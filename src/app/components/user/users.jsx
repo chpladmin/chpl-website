@@ -118,42 +118,42 @@ function ChplUsers(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth={false}>
-        <Paper className={classes.container}>
-          { user
-            && (
+        { user
+          && (
             <ChplUserEdit
               user={user}
               errors={errors}
               dispatch={handleDispatch}
             />
-            )}
-          { !user
-            && (
-            <>
-              <div className={classes.header}>
-                <ChplTextField
-                  id="user-filter"
-                  name="userFilter"
-                  label="Full Name, Friendly Name, Title, Email, or User Name"
-                  onChange={handleFilter}
-                />
-                <ChplUserInvite
-                  roles={roles}
-                  dispatch={handleDispatch}
-                />
-              </div>
-              <div className={classes.users}>
-                { users.map((u) => (
-                  <ChplUserView
-                    key={u.userId}
-                    user={u}
+          )}
+        { !user
+          && (
+            <Paper className={classes.container}>
+              <>
+                <div className={classes.header}>
+                  <ChplTextField
+                    id="user-filter"
+                    name="userFilter"
+                    label="Full Name, Friendly Name, Title, Email, or User Name"
+                    onChange={handleFilter}
+                  />
+                  <ChplUserInvite
+                    roles={roles}
                     dispatch={handleDispatch}
                   />
-                ))}
-              </div>
-            </>
-            )}
-        </Paper>
+                </div>
+                <div className={classes.users}>
+                  { users.map((u) => (
+                    <ChplUserView
+                      key={u.userId}
+                      user={u}
+                      dispatch={handleDispatch}
+                    />
+                  ))}
+                </div>
+              </>
+            </Paper>
+          )}
       </Container>
     </ThemeProvider>
   );

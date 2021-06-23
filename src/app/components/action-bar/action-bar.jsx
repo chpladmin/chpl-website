@@ -124,7 +124,6 @@ function ChplActionBar(props) {
         <div className="action-bar__buttons">
           <ButtonGroup
             color="primary"
-            variant="contained"
           >
             <Button
               id="action-bar-cancel"
@@ -139,6 +138,7 @@ function ChplActionBar(props) {
             </Button>
             <Button
               id="action-bar-save"
+              variant="contained"
               onClick={() => act('save')}
               disabled={isDisabled}
               onMouseOver={() => act('mouseover')}
@@ -153,7 +153,7 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-delete"
-                  size="medium"
+                  variant="contained"
                   className={`${classes.buttons} ${classes.deleteButton}`}
                   onClick={() => act('delete')}
                 >

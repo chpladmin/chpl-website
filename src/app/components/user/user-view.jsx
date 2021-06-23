@@ -90,7 +90,6 @@ function ChplUserView(props) {
                && (
                  <>
                    <strong>Email:</strong>
-                   {' '}
                    <br />
                    {user.email}
                  </>
