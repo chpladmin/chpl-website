@@ -10,8 +10,11 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Chip,
   FormControlLabel,
+  InputAdornment,
   MenuItem,
+  Select,
   Switch,
   ThemeProvider,
   Typography,
@@ -20,15 +23,30 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplTextField } from '../../util';
 import theme from '../../../themes/theme';
-import { complaint as complaintPropType, complainantType } from '../../../shared/prop-types';
+import {
+  criterion as criterionPropType,
+  complaint as complaintPropType,
+  complainantType,
+} from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    listStyle: 'none',
+    padding: theme.spacing(0.5),
+    margin: 0,
+  },
+  chip: {
+    margin: theme.spacing(0.5),
   },
 }));
 
@@ -55,6 +73,12 @@ function ChplComplaintEdit(props) {
     props.complainantTypes
       .sort((a, b) => (a.name < b.name ? -1 : 1))
   );
+  const [criteria] = useState(
+    props.criteria
+      .sort(getAngularService('utilService').sortCert)
+  );
+  const [criterionEdition, setCriterionEdition] = useState('2015');
+  const [criterionToAdd, setCriterionToAdd] = useState('');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -66,6 +90,26 @@ function ChplComplaintEdit(props) {
   });
 
   let formik;
+
+  const addAssociatedCriteria = (event) => {
+    const updated = {
+      ...complaint,
+      criteria: [
+        ...complaint.criteria,
+        event.target.value,
+      ],
+    }
+    setComplaint(updated);
+    setCriterionToAdd('');
+  };
+
+  const removeAssociatedCriterion = (criterion) => {
+    const updated = {
+      ...complaint,
+      criteria: complaint.criteria.filter((crit) => crit.id !== criterion.id),
+    }
+    setComplaint(updated);
+  };
 
   const handleAction = (action, payload) => {
     props.dispatch(action, payload);
@@ -81,6 +125,10 @@ function ChplComplaintEdit(props) {
         break;
         // no default
     }
+  };
+
+  const handleEditionFilterChange = (event) => {
+    setCriterionEdition(event.target.value);
   };
 
   const save = () => {
@@ -208,6 +256,53 @@ function ChplComplaintEdit(props) {
             error={formik.touched.summary && !!formik.errors.summary}
             helperText={formik.touched.summary && formik.errors.summary}
           />
+          {complaint.criteria.length > 0
+           &&
+           <>
+             <Typography>Associated Criteria</Typography>
+             <ul className={classes.chips}>
+               {complaint.criteria
+                .map((criterion) => (
+                  <li key={criterion.id}>
+                    <Chip
+                      label={(criterion.removed ? 'Removed | ' : '') + criterion.number + ': ' + criterion.title}
+                      onDelete={() => removeAssociatedCriterion(criterion)}
+                      className={classes.chip}
+                    />
+                  </li>
+                ))}
+             </ul>
+           </>
+          }
+          <ChplTextField
+            select
+            id="criteria"
+            name="criteria"
+            label="Add Associated Criterion"
+            value={criterionToAdd}
+            onChange={addAssociatedCriteria}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Select
+                    aria-label="Select Edition of Certification Criteria"
+                    value={criterionEdition}
+                    onChange={handleEditionFilterChange}
+                  >
+                    <MenuItem value={'2015'}>2015</MenuItem>
+                    <MenuItem value={'2014'}>2014</MenuItem>
+                    <MenuItem value={'2011'}>2011</MenuItem>
+                  </Select>
+                </InputAdornment>
+              )
+            }}
+          >
+            {criteria
+             .filter((criterion) => (criterion.certificationEdition === criterionEdition))
+             .map((item) => (
+               <MenuItem value={item} key={item.id}>{(item.removed ? 'Removed | ' : '') + item.number + ': ' + item.title}</MenuItem>
+             ))}
+          </ChplTextField>
           <FormControlLabel
             control={(
               <Switch
