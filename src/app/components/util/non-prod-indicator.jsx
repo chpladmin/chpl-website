@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Toolbar } from '@material-ui/core';
+import { Toolbar, Frag } from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 
 import theme from '../../themes/theme';
-// eslint-disable-next-line import/no-cycle
-import { getAngularService } from '.';
+import { getAngularService } from '../../services/angular-react-helper';
 
 const useStyles = makeStyles(() => ({
-  NavBarCallout: {
-    backgroundColor: '#c44f65',
-    height: '25px',
-  },
-
-  NavBarTextBox: {
+  toolBar: {
     minHeight: '25px',
     backgroundColor: '#c44f65',
     width: '100%',
