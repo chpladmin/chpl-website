@@ -8,10 +8,11 @@ const SurveillanceComplaintsComponent = {
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor($log, DateUtil, authService, featureFlags, networkService, utilService) {
+    constructor($log, $scope, DateUtil, authService, featureFlags, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
+      this.$scope = $scope;
       this.DateUtil = DateUtil;
       this.authService = authService;
       this.networkService = networkService;
@@ -61,6 +62,11 @@ const SurveillanceComplaintsComponent = {
 
     handleDispatch(action, payload) {
       switch (action) {
+        case 'close':
+          this.isViewing = false;
+          this.complaint = undefined;
+          this.$scope.$digest();
+          break;
         case 'delete':
           this.deleteComplaint(payload);
           break;
@@ -68,17 +74,12 @@ const SurveillanceComplaintsComponent = {
           this.selectComplaint(payload);
           break;
         case 'view':
-          this.viewComplaint(payload);
+          this.isViewing = true;
+          this.complaint = payload;
+          this.$scope.$digest();
           break;
           // no default
       }
-    }
-
-    viewComplaint(complaint) {
-      this.refreshSurveillances(complaint);
-      this.clearErrorMessages();
-      this.isViewing = true;
-      this.complaint = complaint;
     }
 
     selectComplaint(complaint) {

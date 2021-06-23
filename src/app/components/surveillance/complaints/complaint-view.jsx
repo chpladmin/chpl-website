@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Paper,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import {
+  func,
+} from 'prop-types';
 
 import theme from '../../../themes/theme';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
@@ -25,6 +29,10 @@ function ChplComplaintView(props) {
   useEffect(() => {
     setComplaint(props.complaint);
   }, [props.complaint]);
+
+  const handleAction = (action) => {
+    props.dispatch(action);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -149,6 +157,13 @@ function ChplComplaintView(props) {
         <Typography>
           {complaint.flagForOncReview ? 'Yes' : 'No'}
         </Typography>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => handleAction('close')}
+        >
+          Close
+        </Button>
       </Paper>
     </ThemeProvider>
   );
@@ -158,4 +173,5 @@ export default ChplComplaintView;
 
 ChplComplaintView.propTypes = {
   complaint: complaintPropType.isRequired,
+  dispatch: func.isRequired,
 };

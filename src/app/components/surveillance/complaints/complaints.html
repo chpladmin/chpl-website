@@ -122,8 +122,8 @@
   </div>
   <div class="flex-container" ng-if="$ctrl.isViewing">
     <chpl-complaint-view-bridge
-      complaint="$ctrl.complaint"></chpl-complaint-view-bridge>
-    <button type="button" ng-click="$ctrl.cancelEdit()"><i class="fa fa-close"></i></button>
+      complaint="$ctrl.complaint"
+      dispatch="::$ctrl.handleDispatch"></chpl-complaint-view-bridge>
   </div>
   <div class="flex-container" ng-if="$ctrl.isEditing">
     <div class="flex-item">
