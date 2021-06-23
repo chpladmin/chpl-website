@@ -19,6 +19,7 @@ const criterion = shape({
 });
 
 const complainantType = shape({
+  description: string,
   id: number,
   name: string,
 });
@@ -76,4 +77,4 @@ const complaint = shape({
   surveillances: arrayOf(surveillance),
 });
 
-export default complaint;
+export { complaint, complainantType };

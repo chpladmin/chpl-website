@@ -124,11 +124,13 @@
     ng-if="$ctrl.isViewing"
     complaint="$ctrl.complaint"
     dispatch="::$ctrl.handleDispatch"></chpl-complaint-view-bridge>
-  <chpl-complaint-edit-bridge
-    ng-if="$ctrl.isEditing"
-    complaint="$ctrl.complaint"
-    dispatch="::$ctrl.handleDispatch"></chpl-complaint-edit-bridge>
   <div class="flex-container" ng-if="$ctrl.isEditing">
+    <div class="flex-item">
+      <chpl-complaint-edit-bridge
+        complaint="$ctrl.complaint"
+        complainant-types="$ctrl.complainantTypes"
+        dispatch="::$ctrl.handleDispatch"></chpl-complaint-edit-bridge>
+    </div>
     <div class="flex-item">
       <chpl-surveillance-complaint
         can-edit="$ctrl.displayEdit"
