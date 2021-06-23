@@ -7,18 +7,54 @@ import {
   ButtonGroup,
   ThemeProvider,
   makeStyles,
+  Grid,
+  Container,
 } from '@material-ui/core';
 
 import theme from '../../themes/theme';
 
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import SaveIcon from '@material-ui/icons/Save';
+
 const useStyles = makeStyles(() => ({
-  deleteButton: {
+  
+  ActionBarDeleteButton: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
+    minWidth: '256px',
+    [theme.breakpoints.up('xs')]: {
+      minWidth: '64px',
+      padding: '0 16px',
+    },
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '128px',
+    },
+    [theme.breakpoints.up('md')]: {
+      minWidth: '256px',
+    },
     '&:hover': {
       backgroundColor: '#853544',
     },
   },
+
+  ActionBarButton:{
+    minWidth: '256px',
+    [theme.breakpoints.up('xs')]: {
+      minWidth: '64px',
+    },
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '128px',
+    },
+    [theme.breakpoints.up('md')]: {
+      minWidth: '256px',
+    },
+  },
+
+  iconSpacing: {
+    marginLeft:'4px',
+  },
+
 }));
 
 function ChplActionBar(props) {
@@ -112,37 +148,59 @@ function ChplActionBar(props) {
               </div>
             </>
           )}
-        <div className="action-bar__buttons">
-          <ButtonGroup>
-            { canDelete
-              && (
-                <Button
-                  id="action-bar-delete"
-                  className={classes.deleteButton}
-                  onClick={() => act('delete')}
-                >
-                  Delete
-                </Button>
-              )}
-            <Button
+      <div className="action-bar__buttons">
+
+        <ButtonGroup size="large" aria-label="action bar button group">
+              <Button 
               id="action-bar-cancel"
+              size="medium"
               color="primary"
               variant="outlined"
               onClick={() => act('cancel')}
-            >
+              className={classes.ActionBarButton}
+              >
               Cancel
-            </Button>
-            <Button
+              <CloseOutlinedIcon
+                  className={classes.iconSpacing}
+                  fontSize="medium"
+                />
+              </Button>
+
+            <Button 
               id="action-bar-save"
               color="primary"
               variant="contained"
               onClick={() => act('save')}
               disabled={isDisabled}
               onMouseOver={() => act('mouseover')}
-            >
-              Save
+              size="medium"
+              className={classes.ActionBarButton}
+              >
+                Save
+                <SaveIcon
+                  className={classes.iconSpacing}
+                  fontSize="medium"
+                />
             </Button>
-          </ButtonGroup>
+          
+            { canDelete
+                && (
+            <Button
+              id="action-bar-delete"
+              size="medium"
+              color="primary"
+              variant="contained"
+              className={classes.ActionBarDeleteButton}
+              onClick={() => act('delete')}
+                  >
+                  Delete  
+                  <DeleteOutlinedIcon
+                  className={classes.iconSpacing}
+                  fontSize="medium"
+                />
+                  </Button>
+                )}
+                </ButtonGroup>
         </div>
       </div>
     </ThemeProvider>

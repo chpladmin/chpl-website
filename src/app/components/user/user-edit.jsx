@@ -13,6 +13,8 @@ import {
   Switch,
   ThemeProvider,
   makeStyles,
+  Typography,
+  Paper,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -27,9 +29,9 @@ import {
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
-    gap: '8px',
+    gap: '16px',
     gridTemplateColumns: '1fr 1fr',
-    alignItems: 'center',
+    alignItems: 'start',
   },
   dataEntry: {
     display: 'grid',
@@ -112,13 +114,13 @@ function ChplUserEdit(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <Card>
+        <Card elevation={0}>
           <CardHeader
             title="Edit User"
           />
           <CardContent className={classes.content}>
             <div className={classes.dataEntry}>
+            <Typography variant="body1">User Information</Typography>
               <ChplTextField
                 id="full-name"
                 name="fullName"
@@ -173,6 +175,7 @@ function ChplUserEdit(props) {
               />
             </div>
             <div className={classes.dataEntry}>
+              <Typography variant="body1">Settings</Typography>
               <div>
                 <FormControlLabel
                   control={(
@@ -219,7 +222,6 @@ function ChplUserEdit(props) {
             </div>
           </CardContent>
         </Card>
-      </Container>
       <ChplActionBar
         dispatch={handleDispatch}
         errors={props.errors}

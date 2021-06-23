@@ -29,13 +29,13 @@ const useStyles = makeStyles(() => ({
   header: {
     padding: '16px',
     display: 'grid',
-    gap: '8px',
+    gap: '16px',
     gridTemplateColumns: '4fr 64px',
   },
   users: {
     padding: '16px',
     display: 'grid',
-    gap: '8px',
+    gap: '16px',
     gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
     alignItems: 'start',
   },
