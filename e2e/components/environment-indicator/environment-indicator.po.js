@@ -1,12 +1,12 @@
 class EnvironmentIndicatorComponent {
   constructor() {
     this.elements = {
-      nonprod: '#non-prod-indicator',
+      nonProd: '#non-prod-indicator',
     };
   }
 
   get nonProdIndicator() {
-    return $(this.elements.nonprod);
+    return $(this.elements.nonProd);
   }
 }
 
