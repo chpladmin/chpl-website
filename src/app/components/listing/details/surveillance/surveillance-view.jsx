@@ -33,13 +33,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const getSurveillanceResults = (surv) => surv.requirements.map((req) => req.nonconformities.map((nc) => ({
+const getSurveillanceResults = (surv) => surv.requirements.flatMap((req) => req.nonconformities.map((nc) => ({
   id: req.id,
   statusName: nc.status.name,
   criterion: req.criterion,
   requirement: req.requirement,
-})))
-  .flat();
+})));
 
 function ChplSurveillanceView(props) {
   /* eslint-disable react/destructuring-assignment */
