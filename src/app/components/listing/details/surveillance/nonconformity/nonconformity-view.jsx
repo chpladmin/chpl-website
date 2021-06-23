@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import React, { useState } from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
@@ -18,7 +17,7 @@ import {
 
 import ChplCriterionTitle from '../../../../util/criterion-title';
 import { ChplTooltip } from '../../../../util/chpl-tooltip';
-import { getAngularService } from '.';
+import { getAngularService } from '../../../../../services/angular-react-helper';
 import requirementPropType from '../../../../../shared/prop-types/surveillance-requirement';
 import nonconformityPropType from '../../../../../shared/prop-types/surveillance-nonconformity';
 import surveillancePropType from '../../../../../shared/prop-types/surveillance';
