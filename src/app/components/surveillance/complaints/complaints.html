@@ -120,11 +120,14 @@
       complaints="$ctrl.displayedComplaints"
       dispatch="::$ctrl.handleDispatch"></chpl-complaints-bridge>
   </div>
-  <div class="flex-container" ng-if="$ctrl.isViewing">
-    <chpl-complaint-view-bridge
-      complaint="$ctrl.complaint"
-      dispatch="::$ctrl.handleDispatch"></chpl-complaint-view-bridge>
-  </div>
+  <chpl-complaint-view-bridge
+    ng-if="$ctrl.isViewing"
+    complaint="$ctrl.complaint"
+    dispatch="::$ctrl.handleDispatch"></chpl-complaint-view-bridge>
+  <chpl-complaint-edit-bridge
+    ng-if="$ctrl.isEditing"
+    complaint="$ctrl.complaint"
+    dispatch="::$ctrl.handleDispatch"></chpl-complaint-edit-bridge>
   <div class="flex-container" ng-if="$ctrl.isEditing">
     <div class="flex-item">
       <chpl-surveillance-complaint
