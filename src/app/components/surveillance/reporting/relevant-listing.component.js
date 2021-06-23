@@ -59,7 +59,15 @@ export const SurveillanceReportRelevantListingComponent = {
       });
     }
 
-    editSurveillance(relevantSurveillance) {
+    displaySurveillance(relevantSurveillance) {
+      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
+        this.editSurveillance(relevantSurveillance);
+      } else {
+        this.viewSurveillance(relevantSurveillance);
+      }
+    }
+
+    viewSurveillance(relevantSurveillance) {
       const that = this;
       this._fixRequirementOptions();
       this.networkService.getListing(this.listing.id, true).then((listing) => {
@@ -77,6 +85,37 @@ export const SurveillanceReportRelevantListingComponent = {
           });
       });
     }
+
+    editSurveillance(relevantSurveillance) {
+      let that = this;
+      this._fixRequirementOptions();
+      this.networkService.getListing(this.listing.id, true).then(listing => {
+        let surveillance = listing.surveillance.find(s => s.id === relevantSurveillance.id);
+        that.uibModalInstance = that.$uibModal.open({
+          component: 'aiSurveillanceEdit',
+          animation: false,
+          backdrop: 'static',
+          keyboard: false,
+          size: 'lg',
+          resolve: {
+            surveillance: () => { return surveillance; },
+            surveillanceTypes: () => { return that.surveillanceTypes; },
+            workType: () => { return 'edit'; },
+          },
+        });
+        that.uibModalInstance.result.then(() => {
+          let currentState = {
+            relevantListing: that.listing.id,
+          };
+          that.$state.go(
+            that.$state.current,
+            { ...that.$stateParams, ...currentState },
+            { reload: true },
+          );
+        });
+      });
+    }
+
 
     _fixRequirementOptions() {
       if (this.listing.edition === '2015') {
