@@ -45,9 +45,9 @@ const useStyles = makeStyles(() => ({
 function ChplNonconformityView(props) {
   /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
-  const [currentSurveillance] = useState(props.surveillance);
-  const [currentRequirement] = useState(props.requirement);
-  const [currentNonconformity] = useState(props.nonconformity);
+  const [surveillance] = useState(props.surveillance);
+  const [requirement] = useState(props.requirement);
+  const [nonconformity] = useState(props.nonconformity);
   /* eslint-enable react/destructuring-assignment */
 
   const classes = useStyles();
@@ -61,11 +61,11 @@ function ChplNonconformityView(props) {
         >
           <div className={classes.nonconformityAccordionSummaryGrid}>
             <div>
-              <ChplCriterionTitle criterion={currentNonconformity.criterion} />
-              { ` ${currentRequirement.result.name}` }
+              <ChplCriterionTitle criterion={nonconformity.criterion} />
+              { ` ${requirement.result.name}` }
             </div>
             <div className={classes.nonconformityAccordionSummaryStatus}>
-              { currentNonconformity.status.name }
+              { nonconformity.status.name }
             </div>
           </div>
         </AccordionSummary>
@@ -92,7 +92,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.dateOfDetermination) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.dateOfDetermination) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -103,7 +103,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capApprovalDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capApprovalDate) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -114,7 +114,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capStartDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capStartDate) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -125,7 +125,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capMustCompleteDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capMustCompleteDate) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -136,7 +136,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(currentNonconformity.capEndDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capEndDate) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -148,16 +148,16 @@ function ChplNonconformityView(props) {
                     </ChplTooltip>
                   </TableCell>
                   <TableCell data-testid="nonconformity-type">
-                    { currentNonconformity.criterion
-                      ? <ChplCriterionTitle criterion={currentNonconformity.criterion} useRemovedClass />
+                    { nonconformity.criterion
+                      ? <ChplCriterionTitle criterion={nonconformity.criterion} useRemovedClass />
                       : (
                         <span>
-                          {currentNonconformity.nonconformityType}
+                          {nonconformity.nonconformityType}
                         </span>
                       )}
                   </TableCell>
                 </TableRow>
-                { currentSurveillance.type?.name === 'Randomized'
+                { surveillance.type?.name === 'Randomized'
                   && (
                     <TableRow data-testid="pass-rate-row">
                       <TableCell component="th" scope="row">
@@ -169,7 +169,7 @@ function ChplNonconformityView(props) {
                         </ChplTooltip>
                       </TableCell>
                       <TableCell>
-                        { `${currentNonconformity.sitesPassed} / ${currentNonconformity.totalSites}` }
+                        { `${nonconformity.sitesPassed} / ${nonconformity.totalSites}` }
                       </TableCell>
                     </TableRow>
                   )}
@@ -182,7 +182,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ currentNonconformity.status.name }</TableCell>
+                  <TableCell>{ nonconformity.status.name }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -193,7 +193,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ currentNonconformity.summary }</TableCell>
+                  <TableCell>{ nonconformity.summary }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -204,7 +204,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ currentNonconformity.findings }</TableCell>
+                  <TableCell>{ nonconformity.findings }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -215,7 +215,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ currentNonconformity.developerExplanation }</TableCell>
+                  <TableCell>{ nonconformity.developerExplanation }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -226,7 +226,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ currentNonconformity.resolution }</TableCell>
+                  <TableCell>{ nonconformity.resolution }</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
