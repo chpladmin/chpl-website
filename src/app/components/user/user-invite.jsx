@@ -7,7 +7,6 @@ import {
   MenuItem,
   ThemeProvider,
   makeStyles,
-  useMediaQuery,
 } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import EmailIcon from '@material-ui/icons/Email';
@@ -23,7 +22,6 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gap: '8px',
   },
-
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -43,7 +41,6 @@ function ChplUserInvite(props) {
   /* eslint-enable react/destructuring-assignment */
 
   const [open, setOpen] = React.useState(false);
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const classes = useStyles();
   let formik;
@@ -143,13 +140,13 @@ function ChplUserInvite(props) {
         <DialogActions>
           <Button
             id="invite-user-button"
-            aria-label="Send invitation to new user"
             color="primary"
+            variant="contained"
             onClick={formik.handleSubmit}
             disabled={!formik.isValid}
-            variant="contained"
           >
-            Send Invite <EmailIcon className={classes.iconSpacing} />
+            Send Invite
+            <EmailIcon className={classes.iconSpacing} />
           </Button>
         </DialogActions>
       </Dialog>
