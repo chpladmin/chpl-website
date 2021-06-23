@@ -42,16 +42,17 @@ const getSurveillanceResults = (surv) => surv.requirements.map((req) => req.nonc
 })))
   .flat();
 
-function ChplSurveillanceView({ surveillance }) {
+function ChplSurveillanceView(props) {
+  /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
-  const [currentSurveillance] = useState(surveillance);
+  const [surveillance] = useState(props.surveillance);
   const [surveillanceResults, setSurveillanceResults] = useState([]);
-
   const classes = useStyles();
+  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    setSurveillanceResults(getSurveillanceResults(currentSurveillance));
-  }, [currentSurveillance]);
+    setSurveillanceResults(getSurveillanceResults(surveillance));
+  }, [surveillance]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,7 +78,7 @@ function ChplSurveillanceView({ surveillance }) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.getDisplayDateFormat(currentSurveillance.startDate) }</TableCell>
+              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.startDate) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -88,7 +89,7 @@ function ChplSurveillanceView({ surveillance }) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.getDisplayDateFormat(currentSurveillance.endDate) }</TableCell>
+              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.endDate) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -99,7 +100,7 @@ function ChplSurveillanceView({ surveillance }) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ currentSurveillance.type.name }</TableCell>
+              <TableCell>{ surveillance.type.name }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -111,10 +112,10 @@ function ChplSurveillanceView({ surveillance }) {
                 </ChplTooltip>
               </TableCell>
               <TableCell data-testid="reqs-surveilled-cell">
-                { currentSurveillance.requirements?.length > 0
+                { surveillance.requirements?.length > 0
                   && (
                     <ul className={classes.unindentedData}>
-                      { currentSurveillance.requirements.map((req) => (
+                      { surveillance.requirements.map((req) => (
                         <li key={req.id}>
                           { `${req.type.name} ${req.criterion && ': '}` }
                           <ChplCriterionTitle criterion={req.criterion} useRemovedClass />
@@ -122,7 +123,7 @@ function ChplSurveillanceView({ surveillance }) {
                       ))}
                     </ul>
                   )}
-                { currentSurveillance.requirements?.length === 0 && 'None' }
+                { surveillance.requirements?.length === 0 && 'None' }
               </TableCell>
             </TableRow>
             <TableRow>
@@ -152,16 +153,16 @@ function ChplSurveillanceView({ surveillance }) {
           </TableBody>
         </Table>
       </TableContainer>
-      { getSurveillanceResults(currentSurveillance).length > 0
+      { getSurveillanceResults(surveillance).length > 0
         && (
         <div className={classes.nonconformityContainer}>
           <Typography variant="subtitle1" data-testid="non-conformity-header">
             Non-Conformities
           </Typography>
           <div data-testid="non-conformity-component-container">
-            { currentSurveillance.requirements.map((requirement) => (
+            { surveillance.requirements.map((requirement) => (
               requirement.nonconformities.map((nonconformity) => (
-                <ChplSurveillanceNonconformity key={requirement.id} surveillance={currentSurveillance} requirement={requirement} nonconformity={nonconformity} data-testid="non-conformity-component" />
+                <ChplSurveillanceNonconformity key={requirement.id} surveillance={surveillance} requirement={requirement} nonconformity={nonconformity} data-testid="non-conformity-component" />
               ))
             ))}
           </div>
