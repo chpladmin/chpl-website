@@ -87,7 +87,7 @@
           complainantTypeOther: null,
           oncComplaintId: null,
           acbComplaintId: '456654',
-          receivedDate: 1562630400000,
+          receivedDate: '2020-03-01',
           summary: 'test',
           actions: null,
           complainantContacted: false,
@@ -130,6 +130,9 @@
 
     beforeEach(() => {
       angular.mock.module('chpl.components', ($provide) => {
+        $provide.factory('chplComplaintsBridgeDirective', () => ({}));
+        $provide.factory('chplComplaintEditBridgeDirective', () => ({}));
+        $provide.factory('chplComplaintViewBridgeDirective', () => ({}));
         $provide.factory('chplSavedFilterDirective', () => ({}));
         $provide.factory('chplFiltersDirective', () => ({}));
         $provide.factory('chplFilterDirective', () => ({}));
@@ -222,8 +225,6 @@
         ctrl.saveComplaint(complaint);
         expect(networkService.updateComplaint).toHaveBeenCalledWith({
           ...complaint,
-          receivedDate: 1559606400000,
-          closedDate: null,
         });
       });
 
@@ -233,8 +234,6 @@
         ctrl.saveComplaint(complaint);
         expect(networkService.createComplaint).toHaveBeenCalledWith({
           ...complaint,
-          receivedDate: 1559606400000,
-          closedDate: null,
         });
       });
 
