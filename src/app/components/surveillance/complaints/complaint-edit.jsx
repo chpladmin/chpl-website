@@ -24,14 +24,15 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplTextField } from '../../util';
-import theme from '../../../themes/theme';
 import {
   criterion as criterionPropType,
   complaint as complaintPropType,
   complainantType,
   listing as listingPropType,
+  selectableSurveillance as surveillancePropType,
 } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -88,6 +89,8 @@ function ChplComplaintEdit(props) {
   );
   const [listingToAdd, setListingToAdd] = useState(null);
   const [listingValueToAdd, setListingValueToAdd] = useState('');
+  const [surveillances, setSurveillances] = useState([]);
+  const [surveillanceToAdd, setSurveillanceToAdd] = useState('');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -97,6 +100,17 @@ function ChplComplaintEdit(props) {
       initialComplainantType = type;
     }
   });
+
+  useEffect(() => {
+    setSurveillances(props.surveillances
+                     .map((s) => (s))
+                     .sort((a, b) => {
+                       if (a.chplProductNumber < b.chplProductNumber) { return -1; }
+                       if (a.chplProductNumber > b.chplProductNumber) { return 1; }
+                       return a.friendlyId < b.friendlyId ? -1 : 1;
+                     })
+                    );
+  }, [props.surveillances]);
 
   let formik;
 
@@ -138,6 +152,26 @@ function ChplComplaintEdit(props) {
     const updated = {
       ...complaint,
       listings: complaint.listings.filter((item) => item.id !== listing.id),
+    }
+    setComplaint(updated);
+  };
+
+  const addAssociatedSurveillance = (event) => {
+    const updated = {
+      ...complaint,
+      surveillances: [
+        ...complaint.surveillances,
+        { surveillance: event.target.value },
+      ],
+    }
+    setComplaint(updated);
+    setSurveillanceToAdd('');
+  };
+
+  const removeAssociatedSurveillance = (surveillance) => {
+    const updated = {
+      ...complaint,
+      surveillances: complaint.surveillances.filter((item) => item.surveillance.id !== surveillance.surveillance.id),
     }
     setComplaint(updated);
   };
@@ -378,6 +412,37 @@ function ChplComplaintEdit(props) {
             getOptionLabel={(item) => (`${item.chplProductNumber} (${item.developer} - ${item.product})`)}
             renderInput={(params) => <ChplTextField {...params} label="Add Associated Listing" />}
           />
+          {complaint.surveillances.length > 0
+           &&
+           <>
+             <Typography>Associated Surveillance Activities</Typography>
+             <ul className={classes.chips}>
+               {complaint.surveillances
+                .map((surveillance) => (
+                  <li key={surveillance.id}>
+                    <Chip
+                      label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
+                      onDelete={() => removeAssociatedSurveillance(surveillance)}
+                      className={classes.chip}
+                    />
+                  </li>
+                ))}
+             </ul>
+           </>
+          }
+          <ChplTextField
+            select
+            id="surveillances"
+            name="surveillances"
+            label="Add Associated Surveillance Activity"
+            value={surveillanceToAdd}
+            onChange={addAssociatedSurveillance}
+          >
+            {surveillances
+             .map((item) => (
+               <MenuItem value={item} key={item.id}>{`${item.chplProductNumber}: ${item.friendlyId}`}</MenuItem>
+             ))}
+          </ChplTextField>
           <FormControlLabel
             control={(
               <Switch
@@ -417,5 +482,6 @@ ChplComplaintEdit.propTypes = {
   complainantTypes: arrayOf(complainantType).isRequired,
   criteria: arrayOf(criterionPropType).isRequired,
   listings: arrayOf(listingPropType).isRequired,
+  surveillances: arrayOf(surveillancePropType).isRequired,
   dispatch: func.isRequired,
 };
