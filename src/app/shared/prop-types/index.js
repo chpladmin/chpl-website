@@ -16,6 +16,7 @@ import { testFunctionality, selectedTestFunctionality } from './test-functionali
 import { testProcedure, selectedTestProcedure } from './test-procedure';
 import { testStandard, selectedTestStandard } from './test-standard';
 import { testTool, selectedTestTool } from './test-tool';
+import user from './user';
 
 export {
   acb,
@@ -43,4 +44,5 @@ export {
   testData,
   testStandard,
   testTool,
+  user,
 };

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import {
   bool, number, oneOfType, shape, string,
 } from 'prop-types';

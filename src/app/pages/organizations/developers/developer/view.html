@@ -28,11 +28,10 @@
             <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
           </div>
           <div class="panel-body">
-            <chpl-users users="$ctrl.users"
-                        roles="$ctrl.roles"
-                        column-count="1"
-                        take-action="$ctrl.takeUserAction(action, data)"
-                        ></chpl-users>
+            <chpl-users-bridge users="$ctrl.users"
+                               roles="$ctrl.roles"
+                               take-action="::$ctrl.takeUserAction"
+                               ></chpl-users-bridge>
           </div>
         </div>
       </div>

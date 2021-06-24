@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { bool, number, string } from 'prop-types';
 
-import { ChplTooltip } from './chpl-tooltip';
+import ChplTooltip from './chpl-tooltip';
 
 function ChplEllipsis(props) {
   const [isShortened, setShortened] = useState(true);
