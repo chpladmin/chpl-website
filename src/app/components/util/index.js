@@ -7,7 +7,7 @@ import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
 
 export {
-  ChplConfirmation
+  ChplConfirmation,
   ChplDialogTitle,
   ChplEllipsis,
   ChplHighlightCures,
