@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
 
 function ChplComplaintView(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [complaint, setComplaint] = useState({
+  const [complaint] = useState({
     ...props.complaint,
     criteria: props.complaint.criteria
       .map((item) => (item.certificationCriterion))
