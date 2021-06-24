@@ -73,6 +73,12 @@ const SurveillanceComplaintsComponent = {
         case 'edit':
           this.selectComplaint(payload);
           break;
+        case 'selectListing':
+          this.refreshSurveillances(payload);
+          if (payload.listings.length === 0) {
+            this.$scope.$digest();
+          }
+          break;
         case 'view':
           this.isViewing = true;
           this.complaint = payload;

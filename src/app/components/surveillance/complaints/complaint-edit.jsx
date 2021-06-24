@@ -112,7 +112,12 @@ function ChplComplaintEdit(props) {
 
   let formik;
 
+  const handleAction = (action, payload) => {
+    props.dispatch(action, payload);
+  };
+
   const addAssociatedCriterion = (event) => {
+    if (complaint.criteria.find((item) => item.certificationCriterion.id === event.target.value.id)) { return; }
     const updated = {
       ...complaint,
       criteria: [
@@ -134,14 +139,23 @@ function ChplComplaintEdit(props) {
 
   const addAssociatedListing = (event, newValue) => {
     if (!newValue || !newValue.id) { return; }
+    if (complaint.listings.find((item) => item.id === newValue.id)) {
+      setListingToAdd(null);
+      setListingValueToAdd('');
+      return;
+    }
     const updated = {
       ...complaint,
       listings: [
         ...complaint.listings,
-        newValue,
+        {
+          ...newValue,
+          listingId: newValue.id,
+        },
       ],
     };
     setComplaint(updated);
+    handleAction('selectListing', updated);
     setListingToAdd(null);
     setListingValueToAdd('');
   };
@@ -152,9 +166,11 @@ function ChplComplaintEdit(props) {
       listings: complaint.listings.filter((item) => item.id !== listing.id),
     };
     setComplaint(updated);
+    handleAction('selectListing', updated);
   };
 
   const addAssociatedSurveillance = (event) => {
+    if (complaint.surveillances.find((item) => item.surveillance.id === event.target.value.id)) { return; }
     const updated = {
       ...complaint,
       surveillances: [
@@ -172,10 +188,6 @@ function ChplComplaintEdit(props) {
       surveillances: complaint.surveillances.filter((item) => item.surveillance.id !== surveillance.surveillance.id),
     };
     setComplaint(updated);
-  };
-
-  const handleAction = (action, payload) => {
-    props.dispatch(action, payload);
   };
 
   const handleDispatch = (action) => {
@@ -432,19 +444,22 @@ function ChplComplaintEdit(props) {
              </ul>
            </>
            )}
-          <ChplTextField
-            select
-            id="surveillances"
-            name="surveillances"
-            label="Add Associated Surveillance Activity"
-            value={surveillanceToAdd}
-            onChange={addAssociatedSurveillance}
-          >
-            {surveillances
-              .map((item) => (
-                <MenuItem value={item} key={item.id}>{`${item.chplProductNumber}: ${item.friendlyId}`}</MenuItem>
-              ))}
-          </ChplTextField>
+          {surveillances.length > 0
+           && (
+             <ChplTextField
+               select
+               id="surveillances"
+               name="surveillances"
+               label="Add Associated Surveillance Activity"
+               value={surveillanceToAdd}
+               onChange={addAssociatedSurveillance}
+             >
+               {surveillances
+                 .map((item) => (
+                   <MenuItem value={item} key={item.id}>{`${item.chplProductNumber}: ${item.friendlyId}`}</MenuItem>
+                 ))}
+             </ChplTextField>
+           )}
           <FormControlLabel
             control={(
               <Switch
