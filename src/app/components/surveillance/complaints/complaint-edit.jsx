@@ -373,7 +373,6 @@ function ChplComplaintEdit(props) {
             id="actions"
             name="actions"
             label="Actions/Response"
-            required
             multiline
             value={formik.values.actions}
             onChange={formik.handleChange}
