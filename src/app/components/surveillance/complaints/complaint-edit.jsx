@@ -20,6 +20,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -30,6 +31,7 @@ import {
   criterion as criterionPropType,
   complaint as complaintPropType,
   complainantType,
+  listing as listingPropType,
 } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -79,6 +81,13 @@ function ChplComplaintEdit(props) {
   );
   const [criterionEdition, setCriterionEdition] = useState('2015');
   const [criterionToAdd, setCriterionToAdd] = useState('');
+  const [listings] = useState(
+    props.listings
+      .filter((listing) => (listing.acb === complaint.certificationBody.name))
+      .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)))
+  );
+  const [listingToAdd, setListingToAdd] = useState(null);
+  const [listingValueToAdd, setListingValueToAdd] = useState('');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -107,6 +116,28 @@ function ChplComplaintEdit(props) {
     const updated = {
       ...complaint,
       criteria: complaint.criteria.filter((crit) => crit.id !== criterion.id),
+    }
+    setComplaint(updated);
+  };
+
+  const addAssociatedListing = (event, newValue) => {
+    if (!newValue || !newValue.id) { return null; }
+    const updated = {
+      ...complaint,
+      listings: [
+        ...complaint.listings,
+        newValue,
+      ],
+    }
+    setComplaint(updated);
+    setListingToAdd(null);
+    setListingValueToAdd('');
+  };
+
+  const removeAssociatedListing = (listing) => {
+    const updated = {
+      ...complaint,
+      listings: complaint.listings.filter((item) => item.id !== listing.id),
     }
     setComplaint(updated);
   };
@@ -148,6 +179,7 @@ function ChplComplaintEdit(props) {
       complainantType: initialComplainantType,
       complainantTypeOther: complaint.complainantTypeOther || '',
       summary: complaint.summary,
+      actions: complaint.actions || '',
       complainantContacted: complaint.complainantContacted,
     },
     onSubmit: () => {
@@ -303,6 +335,49 @@ function ChplComplaintEdit(props) {
                <MenuItem value={item} key={item.id}>{(item.removed ? 'Removed | ' : '') + item.number + ': ' + item.title}</MenuItem>
              ))}
           </ChplTextField>
+          <ChplTextField
+            id="actions"
+            name="actions"
+            label="Actions/Response"
+            required
+            multiline
+            value={formik.values.actions}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.actions && !!formik.errors.actions}
+            helperText={formik.touched.actions && formik.errors.actions}
+          />
+          {complaint.listings.length > 0
+           &&
+           <>
+             <Typography>Associated Listings</Typography>
+             <ul className={classes.chips}>
+               {complaint.listings
+                .map((listing) => (
+                  <li key={listing.id}>
+                    <Chip
+                      label={listing.chplProductNumber}
+                      onDelete={() => removeAssociatedListing(listing)}
+                      className={classes.chip}
+                    />
+                  </li>
+                ))}
+             </ul>
+           </>
+          }
+          <Autocomplete
+            id="listings"
+            name="listings"
+            options={listings}
+            value={listingToAdd}
+            onChange={addAssociatedListing}
+            inputValue={listingValueToAdd}
+            onInputChange={(event, newValue) => {
+              setListingValueToAdd(newValue);
+            }}
+            getOptionLabel={(item) => (`${item.chplProductNumber} (${item.developer} - ${item.product})`)}
+            renderInput={(params) => <ChplTextField {...params} label="Add Associated Listing" />}
+          />
           <FormControlLabel
             control={(
               <Switch
@@ -341,5 +416,6 @@ ChplComplaintEdit.propTypes = {
   complaint: complaintPropType.isRequired,
   complainantTypes: arrayOf(complainantType).isRequired,
   criteria: arrayOf(criterionPropType).isRequired,
+  listings: arrayOf(listingPropType).isRequired,
   dispatch: func.isRequired,
 };

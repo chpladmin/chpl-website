@@ -77,4 +77,4 @@ const complaint = shape({
   surveillances: arrayOf(surveillance),
 });
 
-export { criterion, complaint, complainantType };
+export { criterion, complaint, complainantType, listing };
