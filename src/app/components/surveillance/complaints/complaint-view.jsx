@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Paper,
@@ -11,6 +11,7 @@ import {
 } from 'prop-types';
 
 import theme from '../../../themes/theme';
+import { getAngularService } from '../../../services/angular-react-helper';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -22,13 +23,23 @@ const useStyles = makeStyles(() => ({
 
 function ChplComplaintView(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [complaint, setComplaint] = useState({});
+  const [complaint, setComplaint] = useState({
+    ...props.complaint,
+    criteria: props.complaint.criteria
+      .map((item) => (item.certificationCriterion))
+      .sort(getAngularService('utilService').sortCertActual),
+    listings: props.complaint.listings
+      .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))),
+    surveillances: props.complaint.surveillances
+      .map((item) => (item.surveillance))
+      .sort((a, b) => {
+        if (a.chplProductNumber < b.chplProductNumber) { return -1; }
+        if (a.chplProductNumber > b.chplProductNumber) { return 1; }
+        return a.friendlyId < b.friendlyId ? -1 : 1;
+      }),
+  });
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
-
-  useEffect(() => {
-    setComplaint(props.complaint);
-  }, [props.complaint]);
 
   const handleAction = (action) => {
     props.dispatch(action);
@@ -91,7 +102,7 @@ function ChplComplaintView(props) {
         {complaint.criteria?.length > 0
           ? (
             <ul>
-              {complaint.criteria.map((criterion) => <li key={criterion.id}>{ criterion.certificationCriterion?.number}</li>)}
+              {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
             </ul>
 )
           : (
@@ -125,7 +136,7 @@ function ChplComplaintView(props) {
         {complaint.surveillances?.length > 0
           ? (
             <ul>
-              {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{ surveillance.friendlyId }</li>)}
+              {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
             </ul>
 )
           : (
