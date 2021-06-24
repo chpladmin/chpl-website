@@ -1,101 +1,188 @@
-import React, {useState} from 'react';
-import {arrayOf, bool, func, string} from 'prop-types';
+import React, { useState } from 'react';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
+import {
+  Button,
+  ButtonGroup,
+  ThemeProvider,
+  makeStyles,
+} from '@material-ui/core';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import SaveIcon from '@material-ui/icons/Save';
 
-function ChplActionBar (props) {
+import theme from '../../themes/theme';
+
+const useStyles = makeStyles(() => ({
+  buttons: {
+    minWidth: '15vw',
+  },
+  deleteButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+}));
+
+function ChplActionBar(props) {
+  /* eslint-disable react/destructuring-assignment */
+  const [canDelete] = useState(props.canDelete);
+  const [isDisabled] = useState(props.isDisabled);
+  const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
+  const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
   const [showMessages, setShowMessages] = useState(true);
+  const classes = useStyles();
+  /* eslint-enable react/destructuring-assignment */
 
   const act = (action) => {
-    console.log({type: 'act', action});
-    if (props.takeAction) {
-      props.takeAction(action);
+    if (props.dispatch) {
+      props.dispatch(action);
     }
   };
 
-  const submit = event => {
-    event.preventDefault();
-  };
-
   return (
-    <form onSubmit={submit}>
+    <ThemeProvider theme={theme}>
       <div className="action-bar">
-        { ((props.errors && props.errors.length > 0) || (props.warnings && props.warnings.length > 0)) &&
-          <div className="action-bar__error-toggle">
-            <span onClick={() => setShowMessages(!showMessages)}>
-              { props.errors && props.errors.length > 0 &&
-                <>Error{ props.errors.length > 1 && 's'} </>
-              }
-              { props.errors && props.errors.length > 0 && props.warnings && props.warnings.length > 0 &&
-                <>and </>
-              }
-              { props.warnings && props.warnings.length > 0 &&
-                <>Warning{ props.warnings.length > 1 && 's'} </>
-              }
-              <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`}></i>
-            </span>
-          </div>
-        }
-        { showMessages &&
-          <>
-            <div className="action-bar__messages">
-              { props.errors && props.errors.length > 0 &&
-                <div className="action-bar__errors">
-                  <strong>Error{ props.errors.length > 1 && 's'}</strong>
-                  <ul className="action-bar__error-messages">
-                    {
-                      props.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-                        .map(message => (
-                          <li key={message}>{message}</li>
-                        ))
-                    }
-                  </ul>
-                </div>
-              }
-              { props.warnings && props.warnings.length > 0 &&
-                <>
-                  <div className="action-bar__warnings">
-                    <strong>Warning{ props.warnings.length > 1 && 's'}</strong>
-                    <ul className="action-bar__warning-messages">
-                      {
-                        props.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0).map(message => (
-                          <li key={message}>{message}</li>
-                        ))
-                      }
-                    </ul>
-                  </div>
-                </>
-              }
-            </div>
-          </>
-        }
+        { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
+          && (
+            <>
+              <div className="action-bar__error-toggle">
+                <span
+                  onClick={() => setShowMessages(!showMessages)}
+                  onKeyDown={() => setShowMessages(!showMessages)}
+                  tabIndex={0}
+                  role="button"
+                >
+                  { errors && errors.length > 0
+                    && (
+                      <>
+                        Error
+                        { errors.length > 1 && 's'}
+                      </>
+                    )}
+                  { errors && errors.length > 0 && warnings && warnings.length > 0
+                    && <> and </>}
+                  { warnings && warnings.length > 0
+                    && (
+                      <>
+                        Warning
+                        { warnings.length > 1 && 's'}
+                      </>
+                    )}
+                  <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`} />
+                </span>
+              </div>
+            </>
+          )}
+        { showMessages
+          && (
+            <>
+              <div className="action-bar__messages">
+                { errors && errors.length > 0
+                  && (
+                    <div className="action-bar__errors">
+                      <strong>
+                        Error
+                        { errors.length > 1 && 's'}
+                      </strong>
+                      <ul className="action-bar__error-messages">
+                        {
+                          errors.map((message) => (
+                            <li key={message}>{message}</li>
+                          ))
+                        }
+                      </ul>
+                    </div>
+                  )}
+                { warnings && warnings.length > 0
+                  && (
+                    <>
+                      <div className="action-bar__warnings">
+                        <strong>
+                          Warning
+                          { warnings.length > 1 && 's'}
+                        </strong>
+                        <ul className="action-bar__warning-messages">
+                          {
+                            warnings.map((message) => (
+                              <li key={message}>{message}</li>
+                            ))
+                          }
+                        </ul>
+                      </div>
+                    </>
+                  )}
+              </div>
+            </>
+          )}
         <div className="action-bar__buttons">
-          <div className="action-bar__button">
-            {/*
-               Need new component to replace this one
-               confirm="Are you sure you wish to cancel? Your changes will not be saved."
-               confirm-ok="Yes"
-               confirm-cancel="No"
-               confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-             */}
-            <button className="btn btn-default" id="action-bar-cancel"
-                    onClick={() => act('cancel')}>Cancel</button>
-          </div>
-          <div className="action-bar__button">
-            <button className="btn btn-primary" id="action-bar-save"
-                    onClick={() => act('save')}
-                    disabled={props.isDisabled}
-                    onMouseOver={() => act('mouseover')}>Save</button>
-          </div>
+          <ButtonGroup
+            color="primary"
+          >
+            <Button
+              id="action-bar-cancel"
+              variant="outlined"
+              onClick={() => act('cancel')}
+              className={classes.buttons}
+            >
+              Cancel
+              <CloseOutlinedIcon
+                className={classes.iconSpacing}
+              />
+            </Button>
+            <Button
+              id="action-bar-save"
+              variant="contained"
+              onClick={() => act('save')}
+              disabled={isDisabled}
+              onMouseOver={() => act('mouseover')}
+              className={classes.buttons}
+            >
+              Save
+              <SaveIcon
+                className={classes.iconSpacing}
+              />
+            </Button>
+            { canDelete
+              && (
+                <Button
+                  id="action-bar-delete"
+                  variant="contained"
+                  className={`${classes.buttons} ${classes.deleteButton}`}
+                  onClick={() => act('delete')}
+                >
+                  Delete
+                  <DeleteOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
+          </ButtonGroup>
         </div>
       </div>
-    </form>
+    </ThemeProvider>
   );
 }
 
-export {ChplActionBar};
+export default ChplActionBar;
 
 ChplActionBar.propTypes = {
+  dispatch: func.isRequired,
   errors: arrayOf(string),
-  isDisabled: bool,
-  takeAction: func,
   warnings: arrayOf(string),
+  canDelete: bool,
+  isDisabled: bool,
+};
+
+ChplActionBar.defaultProps = {
+  errors: [],
+  warnings: [],
+  canDelete: false,
+  isDisabled: false,
 };
