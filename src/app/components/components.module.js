@@ -4,6 +4,7 @@ import { ChplEllipsis } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
+import { ChplUsers } from './user';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 
 angular
@@ -32,4 +33,5 @@ angular
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
+  .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance));

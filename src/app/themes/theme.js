@@ -61,6 +61,11 @@ const theme = createMuiTheme({
   },
 
   overrides: {
+    MuiPaper: {
+      rounded: {
+        borderRadius: '8px',
+      },
+    },
     MuiButton: {
       root: {
         boxShadow: 'none',

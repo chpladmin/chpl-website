@@ -1,24 +1,7 @@
 import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import {Tooltip} from '@material-ui/core';
 import {bool, number, string} from 'prop-types';
 
-const useStylesBootstrap = makeStyles((theme) => ({
-  arrow: {
-    color: theme.palette.common.black,
-  },
-  tooltip: {
-    backgroundColor: theme.palette.common.black,
-    textAlign: 'center',
-    fontSize: '12px',
-  },
-}));
-
-function BootstrapTooltip (props) {
-  const classes = useStylesBootstrap();
-
-  return <Tooltip arrow placement="top" classes={classes} {...props} />;
-}
+import { ChplTooltip } from '.';
 
 function ChplEllipsis (props) {
   const [isShortened, setShortened] = useState(true);
@@ -40,11 +23,11 @@ function ChplEllipsis (props) {
     <span>
       {isShortened ? display : props.text}
       {display !== props.text && isShortened &&
-       <BootstrapTooltip title={props.text}>
+       <ChplTooltip title={props.text}>
          <button className="btn btn-link btn-xs" onClick={() => setShortened(false)}>
            <i className="fa fa-ellipsis-h"></i><span className="sr-only">Expand description</span>
          </button>
-       </BootstrapTooltip>
+       </ChplTooltip>
       }
       {display !== props.text && !isShortened &&
        <button className="btn btn-link btn-xs" onClick={() => setShortened(true)}>

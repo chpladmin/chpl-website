@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="panel-body" ng-show="!$ctrl.usersCollapsed">
-        <chpl-users column-count="2" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeUserAction(action, data)"></chpl-users>
+        <chpl-users-bridge users="$ctrl.users" roles="$ctrl.roles" dispatch="::$ctrl.takeUserAction"></chpl-users-bridge>
       </div>
     </div>
   </div>

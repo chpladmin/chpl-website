@@ -1,9 +1,11 @@
-import { bool, number, shape, string } from 'prop-types';
-import { address } from './';
+import {
+  bool, number, shape, string,
+} from 'prop-types';
+import { address } from './address';
 
 const acb = shape({
   acbCode: string,
-  address: address,
+  address,
   id: number,
   name: string,
   retired: bool,
@@ -11,4 +13,4 @@ const acb = shape({
   website: string,
 });
 
-export { acb };
+export default acb;
