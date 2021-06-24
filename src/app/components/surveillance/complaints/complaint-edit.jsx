@@ -77,7 +77,7 @@ function ChplComplaintEdit(props) {
   );
   const [criteria] = useState(
     props.criteria
-      .sort(getAngularService('utilService').sortCert)
+      .sort(getAngularService('utilService').sortCertActual)
   );
   const [criterionEdition, setCriterionEdition] = useState('2015');
   const [criterionToAdd, setCriterionToAdd] = useState('');
