@@ -100,7 +100,7 @@ function ChplComplaintEdit(props) {
 
   let formik;
 
-  const addAssociatedCriteria = (event) => {
+  const addAssociatedCriterion = (event) => {
     const updated = {
       ...complaint,
       criteria: [
@@ -312,7 +312,7 @@ function ChplComplaintEdit(props) {
             name="criteria"
             label="Add Associated Criterion"
             value={criterionToAdd}
-            onChange={addAssociatedCriteria}
+            onChange={addAssociatedCriterion}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
