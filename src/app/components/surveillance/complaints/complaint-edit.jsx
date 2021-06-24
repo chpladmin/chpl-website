@@ -215,6 +215,9 @@ function ChplComplaintEdit(props) {
       summary: complaint.summary,
       actions: complaint.actions || '',
       complainantContacted: complaint.complainantContacted,
+      developerContacted: complaint.developerContacted,
+      oncAtlContacted: complaint.oncAtlContacted,
+      flagForOncReview: complaint.flagForOncReview,
     },
     onSubmit: () => {
       save();
@@ -453,6 +456,42 @@ function ChplComplaintEdit(props) {
               />
             )}
             label="Complainant Contacted"
+          />
+          <FormControlLabel
+            control={(
+              <Switch
+                id="developer-contacted"
+                name="developerContacted"
+                color="primary"
+                checked={formik.values.developerContacted}
+                onChange={formik.handleChange}
+              />
+            )}
+            label="Developer Contacted"
+          />
+          <FormControlLabel
+            control={(
+              <Switch
+                id="onc-atl-contacted"
+                name="oncAtlContacted"
+                color="primary"
+                checked={formik.values.oncAtlContacted}
+                onChange={formik.handleChange}
+              />
+            )}
+            label="ONC-Atl Contacted"
+          />
+          <FormControlLabel
+            control={(
+              <Switch
+                id="flag-for-onc-review"
+                name="flagForOncReview"
+                color="primary"
+                checked={formik.values.flagForOncReview}
+                onChange={formik.handleChange}
+              />
+            )}
+            label="Informed ONC per &sect;170.523(s)"
           />
         </CardContent>
         <CardActions>
