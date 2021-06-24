@@ -123,7 +123,7 @@ describe('the search page', () => {
   });
 
   describe('when searching listings by ONC-ACB ID', () => {
-    const acbId = '170008R01';
+    const acbId = '4117-17-0022';
     beforeEach(() => {
       page.searchForListing(acbId);
       hooks.waitForSpinnerToDisappear();

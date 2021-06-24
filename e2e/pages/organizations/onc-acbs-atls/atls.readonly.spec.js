@@ -47,12 +47,10 @@ describe('the ONC-ATL Management page', () => {
 
   describe('when impersonating as UL', () => {
     beforeEach(() => {
-      const userID = '41';
       login.logIn('onc');
       hooks.open('#/users');
       hooks.waitForSpinnerToDisappear();
-      user.impersonateUser(userID).scrollIntoView({ block: 'center', inline: 'center' });
-      user.impersonateUser(userID).click();
+      user.impersonateUser('Chris Crescioli');
       hooks.waitForSpinnerToDisappear();
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
@@ -65,6 +63,7 @@ describe('the ONC-ATL Management page', () => {
     it('should display registered users under UL', () => {
       const atl = 'UL LLC';
       page.organizationNameButton(atl).click();
+      hooks.waitForSpinnerToDisappear();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
       expect(page.manageUsersPanel.getText()).toContain('Role: ROLE_ATL');
       expect(page.manageUsersPanel.getText()).toContain('Organization: UL LLC');

@@ -44,6 +44,7 @@ const DeveloperViewComponent = {
           that.drStatus = 'success';
           that.directReviews = results;
         }, () => { that.drStatus = 'error'; });
+      this.takeUserAction = this.takeUserAction.bind(this);
     }
 
     $onChanges(changes) {
@@ -206,6 +207,7 @@ const DeveloperViewComponent = {
           break;
                 // no default
       }
+      this.$scope.$apply();
     }
   },
 };

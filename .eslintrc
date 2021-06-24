@@ -1,42 +1,43 @@
 {
-    "plugins": [
-        "angular",
-        "jest-dom",
-        "react",
-        "react-hooks"
-    ],
-    "extends": [
-        "airbnb",
-        "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
-    ],
-    "settings": {
-        "react": {
-            "version": "detect",
-        },
+  "plugins": [
+    "angular",
+    "jest-dom",
+    "react",
+    "react-hooks"
+  ],
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect",
     },
-    "env": {
-        "browser": true,
-        "jasmine": true,
-        "amd": true,
-        "es6": true,
-        "jest": true,
-    },
-    "globals": {
-        "angular": true,
-        "inject": true,
-        "module": true,
-    },
-    "parser": "babel-eslint",
-    "rules": {
+  },
+  "env": {
+    "browser": true,
+    "jasmine": true,
+    "amd": true,
+    "es6": true,
+    "jest": true,
+  },
+  "globals": {
+    "angular": true,
+    "inject": true,
+    "module": true,
+  },
+  "parser": "babel-eslint",
+  "rules": {
     "max-len": ["off"],
-    },
-    "overrides": [
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+  },
+  "overrides": [
     {
-    "files": ["*.jsx", "*.spec.js"],
-    "rules": {
-      "no-console": ["off"],
+      "files": ["*.jsx", "*.spec.js"],
+      "rules": {
+        "no-console": ["off"],
+      },
     },
-    },
-    ],
+  ],
 }
