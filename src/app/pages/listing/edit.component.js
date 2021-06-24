@@ -1,4 +1,4 @@
-export const ListingEditPageComponent = {
+const ListingEditPageComponent = {
   templateUrl: 'chpl.listing/edit.html',
   bindings: {
     isConfirming: '<',
@@ -8,11 +8,13 @@ export const ListingEditPageComponent = {
     resources: '<',
   },
   controller: class ListingEditPageComponent {
-    constructor ($log, $q, $state, networkService) {
+    constructor($log, $q, $state, featureFlags, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.$q = $q;
       this.$state = $state;
+      this.isOn = featureFlags.isOn;
       this.errors = {
         basic: [],
         details: [],
@@ -24,20 +26,26 @@ export const ListingEditPageComponent = {
         save: [],
       };
       this.networkService = networkService;
-      this.resources = {};
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.listing) {
         this.listingBasic = angular.copy(changes.listing.currentValue);
         this.listingDetails = angular.copy(changes.listing.currentValue);
       }
       if (changes.resources) {
-        this.resources = changes.resources.currentValue;
+        this.resources = angular.copy(changes.resources.currentValue);
+      }
+      if (this.listingDetails && this.resources) {
+        this.prepareResources();
       }
     }
 
-    cancel () {
+    prepareResources() {
+      this.resources.testStandards.data = this.resources.testStandards.data.filter((item) => !item.year || item.year === this.listingDetails.certificationEdition.name);
+    }
+
+    cancel() {
       if (this.isConfirming) {
         this.onCancel();
       } else {
@@ -45,20 +53,20 @@ export const ListingEditPageComponent = {
       }
     }
 
-    consolidateErrors () {
+    consolidateErrors() {
       this.errorMessages = this.errors.basic.concat(this.errors.details).concat(this.errors.save);
       this.warningMessages = this.warnings.basic.concat(this.warnings.details).concat(this.warnings.save);
     }
 
-    isValid () {
-      return this.isConfirming ||
-        (this.form.$valid
+    isValid() {
+      return this.isConfirming
+        || (this.form.$valid
          && this.errors.basic.length === 0
          && this.errors.details.length === 0);
     }
 
-    save () {
-      let that = this;
+    save() {
+      const that = this;
       this.listingBasic.certificationResults = this.listingDetails.certificationResults;
       this.listingBasic.cqmResults = this.listingDetails.cqmResults;
       this.listingBasic.sed = this.listingDetails.sed;
@@ -74,25 +82,25 @@ export const ListingEditPageComponent = {
       this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
       this.listingBasic.meaningfulUseUserHistory = this.listingDetails.meaningfulUseUserHistory;
       if (this.isConfirming) {
-        this.onChange({listing: this.listingBasic});
+        this.onChange({ listing: this.listingBasic });
       } else {
-        let updateObject = {
+        const updateObject = {
           listing: this.listingBasic,
           reason: this.reason,
           acknowledgeWarnings: this.acknowledgeWarnings,
         };
         this.isSaving = true;
-        this.networkService.updateCP(updateObject).then(response => {
+        this.networkService.updateCP(updateObject).then((response) => {
           if (!response.status || response.status === 200) {
             that.listingBasic = angular.copy(response);
             that.listingDetails = angular.copy(response);
-            that.$state.go('^.^', {forceReload: true}, {reload: true});
+            that.$state.go('^.^', { forceReload: true }, { reload: true });
           } else {
             that.isSaving = undefined;
             that.errors.save = [response.error];
             that.consolidateErrors();
           }
-        }, error => {
+        }, (error) => {
           that.isSaving = undefined;
           if (error.data) {
             that.errors.save = [];
@@ -112,7 +120,7 @@ export const ListingEditPageComponent = {
       }
     }
 
-    takeActionBarAction (action, data) {
+    takeActionBarAction(action, data) {
       switch (action) {
         case 'cancel':
           this.cancel();
@@ -127,21 +135,21 @@ export const ListingEditPageComponent = {
         case 'updateAcknowledgement':
           this.acknowledgeWarnings = data;
           break;
-          //no default
+          // no default
       }
     }
 
-    updateBasic (listing, messages, reason) {
+    updateBasic(listing, messages, reason) {
       if (listing) {
         this.listingBasic = angular.copy(listing);
       }
-      this.errors.basic = messages.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
-      this.warnings.basic = messages.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+      this.errors.basic = messages.errors.sort((a, b) => (a < b ? -1 : 1));
+      this.warnings.basic = messages.warnings.sort((a, b) => (a < b ? -1 : 1));
       this.consolidateErrors();
       this.reason = reason;
     }
 
-    updateDetails (listing, messages) {
+    updateDetails(listing, messages) {
       this.listingDetails.certificationResults = listing.certificationResults;
       this.listingDetails.cqmResults = listing.cqmResults;
       this.listingDetails.sed = listing.sed;
@@ -158,12 +166,12 @@ export const ListingEditPageComponent = {
       this.listingDetails.reportFileLocation = listing.reportFileLocation;
       this.listingDetails.targetedUsers = angular.copy(listing.targetedUsers);
       this.listingDetails.meaningfulUseUserHistory = listing.meaningfulUseUserHistory
-        .map(muu => {
-          muu.muuDate = muu.muuDateObject.getTime();
-          return muu;
-        });
-      this.errors.details = messages.errors.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
-      this.warnings.details = messages.warnings.sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        .map((muu) => ({
+          ...muu,
+          muuDate: muu.muuDateObject.getTime(),
+        }));
+      this.errors.details = messages.errors.sort((a, b) => (a < b ? -1 : 1));
+      this.warnings.details = messages.warnings.sort((a, b) => (a < b ? -1 : 1));
       this.listingBasic = angular.copy(this.listingBasic);
       this.consolidateErrors();
     }
@@ -173,3 +181,5 @@ export const ListingEditPageComponent = {
 angular
   .module('chpl.listing')
   .component('chplListingEditPage', ListingEditPageComponent);
+
+export default ListingEditPageComponent;
