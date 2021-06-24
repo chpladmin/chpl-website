@@ -1,4 +1,6 @@
-import { arrayOf, bool, number, shape, string } from 'prop-types';
+import {
+  arrayOf, bool, number, shape, string,
+} from 'prop-types';
 
 const organization = shape({
   id: number,

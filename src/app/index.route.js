@@ -2,7 +2,7 @@ import { administrationStatesConfig as administrationStates } from './pages/admi
 import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state';
 import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state';
-import { listingStatesConfig as listingStates } from './pages/listing/listing.state';
+import listingStates from './pages/listing/listing.state';
 import organizationsStates from './pages/organizations/organizations.state';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state';
 import reportsStates from './pages/reports/reports.state';

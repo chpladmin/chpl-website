@@ -1,7 +1,7 @@
 import {
   bool, number, shape, string,
 } from 'prop-types';
-import { address } from './address';
+import address from './address';
 
 const acb = shape({
   acbCode: string,
