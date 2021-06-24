@@ -119,7 +119,7 @@ function ChplComplaintEdit(props) {
       ...complaint,
       criteria: [
         ...complaint.criteria,
-        event.target.value,
+        {certificationCriterion: event.target.value},
       ],
     }
     setComplaint(updated);
@@ -129,7 +129,7 @@ function ChplComplaintEdit(props) {
   const removeAssociatedCriterion = (criterion) => {
     const updated = {
       ...complaint,
-      criteria: complaint.criteria.filter((crit) => crit.id !== criterion.id),
+      criteria: complaint.criteria.filter((item) => item.certificationCriterion.id !== criterion.certificationCriterion.id),
     }
     setComplaint(updated);
   };
@@ -329,9 +329,9 @@ function ChplComplaintEdit(props) {
              <ul className={classes.chips}>
                {complaint.criteria
                 .map((criterion) => (
-                  <li key={criterion.id}>
+                  <li key={criterion.certificationCriterion.id}>
                     <Chip
-                      label={(criterion.removed ? 'Removed | ' : '') + criterion.number + ': ' + criterion.title}
+                      label={(criterion.certificationCriterion.removed ? 'Removed | ' : '') + criterion.certificationCriterion.number + ': ' + criterion.certificationCriterion.title}
                       onDelete={() => removeAssociatedCriterion(criterion)}
                       className={classes.chip}
                     />
