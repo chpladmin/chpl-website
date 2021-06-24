@@ -5,7 +5,7 @@ import {
   shape,
   string,
 } from 'prop-types';
-import { acb } from './acb';
+import acb from './acb';
 
 const criterion = shape({
   certificationCriterion: shape({

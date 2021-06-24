@@ -28,7 +28,7 @@ import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplTextField } from '../../util';
 import {
-  criterion as criterionPropType,
+  complaintCriterion as criterionPropType,
   complaint as complaintPropType,
   complainantType,
   listing as listingPropType,

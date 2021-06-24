@@ -1,5 +1,5 @@
-import { ChplConfirmDeveloper } from './confirm-developer.jsx';
-import { ChplConfirmListings } from './confirm-listings.jsx';
-import { getAngularService } from '../../../services/angular-react-helper.jsx';
+import { ChplConfirmDeveloper } from './confirm-developer';
+import ChplConfirmListings from './confirm-listings';
+import { getAngularService } from '../../../services/angular-react-helper';
 
 export { ChplConfirmDeveloper, ChplConfirmListings, getAngularService };
