@@ -312,18 +312,4 @@ describe('the ChplNonconformityView component', () => {
       });
     });
   });
-  /*
-  it('should use the DateUtil.timestampToString to format dates', async () => {
-    render(
-      <ChplNonconformityView
-        surveillance={survWithRandomized}
-        requirement={survWithRandomized.requirements[0]}
-        nonconformity={survWithRandomized.requirements[0].nonconformities[0]}
-      />,
-    );
-    await waitFor(() => {
-      expect(dateUtilMock.timestampToString).toHaveBeenCalledTimes(5); // This is coming back as 30, not sure why
-    });
-  });
-  */
 });
