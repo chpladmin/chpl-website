@@ -64,8 +64,8 @@ describe('the ONC-ATL Management page', () => {
       const atl = 'UL LLC';
       page.organizationNameButton(atl).click();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
-      expect(page.manageUsersPanel.getText()).toContain('Role: ROLE_ATL');
-      expect(page.manageUsersPanel.getText()).toContain('Organization: UL LLC');
+      expect(page.manageUsersPanel.getText()).toContain('ROLE_ATL');
+      expect(page.manageUsersPanel.getText()).toContain('UL LLC');
     });
 
     it('should not present the option to edit ATL details for Drummond Group', () => {

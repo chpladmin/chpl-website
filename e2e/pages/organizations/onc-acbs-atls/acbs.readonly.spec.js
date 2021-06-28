@@ -21,8 +21,8 @@ describe('the ONC-ACB Management page', () => {
   };
 
   beforeEach(async () => {
-    browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-    browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
+    browser.setWindowSize(1600, 1024);
+    browser.setWindowRect(0, 0, 1600, 1024);
     page = new OrganizationPage();
     hooks = new Hooks();
     address = new AddressComponent();
@@ -56,8 +56,8 @@ describe('the ONC-ACB Management page', () => {
       const acb = 'UL LLC';
       page.organizationNameButton(acb).click();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
-      expect(page.manageUsersPanel.getText()).toContain('Role: ROLE_ACB');
-      expect(page.manageUsersPanel.getText()).toContain('Organization: UL LLC');
+      expect(page.manageUsersPanel.getText()).toContain('ROLE_ACB');
+      expect(page.manageUsersPanel.getText()).toContain('UL LLC');
     });
 
     it('should not present the option to edit ACB details for Drummond Group', () => {
