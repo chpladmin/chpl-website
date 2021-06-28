@@ -1,54 +1,57 @@
-const userElements = {
-  users: '#users-toggle',
-  usermanagement: '*=User Management',
-  usertitle: '#user-title',
-  userPhoneNumber: '#user-phone-number',
-  lockedCheckbox: '#is-locked',
-  enabledCheckbox: '#is-enabled',
-  pwChangeCheckbox: '#is-pwchange',
-};
-
+/* eslint-disable class-methods-use-this */
 class UsersPage {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      users: '#users-toggle',
+      usermanagement: '*=User Management',
+      title: '#title',
+      phoneNumber: '#phone-number',
+      lockedCheckbox: '#is-locked',
+      enabledCheckbox: '#is-enabled',
+      pwChangeCheckbox: '#is-pwchange',
+    };
+  }
 
   get usersButton() {
-    return $(userElements.users);
+    return $(this.elements.users);
   }
 
   get userManagementButton() {
-    return $(userElements.usermanagement);
+    return $(this.elements.usermanagement);
   }
 
-  get userTitle() {
-    return $(userElements.usertitle);
+  get title() {
+    return $(this.elements.title);
   }
 
-  get userPhoneNumber() {
-    return $(userElements.userPhoneNumber);
+  get phoneNumber() {
+    return $(this.elements.phoneNumber);
   }
 
   get lockedCheckbox() {
-    return $(userElements.lockedCheckbox);
+    return $(this.elements.lockedCheckbox);
   }
 
   get enabledCheckbox() {
-    return $(userElements.enabledCheckbox);
+    return $(this.elements.enabledCheckbox);
   }
 
   get pwChangeCheckbox() {
-    return $(userElements.pwChangeCheckbox);
+    return $(this.elements.pwChangeCheckbox);
   }
 
-  editUser(name) {
-    $(`//span[text() =" Edit ${name}"]/parent::button`).click();
+  editUser(fullName) {
+    $(`button[title="Edit ${fullName}"]`).scrollIntoView({ block: 'center', inline: 'center' });
+    $(`button[title="Edit ${fullName}"]`).click();
   }
 
-  userInformation(name) {
-    return $(`//h2[text()="${name}"]/parent::div/parent::div/following-sibling::div`);
+  userInformation(fullName) {
+    return $(`div[title="${fullName} Information"]`);
   }
 
-  impersonateUser(userId) {
-    return $(`#user-component-impersonate-${userId}`);
+  impersonateUser(fullName) {
+    $(`button[title="Impersonate ${fullName}"]`).scrollIntoView({ block: 'center', inline: 'center' });
+    $(`button[title="Impersonate ${fullName}"]`).click();
   }
 }
 

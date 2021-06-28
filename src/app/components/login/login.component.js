@@ -1,3 +1,6 @@
+var zxcvbn = require('zxcvbn');
+window.zxcvbn = zxcvbn;
+
 export const LoginComponent = {
   templateUrl: 'chpl.components/login/login.html',
   bindings: {
@@ -6,7 +9,7 @@ export const LoginComponent = {
     pClassFail: '@',
   },
   controller: class LoginComponent {
-    constructor ($analytics, $log, $rootScope, $scope, $state, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
+    constructor($analytics, $log, $rootScope, $scope, $state, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
       'ngInject';
       this.$analytics = $analytics;
       this.$log = $log;
@@ -32,7 +35,7 @@ export const LoginComponent = {
       };
     }
 
-    $onInit () {
+    $onInit() {
       let that = this;
       this.clear();
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
@@ -89,12 +92,12 @@ export const LoginComponent = {
       this.$scope.$on('$destroy', impersonating);
     }
 
-    changePassword () {
+    changePassword() {
       let that = this;
       if (this.misMatchPasswords()) {
         this.message = 'Passwords do not match. Please try again';
       } else {
-        this.networkService.changePassword({oldPassword: this.password, newPassword: this.newPassword})
+        this.networkService.changePassword({ oldPassword: this.password, newPassword: this.newPassword })
           .then(response => {
             if (response.passwordUpdated) {
               that.$analytics.eventTrack('Change Password', { category: 'Authentication' });
@@ -121,12 +124,12 @@ export const LoginComponent = {
       }
     }
 
-    resetPassword () {
+    resetPassword() {
       let that = this;
       if (this.misMatchPasswords()) {
         this.message = 'Passwords do not match. Please try again';
       } else {
-        this.networkService.resetPassword({token: this.token, userName: this.userName, newPassword: this.newPassword})
+        this.networkService.resetPassword({ token: this.token, userName: this.userName, newPassword: this.newPassword })
           .then(response => {
             if (response.passwordUpdated) {
               that.clear();
@@ -152,7 +155,7 @@ export const LoginComponent = {
       }
     }
 
-    clear () {
+    clear() {
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         this.activity = this.activityEnum.NONE;
       } else {
@@ -170,14 +173,14 @@ export const LoginComponent = {
       }
     }
 
-    broadcastLogin () {
+    broadcastLogin() {
       this.$rootScope.$broadcast('loggedIn');
     }
 
-    login () {
+    login() {
       let that = this;
       this.message = '';
-      this.networkService.login({userName: this.userName, password: this.password})
+      this.networkService.login({ userName: this.userName, password: this.password })
         .then(() => {
           that.networkService.getUserById(that.authService.getUserId())
             .then(user => {
@@ -200,7 +203,7 @@ export const LoginComponent = {
         });
     }
 
-    logout () {
+    logout() {
       this.authService.logout();
       this.$analytics.eventTrack('Log Out', { category: 'Authentication' });
       this.clear();
@@ -208,17 +211,17 @@ export const LoginComponent = {
       this.$rootScope.$broadcast('loggedOut');
     }
 
-    setActivity (activity) {
+    setActivity(activity) {
       this.activity = activity;
     }
 
-    misMatchPasswords () {
+    misMatchPasswords() {
       return this.passwordStrength.password !== this.confirmPassword;
     }
 
-    sendReset () {
+    sendReset() {
       let that = this;
-      this.networkService.emailResetPassword({email: this.email})
+      this.networkService.emailResetPassword({ email: this.email })
         .then(() => {
           that.$analytics.eventTrack('Send Reset Email', { category: 'Authentication' });
           that.clear();
@@ -230,7 +233,7 @@ export const LoginComponent = {
         });
     }
 
-    stopImpersonating () {
+    stopImpersonating() {
       let that = this;
       this.networkService.unimpersonateUser()
         .then(token => {
@@ -246,7 +249,7 @@ export const LoginComponent = {
 
     /////////////////////////////////////////////////////////
 
-    _updateExtras () {
+    _updateExtras() {
       const vals = ['chpl'];
       let user = this.authService.getCurrentUser();
       if (user.subjectName) { vals.push(user.subjectName); }

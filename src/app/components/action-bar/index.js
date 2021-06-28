@@ -1,4 +1,3 @@
-import {ChplActionBar} from './action-bar.jsx';
-import {getAngularService} from '../../services/angular-react-helper.jsx';
+import ChplActionBar from './action-bar';
 
-export {ChplActionBar, getAngularService};
+export default ChplActionBar;

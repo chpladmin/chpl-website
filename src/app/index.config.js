@@ -1,14 +1,8 @@
 /* global DEVELOPER_MODE ENABLE_LOGGING */
 
-(function () {
-  'use strict';
-
-  angular
-    .module('chpl')
-    .config(config);
-
+(() => {
   /** @ngInject */
-  function config ($analyticsProvider, $breadcrumbProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
+  function config($analyticsProvider, $breadcrumbProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
     // Enable/disable analytics tracking
     $analyticsProvider.developerMode(DEVELOPER_MODE);
 
@@ -35,6 +29,10 @@
     TitleProvider.enabled(false);
 
     // Set smart-table pagination template
-    stConfig.pagination.template = 'chpl.components/smart-table/stPagination.html';
+    stConfig.pagination.template = 'chpl.components/smart-table/stPagination.html'; // eslint-disable-line no-param-reassign
   }
+
+  angular
+    .module('chpl')
+    .config(config);
 })();
