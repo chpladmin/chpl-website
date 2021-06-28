@@ -1,11 +1,7 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
-<<<<<<< HEAD
-import { ChplEllipsis, ChplNonProdIndicator } from './util';
-=======
 import { ChplCriteria } from './listing/details/criteria';
-import { ChplEllipsis, ChplLink } from './util';
->>>>>>> staging
+import { ChplEllipsis, ChplLink, ChplNonProdIndicator } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
