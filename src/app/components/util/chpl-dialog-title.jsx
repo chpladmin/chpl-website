@@ -10,7 +10,7 @@ import theme from '../../themes/theme';
 
 const useStyles = makeStyles(() => ({
   closeButton: {
-    position: 'absolute',
+    position: [['absolute'], '!important'],
     right: theme.spacing(2),
     top: '11px',
     color: theme.palette.grey[500],

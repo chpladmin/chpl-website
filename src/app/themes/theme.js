@@ -28,35 +28,34 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
-      fontSize: '3.5em',
+      fontSize: '2.250em',
       fontWeight: 800,
     },
     h2: {
-      fontSize: '3em',
-      fontWeight: 400,
-    },
-    h3: {
-      fontSize: '2.5em',
-      fontWeight: 800,
-    },
-    h4: {
       fontSize: '2em',
       fontWeight: 400,
     },
-    h5: {
+    h3: {
+      fontSize: '1.750em',
+      fontWeight: 800,
+    },
+    h4: {
       fontSize: '1.5em',
+      fontWeight: 400,
+    },
+    h5: {
+      fontSize: '1.25em',
       fontWeight: 800,
     },
     h6: {
-      fontSize: '1.3em',
+      fontSize: '1.125em',
       fontWeight: 400,
     },
     body1: {
-      fontSize: '1.2em',
-      lineHeight: '1.3em',
+      fontSize: '1em',
     },
     body2: {
-      fontSize: '1em',
+      fontSize: '0.875em',
     },
     subtitle1: {
       fontWeight: 800,
@@ -71,6 +70,11 @@ const theme = createMuiTheme({
   },
 
   overrides: {
+    MuiPaper: {
+      rounded: {
+        borderRadius: '8px',
+      },
+    },
     MuiButton: {
       root: {
         boxShadow: 'none',
@@ -135,6 +139,11 @@ const theme = createMuiTheme({
         backgroundColor: '#f9f9f9',
       },
     },
+    MuiChip: {
+      root: {
+        fontSize: '.8em',
+      },
+    },
     MuiFormHelperText: {
       root: {
         fontSize: 12,
@@ -169,6 +178,7 @@ const theme = createMuiTheme({
     MuiDivider: {
       root: {
         color: '#c2c6ca',
+        margin: '8px 0',
       },
     },
     MuiDialogActions: {
