@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 11.15.0
+_28 June 2021_
+
+### Features
+* Generate Surveillance Activity Report as Excel spreadsheet
+* Make Phone Number not required on user edit
+* Add Login page to use when user navigates to page without being logged in
+* Direct all page load errors to custom 404 page
+* Provide custom 404 page
+
+### Flagged Features
+* Use new UI for Criteria View/Edit
+* Enable view/edit of Optional Standards
+
+---
+
 ## Version 11.14.0
 _2 June 2021_
 

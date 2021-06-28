@@ -37,13 +37,13 @@ describe('the ONC-ATL Management page', () => {
 
   describe('when impersonating as UL', () => {
     beforeEach(() => {
-      const userID = '41';
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
       hooks.open('#/users');
-      user.impersonateUser(userID).scrollIntoView({ block: 'center', inline: 'center' });
-      user.impersonateUser(userID).click();
+      hooks.waitForSpinnerToDisappear();
+      user.impersonateUser('Chris Crescioli');
+      hooks.waitForSpinnerToDisappear();
       hooks.open('#/organizations/onc-atls');
+      hooks.waitForSpinnerToDisappear();
     });
 
     afterEach(() => {
@@ -80,7 +80,6 @@ describe('the ONC-ATL Management page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
     });
 
     afterEach(() => {
