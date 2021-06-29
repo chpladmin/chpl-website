@@ -22,6 +22,7 @@ import {
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
+import { ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -30,95 +31,32 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const descendingComparator = (a, b, orderBy) => {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-};
-
-const getComparator = (order, orderBy) => (order === 'desc'
-  ? (a, b) => descendingComparator(a, b, orderBy)
-  : (a, b) => -descendingComparator(a, b, orderBy));
-
-const stableSort = (array, comparator) => {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-};
-
-const headCells = [
-  { id: 'acbName', label: 'ONC-ACB' },
-  { id: 'complaintStatusTypeName', label: 'Status' },
-  { id: 'receivedDate', label: 'Received Date' },
-  { id: 'acbComplaintId', label: 'ONC-ACB Complaint ID' },
-  { id: 'oncComplaintId', label: 'ONC Complaint ID' },
-  { id: 'complainantTypeName', label: 'Complainant Type' },
-  { id: 'actions', label: 'Actions', doNotSort: true },
+const headers = [
+  { property: 'acbName', text: 'ONC-ACB', sortable: true },
+  { property: 'complaintStatusTypeName', text: 'Status', sortable: true },
+  { property: 'receivedDate', text: 'Received Date', sortable: true },
+  { property: 'acbComplaintId', text: 'ONC-ACB Complaint ID', sortable: true },
+  { property: 'oncComplaintId', text: 'ONC Complaint ID', sortable: true },
+  { property: 'complainantTypeName', text: 'Complainant Type', sortable: true },
+  { property: 'actions', text: 'Actions', invisible: true, sortable: false },
 ];
 
-const EnhancedTableHead = (props) => {
-  const {
-    onRequestSort, order, orderBy,
-  } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
+const sortComparator = (property) => {
+  let sortOrder = 1;
+  let key = property;
+  if (key[0] === '-') {
+    sortOrder = -1;
+    key = key.substr(1);
+  }
+  return (a, b) => {
+    const result = (a[key] < b[key]) ? -1 : 1;
+    return result * sortOrder;
   };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            { headCell.doNotSort
-              ? (
-                <Typography variant="srOnly">
-                  {headCell.label}
-                </Typography>
-              )
-              : (
-                <TableSortLabel
-                  active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : 'asc'}
-                  onClick={createSortHandler(headCell.id)}
-                >
-                  {headCell.label}
-                  {orderBy === headCell.id ? (
-                    <Typography variant="srOnly">
-                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                    </Typography>
-                  ) : null}
-                </TableSortLabel>
-              )}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-};
-EnhancedTableHead.propTypes = {
-  onRequestSort: func.isRequired,
-  order: oneOf(['asc', 'desc']).isRequired,
-  orderBy: string.isRequired,
 };
 
 function ChplComplaints(props) {
   /* eslint-disable react/destructuring-assignment */
   const [complaints, setComplaints] = useState([]);
-  const [order, setOrder] = React.useState('desc');
-  const [orderBy, setOrderBy] = React.useState('receivedDate');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { hasAnyRole } = getAngularService('authService');
@@ -126,13 +64,15 @@ function ChplComplaints(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    setComplaints(props.complaints);
+    setComplaints(props.complaints
+                  .map((complaint) => complaint)
+                  .sort(sortComparator('-receivedDate')));
   }, [props.complaints]); // eslint-disable-line react/destructuring-assignment
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const handleTableSort = (event, property, orderDirection) => {
+    setComplaints(complaints
+                  .map((complaint) => complaint)
+                  .sort(sortComparator(orderDirection + property)));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -164,15 +104,14 @@ function ChplComplaints(props) {
           size="small"
           aria-label="Complaints table"
         >
-          <EnhancedTableHead
-            classes={classes}
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            rowCount={complaints.length}
+          <ChplSortableHeaders
+            headers={headers}
+            onTableSort={handleTableSort}
+            orderBy="receivedDate"
+            order="desc"
           />
           <TableBody>
-            {stableSort(complaints, getComparator(order, orderBy))
+            {complaints
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((complaint) => (
                 <TableRow key={complaint.id}>

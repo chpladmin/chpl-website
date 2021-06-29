@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {arrayOf, bool, func, oneOf, shape, string} from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import TableHead from '@material-ui/core/TableHead';
@@ -65,7 +65,7 @@ function ChplSortableHeaders (props) {
   );
 }
 
-export {ChplSortableHeaders};
+export default ChplSortableHeaders;
 
 ChplSortableHeaders.propTypes = {
   onTableSort: func,

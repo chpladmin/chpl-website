@@ -125,6 +125,7 @@
     complaint="$ctrl.complaint"
     dispatch="::$ctrl.handleDispatch"></chpl-complaint-view-bridge>
   <chpl-complaint-edit-bridge
+    ng-if="$ctrl.isEditing"
     complaint="$ctrl.complaint"
     certification-bodies="$ctrl.certificationBodies"
     complainant-types="$ctrl.complainantTypes"
