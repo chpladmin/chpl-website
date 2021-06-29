@@ -1,5 +1,5 @@
 <div st-table="$ctrl.displayedComplaints" st-safe-src="$ctrl.complaints" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)">
-  <div ng-if="!$ctrl.isEditing && !$ctrl.isViewing">
+  <div ng-show="!$ctrl.isEditing && !$ctrl.isViewing">
     <chpl-filters
       clear-all-filters="$ctrl.onClearFilter()">
       <chpl-filters-header>
