@@ -64,6 +64,7 @@ const SurveillanceComplaintsComponent = {
       switch (action) {
         case 'cancel':
         case 'close':
+          this.isEditing = false;
           this.isViewing = false;
           this.complaint = undefined;
           this.$scope.$digest();
@@ -150,9 +151,12 @@ const SurveillanceComplaintsComponent = {
     }
 
     displayAddComplaint() {
+      this.selectComplaint({});
+      /*
       this.clearErrorMessages();
       this.complaint = {};
       this.isEditing = true;
+      */
     }
 
     refreshComplaints() {

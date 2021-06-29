@@ -32,6 +32,7 @@ import {
   complaint as complaintPropType,
   complainantType,
   listing as listingPropType,
+  acb,
   selectableSurveillance as surveillancePropType,
 } from '../../../shared/prop-types';
 
@@ -54,6 +55,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const validationSchema = yup.object({
+  certificationBody: yup.object()
+    .required('ONC-ACB is required'),
   receivedDate: yup.date()
     .required('Received Date is required'),
   closedDate: yup.date()
@@ -66,14 +69,26 @@ const validationSchema = yup.object({
   complainantTypeOther: yup.string()
     .test('conditionallyRequired',
       'Complainant Type - Other Description is required',
-      (value, context) => (!!value || context.parent.complainantType.name !== 'Other - [Please Describe]')),
+      (value, context) => (!!value || context.parent.complainantType?.name !== 'Other - [Please Describe]')),
   summary: yup.string()
     .required('Complaint Summary is required'),
 });
 
 function ChplComplaintEdit(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [complaint, setComplaint] = useState(props.complaint);
+  const [complaint, setComplaint] = useState(() => {
+    const c = {
+      ...props.complaint,
+    };
+    if (!c.criteria) { c.criteria = []; }
+    if (!c.listings) { c.listings = []; }
+    if (!c.surveillances) { c.surveillances = []; }
+    return c;
+  });
+  const [certificationBodies] = useState(
+    props.certificationBodies
+      .sort((a, b) => (a.name < b.name ? -1 : 1)),
+  );
   const [complainantTypes] = useState(
     props.complainantTypes
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
@@ -86,7 +101,7 @@ function ChplComplaintEdit(props) {
   const [criterionToAdd, setCriterionToAdd] = useState('');
   const [listings] = useState(
     props.listings
-      .filter((listing) => (listing.acb === complaint.certificationBody.name))
+      .filter((listing) => (!complaint.certificationBody || listing.acb === complaint.certificationBody.name))
       .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))),
   );
   const [listingToAdd, setListingToAdd] = useState(null);
@@ -98,7 +113,7 @@ function ChplComplaintEdit(props) {
 
   let initialComplainantType;
   complainantTypes.forEach((type) => {
-    if (type.id === complaint.complainantType.id) {
+    if (type.id === complaint.complainantType?.id) {
       initialComplainantType = type;
     }
   });
@@ -120,7 +135,7 @@ function ChplComplaintEdit(props) {
   };
 
   const addAssociatedCriterion = (event) => {
-    if (complaint.criteria.find((item) => item.certificationCriterion.id === event.target.value.id)) { return; }
+    if (complaint.criteria?.find((item) => item.certificationCriterion.id === event.target.value.id)) { return; }
     const updated = {
       ...complaint,
       criteria: [
@@ -142,7 +157,7 @@ function ChplComplaintEdit(props) {
 
   const addAssociatedListing = (event, newValue) => {
     if (!newValue || !newValue.id) { return; }
-    if (complaint.listings.find((item) => item.id === newValue.id)) {
+    if (complaint.listings?.find((item) => item.id === newValue.id)) {
       setListingToAdd(null);
       setListingValueToAdd('');
       return;
@@ -173,7 +188,7 @@ function ChplComplaintEdit(props) {
   };
 
   const addAssociatedSurveillance = (event) => {
-    if (complaint.surveillances.find((item) => item.surveillance.id === event.target.value.id)) { return; }
+    if (complaint.surveillances?.find((item) => item.surveillance.id === event.target.value.id)) { return; }
     const updated = {
       ...complaint,
       surveillances: [
@@ -212,6 +227,7 @@ function ChplComplaintEdit(props) {
   const save = () => {
     const updatedComplaint = {
       ...complaint,
+      certificationBody: formik.values.certificationBody,
       receivedDate: formik.values.receivedDate,
       closedDate: formik.values.closedDate,
       acbComplaintId: formik.values.acbComplaintId,
@@ -230,18 +246,19 @@ function ChplComplaintEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      receivedDate: complaint.receivedDate,
+      certificationBody: complaint.certificationBody || '',
+      receivedDate: complaint.receivedDate || '',
       closedDate: complaint.closedDate || '',
-      acbComplaintId: complaint.acbComplaintId,
+      acbComplaintId: complaint.acbComplaintId || '',
       oncComplaintId: complaint.oncComplaintId || '',
-      complainantType: initialComplainantType,
+      complainantType: initialComplainantType || '',
       complainantTypeOther: complaint.complainantTypeOther || '',
-      summary: complaint.summary,
+      summary: complaint.summary || '',
       actions: complaint.actions || '',
-      complainantContacted: complaint.complainantContacted,
-      developerContacted: complaint.developerContacted,
-      oncAtlContacted: complaint.oncAtlContacted,
-      flagForOncReview: complaint.flagForOncReview,
+      complainantContacted: !!complaint.complainantContacted,
+      developerContacted: !!complaint.developerContacted,
+      oncAtlContacted: !!complaint.oncAtlContacted,
+      flagForOncReview: !!complaint.flagForOncReview,
     },
     onSubmit: () => {
       save();
@@ -258,11 +275,32 @@ function ChplComplaintEdit(props) {
           title="Edit User"
         />
         <CardContent className={classes.content}>
-          <Typography>
-            ONC-ACB:
-            <br />
-            {complaint.certificationBody?.name}
-          </Typography>
+          { complaint.id
+            ? (
+              <Typography>
+                ONC-ACB:
+                <br />
+                {complaint.certificationBody?.name}
+              </Typography>
+            )
+            : (
+              <ChplTextField
+                select
+                id="certification-body"
+                name="certificationBody"
+                label="ONC-ACB"
+                required
+                value={formik.values.certificationBody}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.certificationBody && !!formik.errors.certificationBody}
+                helperText={formik.touched.certificationBody && formik.errors.certificationBody}
+              >
+                { certificationBodies.map((item) => (
+                  <MenuItem value={item} key={item.id}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
+                ))}
+              </ChplTextField>
+            )}
           <ChplTextField
             type="date"
             id="received-date"
@@ -349,7 +387,7 @@ function ChplComplaintEdit(props) {
             error={formik.touched.summary && !!formik.errors.summary}
             helperText={formik.touched.summary && formik.errors.summary}
           />
-          {complaint.criteria.length > 0
+          {complaint.criteria?.length > 0
            && (
            <>
              <Typography>Associated Criteria</Typography>
@@ -407,7 +445,7 @@ function ChplComplaintEdit(props) {
             error={formik.touched.actions && !!formik.errors.actions}
             helperText={formik.touched.actions && formik.errors.actions}
           />
-          {complaint.listings.length > 0
+          {complaint.listings?.length > 0
            && (
            <>
              <Typography>Associated Listings</Typography>
@@ -440,7 +478,7 @@ function ChplComplaintEdit(props) {
             renderInput={(params) => <ChplTextField {...params} label="Add Associated Listing" />}
           />
           { /* eslint-enable react/jsx-props-no-spreading */ }
-          {complaint.surveillances.length > 0
+          {complaint.surveillances?.length > 0
            && (
            <>
              <Typography>Associated Surveillance Activities</Typography>
@@ -546,6 +584,7 @@ export default ChplComplaintEdit;
 
 ChplComplaintEdit.propTypes = {
   complaint: complaintPropType.isRequired,
+  certificationBodies: arrayOf(acb).isRequired,
   complainantTypes: arrayOf(complainantType).isRequired,
   criteria: arrayOf(criterionPropType).isRequired,
   listings: arrayOf(listingPropType).isRequired,
