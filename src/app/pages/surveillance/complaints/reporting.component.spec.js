@@ -116,6 +116,7 @@
 
     beforeEach(() => {
       angular.mock.module('chpl.surveillance', $provide => {
+        $provide.factory('chplSurveillanceComplaintsDirective', () => ({}));
         $provide.factory('chplSavedFilterDirective', () => ({}));
         $provide.factory('chplFiltersDirective', () => ({}));
         $provide.factory('chplFilterDirective', () => ({}));
