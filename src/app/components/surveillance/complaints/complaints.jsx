@@ -21,6 +21,7 @@ import {
 } from 'prop-types';
 
 import theme from '../../../themes/theme';
+import { getAngularService } from '../../../services/angular-react-helper';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -120,6 +121,7 @@ function ChplComplaints(props) {
   const [orderBy, setOrderBy] = React.useState('receivedDate');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { hasAnyRole } = getAngularService('authService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -186,21 +188,30 @@ function ChplComplaints(props) {
                     <ButtonGroup
                       color="primary"
                     >
-                      <Button
-                        onClick={() => handleAction('view', complaint)}
-                      >
-                        View
-                      </Button>
-                      <Button
-                        onClick={() => handleAction('edit', complaint)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() => handleAction('delete', complaint)}
-                      >
-                        Delete
-                      </Button>
+                      { hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF'])
+                        && (
+                        <Button
+                          onClick={() => handleAction('view', complaint)}
+                        >
+                          View
+                        </Button>
+                        )}
+                      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+                        && (
+                        <Button
+                          onClick={() => handleAction('edit', complaint)}
+                        >
+                          Edit
+                        </Button>
+                        )}
+                      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+                        && (
+                        <Button
+                          onClick={() => handleAction('delete', complaint)}
+                        >
+                          Delete
+                        </Button>
+                        )}
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>
