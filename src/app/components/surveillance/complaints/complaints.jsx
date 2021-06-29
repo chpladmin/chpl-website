@@ -8,17 +8,12 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
-  TableSortLabel,
   ThemeProvider,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf, func, oneOf, string,
-} from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
@@ -38,7 +33,9 @@ const headers = [
   { property: 'acbComplaintId', text: 'ONC-ACB Complaint ID', sortable: true },
   { property: 'oncComplaintId', text: 'ONC Complaint ID', sortable: true },
   { property: 'complainantTypeName', text: 'Complainant Type', sortable: true },
-  { property: 'actions', text: 'Actions', invisible: true, sortable: false },
+  {
+    property: 'actions', text: 'Actions', invisible: true, sortable: false,
+  },
 ];
 
 const sortComparator = (property) => {
@@ -65,14 +62,14 @@ function ChplComplaints(props) {
 
   useEffect(() => {
     setComplaints(props.complaints
-                  .map((complaint) => complaint)
-                  .sort(sortComparator('-receivedDate')));
+      .map((complaint) => complaint)
+      .sort(sortComparator('-receivedDate')));
   }, [props.complaints]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     setComplaints(complaints
-                  .map((complaint) => complaint)
-                  .sort(sortComparator(orderDirection + property)));
+      .map((complaint) => complaint)
+      .sort(sortComparator(orderDirection + property)));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -157,7 +154,7 @@ function ChplComplaints(props) {
               ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={headCells.length} />
+                <TableCell colSpan={headers.length} />
               </TableRow>
             )}
           </TableBody>

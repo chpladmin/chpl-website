@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import theme from '../../../themes/theme';
-import { getAngularService } from '.';
+import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplSortableHeaders } from '../../util';
 
 const useStyles = makeStyles(() => ({
@@ -48,7 +48,7 @@ function ChplConfirmListings(props) {
         setTimeout(loadListings, 1000);
       }
     });
-  }, [networkService, props.beta]);
+  }, [networkService, props.beta]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     loadListings();
