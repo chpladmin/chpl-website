@@ -152,11 +152,6 @@ const SurveillanceComplaintsComponent = {
 
     displayAddComplaint() {
       this.selectComplaint({});
-      /*
-      this.clearErrorMessages();
-      this.complaint = {};
-      this.isEditing = true;
-      */
     }
 
     refreshComplaints() {
