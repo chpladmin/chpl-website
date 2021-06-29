@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   arrayOf,
   func,
+  string,
 } from 'prop-types';
 import {
-  Button,
-  ButtonGroup,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   Chip,
@@ -27,6 +25,7 @@ import * as yup from 'yup';
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplTextField } from '../../util';
+import ChplActionBar from '../../action-bar';
 import {
   complaintCriterion as criterionPropType,
   complaint as complaintPropType,
@@ -108,6 +107,7 @@ function ChplComplaintEdit(props) {
   const [listingValueToAdd, setListingValueToAdd] = useState('');
   const [surveillances, setSurveillances] = useState([]);
   const [surveillanceToAdd, setSurveillanceToAdd] = useState('');
+  const [errors, setErrors] = useState([]);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -127,6 +127,12 @@ function ChplComplaintEdit(props) {
         return a.friendlyId < b.friendlyId ? -1 : 1;
       }));
   }, [props.surveillances]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setErrors(props.errors
+      .map((s) => (s))
+      .sort((a, b) => (a < b ? -1 : 1)));
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
   let formik;
 
@@ -272,7 +278,7 @@ function ChplComplaintEdit(props) {
     <ThemeProvider theme={theme}>
       <Card>
         <CardHeader
-          title="Edit User"
+          title={complaint.id ? 'Edit Complaint' : 'Create Complaint'}
         />
         <CardContent className={classes.content}>
           { complaint.id
@@ -561,21 +567,11 @@ function ChplComplaintEdit(props) {
             label="Informed ONC per &sect;170.523(s)"
           />
         </CardContent>
-        <CardActions>
-          <ButtonGroup>
-            <Button
-              onClick={() => handleDispatch('save')}
-            >
-              Save
-            </Button>
-            <Button
-              onClick={() => handleDispatch('cancel')}
-            >
-              Cancel
-            </Button>
-          </ButtonGroup>
-        </CardActions>
       </Card>
+      <ChplActionBar
+        errors={errors}
+        dispatch={handleDispatch}
+      />
     </ThemeProvider>
   );
 }
@@ -589,5 +585,10 @@ ChplComplaintEdit.propTypes = {
   criteria: arrayOf(criterionPropType).isRequired,
   listings: arrayOf(listingPropType).isRequired,
   surveillances: arrayOf(surveillancePropType).isRequired,
+  errors: arrayOf(string),
   dispatch: func.isRequired,
+};
+
+ChplComplaintEdit.defaultProps = {
+  errors: [],
 };
