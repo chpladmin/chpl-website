@@ -75,7 +75,6 @@ const SurveillanceComplaintsComponent = {
           this.selectComplaint(payload);
           break;
         case 'save':
-          this.$log.info('save', payload);
           this.saveComplaint(payload);
           break;
         case 'selectListing':

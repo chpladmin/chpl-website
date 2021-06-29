@@ -56,6 +56,9 @@ const useStyles = makeStyles(() => ({
 const validationSchema = yup.object({
   receivedDate: yup.date()
     .required('Received Date is required'),
+  closedDate: yup.date()
+    .min(yup.ref('receivedDate'), 'Closed Date must be after Received Date')
+    .max(new Date(), 'Closed Date must not be in the future'),
   acbComplaintId: yup.string()
     .required('ONC-ACB Complaint ID is required'),
   complainantType: yup.object()
