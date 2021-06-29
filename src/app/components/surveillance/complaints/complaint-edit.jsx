@@ -209,7 +209,18 @@ function ChplComplaintEdit(props) {
   const save = () => {
     const updatedComplaint = {
       ...complaint,
+      receivedDate: formik.values.receivedDate,
+      closedDate: formik.values.closedDate,
       acbComplaintId: formik.values.acbComplaintId,
+      oncComplaintId: formik.values.oncComplaintId,
+      complainantType: formik.values.complainantType,
+      complainantTypeOther: formik.values.complainantTypeOther,
+      summary: formik.values.summary,
+      actions: formik.values.actions,
+      complainantContacted: formik.values.complainantContacted,
+      developerContacted: formik.values.developerContacted,
+      oncAtlContacted: formik.values.oncAtlContacted,
+      flagForOncReview: formik.values.flagForOncReview,
     };
     handleAction('save', updatedComplaint);
   };

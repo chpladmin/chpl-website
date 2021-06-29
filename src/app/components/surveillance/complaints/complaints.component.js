@@ -62,6 +62,7 @@ const SurveillanceComplaintsComponent = {
 
     handleDispatch(action, payload) {
       switch (action) {
+        case 'cancel':
         case 'close':
           this.isViewing = false;
           this.complaint = undefined;
@@ -72,6 +73,10 @@ const SurveillanceComplaintsComponent = {
           break;
         case 'edit':
           this.selectComplaint(payload);
+          break;
+        case 'save':
+          this.$log.info('save', payload);
+          this.saveComplaint(payload);
           break;
         case 'selectListing':
           this.refreshSurveillances(payload);
