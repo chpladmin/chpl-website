@@ -21,8 +21,6 @@ describe('the ONC-ACB Management page', () => {
   };
 
   beforeEach(async () => {
-    browser.setWindowSize(1600, 1024);
-    browser.setWindowRect(0, 0, 1600, 1024);
     page = new OrganizationPage();
     hooks = new Hooks();
     address = new AddressComponent();
