@@ -125,6 +125,7 @@
         vm.hasChanges = false;
       } else {
         vm.hasChanges = true;
+        vm.triggerShowRetired();
       }
 
       vm.tableCtrl.search(query, vm.predicate);
