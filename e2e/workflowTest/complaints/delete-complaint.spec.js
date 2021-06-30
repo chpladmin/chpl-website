@@ -27,19 +27,22 @@ describe('As ROLE_ACB user', () => {
   });
 
   it('should be able to delete complaint', () => {
+    const timestamp = (new Date()).getTime();
     const fields = {
       body: 'Drummond Group',
       receivedDate: '06/23/2021',
-      acbId: 'Test - 111112',
+      acbId: 'Test - ' + timestamp,
       type: 'Developer',
-      summary: 'Test Summary',
+      summary: 'Test Summary - ' + timestamp,
     };
     page.addNewComplaint();
+    hooks.waitForSpinnerToDisappear();
     page.set(fields);
     page.saveComplaint();
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     page.deleteComplaint(fields.acbId);
-    page.delete.click();
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     page.filter.addValue(fields.acbId);
     expect(pagination.pagination.isExisting()).toBe(false);

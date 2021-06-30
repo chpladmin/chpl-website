@@ -23,38 +23,33 @@ describe('As ROLE_ACB user', () => {
     loginComponent.logOut();
   });
 
-  it('should be able to search complaints by ONC-ACB Complaint Id', () => {
-    // page.addNewComplaint();
-    // page.saveComplaint();
-    // expect(page.error.getText()).toHaveTextContaining('ONC-ACB is required');
-    // expect(page.error.getText()).toHaveTextContaining('Complainant Type is required');
-    // expect(page.error.getText()).toHaveTextContaining('Received Date is required');
-    // expect(page.error.getText()).toHaveTextContaining('ONC-ACB Complaint ID is required');
-    // expect(page.error.getText()).toHaveTextContaining('Complaint Summary is required');
-  });
-
   it('should not be able to add new complaint without required fields', () => {
     page.addNewComplaint();
+    hooks.waitForSpinnerToDisappear();
     page.saveComplaint();
-    expect(page.error.getText()).toHaveTextContaining('ONC-ACB is required');
-    expect(page.error.getText()).toHaveTextContaining('Complainant Type is required');
-    expect(page.error.getText()).toHaveTextContaining('Received Date is required');
-    expect(page.error.getText()).toHaveTextContaining('ONC-ACB Complaint ID is required');
-    expect(page.error.getText()).toHaveTextContaining('Complaint Summary is required');
+    expect(page.fieldError('certification-body')).toBe('ONC-ACB is required');
+    expect(page.fieldError('received-date')).toBe('Received Date is required');
+    expect(page.fieldError('complainant-type')).toBe('Complainant Type is required');
+    expect(page.fieldError('acb-complaint-id')).toBe('ONC-ACB Complaint ID is required');
+    expect(page.fieldError('summary')).toBe('Complaint Summary is required');
   });
+
   it('should be able to add new complaint with required fields', () => {
+    const timestamp = (new Date()).getTime();
     const fields = {
       body: 'Drummond Group',
       receivedDate: '06/23/2021',
-      acbId: 'Test - 000000',
+      acbId: 'Test - ' + timestamp,
       type: 'Developer',
-      summary: 'Test Summary',
+      summary: 'Test Summary - ' + timestamp,
     };
     page.addNewComplaint();
+    hooks.waitForSpinnerToDisappear();
     page.set(fields);
     page.saveComplaint();
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     page.filter.addValue(fields.acbId);
-    expect(page.getcellValue(4)).toBe(fields.id);
+    expect(page.getcellValue(1,4)).toBe(fields.acbId);
   });
 });

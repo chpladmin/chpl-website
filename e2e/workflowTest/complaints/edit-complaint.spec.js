@@ -27,20 +27,22 @@ describe('As ROLE_ACB user - when editing complaint', () => {
     const fields = {
       body: 'Drummond Group',
       receivedDate: '06/23/2021',
-      acbId: 'Test - 111111',
+      acbId: 'Test - ' + timestamp,
       type: 'Developer',
-      summary: 'Test Summary',
+      summary: 'Test Summary - ' + timestamp,
     };
     page.addNewComplaint();
+    hooks.waitForSpinnerToDisappear();
     page.set(fields);
     page.saveComplaint();
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     page.editComplaint(fields.acbId);
-    page.closedDate.addValue('04/23/2021');
+    page.closedDate.addValue('01/23/2021');
     page.saveComplaint();
-    expect(page.error.getText()).toBe('ADD TEXT HERE');
+    expect(page.fieldError('closed-date')).toBe('Closed Date must be after Received Date');
     page.closedDate.addValue('04/23/2025');
     page.saveComplaint();
-    expect(page.error.getText()).toBe('ADD TEXT HERE');
+    expect(page.fieldError('closed-date')).toBe('Closed Date must not be in the future');
   });
 });

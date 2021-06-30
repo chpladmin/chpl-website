@@ -7,21 +7,21 @@ class ComplaintsPage {
       acbComplaintId: '#acb-complaint-id',
       complainantType: '#complainant-type',
       summary: '#summary',
-      saveComplaint: '#save-complaint',
+      saveComplaint: '#action-bar-save',
       closedDate: '#closed-date',
-      error: '.text-danger.text-left',
-      specificFieldError: '.text-danger.ng-scope',
       filter: '#data-filter',
-      delete: '//*[text()="Delete Complaint"]',
     };
   }
 
   set(fields) {
-    $(this.elements.certificationBody).selectByVisibleText(fields.body);
+    $(this.elements.certificationBody).click();
+    $(`//li[text()="${fields.body}"]`).click();
     $(this.elements.receivedDate).addValue(fields.receivedDate);
     $(this.elements.acbComplaintId).addValue(fields.acbId);
-    $(this.elements.complainantType).selectByVisibleText(fields.type);
     $(this.elements.summary).addValue(fields.summary);
+    $(this.elements.complainantType).click();
+    $(`//li[text()="${fields.type}"]`).click();
+    
   }
 
   saveComplaint() {
@@ -36,34 +36,26 @@ class ComplaintsPage {
     return $(this.elements.closedDate);
   }
 
-  get error() {
-    return $(this.elements.error);
-  }
-
-  get specificFieldError() {
-    return $(this.elements.specificFieldError);
+  fieldError(fieldName) {
+    return $(`#${fieldName}-helper-text`).getText();
   }
 
   get filter() {
     return $(this.elements.filter);
   }
 
-  get delete() {
-    return $(this.elements.delete);
-  }
-
-  getRowCount() {
-    return $$('//table/tbody/tr').length;
+  getcellValue(row,col) {
+    return $(`//tbody/tr[${row}]/td[${col}]`).getText();
   }
 
   editComplaint(id) {
     this.filter.addValue(id);
-    $('//table/tbody/tr/td[7]/button[@title="Edit Complaint"]').scrollAndClick();
+    $('//*[text()="Edit"]/parent::button').scrollAndClick();
   }
 
   deleteComplaint(id) {
     this.filter.addValue(id);
-    $('//table/tbody/tr/td[7]/button[@title="Delete Complaint"]').scrollAndClick();
+    $('//*[text()="Delete"]/parent::button').scrollAndClick();
   }
 }
 
