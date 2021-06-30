@@ -22,6 +22,7 @@ import {
   interpretActivity,
   interpretCertificationStatusChanges,
   interpretMuuHistory,
+  interpretPIHistory,
   interpretDeveloper,
   interpretProduct,
   interpretVersion,
@@ -135,6 +136,7 @@ function ChplListingHistory(props) {
     setActivity((activity) => [
       ...activity,
       ...interpretCertificationStatusChanges(listing),
+      ...interpretPIHistory(listing, DateUtil),
       ...interpretMuuHistory(listing, DateUtil),
     ]);
     evaluateListingActivity();

@@ -213,19 +213,36 @@ const interpretCertificationStatusChanges = (listing) => listing.certificationEv
     return e;
   });
 
-const interpretMuuHistory = (listing, DateUtil) => listing.meaningfulUseUserHistory
+const interpretPIHistory = (listing, DateUtil) => listing.promotingInteroperabilityUserHistory
   .sort((a, b) => a.muuDate - b.muuDate)
   .map((item, idx, arr) => {
     if (idx > 0) {
       item.activityDate = parseInt(item.muuDate, 10);
-      item.change = [`Estimated number of Meaningful Use Users changed from ${arr[idx - 1].muuCount
+      item.change = [`Estimated number of Promoting Interoperability Users changed from ${arr[idx - 1].muuCount
       } to ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
     } else {
       item.activityDate = parseInt(item.muuDate, 10);
-      item.change = [`Estimated number of Meaningful Use Users became ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
+      item.change = [`Estimated number of Promoting Interoperability Users became ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
     }
     return item;
   });
+
+const interpretMuuHistory = (listing, DateUtil) => {
+  if (listing.promotingInteroperabilityUserHistory) { return []; }
+  return listing.meaningfulUseUserHistory
+    .sort((a, b) => a.muuDate - b.muuDate)
+    .map((item, idx, arr) => {
+      if (idx > 0) {
+        item.activityDate = parseInt(item.muuDate, 10);
+        item.change = [`Estimated number of Meaningful Use Users changed from ${arr[idx - 1].muuCount
+      } to ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
+      } else {
+        item.activityDate = parseInt(item.muuDate, 10);
+        item.change = [`Estimated number of Meaningful Use Users became ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
+      }
+      return item;
+    });
+};
 
 const interpretDeveloper = (activity) => {
   const ret = {
@@ -300,6 +317,7 @@ export {
   interpretActivity,
   interpretCertificationStatusChanges,
   interpretMuuHistory,
+  interpretPIHistory,
   interpretDeveloper,
   interpretProduct,
   interpretVersion,
