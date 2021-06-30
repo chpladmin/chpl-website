@@ -253,7 +253,9 @@
                   predicate="practiceType"
                   register-clear-filter="vm.registerClearFilter(clearFilter)"
                   register-restore-state="vm.registerRestoreState(restoreState)"
-                  name-space="searchTableState"></st-select-distinct>
+                  trigger-show-retired="vm.triggerShowRetired()"
+                  name-space="searchTableState"
+                  analytics="{category: 'Search', eventTitle: 'Practice Type'}"></st-select-distinct>
               </li>
               <li>
                 <a href ng-click="vm.showCertificationDate = !vm.showCertificationDate">

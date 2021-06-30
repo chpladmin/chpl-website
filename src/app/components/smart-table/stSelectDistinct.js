@@ -9,6 +9,8 @@
       bindToController: {
         hasChanges: '=?',
         nameSpace: '@?',
+        analytics: '=?',
+        triggerShowRetired: '&?',
       },
       controller: 'SelectDistinctController',
       controllerAs: 'vm',
@@ -92,7 +94,7 @@
   }
 
   /** @ngInclude */
-  function SelectDistinctController ($localStorage) {
+  function SelectDistinctController ($analytics, $localStorage) {
     var vm = this;
 
     vm.activate = activate;
@@ -107,13 +109,17 @@
 
     function clearFilter () {
       vm.selectedOption = 'All';
-      vm.filterChanged();
+      vm.filterChanged(true);
     }
 
-    function filterChanged () {
+    function filterChanged (doNotTrack) {
       var query = {};
       query.distinct = vm.selectedOption;
 
+      if (!doNotTrack) {
+        let event = 'Filter on ' + vm.analytics.eventTitle + ' Filter';
+        $analytics.eventTrack(event, { category: vm.analytics.category, label: query.distinct });
+      }
       if (query.distinct === 'All') {
         query.distinct = '';
         vm.hasChanges = false;
@@ -141,7 +147,7 @@
         } else {
           vm.selectedOption = 'All';
         }
-        vm.filterChanged();
+        vm.filterChanged(true);
       }
     }
   }
