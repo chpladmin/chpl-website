@@ -160,7 +160,7 @@ function ChplComplaints(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      <TablePagination 
         rowsPerPageOptions={[5, 10, 25, 50, { value: complaints.length, label: 'All' }]}
         component="div"
         count={complaints.length}
