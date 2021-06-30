@@ -329,7 +329,7 @@ describe('the search page', () => {
           page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThan(countBefore);
+          expect(countBefore).toBeLessThan(countAfter);
         });
       });
 
