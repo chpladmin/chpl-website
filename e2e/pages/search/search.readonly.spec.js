@@ -324,7 +324,7 @@ describe('the search page', () => {
 
       describe('the "Practice Type" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View Practice Type ').scrollAndClick();
+          page.moreFilterExpand(' View Practice Type (2011 and 2014 Editions) ').scrollAndClick();
           page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
