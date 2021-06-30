@@ -34,13 +34,7 @@
     <hr />
     <div class="row">
       <div class="col-sm-12">
-        <div ng-show="vm.swaggerLoading">API loading ...</div>
-        <div swagger-ui
-             url="vm.swaggerUrl"
-             loading="vm.swaggerLoading"
-             validator-url="false"
-             trusted-sources="true">
-        </div>
+        <chpl-swagger-bridge></chpl-swagger-bridge>
       </div>
     </div>
   </div>
