@@ -80,7 +80,7 @@ const ListingEditPageComponent = {
       this.listingBasic.qmsStandards = this.listingDetails.qmsStandards;
       this.listingBasic.reportFileLocation = this.listingDetails.reportFileLocation;
       this.listingBasic.targetedUsers = this.listingDetails.targetedUsers;
-      this.listingBasic.meaningfulUseUserHistory = this.listingDetails.meaningfulUseUserHistory;
+      this.listingBasic.promotingInteroperabilityUserHistory = this.listingDetails.promotingInteroperabilityUserHistory;
       if (this.isConfirming) {
         this.onChange({ listing: this.listingBasic });
       } else {
@@ -165,11 +165,7 @@ const ListingEditPageComponent = {
       this.listingDetails.qmsStandards = angular.copy(listing.qmsStandards);
       this.listingDetails.reportFileLocation = listing.reportFileLocation;
       this.listingDetails.targetedUsers = angular.copy(listing.targetedUsers);
-      this.listingDetails.meaningfulUseUserHistory = listing.meaningfulUseUserHistory
-        .map((muu) => ({
-          ...muu,
-          muuDate: muu.muuDateObject.getTime(),
-        }));
+      this.listingDetails.promotingInteroperabilityUserHistory = angular.copy(listing.promotingInteroperabilityUserHistory);
       this.errors.details = messages.errors.sort((a, b) => (a < b ? -1 : 1));
       this.warnings.details = messages.warnings.sort((a, b) => (a < b ? -1 : 1));
       this.listingBasic = angular.copy(this.listingBasic);
