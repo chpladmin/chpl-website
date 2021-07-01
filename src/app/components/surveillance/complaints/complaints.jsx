@@ -20,10 +20,27 @@ import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+
 const useStyles = makeStyles(() => ({
   container: {
     maxHeight: '40vh',
   },
+
+  deleteButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
+
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+
 }));
 
 const headers = [
@@ -98,7 +115,7 @@ function ChplComplaints(props) {
       <TableContainer className={classes.container} component={Paper}>
         <Table
           stickyHeader
-          size="small"
+          size="large"
           aria-label="Complaints table"
         >
           <ChplSortableHeaders
@@ -114,7 +131,7 @@ function ChplComplaints(props) {
                 <TableRow key={complaint.id}>
                   <TableCell>{complaint.acbName}</TableCell>
                   <TableCell>
-                    <Chip color="primary" label={complaint.complaintStatusTypeName} variant={complaint.complaintStatusTypeName === 'Open' ? 'outlined' : 'default'} />
+                    <Chip color="default" label={complaint.complaintStatusTypeName} variant={complaint.complaintStatusTypeName === 'Open' ? 'outlined' : 'default'} />
                   </TableCell>
                   <TableCell>{complaint.receivedDate}</TableCell>
                   <TableCell>{complaint.acbComplaintId}</TableCell>
@@ -129,23 +146,26 @@ function ChplComplaints(props) {
                         <Button
                           onClick={() => handleAction('view', complaint)}
                         >
-                          View
+                          View <VisibilityIcon className={classes.iconSpacing}/>
                         </Button>
                         )}
                       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
                         && (
                         <Button
                           onClick={() => handleAction('edit', complaint)}
+                          variant="contained"
                         >
-                          Edit
+                          Edit <EditOutlinedIcon className={classes.iconSpacing}/>
                         </Button>
                         )}
                       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
                         && (
                         <Button
                           onClick={() => handleAction('delete', complaint)}
+                          variant="contained"
+                          className={classes.deleteButton}
                         >
-                          Delete
+                          Delete <DeleteOutlinedIcon className={classes.iconSpacing} />
                         </Button>
                         )}
                     </ButtonGroup>

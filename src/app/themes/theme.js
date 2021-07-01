@@ -232,6 +232,12 @@ const theme = createMuiTheme({
         color:'#156dac',
       },
     },
+
+    MuiTableSortLabel:{
+      active:{
+        color:'#000000',
+      },
+    },
   },
 });
 
