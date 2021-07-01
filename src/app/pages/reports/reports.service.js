@@ -184,7 +184,11 @@ export class ReportService {
       };
     case 'promotingInteroperabilityUserHistory':
       return {
-        sort: (p, c) => (p.userCountDate < c.userCountDate ? -1 : 1),
+        sort: (p, c) => {
+          if (p.userCountDate < c.userCountDate) { return -1; }
+          if (p.userCountDate > c.userCountDate) { return 1; }
+          return 0;
+        },
         write: m => 'Promoting Interoperability Count of ' + m.userCount + ' on ' + m.userCountDate,
         compare: (p, c) => p.userCount !== c.userCount,
         change: (p, c) => 'Promoting Interoperability Count changed from ' + p.userCount + ' to ' + c.userCount + ' on ' + p.userCountDate,
