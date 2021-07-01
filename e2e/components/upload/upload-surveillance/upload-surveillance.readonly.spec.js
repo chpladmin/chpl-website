@@ -13,6 +13,10 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/upload');
 });
 
+afterEach(() => {
+  loginComponent.logOut();
+});
+
 describe('when on administration upload page as ONC', () => {
   beforeEach(() => {
     loginComponent.logIn('onc');
