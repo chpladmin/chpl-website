@@ -63,7 +63,7 @@ function ChplUploadPromotingInteroperability() {
 
   const uploadFile = () => {
     const item = {
-      url: `${API}/promoting_interoperability/upload`,
+      url: `${API}/promoting-interoperability/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
