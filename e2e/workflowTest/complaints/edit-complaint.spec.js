@@ -24,6 +24,7 @@ describe('As ROLE_ACB user - when editing complaint', () => {
   });
 
   it('should display correct error messages regarding received and closed date', () => {
+    const timestamp = (new Date()).getTime();
     const fields = {
       body: 'Drummond Group',
       receivedDate: '06/23/2021',
