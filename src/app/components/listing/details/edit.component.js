@@ -240,7 +240,7 @@ const ListingDetailsEditComponent = {
           this.listing.ics.parents = this.listing.ics.parents.filter((l) => l.chplProductNumber !== item.chplProductNumber);
           break;
         case 'promotingInteroperabilityUserHistory':
-          this.listing.promotingInteroperabilityUserHistory = this.listing.promotingInteroperabilityUserHistory.filter((event) => (event.userCount !== item.userCount && event.userCountDate !== item.userCountDate));
+          this.listing.promotingInteroperabilityUserHistory = this.listing.promotingInteroperabilityUserHistory.filter((event) => (event.userCount !== item.userCount || event.userCountDate !== item.userCountDate));
           break;
         case 'qmsStandards':
           this.listing.qmsStandards = this.listing.qmsStandards.filter((l) => l.qmsStandardName !== item.qmsStandardName);
