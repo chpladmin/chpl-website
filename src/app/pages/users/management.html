@@ -5,10 +5,6 @@
     </div>
   </div>
   <div class="main-content row" id="main-content" tabindex="-1">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <chpl-users column-count="3" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
-      </div>
-    </div>
+    <chpl-users-bridge users="$ctrl.users" roles="$ctrl.roles" dispatch="::$ctrl.takeAction"></chpl-users-bridge>
   </div>
 </div>

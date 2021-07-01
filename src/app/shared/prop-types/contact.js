@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { number, shape, string } from 'prop-types';
 
 const contact = shape({
@@ -8,4 +9,4 @@ const contact = shape({
   title: string,
 });
 
-export { contact };
+export default contact;

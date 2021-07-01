@@ -92,7 +92,7 @@ function ChplApiKeyRegistration() {
               value={formik.values.nameOrganization}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.nameOrganization && formik.errors.nameOrganization}
+              error={formik.touched.nameOrganization && !!formik.errors.nameOrganization}
               helperText={formik.touched.nameOrganization && formik.errors.nameOrganization}
               InputLabelProps={{ classes: { root: classes.longLabelFix } }}
             />
@@ -106,7 +106,7 @@ function ChplApiKeyRegistration() {
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.email && formik.errors.email}
+              error={formik.touched.email && !!formik.errors.email}
               helperText={formik.touched.email && formik.errors.email}
             />
           </div>
