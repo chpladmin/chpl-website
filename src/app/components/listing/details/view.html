@@ -197,11 +197,11 @@
           </ul>
         </span>
         <span feature-flag="promoting-interoperability">
-          <span ng-if="$ctrl.listing.meaningfulUseUserHistory && $ctrl.listing.meaningfulUseUserHistory.length > 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
+          <span ng-if="$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
             <h4>Estimated Number of Promoting Interoperability Users</h4>
-            <p>{{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuCount }}, last updated on {{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }}</p>
+            <p>{{ $ctrl.currentPI.userCount }}, last updated on {{ $ctrl.currentPI.userCountDate }}</p>
           </span>
-          <span ng-if="!$ctrl.listing.meaningfulUseUserHistory || $ctrl.listing.meaningfulUseUserHistory.length === 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
+          <span ng-if="!$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
             <h4>Estimated Number of Promoting Interoperability Users</h4>
             <p>No Promoting Interoperability Users data exists</p>
           </span>

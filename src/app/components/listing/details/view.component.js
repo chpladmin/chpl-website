@@ -9,10 +9,11 @@ export const ListingDetailsViewComponent = {
     viewAllCerts: '<defaultAll',
   },
   controller: class ListingDetailsViewComponent {
-    constructor($analytics, $log, $uibModal, networkService, utilService) {
+    constructor($analytics, $log, $uibModal, DateUtil, networkService, utilService) {
       this.$analytics = $analytics;
       this.$log = $log;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.utilService = utilService;
       this.muuCount = utilService.muuCount;
@@ -42,6 +43,13 @@ export const ListingDetailsViewComponent = {
         this.countCerts = this.listing.certificationResults.filter((cr) => cr.success).length;
         this.countCqms = this.listing.cqmResults.filter((cqm) => cqm.success).length;
         this.cqms = this.listing.cqmResults;
+        if (this.listing.promotingInteroperabilityUserHistory?.length > 0) {
+          const currentPI = this.listing.promotingInteroperabilityUserHistory.sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))[0]
+          this.currentPI = {
+            ...currentPI,
+            userCountDate: this.DateUtil.getDisplayDateFormat(currentPI.userCountDate),
+          };
+        }
         this.prepCqms();
       }
     }
