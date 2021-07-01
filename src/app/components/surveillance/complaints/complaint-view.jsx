@@ -15,11 +15,12 @@ import {
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
+import { CardHeader } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 5fr',
+    gridTemplateColumns: '6fr 6fr 6fr 6fr',
   },
 }));
 
@@ -50,56 +51,61 @@ function ChplComplaintView(props) {
   return (
     <ThemeProvider theme={theme}>
       <Card>
+        <CardHeader
+        title={complaint.certificationBody?.name}
+        subheader={complaint.complainantType?.name}
+        />
+
         <CardContent className={classes.container}>
-          <Typography>
+          <Typography variant="subtitle1">
             ONC-ACB:
           </Typography>
-          <Typography>
+          <Typography variant="body1">
             {complaint.certificationBody?.name}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Received Date:
           </Typography>
           <Typography>
             {complaint.receivedDate}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Closed Date:
           </Typography>
           <Typography>
             {complaint.closedDate}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             ONC-ACB Complaint ID:
           </Typography>
           <Typography>
             {complaint.acbComplaintId}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             ONC Complaint ID:
           </Typography>
           <Typography>
             {complaint.oncComplaintId}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Complainant Type:
           </Typography>
           <Typography>
             {complaint.complainantType?.name}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Complainant Type (Other):
           </Typography>
           <Typography>
             {complaint.complainantTypeOther}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Complaint Summary:
           </Typography>
           <Typography>
             {complaint.summary}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Associated Criteria:
           </Typography>
           {complaint.criteria?.length > 0
@@ -113,13 +119,13 @@ function ChplComplaintView(props) {
                 None
               </Typography>
            )}
-          <Typography>
+          <Typography variant="subtitle1">
             Actions/Responses:
           </Typography>
           <Typography>
             {complaint.actions}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Associated Certified Products:
           </Typography>
           {complaint.listings?.length > 0
@@ -133,7 +139,7 @@ function ChplComplaintView(props) {
                 None
               </Typography>
            )}
-          <Typography>
+          <Typography variant="subtitle1">
             Associated Surveillance Activities:
           </Typography>
           {complaint.surveillances?.length > 0
@@ -147,31 +153,34 @@ function ChplComplaintView(props) {
                 None
               </Typography>
            )}
-          <Typography>
+          <Typography variant="subtitle1">
             Complainant Contacted:
           </Typography>
-          <Typography>
+          <Typography >
             {complaint.complainantContacted ? 'Yes' : 'No'}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Developer Contacted:
           </Typography>
           <Typography>
             {complaint.developerContacted ? 'Yes' : 'No'}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             ONC-ATL Contacted:
           </Typography>
           <Typography>
             {complaint.oncAtlContacted ? 'Yes' : 'No'}
           </Typography>
-          <Typography>
+          <Typography variant="subtitle1">
             Informed ONC per &sect;170.523(s):
           </Typography>
           <Typography>
             {complaint.flagForOncReview ? 'Yes' : 'No'}
           </Typography>
         </CardContent>
+
+
+        
         <CardActions>
           <Button
             color="primary"

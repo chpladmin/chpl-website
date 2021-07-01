@@ -26,7 +26,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxHeight: '40vh',
+    maxHeight: '64vh',
   },
 
   deleteButton: {
@@ -154,8 +154,9 @@ function ChplComplaints(props) {
                         <Button
                           onClick={() => handleAction('edit', complaint)}
                           variant="contained"
-                        >
-                          Edit <EditOutlinedIcon className={classes.iconSpacing}/>
+                          color="primary"
+                         > 
+                         Edit <EditOutlinedIcon className={classes.iconSpacing}/>
                         </Button>
                         )}
                       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])

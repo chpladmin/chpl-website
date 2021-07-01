@@ -237,6 +237,10 @@ const theme = createMuiTheme({
       active:{
         color:'#000000',
       },
+
+      icon:{
+        color:'#000000',
+      },
     },
   },
 });
