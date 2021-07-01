@@ -155,7 +155,7 @@
     <label for="cp-additional-software">Product wide Relied Upon Software</label>
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
-  <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.rwtEligibilityYear">
+  <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.certificationEdition.name === '2015'">
     <div class="edit-listing__rwt-container-header">
       <div class="data-label">Real World Testing</div>
     </div>

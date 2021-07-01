@@ -98,7 +98,7 @@
               <h2 class="product-heading">Relied Upon Software</h2>
               <p>{{ $ctrl.listing.productAdditionalSoftware }}</p>
             </div>
-            <div ng-if="$ctrl.listing.rwtEligibilityYear && ($ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate)">
+            <div ng-if="$ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate">
               <h2 class="product-heading">Real World Testing</h2>
               <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
                 <label for="rwtPlansUrl">Plans</label>
