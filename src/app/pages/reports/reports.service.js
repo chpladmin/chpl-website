@@ -182,6 +182,13 @@ export class ReportService {
                     + p.associatedCriteria.map(c => c.number + ': ' + c.title).join(', ')
                     + ' to: ' + c.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
       };
+    case 'promotingInteroperabilityUserHistory':
+      return {
+        sort: (p, c) => (p.userCountDate < c.userCountDate ? -1 : 1),
+        write: m => 'Promoting Interoperability Count of ' + m.userCount + ' on ' + m.userCountDate,
+        compare: (p, c) => p.userCount !== c.userCount,
+        change: (p, c) => 'Promoting Interoperability Count changed from ' + p.userCount + ' to ' + c.userCount + ' on ' + p.userCountDate,
+      };
     case 'qmsStandards':
       return {
         sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : p.qmsModification < c.qmsModification ? -1 : p.qmsModification > c.qmsModification ? 1 : p.applicableCriteria < c.applicableCriteria ? -1 : p.applicableCriteria > c.applicableCriteria ? 1 : 0,
