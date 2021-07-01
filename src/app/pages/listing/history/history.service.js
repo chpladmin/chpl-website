@@ -214,15 +214,13 @@ const interpretCertificationStatusChanges = (listing) => listing.certificationEv
   });
 
 const interpretPIHistory = (listing, DateUtil) => listing.promotingInteroperabilityUserHistory
-  .sort((a, b) => a.muuDate - b.muuDate)
-  .map((item, idx, arr) => {
-    if (idx > 0) {
-      item.activityDate = parseInt(item.muuDate, 10);
-      item.change = [`Estimated number of Promoting Interoperability Users changed from ${arr[idx - 1].muuCount
-      } to ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
-    } else {
-      item.activityDate = parseInt(item.muuDate, 10);
-      item.change = [`Estimated number of Promoting Interoperability Users became ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
+      .sort((a, b) => (a.userCountDate < b.userCountDate ? -1 : 1))
+      .map((item, idx, arr) => {
+        item.activityDate = DateUtil.localDateToTimestamp(item.userCountDate);
+        if (idx > 0) {
+          item.change = [`Estimated number of Promoting Interoperability Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
+        } else {
+          item.change = [`Estimated number of Promoting Interoperability Users became ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
     }
     return item;
   });
