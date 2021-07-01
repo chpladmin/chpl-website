@@ -10,6 +10,7 @@ class ComplaintsPage {
       saveComplaint: '#action-bar-save',
       closedDate: '#closed-date',
       filter: '#data-filter',
+      downloadResultsButton: '#download-results',
     };
   }
 
@@ -21,7 +22,18 @@ class ComplaintsPage {
     $(this.elements.summary).addValue(fields.summary);
     $(this.elements.complainantType).click();
     $(`//li[text()="${fields.type}"]`).click();
-    
+  }
+
+  getComplaintsTableHeaders () {
+    return $('table').$('thead').$$('th');
+  }
+
+  getComplaints () {
+    return $('table').$('tbody').$$('tr');
+  }
+
+  get downloadResultsButton () {
+    return $(this.elements.downloadResultsButton);
   }
 
   saveComplaint() {
