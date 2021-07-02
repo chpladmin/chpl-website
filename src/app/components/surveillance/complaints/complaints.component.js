@@ -78,12 +78,6 @@ const SurveillanceComplaintsComponent = {
         case 'save':
           this.saveComplaint(payload);
           break;
-        case 'selectListing':
-          this.refreshSurveillances(payload);
-          if (payload.listings.length === 0) {
-            this.$scope.$digest();
-          }
-          break;
         case 'view':
           this.isViewing = true;
           this.complaint = payload;
