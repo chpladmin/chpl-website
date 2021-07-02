@@ -61,7 +61,7 @@ const useStyles = makeStyles(() => ({
   dataEntry: {
     display: 'grid',
     gap: '16px 8px',
-    marginTop: '8px',
+    marginTop: '16px',
   },
 
   chips: {
@@ -302,6 +302,7 @@ function ChplComplaintEdit(props) {
       <Card>
         <CardHeader
           title={complaint.id ? 'Edit Complaint' : 'Create Complaint'}
+          subheader={complaint.acbComplaintId}
         />
         <CardContent>
           { complaint.id
