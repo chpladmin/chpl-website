@@ -103,20 +103,20 @@ const SurveillanceComplaintsComponent = {
     }
 
     saveComplaint(complaint) {
+      this.clearErrorMessages();
       const toSave = {
         ...complaint,
       };
       if (complaint.id) {
-        this.updateComplaint(toSave);
+        this.modifyComplaint(toSave, this.networkService.updateComplaint);
       } else {
-        this.createComplaint(toSave);
+        this.modifyComplaint(toSave, this.networkService.createComplaint);
       }
     }
 
-    updateComplaint(complaint) {
+    modifyComplaint(complaint, action) {
       const that = this;
-      this.clearErrorMessages();
-      this.networkService.updateComplaint(complaint)
+      action(complaint)
         .then(() => {
           that.refreshComplaints();
           that.isEditing = false;
@@ -126,26 +126,6 @@ const SurveillanceComplaintsComponent = {
             that.errorMessages = error.data.errorMessages;
           }
         });
-    }
-
-    createComplaint(complaint) {
-      const that = this;
-      this.clearErrorMessages();
-      this.networkService.createComplaint(complaint)
-        .then(() => {
-          that.refreshComplaints();
-          that.isEditing = false;
-        })
-        .catch((error) => {
-          if (error.status === 400) {
-            that.errorMessages = error.data.errorMessages;
-          }
-        });
-    }
-
-    cancelEdit() {
-      this.isEditing = false;
-      this.isViewing = false;
     }
 
     displayAddComplaint() {
