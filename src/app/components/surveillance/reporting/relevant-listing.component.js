@@ -60,7 +60,7 @@ export const SurveillanceReportRelevantListingComponent = {
     }
 
     displaySurveillance(relevantSurveillance) {
-      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
+      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
         this.editSurveillance(relevantSurveillance);
       } else {
         this.viewSurveillance(relevantSurveillance);
