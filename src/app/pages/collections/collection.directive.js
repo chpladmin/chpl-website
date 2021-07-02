@@ -32,7 +32,7 @@
   }
 
   /** @ngInject */
-  function CollectionController ($analytics, $filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
+  function CollectionController ($analytics, $filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, DateUtil, RELOAD_TIMEOUT, collectionsService, networkService) {
     var vm = this;
 
     vm.changeItemsPerPage = changeItemsPerPage;
@@ -105,7 +105,7 @@
         ret = col.transformFn(ret, cp, vm.analyticsCategory);
       }
       if (col.isDate) {
-        ret = $filter('date')(ret,'mediumDate','UTC');
+        ret = DateUtil.getDisplayDateFormat(ret);
       }
       if (col.isDeveloperLink) {
         let link = '<a ui-sref="organizations.developers.developer({developerId: ' + cp.developerId + '})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: \'' + vm.analyticsCategory + '\' }">' + ret + '</a>';

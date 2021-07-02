@@ -19,8 +19,8 @@
         { predicate: 'product', display: 'Product', sortType: 'single' },
         { predicate: 'version', display: 'Version', sortType: 'single' },
         { predicate: 'decertificationDate', display: 'Inactive As Of', sortType: 'single', isDate: true },
-        { predicate: 'numMeaningfulUse', display: '# of Known Users', sortType: 'single', nullDisplay: 'Unknown' },
-        { predicate: 'numMeaningfulUseDate', display: '# Last Updated Date', sortType: 'single', isDate: true, nullDisplay: 'Unknown' },
+        { predicate: 'promotingInteroperabilityUserCount', display: '# of Known Users', sortType: 'single', nullDisplay: 'Unknown' },
+        { predicate: 'promotingInteroperabilityUserDate', display: '# Last Updated Date', sortType: 'single', isDate: true, nullDisplay: 'Unknown' },
         { predicate: 'acb', display: 'ONC-ACB', sortType: 'single' },
         { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
       ];
