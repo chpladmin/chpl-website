@@ -156,6 +156,7 @@ const survWithNoRequirements = {
 
 const dateUtilMock = {
   timestampToString: jest.fn(() => 'June 1, 2020'),
+  getDisplayDateFormat: jest.fn(() => 'June 1, 2020'),
 };
 
 jest.mock('./nonconformity/nonconformity-view', () => () => <div data-testid="non-conformity-component" />);

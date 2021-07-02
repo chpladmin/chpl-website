@@ -15,12 +15,13 @@ import {
   TableRow,
 } from '@material-ui/core';
 
-import ChplCriterionTitle from '../../../../util/criterion-title';
-import { ChplTooltip } from '../../../../util/chpl-tooltip';
+import { ChplCriterionTitle, ChplTooltip } from '../../../../util';
 import { getAngularService } from '../../../../../services/angular-react-helper';
-import requirementPropType from '../../../../../shared/prop-types/surveillance-requirement';
-import nonconformityPropType from '../../../../../shared/prop-types/surveillance-nonconformity';
-import surveillancePropType from '../../../../../shared/prop-types/surveillance';
+import {
+  surveillanceRequirement as requirementPropType,
+  surveillanceNonconformity as nonconformityPropType,
+  surveillance as surveillancePropType,
+} from '../../../../../shared/prop-types';
 import theme from '../../../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -61,8 +62,8 @@ function ChplNonconformityView(props) {
         >
           <div className={classes.nonconformityAccordionSummaryGrid}>
             <div>
-              <ChplCriterionTitle criterion={nonconformity.criterion} />
-              { ` ${requirement.result.name}` }
+              { nonconformity.criterion && <ChplCriterionTitle criterion={nonconformity.criterion} /> }
+              { !nonconformity.criterion && ` ${requirement.result.name}` }
             </div>
             <div className={classes.nonconformityAccordionSummaryStatus}>
               { nonconformity.status.name }

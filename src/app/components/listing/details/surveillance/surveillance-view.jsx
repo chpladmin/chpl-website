@@ -12,11 +12,10 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { ChplTooltip } from '../../../util/chpl-tooltip';
+import { ChplCriterionTitle, ChplTooltip } from '../../../util';
 import { getAngularService } from '../../../../services/angular-react-helper';
-import ChplCriterionTitle from '../../../util/criterion-title';
-import ChplSurveillanceNonconformity from './nonconformity/nonconformity-view';
-import surveillancePropType from '../../../../shared/prop-types/surveillance';
+import ChplSurveillanceNonconformity from './nonconformity';
+import { surveillance as surveillancePropType } from '../../../../shared/prop-types';
 import theme from '../../../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -116,7 +115,8 @@ function ChplSurveillanceView(props) {
                       { surveillance.requirements.map((req) => (
                         <li key={req.id}>
                           { `${req.type.name} ${req.criterion && ': '}` }
-                          <ChplCriterionTitle criterion={req.criterion} useRemovedClass />
+                          { req.criterion && <ChplCriterionTitle criterion={req.criterion} useRemovedClass /> }
+                          { !req.criterion && `${req.requirement}` }
                         </li>
                       ))}
                     </ul>
@@ -140,7 +140,8 @@ function ChplSurveillanceView(props) {
                       { surveillanceResults.map((result) => (
                         <li key={result.id}>
                           { `${result.statusName} Non-Conformity Found for` }
-                          <ChplCriterionTitle criterion={result.criterion} useRemovedClass />
+                          { result.criterion && <ChplCriterionTitle criterion={result.criterion} useRemovedClass /> }
+                          { !result.criterion && `${result.requirement}` }
                         </li>
                       ))}
                     </ul>
