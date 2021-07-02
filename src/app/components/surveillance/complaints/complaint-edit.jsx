@@ -332,7 +332,7 @@ function ChplComplaintEdit(props) {
             )}
           <div className={classes.content}> 
           <div className={classes.dataEntry}> 
-          <Typography variant="body1">Complaint Info</Typography>
+          <Typography variant="subtitle1">Complaint Info</Typography>
           <ChplTextField
             type="date"
             id="received-date"
@@ -379,8 +379,7 @@ function ChplComplaintEdit(props) {
           />
            </div>
            <div className={classes.dataEntry}>  
-           <Typography variant="body1">Description</Typography>
-
+           <Typography variant="subtitle1">Description</Typography>
           <ChplTextField
             select
             id="complainant-type"
@@ -425,7 +424,7 @@ function ChplComplaintEdit(props) {
           /> 
           </div> 
           <div className={classes.dataEntry}>
-          <Typography variant="body1">Associated Components</Typography>
+          <Typography variant="subtitle1">Associated Components</Typography>
   
           {complaint.criteria?.length > 0
            && (
@@ -562,7 +561,7 @@ function ChplComplaintEdit(props) {
             />
           </div> 
           <div className={classes.dataEntry}>
-          <Typography variant="body1">Follow-Up</Typography>  
+          <Typography variant="subtitle1">Follow-Up</Typography>  
           <FormControlLabel
             control={(
               <Switch
