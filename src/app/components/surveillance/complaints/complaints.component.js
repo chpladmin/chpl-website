@@ -82,6 +82,7 @@ const SurveillanceComplaintsComponent = {
           break;
         case 'edit':
           this.selectComplaint(payload);
+          this.$scope.$digest();
           break;
         case 'save':
           this.saveComplaint(payload);
