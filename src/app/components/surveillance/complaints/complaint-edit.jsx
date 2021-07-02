@@ -476,17 +476,7 @@ function ChplComplaintEdit(props) {
                 <MenuItem value={item} key={item.id}>{`${(item.removed ? 'Removed | ' : '') + item.number}: ${item.title}`}</MenuItem>
               ))}
           </ChplTextField>
-          <ChplTextField
-            id="actions"
-            name="actions"
-            label="Actions/Response"
-            multiline
-            value={formik.values.actions}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.actions && !!formik.errors.actions}
-            helperText={formik.touched.actions && formik.errors.actions}
-          />
+          
           {complaint.listings?.length > 0
            && (
            <>
@@ -558,6 +548,18 @@ function ChplComplaintEdit(props) {
                  ))}
              </ChplTextField>
            )}
+
+            <ChplTextField
+              id="actions"
+              name="actions"
+              label="Actions/Response"
+              multiline
+              value={formik.values.actions}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.actions && !!formik.errors.actions}
+              helperText={formik.touched.actions && formik.errors.actions}
+            />
           </div> 
           <div className={classes.dataEntry}>
           <Typography variant="body1">Follow-Up</Typography>  
