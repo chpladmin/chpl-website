@@ -40,7 +40,30 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
+    alignItems: 'start',
+    [theme.breakpoints.up('xs')]: {
+      gridTemplateColumns: '1fr',
+    },
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '2fr 2fr',
+    },
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+    [theme.breakpoints.up('xl')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
   },
+
+  dataEntry: {
+    display: 'grid',
+    gap: '16px 8px',
+    marginTop: '8px',
+  },
+
   chips: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -280,13 +303,12 @@ function ChplComplaintEdit(props) {
         <CardHeader
           title={complaint.id ? 'Edit Complaint' : 'Create Complaint'}
         />
-        <CardContent className={classes.content}>
+        <CardContent>
           { complaint.id
             ? (
-              <Typography>
-                ONC-ACB:
-                <br />
-                {complaint.certificationBody?.name}
+             
+              <Typography variant="h5">
+                ONC-ACB:{complaint.certificationBody?.name}
               </Typography>
             )
             : (
@@ -307,6 +329,9 @@ function ChplComplaintEdit(props) {
                 ))}
               </ChplTextField>
             )}
+          <div className={classes.content}> 
+          <div className={classes.dataEntry}> 
+          <Typography variant="body1">Complaint Info</Typography>
           <ChplTextField
             type="date"
             id="received-date"
@@ -351,6 +376,10 @@ function ChplComplaintEdit(props) {
             error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
             helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
           />
+           </div>
+           <div className={classes.dataEntry}>  
+           <Typography variant="body1">Description</Typography>
+
           <ChplTextField
             select
             id="complainant-type"
@@ -392,7 +421,11 @@ function ChplComplaintEdit(props) {
             onBlur={formik.handleBlur}
             error={formik.touched.summary && !!formik.errors.summary}
             helperText={formik.touched.summary && formik.errors.summary}
-          />
+          /> 
+          </div> 
+          <div className={classes.dataEntry}>
+          <Typography variant="body1">Associated Components</Typography>
+  
           {complaint.criteria?.length > 0
            && (
            <>
@@ -405,6 +438,8 @@ function ChplComplaintEdit(props) {
                        label={`${(criterion.certificationCriterion.removed ? 'Removed | ' : '') + criterion.certificationCriterion.number}: ${criterion.certificationCriterion.title}`}
                        onDelete={() => removeAssociatedCriterion(criterion)}
                        className={classes.chip}
+                       color="primary"
+                       variant="outlined"
                      />
                    </li>
                  ))}
@@ -463,6 +498,8 @@ function ChplComplaintEdit(props) {
                        label={listing.chplProductNumber}
                        onDelete={() => removeAssociatedListing(listing)}
                        className={classes.chip}
+                       color="primary"
+                       variant="outlined"
                      />
                    </li>
                  ))}
@@ -496,6 +533,8 @@ function ChplComplaintEdit(props) {
                        label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
                        onDelete={() => removeAssociatedSurveillance(surveillance)}
                        className={classes.chip}
+                       color="primary"
+                       variant="outlined"
                      />
                    </li>
                  ))}
@@ -518,6 +557,9 @@ function ChplComplaintEdit(props) {
                  ))}
              </ChplTextField>
            )}
+          </div> 
+          <div className={classes.dataEntry}>
+          <Typography variant="body1">Follow-Up</Typography>  
           <FormControlLabel
             control={(
               <Switch
@@ -566,6 +608,8 @@ function ChplComplaintEdit(props) {
             )}
             label="Informed ONC per &sect;170.523(s)"
           />
+          </div>
+          </div>
         </CardContent>
       </Card>
       <ChplActionBar
