@@ -197,7 +197,7 @@ const survWithRandomized = {
 jest.mock('../../../../util/criterion-title', () => () => <div>Criteria Title</div>);
 
 const dateUtilMock = {
-  timestampToString: jest.fn(() => 'June 1, 2020'),
+  getDisplayDateFormat: jest.fn(() => 'June 1, 2020'),
 };
 
 angularReactHelper.getAngularService = jest.fn();

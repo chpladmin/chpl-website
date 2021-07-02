@@ -155,7 +155,6 @@ const survWithNoRequirements = {
 };
 
 const dateUtilMock = {
-  timestampToString: jest.fn(() => 'June 1, 2020'),
   getDisplayDateFormat: jest.fn(() => 'June 1, 2020'),
 };
 
@@ -189,7 +188,7 @@ describe('the ChplSurveillanceView component', () => {
       />,
     );
     await waitFor(() => {
-      expect(dateUtilMock.timestampToString).toHaveBeenCalled();
+      expect(dateUtilMock.getDisplayDateFormat).toHaveBeenCalled();
     });
   });
 
