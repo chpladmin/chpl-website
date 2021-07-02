@@ -32,7 +32,6 @@ import {
   complainantType,
   listing as listingPropType,
   acb,
-  selectableSurveillance as surveillancePropType,
 } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({

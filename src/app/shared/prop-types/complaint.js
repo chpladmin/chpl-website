@@ -81,18 +81,9 @@ const complaint = shape({
   surveillances: arrayOf(surveillance),
 });
 
-const selectableSurveillance = shape({
-  certifiedProductId: number,
-  chplProductNumber: string,
-  friendlyId: string,
-  id: number,
-  listingId: number,
-});
-
 export {
   criterion,
   complaint,
   complainantType,
   listing,
-  selectableSurveillance,
 };

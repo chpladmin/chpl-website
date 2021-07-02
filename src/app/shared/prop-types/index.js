@@ -8,7 +8,6 @@ import {
   complaint,
   complainantType,
   listing,
-  selectableSurveillance,
 } from './complaint';
 import contact from './contact';
 import criterion from './criterion';
@@ -42,7 +41,6 @@ export {
   qmsStandard,
   reliedUponSoftware,
   resources,
-  selectableSurveillance,
   selectedOptionalStandard,
   selectedSvap,
   selectedTestData,
