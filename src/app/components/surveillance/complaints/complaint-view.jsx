@@ -18,11 +18,33 @@ import { complaint as complaintPropType } from '../../../shared/prop-types';
 import { CardHeader } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
-  container: {
+  content: {
     display: 'grid',
-    gridTemplateColumns: '1fr 2fr 2fr 1fr',
-    gridGap:'16px',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'start',
+    [theme.breakpoints.up('xs')]: {
+      gridTemplateColumns: '1fr',
     },
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '2fr 2fr',
+    },
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+    [theme.breakpoints.up('xl')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+  },
+
+  dataContent: {
+    display: 'grid',
+    gap: '4px',
+    marginTop: '16px',
+  },
 }));
 
 function ChplComplaintView(props) {
@@ -57,14 +79,12 @@ function ChplComplaintView(props) {
         subheader={complaint.acbComplaintId}
         />
 
-        <CardContent className={classes.container}>
-          <div>
-            <Typography variant="subtitle1">
-              ONC-ACB:
-            </Typography>
-            <Typography variant="body1">
-              {complaint.certificationBody?.name}
-            </Typography>
+        <CardContent >
+          <Typography variant="h5">
+                ONC-ACB:{complaint.certificationBody?.name}
+          </Typography>
+          <div className={classes.content}>
+          <div className={classes.dataContent}>
             <Typography variant="subtitle1">
               Received Date:
             </Typography>
@@ -90,7 +110,7 @@ function ChplComplaintView(props) {
               {complaint.oncComplaintId}
             </Typography>
           </div>
-          <div>
+          <div className={classes.dataContent}>
             <Typography variant="subtitle1">
               Complainant Type:
             </Typography>
@@ -110,8 +130,7 @@ function ChplComplaintView(props) {
               {complaint.summary}
             </Typography>
           </div>
-
-          <div>
+          <div className={classes.dataContent}>
             <Typography variant="subtitle1">
               Associated Criteria:
             </Typography>
@@ -161,7 +180,7 @@ function ChplComplaintView(props) {
               {complaint.actions}
             </Typography>
           </div>
-          <div>
+          <div className={classes.dataContent}>
             <Typography variant="subtitle1">
               Complainant Contacted:
             </Typography>
@@ -186,6 +205,7 @@ function ChplComplaintView(props) {
             <Typography>
               {complaint.flagForOncReview ? 'Yes' : 'No'}
             </Typography>
+          </div>
           </div>
         </CardContent>
         <CardActions>
