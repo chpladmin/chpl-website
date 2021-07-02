@@ -33,11 +33,19 @@ const SurveillanceComplaintsComponent = {
     }
 
     $onInit() {
-      this.refreshComplainantTypes();
-      this.refreshCertificationBodies();
-      this.refreshListings();
-      this.refreshEditions();
-      this.refreshCriteria();
+      const that = this;
+      this.networkService.getComplainantTypes().then((response) => {
+        that.complainantTypes = response.data;
+      });
+      this.networkService.getAcbs(true).then((response) => { // get all acbs that the user has edit capability of
+        that.certificationBodies = response.acbs;
+      });
+      this.networkService.getCollection('complaintListings').then((response) => {
+        that.listings = response.results;
+      });
+      this.networkService.getCriteria().then((response) => {
+        that.criteria = response.criteria;
+      });
     }
 
     $onChanges(changes) {
@@ -88,14 +96,9 @@ const SurveillanceComplaintsComponent = {
     }
 
     selectComplaint(complaint) {
-      this.refreshSurveillances(complaint);
       this.clearErrorMessages();
       this.isEditing = true;
       this.complaint = complaint;
-    }
-
-    selectListing(complaint) {
-      this.refreshSurveillances(complaint);
     }
 
     saveComplaint(complaint) {
@@ -230,65 +233,6 @@ const SurveillanceComplaintsComponent = {
         return this.networkService.getComplaints();
       }
       return this.networkService.getRelevantComplaints(this.quarterlyReport);
-    }
-
-    refreshComplainantTypes() {
-      const that = this;
-      this.networkService.getComplainantTypes().then((response) => {
-        that.complainantTypes = response.data;
-      });
-    }
-
-    refreshCertificationBodies() {
-      const that = this;
-      // get all acbs that the user has edit capability of
-      this.networkService.getAcbs(true).then((response) => {
-        that.certificationBodies = response.acbs;
-      });
-    }
-
-    refreshListings() {
-      const that = this;
-      this.networkService.getCollection('complaintListings').then((response) => {
-        that.listings = response.results;
-      });
-    }
-
-    refreshEditions() {
-      const that = this;
-      this.networkService.getEditions().then((response) => {
-        that.editions = response;
-      });
-    }
-
-    refreshCriteria() {
-      const that = this;
-      this.networkService.getCriteria().then((response) => {
-        that.criteria = response.criteria;
-      });
-    }
-
-    refreshSurveillances(complaint) {
-      const that = this;
-      this.surveillances = [];
-      if (complaint && Array.isArray(complaint.listings)) {
-        complaint.listings.forEach((listing) => {
-          this.networkService.getListingBasic(listing.listingId, true).then((response) => {
-            if (Array.isArray(response.surveillance)) {
-              response.surveillance.forEach((surv) => {
-                that.surveillances.push({
-                  id: surv.id,
-                  friendlyId: surv.friendlyId,
-                  listingId: response.id,
-                  certifiedProductId: response.id,
-                  chplProductNumber: response.chplProductNumber,
-                });
-                that.surveillances = angular.copy(that.surveillances);
-              });
-            }
-          });
-        });
-      }
     }
 
     clearErrorMessages() {
