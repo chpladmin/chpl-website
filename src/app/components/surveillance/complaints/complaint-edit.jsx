@@ -118,9 +118,6 @@ function ChplComplaintEdit(props) {
     }
   });
 
-  const setSelectableSurveillances = (selectedListings) => {
-  };
-
   useEffect(() => {
     setSurveillances([]);
     complaint.listings.forEach((listing) => {
