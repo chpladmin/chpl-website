@@ -103,29 +103,29 @@ const SurveillanceComplaintsComponent = {
     }
 
     saveComplaint(complaint) {
+      const that = this;
       this.clearErrorMessages();
       const toSave = {
         ...complaint,
       };
+      const handleResponse = () => {
+        that.refreshComplaints();
+        that.isEditing = false;
+      };
+      const handleError = (error) => {
+        if (error.status === 400) {
+          that.errorMessages = error.data.errorMessages;
+        }
+      };
       if (complaint.id) {
-        this.modifyComplaint(toSave, this.networkService.updateComplaint);
+        this.networkService.updateComplaint(toSave)
+          .then(handleResponse)
+          .catch(handleError);
       } else {
-        this.modifyComplaint(toSave, this.networkService.createComplaint);
+        this.networkService.createComplaint(complaint)
+          .then(handleResponse)
+          .catch(handleError);
       }
-    }
-
-    modifyComplaint(complaint, action) {
-      const that = this;
-      action(complaint)
-        .then(() => {
-          that.refreshComplaints();
-          that.isEditing = false;
-        })
-        .catch((error) => {
-          if (error.status === 400) {
-            that.errorMessages = error.data.errorMessages;
-          }
-        });
     }
 
     displayAddComplaint() {
