@@ -1,7 +1,7 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
-import { ChplConfirmation, ChplEllipsis, ChplLink } from './util';
+import { ChplConfirmation, ChplEllipsis, ChplLink, ChplNonProdIndicator } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
@@ -34,6 +34,7 @@ angular
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
+  .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
