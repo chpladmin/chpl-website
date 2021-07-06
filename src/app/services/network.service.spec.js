@@ -1873,6 +1873,14 @@
         });
         $httpBackend.flush();
       });
+
+      it('should get the current system status', () => {
+        $httpBackend.expectGET(/^\/rest\/system-status$/).respond(200, { data: 'response' });
+        networkService.getSystemStatus().then((response) => {
+          expect(response.data).toEqual({ data: 'response' });
+        });
+        $httpBackend.flush();
+      });
     });
   });
 })();
