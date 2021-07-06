@@ -14,7 +14,7 @@
     });
 
   /** @ngInclude */
-  function authInterceptor ($log, API, authService, toaster) {
+  function authInterceptor($log, API, authService, toaster) {
     return {
       // automatically attach Authorization header
       request: function (config) {
@@ -50,16 +50,16 @@
     ////////////////////////////////////////////////////////////////////////
 
     // Notify if a cache is being cleared
-    function parseCacheCleared (value) {
+    function parseCacheCleared(value) {
       var caches = value.split(',');
       var body, title;
       for (var i = 0; i < caches.length; i++) {
         switch (caches[i]) {
-        case 'listingCollection':
-          title = 'Update processing';
-          body = 'Your changes may not be reflected immediately in the search results and shortcuts pages. Please contact CHPL admin if you have any concerns';
-          break;
-                    //no default
+          case 'listingCollection':
+            title = 'Update processing';
+            body = 'Your changes may not be reflected immediately in the search results and shortcuts pages. Please contact CHPL admin if you have any concerns';
+            break;
+          //no default
         }
       }
       toaster.pop({
@@ -70,7 +70,7 @@
     }
 
     // Notify if the CHPL ID changed
-    function parseChplIdChanged (id) {
+    function parseChplIdChanged(id) {
       var body, title;
       if (id.indexOf(',') > -1) {
         title = 'CHPL IDs Changed';
@@ -87,7 +87,7 @@
     }
 
     // If a token was sent back, save it
-    function parseToken (data) {
+    function parseToken(data) {
       try {
         if (angular.isString(data)) {
           data = angular.fromJson(data);
