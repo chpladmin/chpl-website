@@ -849,6 +849,10 @@ export default class NetworkService {
     return this.apiPUT('/versions', versionObject);
   }
 
+  getSystemStatus() {
+    return this.$http.get('/rest/system-status');
+  }
+
   /*
    * Helper functions
    */
