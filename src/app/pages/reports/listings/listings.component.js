@@ -42,7 +42,8 @@ const ReportsListingsComponent = {
             .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
             .map((a) => {
               const ret = {
-                value: a.name,
+                value: a.id,
+                display: a.name,
               };
               if (a.retired) {
                 ret.display = `${a.name} (Retired)`;
@@ -50,7 +51,7 @@ const ReportsListingsComponent = {
                 ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
               } else {
                 ret.selected = that.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-                                    || user.organizations.filter((o) => o.name === a.name).length > 0;
+                  || user.organizations.filter((o) => o.name === a.name).length > 0;
               }
               return ret;
             });
@@ -625,8 +626,8 @@ const ReportsListingsComponent = {
           if (pre.testProcedure) {
             curr.testProcedures.forEach((cur) => {
               if (!cur.found && !pre.found
-                                && pre.testProcedure.name === cur.testProcedure.name
-                                && pre.testProcedureVersion === cur.testProcedureVersion) {
+                && pre.testProcedure.name === cur.testProcedure.name
+                && pre.testProcedureVersion === cur.testProcedureVersion) {
                 pre.found = true;
                 cur.found = true;
               }
@@ -660,9 +661,9 @@ const ReportsListingsComponent = {
           if (pre.testData) {
             curr.testDataUsed.forEach((cur) => {
               if (!cur.found && !pre.found
-                                && pre.testData.name === cur.testData.name
-                                && pre.version === cur.version
-                                && pre.alteration === cur.alteration) {
+                && pre.testData.name === cur.testData.name
+                && pre.version === cur.version
+                && pre.alteration === cur.alteration) {
                 pre.found = true;
                 cur.found = true;
               }
@@ -673,7 +674,7 @@ const ReportsListingsComponent = {
           if (pre.testData) {
             curr.testDataUsed.forEach((cur) => {
               if (!cur.found && !pre.found
-                                && pre.testData.name === cur.testData.name) {
+                && pre.testData.name === cur.testData.name) {
                 pre.found = true;
                 cur.found = true;
                 if (pre.version !== cur.version) {
@@ -693,6 +694,38 @@ const ReportsListingsComponent = {
           if (cur.testData) {
             if (!cur.found) {
               ret.push(`<li>Test Data "${cur.testData.name}" was added</li>`);
+            }
+          }
+        });
+      }
+      if (prev.optionalStandards && curr.optionalStandards) {
+        prev.optionalStandards.forEach((pre) => {
+          if (pre.optionalStandard) {
+            curr.optionalStandards.forEach((cur) => {
+              if (!cur.found && !pre.found && pre.optionalStandard.optionalStandard === cur.optionalStandard.optionalStandard) {
+                pre.found = true;
+                cur.found = true;
+              }
+            });
+          }
+        });
+        prev.optionalStandards.forEach((pre) => {
+          if (pre.optionalStandard) {
+            curr.optionalStandards.forEach((cur) => {
+              if (!cur.found && !pre.found && pre.optionalStandard.optionalStandard === cur.optionalStandard.optionalStandard) {
+                pre.found = true;
+                cur.found = true;
+              }
+            });
+            if (!pre.found) {
+              ret.push(`<li>Optional Standard "${pre.optionalStandard.citation}: ${pre.optionalStandard.description}" was removed</li>`);
+            }
+          }
+        });
+        curr.optionalStandards.forEach((cur) => {
+          if (cur.optionalStandard) {
+            if (!cur.found) {
+              ret.push(`<li>Optional Standard "${cur.optionalStandard.citation}: ${cur.optionalStandard.description}" was added</li>`);
             }
           }
         });
@@ -781,9 +814,9 @@ const ReportsListingsComponent = {
             activity.details.push(`CQM "${cqmChanges[j].cmsId}" changes<ul>${cqmChanges[j].changes.join('')}</ul>`);
           }
           if (typeof (item.originalData.ics) === 'object'
-                        && typeof (item.newData.ics) === 'object'
-                        && item.originalData.ics
-                        && item.newData.ics) {
+            && typeof (item.newData.ics) === 'object'
+            && item.originalData.ics
+            && item.newData.ics) {
             if (item.originalData.ics.parents) {
               const icsParentsKeys = [];
               const icsParents = this.ReportService.compareArray(item.originalData.ics.parents, item.newData.ics.parents, icsParentsKeys, 'chplProductNumber');

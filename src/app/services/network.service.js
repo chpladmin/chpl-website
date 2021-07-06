@@ -540,6 +540,11 @@ export default class NetworkService {
     return this.apiGET(url);
   }
 
+  getSurveillanceActivityReport(range) {
+    const url = `/surveillance/reports/activity?start=${range.startDate}&end=${range.endDate}`;
+    return this.apiGET(url);
+  }
+
   getSurveillanceLookups() {
     const data = {};
     this.apiGET('/data/surveillance_types')
@@ -838,6 +843,10 @@ export default class NetworkService {
 
   updateVersion(versionObject) {
     return this.apiPUT('/versions', versionObject);
+  }
+
+  getSystemStatus() {
+    return this.$http.get('/rest/system-status');
   }
 
   /*

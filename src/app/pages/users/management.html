@@ -1,24 +1,10 @@
 <div class="container-fluid">
-  <span ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])">
-    <div class="row">
-      <div class="col-sm-12">
-        <h1>CHPL Users</h1>
-      </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>CHPL Users</h1>
     </div>
-    <div class="main-content row" id="main-content" tabindex="-1">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <chpl-users column-count="3" users="$ctrl.users" roles="$ctrl.roles" take-action="$ctrl.takeAction(action, data)"></chpl-users>
-        </div>
-      </div>
-    </div>
-  </span>
-  <div class="main-content row splash-row" id="main-content" tabindex="-1" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])">
-    <div class="col-md-6 col-md-offset-3 jumbotron">
-      <chpl-login form-class=""
-                  p-class="bg-success lead"
-                  p-class-fail="bg-danger lead">
-      </chpl-login>
-    </div>
+  </div>
+  <div class="main-content row" id="main-content" tabindex="-1">
+    <chpl-users-bridge users="$ctrl.users" roles="$ctrl.roles" dispatch="::$ctrl.takeAction"></chpl-users-bridge>
   </div>
 </div>

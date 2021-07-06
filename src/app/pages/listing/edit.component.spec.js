@@ -1,22 +1,32 @@
 (() => {
-  'use strict';
-
   describe('the CHPL Listing edit page', () => {
+    let $compile;
+    let $log;
+    let $q;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    var $compile, $log, $q, ctrl, el, mock, networkService, scope;
-
-    mock = {
-      listing: {},
-      resources: {},
+    const mock = {
+      listing: {
+        certificationEdition: {},
+      },
+      resources: {
+        testStandards: {
+          data: [],
+        },
+      },
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.listing', $provide => {
-        $provide.decorator('networkService', $delegate => {
-          $delegate.updateCP = jasmine.createSpy('updateCP');
-          return $delegate;
-        });
+      angular.mock.module('chpl.listing', ($provide) => {
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          updateCP: jasmine.createSpy('updateCP'),
+        }));
       });
+
       inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
         $compile = _$compile_;
         $log = _$log_;
@@ -39,7 +49,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -63,7 +73,7 @@
         });
 
         it('should report errors and turn off the saving flag', () => {
-          networkService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
+          networkService.updateCP.and.returnValue($q.when({ status: 400, error: 'an error' }));
           ctrl.save(listing, 'reason');
           scope.$digest();
           expect(ctrl.saveErrors.errors).toEqual(['an error']);
@@ -71,7 +81,7 @@
         });
 
         it('should report errors on server data.error', () => {
-          networkService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
+          networkService.updateCP.and.returnValue($q.reject({ data: { error: 'an error' } }));
           ctrl.save(listing, 'reason');
           scope.$digest();
           expect(ctrl.saveErrors.errors).toEqual(['an error']);
@@ -79,7 +89,7 @@
         });
 
         it('should report errors on server data.errorMessages', () => {
-          networkService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
+          networkService.updateCP.and.returnValue($q.reject({ data: { errorMessages: ['an error2'] } }));
           ctrl.save(listing, 'reason');
           scope.$digest();
           expect(ctrl.saveErrors.errors).toEqual(['an error2']);
@@ -87,7 +97,7 @@
         });
 
         it('should report errors on server data.warningMessages', () => {
-          networkService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
+          networkService.updateCP.and.returnValue($q.reject({ data: { warningMessages: ['an error3'] } }));
           ctrl.save(listing, 'reason');
           scope.$digest();
           expect(ctrl.saveErrors.warnings).toEqual(['an error3']);

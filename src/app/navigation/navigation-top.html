@@ -1,5 +1,6 @@
 <header>
   <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" chpl-add-class-on-scroll offset="50" scroll-class="navbar-scrolled" ng-if="vm.navShown">
+    <chpl-non-prod-indicator-bridge></chpl-non-prod-indicator-bridge>
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" ng-click="navCollapsed = !navCollapsed" ng-init="navCollapsed = true" aria-haspopup="true" aria-expanded="false" id="menu-toggle">
@@ -10,7 +11,6 @@
         </button>
         <a class="navbar-brand" href ng-click="vm.clear()"><img src="../../assets/images/CHPL_Logo_03.png" alt="Certified Health IT Product List" class="img-responsive"></img></a>
       </div>
-
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav navbar-right nav-main">
@@ -56,7 +56,10 @@
     <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])"><button class="btn btn-link" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
   </nav>
   <nav class="navbar navbar-default navbar-admin" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'">
-    <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown"><button class="btn btn-link" ng-click="vm.toggleNavOpen()">Show navigation <i class="fa fa-caret-left"></i></button></div>
+    <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown">
+      <chpl-non-prod-indicator-bridge></chpl-non-prod-indicator-bridge>
+      <button class="btn btn-link" ng-click="vm.toggleNavOpen()">Show navigation <i class="fa fa-caret-left"></i></button>
+    </div>
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" ng-click="vm.adminNavCollapsed = !vm.adminNavCollapsed"
@@ -67,7 +70,6 @@
           <span class="icon-bar"></span>
         </button>
       </div>
-
       <div class="collapse navbar-collapse" uib-collapse="vm.adminNavCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav"> <!-- admin-nav -->
           <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_CMS_STAFF'])" class="dropdown" uib-dropdown is-open="vm.administrationIsOpen">
@@ -119,7 +121,7 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="surveillance.upload()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.upload')"></i>Upload</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="surveillance.confirm()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.confirm')"></i>Confirm</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="surveillance.manage()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.manage')"></i> Manage</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])"><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i>Complaints Reporting</a></li>
+              <li><a ui-sref="surveillance.complaints()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.complaints')"></i>Complaints Reporting</a></li>
               <li><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
             </ul>
           </li>
