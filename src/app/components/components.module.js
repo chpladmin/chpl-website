@@ -1,7 +1,7 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
-import { ChplEllipsis, ChplLink, ChplNonProdIndicator } from './util';
+import { ChplConfirmation, ChplEllipsis, ChplLink, ChplNonProdIndicator } from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
@@ -27,6 +27,7 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
+  .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
