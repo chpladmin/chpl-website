@@ -1,6 +1,6 @@
 import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
-import loginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.po';
 import ToastComponent from '../../components/toast/toast.po';
 import ListingEditComponent from '../../components/listing/listing.po';
@@ -28,7 +28,7 @@ describe('On 2015 Listing details page', () => {
     page = new ListingPage();
     hooks = new Hooks();
     toast = new ToastComponent();
-    login = new loginComponent();
+    login = new LoginComponent();
     action = new ActionBarComponent();
     await hooks.open('#/listing/9715');
   });
