@@ -241,7 +241,7 @@
               </li>
               <li>
                 <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
-                  <i class="fa" ng-class="vm.showPracticeType ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showPracticeType ? 'Hide' : 'View' }} Practice Type <span ng-if="vm.categoryChanged['practiceType']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                  <i class="fa" ng-class="vm.showPracticeType ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showPracticeType ? 'Hide' : 'View' }} Practice Type (2011 and 2014 Editions) <span ng-if="vm.categoryChanged['practiceType']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
               <li ng-show="vm.showPracticeType">
@@ -253,7 +253,9 @@
                   predicate="practiceType"
                   register-clear-filter="vm.registerClearFilter(clearFilter)"
                   register-restore-state="vm.registerRestoreState(restoreState)"
-                  name-space="searchTableState"></st-select-distinct>
+                  trigger-show-retired="vm.triggerShowRetired()"
+                  name-space="searchTableState"
+                  analytics="{category: 'Search', eventTitle: 'Practice Type'}"></st-select-distinct>
               </li>
               <li>
                 <a href ng-click="vm.showCertificationDate = !vm.showCertificationDate">
