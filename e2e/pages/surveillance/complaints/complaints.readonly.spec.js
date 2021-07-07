@@ -1,4 +1,4 @@
-import ComplaintsPage from '../../surveillance/complaints/complaints.po';
+import ComplaintsPage from './complaints.po';
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 
@@ -33,7 +33,7 @@ describe('when logged in as an ADMIN', () => {
       });
 
       it('should have table headers in a defined order', () => {
-        const expectedHeaders = ['ONC-ACB', 'Status', 'Received Date', 'ONC-ACB Complaint ID', 'ONC Complaint ID', 'Complainant Type',''];
+        const expectedHeaders = ['ONC-ACB', 'Status', 'Received Date', 'ONC-ACB Complaint ID', 'ONC Complaint ID', 'Complainant Type', ''];
         const actualHeaders = page.getComplaintsTableHeaders();
         expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of headers');
         actualHeaders.forEach((header, idx) => {
