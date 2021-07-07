@@ -22,11 +22,12 @@ const DeveloperViewComponent = {
       this.movingProducts = [];
       this.activeAcbs = [];
       this.roles = ['ROLE_DEVELOPER'];
+      this.closeConfirmation = this.closeConfirmation.bind(this);
     }
 
     $onInit() {
       const that = this;
-      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.action !== 'editProduct' && this.action !== 'editVersion') {
+      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
         this.loadData();
       }
       this.loggedIn = this.$scope.$on('loggedIn', () => that.loadData());
@@ -82,9 +83,6 @@ const DeveloperViewComponent = {
 
     closeConfirmation() {
       this.action = undefined;
-      if (this.$state.$current.name === 'organizations.developers.developer.edit') {
-        this.$state.go('^', undefined, { reload: true });
-      }
     }
 
     loadData() {
