@@ -1,0 +1,16 @@
+<div role="modal" aria-labeled-by="view-surveillance-header">
+  <div class="modal-header">
+    <button type="button"
+            class="close pull-right"
+            aria-label="Cancel"
+            ng-click="$ctrl.dismiss();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="view-surveillance-header">
+      Surveillance Activity
+    </h4>
+  </div>
+  <div class="modal-body form-horizontal">
+    <chpl-surveillance-view-bridge surveillance="$ctrl.surveillance"></chpl-surveillance-view-bridge>
+  </div>
+</div>

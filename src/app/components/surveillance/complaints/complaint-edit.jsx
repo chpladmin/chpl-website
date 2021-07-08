@@ -32,7 +32,6 @@ import {
   complainantType,
   listing as listingPropType,
   acb,
-  selectableSurveillance as surveillancePropType,
 } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -131,6 +130,7 @@ function ChplComplaintEdit(props) {
   const [surveillances, setSurveillances] = useState([]);
   const [surveillanceToAdd, setSurveillanceToAdd] = useState('');
   const [errors, setErrors] = useState([]);
+  const networkService = getAngularService('networkService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -142,14 +142,27 @@ function ChplComplaintEdit(props) {
   });
 
   useEffect(() => {
-    setSurveillances(props.surveillances
-      .map((s) => (s))
-      .sort((a, b) => {
-        if (a.chplProductNumber < b.chplProductNumber) { return -1; }
-        if (a.chplProductNumber > b.chplProductNumber) { return 1; }
-        return a.friendlyId < b.friendlyId ? -1 : 1;
-      }));
-  }, [props.surveillances]); // eslint-disable-line react/destructuring-assignment
+    setSurveillances([]);
+    complaint.listings.forEach((listing) => {
+      networkService.getListingBasic(listing.listingId, true).then((response) => {
+        const newSurveillances = response.surveillance.map((surv) => ({
+          id: surv.id,
+          friendlyId: surv.friendlyId,
+          listingId: response.id,
+          certifiedProductId: response.id,
+          chplProductNumber: response.chplProductNumber,
+        }));
+        setSurveillances((surveillances) => [
+          ...surveillances,
+          ...newSurveillances,
+        ].sort((a, b) => {
+          if (a.chplProductNumber < b.chplProductNumber) { return -1; }
+          if (a.chplProductNumber > b.chplProductNumber) { return 1; }
+          return a.friendlyId < b.friendlyId ? -1 : 1;
+        }));
+      });
+    });
+  }, [complaint.listings]);
 
   useEffect(() => {
     setErrors(props.errors
@@ -202,7 +215,6 @@ function ChplComplaintEdit(props) {
       ],
     };
     setComplaint(updated);
-    handleAction('selectListing', updated);
     setListingToAdd(null);
     setListingValueToAdd('');
   };
@@ -213,7 +225,6 @@ function ChplComplaintEdit(props) {
       listings: complaint.listings.filter((item) => item.id !== listing.id),
     };
     setComplaint(updated);
-    handleAction('selectListing', updated);
   };
 
   const addAssociatedSurveillance = (event) => {
@@ -630,7 +641,6 @@ ChplComplaintEdit.propTypes = {
   complainantTypes: arrayOf(complainantType).isRequired,
   criteria: arrayOf(criterionPropType).isRequired,
   listings: arrayOf(listingPropType).isRequired,
-  surveillances: arrayOf(surveillancePropType).isRequired,
   errors: arrayOf(string),
   dispatch: func.isRequired,
 };

@@ -22,7 +22,6 @@ const SurveillanceComplaintsComponent = {
       this.filename = `Complaints_${new Date().getTime()}.csv`;
       this.restoreStateHs = [];
       this.complaintListType = 'ALL';
-      this.pageSize = 600;
       this.filterItems = {
         acbItems: [],
         complaintStatusTypeItems: [],
@@ -33,11 +32,19 @@ const SurveillanceComplaintsComponent = {
     }
 
     $onInit() {
-      this.refreshComplainantTypes();
-      this.refreshCertificationBodies();
-      this.refreshListings();
-      this.refreshEditions();
-      this.refreshCriteria();
+      const that = this;
+      this.networkService.getComplainantTypes().then((response) => {
+        that.complainantTypes = response.data;
+      });
+      this.networkService.getAcbs(true).then((response) => { // get all acbs that the user has edit capability of
+        that.certificationBodies = response.acbs;
+      });
+      this.networkService.getCollection('complaintListings').then((response) => {
+        that.listings = response.results;
+      });
+      this.networkService.getCriteria().then((response) => {
+        that.criteria = response.criteria;
+      });
     }
 
     $onChanges(changes) {
@@ -74,15 +81,10 @@ const SurveillanceComplaintsComponent = {
           break;
         case 'edit':
           this.selectComplaint(payload);
+          this.$scope.$digest();
           break;
         case 'save':
           this.saveComplaint(payload);
-          break;
-        case 'selectListing':
-          this.refreshSurveillances(payload);
-          if (payload.listings.length === 0) {
-            this.$scope.$digest();
-          }
           break;
         case 'view':
           this.isViewing = true;
@@ -94,60 +96,35 @@ const SurveillanceComplaintsComponent = {
     }
 
     selectComplaint(complaint) {
-      this.refreshSurveillances(complaint);
       this.clearErrorMessages();
       this.isEditing = true;
       this.complaint = complaint;
     }
 
-    selectListing(complaint) {
-      this.refreshSurveillances(complaint);
-    }
-
     saveComplaint(complaint) {
+      const that = this;
+      this.clearErrorMessages();
       const toSave = {
         ...complaint,
       };
+      const handleResponse = () => {
+        that.refreshComplaints();
+        that.isEditing = false;
+      };
+      const handleError = (error) => {
+        if (error.status === 400) {
+          that.errorMessages = error.data.errorMessages;
+        }
+      };
       if (complaint.id) {
-        this.updateComplaint(toSave);
+        this.networkService.updateComplaint(toSave)
+          .then(handleResponse)
+          .catch(handleError);
       } else {
-        this.createComplaint(toSave);
+        this.networkService.createComplaint(complaint)
+          .then(handleResponse)
+          .catch(handleError);
       }
-    }
-
-    updateComplaint(complaint) {
-      const that = this;
-      this.clearErrorMessages();
-      this.networkService.updateComplaint(complaint)
-        .then(() => {
-          that.refreshComplaints();
-          that.isEditing = false;
-        })
-        .catch((error) => {
-          if (error.status === 400) {
-            that.errorMessages = error.data.errorMessages;
-          }
-        });
-    }
-
-    createComplaint(complaint) {
-      const that = this;
-      this.clearErrorMessages();
-      this.networkService.createComplaint(complaint)
-        .then(() => {
-          that.refreshComplaints();
-          that.isEditing = false;
-        })
-        .catch((error) => {
-          if (error.status === 400) {
-            that.errorMessages = error.data.errorMessages;
-          }
-        });
-    }
-
-    cancelEdit() {
-      this.isEditing = false;
-      this.isViewing = false;
     }
 
     displayAddComplaint() {
@@ -236,65 +213,6 @@ const SurveillanceComplaintsComponent = {
         return this.networkService.getComplaints();
       }
       return this.networkService.getRelevantComplaints(this.quarterlyReport);
-    }
-
-    refreshComplainantTypes() {
-      const that = this;
-      this.networkService.getComplainantTypes().then((response) => {
-        that.complainantTypes = response.data;
-      });
-    }
-
-    refreshCertificationBodies() {
-      const that = this;
-      // get all acbs that the user has edit capability of
-      this.networkService.getAcbs(true).then((response) => {
-        that.certificationBodies = response.acbs;
-      });
-    }
-
-    refreshListings() {
-      const that = this;
-      this.networkService.getCollection('complaintListings').then((response) => {
-        that.listings = response.results;
-      });
-    }
-
-    refreshEditions() {
-      const that = this;
-      this.networkService.getEditions().then((response) => {
-        that.editions = response;
-      });
-    }
-
-    refreshCriteria() {
-      const that = this;
-      this.networkService.getCriteria().then((response) => {
-        that.criteria = response.criteria;
-      });
-    }
-
-    refreshSurveillances(complaint) {
-      const that = this;
-      this.surveillances = [];
-      if (complaint && Array.isArray(complaint.listings)) {
-        complaint.listings.forEach((listing) => {
-          this.networkService.getListingBasic(listing.listingId, true).then((response) => {
-            if (Array.isArray(response.surveillance)) {
-              response.surveillance.forEach((surv) => {
-                that.surveillances.push({
-                  id: surv.id,
-                  friendlyId: surv.friendlyId,
-                  listingId: response.id,
-                  certifiedProductId: response.id,
-                  chplProductNumber: response.chplProductNumber,
-                });
-                that.surveillances = angular.copy(that.surveillances);
-              });
-            }
-          });
-        });
-      }
     }
 
     clearErrorMessages() {

@@ -8,8 +8,9 @@ export const SurveillanceReportRelevantListingComponent = {
     onCancel: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
-    constructor ($log, $state, $stateParams, $uibModal, authService, networkService) {
+    constructor($log, $state, $stateParams, $uibModal, authService, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.$state = $state;
       this.$stateParams = $stateParams;
@@ -18,11 +19,11 @@ export const SurveillanceReportRelevantListingComponent = {
       this.hasAnyRole = authService.hasAnyRole;
     }
 
-    $onInit () {
+    $onInit() {
       this.surveillanceTypes = this.networkService.getSurveillanceLookups();
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.listing) {
         this.listing = angular.copy(changes.listing.currentValue);
       }
@@ -36,29 +37,56 @@ export const SurveillanceReportRelevantListingComponent = {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
       }
       if (this.listing.surveillances) {
-        this.surveillances = this.listing.surveillances.map(s => this.calculateCompletion(s));
+        this.surveillances = this.listing.surveillances.map((s) => this.calculateCompletion(s));
       }
     }
 
-    cancelEdit () {
+    cancelEdit() {
       this.activeSurveillance = undefined;
     }
 
-    save (surveillance) {
-      let that = this;
+    save(surveillance) {
+      const that = this;
       this.networkService.updateRelevantSurveillance(this.quarterlyReport.id, surveillance).then(() => {
-        let currentState = {
+        const currentState = {
           relevantListing: that.listing.id,
         };
         that.$state.go(
           that.$state.current,
-          {...that.$stateParams, ...currentState},
-          {reload: true},
+          { ...that.$stateParams, ...currentState },
+          { reload: true },
         );
       });
     }
 
-    editSurveillance (relevantSurveillance) {
+    displaySurveillance(relevantSurveillance) {
+      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+        this.editSurveillance(relevantSurveillance);
+      } else {
+        this.viewSurveillance(relevantSurveillance);
+      }
+    }
+
+    viewSurveillance(relevantSurveillance) {
+      const that = this;
+      this._fixRequirementOptions();
+      this.networkService.getListing(this.listing.id, true).then((listing) => {
+        const surveillance = listing.surveillance.find((s) => s.id === relevantSurveillance.id);
+        const component =
+          that.uibModalInstance = that.$uibModal.open({
+            component: that.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
+            animation: false,
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+              surveillance: () => surveillance,
+            },
+          });
+      });
+    }
+
+    editSurveillance(relevantSurveillance) {
       let that = this;
       this._fixRequirementOptions();
       this.networkService.getListing(this.listing.id, true).then(listing => {
@@ -81,14 +109,15 @@ export const SurveillanceReportRelevantListingComponent = {
           };
           that.$state.go(
             that.$state.current,
-            {...that.$stateParams, ...currentState},
-            {reload: true},
+            { ...that.$stateParams, ...currentState },
+            { reload: true },
           );
         });
       });
     }
 
-    _fixRequirementOptions () {
+
+    _fixRequirementOptions() {
       if (this.listing.edition === '2015') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
       } else if (this.listing.edition === '2014') {
@@ -96,26 +125,26 @@ export const SurveillanceReportRelevantListingComponent = {
       }
     }
 
-    cancel () {
+    cancel() {
       this.activeSurveillance = undefined;
       this.onCancel();
     }
 
-    calculateCompletion (surveillance) {
+    calculateCompletion(surveillance) {
       surveillance.completed = Math.round((
-        (surveillance.surveillanceOutcome ? 1 : 0 ) +
-                    (surveillance.surveillanceProcessType ? 1 : 0 ) +
-                    (surveillance.k1Reviewed ? 1 : 0 ) +
-                    (surveillance.groundsForInitiating ? 1 : 0 ) +
-                    (surveillance.nonconformityCauses ? 1 : 0 ) +
-                    (surveillance.nonconformityNature ? 1 : 0 ) +
-                    (surveillance.stepsToSurveil ? 1 : 0 ) +
-                    (surveillance.stepsToEngage ? 1 : 0 ) +
-                    (surveillance.additionalCostsEvaluation ? 1 : 0 ) +
-                    (surveillance.limitationsEvaluation ? 1 : 0 ) +
-                    (surveillance.nondisclosureEvaluation ? 1 : 0 ) +
-                    (surveillance.directionDeveloperResolution ? 1 : 0 ) +
-                    (surveillance.completedCapVerification ? 1 : 0)
+        (surveillance.surveillanceOutcome ? 1 : 0)
+        + (surveillance.surveillanceProcessType ? 1 : 0)
+        + (surveillance.k1Reviewed ? 1 : 0)
+        + (surveillance.groundsForInitiating ? 1 : 0)
+        + (surveillance.nonconformityCauses ? 1 : 0)
+        + (surveillance.nonconformityNature ? 1 : 0)
+        + (surveillance.stepsToSurveil ? 1 : 0)
+        + (surveillance.stepsToEngage ? 1 : 0)
+        + (surveillance.additionalCostsEvaluation ? 1 : 0)
+        + (surveillance.limitationsEvaluation ? 1 : 0)
+        + (surveillance.nondisclosureEvaluation ? 1 : 0)
+        + (surveillance.directionDeveloperResolution ? 1 : 0)
+        + (surveillance.completedCapVerification ? 1 : 0)
       ) * 100 / 13);
       return surveillance;
     }

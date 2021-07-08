@@ -197,6 +197,23 @@
         expect(ctrl).toEqual(jasmine.any(Object));
       });
 
+      describe('on init', () => {
+        it('should have fetched all complainant types', () => {
+          expect(networkService.getComplainantTypes).toHaveBeenCalled();
+          expect(ctrl.complainantTypes.length).toBe(2);
+        });
+
+        it('should have fetched all listings', () => {
+          expect(networkService.getCollection).toHaveBeenCalled();
+          expect(ctrl.listings.length).toBe(3);
+        });
+
+        it('should have fetched all criteria', () => {
+          expect(networkService.getCriteria).toHaveBeenCalled();
+          expect(ctrl.criteria.length).toBe(5);
+        });
+      });
+
       it('should delete a complaint', () => {
         const complaint = { id: 1 };
         ctrl.deleteComplaint(complaint);
@@ -237,12 +254,6 @@
         });
       });
 
-      it('should cancel current editing and go to select mode', () => {
-        ctrl.isEditing = true;
-        ctrl.cancelEdit();
-        expect(ctrl.isEditing).toEqual(false);
-      });
-
       it('should allow for adding a new complaint', () => {
         ctrl.complaint = { id: 5 };
         ctrl.displayAddComplaint();
@@ -256,50 +267,6 @@
         expect(networkService.getComplaints).toHaveBeenCalled();
         scope.$digest();
         expect(ctrl.complaints.length).toBe(1);
-      });
-
-      it('should be able to fetch all complainant types', () => {
-        ctrl.complainantTypes = [];
-        ctrl.refreshComplainantTypes();
-        expect(networkService.getComplainantTypes).toHaveBeenCalled();
-        scope.$digest();
-        expect(ctrl.complainantTypes.length).toBe(2);
-      });
-
-      it('should be able to fetch all listings', () => {
-        ctrl.listings = [];
-        ctrl.refreshListings();
-        expect(networkService.getCollection).toHaveBeenCalled();
-        scope.$digest();
-        expect(ctrl.listings.length).toBe(3);
-      });
-
-      it('should be able to fetch all certification editions', () => {
-        ctrl.editions = [];
-        ctrl.refreshEditions();
-        expect(networkService.getEditions).toHaveBeenCalled();
-        scope.$digest();
-        expect(ctrl.editions.length).toBe(3);
-      });
-
-      it('should be able to fetch all criteria', () => {
-        ctrl.criteria = [];
-        ctrl.refreshCriteria();
-        expect(networkService.getCriteria).toHaveBeenCalled();
-        scope.$digest();
-        expect(ctrl.criteria.length).toBe(5);
-      });
-
-      it('should be able to fetch all surveillances for selected listings', () => {
-        const complaint = {
-          id: 1,
-          listings: [
-            { listingId: 1 },
-            { listingId: 2 },
-          ],
-        };
-        ctrl.refreshSurveillances(complaint);
-        expect(networkService.getListingBasic).toHaveBeenCalledTimes(2);
       });
     });
   });

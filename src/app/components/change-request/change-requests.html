@@ -129,8 +129,7 @@
     <div class="panel-footer text-right">
       <span ng-switch="$ctrl.activeState">
         <span ng-switch-when="log">
-          <button class="btn btn-default" ng-click="$ctrl.act('fullCancel')" ng-if="$ctrl.administrationMode">Back to Tracking</button>
-          <button class="btn btn-default" ng-click="$ctrl.act('fullCancel')" ng-if="!$ctrl.administrationMode">Back to Dashboard</button>
+          <button class="btn btn-default" ng-click="$ctrl.act('fullCancel')">Back to Tracking</button>
           <button class="btn btn-default" ng-click="$ctrl.act('cancel')">Back to Change Request</button>
         </span>
         <span ng-switch-when="edit">

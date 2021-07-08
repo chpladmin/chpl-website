@@ -8,7 +8,6 @@ import {
   complaint,
   complainantType,
   listing,
-  selectableSurveillance,
 } from './complaint';
 import contact from './contact';
 import criterion from './criterion';
@@ -16,6 +15,9 @@ import developer from './developer';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
+import surveillance from './surveillance';
+import surveillanceNonconformity from './surveillance-nonconformity';
+import surveillanceRequirement from './surveillance-requirement';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import { svap, selectedSvap } from './svap';
 import { testData, selectedTestData } from './test-data';
@@ -33,8 +35,8 @@ export {
   certificationResult,
   complainantType,
   complaint,
-  contact,
   complaintCriterion,
+  contact,
   criterion,
   developer,
   listing,
@@ -42,7 +44,6 @@ export {
   qmsStandard,
   reliedUponSoftware,
   resources,
-  selectableSurveillance,
   selectedOptionalStandard,
   selectedSvap,
   selectedTestData,
@@ -50,6 +51,9 @@ export {
   selectedTestProcedure,
   selectedTestStandard,
   selectedTestTool,
+  surveillance,
+  surveillanceNonconformity,
+  surveillanceRequirement,
   svap,
   testData,
   testFunctionality,

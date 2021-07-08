@@ -23,8 +23,6 @@ describe('the ONC-ATL Management page', () => {
   };
 
   beforeEach(async () => {
-    browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-    browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
     page = new OrganizationPage();
     hooks = new Hooks();
     login = new LoginComponent();
@@ -65,8 +63,8 @@ describe('the ONC-ATL Management page', () => {
       page.organizationNameButton(atl).click();
       hooks.waitForSpinnerToDisappear();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
-      expect(page.manageUsersPanel.getText()).toContain('Role: ROLE_ATL');
-      expect(page.manageUsersPanel.getText()).toContain('Organization: UL LLC');
+      expect(page.manageUsersPanel.getText()).toContain('ROLE_ATL');
+      expect(page.manageUsersPanel.getText()).toContain('UL LLC');
     });
 
     it('should not present the option to edit ATL details for Drummond Group', () => {
