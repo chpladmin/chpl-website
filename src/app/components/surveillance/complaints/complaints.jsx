@@ -11,6 +11,7 @@ import {
   TablePagination,
   TableRow,
   ThemeProvider,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
@@ -23,7 +24,6 @@ import { complaint as complaintPropType } from '../../../shared/prop-types';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-
 const useStyles = makeStyles(() => ({
   container: {
     maxHeight: '64vh',
@@ -131,7 +131,10 @@ function ChplComplaints(props) {
                 <TableRow key={complaint.id}>
                   <TableCell>{complaint.acbName}</TableCell>
                   <TableCell>
-                    <Chip color="default" label={complaint.complaintStatusTypeName} variant={complaint.complaintStatusTypeName === 'Open' ? 'outlined' : 'default'} />
+                    <Typography variant="subtitle1" 
+                    color={complaint.complaintStatusTypeName === 'Open' ? 'primary' : 'default'}
+                    >{complaint.complaintStatusTypeName}
+                    </Typography> 
                   </TableCell>
                   <TableCell>{complaint.receivedDate}</TableCell>
                   <TableCell>{complaint.acbComplaintId}</TableCell>
