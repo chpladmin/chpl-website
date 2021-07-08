@@ -34,7 +34,7 @@ describe('the ChplUserInvite component', () => {
       userEvent.type(screen.getByLabelText(/Email/), 'email@sample.com');
       userEvent.click(screen.getByRole('button', { name: /ROLE/ }));
       userEvent.click(screen.getByRole('option', { name: 'ROLE_ADMIN' }));
-      userEvent.click(screen.getByRole('button', { name: /Send invite/i }));
+      userEvent.click(screen.getByRole('button', { name: /Send Invite/i }));
 
       await waitFor(() => {
         expect(hocMock.dispatch).toHaveBeenCalledWith(

@@ -1,4 +1,5 @@
 import ChplConfirmation from './confirmation';
+import ChplCriterionTitle from './criterion-title';
 import ChplDialogTitle from './chpl-dialog-title';
 import { ChplEllipsis } from './chpl-ellipsis';
 import ChplHighlightCures from './highlight-cures';
@@ -10,6 +11,7 @@ import ChplTooltip from './chpl-tooltip';
 
 export {
   ChplConfirmation,
+  ChplCriterionTitle,
   ChplDialogTitle,
   ChplEllipsis,
   ChplHighlightCures,
