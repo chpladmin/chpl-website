@@ -4,26 +4,26 @@ import ComplaintsPage from '../../pages/surveillance/complaints/complaints.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
 
 let hooks;
-let loginComponent;
+let login;
 let page;
-let complaintsComponent;
+let complaints;
 
 beforeEach(async () => {
-  loginComponent = new LoginComponent();
+  login = new LoginComponent();
   hooks = new Hooks();
   page = new ComplaintsPage();
-  complaintsComponent = new ComplaintsComponent();
+  complaints = new ComplaintsComponent();
   hooks.open('#/surveillance/complaints');
   await hooks.waitForSpinnerToDisappear();
 });
 
 describe('As ROLE_ACB user - when editing complaint', () => {
   beforeEach(() => {
-    loginComponent.logIn('drummond');
+    login.logIn('drummond');
   });
 
   afterEach(() => {
-    loginComponent.logOut();
+    login.logOut();
   });
 
   it('should display correct error messages regarding received and closed date', () => {
@@ -37,16 +37,16 @@ describe('As ROLE_ACB user - when editing complaint', () => {
     };
     page.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
-    complaintsComponent.set(fields);
-    complaintsComponent.saveComplaint();
+    complaints.set(fields);
+    complaints.saveComplaint();
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
-    page.editComplaint(fields.acbId);
-    complaintsComponent.closedDate.addValue('01/23/2021');
-    complaintsComponent.saveComplaint();
-    expect(complaintsComponent.fieldError('closed-date')).toBe('Closed Date must be after Received Date');
-    complaintsComponent.closedDate.addValue('04/23/2025');
-    complaintsComponent.saveComplaint();
-    expect(complaintsComponent.fieldError('closed-date')).toBe('Closed Date must not be in the future');
+    complaints.editComplaint(fields.acbId);
+    complaints.closedDate.addValue('01/23/2021');
+    complaints.saveComplaint();
+    expect(complaints.fieldError('closed-date')).toBe('Closed Date must be after Received Date');
+    complaints.closedDate.addValue('04/23/2025');
+    complaints.saveComplaint();
+    expect(complaints.fieldError('closed-date')).toBe('Closed Date must not be in the future');
   });
 });

@@ -5,28 +5,28 @@ import PaginationComponent from '../../components/pagination/pagination.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
 
 let hooks;
-let loginComponent;
+let login;
 let page;
 let pagination;
-let complaintsComponent;
+let complaints;
 
 beforeEach(async () => {
-  loginComponent = new LoginComponent();
+  login = new LoginComponent();
   hooks = new Hooks();
   page = new ComplaintsPage();
   pagination = new PaginationComponent();
-  complaintsComponent = new ComplaintsComponent();
+  complaints = new ComplaintsComponent();
   hooks.open('#/surveillance/complaints');
   await hooks.waitForSpinnerToDisappear();
 });
 
 describe('As ROLE_ACB user', () => {
   beforeEach(() => {
-    loginComponent.logIn('drummond');
+    login.logIn('drummond');
   });
 
   afterEach(() => {
-    loginComponent.logOut();
+    login.logOut();
   });
 
   it('should be able to delete complaint', () => {
@@ -40,14 +40,14 @@ describe('As ROLE_ACB user', () => {
     };
     page.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
-    complaintsComponent.set(fields);
-    complaintsComponent.saveComplaint();
+    complaints.set(fields);
+    complaints.saveComplaint();
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
-    page.deleteComplaint(fields.acbId);
+    complaints.deleteComplaint(fields.acbId);
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
-    page.filter.addValue(fields.acbId);
+    complaints.filter.addValue(fields.acbId);
     expect(pagination.pagination.isExisting()).toBe(false);
   });
 });

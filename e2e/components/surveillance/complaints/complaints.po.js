@@ -8,6 +8,8 @@ class ComplaintsComponent {
       summary: '#summary',
       saveComplaint: '#action-bar-save',
       closedDate: '#closed-date',
+      filter: '#data-filter',
+      downloadResultsButton: '#download-results',
     };
   }
 
@@ -31,6 +33,36 @@ class ComplaintsComponent {
 
   fieldError(fieldName) {
     return $(`#${fieldName}-helper-text`).getText();
+  }
+
+  getComplaintsTableHeaders() {
+    return $('table').$('thead').$$('th');
+  }
+
+  getComplaints() {
+    return $('table').$('tbody').$$('tr');
+  }
+
+  get downloadResultsButton() {
+    return $(this.elements.downloadResultsButton);
+  }
+
+  get filter() {
+    return $(this.elements.filter);
+  }
+
+  getcellValue(row, col) {
+    return $(`//tbody/tr[${row}]/td[${col}]`).getText();
+  }
+
+  editComplaint(id) {
+    this.filter.addValue(id);
+    $('//*[text()="Edit"]/parent::button').scrollAndClick();
+  }
+
+  deleteComplaint(id) {
+    this.filter.addValue(id);
+    $('//*[text()="Delete"]/parent::button').scrollAndClick();
   }
 }
 
