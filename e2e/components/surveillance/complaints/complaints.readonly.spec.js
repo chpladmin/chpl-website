@@ -1,5 +1,5 @@
-import ComplaintsComponent from '../../../components/surveillance/complaints/complaints.po';
-import LoginComponent from '../../../components/login/login.po';
+import ComplaintsComponent from './complaints.po';
+import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks;
