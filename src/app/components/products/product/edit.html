@@ -76,14 +76,16 @@
           <button class="btn btn-sm btn-link" ng-click="$ctrl.addingOwner = true"><i class="fa fa-plus-circle"></i> Add Product Owner</button>
         </div>
       </div>
-      <hr />
-      <h4>Contact Information</h4>
-      <chpl-contact contact="$ctrl.product.contact"
-                    is-editing="true"
-                    ignore-friendly-name="true"
-                    on-change="$ctrl.editContact(contact)"
-                    merge-options="$ctrl.contactOptions"
-                    show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+      <span ng-if="!$ctrl.isMerging">
+        <hr />
+        <h4>Contact Information</h4>
+        <chpl-contact contact="$ctrl.product.contact"
+                      is-editing="true"
+                      ignore-friendly-name="true"
+                      on-change="$ctrl.editContact(contact)"
+                      merge-options="$ctrl.contactOptions"
+                      show-form-errors="$ctrl.showFormErrors"></chpl-contact>
+      </span>
     </div>
   </div>
   <chpl-action-bar is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"

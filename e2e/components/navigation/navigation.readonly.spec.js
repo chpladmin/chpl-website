@@ -18,7 +18,7 @@ describe('when logged in', () => {
     login.logOut();
   });
 
-  describe('as an ACB', () => {
+  describe('as ROLE_ACB', () => {
     beforeEach(() => {
       login.logIn('acb');
     });
@@ -40,7 +40,7 @@ describe('when logged in', () => {
     });
   });
 
-  describe('as ONC', () => {
+  describe('as ROLE_ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
     });
@@ -63,6 +63,58 @@ describe('when logged in', () => {
       expect(reports.size).toBe(expected.length);
       expected.forEach((exp) => {
         expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
+      });
+    });
+    it('should have specific options under surveillance', () => {
+      const expected = [
+        'Manage',
+        'Complaints Reporting',
+        'Reporting',
+      ];
+      component.surveillanceToggle.click();
+      const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
+      expect(surveillanceOptions.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(surveillanceOptions.has(exp)).toBe(true);
+      });
+    });
+  });
+  describe('as ROLE_ONC_STAFF', () => {
+    beforeEach(() => {
+      login.logIn('oncstaff');
+    });
+
+    it('should have specific options under surveillance', () => {
+      const expected = [
+        'Complaints Reporting',
+        'Reporting',
+      ];
+      component.surveillanceToggle.click();
+      const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
+      expect(surveillanceOptions.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(surveillanceOptions.has(exp)).toBe(true);
+      });
+    });
+  });
+  describe('as ROLE_ADMIN', () => {
+    beforeEach(() => {
+      login.logIn('admin');
+    });
+
+    it('should have specific options under surveillance', () => {
+      const expected = [
+        'Upload',
+        'Confirm',
+        'Manage',
+        'Complaints Reporting',
+        'Reporting',
+      ];
+      component.surveillanceToggle.click();
+      const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
+      expect(surveillanceOptions.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(surveillanceOptions.has(exp)).toBe(true);
       });
     });
   });
