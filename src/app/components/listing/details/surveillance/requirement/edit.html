@@ -71,7 +71,7 @@
           <tbody>
             <tr ng-repeat="noncon in $ctrl.requirement.nonconformities track by $index">
               <td ng-class="{'removed' : noncon.criterion && noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
-              <td>{{ noncon.status.name }}</td>
+              <td>{{ noncon.nonConformityCloseDateObject ? 'Closed' : 'Open' }}</td>
               <td>{{ noncon.summary }}</td>
               <td>
                 <button class="btn btn-danger" ng-click="$ctrl.deleteNonconformity(noncon)"><i class="fa fa-trash"></i><span class="sr-only">Remove this non-conformity</span></button>
