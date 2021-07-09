@@ -10,6 +10,7 @@ class ComplaintsComponent {
       closedDate: '#closed-date',
       filter: '#data-filter',
       downloadResultsButton: '#download-results',
+      newComplaint: '#add-new-complaint',
     };
   }
 
@@ -35,24 +36,16 @@ class ComplaintsComponent {
     return $(`#${fieldName}-helper-text`).getText();
   }
 
-  getComplaintsTableHeaders() {
-    return $('table').$('thead').$$('th');
-  }
-
-  getComplaints() {
-    return $('table').$('tbody').$$('tr');
-  }
-
   get downloadResultsButton() {
     return $(this.elements.downloadResultsButton);
   }
 
-  get filter() {
-    return $(this.elements.filter);
+  addNewComplaint() {
+    return $(this.elements.newComplaint).click();
   }
 
-  getcellValue(row, col) {
-    return $(`//tbody/tr[${row}]/td[${col}]`).getText();
+  get filter() {
+    return $(this.elements.filter);
   }
 
   editComplaint(id) {

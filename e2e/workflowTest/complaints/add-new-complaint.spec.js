@@ -1,23 +1,22 @@
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import ComplaintsPage from '../../pages/surveillance/complaints/complaints.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
 
 let hooks;
 let login;
-let page;
-let complaints;
+let complaintsComponent;
+const ACB_ID_IDX = 4;
+const FIRST_ROW = 1;
 
 beforeEach(async () => {
   login = new LoginComponent();
   hooks = new Hooks();
-  page = new ComplaintsPage();
-  complaints = new ComplaintsComponent();
+  complaintsComponent = new ComplaintsComponent();
   hooks.open('#/surveillance/complaints');
   await hooks.waitForSpinnerToDisappear();
 });
 
-describe('As ROLE_ACB user', () => {
+describe('As a ROLE_ACB user', () => {
   beforeEach(() => {
     login.logIn('drummond');
   });
@@ -27,14 +26,14 @@ describe('As ROLE_ACB user', () => {
   });
 
   it('should not be able to add new complaint without required fields', () => {
-    page.addNewComplaint();
+    complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
-    complaints.saveComplaint();
-    expect(complaints.fieldError('certification-body')).toBe('ONC-ACB is required');
-    expect(complaints.fieldError('received-date')).toBe('Received Date is required');
-    expect(complaints.fieldError('complainant-type')).toBe('Complainant Type is required');
-    expect(complaints.fieldError('acb-complaint-id')).toBe('ONC-ACB Complaint ID is required');
-    expect(complaints.fieldError('summary')).toBe('Complaint Summary is required');
+    complaintsComponent.saveComplaint();
+    expect(complaintsComponent.fieldError('certification-body')).toBe('ONC-ACB is required');
+    expect(complaintsComponent.fieldError('received-date')).toBe('Received Date is required');
+    expect(complaintsComponent.fieldError('complainant-type')).toBe('Complainant Type is required');
+    expect(complaintsComponent.fieldError('acb-complaint-id')).toBe('ONC-ACB Complaint ID is required');
+    expect(complaintsComponent.fieldError('summary')).toBe('Complaint Summary is required');
   });
 
   it('should be able to add new complaint with required fields', () => {
@@ -46,13 +45,13 @@ describe('As ROLE_ACB user', () => {
       type: 'Developer',
       summary: `Test Summary - ${timestamp}`,
     };
-    page.addNewComplaint();
+    complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
-    complaints.set(fields);
-    complaints.saveComplaint();
+    complaintsComponent.set(fields);
+    complaintsComponent.saveComplaint();
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
-    complaints.filter.addValue(fields.acbId);
-    expect(complaints.getcellValue(1, 4)).toBe(fields.acbId);
+    complaintsComponent.filter.addValue(fields.acbId);
+    expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 });
