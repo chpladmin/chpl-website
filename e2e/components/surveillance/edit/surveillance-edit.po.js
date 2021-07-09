@@ -6,6 +6,7 @@ const elements = {
   edit: '//*[@ng-click="$ctrl.editSurveillance()"]',
   startDate: '#start-date',
   endDate: '#end-date',
+  nonConformityClosedDate: '#non-conformity-close-date',
   surveillanceType: '#surveillance-type',
   siteSurveilled: '#sites-surveilled',
   save: '//button[text()=" Save"]',
@@ -170,7 +171,7 @@ class SurveillanceEditComponent {
   addnonConformity (details , type) {
     this.newnonConformityButton.click();
     this.nonConformityType.selectByVisibleText(details.type);
-    this.nonConformityStatus.selectByVisibleText(details.status);
+    this.nonConformityClosedDate.setValue(details.nonConformityClosedDate);
     this.determinationDate.setValue(details.determinationDate);
     this.approvalDate.setValue(details.approvalDate);
     this.ncStartDate.setValue(details.startDate);
