@@ -97,13 +97,6 @@
         </chpl-filter>
       </chpl-filters-body>
     </chpl-filters>
-    <div class="flex-container">
-      <div class="flex-item text-right" ng-if="$ctrl.displayAdd">
-        <button class="btn btn-default" ng-click="$ctrl.displayAddComplaint()" id="add-new-complaint">
-          Add New Complaint
-        </button>
-      </div>
-    </div>
     <div class="flex-container" ng-if="$ctrl.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])">
       <div class="flex-item text-right">
         <button class="btn btn-primary" id="download-results"
@@ -118,6 +111,7 @@
     <chpl-complaints-bridge
       ng-if="$ctrl.complaints"
       complaints="$ctrl.displayedComplaints"
+      display-add="$ctrl.displayAdd"
       dispatch="::$ctrl.handleDispatch"></chpl-complaints-bridge>
   </div>
   <chpl-complaint-view-bridge

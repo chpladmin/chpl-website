@@ -3,8 +3,6 @@ const SurveillanceComplaintsComponent = {
   bindings: {
     complaintListType: '@?',
     displayAdd: '<',
-    displayDelete: '<',
-    displayEdit: '<',
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
@@ -69,6 +67,10 @@ const SurveillanceComplaintsComponent = {
 
     handleDispatch(action, payload) {
       switch (action) {
+        case 'add':
+          this.selectComplaint({});
+          this.$scope.$digest();
+          break;
         case 'cancel':
         case 'close':
           this.isEditing = false;
@@ -125,10 +127,6 @@ const SurveillanceComplaintsComponent = {
           .then(handleResponse)
           .catch(handleError);
       }
-    }
-
-    displayAddComplaint() {
-      this.selectComplaint({});
     }
 
     refreshComplaints() {

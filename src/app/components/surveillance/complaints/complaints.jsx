@@ -8,12 +8,13 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TablePagination,
   TableRow,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
+import { arrayOf, bool, func } from 'prop-types';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
@@ -107,6 +108,21 @@ function ChplComplaints(props) {
             orderBy="receivedDate"
             order="desc"
           />
+          { props.displayAdd &&
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={headers.length}>
+                  <Button
+                    onClick={() => handleAction('add')}
+                    color="primary"
+                    variant="outlined"
+                  >
+                    Add New Complaint
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          }
           <TableBody>
             {complaints
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -177,5 +193,10 @@ export default ChplComplaints;
 
 ChplComplaints.propTypes = {
   complaints: arrayOf(complaintPropType).isRequired,
+  displayAdd: bool,
   dispatch: func.isRequired,
 };
+
+ChplComplaints.defaultProps = {
+  displayAdd: false,
+}
