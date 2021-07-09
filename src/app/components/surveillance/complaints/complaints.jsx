@@ -39,10 +39,10 @@ const useStyles = makeStyles(() => ({
     marginLeft: '4px',
   },
   statusIndicatorOpen: {
-    color: 'green',
+    color: '#66926d',
   },
   statusIndicatorClosed: {
-    color: 'black',
+    color: 'rgba(0, 0, 0, 0.87)',
   },
 }));
 
