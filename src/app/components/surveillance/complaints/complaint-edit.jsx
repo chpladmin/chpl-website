@@ -318,9 +318,10 @@ function ChplComplaintEdit(props) {
         <CardContent>
           { complaint.id
             ? (
-             
               <Typography variant="h5">
-                ONC-ACB:{complaint.certificationBody?.name}
+                ONC-ACB:
+                {' '}
+                {complaint.certificationBody.name}
               </Typography>
             )
             : (
