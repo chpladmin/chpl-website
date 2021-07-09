@@ -2,33 +2,32 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
-  Chip,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TablePagination,
   TableRow,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
+import { arrayOf, bool, func } from 'prop-types';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 const useStyles = makeStyles(() => ({
   container: {
     maxHeight: '64vh',
   },
-
   deleteButton: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
@@ -36,11 +35,15 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#853544',
     },
   },
-
   iconSpacing: {
     marginLeft: '4px',
   },
-
+  statusIndicatorOpen: {
+    color: 'green',
+  },
+  statusIndicatorClosed: {
+    color: 'black',
+  },
 }));
 
 const headers = [
@@ -50,9 +53,7 @@ const headers = [
   { property: 'acbComplaintId', text: 'ONC-ACB Complaint ID', sortable: true },
   { property: 'oncComplaintId', text: 'ONC Complaint ID', sortable: true },
   { property: 'complainantTypeName', text: 'Complainant Type', sortable: true },
-  {
-    property: 'actions', text: 'Actions', invisible: true, sortable: false,
-  },
+  { property: 'actions', text: 'Actions', invisible: true, sortable: false },
 ];
 
 const sortComparator = (property) => {
@@ -115,7 +116,6 @@ function ChplComplaints(props) {
       <TableContainer className={classes.container} component={Paper}>
         <Table
           stickyHeader
-          size="large"
           aria-label="Complaints table"
         >
           <ChplSortableHeaders
@@ -124,6 +124,23 @@ function ChplComplaints(props) {
             orderBy="receivedDate"
             order="desc"
           />
+          { props.displayAdd
+            && (
+              <TableFooter>
+                <TableRow>
+                  <TableCell colSpan={headers.length - 1} />
+                  <TableCell>
+                    <Button
+                      onClick={() => handleAction('add')}
+                      color="primary"
+                      variant="outlined"
+                    >
+                      Add New Complaint
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            )}
           <TableBody>
             {complaints
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -131,10 +148,12 @@ function ChplComplaints(props) {
                 <TableRow key={complaint.id}>
                   <TableCell>{complaint.acbName}</TableCell>
                   <TableCell>
-                    <Typography variant="subtitle1" 
-                    color={complaint.complaintStatusTypeName === 'Open' ? 'primary' : 'default'}
-                    >{complaint.complaintStatusTypeName}
-                    </Typography> 
+                    <Typography
+                      variant="subtitle1"
+                      className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
+                    >
+                      {complaint.complaintStatusTypeName}
+                    </Typography>
                   </TableCell>
                   <TableCell>{complaint.receivedDate}</TableCell>
                   <TableCell>{complaint.acbComplaintId}</TableCell>
@@ -145,33 +164,39 @@ function ChplComplaints(props) {
                       color="primary"
                     >
                       { hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF'])
-                        && (
-                        <Button
-                          onClick={() => handleAction('view', complaint)}
-                        >
-                          View <VisibilityIcon className={classes.iconSpacing}/>
-                        </Button>
-                        )}
+                       && (
+                         <Button
+                           onClick={() => handleAction('view', complaint)}
+                         >
+                           View
+                           {' '}
+                           <VisibilityIcon className={classes.iconSpacing} />
+                         </Button>
+                       )}
                       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                        && (
-                        <Button
-                          onClick={() => handleAction('edit', complaint)}
-                          variant="contained"
-                          color="primary"
-                         > 
-                         Edit <EditOutlinedIcon className={classes.iconSpacing}/>
-                        </Button>
-                        )}
+                       && (
+                         <Button
+                           onClick={() => handleAction('edit', complaint)}
+                           variant="contained"
+                           color="primary"
+                         >
+                           Edit
+                           {' '}
+                           <EditOutlinedIcon className={classes.iconSpacing} />
+                         </Button>
+                       )}
                       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                        && (
-                        <Button
-                          onClick={() => handleAction('delete', complaint)}
-                          variant="contained"
-                          className={classes.deleteButton}
-                        >
-                          Delete <DeleteOutlinedIcon className={classes.iconSpacing} />
-                        </Button>
-                        )}
+                       && (
+                         <Button
+                           onClick={() => handleAction('delete', complaint)}
+                           variant="contained"
+                           className={classes.deleteButton}
+                         >
+                           Delete
+                           {' '}
+                           <DeleteOutlinedIcon className={classes.iconSpacing} />
+                         </Button>
+                       )}
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>
@@ -184,7 +209,7 @@ function ChplComplaints(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination 
+      <TablePagination
         rowsPerPageOptions={[5, 10, 25, 50, { value: complaints.length, label: 'All' }]}
         component="div"
         count={complaints.length}
@@ -201,5 +226,10 @@ export default ChplComplaints;
 
 ChplComplaints.propTypes = {
   complaints: arrayOf(complaintPropType).isRequired,
+  displayAdd: bool,
   dispatch: func.isRequired,
+};
+
+ChplComplaints.defaultProps = {
+  displayAdd: false,
 };
