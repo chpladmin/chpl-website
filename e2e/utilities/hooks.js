@@ -1,3 +1,4 @@
+const urls = require('../config/urls');
 class Hooks {
   constructor () { }
 
@@ -13,6 +14,13 @@ class Hooks {
 
   waitForSpinnerToAppear () {
     browser.waitUntil( () => $('#loading-bar-spinner').isDisplayed());
+  }
+
+  getFlagState(flagName){
+    browser.url(browser.options.baseUrl + urls.ff4jURL);
+    let jsonObj= JSON.parse($('body').getText())
+    const foundFlag = jsonObj.find(flag => flag.key === flagName);
+    return foundFlag?.active;
   }
 }
 
