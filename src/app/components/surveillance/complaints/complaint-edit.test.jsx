@@ -28,6 +28,11 @@ const mock = {
     { id: 2, name: 'AAA' },
     { id: 1, name: 'NNN' },
   ],
+  certificationCriteria: [
+    { id: 1, number: '1', title: '1 title', certificationEdition: '2015' },
+    { id: 2, number: '2', title: '2 title', certificationEdition: '2015' },
+    { id: 3, number: '3', title: '3 title', certificationEdition: '2015' },
+  ],
   complainantTypes: [
     { id: 3, name: 'ZZZ' },
     { id: 2, name: 'AAA' },
@@ -51,7 +56,7 @@ describe('the ChplComplaintEdit component', () => {
           complaint={{}}
           certificationBodies={mock.certificationBodies}
           complainantTypes={mock.complainantTypes}
-          criteria={[]}
+          criteria={mock.certificationCriteria}
           listings={[]}
           dispatch={mock.hoc.dispatch}
         />,
@@ -80,7 +85,7 @@ describe('the ChplComplaintEdit component', () => {
       });
     });
 
-    describe('when acting', () => {
+    describe('when acting from the action bar', () => {
       it('should allow cancellation', async () => {
         userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
 
@@ -119,6 +124,23 @@ describe('the ChplComplaintEdit component', () => {
 
         await waitFor(() => {
           expect(screen.queryByText('Closed Date must be after Received Date')).toBeInTheDocument();
+        });
+      });
+    });
+
+    describe('when adding and removing things', () => {
+      xit('should allow adding/removing of criteria', async () => {
+        userEvent.click(screen.getByRole('button', { name: /Add Associated Criterion/i }));
+        userEvent.click(screen.getByRole('option', { name: /1: 1 title/i }));
+
+        await waitFor(() => {
+          expect(screen.queryByText('1: 1 title')).toBeInTheDocument();
+        });
+
+        userEvent.click(screen.getByRole('button', { name: /1: 1 title/i }));
+
+        await waitFor(() => {
+          expect(screen.queryByText('1: 1 title')).not.toBeInTheDocument();
         });
       });
     });
