@@ -2,7 +2,9 @@ import LoginComponent from '../login/login.po';
 import NavigationComponent from './navigation.po';
 import Hooks from '../../utilities/hooks';
 
-let component, hooks, login;
+let component;
+let hooks;
+let login;
 
 beforeEach(async () => {
   component = new NavigationComponent();
@@ -16,10 +18,9 @@ describe('when logged in', () => {
     login.logOut();
   });
 
-  describe('as an ACB', () => {
+  describe('as ROLE_ACB', () => {
     beforeEach(() => {
       login.logIn('acb');
-      login.logoutButton.waitForDisplayed();
     });
 
     it('should have specific reports', () => {
@@ -31,18 +32,17 @@ describe('when logged in', () => {
         'Versions',
       ];
       component.reportsToggle.click();
-      let reports = new Set(component.reports.map(item => item.getText()));
+      const reports = new Set(component.reports.map((item) => item.getText()));
       expect(reports.size).toBe(expected.length);
-      expected.forEach(exp => {
-        expect(reports.has(exp)).toBe(true, 'did not find expected report: "' + exp + '"');
+      expected.forEach((exp) => {
+        expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
       });
     });
   });
 
-  describe('as ONC', () => {
+  describe('as ROLE_ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-      login.logoutButton.waitForDisplayed();
     });
 
     it('should have specific reports', () => {
@@ -59,10 +59,62 @@ describe('when logged in', () => {
         'Versions',
       ];
       component.reportsToggle.click();
-      let reports = new Set(component.reports.map(item => item.getText()));
+      const reports = new Set(component.reports.map((item) => item.getText()));
       expect(reports.size).toBe(expected.length);
-      expected.forEach(exp => {
-        expect(reports.has(exp)).toBe(true, 'did not find expected report: "' + exp + '"');
+      expected.forEach((exp) => {
+        expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
+      });
+    });
+    it('should have specific options under surveillance', () => {
+      const expected = [
+        'Manage',
+        'Complaints Reporting',
+        'Reporting',
+      ];
+      component.surveillanceToggle.click();
+      const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
+      expect(surveillanceOptions.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(surveillanceOptions.has(exp)).toBe(true);
+      });
+    });
+  });
+  describe('as ROLE_ONC_STAFF', () => {
+    beforeEach(() => {
+      login.logIn('oncstaff');
+    });
+
+    it('should have specific options under surveillance', () => {
+      const expected = [
+        'Complaints Reporting',
+        'Reporting',
+      ];
+      component.surveillanceToggle.click();
+      const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
+      expect(surveillanceOptions.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(surveillanceOptions.has(exp)).toBe(true);
+      });
+    });
+  });
+  describe('as ROLE_ADMIN', () => {
+    beforeEach(() => {
+      login.logIn('admin');
+    });
+
+    it('should have specific options under surveillance', () => {
+      const expected = [
+        'Upload',
+        'Confirm',
+        'Manage',
+        'Complaints Reporting',
+        'Reporting',
+      ];
+      component.surveillanceToggle.click();
+      const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
+      expect(surveillanceOptions.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(surveillanceOptions.has(exp)).toBe(true);
       });
     });
   });

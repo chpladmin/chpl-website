@@ -1,15 +1,19 @@
 (() => {
-  'use strict';
-
   describe('the Listing Details Edit component', () => {
-    var $compile, $log, Mock, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let Mock;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {};
+    const mock = {};
     mock.listing = {
       certificationResults: [],
-      certificationEdition: {name: '2015'},
+      certificationEdition: { name: '2015' },
       certificationEvents: [
-        { eventDate: 1498622400000, certificationStatusId: 1, status: { name: 'Active' }},
+        { eventDate: 1498622400000, certificationStatusId: 1, status: { name: 'Active' } },
       ],
       certifyingBody: [],
       cqmResults: [],
@@ -19,27 +23,28 @@
       practiceType: [],
       product: { productId: 1 },
       qmsStandards: [
-        {id: 1, qmsStandardName: 'name1'},
-        {id: null, qmsStandardName: 'nullname'},
+        { id: 1, qmsStandardName: 'name1' },
+        { id: null, qmsStandardName: 'nullname' },
       ],
       targetedUsers: [],
     };
-    mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
+    mock.relatedListings = [{ id: 1, edition: '2015' }, { id: 2, edition: '2014' }];
     mock.resources = {
-      accessibilityStandards: {data: []},
-      qmsStandards: {data: []},
-      targetedUsers: {data: []},
-      testStandards: {data: []},
+      accessibilityStandards: { data: [] },
+      qmsStandards: { data: [] },
+      targetedUsers: { data: [] },
+      testStandards: { data: [] },
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.mock', 'chpl.components', $provide => {
+      angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
         $provide.factory('aiSedDirective', () => ({}));
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
-          $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
-          return $delegate;
-        });
+        $provide.factory('chplCriteriaBridgeDirective', () => ({}));
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getRelatedListings: jasmine.createSpy('getRelatedListings'),
+          getSurveillanceLookups: jasmine.createSpy('getSurveillanceLookups'),
+        }));
       });
 
       inject((_$compile_, _$log_, $q, $rootScope, _Mock_, _networkService_) => {
@@ -51,8 +56,8 @@
         networkService.getSurveillanceLookups.and.returnValue($q.when({}));
 
         scope = $rootScope.$new();
-        scope.listing = Mock.fullListings[1];
-        scope.listing.sed = {testTasks: [], ucdProcesses: []};
+        [, scope.listing] = Mock.fullListings;
+        scope.listing.sed = { testTasks: [], ucdProcesses: [] };
         scope.resources = mock.resources;
 
         el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
@@ -66,7 +71,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -128,9 +133,9 @@
         });
 
         it('should not load family if the listing is 2014', () => {
-          var callCount = networkService.getRelatedListings.calls.count();
-          var cp = angular.copy(mock.listing);
-          cp.certificationEdition = {name: '2014'};
+          const callCount = networkService.getRelatedListings.calls.count();
+          const cp = angular.copy(mock.listing);
+          cp.certificationEdition = { name: '2014' };
           scope.listing = cp;
 
           el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
@@ -142,9 +147,9 @@
         });
 
         it('should not load family if the product has no productId', () => {
-          var callCount = networkService.getRelatedListings.calls.count();
-          var cp = angular.copy(mock.listing);
-          cp.product = {productId: undefined};
+          const callCount = networkService.getRelatedListings.calls.count();
+          const cp = angular.copy(mock.listing);
+          cp.product = { productId: undefined };
           scope.listing = cp;
 
           el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');
@@ -156,8 +161,8 @@
         });
 
         it('should not load family if the product does not exist', () => {
-          var callCount = networkService.getRelatedListings.calls.count();
-          var cp = angular.copy(mock.listing);
+          const callCount = networkService.getRelatedListings.calls.count();
+          const cp = angular.copy(mock.listing);
           cp.product = undefined;
           scope.listing = cp;
 

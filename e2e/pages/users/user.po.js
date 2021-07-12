@@ -1,52 +1,58 @@
-const userElements = {
-  users: '#users-toggle',
-  usermanagement: '*=User Management',
-  usertitle: '#user-title',
-  userPhoneNumber: '#user-phone-number',
-  lockedCheckbox: '#is-locked',
-  enabledCheckbox: '#is-enabled',
-  pwChangeCheckbox: '#is-pwchange',
-};
-
+/* eslint-disable class-methods-use-this */
 class UsersPage {
-  constructor () { }
-
-  get usersButton () {
-    return $(userElements.users);
+  constructor() {
+    this.elements = {
+      users: '#users-toggle',
+      usermanagement: '*=User Management',
+      title: '#title',
+      phoneNumber: '#phone-number',
+      lockedCheckbox: '#is-locked',
+      enabledCheckbox: '#is-enabled',
+      pwChangeCheckbox: '#is-pwchange',
+    };
   }
 
-  get userManagementButton () {
-    return $(userElements.usermanagement);
+  get usersButton() {
+    return $(this.elements.users);
   }
 
-  get userTitle () {
-    return $(userElements.usertitle);
+  get userManagementButton() {
+    return $(this.elements.usermanagement);
   }
 
-  get userPhoneNumber () {
-    return $(userElements.userPhoneNumber);
+  get title() {
+    return $(this.elements.title);
   }
 
-  get lockedCheckbox () {
-    return $(userElements.lockedCheckbox);
+  get phoneNumber() {
+    return $(this.elements.phoneNumber);
   }
 
-  get enabledCheckbox () {
-    return $(userElements.enabledCheckbox);
+  get lockedCheckbox() {
+    return $(this.elements.lockedCheckbox);
   }
 
-  get pwChangeCheckbox () {
-    return $(userElements.pwChangeCheckbox);
+  get enabledCheckbox() {
+    return $(this.elements.enabledCheckbox);
   }
 
-  editUser (name) {
-    $('//span[text() =" Edit ' + name + '"]/parent::button').click();
+  get pwChangeCheckbox() {
+    return $(this.elements.pwChangeCheckbox);
   }
 
-  userInformation (name) {
-    return $('//h2[text()="' + name + '"]/parent::div/parent::div/following-sibling::div');
+  editUser(fullName) {
+    $(`button[title="Edit ${fullName}"]`).scrollIntoView({ block: 'center', inline: 'center' });
+    $(`button[title="Edit ${fullName}"]`).click();
   }
 
+  userInformation(fullName) {
+    return $(`div[title="${fullName} Information"]`);
+  }
+
+  impersonateUser(fullName) {
+    $(`button[title="Impersonate ${fullName}"]`).scrollIntoView({ block: 'center', inline: 'center' });
+    $(`button[title="Impersonate ${fullName}"]`).click();
+  }
 }
 
 export default UsersPage;

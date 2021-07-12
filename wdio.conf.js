@@ -308,8 +308,10 @@ exports.config = {
   /**
    * Function to be executed after a test (in Mocha/Jasmine).
    */
-  // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-  // },
+  //afterTest: function(test, context, { error, result, duration, passed, retries }) {
+  afterTest: function () {
+    console.log(browser.getLogs('browser')); //Adding this to capture console logs for some of the failing AQA tests
+  },
   /**
    * Hook that gets executed after the suite has ended
    * @param {Object} suite suite details

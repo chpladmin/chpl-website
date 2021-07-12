@@ -1,5 +1,52 @@
 # Release Notes
 
+## Version 11.16.0
+_12 July 2021_
+
+### Features
+* Listing Report filter by ONC-ACB changed to use acbId
+* Create visible display of non-production environments
+* Show "Retired" filters when filtering on Practice Type
+
+### Bug Fixes
+* Restore "Confirmation" screen on Change Request submission
+* Stop showing Product Contact information on Merge
+
+---
+
+## Version 11.15.0
+_28 June 2021_
+
+### Features
+* Generate Surveillance Activity Report as Excel spreadsheet
+* Make Phone Number not required on user edit
+* Add Login page to use when user navigates to page without being logged in
+* Direct all page load errors to custom 404 page
+* Provide custom 404 page
+
+### Flagged Features
+* Use new UI for Criteria View/Edit
+* Enable view/edit of Optional Standards
+
+---
+
+## Version 11.14.0
+_2 June 2021_
+
+### Features
+* Update README documentation
+* Add developer column to version activity report
+
+### Bug Fixes
+* Require name when saving filters
+* Show G1/G2 measure changes in Listing history component
+* Filter Listings by Compliance correctly when "Matching All" is selected
+
+### User Interface Updates
+* Display Listing History in updated style
+
+---
+
 ## Version 11.13.0
 _17 May 2021_
 

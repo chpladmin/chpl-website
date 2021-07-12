@@ -1,19 +1,11 @@
-<div class="row" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+<div class="row">
   <div class="col-md-12">
     <h2>Upload</h2>
     <chpl-upload-listings ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-listings>
     <chpl-upload-listings-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])" feature-flag="enhanced-upload"></chpl-upload-listings-bridge>
-    <chpl-upload-surveillance-bridge></chpl-upload-surveillance-bridge>
+    <chpl-upload-surveillance-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-surveillance-bridge>
     <chpl-upload-meaningful-use-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-meaningful-use-bridge>
     <chpl-upload-api-documentation ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-api-documentation>
-    <chpl-upload-real-world-testing ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && $ctrl.isOn('rwt-enabled')"></chpl-upload-real-world-testing>
-  </div>
-</div>
-<div class="row" ng-if="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
-  <div class="col-md-6 col-md-offset-3 jumbotron">
-    <chpl-login form-class=""
-                p-class="bg-success lead"
-                p-class-fail="bg-danger lead">
-    </chpl-login>
+    <chpl-upload-real-world-testing ng-if="$ctrl.isOn('rwt-enabled')"></chpl-upload-real-world-testing>
   </div>
 </div>

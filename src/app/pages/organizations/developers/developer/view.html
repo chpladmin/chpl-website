@@ -1,15 +1,15 @@
 <div ui-view="view">
-  <div class="row" ng-if="$ctrl.action === 'confirmation'">
-    <div class="col-md-10 col-md-offset-1">
-      <chpl-confirmation take-action="$ctrl.closeConfirmation()" text="{{ $ctrl.confirmationText }}"></chpl-confirmation>
-    </div>
-  </div>
-  <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
+  <chpl-confirmation-bridge
+    ng-if="$ctrl.action === 'confirmation'"
+    dispatch="::$ctrl.closeConfirmation"
+    text="$ctrl.confirmationText"
+    ></chpl-confirmation-bridge>
+  <div class="row">
     <div class="col-sm-12">
       <h1>Developer Information</h1>
     </div>
   </div>
-  <div class="row" ng-if="!$ctrl.action || $ctrl.action !== 'confirmation'">
+  <div class="row">
     <div class="col-md-4">
       <ul ng-if="$ctrl.errorMessages && $ctrl.errorMessages.length > 0" class="bg-danger">
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
@@ -28,11 +28,10 @@
             <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
           </div>
           <div class="panel-body">
-            <chpl-users users="$ctrl.users"
-                        roles="$ctrl.roles"
-                        column-count="1"
-                        take-action="$ctrl.takeUserAction(action, data)"
-                        ></chpl-users>
+            <chpl-users-bridge users="$ctrl.users"
+                               roles="$ctrl.roles"
+                               take-action="::$ctrl.takeUserAction"
+                               ></chpl-users-bridge>
           </div>
         </div>
       </div>
