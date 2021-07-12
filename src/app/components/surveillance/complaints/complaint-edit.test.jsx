@@ -31,7 +31,7 @@ const mock = {
   complainantTypes: [
     { id: 3, name: 'ZZZ' },
     { id: 2, name: 'AAA' },
-    { id: 1, name: 'NNN' },
+    { id: 1, name: 'Complainant Type - Other' },
   ],
 };
 
@@ -75,7 +75,7 @@ describe('the ChplComplaintEdit component', () => {
       await waitFor(() => {
         const options = within(screen.getByRole('listbox')).getAllByRole('option');
         expect(within(options[0]).getByText('AAA')).toBeInTheDocument();
-        expect(within(options[1]).getByText('NNN')).toBeInTheDocument();
+        expect(within(options[1]).getByText('Complainant Type - Other')).toBeInTheDocument();
         expect(within(options[2]).getByText('ZZZ')).toBeInTheDocument();
       });
     });
@@ -99,6 +99,26 @@ describe('the ChplComplaintEdit component', () => {
           expect(screen.queryByText('Complainant Type is required')).toBeInTheDocument();
           expect(screen.queryByText('Complainant Type - Other Description is required')).not.toBeInTheDocument();
           expect(screen.queryByText('Complaint Summary is required')).toBeInTheDocument();
+        });
+      });
+
+      it('should not allow the closed date to be in the future', async () => {
+        userEvent.type(screen.getByLabelText(/Received Date/i), '2020-03-15');
+        userEvent.type(screen.getByLabelText(/Closed Date/i), '2028-03-16');
+        userEvent.click(screen.getByRole('button', { name: /Save/i }));
+
+        await waitFor(() => {
+          expect(screen.queryByText('Closed Date must not be in the future')).toBeInTheDocument();
+        });
+      });
+
+      it('should require the closed date to be after the received date', async () => {
+        userEvent.type(screen.getByLabelText(/Received Date/i), '2020-03-15');
+        userEvent.type(screen.getByLabelText(/Closed Date/i), '2020-03-11');
+        userEvent.click(screen.getByRole('button', { name: /Save/i }));
+
+        await waitFor(() => {
+          expect(screen.queryByText('Closed Date must be after Received Date')).toBeInTheDocument();
         });
       });
     });
