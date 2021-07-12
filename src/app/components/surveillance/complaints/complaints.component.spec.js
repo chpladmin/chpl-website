@@ -254,13 +254,6 @@
         });
       });
 
-      it('should allow for adding a new complaint', () => {
-        ctrl.complaint = { id: 5 };
-        ctrl.displayAddComplaint();
-        expect(ctrl.complaint).toEqual({});
-        expect(ctrl.isEditing).toEqual(true);
-      });
-
       it('should be able to fetch all relevant complaints', () => {
         ctrl.complaints = [];
         ctrl.refreshComplaints();
