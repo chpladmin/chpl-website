@@ -68,7 +68,6 @@ describe('when confirming surveillance, ACB', () => {
     let nonConformitydetails = {
       type: '170.315 (g)(10): Standardized API for Patient and Population Services',
       determinationDate: '01/01/2020',
-      nonConformityClosedDate: '',
       summary: 'test summary',
       findings: 'test findings',
       approvalDate: '01/01/2020',

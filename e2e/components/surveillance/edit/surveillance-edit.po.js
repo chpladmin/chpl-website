@@ -156,6 +156,10 @@ class SurveillanceEditComponent {
     return $(elements.removeNonConformity);
   }
 
+  get nonConformityClosedDate () {
+    return $(elements.nonConformityClosedDate);
+  }
+
   requirementTableRows () {
     return $(elements.requirementTable).$('tbody').$$('tr');
   }
