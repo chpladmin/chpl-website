@@ -16,15 +16,18 @@ import {
   Typography,
 } from '@material-ui/core';
 
+
+import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+
+
 function Elements() {
   return (
     <Container>
       {/* Typography Containers */}  
       <Container>
-         <Container>
           <Typography variant="h5">Typography Hiearchy:</Typography>
           <br />
-        </Container>
           <Card>
             <CardContent>
               <Grid container spacing={4}>
@@ -128,6 +131,101 @@ function Elements() {
           <br />
         </Container>
       {/* End of Typography Containers */}
+      {/* Buttons Variations*/}
+        <Container>
+          <Typography variant="h5">
+            CHPL Buttons and Where To Use Them:
+          </Typography>
+          <br />
+        </Container>
+        <Container>
+          <Card>
+            <CardContent>
+              <Grid container spacing={4}>
+                <Grid item xs="6">
+                  <Button color="primary" variant="contained">
+                    Primary button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                  <Grid item xs="10">
+                    <Typography variant="body1">
+                      Primary Button should be used on saved buttons or on the
+                      main action of the given page object. Be sure to use the
+                      varient <i>contained</i>.
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs="6">
+                  <Button color="secondary" variant="contained">
+                    Secondary Button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                  <Grid item xs="10">
+                    <Typography variant="body1">
+                      Secondary Button should be used on filters, selecting
+                      listings, uploads and more! Think of this button as a
+                      cache all for all buttons. Be sure to use the varient{' '}
+                      <i>contained</i> here.
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs="6">
+                  <Button color="default" variant="contained">
+                    Default Button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                  <Grid item xs="10">
+                    <Typography variant="body1">
+                      Default Button should be used on cancelling a certian
+                      process/form. Be sure to use the varient
+                      <i> contained</i>.
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs="6">
+                  <Button variant="contained" disabled>
+                    disabled Button
+                  </Button>
+                  <Grid item xs="10">
+                    <Typography variant="body1">
+                      Disabled button should be shown when an action can not be
+                      completed until a user makes a seperate action. You can
+                      use the <i>disabled</i> on any button and styling will
+                      change
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs="6">
+                  <Button variant="contained">
+                    Delete Button
+                    <DeleteOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                  <Grid item xs="10">
+                    <Typography variant="body1">
+                      Delete button should be used only when there is an action
+                      to delete a proccess/item. Be sure to use the varient{' '}
+                      <i>contained</i>.
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Container>
+      {/* End Button Variations*/}  
+      <br/>
       <Container>
         <Container>
           <Typography variant="h5">Tables:</Typography>
