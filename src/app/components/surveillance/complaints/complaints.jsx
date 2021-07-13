@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const headers = [
   { property: 'acbName', text: 'ONC-ACB', sortable: true },
   { property: 'complaintStatusTypeName', text: 'Status', sortable: true },
@@ -34,9 +35,7 @@ const headers = [
   { property: 'acbComplaintId', text: 'ONC-ACB Complaint ID', sortable: true },
   { property: 'oncComplaintId', text: 'ONC Complaint ID', sortable: true },
   { property: 'complainantTypeName', text: 'Complainant Type', sortable: true },
-  {
-    property: 'actions', text: 'Actions', invisible: true, sortable: false,
-  },
+  { property: 'actions', text: 'Actions', invisible: true, sortable: false },
 ];
 
 const sortComparator = (property) => {
@@ -108,7 +107,8 @@ function ChplComplaints(props) {
             orderBy="receivedDate"
             order="desc"
           />
-          { props.displayAdd &&
+          { props.displayAdd // eslint-disable-line react/destructuring-assignment
+            && (
             <TableFooter>
               <TableRow>
                 <TableCell colSpan={headers.length}>
@@ -122,7 +122,7 @@ function ChplComplaints(props) {
                 </TableCell>
               </TableRow>
             </TableFooter>
-          }
+            )}
           <TableBody>
             {complaints
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -199,4 +199,4 @@ ChplComplaints.propTypes = {
 
 ChplComplaints.defaultProps = {
   displayAdd: false,
-}
+};

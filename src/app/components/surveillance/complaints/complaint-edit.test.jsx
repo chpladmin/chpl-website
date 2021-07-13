@@ -19,13 +19,14 @@ const utilServiceMock = {
   sortCertActual: jest.fn(() => 0),
 };
 
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const mock = {
   hoc: {
     dispatch: jest.fn(),
   },
   complaint: {
     criteria: [
-      {certificationCriterion: { id: 4, number: '4', title: '4 title criterion', certificationEdition: '2015' }},
+      { certificationCriterion: { id: 4, number: '4', title: '4 title criterion', certificationEdition: '2015' } },
     ],
   },
   certificationBodies: [
