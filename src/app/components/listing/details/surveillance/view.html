@@ -4,9 +4,7 @@
   </div>
   <div ng-repeat="surv in $ctrl.certifiedProduct.surveillance | orderBy: 'friendlyId'">
     <div class="pull-right">
-      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails
-        ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC'
-          }}</span></a>
+      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a>
       <button class="btn btn-sm btn-ai-success" ng-click="$ctrl.editSurveillance(surv)" ng-if="$ctrl.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
     </div>
     <p><strong>{{ $ctrl.getTitle(surv) }}</strong></p>
@@ -31,17 +29,14 @@
           </tr>
           <tr>
             <th scope="row"><a href uib-tooltip="The type of surveillance conducted (either randomized or reactive). ONC-ACBs are required to randomly survey a minimum of 2% of all the Health IT modules to which they have issued an active certification." tooltip-trigger="'mouseenter focus click'">Surveillance Type</a></th>
-            <td>{{ surv.type.name }}<span ng-if="surv.type.name === 'Randomized'"> ({{ surv.randomizedSitesUsed }}
-                site<span ng-if="surv.randomizedSitesUsed !== 1">s</span> used in surveillance)</span></td>
+            <td>{{ surv.type.name }}<span ng-if="surv.type.name === 'Randomized'"> ({{ surv.randomizedSitesUsed }} site<span ng-if="surv.randomizedSitesUsed !== 1">s</span> used in surveillance)</span></td>
           </tr>
           <tr>
-            <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a transparency or disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="'mouseenter focus click'">Certification Criteria and Program Requirements
-                Surveilled</a></th>
+            <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a transparency or disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="'mouseenter focus click'">Certification Criteria and Program Requirements Surveilled</a></th>
             <td>
               <span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">
                 {{ req.type.name }}:
-                <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ?
-                  'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title }}</span>
+                <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title }}</span>
                 <span ng-if="!req.criterion">{{ req.requirement }}</span><br />
               </span>
             </td>
@@ -62,18 +57,15 @@
       </table>
       <div ng-repeat="req in surv.requirements | orderBy:$ctrl.sortRequirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
         <div ng-repeat="noncon in req.nonconformities">
-          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) :
-              req.requirement }}</span></a>
+          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</span></a>
           <p>Non-Conformity related to
-            <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ?
-              'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
+            <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
             <span ng-if="!req.criterion">{{ req.requirement }} </span>
             Details
           </p>
           <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to
-              <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ?
-                'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
+              <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
               <span ng-if="!req.criterion">{{ req.requirement }} </span>
               Dates
             </p>
@@ -83,7 +75,6 @@
                   <th scope="col">Data type</th>
                   <th scope="col">Data value</th>
                 </tr>
-
               </thead>
               <thead>
                 <tr>
@@ -97,15 +88,13 @@
               </thead>
               <tbody>
                 <tr>
-                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination | date : 'mediumDate' : 'UTC' }}
-                  </td>
+                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.dateOfDetermination">N/A</td>
                   <td ng-if="noncon.capApprovalDate">{{ noncon.capApprovalDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.capApprovalDate">N/A</td>
                   <td ng-if="noncon.capStartDate">{{ noncon.capStartDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.capStartDate">N/A</td>
-                  <td ng-if="noncon.capMustCompleteDate">{{ noncon.capMustCompleteDate | date : 'mediumDate' : 'UTC' }}
-                  </td>
+                  <td ng-if="noncon.capMustCompleteDate">{{ noncon.capMustCompleteDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.capMustCompleteDate">N/A</td>
                   <td ng-if="noncon.capEndDate">{{ noncon.capEndDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.capEndDate">N/A</td>
@@ -115,8 +104,7 @@
               </tbody>
             </table>
             <p>Non-Conformity related to
-              <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ?
-                'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
+              <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
               <span ng-if="!req.criterion">{{ req.requirement }} </span>
               Description
             </p>
@@ -130,9 +118,7 @@
               <tbody>
                 <tr>
                   <th scope="row"><a href uib-tooltip="For non-conformities related to specific regulatory references (e.g. certified capabilities, transparency or disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l). If the non-conformity type is designated as ‘Other Non-Conformity’, then the associated non-conformity does not have a relevant regulatory reference." tooltip-trigger="'mouseenter focus click'">Non-Conformity Type</a></th>
-                  <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed
-                    ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) :
-                    noncon.nonconformityType }}</td>
+                  <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
                 </tr>
                 <tr ng-if="surv.type.name === 'Randomized'">
                   <th scope="row"><a href uib-tooltip="Pass rates only apply to non-conformities found as a result of random surveillance. The numerator for the pass rate is the number of sites for each criterion that passed randomized surveillance for the Health IT module being evaluated. The denominator is the total number of sites for which randomized surveillance was conducted on the Health IT module." tooltip-trigger="'mouseenter focus click'">Pass Rate</a></th>
@@ -157,8 +143,7 @@
               </tbody>
             </table>
             <div ng-if="noncon.documents && noncon.documents.length > 0">
-              <p>Non-Conformity related to {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) :
-                req.requirement }} Supporting Documentation</p>
+              <p>Non-Conformity related to {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }} Supporting Documentation</p>
               <ul>
                 <li ng-repeat="doc in noncon.documents">
                   {{ doc.fileName }}
