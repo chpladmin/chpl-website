@@ -91,7 +91,7 @@ function ChplSurveillanceView(props) {
             <TableRow>
               <TableCell component="th" scope="row">
                 Surveillance Type
-                <ChplTooltip title="The type of surveillance conducted (either randomized or reactive). ONC-ACBs are required to randomly survey a minimum of 2% of all the Health IT modules to which they have issued an active certification.">
+                <ChplTooltip title="The type of surveillance conducted (either randomized or reactive).">
                   <InfoOutlinedIcon
                     className={classes.iconSpacing}
                   />
