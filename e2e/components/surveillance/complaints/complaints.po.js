@@ -10,7 +10,7 @@ class ComplaintsComponent {
       closedDate: '#closed-date',
       filter: '#data-filter',
       downloadResultsButton: '#download-results',
-      newComplaint: '#add-new-complaint',
+      newComplaint: '//*[text()="Add New Complaint"]',
     };
   }
 
@@ -41,7 +41,7 @@ class ComplaintsComponent {
   }
 
   addNewComplaint() {
-    return $(this.elements.newComplaint).click();
+    return $(this.elements.newComplaint).scrollAndClick();
   }
 
   get filter() {
