@@ -294,7 +294,7 @@ export default class NetworkService {
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,openDirectReviewNonConformityCount,closedDirectReviewNonConformityCount');
       case 'decertifiedProducts':
       case 'inactiveCertificates':
-        return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
+        return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,promotingInteroperabilityUserCount,promotingInteroperabilityUserDate');
       case 'sed':
         return this.apiGET('/collections/certified-products?fields=id,edition,developer,developerId,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
       case 'surveillanceManagement':

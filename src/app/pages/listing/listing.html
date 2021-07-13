@@ -17,7 +17,17 @@
             <p ng-if="$ctrl.listing.acbCertificationId">ONC-ACB Certification ID: {{ $ctrl.listing.acbCertificationId }}</p>
           </div>
           <div class="col-sm-8 text-right">
-            <p>Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }} <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])"></chpl-listing-history-bridge></p>
+            <p>
+              Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}
+              |
+              Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
+              <span feature-flag="promoting-interoperability">
+                <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])" promoting-interoperability-is-on="true"></chpl-listing-history-bridge>
+              </span>
+              <span feature-flag="promoting-interoperability" feature-flag-hide>
+                <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])" promoting-interoperability-is-on="false"></chpl-listing-history-bridge>
+              </span>
+            </p>
             <span ng-if="$ctrl.canEdit()">
               <button class="btn btn-default" ui-sref=".view.edit"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</button>
             </span>

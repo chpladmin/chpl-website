@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import theme from '../../themes/theme';
-import { getAngularService } from '.';
+import { getAngularService } from '../../services/angular-react-helper';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {

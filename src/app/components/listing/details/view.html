@@ -196,13 +196,25 @@
             <li ng-repeat="user in $ctrl.listing.targetedUsers">{{ user.targetedUserName }}</li>
           </ul>
         </span>
-        <span ng-if="$ctrl.listing.meaningfulUseUserHistory && $ctrl.listing.meaningfulUseUserHistory.length > 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
-          <h4>Estimated Number of Meaningful Use Users</h4>
-          <p>{{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuCount }}, last updated on {{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }}</p>
+        <span feature-flag="promoting-interoperability">
+          <span ng-if="$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
+            <h4>Estimated Number of Promoting Interoperability Users</h4>
+            <p>{{ $ctrl.currentPI.userCount }}, last updated on {{ $ctrl.currentPI.userCountDate }}</p>
+          </span>
+          <span ng-if="!$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
+            <h4>Estimated Number of Promoting Interoperability Users</h4>
+            <p>No Promoting Interoperability Users data exists</p>
+          </span>
         </span>
-        <span ng-if="!$ctrl.listing.meaningfulUseUserHistory || $ctrl.listing.meaningfulUseUserHistory.length === 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
-          <h4>Estimated Number of Meaningful Use Users</h4>
-          <p>No Meaningful Use Users data exists</p>
+        <span feature-flag="promoting-interoperability" feature-flag-hide>
+          <span ng-if="$ctrl.listing.meaningfulUseUserHistory && $ctrl.listing.meaningfulUseUserHistory.length > 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
+            <h4>Estimated Number of Meaningful Use Users</h4>
+            <p>{{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuCount }}, last updated on {{ $ctrl.muuCount($ctrl.listing.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }}</p>
+          </span>
+          <span ng-if="!$ctrl.listing.meaningfulUseUserHistory || $ctrl.listing.meaningfulUseUserHistory.length === 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
+            <h4>Estimated Number of Meaningful Use Users</h4>
+            <p>No Meaningful Use Users data exists</p>
+          </span>
         </span>
       </div>
     </div>
