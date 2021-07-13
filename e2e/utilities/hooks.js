@@ -17,9 +17,7 @@ class Hooks {
   }
 
   getFlagState(flagName){
-    browser.url(browser.options.baseUrl + urls.ff4jURL);
-    let jsonObj= JSON.parse($('body').getText())
-    const foundFlag = jsonObj.find(flag => flag.key === flagName);
+    const foundFlag = flagObj.find(flag => flag.key === flagName);
     return foundFlag?.active;
   }
 }

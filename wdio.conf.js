@@ -231,7 +231,12 @@ exports.config = {
    */
   before: function (capabilities, specs) {
     assert = require('chai').assert;
-
+    browser.addCommand('getFlag', function () {
+      this.url(this.options.baseUrl + urls.ff4jURL);
+      let jsonObj= JSON.parse($('body').getText())
+      return jsonObj;
+    })
+    global.flagObj= browser.getFlag();
     browser.addCommand("waitAndClick", function () {
       // `this` is return value of $(selector)
       this.waitForDisplayed()
