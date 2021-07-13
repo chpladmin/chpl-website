@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import theme from '../../../themes/theme';
-import { getAngularService } from '.';
+import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplSortableHeaders } from '../../util/chpl-sortable-headers';
 
 const useStyles = makeStyles(() => ({
@@ -43,24 +43,24 @@ function ChplConfirmListings(props) {
   const loadListings = useCallback(() => {
     networkService.getPendingListings(props.beta).then((response) => {
       setListings(response);
-      const pending = response.filter((l) => l.errorCount === null || l.warningCount === null || l.processing);
+      const pending = response.filter((l) => (l.status === 'PROCESSING')); // l.errorCount === null || l.warningCount === null || l.processing);
       if (pending.length > 0) {
         setTimeout(loadListings, 1000);
       }
     });
-  }, [networkService, props.beta]);
+  }, [networkService, props.beta]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     loadListings();
   }, [loadListings]);
 
-  const canProcess = (listing) => listing.errorCount !== null && listing.errorCount !== -1 && listing.warningCount !== null && listing.warningCount !== -1 && !listing.processing;
+  const canProcess = (listing) => (listing.status === 'SUCCESSFUL'); // listing.errorCount !== null && listing.errorCount !== -1 && listing.warningCount !== null && listing.warningCount !== -1 && !listing.processing;
 
   const getStatus = (listing) => {
-    if (listing.errorCount === null || listing.warningCount === null || listing.processing) {
+    if (listing.status === 'PROCESSING') { // listing.errorCount === null || listing.warningCount === null || listing.processing) {
       return <CircularProgress />;
     }
-    if (listing.errorCount === -1 && listing.warningCount === -1) {
+    if (listing.status === 'FAILURE') { // listing.errorCount === -1 && listing.warningCount === -1) {
       return (
         <Chip
           label="Processing error"
@@ -168,7 +168,7 @@ function ChplConfirmListings(props) {
     setListings(listings.sort(listingSortComparator(orderDirection + property)).map((listing) => listing));
   };
 
-  const headers = props.beta ? [
+  const headers = props.beta ? [ // eslint-disable-line react/destructuring-assignment
     { text: 'Action', invisible: true },
     { text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true },
     { text: 'Developer', property: 'developer', sortable: true },
