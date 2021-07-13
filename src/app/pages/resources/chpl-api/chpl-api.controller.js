@@ -1,19 +1,15 @@
-(function () {
-  'use strict';
+(() => {
+  /** @ngInject */
+  function ChplApiController($log, authService) {
+    const vm = this;
+
+    function activate() {
+      vm.apiKey = authService.getApiKey();
+    }
+
+    activate();
+  }
 
   angular.module('chpl.resources')
     .controller('ChplApiController', ChplApiController);
-
-  /** @ngInject */
-  function ChplApiController ($log, authService) {
-    var vm = this;
-
-    activate();
-
-    ////////////////////////////////////////////////////////////////////
-
-    function activate () {
-      vm.apiKey = authService.getApiKey();
-    }
-  }
 })();

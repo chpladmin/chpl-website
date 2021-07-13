@@ -4,14 +4,16 @@ import 'swagger-ui-react/swagger-ui.css';
 import { string } from 'prop-types';
 
 function ChplSwagger(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [apiKey] = props.apiKey;
+  /* eslint-enable react/destructuring-assignment */
 
   const interceptor = (req) => {
     req.url = req.url.replace('chpl-service', 'rest');
     req.headers['Api-Key'] = apiKey;
     console.log(req);
     return req;
-  }
+  };
 
   return (
     <SwaggerUI
