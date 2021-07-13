@@ -1,11 +1,12 @@
-export const DevelopersEditComponent = {
+const DevelopersEditComponent = {
   templateUrl: 'chpl.organizations/developers/developer/edit.html',
   bindings: {
     developer: '<',
   },
   controller: class DevelopersEditComponent {
-    constructor ($log, $scope, $state, authService, networkService, toaster) {
+    constructor($log, $scope, $state, authService, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.$scope = $scope;
       this.$state = $state;
@@ -14,52 +15,56 @@ export const DevelopersEditComponent = {
       this.toaster = toaster;
       this.backup = {};
       this.activeAcbs = [];
+      this.closeConfirmation = this.closeConfirmation.bind(this);
     }
 
-    $onInit () {
-      let that = this;
-      this.networkService.getAcbs(true).then(response => {
+    $onInit() {
+      const that = this;
+      this.networkService.getAcbs(true).then((response) => {
         that.allowedAcbs = response.acbs;
       });
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developer) {
         this.developer = angular.copy(changes.developer.currentValue);
         this.backup.developer = angular.copy(this.developer);
       }
     }
 
-    cancel () {
+    cancel() {
       this.developer = angular.copy(this.backup.developer);
       this.$state.go('organizations.developers.developer', {
         developerId: this.developer.developerId,
         productId: undefined,
-      }, {reload: true});
+      }, { reload: true });
     }
 
-    save (developer) {
+    closeConfirmation() {
+      this.action = undefined;
+      this.$state.go('^', undefined, { reload: true });
+    }
+
+    save(developer) {
       if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
         this.saveRequest(developer);
       } else {
-        let that = this;
+        const that = this;
         this.developer = developer;
         this.errorMessages = [];
-        this.networkService.updateDeveloper(this.developer).then(response => {
+        this.networkService.updateDeveloper(this.developer).then((response) => {
           if (!response.status || response.status === 200 || angular.isObject(response.status)) {
             that.developer = response;
             that.backup.developer = angular.copy(response);
-            this.$state.go('^', undefined, {reload: true});
+            this.$state.go('^', undefined, { reload: true });
+          } else if (response.data.errorMessages) {
+            that.errorMessages = response.data.errorMessages;
+          } else if (response.data.error) {
+            that.errorMessages.push(response.data.error);
           } else {
-            if (response.data.errorMessages) {
-              that.errorMessages = response.data.errorMessages;
-            } else if (response.data.error) {
-              that.errorMessages.push(response.data.error);
-            } else {
-              that.errorMessages = ['An error has occurred.'];
-            }
+            that.errorMessages = ['An error has occurred.'];
           }
-        }, error => {
+        }, (error) => {
           if (error.data.errorMessages) {
             that.errorMessages = error.data.errorMessages;
           } else if (error.data.error) {
@@ -71,9 +76,9 @@ export const DevelopersEditComponent = {
       }
     }
 
-    saveRequest (data) {
-      let that = this;
-      let request = {
+    saveRequest(data) {
+      const that = this;
+      const request = {
         developer: this.developer,
         details: data,
       };
@@ -81,18 +86,18 @@ export const DevelopersEditComponent = {
         .then(that.handleResponse.bind(that), that.handleError.bind(that));
     }
 
-    handleResponse () {
+    handleResponse() {
       let confirmationText = 'The submission has been completed successfully. It will be reviewed by an ONC-ACB or ONC. Once the submission has been approved, it will be displayed on the CHPL.';
       if (this.isWithdrawing) {
         confirmationText = 'Your change request has been successfully withdrawn.';
       }
-      this.networkService.getChangeRequests().then(response => this.changeRequests = response);
+      this.networkService.getChangeRequests().then((response) => { this.changeRequests = response; });
       this.action = 'confirmation';
       this.confirmationText = confirmationText;
       this.isWithdrawing = false;
     }
 
-    handleError (error) {
+    handleError(error) {
       let messages;
       let type = 'error';
       let title = 'Error in submission';
@@ -104,12 +109,12 @@ export const DevelopersEditComponent = {
       } else {
         messages = error.data.errorMessages ? error.data.errorMessages : [];
       }
-      let body = messages.length > 0 ? 'Message' + (messages.length > 1 ? 's' : '') + ':<ul>' + messages.map(e => '<li>' + e + '</li>').join('') + '</ul>'
+      const body = messages.length > 0 ? `Message${messages.length > 1 ? 's' : ''}:<ul>${messages.map((e) => `<li>${e}</li>`).join('')}</ul>`
         : 'An unexpected error occurred. Please try again or contact ONC for support';
       this.toaster.pop({
-        type: type,
-        title: title,
-        body: body,
+        type,
+        title,
+        body,
         bodyOutputType: 'trustedHtml',
       });
     }
@@ -118,3 +123,5 @@ export const DevelopersEditComponent = {
 
 angular.module('chpl.organizations')
   .component('chplDevelopersEdit', DevelopersEditComponent);
+
+export default DevelopersEditComponent;

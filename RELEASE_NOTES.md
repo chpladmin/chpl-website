@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 11.16.0
+_12 July 2021_
+
+### Features
+* Listing Report filter by ONC-ACB changed to use acbId
+* Create visible display of non-production environments
+* Show "Retired" filters when filtering on Practice Type
+
+### Bug Fixes
+* Restore "Confirmation" screen on Change Request submission
+* Stop showing Product Contact information on Merge
+
+---
+
 ## Version 11.15.0
 _28 June 2021_
 

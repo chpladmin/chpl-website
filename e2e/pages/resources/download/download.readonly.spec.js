@@ -105,7 +105,9 @@ inputs.forEach(input => {
       filePath = path.join(global.downloadDir, fileName);
       expect(fs.existsSync(filePath)).toBe.true;
       var stat = fs.statSync(filePath);
+      if(process.env.ENV !== 'stage' && dataFileName === 'direct-reviews') {
       expect(stat.size / 1000).toBeGreaterThan(dataFileSize);
+      }
     });
 
     it(`should not be older than ${generationFrequencyInDays} days `, () => {

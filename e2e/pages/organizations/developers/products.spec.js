@@ -120,7 +120,6 @@ describe('the Product part of the Developers page', () => {
             actionBar.save();
             page.productsHeader.waitForDisplayed();
             toast.clearAllToast();
-            page.selectAllCertificationStatus();
             product.scrollIntoView({ block: 'center', inline: 'center' });
             page.selectProduct(product);
             page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
