@@ -1,13 +1,19 @@
 <div role="modal" aria-labeled-by="edit-nonconformity-label">
   <div class="modal-header">
-    <button type="button" class="close pull-right" aria-label="Cancel edits" confirm="Are you sure you wish to cancel editing? Your changes will not be saved." confirm-ok="Yes" confirm-cancel="No" confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}" ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="edit-nonconformity-label"><span ng-if="$ctrl.workType === 'edit'">Edit</span><span ng-if="$ctrl.workType === 'add'">Create</span> Non-Conformity</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="$ctrl.editForm">
     <div class="form-group">
       <label for="nonconformity-type" class="col-sm-3">Non-Conformity Type <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="$ctrl.nonconformityType" id="nonconformity-type" name="nonconformityType" ng-options="type as ((type.removed ? 'Removed | ' : '') +type.number + (type.title ? (': ' + type.title) : '')) for type in $ctrl.data.nonconformityTypes.data | orderBy:$ctrl.sortNonconformityTypes" required>
+        <select class="input-sm form-control" ng-model="$ctrl.nonconformityType" id="nonconformity-type" name="nonconformityType"
+                ng-options="type as ((type.removed ? 'Removed | ' : '') +type.number + (type.title ? (': ' + type.title) : '')) for type in $ctrl.data.nonconformityTypes.data | orderBy:$ctrl.sortNonconformityTypes" required>
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityType.$touched) && $ctrl.editForm.nonconformityType.$error.required">Field is required</div>
       </div>
@@ -152,7 +158,13 @@
               <td>{{ doc.fileName }}</td>
               <td>{{ doc.fileType }}</td>
               <td>
-                <button class="btn btn-danger btn-block pull-left" ng-if="doc.id" confirm="Are you sure you wish to remove this documentation?" confirm-ok="Yes" confirm-cancel="No" confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}" ng-click="$ctrl.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
+                <button class="btn btn-danger btn-block pull-left"
+                        ng-if="doc.id"
+                        confirm="Are you sure you wish to remove this documentation?"
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                        ng-click="$ctrl.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
                 <span ng-if="!doc.id">N/A</span>
               </td>
             </tr>
@@ -228,7 +240,15 @@
         <li ng-if="$ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed">Total sites must be less than or equal to the number of randomized sites used: {{ $ctrl.randomizedSitesUsed }}</li>
       </ul>
     </div>
-    <button ng-disabled="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject) || ($ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed) || ($ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites)) && $ctrl.showFormErrors && !$ctrl.disableValidation" class="btn btn-ai-success pull-right" ng-mouseover="$ctrl.showFormErrors = true" ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
-    <button class="btn btn-warning pull-left" confirm="Are you sure you wish to cancel editing? Your changes will not be saved." confirm-ok="Yes" confirm-cancel="No" confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}" ng-click="$ctrl.cancel()"><i class="fa fa-trash-o"></i> Cancel</button>
+    <button ng-disabled="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject) || ($ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed) || ($ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites)) && $ctrl.showFormErrors && !$ctrl.disableValidation"
+            class="btn btn-ai-success pull-right"
+            ng-mouseover="$ctrl.showFormErrors = true"
+            ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
+    <button class="btn btn-warning pull-left"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="$ctrl.cancel()"><i class="fa fa-trash-o"></i> Cancel</button>
   </div>
 </div>
