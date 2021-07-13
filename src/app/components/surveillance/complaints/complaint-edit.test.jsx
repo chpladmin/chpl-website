@@ -23,15 +23,20 @@ const mock = {
   hoc: {
     dispatch: jest.fn(),
   },
+  complaint: {
+    criteria: [
+      {certificationCriterion: { id: 4, number: '4', title: '4 title criterion', certificationEdition: '2015' }},
+    ],
+  },
   certificationBodies: [
     { id: 3, name: 'ZZZ', retired: true },
     { id: 2, name: 'AAA' },
     { id: 1, name: 'NNN' },
   ],
   certificationCriteria: [
-    { id: 1, number: '1', title: '1 title', certificationEdition: '2015' },
-    { id: 2, number: '2', title: '2 title', certificationEdition: '2015' },
-    { id: 3, number: '3', title: '3 title', certificationEdition: '2015' },
+    { id: 1, number: '1', title: '1 title criterion', certificationEdition: '2015' },
+    { id: 2, number: '2', title: '2 title criterion', certificationEdition: '2015' },
+    { id: 3, number: '3', title: '3 title criterion', certificationEdition: '2015' },
   ],
   complainantTypes: [
     { id: 3, name: 'ZZZ' },
@@ -43,14 +48,17 @@ const mock = {
 angularReactHelper.getAngularService = jest.fn();
 
 describe('the ChplComplaintEdit component', () => {
+  beforeEach(() => {
+    when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
+    when(angularReactHelper.getAngularService).calledWith('utilService').mockReturnValue(utilServiceMock);
+  });
+
   afterEach(() => {
     cleanup();
   });
 
   describe('when creating a complaint', () => {
     beforeEach(async () => {
-      when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
-      when(angularReactHelper.getAngularService).calledWith('utilService').mockReturnValue(utilServiceMock);
       render(
         <ChplComplaintEdit
           complaint={{}}
@@ -128,19 +136,38 @@ describe('the ChplComplaintEdit component', () => {
       });
     });
 
-    describe('when adding and removing things', () => {
-      xit('should allow adding/removing of criteria', async () => {
+    describe('when adding things', () => {
+      it('should allow addition of criteria', async () => {
         userEvent.click(screen.getByRole('button', { name: /Add Associated Criterion/i }));
-        userEvent.click(screen.getByRole('option', { name: /1: 1 title/i }));
+        userEvent.click(screen.getByRole('option', { name: /1: 1 title criterion/i }));
 
         await waitFor(() => {
-          expect(screen.queryByText('1: 1 title')).toBeInTheDocument();
+          expect(screen.queryByText('1: 1 title criterion')).toBeInTheDocument();
         });
+      });
+    });
+  });
 
-        userEvent.click(screen.getByRole('button', { name: /1: 1 title/i }));
+  describe('when editing a complaint', () => {
+    beforeEach(async () => {
+      render(
+        <ChplComplaintEdit
+          complaint={mock.complaint}
+          certificationBodies={mock.certificationBodies}
+          complainantTypes={mock.complainantTypes}
+          criteria={mock.certificationCriteria}
+          listings={[]}
+          dispatch={mock.hoc.dispatch}
+        />,
+      );
+    });
+
+    describe('when removing things', () => {
+      it('should allow removal of criteria', async () => {
+        userEvent.click(screen.getByRole('button', { name: /4: 4 title criterion/i }));
 
         await waitFor(() => {
-          expect(screen.queryByText('1: 1 title')).not.toBeInTheDocument();
+          expect(screen.queryByText('4: 4 title criterion/i')).not.toBeInTheDocument();
         });
       });
     });
