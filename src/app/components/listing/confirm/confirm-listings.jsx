@@ -61,7 +61,7 @@ function ChplConfirmListings(props) {
     if ((beta && listing.status === 'PROCESSING') || (beta && listing.processing)) {
       return <CircularProgress />;
     }
-    if (listing.status === 'FAILURE') {
+    if (listing.status === 'FAILED') {
       return (
         <Chip
           label="Processing error"
