@@ -66,7 +66,7 @@ function ChplNonconformityView(props) {
               { !nonconformity.criterion && ` ${requirement.result.name}` }
             </div>
             <div className={classes.nonconformityAccordionSummaryStatus}>
-              { nonconformity.nonConformityCloseDate ? 'Closed' : 'Open' }
+              { nonconformity.nonconformityCloseDate ? 'Closed' : 'Open' }
             </div>
           </div>
         </AccordionSummary>
@@ -148,7 +148,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.nonConformityCloseDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.nonconformityCloseDate) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">

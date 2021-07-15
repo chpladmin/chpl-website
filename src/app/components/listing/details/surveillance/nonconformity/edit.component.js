@@ -6,11 +6,12 @@ export const SurveillanceNonconformityEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceNonconformityEditController {
-    constructor($log, API, Upload, authService, networkService, utilService) {
+    constructor($log, API, DateUtil, Upload, authService, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
       this.API = API;
+      this.DateUtil = DateUtil;
       this.Upload = Upload;
       this.networkService = networkService;
       this.utilService = utilService;
@@ -50,8 +51,8 @@ export const SurveillanceNonconformityEditComponent = {
       if (this.nonconformity.capMustCompleteDate) {
         this.nonconformity.capMustCompleteDateObject = new Date(this.nonconformity.capMustCompleteDate);
       }
-      if (this.nonconformity.nonConformityCloseDate) {
-        this.nonconformity.nonConformityCloseDateObject = new Date(this.nonconformity.nonConformityCloseDate);
+      if (this.nonconformity.nonconformityCloseDate) {
+        this.nonconformity.nonconformityCloseDateObject = new Date(this.DateUtil.localDateToTimestamp(this.nonconformity.nonconformityCloseDate));
       }
       if (this.nonconformity.criterion) {
         this.nonconformityType = this.data.nonconformityTypes.data
@@ -111,10 +112,11 @@ export const SurveillanceNonconformityEditComponent = {
       } else {
         this.nonconformity.capMustCompleteDate = null;
       }
-      if (this.nonconformity.nonConformityCloseDateObject) {
-        this.nonconformity.nonConformityCloseDate = this.nonconformity.nonConformityCloseDateObject.getTime();
+      if (this.nonconformity.nonconformityCloseDateObject) {
+        this.$log.info(this.nonconformity.nonconformityCloseDateObject.getTime());
+        this.nonconformity.nonconformityCloseDate = this.DateUtil.timestampToString(this.nonconformity.nonconformityCloseDateObject.getTime(), 'uuuu-MM-dd');
       } else {
-        this.nonconformity.nonConformityCloseDate = null;
+        this.nonconformity.nonconformityCloseDate = null;
       }
       if (this.nonconformityType.title) {
         this.nonconformity.criterion = this.nonconformityType;

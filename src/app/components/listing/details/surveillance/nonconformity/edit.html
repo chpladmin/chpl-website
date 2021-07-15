@@ -87,13 +87,13 @@
       <label for="non-conformity-close-date" class="col-sm-3">Non-conformity Close Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonConformityCloseDateObject" is-open="$ctrl.nonconformity.nonConformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonConformityCloseDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.nonConformityCloseDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDateObject" is-open="$ctrl.nonconformity.nonconformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonconformityCloseDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.nonconformityCloseDateObject">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonConformityCloseDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonconformityCloseDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonConformityCloseDate.$touched) && $ctrl.editForm.nonConformityCloseDate.$error.parse">Improper format (MM/dd/yyyy)</div>
-        <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.nonConformityCloseDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityCloseDate.$touched) && $ctrl.editForm.nonconformityCloseDate.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.nonconformityCloseDate.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
@@ -136,9 +136,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.nonConformityCloseDateObject">*</span></label>
+      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.nonconformityCloseDateObject">*</span></label>
       <div class="col-sm-9">
-        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.nonConformityCloseDateObject" ng-disabled="!$ctrl.nonconformity.nonConformityCloseDateObject"></textarea>
+        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.nonconformityCloseDateObject" ng-disabled="!$ctrl.nonconformity.nonconformityCloseDateObject"></textarea>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.resolution.$touched) && $ctrl.editForm.resolution.$error.required">Field is required</div>
       </div>
     </div>
