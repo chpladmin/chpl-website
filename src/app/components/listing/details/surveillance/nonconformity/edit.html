@@ -87,13 +87,12 @@
       <label for="non-conformity-close-date" class="col-sm-3">Non-conformity Close Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDateObject" is-open="$ctrl.nonconformity.nonconformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonconformityCloseDate" ng-required="$ctrl.nonconformity.nonconformityCloseDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDateObject" is-open="$ctrl.nonconformity.nonconformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonconformityCloseDate">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonconformityCloseDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityCloseDate.$touched) && $ctrl.editForm.nonconformityCloseDate.$error.parse">Improper format (MM/dd/yyyy)</div>
-        <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.nonconformityCloseDate.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
