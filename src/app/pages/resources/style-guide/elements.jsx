@@ -12,7 +12,9 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
+  TablePagination,
   TableRow,
   Typography,
 } from '@material-ui/core';
@@ -20,7 +22,7 @@ import {
 
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-
+import { ChplEllipsis } from '../../../components/util';
 
 function Elements() {
   return (
@@ -125,6 +127,7 @@ function Elements() {
                   <Typography variant="overline" display="block">
                     overline text
                   </Typography>
+                  <ChplEllipsis maxLength="60" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id ex id neque maximus faucibus quis non lectus. Cras luctus leo at venenatis sollicitudin. Donec vitae augue molestie, eleifend dui nec, lacinia ante. Fusce ex lacus, facilisis eget rutrum non, pulvinar sed neque. Vestibulum aliquet leo a orci bibendum, sit amet consequat leo molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse auctor quam dui, vel dictum nunc ultricies id. Nullam iaculis mauris nec dapibus porttitor. Quisque auctor venenatis sem nec maximus. Cras bibendum lacus vitae elementum feugiat. Vestibulum augue mauris, tristique ut ultrices quis, maximus a eros. Pellentesque at feugiat sapien. Integer ultricies sed orci eu porta. Praesent condimentum odio id nisl ultricies tincidunt." />
                 </Grid>
               </Grid>
             </CardContent>
@@ -340,14 +343,12 @@ function Elements() {
           </Grid>
         </Container>
       <br/>
-      <Container>
-        <Container>
-          <Typography variant="h5">Tables:</Typography>
-          <br />
-        </Container>
-      {/* Cards*/}
+      {/* Cards*/} 
+      {/* Table*/}
+      <Container>    
+      <Typography variant="h5">Tables:</Typography>
       <br/>    
-      {/* Table*/}    
+      <Card>
       <Table>
         <TableHead>
           <TableRow>
@@ -361,7 +362,11 @@ function Elements() {
             <TableCell>Item 2</TableCell>
           </TableRow>
         </TableBody>
+        <TableFooter>
+          <TablePagination></TablePagination>
+        </TableFooter>
       </Table>
+      </Card>
       {/*End of Table*/}  
       </Container>
       <br />
@@ -416,6 +421,10 @@ function Elements() {
       </Card>
       {/*End of 404 Card*/} 
       </Container>
+      <br/>
+      {/*Spacing and Grid*/} 
+      <Typography variant="h5">Spacing and Grid:</Typography>
+      {/*End of Spacing and Grid*/} 
     </Container>
   );
 }
