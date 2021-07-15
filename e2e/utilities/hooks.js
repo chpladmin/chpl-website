@@ -1,4 +1,3 @@
-const urls = require('../config/urls');
 class Hooks {
   constructor () { }
 
