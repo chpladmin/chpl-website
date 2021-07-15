@@ -177,6 +177,7 @@
           <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtPlansCheckDateDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.rwtPlansCheckDate.$touched) && !$ctrl.form.rwtPlansCheckDate.$valid">Improper format (mm/dd/yyyy)</div>
     </div>
     <div>
       <div class="data-element"><label for="rwt-results-url">Results URL</label></div>
@@ -196,6 +197,7 @@
           <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtResultsCheckDateDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.rwtResultsCheckDate.$touched) && !$ctrl.form.rwtResultsCheckDate.$valid">Improper format (mm/dd/yyyy)</div>
     </div>
   </div>
   <div class="form-group">
