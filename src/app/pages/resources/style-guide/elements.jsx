@@ -157,7 +157,6 @@ function Elements() {
                     </Typography>
                   </Grid>
                 </Grid>
-
                 <Grid item xs="6">
                   <Button color="secondary" variant="contained">
                     Secondary Button
@@ -174,7 +173,6 @@ function Elements() {
                     </Typography>
                   </Grid>
                 </Grid>
-
                 <Grid item xs="6">
                   <Button color="default" variant="contained">
                     Default Button
@@ -190,7 +188,6 @@ function Elements() {
                     </Typography>
                   </Grid>
                 </Grid>
-
                 <Grid item xs="6">
                   <Button variant="contained" disabled>
                     disabled Button
@@ -204,7 +201,6 @@ function Elements() {
                     </Typography>
                   </Grid>
                 </Grid>
-
                 <Grid item xs="6">
                   <Button variant="contained">
                     Delete Button
@@ -221,6 +217,45 @@ function Elements() {
                   </Grid>
                 </Grid>
               </Grid>
+              <br/>
+              <Typography variant="h6">
+              CHPL Buttons Sizes:By default use medium button on CHPL UI
+             </Typography>
+              <Grid container alignItems="center" justify="space-between">
+              <Grid item>
+                  <Button color="primary" variant="contained" size="small">
+                    Small button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                </Grid>
+                <Grid item>
+                <Button size="medium" color="primary" variant="contained">
+                    Medium button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button color="primary" variant="contained" size="large">
+                    Large button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                </Grid>
+              </Grid>
+              <br/>
+              <Grid item xs="12">
+                  <Button fullWidth color="primary" variant="contained">
+                    Large button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                </Grid>
             </CardContent>
           </Card>
         </Container>

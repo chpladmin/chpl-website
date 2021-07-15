@@ -78,7 +78,7 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         boxShadow: 'none',
-        fontSize: 14,
+        fontSize:'1em',
         '&:hover': {
           boxShadow: 'none',
         },
@@ -86,7 +86,7 @@ const theme = createMuiTheme({
       contained: {
         backgroundColor: '#eeeeee',
         boxShadow: 'none',
-        fontSize: 14,
+        fontSize: '1em',
         '&:hover, selected': {
           boxShadow: 'none',
         },
@@ -94,7 +94,7 @@ const theme = createMuiTheme({
       containedSecondary: {
         border: '.5px solid #156dac',
         backgroundColor: '#ffffff',
-        fontSize: 14,
+        fontSize: '1em',
         color: '#156dac',
         '&:hover': {
           backgroundColor: 'rgb(245, 249, 253, 0.9)',
@@ -102,6 +102,12 @@ const theme = createMuiTheme({
         '&: selected': {
           backgroundColor: '#599bde',
         },
+      },
+      containedSizeSmall:{
+        fontSize: '0.875em',
+      },
+      containedSizeLarge:{
+        fontSize: '1.125em',
       },
     },
     MuiListItem: {
