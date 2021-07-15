@@ -117,7 +117,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row"><a href uib-tooltip="For non-conformities related to specific regulatory references (e.g. certified capabilities, disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l)). If the non-conformity type is designated as ‘Other Non-Conformity', then the associated non-conformity does not have a relevant regulatory reference." tooltip-trigger="'mouseenter focus click'">Non-Conformity Type</a></th>
+                  <th scope="row"><a href uib-tooltip="For non-conformities related to specific regulatory references (e.g. certified capabilities, disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l)). If the non-conformity type is designated as 'Other Non-Conformity', then the associated non-conformity does not have a relevant regulatory reference." tooltip-trigger="'mouseenter focus click'">Non-Conformity Type</a></th>
                   <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
                 </tr>
                 <tr ng-if="surv.type.name === 'Randomized'">
