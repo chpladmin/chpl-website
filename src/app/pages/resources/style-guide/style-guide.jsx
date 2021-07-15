@@ -14,6 +14,10 @@ const useStyles = makeStyles({
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
+    backgroundColor:"#f2f2f2",
+    paddingTop: "16px",
+    paddingBottom: "128px",
+    marginBottom:"-128px",
   },
 });
 
