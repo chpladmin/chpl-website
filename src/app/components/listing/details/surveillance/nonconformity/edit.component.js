@@ -113,7 +113,6 @@ export const SurveillanceNonconformityEditComponent = {
         this.nonconformity.capMustCompleteDate = null;
       }
       if (this.nonconformity.nonconformityCloseDateObject) {
-        this.$log.info(this.nonconformity.nonconformityCloseDateObject.getTime());
         this.nonconformity.nonconformityCloseDate = this.DateUtil.timestampToString(this.nonconformity.nonconformityCloseDateObject.getTime(), 'uuuu-MM-dd');
       } else {
         this.nonconformity.nonconformityCloseDate = null;
