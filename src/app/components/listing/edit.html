@@ -155,7 +155,7 @@
     <label for="cp-additional-software">Product wide Relied Upon Software</label>
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
-  <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.rwtEligibilityYear">
+  <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.workType !== 'confirm'">
     <div class="edit-listing__rwt-container-header">
       <div class="data-label">Real World Testing</div>
     </div>
@@ -177,6 +177,7 @@
           <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtPlansCheckDateDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.rwtPlansCheckDate.$touched) && !$ctrl.form.rwtPlansCheckDate.$valid">Improper format (mm/dd/yyyy)</div>
     </div>
     <div>
       <div class="data-element"><label for="rwt-results-url">Results URL</label></div>
@@ -196,6 +197,7 @@
           <button type="button" class="btn btn-default btn-sm" ng-click="$ctrl.listing.rwtResultsCheckDateDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
         </span>
       </div>
+      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.rwtResultsCheckDate.$touched) && !$ctrl.form.rwtResultsCheckDate.$valid">Improper format (mm/dd/yyyy)</div>
     </div>
   </div>
   <div class="form-group">

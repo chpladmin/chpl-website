@@ -61,8 +61,8 @@ const ListingEditPageComponent = {
     isValid() {
       return this.isConfirming
         || (this.form.$valid
-         && this.errors.basic.length === 0
-         && this.errors.details.length === 0);
+          && this.errors.basic.length === 0
+          && this.errors.details.length === 0);
     }
 
     save() {
@@ -127,6 +127,7 @@ const ListingEditPageComponent = {
           break;
         case 'mouseover':
           this.consolidateErrors();
+          this.$log.info('mouseover');
           this.showFormErrors = true;
           break;
         case 'save':
@@ -135,7 +136,7 @@ const ListingEditPageComponent = {
         case 'updateAcknowledgement':
           this.acknowledgeWarnings = data;
           break;
-          // no default
+        // no default
       }
     }
 
