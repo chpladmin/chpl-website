@@ -1,11 +1,15 @@
 import React from 'react';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   ButtonGroup,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  Chip,
   Container,
   Divider,
   Grid,
@@ -23,7 +27,10 @@ import {
 
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import { ChplEllipsis } from '../../../components/util';
+import { ChplTextField } from '../../../components/util';
 
 function Elements() {
   return (
@@ -231,7 +238,7 @@ function Elements() {
                 </Grid>
                 <Grid item xs="10">
                     <Typography variant="body1">
-                     Button groups are used when there's mutiple actions that can happen for a particular item, table or other. 
+                    Button groups are used when there's multiple actions that can happen for a particular item, table or other. 
                     </Typography>     
                 </Grid>
                 <br/>
@@ -244,7 +251,7 @@ function Elements() {
                 </Grid>
                 <Grid item xs="10">
                     <Typography variant="body1">
-                      Withing CHPL youll see vartions of button groups that includes primary, secondary, default, and so one.
+                      Within CHPL youll see vartions of button groups that includes primary, secondary, default, and so one.
                       <i>contained</i>.
                     </Typography>     
                 </Grid>
@@ -399,8 +406,87 @@ function Elements() {
       {/*End of Table*/}  
       </Container>
       <br />
+
+      {/*>Chpl TextField*/} 
       <Container>
+        <Typography variant="h5">Chips:</Typography>
+        <Chip label="Basic" />
+        <Chip label="Outline Default" color="default" variant="outlined" />
+        <Chip label="Outline Primary" color="primary" variant="outlined" />
+        <Chip label="Clickable Chip Link" component="a" href="#chip" clickable />
+        <Typography variant="body1">Chips are used in the CHPl interface to indicate a change that has or needs to happened. Chips are usually being displayed in accordion and forms.</Typography>
+        
+      </Container>
+      {/*End of >Chpl TextField*/} 
+      <br />
+      {/*>Chpl TextField*/} 
+      <Container>
+        <Typography variant="h5">Chpl TextField:</Typography>
+        <Card>
+        <ChplTextField/>
+        </Card>
+      </Container>
+      {/*End of >Chpl TextField*/} 
+      <br/>
+      {/*Accordions*/} 
+      <Container>
+        <Typography variant="h5">Accordions</Typography>
+        <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography>Accordion 1</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography>Accordion 2</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion disabled>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel3a-content"
+          id="panel3a-header"
+        >
+          <Typography>Disabled Accordion</Typography>
+        </AccordionSummary>
+      </Accordion>
+      </Container>
+      {/*End of Accordions*/} 
+      <br/>
+      {/*App Bar*/} 
+      <Container>
+      <Typography variant="h5">App Bar</Typography>
+      </Container>
+      {/*End of App Bar*/} 
+      <br/>
+      {/*Spacing and Grid*/} 
+      <Container>
+        <Typography variant="h5">Spacing and Grid:</Typography>
+      </Container>
+      {/*End of Spacing and Grid*/} 
+      <br/>
       {/*404 Card*/} 
+      <Container>
       <Card>
         <CardHeader title="404 Page Not Found" />
         <CardContent>
@@ -448,12 +534,9 @@ function Elements() {
           </Button>
         </CardActions>
       </Card>
-      {/*End of 404 Card*/} 
       </Container>
+      {/*End of 404 Card*/} 
       <br/>
-      {/*Spacing and Grid*/} 
-      <Typography variant="h5">Spacing and Grid:</Typography>
-      {/*End of Spacing and Grid*/} 
     </Container>
   );
 }

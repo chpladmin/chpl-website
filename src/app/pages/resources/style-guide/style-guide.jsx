@@ -1,8 +1,10 @@
 import React from 'react';
 import {
   ThemeProvider,
+  Container,
   createMuiTheme,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 
 import Elements from './elements';
@@ -27,10 +29,20 @@ function ChplStyleGuide() {
   return (
     <div className={classes.container}>
       <ThemeProvider theme={defaultTheme}>
+      <div>
+        <Container>
+        <Typography variant="h1">Default Material UI</Typography>
         <Elements />
+        </Container>
+      </div>  
+      <div>
+        <Container>
+        <Typography variant="h1">CHPL Material UI</Typography>
         <ThemeProvider theme={theme}>
-          <Elements />
+        <Elements />
         </ThemeProvider>
+        </Container>
+      </div>
       </ThemeProvider>
     </div>
   );
