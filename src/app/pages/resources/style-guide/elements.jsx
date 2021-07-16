@@ -17,6 +17,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableFooter,
   TableHead,
   TablePagination,
@@ -386,6 +387,7 @@ function Elements() {
       <Typography variant="h5">Tables:</Typography>
       <br/>    
       <Card>
+      <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
@@ -400,17 +402,12 @@ function Elements() {
           </TableRow>
         </TableBody>
       </Table>
+      </TableContainer>
       </Card>
-      <TablePagination>
-        <Toolbar>
-          
-        </Toolbar>
-      </TablePagination>
-    
-      {/*End of Table*/}  
+      <TablePagination/>
       </Container>
+      {/*End of Table*/}  
       <br />
-
       {/*>Chpl TextField*/} 
       <Container>
         <Typography variant="h5">Chips:</Typography>

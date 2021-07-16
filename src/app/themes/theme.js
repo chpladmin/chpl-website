@@ -43,7 +43,7 @@ const theme = createMuiTheme({
       fontSize: '1.5em',
       fontWeight: 400,
     },
-    h5: {
+    h5: { 
       fontSize: '1.25em',
       fontWeight: 800,
     },
@@ -207,6 +207,7 @@ const theme = createMuiTheme({
         width: '100%',
       },
     },
+
     MuiTablePagination:{
       root:{
         display: 'flex',
@@ -218,7 +219,7 @@ const theme = createMuiTheme({
       },
       toolbar:{
         backgroundColor:'#ffffff',
-        margin:'16px 0px 4px 0px',
+        margin:'16px 0px 16px 0px',
         boxShadow:'0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         borderRadius:'64px'
       },
