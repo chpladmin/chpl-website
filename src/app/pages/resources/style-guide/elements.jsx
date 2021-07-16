@@ -21,6 +21,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Toolbar,
   Typography,
 } from '@material-ui/core';
 
@@ -398,11 +399,14 @@ function Elements() {
             <TableCell>Item 2</TableCell>
           </TableRow>
         </TableBody>
-        <TableFooter>
-          <TablePagination></TablePagination>
-        </TableFooter>
       </Table>
       </Card>
+      <TablePagination>
+        <Toolbar>
+          
+        </Toolbar>
+      </TablePagination>
+    
       {/*End of Table*/}  
       </Container>
       <br />
