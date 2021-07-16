@@ -33,6 +33,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplEllipsis } from '../../../components/util';
 import { ChplTextField } from '../../../components/util';
+import ChplStyleGuideTable from './style-guide-table';
 
 function Elements() {
   return (
@@ -386,25 +387,9 @@ function Elements() {
       <Container>    
       <Typography variant="h5">Tables:</Typography>
       <br/>    
-      <Card>
-      <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Heading 1</TableCell>
-            <TableCell>Heading 2</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>Item 1</TableCell>
-            <TableCell>Item 2</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-      </TableContainer>
-      </Card>
-      <TablePagination/>
+      <hr />
+      <ChplStyleGuideTable />
+      <hr />
       </Container>
       {/*End of Table*/}  
       <br />

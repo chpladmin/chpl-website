@@ -1,6 +1,6 @@
 import 'angular-swagger-ui';
 import ChplNotFound from './not-found';
-import ChplStyleGuide from './style-guide';
+import { ChplStyleGuide } from './style-guide';
 import { reactToAngularComponent } from '../../services/angular-react-helper';
 
 angular
