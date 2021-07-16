@@ -1,3 +1,4 @@
 import ChplStyleGuide from './style-guide';
+import ChplStyleGuideTable from './style-guide-table';
 
-export default ChplStyleGuide;
+export { ChplStyleGuide, ChplStyleGuideTable };

@@ -15,6 +15,8 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import ChplStyleGuideTable from './style-guide-table';
+
 function Elements() {
   return (
     <Container>
@@ -61,6 +63,8 @@ function Elements() {
       <Typography variant="overline" display="block" gutterBottom>
         overline text
       </Typography>
+      <hr />
+      <ChplStyleGuideTable />
       <hr />
       <Table>
         <TableHead>
