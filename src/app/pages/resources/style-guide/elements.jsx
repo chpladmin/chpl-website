@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  ButtonGroup,
   Card,
   CardActions,
   CardContent,
@@ -217,8 +218,36 @@ function Elements() {
                       Delete button should be used only when there is an action
                       to delete a proccess/item. Be sure to use the varient{' '}
                       <i>contained</i>.
-                    </Typography>
+                    </Typography>     
                   </Grid>
+                </Grid>
+                <Grid item xs="6">
+                <Grid>
+                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                  <Button>Click Here</Button>
+                  <Button>Hover Over Me</Button>
+                  <Button>One More</Button>
+                </ButtonGroup>
+                </Grid>
+                <Grid item xs="10">
+                    <Typography variant="body1">
+                     Button groups are used when there's mutiple actions that can happen for a particular item, table or other. 
+                    </Typography>     
+                </Grid>
+                <br/>
+                <Grid>
+                <ButtonGroup>
+                  <Button color="primary" variant="contained">Open Details</Button>
+                  <Button color="primary" variant="outlined">CMS Widget</Button>
+                  <Button color="primary" variant="outlined">Compare</Button>
+                </ButtonGroup>
+                </Grid>
+                <Grid item xs="10">
+                    <Typography variant="body1">
+                      Withing CHPL youll see vartions of button groups that includes primary, secondary, default, and so one.
+                      <i>contained</i>.
+                    </Typography>     
+                </Grid>
                 </Grid>
               </Grid>
               <br/>
