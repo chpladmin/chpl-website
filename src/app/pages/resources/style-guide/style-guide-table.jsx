@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -7,14 +8,31 @@ import {
   TableContainer,
   TableFooter,
   TableRow,
+  TablePagination,
+  Typography,
   ThemeProvider,
   makeStyles,
+  Container,
+  Divider,
 } from '@material-ui/core';
 
 import theme from '../../../themes/theme';
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import GetAppIcon from '@material-ui/icons/GetApp';
+
+const useStyles = makeStyles({
+  container: {
+    display: 'grid',
+    gridGap:'8px',
+    gridTemplateColumns: '1fr 2fr 1fr 1fr',
+    padding:'16px 0px',
+    alignItems: 'center',
+  },
+});
 
 function ChplStyleGuideTable() {
+  const classes = useStyles();
   const [listings, setListings] = useState([
     {
       id: 1,
@@ -22,78 +40,91 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'Infection Control Antimicrobial Use and Resistance Reporting',
       version: 'Epic 2017',
+      actions: 'Y | N',
     }, {
       id: 2,
       chplProductNumber: '15.07.07.1447.SY01.01.00.1.160505',
       developer: 'Epic Systems Corporation',
       product: 'Syndromic Surveillance Reporting',
       version: 'Epic 2017',
+      actions: 'Y | N',
     }, {
       id: 3,
       chplProductNumber: '15.07.07.1447.BE01.01.00.1.160505',
       developer: 'Epic Systems Corporation',
       product: 'Beaker Reportable Labs Reporting',
       version: 'Epic 2017',
+      actions: 'Y | N',
     }, {
       id: 4,
       chplProductNumber: '15.04.04.2657.Care.01.00.0.160701',
       developer: 'Carefluence',
       product: 'Carefluence Open API',
       version: '1',
+      actions: 'Y | N',
     }, {
       id: 5,
       chplProductNumber: '15.04.04.2980.Modu.09.00.1.160728',
       developer: 'ModuleMD',
       product: 'ModuleMD WISE™',
       version: '9.0',
+      actions: 'Y | N',
     }, {
       id: 6,
       chplProductNumber: '15.04.04.2891.Alls.17.00.0.160728',
       developer: 'Allscripts',
       product: 'Allscripts TouchWorks EHR',
       version: '17.1',
+      actions: 'Y | N',
     }, {
       id: 7,
       chplProductNumber: '15.04.04.2891.Alls.AC.00.1.160804',
       developer: 'Allscripts',
       product: 'Allscripts Sunrise Acute Care',
       version: '16.3',
+      actions: 'Y | N',
     }, {
       id: 8,
       chplProductNumber: '15.04.04.2891.Alls.AM.00.1.160804',
       developer: 'Allscripts',
       product: 'Allscripts Sunrise Ambulatory Care',
       version: '16.3',
+      actions: 'Y | N',
     }, {
       id: 9,
       chplProductNumber: '15.07.07.1447.EP03.01.00.1.160720',
       developer: 'Epic Systems Corporation',
       product: 'EpicCare Ambulatory EHR Suite',
       version: 'Epic 2016',
+      actions: 'Y | N',
     }, {
       id: 10,
       chplProductNumber: '15.07.07.1447.EP04.01.00.1.160720',
       developer: 'Epic Systems Corporation',
       product: 'EpicCare Inpatient EHR Suite',
       version: 'Epic 2016',
+      actions: 'Y | N',
     }, {
       id: 11,
       chplProductNumber: '15.07.07.1447.BE02.01.00.1.160815',
       developer: 'Epic Systems Corporation',
       product: 'Beacon Cancer Registry Reporting',
       version: 'Epic 2017',
+      actions: 'Y | N',
     }, {
       id: 12,
       chplProductNumber: '15.07.07.2713.CQ01.01.00.1.160916',
       developer: 'Dynamic Health IT, Inc',
       product: 'CQMsolution',
       version: '3.0',
+      actions: 'Y | N',
     }, {
       id: 3,
       chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
       developer: 'Epic Systems Corporation',
       product: 'Beaker Reportable Labs Reporting',
       version: 'Epic 2015',
+      actions: 'Y | N',
     },
   ]);
 
@@ -102,6 +133,7 @@ function ChplStyleGuideTable() {
     { text: 'Developer', property: 'developer', sortable: true },
     { text: 'Product', property: 'product', sortable: true },
     { text: 'Version', property: 'version', sortable: true },
+    { text: 'Actions', property: 'actions', sortable: true },
   ];
 
   const listingSortComparator = (property) => {
@@ -122,8 +154,21 @@ function ChplStyleGuideTable() {
   };
 
   return (
+    <div>
     <TableContainer component={Paper}>
-      <Table size="small">
+    <Container>
+    <div className={classes.container}>
+    <Typography variant="h5">Title of Table</Typography>
+    <Typography>search bar should go here</Typography>
+    <Button size="medium" color="primary" variant="outlined">Download
+    <GetAppIcon/>
+    </Button>
+    <Button size="medium" color="primary" variant="outlined">Add
+    <PlaylistAddIcon/>
+    </Button>
+    </div>
+    </Container>
+      <Table>
         <ChplSortableHeaders
           headers={headers}
           onTableSort={handleTableSort}
@@ -136,11 +181,19 @@ function ChplStyleGuideTable() {
                 <TableCell>{ listing.developer }</TableCell>
                 <TableCell>{ listing.product }</TableCell>
                 <TableCell>{ listing.version }</TableCell>
+                <TableCell>{ listing.actions }</TableCell>
               </TableRow>
             ))}
         </TableBody>
+        <TableFooter>
+        <TableRow>
+        <TablePagination>
+        </TablePagination>
+        </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
+    </div>
   );
 }
 

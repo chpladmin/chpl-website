@@ -387,9 +387,7 @@ function Elements() {
       <Container>    
       <Typography variant="h5">Tables:</Typography>
       <br/>    
-      <hr />
       <ChplStyleGuideTable />
-      <hr />
       </Container>
       {/*End of Table*/}  
       <br />

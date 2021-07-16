@@ -208,20 +208,26 @@ const theme = createMuiTheme({
       },
     },
 
+    MuiTableFooter:{
+      root:{
+
+      },
+    },
     MuiTablePagination:{
       root:{
-        display: 'flex',
-        alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
         fontSize:'1em',
+        backgroundColor:'#f9f9f9'
+      },
+      spacer:{
+        flex:'none',
       },
       toolbar:{
         backgroundColor:'#ffffff',
-        margin:'16px 0px 16px 0px',
+        margin:'16px 32px',
         boxShadow:'0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-        borderRadius:'64px'
+        borderRadius:'64px',
+        display:'flex',
+        justifyContent:'center'
       },
       select:{
         color:'#156dac',
