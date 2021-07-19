@@ -4,7 +4,12 @@
     <chpl-upload-listings ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-listings>
     <chpl-upload-listings-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])" feature-flag="enhanced-upload"></chpl-upload-listings-bridge>
     <chpl-upload-surveillance-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-surveillance-bridge>
-    <chpl-upload-meaningful-use-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-meaningful-use-bridge>
+    <span feature-flag="promoting-interoperability">
+      <chpl-upload-promoting-interoperability-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-promoting-interoperability-bridge>
+    </span>
+    <span feature-flag="promoting-interoperability" feature-flag-hide>
+      <chpl-upload-meaningful-use-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-meaningful-use-bridge>
+    </span>
     <chpl-upload-api-documentation ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-api-documentation>
     <chpl-upload-real-world-testing ng-if="$ctrl.isOn('rwt-enabled')"></chpl-upload-real-world-testing>
   </div>

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
+
 import theme from '../../themes/theme';
-import { getAngularService } from '.';
+import { getAngularService } from '../../services/angular-react-helper';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {

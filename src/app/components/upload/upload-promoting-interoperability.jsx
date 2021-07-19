@@ -40,7 +40,7 @@ const validationSchema = yup.object({
     .required('Accurate as of date is required'),
 });
 
-function ChplUploadMeaningfulUse() {
+function ChplUploadPromotingInteroperability() {
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
   const API = getAngularService('API');
@@ -63,7 +63,7 @@ function ChplUploadMeaningfulUse() {
 
   const uploadFile = () => {
     const item = {
-      url: `${API}/meaningful_use/upload`,
+      url: `${API}/promoting-interoperability/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
@@ -119,7 +119,7 @@ function ChplUploadMeaningfulUse() {
   return (
     <ThemeProvider theme={theme}>
       <Card>
-        <CardHeader title="Upload Meaningful Use Users" subtitle="CSV files only" />
+        <CardHeader title="Upload Promoting Interoperability Users" subtitle="CSV files only" />
         <CardContent>
           <div className={classes.gridStyle}>
             <Typography variant="body1" className={classes.fullRow}>
@@ -134,7 +134,7 @@ function ChplUploadMeaningfulUse() {
                 Choose file to upload
                 <input
                   type="file"
-                  id="upload-meaningful-use"
+                  id="upload-promoting-interoperability"
                   onChange={onFileChange}
                   style={{ display: 'none' }}
                 />
@@ -184,7 +184,7 @@ function ChplUploadMeaningfulUse() {
                 type="date"
                 id="accurate-as-of"
                 name="accurateAsOf"
-                label="Enter the Accurate As of date for Meaningful Use Users associated with this upload"
+                label="Enter the Accurate As of date for Promoting Interoperability Users associated with this upload"
                 required
                 value={formik.values.accurateAsOf}
                 onChange={formik.handleChange}
@@ -200,6 +200,6 @@ function ChplUploadMeaningfulUse() {
   );
 }
 
-export default ChplUploadMeaningfulUse;
+export default ChplUploadPromotingInteroperability;
 
-ChplUploadMeaningfulUse.propTypes = {};
+ChplUploadPromotingInteroperability.propTypes = {};

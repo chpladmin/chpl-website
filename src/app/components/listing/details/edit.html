@@ -259,43 +259,45 @@
         </div>
 
         <div class="manage-list__container">
-          <div class="data-label">Estimated Number of Meaningful Use Users</div>
+          <div class="data-label" feature-flag="promoting-interoperability">Estimated Number of Promoting Interoperability Users</div>
+          <div class="data-label" feature-flag="promoting-interoperability" feature-flag-hide>Estimated Number of Meaningful Use Users</div>
           <div class="data-label">Effective Date</div>
-          <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
-            {{ item.muuCount }}
+          <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.promotingInteroperabilityUserHistory | orderBy:'-userCountDate' track by $index">
+            {{ item.userCount }}
           </div>
           <div>
-            {{ item.muuDate | date : 'mediumDate' : 'GMT' }}
-            <div class="text-danger" ng-if="$ctrl.matchesPreviousMuuDate(item)">Only one value allowed per day</div>
+            {{ $ctrl.DateUtil.getDisplayDateFormat(item.userCountDate) }}
+            <div class="text-danger" ng-if="$ctrl.matchesPreviousPIDate(item)">Only one value allowed per day</div>
           </div>
           <div class="manage-list__item--end" ng-repeat-end>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('meaningfulUseUserHistory', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('promotingInteroperabilityUserHistory', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
           </div>
-          <div class="manage-list__item--start" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
-            <label for="meaningful-use-user-history-add-new-value" class="sr-only"><span ng-if="$first">Current </span>Meaningful Use User Count</label>
-            <input type="number" ng-model="$ctrl.newItem['meaningfulUseUserHistory'].muuCount"
-                   id="meaningful-use-user-history-add-new-value" name="meaningfulUseUserHistoryAddNewValue"
+          <div class="manage-list__item--start" ng-if="$ctrl.addingItem['promotingInteroperabilityUserHistory']">
+            <label for="promoting-interoperability-user-history-add-new-value" class="sr-only" feature-flag="promoting-interoperability"><span ng-if="$first">Current </span>Promoting Interoperability Use User Count</label>
+            <label for="promoting-interoperability-user-history-add-new-value" class="sr-only" feature-flag="promoting-interoperability" feature-flag-hide><span ng-if="$first">Current </span>Meaningful Use User Count</label>
+            <input type="number" ng-model="$ctrl.newItem['promotingInteroperabilityUserHistory'].userCount"
+                   id="promoting-interoperability-user-history-add-new-value" name="promotingInteroperabilityUserHistoryAddNewValue"
                    class="input-sm form-control" required></input>
           </div>
-          <div ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
-            <label class="sr-only" for="meaningful-use-user-history-add-new-date">Add new Effective Date</label>
+          <div ng-if="$ctrl.addingItem['promotingInteroperabilityUserHistory']">
+            <label class="sr-only" for="promoting-interoperability-user-history-add-new-date">Add new Effective Date</label>
             <div class="input-group">
-              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['meaningfulUseUserHistory'].muuDateObject"
-                     is-open="muuEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
-                     id="meaningful-use-user-history-add-new-date" name="meaningfulUseUserHistoryAddNewDate" required>
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['promotingInteroperabilityUserHistory'].userCountDate"
+                     is-open="PIEvent.statusDatePicker" close-text="Close"
+                     id="promoting-interoperability-user-history-add-new-date" name="promotingInteroperabilityUserHistoryAddNewDate" required>
               <span class="input-group-btn">
-                <button type="button" class="btn btn-secondary btn-sm" ng-click="muuEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
+                <button type="button" class="btn btn-secondary btn-sm" ng-click="PIEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
               </span>
             </div>
           </div>
-          <div class="manage-list__item--end" ng-if="$ctrl.addingItem['meaningfulUseUserHistory']">
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('meaningfulUseUserHistory')" ng-mouseover="$ctrl.showFormErrors = true"
-                    ng-disabled="($ctrl.showFormErrors || $ctrl.form.meaningFullUseUserAddNewValue.$touched || $ctrl.form.meaningfulUseUserHistoryAddNewDate) && ($ctrl.form.meaningfulUseUserHistoryAddNewValue.$error.required || $ctrl.form.meaningfulUseUserHistoryAddNewDate.$error.required)"
+          <div class="manage-list__item--end" ng-if="$ctrl.addingItem['promotingInteroperabilityUserHistory']">
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('promotingInteroperabilityUserHistory')" ng-mouseover="$ctrl.showFormErrors = true"
+                    ng-disabled="($ctrl.showFormErrors || $ctrl.form.promotingInteroperabilityUserAddNewValue.$touched || $ctrl.form.promotingInteroperabilityUserHistoryAddNewDate) && ($ctrl.form.promotingInteroperabilityUserHistoryAddNewValue.$error.required || $ctrl.form.promotingInteroperabilityUserHistoryAddNewDate.$error.required)"
                     ><i class="fa fa-save"></i></button>
-            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('meaningfulUseUserHistory')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
+            <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('promotingInteroperabilityUserHistory')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
           </div>
-          <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['meaningfulUseUserHistory']">
-            <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['meaningfulUseUserHistory'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
+          <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['promotingInteroperabilityUserHistory']">
+            <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['promotingInteroperabilityUserHistory'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
           </div>
         </div>
 
