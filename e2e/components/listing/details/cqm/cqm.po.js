@@ -1,12 +1,13 @@
-const elements = {
-  cqmHeader: '//div[text()="Clinical Quality Measures"]',
-};
 
 class CriteriaComponent {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      cqmHeader: '//div[text()="Clinical Quality Measures"]',
+    };
+  }
 
   get cqmHeader() {
-    return $(elements.cqmHeader);
+    return $(this.elements.cqmHeader);
   }
 
   expandCqm() {

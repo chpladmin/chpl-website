@@ -27,6 +27,10 @@ class CompareWidgetComponent {
     this.compareButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
     this.compareButton(listingId).click();
   }
+
+  addToCompare (listingId){
+    return $(`#toggle-compare-${listingId}`);
+  }
 }
 
 export default CompareWidgetComponent;

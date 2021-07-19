@@ -3,21 +3,24 @@ import Hooks from '../../../../utilities/hooks';
 import CqmComponent from './cqm.po';
 
 let cqm;
-let hooks; 
+let hooks;
 let page;
 
-describe('the Listing page', () => {
+beforeEach(async () => {
+  page = new ListingPage();
+  hooks = new Hooks();
+  cqm = new CqmComponent();
+});
+
+describe('the 2015 listing page', () => {
   beforeEach(async () => {
-    page = new ListingPage();
-    hooks = new Hooks();
-    cqm = new CqmComponent();
     hooks.open('#/listing/9833');
-    await hooks.waitForSpinnerToDisappear();
+    hooks.waitForSpinnerToDisappear();
+    cqm.cqmHeader.scrollIntoView();
+    cqm.expandCqm();
   });
 
   it('should show attested CQMs', () => {
-    cqm.cqmHeader.scrollIntoView();
-    cqm.expandCqm();
     expect(cqm.cqmCount()).toBeGreaterThan(10);
   });
 
@@ -27,8 +30,30 @@ describe('the Listing page', () => {
     });
 
     it('should display all cqms', () => {
-      cqm.cqmHeader.scrollIntoView();
-      cqm.expandCqm();
+      expect(cqm.cqmCount()).toBe(100);
+    });
+  });
+});
+
+describe('the 2014 listing page', () => {
+  beforeEach(async () => {
+    hooks.open('#/listing/8490');
+    hooks.waitForSpinnerToAppear();
+    hooks.waitForSpinnerToDisappear();
+    cqm.cqmHeader.scrollIntoView();
+    cqm.expandCqm();
+  });
+
+  it('should show attested CQMs', () => {
+    expect(cqm.cqmCount()).toBeGreaterThan(8);
+  });
+
+  describe('when clicked on see all cqms', () => {
+    beforeEach(async () => {
+      page.seeAll.scrollAndClick();
+    });
+
+    it('should display all cqms', () => {
       expect(cqm.cqmCount()).toBe(100);
     });
   });
