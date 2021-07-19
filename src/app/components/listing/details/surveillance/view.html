@@ -83,7 +83,6 @@
                   <th scope="col"><a href uib-tooltip="The date that the corrective action was started." tooltip-trigger="'mouseenter focus click'">Date Corrective Action Began</a></th>
                   <th scope="col"><a href uib-tooltip="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status." tooltip-trigger="'mouseenter focus click'">Date Corrective Action Must Be Completed</a></th>
                   <th scope="col"><a href uib-tooltip="The date that the corrective action was completed." tooltip-trigger="'mouseenter focus click'">Date Corrective Action Was Completed</a></th>
-                  <th scope="col"><a href uib-tooltip="The date that the non-conformity was closed." tooltip-trigger="'mouseenter focus click'">Date Non-Conformity Was Closed</a></th>
                 </tr>
               </thead>
               <tbody>
@@ -98,8 +97,6 @@
                   <td ng-if="!noncon.capMustCompleteDate">N/A</td>
                   <td ng-if="noncon.capEndDate">{{ noncon.capEndDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.capEndDate">N/A</td>
-                  <td ng-if="noncon.nonconformityCloseDate">{{ noncon.nonconformityCloseDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td ng-if="!noncon.nonconformityCloseDate">N/A</td>
                 </tr>
               </tbody>
             </table>
@@ -119,6 +116,10 @@
                 <tr>
                   <th scope="row"><a href uib-tooltip="For non-conformities related to specific regulatory references (e.g. certified capabilities, disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l)). If the non-conformity type is designated as 'Other Non-Conformity', then the associated non-conformity does not have a relevant regulatory reference." tooltip-trigger="'mouseenter focus click'">Non-Conformity Type</a></th>
                   <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a href uib-tooltip="Whether the non-conformity is open or closed (has been resolved)." tooltip-trigger="'mouseenter focus click'">Non-Conformity Status</a></th>
+                  <td>{{ noncon.nonconformityStatus }}</td>
                 </tr>
                 <tr ng-if="surv.type.name === 'Randomized'">
                   <th scope="row"><a href uib-tooltip="Pass rates only apply to non-conformities found as a result of random surveillance. The numerator for the pass rate is the number of sites for each criterion that passed randomized surveillance for the Health IT module being evaluated. The denominator is the total number of sites for which randomized surveillance was conducted on the Health IT module." tooltip-trigger="'mouseenter focus click'">Pass Rate</a></th>
