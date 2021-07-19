@@ -82,6 +82,12 @@ const validationSchema = yup.object({
       (value, context) => (!!value || context.parent.complainantType?.name !== 'Other - [Please Describe]')),
   summary: yup.string()
     .required('Complaint Summary is required'),
+  actions: yup.string()
+    .when('closedDate', {
+      is: (closedDate) => closedDate,
+      then: yup.string().required('Actions/Response is required.'),
+      otherwise: yup.string(),
+    }),
 });
 
 function ChplComplaintEdit(props) {
@@ -333,7 +339,7 @@ function ChplComplaintEdit(props) {
             )}
           <div className={classes.content}>
             <div className={classes.dataEntry}>
-              <Typography variant="subtitle1">Complaint Info</Typography>
+              <Typography variant="subtitle1">General Info</Typography>
               <ChplTextField
                 type="date"
                 id="received-date"
@@ -378,9 +384,6 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
                 helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
               />
-            </div>
-            <div className={classes.dataEntry}>
-              <Typography variant="subtitle1">Description</Typography>
               <ChplTextField
                 select
                 id="complainant-type"
@@ -399,18 +402,21 @@ function ChplComplaintEdit(props) {
               </ChplTextField>
               { formik.values.complainantType.name === 'Other - [Please Describe]'
                 && (
-                  <ChplTextField
-                    id="complainant-type-other"
-                    name="complainantTypeOther"
-                    label="Complainant Type - Other Description"
-                    required
-                    value={formik.values.complainantTypeOther}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.complainantTypeOther && !!formik.errors.complainantTypeOther}
-                    helperText={formik.touched.complainantTypeOther && formik.errors.complainantTypeOther}
-                  />
+                <ChplTextField
+                  id="complainant-type-other"
+                  name="complainantTypeOther"
+                  label="Complainant Type - Other Description"
+                  required
+                  value={formik.values.complainantTypeOther}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.complainantTypeOther && !!formik.errors.complainantTypeOther}
+                  helperText={formik.touched.complainantTypeOther && formik.errors.complainantTypeOther}
+                />
                 )}
+            </div>
+            <div className={classes.dataEntry}>
+              <Typography variant="subtitle1">Summary and Actions</Typography>
               <ChplTextField
                 id="summary"
                 name="summary"
@@ -423,30 +429,41 @@ function ChplComplaintEdit(props) {
                 error={formik.touched.summary && !!formik.errors.summary}
                 helperText={formik.touched.summary && formik.errors.summary}
               />
+              <ChplTextField
+                id="actions"
+                name="actions"
+                label="Actions/Response"
+                multiline
+                value={formik.values.actions}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.actions && !!formik.errors.actions}
+                helperText={formik.touched.actions && formik.errors.actions}
+              />
             </div>
             <div className={classes.dataEntry}>
-              <Typography variant="subtitle1">Associated Components</Typography>
+              <Typography variant="subtitle1">Review Info</Typography>
 
               {complaint.criteria?.length > 0
-               && (
-                 <>
-                   <Typography>Associated Criteria</Typography>
-                   <ul className={classes.chips}>
-                     {complaint.criteria
-                       .map((criterion) => (
-                         <li key={criterion.certificationCriterion.id}>
-                           <Chip
-                             label={`${(criterion.certificationCriterion.removed ? 'Removed | ' : '') + criterion.certificationCriterion.number}: ${criterion.certificationCriterion.title}`}
-                             onDelete={() => removeAssociatedCriterion(criterion)}
-                             className={classes.chip}
-                             color="primary"
-                             variant="outlined"
-                           />
-                         </li>
-                       ))}
-                   </ul>
-                 </>
-               )}
+           && (
+           <>
+             <Typography>Associated Criteria</Typography>
+             <ul className={classes.chips}>
+               {complaint.criteria
+                 .map((criterion) => (
+                   <li key={criterion.certificationCriterion.id}>
+                     <Chip
+                       label={`${(criterion.certificationCriterion.removed ? 'Removed | ' : '') + criterion.certificationCriterion.number}: ${criterion.certificationCriterion.title}`}
+                       onDelete={() => removeAssociatedCriterion(criterion)}
+                       className={classes.chip}
+                       color="primary"
+                       variant="outlined"
+                     />
+                   </li>
+                 ))}
+             </ul>
+           </>
+           )}
               <ChplTextField
                 select
                 id="criteria"
@@ -478,25 +495,25 @@ function ChplComplaintEdit(props) {
               </ChplTextField>
 
               {complaint.listings?.length > 0
-               && (
-                 <>
-                   <Typography>Associated Listings</Typography>
-                   <ul className={classes.chips}>
-                     {complaint.listings
-                       .map((listing) => (
-                         <li key={listing.id}>
-                           <Chip
-                             label={listing.chplProductNumber}
-                             onDelete={() => removeAssociatedListing(listing)}
-                             className={classes.chip}
-                             color="primary"
-                             variant="outlined"
-                           />
-                         </li>
-                       ))}
-                   </ul>
-                 </>
-               )}
+           && (
+           <>
+             <Typography>Associated Listings</Typography>
+             <ul className={classes.chips}>
+               {complaint.listings
+                 .map((listing) => (
+                   <li key={listing.id}>
+                     <Chip
+                       label={listing.chplProductNumber}
+                       onDelete={() => removeAssociatedListing(listing)}
+                       className={classes.chip}
+                       color="primary"
+                       variant="outlined"
+                     />
+                   </li>
+                 ))}
+             </ul>
+           </>
+           )}
               { /* eslint-disable react/jsx-props-no-spreading */ }
               <Autocomplete
                 id="listings"
@@ -513,56 +530,44 @@ function ChplComplaintEdit(props) {
               />
               { /* eslint-enable react/jsx-props-no-spreading */ }
               {complaint.surveillances?.length > 0
-               && (
-                 <>
-                   <Typography>Associated Surveillance Activities</Typography>
-                   <ul className={classes.chips}>
-                     {complaint.surveillances
-                       .map((surveillance) => (
-                         <li key={surveillance.id}>
-                           <Chip
-                             label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
-                             onDelete={() => removeAssociatedSurveillance(surveillance)}
-                             className={classes.chip}
-                             color="primary"
-                             variant="outlined"
-                           />
-                         </li>
-                       ))}
-                   </ul>
-                 </>
-               )}
+           && (
+           <>
+             <Typography>Associated Surveillance Activities</Typography>
+             <ul className={classes.chips}>
+               {complaint.surveillances
+                 .map((surveillance) => (
+                   <li key={surveillance.id}>
+                     <Chip
+                       label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
+                       onDelete={() => removeAssociatedSurveillance(surveillance)}
+                       className={classes.chip}
+                       color="primary"
+                       variant="outlined"
+                     />
+                   </li>
+                 ))}
+             </ul>
+           </>
+           )}
               {surveillances.length > 0
-               && (
-                 <ChplTextField
-                   select
-                   id="surveillances"
-                   name="surveillances"
-                   label="Add Associated Surveillance Activity"
-                   value={surveillanceToAdd}
-                   onChange={addAssociatedSurveillance}
-                 >
-                   {surveillances
-                     .map((item) => (
-                       <MenuItem value={item} key={item.id}>{`${item.chplProductNumber}: ${item.friendlyId}`}</MenuItem>
-                     ))}
-                 </ChplTextField>
-               )}
-
-              <ChplTextField
-                id="actions"
-                name="actions"
-                label="Actions/Response"
-                multiline
-                value={formik.values.actions}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.actions && !!formik.errors.actions}
-                helperText={formik.touched.actions && formik.errors.actions}
-              />
+                && (
+                  <ChplTextField
+                    select
+                    id="surveillances"
+                    name="surveillances"
+                    label="Add Associated Surveillance Activity"
+                    value={surveillanceToAdd}
+                    onChange={addAssociatedSurveillance}
+                  >
+                    {surveillances
+                      .map((item) => (
+                        <MenuItem value={item} key={item.id}>{`${item.chplProductNumber}: ${item.friendlyId}`}</MenuItem>
+                      ))}
+                  </ChplTextField>
+                )}
             </div>
             <div className={classes.dataEntry}>
-              <Typography variant="subtitle1">Follow-Up</Typography>
+              <Typography variant="subtitle1">Parties Contacted</Typography>
               <FormControlLabel
                 control={(
                   <Switch
@@ -572,7 +577,7 @@ function ChplComplaintEdit(props) {
                     checked={formik.values.complainantContacted}
                     onChange={formik.handleChange}
                   />
-                )}
+            )}
                 label="Complainant Contacted"
               />
               <FormControlLabel
@@ -584,7 +589,7 @@ function ChplComplaintEdit(props) {
                     checked={formik.values.developerContacted}
                     onChange={formik.handleChange}
                   />
-                )}
+            )}
                 label="Developer Contacted"
               />
               <FormControlLabel
@@ -596,7 +601,7 @@ function ChplComplaintEdit(props) {
                     checked={formik.values.oncAtlContacted}
                     onChange={formik.handleChange}
                   />
-                )}
+            )}
                 label="ONC-Atl Contacted"
               />
               <FormControlLabel
@@ -608,7 +613,7 @@ function ChplComplaintEdit(props) {
                     checked={formik.values.flagForOncReview}
                     onChange={formik.handleChange}
                   />
-                )}
+            )}
                 label="Informed ONC per &sect;170.523(s)"
               />
             </div>

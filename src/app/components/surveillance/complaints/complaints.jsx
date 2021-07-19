@@ -21,7 +21,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplSortableHeaders } from '../../util';
+import { ChplEllipsis, ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -158,7 +158,9 @@ function ChplComplaints(props) {
                   </TableCell>
                   <TableCell>{complaint.receivedDate}</TableCell>
                   <TableCell>{complaint.acbComplaintId}</TableCell>
-                  <TableCell>{complaint.oncComplaintId}</TableCell>
+                  <TableCell>
+                    { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
+                  </TableCell>
                   <TableCell>{complaint.complainantTypeName}</TableCell>
                   <TableCell>
                     <ButtonGroup

@@ -135,6 +135,23 @@ describe('the ChplComplaintEdit component', () => {
           expect(screen.queryByText('Closed Date must be after Received Date')).toBeInTheDocument();
         });
       });
+
+      it('should require actions/response when closed date is populated', async () => {
+        userEvent.type(screen.getByLabelText(/Closed Date/i), '2021-03-16');
+        userEvent.click(screen.getByRole('button', { name: /Save/i }));
+
+        await waitFor(() => {
+          expect(screen.queryByText('Actions/Response is required.')).toBeInTheDocument();
+        });
+      });
+
+      it('should not require actions/response when closed date is not populated', async () => {
+        userEvent.click(screen.getByRole('button', { name: /Save/i }));
+
+        await waitFor(() => {
+          expect(screen.queryByText('Actions/Response is required.')).not.toBeInTheDocument();
+        });
+      });
     });
 
     describe('when adding things', () => {
