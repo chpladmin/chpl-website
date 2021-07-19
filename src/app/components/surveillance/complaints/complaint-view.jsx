@@ -65,17 +65,18 @@ function ChplComplaintView(props) {
     <ThemeProvider theme={theme}>
       <Card>
         <CardHeader
-          title="Viewing Compliant"
+          title="View Compliant"
           subheader={complaint.acbComplaintId}
         />
         <CardContent>
           <Typography variant="h5">
             ONC-ACB:
-            {complaint.certificationBody?.name}
+            {' '}
+            {complaint.certificationBody.name}
           </Typography>
           <div className={classes.content}>
             <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Complaint Info</Typography>
+              <Typography variant="subtitle1">General Info</Typography>
               <Typography variant="subtitle2">
                 Received Date:
               </Typography>
@@ -100,72 +101,32 @@ function ChplComplaintView(props) {
               <Typography>
                 {complaint.oncComplaintId}
               </Typography>
-            </div>
-            <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Description</Typography>
               <Typography variant="subtitle2">
                 Complainant Type:
               </Typography>
               <Typography>
                 {complaint.complainantType?.name}
               </Typography>
-              <Typography variant="subtitle2">
-                Complainant Type (Other):
-              </Typography>
-              <Typography>
-                {complaint.complainantTypeOther}
-              </Typography>
+              {complaint.complainantType?.name === 'Other - [Please Describe]'
+               && (
+                 <>
+                   <Typography variant="subtitle2">
+                     Complainant Type (Other):
+                   </Typography>
+                   <Typography>
+                     {complaint.complainantTypeOther}
+                   </Typography>
+                 </>
+               )}
+            </div>
+            <div className={classes.dataContent}>
+              <Typography variant="subtitle1">Summary and Actions</Typography>
               <Typography variant="subtitle2">
                 Complaint Summary:
               </Typography>
               <Typography>
                 {complaint.summary}
               </Typography>
-            </div>
-            <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Associated Components</Typography>
-              <Typography variant="subtitle2">
-                Associated Criteria:
-              </Typography>
-              {complaint.criteria?.length > 0
-                ? (
-                  <ul>
-                    {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
-                  </ul>
-            )
-                : (
-                  <Typography>
-                    None
-                  </Typography>
-            )}
-              <Typography variant="subtitle2">
-                Associated Certified Products:
-              </Typography>
-              {complaint.listings?.length > 0
-                ? (
-                  <ul>
-                    {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
-                  </ul>
-            )
-                : (
-                  <Typography>
-                    None
-                  </Typography>
-            )}
-              <Typography variant="subtitle2">
-                Associated Surveillance Activities:
-              </Typography>
-              {complaint.surveillances?.length > 0
-                ? (
-                  <ul>
-                    {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
-                  </ul>
-            )
-                : (
-                  <Typography>
-                    None
-                  </Typography>
-            )}
               <Typography variant="subtitle2">
                 Actions/Responses:
               </Typography>
@@ -174,7 +135,52 @@ function ChplComplaintView(props) {
               </Typography>
             </div>
             <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Follow-Up</Typography>
+              <Typography variant="subtitle1">Review Info</Typography>
+              <Typography variant="subtitle2">
+                Associated Criteria:
+              </Typography>
+              {complaint.criteria?.length > 0
+                ? (
+                  <ul>
+                    {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
+                  </ul>
+               )
+                : (
+                  <Typography>
+                    None
+                  </Typography>
+               )}
+              <Typography variant="subtitle2">
+                Associated Listings:
+              </Typography>
+              {complaint.listings?.length > 0
+                ? (
+                  <ul>
+                    {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
+                  </ul>
+               )
+                : (
+                  <Typography>
+                    None
+                  </Typography>
+               )}
+              <Typography variant="subtitle2">
+                Associated Surveillance Activities:
+              </Typography>
+              {complaint.surveillances?.length > 0
+                ? (
+                  <ul>
+                    {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
+                  </ul>
+               )
+                : (
+                  <Typography>
+                    None
+                  </Typography>
+               )}
+            </div>
+            <div className={classes.dataContent}>
+              <Typography variant="subtitle1">Parties Contacted</Typography>
               <Typography variant="subtitle2">
                 Complainant Contacted:
               </Typography>
