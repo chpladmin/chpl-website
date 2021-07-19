@@ -144,12 +144,12 @@ function ChplComplaintView(props) {
                   <ul>
                     {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
                   </ul>
-            )
+               )
                 : (
                   <Typography>
                     None
                   </Typography>
-            )}
+               )}
               <Typography variant="subtitle2">
                 Associated Listings:
               </Typography>
@@ -158,12 +158,12 @@ function ChplComplaintView(props) {
                   <ul>
                     {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
                   </ul>
-            )
+               )
                 : (
                   <Typography>
                     None
                   </Typography>
-            )}
+               )}
               <Typography variant="subtitle2">
                 Associated Surveillance Activities:
               </Typography>
@@ -172,12 +172,12 @@ function ChplComplaintView(props) {
                   <ul>
                     {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
                   </ul>
-            )
+               )
                 : (
                   <Typography>
                     None
                   </Typography>
-            )}
+               )}
             </div>
             <div className={classes.dataContent}>
               <Typography variant="subtitle1">Parties Contacted</Typography>
