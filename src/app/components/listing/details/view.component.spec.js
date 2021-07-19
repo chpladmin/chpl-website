@@ -11,6 +11,7 @@
     beforeEach(() => {
       angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
         $provide.factory('aiSedDirective', () => ({}));
+        $provide.factory('chplCertificationCriteriaDirective', () => ({}));
         $provide.factory('chplCriteriaBridgeDirective', () => ({}));
         $provide.decorator('networkService', ($delegate) => ({ ...$delegate, getSurveillanceLookups: jasmine.createSpy('getSurveillanceLookups') }));
       });
