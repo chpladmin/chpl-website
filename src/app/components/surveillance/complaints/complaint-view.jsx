@@ -4,6 +4,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardHeader,
   ThemeProvider,
   Typography,
   makeStyles,
@@ -17,9 +18,22 @@ import { getAngularService } from '../../../services/angular-react-helper';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
-  container: {
+  content: {
     display: 'grid',
-    gridTemplateColumns: '1fr 5fr',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'start',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '2fr 2fr',
+    },
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+  },
+  dataContent: {
+    display: 'grid',
+    gap: '4px',
+    marginTop: '16px',
   },
 }));
 
@@ -50,127 +64,143 @@ function ChplComplaintView(props) {
   return (
     <ThemeProvider theme={theme}>
       <Card>
-        <CardContent className={classes.container}>
-          <Typography>
+        <CardHeader
+          title="Viewing Compliant"
+          subheader={complaint.acbComplaintId}
+        />
+        <CardContent>
+          <Typography variant="h5">
             ONC-ACB:
-          </Typography>
-          <Typography>
             {complaint.certificationBody?.name}
           </Typography>
-          <Typography>
-            Received Date:
-          </Typography>
-          <Typography>
-            {complaint.receivedDate}
-          </Typography>
-          <Typography>
-            Closed Date:
-          </Typography>
-          <Typography>
-            {complaint.closedDate}
-          </Typography>
-          <Typography>
-            ONC-ACB Complaint ID:
-          </Typography>
-          <Typography>
-            {complaint.acbComplaintId}
-          </Typography>
-          <Typography>
-            ONC Complaint ID:
-          </Typography>
-          <Typography>
-            {complaint.oncComplaintId}
-          </Typography>
-          <Typography>
-            Complainant Type:
-          </Typography>
-          <Typography>
-            {complaint.complainantType?.name}
-          </Typography>
-          <Typography>
-            Complainant Type (Other):
-          </Typography>
-          <Typography>
-            {complaint.complainantTypeOther}
-          </Typography>
-          <Typography>
-            Complaint Summary:
-          </Typography>
-          <Typography>
-            {complaint.summary}
-          </Typography>
-          <Typography>
-            Associated Criteria:
-          </Typography>
-          {complaint.criteria?.length > 0
-            ? (
-              <ul>
-                {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
-              </ul>
-           )
-            : (
-              <Typography>
-                None
+          <div className={classes.content}>
+            <div className={classes.dataContent}>
+              <Typography variant="subtitle1">Complaint Info</Typography>
+              <Typography variant="subtitle2">
+                Received Date:
               </Typography>
-           )}
-          <Typography>
-            Actions/Responses:
-          </Typography>
-          <Typography>
-            {complaint.actions}
-          </Typography>
-          <Typography>
-            Associated Certified Products:
-          </Typography>
-          {complaint.listings?.length > 0
-            ? (
-              <ul>
-                {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
-              </ul>
-           )
-            : (
               <Typography>
-                None
+                {complaint.receivedDate}
               </Typography>
-           )}
-          <Typography>
-            Associated Surveillance Activities:
-          </Typography>
-          {complaint.surveillances?.length > 0
-            ? (
-              <ul>
-                {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
-              </ul>
-           )
-            : (
+              <Typography variant="subtitle2">
+                Closed Date:
+              </Typography>
               <Typography>
-                None
+                {complaint.closedDate}
               </Typography>
-           )}
-          <Typography>
-            Complainant Contacted:
-          </Typography>
-          <Typography>
-            {complaint.complainantContacted ? 'Yes' : 'No'}
-          </Typography>
-          <Typography>
-            Developer Contacted:
-          </Typography>
-          <Typography>
-            {complaint.developerContacted ? 'Yes' : 'No'}
-          </Typography>
-          <Typography>
-            ONC-ATL Contacted:
-          </Typography>
-          <Typography>
-            {complaint.oncAtlContacted ? 'Yes' : 'No'}
-          </Typography>
-          <Typography>
-            Informed ONC per &sect;170.523(s):
-          </Typography>
-          <Typography>
-            {complaint.flagForOncReview ? 'Yes' : 'No'}
-          </Typography>
+              <Typography variant="subtitle2">
+                ONC-ACB Complaint ID:
+              </Typography>
+              <Typography>
+                {complaint.acbComplaintId}
+              </Typography>
+              <Typography variant="subtitle2">
+                ONC Complaint ID:
+              </Typography>
+              <Typography>
+                {complaint.oncComplaintId}
+              </Typography>
+            </div>
+            <div className={classes.dataContent}>
+              <Typography variant="subtitle1">Description</Typography>
+              <Typography variant="subtitle2">
+                Complainant Type:
+              </Typography>
+              <Typography>
+                {complaint.complainantType?.name}
+              </Typography>
+              <Typography variant="subtitle2">
+                Complainant Type (Other):
+              </Typography>
+              <Typography>
+                {complaint.complainantTypeOther}
+              </Typography>
+              <Typography variant="subtitle2">
+                Complaint Summary:
+              </Typography>
+              <Typography>
+                {complaint.summary}
+              </Typography>
+            </div>
+            <div className={classes.dataContent}>
+              <Typography variant="subtitle1">Associated Components</Typography>
+              <Typography variant="subtitle2">
+                Associated Criteria:
+              </Typography>
+              {complaint.criteria?.length > 0
+                ? (
+                  <ul>
+                    {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
+                  </ul>
+            )
+                : (
+                  <Typography>
+                    None
+                  </Typography>
+            )}
+              <Typography variant="subtitle2">
+                Associated Certified Products:
+              </Typography>
+              {complaint.listings?.length > 0
+                ? (
+                  <ul>
+                    {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
+                  </ul>
+            )
+                : (
+                  <Typography>
+                    None
+                  </Typography>
+            )}
+              <Typography variant="subtitle2">
+                Associated Surveillance Activities:
+              </Typography>
+              {complaint.surveillances?.length > 0
+                ? (
+                  <ul>
+                    {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
+                  </ul>
+            )
+                : (
+                  <Typography>
+                    None
+                  </Typography>
+            )}
+              <Typography variant="subtitle2">
+                Actions/Responses:
+              </Typography>
+              <Typography>
+                {complaint.actions}
+              </Typography>
+            </div>
+            <div className={classes.dataContent}>
+              <Typography variant="subtitle1">Follow-Up</Typography>
+              <Typography variant="subtitle2">
+                Complainant Contacted:
+              </Typography>
+              <Typography>
+                {complaint.complainantContacted ? 'Yes' : 'No'}
+              </Typography>
+              <Typography variant="subtitle2">
+                Developer Contacted:
+              </Typography>
+              <Typography>
+                {complaint.developerContacted ? 'Yes' : 'No'}
+              </Typography>
+              <Typography variant="subtitle2">
+                ONC-ATL Contacted:
+              </Typography>
+              <Typography>
+                {complaint.oncAtlContacted ? 'Yes' : 'No'}
+              </Typography>
+              <Typography variant="subtitle2">
+                Informed ONC per &sect;170.523(s):
+              </Typography>
+              <Typography>
+                {complaint.flagForOncReview ? 'Yes' : 'No'}
+              </Typography>
+            </div>
+          </div>
         </CardContent>
         <CardActions>
           <Button

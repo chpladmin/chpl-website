@@ -40,29 +40,18 @@ const useStyles = makeStyles(() => ({
     gap: '16px',
     gridTemplateColumns: '1fr',
     alignItems: 'start',
-    [theme.breakpoints.up('xs')]: {
-      gridTemplateColumns: '1fr',
-    },
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '2fr 2fr',
     },
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
     },
-    [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
-    },
-    [theme.breakpoints.up('xl')]: {
-      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
-    },
   },
-
   dataEntry: {
     display: 'grid',
     gap: '16px 8px',
     marginTop: '16px',
   },
-
   chips: {
     display: 'flex',
     flexWrap: 'wrap',
