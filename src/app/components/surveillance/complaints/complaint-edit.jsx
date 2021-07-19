@@ -70,6 +70,12 @@ const validationSchema = yup.object({
       (value, context) => (!!value || context.parent.complainantType?.name !== 'Other - [Please Describe]')),
   summary: yup.string()
     .required('Complaint Summary is required'),
+  actions: yup.string()
+    .when('closedDate', {
+      is: (closedDate) => closedDate,
+      then: yup.string().required('Actions/Response is required.'),
+      otherwise: yup.string(),
+    }),
 });
 
 function ChplComplaintEdit(props) {
