@@ -7,7 +7,7 @@ function ChplEllipsis(props) {
   const [isShortened, setShortened] = useState(true);
   const { text, wordBoundaries, maxLength } = props;
 
-  if (text) {
+  if (!text) {
     return null;
   }
 
