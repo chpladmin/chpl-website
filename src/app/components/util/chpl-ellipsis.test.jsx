@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { ChplEllipsis } from './chpl-ellipsis';
+import ChplEllipsis from './chpl-ellipsis';
 
 describe('the ChplEllipsis component', () => {
   afterEach(() => {

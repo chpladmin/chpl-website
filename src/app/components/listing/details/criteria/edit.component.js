@@ -49,6 +49,7 @@ const CertificationCriteriaEditComponent = {
       this.selectedTestProcedureKeys = this.getSelectedTestProcedureKeys();
       this.selectedOptionalStandardKeys = this.getSelectedOptionalStandardKeys();
       this.selectedTestStandardKeys = this.getSelectedTestStandardKeys();
+      this.newOptionalStandards = this.getNewOptionalStandards();
       this.newTestStandards = this.getNewTestStandards();
       this.selectedTestToolKeys = this.getSelectedTestToolKeys();
       this.sortedTestFunctionalities = this.getSortedTestFunctionalities();
@@ -261,6 +262,15 @@ const CertificationCriteriaEditComponent = {
         this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => keys.find((k) => k.key === ts.id));
       }
       return keys;
+    }
+
+    getNewOptionalStandards() {
+      if (!this.cert.optionalStandards) {
+        return [];
+      }
+      return this.cert.optionalStandards
+        .filter((os) => !os.optionalStandard.id)
+        .map((os) => os.citation);
     }
 
     getNewTestStandards() {
