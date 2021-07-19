@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
-  Chip,
   Paper,
   Table,
   TableBody,
@@ -12,9 +11,13 @@ import {
   TablePagination,
   TableRow,
   ThemeProvider,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, bool, func } from 'prop-types';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
@@ -23,7 +26,23 @@ import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   container: {
-    maxHeight: '40vh',
+    maxHeight: '64vh',
+  },
+  deleteButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+  statusIndicatorOpen: {
+    color: '#66926d',
+  },
+  statusIndicatorClosed: {
+    color: 'rgba(0, 0, 0, 0.87)',
   },
 }));
 
@@ -98,7 +117,6 @@ function ChplComplaints(props) {
       <TableContainer className={classes.container} component={Paper}>
         <Table
           stickyHeader
-          size="small"
           aria-label="Complaints table"
         >
           <ChplSortableHeaders
@@ -109,19 +127,20 @@ function ChplComplaints(props) {
           />
           { props.displayAdd // eslint-disable-line react/destructuring-assignment
             && (
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={headers.length}>
-                  <Button
-                    onClick={() => handleAction('add')}
-                    color="primary"
-                    variant="outlined"
-                  >
-                    Add New Complaint
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableFooter>
+              <TableFooter>
+                <TableRow>
+                  <TableCell colSpan={headers.length - 1} />
+                  <TableCell>
+                    <Button
+                      onClick={() => handleAction('add')}
+                      color="primary"
+                      variant="outlined"
+                    >
+                      Add New Complaint
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
             )}
           <TableBody>
             {complaints
@@ -130,7 +149,12 @@ function ChplComplaints(props) {
                 <TableRow key={complaint.id}>
                   <TableCell>{complaint.acbName}</TableCell>
                   <TableCell>
-                    <Chip color="primary" label={complaint.complaintStatusTypeName} variant={complaint.complaintStatusTypeName === 'Open' ? 'outlined' : 'default'} />
+                    <Typography
+                      variant="subtitle1"
+                      className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
+                    >
+                      {complaint.complaintStatusTypeName}
+                    </Typography>
                   </TableCell>
                   <TableCell>{complaint.receivedDate}</TableCell>
                   <TableCell>{complaint.acbComplaintId}</TableCell>
@@ -141,29 +165,39 @@ function ChplComplaints(props) {
                       color="primary"
                     >
                       { hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF'])
-                        && (
-                        <Button
-                          onClick={() => handleAction('view', complaint)}
-                        >
-                          View
-                        </Button>
-                        )}
+                       && (
+                         <Button
+                           onClick={() => handleAction('view', complaint)}
+                         >
+                           View
+                           {' '}
+                           <VisibilityIcon className={classes.iconSpacing} />
+                         </Button>
+                       )}
                       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                        && (
-                        <Button
-                          onClick={() => handleAction('edit', complaint)}
-                        >
-                          Edit
-                        </Button>
-                        )}
+                       && (
+                         <Button
+                           onClick={() => handleAction('edit', complaint)}
+                           variant="contained"
+                           color="primary"
+                         >
+                           Edit
+                           {' '}
+                           <EditOutlinedIcon className={classes.iconSpacing} />
+                         </Button>
+                       )}
                       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                        && (
-                        <Button
-                          onClick={() => handleAction('delete', complaint)}
-                        >
-                          Delete
-                        </Button>
-                        )}
+                       && (
+                         <Button
+                           onClick={() => handleAction('delete', complaint)}
+                           variant="contained"
+                           className={classes.deleteButton}
+                         >
+                           Delete
+                           {' '}
+                           <DeleteOutlinedIcon className={classes.iconSpacing} />
+                         </Button>
+                       )}
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>
