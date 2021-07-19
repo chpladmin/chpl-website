@@ -25,8 +25,8 @@ const useStyles = makeStyles({
   container: {
     display: 'grid',
     gridGap:'8px',
-    gridTemplateColumns: '1fr 2fr 1fr 1fr',
-    padding:'16px 0px',
+    gridTemplateColumns: '4fr 1fr 1fr',
+    padding:'16px 16px',
     alignItems: 'center',
   },
 });
@@ -40,6 +40,7 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'Infection Control Antimicrobial Use and Resistance Reporting',
       version: 'Epic 2017',
+      status: 'OPEN',
       actions: 'Y | N',
     }, {
       id: 2,
@@ -47,6 +48,7 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'Syndromic Surveillance Reporting',
       version: 'Epic 2017',
+      status: 'OPEN',
       actions: 'Y | N',
     }, {
       id: 3,
@@ -54,6 +56,7 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'Beaker Reportable Labs Reporting',
       version: 'Epic 2017',
+      status: 'OPEN',
       actions: 'Y | N',
     }, {
       id: 4,
@@ -61,6 +64,7 @@ function ChplStyleGuideTable() {
       developer: 'Carefluence',
       product: 'Carefluence Open API',
       version: '1',
+      status: 'OPEN',
       actions: 'Y | N',
     }, {
       id: 5,
@@ -68,6 +72,7 @@ function ChplStyleGuideTable() {
       developer: 'ModuleMD',
       product: 'ModuleMD WISE™',
       version: '9.0',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 6,
@@ -75,6 +80,7 @@ function ChplStyleGuideTable() {
       developer: 'Allscripts',
       product: 'Allscripts TouchWorks EHR',
       version: '17.1',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 7,
@@ -82,6 +88,7 @@ function ChplStyleGuideTable() {
       developer: 'Allscripts',
       product: 'Allscripts Sunrise Acute Care',
       version: '16.3',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 8,
@@ -89,6 +96,7 @@ function ChplStyleGuideTable() {
       developer: 'Allscripts',
       product: 'Allscripts Sunrise Ambulatory Care',
       version: '16.3',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 9,
@@ -96,6 +104,7 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'EpicCare Ambulatory EHR Suite',
       version: 'Epic 2016',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 10,
@@ -103,6 +112,7 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'EpicCare Inpatient EHR Suite',
       version: 'Epic 2016',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 11,
@@ -110,6 +120,7 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'Beacon Cancer Registry Reporting',
       version: 'Epic 2017',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 12,
@@ -117,6 +128,7 @@ function ChplStyleGuideTable() {
       developer: 'Dynamic Health IT, Inc',
       product: 'CQMsolution',
       version: '3.0',
+      status: 'CLOSED',
       actions: 'Y | N',
     }, {
       id: 3,
@@ -124,6 +136,7 @@ function ChplStyleGuideTable() {
       developer: 'Epic Systems Corporation',
       product: 'Beaker Reportable Labs Reporting',
       version: 'Epic 2015',
+      status: 'CLOSED',
       actions: 'Y | N',
     },
   ]);
@@ -133,6 +146,7 @@ function ChplStyleGuideTable() {
     { text: 'Developer', property: 'developer', sortable: true },
     { text: 'Product', property: 'product', sortable: true },
     { text: 'Version', property: 'version', sortable: true },
+    { text: 'Status', property: 'status', sortable: true },
     { text: 'Actions', property: 'actions', sortable: true },
   ];
 
@@ -156,10 +170,8 @@ function ChplStyleGuideTable() {
   return (
     <div>
     <TableContainer component={Paper}>
-    <Container>
     <div className={classes.container}>
     <Typography variant="h5">Title of Table</Typography>
-    <Typography>search bar should go here</Typography>
     <Button size="medium" color="primary" variant="outlined">Download
     <GetAppIcon/>
     </Button>
@@ -167,7 +179,6 @@ function ChplStyleGuideTable() {
     <PlaylistAddIcon/>
     </Button>
     </div>
-    </Container>
       <Table>
         <ChplSortableHeaders
           headers={headers}
@@ -181,6 +192,7 @@ function ChplStyleGuideTable() {
                 <TableCell>{ listing.developer }</TableCell>
                 <TableCell>{ listing.product }</TableCell>
                 <TableCell>{ listing.version }</TableCell>
+                <TableCell>{ listing.status }</TableCell>
                 <TableCell>{ listing.actions }</TableCell>
               </TableRow>
             ))}

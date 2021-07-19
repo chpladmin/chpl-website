@@ -74,6 +74,9 @@ const theme = createMuiTheme({
       rounded: {
         borderRadius: '8px',
       },
+      elevation1:{
+        boxShadow:'0px 4px 8px rgb(149 157 165 / 10%)',
+      }
     },
     MuiButton: {
       root: {
