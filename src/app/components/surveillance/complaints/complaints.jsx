@@ -46,6 +46,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const headers = [
   { property: 'acbName', text: 'ONC-ACB', sortable: true },
   { property: 'complaintStatusTypeName', text: 'Status', sortable: true },
@@ -124,7 +125,7 @@ function ChplComplaints(props) {
             orderBy="receivedDate"
             order="desc"
           />
-          { props.displayAdd
+          { props.displayAdd // eslint-disable-line react/destructuring-assignment
             && (
               <TableFooter>
                 <TableRow>
