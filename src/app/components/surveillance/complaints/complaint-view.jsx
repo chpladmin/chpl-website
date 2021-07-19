@@ -65,17 +65,18 @@ function ChplComplaintView(props) {
     <ThemeProvider theme={theme}>
       <Card>
         <CardHeader
-          title="Viewing Compliant"
+          title="View Compliant"
           subheader={complaint.acbComplaintId}
         />
         <CardContent>
           <Typography variant="h5">
             ONC-ACB:
-            {complaint.certificationBody?.name}
+            {' '}
+            {complaint.certificationBody.name}
           </Typography>
           <div className={classes.content}>
             <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Complaint Info</Typography>
+              <Typography variant="subtitle1">General Info</Typography>
               <Typography variant="subtitle2">
                 Received Date:
               </Typography>
@@ -100,30 +101,41 @@ function ChplComplaintView(props) {
               <Typography>
                 {complaint.oncComplaintId}
               </Typography>
-            </div>
-            <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Description</Typography>
               <Typography variant="subtitle2">
                 Complainant Type:
               </Typography>
               <Typography>
                 {complaint.complainantType?.name}
               </Typography>
-              <Typography variant="subtitle2">
-                Complainant Type (Other):
-              </Typography>
-              <Typography>
-                {complaint.complainantTypeOther}
-              </Typography>
+              {complaint.complainantType?.name === 'Other - [Please Describe]'
+               && (
+                 <>
+                   <Typography variant="subtitle2">
+                     Complainant Type (Other):
+                   </Typography>
+                   <Typography>
+                     {complaint.complainantTypeOther}
+                   </Typography>
+                 </>
+               )}
+            </div>
+            <div className={classes.dataContent}>
+              <Typography variant="subtitle1">Summary and Actions</Typography>
               <Typography variant="subtitle2">
                 Complaint Summary:
               </Typography>
               <Typography>
                 {complaint.summary}
               </Typography>
+              <Typography variant="subtitle2">
+                Actions/Responses:
+              </Typography>
+              <Typography>
+                {complaint.actions}
+              </Typography>
             </div>
             <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Associated Components</Typography>
+              <Typography variant="subtitle1">Review Info</Typography>
               <Typography variant="subtitle2">
                 Associated Criteria:
               </Typography>
@@ -139,7 +151,7 @@ function ChplComplaintView(props) {
                   </Typography>
             )}
               <Typography variant="subtitle2">
-                Associated Certified Products:
+                Associated Listings:
               </Typography>
               {complaint.listings?.length > 0
                 ? (
@@ -166,15 +178,9 @@ function ChplComplaintView(props) {
                     None
                   </Typography>
             )}
-              <Typography variant="subtitle2">
-                Actions/Responses:
-              </Typography>
-              <Typography>
-                {complaint.actions}
-              </Typography>
             </div>
             <div className={classes.dataContent}>
-              <Typography variant="subtitle1">Follow-Up</Typography>
+              <Typography variant="subtitle1">Parties Contacted</Typography>
               <Typography variant="subtitle2">
                 Complainant Contacted:
               </Typography>
