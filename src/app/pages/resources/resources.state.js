@@ -46,6 +46,13 @@ const states = [
     component: 'chplStyleGuideBridge',
     data: {
       title: 'CHPL Style Guide',
+    },
+  }, {
+    name: 'attestations',
+    url: '/attestations',
+    component: 'chplAttestationsBridge',
+    data: {
+      title: 'CHPL Attestations',
       roles: ['ROLE_ADMIN'],
     },
   },
