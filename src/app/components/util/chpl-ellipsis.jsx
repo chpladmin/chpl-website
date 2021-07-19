@@ -5,9 +5,9 @@ import ChplTooltip from './chpl-tooltip';
 
 function ChplEllipsis(props) {
   const [isShortened, setShortened] = useState(true);
-  const {text, wordBoundaries, maxLength} = props;
+  const { text, wordBoundaries, maxLength } = props;
 
-  if (!props.text) {
+  if (text) {
     return null;
   }
 
@@ -30,7 +30,7 @@ function ChplEllipsis(props) {
       {display !== text && isShortened
        && (
          <ChplTooltip title={text}>
-           <button className="btn btn-link btn-xs" onClick={() => setShortened(false)}>
+           <button type="button" className="btn btn-link btn-xs" onClick={() => setShortened(false)}>
              <i className="fa fa-ellipsis-h" />
              <span className="sr-only">Expand description</span>
            </button>
@@ -38,7 +38,7 @@ function ChplEllipsis(props) {
        )}
       {display !== text && !isShortened
        && (
-         <button className="btn btn-link btn-xs" onClick={() => setShortened(true)}>
+         <button type="button" className="btn btn-link btn-xs" onClick={() => setShortened(true)}>
            <i className="fa fa-arrow-left" />
            <span className="sr-only">Minimize description</span>
          </button>
@@ -47,7 +47,7 @@ function ChplEllipsis(props) {
   );
 }
 
-export { ChplEllipsis };
+export default ChplEllipsis;
 
 ChplEllipsis.propTypes = {
   text: string.isRequired,
@@ -58,4 +58,4 @@ ChplEllipsis.propTypes = {
 ChplEllipsis.defaultProps = {
   maxLength: 80,
   wordBoundaries: false,
-}
+};
