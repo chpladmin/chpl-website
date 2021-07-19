@@ -154,9 +154,7 @@ const SurveillanceComplaintsComponent = {
             updated.acbName = complaint.certificationBody.name;
             updated.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
             updated.complainantTypeName = complaint.complainantType.name;
-            updated.filterText = `${complaint.oncComplaintId}|${complaint.acbComplaintId
-            }|${complaint.listings.map((l) => l.chplProductNumber).join('|')
-            }|${complaint.criteria.map((c) => c.certificationCriterion.number).join('|')}`;
+            updated.filterText = `${complaint.oncComplaintId}|${complaint.acbComplaintId}|${complaint.listings.map((l) => l.chplProductNumber).join('|')}|${complaint.criteria.map((c) => c.certificationCriterion.number).join('|')}`;
             that.addFilterItems(updated);
             if (complaint.criteria) {
               updated.csvCriteria = complaint.criteria.map((c) => c.certificationCriterion.number + (that.utilService.isCures(c.certificationCriterion) ? ' (Cures Update)' : '')).join(',');
