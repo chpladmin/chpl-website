@@ -4,17 +4,30 @@ import MeasuresComponent from './measures.po';
 let hooks;
 let measures;
 
-describe('the Listing page', () => {
+beforeEach(async () => {
+  hooks = new Hooks();
+  measures = new MeasuresComponent();
+});
+
+describe('the 2015 Listing page', () => {
   beforeEach(async () => {
-    hooks = new Hooks();
-    measures = new MeasuresComponent();
     hooks.open('#/listing/9833');
-    await hooks.waitForSpinnerToDisappear();
+    hooks.waitForSpinnerToDisappear();
   });
 
   it('should show measures', () => {
     measures.measuresHeader.scrollIntoView();
     measures.expandMeasures();
     expect(measures.measuresCount()).toBeGreaterThan(15);
+  });
+});
+describe('the 2014 Listing page', () => {
+  beforeEach(async () => {
+    hooks.open('#/listing/8490');
+    hooks.waitForSpinnerToDisappear();
+  });
+
+  it('should not show measures', () => {
+    expect(measures.measuresHeader.isDisplayed()).toBe(false);
   });
 });

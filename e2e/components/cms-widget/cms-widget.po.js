@@ -88,6 +88,9 @@ class CmsWidgetComponent {
     this.certIdButton(listingId).click();
   }
 
+  addToCms (listingId){
+    return $(`#toggle-cms-${listingId}`);
+  }
 }
 
 export default CmsWidgetComponent;
