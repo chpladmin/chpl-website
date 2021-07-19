@@ -39,7 +39,30 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
+    alignItems: 'start',
+    [theme.breakpoints.up('xs')]: {
+      gridTemplateColumns: '1fr',
+    },
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '2fr 2fr',
+    },
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
+    [theme.breakpoints.up('xl')]: {
+      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+    },
   },
+
+  dataEntry: {
+    display: 'grid',
+    gap: '16px 8px',
+    marginTop: '16px',
+  },
+
   chips: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -296,14 +319,15 @@ function ChplComplaintEdit(props) {
       <Card>
         <CardHeader
           title={complaint.id ? 'Edit Complaint' : 'Create Complaint'}
+          subheader={complaint.acbComplaintId}
         />
-        <CardContent className={classes.content}>
+        <CardContent>
           { complaint.id
             ? (
-              <Typography>
+              <Typography variant="h5">
                 ONC-ACB:
-                <br />
-                {complaint.certificationBody?.name}
+                {' '}
+                {complaint.certificationBody.name}
               </Typography>
             )
             : (
@@ -324,93 +348,114 @@ function ChplComplaintEdit(props) {
                 ))}
               </ChplTextField>
             )}
-          <ChplTextField
-            type="date"
-            id="received-date"
-            name="receivedDate"
-            label="Received Date"
-            required
-            value={formik.values.receivedDate}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.receivedDate && !!formik.errors.receivedDate}
-            helperText={formik.touched.receivedDate && formik.errors.receivedDate}
-          />
-          <ChplTextField
-            type="date"
-            id="closed-date"
-            name="closedDate"
-            label="Closed Date"
-            value={formik.values.closedDate}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.closedDate && !!formik.errors.closedDate}
-            helperText={formik.touched.closedDate && formik.errors.closedDate}
-          />
-          <ChplTextField
-            id="acb-complaint-id"
-            name="acbComplaintId"
-            label="ONC-ACB Complaint ID"
-            required
-            value={formik.values.acbComplaintId}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.acbComplaintId && !!formik.errors.acbComplaintId}
-            helperText={formik.touched.acbComplaintId && formik.errors.acbComplaintId}
-          />
-          <ChplTextField
-            id="onc-complaint-id"
-            name="oncComplaintId"
-            label="ONC Complaint ID"
-            value={formik.values.oncComplaintId}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
-            helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
-          />
-          <ChplTextField
-            select
-            id="complainant-type"
-            name="complainantType"
-            label="Complainant Type"
-            required
-            value={formik.values.complainantType}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.complainantType && !!formik.errors.complainantType}
-            helperText={formik.touched.complainantType && formik.errors.complainantType}
-          >
-            { complainantTypes.map((item) => (
-              <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-            ))}
-          </ChplTextField>
-          { formik.values.complainantType.name === 'Other - [Please Describe]'
-            && (
-            <ChplTextField
-              id="complainant-type-other"
-              name="complainantTypeOther"
-              label="Complainant Type - Other Description"
-              required
-              value={formik.values.complainantTypeOther}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.complainantTypeOther && !!formik.errors.complainantTypeOther}
-              helperText={formik.touched.complainantTypeOther && formik.errors.complainantTypeOther}
-            />
-            )}
-          <ChplTextField
-            id="summary"
-            name="summary"
-            label="Complaint Summary"
-            required
-            multiline
-            value={formik.values.summary}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.summary && !!formik.errors.summary}
-            helperText={formik.touched.summary && formik.errors.summary}
-          />
-          {complaint.criteria?.length > 0
+          <div className={classes.content}>
+            <div className={classes.dataEntry}>
+              <Typography variant="subtitle1">General Info</Typography>
+              <ChplTextField
+                type="date"
+                id="received-date"
+                name="receivedDate"
+                label="Received Date"
+                required
+                value={formik.values.receivedDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.receivedDate && !!formik.errors.receivedDate}
+                helperText={formik.touched.receivedDate && formik.errors.receivedDate}
+              />
+              <ChplTextField
+                type="date"
+                id="closed-date"
+                name="closedDate"
+                label="Closed Date"
+                value={formik.values.closedDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.closedDate && !!formik.errors.closedDate}
+                helperText={formik.touched.closedDate && formik.errors.closedDate}
+              />
+              <ChplTextField
+                id="acb-complaint-id"
+                name="acbComplaintId"
+                label="ONC-ACB Complaint ID"
+                required
+                value={formik.values.acbComplaintId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.acbComplaintId && !!formik.errors.acbComplaintId}
+                helperText={formik.touched.acbComplaintId && formik.errors.acbComplaintId}
+              />
+              <ChplTextField
+                id="onc-complaint-id"
+                name="oncComplaintId"
+                label="ONC Complaint ID"
+                value={formik.values.oncComplaintId}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.oncComplaintId && !!formik.errors.oncComplaintId}
+                helperText={formik.touched.oncComplaintId && formik.errors.oncComplaintId}
+              />
+              <ChplTextField
+                select
+                id="complainant-type"
+                name="complainantType"
+                label="Complainant Type"
+                required
+                value={formik.values.complainantType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.complainantType && !!formik.errors.complainantType}
+                helperText={formik.touched.complainantType && formik.errors.complainantType}
+              >
+                { complainantTypes.map((item) => (
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                ))}
+              </ChplTextField>
+              { formik.values.complainantType.name === 'Other - [Please Describe]'
+                && (
+                <ChplTextField
+                  id="complainant-type-other"
+                  name="complainantTypeOther"
+                  label="Complainant Type - Other Description"
+                  required
+                  value={formik.values.complainantTypeOther}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.complainantTypeOther && !!formik.errors.complainantTypeOther}
+                  helperText={formik.touched.complainantTypeOther && formik.errors.complainantTypeOther}
+                />
+                )}
+            </div>
+            <div className={classes.dataEntry}>
+              <Typography variant="subtitle1">Summary and Actions</Typography>
+              <ChplTextField
+                id="summary"
+                name="summary"
+                label="Complaint Summary"
+                required
+                multiline
+                value={formik.values.summary}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.summary && !!formik.errors.summary}
+                helperText={formik.touched.summary && formik.errors.summary}
+              />
+              <ChplTextField
+                id="actions"
+                name="actions"
+                label="Actions/Response"
+                multiline
+                value={formik.values.actions}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.actions && !!formik.errors.actions}
+                helperText={formik.touched.actions && formik.errors.actions}
+              />
+            </div>
+            <div className={classes.dataEntry}>
+              <Typography variant="subtitle1">Review Info</Typography>
+
+              {complaint.criteria?.length > 0
            && (
            <>
              <Typography>Associated Criteria</Typography>
@@ -422,53 +467,45 @@ function ChplComplaintEdit(props) {
                        label={`${(criterion.certificationCriterion.removed ? 'Removed | ' : '') + criterion.certificationCriterion.number}: ${criterion.certificationCriterion.title}`}
                        onDelete={() => removeAssociatedCriterion(criterion)}
                        className={classes.chip}
+                       color="primary"
+                       variant="outlined"
                      />
                    </li>
                  ))}
              </ul>
            </>
            )}
-          <ChplTextField
-            select
-            id="criteria"
-            name="criteria"
-            label="Add Associated Criterion"
-            value={criterionToAdd}
-            onChange={addAssociatedCriterion}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Select
-                    aria-label="Select Edition of Certification Criteria"
-                    value={criterionEdition}
-                    onChange={handleEditionFilterChange}
-                  >
-                    <MenuItem value="2015">2015</MenuItem>
-                    <MenuItem value="2014">2014</MenuItem>
-                    <MenuItem value="2011">2011</MenuItem>
-                  </Select>
-                </InputAdornment>
-              ),
-            }}
-          >
-            {criteria
-              .filter((criterion) => (criterion.certificationEdition === criterionEdition))
-              .map((item) => (
-                <MenuItem value={item} key={item.id}>{`${(item.removed ? 'Removed | ' : '') + item.number}: ${item.title}`}</MenuItem>
-              ))}
-          </ChplTextField>
-          <ChplTextField
-            id="actions"
-            name="actions"
-            label="Actions/Response"
-            multiline
-            value={formik.values.actions}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.actions && !!formik.errors.actions}
-            helperText={formik.touched.actions && formik.errors.actions}
-          />
-          {complaint.listings?.length > 0
+              <ChplTextField
+                select
+                id="criteria"
+                name="criteria"
+                label="Add Associated Criterion"
+                value={criterionToAdd}
+                onChange={addAssociatedCriterion}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Select
+                        aria-label="Select Edition of Certification Criteria"
+                        value={criterionEdition}
+                        onChange={handleEditionFilterChange}
+                      >
+                        <MenuItem value="2015">2015</MenuItem>
+                        <MenuItem value="2014">2014</MenuItem>
+                        <MenuItem value="2011">2011</MenuItem>
+                      </Select>
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                {criteria
+                  .filter((criterion) => (criterion.certificationEdition === criterionEdition))
+                  .map((item) => (
+                    <MenuItem value={item} key={item.id}>{`${(item.removed ? 'Removed | ' : '') + item.number}: ${item.title}`}</MenuItem>
+                  ))}
+              </ChplTextField>
+
+              {complaint.listings?.length > 0
            && (
            <>
              <Typography>Associated Listings</Typography>
@@ -480,28 +517,30 @@ function ChplComplaintEdit(props) {
                        label={listing.chplProductNumber}
                        onDelete={() => removeAssociatedListing(listing)}
                        className={classes.chip}
+                       color="primary"
+                       variant="outlined"
                      />
                    </li>
                  ))}
              </ul>
            </>
            )}
-          { /* eslint-disable react/jsx-props-no-spreading */ }
-          <Autocomplete
-            id="listings"
-            name="listings"
-            options={listings}
-            value={listingToAdd}
-            onChange={addAssociatedListing}
-            inputValue={listingValueToAdd}
-            onInputChange={(event, newValue) => {
-              setListingValueToAdd(newValue);
-            }}
-            getOptionLabel={(item) => (`${item.chplProductNumber} (${item.developer} - ${item.product})`)}
-            renderInput={(params) => <ChplTextField {...params} label="Add Associated Listing" />}
-          />
-          { /* eslint-enable react/jsx-props-no-spreading */ }
-          {complaint.surveillances?.length > 0
+              { /* eslint-disable react/jsx-props-no-spreading */ }
+              <Autocomplete
+                id="listings"
+                name="listings"
+                options={listings}
+                value={listingToAdd}
+                onChange={addAssociatedListing}
+                inputValue={listingValueToAdd}
+                onInputChange={(event, newValue) => {
+                  setListingValueToAdd(newValue);
+                }}
+                getOptionLabel={(item) => (`${item.chplProductNumber} (${item.developer} - ${item.product})`)}
+                renderInput={(params) => <ChplTextField {...params} label="Add Associated Listing" />}
+              />
+              { /* eslint-enable react/jsx-props-no-spreading */ }
+              {complaint.surveillances?.length > 0
            && (
            <>
              <Typography>Associated Surveillance Activities</Typography>
@@ -513,76 +552,83 @@ function ChplComplaintEdit(props) {
                        label={`${surveillance.surveillance.chplProductNumber}: ${surveillance.surveillance.friendlyId}`}
                        onDelete={() => removeAssociatedSurveillance(surveillance)}
                        className={classes.chip}
+                       color="primary"
+                       variant="outlined"
                      />
                    </li>
                  ))}
              </ul>
            </>
            )}
-          {surveillances.length > 0
-           && (
-             <ChplTextField
-               select
-               id="surveillances"
-               name="surveillances"
-               label="Add Associated Surveillance Activity"
-               value={surveillanceToAdd}
-               onChange={addAssociatedSurveillance}
-             >
-               {surveillances
-                 .map((item) => (
-                   <MenuItem value={item} key={item.id}>{`${item.chplProductNumber}: ${item.friendlyId}`}</MenuItem>
-                 ))}
-             </ChplTextField>
-           )}
-          <FormControlLabel
-            control={(
-              <Switch
-                id="complainant-contacted"
-                name="complainantContacted"
-                color="primary"
-                checked={formik.values.complainantContacted}
-                onChange={formik.handleChange}
-              />
+              {surveillances.length > 0
+                && (
+                  <ChplTextField
+                    select
+                    id="surveillances"
+                    name="surveillances"
+                    label="Add Associated Surveillance Activity"
+                    value={surveillanceToAdd}
+                    onChange={addAssociatedSurveillance}
+                  >
+                    {surveillances
+                      .map((item) => (
+                        <MenuItem value={item} key={item.id}>{`${item.chplProductNumber}: ${item.friendlyId}`}</MenuItem>
+                      ))}
+                  </ChplTextField>
+                )}
+            </div>
+            <div className={classes.dataEntry}>
+              <Typography variant="subtitle1">Parties Contacted</Typography>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="complainant-contacted"
+                    name="complainantContacted"
+                    color="primary"
+                    checked={formik.values.complainantContacted}
+                    onChange={formik.handleChange}
+                  />
             )}
-            label="Complainant Contacted"
-          />
-          <FormControlLabel
-            control={(
-              <Switch
-                id="developer-contacted"
-                name="developerContacted"
-                color="primary"
-                checked={formik.values.developerContacted}
-                onChange={formik.handleChange}
+                label="Complainant Contacted"
               />
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="developer-contacted"
+                    name="developerContacted"
+                    color="primary"
+                    checked={formik.values.developerContacted}
+                    onChange={formik.handleChange}
+                  />
             )}
-            label="Developer Contacted"
-          />
-          <FormControlLabel
-            control={(
-              <Switch
-                id="onc-atl-contacted"
-                name="oncAtlContacted"
-                color="primary"
-                checked={formik.values.oncAtlContacted}
-                onChange={formik.handleChange}
+                label="Developer Contacted"
               />
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="onc-atl-contacted"
+                    name="oncAtlContacted"
+                    color="primary"
+                    checked={formik.values.oncAtlContacted}
+                    onChange={formik.handleChange}
+                  />
             )}
-            label="ONC-Atl Contacted"
-          />
-          <FormControlLabel
-            control={(
-              <Switch
-                id="flag-for-onc-review"
-                name="flagForOncReview"
-                color="primary"
-                checked={formik.values.flagForOncReview}
-                onChange={formik.handleChange}
+                label="ONC-Atl Contacted"
               />
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="flag-for-onc-review"
+                    name="flagForOncReview"
+                    color="primary"
+                    checked={formik.values.flagForOncReview}
+                    onChange={formik.handleChange}
+                  />
             )}
-            label="Informed ONC per &sect;170.523(s)"
-          />
+                label="Informed ONC per &sect;170.523(s)"
+              />
+            </div>
+          </div>
         </CardContent>
       </Card>
       <ChplActionBar
