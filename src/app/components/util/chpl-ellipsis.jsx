@@ -5,7 +5,9 @@ import ChplTooltip from './chpl-tooltip';
 
 function ChplEllipsis(props) {
   const [isShortened, setShortened] = useState(true);
-  const { text, wordBoundaries, maxLength } = props;
+  const { text } = props;
+  const { wordBoundaries } = props;
+  const { maxLength } = props;
 
   if (!text) {
     return null;
