@@ -21,6 +21,7 @@ const complaintMock = {
   criteria: [],
   listings: [],
   surveillances: [],
+  certificationBody: {},
 };
 
 angularReactHelper.getAngularService = jest.fn();
@@ -46,13 +47,13 @@ describe('the ChplComplaintView component', () => {
     });
 
     it('should have "No" for the various complaint booleans', async () => {
-      let item = await screen.findByText('Complainant Contacted:');
+      let item = await screen.findByText(/Complainant Contacted:/i);
       expect(item.nextSibling).toHaveTextContent('No');
-      item = await screen.findByText('Developer Contacted:');
+      item = await screen.findByText(/Developer Contacted:/i);
       expect(item.nextSibling).toHaveTextContent('No');
-      item = await screen.findByText('ONC-ATL Contacted:');
+      item = await screen.findByText(/ONC-ATL Contacted:/i);
       expect(item.nextSibling).toHaveTextContent('No');
-      item = await screen.findByText(/Informed ONC per/);
+      item = await screen.findByText(/Informed ONC per/i);
       expect(item.nextSibling).toHaveTextContent('No');
     });
 
@@ -192,13 +193,13 @@ describe('the ChplComplaintView component', () => {
     });
 
     it('should have "Yes" for the various complaint booleans', async () => {
-      let item = await screen.findByText('Complainant Contacted:');
+      let item = await screen.findByText(/Complainant Contacted:/i);
       expect(item.nextSibling).toHaveTextContent('Yes');
-      item = await screen.findByText('Developer Contacted:');
+      item = await screen.findByText(/Developer Contacted:/i);
       expect(item.nextSibling).toHaveTextContent('Yes');
-      item = await screen.findByText('ONC-ATL Contacted:');
+      item = await screen.findByText(/ONC-ATL Contacted:/i);
       expect(item.nextSibling).toHaveTextContent('Yes');
-      item = await screen.findByText(/Informed ONC per/);
+      item = await screen.findByText(/Informed ONC per/i);
       expect(item.nextSibling).toHaveTextContent('Yes');
     });
   });
