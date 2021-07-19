@@ -433,6 +433,7 @@ function ChplComplaintEdit(props) {
                 id="actions"
                 name="actions"
                 label="Actions/Response"
+                required={formik.values.closedDate}
                 multiline
                 value={formik.values.actions}
                 onChange={formik.handleChange}
@@ -443,7 +444,6 @@ function ChplComplaintEdit(props) {
             </div>
             <div className={classes.dataEntry}>
               <Typography variant="subtitle1">Review Info</Typography>
-
               {complaint.criteria?.length > 0
            && (
            <>
