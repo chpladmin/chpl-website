@@ -66,7 +66,7 @@ function ChplNonconformityView(props) {
               { !nonconformity.criterion && ` ${requirement.result.name}` }
             </div>
             <div className={classes.nonconformityAccordionSummaryStatus}>
-              { nonconformity.nonconformityCloseDate ? 'Closed' : 'Open' }
+              { nonconformity.status.name }
             </div>
           </div>
         </AccordionSummary>
@@ -141,19 +141,8 @@ function ChplNonconformityView(props) {
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
-                    Date Non-conformity Was Closed
-                    <ChplTooltip title="The date that the non-conformity was closed.">
-                      <InfoOutlinedIcon
-                        className={classes.iconSpacing}
-                      />
-                    </ChplTooltip>
-                  </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.nonconformityCloseDate) }</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th" scope="row">
                     Non-Conformity Type
-                    <ChplTooltip title="For non-conformities related to specific regulatory references (e.g. certified capabilities, disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l)). If the non-conformity type is designated as 'Other Non-Conformity', then the associated non-conformity does not have a relevant regulatory reference.">
+                    <ChplTooltip title="For non-conformities related to specific regulatory references (e.g. certified capabilities, transparency or disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l). If the non-conformity type is designated as ‘Other Non-Conformity’, then the associated non-conformity does not have a relevant regulatory reference.">
                       <InfoOutlinedIcon
                         className={classes.iconSpacing}
                       />
@@ -185,6 +174,17 @@ function ChplNonconformityView(props) {
                       </TableCell>
                     </TableRow>
                   )}
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Non-Conformity Status
+                    <ChplTooltip title="Whether the non-conformity is open or closed (has been resolved).">
+                      <InfoOutlinedIcon
+                        className={classes.iconSpacing}
+                      />
+                    </ChplTooltip>
+                  </TableCell>
+                  <TableCell>{ nonconformity.nonconformityStatus }</TableCell>
+                </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
                     Non-Conformity Summary
