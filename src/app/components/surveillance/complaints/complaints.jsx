@@ -15,10 +15,11 @@ import {
 } from '@material-ui/core';
 import { arrayOf, bool, func } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-
+import AddIcon from '@material-ui/icons/Add';
 import theme from '../../../themes/theme';
 import { ChplEllipsis, ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -125,13 +126,13 @@ function ChplComplaints(props) {
               <TableFooter>
                 <TableRow>
                   <TableCell colSpan={headers.length - 1} />
-                  <TableCell>
+                  <TableCell align="right">
                     <Button
                       onClick={() => handleAction('add')}
                       color="primary"
                       variant="outlined"
                     >
-                      Add New Complaint
+                      Add New Complaint<AddIcon className={classes.iconSpacing} />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -157,7 +158,7 @@ function ChplComplaints(props) {
                     { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
                   </TableCell>
                   <TableCell>{complaint.complainantTypeName}</TableCell>
-                  <TableCell>
+                  <TableCell align="right">
                     <Button
                       onClick={() => handleAction('view', complaint)}
                       variant="contained"
