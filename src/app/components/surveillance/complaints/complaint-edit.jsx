@@ -440,7 +440,7 @@ function ChplComplaintEdit(props) {
                 id="actions"
                 name="actions"
                 label="Actions/Response"
-                required={formik.values.closedDate}
+                required={!!formik.values.closedDate}
                 multiline
                 value={formik.values.actions}
                 onChange={formik.handleChange}
