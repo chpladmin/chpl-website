@@ -114,8 +114,10 @@ export const SurveillanceNonconformityEditComponent = {
       }
       if (this.nonconformity.nonconformityCloseDateObject) {
         this.nonconformity.nonconformityCloseDate = this.DateUtil.timestampToString(this.nonconformity.nonconformityCloseDateObject.getTime(), 'uuuu-MM-dd');
+        this.nonconformity.nonconformityStatus = 'Closed';
       } else {
         this.nonconformity.nonconformityCloseDate = null;
+        this.nonconformity.nonconformityStatus = 'Open';
       }
       if (this.nonconformityType.title) {
         this.nonconformity.criterion = this.nonconformityType;
