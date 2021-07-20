@@ -9,6 +9,10 @@ import { when } from 'jest-when';
 import * as angularReactHelper from '../../../services/angular-react-helper';
 import ChplComplaintView from './complaint-view';
 
+const authServiceMock = {
+  hasAnyRole: jest.fn(() => true),
+};
+
 const utilServiceMock = {
   sortCertActual: jest.fn(() => Promise.resolve(0)),
 };
@@ -25,6 +29,7 @@ const complaintMock = {
 };
 
 angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 when(angularReactHelper.getAngularService).calledWith('utilService').mockReturnValue(utilServiceMock);
 
 describe('the ChplComplaintView component', () => {
@@ -59,11 +64,12 @@ describe('the ChplComplaintView component', () => {
 
     it('should call the callback on close', async () => {
       hocMock.dispatch.mockClear();
-      userEvent.click(screen.getByRole('button', { name: /Close/i }));
+      userEvent.click(screen.getByRole('button', { name: /Back to Complaints/i }));
 
       await waitFor(() => {
         expect(hocMock.dispatch).toHaveBeenCalledWith(
           'close',
+          undefined,
         );
       });
     });
