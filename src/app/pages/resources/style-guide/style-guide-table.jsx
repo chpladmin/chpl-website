@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Button,
+  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -28,6 +29,10 @@ const useStyles = makeStyles({
     gridTemplateColumns: '4fr 1fr 1fr',
     padding:'16px 16px',
     alignItems: 'center',
+  },
+
+  tableContainer: {
+    maxHeight: 440,
   },
 });
 
@@ -147,7 +152,7 @@ function ChplStyleGuideTable() {
     { text: 'Product', property: 'product', sortable: true },
     { text: 'Version', property: 'version', sortable: true },
     { text: 'Status', property: 'status', sortable: true },
-    { text: 'Actions', property: 'actions', sortable: true },
+    { text: 'Actions', property: 'actions', invisible: true, sortable: false },
   ];
 
   const listingSortComparator = (property) => {
@@ -169,7 +174,7 @@ function ChplStyleGuideTable() {
 
   return (
     <div>
-    <TableContainer component={Paper}>
+    <TableContainer className={classes.tableContainer} component={Paper}>
     <div className={classes.container}>
     <Typography variant="h5">Title of Table</Typography>
     <Button size="medium" color="primary" variant="outlined">Download
@@ -193,7 +198,16 @@ function ChplStyleGuideTable() {
                 <TableCell>{ listing.product }</TableCell>
                 <TableCell>{ listing.version }</TableCell>
                 <TableCell>{ listing.status }</TableCell>
-                <TableCell>{ listing.actions }</TableCell>
+                <TableCell>
+                  <ButtonGroup color="primary"> 
+                    <Button>
+                     CERT ID
+                    </Button>
+                    <Button>
+                     Compare
+                    </Button>
+                  </ButtonGroup>
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
