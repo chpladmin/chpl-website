@@ -43,7 +43,7 @@ describe('As a ROLE_ONC user', () => {
     }
   });
 
-  it('shount not be able to upload invalid format of Muu or Pi file', () => {
+  it('should not be able to upload invalid format of Muu or Pi file', () => {
     if (flagState) {
       uploadMuuPiComponent.accurateAsOfDate.setValue('01/01/2021');
       uploadMuuPiComponent.uploadPi('../../../resources/apiDoc/APIDoc_File.xlsx');

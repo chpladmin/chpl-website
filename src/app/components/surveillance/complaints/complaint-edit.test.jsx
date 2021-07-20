@@ -99,7 +99,7 @@ describe('the ChplComplaintEdit component', () => {
         userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
 
         await waitFor(() => {
-          expect(mock.hoc.dispatch).toHaveBeenCalledWith('cancel', undefined);
+          expect(mock.hoc.dispatch).toHaveBeenCalledWith('close', undefined);
         });
       });
 
