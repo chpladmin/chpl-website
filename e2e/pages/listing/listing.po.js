@@ -55,7 +55,7 @@ class ListingPage {
   }
 
   get listingBasicInformation() {
-    return $(elements.listingBasicInformation);
+    return $(this.elements.listingBasicInformation);
   }
 }
 
