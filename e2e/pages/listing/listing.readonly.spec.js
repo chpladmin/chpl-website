@@ -14,6 +14,7 @@ beforeEach(() => {
 describe('when on 2015 listing page - ', () => {
   beforeEach(() => {
     hooks.open('#/listing/9833');
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
 
