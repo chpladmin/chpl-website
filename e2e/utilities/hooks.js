@@ -25,7 +25,8 @@ class Hooks {
 
   getTableRows() {
     return $('table').$('tbody').$$('tr');
-
+  }
+  
   getFlagState(flagName){
     const foundFlag = flagObj.find(flag => flag.key === flagName);
     return foundFlag?.active;
