@@ -2,20 +2,40 @@ import ListingPage from './listing.po';
 import Hooks from '../../utilities/hooks';
 import CmsWidgetComponent from '../../components/cms-widget/cms-widget.po';
 import CompareWidgetComponent from '../../components/compare-widget/compare-widget.po';
+import LoginComponent from '../../components/login/login.po';
 
-let cmsComponent; let compareComponent; let hooks; let page;
+let cmsComponent; let compareComponent; let hooks; let page; let login;
 
 beforeEach(() => {
   page = new ListingPage();
   hooks = new Hooks();
   cmsComponent = new CmsWidgetComponent();
   compareComponent = new CompareWidgetComponent();
+  login= new LoginComponent();
 });
 describe('when on 2015 listing page - ', () => {
   beforeEach(() => {
     hooks.open('#/listing/9833');
     hooks.waitForSpinnerToDisappear();
   });
+
+  describe('when logged in as a ROLE_ONC', () => {
+    beforeEach(async () => {
+      login.logIn('onc');
+    });
+
+      afterEach(() => {
+        login.logOut();
+      });
+  
+  it('should have correct link to go to manage surveillance activity', () => {
+    expect(page.manageSurveillanceActivity.getAttribute('href')).toContain('surveillance/manage');
+  });
+
+  it('should have correct link for editing a listing', () => {
+    expect(page.editCertifiedProduct.getAttribute('href')).toContain('listing/9833/view/edit');
+  });
+});
 
   describe('clicking on return to search link', () => {
     beforeEach(async () => {
@@ -81,6 +101,7 @@ describe('when on 2015 listing page - ', () => {
 describe('when on 2014 listing page - ', () => {
   beforeEach(() => {
     hooks.open('#/listing/8490');
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
   describe('when clicking on return to search link', () => {
@@ -113,8 +134,6 @@ describe('when on 2014 listing page - ', () => {
       });
 
       it('should go to api page', () => {
-        page.goToApi.click();
-        hooks.waitForSpinnerToDisappear();
         expect(browser.getUrl()).toContain('resources/chpl-api');
       });
     });

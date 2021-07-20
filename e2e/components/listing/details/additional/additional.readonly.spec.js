@@ -23,6 +23,7 @@ describe('the 2015 listing page for listing with ICS value false', () => {
 describe('the 2015 listing page for listing with ICS value true', () => {
   beforeEach(() => {
     hooks.open('#/listing/10540');
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
   describe('when expanding additional information', () => {
@@ -32,7 +33,6 @@ describe('the 2015 listing page for listing with ICS value true', () => {
     });
 
     it('should display ICS relationship button under additional information', () => {
-      browser.waitUntil(() => additional.icsButton.isDisplayed());
       expect(additional.icsButton.isDisplayed()).toBe(true);
     });
 
