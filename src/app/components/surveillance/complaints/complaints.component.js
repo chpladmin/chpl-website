@@ -69,7 +69,9 @@ const SurveillanceComplaintsComponent = {
     handleDispatch(action, payload) {
       switch (action) {
         case 'add':
-          this.selectComplaint({});
+          this.clearErrorMessages();
+          this.isEditing = true;
+          this.complaint = {};
           this.$scope.$digest();
           break;
         case 'cancel':
@@ -87,8 +89,9 @@ const SurveillanceComplaintsComponent = {
           this.deleteComplaint(payload);
           break;
         case 'edit':
+          this.clearErrorMessages();
           this.isViewing = false;
-          this.selectComplaint(payload);
+          this.isEditing = true;
           this.$scope.$digest();
           break;
         case 'save':
@@ -101,12 +104,6 @@ const SurveillanceComplaintsComponent = {
           break;
           // no default
       }
-    }
-
-    selectComplaint(complaint) {
-      this.clearErrorMessages();
-      this.isEditing = true;
-      this.complaint = complaint;
     }
 
     saveComplaint(complaint) {
