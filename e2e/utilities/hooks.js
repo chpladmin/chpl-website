@@ -31,12 +31,6 @@ class Hooks {
     const foundFlag = flagObj.find(flag => flag.key === flagName);
     return foundFlag?.active;
   }
-
-  getFlagState(flagName){
-    const foundFlag = flagObj.find(flag => flag.key === flagName);
-    return foundFlag?.active;
-  }
-
 }
 
 export default Hooks;
