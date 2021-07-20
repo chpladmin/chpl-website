@@ -246,7 +246,14 @@ function ChplComplaintEdit(props) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        handleAction('cancel');
+        if (complaint.id) {
+          handleAction('cancel');
+        } else {
+          handleAction('close');
+        }
+        break;
+      case 'delete':
+        handleAction('delete', complaint);
         break;
       case 'save':
         formik.submitForm();
@@ -623,6 +630,7 @@ function ChplComplaintEdit(props) {
       <ChplActionBar
         errors={errors}
         dispatch={handleDispatch}
+        canDelete={!!complaint.id}
       />
     </ThemeProvider>
   );

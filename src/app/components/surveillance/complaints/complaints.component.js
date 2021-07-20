@@ -60,6 +60,7 @@ const SurveillanceComplaintsComponent = {
       this.clearErrorMessages();
       this.networkService.deleteComplaint(complaint.id).then(() => {
         that.complaint = {};
+        that.isViewing = false;
         that.isEditing = false;
         that.refreshComplaints();
       });
@@ -72,16 +73,21 @@ const SurveillanceComplaintsComponent = {
           this.$scope.$digest();
           break;
         case 'cancel':
+          this.isEditing = false;
+          this.isViewing = true;
+          this.$scope.$digest();
+          break;
         case 'close':
           this.isEditing = false;
           this.isViewing = false;
-          this.complaint = undefined;
+          this.complaint = {};
           this.$scope.$digest();
           break;
         case 'delete':
           this.deleteComplaint(payload);
           break;
         case 'edit':
+          this.isViewing = false;
           this.selectComplaint(payload);
           this.$scope.$digest();
           break;
