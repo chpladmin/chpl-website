@@ -63,8 +63,8 @@ function ChplComplaintView(props) {
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
-  const handleAction = (action, payload) => {
-    props.dispatch(action, payload);
+  const handleAction = (action) => {
+    props.dispatch(action);
   };
 
   return (
@@ -229,7 +229,7 @@ function ChplComplaintView(props) {
               <Button
                 color="primary"
                 variant="contained"
-                onClick={() => handleAction('edit', complaint)}
+                onClick={() => handleAction('edit')}
               >
                 Edit
                 {' '}
