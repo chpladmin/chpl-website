@@ -10,11 +10,16 @@ class ListingPage {
       returnToSearch: '//a[text()=" Return to search results"]',
       productHistory: '#view-listing-history',
       goToApi: '#go-to-api',
+      manageSurveillanceActivity: '//a[text()=" Manage Surveillance Activity"]',
     };
   }
 
   get realWorldTestingHeader() {
     return $(this.elements.realWorldTestingHeader);
+  }
+
+  get manageSurveillanceActivity() {
+    return $(this.elements.manageSurveillanceActivity);
   }
 
   get seeAll() {

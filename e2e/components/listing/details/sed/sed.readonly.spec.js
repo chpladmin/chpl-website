@@ -32,6 +32,7 @@ describe('the 2015 listing page', () => {
 describe('the 2014 listing page', () => {
   beforeEach(async () => {
     hooks.open('#/listing/8490');
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     sed.sedHeader.scrollIntoView();
     sed.expandSed();

@@ -23,6 +23,7 @@ describe('the 2015 listing page for listing with ICS value false', () => {
 describe('the 2015 listing page for listing with ICS value true', () => {
   beforeEach(() => {
     hooks.open('#/listing/10540');
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
   describe('when expanding additional information', () => {
