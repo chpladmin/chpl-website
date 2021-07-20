@@ -30,7 +30,7 @@ function ChplAttestations() {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography>API</Typography>
+            <Typography>Condition: API</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Table>
@@ -340,7 +340,7 @@ function ChplAttestations() {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography>Assurances</Typography>
+            <Typography>Condition: Assurances</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Table>
@@ -461,7 +461,7 @@ function ChplAttestations() {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography>Communication </Typography>
+            <Typography>Condition: Communication</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Table>
@@ -591,7 +591,7 @@ function ChplAttestations() {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography>Information Blocking </Typography>
+            <Typography>Condition: Information Blocking</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Table>
@@ -624,7 +624,7 @@ function ChplAttestations() {
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography>Real World Testing </Typography>
+            <Typography>Condition: Real World Testing</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Table>
