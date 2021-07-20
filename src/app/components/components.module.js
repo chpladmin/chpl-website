@@ -1,4 +1,5 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
+import { ChplComplaintEdit, ChplComplaintView, ChplComplaints } from './surveillance/complaints';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import { ChplConfirmation, ChplEllipsis, ChplLink, ChplNonProdIndicator } from './util';
@@ -28,6 +29,9 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
+  .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
+  .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
+  .component('chplComplaintsBridge', reactToAngularComponent(ChplComplaints))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))

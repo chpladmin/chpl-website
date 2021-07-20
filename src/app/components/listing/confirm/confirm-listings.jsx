@@ -19,8 +19,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import theme from '../../../themes/theme';
-import { getAngularService } from '.';
-import { ChplSortableHeaders } from '../../util/chpl-sortable-headers';
+import { getAngularService } from '../../../services/angular-react-helper';
+import { ChplSortableHeaders } from '../../util';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -48,7 +48,7 @@ function ChplConfirmListings(props) {
         setTimeout(loadListings, 1000);
       }
     });
-  }, [networkService, props.beta]);
+  }, [networkService, props.beta]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     loadListings();
@@ -165,7 +165,7 @@ function ChplConfirmListings(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    setListings(listings.sort(listingSortComparator(orderDirection + property)).map((listing) => listing));
+    setListings(listings.map((listing) => listing).sort(listingSortComparator(orderDirection + property)));
   };
 
   const headers = props.beta ? [
