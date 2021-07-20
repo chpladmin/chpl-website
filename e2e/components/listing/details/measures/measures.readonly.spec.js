@@ -24,6 +24,7 @@ describe('the 2015 Listing page', () => {
 describe('the 2014 Listing page', () => {
   beforeEach(async () => {
     hooks.open('#/listing/8490');
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
 
