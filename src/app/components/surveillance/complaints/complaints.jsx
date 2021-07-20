@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -15,12 +14,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, bool, func } from 'prop-types';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplEllipsis, ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
@@ -75,7 +71,6 @@ function ChplComplaints(props) {
   const [complaints, setComplaints] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { hasAnyRole } = getAngularService('authService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -163,44 +158,15 @@ function ChplComplaints(props) {
                   </TableCell>
                   <TableCell>{complaint.complainantTypeName}</TableCell>
                   <TableCell>
-                    <ButtonGroup
+                    <Button
+                      onClick={() => handleAction('view', complaint)}
+                      variant="contained"
                       color="primary"
                     >
-                      { hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF'])
-                       && (
-                         <Button
-                           onClick={() => handleAction('view', complaint)}
-                         >
-                           View
-                           {' '}
-                           <VisibilityIcon className={classes.iconSpacing} />
-                         </Button>
-                       )}
-                      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                       && (
-                         <Button
-                           onClick={() => handleAction('edit', complaint)}
-                           variant="contained"
-                           color="primary"
-                         >
-                           Edit
-                           {' '}
-                           <EditOutlinedIcon className={classes.iconSpacing} />
-                         </Button>
-                       )}
-                      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                       && (
-                         <Button
-                           onClick={() => handleAction('delete', complaint)}
-                           variant="contained"
-                           className={classes.deleteButton}
-                         >
-                           Delete
-                           {' '}
-                           <DeleteOutlinedIcon className={classes.iconSpacing} />
-                         </Button>
-                       )}
-                    </ButtonGroup>
+                      View
+                      {' '}
+                      <VisibilityIcon className={classes.iconSpacing} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

@@ -12,6 +12,8 @@ import {
 import {
   func,
 } from 'prop-types';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import HistoryIcon from '@material-ui/icons/History';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
@@ -35,6 +37,9 @@ const useStyles = makeStyles(() => ({
     gap: '4px',
     marginTop: '16px',
   },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
 }));
 
 function ChplComplaintView(props) {
@@ -54,18 +59,19 @@ function ChplComplaintView(props) {
         return a.friendlyId < b.friendlyId ? -1 : 1;
       }),
   });
+  const { hasAnyRole } = getAngularService('authService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
-  const handleAction = (action) => {
-    props.dispatch(action);
+  const handleAction = (action, payload) => {
+    props.dispatch(action, payload);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Card>
         <CardHeader
-          title="View Compliant"
+          title="Complaint"
           subheader={complaint.acbComplaintId}
         />
         <CardContent>
@@ -211,11 +217,25 @@ function ChplComplaintView(props) {
         <CardActions>
           <Button
             color="primary"
-            variant="contained"
+            variant="outlined"
             onClick={() => handleAction('close')}
           >
-            Close
+            Back to Complaints
+            {' '}
+            <HistoryIcon className={classes.iconSpacing} />
           </Button>
+          { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+            && (
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => handleAction('edit', complaint)}
+              >
+                Edit
+                {' '}
+                <EditOutlinedIcon className={classes.iconSpacing} />
+              </Button>
+            )}
         </CardActions>
       </Card>
     </ThemeProvider>
