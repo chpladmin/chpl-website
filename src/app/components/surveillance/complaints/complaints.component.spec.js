@@ -223,19 +223,6 @@
         expect(ctrl.isEditing).toBe(false);
       });
 
-      it('should select a complaint', () => {
-        const complaint = {
-          id: 1,
-          listings: [
-            { listingId: 1 },
-            { listingId: 2 },
-          ],
-        };
-        ctrl.selectComplaint(complaint);
-        expect(ctrl.isEditing).toBe(true);
-        expect(ctrl.complaint).toEqual(complaint);
-      });
-
       it('should save/update a complaint', () => {
         const complaint = { id: 1, formattedReceivedDate: new Date('2019-06-04') };
         ctrl.isEditing = true;

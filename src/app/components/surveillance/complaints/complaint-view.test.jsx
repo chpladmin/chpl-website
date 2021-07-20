@@ -69,7 +69,6 @@ describe('the ChplComplaintView component', () => {
       await waitFor(() => {
         expect(hocMock.dispatch).toHaveBeenCalledWith(
           'close',
-          undefined,
         );
       });
     });
