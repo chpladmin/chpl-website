@@ -9,7 +9,7 @@ const theme = createMuiTheme({
 
   palette: {
     background: {
-      default: '#f2f2f2',
+      default: '#f2f2f2', // attestation add
     },
     primary: {
       light: '#599bde',
@@ -156,7 +156,7 @@ const theme = createMuiTheme({
     },
     MuiTableCell: {
       root:{
-        fontSize:'1em',
+        fontSize:'1em', // attestation add
       },
       head: {
         color: '#156dac',
@@ -206,7 +206,7 @@ const theme = createMuiTheme({
     },
     MuiTypography:{
       gutterBottom:{
-        marginBottom:'16px',
+        marginBottom:'16px', // attestation add
       }
     }
   },

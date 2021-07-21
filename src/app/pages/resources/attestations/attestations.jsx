@@ -32,15 +32,14 @@ const useStyles = makeStyles(() => ({
 function ChplAttestations() {
   const classes = useStyles();
   return (
-    <div className={classes.content}>
-    <Container>
+    <Container className={classes.content}>
       <ThemeProvider theme={theme}>
         <Typography gutterBottom variant="h1">
           This is a block of header text.
         </Typography>
         <Divider></Divider>
-        <Typography gutterBottom variant="subtitle1">
-         Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
+        <Typography gutterBottom variant="body1">
+          For [Developer's] health IT that had an active certification at any time under the ONC Health IT Certification Program during the prior six months, [the Developer] attests that in the prior six months or from the time the Developer entered the Program, whichever timeframe is shorter,
         </Typography>
         <Accordion>
           <AccordionSummary
@@ -78,7 +77,7 @@ function ChplAttestations() {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <RadioGroup color="primary"> 
+                    <RadioGroup>
                       <FormControlLabel value="Yes" control={<Radio color="primary" />} label="Yes" />
                       <FormControlLabel value="No" control={<Radio color="primary" />} label="No" />
                       <FormControlLabel value="Not Applicable" control={<Radio color="primary" />} label="Not Applicable" />
@@ -861,8 +860,7 @@ function ChplAttestations() {
           </AccordionDetails>
         </Accordion>
       </ThemeProvider>
-      </Container>
-    </div>
+    </Container>
   );
 }
 
