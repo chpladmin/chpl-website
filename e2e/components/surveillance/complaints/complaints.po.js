@@ -49,13 +49,19 @@ class ComplaintsComponent {
   }
 
   editComplaint(id) {
-    this.filter.addValue(id);
+    this.viewComplaint(id);
     $('//*[text()="Edit"]/parent::button').scrollAndClick();
   }
 
-  deleteComplaint(id) {
+  viewComplaint(id) {
     this.filter.addValue(id);
-    $('//*[text()="Delete"]/parent::button').scrollAndClick();
+    $('//span[text()="View"]/parent::button').scrollAndClick();
+  }
+
+  deleteComplaint(id) {
+    this.viewComplaint(id);
+    $('//*[text()="Edit"]/parent::button').scrollAndClick();
+    $('//span[text()="Delete"]/parent::button').scrollAndClick();
   }
 }
 
