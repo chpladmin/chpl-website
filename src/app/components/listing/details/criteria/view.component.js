@@ -28,6 +28,8 @@ const CertificationCriteriaViewComponent = {
         this.cert = angular.copy(changes.cert.currentValue);
         if (this.cert.testFunctionality) {
           this.cert.testFunctionality = this.cert.testFunctionality.sort(this.utilService.sortTestFunctionality);
+        }
+        if (this.cert.optionalStandards) {
           this.cert.optionalStandards = this.cert.optionalStandards.map((os) => ({
             ...os,
             optionalStandard: {
