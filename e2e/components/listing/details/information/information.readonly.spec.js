@@ -48,7 +48,7 @@ describe('the 2015 Listing page', () => {
 
 describe('the 2014 Listing page', () => {
   beforeEach(() => {
-    hooks.open('#/listing/4704');
+    hooks.open('#/listing/8490');
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
@@ -77,8 +77,8 @@ describe('the 2014 Listing page', () => {
   it('should display ACB information', () => {
     expect(information.getInformation('onc-authorized-certification-body').getText()).toContain('Drummond Group');
   });
-  it('should not display ATL information', () => {
-    expect(information.getInformation('onc-accredited-testing-laboratory').isDisplayed()).toBe(false);
+  it('should display ATL information', () => {
+    expect(information.getInformation('onc-accredited-testing-laboratory').isDisplayed()).toBe(true);
   });
   it('should display mandatory disclosures URL', () => {
     expect(information.getInformation('mandatory-disclosures').isDisplayed()).toBe(true);

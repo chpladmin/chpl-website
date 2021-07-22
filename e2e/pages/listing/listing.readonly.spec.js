@@ -4,7 +4,11 @@ import CmsWidgetComponent from '../../components/cms-widget/cms-widget.po';
 import CompareWidgetComponent from '../../components/compare-widget/compare-widget.po';
 import LoginComponent from '../../components/login/login.po';
 
-let cmsComponent; let compareComponent; let hooks; let page; let login;
+let cmsComponent;
+let compareComponent;
+let hooks;
+let page;
+let login;
 
 beforeEach(() => {
   page = new ListingPage();

@@ -20,7 +20,7 @@ describe('the 2015 listing page', () => {
       compliance.expandCompliance();
     });
 
-    it('should display surveillance and direct review activities under compliance activity', () => {
+    it('should display surveillance and direct review accordions under compliance activity', () => {
       browser.waitUntil(() => compliance.surveillanceHeader.isDisplayed());
       expect(compliance.surveillanceHeader.isDisplayed()).toBe(true);
       expect(compliance.drHeader.isDisplayed()).toBe(true);
@@ -45,7 +45,7 @@ describe('the 2014 listing page', () => {
       compliance.expandCompliance();
     });
 
-    it('should display surveillance and direct review activities under compliance activity', () => {
+    it('should display surveillance and direct review accordions under compliance activity', () => {
       browser.waitUntil(() => compliance.surveillanceHeader.isDisplayed());
       compliance.surveillanceHeader.scrollIntoView();
       expect(compliance.surveillanceHeader.isDisplayed()).toBe(true);
