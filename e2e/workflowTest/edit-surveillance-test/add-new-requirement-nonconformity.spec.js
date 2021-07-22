@@ -62,7 +62,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       let nonConformitydetails = {
         type: '170.314 (a)(1): Computerized provider order entry',
         determinationDate: '01/01/2020',
-        nonConformityClosedDate : '01/01/2021',
+        nonConformityCloseDate : '01/01/2021',
         summary: 'test summary',
         findings: 'test findings',
         approvalDate: '01/01/2020',

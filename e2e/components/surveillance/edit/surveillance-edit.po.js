@@ -6,7 +6,7 @@ const elements = {
   edit: '//*[@ng-click="$ctrl.editSurveillance()"]',
   startDate: '#start-date',
   endDate: '#end-date',
-  nonConformityClosedDate: '#non-conformity-close-date',
+  nonConformityCloseDate: '#non-conformity-close-date',
   surveillanceType: '#surveillance-type',
   siteSurveilled: '#sites-surveilled',
   save: '//button[text()=" Save"]',
@@ -156,8 +156,8 @@ class SurveillanceEditComponent {
     return $(elements.removeNonConformity);
   }
 
-  get nonConformityClosedDate () {
-    return $(elements.nonConformityClosedDate);
+  get nonConformityCloseDate () {
+    return $(elements.nonConformityCloseDate);
   }
 
   requirementTableRows () {
@@ -175,7 +175,7 @@ class SurveillanceEditComponent {
   addnonConformity (details , type) {
     this.newnonConformityButton.click();
     this.nonConformityType.selectByVisibleText(details.type);
-    this.nonConformityClosedDate.setValue(details.nonConformityClosedDate);
+    this.nonConformityCloseDate.setValue(details.nonConformityCloseDate);
     this.determinationDate.setValue(details.determinationDate);
     this.approvalDate.setValue(details.approvalDate);
     this.ncStartDate.setValue(details.startDate);
