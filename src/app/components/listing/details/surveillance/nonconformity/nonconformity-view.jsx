@@ -66,7 +66,7 @@ function ChplNonconformityView(props) {
               { !nonconformity.criterion && ` ${requirement.result.name}` }
             </div>
             <div className={classes.nonconformityAccordionSummaryStatus}>
-              { nonconformity.status.name }
+              { nonconformity.nonconformityStatus }
             </div>
           </div>
         </AccordionSummary>
@@ -183,7 +183,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ nonconformity.status.name }</TableCell>
+                  <TableCell>{ nonconformity.nonconformityStatus }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">

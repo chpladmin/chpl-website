@@ -19,15 +19,6 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="nonconformity-status" class="col-sm-3">Non-Conformity Status <span class="text-danger">*</span></label>
-      <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="$ctrl.nonconformity.status" id="nonconformity-status" name="nonconformityStatus"
-                ng-options="type as type.name for type in $ctrl.data.nonconformityStatusTypes.data | orderBy:'name'" required>
-        </select>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityStatus.$touched) && $ctrl.editForm.nonconformityStatus.$error.required">Field is required</div>
-      </div>
-    </div>
-    <div class="form-group">
       <label for="date-of-determination" class="col-sm-3">Date Of Determination <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
@@ -93,6 +84,18 @@
       </div>
     </div>
     <div class="form-group">
+      <label for="non-conformity-close-date" class="col-sm-3">Non-conformity Close Date</label>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDateObject" is-open="$ctrl.nonconformity.nonconformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonconformityCloseDate">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonconformityCloseDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityCloseDate.$touched) && $ctrl.editForm.nonconformityCloseDate.$error.parse">Improper format (MM/dd/yyyy)</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label for="sites-passed" class="col-sm-3">Number of Sites Passed <span class="text-danger" ng-if="$ctrl.randomized">*</span></label>
       <div class="col-sm-9">
         <input class="input-sm form-control" type="number" ng-model="$ctrl.nonconformity.sitesPassed" id="sites-passed" name="sitesPassed" ng-required="$ctrl.randomized" ng-disabled="!$ctrl.randomized && !$ctrl.disableValidation"></input>
@@ -132,9 +135,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.status.name === 'Closed'">*</span></label>
+      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.nonconformityCloseDateObject">*</span></label>
       <div class="col-sm-9">
-        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.status.name === 'Closed'" ng-disabled="$ctrl.nonconformity.status.name === 'Open'"></textarea>
+        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.nonconformityCloseDateObject" ng-disabled="!$ctrl.nonconformity.nonconformityCloseDateObject"></textarea>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.resolution.$touched) && $ctrl.editForm.resolution.$error.required">Field is required</div>
       </div>
     </div>
