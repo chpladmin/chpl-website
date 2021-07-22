@@ -20,6 +20,7 @@ class ComplaintsComponent {
     $(this.elements.receivedDate).addValue(fields.receivedDate);
     $(this.elements.acbComplaintId).addValue(fields.acbId);
     $(this.elements.summary).addValue(fields.summary);
+    $(this.elements.complainantType).scrollIntoView();
     $(this.elements.complainantType).click();
     $(`//li[text()="${fields.type}"]`).click();
   }
