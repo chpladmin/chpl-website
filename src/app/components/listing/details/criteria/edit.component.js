@@ -141,10 +141,21 @@ const CertificationCriteriaEditComponent = {
       }
     }
 
-    optionalStandardOnChange(action) {
+    optionalStandardsOnChange(action) {
+      const that = this;
       switch (action.action) {
         case 'Remove':
-          this.cert.optionalStandards = this.cert.optionalStandards.filter((cros) => cros.optionalStandard.id !== action.item.item.id);
+          this.cert.optionalStandards = this.cert.optionalStandards
+            .filter((cros) => {
+              if (cros.optionalStandard.id === null && action.item.item.id === 'newItem') {
+                if (cros.citation === action.item.item.citation) {
+                  that.newOptionalStandards = that.newOptionalStandards.filter((os) => (os !== action.item.item.citation));
+                  return false;
+                }
+                return true;
+              }
+              return cros.optionalStandard.id !== action.item.item.id;
+            });
           break;
         case 'Add':
           this.cert.optionalStandards.push({ optionalStandard: new this.CertificationResultOptionalStandard(action.item.item) });
