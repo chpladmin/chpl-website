@@ -49,6 +49,7 @@ const CertificationCriteriaEditComponent = {
       this.selectedTestProcedureKeys = this.getSelectedTestProcedureKeys();
       this.selectedOptionalStandardKeys = this.getSelectedOptionalStandardKeys();
       this.selectedTestStandardKeys = this.getSelectedTestStandardKeys();
+      this.newOptionalStandards = this.getNewOptionalStandards();
       this.newTestStandards = this.getNewTestStandards();
       this.selectedTestToolKeys = this.getSelectedTestToolKeys();
       this.sortedTestFunctionalities = this.getSortedTestFunctionalities();
@@ -140,10 +141,21 @@ const CertificationCriteriaEditComponent = {
       }
     }
 
-    optionalStandardOnChange(action) {
+    optionalStandardsOnChange(action) {
+      const that = this;
       switch (action.action) {
         case 'Remove':
-          this.cert.optionalStandards = this.cert.optionalStandards.filter((cros) => cros.optionalStandard.id !== action.item.item.id);
+          this.cert.optionalStandards = this.cert.optionalStandards
+            .filter((cros) => {
+              if (cros.optionalStandard.id === null && action.item.item.id === 'newItem') {
+                if (cros.citation === action.item.item.citation) {
+                  that.newOptionalStandards = that.newOptionalStandards.filter((os) => (os !== action.item.item.citation));
+                  return false;
+                }
+                return true;
+              }
+              return cros.optionalStandard.id !== action.item.item.id;
+            });
           break;
         case 'Add':
           this.cert.optionalStandards.push({ optionalStandard: new this.CertificationResultOptionalStandard(action.item.item) });
@@ -261,6 +273,15 @@ const CertificationCriteriaEditComponent = {
         this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => keys.find((k) => k.key === ts.id));
       }
       return keys;
+    }
+
+    getNewOptionalStandards() {
+      if (!this.cert.optionalStandards) {
+        return [];
+      }
+      return this.cert.optionalStandards
+        .filter((os) => !os.optionalStandard.id)
+        .map((os) => os.citation);
     }
 
     getNewTestStandards() {

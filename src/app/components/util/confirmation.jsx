@@ -4,32 +4,23 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Paper,
   ThemeProvider,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { func, string } from 'prop-types';
 
 import theme from '../../themes/theme';
-import { ChplDialogTitle } from '../util';
-
-const useStyles = makeStyles(() => ({
-  noWrap: {
-    whiteSpace: 'nowrap',
-  },
-}));
+import ChplDialogTitle from './chpl-dialog-title';
 
 function ChplConfirmation(props) {
   /* eslint-disable react/destructuring-assignment */
   const [text, setText] = useState('');
   const [open, setOpen] = React.useState(true);
-  const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     setText(props.text);
-  }, [props.text]);
+  }, [props.text]); // eslint-disable-line react/destructuring-assignment
 
   const handleClose = () => {
     setOpen(false);

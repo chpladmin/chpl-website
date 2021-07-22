@@ -134,7 +134,7 @@ function ChplOptionalStandardsEdit(props) {
                 { optionalStandards.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2"><ChplEllipsis text={item.optionalStandard.description} maxLength={100} wordBoundaries /></Typography>
+                      <Typography variant="body2"><ChplEllipsis text={item.optionalStandard.description || item.citation} maxLength={100} wordBoundaries /></Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding
