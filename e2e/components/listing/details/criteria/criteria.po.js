@@ -1,13 +1,3 @@
-const elements = {
-  removedCriteria: '#removed-header',
-  attestToggle: '#success',
-  accept: '//span[text()="Accept"]',
-  testProcedureName: '#name',
-  version: '#version',
-  testToolsName: '#tt',
-  privacySecurityName: '#privacy-security-framework',
-};
-
 // Old elements added intentionally so it would be easy to clean up later
 const elementsOld = {
   saveCertifiedProduct: 'button=Save Certification Criteria',
@@ -16,10 +6,20 @@ const elementsOld = {
 };
 
 class CriteriaComponent {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      removedCriteria: '#removed-header',
+      attestToggle: '#success',
+      accept: '//span[text()="Accept"]',
+      testProcedureName: '#name',
+      version: '#version',
+      testToolsName: '#tt',
+      privacySecurityName: '#privacy-security-framework',
+    };
+  }
 
   get removedCriteriaHeader() {
-    return $(elements.removedCriteria);
+    return $(this.elements.removedCriteria);
   }
 
   editCriteria(id) {
@@ -27,11 +27,11 @@ class CriteriaComponent {
   }
 
   get attestToggle() {
-    return $(elements.attestToggle);
+    return $(this.elements.attestToggle);
   }
 
   get accept() {
-    return $(elements.accept);
+    return $(this.elements.accept);
   }
 
   get saveCertifiedProductOld() {
@@ -43,7 +43,7 @@ class CriteriaComponent {
   }
 
   expandRemovedCriteria() {
-    $(elements.removedCriteria).$$('div')[1].scrollAndClick();
+    $(this.elements.removedCriteria).$$('div')[1].scrollAndClick();
   }
 
   uiUpgradeFlag() {
@@ -96,22 +96,22 @@ class CriteriaComponent {
 
   addTestProcedures(name, version) {
     this.addItem('test-procedures');
-    $(elements.testProcedureName).click();
+    $(this.elements.testProcedureName).click();
     $('#menu-name').$(`li*=${name}`).click();
-    $(elements.version).addValue(version);
+    $(this.elements.version).addValue(version);
     this.checkItem('test-procedures');
   }
 
   addTestTools(name, version) {
     this.addItem('test-tools');
-    $(elements.testToolsName).click();
+    $(this.elements.testToolsName).click();
     $('#menu-tt').$(`li*=${name}`).click();
-    $(elements.version).addValue(version);
+    $(this.elements.version).addValue(version);
     this.checkItem('test-tools');
   }
 
   addPrivacySecurity(value) {
-    $(elements.privacySecurityName).click();
+    $(this.elements.privacySecurityName).click();
     $(`//*[@data-value="${value}"]`).click();
   }
 

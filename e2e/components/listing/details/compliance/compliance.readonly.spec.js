@@ -4,26 +4,57 @@ import ComplianceComponent from './compliance.po';
 let compliance;
 let hooks;
 
-describe('the Listing page', () => {
-  beforeEach(async () => {
-    hooks = new Hooks();
-    compliance = new ComplianceComponent();
+beforeEach(() => {
+  hooks = new Hooks();
+  compliance = new ComplianceComponent();
+});
+describe('the 2015 listing page', () => {
+  beforeEach(() => {
     hooks.open('#/listing/9833');
-    await hooks.waitForSpinnerToDisappear();
+    hooks.waitForSpinnerToDisappear();
   });
 
-  it('should display surveillance and Direct review activities under compliance activity', () => {
-    compliance.complianceHeader.scrollIntoView();
-    compliance.expandCompliance();
-    browser.waitUntil(() => compliance.surveillanceHeader.isDisplayed());
-    expect(compliance.surveillanceHeader.isDisplayed()).toBe(true);
-    expect(compliance.drHeader.isDisplayed()).toBe(true);
+  describe('when expanding compliance activities', () => {
+    beforeEach(() => {
+      compliance.complianceHeader.scrollIntoView();
+      compliance.expandCompliance();
+    });
+
+    it('should display surveillance and direct review accordions under compliance activity', () => {
+      browser.waitUntil(() => compliance.surveillanceHeader.isDisplayed());
+      expect(compliance.surveillanceHeader.isDisplayed()).toBe(true);
+      expect(compliance.drHeader.isDisplayed()).toBe(true);
+    });
+
+    it('should display surveillance activities when expanding surveillance activities', () => {
+      compliance.expandSurveillance();
+      expect(compliance.survActivity.isDisplayed()).toBe(true);
+    });
+  });
+});
+describe('the 2014 listing page', () => {
+  beforeEach(() => {
+    hooks.open('#/listing/4445');
+    hooks.waitForSpinnerToAppear();
+    hooks.waitForSpinnerToDisappear();
   });
 
-  it('should display surveillance activities', () => {
-    compliance.complianceHeader.scrollIntoView();
-    compliance.expandCompliance();
-    compliance.expandSurveillance();
-    expect(compliance.survActivity.isDisplayed()).toBe(true);
+  describe('when expanding compliance activities', () => {
+    beforeEach(() => {
+      compliance.complianceHeader.scrollIntoView();
+      compliance.expandCompliance();
+    });
+
+    it('should display surveillance and direct review accordions under compliance activity', () => {
+      browser.waitUntil(() => compliance.surveillanceHeader.isDisplayed());
+      compliance.surveillanceHeader.scrollIntoView();
+      expect(compliance.surveillanceHeader.isDisplayed()).toBe(true);
+      expect(compliance.drHeader.isDisplayed()).toBe(true);
+    });
+
+    it('should display surveillance activities when expanding surveillance activities', () => {
+      compliance.expandSurveillance();
+      expect(compliance.survActivity.isDisplayed()).toBe(true);
+    });
   });
 });
