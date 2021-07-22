@@ -10,6 +10,8 @@ const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
 const listingId1 = '15.04.04.2496.ARIA.16.03.1.200623';
 const inputs = require('../../components/surveillance/edit/requirement-dp');
 const error = 'At least one Non-Conformity must be documented';
+const FIRST_ROW=1;
+const STATUS_COL_IDX=2;
 
 beforeEach(async () => {
   loginComponent = new LoginComponent();
@@ -59,8 +61,8 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     it(`should be able to ${testName} with non-conformity to reactive surveillance activity`, () => {
       let nonConformitydetails = {
         type: '170.314 (a)(1): Computerized provider order entry',
-        status: 'Open',
         determinationDate: '01/01/2020',
+        nonConformityCloseDate : '01/01/2021',
         summary: 'test summary',
         findings: 'test findings',
         approvalDate: '01/01/2020',
@@ -77,6 +79,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       expect(edit.totalSites.isEnabled()).toBeFalse;
       edit.saveButton.scrollAndClick();
       expect(edit.nonConformityTableRows().length).toEqual(1);
+      expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Closed');
       do {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
@@ -113,7 +116,6 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     it(`should be able to ${testName} with non-conformity to randomized surveillance activity`, () => {
       let nonConformitydetails = {
         type: '170.314 (a)(1): Computerized provider order entry',
-        status: 'Closed',
         determinationDate: '01/01/2020',
         summary: 'Test summary',
         findings: 'Test findings',
@@ -131,6 +133,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.addnonConformity(nonConformitydetails , 'Randomized');
       edit.saveButton.scrollAndClick();
       expect(edit.nonConformityTableRows().length).toEqual(1);
+      expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Open');
       do {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());

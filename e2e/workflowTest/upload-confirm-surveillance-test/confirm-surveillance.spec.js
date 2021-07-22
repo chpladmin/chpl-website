@@ -67,7 +67,6 @@ describe('when confirming surveillance, ACB', () => {
   it('should not be able to confirm when the surveillance has a non-conformity type the listing does not attest to', () => {
     let nonConformitydetails = {
       type: '170.315 (g)(10): Standardized API for Patient and Population Services',
-      status: 'Open',
       determinationDate: '01/01/2020',
       summary: 'test summary',
       findings: 'test findings',
