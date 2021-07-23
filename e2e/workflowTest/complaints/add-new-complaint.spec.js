@@ -52,6 +52,7 @@ describe('As a ROLE_ACB user', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
+    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 });
