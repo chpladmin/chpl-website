@@ -10,7 +10,7 @@ import { func } from 'prop-types';
 
 import theme from '../../themes/theme';
 
-function ChplAttestations(props) {
+function ChplAttestationChangeRequest(props) {
   const createAttestationChangeRequest = () => {
     const request = { attestation: Date.now().toString() };
     props.onSaveRequest(request);
@@ -41,8 +41,8 @@ function ChplAttestations(props) {
   );
 }
 
-export default ChplAttestations;
+export default ChplAttestationChangeRequest;
 
-ChplAttestations.propTypes = {
+ChplAttestationChangeRequest.propTypes = {
   onSaveRequest: func.isRequired,
 };

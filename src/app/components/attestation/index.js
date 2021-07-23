@@ -1,3 +1,3 @@
-import ChplAttestations from './attestations';
+import ChplAttestationChangeRequest from './attestation-change-request';
 
-export { ChplAttestations };
+export { ChplAttestationChangeRequest };
