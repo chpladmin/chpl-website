@@ -213,6 +213,9 @@ const DeveloperViewComponent = {
     }
 
     displayAttestations() {
+      this.$log.info(this.featureFlags.isOn('change-request'));
+      this.$log.info(this.featureFlags.isOn('role-developer'));
+      this.$log.info(this.featureFlags.isOn('attestations'));
       return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations');
     }
   },
