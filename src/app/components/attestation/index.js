@@ -1,3 +1,3 @@
-import ChplAttestationView from './attestation-veiw';
+import ChplAttestations from './attestations';
 
-export { ChplAttestationView };
+export { ChplAttestations };

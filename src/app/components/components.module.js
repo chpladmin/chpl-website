@@ -1,5 +1,5 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
-import { ChplAttestationView } from './attestation'
+import { ChplAttestations } from './attestation'
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import {
@@ -35,7 +35,7 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
-  .component('chplAttestationViewBridge', reactToAngularComponent(ChplAttestationView))
+  .component('chplAttestationsBridge', reactToAngularComponent(ChplAttestations))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
