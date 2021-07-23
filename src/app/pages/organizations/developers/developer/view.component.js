@@ -5,7 +5,7 @@ const DeveloperViewComponent = {
     directReviews: '<',
   },
   controller: class DeveloperViewComponent {
-    constructor($log, $scope, $state, $stateParams, authService, networkService, toaster) {
+    constructor($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
       'ngInject';
 
       this.$log = $log;
@@ -13,6 +13,7 @@ const DeveloperViewComponent = {
       this.$state = $state;
       this.$stateParams = $stateParams;
       this.canManageDeveloper = authService.canManageDeveloper;
+      this.featureFlags = featureFlags;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
@@ -209,6 +210,10 @@ const DeveloperViewComponent = {
         // no default
       }
       this.$scope.$apply();
+    }
+
+    displayAttestations() {
+      return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations');
     }
   },
 };

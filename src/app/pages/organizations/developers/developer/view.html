@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div feature-flag="role-developer">
+      <div ng-if="$ctrl.displayAttestations()">
         <chpl-attestations-bridge on-save-request="::$ctrl.saveRequest"></chpl-attestations-bridge>
       </div>
     </div>
