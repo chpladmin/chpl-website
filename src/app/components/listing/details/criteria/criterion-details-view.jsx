@@ -144,7 +144,7 @@ function ChplCriterionDetailsView(props) {
                       <ul className={classes.unindentedData}>
                         { criterion.optionalStandards.map((os, index) => (
                           <li key={os.id || os.key || index}>
-                            <ChplEllipsis text={os.optionalStandard.description || os.citation} maxLength={100} wordBoundaries />
+                            <ChplEllipsis text={os.description || os.citation} maxLength={100} wordBoundaries />
                           </li>
                         ))}
                       </ul>

@@ -29,15 +29,6 @@ const CertificationCriteriaViewComponent = {
         if (this.cert.testFunctionality) {
           this.cert.testFunctionality = this.cert.testFunctionality.sort(this.utilService.sortTestFunctionality);
         }
-        if (this.cert.optionalStandards) {
-          this.cert.optionalStandards = this.cert.optionalStandards.map((os) => ({
-            ...os,
-            optionalStandard: {
-              ...os.optionalStandard,
-              description: os.optionalStandard.description || os.citation,
-            },
-          }));
-        }
       }
       if (changes.resources) {
         this.resources = angular.copy(changes.resources.currentValue);

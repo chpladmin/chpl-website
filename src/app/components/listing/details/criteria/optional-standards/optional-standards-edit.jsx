@@ -52,10 +52,10 @@ const validationSchema = yup.object({
 function ChplOptionalStandardsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.optionalStandard.citation < b.optionalStandard.citation ? -1 : 1)));
+  const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.citation < b.citation ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
-      .filter((option) => !(props.optionalStandards.find((used) => used.optionalStandard.id === option.id)))
+      .filter((option) => !(props.optionalStandards.find((used) => used.id === option.id)))
       .sort((a, b) => (a.citation < b.citation ? -1 : 1)),
   );
   const classes = useStyles();
@@ -71,11 +71,9 @@ function ChplOptionalStandardsEdit(props) {
     const updated = [
       ...optionalStandards,
       {
-        optionalStandard: {
-          id: formik.values.os.id,
-          citation: formik.values.os.citation,
-          description: formik.values.os.description,
-        },
+        optionalStandardId: formik.values.os.id,
+        citation: formik.values.os.citation,
+        description: formik.values.os.description,
         key: Date.now(),
       },
     ];
@@ -93,14 +91,19 @@ function ChplOptionalStandardsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = optionalStandards.filter((s) => s.optionalStandard.id !== item.optionalStandard.id);
+    const updated = optionalStandards.filter((s) => {
+      if (s.optionalStandardId) {
+        return s.optionalStandardId !== item.optionalStandardId;
+      }
+      return s.citation !== item.citation;
+    });
     setOptionalStandards(updated);
     setOptions([
       ...options,
       {
-        citation: item.optionalStandard.citation,
-        description: item.optionalStandard.description,
-        id: item.optionalStandard.id,
+        citation: item.citation,
+        description: item.description,
+        id: item.optionalStandardId,
       },
     ].sort((a, b) => (a.citation < b.citation ? -1 : 1)));
     update(updated);
@@ -134,7 +137,7 @@ function ChplOptionalStandardsEdit(props) {
                 { optionalStandards.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2"><ChplEllipsis text={item.optionalStandard.description || item.citation} maxLength={100} wordBoundaries /></Typography>
+                      <Typography variant="body2"><ChplEllipsis text={item.description || item.citation} maxLength={100} wordBoundaries /></Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding

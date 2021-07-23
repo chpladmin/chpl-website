@@ -142,23 +142,18 @@ const CertificationCriteriaEditComponent = {
     }
 
     optionalStandardsOnChange(action) {
-      const that = this;
       switch (action.action) {
         case 'Remove':
           this.cert.optionalStandards = this.cert.optionalStandards
             .filter((cros) => {
-              if (cros.optionalStandard.id === null && action.item.item.id === 'newItem') {
-                if (cros.citation === action.item.item.citation) {
-                  that.newOptionalStandards = that.newOptionalStandards.filter((os) => (os !== action.item.item.citation));
-                  return false;
-                }
-                return true;
+              if (action.item.item.id === 'newItem') {
+                return cros.citation !== action.item.item.citation;
               }
-              return cros.optionalStandard.id !== action.item.item.id;
+              return cros.optionalStandardId !== action.item.item.id;
             });
           break;
         case 'Add':
-          this.cert.optionalStandards.push({ optionalStandard: new this.CertificationResultOptionalStandard(action.item.item) });
+          this.cert.optionalStandards.push(new this.CertificationResultOptionalStandard(action.item.item));
           break;
         default:
       }
@@ -254,12 +249,29 @@ const CertificationCriteriaEditComponent = {
     }
 
     getSelectedOptionalStandardKeys() {
+      const that = this;
       if (!this.cert.optionalStandards) {
         return [];
       }
       return this.cert.optionalStandards
-        .filter((os) => os.optionalStandard.id)
-        .map((os) => ({ key: os.optionalStandard.id }));
+        .filter((os) => os.optionalStandardId
+            && that.cert.allowedOptionalStandards
+            && that.cert.allowedOptionalStandards.length > 0
+            && that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length > 0)
+        .map((os) => ({ key: os.optionalStandardId }));
+    }
+
+    getNewOptionalStandards() {
+      const that = this;
+      if (!this.cert.optionalStandards) {
+        return [];
+      }
+      return this.cert.optionalStandards
+        .filter((os) => !os.optionalStandardId
+            || !that.cert.allowedOptionalStandards
+            || that.cert.allowedOptionalStandards.length === 0
+            || that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length === 0)
+        .map((os) => os.citation);
     }
 
     getSelectedTestStandardKeys() {
@@ -273,15 +285,6 @@ const CertificationCriteriaEditComponent = {
         this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => keys.find((k) => k.key === ts.id));
       }
       return keys;
-    }
-
-    getNewOptionalStandards() {
-      if (!this.cert.optionalStandards) {
-        return [];
-      }
-      return this.cert.optionalStandards
-        .filter((os) => !os.optionalStandard.id)
-        .map((os) => os.citation);
     }
 
     getNewTestStandards() {

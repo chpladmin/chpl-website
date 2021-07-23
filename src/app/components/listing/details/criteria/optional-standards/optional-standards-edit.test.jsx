@@ -21,8 +21,8 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { optionalStandard: { citation: 'zz name', description: 'zz name', id: 2 } },
-            { optionalStandard: { citation: 'name 1', description: 'name 1', id: 3 } },
+            { citation: 'zz name', description: 'zz name', id: 2 },
+            { citation: 'name 1', description: 'name 1', id: 3 },
           ]}
           options={[
             { citation: 'zz name', description: 'zz name', id: 2 },
@@ -74,8 +74,8 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { optionalStandard: { citation: 'zz name', description: 'zz name', id: 2 } },
-            { optionalStandard: { citation: 'name 1', description: 'name 1', id: 3 } },
+            { citation: 'zz name', description: 'zz name', id: 2 },
+            { citation: 'name 1', description: 'name 1', id: 3 },
           ]}
           options={[
             { citation: 'zz name', description: 'zz name', id: 2 },
@@ -134,12 +134,13 @@ describe('the ChplOptionalStandardsEdit component', () => {
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
       userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
+      /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { optionalStandard: { id: 3, citation: 'name 1', description: 'name 1' } },
-            { optionalStandard: { id: 2, citation: 'zz name', description: 'zz name' } },
-            { optionalStandard: { id: 4, citation: 'a name', description: 'a name' }, key: expect.any(Number) },
+            { id: 3, citation: 'name 1', description: 'name 1' },
+            { id: 2, citation: 'zz name', description: 'zz name' },
+            { optionalStandardId: 4, citation: 'a name', description: 'a name', key: expect.any(Number) },
           ],
           key: 'optionalStandards',
         });
@@ -152,8 +153,8 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { optionalStandard: { citation: 'zz name', description: 'zz name', id: 2 } },
-            { optionalStandard: { citation: 'name 1', description: 'name 1', id: 3 } },
+            { citation: 'zz name', description: 'zz name', id: 2 },
+            { citation: 'name 1', description: 'name 1', id: 3 },
           ]}
           options={[
             { citation: 'zz name', description: 'zz name', id: 2 },
@@ -182,7 +183,7 @@ describe('the ChplOptionalStandardsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { optionalStandard: { id: 2, citation: 'zz name', description: 'zz name' } },
+            { id: 2, citation: 'zz name', description: 'zz name' },
           ],
           key: 'optionalStandards',
         });
