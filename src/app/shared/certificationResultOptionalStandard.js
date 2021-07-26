@@ -5,7 +5,7 @@
     .factory('CertificationResultOptionalStandard', function () {
       var CertificationResultOptionalStandard = function (optionalStandard) {
         return {
-          id: optionalStandard.id,
+          optionalStandardId: optionalStandard.id,
           citation: optionalStandard.citation,
           description: optionalStandard.description,
         };
