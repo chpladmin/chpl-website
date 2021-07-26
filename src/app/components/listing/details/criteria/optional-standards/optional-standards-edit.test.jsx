@@ -21,8 +21,8 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { citation: 'zz name', description: 'zz name', id: 2 },
-            { citation: 'name 1', description: 'name 1', id: 3 },
+            { citation: 'zz name', description: 'zz name', optionalStandardId: 2 },
+            { citation: 'name 1', description: 'name 1', optionalStandardId: 3 },
           ]}
           options={[
             { citation: 'zz name', description: 'zz name', id: 2 },
@@ -74,8 +74,8 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { citation: 'zz name', description: 'zz name', id: 2 },
-            { citation: 'name 1', description: 'name 1', id: 3 },
+            { citation: 'zz name', description: 'zz name', optionalStandardId: 2 },
+            { citation: 'name 1', description: 'name 1', optionalStandardId: 3 },
           ]}
           options={[
             { citation: 'zz name', description: 'zz name', id: 2 },
@@ -138,8 +138,8 @@ describe('the ChplOptionalStandardsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { id: 3, citation: 'name 1', description: 'name 1' },
-            { id: 2, citation: 'zz name', description: 'zz name' },
+            { optionalStandardId: 3, citation: 'name 1', description: 'name 1' },
+            { optionalStandardId: 2, citation: 'zz name', description: 'zz name' },
             { optionalStandardId: 4, citation: 'a name', description: 'a name', key: expect.any(Number) },
           ],
           key: 'optionalStandards',
@@ -153,8 +153,8 @@ describe('the ChplOptionalStandardsEdit component', () => {
       render(
         <ChplOptionalStandardsEdit
           optionalStandards={[
-            { citation: 'zz name', description: 'zz name', id: 2 },
-            { citation: 'name 1', description: 'name 1', id: 3 },
+            { citation: 'zz name', description: 'zz name', optionalStandardId: 2 },
+            { citation: 'name 1', description: 'name 1', optionalStandardId: 3 },
           ]}
           options={[
             { citation: 'zz name', description: 'zz name', id: 2 },
@@ -183,7 +183,7 @@ describe('the ChplOptionalStandardsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { id: 2, citation: 'zz name', description: 'zz name' },
+            { optionalStandardId: 2, citation: 'zz name', description: 'zz name' },
           ],
           key: 'optionalStandards',
         });
