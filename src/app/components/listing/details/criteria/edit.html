@@ -89,7 +89,7 @@
             </td>
           </tr>
         </span>
-        <tr ng-if="$ctrl.cert.success && ($ctrl.cert.testStandards !== null || $ctrl.resources.testStandards.data.length > 0)">
+        <tr ng-if="$ctrl.cert.success && (($ctrl.cert.testStandards !== null && $ctrl.cert.testStandards.length > 0) || $ctrl.resources.testStandards.data.length > 0)">
           <td>
             <span>Test Standard</span>
           </td>
