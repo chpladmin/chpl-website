@@ -55,7 +55,7 @@ function ChplOptionalStandardsEdit(props) {
   const [optionalStandards, setOptionalStandards] = useState(props.optionalStandards.sort((a, b) => (a.citation < b.citation ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
-      .filter((option) => !(props.optionalStandards.find((used) => used.id === option.id)))
+      .filter((option) => !(props.optionalStandards.find((used) => used.optionalStandardId === option.id)))
       .sort((a, b) => (a.citation < b.citation ? -1 : 1)),
   );
   const classes = useStyles();
