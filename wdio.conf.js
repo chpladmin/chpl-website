@@ -167,7 +167,8 @@ exports.config = {
         return;
       }
       var message = assertion.error.message.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-      var location = `${__dirname}/test_reports/e2e/screenshot/assertionError_${message}.png`;;
+      var location = `${__dirname}/test_reports/e2e/screenshot/assertionError_${message}.png`;
+      console.log(`Saving screenshot: ${location}`);
       browser.saveScreenshot(location);
     }
   },
@@ -207,9 +208,11 @@ exports.config = {
   onPrepare: function (config, capabilities) {
     // make sure download directory exists
     if (!fs.existsSync(downloadDir)){
+      console.log(`making directory "${downloadDir}`);
       fs.mkdirSync(downloadDir);
     }
     if (!fs.existsSync(downloadDir + 'screenshot')){
+      console.log(`making directory "${downloadDir}screenshot`);
       fs.mkdirSync(downloadDir + 'screenshot');
     }
   },
