@@ -28,12 +28,12 @@ function ChplAttestationChangeRequest(props) {
         <CardActions>
           <Button
             color="primary"
-            id="create-attestation-change-request-button"
-            name="createAttestationChangeRequestButton"
+            id="submit-attestation-change-request-button"
+            name="submitAttestationChangeRequestButton"
             variant="contained"
             onClick={createAttestationChangeRequest}
           >
-            Create Attestation Change Request
+            Submit Attestation Change Request
           </Button>
         </CardActions>
       </Card>
