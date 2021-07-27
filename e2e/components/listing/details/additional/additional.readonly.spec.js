@@ -11,6 +11,7 @@ beforeEach(() => {
 describe('the 2015 listing page for listing with ICS value false', () => {
   beforeEach(() => {
     hooks.open('#/listing/9833');
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
 
