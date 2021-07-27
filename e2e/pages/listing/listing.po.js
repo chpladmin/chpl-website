@@ -4,6 +4,7 @@ const elements = {
   editCertifiedProduct: '//button[text()=" Edit Certified Product"]',
   reason: '#reason-for-change',
   bypassWarning: '#acknowledge-warnings',
+  listingBasicInformation: '#listing-information-basic',
 };
 
 class ListingPage {
@@ -27,6 +28,10 @@ class ListingPage {
 
   get bypassWarning() {
     return $(elements.bypassWarning);
+  }
+
+  get listingBasicInformation() {
+    return $(elements.listingBasicInformation);
   }
 }
 
