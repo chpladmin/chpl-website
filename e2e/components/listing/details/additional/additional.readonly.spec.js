@@ -34,6 +34,7 @@ describe('the 2015 listing page for listing with ICS value true', () => {
     });
 
     it('should display ICS relationship button under additional information', () => {
+      browser.waitUntil(() => additional.icsButton.isDisplayed())
       expect(additional.icsButton.isDisplayed()).toBe(true);
     });
 

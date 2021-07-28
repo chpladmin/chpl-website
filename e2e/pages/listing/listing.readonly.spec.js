@@ -61,7 +61,7 @@ describe('when on 2015 listing page - ', () => {
     });
 
     it('should open product history modal', () => {
-      expect(hooks.getTableRows().length).toBeGreaterThan(1);
+      expect(page.listingHistoryModalRows().length).toBeGreaterThan(1);
     });
 
     describe('when clicking on Go to API button from product history', () => {
@@ -128,7 +128,7 @@ describe('when on 2014 listing page - ', () => {
     });
 
     it('should open product history modal', () => {
-      expect(hooks.getTableRows().length).toBeGreaterThan(1);
+      expect(page.listingHistoryModalRows().length).toBeGreaterThan(1);
     });
 
     describe('when clicking on Go to API button from product history', () => {

@@ -52,6 +52,10 @@ class ListingPage {
   goToDeveloperPageLink(developerName) {
     return $(`//a[text()="${developerName}"]`);
   }
+
+  listingHistoryModalRows() {
+    return $('//*[@id=\'listing-history-title\']/parent::div').$('table').$('tbody').$$('tr');
+  }
 }
 
 export default ListingPage;
