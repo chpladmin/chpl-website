@@ -10,6 +10,7 @@ class ListingPage {
       productHistory: '#view-listing-history',
       goToApi: '#go-to-api',
       manageSurveillanceActivity: '//a[text()=" Manage Surveillance Activity"]',
+      listingBasicInformation: '#listing-information-basic',
     };
   }
 
@@ -55,6 +56,10 @@ class ListingPage {
 
   listingHistoryModalRows() {
     return $('//*[@id=\'listing-history-title\']/parent::div').$('table').$('tbody').$$('tr');
+  }
+
+  get listingBasicInformation() {
+    return $(this.elements.listingBasicInformation);
   }
 }
 
