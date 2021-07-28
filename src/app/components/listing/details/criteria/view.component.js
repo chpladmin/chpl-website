@@ -13,13 +13,14 @@ const CertificationCriteriaViewComponent = {
     viewAll: '<',
   },
   controller: class CertificationCriteriaViewController {
-    constructor($analytics, $log, $uibModal, authService, utilService) {
+    constructor($analytics, $log, $uibModal, authService, featureFlags, utilService) {
       'ngInject';
 
       this.$analytics = $analytics;
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.hasAnyRole = authService.hasAnyRole;
+      this.isOn = featureFlags.isOn;
       this.utilService = utilService;
     }
 
@@ -90,6 +91,13 @@ const CertificationCriteriaViewComponent = {
                 || (!this.cert.success
                  && (this.cert.g1Success !== null
                   || this.cert.g2Success !== null));
+    }
+
+    showOptionalStandardsSection() {
+      return this.cert.success && (
+        (this.cert.optionalStandards?.length > 0)
+          || (this.cert.testStandards?.length > 0 && (!this.isOn('optional-standards') || this.cert.optionalStandards))
+      );
     }
 
     toggleCriteria() {

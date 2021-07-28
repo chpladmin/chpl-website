@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { arrayOf } from 'prop-types';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import {
@@ -20,6 +20,7 @@ import {
   certificationResult,
   qmsStandard,
 } from '../../../../shared/prop-types';
+import FlagContext from '../../../../shared/contexts';
 
 const useStyles = makeStyles(() => ({
   iconSpacing: {
@@ -36,11 +37,16 @@ function ChplCriterionDetailsView(props) {
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const classes = useStyles();
+  const { optionalStandardsIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   if (criterion.criterion.certificationEdition === '2011') {
     return null;
   }
+
+  const showOptionalStandardsSection = () => criterion.success
+        && ((criterion.optionalStandards?.length > 0)
+            || (criterion.testStandards?.length > 0 && (!optionalStandardsIsOn || criterion.optionalStandards)));
 
   return (
     <TableContainer component={Paper}>
@@ -125,7 +131,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.optionalStandards && (criterion.optionalStandards.length > 0 || criterion.testStandards?.length > 0)
+          { showOptionalStandardsSection()
             && (
               <TableRow key="optionalStandards">
                 <TableCell component="th" scope="row">
