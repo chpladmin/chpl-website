@@ -152,6 +152,9 @@ const theme = createMuiTheme({
       },
     },
     MuiTableCell: {
+      root: {
+        fontSize: '1em',
+      },
       head: {
         color: '#156dac',
         fontWeight: 800,
