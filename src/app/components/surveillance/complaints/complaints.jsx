@@ -71,7 +71,7 @@ function ChplComplaints(props) {
   /* eslint-disable react/destructuring-assignment */
   const [complaints, setComplaints] = useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
