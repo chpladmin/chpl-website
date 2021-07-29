@@ -3,8 +3,7 @@
 const uploadElements = {
   chooseUploadListing: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
   uploadButton: '.btn.btn-ai-success',
-  listingUploadText: '//chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
-  uploadSuccessfulText: '//*[@id="main-content"]/div/ui-view/chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
+  uploadSuccessfulText: '//chpl-upload-listings/div/div[2]/div',
 };
 const path = require('path');
 
@@ -23,10 +22,6 @@ class UploadPage {
     return $(uploadElements.uploadSuccessfulText);
   }
 
-  get listingUploadText () {
-    return $(uploadElements.listingUploadText);
-  }
-
   waitForSuccessfulUpload (fileName) {
     browser.waitUntil( () => this.uploadSuccessfulText.getText().includes(fileName));
   }
@@ -35,7 +30,6 @@ class UploadPage {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadListingButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.waitAndClick();
-    browser.waitUntil( () => this.listingUploadText.isDisplayed());
   }
 
 }

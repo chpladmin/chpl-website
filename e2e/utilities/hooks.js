@@ -19,6 +19,10 @@ class Hooks {
     const foundFlag = flagObj.find(flag => flag.key === flagName);
     return foundFlag?.active;
   }
+  
+  getTableRows() {
+    return $('table').$('tbody').$$('tr');
+  }
 }
 
 export default Hooks;
