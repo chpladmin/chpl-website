@@ -213,16 +213,15 @@ const interpretCertificationStatusChanges = (listing) => listing.certificationEv
     return e;
   });
 
-const interpretMuuHistory = (listing, DateUtil) => listing.meaningfulUseUserHistory
-  .sort((a, b) => a.muuDate - b.muuDate)
+const interpretPIHistory = (listing, DateUtil, piIsOn) => listing.promotingInteroperabilityUserHistory
+  .sort((a, b) => (a.userCountDate < b.userCountDate ? -1 : 1))
   .map((item, idx, arr) => {
+    const title = piIsOn ? 'Promoting Interoperability' : 'Meaningful Use';
+    item.activityDate = DateUtil.localDateToTimestamp(item.userCountDate);
     if (idx > 0) {
-      item.activityDate = parseInt(item.muuDate, 10);
-      item.change = [`Estimated number of Meaningful Use Users changed from ${arr[idx - 1].muuCount
-      } to ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
+      item.change = [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
     } else {
-      item.activityDate = parseInt(item.muuDate, 10);
-      item.change = [`Estimated number of Meaningful Use Users became ${item.muuCount} on ${DateUtil.getDisplayDateFormat(item.muuDate)}`];
+      item.change = [`Estimated number of ${title} Users became ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];
     }
     return item;
   });
@@ -299,7 +298,7 @@ const interpretVersion = (activity) => {
 export {
   interpretActivity,
   interpretCertificationStatusChanges,
-  interpretMuuHistory,
+  interpretPIHistory,
   interpretDeveloper,
   interpretProduct,
   interpretVersion,
