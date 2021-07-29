@@ -1,12 +1,12 @@
-const elements = {
-  measuresHeader: '//div[text()="Successfully Tested G1/G2 Measures"]',
-};
-
 class MeasuresComponent {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      measuresHeader: '//div[text()="Successfully Tested G1/G2 Measures"]',
+    };
+  }
 
   get measuresHeader() {
-    return $(elements.measuresHeader);
+    return $(this.elements.measuresHeader);
   }
 
   expandMeasures() {

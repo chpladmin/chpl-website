@@ -91,7 +91,7 @@ class ConfirmPage {
   }
 
   findListingToReject (chplId) {
-    return $('//td[text()="' + chplId + '"]');
+    return $('chpl-confirm-listings-bridge').$('//td[text()="' + chplId + '"]');
   }
 
   rejectListing (chplId) {
