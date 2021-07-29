@@ -10,6 +10,10 @@ const listingEditElements = {
   saveCertifiedProduct: 'button=Save Certification Criteria',
   closeListingEditButton: 'button.close.pull-right.ng-isolate-scope',
   yesConfirmation: '//button[text()="Yes"]',
+  rwtPlansUrl: '#rwt-plans-url',
+  rwtPlansCheckDate: '#rwt-plans-check-date',
+  rwtResultsUrl: '#rwt-results-url',
+  rwtResultsCheckDate: '#rwt-results-check-date',
 };
 
 class ListingEditComponent {
@@ -49,6 +53,22 @@ class ListingEditComponent {
 
   get saveCertifiedProduct() {
     return $(listingEditElements.saveCertifiedProduct);
+  }
+
+  get rwtPlansUrl() {
+    return $(listingEditElements.rwtPlansUrl);
+  }
+
+  get rwtPlansCheckDate() {
+    return $(listingEditElements.rwtPlansCheckDate);
+  }
+
+  get rwtResultsUrl() {
+    return $(listingEditElements.rwtResultsUrl);
+  }
+
+  get rwtResultsCheckDate() {
+    return $(listingEditElements.rwtResultsCheckDate);
   }
 
   get closeListingEditButton() {

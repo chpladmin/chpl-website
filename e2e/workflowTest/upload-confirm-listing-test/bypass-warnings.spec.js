@@ -33,11 +33,12 @@ describe('listing with no confirm warnings and no errors', () => {
     confirmPage.gotoConfirmListingPage(listingIdNoWarningError);
     confirmPage.confirmListing();
     expect(confirmPage.warningCheckbox.isDisplayed()).toBeFalse;
-    confirmPage.waitForSuccessfulConfirm();
-    expect(confirmPage.toastContainerTitle.getText()).toBe('Please stand by');
+    browser.waitUntil(() => toast.toastContainer.isDisplayed());
+    expect(toast.toastTitle.getText()).toBe('Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
-    expect(confirmPage.toastContainerTitle.getText()).toBe('Success');
+    browser.waitUntil(() => toast.toastContainer.isDisplayed());
+    expect(toast.toastTitle.getText()).toBe('Success');
   });
   afterEach(function () {
     browser.refresh();
@@ -76,11 +77,12 @@ describe('listing with warnings on confirm and no errors', () => {
     hooks.waitForSpinnerToDisappear();
     confirmPage.warningCheckbox.click();
     confirmPage.confirmListing();
-    confirmPage.waitForSuccessfulConfirm();
-    expect(confirmPage.toastContainerTitle.getText()).toBe('Please stand by');
+    browser.waitUntil(() => toast.toastContainer.isDisplayed());
+    expect(toast.toastTitle.getText()).toBe('Please stand by');
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
-    expect(confirmPage.toastContainerTitle.getText()).toBe('Success');
+    browser.waitUntil(() => toast.toastContainer.isDisplayed())
+    expect(toast.toastTitle.getText()).toBe('Success');
   });
 
   afterEach(function () {
