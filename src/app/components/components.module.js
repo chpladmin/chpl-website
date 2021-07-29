@@ -1,8 +1,12 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
-import { ChplComplaintEdit, ChplComplaintView, ChplComplaints } from './surveillance/complaints';
+import {
+  ChplComplaintAdd, ChplComplaintEdit, ChplComplaintView, ChplComplaints,
+} from './surveillance/complaints';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
-import { ChplConfirmation, ChplEllipsis, ChplLink, ChplNonProdIndicator } from './util';
+import {
+  ChplConfirmation, ChplEllipsis, ChplLink, ChplNonProdIndicator,
+} from './util';
 import { ChplFuzzyType } from './fuzzy-type';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
@@ -29,8 +33,9 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
-  .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
+  .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
+  .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
   .component('chplComplaintsBridge', reactToAngularComponent(ChplComplaints))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
