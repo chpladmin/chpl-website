@@ -18,7 +18,6 @@ import AddIcon from '@material-ui/icons/Add';
 import theme from '../../../themes/theme';
 import { ChplEllipsis, ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
-import zIndex from '@material-ui/core/styles/zIndex';
 
 const useStyles = makeStyles(() => ({
   container: {

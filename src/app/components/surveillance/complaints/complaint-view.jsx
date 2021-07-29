@@ -88,11 +88,9 @@ function ChplComplaintView(props) {
               <Typography>
                 {complaint.receivedDate}
               </Typography>
-              </Typography>
               <Typography variant="subtitle2">
                 Closed Date:
               </Typography>
-              <Typography>
                 {complaint.closedDate}
               </Typography>
               <Typography variant="subtitle2">
