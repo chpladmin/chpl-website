@@ -213,7 +213,7 @@ const DeveloperViewComponent = {
     }
 
     displayAttestations() {
-      return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations');
+      return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations') && this.hasAnyRole(['ROLE_DEVELOPER']);
     }
   },
 };
