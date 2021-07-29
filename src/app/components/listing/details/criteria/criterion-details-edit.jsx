@@ -208,7 +208,7 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { optionalStandardsIsOn && criterion.optionalStandards && criterion.allowedOptionalStandards?.length > 0
+            { optionalStandardsIsOn && (criterion.optionalStandards || criterion.allowedOptionalStandards?.length > 0)
               && (
                 <>
                   <div>
