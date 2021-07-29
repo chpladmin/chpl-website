@@ -1,7 +1,7 @@
 import ChplConfirmation from './confirmation';
 import ChplCriterionTitle from './criterion-title';
 import ChplDialogTitle from './chpl-dialog-title';
-import { ChplEllipsis } from './chpl-ellipsis';
+import ChplEllipsis from './chpl-ellipsis';
 import ChplHighlightCures from './highlight-cures';
 import ChplLink from './chpl-link';
 import ChplSortableHeaders from './chpl-sortable-headers';

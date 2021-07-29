@@ -3,7 +3,7 @@ const uploadElements = {
   title: '.panel-title',
   chooseUploadListing: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
   uploadButton: '.btn.btn-ai-success',
-  listingUploadText: '//chpl-upload/div/div/chpl-upload-listings/div/div[2]/div',
+  listingUploadText: '//chpl-upload-listings/div/div[2]/div',
   chooseUploadListingBeta: '//input[@id="upload-listings"]',
   uploadBetaButton: '.MuiButton-containedPrimary',
 };

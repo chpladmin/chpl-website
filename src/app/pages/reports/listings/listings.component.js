@@ -832,7 +832,13 @@ const ReportsListingsComponent = {
               }
             }
           }
-          if (item.originalData.meaningfulUseUserHistory) {
+          if (item.originalData.promotingInteroperabilityUserHistory) {
+            const promotingInteroperabilityUserHistory = this.ReportService.compare(item.originalData.promotingInteroperabilityUserHistory, item.newData.promotingInteroperabilityUserHistory, 'promotingInteroperabilityUserHistory');
+            if (promotingInteroperabilityUserHistory.length > 0) {
+              activity.details.push(`Promoting Interoperability user history changes<ul>${promotingInteroperabilityUserHistory.join('')}</ul>`);
+            }
+          }
+          if (item.originalData.meaningfulUseUserHistory && !item.originalData.promotingInteroperabilityUserHistory) {
             const meaningfulUseUserHistory = this.ReportService.compare(item.originalData.meaningfulUseUserHistory, item.newData.meaningfulUseUserHistory, 'meaningfulUseUserHistory');
             if (meaningfulUseUserHistory.length > 0) {
               activity.details.push(`Meaningful use user history changes<ul>${meaningfulUseUserHistory.join('')}</ul>`);

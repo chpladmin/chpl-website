@@ -21,7 +21,7 @@ import { bool, object } from 'prop-types';
 import {
   interpretActivity,
   interpretCertificationStatusChanges,
-  interpretMuuHistory,
+  interpretPIHistory,
   interpretDeveloper,
   interpretProduct,
   interpretVersion,
@@ -48,6 +48,9 @@ function ChplListingHistory(props) {
   const ReportService = getAngularService('ReportService');
   const networkService = getAngularService('networkService');
   const utilService = getAngularService('utilService');
+  const flags = {
+    promotingInteroperabilityIsOn: props.promotingInteroperabilityIsOn,
+  };
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -135,7 +138,7 @@ function ChplListingHistory(props) {
     setActivity((activity) => [
       ...activity,
       ...interpretCertificationStatusChanges(listing),
-      ...interpretMuuHistory(listing, DateUtil),
+      ...interpretPIHistory(listing, DateUtil, flags.promotingInteroperabilityIsOn),
     ]);
     evaluateListingActivity();
     evaluateDeveloperActivity(listing.developer.developerId);
@@ -265,8 +268,10 @@ export default ChplListingHistory;
 ChplListingHistory.propTypes = {
   canSeeHistory: bool,
   listing: object.isRequired,
+  promotingInteroperabilityIsOn: bool,
 };
 
 ChplListingHistory.defaultProps = {
   canSeeHistory: false,
+  promotingInteroperabilityIsOn: false,
 };
