@@ -49,6 +49,7 @@ const CertificationCriteriaEditComponent = {
       this.selectedTestProcedureKeys = this.getSelectedTestProcedureKeys();
       this.selectedOptionalStandardKeys = this.getSelectedOptionalStandardKeys();
       this.selectedTestStandardKeys = this.getSelectedTestStandardKeys();
+      this.newOptionalStandards = this.getNewOptionalStandards();
       this.newTestStandards = this.getNewTestStandards();
       this.selectedTestToolKeys = this.getSelectedTestToolKeys();
       this.sortedTestFunctionalities = this.getSortedTestFunctionalities();
@@ -140,13 +141,19 @@ const CertificationCriteriaEditComponent = {
       }
     }
 
-    optionalStandardOnChange(action) {
+    optionalStandardsOnChange(action) {
       switch (action.action) {
         case 'Remove':
-          this.cert.optionalStandards = this.cert.optionalStandards.filter((cros) => cros.optionalStandard.id !== action.item.item.id);
+          this.cert.optionalStandards = this.cert.optionalStandards
+            .filter((cros) => {
+              if (action.item.item.id === 'newItem') {
+                return cros.citation !== action.item.item.citation;
+              }
+              return cros.optionalStandardId !== action.item.item.id;
+            });
           break;
         case 'Add':
-          this.cert.optionalStandards.push({ optionalStandard: new this.CertificationResultOptionalStandard(action.item.item) });
+          this.cert.optionalStandards.push(new this.CertificationResultOptionalStandard(action.item.item));
           break;
         default:
       }
@@ -242,12 +249,29 @@ const CertificationCriteriaEditComponent = {
     }
 
     getSelectedOptionalStandardKeys() {
+      const that = this;
       if (!this.cert.optionalStandards) {
         return [];
       }
       return this.cert.optionalStandards
-        .filter((os) => os.optionalStandard.id)
-        .map((os) => ({ key: os.optionalStandard.id }));
+        .filter((os) => os.optionalStandardId
+            && that.cert.allowedOptionalStandards
+            && that.cert.allowedOptionalStandards.length > 0
+            && that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length > 0)
+        .map((os) => ({ key: os.optionalStandardId }));
+    }
+
+    getNewOptionalStandards() {
+      const that = this;
+      if (!this.cert.optionalStandards) {
+        return [];
+      }
+      return this.cert.optionalStandards
+        .filter((os) => !os.optionalStandardId
+            || !that.cert.allowedOptionalStandards
+            || that.cert.allowedOptionalStandards.length === 0
+            || that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length === 0)
+        .map((os) => os.citation);
     }
 
     getSelectedTestStandardKeys() {
