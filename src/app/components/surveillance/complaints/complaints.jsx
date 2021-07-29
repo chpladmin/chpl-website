@@ -6,14 +6,13 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TablePagination,
   TableRow,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, bool, func } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import AddIcon from '@material-ui/icons/Add';
 import theme from '../../../themes/theme';
@@ -121,23 +120,6 @@ function ChplComplaints(props) {
             orderBy="receivedDate"
             order="desc"
           />
-          { props.displayAdd // eslint-disable-line react/destructuring-assignment
-            && (
-              <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={headers.length - 1} />
-                  <TableCell align="right">
-                    <Button
-                      onClick={() => handleAction('add')}
-                      color="primary"
-                      variant="outlined"
-                    >
-                      Add New Complaint<AddIcon className={classes.iconSpacing} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              </TableFooter>
-            )}
           <TableBody>
             {complaints
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -196,10 +178,5 @@ export default ChplComplaints;
 
 ChplComplaints.propTypes = {
   complaints: arrayOf(complaintPropType).isRequired,
-  displayAdd: bool,
   dispatch: func.isRequired,
-};
-
-ChplComplaints.defaultProps = {
-  displayAdd: false,
 };

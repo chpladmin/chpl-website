@@ -99,6 +99,9 @@
     </chpl-filters>
     <div class="flex-container" ng-if="$ctrl.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])">
       <div class="flex-item text-right">
+        <chpl-complaint-add-bridge
+          ng-if="$ctrl.displayAdd"
+          dispatch="::$ctrl.handleDispatch"></chpl-complaint-add-bridge>
         <button class="btn btn-primary" id="download-results"
                 ng-csv="$ctrl.csvComplaints" filename="{{ $ctrl.filename }}" add-bom="true"
                 ng-disabled="!$ctrl.csvComplaints"
@@ -111,7 +114,6 @@
     <chpl-complaints-bridge
       ng-if="$ctrl.complaints"
       complaints="$ctrl.displayedComplaints"
-      display-add="$ctrl.displayAdd"
       dispatch="::$ctrl.handleDispatch"></chpl-complaints-bridge>
   </div>
   <chpl-complaint-view-bridge
