@@ -87,7 +87,7 @@
         { display: 'ONC-ACB', enabled: false, columns: [{ display: 'ONC-ACB', key: 'acb' }] },
         { display: 'Practice Type', enabled: false, columns: [{ display: 'Practice Type', key: 'practiceType' }] },
         { display: 'Status', enabled: true, columns: [{ display: 'Status', key: 'certificationStatus' }] },
-        { display: 'Details', enabled: true, columns: [{ display: 'Details', key: 'id', transform: id => 'https://chpl.healthit.gov/#/product/' + id }] },
+        { display: 'Details', enabled: true, columns: [{ display: 'Details', key: 'id', transform: id => 'https://chpl.healthit.gov/#/listing/' + id }] },
         { display: 'Certification Criteria', enabled: false, columns: [{ display: 'Certification Criteria', key: 'criteriaMet', transform: getCriteriaForCsv }] },
         { display: 'Clinical Quality Measures', enabled: false, columns: [{ display: 'Clinical Quality Measures', key: 'cqmsMet', transform: cqm => cqm ? cqm.split(SPLIT_PRIMARY).sort(utilService.sortCqmActual).join('\n') : '' }] },
         { display: 'Surveillance', enabled: false, columns: [

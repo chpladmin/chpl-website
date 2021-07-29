@@ -14,6 +14,10 @@ class Hooks {
   waitForSpinnerToAppear () {
     browser.waitUntil( () => $('#loading-bar-spinner').isDisplayed());
   }
+
+  getTableRows() {
+    return $('table').$('tbody').$$('tr');
+  }
 }
 
 export default Hooks;
