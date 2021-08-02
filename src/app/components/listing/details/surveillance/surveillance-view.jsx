@@ -102,7 +102,7 @@ function ChplSurveillanceView(props) {
             <TableRow>
               <TableCell component="th" scope="row">
                 Certification Criteria and Program Requirements Surveilled
-                <ChplTooltip title="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a transparency or disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.">
+                <ChplTooltip title="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.">
                   <InfoOutlinedIcon
                     className={classes.iconSpacing}
                   />
