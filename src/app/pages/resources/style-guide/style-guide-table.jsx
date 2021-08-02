@@ -199,7 +199,7 @@ function ChplStyleGuideTable() {
                 <TableCell>{ listing.version }</TableCell>
                 <TableCell>{ listing.status }</TableCell>
                 <TableCell>
-                  <ButtonGroup color="primary"> 
+                  <ButtonGroup color="primary">
                     <Button>
                      CERT ID
                     </Button>

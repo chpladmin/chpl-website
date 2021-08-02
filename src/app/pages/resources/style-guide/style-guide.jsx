@@ -15,10 +15,9 @@ const defaultTheme = createMuiTheme({});
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     backgroundColor:"#f2f2f2",
-    paddingTop: "16px",
-    paddingBottom: "128px",
+    padding: "32px",
     marginBottom:"-128px",
   },
 });
@@ -30,19 +29,15 @@ function ChplStyleGuide() {
     <div className={classes.container}>
       <ThemeProvider theme={defaultTheme}>
       <div>
-        <Container>
-        <Typography variant="h1">Default Material UI</Typography>
-        <Elements />
-        </Container>
-      </div>  
-      <div>
-        <Container>
         <Typography variant="h1">CHPL Material UI</Typography>
         <ThemeProvider theme={theme}>
         <Elements />
         </ThemeProvider>
-        </Container>
       </div>
+      <div>
+        <Typography variant="h1">Default Material UI</Typography>
+        <Elements />
+      </div>  
       </ThemeProvider>
     </div>
   );

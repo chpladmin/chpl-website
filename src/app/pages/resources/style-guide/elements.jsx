@@ -14,6 +14,8 @@ import {
   Divider,
   Grid,
   Link,
+  List,
+  ListItem,
   Table,
   TableBody,
   TableCell,
@@ -34,13 +36,18 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ChplEllipsis } from '../../../components/util';
 import { ChplTextField } from '../../../components/util';
 import ChplStyleGuideTable from './style-guide-table';
+import ChplDeleteButton from './chpl-delete-button';
+import ChplPrimaryButton from './chpl-primary-button';
+import ChplSecondaryButton from './chpl-secondary-button';
+import ChplDefaultButton from './chpl-default-button';
+
 
 function Elements() {
   return (
-    <Container>
+    <div>
       {/* Typography Containers */}  
-      <Container>
-          <Typography variant="h5">Typography Hiearchy:</Typography>
+      <div>
+          <Typography variant="h3">Typography Hiearchy:</Typography>
           <br />
           <Card>
             <CardContent>
@@ -144,92 +151,91 @@ function Elements() {
             </CardContent>
           </Card>
           <br />
-        </Container>
+        </div>
       {/* End of Typography Containers */}
       {/* Buttons Variations*/}
-        <Container>
-          <Typography variant="h5">
+        <div>
+          <Typography variant="h3">
             CHPL Buttons and Where To Use Them:
           </Typography>
           <br />
-        </Container>
-        <Container>
+        </div>
+        <div>
           <Card>
             <CardContent>
-              <Grid container spacing={4}>
+              <Grid container spacing={2}>
+              <Grid item xs="12">
+                    <Typography variant="subtitle1">
+                      Rules To Follow:
+                    </Typography> 
+                <List aria-label="chpl button rules">
+                <ListItem>
+                <Typography variant="body1">
+                      1. All buttons should have text that assoicated with action.
+                    </Typography>       
+                </ListItem>
+                <ListItem>
+                <Typography variant="body1">
+                      2. All buttons should have an icon assoicated with the given button.
+                    </Typography>       
+                </ListItem>        
+                <ListItem>
+                <Typography variant="body1">
+                      3. Sizing of the button is either medium or full width.
+                    </Typography>       
+                </ListItem>
+                <ListItem>
+                <Typography variant="body1">
+                      4. All CHPL buttons are built as their own component. You have the following options of (ChplPrimary Button , Chpl Secondary Button, ChplDeleteButton, ChplButtonGroup)
+                    </Typography>       
+                </ListItem>
+                <ListItem>
+                <Typography variant="body1">
+                      5. All icons within a button should have the class .iconSpacing applied for a consistent theme)
+                    </Typography>       
+                </ListItem>
+                </List>
+                </Grid>
+                </Grid>
+                <Grid container spacing={2}>
                 <Grid item xs="6">
-                  <Button color="primary" variant="contained">
-                    Primary button
-                    <ArrowForwardOutlinedIcon
-                      fontSize="small"
-                    />
-                  </Button>
-                  <Grid item xs="10">
-                    <Typography variant="body1">
+                  <ChplPrimaryButton/>
+                    <Typography gutterBottom variant="body1">
                       Primary Button should be used on saved buttons or on the
                       main action of the given page object. Be sure to use the
                       varient <i>contained</i>.
                     </Typography>
                   </Grid>
-                </Grid>
                 <Grid item xs="6">
-                  <Button color="secondary" variant="contained">
-                    Secondary Button
-                    <ArrowForwardOutlinedIcon
-                      fontSize="small"
-                    />
-                  </Button>
-                  <Grid item xs="10">
-                    <Typography variant="body1">
+                  <ChplSecondaryButton/>
+                    <Typography gutterBottom variant="body1">
                       Secondary Button should be used on filters, selecting
                       listings, uploads and more! Think of this button as a
                       cache all for all buttons. Be sure to use the varient{' '}
                       <i>contained</i> here.
                     </Typography>
-                  </Grid>
                 </Grid>
                 <Grid item xs="6">
-                  <Button color="default" variant="contained">
-                    Default Button
-                    <ArrowForwardOutlinedIcon
-                      fontSize="small"
-                    />
-                  </Button>
-                  <Grid item xs="10">
-                    <Typography variant="body1">
-                      Default Button should be used on cancelling a certian
-                      process/form. Be sure to use the varient
-                      <i> contained</i>.
+                  <ChplDefaultButton/>
+                    <Typography gutterBottom  variant="body1">
+                      Default Button should be used on cancelling a certian process/form. Be sure to use the varient<i> contained</i>.
                     </Typography>
-                  </Grid>
                 </Grid>
                 <Grid item xs="6">
                   <Button variant="contained" disabled>
                     disabled Button
                   </Button>
-                  <Grid item xs="10">
-                    <Typography variant="body1">
-                      Disabled button should be shown when an action can not be
-                      completed until a user makes a seperate action. You can
-                      use the <i>disabled</i> on any button and styling will
-                      change
+                    <Typography gutterBottom  variant="body1">
+                      Disabled button should be shown when an action can not be completed until a user makes a seperate action. You can use the <i>disabled</i> on any button and styling will change
                     </Typography>
-                  </Grid>
                 </Grid>
                 <Grid item xs="6">
-                  <Button variant="contained">
-                    Delete Button
-                    <DeleteOutlinedIcon
-                      fontSize="small"
-                    />
-                  </Button>
-                  <Grid item xs="10">
-                    <Typography variant="body1">
+                  <ChplDeleteButton/>
+                    <Typography gutterBottom  variant="body1">
                       Delete button should be used only when there is an action
                       to delete a proccess/item. Be sure to use the varient{' '}
                       <i>contained</i>.
-                    </Typography>     
-                  </Grid>
+                    </Typography> 
                 </Grid>
                 <Grid item xs="6">
                 <Grid>
@@ -238,9 +244,7 @@ function Elements() {
                   <Button>Hover Over Me</Button>
                   <Button>One More</Button>
                 </ButtonGroup>
-                </Grid>
-                <Grid item xs="10">
-                    <Typography variant="body1">
+                    <Typography gutterBottom variant="body1">
                     Button groups are used when there's multiple actions that can happen for a particular item, table or other. 
                     </Typography>     
                 </Grid>
@@ -251,67 +255,47 @@ function Elements() {
                   <Button color="primary" variant="outlined">CMS Widget</Button>
                   <Button color="primary" variant="outlined">Compare</Button>
                 </ButtonGroup>
-                </Grid>
-                <Grid item xs="10">
-                    <Typography variant="body1">
+                    <Typography gutterBottomvariant="body1">
                       Within CHPL youll see vartions of button groups that includes primary, secondary, default, and so one.
-                      <i>contained</i>.
                     </Typography>     
                 </Grid>
                 </Grid>
               </Grid>
+              <Divider />
               <br/>
-              <Typography variant="h6">
-              CHPL Buttons Sizes:By default use medium button on CHPL UI
+              <Typography gutterBottom variant="h5">
+              CHPL Buttons Sizes:
              </Typography>
-              <Grid container alignItems="center" justify="space-between">
-              <Grid item>
-                  <Button color="primary" variant="contained" size="small">
-                    Small button
-                    <ArrowForwardOutlinedIcon
-                      fontSize="small"
-                    />
-                  </Button>
-                </Grid>
-                <Grid item>
+              <Grid container>
+              <Grid item lg="2">
                 <Button size="medium" color="primary" variant="contained">
                     Medium button
                     <ArrowForwardOutlinedIcon
                       fontSize="small"
                     />
                   </Button>
-                </Grid>
-                <Grid item>
-                  <Button color="primary" variant="contained" size="large">
-                    Large button
-                    <ArrowForwardOutlinedIcon
-                      fontSize="small"
-                    />
-                  </Button>
-                </Grid>
-              </Grid>
-              <br/>
-              <Grid item xs="12">
+                  </Grid>
+                  <Grid item lg="10">
                   <Button fullWidth color="primary" variant="contained">
-                    Large button
+                    Full Width button
                     <ArrowForwardOutlinedIcon
-                      fontSize="small"
                     />
                   </Button>
-                </Grid>
+              </Grid>
+              </Grid>
             </CardContent>
           </Card>
-        </Container>
+        </div>
       {/* End Button Variations*/}
       <br/>
       {/* Cards*/}  
-      <Container>
+      <div>
           <Typography variant="h5">
             CHPL Cards (Header, Body, Action):
           </Typography>
           <br/>
-        </Container>
-        <Container>
+        </div>
+        <div>
           <Grid container spacing={8}>
             <Grid item xs={6}>
               <Card>
@@ -380,19 +364,19 @@ function Elements() {
               </Card>
             </Grid>
           </Grid>
-        </Container>
+        </div>
       <br/>
       {/* Cards*/} 
       {/* Table*/}
-      <Container>    
+      <div>    
       <Typography variant="h5">Tables:</Typography>
       <br/>    
       <ChplStyleGuideTable />
-      </Container>
+      </div>
       {/*End of Table*/}  
       <br />
       {/*>Chpl TextField*/} 
-      <Container>
+      <div>
         <Typography variant="h5">Chips:</Typography>
         <Chip label="Basic" />
         <Chip label="Outline Default" color="default" variant="outlined" />
@@ -400,20 +384,20 @@ function Elements() {
         <Chip label="Clickable Chip Link" component="a" href="#chip" clickable />
         <Typography variant="body1">Chips are used in the CHPl interface to indicate a change that has or needs to happened. Chips are usually being displayed in accordion and forms.</Typography>
         
-      </Container>
+      </div>
       {/*End of >Chpl TextField*/} 
       <br />
       {/*>Chpl TextField*/} 
-      <Container>
+      <div>
         <Typography variant="h5">Chpl TextField:</Typography>
         <Card>
         <ChplTextField/>
         </Card>
-      </Container>
+      </div>
       {/*End of >Chpl TextField*/} 
       <br/>
       {/*Accordions*/} 
-      <Container>
+      <div>
         <Typography variant="h5">Accordions</Typography>
         <Accordion>
         <AccordionSummary
@@ -454,23 +438,23 @@ function Elements() {
           <Typography>Disabled Accordion</Typography>
         </AccordionSummary>
       </Accordion>
-      </Container>
+      </div>
       {/*End of Accordions*/} 
       <br/>
       {/*App Bar*/} 
-      <Container>
+      <div>
       <Typography variant="h5">App Bar</Typography>
-      </Container>
+      </div>
       {/*End of App Bar*/} 
       <br/>
       {/*Spacing and Grid*/} 
-      <Container>
+      <div>
         <Typography variant="h5">Spacing and Grid:</Typography>
-      </Container>
+      </div>
       {/*End of Spacing and Grid*/} 
       <br/>
       {/*404 Card*/} 
-      <Container>
+      <div>
       <Card>
         <CardHeader title="404 Page Not Found" />
         <CardContent>
@@ -518,10 +502,10 @@ function Elements() {
           </Button>
         </CardActions>
       </Card>
-      </Container>
+      </div>
       {/*End of 404 Card*/} 
       <br/>
-    </Container>
+    </div>
   );
 }
 
