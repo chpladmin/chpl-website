@@ -9,6 +9,10 @@ import { when } from 'jest-when';
 import * as angularReactHelper from '../../../services/angular-react-helper';
 import ChplComplaintView from './complaint-view';
 
+const DateUtilMock = {
+  getDisplayDateFormat: jest.fn(() => ''),
+};
+
 const authServiceMock = {
   hasAnyRole: jest.fn(() => true),
 };
@@ -29,6 +33,7 @@ const complaintMock = {
 };
 
 angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(DateUtilMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 when(angularReactHelper.getAngularService).calledWith('utilService').mockReturnValue(utilServiceMock);
 
