@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import AddIcon from '@material-ui/icons/Add';
+
 import theme from '../../../themes/theme';
 import { ChplEllipsis, ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
