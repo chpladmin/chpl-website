@@ -6,7 +6,6 @@ const confirmElements = {
   rejectButton: '#reject-selected-pending-listings',
   warningCheckbox: '#acknowledge-warnings',
   confirmButton: '#inspect-confirm',
-  toastContainertitle: '.ng-binding.toast-title',
   rejectButtonOnInspectListing: '#inspect-reject',
   errorMessage: '.bg-danger',
   errorOnInspect: '.action-bar__error-messages > li',
@@ -42,10 +41,6 @@ class ConfirmPage {
 
   get confirmButton () {
     return $(confirmElements.confirmButton);
-  }
-
-  get toastContainerTitle () {
-    return $(confirmElements.toastContainertitle);
   }
 
   get rejectButtonOnInspectListing () {
@@ -91,7 +86,7 @@ class ConfirmPage {
   }
 
   findListingToReject (chplId) {
-    return $('//td[text()="' + chplId + '"]');
+    return $('chpl-confirm-listings-bridge').$('//td[text()="' + chplId + '"]');
   }
 
   rejectListing (chplId) {
@@ -107,14 +102,6 @@ class ConfirmPage {
   confirmListing () {
     this.confirmButton.scrollAndClick();
     this.yesConfirmation.waitAndClick();
-  }
-
-  waitForSuccessfulConfirm () {
-    browser.waitUntil( () => this.toastContainerTitle.isDisplayed() ,
-      {
-        timeout: config.longTimeout,
-      }
-    );
   }
 
   waitForBarMessages () {

@@ -9,11 +9,9 @@ const optionalStandard = shape({
 
 const selectedOptionalStandard = shape({
   id: number,
-  optionalStandard: shape({
-    citation: string,
-    description: string,
-    id: number,
-  }),
+  citation: string,
+  description: string,
+  optionalStandardId: number,
 });
 
 export { optionalStandard, selectedOptionalStandard };

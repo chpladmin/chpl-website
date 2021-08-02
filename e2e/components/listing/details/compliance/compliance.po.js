@@ -1,22 +1,22 @@
-const elements = {
-  complianceHeader: '//div[text()="Compliance Activities"]',
-  surveillanceHeader: '//div[text()="Surveillance Activities"]',
-  drHeader: '//div[text()="Direct Review Activities"]',
-};
-
 class ComplianceComponent {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      complianceHeader: '//div[text()="Compliance Activities"]',
+      surveillanceHeader: '//div[text()="Surveillance Activities"]',
+      drHeader: '//div[text()="Direct Review Activities"]',
+    };
+  }
 
   get complianceHeader() {
-    return $(elements.complianceHeader);
+    return $(this.elements.complianceHeader);
   }
 
   get surveillanceHeader() {
-    return $(elements.surveillanceHeader);
+    return $(this.elements.surveillanceHeader);
   }
 
   get drHeader() {
-    return $(elements.drHeader);
+    return $(this.elements.drHeader);
   }
 
   expandCompliance() {
