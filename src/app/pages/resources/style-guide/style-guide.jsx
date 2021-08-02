@@ -13,7 +13,7 @@ import theme from '../../../themes/theme';
 const defaultTheme = createMuiTheme({});
 
 const useStyles = makeStyles({
-  container: {
+  Chplcontainer: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     backgroundColor:"#f2f2f2",
@@ -26,7 +26,7 @@ function ChplStyleGuide() {
   const classes = useStyles();
 
   return (
-    <div className={classes.container}>
+    <div className={classes.Chplcontainer}>
       <ThemeProvider theme={defaultTheme}>
       <div>
         <Typography variant="h1">CHPL Material UI</Typography>

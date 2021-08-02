@@ -13,14 +13,16 @@ import {
   Typography,
   ThemeProvider,
   makeStyles,
-  Container,
-  Divider,
 } from '@material-ui/core';
 
 import theme from '../../../themes/theme';
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+
 
 const useStyles = makeStyles({
   container: {
@@ -30,9 +32,11 @@ const useStyles = makeStyles({
     padding:'16px 16px',
     alignItems: 'center',
   },
-
   tableContainer: {
-    maxHeight: 440,
+    maxHeight: "64vw",
+  },
+  iconSpacing: {
+    marginLeft: '4px',
   },
 });
 
@@ -136,13 +140,37 @@ function ChplStyleGuideTable() {
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
-      id: 3,
+      id: 13,
       chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
       developer: 'Epic Systems Corporation',
       product: 'Beaker Reportable Labs Reporting',
       version: 'Epic 2015',
       status: 'CLOSED',
       actions: 'Y | N',
+    }, {
+    id: 14,
+    chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
+    developer: 'Epic Systems Corporation',
+    product: 'Beaker Reportable Labs Reporting',
+    version: 'Epic 2015',
+    status: 'CLOSED',
+    actions: 'Y | N',
+    },{
+    id: 15,
+    chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
+    developer: 'Epic Systems Corporation',
+    product: 'Beaker Reportable Labs Reporting',
+    version: 'Epic 2015',
+    status: 'CLOSED',
+    actions: 'Y | N',
+    },{ 
+    id: 16,
+    chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
+    developer: 'Epic Systems Corporation',
+    product: 'Beaker Reportable Labs Reporting',
+    version: 'Epic 2015',
+    status: 'CLOSED',
+    actions: 'Y | N',
     },
   ]);
 
@@ -174,16 +202,19 @@ function ChplStyleGuideTable() {
 
   return (
     <div>
-    <TableContainer className={classes.tableContainer} component={Paper}>
+    <TableContainer component={Paper}>
     <div className={classes.container}>
     <Typography variant="h5">Title of Table</Typography>
-    <Button size="medium" color="primary" variant="outlined">Download
-    <GetAppIcon/>
+    <Button size="medium" color="secondary" variant="contained">Download
+    <GetAppIcon className={classes.iconSpacing}/>
     </Button>
-    <Button size="medium" color="primary" variant="outlined">Add
-    <PlaylistAddIcon/>
+    <Button size="medium" color="secondary" variant="contained">Add
+    <PlaylistAddIcon className={classes.iconSpacing}/>
     </Button>
     </div>
+
+    </TableContainer>
+    <TableContainer className={classes.tableContainer} component={Paper}>
       <Table>
         <ChplSortableHeaders
           headers={headers}
@@ -198,13 +229,19 @@ function ChplStyleGuideTable() {
                 <TableCell>{ listing.product }</TableCell>
                 <TableCell>{ listing.version }</TableCell>
                 <TableCell>{ listing.status }</TableCell>
-                <TableCell>
+                <TableCell align="right">
                   <ButtonGroup color="primary">
+                  <Button color="primary" variant="contained">
+                     OPEN Details 
+                     <ArrowForwardIcon className={classes.iconSpacing}/>
+                    </Button>
                     <Button>
                      CERT ID
+                     <AssignmentOutlinedIcon className={classes.iconSpacing}/>
                     </Button>
                     <Button>
                      Compare
+                     <CompareArrowsIcon className={classes.iconSpacing}/>
                     </Button>
                   </ButtonGroup>
                 </TableCell>
