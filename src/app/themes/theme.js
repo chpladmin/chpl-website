@@ -165,11 +165,15 @@ const theme = createMuiTheme({
       },
     },
     MuiTableCell: {
+      root:{
+        fontSize:"1em",
+      },
       head: {
         color: '#156dac',
         fontWeight: 800,
       },
     },
+    
     MuiTableRow: {
       root: {
         '&:hover': {
@@ -183,6 +187,15 @@ const theme = createMuiTheme({
         '&:hover': {
           backgroundColor: '#ffffff',
         },
+      },
+    }, 
+    MuiTableSortLabel:{
+      active:{
+        color:'#000000',
+      },
+
+      icon:{
+        color:'#000000',
       },
     },
     MuiDivider: {
@@ -249,15 +262,6 @@ const theme = createMuiTheme({
       },
     },
 
-    MuiTableSortLabel:{
-      active:{
-        color:'#000000',
-      },
-
-      icon:{
-        color:'#000000',
-      },
-    },
   },
 });
 
