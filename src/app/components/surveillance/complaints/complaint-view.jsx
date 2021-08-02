@@ -13,7 +13,7 @@ import {
   func,
 } from 'prop-types';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import HistoryIcon from '@material-ui/icons/History';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
@@ -85,7 +85,7 @@ function ChplComplaintView(props) {
               <Typography variant="subtitle1">General Info</Typography>
               <Typography variant="subtitle2">
                 Received Date:
-              </Typography>
+              </Typography> 
               <Typography>
                 {complaint.receivedDate}
               </Typography>
@@ -222,7 +222,7 @@ function ChplComplaintView(props) {
           >
             Back to Complaints
             {' '}
-            <HistoryIcon className={classes.iconSpacing} />
+            <ArrowBackIcon className={classes.iconSpacing} />
           </Button>
           { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
             && (

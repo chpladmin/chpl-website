@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-
+import AddIcon from '@material-ui/icons/Add';
 import theme from '../../../themes/theme';
 import { ChplEllipsis, ChplSortableHeaders } from '../../util';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
@@ -69,7 +69,7 @@ function ChplComplaints(props) {
   /* eslint-disable react/destructuring-assignment */
   const [complaints, setComplaints] = useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -139,7 +139,7 @@ function ChplComplaints(props) {
                     { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
                   </TableCell>
                   <TableCell>{complaint.complainantTypeName}</TableCell>
-                  <TableCell>
+                  <TableCell align="right">
                     <Button
                       onClick={() => handleAction('view', complaint)}
                       variant="contained"
@@ -161,7 +161,7 @@ function ChplComplaints(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50, { value: complaints.length, label: 'All' }]}
+        rowsPerPageOptions={[50, 100, 200, { value: complaints.length, label: 'All' }]}
         component="div"
         count={complaints.length}
         rowsPerPage={rowsPerPage}
