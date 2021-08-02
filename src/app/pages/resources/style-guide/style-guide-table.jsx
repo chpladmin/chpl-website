@@ -215,7 +215,7 @@ function ChplStyleGuideTable() {
 
     </TableContainer>
     <TableContainer className={classes.tableContainer} component={Paper}>
-      <Table>
+      <Table stickyHeader>
         <ChplSortableHeaders
           headers={headers}
           onTableSort={handleTableSort}

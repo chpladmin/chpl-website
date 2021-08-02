@@ -172,6 +172,9 @@ const theme = createMuiTheme({
         color: '#156dac',
         fontWeight: 800,
       },
+      stickyHeader:{
+        backgroundColor: '#ffffff'
+      }
     },
     
     MuiTableRow: {
