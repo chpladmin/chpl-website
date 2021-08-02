@@ -6,12 +6,11 @@ const SurveillanceComplaintsComponent = {
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor($log, $scope, DateUtil, authService, featureFlags, networkService, utilService) {
+    constructor($log, $scope, authService, featureFlags, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
       this.$scope = $scope;
-      this.DateUtil = DateUtil;
       this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
@@ -141,17 +140,13 @@ const SurveillanceComplaintsComponent = {
               ...complaint,
             };
             if (complaint.receivedDate) {
-              updated.formattedReceivedDate = this.DateUtil.getDisplayDateFormat(complaint.receivedDate);
               updated.csvReceivedDate = complaint.receivedDate;
             } else {
-              updated.formattedReceivedDate = null;
               updated.csvReceivedDate = null;
             }
             if (complaint.closedDate) {
-              updated.formattedClosedDate = this.DateUtil.getDisplayDateFormat(complaint.closedDate);
               updated.csvClosedDate = complaint.closedDate;
             } else {
-              updated.formattedClosedDate = null;
               updated.csvClosedDate = null;
             }
             updated.acbName = complaint.certificationBody.name;
