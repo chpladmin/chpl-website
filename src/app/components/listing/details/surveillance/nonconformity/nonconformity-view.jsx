@@ -142,7 +142,7 @@ function ChplNonconformityView(props) {
                 <TableRow>
                   <TableCell component="th" scope="row">
                     Non-Conformity Type
-                    <ChplTooltip title="For non-conformities related to specific regulatory references (e.g. certified capabilities, transparency or disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l). If the non-conformity type is designated as ‘Other Non-Conformity’, then the associated non-conformity does not have a relevant regulatory reference.">
+                    <ChplTooltip title="For non-conformities related to specific regulatory references (e.g. certified capabilities, disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l)). If the non-conformity type is designated as ‘Other Non-Conformity’, then the associated non-conformity does not have a relevant regulatory reference.">
                       <InfoOutlinedIcon
                         className={classes.iconSpacing}
                       />
