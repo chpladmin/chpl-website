@@ -17,6 +17,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import theme from '../../../themes/theme';
 import { ChplEllipsis, ChplSortableHeaders } from '../../util';
+import { getAngularService } from '../../../services/angular-react-helper';
 import { complaint as complaintPropType } from '../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -70,6 +71,7 @@ function ChplComplaints(props) {
   const [complaints, setComplaints] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
+  const DateUtil = getAngularService('DateUtil');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -133,7 +135,7 @@ function ChplComplaints(props) {
                       {complaint.complaintStatusTypeName}
                     </Typography>
                   </TableCell>
-                  <TableCell>{complaint.receivedDate}</TableCell>
+                  <TableCell>{DateUtil.getDisplayDateFormat(complaint.receivedDate)}</TableCell>
                   <TableCell>{complaint.acbComplaintId}</TableCell>
                   <TableCell>
                     { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }

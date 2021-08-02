@@ -60,6 +60,7 @@ function ChplComplaintView(props) {
       }),
   });
   const { hasAnyRole } = getAngularService('authService');
+  const DateUtil = getAngularService('DateUtil');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -87,13 +88,13 @@ function ChplComplaintView(props) {
                 Received Date:
               </Typography>
               <Typography>
-                {complaint.receivedDate}
+                {DateUtil.getDisplayDateFormat(complaint.receivedDate)}
               </Typography>
               <Typography variant="subtitle2">
                 Closed Date:
               </Typography>
               <Typography>
-                {complaint.closedDate}
+                {DateUtil.getDisplayDateFormat(complaint.closedDate)}
               </Typography>
               <Typography variant="subtitle2">
                 ONC-ACB Complaint ID:
