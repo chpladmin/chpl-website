@@ -161,7 +161,7 @@ function ChplComplaints(props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50, { value: complaints.length, label: 'All' }]}
+        rowsPerPageOptions={[50, 100, 200, { value: complaints.length, label: 'All' }]}
         component="div"
         count={complaints.length}
         rowsPerPage={rowsPerPage}
