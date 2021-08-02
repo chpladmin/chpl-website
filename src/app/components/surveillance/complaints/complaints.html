@@ -97,12 +97,13 @@
         </chpl-filter>
       </chpl-filters-body>
     </chpl-filters>
-    <div class="flex-container" ng-if="$ctrl.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])">
+    <div class="flex-container">
       <div class="flex-item text-right">
         <chpl-complaint-add-bridge
           ng-if="$ctrl.displayAdd"
           dispatch="::$ctrl.handleDispatch"></chpl-complaint-add-bridge>
         <button class="btn btn-primary" id="download-results"
+                ng-if="$ctrl.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])"
                 ng-csv="$ctrl.csvComplaints" filename="{{ $ctrl.filename }}" add-bom="true"
                 ng-disabled="!$ctrl.csvComplaints"
                 csv-header="['complaint_id', 'ONC-ACB', 'Complainant Type Name', 'complainant_type_other', 'onc_complaint_id', 'acb_complaint_id', 'received_date', 'summary', 'actions', 'complainant_contacted', 'developer_contacted', 'onc_atl_contacted', 'informed_onc_per_170.523(s)', 'closed_date', 'developer_name', 'product_name', 'version', 'associated_listings', 'associated_surveillance', 'associated_criteria']"
