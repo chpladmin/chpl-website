@@ -236,7 +236,6 @@ const theme = createMuiTheme({
     MuiTablePagination:{
       root:{
         fontSize:'1em',
-        backgroundColor:'#f9f9f9'
       },
       spacer:{
         flex:'none',

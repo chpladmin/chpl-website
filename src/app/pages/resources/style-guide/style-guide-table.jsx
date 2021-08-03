@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   tableContainer: {
-    maxHeight: "64vw",
+    maxHeight: "800px",
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -200,6 +200,7 @@ function ChplStyleGuideTable() {
     setListings(listings.sort(listingSortComparator(orderDirection + property)).map((listing) => listing));
   };
 
+  
   return (
     <div>
     <TableContainer component={Paper}>
@@ -248,14 +249,13 @@ function ChplStyleGuideTable() {
               </TableRow>
             ))}
         </TableBody>
-        <TableFooter>
-        <TableRow>
-        <TablePagination>
-        </TablePagination>
-        </TableRow>
-        </TableFooter>
       </Table>
     </TableContainer>
+    <TablePagination
+              rowsPerPageOptions={[5, 10, 25, { label: 'All'}]}
+              component="div"
+      />
+
     </div>
   );
 }
