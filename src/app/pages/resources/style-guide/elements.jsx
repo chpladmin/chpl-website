@@ -10,27 +10,16 @@ import {
   CardContent,
   CardHeader,
   Chip,
-  Container,
   Divider,
   Grid,
   Link,
   List,
   ListItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Toolbar,
   Typography,
 } from '@material-ui/core';
 
 
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplEllipsis } from '../../../components/util';
@@ -40,6 +29,7 @@ import ChplDeleteButton from './chpl-delete-button';
 import ChplPrimaryButton from './chpl-primary-button';
 import ChplSecondaryButton from './chpl-secondary-button';
 import ChplDefaultButton from './chpl-default-button';
+import ChplDefaultFilter from './chpl-default-filter';
 
 
 function Elements() {
@@ -371,7 +361,18 @@ function Elements() {
           </Grid>
         </div>
       <br/>
-      {/* Cards*/} 
+      {/* Cards*/}
+      <Typography gutterButton variant="h5">
+            CHPL Dropdown Filters:
+      </Typography> 
+      <Card>
+        <CardContent>
+          <div>
+            <ChplDefaultFilter/>
+          </div>
+        </CardContent>
+      </Card>
+      <br/>
       {/* Table*/}
       <div>    
       <Typography variant="h5">Tables:</Typography>

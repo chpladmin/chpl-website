@@ -114,11 +114,22 @@ const theme = createMuiTheme({
         fontSize: '1.125em',
       },
     },
+    MuiList:{
+      padding:{
+        paddingTop:'0',
+        paddingBottom:'0',
+      },
+    },
     MuiListItem: {
       root: {
         '&:hover': {
           backgroundColor: '#eeeeee',
         },
+      },
+    },
+    MuiListSubheader:{
+      root:{
+        fontSize:'0.875em',
       },
     },
     MuiCheckbox: {
