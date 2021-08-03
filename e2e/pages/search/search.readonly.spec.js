@@ -1,10 +1,12 @@
-import SearchPage from './search.po.js';
+import SearchPage from './search.po';
 import Hooks from '../../utilities/hooks';
 
-let hooks, page;
+let hooks;
+let page;
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config/mainConfig');
+
 const developerName = 'Allscripts';
 const productName = 'TouchWork';
 const version = '19';
@@ -32,16 +34,16 @@ describe('the search page', () => {
 
     describe('the button', () => {
       const buttons = [
-        {title: 'API Info for 2015 Ed. Products', link: '#/collections/api-documentation'},
-        {title: 'Banned Developers', link: '#/collections/developers'},
-        {title: 'Charts', link: '#/charts'},
-        {title: 'Decertified Products', link: '#/collections/products'},
-        {title: 'Inactive Certificates', link: '#/collections/inactive'},
-        {title: 'Products: Corrective Action', link: '#/collections/corrective-action'},
-        {title: 'SED Info for 2015 Ed. Products', link: '#/collections/sed'},
+        { title: 'API Info for 2015 Ed. Products', link: '#/collections/api-documentation' },
+        { title: 'Banned Developers', link: '#/collections/developers' },
+        { title: 'Charts', link: '#/charts' },
+        { title: 'Decertified Products', link: '#/collections/products' },
+        { title: 'Inactive Certificates', link: '#/collections/inactive' },
+        { title: 'Products: Corrective Action', link: '#/collections/corrective-action' },
+        { title: 'SED Info for 2015 Ed. Products', link: '#/collections/sed' },
       ];
 
-      buttons.forEach(button => {
+      buttons.forEach((button) => {
         describe(`"${button.title}"`, () => {
           it('should be displayed', () => {
             expect(page.homeSearchPageButtons(button.title).isDisplayed()).toBe(true);
@@ -69,7 +71,7 @@ describe('the search page', () => {
     });
 
     it('should show all listings (more than 500)', () => {
-      var count = page.listingTotalCount();
+      const count = page.listingTotalCount();
       expect(count).toBeGreaterThan(totalListing);
     });
   });
@@ -96,9 +98,9 @@ describe('the search page', () => {
     });
 
     it('should only show listings that match the developer', () => {
-      var count = page.listingTableFirstPageRowCount();
-      for (var i = 1; i <= count; i++) {
-        expect(page.getColumnText(i,DEVELOPER_COL_IDX)).toContain(developerName);
+      const count = page.listingTableFirstPageRowCount();
+      for (let i = 1; i <= count; i += 1) {
+        expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
       }
     });
   });
@@ -115,15 +117,15 @@ describe('the search page', () => {
     });
 
     it('should only show listings that match the product', () => {
-      var count = page.listingTableFirstPageRowCount();
-      for (var i = 1; i <= count; i++) {
-        expect(page.getColumnText(i,PRODUCT_COL_IDX)).toContain(productName);
+      const count = page.listingTableFirstPageRowCount();
+      for (let i = 1; i <= count; i += 1) {
+        expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
       }
     });
   });
 
   describe('when searching listings by ONC-ACB ID', () => {
-    const acbId = '170008R01';
+    const acbId = '4117-17-0022';
     beforeEach(() => {
       page.searchForListing(acbId);
       hooks.waitForSpinnerToDisappear();
@@ -135,10 +137,9 @@ describe('the search page', () => {
     });
 
     it('should only the listing that has that ACB ID', () => {
-      var count = page.listingTableFirstPageRowCount();
+      const count = page.listingTableFirstPageRowCount();
       expect(count).toBe(1);
     });
-
   });
 
   describe('when searching listings by CHPL ID', () => {
@@ -154,14 +155,14 @@ describe('the search page', () => {
     });
 
     it('should show only the listing that has that CHPL ID', () => {
-      var count = page.listingTableFirstPageRowCount();
+      const count = page.listingTableFirstPageRowCount();
       expect(count).toBe(1);
     });
   });
 
   describe('when filtering', () => {
-    var countBefore;
-    var countAfter;
+    let countBefore;
+    let countAfter;
     beforeEach(() => {
       page.browseAll.click();
       hooks.waitForSpinnerToDisappear();
@@ -187,8 +188,8 @@ describe('the search page', () => {
 
       it('should at least show 1 retired listing', () => {
         let isInclude = false;
-        for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-          if (page.getColumnText(i,STATUS_COL_IDX).includes('Retired')) {
+        for (let i = 1; i <= page.listingTableFirstPageRowCount(); i += 1) {
+          if (page.getColumnText(i, STATUS_COL_IDX).includes('Retired')) {
             isInclude = true;
             break;
           }
@@ -211,8 +212,8 @@ describe('the search page', () => {
 
       it('should at least show 1 2014 listing', () => {
         let isInclude = false;
-        for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-          if (page.getColumnText(i,EDITION_COL_IDX).includes('2014')) {
+        for (let i = 1; i <= page.listingTableFirstPageRowCount(); i += 1) {
+          if (page.getColumnText(i, EDITION_COL_IDX).includes('2014')) {
             isInclude = true;
             break;
           }
@@ -324,11 +325,11 @@ describe('the search page', () => {
 
       describe('the "Practice Type" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View Practice Type ').scrollAndClick();
+          page.moreFilterExpand(' View Practice Type (2011 and 2014 Editions) ').scrollAndClick();
           page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
-          expect(countAfter).toBeLessThan(countBefore);
+          expect(countBefore).toBeLessThan(countAfter);
         });
       });
 
@@ -356,10 +357,10 @@ describe('the search page', () => {
         });
 
         it('should show correct Developer/ Product/ Version name as searched for', () => {
-          for (var i = 1; i <= page.listingTableFirstPageRowCount(); i++) {
-            expect(page.getColumnText(i,2)).toContain(developerName);
-            expect(page.getColumnText(i,3)).toContain(productName);
-            expect(page.getColumnText(i,4)).toContain(version);
+          for (let i = 1; i <= page.listingTableFirstPageRowCount(); i += 1) {
+            expect(page.getColumnText(i, 2)).toContain(developerName);
+            expect(page.getColumnText(i, 3)).toContain(productName);
+            expect(page.getColumnText(i, 4)).toContain(version);
           }
         });
       });
@@ -394,7 +395,7 @@ describe('the search page', () => {
       if (!fs.existsSync(filePath)) {
         page.downloadResultsAction.scrollAndClick();
       }
-      browser.waitForFileExists(filePath,config.timeout);
+      browser.waitForFileExists(filePath, config.timeout);
       expect(fs.existsSync(filePath)).toBe(true);
     });
 

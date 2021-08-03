@@ -9,7 +9,7 @@ const OncOrganizationsComponent = {
     functions: '<',
   },
   controller: class OncOrganizationsComponent {
-    constructor($anchorScroll, $log, $q, $scope, $state, authService, networkService, toaster, utilService) {
+    constructor($anchorScroll, $log, $q, $scope, $state, authService, networkService, toaster) {
       'ngInject';
 
       this.$anchorScroll = $anchorScroll;
@@ -20,9 +20,6 @@ const OncOrganizationsComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
-      this.range = utilService.range;
-      this.rangeCol = utilService.rangeCol;
-      this.columnCount = 2;
     }
 
     $onInit() {
@@ -32,6 +29,7 @@ const OncOrganizationsComponent = {
       if (this.$state.params.id) {
         this.loadUsers();
       }
+      this.takeUserAction = this.takeUserAction.bind(this);
     }
 
     $onChanges(changes) {
@@ -183,6 +181,7 @@ const OncOrganizationsComponent = {
           break;
                 // no default
       }
+      this.$scope.$apply();
     }
   },
 };
