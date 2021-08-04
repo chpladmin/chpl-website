@@ -30,7 +30,7 @@ import ChplPrimaryButton from './chpl-primary-button';
 import ChplSecondaryButton from './chpl-secondary-button';
 import ChplDefaultButton from './chpl-default-button';
 import ChplDefaultFilter from './chpl-default-filter';
-
+import ChplDefaultForm from './chpl-default-form';
 
 function Elements() {
   return (
@@ -166,7 +166,7 @@ function Elements() {
                 <List aria-label="chpl button rules">
                 <ListItem>
                 <Typography variant="body1">
-                      1. All buttons should have text that assoicated with action.
+                      1. All buttons should have text that assoicated with the action.
                     </Typography>       
                 </ListItem>
                 <ListItem>
@@ -381,26 +381,27 @@ function Elements() {
       </div>
       {/*End of Table*/}  
       <br />
-      {/*>Chpl TextField*/} 
+      {/*>Chpl Chips*/} 
       <div>
         <Typography variant="h5">Chips:</Typography>
         <Chip label="Basic" />
         <Chip label="Outline Default" color="default" variant="outlined" />
         <Chip label="Outline Primary" color="primary" variant="outlined" />
         <Chip label="Clickable Chip Link" component="a" href="#chip" clickable />
+        <br/>
         <Typography variant="body1">Chips are used in the CHPl interface to indicate a change that has or needs to happened. Chips are usually being displayed in accordion and forms.</Typography>
         
       </div>
-      {/*End of >Chpl TextField*/} 
+      {/*End of Chpl Chips*/} 
       <br />
-      {/*>Chpl TextField*/} 
-      <div>
-        <Typography variant="h5">Chpl TextField:</Typography>
-        <Card>
-        <ChplTextField/>
-        </Card>
-      </div>
-      {/*End of >Chpl TextField*/} 
+      {/*>Chpl Forms & TextField*/} 
+        <Typography gutterBottom variant="h5">Chpl Forms & TextField:</Typography>
+        <ChplDefaultForm/>
+        <Typography gutterBottom variant="body1">All chpl forms within edit mode should have ChplActionBar applied to the bottoms of the page. A real-life example is shown in the user management section of CHPL.</Typography>
+        <Typography gutterBottom variant="body1">Action bar will be coming soon in the Chpl Style Guide.</Typography>
+
+
+      {/*End of >Chpl Forms & TextField*/} 
       <br/>
       {/*Accordions*/} 
       <div>
@@ -449,14 +450,59 @@ function Elements() {
       <br/>
       {/*App Bar*/} 
       <div>
-      <Typography variant="h5">App Bar</Typography>
+      <Typography variant="h5">Action Bar:</Typography>
       </div>
       {/*End of App Bar*/} 
+      <br/>
+      <br/>
+      {/*Log In Module*/} 
+      <div>
+      <Typography variant="h5">Log In Module:</Typography>
+      </div>
+      {/*End Log In Module*/} 
       <br/>
       {/*Spacing and Grid*/} 
       <div>
         <Typography variant="h5">Spacing and Grid:</Typography>
       </div>
+      <Card>
+            <CardContent>
+              <Grid container spacing={2}>
+              <Grid item xs="12">
+                    <Typography variant="subtitle1">
+                      Rules To Follow:
+                    </Typography> 
+                <List aria-label="chpl button rules">
+                <ListItem>
+                <Typography variant="body1">
+                      1. CHPL uses the power of 4 for padding and margin on components. This means you should ONLY use numbers such as 4 | 8 | 16 | 32 | 64 | 128 | 256 (256 should be the largest number used if necesscary, contact designer if needed) 
+                    </Typography>      
+                </ListItem>
+                <ListItem>
+                <Typography variant="body1">
+                      2. When starting a new page but sure to use the Chplcontainer to create our full width pages, if you use the default Material UI the CHPL theme will be thrown off. You can reference this class in the style-guide.js
+                    </Typography>       
+                </ListItem>        
+                <ListItem>
+                <Typography variant="body1">
+                      3. Chpl uses a custom grid system that is very flexiable depending on the content. The grid should always be applied within a component. For example a card, accordion, table and more.
+                    </Typography>       
+                </ListItem>
+                <ListItem>
+                <Typography variant="body1">
+                      4. The power of our grid comes from using gridTemplateColumns, gridTemplateRows and gridGap to create a clean, modern design for our application. Chpl will use Media Querys that effect this css styles to our interface is responsive on all screens.  
+                    </Typography>       
+                </ListItem>
+                <ListItem>
+                <Typography variant="body1">
+                      5. Coming Soon...
+                    </Typography>       
+                </ListItem>
+                </List>
+                </Grid>
+                </Grid>
+         </CardContent>
+    </Card>
       {/*End of Spacing and Grid*/} 
       <br/>
       {/*404 Card*/} 
