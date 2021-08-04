@@ -20,7 +20,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplSortableHeaders } from '../../util/chpl-sortable-headers';
+import ChplSortableHeaders from '../../util/chpl-sortable-headers';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -166,7 +166,7 @@ function ChplConfirmListings(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    setListings(listings.sort(listingSortComparator(orderDirection + property)).map((listing) => listing));
+    setListings(listings.map((listing) => listing).sort(listingSortComparator(orderDirection + property)));
   };
 
   const headers = beta ? [
