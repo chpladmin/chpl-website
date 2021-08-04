@@ -28,7 +28,7 @@ inputs.forEach((input) => {
   const { expectedErrors } = input;
   const { expectedWarnings } = input;
 
-  describe(`User uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields`, () => {
+  describe(`User uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields or missing required criteria`, () => {
     if (process.env.ENV !== 'stage') {
       beforeEach(() => {
         uploadListingComponent.uploadListingBeta('../../../resources/upload-listing-beta/2015_InvalidData.csv');

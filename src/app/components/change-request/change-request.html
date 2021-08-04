@@ -69,6 +69,22 @@
                             ></chpl-developer>
           </div>
         </span>
+        <span ng-switch-when="Developer Attestation Change Request">
+          <div class="col-sm-4">
+            <h3>Current Details</h3>
+            <chpl-developer developer="$ctrl.changeRequest.developer" is-change-request="true"></chpl-developer>
+          </div>
+          <div class="col-sm-4">
+            <h3>Submitted Attestation</h3>
+            <input class="input-sm form-control"
+                   id="submitted-attestatioin"
+                   name="submittedAttestation"
+                   required
+                   ng-model="$ctrl.changeRequest.details.attestation"
+                   ng-disabled="$ctrl.activeState === 'withdraw' || $ctrl.administrationMode"
+                   ng-change="$ctrl.update()"/>
+          </div>
+        </span>
       </span>
       <div class="col-sm-4">
         <button class="btn btn-default pull-right" aria-label="Cancel"
