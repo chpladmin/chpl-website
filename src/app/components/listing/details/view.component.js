@@ -1,4 +1,29 @@
-export const ListingDetailsViewComponent = {
+const sortCqms = (cqm) => {
+  let ret = 0;
+  if (cqm.cmsId) {
+    ret = parseInt(cqm.cmsId.substring(3), 10);
+  } else {
+    ret = parseInt(cqm.nqfNumber, 10);
+  }
+  return ret;
+};
+
+const checkC = (cqm, num) => {
+  let ret;
+  if (angular.isUndefined(cqm[`hasC${num}`])) {
+    ret = false;
+    if (cqm.criteria) {
+      for (let i = 0; i < cqm.criteria.length; i += 1) {
+        ret = ret || (cqm.criteria[i].certificationNumber === `170.315 (c)(${num})`);
+      }
+    }
+  } else {
+    ret = cqm[`hasC${num}`];
+  }
+  return ret;
+};
+
+const ListingDetailsViewComponent = {
   templateUrl: 'chpl.components/listing/details/view.html',
   bindings: {
     listing: '<',
@@ -9,14 +34,16 @@ export const ListingDetailsViewComponent = {
     viewAllCerts: '<defaultAll',
   },
   controller: class ListingDetailsViewComponent {
-    constructor($analytics, $log, $uibModal, networkService, utilService) {
+    constructor($analytics, $log, $uibModal, DateUtil, networkService, utilService) {
       this.$analytics = $analytics;
       this.$log = $log;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.utilService = utilService;
       this.muuCount = utilService.muuCount;
       this.sortCerts = utilService.sortCert;
+      this.sortCqms = sortCqms;
       this.viewAllCerts = false;
       this.panelShown = 'cert';
     }
@@ -42,6 +69,13 @@ export const ListingDetailsViewComponent = {
         this.countCerts = this.listing.certificationResults.filter((cr) => cr.success).length;
         this.countCqms = this.listing.cqmResults.filter((cqm) => cqm.success).length;
         this.cqms = this.listing.cqmResults;
+        if (this.listing.promotingInteroperabilityUserHistory?.length > 0) {
+          const currentPI = this.listing.promotingInteroperabilityUserHistory.sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))[0];
+          this.currentPI = {
+            ...currentPI,
+            userCountDate: this.DateUtil.getDisplayDateFormat(currentPI.userCountDate),
+          };
+        }
         this.prepCqms();
       }
     }
@@ -49,33 +83,26 @@ export const ListingDetailsViewComponent = {
     prepCqms() {
       if (this.cqms) {
         this.cqms = this.cqms.map((cqm, idx) => {
-          cqm.id = idx;
-          for (let j = 1; j < 5; j++) {
-            cqm[`hasC${j}`] = this.checkC(cqm, j);
+          const newCqm = {
+            ...cqm,
+            id: idx,
+          };
+          for (let j = 1; j < 5; j += 1) {
+            newCqm[`hasC${j}`] = checkC(newCqm, j);
           }
-          cqm.allVersions.sort((a, b) => {
+          newCqm.allVersions.sort((a, b) => {
             const aVal = parseInt(a.substring(1), 10);
             const bVal = parseInt(b.substring(1), 10);
             return aVal - bVal;
           });
-          cqm.successVersions.sort((a, b) => {
+          newCqm.successVersions.sort((a, b) => {
             const aVal = parseInt(a.substring(1), 10);
             const bVal = parseInt(b.substring(1), 10);
             return aVal - bVal;
           });
-          return cqm;
+          return newCqm;
         });
       }
-    }
-
-    sortCqms(cqm) {
-      let ret = 0;
-      if (cqm.cmsId) {
-        ret = parseInt(cqm.cmsId.substring(3), 10);
-      } else {
-        ret = parseInt(cqm.nqfNumber, 10);
-      }
-      return ret;
     }
 
     showPanel(panel) {
@@ -102,7 +129,7 @@ export const ListingDetailsViewComponent = {
           case 'sed':
             this.$analytics.eventTrack('Viewed SED information', { category: 'Listing Details', label: this.listing.chplProductNumber });
             break;
-          // no default
+            // no default
         }
       }
 
@@ -118,7 +145,7 @@ export const ListingDetailsViewComponent = {
           case 'directReviews':
             this.$analytics.eventTrack('Viewed Direct Review information', { category: 'Listing Details', label: this.listing.chplProductNumber });
             break;
-          // no default
+            // no default
         }
       }
 
@@ -151,23 +178,10 @@ export const ListingDetailsViewComponent = {
         });
       });
     }
-
-    checkC(cqm, num) {
-      let ret;
-      if (angular.isUndefined(cqm[`hasC${num}`])) {
-        ret = false;
-        if (cqm.criteria) {
-          for (let i = 0; i < cqm.criteria.length; i++) {
-            ret = ret || (cqm.criteria[i].certificationNumber === `170.315 (c)(${num})`);
-          }
-        }
-      } else {
-        ret = cqm[`hasC${num}`];
-      }
-      return ret;
-    }
   },
 };
 
 angular.module('chpl.components')
   .component('chplListingDetailsView', ListingDetailsViewComponent);
+
+export default ListingDetailsViewComponent;

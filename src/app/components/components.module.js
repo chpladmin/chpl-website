@@ -1,11 +1,18 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
+import { ChplAttestationChangeRequest } from './attestation'
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
-import { ChplConfirmation, ChplEllipsis, ChplLink, ChplNonProdIndicator } from './util';
+import {
+  ChplConfirmation,
+  ChplEllipsis,
+  ChplLink,
+  ChplNonProdIndicator,
+} from './util';
+
 import { ChplFuzzyType } from './fuzzy-type';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
-import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadSurveillance } from './upload';
+import { ChplUploadListings, ChplUploadMeaningfulUse, ChplUploadPromotingInteroperability, ChplUploadSurveillance } from './upload';
 import { ChplUsers } from './user';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 
@@ -28,6 +35,7 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
+  .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
@@ -40,5 +48,6 @@ angular
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
+  .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance));
