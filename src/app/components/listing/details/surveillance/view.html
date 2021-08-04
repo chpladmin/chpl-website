@@ -32,7 +32,7 @@
             <td>{{ surv.type.name }}<span ng-if="surv.type.name === 'Randomized'"> ({{ surv.randomizedSitesUsed }} site<span ng-if="surv.randomizedSitesUsed !== 1">s</span> used in surveillance)</span></td>
           </tr>
           <tr>
-            <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a transparency or disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="'mouseenter focus click'">Certification Criteria and Program Requirements Surveilled</a></th>
+            <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="'mouseenter focus click'">Certification Criteria and Program Requirements Surveilled</a></th>
             <td>
               <span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">
                 {{ req.type.name }}:
