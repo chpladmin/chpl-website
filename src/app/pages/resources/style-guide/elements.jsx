@@ -22,7 +22,7 @@ import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplEllipsis } from '../../../components/util';
-import { ChplTextField } from '../../../components/util';
+import ChplAccordion from './chpl-accordion';
 import ChplStyleGuideTable from './style-guide-table';
 import ChplDeleteButton from './chpl-delete-button';
 import ChplPrimaryButton from './chpl-primary-button';
@@ -37,6 +37,7 @@ function Elements() {
     <div>
       {/* Typography Containers */}
       <div>
+        <Divider></Divider>
         <Typography variant="h3">Typography Hiearchy:</Typography>
         <br />
         <Card>
@@ -407,46 +408,7 @@ function Elements() {
       <br />
       {/*Accordions*/}
       <div>
-        <Typography variant="h5">Accordions</Typography>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>Accordion 1</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
-            <Typography>Accordion 2</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-              sit amet blandit leo lobortis eget.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion disabled>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3a-content"
-            id="panel3a-header"
-          >
-            <Typography>Disabled Accordion</Typography>
-          </AccordionSummary>
-        </Accordion>
+        <ChplAccordion/>
       </div>
       {/*End of Accordions*/}
       <br />

@@ -70,6 +70,15 @@ const theme = createMuiTheme({
   },
 
   overrides: {
+    MuiAccordionSummary:{
+      root:{
+        backgroundColor:'#f5f9fd',
+        padding:'4px 8px',
+      },
+      content:{
+        padding:'4px',
+      },
+    },
     MuiPaper: {
       rounded: {
         borderRadius: '8px',
@@ -238,7 +247,6 @@ const theme = createMuiTheme({
         width: '100%',
       },
     },
-
     MuiTableFooter:{
       root:{
 
@@ -267,7 +275,6 @@ const theme = createMuiTheme({
         color:'#156dac',
       },
     },
-
     MuiSelect:{
       icon:{
         position:'inherit',
