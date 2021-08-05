@@ -5,7 +5,7 @@ const DeveloperViewComponent = {
     directReviews: '<',
   },
   controller: class DeveloperViewComponent {
-    constructor($log, $scope, $state, $stateParams, authService, networkService, toaster) {
+    constructor($log, $scope, $state, $stateParams, authService, featureFlags, networkService, toaster) {
       'ngInject';
 
       this.$log = $log;
@@ -13,6 +13,7 @@ const DeveloperViewComponent = {
       this.$state = $state;
       this.$stateParams = $stateParams;
       this.canManageDeveloper = authService.canManageDeveloper;
+      this.featureFlags = featureFlags;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
@@ -22,6 +23,7 @@ const DeveloperViewComponent = {
       this.movingProducts = [];
       this.activeAcbs = [];
       this.roles = ['ROLE_DEVELOPER'];
+      this.users = [];
       this.closeConfirmation = this.closeConfirmation.bind(this);
     }
 
@@ -45,6 +47,7 @@ const DeveloperViewComponent = {
           that.directReviews = results;
         }, () => { that.drStatus = 'error'; });
       this.takeUserAction = this.takeUserAction.bind(this);
+      this.saveRequest = this.saveRequest.bind(this);
     }
 
     $onChanges(changes) {
@@ -112,7 +115,7 @@ const DeveloperViewComponent = {
         case 'save':
           this.updateRequest(data);
           break;
-                // no default
+        // no default
       }
     }
 
@@ -153,7 +156,7 @@ const DeveloperViewComponent = {
       let type = 'error';
       let title = 'Error in submission';
       if (error && error.data && error.data.error
-                && error.data.error === 'No data was changed.') {
+        && error.data.error === 'No data was changed.') {
         messages = ['Cannot "Submit" a change request when no changes have been made.'];
         type = 'info';
         title = 'Please check your input';
@@ -205,9 +208,13 @@ const DeveloperViewComponent = {
           this.action = undefined;
           this.$state.reload();
           break;
-                // no default
+        // no default
       }
       this.$scope.$apply();
+    }
+
+    displayAttestations() {
+      return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations') && this.hasAnyRole(['ROLE_DEVELOPER']) && this.canManageDeveloper(this.developer);
     }
   },
 };

@@ -77,7 +77,7 @@ class ConfirmPage {
   }
 
   gotoPendingListingPage (pendingListingId ) {
-    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: 35000 });
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').scrollAndClick();
   }
 

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import {arrayOf, bool, func, oneOf, shape, string} from 'prop-types';
-import {makeStyles} from '@material-ui/core/styles';
+import {
+  arrayOf, bool, func, oneOf, shape, string,
+} from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
@@ -20,12 +22,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ChplSortableHeaders (props) {
+function ChplSortableHeaders(props) {
   const [order, setOrder] = useState(props.order);
   const [orderBy, setOrderBy] = useState(props.orderBy);
   const classes = useStyles();
 
-  const createSortHandler = property => event => {
+  const createSortHandler = (property) => (event) => {
     const isAsc = orderBy === property && order === 'asc';
     const orderDirection = order === 'asc' ? '' : '-';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -36,39 +38,47 @@ function ChplSortableHeaders (props) {
   return (
     <TableHead>
       <TableRow>
-        { props.headers.map(headCell => (
+        { props.headers.map((headCell) => (
           headCell.sortable
-            ? <TableCell key={ headCell.property }
-                         align="left"
-                         sortDirection={ orderBy === headCell.property ? order : false }>
-                <TableSortLabel className={ classes.header }
-                                active={ orderBy === headCell.property }
-                                direction={ orderBy === headCell.property ? order : 'asc' }
-                                onClick={ createSortHandler(headCell.property) } >
-                    { headCell.text }
-                    {orderBy === headCell.property
-                      ? (
-                        <span className={ classes.visuallyHidden }>
-                          { order === 'desc' ? 'sorted descending' : 'sorted ascending' }
-                        </span>
-                      ) : null}
+            ? (
+              <TableCell
+                key={headCell.property}
+                align="left"
+                sortDirection={orderBy === headCell.property ? order : false}
+              >
+                <TableSortLabel
+                  className={classes.header}
+                  active={orderBy === headCell.property}
+                  direction={orderBy === headCell.property ? order : 'asc'}
+                  onClick={createSortHandler(headCell.property)}
+                >
+                  { headCell.text }
+                  {orderBy === headCell.property
+                    ? (
+                      <span className={classes.visuallyHidden}>
+                        { order === 'desc' ? 'sorted descending' : 'sorted ascending' }
+                      </span>
+                    ) : null}
                 </TableSortLabel>
               </TableCell>
-            : <TableCell align="left" key={ headCell.text }>
-                <span className={ headCell.invisible && classes.visuallyHidden }>
+            )
+            : (
+              <TableCell align="left" key={headCell.text}>
+                <span className={headCell.invisible && classes.visuallyHidden}>
                   { headCell.text }
                 </span>
               </TableCell>
+            )
         ))}
       </TableRow>
     </TableHead>
   );
 }
 
-export {ChplSortableHeaders};
+export default ChplSortableHeaders;
 
 ChplSortableHeaders.propTypes = {
-  onTableSort: func,
+  onTableSort: func.isRequired,
   order: oneOf(['asc', 'desc', '']),
   orderBy: string,
   headers: arrayOf(shape({
@@ -76,5 +86,10 @@ ChplSortableHeaders.propTypes = {
     property: string,
     text: string,
     sortable: bool,
-  })),
+  })).isRequired,
+};
+
+ChplSortableHeaders.defaultProps = {
+  order: '',
+  orderBy: '',
 };

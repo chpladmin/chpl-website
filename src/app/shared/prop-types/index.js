@@ -3,6 +3,12 @@ import accessibilityStandard from './accessibility-standard';
 import address from './address';
 import analyticsConfig from './analytics-config';
 import certificationResult from './certification-result';
+import {
+  criterion as complaintCriterion,
+  complaint,
+  complainantType,
+  listing,
+} from './complaint';
 import contact from './contact';
 import criterion from './criterion';
 import developer from './developer';
@@ -27,27 +33,31 @@ export {
   address,
   analyticsConfig,
   certificationResult,
+  complainantType,
+  complaint,
+  complaintCriterion,
   contact,
   criterion,
   developer,
-  qmsStandard,
+  listing,
   optionalStandard,
+  qmsStandard,
   reliedUponSoftware,
   resources,
   selectedOptionalStandard,
+  selectedSvap,
+  selectedTestData,
   selectedTestFunctionality,
   selectedTestProcedure,
-  selectedTestData,
   selectedTestStandard,
   selectedTestTool,
-  selectedSvap,
   surveillance,
   surveillanceNonconformity,
   surveillanceRequirement,
   svap,
+  testData,
   testFunctionality,
   testProcedure,
-  testData,
   testStandard,
   testTool,
   user,

@@ -33,141 +33,141 @@ const elements = {
 };
 
 class SurveillanceEditComponent {
-  constructor () { }
+  constructor() { }
 
-  get cancel () {
+  get cancel() {
     return $(elements.cancel);
   }
 
-  get requirementCapability () {
+  get requirementCapability() {
     return $(elements.requirementCapability);
   }
 
-  get surveillanceDetails () {
+  get surveillanceDetails() {
     return $(elements.surveillanceDetails);
   }
 
-  get inspectTitle () {
+  get inspectTitle() {
     return $(elements.inspectTitle);
   }
 
-  get editButton () {
+  get editButton() {
     return $(elements.edit);
   }
 
-  get startDate () {
+  get startDate() {
     return $(elements.startDate);
   }
 
-  get endDate () {
+  get endDate() {
     return $(elements.endDate);
   }
 
-  get surveillanceType () {
+  get surveillanceType() {
     return $(elements.surveillanceType);
   }
 
-  get siteSurveilled () {
+  get siteSurveilled() {
     return $(elements.siteSurveilled);
   }
 
-  get saveButton () {
+  get saveButton() {
     return $(elements.save);
   }
 
-  get removeButton () {
+  get removeButton() {
     return $(elements.removeRequirement);
   }
 
-  get errorMessages () {
+  get errorMessages() {
     return $(elements.error);
   }
 
-  get newRequirementButton () {
+  get newRequirementButton() {
     return $(elements.newRequirement);
   }
 
-  get requirementType () {
+  get requirementType() {
     return $(elements.requirementType);
   }
 
-  get requirementResult () {
+  get requirementResult() {
     return $(elements.requirementResult);
   }
 
-  get newnonConformityButton () {
+  get newnonConformityButton() {
     return $(elements.newnonConformity);
   }
 
-  get nonConformityType () {
+  get nonConformityType() {
     return $(elements.nonConformityType);
   }
 
-  get nonConformityStatus () {
+  get nonConformityStatus() {
     return $(elements.nonConformityStatus);
   }
 
-  get determinationDate () {
+  get determinationDate() {
     return $(elements.determinationDate);
   }
 
-  get summary () {
+  get summary() {
     return $(elements.summary);
   }
 
-  get findings () {
+  get findings() {
     return $(elements.findings);
   }
 
-  get approvalDate () {
+  get approvalDate() {
     return $(elements.approvalDate);
   }
 
-  get ncStartDate () {
+  get ncStartDate() {
     return $(elements.ncStartDate);
   }
 
-  get completeDate () {
+  get completeDate() {
     return $(elements.completeDate);
   }
 
-  get sites () {
+  get sites() {
     return $(elements.sites);
   }
 
-  get totalSites () {
+  get totalSites() {
     return $(elements.totalSites);
   }
 
-  get resolution () {
+  get resolution() {
     return $(elements.resolution);
   }
 
-  get explanation () {
+  get explanation() {
     return $(elements.explanation);
   }
 
-  get editRequirement () {
+  get editRequirement() {
     return $(elements.editRequirement);
   }
 
-  get removeNonConformity () {
+  get removeNonConformity() {
     return $(elements.removeNonConformity);
   }
 
-  requirementTableRows () {
+  requirementTableRows() {
     return $(elements.requirementTable).$('tbody').$$('tr');
   }
 
-  requirementName (i) {
+  requirementName(i) {
     return $(elements.requirementTable).$('tbody').$('tr').$$('td')[i];
   }
 
-  nonConformityTableRows () {
+  nonConformityTableRows() {
     return $('.table.ng-scope').$('tbody').$$('tr');
   }
 
-  addnonConformity (details , type) {
+  addnonConformity(details, type) {
     this.newnonConformityButton.click();
     this.nonConformityType.selectByVisibleText(details.type);
     this.nonConformityStatus.selectByVisibleText(details.status);
@@ -177,7 +177,8 @@ class SurveillanceEditComponent {
     this.completeDate.setValue(details.completeDate);
     if (type === 'Randomized') {
       this.sites.setValue(details.sites);
-      this.totalSites.setValue(details.totalSites); }
+      this.totalSites.setValue(details.totalSites);
+    }
     this.summary.setValue(details.summary);
     this.findings.setValue(details.findings);
     this.explanation.setValue(details.explanation);
@@ -186,14 +187,14 @@ class SurveillanceEditComponent {
     }
   }
 
-  editSurveillance () {
+  editSurveillance() {
     this.editButton.click();
     if (!$('#edit-surveillance-label').isDisplayed()) {
       this.editButton.click();
     }
   }
 
-  addRequirement (type, capability, result) {
+  addRequirement(type, capability, result) {
     this.newRequirementButton.click();
     this.requirementType.selectByVisibleText(type);
     if (type === 'Other Requirement') {
