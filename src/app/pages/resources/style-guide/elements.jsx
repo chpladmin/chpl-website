@@ -31,6 +31,7 @@ import ChplDefaultButton from './chpl-default-button';
 import ChplDefaultFilter from './chpl-default-filter';
 import ChplDefaultForm from './chpl-default-form';
 import ChplActionBar from '../../../components/action-bar/action-bar';
+import ChplTemplate from './chpl-template';
 
 function Elements() {
   return (
@@ -468,6 +469,11 @@ function Elements() {
           </Grid>
         </CardContent>
       </Card>
+      <br/>
+      <Typography gutterBottom variant="body1">CHPL Template is shown below.</Typography>
+      <div>
+       <ChplTemplate/>
+      </div>
       {/*End of Spacing and Grid*/}
       <br />
       {/*404 Card*/}
