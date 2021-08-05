@@ -98,7 +98,12 @@ describe('when logged in', () => {
     });
     it('should have specific reports', () => {
       const expected = [
+        'Developers',
+        'Listings',
+        'Products',
         'User Actions',
+        'Users',
+        'Versions',
       ];
       component.reportsToggle.click();
       const reports = new Set(component.reports.map((item) => item.getText()));
