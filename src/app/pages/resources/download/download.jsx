@@ -19,8 +19,11 @@ const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '32px',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     alignItems: 'start',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr 1fr',
+    },
   },
   fullWidth: {
     gridColumnEnd: 'span 2',
