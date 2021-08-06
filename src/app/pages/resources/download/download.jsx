@@ -41,6 +41,12 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
+  listSpacing: {
+    '& li': {
+      marginBottom: '.35em',
+      lineHeight: '1.5',
+    },
+  },
 });
 
 function ChplResourcesDownload() {
@@ -116,67 +122,63 @@ function ChplResourcesDownload() {
             >
               To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.
             </Typography>
-            <ul>
+            <ul className={classes.listSpacing}>
               <li>
-                <Typography gutterBottom variant="subtitle1">Certified Health IT Products</Typography>
+                <Typography variant="subtitle1">Certified Health IT Products</Typography>
                 <ul>
                   <li>
-                    <Typography gutterBottom variant="body1">
-                      <strong>2015/2014/2011 Edition Products:</strong>
-                      {' '}
-                      Entire collection of a specified certification edition&apos;s certified products, including all data elements. Available as an XML file.
-                    </Typography>
+                    <strong>2015/2014/2011 Edition Products:</strong>
+                    {' '}
+                    Entire collection of a specified certification edition&apos;s certified products, including all data elements. Available as an XML file.
                     <ul>
-                      <li><Typography gutterBottom variant="body1">The 2015 Edition Products file is updated nightly.</Typography></li>
-                      <li><Typography gutterBottom variant="body1">The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.</Typography></li>
+                      <li>
+                        The 2015 Edition Products file is updated nightly.
+                      </li>
+                      <li>
+                        The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
+                      </li>
                     </ul>
                   </li>
                   <li>
-                    <Typography gutterBottom variant="body1">
-                      <strong>2015/2014 Edition Summary:</strong>
-                      {' '}
-                      Entire collection of a specified certification edition&apos;s certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests. Available as a CSV file.
-                    </Typography>
+                    <strong>2015/2014 Edition Summary:</strong>
+                    {' '}
+                    Entire collection of a specified certification edition&apos;s certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests. Available as a CSV file.
                     <ul>
-                      <li><Typography gutterBottom variant="body1">The 2015 Edition Summary file is updated nightly.</Typography></li>
-                      <li><Typography gutterBottom variant="body1">The 2014 Edition Summary file is updated quarterly.</Typography></li>
+                      <li>
+                        The 2015 Edition Summary file is updated nightly.
+                      </li>
+                      <li>
+                        The 2014 Edition Summary file is updated quarterly.
+                      </li>
                     </ul>
                   </li>
                 </ul>
               </li>
               <li>
-                <Typography gutterBottom variant="subtitle1">Compliance Activities</Typography>
+                <Typography variant="subtitle1">Compliance Activities</Typography>
                 <ul>
                   <li>
-                    <Typography gutterBottom variant="body1">
-                      <strong>Surveillance Activity:</strong>
-                      {' '}
-                      Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.
-                    </Typography>
+                    <strong>Surveillance Activity:</strong>
+                    {' '}
+                    Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.
                   </li>
                   { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                     && (
-                    <li>
-                      <Typography gutterBottom variant="body1">
+                      <li>
                         <strong>Surveillance (Basic):</strong>
                         {' '}
                         Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.
-                      </Typography>
-                    </li>
+                      </li>
                     )}
                   <li>
-                    <Typography gutterBottom variant="body1">
-                      <strong>Surveillance Non-Conformities:</strong>
-                      {' '}
-                      Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file. Available as a CSV file.
-                    </Typography>
+                    <strong>Surveillance Non-Conformities:</strong>
+                    {' '}
+                    Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file. Available as a CSV file.
                   </li>
                   <li>
-                    <Typography gutterBottom variant="body1">
-                      <strong>Direct Review Activity:</strong>
-                      {' '}
-                      Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.
-                    </Typography>
+                    <strong>Direct Review Activity:</strong>
+                    {' '}
+                    Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.
                   </li>
                 </ul>
               </li>
