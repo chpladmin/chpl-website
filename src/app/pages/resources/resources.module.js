@@ -12,5 +12,4 @@ angular
     'swaggerUi',
   ])
   .component('chplNotFoundBridge', reactToAngularComponent(ChplNotFound))
-  .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload))
-;
+  .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload));
