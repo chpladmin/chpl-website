@@ -1,0 +1,88 @@
+import React, { useState } from 'react';
+import Popover from '@material-ui/core/Popover';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  List,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
+
+import { ChplTextField } from '../../../components/util';
+
+const useStyles = makeStyles({
+    loginCard: {
+      maxWidth:'400px',
+    },
+  });
+
+function ChplAdministratorLogin(props) {
+  const classes = useStyles();
+  const { anchor } = props;
+  const [anchorElement, setAnchorElement] = useState(null);
+  const handlePopoverClose = () => {
+    setAnchorElement(null);
+  };
+  const handleClick = (event) => {
+    setAnchorElement(event.currentTarget);
+  };
+  const open = Boolean(anchorElement);
+  const id = open ? 'ChplAdministratorLogin' : undefined;
+
+  return (
+    <>
+      <div
+        // aria-owns={open ? 'assignedTo-popover' : undefined}
+        // aria-haspopup='true'
+        // onMouseEnter={handlePopoverOpen}
+        // onMouseLeave={handlePopoverClose}
+        aria-describedby={id}
+        onClick={handleClick}>
+        {anchor}
+      </div>
+
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorElement}
+        onClose={handlePopoverClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+       >
+            <Card className={classes.loginCard}>
+            <CardContent>
+            <ChplTextField
+                id="email-user-name"
+                name="emailUserName"
+                label="Email or User Name"
+                required/>
+            <ChplTextField
+                id="password"
+                name="password"
+                label="Password"
+                required
+                />
+            <Typography variant="body2">This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.
+            </Typography>
+            </CardContent>
+            <CardActions>
+            <Button fullWidth color="primary" variant="contained">Sign-In</Button>
+            </CardActions>
+            <CardActions>
+            <Button fullWidth color="secondary" variant="contained">Forget Password</Button>
+            </CardActions>
+            </Card>
+      </Popover>
+    </>
+  );
+}
+
+export default ChplAdministratorLogin;

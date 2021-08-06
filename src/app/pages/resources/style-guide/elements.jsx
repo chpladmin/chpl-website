@@ -32,6 +32,7 @@ import ChplDefaultFilter from './chpl-default-filter';
 import ChplDefaultForm from './chpl-default-form';
 import ChplActionBar from '../../../components/action-bar/action-bar';
 import ChplTemplate from './chpl-template';
+import ChplAdministratorLogin from './chpl-administrator-login';
 
 function Elements() {
   return (
@@ -424,7 +425,9 @@ function Elements() {
       {/*Log In Module*/}
       <div>
         <Typography variant="h5">Log In Module:</Typography>
+        <ChplAdministratorLogin/>
       </div>
+
       {/*End Log In Module*/}
       <br />
       {/*Spacing and Grid*/}
