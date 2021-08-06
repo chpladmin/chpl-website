@@ -57,6 +57,7 @@ function ChplApiKeyConfirm(props) {
                       <ul>
                         <li>This email confirmation request has already been processed.  Be sure to check you email for an email with your API key.</li>
                         <li>The confirmation token in the URL is not correct.</li>
+                        <li>The confirmation succeeded, but the acknowledgement email was unable to be sent.</li>
                       </ul>
                     </Typography>
                   </>
