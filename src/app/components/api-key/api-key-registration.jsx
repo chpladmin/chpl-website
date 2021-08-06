@@ -55,10 +55,17 @@ function ChplApiKeyRegistration() {
           formik.resetForm();
         }
       }, (error) => {
-        toaster.pop({
-          type: 'error',
-          body: error.data.errorMessages[0],
-        });
+        if (error.data.error) {
+          toaster.pop({
+            type: 'error',
+            body: error.data.error,
+          });
+        } else {
+          toaster.pop({
+            type: 'error',
+            body: error.data.errorMessages[0],
+          });
+        }
       });
   };
 
