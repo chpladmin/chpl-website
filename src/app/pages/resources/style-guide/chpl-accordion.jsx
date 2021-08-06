@@ -3,6 +3,7 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
+    IconButton, 
     Container,
     ThemeProvider,
     makeStyles,
@@ -34,6 +35,9 @@ const useStyles = makeStyles(() => ({
         border: '1px solid #f9f9f9',
         margin:'8px',
     },
+    infoButton:{
+        padding:'0px 0px 0px 4px',
+    }
 }));
 
 function ChplAccordion() {
@@ -48,7 +52,9 @@ function ChplAccordion() {
                 >
                     Accordion Level 1
                     <ChplTooltip title="These certification criteria have been removed from the Program.">
+                        <IconButton color="primary" className={classes.infoButton}>
                         <InfoOutlinedIcon fontSize="medium" />
+                        </IconButton>
                     </ChplTooltip>
                 </AccordionSummary>
                         <Accordion>
@@ -58,8 +64,10 @@ function ChplAccordion() {
                                 id="removed-header"
                             >
                                 Nested Accordion
-                                <ChplTooltip title="These certification criteria have been removed from the Program.">
-                                    <InfoOutlinedIcon fontSize="medium" />
+                                <ChplTooltip title="Nested Accordion.">
+                                <IconButton color="primary" className={classes.infoButton}>
+                                <InfoOutlinedIcon fontSize="medium" />
+                                </IconButton>
                                 </ChplTooltip>
                             </AccordionSummary>
                             <AccordionDetails className={classes.NestedAccordionDetails}>
