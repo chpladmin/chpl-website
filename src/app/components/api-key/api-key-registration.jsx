@@ -1,16 +1,20 @@
 import React from 'react';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  TextField,
+  ThemeProvider,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
 import theme from '../../themes/theme';
-import { getAngularService } from '.';
+import { getAngularService } from '../../services/angular-react-helper';
 
 const useStyles = makeStyles(() => ({
   grid: {
@@ -135,6 +139,6 @@ function ChplApiKeyRegistration() {
   );
 }
 
-export { ChplApiKeyRegistration };
+export default ChplApiKeyRegistration;
 
 ChplApiKeyRegistration.propTypes = { };
