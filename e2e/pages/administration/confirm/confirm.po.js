@@ -6,7 +6,6 @@ const confirmElements = {
   rejectButton: '#reject-selected-pending-listings',
   warningCheckbox: '#acknowledge-warnings',
   confirmButton: '#inspect-confirm',
-  toastContainertitle: '.ng-binding.toast-title',
   rejectButtonOnInspectListing: '#inspect-reject',
   errorMessage: '.bg-danger',
   errorOnInspect: '.action-bar__error-messages > li',
@@ -44,10 +43,6 @@ class ConfirmPage {
     return $(confirmElements.confirmButton);
   }
 
-  get toastContainerTitle () {
-    return $(confirmElements.toastContainertitle);
-  }
-
   get rejectButtonOnInspectListing () {
     return $(confirmElements.rejectButtonOnInspectListing);
   }
@@ -82,7 +77,7 @@ class ConfirmPage {
   }
 
   gotoPendingListingPage (pendingListingId ) {
-    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: 35000 });
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').scrollAndClick();
   }
 
@@ -91,7 +86,7 @@ class ConfirmPage {
   }
 
   findListingToReject (chplId) {
-    return $('//td[text()="' + chplId + '"]');
+    return $('chpl-confirm-listings-bridge').$('//td[text()="' + chplId + '"]');
   }
 
   rejectListing (chplId) {
@@ -107,14 +102,6 @@ class ConfirmPage {
   confirmListing () {
     this.confirmButton.scrollAndClick();
     this.yesConfirmation.waitAndClick();
-  }
-
-  waitForSuccessfulConfirm () {
-    browser.waitUntil( () => this.toastContainerTitle.isDisplayed() ,
-      {
-        timeout: config.longTimeout,
-      }
-    );
   }
 
   waitForBarMessages () {

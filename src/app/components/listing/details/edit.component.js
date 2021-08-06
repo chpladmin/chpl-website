@@ -9,11 +9,12 @@ const ListingDetailsEditComponent = {
     showFormErrors: '<',
   },
   controller: class ListingDetailsEditComponent {
-    constructor($analytics, $filter, $log, $uibModal, featureFlags, networkService, utilService) {
+    constructor($analytics, $filter, $log, $uibModal, DateUtil, featureFlags, networkService, utilService) {
       this.$analytics = $analytics;
       this.$filter = $filter;
       this.$log = $log;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.utilService = utilService;
       this.addNewValue = utilService.addNewValue;
@@ -86,11 +87,11 @@ const ListingDetailsEditComponent = {
       return this.listing.certificationEdition.name === '2015' && this.listing.ics.inherits && this.listing.ics.parents.length === 0;
     }
 
-    matchesPreviousMuuDate(muu) {
-      const orderedMuu = this.$filter('orderBy')(this.listing.meaningfulUseUserHistory, 'muuDateObject');
-      const muuLoc = orderedMuu.indexOf(muu);
-      if (muuLoc > 0) {
-        return (this.$filter('date')(muu.muuDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedMuu[muuLoc - 1].muuDateObject, 'mediumDate', 'UTC'));
+    matchesPreviousPIDate(item) {
+      const orderedPI = this.listing.promotingInteroperabilityUserHistory.sort((a, b) => (a.userCountDate < b.userCountDate ? -1 : 1));
+      const itemLoc = orderedPI.indexOf(item);
+      if (itemLoc > 0) {
+        return orderedPI[itemLoc - 1].userCountDate === item.userCountDate;
       }
       return false;
     }
@@ -99,10 +100,8 @@ const ListingDetailsEditComponent = {
       if (angular.isUndefined(this.listing.ics.parents)) {
         this.listing.ics.parents = [];
       }
-      if (this.listing.meaningfulUseUserHistory && this.listing.meaningfulUseUserHistory.length > 0) {
-        this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.map((muu) => ({ ...muu, muuDateObject: new Date(muu.muuDate) }));
-      } else {
-        this.listing.meaningfulUseUserHistory = [];
+      if (!this.listing.promotingInteroperabilityUserHistory?.length > 0) {
+        this.listing.promotingInteroperabilityUserHistory = [];
       }
 
       if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015' && (!this.relatedListings || this.relatedListings.length === 0)) {
@@ -240,8 +239,8 @@ const ListingDetailsEditComponent = {
         case 'ics':
           this.listing.ics.parents = this.listing.ics.parents.filter((l) => l.chplProductNumber !== item.chplProductNumber);
           break;
-        case 'meaningfulUseUserHistory':
-          this.listing.meaningfulUseUserHistory = this.listing.meaningfulUseUserHistory.filter((event) => event.muuDateObject.getTime() !== item.muuDateObject.getTime());
+        case 'promotingInteroperabilityUserHistory':
+          this.listing.promotingInteroperabilityUserHistory = this.listing.promotingInteroperabilityUserHistory.filter((event) => (event.userCount !== item.userCount || event.userCountDate !== item.userCountDate));
           break;
         case 'qmsStandards':
           this.listing.qmsStandards = this.listing.qmsStandards.filter((l) => l.qmsStandardName !== item.qmsStandardName);
@@ -265,10 +264,10 @@ const ListingDetailsEditComponent = {
           this.addNewValue(this.listing.ics.parents, this.newItem[type]);
           this.listing.ics.parents = this.listing.ics.parents.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
           break;
-        case 'meaningfulUseUserHistory':
-          this.listing.meaningfulUseUserHistory.push({
-            muuCount: this.newItem[type].muuCount,
-            muuDateObject: this.newItem[type].muuDateObject,
+        case 'promotingInteroperabilityUserHistory':
+          this.addNewValue(this.listing.promotingInteroperabilityUserHistory, {
+            ...this.newItem[type],
+            userCountDate: this.DateUtil.timestampToString((new Date(this.newItem[type].userCountDate)).getTime(), 'yyyy-MM-dd'),
           });
           break;
         case 'qmsStandards':

@@ -12,7 +12,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import theme from '../../themes/theme';
-import { getAngularService } from '.';
+import { getAngularService } from '../../services/angular-react-helper';
 import { ChplTextField } from '../util';
 
 const useStyles = makeStyles(() => ({
