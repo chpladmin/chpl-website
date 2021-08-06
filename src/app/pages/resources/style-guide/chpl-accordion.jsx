@@ -21,7 +21,6 @@ const useStyles = makeStyles(() => ({
         gap: '16px',
         gridTemplateColumns: '1fr',
         alignItems: 'start',
-        padding: '16px',
     },
     NestedAccordionSummary: {
         backgroundColor: '#f9f9f9',
@@ -32,7 +31,6 @@ const useStyles = makeStyles(() => ({
         borderRadius: '8px',
         display: 'grid',
         gridTemplateColumns: '1fr',
-        border: '1px solid #f9f9f9',
         margin:'8px',
     },
     infoButton:{
@@ -71,7 +69,9 @@ function ChplAccordion() {
                                 </ChplTooltip>
                             </AccordionSummary>
                             <AccordionDetails className={classes.NestedAccordionDetails}>
+                                    <div className={classes.content}>
                                     <Typography>Something</Typography>
+                                    </div>                            
                             </AccordionDetails>
                         </Accordion>
             </Accordion>
