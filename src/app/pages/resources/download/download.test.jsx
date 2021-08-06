@@ -39,7 +39,7 @@ describe('the ChplResourcesDownload page', () => {
 
   describe('when rendering', () => {
     it('should not show the restricted SVAP item', async () => {
-      const item = screen.queryByText(/Standards Values Advancement Process (SVAP) Summary:/i);
+      const item = screen.queryByText(/Standards Version Advancement Process (SVAP) Summary:/i);
 
       await waitFor(() => {
         expect(item).toBe(null);

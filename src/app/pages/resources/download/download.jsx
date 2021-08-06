@@ -159,7 +159,7 @@ function ChplResourcesDownload() {
                   { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
                     && (
                       <li>
-                        <strong>Standards Values Advancement Process (SVAP) Summary:</strong>
+                        <strong>Standards Version Advancement Process (SVAP) Summary:</strong>
                         {' '}
                         Entire collection of all SVAP values that have been associated with a criterion for a certified product. Available as a CSV file; updated nightly.
                       </li>
