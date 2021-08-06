@@ -1,19 +1,19 @@
-const downloadElements = {
-  downloadBridge: 'chpl-resources-download-bridge',
-  download: '#download-select',
-  downloadDefinitionFileButton: '#download-chpl-definition-button',
-  downloadDataFileButton: '#download-chpl-data-button',
-};
-
 class DownloadPage {
-  constructor () { }
+  constructor() {
+    this.elements = {
+      downloadBridge: 'chpl-resources-download-bridge',
+      download: '#download-select',
+      downloadDefinitionFileButton: '#download-chpl-definition-button',
+      downloadDataFileButton: '#download-chpl-data-button',
+    };
+  }
 
-  get downloadPage () {
-    return $(downloadElements.downloadBridge);
+  get downloadPage() {
+    return $(this.downloadElements.downloadBridge);
   }
 
   selectFile(file) {
-    $(downloadElements.download).click();
+    $(this.downloadElements.download).click();
     browser.pause(1000);
     $(`li[data-value="${file}"]`).click();
     browser.pause(1000);
@@ -21,12 +21,12 @@ class DownloadPage {
 
   downloadDataFile(file) {
     this.selectFile(file);
-    $(downloadElements.downloadDefinitionFileButton).click();
+    $(this.downloadElements.downloadDefinitionFileButton).click();
   }
 
   downloadDefinitionFile(file) {
     this.selectFile(file);
-    $(downloadElements.downloadDefinitionFileButton).click();
+    $(this.downloadElements.downloadDefinitionFileButton).click();
   }
 }
 
