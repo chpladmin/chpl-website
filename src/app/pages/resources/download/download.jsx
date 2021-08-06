@@ -6,44 +6,37 @@ import {
   CardHeader,
   CardActions,
   Divider,
+  MenuItem,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import { ChplTextField } from '../../../components/util';
 
 const useStyles = makeStyles({
-  content: {
-    display: 'grid',
-    gap: '32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'start',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 1fr',
-    },
-  },
-  fullWidth: {
-    gridColumnEnd: 'span 2',
-  },
-  rowHeader: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'start',
+  pageHeader: {
     padding: '32px',
-    backgroundColor:'#ffffff',
   },
-  rowBody: {
+  pageBody: {
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
-    alignItems: 'start',
     padding: '32px',
     backgroundColor:'#f9f9f9',
     marginBottom:'-128px',
+  },
+  content: {
+    display: 'grid',
+    gap: '32px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(512px, 1fr))',
+    alignItems: 'start',
+  },
+  fullWidth: {
+    gridColumnEnd: 'span 2',
   },
   iconSpacing:{
     marginLeft:'4px',
@@ -51,42 +44,64 @@ const useStyles = makeStyles({
 });
 
 function ChplResourcesDownload() {
-  const classes = useStyles();
+  const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const {
     getApiKey,
     getToken,
     hasAnyRole,
   } = getAngularService('authService');
+  const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState('');
+  const classes = useStyles();
 
   useEffect(() => {
+    const data = {
+      '2015 edition products (xml)': { data: API + '/download?api_key=' + getApiKey() + '&edition=2015', definition: API + '/download?api_key=' + getApiKey() + '&edition=2015&definition=true', label: '2015 XML'},
+      '2014 edition products (xml)': { data: API + '/download?api_key=' + getApiKey() + '&edition=2014', definition: API + '/download?api_key=' + getApiKey() + '&edition=2014&definition=true', label: '2014 XML'},
+      '2011 edition products (xml)': { data: API + '/download?api_key=' + getApiKey() + '&edition=2011', definition: API + '/download?api_key=' + getApiKey() + '&edition=2011&definition=true', label: '2011 XML'},
+      '2015 edition summary (csv)': { data: API + '/download?api_key=' + getApiKey() + '&edition=2015&format=csv', definition: API + '/download?api_key=' + getApiKey() + '&edition=2015&format=csv&definition=true', label: '2015 CSV'},
+      '2014 edition summary (csv)': { data: API + '/download?api_key=' + getApiKey() + '&edition=2014&format=csv', definition: API + '/download?api_key=' + getApiKey() + '&edition=2014&format=csv&definition=true', label: '2014 CSV'},
+      'Surveillance Activity': { data: API + '/surveillance/download?api_key=' + getApiKey() + '&type=all', definition: API + '/surveillance/download?api_key=' + getApiKey() + '&type=all&definition=true', label: 'Surveillance'},
+      'Surveillance Non-Conformities': { data: API + '/surveillance/download?api_key=' + getApiKey(), definition: API + '/surveillance/download?api_key=' + getApiKey() + '&definition=true', label: 'Surveillance Non-Conformities'},
+      'Direct Review Activity': { data: API + '/developers/direct-reviews/download?api_key=' + getApiKey(), definition: API + '/developers/direct-reviews/download?api_key=' + getApiKey() + '&definition=true', label: 'Direct Review Activity'},
+      'Surveillance (Basic)': { data: API + '/surveillance/download?api_key=' + getApiKey() + '&type=basic&authorization=Bearer%20' + getToken(), definition: API + '/surveillance/download?api_key=' + getApiKey() + '&type=basic&definition=true&authorization=Bearer%20' + getToken(), label: 'Surveillance (Basic)'},
+    }
     let options = [
-      { data: API + '/download?api_key=' + getApiKey() + '&edition=2015', definition: API + '/download?api_key=' + getApiKey() + '&edition=2015&definition=true', label: '2015 XML', display: '2015 edition products (xml)'},
-      { data: API + '/download?api_key=' + getApiKey() + '&edition=2014', definition: API + '/download?api_key=' + getApiKey() + '&edition=2014&definition=true', label: '2014 XML', display: '2014 edition products (xml)'},
-      { data: API + '/download?api_key=' + getApiKey() + '&edition=2011', definition: API + '/download?api_key=' + getApiKey() + '&edition=2011&definition=true', label: '2011 XML', display: '2011 edition products (xml)'},
-      { data: API + '/download?api_key=' + getApiKey() + '&edition=2015&format=csv', definition: API + '/download?api_key=' + getApiKey() + '&edition=2015&format=csv&definition=true', label: '2015 CSV', display: '2015 edition summary (csv)'},
-      { data: API + '/download?api_key=' + getApiKey() + '&edition=2014&format=csv', definition: API + '/download?api_key=' + getApiKey() + '&edition=2014&format=csv&definition=true', label: '2014 CSV', display: '2014 edition summary (csv)'},
-      { data: API + '/surveillance/download?api_key=' + getApiKey() + '&type=all', definition: API + '/surveillance/download?api_key=' + getApiKey() + '&type=all&definition=true', label: 'Surveillance', display: 'Surveillance Activity'},
-      { data: API + '/surveillance/download?api_key=' + getApiKey(), definition: API + '/surveillance/download?api_key=' + getApiKey() + '&definition=true', label: 'Surveillance Non-Conformities', display: 'Surveillance Non-Conformities'},
-      { data: API + '/developers/direct-reviews/download?api_key=' + getApiKey(), definition: API + '/developers/direct-reviews/download?api_key=' + getApiKey() + '&definition=true', label: 'Direct Review Activity', display: 'Direct Review Activity'},
+      '2015 edition products (xml)',
+      '2014 edition products (xml)',
+      '2011 edition products (xml)',
+      '2015 edition summary (csv)',
+      '2014 edition summary (csv)',
+      'Surveillance Activity',
+      'Surveillance Non-Conformities',
+      'Direct Review Activity',
     ];
     if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-      options.splice(6, 0, { data: API + '/surveillance/download?api_key=' + getApiKey() + '&type=basic&authorization=Bearer%20' + getToken(), definition: API + '/surveillance/download?api_key=' + getApiKey() + '&type=basic&definition=true&authorization=Bearer%20' + getToken(), label: 'Surveillance (Basic)', display: 'Surveillance (Basic)'});
+      options.splice(6, 0, 'Surveillance (Basic)');
     }
+    setFiles(data);
     setDownloadOptions(options);
   }, [getApiKey, getToken, hasAnyRole]);
 
+  const downloadFile = (type) => {
+    if (selectedOption) {
+      $analytics.eventTrack('Download CHPL' + (type === 'definition' ? ' Definition' : ''), { category: 'Download CHPL', label: files[selectedOption].label });
+      window.open(files[selectedOption][type]);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.rowHeader}>
+      <div className={classes.pageHeader}>
         <Typography
           variant="h1"
         >
           Download the CHPL
         </Typography>
       </div>
-      <div className={classes.rowBody} id="main-content" tabIndex="-1">
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography
           variant="h2"
         >
@@ -121,7 +136,7 @@ function ChplResourcesDownload() {
               <li><Typography gutterBottom variant='subtitle1'>Compliance Activities</Typography>
                 <ul>
                   <li><Typography gutterBottom variant='body1'><strong>Surveillance Activity:</strong> Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.</Typography></li>
-                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) &&
                     <li><Typography gutterBottom variant='body1'><strong>Surveillance (Basic):</strong> Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.</Typography></li>
                       }
                   <li><Typography gutterBottom variant='body1'><strong>Surveillance Non-Conformities:</strong> Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.</Typography></li>
@@ -135,11 +150,18 @@ function ChplResourcesDownload() {
             </CardHeader>
             <CardContent>
               <div className={classes.fullWidth}>
-                Pick a thing here (select box)
-                { downloadOptions.map((option) =>
-                      <li>{option.data} - {option.definition} - {option.label} - {option.display}</li>
-                    )
-                    }
+              <ChplTextField
+                select
+                id="download-select"
+                name="downloadSelect"
+                label="Select which collection of information to download"
+                value={selectedOption}
+                onChange={(event) => setSelectedOption(event.target.value)}
+              >
+                { downloadOptions.map((item) => (
+                  <MenuItem value={item} key={item}>{item}</MenuItem>
+                ))}
+              </ChplTextField>
               </div>
               <div className={classes.fullWidth}>
                 <div>
@@ -150,8 +172,28 @@ function ChplResourcesDownload() {
               </div>
             </CardContent>
             <CardActions>
-              <Button fullWidth color="primary" variant="contained">Data File<GetAppIcon className={classes.iconSpacing}/></Button>
-              <Button fullWidth color="secondary" variant="contained">Definition File<GetAppIcon className={classes.iconSpacing}/></Button>
+              <Button
+                fullWidth
+                color="primary"
+                variant="contained"
+                id="download-chpl-link"
+                onClick={() => downloadFile('data')}
+              >
+                Data File
+                {' '}
+                <GetAppIcon className={classes.iconSpacing}/>
+              </Button>
+              <Button
+                fullWidth
+                color="secondary"
+                variant="contained"
+                id="download-chpl-definition-link"
+                onClick={() => downloadFile('definition')}
+              >
+                Definition File
+                {' '}
+                <GetAppIcon className={classes.iconSpacing}/>
+              </Button>
             </CardActions>
           </Card>
         </div>
