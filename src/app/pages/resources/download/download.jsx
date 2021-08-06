@@ -226,7 +226,7 @@ function ChplResourcesDownload() {
                 fullWidth
                 color="primary"
                 variant="contained"
-                id="download-chpl-link"
+                id="download-chpl-data-button"
                 onClick={() => downloadFile('data')}
               >
                 Data File
@@ -237,7 +237,7 @@ function ChplResourcesDownload() {
                 fullWidth
                 color="secondary"
                 variant="contained"
-                id="download-chpl-definition-link"
+                id="download-chpl-definition-button"
                 onClick={() => downloadFile('definition')}
               >
                 Definition File
