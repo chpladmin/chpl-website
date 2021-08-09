@@ -21,7 +21,7 @@ class DownloadPage {
 
   downloadDataFile(file) {
     this.selectFile(file);
-    $(this.elements.downloadDefinitionFileButton).click();
+    $(this.elements.downloadDataFileButton).click();
   }
 
   downloadDefinitionFile(file) {
