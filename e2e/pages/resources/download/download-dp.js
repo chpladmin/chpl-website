@@ -27,7 +27,7 @@ module.exports = [{
   definitionFileName: '2015 Listing CSV Data Dictionary.csv',
   dataFileName: 'chpl-2015',
   fileExtension: 'csv',
-  definitionFileSize: 14,
+  definitionFileSize: 13,
   dataFileSize: 900,
   generationFrequencyInDays: 1,
   definitionFileLines: 100,
