@@ -6,53 +6,53 @@ const path = require('path');
 const fs = require('fs');
 const inputs = require('./download-dp');
 
-let hooks; let
-  page;
-const productFile2015 = 'The 2015 Edition Products file is updated nightly.';
-const productFile2014And2011 = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
-const summaryFile2015 = 'The 2015 Edition Summary file is updated nightly.';
-const summaryFile2014 = 'The 2014 Edition Summary file is updated quarterly.';
-const directReview = 'Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.';
-const surveillanceNonConformity = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.';
-const surveillanceActivity = 'Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.';
-
-beforeEach(async () => {
-  page = new DownloadPage();
-  hooks = new Hooks();
-  await hooks.open('#/resources/download');
-});
+let hooks;
+let page;
 
 describe('the Download page', () => {
+  beforeEach(async () => {
+    page = new DownloadPage();
+    hooks = new Hooks();
+    await hooks.open('#/resources/download');
+  });
+
   describe('2015/2014/2011 Edition products section', () => {
     it('should have correct information about 2015 edition products file', () => {
+      const productFile2015 = 'The 2015 Edition Products file is updated nightly.';
       expect(page.downloadPage.getText()).toContain(productFile2015);
     });
 
     it('should have correct information about 2014 and 2011 edition products file', () => {
+      const productFile2014And2011 = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
       expect(page.downloadPage.getText()).toContain(productFile2014And2011);
     });
   });
 
   describe('2015/2014 Edition summary section', () => {
     it('should have correct information about 2015 edition summary file', () => {
+      const summaryFile2015 = 'The 2015 Edition Summary file is updated nightly.';
       expect(page.downloadPage.getText()).toContain(summaryFile2015);
     });
 
     it('should have correct information about 2014 edition summary file', () => {
+      const summaryFile2014 = 'The 2014 Edition Summary file is updated quarterly.';
       expect(page.downloadPage.getText()).toContain(summaryFile2014);
     });
   });
 
   describe('compliance activities section', () => {
     it('should have correct information about Surveillance Activity', () => {
+      const surveillanceActivity = 'Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.';
       expect(page.downloadPage.getText()).toContain(surveillanceActivity);
     });
 
     it('should have correct information about Surveillance Non-Conformities', () => {
+      const surveillanceNonConformity = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.';
       expect(page.downloadPage.getText()).toContain(surveillanceNonConformity);
     });
 
     it('should have correct information about Direct Review Activity', () => {
+      const directReview = 'Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.';
       expect(page.downloadPage.getText()).toContain(directReview);
     });
   });
@@ -67,8 +67,8 @@ describe('the Download page', () => {
     const { generationFrequencyInDays } = input;
     const { definitionFileLines } = input;
     const { dataLines } = input;
-    let fileContents; let
-      filePath;
+    let fileContents;
+    let filePath;
 
     describe(`when downloading the ${file} definition file`, () => {
       it(`should download file successfully with file size more than ${definitionFileSize} KB`, () => {
