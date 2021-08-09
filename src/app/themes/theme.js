@@ -255,17 +255,20 @@ const theme = createMuiTheme({
     MuiTablePagination:{
       root:{
         fontSize:'1em',
+        display:'grid',
+        justifyContent:'space-evenly',
       },
       spacer:{
         flex:'none',
       },
       toolbar:{
         backgroundColor:'#ffffff',
-        margin:'16px 32px',
+        margin:'16px',
         boxShadow:'0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         borderRadius:'64px',
         display:'flex',
-        justifyContent:'center'
+        justifyContent:'center',
+        padding:'8px 32px',
       },
       select:{
         color:'#156dac',

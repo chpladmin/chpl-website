@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  InputBase,
+  Divider,
   Paper,
   Table,
   TableBody,
@@ -11,32 +13,63 @@ import {
   TableRow,
   TablePagination,
   Typography,
-  ThemeProvider,
   makeStyles,
+  Toolbar,
 } from '@material-ui/core';
 
 import theme from '../../../themes/theme';
+import { ChplLink } from '../../../components/util/';
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers';
+import LanguageIcon from '@material-ui/icons/Language';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import SearchIcon from '@material-ui/icons/Search';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+import ChplDefaultFilter from './chpl-default-filter';
 
 
 const useStyles = makeStyles({
-  container: {
+  filterContainer: {
     display: 'grid',
-    gridGap:'8px',
-    gridTemplateColumns: '4fr 1fr 1fr',
-    padding:'16px 16px',
+    gridGap: '8px',
+    gridTemplateColumns: '8fr 2fr 2fr',
+    padding: '16px',
     alignItems: 'center',
+    borderRadius: '0px',
   },
+  filterSubContainer: {
+    display: 'grid',
+    gridGap: '8px',
+    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 2fr 2fr',
+    alignItems: 'center',
+    borderRadius: '0px',
+  },
+  searchContainer: {
+    margin: '16px 32px',
+    padding: '4px 32px',
+    display: 'grid',
+    boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+    minHeight: '64px',
+    gridTemplateColumns: '.4fr 10.6fr 1fr',
+    alignItems: 'center',
+    borderRadius: '64px',
+    backgroundColor: '#ffffff',
+  },
+
+  searchInput: {
+    display: 'grid',
+  },
+
   tableContainer: {
     maxHeight: "800px",
   },
   iconSpacing: {
     marginLeft: '4px',
+  },
+  browseAll: {
+    borderRadius: '64px',
   },
 });
 
@@ -148,29 +181,29 @@ function ChplStyleGuideTable() {
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
-    id: 14,
-    chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
-    developer: 'Epic Systems Corporation',
-    product: 'Beaker Reportable Labs Reporting',
-    version: 'Epic 2015',
-    status: 'CLOSED',
-    actions: 'Y | N',
-    },{
-    id: 15,
-    chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
-    developer: 'Epic Systems Corporation',
-    product: 'Beaker Reportable Labs Reporting',
-    version: 'Epic 2015',
-    status: 'CLOSED',
-    actions: 'Y | N',
-    },{ 
-    id: 16,
-    chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
-    developer: 'Epic Systems Corporation',
-    product: 'Beaker Reportable Labs Reporting',
-    version: 'Epic 2015',
-    status: 'CLOSED',
-    actions: 'Y | N',
+      id: 14,
+      chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
+      developer: 'Epic Systems Corporation',
+      product: 'Beaker Reportable Labs Reporting',
+      version: 'Epic 2015',
+      status: 'CLOSED',
+      actions: 'Y | N',
+    }, {
+      id: 15,
+      chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
+      developer: 'Epic Systems Corporation',
+      product: 'Beaker Reportable Labs Reporting',
+      version: 'Epic 2015',
+      status: 'CLOSED',
+      actions: 'Y | N',
+    }, {
+      id: 16,
+      chplProductNumber: '15.07.07.1447.BE01.02.01.1.161014',
+      developer: 'Epic Systems Corporation',
+      product: 'Beaker Reportable Labs Reporting',
+      version: 'Epic 2015',
+      status: 'CLOSED',
+      actions: 'Y | N',
     },
   ]);
 
@@ -200,60 +233,90 @@ function ChplStyleGuideTable() {
     setListings(listings.sort(listingSortComparator(orderDirection + property)).map((listing) => listing));
   };
 
-  
+
   return (
     <div>
-    <TableContainer component={Paper}>
-    <div className={classes.container}>
-    <Typography variant="h5">Title of Table</Typography>
-    <Button size="medium" color="secondary" variant="contained">Download
-    <GetAppIcon className={classes.iconSpacing}/>
-    </Button>
-    <Button size="medium" color="secondary" variant="contained">Add
-    <PlaylistAddIcon className={classes.iconSpacing}/>
-    </Button>
-    </div>
+      <div className={classes.searchContainer}>
+        <div>
+          <SearchIcon />
+        </div>
+        <div>
+          <InputBase
+            className={classes.searchInput}
+            placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID..."
 
-    </TableContainer>
-    <TableContainer className={classes.tableContainer} component={Paper}>
-      <Table stickyHeader>
-        <ChplSortableHeaders
-          headers={headers}
-          onTableSort={handleTableSort}
-        />
-        <TableBody>
-          { listings
-            .map((listing) => (
-              <TableRow key={listing.id}>
-                <TableCell>{ listing.chplProductNumber }</TableCell>
-                <TableCell>{ listing.developer }</TableCell>
-                <TableCell>{ listing.product }</TableCell>
-                <TableCell>{ listing.version }</TableCell>
-                <TableCell>{ listing.status }</TableCell>
-                <TableCell align="right">
-                  <ButtonGroup color="primary">
-                  <Button color="primary" variant="contained">
-                     OPEN Details 
-                     <ArrowForwardIcon className={classes.iconSpacing}/>
-                    </Button>
-                    <Button>
-                     CERT ID
-                     <AssignmentOutlinedIcon className={classes.iconSpacing}/>
-                    </Button>
-                    <Button>
-                     Compare
-                     <CompareArrowsIcon className={classes.iconSpacing}/>
-                    </Button>
-                  </ButtonGroup>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All'}]}
-              component="div"
+          />
+        </div>
+        <div>
+          <Button className={classes.browseAll} variant='contained' color="secondary">
+            Browse All <LanguageIcon className={classes.iconSpacing} />
+          </Button>
+        </div>
+      </div>
+      <br/>
+      <TableContainer component={Paper}>
+        <div className={classes.filterContainer}>
+        <div className={classes.filterSubContainer}>
+          <div><ChplDefaultFilter/></div>
+          <div><ChplDefaultFilter/></div>
+          <div><ChplDefaultFilter/></div>
+          <div><ChplDefaultFilter/></div>
+          <div><ChplDefaultFilter/></div>
+        </div>
+        <div>
+          <Button fullWidth color="secondary" variant="contained">Download
+            <GetAppIcon className={classes.iconSpacing} />
+          </Button>
+          </div>
+          <div>
+          <Button fullWidth color="secondary" variant="contained">Add
+            <PlaylistAddIcon className={classes.iconSpacing} />
+          </Button>
+          </div>
+        </div>
+      </TableContainer>
+      <br/>
+      <TableContainer className={classes.tableContainer} component={Paper}>
+        <Table stickyHeader>
+          <ChplSortableHeaders
+            headers={headers}
+            onTableSort={handleTableSort}
+          />
+          <TableBody>
+            {listings
+              .map((listing) => (
+                <TableRow key={listing.id}>
+                  <TableCell>{listing.chplProductNumber}</TableCell>
+                  <TableCell>
+                    {listing.developer}
+                  </TableCell>
+                  <TableCell>{listing.product}</TableCell>
+                  <TableCell>{listing.version}</TableCell>
+                  <TableCell>{listing.status}</TableCell>
+                  <TableCell align="right">
+                    <ButtonGroup color="primary">
+                      <Button color="primary" variant="contained">
+                        OPEN Details
+                        <ArrowForwardIcon className={classes.iconSpacing} />
+                      </Button>
+                      <Button color="secondary" variant="contained">
+                        CERT ID
+                        <AssignmentOutlinedIcon className={classes.iconSpacing} />
+                      </Button>
+                      <Button color="secondary" variant="contained">
+                        Compare
+                        <CompareArrowsIcon className={classes.iconSpacing} />
+                      </Button>
+                    </ButtonGroup>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[50, 100, 200, { label: 'All' }]}
+        component="div"
       />
 
     </div>

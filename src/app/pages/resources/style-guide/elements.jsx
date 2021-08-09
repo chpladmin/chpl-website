@@ -34,7 +34,9 @@ import ChplActionBar from '../../../components/action-bar/action-bar';
 import ChplTemplate from './chpl-template';
 import ChplAdministratorLogin from './chpl-administrator-login';
 
+
 function Elements() {
+
   return (
     <div>
       {/* Typography Containers */}
@@ -371,7 +373,7 @@ function Elements() {
       </Typography>
       <br />
       <Card>
-        <CardContent>
+        <CardContent >
           <div>
             <ChplDefaultFilter />
           </div>
