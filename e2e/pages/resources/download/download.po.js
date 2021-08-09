@@ -9,11 +9,11 @@ class DownloadPage {
   }
 
   get downloadPage() {
-    return $(this.downloadElements.downloadBridge);
+    return $(this.elements.downloadBridge);
   }
 
   selectFile(file) {
-    $(this.downloadElements.download).click();
+    $(this.elements.download).click();
     browser.pause(1000);
     $(`li[data-value="${file}"]`).click();
     browser.pause(1000);
@@ -21,12 +21,12 @@ class DownloadPage {
 
   downloadDataFile(file) {
     this.selectFile(file);
-    $(this.downloadElements.downloadDefinitionFileButton).click();
+    $(this.elements.downloadDefinitionFileButton).click();
   }
 
   downloadDefinitionFile(file) {
     this.selectFile(file);
-    $(this.downloadElements.downloadDefinitionFileButton).click();
+    $(this.elements.downloadDefinitionFileButton).click();
   }
 }
 
