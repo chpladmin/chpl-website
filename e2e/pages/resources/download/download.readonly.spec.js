@@ -58,24 +58,24 @@ describe('the Download page', () => {
   });
 
   inputs.forEach((input) => {
-    const { file } = input;
-    const { definitionFileName } = input;
-    const { dataFileName } = input;
-    const { definitionFileSize } = input;
-    const { fileExtension } = input;
-    const { dataFileSize } = input;
-    const { generationFrequencyInDays } = input;
-    const { definitionFileLines } = input;
-    const { dataLines } = input;
-    let fileContents;
-    let filePath;
+    const {
+      file,
+      definitionFileName,
+      dataFileName,
+      definitionFileSize,
+      fileExtension,
+      dataFileSize,
+      generationFrequencyInDays,
+      definitionFileLines,
+      dataLines,
+    } = input;
 
     describe(`when downloading the ${file} definition file`, () => {
       it(`should download file successfully with file size more than ${definitionFileSize} KB`, () => {
         if (!(file.includes('2014 edition products (xml)') || file.includes('2011 edition products (xml)'))) {
           page.downloadDefinitionFile(file);
-          filePath = path.join(global.downloadDir, definitionFileName);
-          browser.waitForFileExists(filePath, 10000);
+          browser.pause(config.timeout);
+          const filePath = path.join(global.downloadDir, definitionFileName);
           expect(fs.existsSync(filePath)).toBe(true);
           const stat = fs.statSync(filePath);
           expect(stat.size / 1000).toBeGreaterThan(definitionFileSize);
@@ -83,8 +83,11 @@ describe('the Download page', () => {
       });
 
       if (fileExtension.includes('csv')) {
-        it(`should have at-least ${definitionFileLines} rows in the file`, () => {
-          fileContents = fs.readFileSync(filePath, 'utf-8');
+        it(`should have at least ${definitionFileLines} rows in the file`, () => {
+          page.downloadDefinitionFile(file);
+          browser.pause(config.timeout);
+          const filePath = path.join(global.downloadDir, definitionFileName);
+          const fileContents = fs.readFileSync(filePath, 'utf-8');
           const actualLines = fileContents.split('\n').length;
           expect(actualLines).toBeGreaterThanOrEqual(definitionFileLines);
         });
@@ -92,14 +95,12 @@ describe('the Download page', () => {
     });
 
     describe(`when downloading the ${file} data file`, () => {
-      let fileName;
-
       it(`should download file successfully with file size more than ${dataFileSize} KB`, () => {
         page.downloadDataFile(file);
-        browser.pause(config.timeout); // can't add explicit timeout as file name is dynamic here
+        browser.pause(config.timeout);
         const dirCont = fs.readdirSync(global.downloadDir);
-        fileName = dirCont.filter((f) => f.match(new RegExp(`${dataFileName}.*.(${fileExtension})`))).toString();
-        filePath = path.join(global.downloadDir, fileName);
+        const fileName = dirCont.filter((f) => f.match(new RegExp(`${dataFileName}.*.(${fileExtension})`))).toString();
+        const filePath = path.join(global.downloadDir, fileName);
         expect(fs.existsSync(filePath)).toBe(true);
         const stat = fs.statSync(filePath);
         if (process.env.ENV !== 'stage' && dataFileName === 'direct-reviews') {
@@ -107,16 +108,25 @@ describe('the Download page', () => {
         }
       });
 
-      it(`should not be older than ${generationFrequencyInDays} days `, () => {
+      it(`should not be older than ${generationFrequencyInDays} days`, () => {
+        page.downloadDataFile(file);
+        browser.pause(config.timeout);
+        const dirCont = fs.readdirSync(global.downloadDir);
+        const fileName = dirCont.filter((f) => f.match(new RegExp(`${dataFileName}.*.(${fileExtension})`))).toString();
         const actualDate = new Date(fileName.slice((fileName.length - 19), -11).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
         const currentDate = new Date();
-        const diffDays = (actualDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24);
+        const diffDays = (currentDate.getTime() - actualDate.getTime()) / (1000 * 3600 * 24);
         expect(parseInt(diffDays, 10)).toBeLessThanOrEqual(generationFrequencyInDays);
       });
 
       if (fileExtension.includes('csv')) {
-        it(`should have at-least ${dataLines} rows in the file`, () => {
-          fileContents = fs.readFileSync(filePath, 'utf-8');
+        it(`should have at least ${dataLines} rows in the file`, () => {
+          page.downloadDataFile(file);
+          browser.pause(config.timeout);
+          const dirCont = fs.readdirSync(global.downloadDir);
+          const fileName = dirCont.filter((f) => f.match(new RegExp(`${dataFileName}.*.(${fileExtension})`))).toString();
+          const filePath = path.join(global.downloadDir, fileName);
+          const fileContents = fs.readFileSync(filePath, 'utf-8');
           const actualLines = fileContents.split('\n').length;
           expect(actualLines).toBeGreaterThanOrEqual(dataLines);
         });
