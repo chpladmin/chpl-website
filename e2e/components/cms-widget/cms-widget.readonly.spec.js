@@ -91,7 +91,7 @@ describe('on cms widget', () => {
 
     it('should have correct CMS ID reverse look up link', () => {
       assert.isTrue(cms.cmsIdReverseLookupLink.isDisplayed());
-      assert.equal(cms.cmsIdReverseLookupLink.getAttribute('href').slice(cms.cmsIdReverseLookupLink.getAttribute('href').length - 22),cmsReverseLookup);
+      assert.equal(cms.cmsIdReverseLookupLink.getAttribute('href'),cmsReverseLookup);
     });
 
     it('should not have compare products button', () => {
@@ -133,7 +133,7 @@ describe('on cms widget', () => {
 
     it('should have correct CMS ID reverse look up link', () => {
       assert.isTrue(cms.cmsIdReverseLookupLink.isDisplayed());
-      assert.equal(cms.cmsIdReverseLookupLink.getAttribute('href'),browser.options.baseUrl + cmsReverseLookup);
+      assert.equal(cms.cmsIdReverseLookupLink.getAttribute('href'), cmsReverseLookup);
     });
 
     it('should have correct base criteria link', () => {
