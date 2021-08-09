@@ -19,8 +19,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import theme from '../../../themes/theme';
-import { getAngularService } from '.';
-import { ChplSortableHeaders } from '../../util/chpl-sortable-headers';
+import { getAngularService } from '../../../services/angular-react-helper';
+import ChplSortableHeaders from '../../util/chpl-sortable-headers';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplConfirmListings(props) {
+  const { beta } = props;
   const [idsToReject, setIdsToReject] = useState([]);
   const [listings, setListings] = useState([]);
   const DateUtil = getAngularService('DateUtil');
@@ -41,26 +42,26 @@ function ChplConfirmListings(props) {
   const classes = useStyles();
 
   const loadListings = useCallback(() => {
-    networkService.getPendingListings(props.beta).then((response) => {
+    networkService.getPendingListings(beta).then((response) => {
       setListings(response);
-      const pending = response.filter((l) => l.errorCount === null || l.warningCount === null || l.processing);
+      const pending = response.filter((l) => ((beta && l.status === 'PROCESSING') || (!beta && l.processing)));
       if (pending.length > 0) {
         setTimeout(loadListings, 1000);
       }
     });
-  }, [networkService, props.beta]);
+  }, [networkService, beta]);
 
   useEffect(() => {
     loadListings();
   }, [loadListings]);
 
-  const canProcess = (listing) => listing.errorCount !== null && listing.errorCount !== -1 && listing.warningCount !== null && listing.warningCount !== -1 && !listing.processing;
+  const canProcess = (listing) => ((beta && listing.status === 'SUCCESSFUL') || (!beta && !listing.processing));
 
   const getStatus = (listing) => {
-    if (listing.errorCount === null || listing.warningCount === null || listing.processing) {
+    if ((beta && listing.status === 'PROCESSING') || (beta && listing.processing)) {
       return <CircularProgress />;
     }
-    if (listing.errorCount === -1 && listing.warningCount === -1) {
+    if (listing.status === 'FAILED') {
       return (
         <Chip
           label="Processing error"
@@ -78,7 +79,7 @@ function ChplConfirmListings(props) {
   };
 
   const handleProcess = (listing) => {
-    props.onProcess(listing.id, props.beta);
+    props.onProcess(listing.id, beta);
   };
 
   const handleRejectOriginal = () => {
@@ -136,7 +137,7 @@ function ChplConfirmListings(props) {
   };
 
   const handleReject = () => {
-    if (props.beta) {
+    if (beta) {
       handleRejectBeta();
     } else {
       handleRejectOriginal();
@@ -165,10 +166,10 @@ function ChplConfirmListings(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    setListings(listings.sort(listingSortComparator(orderDirection + property)).map((listing) => listing));
+    setListings(listings.map((listing) => listing).sort(listingSortComparator(orderDirection + property)));
   };
 
-  const headers = props.beta ? [
+  const headers = beta ? [
     { text: 'Action', invisible: true },
     { text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true },
     { text: 'Developer', property: 'developer', sortable: true },
@@ -237,9 +238,9 @@ function ChplConfirmListings(props) {
                           </Button>
                         </TableCell>
                         <TableCell>{ listing.chplProductNumber }</TableCell>
-                        <TableCell>{ props.beta ? listing.developer : listing.developer.name }</TableCell>
-                        <TableCell>{ props.beta ? listing.product : listing.product.name }</TableCell>
-                        <TableCell>{ props.beta ? listing.version : listing.version.version }</TableCell>
+                        <TableCell>{ beta ? listing.developer : listing.developer.name }</TableCell>
+                        <TableCell>{ beta ? listing.product : listing.product.name }</TableCell>
+                        <TableCell>{ beta ? listing.version : listing.version.version }</TableCell>
                         <TableCell>{ DateUtil.getDisplayDateFormat(listing.certificationDate) }</TableCell>
                         <TableCell>{ getStatus(listing) }</TableCell>
                         <TableCell align="right">

@@ -14,6 +14,14 @@ class Hooks {
   waitForSpinnerToAppear () {
     browser.waitUntil( () => $('#loading-bar-spinner').isDisplayed());
   }
+  
+  getCellValue(row, col) {
+    return $(`//tbody/tr[${row}]/td[${col}]`).getText();
+  }
+
+  getTableHeaders() {
+    return $('table').$('thead').$$('th');
+  }
 
   getFlagState(flagName){
     const foundFlag = flagObj.find(flag => flag.key === flagName);
