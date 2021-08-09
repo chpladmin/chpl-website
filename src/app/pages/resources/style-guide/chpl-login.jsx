@@ -10,12 +10,21 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { ChplTextField } from '../../../components/util';
 
 const useStyles = makeStyles({
     loginCard: {
       maxWidth:'400px',
     },
+    content:{
+        display: 'grid',
+        gap: '8px',
+    },
+    iconSpacing: {
+        marginLeft: '4px',
+      },
   });
 
 function ChplAdministratorLogin(props) {
@@ -58,12 +67,13 @@ function ChplAdministratorLogin(props) {
         }}
        >
             <Card className={classes.loginCard}>
-            <CardContent>
+            <CardContent className={classes.content}>
             <ChplTextField
                 id="email-user-name"
                 name="emailUserName"
                 label="Email or User Name"
                 required/>
+            
             <ChplTextField
                 id="password"
                 name="password"
@@ -74,10 +84,8 @@ function ChplAdministratorLogin(props) {
             </Typography>
             </CardContent>
             <CardActions>
-            <Button fullWidth color="primary" variant="contained">Sign-In</Button>
-            </CardActions>
-            <CardActions>
-            <Button fullWidth color="secondary" variant="contained">Forget Password</Button>
+            <Button fullWidth color="primary" variant="contained">Log-In<VpnKeyIcon className={classes.iconSpacing}/></Button>
+            <Button fullWidth color="secondary" variant="contained">Forget Password<HelpOutlineIcon className={classes.iconSpacing}/></Button>
             </CardActions>
             </Card>
       </Popover>

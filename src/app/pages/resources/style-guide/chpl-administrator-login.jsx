@@ -5,8 +5,7 @@ import {
 } from '@material-ui/core';
 
 import ChplLogin from './chpl-login';
-import FilterListIcon from '@material-ui/icons/FilterList';
-
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
@@ -21,7 +20,7 @@ function ChplAdministratorLogin () {
     anchor={
      <Button variant="contained" color="secondary">
        Administrator Login  
-      <FilterListIcon 
+      <ArrowForwardIcon className={classes.iconSpacing}
       />
     </Button>
     } 
