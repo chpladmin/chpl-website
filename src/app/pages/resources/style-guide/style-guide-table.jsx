@@ -17,8 +17,6 @@ import {
   Toolbar,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
-import { ChplLink } from '../../../components/util/';
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers';
 import LanguageIcon from '@material-ui/icons/Language';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
@@ -42,7 +40,7 @@ const useStyles = makeStyles({
   filterSubContainer: {
     display: 'grid',
     gridGap: '8px',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 2fr 2fr',
+    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
     alignItems: 'center',
     borderRadius: '0px',
   },
@@ -50,20 +48,27 @@ const useStyles = makeStyles({
     margin: '16px 32px',
     padding: '4px 32px',
     display: 'grid',
-    boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     minHeight: '64px',
-    gridTemplateColumns: '.4fr 10.6fr 1fr',
+    gridTemplateColumns: '.5fr 10.5fr 1fr',
     alignItems: 'center',
     borderRadius: '64px',
     backgroundColor: '#ffffff',
   },
-
   searchInput: {
     display: 'grid',
   },
-
+  container: {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "1fr",
+  },
   tableContainer: {
     maxHeight: "800px",
+    overflowX: "scroll",
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "1fr",
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -235,7 +240,7 @@ function ChplStyleGuideTable() {
 
 
   return (
-    <div>
+    <div className={classes.container}>
       <div className={classes.searchContainer}>
         <div>
           <SearchIcon />
@@ -253,29 +258,28 @@ function ChplStyleGuideTable() {
           </Button>
         </div>
       </div>
-      <br/>
       <TableContainer component={Paper}>
         <div className={classes.filterContainer}>
-        <div className={classes.filterSubContainer}>
-          <div><ChplDefaultFilter/></div>
-          <div><ChplDefaultFilter/></div>
-          <div><ChplDefaultFilter/></div>
-          <div><ChplDefaultFilter/></div>
-          <div><ChplDefaultFilter/></div>
-        </div>
-        <div>
-          <Button fullWidth color="secondary" variant="contained">Download
-            <GetAppIcon className={classes.iconSpacing} />
-          </Button>
+          <div className={classes.filterSubContainer}>
+            <div><ChplDefaultFilter /></div>
+            <div><ChplDefaultFilter /></div>
+            <div><ChplDefaultFilter /></div>
+            <div><ChplDefaultFilter /></div>
+            <div><ChplDefaultFilter /></div>
           </div>
           <div>
-          <Button fullWidth color="secondary" variant="contained">Add
-            <PlaylistAddIcon className={classes.iconSpacing} />
-          </Button>
+            <Button fullWidth color="secondary" variant="contained">Download
+              <GetAppIcon className={classes.iconSpacing} />
+            </Button>
+          </div>
+          <div>
+            <Button fullWidth color="secondary" variant="contained">Add
+              <PlaylistAddIcon className={classes.iconSpacing} />
+            </Button>
           </div>
         </div>
       </TableContainer>
-      <br/>
+      <br />
       <TableContainer className={classes.tableContainer} component={Paper}>
         <Table stickyHeader>
           <ChplSortableHeaders
@@ -288,7 +292,7 @@ function ChplStyleGuideTable() {
                 <TableRow key={listing.id}>
                   <TableCell>{listing.chplProductNumber}</TableCell>
                   <TableCell>
-                    {listing.developer}
+                    <a href='#'>{listing.developer}</a>
                   </TableCell>
                   <TableCell>{listing.product}</TableCell>
                   <TableCell>{listing.version}</TableCell>
@@ -296,7 +300,7 @@ function ChplStyleGuideTable() {
                   <TableCell align="right">
                     <ButtonGroup color="primary">
                       <Button color="primary" variant="contained">
-                        OPEN Details
+                        Open Details
                         <ArrowForwardIcon className={classes.iconSpacing} />
                       </Button>
                       <Button color="secondary" variant="contained">
