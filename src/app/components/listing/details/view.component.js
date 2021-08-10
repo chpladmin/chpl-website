@@ -34,11 +34,12 @@ const ListingDetailsViewComponent = {
     viewAllCerts: '<defaultAll',
   },
   controller: class ListingDetailsViewComponent {
-    constructor($analytics, $log, $uibModal, DateUtil, networkService, utilService) {
+    constructor($analytics, $log, $uibModal, DateUtil, featureFlags, networkService, utilService) {
       this.$analytics = $analytics;
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
+      this.isOn = featureFlags.isOn;
       this.networkService = networkService;
       this.utilService = utilService;
       this.muuCount = utilService.muuCount;
