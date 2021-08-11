@@ -260,7 +260,7 @@ function ChplStyleGuideTable() {
           </Button>
       </div>
       </div>
-      <Typography variant="body02" align="center">
+      <Typography variant="body2" align="center">
             Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.
             </Typography>
       <br />

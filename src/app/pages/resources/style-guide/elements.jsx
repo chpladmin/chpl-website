@@ -30,7 +30,7 @@ import ChplDefaultForm from './chpl-default-form';
 import ChplActionBar from '../../../components/action-bar/action-bar';
 import ChplTemplate from './chpl-template';
 import ChplAdministratorLogin from './chpl-administrator-login';
-import ChplConfirmation from './chpl-confirmation';
+import SgConfirmation from './sg-confirmation';
 
 function Elements() {
 
@@ -227,7 +227,8 @@ function Elements() {
                 </Typography>
               </Grid>
               <Grid item xs="6">
-                <ChplConfirmation/>
+                <SgConfirmation/>
+                <Typography>Confirmation Alerts are urgent interruptions, requiring acknowledgement, that inform the user about a situation. Click on the save button to show the dialog box for confirmation. Chpl interface should use confirmation on all saved, delete or cancels (in edit mode). </Typography>
               </Grid>
               <Grid item xs="6">
                 <ChplDeleteButton />
