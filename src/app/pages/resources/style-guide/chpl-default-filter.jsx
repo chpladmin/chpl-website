@@ -19,7 +19,7 @@ function ChplDefaultFilter() {
   return (
     <ChplDefaultFilterPopover
     anchor={
-     <Button size="medium" variant="outlined" color="default">
+     <Button variant="contained" color="secondary">
        Chpl Default Filter
       <FilterListIcon className={classes.iconSpacing}
       />

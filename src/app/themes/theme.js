@@ -123,6 +123,11 @@ const theme = createMuiTheme({
         fontSize: '1.125em',
       },
     },
+    MuiDialogActions:{
+      root: {
+        justifyContent: 'flex-start',
+    },
+  },
     MuiList:{
       padding:{
         paddingTop:'0',

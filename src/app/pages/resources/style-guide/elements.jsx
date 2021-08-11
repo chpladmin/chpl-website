@@ -30,7 +30,7 @@ import ChplDefaultForm from './chpl-default-form';
 import ChplActionBar from '../../../components/action-bar/action-bar';
 import ChplTemplate from './chpl-template';
 import ChplAdministratorLogin from './chpl-administrator-login';
-
+import ChplConfirmation from './chpl-confirmation';
 
 function Elements() {
 
@@ -225,6 +225,9 @@ function Elements() {
                 <Typography gutterBottom variant="body1">
                   Disabled button should be shown when an action can not be completed until a user makes a seperate action. You can use the <i>disabled</i> on any button and styling will change
                 </Typography>
+              </Grid>
+              <Grid item xs="6">
+                <ChplConfirmation/>
               </Grid>
               <Grid item xs="6">
                 <ChplDeleteButton />

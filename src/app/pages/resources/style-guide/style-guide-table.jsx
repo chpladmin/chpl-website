@@ -3,18 +3,16 @@ import {
   Button,
   ButtonGroup,
   InputBase,
-  Divider,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableRow,
   TablePagination,
-  Typography,
   makeStyles,
-  Toolbar,
+  useMediaQuery,
+  Typography,
 } from '@material-ui/core';
 
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers';
@@ -22,6 +20,7 @@ import LanguageIcon from '@material-ui/icons/Language';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import SearchIcon from '@material-ui/icons/Search';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
@@ -32,10 +31,9 @@ const useStyles = makeStyles({
   filterContainer: {
     display: 'grid',
     gridGap: '8px',
-    gridTemplateColumns: '8fr 2fr 2fr',
+    gridTemplateColumns: '8fr 4fr',
     padding: '16px',
     alignItems: 'center',
-    borderRadius: '0px',
   },
   filterSubContainer: {
     display: 'grid',
@@ -45,15 +43,24 @@ const useStyles = makeStyles({
     borderRadius: '0px',
   },
   searchContainer: {
-    margin: '16px 32px',
-    padding: '4px 32px',
+    margin: '16px 128px',
+    padding: '0px 0px 0px 32px',
     display: 'grid',
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    minHeight: '64px',
     gridTemplateColumns: '.5fr 10.5fr 1fr',
     alignItems: 'center',
     borderRadius: '64px',
     backgroundColor: '#ffffff',
+  },
+  tableContainer: {
+    maxHeight: "800px",
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "1fr",
+  },
+  tableActionContainer: {
+    display: "grid",
+    justifyContent:'end',
   },
   searchInput: {
     display: 'grid',
@@ -63,18 +70,13 @@ const useStyles = makeStyles({
     gridTemplateColumns: "1fr",
     gridTemplateRows: "1fr",
   },
-  tableContainer: {
-    maxHeight: "800px",
-    overflowX: "scroll",
-    display: "grid",
-    gridTemplateColumns: "1fr",
-    gridTemplateRows: "1fr",
-  },
+
   iconSpacing: {
     marginLeft: '4px',
   },
   browseAll: {
-    borderRadius: '64px',
+    borderRadius: '0px 64px 64px 0px',
+    padding: '16px',
   },
 });
 
@@ -252,12 +254,16 @@ function ChplStyleGuideTable() {
 
           />
         </div>
-        <div>
-          <Button className={classes.browseAll} variant='contained' color="secondary">
+      <div>
+          <Button className={classes.browseAll} variant='contained' color="primary">
             Browse All <LanguageIcon className={classes.iconSpacing} />
           </Button>
-        </div>
       </div>
+      </div>
+      <Typography variant="body02" align="center">
+            Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.
+            </Typography>
+      <br />
       <TableContainer component={Paper}>
         <div className={classes.filterContainer}>
           <div className={classes.filterSubContainer}>
@@ -267,19 +273,22 @@ function ChplStyleGuideTable() {
             <div><ChplDefaultFilter /></div>
             <div><ChplDefaultFilter /></div>
           </div>
-          <div>
+          <div className={classes.tableActionContainer}>
+            <ButtonGroup>
             <Button fullWidth color="secondary" variant="contained">Download
-              <GetAppIcon className={classes.iconSpacing} />
+              <GetAppIcon className={classes.iconSpacing}/>
             </Button>
-          </div>
-          <div>
             <Button fullWidth color="secondary" variant="contained">Add
-              <PlaylistAddIcon className={classes.iconSpacing} />
+              <PlaylistAddIcon className={classes.iconSpacing}/>
             </Button>
+            <Button fullWidth color="secondary" variant="contained">Reset
+              <RotateLeftIcon className={classes.iconSpacing}/>
+            </Button>
+            </ButtonGroup>
           </div>
         </div>
       </TableContainer>
-      <br />
+      <br/>
       <TableContainer className={classes.tableContainer} component={Paper}>
         <Table stickyHeader>
           <ChplSortableHeaders
