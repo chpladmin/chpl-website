@@ -84,16 +84,17 @@ function ChplResourcesDownload() {
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
       'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'SVAP Summary' },
     };
-    const options = downloadOptions.map((d) => d);
-    if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-      options.splice(6, 0, 'Surveillance (Basic)');
-    }
-    if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
-      options.splice(5, 0, 'SVAP Summary (csv)');
-    }
     setFiles(data);
-    setDownloadOptions(options);
-  }, [API, getApiKey, getToken, hasAnyRole]);
+    setDownloadOptions((options) => {
+      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+        options.splice(6, 0, 'Surveillance (Basic)');
+      }
+      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
+        options.splice(5, 0, 'SVAP Summary (csv)');
+      }
+      return options;
+    });
+  }, [API, downloadOptions, getApiKey, getToken, hasAnyRole]);
 
   const downloadFile = (type) => {
     if (selectedOption) {
