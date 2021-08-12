@@ -17,6 +17,7 @@ const useStyles = makeStyles({
     display:'grid',
     gridTemplateColumns: '1fr',
     gap:'16px',
+    padding:'32px',
   },
 });
 function SgProductCardContainer() {

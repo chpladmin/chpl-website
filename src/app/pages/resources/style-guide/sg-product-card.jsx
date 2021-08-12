@@ -20,12 +20,12 @@ const useStyles = makeStyles({
         marginLeft: '4px',
     },
     productCard: {
-        paddingBottom:'8px',
+        paddingBottom: '8px',
     },
     productCardHeaderContainer: {
         display: 'grid',
         gridTemplateColumns: 'auto 11fr',
-        padding: '8px 16px',
+        padding: '16px',
         gap: '16px',
         alignItems: 'center',
     },
@@ -35,15 +35,20 @@ const useStyles = makeStyles({
     },
     versionProductCardHeaderContainer: {
         display: 'grid',
-        gridTemplateColumns: 'auto 1fr',
+        gridTemplateColumns: 'auto auto auto 1fr',
         gap: '8px',
         alignItems: 'center',
+    },
+    widgetProductContainer:{
+        alignContent:'space-between',
+        display: 'grid',
+        gap: '8px',
     },
     content: {
         display: 'grid',
         gridTemplateColumns: 'auto auto auto',
         gap: '8px',
-        
+
     },
     subcontent: {
         display: 'grid',
@@ -72,8 +77,10 @@ function SgProductCard() {
                     <div className={classes.subProductCardHeaderContainer}>
                         <Typography variant='h5'><a href='#'>Infection Control Antimicrobial Use and Resistance Reporting</a></Typography>
                         <div className={classes.versionProductCardHeaderContainer}>
-                            <Typography variant='subtitle1'> Version:</Typography>
+                            <Typography variant='subtitle2'> Version:</Typography>
                             <Typography variant='body1'>May 2021</Typography>
+                            <Typography variant='subtitle2'> Developer:</Typography>
+                            <Typography variant='body1'><a href='#'> Epic Systems Corporation </a></Typography>
                         </div>
                     </div>
                 </div>
@@ -108,45 +115,28 @@ function SgProductCard() {
                         </div>
                         <div>
                             <Typography variant='subtitle1'>
-                                Developer
-                            </Typography>
-                            <Typography varient='body1'>
-                                <a href='#'> Epic Systems Corporation </a>
-                            </Typography>
-                        </div>
-                    </div>
-                    <div className={classes.subcontent}>
-                        <div>
-                            <Typography variant='subtitle1'>
                                 Status{' '}
                             </Typography>
                             <Typography varient='body1'>
                                 Active <BeenhereIcon className={classes.activeStatus} />
                             </Typography>
                         </div>
-                        <div>
-                            <Typography variant='subtitle1'>
-                                Widgets
-                            </Typography>
-                            <ButtonGroup fullWidth>
-                                <Button color='secondary' variant='contained'>
-                                    CERT ID
-                                    <AssignmentOutlinedIcon className={classes.iconSpacing}
-
-                                    />
-                                </Button>
-                                <Button color='secondary' variant='contained'>
-                                    COMPARE
-                                    <CompareArrowsIcon className={classes.iconSpacing}
-
-                                    />
-                                </Button>
-                            </ButtonGroup>
-                        </div>
                     </div>
-
-                    <div className={classes.subcontent}>
-
+                    <div className={classes.widgetProductContainer}>
+                        <div>
+                            <Button color='secondary' variant='contained' fullWidth>
+                                CERT ID
+                                <AssignmentOutlinedIcon className={classes.iconSpacing}
+                                />
+                            </Button>
+                        </div>
+                        <div>
+                            <Button color='secondary' variant='contained' fullWidth>
+                                COMPARE
+                                <CompareArrowsIcon className={classes.iconSpacing}
+                                />
+                            </Button>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
