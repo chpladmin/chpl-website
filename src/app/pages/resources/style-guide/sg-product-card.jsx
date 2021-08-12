@@ -2,8 +2,8 @@ import React from 'react';
 import {
     Avatar,
     Button,
+    ButtonGroup,
     Card,
-    CardActions,
     CardContent,
     Divider,
     Typography,
@@ -19,34 +19,43 @@ const useStyles = makeStyles({
     iconSpacing: {
         marginLeft: '4px',
     },
+    productCard: {
+        paddingBottom:'8px',
+    },
     productCardHeaderContainer: {
-        display: "grid",
-        gridTemplateColumns: "1fr 11fr",
-        padding:'16px',
-        alignItems:'center',
-        maxWidth:'800px',
-        },
-
-    productCardHeader: {
-        textDecoration:'none',
-     },
+        display: 'grid',
+        gridTemplateColumns: 'auto 11fr',
+        padding: '8px 16px',
+        gap: '16px',
+        alignItems: 'center',
+    },
+    subProductCardHeaderContainer: {
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+    },
+    versionProductCardHeaderContainer: {
+        display: 'grid',
+        gridTemplateColumns: 'auto 1fr',
+        gap: '8px',
+        alignItems: 'center',
+    },
     content: {
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
+        gridTemplateColumns: 'auto auto auto',
         gap: '8px',
-        paddingBottom:'16px',
+        
     },
     subcontent: {
         display: 'grid',
         gap: '8px',
     },
 
-    developerAvatar:{
-        color:'#156dac',
-        backgroundColor:'#f5f9fd',
+    developerAvatar: {
+        color: '#156dac',
+        backgroundColor: '#f5f9fd',
     },
 
-    activeStatus:{
+    activeStatus: {
         color: '#66926d',
         marginLeft: '4px',
     },
@@ -57,90 +66,92 @@ function SgProductCard() {
 
     return (
         <div>
-            <Card>
+            <Card className={classes.productCard} >
                 <div className={classes.productCardHeaderContainer}>
-                <Avatar className={classes.developerAvatar}>EPIC</Avatar>
-                <Typography variant="h3"><a className={classes.productCardHeader} href="#">Infection Control Antimicrobial Use and Resistance Reporting</a></Typography></div>
-                <Divider/>
+                    <Avatar className={classes.developerAvatar}>EPIC</Avatar>
+                    <div className={classes.subProductCardHeaderContainer}>
+                        <Typography variant='h5'><a href='#'>Infection Control Antimicrobial Use and Resistance Reporting</a></Typography>
+                        <div className={classes.versionProductCardHeaderContainer}>
+                            <Typography variant='subtitle1'> Version:</Typography>
+                            <Typography variant='body1'>May 2021</Typography>
+                        </div>
+                    </div>
+                </div>
+                <Divider />
                 <CardContent className={classes.content}>
                     <div className={classes.subcontent}>
                         <div>
-                        <Typography variant="subtitle1">
+                            <Typography variant='subtitle1'>
                                 Edition{' '}
                             </Typography>
-                            <Typography varient="body1">
+                            <Typography varient='body1'>
                                 2015
                             </Typography>
                         </div>
                         <div>
-                        <Typography variant="subtitle1">
-                               Version{' '}
+                            <Typography variant='subtitle1'>
+                                CHPL ID{' '}
                             </Typography>
-                            <Typography varient="body1">
-                                May 2021
+                            <Typography varient='body1'>
+                                15.04.04.1447.Beac.AU.08.1.200220
                             </Typography>
                         </div>
                     </div>
                     <div className={classes.subcontent}>
                         <div>
-                        <Typography variant="subtitle1">
-                            CHPL ID{' '}
-                        </Typography>
-                        <Typography varient="body1">
-                            15.04.04.1447.Beac.AU.08.1.200220	
-                        </Typography>
-                        </div>
-                        <div>
-                        <Typography variant="subtitle1">
-                            Certification Data{' '}
-                        </Typography>
-                        <Typography varient="body1">
-                            May 12, 2021
-                        </Typography>
-                        </div>
-                    </div>
-                    <div className={classes.subcontent}>
-                        <div>
-                        <Typography variant="subtitle1">
-                               Status{' '}
+                            <Typography variant='subtitle1'>
+                                Certification Data{' '}
                             </Typography>
-                            <Typography varient="body1">
-                               Active <BeenhereIcon className={classes.activeStatus}/>
+                            <Typography varient='body1'>
+                                May 12, 2021
                             </Typography>
                         </div>
-                        <div> 
-                            <Typography variant="subtitle1">
+                        <div>
+                            <Typography variant='subtitle1'>
                                 Developer
                             </Typography>
-                            <Typography varient="body1">
-                               <a href="#"> Epic Systems Corporation </a>
+                            <Typography varient='body1'>
+                                <a href='#'> Epic Systems Corporation </a>
                             </Typography>
                         </div>
                     </div>
-                </CardContent>
-                <CardActions>
-                    <Button color="primary" variant="contained" fullWidth>
-                        More Details
-                        <ArrowForwardIcon className={classes.iconSpacing}
+                    <div className={classes.subcontent}>
+                        <div>
+                            <Typography variant='subtitle1'>
+                                Status{' '}
+                            </Typography>
+                            <Typography varient='body1'>
+                                Active <BeenhereIcon className={classes.activeStatus} />
+                            </Typography>
+                        </div>
+                        <div>
+                            <Typography variant='subtitle1'>
+                                Widgets
+                            </Typography>
+                            <ButtonGroup fullWidth>
+                                <Button color='secondary' variant='contained'>
+                                    CERT ID
+                                    <AssignmentOutlinedIcon className={classes.iconSpacing}
 
-                        />
-                    </Button>
-                    <Button color="secondary" variant="contained" fullWidth>
-                        CERT ID
-                        <AssignmentOutlinedIcon className={classes.iconSpacing}
-                            
-                        />
-                    </Button>
-                    <Button color="secondary" variant="contained" fullWidth>
-                        COMPARE
-                        <CompareArrowsIcon className={classes.iconSpacing}
-                            
-                        />
-                    </Button>
-                </CardActions>
+                                    />
+                                </Button>
+                                <Button color='secondary' variant='contained'>
+                                    COMPARE
+                                    <CompareArrowsIcon className={classes.iconSpacing}
+
+                                    />
+                                </Button>
+                            </ButtonGroup>
+                        </div>
+                    </div>
+
+                    <div className={classes.subcontent}>
+
+                    </div>
+                </CardContent>
             </Card>
 
-        </div>
+        </div >
     );
 }
 
