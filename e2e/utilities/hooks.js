@@ -31,6 +31,7 @@ class Hooks {
   getTableRows() {
     return $('table').$('tbody').$$('tr');
   }
+
 }
 
 export default Hooks;
