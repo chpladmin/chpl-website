@@ -68,7 +68,7 @@ export default function SgConfirmation() {
         <Divider/>
         <DialogActions className={classes.actionDialogContainer}>
           <Button onClick={handleClose} color="primary" variant="contained">
-            Agree <ArrowForwardIcon className={classes.iconSpacing} />
+            Yes <ArrowForwardIcon className={classes.iconSpacing} />
           </Button>
           <Button onClick={handleClose} color="default" variant="contained" autoFocus>
             Cancel <CloseIcon className={classes.iconSpacing} />

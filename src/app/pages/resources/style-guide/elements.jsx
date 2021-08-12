@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  Container,
   Divider,
   Grid,
   Link,
@@ -31,6 +32,8 @@ import ChplActionBar from '../../../components/action-bar/action-bar';
 import ChplTemplate from './chpl-template';
 import ChplAdministratorLogin from './chpl-administrator-login';
 import SgConfirmation from './sg-confirmation';
+import SgProductCard from './sg-product-card';
+import SgProductCardContainer from './sg-product-card-container';
 
 function Elements() {
 
@@ -325,45 +328,6 @@ function Elements() {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item xs={6}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">
-                  This is a card without a card header{' '}
-                </Typography>
-                <Typography varient="h6" color="primary">
-                  (using h6 for display difference){' '}
-                </Typography>
-                <br />
-                <Divider></Divider>
-                <br />
-                <Typography variant="body2">
-                  Body 2 is being shown to developers can see difference
-                  between body1 and body 2 in a card. Nam interdum pretium
-                  auctor. Aliquam in tortor dolor. Aenean et tincidunt nulla.
-                  Morbi pellentesque nulla ut enim sodales, facilisis
-                  tristique tortor lobortis. Nunc id lacinia sem, vitae
-                  venenatis nisi. Etiam imperdiet eu enim sit amet cursus.
-                  Praesent tortor massa, scelerisque eget placerat id,
-                  malesuada a nisi.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button color="primary" variant="contained" size="small">
-                  Learn More
-                  <ArrowForwardOutlinedIcon
-                    fontSize="small"
-                  />
-                </Button>
-                <Button color="secondary" variant="contained" size="small">
-                  Go to Page
-                  <ArrowForwardOutlinedIcon
-                    fontSize="small"
-                  />
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
         </Grid>
       </div>
       <br />
@@ -534,6 +498,26 @@ function Elements() {
       </div>
       {/*End of 404 Card*/}
       <br />
+      
+      <Container>
+        <Grid item>
+          <SgProductCard/>
+        </Grid>
+        <br/>
+        <Grid item>
+          <SgProductCard/>
+        </Grid>
+        <br/>
+        <Grid item>
+          <SgProductCard/>
+        </Grid>
+        <br/>
+        <Grid item>
+          <SgProductCard/>
+        </Grid>
+        <br/>
+      </Container>
+      <SgProductCardContainer/>
     </div>
   );
 }
