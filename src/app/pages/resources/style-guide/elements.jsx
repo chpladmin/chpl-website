@@ -498,25 +498,6 @@ function Elements() {
       </div>
       {/*End of 404 Card*/}
       <br />
-      
-      <Container>
-        <Grid item>
-          <SgProductCard/>
-        </Grid>
-        <br/>
-        <Grid item>
-          <SgProductCard/>
-        </Grid>
-        <br/>
-        <Grid item>
-          <SgProductCard/>
-        </Grid>
-        <br/>
-        <Grid item>
-          <SgProductCard/>
-        </Grid>
-        <br/>
-      </Container>
       <SgProductCardContainer/>
     </div>
   );
