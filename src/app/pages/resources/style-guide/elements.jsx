@@ -34,6 +34,8 @@ import ChplAdministratorLogin from './chpl-administrator-login';
 import SgConfirmation from './sg-confirmation';
 import SgProductCard from './sg-product-card';
 import SgProductCardContainer from './sg-product-card-container';
+import SgSearchBar from './sg-search-bar';
+
 
 function Elements() {
 
@@ -498,6 +500,7 @@ function Elements() {
       </div>
       {/*End of 404 Card*/}
       <br />
+      <SgSearchBar/>
       <SgProductCardContainer/>
     </div>
   );
