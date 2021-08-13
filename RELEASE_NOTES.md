@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 11.18.0
+_9 August 2021_
+
+### Features
+* Require Complaint dates to be "logical"
+
+### User Interface Updates
+* Display Complaints in updated UX
+
+### Flagged Features
+* Add Attestation change request
+
+### Flagged Bug Fixes
+* Re-enable invitation of ROLE_DEVELOPER users
+
+---
+
 ## Version 11.17.0
 _2 August 2021_
 
