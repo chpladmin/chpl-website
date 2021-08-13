@@ -11,6 +11,7 @@ import {
     from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import theme from '../../../themes/theme';
+import SgAdvancedSearch from './sg-advanced-search';
 
 const useStyles = makeStyles(() => ({
     ActionBarTop: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles(() => ({
         background:
             'linear-gradient(180deg, #051537 20%, #0E2F69 80%);',
         marginTop: '25px',
+        boxShadow:'0px 4px 8px rgb(149 157 165 / 10%)',
     },
     searchContainer: {
         backgroundColor: '#C6D5E5',
@@ -88,7 +90,7 @@ const SgSearchBar = () => {
                 <div>
                     <ButtonGroup variant="text" size="medium">
                     <Button color="primary">Restore Search</Button>
-                    <Button color="primary">Advanced Search</Button>
+                    <SgAdvancedSearch/>
                     </ButtonGroup>
                 </div>
             </Toolbar>
