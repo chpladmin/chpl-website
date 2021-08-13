@@ -27,7 +27,6 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     padding: '32px',
     backgroundColor: '#f9f9f9',
-    marginBottom: '-128px',
   },
   content: {
     display: 'grid',
@@ -35,10 +34,7 @@ const useStyles = makeStyles({
     alignItems: 'start',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 1fr',
-    },
-    [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: '2fr 1fr',
+      gridTemplateColumns: '7fr 5fr',
     },
   },
   fullWidth: {
@@ -50,7 +46,7 @@ const useStyles = makeStyles({
   listSpacing: {
     '& li': {
       marginBottom: '.35em',
-      lineHeight: '1.5',
+      lineHeight: '1.3em',
     },
   },
 });
@@ -135,7 +131,7 @@ function ChplResourcesDownload() {
             </Typography>
             <ul className={classes.listSpacing}>
               <li>
-                <Typography variant="subtitle1">Certified Health IT Products</Typography>
+                <Typography gutterBottom variant="subtitle1">Certified Health IT Products</Typography>
                 <ul>
                   <li>
                     <strong>2015/2014/2011 Edition Products:</strong>
@@ -174,7 +170,7 @@ function ChplResourcesDownload() {
                 </ul>
               </li>
               <li>
-                <Typography variant="subtitle1">Compliance Activities</Typography>
+                <Typography gutterBottom variant="subtitle1">Compliance Activities</Typography>
                 <ul>
                   <li>
                     <strong>Surveillance Activity:</strong>
@@ -211,7 +207,7 @@ function ChplResourcesDownload() {
                   select
                   id="download-select"
                   name="downloadSelect"
-                  label="Select which collection of information to download"
+                  label="Select a collection to download"
                   value={selectedOption}
                   onChange={(event) => setSelectedOption(event.target.value)}
                 >
