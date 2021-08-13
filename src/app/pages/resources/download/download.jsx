@@ -32,8 +32,14 @@ const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '32px',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(512px, 1fr))',
     alignItems: 'start',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr 1fr',
+    },
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '2fr 1fr',
+    },
   },
   fullWidth: {
     gridColumnEnd: 'span 2',
