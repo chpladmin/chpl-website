@@ -84,12 +84,12 @@ describe('the ChplResourcesDownload page', () => {
       });
     });
 
-    it('should not track analytics if nothing was selected', async () => {
+    it('should track the default file analytics if nothing was selected', async () => {
       analyticsMock.eventTrack.mockClear();
-      userEvent.click(screen.getByRole('button', { name: /Definition File/i }));
+      userEvent.click(screen.getByRole('button', { name: /Data File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).not.toHaveBeenCalled();
+        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: '2015 XML' });
       });
     });
   });
