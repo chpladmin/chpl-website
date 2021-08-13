@@ -65,7 +65,7 @@ describe('the ChplResourcesDownload page', () => {
 
   describe('when selecting a file', () => {
     it('should track analytics on the download file', async () => {
-      userEvent.click(screen.getByRole('button', { name: /Select which collection of information to download/i }));
+      userEvent.click(screen.getByRole('button', { name: /Select a collection to download/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('2011 edition products (xml)'));
       userEvent.click(screen.getByRole('button', { name: /Data File/i }));
 
@@ -75,7 +75,7 @@ describe('the ChplResourcesDownload page', () => {
     });
 
     it('should track analytics on the definition file', async () => {
-      userEvent.click(screen.getByRole('button', { name: /Select which collection of information to download/i }));
+      userEvent.click(screen.getByRole('button', { name: /Select a collection to download/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('2011 edition products (xml)'));
       userEvent.click(screen.getByRole('button', { name: /Definition File/i }));
 
