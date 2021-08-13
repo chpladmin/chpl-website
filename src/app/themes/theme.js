@@ -132,7 +132,7 @@ const theme = createMuiTheme({
     MuiListItem: {
       root: {
         '&:hover': {
-          backgroundColor: '#eeeeee',
+          backgroundColor: 'rgb(0 0 0 / 10%)',
         },
       },
     },

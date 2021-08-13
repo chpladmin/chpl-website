@@ -10,8 +10,11 @@ import {
 }
     from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import RestoreIcon from '@material-ui/icons/Restore';
+import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined';
 import theme from '../../../themes/theme';
 import SgAdvancedSearch from './sg-advanced-search';
+
 
 const useStyles = makeStyles(() => ({
     ActionBarTop: {
@@ -54,7 +57,10 @@ const useStyles = makeStyles(() => ({
     searchBar: {
         display: 'grid',
         gridTemplateColumns: '11fr auto',
-    }
+    },
+    iconSpacing: {
+        marginLeft: '4px',
+    },
 }));
 
 const SgSearchBar = () => {
@@ -86,10 +92,10 @@ const SgSearchBar = () => {
                         />
                         <Button className={classes.goButton} size="medium" variant="contained" color="primary">Go</Button>
                     </div></div>
-                <Button size="medium" variant="outlined" color="primary">Browse All</Button>
+                <Button variant="outlined" color="primary">Browse All<ExploreOutlinedIcon className={classes.iconSpacing}/></Button>
                 <div>
                     <ButtonGroup variant="text" size="medium">
-                    <Button color="primary">Restore Search</Button>
+                    <Button color="primary">Restore Search <RestoreIcon className={classes.iconSpacing}/></Button>
                     <SgAdvancedSearch/>
                     </ButtonGroup>
                 </div>
