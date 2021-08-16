@@ -143,7 +143,6 @@ function ChplUserInvite(props) {
             color="primary"
             variant="contained"
             onClick={formik.handleSubmit}
-            disabled={!formik.isValid}
           >
             Send Invite
             <EmailIcon className={classes.iconSpacing} />

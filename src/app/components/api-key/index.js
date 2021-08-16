@@ -1,5 +1,4 @@
-import { ChplApiKeyConfirm } from './api-key-confirm.jsx';
-import { ChplApiKeyRegistration } from './api-key-registration.jsx';
-import { getAngularService } from '../../services/angular-react-helper.jsx';
+import ChplApiKeyConfirm from './api-key-confirm';
+import ChplApiKeyRegistration from './api-key-registration';
 
-export { ChplApiKeyConfirm, ChplApiKeyRegistration, getAngularService };
+export { ChplApiKeyConfirm, ChplApiKeyRegistration };

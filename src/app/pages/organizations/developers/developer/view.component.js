@@ -197,6 +197,10 @@ const DeveloperViewComponent = {
             type: 'success',
             title: 'Email sent',
             body: `Email sent successfully to ${data.email}`,
+          })).catch((error) => that.toaster.pop({
+            type: 'error',
+            title: 'Email was not sent',
+            body: error.data.error,
           }));
           break;
         case 'refresh':

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  ThemeProvider,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
 import { string } from 'prop-types';
-import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Typography from '@material-ui/core/Typography';
+import { getAngularService } from '../../services/angular-react-helper';
 import theme from '../../themes/theme';
-import { getAngularService } from '.';
 
 const useStyles = makeStyles(() => ({
   grid: {
@@ -54,6 +57,7 @@ function ChplApiKeyConfirm(props) {
                       <ul>
                         <li>This email confirmation request has already been processed.  Be sure to check you email for an email with your API key.</li>
                         <li>The confirmation token in the URL is not correct.</li>
+                        <li>The confirmation succeeded, but the acknowledgement email was unable to be sent.</li>
                       </ul>
                     </Typography>
                   </>
@@ -68,7 +72,7 @@ function ChplApiKeyConfirm(props) {
                       <strong>{ apiKey.apiKey }</strong>
                     </Typography>
                     <Typography variant="body1" gutterBottom>
-                      Your API key must be included in all API calls via either a header with the name 'API-Key' or as a URL parameter named 'api_key'.
+                      Your API key must be included in all API calls via either a header with the name &quot;API-Key&quot; or as a URL parameter named &quot;api_key&quot;.
                     </Typography>
                   </>
                 )}
@@ -80,7 +84,7 @@ function ChplApiKeyConfirm(props) {
   );
 }
 
-export { ChplApiKeyConfirm };
+export default ChplApiKeyConfirm;
 
 ChplApiKeyConfirm.propTypes = {
   hash: string.isRequired,
