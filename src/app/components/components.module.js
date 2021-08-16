@@ -1,5 +1,5 @@
-import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
-import { ChplAttestationChangeRequest } from './attestation'
+import { ChplApiKeyConfirm } from './api-key';
+import { ChplAttestationChangeRequest } from './attestation';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
@@ -44,7 +44,6 @@ angular
     'ui.router',
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
-  .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
   .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))

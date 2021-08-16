@@ -2,6 +2,7 @@
 import 'angular-loading-bar/build/loading-bar.min.css';
 import './index.scss';
 import '../assets/favicons/favicons';
+import 'swagger-ui-react/swagger-ui.css';
 
 import angular from 'angular';
 import 'angular-avatar';
