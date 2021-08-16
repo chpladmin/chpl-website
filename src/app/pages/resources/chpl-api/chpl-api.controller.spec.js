@@ -1,14 +1,13 @@
-(function () {
-  'use strict';
+(() => {
+  describe('the CHPL API component', () => {
+    let $log;
+    let scope;
+    let vm;
 
-  describe('the CHPL API component', function () {
-
-    var $log, scope, vm;
-
-    beforeEach(function () {
+    beforeEach(() => {
       angular.mock.module('chpl.resources', 'chpl.constants');
 
-      inject(function ($controller, _$log_, $rootScope) {
+      inject(($controller, _$log_, $rootScope) => {
         $log = _$log_;
 
         scope = $rootScope.$new();
@@ -19,14 +18,14 @@
       });
     });
 
-    afterEach(function () {
+    afterEach(() => {
       if ($log.debug.logs.length > 0) {
-        //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+        console.log(`Debug:\n${angular.toJson($log.debug.logs)}`);
       }
     });
 
-    describe('controller', function () {
-      it('should exist', function () {
+    describe('controller', () => {
+      it('should exist', () => {
         expect(vm).toBeDefined();
       });
     });
