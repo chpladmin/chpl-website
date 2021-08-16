@@ -1,60 +1,59 @@
 (() => {
-  'use strict';
-
   describe('the Complaints Reporting component', () => {
-    var $compile, $log, $q, ctrl, el, networkService, scope;
+    let $compile; let $log; let $q; let ctrl; let el; let networkService; let
+      scope;
 
-    let complainantTypes = {
+    const complainantTypes = {
       data: [
         { id: 1, name: 'developer' },
         { id: 2, name: 'provider' },
       ],
     };
 
-    let certBodies = [
+    const certBodies = [
       { id: 1, name: 'Drummond' },
       { id: 2, name: 'SLI' },
     ];
 
-    let allCps = [
+    const allCps = [
       { id: 296, chplProductNumber: 'CHP-022218', acb: 'UL LLC' },
       { id: 4708, chplProductNumber: 'CHP-022844', acb: 'Drummond Group' },
       { id: 470, chplProductNumber: 'CHP-026059', acb: 'UL LLC' },
     ];
 
-    let listingWithSurveillance = {
-      'id': 8828,
-      'chplProductNumber': '14.05.07.2002.EMA2.07.03.1.170831',
-      'surveillance': [
+    const listingWithSurveillance = {
+      id: 8828,
+      chplProductNumber: '14.05.07.2002.EMA2.07.03.1.170831',
+      surveillance: [
         {
-          'id': 599,
-          'surveillanceIdToReplace': null,
-          'friendlyId': 'SURV01',
-          'startDate': 1500004800000,
-          'endDate': 1517806800000,
-          'type': { 'id': 1, 'name': 'Reactive' },
-          'randomizedSitesUsed': null,
-          'requirements': [
+          id: 599,
+          surveillanceIdToReplace: null,
+          friendlyId: 'SURV01',
+          startDate: 1500004800000,
+          endDate: 1517806800000,
+          type: { id: 1, name: 'Reactive' },
+          randomizedSitesUsed: null,
+          requirements: [
             {
-              'id': 889,
-              'type': { 'id': 1, 'name': 'Certified Capability' },
-              'requirement': '170.314 (b)(7)',
-              'result': {
-                'id': 2,
-                'name': 'No Non-Conformity',
+              id: 889,
+              type: { id: 1, name: 'Certified Capability' },
+              requirement: '170.314 (b)(7)',
+              result: {
+                id: 2,
+                name: 'No Non-Conformity',
               },
-              'nonconformities': [],
+              nonconformities: [],
             },
           ],
-          'authority': 'ROLE_ACB',
-          'errorMessages': [],
-          'warningMessages': [],
-          'lastModifiedDate': 1517959724664,
+          authority: 'ROLE_ACB',
+          errorMessages: [],
+          warningMessages: [],
+          lastModifiedDate: 1517959724664,
         },
       ],
     };
 
-    let allComplaints = {
+    const allComplaints = {
       results: [
         {
           id: 52,
@@ -98,40 +97,51 @@
       ],
     };
 
-    let editions = [
+    const editions = [
       { id: 3, name: '2015', description: null },
       { id: 2, name: '2014', description: null },
       { id: 1, name: '2011', description: null },
     ];
 
-    let criteria = {
+    const criteria = {
       criteria: [
-        { id: 14, number: '170.315 (a)(14)', title: 'Implantable Device List', certificationEditionId: 3, certificationEdition: '2015', description: null },
-        { id: 39, number: '170.315 (d)(11)', title: 'Accounting of Disclosures', certificationEditionId: 3, certificationEdition: '2015', description: null },
-        { id: 104, number: '170.314 (e)(2)', title: 'Ambulatory setting only -clinical summary', certificationEditionId: 2, certificationEdition: '2014', description: null },
-        { id: 153, number: '170.304 (i)', title: 'Exchange clinical information and patient summary record', certificationEditionId: 1, certificationEdition: '2011', description: null },
-        { id: 96, number: '170.314 (d)(3)', title: 'Audit report(s)', certificationEditionId: 2, certificationEdition: '2014', description: null },
+        {
+          id: 14, number: '170.315 (a)(14)', title: 'Implantable Device List', certificationEditionId: 3, certificationEdition: '2015', description: null,
+        },
+        {
+          id: 39, number: '170.315 (d)(11)', title: 'Accounting of Disclosures', certificationEditionId: 3, certificationEdition: '2015', description: null,
+        },
+        {
+          id: 104, number: '170.314 (e)(2)', title: 'Ambulatory setting only -clinical summary', certificationEditionId: 2, certificationEdition: '2014', description: null,
+        },
+        {
+          id: 153, number: '170.304 (i)', title: 'Exchange clinical information and patient summary record', certificationEditionId: 1, certificationEdition: '2011', description: null,
+        },
+        {
+          id: 96, number: '170.314 (d)(3)', title: 'Audit report(s)', certificationEditionId: 2, certificationEdition: '2014', description: null,
+        },
       ],
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.surveillance', $provide => {
+      angular.mock.module('chpl.surveillance', ($provide) => {
+        $provide.factory('chplSurveillanceComplaintsDirective', () => ({}));
         $provide.factory('chplSavedFilterDirective', () => ({}));
         $provide.factory('chplFiltersDirective', () => ({}));
         $provide.factory('chplFilterDirective', () => ({}));
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getComplainantTypes = jasmine.createSpy('getComplainantTypes');
-          $delegate.getAcbs = jasmine.createSpy('getAcbs');
-          $delegate.deleteComplaint = jasmine.createSpy('deleteComplaint');
-          $delegate.updateComplaint = jasmine.createSpy('updateComplaint');
-          $delegate.createComplaint = jasmine.createSpy('createComplaint');
-          $delegate.getCollection = jasmine.createSpy('getCollection');
-          $delegate.getEditions = jasmine.createSpy('getEditions');
-          $delegate.getCriteria = jasmine.createSpy('getCriteria');
-          $delegate.getListingBasic = jasmine.createSpy('getListingBasic');
-          $delegate.getComplaints = jasmine.createSpy('getComplaints');
-          return $delegate;
-        });
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getComplainantTypes: jasmine.createSpy('getComplainantTypes'),
+          getAcbs: jasmine.createSpy('getAcbs'),
+          deleteComplaint: jasmine.createSpy('deleteComplaint'),
+          updateComplaint: jasmine.createSpy('updateComplaint'),
+          createComplaint: jasmine.createSpy('createComplaint'),
+          getCollection: jasmine.createSpy('getCollection'),
+          getEditions: jasmine.createSpy('getEditions'),
+          getCriteria: jasmine.createSpy('getCriteria'),
+          getListingBasic: jasmine.createSpy('getListingBasic'),
+          getComplaints: jasmine.createSpy('getComplaints'),
+        }));
       });
       inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
         $compile = _$compile_;
@@ -146,7 +156,7 @@
         networkService.deleteComplaint.and.returnValue($q.when({ status: 200 }));
         networkService.updateComplaint.and.returnValue($q.when(allComplaints[0]));
         networkService.createComplaint.and.returnValue($q.when(allComplaints[0]));
-        networkService.getCollection.and.returnValue($q.when({ 'results': angular.copy(allCps) }));
+        networkService.getCollection.and.returnValue($q.when({ results: angular.copy(allCps) }));
         networkService.createComplaint.and.returnValue($q.when(allComplaints[0]));
         networkService.getListingBasic.and.returnValue($q.when(listingWithSurveillance));
         networkService.getComplaints.and.returnValue($q.when(allComplaints));
@@ -164,7 +174,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });

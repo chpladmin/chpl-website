@@ -59,7 +59,7 @@
           requirementId: 1,
           surveillanceId: 1,
           surveillanceTypes: {
-            nonconformityTypes: { data: []},
+            nonconformityTypes: { data: [] },
           },
           workType: 'create',
         };
@@ -111,7 +111,7 @@
           requirementId: 1,
           surveillanceId: 1,
           surveillanceTypes: {
-            nonconformityTypes: { data: []},
+            nonconformityTypes: { data: [] },
           },
           workType: 'create',
         };
@@ -124,28 +124,6 @@
         expect(ctrl.nonconformity.capStartDateObject).toEqual(aDate);
         expect(ctrl.nonconformity.capEndDateObject).toEqual(aDate);
         expect(ctrl.nonconformity.capMustCompleteDateObject).toEqual(aDate);
-      });
-
-      it('should convert ncT status to objects on load', () => {
-        var data = {
-          nonconformityStatusTypes: {data: [{id: 1, name: 'Open'},{id: 2, name: 'name2'}]},
-          nonconformityTypes: { data: []},
-        };
-        scope.resolve = {
-          disableValidation: false,
-          nonconformity: {status: {name: 'Open'}},
-          randomized: false,
-          randomizedSitesUsed: undefined,
-          requirementId: 1,
-          surveillanceId: 1,
-          surveillanceTypes: data,
-          workType: 'create',
-        };
-        el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
-        $compile(el)(scope);
-        scope.$digest();
-        ctrl = el.isolateScope().$ctrl;
-        expect(ctrl.nonconformity.status.id).toBe(data.nonconformityStatusTypes.data[0].id);
       });
 
       describe('when uploading', () => {
@@ -215,11 +193,11 @@
       describe('when deleting a document', () => {
         beforeEach(() => {
           ctrl.surveillanceId = 1;
-          ctrl.nonconformity = {id: 2};
+          ctrl.nonconformity = { id: 2 };
           ctrl.nonconformity.documents = [
-            {id: 1},
-            {id: 2},
-            {id: 3},
+            { id: 1 },
+            { id: 2 },
+            { id: 3 },
           ];
         });
 
@@ -236,7 +214,7 @@
         });
 
         it('should handle failure', () => {
-          networkService.deleteSurveillanceDocument.and.returnValue($q.reject({data: {}}));
+          networkService.deleteSurveillanceDocument.and.returnValue($q.reject({ data: {} }));
           ctrl.deleteDoc(3);
           scope.$digest();
           expect(ctrl.deleteMessage).toBe('File was not removed successfully.');
@@ -288,7 +266,7 @@
         });
 
         it('should close it\'s modal with the NC', () => {
-          ctrl.nonconformity = {id: 'an NC'};
+          ctrl.nonconformity = { id: 'an NC' };
           ctrl.save();
           expect(scope.close).toHaveBeenCalled();
         });

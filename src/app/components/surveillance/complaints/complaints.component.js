@@ -3,15 +3,14 @@ const SurveillanceComplaintsComponent = {
   bindings: {
     complaintListType: '@?',
     displayAdd: '<',
-    displayDelete: '<',
-    displayEdit: '<',
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor($log, authService, featureFlags, networkService, utilService) {
+    constructor($log, $scope, authService, featureFlags, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
+      this.$scope = $scope;
       this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
@@ -20,21 +19,29 @@ const SurveillanceComplaintsComponent = {
       this.filename = `Complaints_${new Date().getTime()}.csv`;
       this.restoreStateHs = [];
       this.complaintListType = 'ALL';
-      this.pageSize = 50;
       this.filterItems = {
         acbItems: [],
         complaintStatusTypeItems: [],
         complainantTypeItems: [],
       };
       this.hasChanges = {};
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onInit() {
-      this.refreshComplainantTypes();
-      this.refreshCertificationBodies();
-      this.refreshListings();
-      this.refreshEditions();
-      this.refreshCriteria();
+      const that = this;
+      this.networkService.getComplainantTypes().then((response) => {
+        that.complainantTypes = response.data;
+      });
+      this.networkService.getAcbs(true).then((response) => { // get all acbs that the user has edit capability of
+        that.certificationBodies = response.acbs;
+      });
+      this.networkService.getCollection('complaintListings').then((response) => {
+        that.listings = response.results;
+      });
+      this.networkService.getCriteria().then((response) => {
+        that.criteria = response.criteria;
+      });
     }
 
     $onChanges(changes) {
@@ -52,77 +59,76 @@ const SurveillanceComplaintsComponent = {
       this.clearErrorMessages();
       this.networkService.deleteComplaint(complaint.id).then(() => {
         that.complaint = {};
+        that.isViewing = false;
         that.isEditing = false;
         that.refreshComplaints();
       });
     }
 
-    selectComplaint(complaint) {
-      this.refreshSurveillances(complaint);
-      this.clearErrorMessages();
-      this.isEditing = true;
-      this.complaint = complaint;
-    }
-
-    selectListing(complaint) {
-      this.refreshSurveillances(complaint);
+    handleDispatch(action, payload) {
+      switch (action) {
+        case 'add':
+          this.clearErrorMessages();
+          this.isEditing = true;
+          this.complaint = {};
+          this.$scope.$digest();
+          break;
+        case 'cancel':
+          this.isEditing = false;
+          this.isViewing = true;
+          this.$scope.$digest();
+          break;
+        case 'close':
+          this.isEditing = false;
+          this.isViewing = false;
+          this.complaint = {};
+          this.$scope.$digest();
+          break;
+        case 'delete':
+          this.deleteComplaint(payload);
+          break;
+        case 'edit':
+          this.clearErrorMessages();
+          this.isViewing = false;
+          this.isEditing = true;
+          this.$scope.$digest();
+          break;
+        case 'save':
+          this.saveComplaint(payload);
+          break;
+        case 'view':
+          this.isViewing = true;
+          this.complaint = payload;
+          this.$scope.$digest();
+          break;
+          // no default
+      }
     }
 
     saveComplaint(complaint) {
+      const that = this;
+      this.clearErrorMessages();
       const toSave = {
         ...complaint,
       };
-      toSave.receivedDate = complaint.formattedReceivedDate.getTime();
-      if (complaint.formattedClosedDate) {
-        toSave.closedDate = complaint.formattedClosedDate.getTime();
-      } else {
-        toSave.closedDate = null;
-      }
+      const handleResponse = () => {
+        that.refreshComplaints();
+        that.isEditing = false;
+      };
+      const handleError = (error) => {
+        if (error.status === 400) {
+          that.errorMessages = error.data.errorMessages;
+        }
+      };
       if (complaint.id) {
-        this.updateComplaint(toSave);
+        this.networkService.updateComplaint(toSave)
+          .then(handleResponse)
+          .catch(handleError);
       } else {
-        this.createComplaint(toSave);
+        this.networkService.createComplaint(complaint)
+          .then(handleResponse)
+          .catch(handleError);
       }
-    }
-
-    updateComplaint(complaint) {
-      const that = this;
-      this.clearErrorMessages();
-      this.networkService.updateComplaint(complaint)
-        .then(() => {
-          that.refreshComplaints();
-          that.isEditing = false;
-        })
-        .catch((error) => {
-          if (error.status === 400) {
-            that.errorMessages = error.data.errorMessages;
-          }
-        });
-    }
-
-    createComplaint(complaint) {
-      const that = this;
-      this.clearErrorMessages();
-      this.networkService.createComplaint(complaint)
-        .then(() => {
-          that.refreshComplaints();
-          that.isEditing = false;
-        })
-        .catch((error) => {
-          if (error.status === 400) {
-            that.errorMessages = error.data.errorMessages;
-          }
-        });
-    }
-
-    cancelEdit() {
-      this.isEditing = false;
-    }
-
-    displayAddComplaint() {
-      this.clearErrorMessages();
-      this.complaint = {};
-      this.isEditing = true;
     }
 
     refreshComplaints() {
@@ -134,25 +140,19 @@ const SurveillanceComplaintsComponent = {
               ...complaint,
             };
             if (complaint.receivedDate) {
-              updated.formattedReceivedDate = new Date(complaint.receivedDate);
-              updated.csvReceivedDate = new Date(complaint.receivedDate).toISOString().substring(0, 10);
+              updated.csvReceivedDate = complaint.receivedDate;
             } else {
-              updated.formattedReceivedDate = null;
               updated.csvReceivedDate = null;
             }
             if (complaint.closedDate) {
-              updated.formattedClosedDate = new Date(complaint.closedDate);
-              updated.csvClosedDate = new Date(complaint.closedDate).toISOString().substring(0, 10);
+              updated.csvClosedDate = complaint.closedDate;
             } else {
-              updated.formattedClosedDate = null;
               updated.csvClosedDate = null;
             }
             updated.acbName = complaint.certificationBody.name;
             updated.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
             updated.complainantTypeName = complaint.complainantType.name;
-            updated.filterText = `${complaint.oncComplaintId}|${complaint.acbComplaintId
-            }|${complaint.listings.map((l) => l.chplProductNumber).join('|')
-            }|${complaint.criteria.map((c) => c.certificationCriterion.number).join('|')}`;
+            updated.filterText = `${complaint.oncComplaintId}|${complaint.acbComplaintId}|${complaint.listings.map((l) => l.chplProductNumber).join('|')}|${complaint.criteria.map((c) => c.certificationCriterion.number).join('|')}`;
             that.addFilterItems(updated);
             if (complaint.criteria) {
               updated.csvCriteria = complaint.criteria.map((c) => c.certificationCriterion.number + (that.utilService.isCures(c.certificationCriterion) ? ' (Cures Update)' : '')).join(',');
@@ -207,65 +207,6 @@ const SurveillanceComplaintsComponent = {
         return this.networkService.getComplaints();
       }
       return this.networkService.getRelevantComplaints(this.quarterlyReport);
-    }
-
-    refreshComplainantTypes() {
-      const that = this;
-      this.networkService.getComplainantTypes().then((response) => {
-        that.complainantTypes = response.data;
-      });
-    }
-
-    refreshCertificationBodies() {
-      const that = this;
-      // get all acbs that the user has edit capability of
-      this.networkService.getAcbs(true).then((response) => {
-        that.certificationBodies = response.acbs;
-      });
-    }
-
-    refreshListings() {
-      const that = this;
-      this.networkService.getCollection('complaintListings').then((response) => {
-        that.listings = response.results;
-      });
-    }
-
-    refreshEditions() {
-      const that = this;
-      this.networkService.getEditions().then((response) => {
-        that.editions = response;
-      });
-    }
-
-    refreshCriteria() {
-      const that = this;
-      this.networkService.getCriteria().then((response) => {
-        that.criteria = response.criteria;
-      });
-    }
-
-    refreshSurveillances(complaint) {
-      const that = this;
-      this.surveillances = [];
-      if (complaint && Array.isArray(complaint.listings)) {
-        complaint.listings.forEach((listing) => {
-          this.networkService.getListingBasic(listing.listingId, true).then((response) => {
-            if (Array.isArray(response.surveillance)) {
-              response.surveillance.forEach((surv) => {
-                that.surveillances.push({
-                  id: surv.id,
-                  friendlyId: surv.friendlyId,
-                  listingId: response.id,
-                  certifiedProductId: response.id,
-                  chplProductNumber: response.chplProductNumber,
-                });
-                that.surveillances = angular.copy(that.surveillances);
-              });
-            }
-          });
-        });
-      }
     }
 
     clearErrorMessages() {

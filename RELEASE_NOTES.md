@@ -1,5 +1,36 @@
 # Release Notes
 
+## Version 11.18.0
+_9 August 2021_
+
+### Features
+* Require Complaint dates to be "logical"
+
+### User Interface Updates
+* Display Complaints in updated UX
+
+### Flagged Features
+* Add Attestation change request
+
+### Flagged Bug Fixes
+* Re-enable invitation of ROLE_DEVELOPER users
+
+---
+
+## Version 11.17.0
+_2 August 2021_
+
+### Features
+* Enable Real World Testing data entry / view for all 2015 Edition Listings
+
+### Flagged Features
+* Display "Promoting Interoperability" where applicable
+
+### Bug Fixes
+* Provide correct link in Search Results download file
+
+---
+
 ## Version 11.16.0
 _12 July 2021_
 
