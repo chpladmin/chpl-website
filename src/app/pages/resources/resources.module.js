@@ -1,4 +1,3 @@
-import 'angular-swagger-ui';
 import ChplNotFound from './not-found';
 import ChplResourcesDownload from './download';
 import ChplSwagger from './chpl-api';
@@ -11,7 +10,6 @@ angular
     'chpl.constants',
     'chpl.services',
     'ngStorage',
-    'swaggerUi',
   ])
   .component('chplNotFoundBridge', reactToAngularComponent(ChplNotFound))
   .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload))

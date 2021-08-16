@@ -2823,7 +2823,7 @@ angular-resource@^1.7.2:
   resolved "https://registry.yarnpkg.com/angular-resource/-/angular-resource-1.8.0.tgz#578ef122e7cb7bcc6c0ad6c2451dc3d27fd570ba"
   integrity sha512-9woUq3kDwoT7R6SjKX8vaJMhOplYBm9sqRAxKgDhDIdPyA8iBowqQIusf9+8Q+z/HlXb8ZXvKspJyKXrxmKdvg==
 
-"angular-sanitize@>=1.5.0 <2", angular-sanitize@^1.7.2:
+angular-sanitize@^1.7.2:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.8.0.tgz#9f80782d3afeec3bcc0bb92b3ca6f1f421cfbca6"
   integrity sha512-j5GiOPCvfcDWK5svEOVoPb11X3UDVy/mdHPRWuy14Iyw86xaq+Bb+x/em2sAOa5MQQeY5ciLXbF3RRp8iCKcNg==
@@ -2832,14 +2832,6 @@ angular-smart-table@^2.1.11:
   version "2.1.11"
   resolved "https://registry.yarnpkg.com/angular-smart-table/-/angular-smart-table-2.1.11.tgz#d0ca625f5bfb873bf3748ab861c82892e42ddfa2"
   integrity sha512-8ZSGygQqVBkpPDzb0382ujK1eOr8fnePXpzq+sUBkUsvRaEgMeY6VoFpWmg106472mD6oMNXIW9+VDQKllXa0w==
-
-angular-swagger-ui@^0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/angular-swagger-ui/-/angular-swagger-ui-0.5.5.tgz#dd3ecf74af78413ffee457d7ac394342d4329994"
-  integrity sha1-3T7PdK94QT/+5FfXrDlDQtQymZQ=
-  dependencies:
-    angular ">=1.5.0 <2"
-    angular-sanitize ">=1.5.0 <2"
 
 angular-ui-bootstrap@2.5.6:
   version "2.5.6"
@@ -2858,7 +2850,7 @@ angular-zxcvbn@^3.2.2:
   resolved "https://registry.yarnpkg.com/angular-zxcvbn/-/angular-zxcvbn-3.2.2.tgz#2dbcba5eb5da4c90b2b0b6022da08b7768937c46"
   integrity sha1-Lby6XrXaTJCysLYCLaCLd2iTfEY=
 
-angular@>1.2.9, "angular@>=1.5.0 <2", angular@^1.2.0, angular@^1.7.2:
+angular@>1.2.9, angular@^1.2.0, angular@^1.7.2:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.8.0.tgz#b1ec179887869215cab6dfd0df2e42caa65b1b51"
   integrity sha512-VdaMx+Qk0Skla7B5gw77a8hzlcOakwF8mjlW13DpIWIDlfqwAbSSLfd8N/qZnzEmQF4jC4iofInd3gE7vL8ZZg==

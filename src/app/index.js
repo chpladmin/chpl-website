@@ -1,6 +1,5 @@
 // Import base SCSS file and then all SCSS files in directories
 import 'angular-loading-bar/build/loading-bar.min.css';
-import 'angular-swagger-ui/dist/css/swagger-ui.min.css';
 import './index.scss';
 import '../assets/favicons/favicons';
 
