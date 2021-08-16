@@ -29,10 +29,6 @@
       it('should exist', function () {
         expect(vm).toBeDefined();
       });
-
-      it('should load have a swaggerUI at start', function () {
-        expect(vm.swaggerUrl.length).toBeGreaterThan(0);
-      });
     });
   });
 })();
