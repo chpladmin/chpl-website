@@ -48,9 +48,11 @@ const theme = createMuiTheme({
     h6: {
       fontSize: '1.125em',
       fontWeight: 400,
+      lineHeight:'1.3em'
     },
     body1: {
       fontSize: '1em',
+      lineHeight:'1.3em'
     },
     body2: {
       fontSize: '0.875em',
