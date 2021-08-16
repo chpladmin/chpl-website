@@ -5,11 +5,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import SwaggerUI from 'swagger-ui-react';
 
 import theme from '../../../themes/theme';
 import { ChplLink } from '../../../components/util';
 import { ChplApiKeyRegistration } from '../../../components/api-key';
-import ChplSwagger from './swagger';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -91,8 +91,9 @@ function ChplResourcesApi() {
           <div
             className={classes.fullWidth}
           >
-            <ChplSwagger
+            <SwaggerUI
               url={url}
+              docExpansion="none"
             />
           </div>
         </div>
