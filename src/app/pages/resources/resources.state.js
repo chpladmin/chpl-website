@@ -32,7 +32,7 @@ const states = [
   }, {
     name: 'resources.overview',
     url: '/overview',
-    component: 'aiOverview',
+    component: 'chplResourcesOverviewBridge',
     data: { title: 'CHPL Overview' },
   }, {
     name: 'not-found',
