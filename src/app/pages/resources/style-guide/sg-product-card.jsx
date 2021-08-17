@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     },
     versionProductCardHeaderContainer: {
         display: 'grid',
-        gridTemplateColumns: 'auto auto auto 1fr',
+        gridTemplateColumns: 'auto auto auto auto 1fr',
         gap: '8px',
         alignItems: 'center',
     },
@@ -78,7 +78,7 @@ function SgProductCard() {
                         <Typography variant='h5'><a href='#'>Infection Control Antimicrobial Use and Resistance Reporting</a></Typography>
                         <div className={classes.versionProductCardHeaderContainer}>
                             <Typography variant='subtitle2'> Version:</Typography>
-                            <Typography variant='body1'>May 2021</Typography>
+                            <Typography variant='body1'>May 2021</Typography>|
                             <Typography variant='subtitle2'> Developer:</Typography>
                             <Typography variant='body1'><a href='#'> Epic Systems Corporation </a></Typography>
                         </div>

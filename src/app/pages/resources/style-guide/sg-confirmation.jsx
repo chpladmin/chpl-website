@@ -11,7 +11,7 @@ makeStyles,
 Slide,
 } from '@material-ui/core';
 
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveIcon from '@material-ui/icons/Save';
 
@@ -68,7 +68,7 @@ export default function SgConfirmation() {
         <Divider/>
         <DialogActions className={classes.actionDialogContainer}>
           <Button onClick={handleClose} color="primary" variant="contained">
-            Yes <ArrowForwardIcon className={classes.iconSpacing} />
+            Yes <DoneIcon className={classes.iconSpacing} />
           </Button>
           <Button onClick={handleClose} color="default" variant="contained" autoFocus>
             Cancel <CloseIcon className={classes.iconSpacing} />

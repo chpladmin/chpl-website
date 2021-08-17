@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 
 import SearchIcon from '@material-ui/icons/Search';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const useStyles = makeStyles({
     filterContainer: {
@@ -70,6 +71,9 @@ const useStyles = makeStyles({
         display: 'grid',
         gridTemplateColumns: 'auto 1fr',
     },
+    iconSpacing:{
+        
+    }
 });
 
 function SgAdvancedSearchPopover(props) {

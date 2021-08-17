@@ -500,6 +500,8 @@ function Elements() {
       </div>
       {/*End of 404 Card*/}
       <br />
+      <br />
+      <br />
       <SgSearchBar/>
       <SgProductCardContainer/>
     </div>
