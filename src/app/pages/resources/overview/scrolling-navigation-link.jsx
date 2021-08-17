@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Button,
+} from '@material-ui/core';
 import { string } from 'prop-types';
+
+import { getAngularService } from '../../../services/angular-react-helper';
 import { analyticsConfig } from '../../../shared/prop-types';
 
 const ScrollingNavigationLink = (props) => {
+  /* eslint-disable react/destructuring-assignment */
+  const $analytics = getAngularService('$analytics');
   const [analytics] = useState(props.analytics);
   const [id] = useState(props.id);
   const [name] = useState(props.name);
   const [target, setTarget] = useState('');
+  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     setTarget(document.getElementById(id));
@@ -24,11 +32,12 @@ const ScrollingNavigationLink = (props) => {
   };
 
   return (
-    <a href={`#${name}`}
-       onClick={handleClick}
-       aria-label={`Scroll display to ${name}`}>
+    <Button
+      onClick={handleClick}
+      aria-label={`Scroll display to ${name}`}
+    >
       {name}
-    </a>
+    </Button>
   );
 };
 
@@ -42,4 +51,4 @@ ScrollingNavigationLink.propTypes = {
 
 ScrollingNavigationLink.defaultProps = {
   analytics: {},
-}
+};

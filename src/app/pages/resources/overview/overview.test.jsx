@@ -13,9 +13,18 @@ const $analyticsMock = {
 };
 
 const networkServiceMock = {
-  getAcbs: jest.fn(),
-  getAnnouncements: jest.fn(),
-  getAtls: jest.fn(),
+  getAcbs: jest.fn(() => Promise.resolve({
+    status: 200,
+    acbs: [],
+  })),
+  getAnnouncements: jest.fn(() => Promise.resolve({
+    status: 200,
+    announcements: [],
+  })),
+  getAtls: jest.fn(() => Promise.resolve({
+    status: 200,
+    atls: [],
+  })),
 };
 
 angularReactHelper.getAngularService = jest.fn();
