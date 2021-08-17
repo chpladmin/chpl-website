@@ -38,8 +38,7 @@ const useStyles = makeStyles({
 
 function ChplResourcesApi() {
   const classes = useStyles();
-  const url = 'http://localhost:3000/rest/v3/api-docs';
-  //`${$location.absUrl().split('#')[0]}rest/v3/api-docs`;
+  const url = `${window.location.href.split('#')[0]}rest/v3/api-docs`;
 
   return (
     <ThemeProvider theme={theme}>
