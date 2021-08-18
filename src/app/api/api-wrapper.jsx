@@ -3,6 +3,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { element } from 'prop-types';
 
 import { AxiosProvider } from './axios';
@@ -14,6 +15,7 @@ function ApiWrapper({ children }) {
     <AxiosProvider>
       <QueryClientProvider client={queryClient}>
         {children}
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AxiosProvider>
   );
