@@ -67,6 +67,15 @@
         background: #c44f65;
     }
 
+    .opblock.opblock-deprecated {
+        opacity: 1;
+    }
+
+    .opblock.opblock-deprecated .opblock-summary-method {
+        background: #eeeeee;
+        color: #3b495f;
+    }
+
     pre {
         background-color: transparent;
         border: none;
