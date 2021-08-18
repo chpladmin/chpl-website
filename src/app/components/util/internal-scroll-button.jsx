@@ -4,10 +4,10 @@ import {
 } from '@material-ui/core';
 import { string } from 'prop-types';
 
-import { getAngularService } from '../../../services/angular-react-helper';
-import { analyticsConfig } from '../../../shared/prop-types';
+import { getAngularService } from '../../services/angular-react-helper';
+import { analyticsConfig } from '../../shared/prop-types';
 
-const ScrollingNavigationLink = (props) => {
+const InternalScrollButton = (props) => {
   /* eslint-disable react/destructuring-assignment */
   const $analytics = getAngularService('$analytics');
   const [analytics] = useState(props.analytics);
@@ -41,14 +41,14 @@ const ScrollingNavigationLink = (props) => {
   );
 };
 
-export default ScrollingNavigationLink;
+export default InternalScrollButton;
 
-ScrollingNavigationLink.propTypes = {
+InternalScrollButton.propTypes = {
   name: string.isRequired,
   id: string.isRequired,
   analytics: analyticsConfig,
 };
 
-ScrollingNavigationLink.defaultProps = {
+InternalScrollButton.defaultProps = {
   analytics: {},
 };
