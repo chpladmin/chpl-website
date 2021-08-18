@@ -7,6 +7,7 @@ const AxiosContext = createContext();
 function AxiosProvider({ children }) {
   const axios = useMemo(() => {
     const ax = Axios.create({
+      baseURL: '/rest/',
       headers: {
         'Content-Type': 'application/json',
       },
