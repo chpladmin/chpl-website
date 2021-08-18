@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import {
   Button,
+  makeStyles,
 } from '@material-ui/core';
 import { string } from 'prop-types';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { analyticsConfig } from '../../shared/prop-types';
 
+const useStyles = makeStyles({
+  noButtonWrap: {
+    whiteSpace: 'nowrap',
+  },
+});
+
 const InternalScrollButton = (props) => {
   /* eslint-disable react/destructuring-assignment */
   const $analytics = getAngularService('$analytics');
   const [analytics] = useState(props.analytics);
+  const {children} = props;
   const [id] = useState(props.id);
-  const [name] = useState(props.name);
   const [target, setTarget] = useState('');
   /* eslint-enable react/destructuring-assignment */
 
@@ -31,12 +38,16 @@ const InternalScrollButton = (props) => {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const classes = useStyles();
+
   return (
     <Button
       onClick={handleClick}
-      aria-label={`Scroll display to ${name}`}
+      aria-label={`Scroll display to ${children}`}
+      color="primary"
+      className={classes.noButtonWrap}
     >
-      {name}
+      {children}
     </Button>
   );
 };
