@@ -58,6 +58,7 @@
     "angularjs-toaster": "^2.2.0",
     "angulartics": "^1.6.0",
     "angulartics-google-tag-manager": "^0.0.1",
+    "axios": "^0.21.1",
     "bootstrap-sass": "3.4.1",
     "chai": "^4.2.0",
     "cytoscape": "2.6",
@@ -72,6 +73,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-query": "^3.19.6",
     "swagger-ui-react": "^3.51.0",
     "yup": "^0.32.9",
     "zxcvbn": "^4.4.2"

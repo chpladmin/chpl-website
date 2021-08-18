@@ -11,10 +11,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
 import ScrollingNavigationLink from './scrolling-navigation-link';
 import { ChplLink } from '../../../components/util';
 import { getAngularService } from '../../../services/angular-react-helper';
+import { useFetchAcbs } from '../../../api/acbs';
+import { useFetchAtls } from '../../../api/atls';
+import ApiWrapper from '../../../api/api-wrapper';
+import theme from '../../../themes/theme';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -41,33 +44,30 @@ const useStyles = makeStyles({
   },
 });
 
+const getOrgs = (query, key) => {
+  if (!query.isSuccess) { return []; }
+  return query.data[key]
+    .filter((item) => !item.retired)
+    .sort((a, b) => (a.name < b.name ? -1 : 1));
+}
+
 function ChplResourcesOverview() {
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
-  const [acbs, setAcbs] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const [atls, setAtls] = useState([]);
+  const acbQuery = useFetchAcbs();
+  const atlQuery = useFetchAtls();
   const classes = useStyles();
 
   useEffect(() => {
-    networkService.getAcbs(false).then((result) => {
-      setAcbs(result.acbs
-        .filter((acb) => !acb.retired)
-        .sort((a, b) => (a.name < b.name ? -1 : 1)));
-    });
     networkService.getAnnouncements(false).then((result) => {
       setAnnouncements(result.announcements
-        .map((announcement) => ({
-          ...announcement,
-          startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
-          endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
-        }))
-        .sort((a, b) => (a.startDate - b.startDate)));
-    });
-    networkService.getAtls(false).then((result) => {
-      setAtls(result.atls
-        .filter((atl) => !atl.retired)
-        .sort((a, b) => (a.name < b.name ? -1 : 1)));
+                       .map((announcement) => ({
+                         ...announcement,
+                         startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
+                         endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
+                       }))
+                       .sort((a, b) => (a.startDate - b.startDate)));
     });
   }, [DateUtil, networkService]);
 
@@ -130,34 +130,34 @@ function ChplResourcesOverview() {
         <div>
           { announcements.length > 0
             && (
-            <>
-              <Typography variant="h2">
-                Announcement
-                {announcements.length > 1 ? 's' : ''}
-              </Typography>
-              <ul>
-                {announcements.map((announcement) => (
-                  <li key={announcement.id}>
-                    <strong>{ announcement.title}</strong>
-                    {announcement.text
-                     && (
-                     <>
-                       :
-                       {' '}
-                       {announcement.text}
-                     </>
-                     )}
-                    <br />
-                    Start date:
-                    {' '}
-                    { announcement.startDisplay }
-                    , End date:
-                    {' '}
-                    {announcement.endDisplay}
-                  </li>
-                ))}
-              </ul>
-            </>
+              <>
+                <Typography variant="h2">
+                  Announcement
+                  {announcements.length > 1 ? 's' : ''}
+                </Typography>
+                <ul>
+                  {announcements.map((announcement) => (
+                    <li key={announcement.id}>
+                      <strong>{ announcement.title}</strong>
+                      {announcement.text
+                       && (
+                         <>
+                           :
+                           {' '}
+                           {announcement.text}
+                         </>
+                       )}
+                      <br />
+                      Start date:
+                      {' '}
+                      { announcement.startDisplay }
+                      , End date:
+                      {' '}
+                      {announcement.endDisplay}
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           <span className="anchor-element">
             <a id="whatIsTheChpl" className="page-anchor" />
@@ -409,25 +409,25 @@ function ChplResourcesOverview() {
               </TableRow>
             </TableHead>
             <TableBody>
-              { acbs.map((acb) => (
+              { getOrgs(acbQuery, 'acbs').map((acb) => (
                 <TableRow key={acb.id}>
                   <TableCell>ONC-ACB</TableCell>
                   <TableCell>{acb.name}</TableCell>
                   <TableCell>{acb.acbCode}</TableCell>
                   <TableCell>
                     {acb.website
-                              && <ChplLink href={acb.website} />}
+                     && <ChplLink href={acb.website} />}
                   </TableCell>
                 </TableRow>
               ))}
-              { atls.map((atl) => (
+              { getOrgs(atlQuery, 'atls').map((atl) => (
                 <TableRow key={atl.id}>
                   <TableCell>ONC-ATL</TableCell>
                   <TableCell>{atl.name}</TableCell>
                   <TableCell>{atl.atlCode}</TableCell>
                   <TableCell>
                     {atl.website
-                              && <ChplLink href={atl.website} />}
+                     && <ChplLink href={atl.website} />}
                   </TableCell>
                 </TableRow>
               ))}
@@ -445,4 +445,10 @@ function ChplResourcesOverview() {
   );
 }
 
-export default ChplResourcesOverview;
+export default function () {
+  return (
+    <ApiWrapper>
+      <ChplResourcesOverview />
+    </ApiWrapper>
+  )
+}
