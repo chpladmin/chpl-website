@@ -11,10 +11,15 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
-import ScrollingNavigationLink from './scrolling-navigation-link';
-import { ChplLink } from '../../../components/util';
+import {
+  ChplLink,
+  InternalScrollButton,
+} from '../../../components/util';
 import { getAngularService } from '../../../services/angular-react-helper';
+import { useFetchAcbs } from '../../../api/acbs';
+import { useFetchAtls } from '../../../api/atls';
+import ApiWrapper from '../../../api/api-wrapper';
+import theme from '../../../themes/theme';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -41,20 +46,22 @@ const useStyles = makeStyles({
   },
 });
 
+const getOrgs = (query, key) => {
+  if (!query.isSuccess) { return []; }
+  return query.data[key]
+    .filter((item) => !item.retired)
+    .sort((a, b) => (a.name < b.name ? -1 : 1));
+};
+
 function ChplResourcesOverview() {
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
-  const [acbs, setAcbs] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const [atls, setAtls] = useState([]);
+  const acbQuery = useFetchAcbs();
+  const atlQuery = useFetchAtls();
   const classes = useStyles();
 
   useEffect(() => {
-    networkService.getAcbs(false).then((result) => {
-      setAcbs(result.acbs
-        .filter((acb) => !acb.retired)
-        .sort((a, b) => (a.name < b.name ? -1 : 1)));
-    });
     networkService.getAnnouncements(false).then((result) => {
       setAnnouncements(result.announcements
         .map((announcement) => ({
@@ -63,11 +70,6 @@ function ChplResourcesOverview() {
           endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
         }))
         .sort((a, b) => (a.startDate - b.startDate)));
-    });
-    networkService.getAtls(false).then((result) => {
-      setAtls(result.atls
-        .filter((atl) => !atl.retired)
-        .sort((a, b) => (a.name < b.name ? -1 : 1)));
     });
   }, [DateUtil, networkService]);
 
@@ -84,42 +86,42 @@ function ChplResourcesOverview() {
         <div>
           <ul>
             <li>
-              <ScrollingNavigationLink
+              <InternalScrollButton
                 name="What is the CHPL"
                 id="whatIsTheChpl"
                 analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'What is the CHPL' }}
               />
             </li>
             <li>
-              <ScrollingNavigationLink
+              <InternalScrollButton
                 name="Recommended Web Browsers"
                 id="recommendedWebBrowsers"
                 analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Recommended Web Browsers' }}
               />
             </li>
             <li>
-              <ScrollingNavigationLink
+              <InternalScrollButton
                 name="Using the CHPL Website"
                 id="usingTheChplWebsite"
                 analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Using the CHPL Website' }}
               />
             </li>
             <li>
-              <ScrollingNavigationLink
+              <InternalScrollButton
                 name="ONC Certification Program"
                 id="oncCertificationProgram"
                 analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC Certification Program' }}
               />
             </li>
             <li>
-              <ScrollingNavigationLink
+              <InternalScrollButton
                 name="For EHR Developers"
                 id="forEhrDevelopers"
                 analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'For EHR Developers' }}
               />
             </li>
             <li>
-              <ScrollingNavigationLink
+              <InternalScrollButton
                 name="ONC-ACB and ONC-ATL information"
                 id="oncacbAndAtlInformation"
                 analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC-ACB and ONC-ATL information' }}
@@ -130,34 +132,34 @@ function ChplResourcesOverview() {
         <div>
           { announcements.length > 0
             && (
-            <>
-              <Typography variant="h2">
-                Announcement
-                {announcements.length > 1 ? 's' : ''}
-              </Typography>
-              <ul>
-                {announcements.map((announcement) => (
-                  <li key={announcement.id}>
-                    <strong>{ announcement.title}</strong>
-                    {announcement.text
-                     && (
-                     <>
-                       :
-                       {' '}
-                       {announcement.text}
-                     </>
-                     )}
-                    <br />
-                    Start date:
-                    {' '}
-                    { announcement.startDisplay }
-                    , End date:
-                    {' '}
-                    {announcement.endDisplay}
-                  </li>
-                ))}
-              </ul>
-            </>
+              <>
+                <Typography variant="h2">
+                  Announcement
+                  {announcements.length > 1 ? 's' : ''}
+                </Typography>
+                <ul>
+                  {announcements.map((announcement) => (
+                    <li key={announcement.id}>
+                      <strong>{ announcement.title}</strong>
+                      {announcement.text
+                       && (
+                         <>
+                           :
+                           {' '}
+                           {announcement.text}
+                         </>
+                       )}
+                      <br />
+                      Start date:
+                      {' '}
+                      { announcement.startDisplay }
+                      , End date:
+                      {' '}
+                      {announcement.endDisplay}
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           <span className="anchor-element">
             <a id="whatIsTheChpl" className="page-anchor" />
@@ -179,7 +181,7 @@ function ChplResourcesOverview() {
             <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration &amp; Attestation Page</a>
             .
           </Typography>
-          <ScrollingNavigationLink
+          <InternalScrollButton
             name="Back to the top"
             id="main-content"
             analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
@@ -200,7 +202,7 @@ function ChplResourcesOverview() {
             <li>Microsoft Edge (two most recent major versions)</li>
             <li>Mozilla Firefox (latest version)</li>
           </ul>
-          <ScrollingNavigationLink
+          <InternalScrollButton
             name="Back to the top"
             id="main-content"
             analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
@@ -305,7 +307,7 @@ function ChplResourcesOverview() {
             <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC's Health IT Feedback Form</a>
             .
           </Typography>
-          <ScrollingNavigationLink
+          <InternalScrollButton
             name="Back to the top"
             id="main-content"
             analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
@@ -360,7 +362,7 @@ function ChplResourcesOverview() {
             <a href="https://ecqi.healthit.gov/">eCQI Resource Center</a>
             .
           </Typography>
-          <ScrollingNavigationLink
+          <InternalScrollButton
             name="Back to the top"
             id="main-content"
             analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
@@ -384,7 +386,7 @@ function ChplResourcesOverview() {
             <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program page</a>
             .
           </Typography>
-          <ScrollingNavigationLink
+          <InternalScrollButton
             name="Back to the top"
             id="main-content"
             analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
@@ -409,31 +411,31 @@ function ChplResourcesOverview() {
               </TableRow>
             </TableHead>
             <TableBody>
-              { acbs.map((acb) => (
+              { getOrgs(acbQuery, 'acbs').map((acb) => (
                 <TableRow key={acb.id}>
                   <TableCell>ONC-ACB</TableCell>
                   <TableCell>{acb.name}</TableCell>
                   <TableCell>{acb.acbCode}</TableCell>
                   <TableCell>
                     {acb.website
-                              && <ChplLink href={acb.website} />}
+                     && <ChplLink href={acb.website} />}
                   </TableCell>
                 </TableRow>
               ))}
-              { atls.map((atl) => (
+              { getOrgs(atlQuery, 'atls').map((atl) => (
                 <TableRow key={atl.id}>
                   <TableCell>ONC-ATL</TableCell>
                   <TableCell>{atl.name}</TableCell>
                   <TableCell>{atl.atlCode}</TableCell>
                   <TableCell>
                     {atl.website
-                              && <ChplLink href={atl.website} />}
+                     && <ChplLink href={atl.website} />}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <ScrollingNavigationLink
+          <InternalScrollButton
             name="Back to the top"
             id="main-content"
             analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
@@ -445,4 +447,10 @@ function ChplResourcesOverview() {
   );
 }
 
-export default ChplResourcesOverview;
+export default function OverviewWrapper() {
+  return (
+    <ApiWrapper>
+      <ChplResourcesOverview />
+    </ApiWrapper>
+  );
+}
