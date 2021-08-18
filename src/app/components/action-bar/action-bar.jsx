@@ -12,6 +12,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
+import ChplActionBarConfirmation from './action-bar-confirmation';
 import theme from '../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -33,6 +34,7 @@ const useStyles = makeStyles(() => ({
 function ChplActionBar(props) {
   /* eslint-disable react/destructuring-assignment */
   const [canDelete] = useState(props.canDelete);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled] = useState(props.isDisabled);
   const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
   const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
@@ -46,9 +48,26 @@ function ChplActionBar(props) {
     }
   };
 
+  const confirmDelete = () => {
+    setIsConfirming(true);
+  };
+
+  const handleConfirmation = (response) => {
+    if (response === 'yes') {
+      act('delete');
+    }
+    setIsConfirming(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="action-bar">
+        { isConfirming
+          && (
+          <ChplActionBarConfirmation
+            dispatch={handleConfirmation}
+          />
+          )}
         { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
           && (
             <>
@@ -155,7 +174,7 @@ function ChplActionBar(props) {
                   id="action-bar-delete"
                   variant="contained"
                   className={`${classes.buttons} ${classes.deleteButton}`}
-                  onClick={() => act('delete')}
+                  onClick={() => confirmDelete()}
                 >
                   Delete
                   <DeleteOutlinedIcon
