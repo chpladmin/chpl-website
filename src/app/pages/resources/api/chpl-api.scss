@@ -1,85 +1,83 @@
 .swagger-ui {
 
-    .api-version {
-        color: #333;
+    .btn.authorize {
+        color: #66926d;
+        border-color: #66926d;
     }
 
-    .btn.authorize{
-         color:#66926d;
-         border-color: #66926d;
+    .btn.authorize svg {
+        fill: #66926d;
     }
 
-    .btn.authorize svg{
-        fill:#66926d;
-   }
-
-   .info{
-    border-top: 1px solid rgba(59, 65, 81, 0.3);
-    padding-top: 32px;
-   }
-
-   .info{
-    a {
-        color: #156dac;
-        text-decoration: underline;
-      }
+    .info {
+        border-top: "1px solid rgba(59, 65, 81, 0.3)";
+        padding-top: 32px;
     }
 
-   .info .title small.version-stamp{
-       background-color: #384903;
-   }
+    .info {
 
-   .info .title {
-    color: #3b4151;
-    font-size: 1.75em;
-    margin: 0;
-    font-weight: 400;
-    font-family: 'Lato';
-   }
+        a {
+            color: #156dac;
+            text-decoration: underline;
+        }
 
-   .opblock.opblock-get .opblock-summary{
-       border-color:#156dac;
-   }
-
-   .opblock.opblock-get .opblock-summary-method{
-       background:#156dac;
-   }
-
-   .opblock.opblock-put .opblock-summary{
-    border-color:#cc8400;
     }
 
-    .opblock.opblock-put .opblock-summary-method{
-     background:#cc8400;
+    .info .title small.version-stamp {
+        background-color: #384903;
     }
 
-   .opblock.opblock-post .opblock-summary{
-       border-color:#66926d;
-   }
-
-   .opblock.opblock-post .opblock-summary-method{
-    background:#66926d;
-   }
-
-   .opblock.opblock-delete .opblock-summary{
-    border-color:#c44f65;
+    .info .title {
+        color: #3b4151;
+        font-size: 1.75em;
+        margin: 0;
+        font-weight: 400;
+        font-family: "Lato";
     }
 
-    .opblock.opblock-delete .opblock-summary-method{
-    background:#c44f65;
+    .opblock.opblock-get .opblock-summary {
+        border-color: #156dac;
     }
 
-   pre{
-       background-color:transparent;
-       border:none;
-   }
+    .opblock.opblock-get .opblock-summary-method {
+        background: #156dac;
+    }
 
-   .servers {
-    padding-top: 8px;
+    .opblock.opblock-put .opblock-summary {
+        border-color: #cc8400;
+    }
+
+    .opblock.opblock-put .opblock-summary-method {
+        background: #cc8400;
+    }
+
+    .opblock.opblock-post .opblock-summary {
+        border-color: #66926d;
+    }
+
+    .opblock.opblock-post .opblock-summary-method {
+        background: #66926d;
+    }
+
+    .opblock.opblock-delete .opblock-summary {
+        border-color: #c44f65;
+    }
+
+    .opblock.opblock-delete .opblock-summary-method {
+        background: #c44f65;
+    }
+
+    pre {
+        background-color: transparent;
+        border: none;
+    }
+
+    .servers {
+        padding-top: 8px;
     }
     
-    .wrapper{
+    .wrapper {
         max-width: none;
-        padding: 0px 8px;
+        padding: "0px 8px";
     }
 }
