@@ -49,7 +49,7 @@ const getOrgs = (query, key) => {
   return query.data[key]
     .filter((item) => !item.retired)
     .sort((a, b) => (a.name < b.name ? -1 : 1));
-}
+};
 
 function ChplResourcesOverview() {
   const DateUtil = getAngularService('DateUtil');
@@ -62,12 +62,12 @@ function ChplResourcesOverview() {
   useEffect(() => {
     networkService.getAnnouncements(false).then((result) => {
       setAnnouncements(result.announcements
-                       .map((announcement) => ({
-                         ...announcement,
-                         startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
-                         endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
-                       }))
-                       .sort((a, b) => (a.startDate - b.startDate)));
+        .map((announcement) => ({
+          ...announcement,
+          startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
+          endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
+        }))
+        .sort((a, b) => (a.startDate - b.startDate)));
     });
   }, [DateUtil, networkService]);
 
@@ -445,10 +445,10 @@ function ChplResourcesOverview() {
   );
 }
 
-export default function () {
+export default function OverviewWrapper() {
   return (
     <ApiWrapper>
       <ChplResourcesOverview />
     </ApiWrapper>
-  )
+  );
 }

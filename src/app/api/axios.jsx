@@ -1,35 +1,42 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import Axios from 'axios';
+import { element } from 'prop-types';
 
 const AxiosContext = createContext();
 
-function AxiosProvider({children}) {
+function AxiosProvider({ children }) {
   const axios = useMemo(() => {
-    const axios = Axios.create({
+    const ax = Axios.create({
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    axios.interceptors.request.use((config) => {
+    ax.interceptors.request.use((config) => {
+      const updated = {
+        ...config,
+      };
+      updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
       /*
         const token = localStorage.getItem("token");
         if (token) {
         config.headers.Authorization = `Bearer ${token}`;
         }
       */
-      config.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
-
-      return config;
+      return updated;
     });
 
-    return axios;
+    return ax;
   }, []);
 
   return (
     <AxiosContext.Provider value={axios}>{children}</AxiosContext.Provider>
   );
 }
+
+AxiosProvider.propTypes = {
+  children: element.isRequired,
+};
 
 function useAxios() {
   return useContext(AxiosContext);

@@ -8,6 +8,8 @@ const useFetchAtls = (editable = false) => {
     const response = await axios.get(`/rest/atls?editable=${editable ? 'true' : 'false'}`);
     return response.data;
   });
-}
+};
 
+/* eslint-disable import/prefer-default-export */
+// remove eslint disable line when new api methods are added
 export { useFetchAtls };
