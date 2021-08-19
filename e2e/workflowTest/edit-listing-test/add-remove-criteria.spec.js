@@ -1,7 +1,7 @@
 import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
 import CriteriaComponent from '../../components/listing/details/criteria/criteria.po';
-import loginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.po';
 import ToastComponent from '../../components/toast/toast.po';
 
@@ -17,7 +17,7 @@ describe('On the 2015 Listing page', () => {
     page = new ListingPage();
     hooks = new Hooks();
     toast = new ToastComponent();
-    login = new loginComponent();
+    login = new LoginComponent();
     criteria = new CriteriaComponent();
     action = new ActionBarComponent();
     await hooks.open('#/listing/10599');
@@ -49,7 +49,7 @@ describe('On the 2015 Listing page', () => {
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
-      expect(toast.toastTitle.getText()).toBe('CHPL ID Changed');
+      expect(toast.toastTitle.getText()).toBe('CHPL ID Changed' || 'Update processing');
       toast.clearAllToast();
       hooks.waitForSpinnerToDisappear();
       expect(criteria.criteriaHeader('174', '170.315 (d)(3)', true).isDisplayed()).toBe(false);

@@ -100,18 +100,18 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a ui-sref="organizations.onc-atls"><i class="fa fa-caret-right" ng-if="vm.isActive('organizations.onc-atls')"></i> ONC-ATLs</a></li>
             </ul>
           </li>
-          <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])" class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
+          <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL'])" class="dropdown" uib-dropdown is-open="vm.reportsIsOpen">
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="reports-toggle" ng-class="{'admin-active' : vm.isActive('reports')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.reportsIsOpen">Reports</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="reports-toggle" id="reports-dropdown-menu">
               <li><a ui-sref="reports.listings()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.listings')"></i> Listings</a></li>
               <li><a ui-sref="reports.developers()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.developers')"></i> Developers</a></li>
               <li><a ui-sref="reports.products()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.products')"></i> Products</a></li>
               <li><a ui-sref="reports.versions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.versions')"></i> Versions</a></li>
-              <li><a ui-sref="reports.acbs()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.acbs')"></i> ONC-ACBs</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.atls()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.atls')"></i> ONC-ATLs</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="reports.acbs()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.acbs')"></i> ONC-ACBs</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a ui-sref="reports.atls()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.atls')"></i> ONC-ATLs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.announcements()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.announcements')"></i> Announcements</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.user-actions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.user-actions')"></i> User Actions</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])"><a ui-sref="reports.users()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.users')"></i> Users</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])"><a ui-sref="reports.user-actions()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.user-actions')"></i> User Actions</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="reports.api-keys()"><i class="fa fa-caret-right" ng-if="vm.isActive('reports.api-keys')"></i> API Keys</a></li>
             </ul>
           </li>

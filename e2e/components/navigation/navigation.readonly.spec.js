@@ -96,6 +96,22 @@ describe('when logged in', () => {
         expect(surveillanceOptions.has(exp)).toBe(true);
       });
     });
+    it('should have specific reports', () => {
+      const expected = [
+        'Developers',
+        'Listings',
+        'Products',
+        'User Actions',
+        'Users',
+        'Versions',
+      ];
+      component.reportsToggle.click();
+      const reports = new Set(component.reports.map((item) => item.getText()));
+      expect(reports.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
+      });
+    });
   });
   describe('as ROLE_ADMIN', () => {
     beforeEach(() => {

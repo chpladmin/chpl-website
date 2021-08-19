@@ -5,13 +5,16 @@ const states = [{
   component: 'chplReports',
   data: {
     title: 'CHPL Reports',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL'],
   },
 }, {
   name: 'reports.acbs',
   url: '/onc-acbs',
   component: 'chplReportsAcbs',
-  data: { title: 'CHPL Reports - ONC-ACBs' },
+  data: {
+    title: 'CHPL Reports - ONC-ACBs',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
+  },
 }, {
   name: 'reports.announcements',
   url: '/announcements',
@@ -34,7 +37,7 @@ const states = [{
   component: 'chplReportsAtls',
   data: {
     title: 'CHPL Reports - ONC-ATLs',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ATL'],
   },
 }, {
   name: 'reports.listings',
@@ -67,7 +70,7 @@ const states = [{
   component: 'chplReportsUserActions',
   data: {
     title: 'CHPL Reports - User Actions',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
   },
 }, {
   name: 'reports.users',
@@ -75,7 +78,7 @@ const states = [{
   component: 'chplReportsUsers',
   data: {
     title: 'CHPL Reports - Users',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
   },
 }, {
   name: 'reports.versions',
