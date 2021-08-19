@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Divider,
-  Fab,
   Table,
   TableBody,
   TableCell,
@@ -48,12 +47,6 @@ const useStyles = makeStyles({
   },
   fullWidth: {
     gridColumnEnd: 'span 2',
-  },
-  FabContainer: {
-    position: 'fixed',
-    zIndex: 1500,
-    bottom: '9em',
-    right: '1em',
   },
   pageLinks: {
     position: 'relative',
@@ -416,17 +409,6 @@ function ChplResourcesOverview() {
               ))}
             </TableBody>
           </Table>
-          <div >
-            <Fab
-              name="Back to the top"
-              className={classes.FabContainer}
-              color="primary"
-              id="main-content"
-              analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
-              variant="extended">Back To The Top
-              <ArrowUpwardIcon className={classes.iconSpacing} />
-            </Fab>
-          </div>
         </div>
       </div>
     </ThemeProvider>
