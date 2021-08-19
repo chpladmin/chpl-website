@@ -98,6 +98,14 @@ function ChplResourcesOverview() {
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div className={classes.pageLinks}>
+          {announcements.length > 0
+           && (
+             <InternalScrollButton
+               id="announcements"
+               analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Announcements' }}
+             >Announcements<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+           )
+          }
           <InternalScrollButton
             id="whatIsTheChpl"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'What is the CHPL' }}
@@ -123,38 +131,41 @@ function ChplResourcesOverview() {
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC-ACB and ONC-ATL information' }}
           >ONC-ACB and ONC-ATL Information<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
         </div>
-        <div className={classes.content}>
+        <div>
           {announcements.length > 0
-            && (
-              <>
-                <Typography variant="h2">
-                  Announcement
-                  {announcements.length > 1 ? 's' : ''}
-                </Typography>
-                <ul>
-                  {announcements.map((announcement) => (
-                    <li key={announcement.id}>
-                      <strong>{announcement.title}</strong>
-                      {announcement.text
-                        && (
-                          <>
-                            :
-                            {' '}
-                            {announcement.text}
-                          </>
-                        )}
-                      <br />
-                      Start date:
-                      {' '}
-                      {announcement.startDisplay}
-                      , End date:
-                      {' '}
-                      {announcement.endDisplay}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+           && (
+             <>
+               <span className="anchor-element">
+                 <a id="announcements" className="page-anchor" />
+               </span>
+               <Typography variant="h2">
+                 Announcement
+                 {announcements.length > 1 ? 's' : ''}
+               </Typography>
+               <ul>
+                 {announcements.map((announcement) => (
+                   <li key={announcement.id}>
+                     <strong>{announcement.title}</strong>
+                     {announcement.text
+                      && (
+                        <>
+                          :
+                          {' '}
+                          {announcement.text}
+                        </>
+                      )}
+                     <br />
+                     Start date:
+                     {' '}
+                     {announcement.startDisplay}
+                     , End date:
+                     {' '}
+                     {announcement.endDisplay}
+                   </li>
+                 ))}
+               </ul>
+             </>
+           )}
           <span className="anchor-element">
             <a id="whatIsTheChpl" className="page-anchor" />
           </span>
