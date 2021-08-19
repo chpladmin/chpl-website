@@ -113,6 +113,8 @@ export const ExpandableListComponent = {
       if (itemToReturn && itemToReturn.length > 0) {
         return itemToReturn[0];
       }
+      this.$log.error(`Could not find item with ${this.itemKey} '${key}' in:`, this.items);
+      return {};
     }
 
     _getOnChangeObject (action, selectedItem) {
