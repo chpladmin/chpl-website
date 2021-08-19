@@ -35,6 +35,7 @@ import SgConfirmation from './sg-confirmation';
 import SgProductCard from './sg-product-card';
 import SgProductCardContainer from './sg-product-card-container';
 import SgSearchBar from './sg-search-bar';
+import SgBacktToTheTop from './sg-back-to-the-top';
 
 
 function Elements() {
@@ -232,7 +233,7 @@ function Elements() {
                 </Typography>
               </Grid>
               <Grid item xs="6">
-                <SgConfirmation/>
+                <SgConfirmation />
                 <Typography>Confirmation Alerts are urgent interruptions, requiring acknowledgement, that inform the user about a situation. Click on the save button to show the dialog box for confirmation. Chpl interface should use confirmation on all saved, delete or cancels (in edit mode). </Typography>
               </Grid>
               <Grid item xs="6">
@@ -335,17 +336,17 @@ function Elements() {
       <br />
       {/* Cards*/}
       <div>
-      <Typography gutterButton variant="h5">
-        CHPL Dropdown Filters:
-      </Typography>
-      <br />
-      <Card>
-        <CardContent >
-          <div>
-            <ChplDefaultFilter />
-          </div>
-        </CardContent>
-      </Card>
+        <Typography gutterButton variant="h5">
+          CHPL Dropdown Filters:
+        </Typography>
+        <br />
+        <Card>
+          <CardContent >
+            <div>
+              <ChplDefaultFilter />
+            </div>
+          </CardContent>
+        </Card>
       </div>
       <br />
       {/* Table*/}
@@ -371,15 +372,15 @@ function Elements() {
       <br />
       {/*>Chpl Forms & TextField*/}
       <div>
-      <Typography gutterBottom variant="h5">Chpl Forms & TextField:</Typography>
-      <ChplDefaultForm />
-      <Typography gutterBottom variant="body1">All chpl forms within edit mode should have ChplActionBar applied to the bottoms of the page. A real-life example is shown in the user management section of CHPL.</Typography>
+        <Typography gutterBottom variant="h5">Chpl Forms & TextField:</Typography>
+        <ChplDefaultForm />
+        <Typography gutterBottom variant="body1">All chpl forms within edit mode should have ChplActionBar applied to the bottoms of the page. A real-life example is shown in the user management section of CHPL.</Typography>
       </div>
       {/*End of >Chpl Forms & TextField*/}
       <br />
       {/*Accordions*/}
       <div>
-        <ChplAccordion/>
+        <ChplAccordion />
       </div>
       {/*End of Accordions*/}
       <br />
@@ -387,14 +388,14 @@ function Elements() {
       <div>
         <Typography gutterBottom variant="h5">Action Bar:</Typography>
         <Typography gutterBottom variant="body1">View the bottom of the screen to see the action bar. The action bar will have a cancel & save button as default. It some occasions there will be a delete button.</Typography>
-        <ChplActionBar/>
+        <ChplActionBar />
       </div>
       {/*End of App Bar*/}
       <br />
       {/*Log In Module*/}
       <div>
         <Typography variant="h5">Log In Module:</Typography>
-        <ChplAdministratorLogin/>
+        <ChplAdministratorLogin />
       </div>
 
       {/*End Log In Module*/}
@@ -441,10 +442,10 @@ function Elements() {
           </Grid>
         </CardContent>
       </Card>
-      <br/>
+      <br />
       <Typography gutterBottom variant="body1">CHPL Template is shown below.</Typography>
       <div>
-       <ChplTemplate/>
+        <ChplTemplate />
       </div>
       {/*End of Spacing and Grid*/}
       <br />
@@ -502,8 +503,11 @@ function Elements() {
       <br />
       <br />
       <br />
-      <SgSearchBar/>
-      <SgProductCardContainer/>
+      <div>
+        <SgSearchBar />
+        <SgProductCardContainer />
+      </div>
+      <SgBacktToTheTop />
     </div>
   );
 }
