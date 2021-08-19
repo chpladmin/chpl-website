@@ -43,7 +43,6 @@ const InternalScrollButton = (props) => {
   return (
     <Button
       onClick={handleClick}
-      aria-label={`Scroll display to ${children}`}
       color="primary"
       className={classes.noButtonWrap}
     >
@@ -55,7 +54,6 @@ const InternalScrollButton = (props) => {
 export default InternalScrollButton;
 
 InternalScrollButton.propTypes = {
-  name: string.isRequired,
   id: string.isRequired,
   analytics: analyticsConfig,
 };

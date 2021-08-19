@@ -110,37 +110,29 @@ function ChplResourcesOverview() {
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div className={classes.pageLinks}>
           <InternalScrollButton
-
-            name="What is the CHPL"
             id="whatIsTheChpl"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'What is the CHPL' }}
           >What is the CHPL<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
           <InternalScrollButton
-            name="Recommended Web Browsers"
             id="recommendedWebBrowsers"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Recommended Web Browsers' }}
           >Recommended Web Browsers<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
           <InternalScrollButton
-            name="Using the CHPL Website"
             id="usingTheChplWebsite"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Using the CHPL Website' }}
           >Using the Chpl Website<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
           <InternalScrollButton
-            name="ONC Certification Program"
             id="oncCertificationProgram"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC Certification Program' }}
           >ONC Certification Program<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
           <InternalScrollButton
-            name="For EHR Developers"
             id="forEhrDevelopers"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'For EHR Developers' }}
           >For EHR Developers<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
           <InternalScrollButton
-            name="ONC-ACB and ONC-ATL information"
             id="oncacbAndAtlInformation"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC-ACB and ONC-ATL information' }}
           >ONC-ACB and ONC-ATL Information<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
-
         </div>
         <div className={classes.content}>
           {announcements.length > 0
