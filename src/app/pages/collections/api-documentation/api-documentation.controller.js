@@ -20,7 +20,7 @@
           predicate: 'serviceBaseUrlList', display: 'Service Base URL List', sortType: 'single', transformFn: vm.criteriaUrlTransform,
         },
         {
-          predicate: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL', sortType: 'single', transformFn: vm.disclosuresTransform,
+          predicate: 'mandatoryDisclosures', display: 'Mandatory Disclosures', sortType: 'single', transformFn: vm.disclosuresTransform,
         },
       ];
       vm.filters = ['certificationStatus'];
