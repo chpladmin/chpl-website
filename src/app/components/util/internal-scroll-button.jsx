@@ -3,7 +3,7 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import { string } from 'prop-types';
+import { node, string } from 'prop-types';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { analyticsConfig } from '../../shared/prop-types';
@@ -18,7 +18,7 @@ const InternalScrollButton = (props) => {
   /* eslint-disable react/destructuring-assignment */
   const $analytics = getAngularService('$analytics');
   const [analytics] = useState(props.analytics);
-  const {children} = props;
+  const { children } = props;
   const [id] = useState(props.id);
   const [target, setTarget] = useState('');
   /* eslint-enable react/destructuring-assignment */
@@ -55,6 +55,7 @@ export default InternalScrollButton;
 
 InternalScrollButton.propTypes = {
   id: string.isRequired,
+  children: node.isRequired,
   analytics: analyticsConfig,
 };
 

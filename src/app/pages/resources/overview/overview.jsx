@@ -10,14 +10,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import {
   ChplLink,
   InternalScrollButton,
 } from '../../../components/util';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import NavigationIcon from '@material-ui/icons/Navigation';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { useFetchAcbs } from '../../../api/acbs';
 import { useFetchAtls } from '../../../api/atls';
@@ -103,40 +101,60 @@ function ChplResourcesOverview() {
              <InternalScrollButton
                id="announcements"
                analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Announcements' }}
-             >Announcements<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
-           )
-          }
+             >
+               Announcements
+               <ArrowForwardIcon className={classes.iconSpacing} />
+             </InternalScrollButton>
+           )}
           <InternalScrollButton
             id="whatIsTheChpl"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'What is the CHPL' }}
-          >What is the CHPL<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          >
+            What is the CHPL
+            <ArrowForwardIcon className={classes.iconSpacing} />
+          </InternalScrollButton>
           <InternalScrollButton
             id="recommendedWebBrowsers"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Recommended Web Browsers' }}
-          >Recommended Web Browsers<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          >
+            Recommended Web Browsers
+            <ArrowForwardIcon className={classes.iconSpacing} />
+          </InternalScrollButton>
           <InternalScrollButton
             id="usingTheChplWebsite"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Using the CHPL Website' }}
-          >Using the Chpl Website<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          >
+            Using the Chpl Website
+            <ArrowForwardIcon className={classes.iconSpacing} />
+          </InternalScrollButton>
           <InternalScrollButton
             id="oncCertificationProgram"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC Certification Program' }}
-          >ONC Certification Program<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          >
+            ONC Certification Program
+            <ArrowForwardIcon className={classes.iconSpacing} />
+          </InternalScrollButton>
           <InternalScrollButton
             id="forEhrDevelopers"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'For EHR Developers' }}
-          >For EHR Developers<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          >
+            For EHR Developers
+            <ArrowForwardIcon className={classes.iconSpacing} />
+          </InternalScrollButton>
           <InternalScrollButton
             id="oncacbAndAtlInformation"
             analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC-ACB and ONC-ATL information' }}
-          >ONC-ACB and ONC-ATL Information<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          >
+            ONC-ACB and ONC-ATL Information
+            <ArrowForwardIcon className={classes.iconSpacing} />
+          </InternalScrollButton>
         </div>
         <div>
           {announcements.length > 0
            && (
              <>
                <span className="anchor-element">
-                 <a id="announcements" className="page-anchor" />
+                 <span id="announcements" className="page-anchor" />
                </span>
                <Typography variant="h2">
                  Announcement
@@ -167,7 +185,7 @@ function ChplResourcesOverview() {
              </>
            )}
           <span className="anchor-element">
-            <a id="whatIsTheChpl" className="page-anchor" />
+            <span id="whatIsTheChpl" className="page-anchor" />
           </span>
           <Typography gutterBottom variant="h2">
             What is the CHPL?
@@ -188,7 +206,7 @@ function ChplResourcesOverview() {
           </Typography>
           <Divider />
           <span className="anchor-element">
-            <a id="recommendedWebBrowsers" className="page-anchor" />
+            <span id="recommendedWebBrowsers" className="page-anchor" />
           </span>
           <Typography gutterBottom variant="h2">
             Recommended Web Browsers
@@ -204,7 +222,7 @@ function ChplResourcesOverview() {
           </ul>
           <Divider />
           <span className="anchor-element">
-            <a id="usingTheChplWebsite" className="page-anchor" />
+            <span id="usingTheChplWebsite" className="page-anchor" />
           </span>
           <Typography gutterBottom variant="h2">
             Using the CHPL Website
@@ -213,13 +231,13 @@ function ChplResourcesOverview() {
             How do I use the CHPL to view certified health information technology?
           </Typography>
           <Typography gutterBottom>
-            To search for certified health information technology, type a developer name, product name, CHPL Product ID, or ONC-ACB Certification ID into the main search area. Alternatively, you may choose to browse all certified products by clicking the 'Browse all' option. Filters are also available to search for product listings matching specific criteria (e.g., certification criteria, clinical quality measurements, etc.). The CHPL will display your search results based on the information entered.
+            To search for certified health information technology, type a developer name, product name, CHPL Product ID, or ONC-ACB Certification ID into the main search area. Alternatively, you may choose to browse all certified products by clicking the &apos;Browse all&apos; option. Filters are also available to search for product listings matching specific criteria (e.g., certification criteria, clinical quality measurements, etc.). The CHPL will display your search results based on the information entered.
           </Typography>
           <Typography variant="h3">
             How do I create a CMS EHR Certification ID?
           </Typography>
           <Typography gutterBottom>
-            To create a CMS EHR Certification ID, search for the products that you would like to use your CMS Certification ID. Once you have located the product listings you would like to use, click the yellow "+CertID" button to the right of the product listing on the search results page to add to the 'CMS ID Creator' widget at the top of the page. Once you have entered all of the desired product listings, you will be able to generate a CMS EHR Certification ID by clicking the 'Get EHR Certification ID' button, if the combination of product listings selected meets the program requirements.
+            To create a CMS EHR Certification ID, search for the products that you would like to use your CMS Certification ID. Once you have located the product listings you would like to use, click the yellow &quot;+CertID&quot; button to the right of the product listing on the search results page to add to the &apos;CMS ID Creator&apos; widget at the top of the page. Once you have entered all of the desired product listings, you will be able to generate a CMS EHR Certification ID by clicking the &apos;Get EHR Certification ID&apos; button, if the combination of product listings selected meets the program requirements.
           </Typography>
           <Typography gutterBottom variant="h3">
             What is the difference between an ONC-ACB Certification ID and CHPL Product Number (CHPL ID)?
@@ -232,7 +250,7 @@ function ChplResourcesOverview() {
             (e.g.,
             {' '}
             <code>CHP-022989</code>
-            ). Products certified for the first time on the new "open data" CHPL (those certified after March 28, 2016) have CHPL IDs in the following format:
+            ). Products certified for the first time on the new &quot;open data&quot; CHPL (those certified after March 28, 2016) have CHPL IDs in the following format:
             {' '}
             <code>Edition . ATL . ACB . Developer . Product . Version . ICS . ReliedUponSoftware . Date</code>
             {' '}
@@ -248,13 +266,13 @@ function ChplResourcesOverview() {
             How do I compare products?
           </Typography>
           <Typography gutterBottom>
-            To compare product listings, please navigate to the product listings you would like to compare and use the green '+Compare' button to the right of the product listing information on the search results page or in the upper right-hand corner of the product listing detail page to add the product listings to the 'Compare' module. Once you have identified all the product listings you would like to compare, click the blue 'Compare Products' button in the module (pops out once at least one product listing is selected) to view the products side-by-side.
+            To compare product listings, please navigate to the product listings you would like to compare and use the green &apos;+Compare&apos; button to the right of the product listing information on the search results page or in the upper right-hand corner of the product listing detail page to add the product listings to the &apos;Compare&apos; module. Once you have identified all the product listings you would like to compare, click the blue &apos;Compare Products&apos; button in the module (pops out once at least one product listing is selected) to view the products side-by-side.
           </Typography>
           <Typography gutterBottom variant="h3">
             How would I report a problem or concern with my certified health information technology?
           </Typography>
           <Typography gutterBottom>
-            Errors or questions regarding product listings should be directed based on the table below. A list of ONC-ACB contact information can be found on ONC's
+            Errors or questions regarding product listings should be directed based on the table below. A list of ONC-ACB contact information can be found on ONC&apos;s
             {' '}
             <a href="https://www.healthit.gov/topic/certification-ehrs/certification-process">Certification Bodies</a>
             {' '}
@@ -275,7 +293,7 @@ function ChplResourcesOverview() {
               <TableRow>
                 <TableCell>Eligible Professionals &amp; Eligible Hospital complaints regarding an EHR product</TableCell>
                 <TableCell>
-                  Please refer to the ONC Health IT Certification Program's
+                  Please refer to the ONC Health IT Certification Program&apos;s
                   <a href="https://www.healthit.gov/topic/certified-health-it-complaint-process">Provider Complaint Process</a>
                 </TableCell>
               </TableRow>
@@ -291,7 +309,7 @@ function ChplResourcesOverview() {
                 <TableCell>Other comments or complaints</TableCell>
                 <TableCell>
                   Please use
-                  <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC's Health IT Feedback Form</a>
+                  <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC&apos;s Health IT Feedback Form</a>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -300,12 +318,12 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             If the ONC-ACB cannot or does not address your issue, please use
             {' '}
-            <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC's Health IT Feedback Form</a>
+            <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC&apos;s Health IT Feedback Form</a>
             .
           </Typography>
           <Divider />
           <span className="anchor-element">
-            <a id="oncCertificationProgram" className="page-anchor" />
+            <span id="oncCertificationProgram" className="page-anchor" />
           </span>
           <Typography gutterBottom variant="h2">
             ONC Certification Program
@@ -355,7 +373,7 @@ function ChplResourcesOverview() {
           </Typography>
           <Divider />
           <span className="anchor-element">
-            <a id="forEhrDevelopers" className="page-anchor" />
+            <span id="forEhrDevelopers" className="page-anchor" />
           </span>
           <Typography gutterBottom variant="h2">
             For EHR Developers
@@ -374,7 +392,7 @@ function ChplResourcesOverview() {
           </Typography>
           <Divider />
           <span className="anchor-element">
-            <a id="oncacbAndAtlInformation" className="page-anchor" />
+            <span id="oncacbAndAtlInformation" className="page-anchor" />
           </span>
           <Typography gutterBottom variant="h2">
             ONC-ACB and ONC-ATL Information
