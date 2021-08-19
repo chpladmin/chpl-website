@@ -38,19 +38,15 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr 4fr',
     },
   },
-  content: {
-    display: 'grid',
-    gap: '8px',
-    alignItems: 'start',
-    gridTemplateColumns: '1fr',
-    overflowWrap: 'anywhere',
-  },
   fullWidth: {
     gridColumnEnd: 'span 2',
   },
   pageLinks: {
     position: 'relative',
     height: 'auto',
+    display: 'grid',
+    gap: '8px',
+    justifyItems: 'start',
     [theme.breakpoints.up('md')]: {
       position: 'sticky',
       height: '215px',
