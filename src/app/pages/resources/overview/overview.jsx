@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Divider,
+  Fab,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +16,9 @@ import {
   ChplLink,
   InternalScrollButton,
 } from '../../../components/util';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import NavigationIcon from '@material-ui/icons/Navigation';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { useFetchAcbs } from '../../../api/acbs';
 import { useFetchAtls } from '../../../api/atls';
@@ -28,21 +32,42 @@ const useStyles = makeStyles({
   pageBody: {
     display: 'grid',
     gap: '16px',
-    gridTemplateColumns: '1fr 4fr',
+    gridTemplateColumns: '1fr',
     padding: '32px',
     backgroundColor: '#f9f9f9',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr 4fr',
+    },
   },
   content: {
     display: 'grid',
-    gap: '32px',
+    gap: '8px',
     alignItems: 'start',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '7fr 5fr',
-    },
+    overflowWrap: 'anywhere',
   },
   fullWidth: {
     gridColumnEnd: 'span 2',
+  },
+  FabContainer: {
+    position: 'fixed',
+    zIndex: 1500,
+    bottom: '9em',
+    right: '1em',
+  },
+  pageLinks: {
+    position: 'relative',
+    height: 'auto',
+    [theme.breakpoints.up('md')]: {
+      position: 'sticky',
+      height: '215px',
+      top: '100px',
+      borderRight: '1px solid #c2c6ca',
+      marginRight: '16px',
+    },
+  },
+  iconSpacing: {
+    marginLeft: '4px',
   },
 });
 
@@ -83,54 +108,42 @@ function ChplResourcesOverview() {
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <ul>
-            <li>
-              <InternalScrollButton
-                name="What is the CHPL"
-                id="whatIsTheChpl"
-                analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'What is the CHPL' }}
-              />
-            </li>
-            <li>
-              <InternalScrollButton
-                name="Recommended Web Browsers"
-                id="recommendedWebBrowsers"
-                analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Recommended Web Browsers' }}
-              />
-            </li>
-            <li>
-              <InternalScrollButton
-                name="Using the CHPL Website"
-                id="usingTheChplWebsite"
-                analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Using the CHPL Website' }}
-              />
-            </li>
-            <li>
-              <InternalScrollButton
-                name="ONC Certification Program"
-                id="oncCertificationProgram"
-                analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC Certification Program' }}
-              />
-            </li>
-            <li>
-              <InternalScrollButton
-                name="For EHR Developers"
-                id="forEhrDevelopers"
-                analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'For EHR Developers' }}
-              />
-            </li>
-            <li>
-              <InternalScrollButton
-                name="ONC-ACB and ONC-ATL information"
-                id="oncacbAndAtlInformation"
-                analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC-ACB and ONC-ATL information' }}
-              />
-            </li>
-          </ul>
+        <div className={classes.pageLinks}>
+          <InternalScrollButton
+
+            name="What is the CHPL"
+            id="whatIsTheChpl"
+            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'What is the CHPL' }}
+          >What is the CHPL<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          <InternalScrollButton
+            name="Recommended Web Browsers"
+            id="recommendedWebBrowsers"
+            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Recommended Web Browsers' }}
+          >Recommended Web Browsers<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          <InternalScrollButton
+            name="Using the CHPL Website"
+            id="usingTheChplWebsite"
+            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'Using the CHPL Website' }}
+          >Using the Chpl Website<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          <InternalScrollButton
+            name="ONC Certification Program"
+            id="oncCertificationProgram"
+            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC Certification Program' }}
+          >ONC Certification Program<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          <InternalScrollButton
+            name="For EHR Developers"
+            id="forEhrDevelopers"
+            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'For EHR Developers' }}
+          >For EHR Developers<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+          <InternalScrollButton
+            name="ONC-ACB and ONC-ATL information"
+            id="oncacbAndAtlInformation"
+            analytics={{ event: 'Jump to Overview Section', category: 'Navigation', label: 'ONC-ACB and ONC-ATL information' }}
+          >ONC-ACB and ONC-ATL Information<ArrowForwardIcon className={classes.iconSpacing} /></InternalScrollButton>
+
         </div>
-        <div>
-          { announcements.length > 0
+        <div className={classes.content}>
+          {announcements.length > 0
             && (
               <>
                 <Typography variant="h2">
@@ -140,19 +153,19 @@ function ChplResourcesOverview() {
                 <ul>
                   {announcements.map((announcement) => (
                     <li key={announcement.id}>
-                      <strong>{ announcement.title}</strong>
+                      <strong>{announcement.title}</strong>
                       {announcement.text
-                       && (
-                         <>
-                           :
-                           {' '}
-                           {announcement.text}
-                         </>
-                       )}
+                        && (
+                          <>
+                            :
+                            {' '}
+                            {announcement.text}
+                          </>
+                        )}
                       <br />
                       Start date:
                       {' '}
-                      { announcement.startDisplay }
+                      {announcement.startDisplay}
                       , End date:
                       {' '}
                       {announcement.endDisplay}
@@ -164,7 +177,7 @@ function ChplResourcesOverview() {
           <span className="anchor-element">
             <a id="whatIsTheChpl" className="page-anchor" />
           </span>
-          <Typography variant="h2">
+          <Typography gutterBottom variant="h2">
             What is the CHPL?
           </Typography>
           <Typography gutterBottom>
@@ -181,16 +194,11 @@ function ChplResourcesOverview() {
             <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration &amp; Attestation Page</a>
             .
           </Typography>
-          <InternalScrollButton
-            name="Back to the top"
-            id="main-content"
-            analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
-          />
           <Divider />
           <span className="anchor-element">
             <a id="recommendedWebBrowsers" className="page-anchor" />
           </span>
-          <Typography variant="h2">
+          <Typography gutterBottom variant="h2">
             Recommended Web Browsers
           </Typography>
           <Typography gutterBottom>
@@ -202,31 +210,26 @@ function ChplResourcesOverview() {
             <li>Microsoft Edge (two most recent major versions)</li>
             <li>Mozilla Firefox (latest version)</li>
           </ul>
-          <InternalScrollButton
-            name="Back to the top"
-            id="main-content"
-            analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
-          />
           <Divider />
           <span className="anchor-element">
             <a id="usingTheChplWebsite" className="page-anchor" />
           </span>
-          <Typography variant="h2">
+          <Typography gutterBottom variant="h2">
             Using the CHPL Website
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             How do I use the CHPL to view certified health information technology?
           </Typography>
           <Typography gutterBottom>
             To search for certified health information technology, type a developer name, product name, CHPL Product ID, or ONC-ACB Certification ID into the main search area. Alternatively, you may choose to browse all certified products by clicking the 'Browse all' option. Filters are also available to search for product listings matching specific criteria (e.g., certification criteria, clinical quality measurements, etc.). The CHPL will display your search results based on the information entered.
           </Typography>
-          <Typography variant="h3">
+          <Typography variant="h5">
             How do I create a CMS EHR Certification ID?
           </Typography>
           <Typography gutterBottom>
             To create a CMS EHR Certification ID, search for the products that you would like to use your CMS Certification ID. Once you have located the product listings you would like to use, click the yellow "+CertID" button to the right of the product listing on the search results page to add to the 'CMS ID Creator' widget at the top of the page. Once you have entered all of the desired product listings, you will be able to generate a CMS EHR Certification ID by clicking the 'Get EHR Certification ID' button, if the combination of product listings selected meets the program requirements.
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             What is the difference between an ONC-ACB Certification ID and CHPL Product Number (CHPL ID)?
           </Typography>
           <Typography gutterBottom>
@@ -249,13 +252,13 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             ONC-ACB Certification IDs are generated by each ONC-ACB and may not have a consistent format. In addition, a single ONC-ACB Certification ID may reference more than one certified product.
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             How do I compare products?
           </Typography>
           <Typography gutterBottom>
             To compare product listings, please navigate to the product listings you would like to compare and use the green '+Compare' button to the right of the product listing information on the search results page or in the upper right-hand corner of the product listing detail page to add the product listings to the 'Compare' module. Once you have identified all the product listings you would like to compare, click the blue 'Compare Products' button in the module (pops out once at least one product listing is selected) to view the products side-by-side.
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             How would I report a problem or concern with my certified health information technology?
           </Typography>
           <Typography gutterBottom>
@@ -301,25 +304,21 @@ function ChplResourcesOverview() {
               </TableRow>
             </TableBody>
           </Table>
+          <br />
           <Typography gutterBottom>
             If the ONC-ACB cannot or does not address your issue, please use
             {' '}
             <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC's Health IT Feedback Form</a>
             .
           </Typography>
-          <InternalScrollButton
-            name="Back to the top"
-            id="main-content"
-            analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
-          />
           <Divider />
           <span className="anchor-element">
             <a id="oncCertificationProgram" className="page-anchor" />
           </span>
-          <Typography variant="h2">
+          <Typography gutterBottom variant="h2">
             ONC Certification Program
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             How does the certification process work?
           </Typography>
           <Typography gutterBottom>
@@ -332,7 +331,7 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             Certification criteria establish the required capabilities, standards, and implementation specifications that health information technology needs to meet in order to become certified under the ONC Health IT Certification Program. Certified health IT products can be used for participation in CMS quality reporting programs and State Promoting Interoperability Programs.
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             Which Certification Edition do I need to use to attest for Promoting Interoperability Programs?
           </Typography>
           <Typography gutterBottom>
@@ -341,7 +340,7 @@ function ChplResourcesOverview() {
             <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration and Attestation Page</a>
             .
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             What are clinical quality measures (CQMs)?
           </Typography>
           <Typography gutterBottom>
@@ -353,7 +352,7 @@ function ChplResourcesOverview() {
             <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html">CMS Clinical Quality Measures Basics page</a>
             .
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             What are electronic clinical quality measures (eCQMs)?
           </Typography>
           <Typography gutterBottom>
@@ -362,19 +361,14 @@ function ChplResourcesOverview() {
             <a href="https://ecqi.healthit.gov/">eCQI Resource Center</a>
             .
           </Typography>
-          <InternalScrollButton
-            name="Back to the top"
-            id="main-content"
-            analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
-          />
           <Divider />
           <span className="anchor-element">
             <a id="forEhrDevelopers" className="page-anchor" />
           </span>
-          <Typography variant="h2">
+          <Typography gutterBottom variant="h2">
             For EHR Developers
           </Typography>
-          <Typography variant="h3">
+          <Typography gutterBottom variant="h5">
             How can a product be added to the CHPL?
           </Typography>
           <Typography gutterBottom>
@@ -386,16 +380,11 @@ function ChplResourcesOverview() {
             <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program page</a>
             .
           </Typography>
-          <InternalScrollButton
-            name="Back to the top"
-            id="main-content"
-            analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
-          />
           <Divider />
           <span className="anchor-element">
             <a id="oncacbAndAtlInformation" className="page-anchor" />
           </span>
-          <Typography variant="h2">
+          <Typography gutterBottom variant="h2">
             ONC-ACB and ONC-ATL Information
           </Typography>
           <Typography gutterBottom>
@@ -411,36 +400,41 @@ function ChplResourcesOverview() {
               </TableRow>
             </TableHead>
             <TableBody>
-              { getOrgs(acbQuery, 'acbs').map((acb) => (
+              {getOrgs(acbQuery, 'acbs').map((acb) => (
                 <TableRow key={acb.id}>
                   <TableCell>ONC-ACB</TableCell>
                   <TableCell>{acb.name}</TableCell>
                   <TableCell>{acb.acbCode}</TableCell>
                   <TableCell>
                     {acb.website
-                     && <ChplLink href={acb.website} />}
+                      && <ChplLink href={acb.website} />}
                   </TableCell>
                 </TableRow>
               ))}
-              { getOrgs(atlQuery, 'atls').map((atl) => (
+              {getOrgs(atlQuery, 'atls').map((atl) => (
                 <TableRow key={atl.id}>
                   <TableCell>ONC-ATL</TableCell>
                   <TableCell>{atl.name}</TableCell>
                   <TableCell>{atl.atlCode}</TableCell>
                   <TableCell>
                     {atl.website
-                     && <ChplLink href={atl.website} />}
+                      && <ChplLink href={atl.website} />}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <InternalScrollButton
-            name="Back to the top"
-            id="main-content"
-            analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
-          />
-          <Divider />
+          <div >
+            <Fab
+              name="Back to the top"
+              className={classes.FabContainer}
+              color="primary"
+              id="main-content"
+              analytics={{ event: 'Jump to top of Overview', category: 'Navigation' }}
+              variant="extended">Back To The Top
+              <ArrowUpwardIcon className={classes.iconSpacing} />
+            </Fab>
+          </div>
         </div>
       </div>
     </ThemeProvider>

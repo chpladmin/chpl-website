@@ -10,7 +10,7 @@
     }
 
     .info {
-        border-top: "1px solid rgba(59, 65, 81, 0.3)";
+        border-top: 1px solid rgba(59, 65, 81, .3);
         padding-top: 32px;
     }
 
@@ -67,6 +67,15 @@
         background: #c44f65;
     }
 
+    .opblock.opblock-deprecated {
+        opacity: 1;
+    }
+
+    .opblock.opblock-deprecated .opblock-summary-method {
+        background: #eeeeee;
+        color: #3b495f;
+    }
+
     pre {
         background-color: transparent;
         border: none;
@@ -78,6 +87,6 @@
 
     .wrapper {
         max-width: none;
-        padding: "0px 8px";
+        padding: 0 8px;
     }
 }
