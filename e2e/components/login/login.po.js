@@ -18,7 +18,7 @@ class LoginComponent {
   }
 
   toggleLoginComponent() {
-    $(this.elements.loginToggle).scrollAndClick();
+    $(this.elements.loginToggle).click();
   }
 
   logIn(user) {
@@ -38,7 +38,7 @@ class LoginComponent {
     }
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
-    btn.scrollAndClick();
+    btn.click();
     if (!usingLegacy) {
       this.toggleLoginComponent();
     }
@@ -50,7 +50,7 @@ class LoginComponent {
     if (!($(this.elements.logout).isDisplayed())) {
       this.toggleLoginComponent();
     }
-    $(this.elements.logout).scrollAndClick();
+    $(this.elements.logout).click();
     browser.waitUntil(() => this.getLoggedInUserName() === 'Administrator Login');
     this.toggleLoginComponent();
   }
