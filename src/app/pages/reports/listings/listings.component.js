@@ -748,8 +748,8 @@ const ReportsListingsComponent = {
           { key: 'sedReportFileLocation', display: 'SED Report File Location' },
           { key: 'sedTesting', display: 'SED Tested' },
           { key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date' },
-          { key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures' },
-          { key: 'mandatoryDisclosures', display: 'Mandatory Disclosures' },
+          { key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL' },
+          { key: 'mandatoryDisclosures', display: 'Mandatory Disclosures URL' },
           { key: 'rwtPlansUrl', display: 'Real World Testing Plans URL' },
           { key: 'rwtPlansCheckDate', display: 'Real World Testing Plans Last Completeness Check Date', filter: 'date' },
           { key: 'rwtResultsUrl', display: 'Real World Testing Results URL' },
@@ -1030,8 +1030,7 @@ const ReportsListingsComponent = {
     shouldShowChange(item, key) {
       switch (key) {
         case 'transparencyAttestationUrl':
-          return item.originalData.mandatoryDisclosures === undefined
-          break;
+          return item.originalData.mandatoryDisclosures === undefined;
         default:
           return true;
       }
