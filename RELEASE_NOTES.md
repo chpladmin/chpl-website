@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 11.19.0
+_23 August 2021_
+
+### Features
+* Add new Non-conformity close date field to CHPL
+* Indicate when API Key registration email was not sent
+* Report errors on user invitation failure
+* Enable ONC_STAFF users to get to allowed reports
+* Allow download of SVAP Reports for authorized users
+
+### User Interface Updates
+* Use updated link for ONC "Contact Us" form
+* Update description of Surveillance and Non-conformity types in hover text
+
+### Bug Fixes
+* Allow removal of invalid Criteria objects
+
+### Flagged Bug Fixes
+* Stop displaying invalid Test Standards
+
+---
+
 ## Version 11.18.0
 _9 August 2021_
 
