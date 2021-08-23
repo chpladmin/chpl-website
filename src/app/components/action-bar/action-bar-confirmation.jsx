@@ -11,7 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {
-  func,
+  func, string,
 } from 'prop-types';
 
 import CheckIcon from '@material-ui/icons/Check';
@@ -56,7 +56,7 @@ function ChplActionBarConfirmation(props) {
       <Divider />
       <DialogContent>
         <DialogContentText id="alert-dialog-description" className={classes.dialogContent}>
-          Are you sure you want to delete this?
+          { props.pendingMessage }
         </DialogContentText>
       </DialogContent>
       <Divider />
@@ -80,4 +80,5 @@ export default ChplActionBarConfirmation;
 
 ChplActionBarConfirmation.propTypes = {
   dispatch: func.isRequired,
+  pendingMessage: string.isRequired,
 };

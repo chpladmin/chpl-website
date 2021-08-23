@@ -28,6 +28,7 @@ describe('the ChplActionBar component', () => {
     it('should call the callback for cancel', async () => {
       hocMock.dispatch.mockClear();
       userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+      userEvent.click(screen.getByRole('button', { name: /Yes/i }));
 
       await waitFor(() => {
         expect(hocMock.dispatch).toHaveBeenCalledWith('cancel');

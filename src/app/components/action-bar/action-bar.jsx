@@ -33,6 +33,8 @@ const useStyles = makeStyles(() => ({
 
 function ChplActionBar(props) {
   /* eslint-disable react/destructuring-assignment */
+  const [pendingAction, setPendingAction] = useState('');
+  const [pendingMessage, setPendingMessage] = useState('');
   const [canDelete] = useState(props.canDelete);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled] = useState(props.isDisabled);
@@ -48,15 +50,24 @@ function ChplActionBar(props) {
     }
   };
 
+  const confirmCancel = () => {
+    setIsConfirming(true);
+    setPendingAction('cancel');
+    setPendingMessage('Are you sure you want to cancel?');
+  };
+
   const confirmDelete = () => {
     setIsConfirming(true);
+    setPendingAction('delete');
+    setPendingMessage('Are you sure you want to delete this?');
   };
 
   const handleConfirmation = (response) => {
-    if (response === 'yes') {
-      act('delete');
+    if (response === 'yes' && pendingAction) {
+      act(pendingAction);
     }
     setIsConfirming(false);
+    setPendingAction('');
   };
 
   return (
@@ -66,6 +77,7 @@ function ChplActionBar(props) {
           && (
           <ChplActionBarConfirmation
             dispatch={handleConfirmation}
+            pendingMessage={pendingMessage}
           />
           )}
         { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
@@ -147,7 +159,7 @@ function ChplActionBar(props) {
             <Button
               id="action-bar-cancel"
               variant="outlined"
-              onClick={() => act('cancel')}
+              onClick={() => confirmCancel()}
               className={classes.buttons}
             >
               Cancel

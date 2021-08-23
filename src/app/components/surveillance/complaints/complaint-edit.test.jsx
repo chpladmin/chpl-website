@@ -97,6 +97,7 @@ describe('the ChplComplaintEdit component', () => {
     describe('when acting from the action bar', () => {
       it('should allow cancellation', async () => {
         userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+        userEvent.click(screen.getByRole('button', { name: /Yes/i }));
 
         await waitFor(() => {
           expect(mock.hoc.dispatch).toHaveBeenCalledWith('close', undefined);
