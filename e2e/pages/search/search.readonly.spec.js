@@ -54,7 +54,7 @@ describe('the search page', () => {
           });
 
           it('should have the correct link to the page', () => {
-            expect(page.homeSearchPageButtons(button.title).getAttribute('href')).toBe(browser.options.baseUrl + button.link);
+            expect(page.homeSearchPageButtons(button.title).getAttribute('href')).toBe(button.link);
           });
         });
       });

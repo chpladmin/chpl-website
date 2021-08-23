@@ -17,11 +17,9 @@
           <tbody>
             <tr>
               <th scope="row">Type</th>
-              <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Status</th>
-              <td>{{ noncon.status.name }}</td>
+              <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ?
+                'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType
+                }}</td>
             </tr>
             <tr>
               <th scope="row">Date of Determination</th>
@@ -46,6 +44,10 @@
               <th scope="row">Corrective Action Plan must complete date</th>
               <td ng-if="noncon.capMustCompleteDate">{{ noncon.capMustCompleteDate | date : 'mediumDate' : 'UTC' }}</td>
               <td ng-if="!noncon.capMustCompleteDate">N/A</td>
+            </tr>
+            <tr>
+              <th scope="row">Non-conformity Status</th>
+              <td >{{ noncon.nonconformityStatus }}</td>
             </tr>
             <tr>
               <th scope="row">Sites passed / Total sites</th>
