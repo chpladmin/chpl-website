@@ -35,7 +35,6 @@ import SgConfirmation from './sg-confirmation';
 import SgProductCard from './sg-product-card';
 import SgProductCardContainer from './sg-product-card-container';
 import SgSearchBar from './sg-search-bar';
-import SgBacktToTheTop from './sg-back-to-the-top';
 
 
 function Elements() {
@@ -507,7 +506,6 @@ function Elements() {
         <SgSearchBar />
         <SgProductCardContainer />
       </div>
-      <SgBacktToTheTop />
     </div>
   );
 }

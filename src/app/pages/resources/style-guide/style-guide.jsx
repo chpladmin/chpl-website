@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import SgBackToTop from './sg-back-to-the-top';
 import Elements from './elements';
 import theme from '../../../themes/theme';
 
@@ -37,7 +38,8 @@ function ChplStyleGuide() {
       <div>
         <Typography variant="h1">Default Material UI</Typography>
         <Elements />
-      </div>  
+      </div>
+      <SgBackToTop/>  
       </ThemeProvider>
     </div>
   );
