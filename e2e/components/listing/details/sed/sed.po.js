@@ -1,22 +1,22 @@
-const elements = {
-  sedHeader: '//div[text()="Safety Enhanced Design (SED)"]',
-  ucdProcess: '#sed-ucd-processes-table',
-  tasksTable: '#sed-tasks-table',
-};
-
 class SedComponent {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      sedHeader: '//div[text()="Safety Enhanced Design (SED)"]',
+      ucdProcess: '#sed-ucd-processes-table',
+      tasksTable: '#sed-tasks-table',
+    };
+  }
 
   get sedHeader() {
-    return $(elements.sedHeader);
+    return $(this.elements.sedHeader);
   }
 
   get ucdProcess() {
-    return $(elements.ucdProcess);
+    return $(this.elements.ucdProcess);
   }
 
   get tasksTable() {
-    return $(elements.tasksTable);
+    return $(this.elements.tasksTable);
   }
 
   expandSed() {
