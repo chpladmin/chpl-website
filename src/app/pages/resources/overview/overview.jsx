@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Divider,
-  Fab,
   Table,
   TableBody,
   TableCell,
@@ -24,19 +23,10 @@ import ApiWrapper from '../../../api/api-wrapper';
 import theme from '../../../themes/theme';
 
 const useStyles = makeStyles({
-  content:{
-    display:'grid',
-    gap:'8px',
-    overflowWrap:'anywhere',
-  },
-  fabContainer: {
-    position: 'fixed',
-    zIndex: 1500,
-    bottom: '9em',
-    right: '1em',
-  },
-  fullWidth: {
-    gridColumnEnd: 'span 2',
+  content: {
+    display: 'grid',
+    gap: '8px',
+    overflowWrap: 'anywhere',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -48,26 +38,24 @@ const useStyles = makeStyles({
     padding: '32px',
     backgroundColor: '#f9f9f9',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 4fr',
+      gridTemplateColumns: 'auto 1fr',
     },
   },
-  pageLinks: {
+  pageNavigation: {
     position: 'sticky',
-    height: '256px',
-    top: '-1px',
-    height: 'auto',
+    top: 0,
+    height: 'min-content',
     display: 'grid',
     gap: '8px',
     backgroundColor: '#f9f9f9',
     justifyItems: 'start',
     borderBottom: '1px solid #c2c6ca',
-    paddingBottom:'16px',
+    paddingBottom: '16px',
     [theme.breakpoints.up('md')]: {
-      height: '256px',
       top: '100px',
       borderRight: '1px solid #c2c6ca',
       borderBottom: 'none',
-      paddingRight:'16px',
+      paddingRight: '16px',
     },
   },
   pageHeader: {
@@ -111,7 +99,7 @@ function ChplResourcesOverview() {
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div className={classes.pageLinks}>
+        <div className={classes.pageNavigation}>
           {announcements.length > 0
            && (
              <InternalScrollButton
@@ -259,7 +247,7 @@ function ChplResourcesOverview() {
             What is the difference between an ONC-ACB Certification ID and CHPL Product Number (CHPL ID)?
           </Typography>
           <Typography gutterBottom>
-            CHPL IDs are unique to each certified product. There are tw`  o types of CHPL IDs depending on the certified product. Certified products from the CHPL 4.0 (those certified before March 28, 2016) have CHPL IDs in the following format:
+            CHPL IDs are unique to each certified product. There are two types of CHPL IDs depending on the certified product. Certified products from the CHPL 4.0 (those certified before March 28, 2016) have CHPL IDs in the following format:
             {' '}
             <code>CHP-XXXXXX</code>
             {' '}
