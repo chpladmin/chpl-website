@@ -5,7 +5,7 @@ import {
   func,
 } from 'prop-types';
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
+import CheckIcon from '@material-ui/icons/Check';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SyncIcon from '@material-ui/icons/Sync';
@@ -118,7 +118,7 @@ function ChplCriterion(props) {
           <Grid item xs={1}>
             { criterion.success
               && (
-                <DoneAllIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
+                <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
               )}
           </Grid>
           <Grid item xs={3}>
