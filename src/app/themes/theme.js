@@ -22,6 +22,9 @@ const theme = createMuiTheme({
       dark: '#c2c6ca',
       contrastText: '#000000',
     },
+    error: {
+      main: '#c44f65',
+    },
   },
   typography: {
     fontFamily: 'Lato, sans-serif',
@@ -48,11 +51,11 @@ const theme = createMuiTheme({
     h6: {
       fontSize: '1.125em',
       fontWeight: 400,
-      lineHeight:'1.3em'
+      lineHeight: '1.3em'
     },
     body1: {
       fontSize: '1em',
-      lineHeight:'1.3em'
+      lineHeight: '1.3em'
     },
     body2: {
       fontSize: '0.875em',
@@ -202,6 +205,12 @@ const theme = createMuiTheme({
     MuiFormControl: {
       root: {
         width: '100%',
+      },
+    },
+    MuiFormLabel: {
+      asterisk: {
+        fontSize: '2em',
+        verticalAlign: 'top',
       },
     },
     MuiTablePagination: {
