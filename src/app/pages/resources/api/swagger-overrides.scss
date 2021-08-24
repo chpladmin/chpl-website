@@ -1,12 +1,12 @@
 .swagger-ui {
 
     .btn.authorize {
-        color: #66926d;
-        border-color: #66926d;
+        color: #384903;
+        border-color: #384903;
     }
 
     .btn.authorize svg {
-        fill: #66926d;
+        fill: #384903;
     }
 
     .info {
@@ -27,6 +27,10 @@
         background-color: #384903;
     }
 
+    .info .title small {
+        background: #000000;
+    }
+
     .info .title {
         color: #3b4151;
         font-size: 1.75em;
@@ -35,7 +39,7 @@
         font-family: "Lato";
     }
 
-    .opblock.opblock-get .opblock-summary {
+    .opblock.opblock-get {
         border-color: #156dac;
     }
 
@@ -43,23 +47,23 @@
         background: #156dac;
     }
 
-    .opblock.opblock-put .opblock-summary {
-        border-color: #cc8400;
+    .opblock.opblock-put {
+        border-color: #7a5000;
     }
 
     .opblock.opblock-put .opblock-summary-method {
-        background: #cc8400;
+        background: #7a5000;
     }
 
-    .opblock.opblock-post .opblock-summary {
-        border-color: #66926d;
+    .opblock.opblock-post {
+        border-color: #384903;
     }
 
     .opblock.opblock-post .opblock-summary-method {
-        background: #66926d;
+        background: #384903;
     }
 
-    .opblock.opblock-delete .opblock-summary {
+    .opblock.opblock-delete {
         border-color: #c44f65;
     }
 
@@ -74,6 +78,16 @@
     .opblock.opblock-deprecated .opblock-summary-method {
         background: #eeeeee;
         color: #3b495f;
+    }
+
+    .parameter__extension .swagger-ui .parameter__in {
+        color: #000000;
+    }
+
+    .parameter__name .required span {
+        color: #c44f65;
+        font-size: 24px;
+        vertical-align: middle;
     }
 
     pre {

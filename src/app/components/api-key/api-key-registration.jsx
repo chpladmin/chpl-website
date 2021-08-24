@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gridRowGap: '8px',
+    gridRowGap: '16px',
   },
   longLabelFix: {
     paddingRight: '4px',
@@ -116,6 +116,7 @@ function ChplApiKeyRegistration() {
             onBlur={formik.handleBlur}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
+            InputLabelProps={{ classes: { root: classes.longLabelFix } }}
           />
         </div>
       </CardContent>
