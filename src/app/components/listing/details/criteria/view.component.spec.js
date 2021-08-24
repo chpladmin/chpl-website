@@ -9,6 +9,7 @@
         id: 1,
         criterion: {
           number: 'initial cert',
+          title: 'a title',
         },
       },
     };
@@ -247,15 +248,26 @@
           expect(ctrl.showDetails).toBe(false);
         });
 
-        it('should track analytics when it opens', function () {
+        it('should track analytics only when it opens', function () {
           spyOn($analytics, 'eventTrack');
           ctrl.toggleCriteria();
-          expect($analytics.eventTrack).toHaveBeenCalled();
+          expect($analytics.eventTrack).toHaveBeenCalledWith(
+            'Viewed criteria details', { category: 'Listing Details', label: 'initial cert'},
+          );
           expect($analytics.eventTrack.calls.count()).toBe(1);
           ctrl.toggleCriteria();
           expect($analytics.eventTrack.calls.count()).toBe(1);
           ctrl.toggleCriteria();
           expect($analytics.eventTrack.calls.count()).toBe(2);
+        });
+
+        it('should track analytics of cures update criteria', function () {
+          spyOn($analytics, 'eventTrack');
+          ctrl.cert.criterion.title = 'something Cures Update';
+          ctrl.toggleCriteria();
+          expect($analytics.eventTrack).toHaveBeenCalledWith(
+            'Viewed criteria details', { category: 'Listing Details', label: 'initial cert (Cures Update)'},
+          );
         });
       });
 
