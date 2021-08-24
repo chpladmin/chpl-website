@@ -11,7 +11,7 @@ class CriteriaComponent {
       removedCriteria: '#removed-header',
       attestToggle: '#success',
       accept: '//span[text()="Accept"]',
-      testProcedureName: '#name',
+      testProcedureName: 'div#name',
       version: '#version',
       testToolsName: '#tt',
       privacySecurityName: '#privacy-security-framework',
@@ -24,6 +24,14 @@ class CriteriaComponent {
 
   editCriteria(id) {
     $(`#criterion-id-${id}-edit`).scrollAndClick();
+  }
+
+  get testProcedure() {
+    return $(this.elements.testProcedureName);
+  }
+
+  get testProcedureOld() {
+    return $(elementsOld.testProcedureName);
   }
 
   get attestToggle() {
@@ -96,6 +104,7 @@ class CriteriaComponent {
 
   addTestProcedures(name, version) {
     this.addItem('test-procedures');
+    $(this.elements.testProcedureName).scrollIntoView({ block: 'center', inline: 'center' });
     $(this.elements.testProcedureName).click();
     $('#menu-name').$(`li*=${name}`).click();
     $(this.elements.version).addValue(version);
@@ -104,6 +113,7 @@ class CriteriaComponent {
 
   addTestTools(name, version) {
     this.addItem('test-tools');
+    $(this.elements.testToolsName).scrollIntoView({ block: 'center', inline: 'center' });
     $(this.elements.testToolsName).click();
     $('#menu-tt').$(`li*=${name}`).click();
     $(this.elements.version).addValue(version);
@@ -111,6 +121,7 @@ class CriteriaComponent {
   }
 
   addPrivacySecurity(value) {
+    $(this.elements.privacySecurityName).scrollIntoView({ block: 'center', inline: 'center' });
     $(this.elements.privacySecurityName).click();
     $(`//*[@data-value="${value}"]`).click();
   }
@@ -145,6 +156,14 @@ class CriteriaComponent {
   addTestToolsOld(name, version) {
     $(elementsOld.testToolsName).selectByVisibleText(name);
     $('//*[starts-with(@id,"testTools-additional-input")]').addValue(version);
+  }
+
+  get testProcedureDropdownOptions () {
+    return $('#menu-name').$$('li');
+  }
+
+  get testProcedureDropdownOptionsOld () {
+    return this.testProcedureOld.$$('option');
   }
 }
 
