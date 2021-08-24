@@ -74,12 +74,14 @@ function ChplCriterion(props) {
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const $analytics = getAngularService('$analytics');
+  const utilService = getAngularService('utilService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const handleAccordionChange = (event, isExpanded) => {
     if (!isExpanded) {
-      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: criterion.criterion.number });
+      const label = criterion.criterion.number + (utilService.isCures(criterion.criterion) ? ' (Cures Update)' : '');
+      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
     }
   };
 
