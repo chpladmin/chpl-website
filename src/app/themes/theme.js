@@ -35,7 +35,7 @@ const theme = createMuiTheme({
     },
     h3: {
       fontSize: '1.750em',
-      fontWeight: 800,
+      fontWeight: 400,
     },
     h4: {
       fontSize: '1.5em',
@@ -43,7 +43,7 @@ const theme = createMuiTheme({
     },
     h5: {
       fontSize: '1.25em',
-      fontWeight: 800,
+      fontWeight: 400,
     },
     h6: {
       fontSize: '1.125em',
@@ -156,6 +156,7 @@ const theme = createMuiTheme({
     MuiTableCell: {
       root: {
         fontSize: '1em',
+        minWidth: '75px',
       },
       head: {
         color: '#156dac',
