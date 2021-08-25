@@ -12,18 +12,8 @@ import { ChplLink } from '../../../components/util';
 import { ChplApiKeyRegistration } from '../../../components/api-key';
 
 const useStyles = makeStyles({
-  content: {
-    display: 'grid',
-    gap: '32px',
-    gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '7fr 5fr',
-    },
-  },
   pageHeader: {
-    display: 'grid',
     padding: '32px',
-    gridTemplateColumns: '1fr',
   },
   pageBody: {
     display: 'grid',
@@ -103,7 +93,6 @@ function ChplResourcesApi() {
           />
         </div>
       </div>
-
     </ThemeProvider>
   );
 }
