@@ -79,7 +79,7 @@ function ChplCriterion(props) {
   /* eslint-enable react/destructuring-assignment */
 
   const handleAccordionChange = (event, isExpanded) => {
-    if (!isExpanded) {
+    if (isExpanded) {
       const label = criterion.criterion.number + (utilService.isCures(criterion.criterion) ? ' (Cures Update)' : '');
       $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
     }
@@ -108,7 +108,7 @@ function ChplCriterion(props) {
     <Accordion
       disabled={!criterion.success && !(criterion.g1Success !== null || criterion.g2Success !== null) && !canEdit}
       className={classes.criterionAccordion}
-      onChange={() => handleAccordionChange()}
+      onChange={handleAccordionChange}
       id={`criterion-id-${criterion.criterion.id}`}
     >
       <AccordionSummary
