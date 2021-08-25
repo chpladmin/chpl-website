@@ -99,8 +99,19 @@
         padding-top: 8px;
     }
 
+    @media only screen and (max-width: 600px) {
+       
+        .scheme-container .schemes {
+            display: grid;
+            gap: 8px;
+            justify-items: start;
+            grid-template-columns: 1fr;
+        }
+    }
+
     .wrapper {
         max-width: none;
         padding: 0 8px;
     }
+
 }
