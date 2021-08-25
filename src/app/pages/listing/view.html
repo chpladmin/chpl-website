@@ -144,8 +144,8 @@
               </div>
               <div>
                 <div class="data-label listing__enhanced-label">Mandatory Disclosures</div>
-                <chpl-link-bridge ng-if="$ctrl.listing.transparencyAttestationUrl" href="$ctrl.listing.transparencyAttestationUrl" analytics="{ event:'Transparency Disclosure', category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl }"></chpl-link-bridge>
-                <p class="read-only-data" ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
+                <chpl-link-bridge ng-if="$ctrl.listing.mandatoryDisclosures" href="$ctrl.listing.mandatoryDisclosures" analytics="{ event:'Transparency Disclosure', category: 'Download Details', label: $ctrl.listing.mandatoryDisclosures }"></chpl-link-bridge>
+                <p class="read-only-data" ng-if="!$ctrl.listing.mandatoryDisclosures">No report on file</p>
               </div>
             </div>
           </div>
