@@ -21,13 +21,20 @@ import SearchIcon from '@material-ui/icons/Search';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 const useStyles = makeStyles({
-    filterContainer: {
+
+    advancedSearchContainer: {
         background: '#E7F0F8',
         display: 'grid',
-        gridTemplateColumns: '5fr auto 4fr',
+        gridTemplateColumns: '6fr 2fr 4fr',
         padding: '16px',
     },
-    filterGroupOneContainer: {
+    filterContainer: {
+        display: 'grid',
+        gridTemplateColumns: 'auto',
+        justifyItems:'start',
+        alignItems:'start',
+    },
+    filterHeaderContainer: {
         display: 'grid',
         gridTemplateColumns: '1fr auto',
         alignItems: 'center',
@@ -49,16 +56,11 @@ const useStyles = makeStyles({
         alignItems: 'center',
         gap: '8px',
     },
-    switchGroupThreeContainer: {
-        display: 'grid',
-        gridTemplateColumns: '10fr auto auto',
-        alignItems: 'center',
-        gap: '4px',
-    },
     filterSubHeaderContainer: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        alignItems: 'center',
+        justifyItems: 'start',
+        gap: '8px',
     },
     searchInput: {
         flexGrow: 1,
@@ -71,9 +73,16 @@ const useStyles = makeStyles({
         display: 'grid',
         gridTemplateColumns: 'auto 1fr',
     },
-    iconSpacing:{
-        
-    }
+    switchGroupThreeContainer: {
+        display: 'grid',
+        gridTemplateColumns: '10fr auto auto',
+        alignItems: 'center',
+        gap: '4px',
+    },
+    iconSpacing: {
+        marginLeft: '4px',
+    },
+
 });
 
 function SgAdvancedSearchPopover(props) {
@@ -129,13 +138,13 @@ function SgAdvancedSearchPopover(props) {
                     },
                 }}
             >
-                <div className={classes.filterContainer}>
+                <div className={classes.advancedSearchContainer}>
                     <div>
                         <div>
                             <List dense
                                 subheader={
                                     <ListSubheader disableSticky component="div" id="nested-list-subheader">
-                                        <div className={classes.filterGroupOneContainer}>
+                                        <div className={classes.filterHeaderContainer}>
                                             <div>
                                                 <Typography variant="subtitle1"> Filter By: </Typography>
                                             </div>
@@ -152,41 +161,17 @@ function SgAdvancedSearchPopover(props) {
                                     </ListSubheader>
                                 }>
                                 <div className={classes.filterSubHeaderContainer}>
-                                    <div>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>Certification Criteria</ListItemText>
-                                        </ListItem>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>Certification Status</ListItemText>
-                                        </ListItem>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>Certification Edition</ListItemText>
-                                        </ListItem>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>Clinical Quality Measures</ListItemText>
-                                        </ListItem>
+                                    <div className={classes.filterContainer}>
+                                        <Button color="primary">Certification Criteria</Button>
+                                        <Button color="primary">Certification Status</Button>
+                                        <Button color="primary">Certification Edition</Button>
+                                        <Button color="primary">Clinical Quality Measures</Button>
                                     </div>
-                                    <div>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>Certification Date</ListItemText>
-                                        </ListItem>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>ONC-ACBs</ListItemText>
-                                        </ListItem>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>Patient Type</ListItemText>
-                                        </ListItem>
-                                        <ListItem>
-                                            <Checkbox color="primary" edge="start" />
-                                            <ListItemText>Surveillance Activity</ListItemText>
-                                        </ListItem>
+                                    <div className={classes.filterContainer}>
+                                        <Button color="primary">Certification Date</Button>
+                                        <Button color="primary">ONC-ACBs</Button>
+                                        <Button color="primary">Patient Type</Button>
+                                        <Button color="primary">Surveillance Activity</Button>
                                     </div>
                                 </div>
                             </List>

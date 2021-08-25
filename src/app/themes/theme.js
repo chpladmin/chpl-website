@@ -37,15 +37,15 @@ const theme = createMuiTheme({
     },
     h3: {
       fontSize: '1.750em',
-      fontWeight: 800,
+      fontWeight: 400,
     },
     h4: {
       fontSize: '1.5em',
       fontWeight: 400,
     },
-    h5: { 
+    h5: {
       fontSize: '1.25em',
-      fontWeight: 800,
+      fontWeight: 400,
     },
     h6: {
       fontSize: '1.125em',
@@ -70,31 +70,31 @@ const theme = createMuiTheme({
   },
 
   overrides: {
-    MuiAccordionSummary:{
-      root:{
-        backgroundColor:'#f5f9fd',
-        padding:'4px 8px',
+    MuiAccordionSummary: {
+      root: {
+        backgroundColor: '#f5f9fd',
+        padding: '4px 8px',
       },
-      content:{
-        padding:'4px',
+      content: {
+        padding: '4px',
       },
     },
     MuiPaper: {
       rounded: {
         borderRadius: '8px',
       },
-      elevation1:{
-        boxShadow:'0px 4px 8px rgb(149 157 165 / 10%)',
+      elevation1: {
+        boxShadow: '0px 4px 8px rgb(149 157 165 / 10%)',
       }
     },
     MuiButton: {
       root: {
         boxShadow: 'none',
-        fontSize:'1em',
+        fontSize: '1em',
         '&:hover': {
           boxShadow: 'none',
         },
-        whiteSpace:'nowrap',
+        whiteSpace: 'nowrap',
       },
       contained: {
         backgroundColor: '#eeeeee',
@@ -116,17 +116,17 @@ const theme = createMuiTheme({
           backgroundColor: '#599bde',
         },
       },
-      containedSizeSmall:{
+      containedSizeSmall: {
         fontSize: '0.875em',
       },
-      containedSizeLarge:{
+      containedSizeLarge: {
         fontSize: '1.125em',
       },
     },
-    MuiList:{
-      padding:{
-        paddingTop:'0',
-        paddingBottom:'0',
+    MuiList: {
+      padding: {
+        paddingTop: '0',
+        paddingBottom: '0',
       },
     },
     MuiListItem: {
@@ -136,9 +136,9 @@ const theme = createMuiTheme({
         },
       },
     },
-    MuiListSubheader:{
-      root:{
-        fontSize:'0.875em',
+    MuiListSubheader: {
+      root: {
+        fontSize: '0.875em',
       },
     },
     MuiCheckbox: {
@@ -185,18 +185,18 @@ const theme = createMuiTheme({
       },
     },
     MuiTableCell: {
-      root:{
-        fontSize:"1em",
+      root: {
+        fontSize: "1em",
       },
       head: {
         color: '#156dac',
         fontWeight: 800,
       },
-      stickyHeader:{
+      stickyHeader: {
         backgroundColor: '#ffffff'
       }
     },
-    
+
     MuiTableRow: {
       root: {
         '&:hover': {
@@ -211,14 +211,14 @@ const theme = createMuiTheme({
           backgroundColor: '#ffffff',
         },
       },
-    }, 
-    MuiTableSortLabel:{
-      active:{
-        color:'#000000',
+    },
+    MuiTableSortLabel: {
+      active: {
+        color: '#000000',
       },
 
-      icon:{
-        color:'#000000',
+      icon: {
+        color: '#000000',
       },
     },
     MuiDivider: {
@@ -247,41 +247,48 @@ const theme = createMuiTheme({
         width: '100%',
       },
     },
-    MuiTableFooter:{
-      root:{
+    MuiTableFooter: {
+      root: {
 
       },
     },
-    MuiTablePagination:{
-      root:{
-        fontSize:'1em',
-        display:'grid',
-        justifyContent:'space-evenly',
+    MuiTablePagination: {
+      root: {
+        fontSize: '1em',
+        display: 'grid',
+        justifyContent: 'space-evenly',
       },
-      spacer:{
-        flex:'none',
+      spacer: {
+        flex: 'none',
       },
-      toolbar:{
-        backgroundColor:'#ffffff',
-        margin:'16px',
+      toolbar: {
+        backgroundColor: '#ffffff',
+        margin: '16px',
         boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-        borderRadius:'64px',
-        display:'flex',
-        justifyContent:'center',
-        padding:'8px 32px',
+        borderRadius: '64px',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '8px 32px',
       },
-      select:{
-        color:'#156dac',
-        fontWeight:'500',
+      select: {
+        color: '#156dac',
+        fontWeight: '500',
       },
-      actions:{
-        color:'#156dac',
+      actions: {
+        color: '#156dac',
       },
     },
-    MuiSelect:{
-      icon:{
-        position:'inherit',
-        color:'#156dac',
+    MuiSelect: {
+      icon: {
+        position: 'inherit',
+        color: '#156dac',
+      },
+    },
+    MuiListSubheader: {
+      gutters: {
+        paddingLeft: '8px',
+        paddingRight: '8px',
+
       },
     },
 
