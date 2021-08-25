@@ -12,27 +12,31 @@ import { ChplLink } from '../../../components/util';
 import { ChplApiKeyRegistration } from '../../../components/api-key';
 
 const useStyles = makeStyles({
-  pageHeader: {
-    padding: '32px',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-    padding: '32px',
-    backgroundColor: '#f9f9f9',
-  },
   content: {
     display: 'grid',
     gap: '32px',
-    alignItems: 'start',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '7fr 5fr',
     },
   },
-  fullWidth: {
-    gridColumnEnd: 'span 2',
+  pageHeader: {
+    display: 'grid',
+    padding: '32px',
+    gridTemplateColumns: '1fr',
+  },
+  pageBody: {
+    display: 'grid',
+    gap: '16px',
+    padding: '32px',
+    gridTemplateColumns: '1fr',
+    backgroundColor: '#f9f9f9',
+  },
+  subContent: {
+    display: 'grid',
+  },
+  subHeader: {
+    display: 'grid',
   },
 });
 
@@ -50,14 +54,16 @@ function ChplResourcesApi() {
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography
-          variant="h2"
-        >
-          Access API Documentation
-        </Typography>
-        <Divider />
+        <div className={classes.subHeader}>
+          <Typography
+            variant="h2"
+          >
+            Access API Documentation
+          </Typography>
+          <Divider />
+        </div>
         <div className={classes.content}>
-          <div>
+          <div className={classes.subContent}>
             <Typography
               gutterBottom
             >
@@ -84,19 +90,19 @@ function ChplResourcesApi() {
               <ChplLink href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md" text="release notes on GitHub" analytics={{ event: 'Go to Release Notes on GitHub', catgory: 'CHPL API' }} />
             </Typography>
           </div>
-          <div>
+          <div className={classes.subContent}>
             <ChplApiKeyRegistration />
           </div>
-          <div
-            className={classes.fullWidth}
-          >
-            <SwaggerUI
-              url={url}
-              docExpansion="none"
-            />
-          </div>
+        </div>
+        <div className={classes.subContent}
+        >
+          <SwaggerUI
+            url={url}
+            docExpansion="none"
+          />
         </div>
       </div>
+
     </ThemeProvider>
   );
 }
