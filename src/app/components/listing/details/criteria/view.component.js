@@ -102,7 +102,8 @@ const CertificationCriteriaViewComponent = {
 
     toggleCriteria() {
       if (!this.showDetails) {
-        this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: this.cert.criterion.number });
+        const label = this.cert.criterion.number + (this.utilService.isCures(this.cert.criterion) ? ' (Cures Update)' : '');
+        this.$analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
       }
       this.showDetails = !this.showDetails;
     }
