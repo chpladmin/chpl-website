@@ -91,13 +91,11 @@
           authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ONC
           // base line
           expect(ctrl.authority).toBeUndefined();
-          expect(typeof(ctrl.surveillance.startDateObject)).toBe('object');
-          expect(typeof(ctrl.surveillance.endDateObject)).toBe('undefined');
           expect(ctrl.surveillance.type).toBeDefined();
 
           var newSurv = angular.copy(Mock.surveillances[0]);
-          newSurv.endDate = angular.copy(newSurv.startDate);
-          newSurv.startDate = undefined;
+          newSurv.endDay = angular.copy(newSurv.startDay);
+          newSurv.startDay = undefined;
           newSurv.type = undefined;
           authService.hasAnyRole.and.returnValue(true);
           scope.resolve = {
@@ -110,8 +108,6 @@
           scope.$digest();
           ctrl = el.isolateScope().$ctrl;
           expect(ctrl.authority).toEqual('ROLE_ONC');
-          expect(typeof(ctrl.surveillance.startDateObject)).toBe('undefined');
-          expect(typeof(ctrl.surveillance.endDateObject)).toBe('object');
           expect(ctrl.surveillance.type).toBeUndefined();
         });
 
@@ -401,57 +397,34 @@
         });
 
         it('should not require one when there are open NCs', () => {
-          expect(ctrl.missingEndDate()).toBe(false);
+          expect(ctrl.missingEndDay()).toBe(false);
         });
 
         it('should require one when all NCs are closed and there\'s no surveillance end date', () => {
           ctrl.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
-          expect(ctrl.missingEndDate()).toBe(true);
+          expect(ctrl.missingEndDay()).toBe(true);
         });
 
         it('should require one when there are no NCs and there\'s no surveillance end date', () => {
           ctrl.surveillance.requirements[0].nonconformities = [];
-          expect(ctrl.missingEndDate()).toBe(true);
+          expect(ctrl.missingEndDay()).toBe(true);
         });
 
         it('should not require one when all NCs are closed and the surveillance has an end date', () => {
           ctrl.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
-          ctrl.surveillance.endDateObject = '1472702800000';
-          expect(ctrl.missingEndDate()).toBe(false);
+          ctrl.surveillance.endDay = '2020-03-01';
+          expect(ctrl.missingEndDay()).toBe(false);
         });
 
         it('should not require one when there are no requirements', () => {
           ctrl.surveillance.requirements = undefined;
-          expect(ctrl.missingEndDate()).toBeFalsy();
+          expect(ctrl.missingEndDay()).toBeFalsy();
         });
       });
 
       describe('when saving the surveillance', () => {
         beforeEach(() => {
           ctrl.workType = '';
-        });
-
-        it('should set the start date', () => {
-          var aDate = new Date();
-          ctrl.surveillance.startDate = undefined;
-          ctrl.surveillance.startDateObject = aDate;
-          ctrl.save();
-          expect(ctrl.surveillance.startDate).toBe(aDate.getTime());
-        });
-
-        it('should set the end date if it exists', () => {
-          var aDate = new Date();
-          ctrl.surveillance.endDate = undefined;
-          ctrl.surveillance.endDateObject = aDate;
-          ctrl.save();
-          expect(ctrl.surveillance.endDate).toBe(aDate.getTime());
-        });
-
-        it('should set the end date to null if it doesn\'t exist', () => {
-          ctrl.surveillance.endDate = undefined;
-          ctrl.surveillance.endDateObject = null;
-          ctrl.save();
-          expect(ctrl.surveillance.endDate).toBe(null);
         });
 
         describe('in a "confirm" workflow', () => {

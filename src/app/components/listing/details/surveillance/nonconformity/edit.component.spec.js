@@ -94,38 +94,6 @@
         expect(scope.dismiss).toHaveBeenCalled();
       });
 
-      it('should convert dateTime longs to javascript objects on load', () => {
-        var aDate = new Date('1/1/2003');
-        var nc = {
-          dateOfDetermination: aDate.getTime(),
-          capApprovalDate: aDate.getTime(),
-          capStartDate: aDate.getTime(),
-          capEndDate: aDate.getTime(),
-          capMustCompleteDate: aDate.getTime(),
-        };
-        scope.resolve = {
-          disableValidation: false,
-          nonconformity: nc,
-          randomized: false,
-          randomizedSitesUsed: undefined,
-          requirementId: 1,
-          surveillanceId: 1,
-          surveillanceTypes: {
-            nonconformityTypes: { data: [] },
-          },
-          workType: 'create',
-        };
-        el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
-        $compile(el)(scope);
-        scope.$digest();
-        ctrl = el.isolateScope().$ctrl;
-        expect(ctrl.nonconformity.dateOfDeterminationObject).toEqual(aDate);
-        expect(ctrl.nonconformity.capApprovalDateObject).toEqual(aDate);
-        expect(ctrl.nonconformity.capStartDateObject).toEqual(aDate);
-        expect(ctrl.nonconformity.capEndDateObject).toEqual(aDate);
-        expect(ctrl.nonconformity.capMustCompleteDateObject).toEqual(aDate);
-      });
-
       describe('when uploading', () => {
         it('should not do anything without a file', () => {
           ctrl.file = undefined;
@@ -142,7 +110,7 @@
             ctrl.file = {
               name: 'name',
             };
-            ctrl.accurateAsOfDateObject = '2018-11-28';
+            ctrl.accurateAsOfDay = '2018-11-28';
             ctrl.nonconformity.documents = [];
             response = {
               data: {
@@ -225,44 +193,6 @@
       describe('when saving the nonconformity', () => {
         beforeEach(() => {
           ctrl.nonconformityType = {};
-        });
-
-        it('should convert date objects to longs', () => {
-          var aDate = new Date('1/1/2003');
-          ctrl.nonconformity = {
-            dateOfDeterminationObject: aDate,
-            capApprovalDateObject: aDate,
-            capStartDateObject: aDate,
-            capEndDateObject: aDate,
-            capMustCompleteDateObject: aDate,
-          };
-          expect(ctrl.nonconformity.dateOfDetermination).toBeUndefined();
-          expect(ctrl.nonconformity.capApprovalDate).toBeUndefined();
-          expect(ctrl.nonconformity.capStartDate).toBeUndefined();
-          expect(ctrl.nonconformity.capEndDate).toBeUndefined();
-          expect(ctrl.nonconformity.capMustCompleteDate).toBeUndefined();
-          ctrl.save();
-          expect(ctrl.nonconformity.dateOfDetermination).toBe(aDate.getTime());
-          expect(ctrl.nonconformity.capApprovalDate).toBe(aDate.getTime());
-          expect(ctrl.nonconformity.capStartDate).toBe(aDate.getTime());
-          expect(ctrl.nonconformity.capEndDate).toBe(aDate.getTime());
-          expect(ctrl.nonconformity.capMustCompleteDate).toBe(aDate.getTime());
-        });
-
-        it('should remove date values if no object exists', () => {
-          ctrl.nonconformity = {
-            dateOfDetermination: 'fake',
-            capApprovalDate: 'fake',
-            capStartDate: 'fake',
-            capEndDate: 'fake',
-            capMustCompleteDate: 'fake',
-          };
-          ctrl.save();
-          expect(ctrl.nonconformity.dateOfDetermination).toBe(null);
-          expect(ctrl.nonconformity.capApprovalDate).toBe(null);
-          expect(ctrl.nonconformity.capStartDate).toBe(null);
-          expect(ctrl.nonconformity.capEndDate).toBe(null);
-          expect(ctrl.nonconformity.capMustCompleteDate).toBe(null);
         });
 
         it('should close it\'s modal with the NC', () => {
