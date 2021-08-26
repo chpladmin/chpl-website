@@ -22,7 +22,7 @@
       <label for="date-of-determination-day" class="col-sm-3">Date Of Determination <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.dateOfDeterminationDay" is-open="$ctrl.nonconformity.dateOfDeterminationDayPicker" close-text="Close" id="date-of-determination-day" name="dateOfDeterminationDay" ng-model-options="{ timezone: 'UTC' }" required>
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.dateOfDeterminationDay" is-open="$ctrl.nonconformity.dateOfDeterminationDayPicker" close-text="Close" id="date-of-determination-day" name="dateOfDeterminationDay" chpl-local-date-formatter required>
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.dateOfDeterminationDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
@@ -35,7 +35,7 @@
       <label for="cap-approval-day" class="col-sm-3">Corrective Action Plan Approval Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDay">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capApprovalDay" is-open="$ctrl.nonconformity.capApprovalDayPicker" close-text="Close" id="cap-approval-day" name="capApprovalDay" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capEndDay">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capApprovalDay" is-open="$ctrl.nonconformity.capApprovalDayPicker" close-text="Close" id="cap-approval-day" name="capApprovalDay" chpl-local-date-formatter ng-required="$ctrl.nonconformity.capEndDay">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capApprovalDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
@@ -48,7 +48,7 @@
       <label for="cap-start-day" class="col-sm-3">Corrective Action Plan Start Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDay">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capStartDay" is-open="$ctrl.nonconformity.capStartDayPicker" close-text="Close" id="cap-start-day" name="capStartDay" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capEndDay">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capStartDay" is-open="$ctrl.nonconformity.capStartDayPicker" close-text="Close" id="cap-start-day" name="capStartDay" chpl-local-date-formatter ng-required="$ctrl.nonconformity.capEndDay">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capStartDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
@@ -61,7 +61,7 @@
       <label for="cap-end-day" class="col-sm-3">Corrective Action Plan End Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capEndDay" is-open="$ctrl.nonconformity.capEndDayPicker" close-text="Close" id="cap-end-day" name="capEndDay" ng-model-options="{ timezone: 'UTC' }" ng-disabled="!$ctrl.nonconformity.capApprovalDay || !$ctrl.nonconformity.capStartDay">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capEndDay" is-open="$ctrl.nonconformity.capEndDayPicker" close-text="Close" id="cap-end-day" name="capEndDay" chpl-local-date-formatter ng-disabled="!$ctrl.nonconformity.capApprovalDay || !$ctrl.nonconformity.capStartDay">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capEndDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
@@ -74,7 +74,7 @@
       <label for="cap-must-complete-day" class="col-sm-3">Corrective Action Plan Must Complete Date <span class="text-danger" ng-if="$ctrl.nonconformity.capApprovalDay">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capMustCompleteDay" is-open="$ctrl.nonconformity.capMustCompleteDayPicker" close-text="Close" id="cap-must-complete-day" name="capMustCompleteDay" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capApprovalDay">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capMustCompleteDay" is-open="$ctrl.nonconformity.capMustCompleteDayPicker" close-text="Close" id="cap-must-complete-day" name="capMustCompleteDay" chpl-local-date-formatter ng-required="$ctrl.nonconformity.capApprovalDay">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capMustCompleteDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>

@@ -27,7 +27,7 @@
       <label for="start-day" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.startDay" is-open="$ctrl.surveillance.startDayPicker" close-text="Close" id="start-day" name="startDay" ng-model-options="{ timezone: 'UTC' }" required>
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.startDay" is-open="$ctrl.surveillance.startDayPicker" close-text="Close" id="start-day" name="startDay" chpl-local-date-formatter required>
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.surveillance.startDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
@@ -40,7 +40,7 @@
       <label for="end-day" class="col-sm-3">End Date <span class="text-danger" ng-if="$ctrl.missingEndDay()">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.endDay" is-open="$ctrl.surveillance.endDayPicker" close-text="Close" id="end-day" name="endDay" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.missingEndDay()">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.endDay" is-open="$ctrl.surveillance.endDayPicker" close-text="Close" id="end-day" name="endDay" chpl-local-date-formatter ng-required="$ctrl.missingEndDay()">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.surveillance.endDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
