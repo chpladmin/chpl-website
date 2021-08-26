@@ -5,9 +5,10 @@ export const SurveillanceNonconformityInspectComponent = {
     close: '&',
   },
   controller: class SurveillanceNonconformityInspectController {
-    constructor ($log) {
+    constructor ($log, DateUtil) {
       'ngInject';
       this.$log = $log;
+      this.DateUtil = DateUtil;
     }
 
     $onInit () {

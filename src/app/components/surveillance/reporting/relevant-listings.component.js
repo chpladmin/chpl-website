@@ -9,9 +9,10 @@ export const SurveillanceReportRelevantListingsComponent = {
     onSave: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
-    constructor ($log) {
+    constructor ($log, DateUtil) {
       'ngInject';
       this.$log = $log;
+      this.DateUtil = DateUtil;
     }
 
     $onChanges (changes) {

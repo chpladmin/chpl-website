@@ -5,12 +5,13 @@ export const SurveillanceComponent = {
     certifiedProduct: '<',
   },
   controller: class SurveillanceController {
-    constructor ($filter, $log, $uibModal, API, authService, networkService, utilService) {
+    constructor ($filter, $log, $uibModal, API, DateUtil, authService, networkService, utilService) {
       'ngInject';
       this.$filter = $filter;
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.API = API;
+      this.DateUtil = DateUtil;
       this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
@@ -62,9 +63,9 @@ export const SurveillanceComponent = {
     }
 
     getTitle (surv) {
-      var title = surv.endDate
-        ? 'Closed Surveillance, Ended ' + this.$filter('date')(surv.endDate, 'mediumDate', 'UTC') + ': '
-        : 'Open Surveillance, Began ' + this.$filter('date')(surv.startDate, 'mediumDate', 'UTC') + ': ';
+      var title = surv.endDay
+          ? 'Closed Surveillance, Ended ' + this.DateUtil.getDisplayDateFormat(surv.endDay) + ': '
+          : 'Open Surveillance, Began ' + this.DateUtil.getDisplayDateFormat(surv.startDay) + ': ';
       var open = 0;
       var closed = 0;
       for (var i = 0; i < surv.requirements.length; i++) {

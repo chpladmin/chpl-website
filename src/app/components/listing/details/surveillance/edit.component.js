@@ -33,12 +33,6 @@ export const SurveillanceEditComponent = {
       if (this.workType === 'initiate') {
         this.surveillance.authority = this.authority;
       }
-      if (this.surveillance.startDate) {
-        this.surveillance.startDateObject = new Date(this.surveillance.startDate);
-      }
-      if (this.surveillance.endDate) {
-        this.surveillance.endDateObject = new Date(this.surveillance.endDate);
-      }
       this.disableValidation = this.surveillance.errorMessages && this.surveillance.errorMessages.length > 0;
       if (this.surveillance.type) {
         this.surveillance.type = this.utilService.findModel(this.surveillance.type, this.data.surveillanceTypes.data, 'name');
@@ -189,7 +183,7 @@ export const SurveillanceEditComponent = {
       });
     }
 
-    missingEndDate () {
+    missingEndDay () {
       var noNcs = true;
       var allClosed = true;
       if (this.surveillance.requirements) {
@@ -200,16 +194,10 @@ export const SurveillanceEditComponent = {
           }
         }
       }
-      return this.surveillance.requirements && (noNcs || allClosed) && !this.surveillance.endDateObject;
+      return this.surveillance.requirements && (noNcs || allClosed) && !this.surveillance.endDay;
     }
 
     save () {
-      this.surveillance.startDate = this.surveillance.startDateObject.getTime();
-      if (this.surveillance.endDateObject) {
-        this.surveillance.endDate = this.surveillance.endDateObject.getTime();
-      } else {
-        this.surveillance.endDate = null;
-      }
       if (this.workType === 'confirm') {
         this.close({$value: this.surveillance});
       } else if (this.workType === 'initiate') {

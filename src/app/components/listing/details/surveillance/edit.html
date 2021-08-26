@@ -24,29 +24,29 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="start-date" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
+      <label for="start-day" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.startDateObject" is-open="$ctrl.surveillance.startDatePicker" close-text="Close" id="start-date" name="startDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.startDay" is-open="$ctrl.surveillance.startDayPicker" close-text="Close" id="start-day" name="startDay" ng-model-options="{ timezone: 'UTC' }" required>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.surveillance.startDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.surveillance.startDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.startDate.$touched) && $ctrl.editForm.startDate.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.startDate.$touched) && $ctrl.editForm.startDate.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.startDay.$touched) && $ctrl.editForm.startDay.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.startDay.$touched) && $ctrl.editForm.startDay.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="end-date" class="col-sm-3">End Date <span class="text-danger" ng-if="$ctrl.missingEndDate()">*</span></label>
+      <label for="end-day" class="col-sm-3">End Date <span class="text-danger" ng-if="$ctrl.missingEndDay()">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.endDateObject" is-open="$ctrl.surveillance.endDatePicker" close-text="Close" id="end-date" name="endDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.missingEndDate()">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.surveillance.endDay" is-open="$ctrl.surveillance.endDayPicker" close-text="Close" id="end-day" name="endDay" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.missingEndDay()">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.surveillance.endDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.surveillance.endDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.endDate.$touched) && $ctrl.editForm.endDate.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.endDate.$touched) && $ctrl.editForm.endDate.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.endDay.$touched) && $ctrl.editForm.endDay.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.endDay.$touched) && $ctrl.editForm.endDay.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
@@ -119,24 +119,24 @@
     <div class="text-danger text-left" ng-if="($ctrl.editForm.$invalid ||
                                               !$ctrl.surveillance.requirements ||
                                               $ctrl.surveillance.requirements.length === 0 ||
-                                              $ctrl.missingEndDate() ||
+                                              $ctrl.missingEndDay() ||
                                               ($ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])))
                                               && $ctrl.showFormErrors">
       The following error(s) must be fixed:
       <ul>
-        <li ng-if="$ctrl.editForm.startDate.$error.required">Start Date is required</li>
-        <li ng-if="$ctrl.editForm.startDate.$error.parse">Start Date is an improper format (MM/dd/yyyy)</li>
-        <li ng-if="$ctrl.editForm.endDate.$error.parse">End Date is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.startDay.$error.required">Start Date is required</li>
+        <li ng-if="$ctrl.editForm.startDay.$error.parse">Start Date is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.endDay.$error.parse">End Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
         <li ng-if="$ctrl.editForm.authority.$error.required">Initiated by is required</li>
         <li ng-if="$ctrl.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
         <li ng-if="$ctrl.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
         <li ng-if="!$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
         <li ng-if="$ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">User must have authority for ONC-Admin to edit surveillance created by ONC-Admin</li>
-        <li ng-if="$ctrl.missingEndDate()">End Date is required when there are no open Nonconformities</li>
+        <li ng-if="$ctrl.missingEndDay()">End Date is required when there are no open Nonconformities</li>
       </ul>
     </div>
-    <button ng-disabled="($ctrl.editForm.$invalid || !$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0 || $ctrl.missingEndDate() || ($ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))) && $ctrl.showFormErrors && !$ctrl.disableValidation"
+    <button ng-disabled="($ctrl.editForm.$invalid || !$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0 || $ctrl.missingEndDay() || ($ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))) && $ctrl.showFormErrors && !$ctrl.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="$ctrl.showFormErrors = true"
             ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>

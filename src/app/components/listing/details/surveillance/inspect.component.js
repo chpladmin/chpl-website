@@ -6,10 +6,11 @@ export const SurveillanceInspectComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceInspectController {
-    constructor ($log, $uibModal, authService, networkService, utilService) {
+    constructor ($log, $uibModal, DateUtil, authService, networkService, utilService) {
       'ngInject';
       this.$log = $log;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.utilService = utilService;
