@@ -1,4 +1,4 @@
-export const SurveillanceEditComponent = {
+const SurveillanceEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/edit.html',
   bindings: {
     resolve: '<',
@@ -6,8 +6,9 @@ export const SurveillanceEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceEditController {
-    constructor ($log, $uibModal, authService, networkService, toaster, utilService) {
+    constructor($log, $uibModal, authService, networkService, toaster, utilService) {
       'ngInject';
+
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.authService = authService;
@@ -18,7 +19,7 @@ export const SurveillanceEditComponent = {
       this.sortRequirements = utilService.sortRequirements;
     }
 
-    $onInit () {
+    $onInit() {
       this.surveillance = angular.copy(this.resolve.surveillance);
       this.workType = this.resolve.workType;
       this.data = angular.copy(this.resolve.surveillanceTypes);
@@ -39,10 +40,10 @@ export const SurveillanceEditComponent = {
       }
     }
 
-    addRequirement () {
-      let data = angular.copy(this.data);
+    addRequirement() {
+      const data = angular.copy(this.data);
       if (this.hasAnyRole(['ROLE_ACB'])) {
-        data.surveillanceRequirements.criteriaOptions = data.surveillanceRequirements.criteriaOptions.filter(option => !option.removed);
+        data.surveillanceRequirements.criteriaOptions = data.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
       }
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
@@ -53,75 +54,73 @@ export const SurveillanceEditComponent = {
           disableValidation: () => false,
           randomized: () => this.surveillance.type.name === 'Randomized',
           randomizedSitesUsed: () => this.surveillance.randomizedSitesUsed,
-          requirement: () => { return {nonconformities: []}; },
+          requirement: () => ({ nonconformities: [] }),
           surveillanceId: () => this.surveillance.id,
           surveillanceTypes: () => data,
           workType: () => 'add',
         },
         size: 'lg',
       });
-      this.modalInstance.result.then(response => {
+      this.modalInstance.result.then((response) => {
         if (!this.surveillance.requirements) {
           this.surveillance.requirements = [];
         }
         this.surveillance.requirements.push(response);
-      }, result => {
+      }, (result) => {
         this.$log.info(result);
       });
     }
 
-    cancel () {
+    cancel() {
       this.dismiss();
     }
 
-    deleteRequirement (req) {
-      for (var i = 0; i < this.surveillance.requirements.length; i++) {
-        if (angular.equals(this.surveillance.requirements[i],req)) {
-          this.surveillance.requirements.splice(i,1);
+    deleteRequirement(req) {
+      for (let i = 0; i < this.surveillance.requirements.length; i += 1) {
+        if (angular.equals(this.surveillance.requirements[i], req)) {
+          this.surveillance.requirements.splice(i, 1);
         }
       }
     }
 
-    deleteSurveillance () {
-      let that = this;
+    deleteSurveillance() {
+      const that = this;
       if (this.reason) {
-        this.getAssociatedComplaints().then(complaints => {
+        this.getAssociatedComplaints().then((complaints) => {
           let complaintsString;
           if (Array.isArray(complaints) && complaints.length > 0) {
-            complaintsString = complaints.map(complaint => {
-              return complaint.acbComplaintId;
-            }).join(', ');
+            complaintsString = complaints.map((complaint) => complaint.acbComplaintId).join(', ');
           }
 
           that.networkService.deleteSurveillance(that.surveillance.id, that.reason)
-            .then(response => {
+            .then((response) => {
               if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                 if (complaintsString) {
                   that.toaster.pop({
                     type: 'success',
-                    body: 'Surveillance has been removed from the following complaints: ' + complaintsString,
+                    body: `Surveillance has been removed from the following complaints: ${complaintsString}`,
                   });
                 }
                 that.close({ $value: response });
               } else {
                 that.errorMessages = [response];
               }
-            }, error => {
+            }, (error) => {
               that.errorMessages = [error.data.error ? error.data.error : error.statusText];
             });
         });
       }
     }
 
-    getAssociatedComplaints () {
-      let that = this;
-      let complaintsPromise = new Promise(resolve => {
-        let complaints = [];
-        this.networkService.getComplaints().then(response => {
+    getAssociatedComplaints() {
+      const that = this;
+      const complaintsPromise = new Promise((resolve) => {
+        const complaints = [];
+        this.networkService.getComplaints().then((response) => {
           if (Array.isArray(response.results)) {
-            response.results.forEach(complaint => {
+            response.results.forEach((complaint) => {
               if (Array.isArray(complaint.surveillances)) {
-                for (let complaintSurveillance of complaint.surveillances) {
+                for (const complaintSurveillance of complaint.surveillances) {
                   if (complaintSurveillance.surveillance.id === that.surveillance.id) {
                     complaints.push(complaint);
                     break;
@@ -136,7 +135,7 @@ export const SurveillanceEditComponent = {
       return complaintsPromise;
     }
 
-    editRequirement (req) {
+    editRequirement(req) {
       req.guiId = req.id ? req.id : (new Date()).getTime();
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
@@ -154,9 +153,9 @@ export const SurveillanceEditComponent = {
         },
         size: 'lg',
       });
-      this.modalInstance.result.then(response => {
-        var found = false;
-        for (var i = 0; i < this.surveillance.requirements.length; i++) {
+      this.modalInstance.result.then((response) => {
+        let found = false;
+        for (let i = 0; i < this.surveillance.requirements.length; i += 1) {
           if (this.surveillance.requirements[i].guiId === response.guiId) {
             this.surveillance.requirements[i] = response;
             found = true;
@@ -165,12 +164,12 @@ export const SurveillanceEditComponent = {
         if (!found) {
           this.surveillance.requirements.push(response);
         }
-      }, result => {
+      }, (result) => {
         this.$log.info(result);
       });
     }
 
-    inspectNonconformities (noncons) {
+    inspectNonconformities(noncons) {
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceNonconformityInspect',
         animation: false,
@@ -183,13 +182,13 @@ export const SurveillanceEditComponent = {
       });
     }
 
-    missingEndDay () {
-      var noNcs = true;
-      var allClosed = true;
+    missingEndDay() {
+      let noNcs = true;
+      let allClosed = true;
       if (this.surveillance.requirements) {
-        for (var i = 0; i < this.surveillance.requirements.length; i++) {
+        for (let i = 0; i < this.surveillance.requirements.length; i += 1) {
           noNcs = noNcs && (!this.surveillance.requirements[i].nonconformities || this.surveillance.requirements[i].nonconformities.length === 0);
-          for (var j = 0; j < this.surveillance.requirements[i].nonconformities.length; j++) {
+          for (let j = 0; j < this.surveillance.requirements[i].nonconformities.length; j += 1) {
             allClosed = allClosed && (this.surveillance.requirements[i].nonconformities[j].status.name === 'Closed');
           }
         }
@@ -197,19 +196,19 @@ export const SurveillanceEditComponent = {
       return this.surveillance.requirements && (noNcs || allClosed) && !this.surveillance.endDay;
     }
 
-    save () {
+    save() {
       if (this.workType === 'confirm') {
-        this.close({$value: this.surveillance});
+        this.close({ $value: this.surveillance });
       } else if (this.workType === 'initiate') {
         this.surveillance.certifiedProduct.edition = this.surveillance.certifiedProduct.certificationEdition.name;
         this.networkService.initiateSurveillance(this.surveillance)
-          .then(response => {
+          .then((response) => {
             if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-              this.close({$value: response});
+              this.close({ $value: response });
             } else {
               this.errorMessages = [response];
             }
-          }, error => {
+          }, (error) => {
             if (error.data.errorMessages && error.data.errorMessages.length > 0) {
               this.errorMessages = error.data.errorMessages;
             } else if (error.data.error) {
@@ -220,13 +219,13 @@ export const SurveillanceEditComponent = {
           });
       } else if (this.workType === 'edit') {
         this.networkService.updateSurveillance(this.surveillance)
-          .then(response => {
+          .then((response) => {
             if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-              this.close({$value: response});
+              this.close({ $value: response });
             } else {
               this.errorMessages = [response];
             }
-          }, error => {
+          }, (error) => {
             if (error.data.errorMessages && error.data.errorMessages.length > 0) {
               this.errorMessages = error.data.errorMessages;
             } else if (error.data.error) {
@@ -243,3 +242,5 @@ export const SurveillanceEditComponent = {
 angular
   .module('chpl.components')
   .component('aiSurveillanceEdit', SurveillanceEditComponent);
+
+export default SurveillanceEditComponent;

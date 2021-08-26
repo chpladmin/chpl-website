@@ -1,8 +1,15 @@
 (() => {
-  'use strict';
-
   describe('the surveillance nonconformity edit component', () => {
-    var $compile, $log, $q, Upload, authService, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let Upload;
+    let authService;
+    let ctrl;
+    let el;
+    let mock;
+    let networkService;
+    let scope;
 
     beforeEach(() => {
       mock = {
@@ -18,20 +25,20 @@
         },
       };
 
-      angular.mock.module('chpl.components', $provide => {
-        $provide.decorator('Upload', $delegate => {
-          $delegate.upload = jasmine.createSpy('upload');
-          return $delegate;
-        });
-        $provide.decorator('authService', $delegate => {
-          $delegate.getApiKey = jasmine.createSpy('getApiKey');
-          $delegate.getToken = jasmine.createSpy('getToken');
-          return $delegate;
-        });
-        $provide.decorator('networkService', $delegate => {
-          $delegate.deleteSurveillanceDocument = jasmine.createSpy('deleteSurveillanceDocument');
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', ($provide) => {
+        $provide.decorator('Upload', ($delegate) => ({
+          ...$delegate,
+          upload: jasmine.createSpy('upload'),
+        }));
+        $provide.decorator('authService', ($delegate) => ({
+          ...$delegate,
+          getApiKey: jasmine.createSpy('getApiKey'),
+          getToken: jasmine.createSpy('getToken'),
+        }));
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          deleteSurveillanceDocument: jasmine.createSpy('deleteSurveillanceDocument'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _Upload_, _authService_, _networkService_) => {
@@ -72,7 +79,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.debug('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.debug(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });

@@ -1,27 +1,36 @@
 (() => {
-  'use strict';
-
   describe('the surveillance edit component', () => {
-    var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, ctrl, el, networkService, scope, utilService;
+    let $compile;
+    let $log;
+    let $q;
+    let $uibModal;
+    let Mock;
+    let actualOptions;
+    let authService;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
+    let utilService;
 
     beforeEach(() => {
-      angular.mock.module('chpl.mock', 'chpl.components', $provide => {
-        $provide.decorator('authService', $delegate => {
-          $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-          return $delegate;
-        });
-        $provide.decorator('networkService', $delegate => {
-          $delegate.deleteSurveillance = jasmine.createSpy('deleteSurveillance');
-          $delegate.getComplaints = jasmine.createSpy('getComplaints');
-          $delegate.initiateSurveillance = jasmine.createSpy('initiateSurveillance');
-          $delegate.updateSurveillance = jasmine.createSpy('updateSurveillance');
-          return $delegate;
-        });
-        $provide.decorator('utilService', $delegate => {
-          $delegate.findModel = jasmine.createSpy('findModel');
-          $delegate.sortRequirements = jasmine.createSpy('sortRequirements');
-          return $delegate;
-        });
+      angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
+        $provide.decorator('authService', ($delegate) => ({
+          ...$delegate,
+          hasAnyRole: jasmine.createSpy('hasAnyRole'),
+        }));
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          deleteSurveillance: jasmine.createSpy('deleteSurveillance'),
+          getComplaints: jasmine.createSpy('getComplaints'),
+          initiateSurveillance: jasmine.createSpy('initiateSurveillance'),
+          updateSurveillance: jasmine.createSpy('updateSurveillance'),
+        }));
+        $provide.decorator('utilService', ($delegate) => ({
+          ...$delegate,
+          findModel: jasmine.createSpy('findModel'),
+          sortRequirements: jasmine.createSpy('sortRequirements'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_, _utilService_) => {
@@ -40,7 +49,7 @@
         utilService.sortRequirements.and.returnValue(1);
         Mock = _Mock_;
         $uibModal = _$uibModal_;
-        spyOn($uibModal, 'open').and.callFake(options => {
+        spyOn($uibModal, 'open').and.callFake((options) => {
           actualOptions = options;
           return Mock.fakeModal;
         });
@@ -64,7 +73,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -88,12 +97,12 @@
 
       describe('during activation', () => {
         it('should provide authorities', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ONC
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ONC', false)); // user is ONC
           // base line
           expect(ctrl.authority).toBeUndefined();
           expect(ctrl.surveillance.type).toBeDefined();
 
-          var newSurv = angular.copy(Mock.surveillances[0]);
+          const newSurv = angular.copy(Mock.surveillances[0]);
           newSurv.endDay = angular.copy(newSurv.startDay);
           newSurv.startDay = undefined;
           newSurv.type = undefined;
@@ -113,7 +122,7 @@
 
         describe('on initiation', () => {
           it('should set authority', () => {
-            authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
+            authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
             scope.resolve = {
               surveillance: {},
               surveillanceTypes: Mock.surveillanceData,
@@ -130,7 +139,7 @@
       });
 
       describe('when adding a new requirement', () => {
-        var modalOptions;
+        let modalOptions;
         beforeEach(() => {
           modalOptions = {
             component: 'aiSurveillanceRequirementEdit',
@@ -162,7 +171,7 @@
           expect(actualOptions.resolve.disableValidation()).toBe(false);
           expect(actualOptions.resolve.randomized()).toBe(false);
           expect(actualOptions.resolve.randomizedSitesUsed()).toBeNull();
-          expect(actualOptions.resolve.requirement()).toEqual({nonconformities: []});
+          expect(actualOptions.resolve.requirement()).toEqual({ nonconformities: [] });
           expect(actualOptions.resolve.surveillanceId()).toEqual(Mock.surveillances[0].id);
           expect(angular.toJson(actualOptions.resolve.surveillanceTypes())).toEqual(angular.toJson(Mock.surveillanceData));
           expect(actualOptions.resolve.workType()).toEqual('add');
@@ -176,25 +185,25 @@
         });
 
         it('should append the response to the array of requirements', () => {
-          var reqCount = ctrl.surveillance.requirements.length;
+          const reqCount = ctrl.surveillance.requirements.length;
           ctrl.addRequirement();
           ctrl.modalInstance.close({});
           expect(ctrl.surveillance.requirements.length).toBe(reqCount + 1);
         });
 
         it('should log a non-closed modal', () => {
-          var logCount = $log.info.logs.length;
+          const logCount = $log.info.logs.length;
           ctrl.addRequirement();
           ctrl.modalInstance.dismiss('string');
           expect($log.info.logs.length).toBe(logCount + 1);
         });
 
         it('should filter out removed criteria when user is ROLE_ACB', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
           ctrl.data = {
             surveillanceRequirements: {
-              criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
-              criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}],
+              criteriaOptions: [{ removed: false }, { removed: false }, { removed: true }],
+              criteriaOptions2015: [{ removed: false }, { removed: false }, { removed: true }],
             },
           };
           ctrl.addRequirement();
@@ -202,10 +211,10 @@
         });
 
         it('should not change base data', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
           ctrl.data = {
             surveillanceRequirements: {
-              criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
+              criteriaOptions: [{ removed: false }, { removed: false }, { removed: true }],
             },
           };
           ctrl.addRequirement();
@@ -213,10 +222,10 @@
         });
 
         it('should not filter out removed criteria when user is ROLE_ONC', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ONC
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ONC', false)); // user is ONC
           ctrl.data = {
             surveillanceRequirements: {
-              criteriaOptions: [{removed: false}, {removed: false}, {removed: true}],
+              criteriaOptions: [{ removed: false }, { removed: false }, { removed: true }],
             },
           };
           ctrl.addRequirement();
@@ -227,11 +236,11 @@
       describe('when deleting requirements', () => {
         it('should be able to remove requirements', () => {
           ctrl.surveillance.requirements = [
-            {id: 1, type: 'fake'},
-            {id: 2, type: 'fake2'},
+            { id: 1, type: 'fake' },
+            { id: 2, type: 'fake2' },
           ];
-          ctrl.deleteRequirement({id: 2, type: 'fake2'});
-          expect(ctrl.surveillance.requirements).toEqual([{id: 1, type: 'fake'}]);
+          ctrl.deleteRequirement({ id: 2, type: 'fake2' });
+          expect(ctrl.surveillance.requirements).toEqual([{ id: 1, type: 'fake' }]);
         });
       });
 
@@ -241,10 +250,10 @@
         });
 
         it('should close it\'s own modal on a status:200 response', () => {
-          networkService.deleteSurveillance.and.returnValue($q.when({status: 200}));
+          networkService.deleteSurveillance.and.returnValue($q.when({ status: 200 }));
           ctrl.deleteSurveillance();
           scope.$digest();
-          expect(scope.close).toHaveBeenCalledWith({status: 200});
+          expect(scope.close).toHaveBeenCalledWith({ status: 200 });
         });
 
         it('should close it\'s own modal if no status in the response', () => {
@@ -255,28 +264,28 @@
         });
 
         it('should close it\'s own modal if status is an object in the response', () => {
-          networkService.deleteSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
+          networkService.deleteSurveillance.and.returnValue($q.when({ status: { status: 'OK' } }));
           ctrl.deleteSurveillance();
           scope.$digest();
-          expect(scope.close).toHaveBeenCalledWith({status: {status: 'OK'}});
+          expect(scope.close).toHaveBeenCalledWith({ status: { status: 'OK' } });
         });
 
         it('should report errors if status has errors', () => {
-          networkService.deleteSurveillance.and.returnValue($q.when({status: 'bad'}));
+          networkService.deleteSurveillance.and.returnValue($q.when({ status: 'bad' }));
           ctrl.deleteSurveillance();
           scope.$digest();
           expect(ctrl.errorMessages[0].status).toBe('bad');
         });
 
         it('should report errors if request fails', () => {
-          networkService.deleteSurveillance.and.returnValue($q.reject({statusText: 'errors'}));
+          networkService.deleteSurveillance.and.returnValue($q.reject({ statusText: 'errors' }));
           ctrl.deleteSurveillance();
           scope.$digest();
           expect(ctrl.errorMessages).toEqual(['errors']);
         });
 
         it('should not allow deleting a surveillance without a Reason for Change', () => {
-          var callCount = networkService.deleteSurveillance.calls.count();
+          const callCount = networkService.deleteSurveillance.calls.count();
           ctrl.reason = undefined;
           ctrl.deleteSurveillance();
           scope.$digest();
@@ -290,7 +299,7 @@
       });
 
       describe('when editing a requirement', () => {
-        var modalOptions;
+        let modalOptions;
         beforeEach(() => {
           modalOptions = {
             component: 'aiSurveillanceRequirementEdit',
@@ -309,8 +318,8 @@
             },
           };
           ctrl.surveillance.requirements = [
-            {id: 1, type: 'fake'},
-            {id: 2, type: 'fake2'},
+            { id: 1, type: 'fake' },
+            { id: 2, type: 'fake2' },
           ];
         });
 
@@ -333,13 +342,13 @@
         });
 
         it('should create a temporary guid if one doesn\'t exist', () => {
-          var req = {name: 'fake'};
+          const req = { name: 'fake' };
           ctrl.editRequirement(req);
           expect(req.guiId).toEqual(jasmine.any(Number));
         });
 
         it('should replace the array object with the response if the guid matches', () => {
-          var req = angular.copy(ctrl.surveillance.requirements[1]);
+          const req = angular.copy(ctrl.surveillance.requirements[1]);
           req.guiId = req.id;
           req.name = 'new name';
           ctrl.editRequirement(ctrl.surveillance.requirements[1]);
@@ -349,13 +358,13 @@
 
         it('should append the response if it does not match', () => {
           ctrl.editRequirement(ctrl.surveillance.requirements[1]);
-          ctrl.modalInstance.close({guiId: 123123});
-          expect(ctrl.surveillance.requirements[1]).not.toEqual({guiId: 123123});
-          expect(ctrl.surveillance.requirements[2]).toEqual({guiId: 123123});
+          ctrl.modalInstance.close({ guiId: 123123 });
+          expect(ctrl.surveillance.requirements[1]).not.toEqual({ guiId: 123123 });
+          expect(ctrl.surveillance.requirements[2]).toEqual({ guiId: 123123 });
         });
 
         it('should log a non-closed modal', () => {
-          var logCount = $log.info.logs.length;
+          const logCount = $log.info.logs.length;
           ctrl.editRequirement(ctrl.surveillance.requirements[1]);
           ctrl.modalInstance.dismiss('string');
           expect($log.info.logs.length).toBe(logCount + 1);
@@ -363,7 +372,7 @@
       });
 
       describe('when inspecting nonconformities', () => {
-        var modalOptions;
+        let modalOptions;
         beforeEach(() => {
           modalOptions = {
             component: 'aiSurveillanceNonconformityInspect',
@@ -384,7 +393,7 @@
         });
 
         it('should resolve elements on that modal', () => {
-          var noncons = [1,2,3];
+          const noncons = [1, 2, 3];
           ctrl.inspectNonconformities(noncons);
           expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
           expect(actualOptions.resolve.nonconformities()).toEqual(noncons);
@@ -401,7 +410,7 @@
         });
 
         it('should require one when all NCs are closed and there\'s no surveillance end date', () => {
-          ctrl.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
+          ctrl.surveillance.requirements[0].nonconformities[0].status = { id: 2, name: 'Closed' };
           expect(ctrl.missingEndDay()).toBe(true);
         });
 
@@ -411,7 +420,7 @@
         });
 
         it('should not require one when all NCs are closed and the surveillance has an end date', () => {
-          ctrl.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
+          ctrl.surveillance.requirements[0].nonconformities[0].status = { id: 2, name: 'Closed' };
           ctrl.surveillance.endDay = '2020-03-01';
           expect(ctrl.missingEndDay()).toBe(false);
         });
@@ -431,8 +440,8 @@
           beforeEach(() => {
             ctrl.workType = 'confirm';
             ctrl.surveillance.requirements = [
-              {id: 1, type: 'fake'},
-              {id: 2, type: 'fake2'},
+              { id: 1, type: 'fake' },
+              { id: 2, type: 'fake2' },
             ];
           });
 
@@ -451,21 +460,21 @@
           beforeEach(() => {
             ctrl.workType = 'initiate';
             ctrl.surveillance.certifiedProduct.edition = undefined;
-            ctrl.surveillance.certifiedProduct.certificationEdition = {name: 'fake'};
+            ctrl.surveillance.certifiedProduct.certificationEdition = { name: 'fake' };
           });
 
           it('should set the certification edition correctly', () => {
             ctrl.surveillance.certifiedProduct.edition = undefined;
-            ctrl.surveillance.certifiedProduct.certificationEdition = {name: 'fake'};
+            ctrl.surveillance.certifiedProduct.certificationEdition = { name: 'fake' };
             ctrl.save();
             expect(ctrl.surveillance.certifiedProduct.edition).toBe('fake');
           });
 
           it('should close it\'s own modal on a status:200 response', () => {
-            networkService.initiateSurveillance.and.returnValue($q.when({status: 200}));
+            networkService.initiateSurveillance.and.returnValue($q.when({ status: 200 }));
             ctrl.save();
             scope.$digest();
-            expect(scope.close).toHaveBeenCalledWith({status: 200});
+            expect(scope.close).toHaveBeenCalledWith({ status: 200 });
           });
 
           it('should close it\'s own modal if no status in the response', () => {
@@ -476,49 +485,49 @@
           });
 
           it('should close it\'s own modal if status is an object in the response', () => {
-            networkService.initiateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
+            networkService.initiateSurveillance.and.returnValue($q.when({ status: { status: 'OK' } }));
             ctrl.save();
             scope.$digest();
-            expect(scope.close).toHaveBeenCalledWith({status: {status: 'OK'}});
+            expect(scope.close).toHaveBeenCalledWith({ status: { status: 'OK' } });
           });
 
           it('should report errors if status has errors', () => {
-            networkService.initiateSurveillance.and.returnValue($q.when({status: 'bad'}));
+            networkService.initiateSurveillance.and.returnValue($q.when({ status: 'bad' }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages[0].status).toBe('bad');
           });
 
           it('should report errors if request fails', () => {
-            networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
+            networkService.initiateSurveillance.and.returnValue($q.reject({ data: { errorMessages: ['errors'] } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual(['errors']);
           });
 
           it('should not report errors if request fails but no messages are returned', () => {
-            networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+            networkService.initiateSurveillance.and.returnValue($q.reject({ data: { errorMessages: [] } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual([undefined]);
           });
 
           it('should not report errors if request fails but no messages are returned', () => {
-            networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
+            networkService.initiateSurveillance.and.returnValue($q.reject({ data: { errorMessages: undefined } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual([undefined]);
           });
 
           it('should report errors if request fails and "data.error" is returned', () => {
-            networkService.initiateSurveillance.and.returnValue($q.reject({data: {error: 'an error'}}));
+            networkService.initiateSurveillance.and.returnValue($q.reject({ data: { error: 'an error' } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual(['an error']);
           });
 
           it('should report errors if request fails and "statusText" is returned', () => {
-            networkService.initiateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
+            networkService.initiateSurveillance.and.returnValue($q.reject({ statusText: 'errors', data: { errorMessages: undefined } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual(['errors']);
@@ -531,10 +540,10 @@
           });
 
           it('should close it\'s own modal on a status:200 response', () => {
-            networkService.updateSurveillance.and.returnValue($q.when({status: 200}));
+            networkService.updateSurveillance.and.returnValue($q.when({ status: 200 }));
             ctrl.save();
             scope.$digest();
-            expect(scope.close).toHaveBeenCalledWith({status: 200});
+            expect(scope.close).toHaveBeenCalledWith({ status: 200 });
           });
 
           it('should close it\'s own modal if no status in the response', () => {
@@ -545,42 +554,42 @@
           });
 
           it('should close it\'s own modal if status is an object in the response', () => {
-            networkService.updateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
+            networkService.updateSurveillance.and.returnValue($q.when({ status: { status: 'OK' } }));
             ctrl.save();
             scope.$digest();
-            expect(scope.close).toHaveBeenCalledWith({status: {status: 'OK'}});
+            expect(scope.close).toHaveBeenCalledWith({ status: { status: 'OK' } });
           });
 
           it('should report errors if status has errors', () => {
-            networkService.updateSurveillance.and.returnValue($q.when({status: 'bad'}));
+            networkService.updateSurveillance.and.returnValue($q.when({ status: 'bad' }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages[0].status).toBe('bad');
           });
 
           it('should report errors if request fails', () => {
-            networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
+            networkService.updateSurveillance.and.returnValue($q.reject({ data: { errorMessages: ['errors'] } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual(['errors']);
           });
 
           it('should not report errors if request fails but no messages are returned', () => {
-            networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+            networkService.updateSurveillance.and.returnValue($q.reject({ data: { errorMessages: [] } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual([undefined]);
           });
 
           it('should not report errors if request fails but no messages are returned', () => {
-            networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
+            networkService.updateSurveillance.and.returnValue($q.reject({ data: { errorMessages: undefined } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual([undefined]);
           });
 
           it('should report errors if request fails and "statusText" is returned', () => {
-            networkService.updateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
+            networkService.updateSurveillance.and.returnValue($q.reject({ statusText: 'errors', data: { errorMessages: undefined } }));
             ctrl.save();
             scope.$digest();
             expect(ctrl.errorMessages).toEqual(['errors']);

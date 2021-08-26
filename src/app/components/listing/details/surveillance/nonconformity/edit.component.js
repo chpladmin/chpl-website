@@ -1,4 +1,4 @@
-export const SurveillanceNonconformityEditComponent = {
+const SurveillanceNonconformityEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/nonconformity/edit.html',
   bindings: {
     resolve: '<',
@@ -52,7 +52,7 @@ export const SurveillanceNonconformityEditComponent = {
       const that = this;
       this.networkService.deleteSurveillanceDocument(this.surveillanceId, docId)
         .then(() => {
-          for (let i = 0; i < this.nonconformity.documents.length; i++) {
+          for (let i = 0; i < this.nonconformity.documents.length; i += 1) {
             if (this.nonconformity.documents[i].id === docId) {
               this.nonconformity.documents.splice(i, 1);
             }
@@ -111,7 +111,7 @@ export const SurveillanceNonconformityEditComponent = {
           that.uploadSuccess = false;
           that.file = undefined;
         }, (event) => {
-          that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
+          that.progressPercentage = parseInt(100.0 * (event.loaded / event.total), 10);
           that.$log.info(`progress: ${that.progressPercentage}% ${event.config.data.file.name}`);
         });
       }
@@ -122,3 +122,5 @@ export const SurveillanceNonconformityEditComponent = {
 angular
   .module('chpl.components')
   .component('aiSurveillanceNonconformityEdit', SurveillanceNonconformityEditComponent);
+
+export default SurveillanceNonconformityEditComponent;
