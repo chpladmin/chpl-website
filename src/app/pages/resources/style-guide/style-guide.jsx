@@ -1,9 +1,7 @@
 import React from 'react';
 import {
   ThemeProvider,
-  Container,
   createMuiTheme,
-  makeStyles,
   Typography,
 } from '@material-ui/core';
 
@@ -13,32 +11,23 @@ import theme from '../../../themes/theme';
 
 const defaultTheme = createMuiTheme({});
 
-const useStyles = makeStyles({
-  Chplcontainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    backgroundColor:"#f2f2f2",
-    padding: "32px",
-    marginBottom:"-128px",
-  },
-});
-
 function ChplStyleGuide() {
-  const classes = useStyles();
   
   return (
-    <div className={classes.Chplcontainer}>
+    <div>
       <ThemeProvider theme={defaultTheme}>
       <div>
-        <Typography variant="h1">CHPL Material UI</Typography>
+        <Typography variant='h1'>CHPL Material UI</Typography>
         <ThemeProvider theme={theme}>
         <Elements />
         </ThemeProvider>
       </div>
+     {/* Default Material UI
       <div>
-        <Typography variant="h1">Default Material UI</Typography>
+        <Typography variant='h1'>Default Material UI</Typography>
         <Elements />
       </div>
+      */}
       <SgBackToTop/>  
       </ThemeProvider>
     </div>
