@@ -5,17 +5,18 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplActionBar from './action-bar';
+import ChplActionBarConfirmation from './action-bar-confirmation';
 
 const hocMock = {
   dispatch: jest.fn(),
 };
 
-describe('the ChplActionBar component', () => {
+describe('the ChplActionBarConfirmation component', () => {
   beforeEach(async () => {
     render(
-      <ChplActionBar
+      <ChplActionBarConfirmation
         dispatch={hocMock.dispatch}
+        pendingMessage="This is your message"
       />,
     );
   });
@@ -25,22 +26,21 @@ describe('the ChplActionBar component', () => {
   });
 
   describe('when taking actions', () => {
-    it('should call the callback for cancel', async () => {
+    it('should call the callback for "No"', async () => {
       hocMock.dispatch.mockClear();
-      userEvent.click(screen.getByRole('button', { name: /Cancel/i }));
-      userEvent.click(screen.getByRole('button', { name: /Yes/i }));
+      userEvent.click(screen.getByRole('button', { name: /No/i }));
 
       await waitFor(() => {
-        expect(hocMock.dispatch).toHaveBeenCalledWith('cancel');
+        expect(hocMock.dispatch).toHaveBeenCalledWith('no');
       });
     });
 
-    it('should call the callback for save', async () => {
+    it('should call the callback for "Yes"', async () => {
       hocMock.dispatch.mockClear();
-      userEvent.click(screen.getByRole('button', { name: /Save/i }));
+      userEvent.click(screen.getByRole('button', { name: /Yes/i }));
 
       await waitFor(() => {
-        expect(hocMock.dispatch).toHaveBeenCalledWith('save');
+        expect(hocMock.dispatch).toHaveBeenCalledWith('yes');
       });
     });
   });

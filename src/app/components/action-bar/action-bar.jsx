@@ -12,6 +12,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
+import ChplActionBarConfirmation from './action-bar-confirmation';
 import theme from '../../themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -32,7 +33,10 @@ const useStyles = makeStyles(() => ({
 
 function ChplActionBar(props) {
   /* eslint-disable react/destructuring-assignment */
+  const [pendingAction, setPendingAction] = useState('');
+  const [pendingMessage, setPendingMessage] = useState('');
   const [canDelete] = useState(props.canDelete);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled] = useState(props.isDisabled);
   const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
   const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
@@ -46,9 +50,36 @@ function ChplActionBar(props) {
     }
   };
 
+  const confirmCancel = () => {
+    setIsConfirming(true);
+    setPendingAction('cancel');
+    setPendingMessage('Are you sure you want to cancel?');
+  };
+
+  const confirmDelete = () => {
+    setIsConfirming(true);
+    setPendingAction('delete');
+    setPendingMessage('Are you sure you want to delete this?');
+  };
+
+  const handleConfirmation = (response) => {
+    if (response === 'yes' && pendingAction) {
+      act(pendingAction);
+    }
+    setIsConfirming(false);
+    setPendingAction('');
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="action-bar">
+        { isConfirming
+          && (
+          <ChplActionBarConfirmation
+            dispatch={handleConfirmation}
+            pendingMessage={pendingMessage}
+          />
+          )}
         { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
           && (
             <>
@@ -128,7 +159,7 @@ function ChplActionBar(props) {
             <Button
               id="action-bar-cancel"
               variant="outlined"
-              onClick={() => act('cancel')}
+              onClick={() => confirmCancel()}
               className={classes.buttons}
             >
               Cancel
@@ -155,7 +186,7 @@ function ChplActionBar(props) {
                   id="action-bar-delete"
                   variant="contained"
                   className={`${classes.buttons} ${classes.deleteButton}`}
-                  onClick={() => act('delete')}
+                  onClick={() => confirmDelete()}
                 >
                   Delete
                   <DeleteOutlinedIcon
