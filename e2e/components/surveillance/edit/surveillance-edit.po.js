@@ -1,175 +1,176 @@
-const elements = {
-  cancel: '//*[@ng-click="$ctrl.cancel()"]',
-  surveillanceDetails: '.col-sm-12.ng-binding',
-  requirementTable: '.table-condensed',
-  inspectTitle: '#inspect-label',
-  edit: '//*[@ng-click="$ctrl.editSurveillance()"]',
-  startDate: '#start-day',
-  endDate: '#end-day',
-  nonConformityCloseDate: '#non-conformity-close-day',
-  surveillanceType: '#surveillance-type',
-  siteSurveilled: '#sites-surveilled',
-  save: '//button[text()=" Save"]',
-  removeRequirement: '//*[@ng-click="$ctrl.deleteRequirement(req)"]',
-  error: '.text-danger.text-left',
-  newRequirement: '//*[@ng-click="$ctrl.addRequirement()"]',
-  requirementType: '#requirement-type',
-  requirementResult: '#result',
-  newnonConformity: '//*[@ng-click="$ctrl.addNonconformity()"]',
-  nonConformityType: '#nonconformity-type',
-  nonConformityStatus: '#nonconformity-status',
-  determinationDate: '#date-of-determination-day',
-  summary: '#summary',
-  findings: '#findings',
-  editRequirement: '//*[@ng-click="$ctrl.editRequirement(req)"]',
-  removeNonConformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
-  approvalDate: '#cap-approval-day',
-  ncStartDate: '#cap-start-day',
-  completeDate: '#cap-must-complete-day',
-  sites: '#sites-passed',
-  totalSites: '#total-sites',
-  explanation: '#developer-explanation',
-  resolution: '#resolution',
-  requirementCapability: '//*[@name="requirement"]',
-};
-
 class SurveillanceEditComponent {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      approvalDate: '#cap-approval-day',
+      cancel: '//*[@ng-click="$ctrl.cancel()"]',
+      completeDate: '#cap-must-complete-day',
+      determinationDate: '#date-of-determination-day',
+      edit: '//*[@ng-click="$ctrl.editSurveillance()"]',
+      editRequirement: '//*[@ng-click="$ctrl.editRequirement(req)"]',
+      endDate: '#end-day',
+      error: '.text-danger.text-left',
+      explanation: '#developer-explanation',
+      findings: '#findings',
+      inspectTitle: '#inspect-label',
+      ncStartDate: '#cap-start-day',
+      newRequirement: '//*[@ng-click="$ctrl.addRequirement()"]',
+      newnonConformity: '//*[@ng-click="$ctrl.addNonconformity()"]',
+      nonConformityCloseDate: '#non-conformity-close-day',
+      nonConformityStatus: '#nonconformity-status',
+      nonConformityType: '#nonconformity-type',
+      nonconformityTable: '.table.ng-scope',
+      removeNonConformity: '//*[@ng-click="$ctrl.deleteNonconformity(noncon)"]',
+      removeRequirement: '//*[@ng-click="$ctrl.deleteRequirement(req)"]',
+      requirementCapability: '//*[@name="requirement"]',
+      requirementResult: '#result',
+      requirementTable: '.table-condensed',
+      requirementType: '#requirement-type',
+      resolution: '#resolution',
+      save: '//button[text()=" Save"]',
+      siteSurveilled: '#sites-surveilled',
+      sites: '#sites-passed',
+      startDate: '#start-day',
+      summary: '#summary',
+      surveillanceDetails: '.col-sm-12.ng-binding',
+      surveillanceType: '#surveillance-type',
+      totalSites: '#total-sites',
+    };
+  }
 
   get cancel() {
-    return $(elements.cancel);
+    return $(this.elements.cancel);
   }
 
   get requirementCapability() {
-    return $(elements.requirementCapability);
+    return $(this.elements.requirementCapability);
   }
 
   get surveillanceDetails() {
-    return $(elements.surveillanceDetails);
+    return $(this.elements.surveillanceDetails);
   }
 
   get inspectTitle() {
-    return $(elements.inspectTitle);
+    return $(this.elements.inspectTitle);
   }
 
   get editButton() {
-    return $(elements.edit);
+    return $(this.elements.edit);
   }
 
   get startDate() {
-    return $(elements.startDate);
+    return $(this.elements.startDate);
   }
 
   get endDate() {
-    return $(elements.endDate);
+    return $(this.elements.endDate);
   }
 
   get surveillanceType() {
-    return $(elements.surveillanceType);
+    return $(this.elements.surveillanceType);
   }
 
   get siteSurveilled() {
-    return $(elements.siteSurveilled);
+    return $(this.elements.siteSurveilled);
   }
 
   get saveButton() {
-    return $(elements.save);
+    return $(this.elements.save);
   }
 
   get removeButton() {
-    return $(elements.removeRequirement);
+    return $(this.elements.removeRequirement);
   }
 
   get errorMessages() {
-    return $(elements.error);
+    return $(this.elements.error);
   }
 
   get newRequirementButton() {
-    return $(elements.newRequirement);
+    return $(this.elements.newRequirement);
   }
 
   get requirementType() {
-    return $(elements.requirementType);
+    return $(this.elements.requirementType);
   }
 
   get requirementResult() {
-    return $(elements.requirementResult);
+    return $(this.elements.requirementResult);
   }
 
   get newnonConformityButton() {
-    return $(elements.newnonConformity);
+    return $(this.elements.newnonConformity);
   }
 
   get nonConformityType() {
-    return $(elements.nonConformityType);
+    return $(this.elements.nonConformityType);
   }
 
   get nonConformityStatus() {
-    return $(elements.nonConformityStatus);
+    return $(this.elements.nonConformityStatus);
   }
 
   get determinationDate() {
-    return $(elements.determinationDate);
+    return $(this.elements.determinationDate);
   }
 
   get summary() {
-    return $(elements.summary);
+    return $(this.elements.summary);
   }
 
   get findings() {
-    return $(elements.findings);
+    return $(this.elements.findings);
   }
 
   get approvalDate() {
-    return $(elements.approvalDate);
+    return $(this.elements.approvalDate);
   }
 
   get ncStartDate() {
-    return $(elements.ncStartDate);
+    return $(this.elements.ncStartDate);
   }
 
   get completeDate() {
-    return $(elements.completeDate);
+    return $(this.elements.completeDate);
   }
 
   get sites() {
-    return $(elements.sites);
+    return $(this.elements.sites);
   }
 
   get totalSites() {
-    return $(elements.totalSites);
+    return $(this.elements.totalSites);
   }
 
   get resolution() {
-    return $(elements.resolution);
+    return $(this.elements.resolution);
   }
 
   get explanation() {
-    return $(elements.explanation);
+    return $(this.elements.explanation);
   }
 
   get editRequirement() {
-    return $(elements.editRequirement);
+    return $(this.elements.editRequirement);
   }
 
   get removeNonConformity() {
-    return $(elements.removeNonConformity);
+    return $(this.elements.removeNonConformity);
   }
 
-  get nonConformityCloseDate () {
-    return $(elements.nonConformityCloseDate);
+  get nonConformityCloseDate() {
+    return $(this.elements.nonConformityCloseDate);
   }
 
   requirementTableRows() {
-    return $(elements.requirementTable).$('tbody').$$('tr');
+    return $(this.elements.requirementTable).$('tbody').$$('tr');
   }
 
   requirementName(i) {
-    return $(elements.requirementTable).$('tbody').$('tr').$$('td')[i];
+    return $(this.elements.requirementTable).$('tbody').$('tr').$$('td')[i];
   }
 
   nonConformityTableRows() {
-    return $('.table.ng-scope').$('tbody').$$('tr');
+    return $(this.elements.nonconformityTable).$('tbody').$$('tr');
   }
 
   addnonConformity(details, type) {
