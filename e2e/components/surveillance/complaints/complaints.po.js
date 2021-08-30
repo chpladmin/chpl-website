@@ -63,6 +63,7 @@ class ComplaintsComponent {
     this.viewComplaint(id);
     $('//*[text()="Edit"]/parent::button').scrollAndClick();
     $('//span[text()="Delete"]/parent::button').scrollAndClick();
+    $('//span[text()="Yes"]/parent::button').scrollAndClick();
   }
 }
 
