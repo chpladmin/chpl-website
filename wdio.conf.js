@@ -7,14 +7,8 @@ const urls = require('./e2e/config/urls');
 global.downloadDir = path.join(`${__dirname}`, 'test_reports/e2e/');
 
 let baseUrl='http://localhost:3000/';
-if (process.env.ENV === 'dev') {
-  baseUrl = urls.devURL
-}
-else if (process.env.ENV === 'qa') {
-  baseUrl = urls.qaURL
-}
-else if (process.env.ENV === 'stage') {
-  baseUrl = urls.stageURL
+if (process.env.ENV) {
+  baseUrl = urls[`${process.env.ENV}URL`];
 }
 exports.config = {
   //
