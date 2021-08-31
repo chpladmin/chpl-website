@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 11.20.0
+_31 August 2021_
+
+### Features
+* Track Analytics separately on Cures vs. non-Cures criteria
+* Require confirmation of cancel and delete in certain circumstances
+
+---
+
 ## Version 11.19.0
 _23 August 2021_
 
