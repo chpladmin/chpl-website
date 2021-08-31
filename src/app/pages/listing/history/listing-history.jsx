@@ -149,7 +149,7 @@ function ChplListingHistory(props) {
   const goToApi = () => {
     $analytics.eventTrack('Go To API Page', { category: 'Listing Details', label: listing.chplProductNumber });
     setOpen(false);
-    $state.go('resources.chpl-api');
+    $state.go('resources.api');
   };
 
   const goToHistory = () => {
