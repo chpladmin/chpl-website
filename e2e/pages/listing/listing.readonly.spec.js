@@ -71,7 +71,7 @@ describe('when on 2015 listing page - ', () => {
       });
 
       it('should go to api page', () => {
-        expect(browser.getUrl()).toContain('resources/chpl-api');
+        expect(browser.getUrl()).toContain('resources/api');
       });
     });
   });
