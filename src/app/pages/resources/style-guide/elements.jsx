@@ -55,6 +55,11 @@ const useStyles = makeStyles({
     gridTemplateColumns: '3fr 9fr',
     alignItems:'start',
   },
+  chipContainer:{
+    gap: '16px',
+    display: 'grid',
+    justifyItems:'start',
+  },
 });
 
 

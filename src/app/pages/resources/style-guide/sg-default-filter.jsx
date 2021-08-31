@@ -4,23 +4,24 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import SgLogin from './sg-login';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import SgDefaultFilterPopover from './sg-default-filter-popover';
+import FilterListIcon from '@material-ui/icons/FilterList';
+
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
 });
 
-function SgAdministratorLogin () {
+function SgDefaultFilter() {
   const classes = useStyles();
 
   return (
-    <SgLogin
+    <SgDefaultFilterPopover
     anchor={
      <Button variant="contained" color="secondary">
-       Administrator Login  
-      <ArrowForwardIcon className={classes.iconSpacing}
+       Chpl Default Filter
+      <FilterListIcon className={classes.iconSpacing}
       />
     </Button>
     } 
@@ -28,4 +29,4 @@ function SgAdministratorLogin () {
   );
 }
 
-export default SgAdministratorLogin;
+export default SgDefaultFilter;

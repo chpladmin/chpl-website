@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  InputBase,
   Paper,
   Table,
   TableBody,
@@ -10,6 +11,8 @@ import {
   TableRow,
   TablePagination,
   makeStyles,
+  useMediaQuery,
+  Typography,
 } from '@material-ui/core';
 
 import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers';
@@ -54,7 +57,7 @@ const useStyles = makeStyles({
   },
 });
 
-function SgTable() {
+function ChplStyleGuideTable() {
   const classes = useStyles();
   const [listings, setListings] = useState([
     {
@@ -312,4 +315,4 @@ function SgTable() {
   );
 }
 
-export default SgTable;
+export default ChplStyleGuideTable;

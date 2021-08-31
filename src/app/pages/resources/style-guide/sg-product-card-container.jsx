@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 import GetAppIcon from '@material-ui/icons/GetApp';
-import ChplDefaultFilter from './chpl-default-filter';
+import SgDefaultFilter from './sg-default-filter';
 
 const useStyles = makeStyles({
   container: {
@@ -70,7 +70,7 @@ function SgProductCardContainer() {
         <br/>
         <div>
          <Typography gutterBottom variant='h5'>Sort Results By:</Typography>
-         <ChplDefaultFilter fullWidth/>
+         <SgDefaultFilter fullWidth/>
         </div>
       </div>
       <div>
