@@ -6,7 +6,7 @@ const theme = createMuiTheme({
     display: 'flex',
   },
   spacing: 4,
-  
+
    /*Start of CHPL Colorwave*/
   palette: {
     background: {
@@ -223,15 +223,15 @@ const theme = createMuiTheme({
         boxShadow: '0px 4px 8px rgb(149 157 165 / 10%)',
       }
     },
-    MuiTable: {
-      root: {
-        borderRadius: '8px',
-      },
-    },
     MuiSelect: {
       icon: {
         position: 'inherit',
         color: '#156dac',
+      },
+    },
+    MuiTable: {
+      root: {
+        borderRadius: '8px',
       },
     },
     MuiTableCell: {
