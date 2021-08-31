@@ -1,8 +1,9 @@
-import ListingPage from './listing.po';
 import Hooks from '../../utilities/hooks';
 import CmsWidgetComponent from '../../components/cms-widget/cms-widget.po';
 import CompareWidgetComponent from '../../components/compare-widget/compare-widget.po';
 import LoginComponent from '../../components/login/login.po';
+
+import ListingPage from './listing.po';
 
 let cmsComponent;
 let compareComponent;
@@ -15,7 +16,7 @@ beforeEach(() => {
   hooks = new Hooks();
   cmsComponent = new CmsWidgetComponent();
   compareComponent = new CompareWidgetComponent();
-  login= new LoginComponent();
+  login = new LoginComponent();
 });
 describe('when on 2015 listing page - ', () => {
   beforeEach(() => {
@@ -28,18 +29,18 @@ describe('when on 2015 listing page - ', () => {
       login.logIn('onc');
     });
 
-      afterEach(() => {
-        login.logOut();
-      });
-  
-  it('should have correct link to go to manage surveillance activity', () => {
-    expect(page.manageSurveillanceActivity.getAttribute('href')).toContain('surveillance/manage');
-  });
+    afterEach(() => {
+      login.logOut();
+    });
 
-  it('should have correct link for editing a listing', () => {
-    expect(page.editCertifiedProduct.getAttribute('href')).toContain('listing/9833/view/edit');
+    it('should have correct link to go to manage surveillance activity', () => {
+      expect(page.manageSurveillanceActivity.getAttribute('href')).toContain('surveillance/manage');
+    });
+
+    it('should have correct link for editing a listing', () => {
+      expect(page.editCertifiedProduct.getAttribute('href')).toContain('listing/9833/view/edit');
+    });
   });
-});
 
   describe('clicking on return to search link', () => {
     beforeEach(async () => {

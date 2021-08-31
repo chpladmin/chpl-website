@@ -18,6 +18,10 @@ import {
 } from '@material-ui/core';
 import { bool, object } from 'prop-types';
 
+import theme from '../../../themes/theme';
+import { getAngularService } from '../../../services/angular-react-helper';
+import { ChplDialogTitle } from '../../../components/util';
+
 import {
   interpretActivity,
   interpretCertificationStatusChanges,
@@ -26,9 +30,6 @@ import {
   interpretProduct,
   interpretVersion,
 } from './history.service';
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper.jsx';
-import { ChplDialogTitle } from '../../../components/util';
 
 const useStyles = makeStyles(() => ({
   noWrap: {
