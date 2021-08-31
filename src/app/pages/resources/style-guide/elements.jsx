@@ -7,9 +7,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
-  Container,
   Divider,
-  Grid,
   Link,
   List,
   ListItem,
@@ -17,40 +15,45 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+/*MUI Icons*/
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import SettingsIcon from '@material-ui/icons/Settings';
 
+/*Utility Componets*/
 import { ChplEllipsis } from '../../../components/util';
-import ChplAccordion from './chpl-accordion';
-import ChplStyleGuideTable from './style-guide-table';
-import ChplDeleteButton from './chpl-delete-button';
-import ChplPrimaryButton from './chpl-primary-button';
-import ChplSecondaryButton from './chpl-secondary-button';
-import ChplDefaultButton from './chpl-default-button';
-import ChplDefaultFilter from './chpl-default-filter';
-import ChplDefaultForm from './chpl-default-form';
 import ChplActionBar from '../../../components/action-bar/action-bar';
-import ChplTemplate from './chpl-template';
-import ChplAdministratorLogin from './chpl-administrator-login';
+
+/* Style Guide Componets*/
+import SgAccordion from './sg-accordion';
+import SgAdministratorLogin from './sg-administrator-login';
+import SgDefaultButton from './sg-default-button';
+import SgDefaultForm from './sg-default-form';
+import SgDeleteButton from './sg-delete-button';
 import SgConfirmation from './sg-confirmation';
-import SgProductCard from './sg-product-card';
+import SgPrimaryButton from './sg-primary-button';
 import SgProductCardContainer from './sg-product-card-container';
 import SgSearchBar from './sg-search-bar';
+import SgSecondaryButton from './sg-secondary-button';
+import SgTable from './sg-table';
+import SgTemplate from './sg-template';
 
+/*Custom CSS for Style Guide*/
 const useStyles = makeStyles({
   chplContainer: {
-    gridTemplateColumns: '1fr',
     backgroundColor: '#f2f2f2',
     padding: '32px',
-    paddingTop:'64px',
+    paddingTop: '64px',
     gap: '16px',
-    display:'grid',
-    overflowWrap:'anywhere',
+    display: 'grid',
+    overflowWrap: 'anywhere',
   },
-  buttonContainer:{
-    gridTemplateColumns: 'auto 1fr',
+  rowContainer: {
     gap: '16px',
-    display:'grid',
+    display: 'grid',
+    gridTemplateColumns: '3fr 9fr',
+    alignItems:'start',
   },
 });
 
@@ -62,73 +65,105 @@ function Elements() {
     <div>
       <SgSearchBar />
       <div className={classes.chplContainer}>
-        <div>
-        {/* Typography Containers */}
-        <Typography gutterBottom variant="h3">Typography Hiearchy:</Typography>
-        <Card>
-          <CardContent>
-            <Typography gutterBottom variant="h1">h1. Heading</Typography>
-            <Typography gutterBottom varient="body1">
-              The H1 heading describes a page’s main topic. It should be highly related to the content and unique across your website, and a page may only contain one H1 heading.
-            </Typography>
-            <Typography gutterBottom variant="h2">h2. Heading</Typography>
-            <Typography gutterBottom varient="body1">The H2 heading describes a sub topic on the given page. We will used these as subheads.
-            </Typography>
-            <Typography gutterBottom variant="h3">h3. Heading</Typography>
-            <Typography gutterBottom variant="body1">
-              Consider using H3 for useful groups of h1 content. Think of h3 as is a second heading.
-            </Typography>
-            <Typography gutterBottom variant="h4">h4. Heading</Typography>
-            <Typography gutterBottom variant="body1">
-              The H4 heading will be used a sub topic to h2 subject. The bottom echelons (H4-H6) should be where you put your content that only exists to back up the previous headings – and should be the least important.
-            </Typography>
-            <Typography gutterBottom variant="h5">h5. Heading</Typography>
-            <Typography gutterBottom variant="body1">
-              H5 comes in handy for call outs. If chpl wanted to focus on a certain obecjt, h5 should be used. Card Header will be using h5 as a default in CHPL.
-            </Typography>
-            <Typography gutterBottom variant="h6">h6. Heading</Typography>
-            <Typography gutterBottom variant="body1">
-              Should only be used it pages are dense with other heading tags. It highly likely we used this. H6 is slighty bigger then body text so user can still see the difference for easy reading hiearchy.
-            </Typography>
-            <Typography gutterBottom variant="subtitle1">
-              subtitle1. used on static label headers. See real-life example below.
-            </Typography>
-            <Typography gutterBottom variant="subtitle2">
-              subtitle2. used on static label sub-headers. See real-life example below.
-            </Typography>
-            <Typography gutterBottom variant="body1">
-              Body1
-            </Typography>
-            <Typography gutterBottom variant="body1">
-              This is the standard body text for the CHPL Interface. Varient = body1
-            </Typography>
-            <Typography gutterBottom variant="body2">
-              Body2
-            </Typography>
-            <Typography gutterBottom variant="body2">
-              This is the secondary body text for the CHPL interface. This should be used in dense places, due to the type being smaller than the original body copy. Use Varient = body2
-            </Typography>
-            <Typography gutterBottom variant="body1" display="block">
-              The chpl ellipis can be used to hide large amount of text without losing the ability to access the information.
-              <ChplEllipsis maxLength="39" text="Use the eillipis to read more content. Donec id ex id neque maximus faucibus quis non lectus. Cras luctus leo at venenatis sollicitudin. Donec vitae augue molestie, eleifend dui nec, lacinia ante. Fusce ex lacus, facilisis eget rutrum non, pulvinar sed neque. Vestibulum aliquet leo a orci bibendum, sit amet consequat leo molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse auctor quam dui, vel dictum nunc ultricies id. Nullam iaculis mauris nec dapibus porttitor. Quisque auctor venenatis sem nec maximus. Cras bibendum lacus vitae elementum feugiat. Vestibulum augue mauris, tristique ut ultrices quis, maximus a eros. Pellentesque at feugiat sapien. Integer ultricies sed orci eu porta. Praesent condimentum odio id nisl ultricies tincidunt." />
-            </Typography>
-            <Typography gutterBottom variant="button" display="block">
-              button text - Defaulted to all caps.
-            </Typography>
-            <Typography gutterBottom variant="caption" display="block">
-              caption text
-            </Typography>
-            <Typography gutterBottom variant="overline" display="block">
-              overline text
-            </Typography>
-          </CardContent>
-        </Card>
+      <Typography gutterBottom variant="h3">Typography Hierarchy:</Typography>
+      {/* Typography Containers */}
+        <div className={classes.rowContainer}>
+          <Card>
+            <CardHeader title="Rules To Follow:"></CardHeader>
+            <CardContent>
+              <List aria-label="chpl button rules">
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    1. A page may only contain one H1 heading.
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    2. CHPL's H1 are the only header that is defaulted to a heavier weight. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    3. Headers should never jump one another. For example a page should not never a h1 then a h3 following it. It should read h1, h2, h3, and so one. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    4. When displaying data, subtitles should be used above the data that is being displayed. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    5. Typography should always be align left. There may be a special edge cases where we align typography to the right.  
+                  </Typography>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <Typography gutterBottom variant="h1">h1. Heading</Typography>
+              <Typography gutterBottom varient="body1">
+                The H1 heading describes a page’s main topic. It should be highly related to the content and unique across your website, 
+              </Typography>
+              <Typography gutterBottom variant="h2">h2. Heading</Typography>
+              <Typography gutterBottom varient="body1">The H2 heading describes a sub topic on the given page. We will used these as subheads.
+              </Typography>
+              <Typography gutterBottom variant="h3">h3. Heading</Typography>
+              <Typography gutterBottom variant="body1">
+                Consider using H3 for useful groups of h1 content. Think of h3 as is a second heading.
+              </Typography>
+              <Typography gutterBottom variant="h4">h4. Heading</Typography>
+              <Typography gutterBottom variant="body1">
+                The H4 heading will be used a sub topic to h2 subject. The bottom echelons (H4-H6) should be where you put your content that only exists to back up the previous headings – and should be the least important.
+              </Typography>
+              <Typography gutterBottom variant="h5">h5. Heading</Typography>
+              <Typography gutterBottom variant="body1">
+                H5 comes in handy for call outs. If chpl wanted to focus on a certain obecjt, h5 should be used. Card Header will be using h5 as a default in CHPL.
+              </Typography>
+              <Typography gutterBottom variant="h6">h6. Heading</Typography>
+              <Typography gutterBottom variant="body1">
+                Should only be used it pages are dense with other heading tags. It highly likely we used this. H6 is slighty bigger then body text so user can still see the difference for easy reading hiearchy.
+              </Typography>
+              <Typography gutterBottom variant="subtitle1">
+                subtitle1. used on static label headers. See real-life example below.
+              </Typography>
+              <Typography gutterBottom variant="subtitle2">
+                subtitle2. used on static label sub-headers. See real-life example below.
+              </Typography>
+              <Typography gutterBottom variant="body1">
+                Body1
+              </Typography>
+              <Typography gutterBottom variant="body1">
+                This is the standard body text for the CHPL Interface. Varient = body1
+              </Typography>
+              <Typography gutterBottom variant="body2">
+                Body2
+              </Typography>
+              <Typography gutterBottom variant="body2">
+                This is the secondary body text for the CHPL interface. This should be used in dense places, due to the type being smaller than the original body copy. Use Varient = body2
+              </Typography>
+              <Typography gutterBottom variant="body1" display="block">
+                The chpl ellipis can be used to hide large amount of text without losing the ability to access the information.
+                <ChplEllipsis maxLength="39" text="Use the eillipis to read more content. Donec id ex id neque maximus faucibus quis non lectus. Cras luctus leo at venenatis sollicitudin. Donec vitae augue molestie, eleifend dui nec, lacinia ante. Fusce ex lacus, facilisis eget rutrum non, pulvinar sed neque. Vestibulum aliquet leo a orci bibendum, sit amet consequat leo molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse auctor quam dui, vel dictum nunc ultricies id. Nullam iaculis mauris nec dapibus porttitor. Quisque auctor venenatis sem nec maximus. Cras bibendum lacus vitae elementum feugiat. Vestibulum augue mauris, tristique ut ultrices quis, maximus a eros. Pellentesque at feugiat sapien. Integer ultricies sed orci eu porta. Praesent condimentum odio id nisl ultricies tincidunt." />
+              </Typography>
+              <Typography gutterBottom variant="button" display="block">
+                button text - Defaulted to all caps.
+              </Typography>
+              <Typography gutterBottom variant="caption" display="block">
+                caption text
+              </Typography>
+              <Typography gutterBottom variant="overline" display="block">
+                overline text
+              </Typography>
+            </CardContent>
+          </Card>
         </div>
         {/* End of Typography Containers */}
 
-        {/* Buttons Variations*/}
-        <div >
         <Typography gutterBottom variant="h2">CHPL Buttons and Where To Use Them:</Typography>
+        {/* Buttons Variations*/}
+        <div className={classes.rowContainer}>
           <Card>
             <CardHeader title="Rules To Follow:"></CardHeader>
             <CardContent>
@@ -158,87 +193,128 @@ function Elements() {
                     5. All icons within a button should have the class .iconSpacing applied for a consistent theme)
                   </Typography>
                 </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    6. Choosing a button style depends on the primacy of the button, the number of containers on screen, and the screen layout.
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    7. Button groups are used when there's multiple actions that can happen for a particular item, table or other. A button group should have 3 or more actions to be consider a button group. 
+                  </Typography>
+                </ListItem>
               </List>
-              <Divider />
-              <div className={classes.buttonContainer}>
-              <ChplPrimaryButton />
-              <Typography gutterBottom gutterBottom variant="body1">
-                Primary Button should be used on saved buttons or on the
-                main action of the given page object. Be sure to use the
-                varient <i>contained</i>.
-              </Typography>
-              <ChplSecondaryButton />
-              <Typography gutterBottom gutterBottom variant="body1">
-                Secondary Button should be used on filters, selecting
-                listings, uploads and more! Think of this button as a
-                cache all for all buttons. Be sure to use the varient{' '}
-                <i>contained</i> here.
-              </Typography>
-              <ChplDefaultButton />
-              <Typography gutterBottom gutterBottom variant="body1">
-                Default Button should be used on cancelling a certian process/form. Be sure to use the varient<i> contained</i>.
-              </Typography>
-              <Button variant="contained" disabled>
-                disabled Button
-              </Button>
-              <Typography gutterBottom gutterBottom variant="body1">
-                Disabled button should be shown when an action can not be completed until a user makes a seperate action. You can use the <i>disabled</i> on any button and styling will change
-              </Typography>
-              <SgConfirmation />
-              <Typography gutterBottom>Confirmation Alerts are urgent interruptions, requiring acknowledgement, that inform the user about a situation. Click on the save button to show the dialog box for confirmation. Chpl interface should use confirmation on all saved, delete or cancels (in edit mode). </Typography>
-              <ChplDeleteButton />
-              <Typography gutterBottom gutterBottom variant="body1">
-                Delete button should be used only when there is an action
-                to delete a proccess/item. Be sure to use the varient{' '}
-                <i>contained</i>.
-              </Typography>
-              <ButtonGroup color="primary" aria-label="outlined primary button group">
-                <Button>Click Here</Button>
-                <Button>Hover Over Me</Button>
-                <Button>One More</Button>
-              </ButtonGroup>
-              <Typography gutterBottom gutterBottom variant="body1">
-                Button groups are used when there's multiple actions that can happen for a particular item, table or other.
-              </Typography>
-              <ButtonGroup>
-                <Button color="primary" variant="contained">Open Details</Button>
-                <Button color="primary" variant="outlined">CMS Widget</Button>
-                <Button color="primary" variant="outlined">Compare</Button>
-              </ButtonGroup>
-              <Typography gutterBottom gutterBottomvariant="body1">
-                Within CHPL youll see vartions of button groups that includes primary, secondary, default, and so one.
-              </Typography>
-              </div>
-              <Divider />
-              <Typography gutterBottom gutterBottom variant="h3">
-                CHPL Buttons Sizes:
-              </Typography>
-              <div className={classes.buttonContainer}>
-              <Button size="medium" color="primary" variant="contained">
-                Medium button
-                <ArrowForwardOutlinedIcon
-                  fontSize="small"
-                />
-              </Button>
-              <Button fullWidth color="primary" variant="contained">
-                Full Width button
-                <ArrowForwardOutlinedIcon
-                />
-              </Button>
-              </div>
+            </CardContent>
+          </Card>
+          <div>
+          <Card>
+          <CardHeader title="Button Options"></CardHeader>
+            <CardContent>
+              <div>
+                <div>
+                  <SgPrimaryButton />
+                  <Typography gutterBottom variant="body1">
+                    Primary Button should be used on saved buttons or on the
+                    main action of the given page object. Be sure to use the
+                    varient <i>contained</i>.
+                  </Typography>
+                </div>
+                <div>
+                  <SgSecondaryButton />
+                  <Typography gutterBottom variant="body1">
+                    Secondary Button should be used on filters, selecting listings, uploads and more! Think of this button as a cache all for all buttons. Be sure to use the variant contained here.
+                  </Typography>
+                </div>
+                <div>
+                  <SgDefaultButton />
+                  <Typography gutterBottom variant="body1">
+                    Default Button should be used on cancelling a certian process/form. Be sure to use the variant contained.
+                  </Typography>
+                </div>
+                <div>
+                  <Button variant="contained" disabled>
+                    disabled Button
+                  </Button>
+                  <Typography gutterBottom variant="body1">
+                    Disabled button should be shown when an action can not be completed until a user makes a seperate action. You can use the disabled on any button and styling will change
+                  </Typography>
+                </div>
+                <div>
+                  <SgConfirmation />
+                  <Typography gutterBottom>Confirmation Alerts are urgent interruptions, requiring acknowledgement, that inform the user about a situation. Click on the save button to show the dialog box for confirmation. Chpl interface should use confirmation on all saved, delete or cancels (in edit mode). </Typography>
+                </div>
+                <div>
+                  <SgDeleteButton />
+                  <Typography gutterBottom variant="body1">
+                    Delete button should be used only when there is an action to delete a proccess/item. Be sure to use the variant contained.
+                  </Typography>
+                </div>
+                <div>
+                <ButtonGroup>
+                  <Button fullWidth color="secondary" variant="contained">Download
+                    <GetAppIcon className={classes.iconSpacing}/>
+                  </Button>
+                  <Button fullWidth color="secondary" variant="contained">Columns Settings
+                    <SettingsIcon className={classes.iconSpacing}/>
+                  </Button>
+                  <Button fullWidth color="secondary" variant="contained">Add
+                    <PlaylistAddIcon className={classes.iconSpacing}/>
+                  </Button>
+                 </ButtonGroup>
+                </div>
+                </div>
+            </CardContent>
+          </Card>
+         <br/>
+          <Card>
+          <CardHeader title="Button Sizes"></CardHeader>
+            <CardContent>
+                <div>
+                  <Button size="medium" color="primary" variant="contained">
+                    Medium button
+                    <ArrowForwardOutlinedIcon
+                      fontSize="small"
+                    />
+                  </Button>
+                </div>
+                <Divider/>
+                <div>
+                <Button fullWidth color="primary" variant="contained">
+                  Full Width button
+                  <ArrowForwardOutlinedIcon
+                  />
+                </Button>
+                </div>
             </CardContent>
           </Card>
         </div>
-        {/* End Button Variations*/}
-        
-        {/* Cards*/}
-        <div>
-          <Typography gutterBottom variant="h2">
-            CHPL Cards (Header, Body, Action):
-          </Typography>
-
         </div>
-        <div>
+        {/* End Button Variations*/}
+        <Typography gutterBottom variant="h2"> CHPL Cards (Header, Body, Action):</Typography>
+        {/* Cards*/}
+          <div className={classes.rowContainer}>
+          <Card>
+            <CardHeader title="Rules To Follow:"></CardHeader>
+            <CardContent>
+              <List aria-label="Card rules">
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    1. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    2. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    3. 
+                  </Typography>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader title="Header of Card"></CardHeader>
             <CardContent>
@@ -246,12 +322,10 @@ function Elements() {
               <Typography gutterBottom color="primary">
                 Some body copy with primary coloring.
               </Typography>
-    
               <Divider></Divider>
-    
               <Typography gutterBottom variant="body1">
                 Body 1 is being shown
-      
+
                 {'Dont you like this font? If so download it here'}
               </Typography>
             </CardContent>
@@ -264,76 +338,141 @@ function Elements() {
               </Button>
             </CardActions>
           </Card>
-        </div>
+          </div>
         {/* Cards*/}
-        <div>
-          <Typography gutterBottom gutterButton variant="h2">
-            CHPL Dropdown Filters:
-          </Typography>
-          <Card>
-            <CardContent >
-              <div>
-                <ChplDefaultFilter />
-              </div>
+        {/*Chpl Chips*/}
+        <Typography gutterBottom variant="h2">Chips:</Typography>
+        <div className={classes.rowContainer}>
+        <Card>
+            <CardHeader title="Rules To Follow:"></CardHeader>
+            <CardContent>
+              <List aria-label="Card rules">
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    1. Chips are used in the CHPl interface to indicate a change that has or needs to happened. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    2. Chips are displayed in accordion and forms during edit mode.
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    3. Chips are not buttons, so they shouldnt have a link or action behind it. 
+                  </Typography>
+                </ListItem>
+              </List>
             </CardContent>
           </Card>
-        </div>
-        {/* Table*/}
-        <div>
-          <Typography gutterBottom variant="h2">Tables:</Typography>
-          <ChplStyleGuideTable />
-        </div>
-        {/*End of Table*/}
-        {/*>Chpl Chips*/}
-        <div>
-          <Typography gutterBottom variant="h2">Chips:</Typography>
+        <Card>
+          <CardHeader title="Chip Options"></CardHeader>
+          <CardContent>
+          <div className={classes.chipContainer}>
           <Chip label="Basic" />
           <Chip label="Outline Default" color="default" variant="outlined" />
           <Chip label="Outline Primary" color="primary" variant="outlined" />
           <Chip label="Clickable Chip Link" component="a" href="#chip" clickable />
-          <Typography gutterBottom variant="body1">Chips are used in the CHPl interface to indicate a change that has or needs to happened. Chips are usually being displayed in accordion and forms.</Typography>
+          </div>
+        </CardContent>
+        </Card>
         </div>
         {/*End of Chpl Chips*/}
-
-        {/*>Chpl Forms & TextField*/}
+        {/* Table*/}
         <div>
-          <Typography gutterBottom gutterBottom variant="h5">Chpl Forms & TextField:</Typography>
-          <ChplDefaultForm />
-          <Typography gutterBottom gutterBottom variant="body1">All chpl forms within edit mode should have ChplActionBar applied to the bottoms of the page. A real-life example is shown in the user management section of CHPL.</Typography>
+          <Typography gutterBottom variant="h2">Tables:</Typography>
+          <SgTable />
         </div>
-        {/*End of >Chpl Forms & TextField*/}
-
+        {/*End of Table*/}
+        <Typography gutterBottom gutterBottom variant="h2">Chpl Forms & TextField:</Typography>
+        {/*Chpl Forms & TextField*/}
+        <div className={classes.rowContainer}>
+        <Card>
+            <CardHeader title="Rules To Follow:"></CardHeader>
+            <CardContent>
+              <List aria-label="chpl button rules">
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    1. All chpl forms within edit mode should have ChplActionBar applied to the bottoms of the page. A real-life example is shown in the user management section of CHPL.
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    2. All chpl forms should be contained in a card for consistent styling and spacing. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    3. Inputs should use the componet ChplTextField.
+                  </Typography>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
+          <SgDefaultForm />
+          </div>
+        {/*End of Chpl Forms & TextField*/}
+        <Typography gutterBottom gutterBottom variant="h2">Chpl Accordions:</Typography>
         {/*Accordions*/}
-        <div>
-          <ChplAccordion />
+        <div className={classes.rowContainer}>
+          <Card>
+            <CardHeader title="Rules To Follow:"></CardHeader>
+            <CardContent>
+              <List aria-label="Card rules">
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    1. 
+                  </Typography>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
+        <SgAccordion />
         </div>
         {/*End of Accordions*/}
-
+        <Typography gutterBottom gutterBottom variant="h2">Action Bar:</Typography>
         {/*App Bar*/}
-        <div>
-          <Typography gutterBottom gutterBottom variant="h5">Action Bar:</Typography>
-          <Typography gutterBottom gutterBottom variant="body1">View the bottom of the screen to see the action bar. The action bar will have a cancel & save button as default. It some occasions there will be a delete button.</Typography>
-          <ChplActionBar />
+        <div className={classes.rowContainer}>
+          <Card>
+            <CardHeader title="Rules To Follow:"></CardHeader>
+            <CardContent>
+              <List aria-label="Card rules">
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    1. View the bottom of the screen to see the action bar. The action bar will have a cancel & save button as default. It some occasions there will be a delete button.
+                  </Typography>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
+        <ChplActionBar />
         </div>
         {/*End of App Bar*/}
-
-        {/*Log In Module*/}
-        <div>
-          <Typography gutterBottom variant="h5">Log In Module:</Typography>
-          <ChplAdministratorLogin />
+          <Typography gutterBottom variant="h2">Log In Module:</Typography>
+          {/*Log In Module*/}
+          <div className={classes.rowContainer}>
+          <Card>
+            <CardHeader title="Rules To Follow:"></CardHeader>
+            <CardContent>
+              <List aria-label="Card rules">
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    1. 
+                  </Typography>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
+          <SgAdministratorLogin />
         </div>
         {/*End Log In Module*/}
-
+        <Typography gutterBottom variant="h2">CHPL Spacing, Grid & Template</Typography>
         {/*Spacing and Grid*/}
-        <div>
-          <Typography gutterBottom variant="h5">Spacing and Grid:</Typography>
-        </div>
+        <div className={classes.rowContainer}>
         <Card>
+          <CardHeader title="Rules To Follow:"></CardHeader>
           <CardContent>
-            <Typography gutterBottom variant="subtitle1">
-              Rules To Follow:
-            </Typography>
-            <List aria-label="chpl button rules">
+            <List>
               <ListItem>
                 <Typography gutterBottom variant="body1">
                   1. CHPL uses the power of 4 for padding and margin on components. This means you should ONLY use numbers such as 4 | 8 | 16 | 32 | 64 | 128 | 256 (256 should be the largest number used if necesscary, contact designer if needed)
@@ -354,21 +493,27 @@ function Elements() {
                   4. The power of our grid comes from using gridTemplateColumns, gridTemplateRows and gridGap to create a clean, modern design for our application. Chpl will use Media Querys that effect these css styles to our interface is responsive on all screens.
                 </Typography>
               </ListItem>
+            </List>
+          </CardContent>
+        </Card>
+        <SgTemplate />
+        </div>
+        {/*End of Spacing and Grid*/}
+        <Typography gutterBottom variant="h2">404 Error</Typography>
+        {/*404 Card*/}
+        <div className={classes.rowContainer}>
+        <Card>
+          <CardHeader title="Rules To Follow:"></CardHeader>
+          <CardContent>
+            <List>
               <ListItem>
                 <Typography gutterBottom variant="body1">
-                  5. Coming Soon...
+                  1. 404 Card Actions should be links instead of buttons.
                 </Typography>
               </ListItem>
             </List>
           </CardContent>
         </Card>
-        <Typography gutterBottom gutterBottom variant="body1">CHPL Template is shown below.</Typography>
-        <div>
-          <ChplTemplate />
-        </div>
-        {/*End of Spacing and Grid*/}
-        {/*404 Card*/}
-        <div>
           <Card>
             <CardHeader title="404 Page Not Found" />
             <CardContent>
@@ -394,14 +539,15 @@ function Elements() {
                   Support Portal
                 </Link>
               </Typography>
-
             </CardActions>
           </Card>
         </div>
         {/*End of 404 Card*/}
-        <div>
+       {/*Start of Sandbox Componets that are WIP*/}
+       <Typography gutterBottom variant="h2">Work In Progress Section:</Typography>
+        {/*Search Results*/}
           <SgProductCardContainer />
-        </div>
+        {/*End of Search Results*/}
       </div>
     </div>
   );

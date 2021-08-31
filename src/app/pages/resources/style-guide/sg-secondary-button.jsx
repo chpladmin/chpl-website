@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles({
@@ -15,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSecondaryButton() {
+function SgSecondaryButton() {
   const classes = useStyles();
 
   return (
@@ -28,4 +25,4 @@ function ChplSecondaryButton() {
   );
 }
 
-export default ChplSecondaryButton;
+export default SgSecondaryButton;

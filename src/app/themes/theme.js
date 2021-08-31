@@ -216,7 +216,6 @@ const theme = createMuiTheme({
       active: {
         color: '#000000',
       },
-
       icon: {
         color: '#000000',
       },
@@ -245,11 +244,6 @@ const theme = createMuiTheme({
     MuiFormControl: {
       root: {
         width: '100%',
-      },
-    },
-    MuiTableFooter: {
-      root: {
-
       },
     },
     MuiTablePagination: {
@@ -288,10 +282,8 @@ const theme = createMuiTheme({
       gutters: {
         paddingLeft: '8px',
         paddingRight: '8px',
-
       },
     },
-
   },
 });
 

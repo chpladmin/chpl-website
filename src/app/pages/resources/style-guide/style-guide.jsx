@@ -22,7 +22,7 @@ function ChplStyleGuide() {
         <Elements />
         </ThemeProvider>
       </div>
-     {/* Default Material UI
+     {/* 
       <div>
         <Typography variant='h1'>Default Material UI</Typography>
         <Elements />

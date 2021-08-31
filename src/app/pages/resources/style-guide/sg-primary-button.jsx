@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const useStyles = makeStyles({
@@ -14,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplPrimaryButton() {
+function SgPrimaryButton() {
   const classes = useStyles();
 
   return (
@@ -27,4 +25,4 @@ function ChplPrimaryButton() {
   );
 }
 
-export default ChplPrimaryButton;
+export default SgPrimaryButton;

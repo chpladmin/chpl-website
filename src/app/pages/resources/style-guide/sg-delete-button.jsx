@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import {
   Button,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 const useStyles = makeStyles({
@@ -21,11 +19,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplDeleteButton() {
+function SgDeleteButton() {
   const classes = useStyles();
 
   return (
-    <Button className={classes.deleteButton} variant="contained">
+    <Button size="medium" className={classes.deleteButton} variant="contained">
     Delete Button
     <DeleteOutlinedIcon className={classes.iconSpacing}
     fontSize="small"
@@ -34,4 +32,4 @@ function ChplDeleteButton() {
   );
 }
 
-export default ChplDeleteButton;
+export default SgDeleteButton;

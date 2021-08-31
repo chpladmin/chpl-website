@@ -4,24 +4,23 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import ChplDefaultFilterPopover from './chpl-default-filter-popover';
-import FilterListIcon from '@material-ui/icons/FilterList';
-
+import ChplLogin from './chpl-login';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
 });
 
-function ChplDefaultFilter() {
+function SgAdministratorLogin () {
   const classes = useStyles();
 
   return (
-    <ChplDefaultFilterPopover
+    <ChplLogin
     anchor={
      <Button variant="contained" color="secondary">
-       Chpl Default Filter
-      <FilterListIcon className={classes.iconSpacing}
+       Administrator Login  
+      <ArrowForwardIcon className={classes.iconSpacing}
       />
     </Button>
     } 
@@ -29,4 +28,4 @@ function ChplDefaultFilter() {
   );
 }
 
-export default ChplDefaultFilter;
+export default SgAdministratorLogin;

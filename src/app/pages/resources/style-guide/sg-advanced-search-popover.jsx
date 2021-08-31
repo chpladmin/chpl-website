@@ -3,13 +3,10 @@ import {
     Button,
     ButtonGroup,
     Checkbox,
-    Divider,
     InputBase,
-    FormControlLabel,
     List,
     ListItem,
     ListItemText,
-    ListItemIcon,
     ListSubheader,
     Popover,
     Switch,
@@ -18,7 +15,6 @@ import {
 } from '@material-ui/core';
 
 import SearchIcon from '@material-ui/icons/Search';
-import GetAppIcon from '@material-ui/icons/GetApp';
 
 const useStyles = makeStyles({
 

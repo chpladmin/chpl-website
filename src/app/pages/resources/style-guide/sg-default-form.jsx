@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     },
   }));
 
-function ChplDefaultForm() {
+function SgDefaultForm() {
   const classes = useStyles();
 
   return (
@@ -90,4 +90,4 @@ function ChplDefaultForm() {
   );
 }
 
-export default ChplDefaultForm;
+export default SgDefaultForm;

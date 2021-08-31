@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import {
   Button,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
 import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
@@ -14,11 +12,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplDefaultButton() {
+function SgDefaultButton() {
   const classes = useStyles();
 
   return (
-    <Button color="default" variant="contained">
+    <Button size="medium" color="default" variant="contained">
     Default Button
     <CloseIcon className={classes.iconSpacing}
     fontSize="small"
@@ -27,4 +25,4 @@ function ChplDefaultButton() {
   );
 }
 
-export default ChplDefaultButton;
+export default SgDefaultButton;

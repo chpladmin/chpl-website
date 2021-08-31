@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Button,
     Card,
@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-function ChplTemplate() {
+function SgTemplate() {
     const classes = useStyles();
 
     return (
@@ -87,4 +87,4 @@ function ChplTemplate() {
     );
 }
 
-export default ChplTemplate;
+export default SgTemplate;

@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-function ChplAccordion() {
+function SgAccordion() {
     const classes = useStyles();
 
     return (
@@ -79,4 +79,4 @@ function ChplAccordion() {
     );
 }
 
-export default ChplAccordion;
+export default SgAccordion;
