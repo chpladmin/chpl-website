@@ -190,7 +190,13 @@ const theme = createMuiTheme({
     MuiFormLabel: {
       asterisk: {
         fontSize: '2em',
-        verticalAlign: 'top',
+        verticalAlign: 'text-top',
+      },
+    },
+    MuiOutlinedInput:{
+      inputMarginDense:{
+        paddingTop: '14.5px',
+        paddingBottom: '10px',
       },
     },
     MuiList: {

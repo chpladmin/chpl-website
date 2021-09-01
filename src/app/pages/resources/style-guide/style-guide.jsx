@@ -5,6 +5,8 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import SgCompareWidget from './sg-compare-widget';
+import SgCmsWidget from './sg-cms-widget';
 import SgBackToTop from './sg-back-to-the-top';
 import Elements from './elements';
 import theme from '../../../themes/theme';
@@ -28,6 +30,8 @@ function ChplStyleGuide() {
         <Elements />
       </div>
       */}
+      <SgCompareWidget/>
+      <SgCmsWidget/>
       <SgBackToTop/>  
       </ThemeProvider>
     </div>

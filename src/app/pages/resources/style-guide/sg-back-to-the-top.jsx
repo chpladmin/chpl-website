@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         marginLeft: '4px',
     },
     backToTop: {
-        zIndex: 1500,
+        zIndex: 1299,
         position: 'fixed',
         bottom: '10vh',
         right: '0',
