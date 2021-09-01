@@ -18,7 +18,8 @@ beforeEach(() => {
   compareComponent = new CompareWidgetComponent();
   login = new LoginComponent();
 });
-describe('when on 2015 listing page - ', () => {
+
+describe('when on 2015 listing page', () => {
   beforeEach(() => {
     hooks.open('#/listing/9833');
     hooks.waitForSpinnerToDisappear();
@@ -139,7 +140,7 @@ describe('when on 2014 listing page - ', () => {
       });
 
       it('should go to api page', () => {
-        expect(browser.getUrl()).toContain('resources/chpl-api');
+        expect(browser.getUrl()).toContain('resources/chpl');
       });
     });
   });
@@ -162,4 +163,3 @@ describe('when on 2014 listing page - ', () => {
     expect(page.goToDeveloperPageLink('VIPA Health Solutions, LLC').getAttribute('href')).toContain('organizations/developers/');
   });
 });
-
