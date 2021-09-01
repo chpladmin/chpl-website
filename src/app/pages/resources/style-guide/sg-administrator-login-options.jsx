@@ -4,7 +4,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import SgLogin from './sg-login';
+import SgLoginOptions from './sg-login-options';
 import PersonIcon from '@material-ui/icons/Person';
 const useStyles = makeStyles({
   iconSpacing: {
@@ -12,14 +12,14 @@ const useStyles = makeStyles({
   },
 });
 
-function SgAdministratorLogin () {
+function SgAdministratorLoginOptions () {
   const classes = useStyles();
 
   return (
-    <SgLogin
+    <SgLoginOptions
     anchor={
      <Button variant="contained" color="secondary">
-       Administrator Login  
+       User Name Goes Here
       <PersonIcon className={classes.iconSpacing}/>
     </Button>
     } 
@@ -27,4 +27,4 @@ function SgAdministratorLogin () {
   );
 }
 
-export default SgAdministratorLogin;
+export default SgAdministratorLoginOptions;

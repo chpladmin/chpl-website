@@ -28,6 +28,9 @@ import ChplActionBar from '../../../components/action-bar/action-bar';
 /* Style Guide Componets*/
 import SgAccordion from './sg-accordion';
 import SgAdministratorLogin from './sg-administrator-login';
+import SgAdministratorLoginForgotPassword from './sg-administrator-login-forgot-password';
+import SgAdministratorLoginOptions from './sg-administrator-login-options';
+import SgAdministratorLoginRequired from './sg-administrator-login-required';
 import SgDefaultButton from './sg-default-button';
 import SgDefaultForm from './sg-default-form';
 import SgDeleteButton from './sg-delete-button';
@@ -55,7 +58,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '3fr 9fr',
     alignItems:'start',
   },
-  chipContainer:{
+  columnContainer:{
     gap: '16px',
     display: 'grid',
     justifyItems:'start',
@@ -373,7 +376,7 @@ function Elements() {
         <Card>
           <CardHeader title="Chip Options"></CardHeader>
           <CardContent>
-          <div className={classes.chipContainer}>
+          <div className={classes.columnContainer}>
           <Chip label="Basic" />
           <Chip label="Outline Default" color="default" variant="outlined" />
           <Chip label="Outline Primary" color="primary" variant="outlined" />
@@ -468,7 +471,12 @@ function Elements() {
               </List>
             </CardContent>
           </Card>
+          <div className={classes.columnContainer}>
           <SgAdministratorLogin />
+          <SgAdministratorLoginForgotPassword />
+          <SgAdministratorLoginOptions />
+          <SgAdministratorLoginRequired />
+          </div>
         </div>
         {/*End Log In Module*/}
         <Typography gutterBottom variant="h2">CHPL Spacing, Grid & Template</Typography>
