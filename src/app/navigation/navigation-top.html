@@ -125,6 +125,13 @@
               <li><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
             </ul>
           </li>
+          <li ng-if="vm.hasAnyRole(['ROLE_ADMIN'])" class="dropdown" uib-dropdown is-open="vm.sysAdminIsOpen">
+            <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="sys-admin-toggle" ng-class="{'admin-active' : vm.isActive('sysAdmin')}" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.sysAdminIsOpen">System Admin</button>
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="sys-admin-toggle" id="sys-admin-dropdown-menu">
+              <li><a ui-sref="resources.style-guide()"><i class="fa fa-caret-right" ng-if="vm.isActive('sys-admin.style-guide')"></i>Style Guide</a></li>
+              <li><a href="rest/ff4j-console/home">FF4j</a></li>
+            </ul>
+          </li>
         </ul><!-- /admin nav -->
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown" uib-dropdown auto-close="outsideClick" is-open="vm.adminLoginIsOpen">
