@@ -21,6 +21,11 @@ const returnToMock = {
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$state').mockReturnValue($stateMock);
 
+jest.mock('../../../components/login/login', () => ({
+  __esModule: true,
+  default: () => null,
+}));
+
 describe('the ChplLogin page', () => {
   afterEach(() => {
     cleanup();
