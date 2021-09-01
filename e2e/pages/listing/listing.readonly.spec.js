@@ -140,7 +140,7 @@ describe('when on 2014 listing page - ', () => {
       });
 
       it('should go to api page', () => {
-        expect(browser.getUrl()).toContain('resources/chpl');
+        expect(browser.getUrl()).toContain('resources/api');
       });
     });
   });
