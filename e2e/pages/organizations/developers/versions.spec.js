@@ -133,7 +133,7 @@ describe('the Version part of the Developers page', () => {
           page.editVersionCode.setValue(newCode);
           page.moveListing(movingListingId);
           actionBar.save();
-          expect(actionBar.errorMessages.getText()).toEqual('Access is denied to update listing CHP-025300 because it is owned by ICSA Labs.');
+          expect(actionBar.errorMessages.getText()).toEqual('Version split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
         });
       });
     });
