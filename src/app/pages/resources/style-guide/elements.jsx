@@ -28,6 +28,7 @@ import ChplActionBar from '../../../components/action-bar/action-bar';
 /* Style Guide Componets*/
 import SgAccordion from './sg-accordion';
 import SgAdministratorLogin from './sg-administrator-login';
+import SgAdministratorLoginChangePassword from './sg-administrator-login-change-password';
 import SgAdministratorLoginForgotPassword from './sg-administrator-login-forgot-password';
 import SgAdministratorLoginOptions from './sg-administrator-login-options';
 import SgAdministratorLoginRequired from './sg-administrator-login-required';
@@ -474,6 +475,7 @@ function Elements() {
           <div className={classes.columnContainer}>
           <SgAdministratorLogin />
           <SgAdministratorLoginForgotPassword />
+          <SgAdministratorLoginChangePassword />
           <SgAdministratorLoginOptions />
           <SgAdministratorLoginRequired />
           </div>

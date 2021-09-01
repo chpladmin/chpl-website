@@ -14,7 +14,7 @@ import { ChplTextField } from '../../../components/util';
 
 const useStyles = makeStyles({
     loginCard: {
-      maxWidth:'400px',
+      maxWidth:'350px',
     },
     content:{
         display: 'grid',
@@ -57,11 +57,11 @@ function SgLoginOptions(props) {
         onClose={handlePopoverClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: 'right',
         }}
        >
             <Card className={classes.loginCard}>

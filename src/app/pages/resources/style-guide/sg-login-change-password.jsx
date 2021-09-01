@@ -7,13 +7,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import SendIcon from '@material-ui/icons/Send';
-import CloseIcon from '@material-ui/icons/Close';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { ChplTextField } from '../../../components/util';
-
+import SgPasswordDeterminate from './sg-password-determinate';
 const useStyles = makeStyles({
     loginCard: {
-      maxWidth:'400px',
+      maxWidth:'350px',
     },
     content:{
         display: 'grid',
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
       },
   });
 
-function SgForgotPassword(props) {
+function SgLoginChangePassword(props) {
   const classes = useStyles();
   const { anchor } = props;
   const [anchorElement, setAnchorElement] = useState(null);
@@ -42,7 +42,7 @@ function SgForgotPassword(props) {
       <div
         // aria-owns={open ? 'assignedTo-popover' : undefined}
         // aria-haspopup='true'
-        // onMouseEnter={handlePopoverOpen}
+        // onMouseEnter={handlePopoverOpen}a
         // onMouseLeave={handlePopoverClose}
         aria-describedby={id}
         onClick={handleClick}>
@@ -66,14 +66,30 @@ function SgForgotPassword(props) {
             <Card className={classes.loginCard}>
             <CardContent className={classes.content}>
             <ChplTextField
-                id="email"
-                name="email"
-                label="Email"
+                id="old-password"
+                name="oldPassword"
+                label="Old Password"
                 required
-                helperText="sample@example.com"
+                helperText="Enter your last password"
                 />
-            <Button fullWidth color="primary" variant="contained">Send Reset Email<SendIcon className={classes.iconSpacing}/></Button>
-            <Button fullWidth color="default" variant="contained">Cancel<CloseIcon className={classes.iconSpacing}/></Button>
+            
+            <ChplTextField
+                       id="new-password"
+                       name="newPassword"
+                       label="New Password"
+                       required
+                       helperText="Enter your new password"
+                />
+            <SgPasswordDeterminate/>
+            <ChplTextField
+                       id="confirm-password"
+                       name="confirmPassword"
+                       label="Confirm New Password"
+                       required
+                       helperText="Renter your new password"
+                />  
+            <Button fullWidth color="primary" variant="contained">Confirm New Password<VpnKeyIcon className={classes.iconSpacing}/></Button>
+            <Button fullWidth color="default" variant="contained">Cancel<HelpOutlineIcon className={classes.iconSpacing}/></Button>
             </CardContent>
             </Card>
       </Popover>
@@ -81,4 +97,4 @@ function SgForgotPassword(props) {
   );
 }
 
-export default SgForgotPassword;
+export default SgLoginChangePassword;

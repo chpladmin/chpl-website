@@ -4,7 +4,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import SgLoginOptions from './sg-login-options';
+import SgLoginChangePassword from './sg-login-change-password';
 import PersonIcon from '@material-ui/icons/Person';
 const useStyles = makeStyles({
   iconSpacing: {
@@ -12,11 +12,11 @@ const useStyles = makeStyles({
   },
 });
 
-function SgAdministratorLoginOptions () {
+function SgAdministratorLoginChangePassword () {
   const classes = useStyles();
 
   return (
-    <SgLoginOptions
+    <SgLoginChangePassword
     anchor={
      <Button variant="contained" color="secondary">
        $UserName
@@ -27,4 +27,4 @@ function SgAdministratorLoginOptions () {
   );
 }
 
-export default SgAdministratorLoginOptions;
+export default SgAdministratorLoginChangePassword;
