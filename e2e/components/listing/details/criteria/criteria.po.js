@@ -13,7 +13,7 @@ class CriteriaComponent {
       accept: '//span[text()="Accept"]',
       testProcedureName: 'div#name',
       version: '#version',
-      testToolsName: '#tt',
+      testToolsName: 'div#tt',
       privacySecurityName: '#privacy-security-framework',
     };
   }
@@ -30,8 +30,16 @@ class CriteriaComponent {
     return $(this.elements.testProcedureName);
   }
 
+  get testTools() {
+    return $(this.elements.testToolsName);
+  }
+
   get testProcedureOld() {
     return $(elementsOld.testProcedureName);
+  }
+
+  get testToolsOld() {
+    return $(elementsOld.testToolsName);
   }
 
   get attestToggle() {
@@ -162,8 +170,16 @@ class CriteriaComponent {
     return $('#menu-name').$$('li');
   }
 
+  get testToolsDropdownOptions () {
+    return $('#menu-tt').$$('li');
+  }
+
   get testProcedureDropdownOptionsOld () {
     return this.testProcedureOld.$$('option');
+  }
+
+  get testToolsDropdownOptionsOld () {
+    return this.testToolsOld.$$('option');
   }
 }
 

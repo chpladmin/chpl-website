@@ -7,7 +7,7 @@ let criteria;
 let hooks;
 let login;
 let page;
-const inputs = require('./dataProviders/testProcedure-options-dp');
+const inputs = require('./dataProviders/attribute-value-options-dp');
 
 inputs.forEach((input) => {
   const { criteriaName } = input;
@@ -15,6 +15,7 @@ inputs.forEach((input) => {
   const { id } = input;
   const { criteriaOld } = input;
   const { cures } = input;
+  const { testToolsOptions } = input;
 
   describe('On the 2015 Listing editing page', () => {
     beforeEach(async () => {
@@ -35,6 +36,31 @@ inputs.forEach((input) => {
       afterEach(() => {
         browser.refresh();  /// it is very complex to exit the opened window based on uiUpgrade flag so temporary adding this
         login.logOut();
+      });
+
+      it(`should be able to see only correct options for test tools for ${criteriaName}`, () => {
+        const expected = testToolsOptions;
+        if (criteria.uiUpgradeFlag()) {
+          criteria.expandCriteria(id);
+          criteria.editCriteria(id);
+          criteria.attestToggle.click();
+          criteria.addItem('test-tools');
+          criteria.testTools.scrollIntoView({ block: 'center', inline: 'center' });
+          criteria.testTools.click();
+          const actual = new Set(criteria.testToolsDropdownOptions.map((item) => item.getText()));
+          expect(actual.size).toBe(expected.length);
+          expected.forEach((exp) => {
+            expect(actual.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
+          });
+        } else {
+          criteria.openUnattestedCriteriaOld(criteriaOld, cures);
+          criteria.attestCriteriaOld(criteriaOld);
+          const actual = new Set(criteria.testToolsDropdownOptionsOld.map((item) => item.getText()));
+          expect(actual.size - 2).toBe(expected.length);
+          expected.forEach((exp) => {
+            expect(actual.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
+          });
+        }
       });
 
       it(`should be able to see only correct options for test procedures for ${criteriaName}`, () => {
