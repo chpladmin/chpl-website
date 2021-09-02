@@ -4,11 +4,12 @@ import {
   Button,
   Card,
   CardContent,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import { ChplTextField } from '../../../components/util';
 import SgPasswordDeterminate from './sg-password-determinate';
 const useStyles = makeStyles({
@@ -65,6 +66,7 @@ function SgLoginChangePassword(props) {
        >
             <Card className={classes.loginCard}>
             <CardContent className={classes.content}>
+            <Typography variant='h5'>Change Password</Typography>
             <ChplTextField
                 id="old-password"
                 name="oldPassword"
@@ -86,10 +88,10 @@ function SgLoginChangePassword(props) {
                        name="confirmPassword"
                        label="Confirm New Password"
                        required
-                       helperText="Renter your new password"
+                       helperText="Re-enter your new password"
                 />  
-            <Button fullWidth color="primary" variant="contained">Confirm New Password<VpnKeyIcon className={classes.iconSpacing}/></Button>
-            <Button fullWidth color="default" variant="contained">Cancel<HelpOutlineIcon className={classes.iconSpacing}/></Button>
+            <Button fullWidth color="primary" variant="contained">Confirm New Password<CheckIcon className={classes.iconSpacing}/></Button>
+            <Button fullWidth color="default" variant="contained">Cancel<CloseIcon className={classes.iconSpacing}/></Button>
             </CardContent>
             </Card>
       </Popover>

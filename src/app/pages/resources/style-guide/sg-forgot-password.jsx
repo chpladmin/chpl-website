@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardContent,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 
@@ -65,6 +66,7 @@ function SgForgotPassword(props) {
        >
             <Card className={classes.loginCard}>
             <CardContent className={classes.content}>
+            <Typography variant='h5'>Forgot Password</Typography>
             <ChplTextField
                 id="email"
                 name="email"

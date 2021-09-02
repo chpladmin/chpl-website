@@ -66,6 +66,7 @@ function SgLogin(props) {
        >
             <Card className={classes.loginCard}>
             <CardContent className={classes.content}>
+            <Typography variant='h5'>Login</Typography>
             <ChplTextField
                 id="email-user-name"
                 name="emailUserName"
