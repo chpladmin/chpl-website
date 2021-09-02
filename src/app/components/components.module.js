@@ -4,7 +4,7 @@ import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
-import { ChplLogin } from './login';
+import { LoginWrapper } from './login';
 import {
   ChplComplaintAdd,
   ChplComplaintEdit,
@@ -58,7 +58,6 @@ angular
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
-  .component('chplLoginBridge', reactToAngularComponent(ChplLogin))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
@@ -66,4 +65,5 @@ angular
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance))
-  .component('chplUsersBridge', reactToAngularComponent(ChplUsers));
+  .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
+  .component('loginWrapperBridge', reactToAngularComponent(LoginWrapper));

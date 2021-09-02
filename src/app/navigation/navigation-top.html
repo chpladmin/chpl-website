@@ -141,7 +141,8 @@
                 ng-class="vm.adminLoginIsOpen ? 'fa-caret-down' : 'fa-caret-left'"></span></button>
             <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
               <li>
-                <chpl-login form-class="navbar-form" p-class="navbar-text" p-class-fail="navbar-text"></chpl-login>
+                <login-wrapper-bridge>
+                </login-wrapper-bridge>
               </li>
             </ul>
           </li>

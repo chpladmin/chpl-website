@@ -89,7 +89,8 @@ function ChplLogin(props) {
     }
   }, [user, impersonating]);
 
-  const cancel = () => {
+  const cancel = (e) => {
+    e.stopPropagation();
     switch (state) {
       case 'CHANGEPASSWORD':
         setState('LOGGEDIN');
@@ -165,7 +166,8 @@ function ChplLogin(props) {
       });
   };
 
-  const logout = () => {
+  const logout = (e) => {
+    e.stopPropagation();
     setUser({});
     setState('SIGNIN');
     authService.logout();
@@ -192,7 +194,8 @@ function ChplLogin(props) {
       });
   };
 
-  const stopImpersonating = () => {
+  const stopImpersonating = (e) => {
+    e.stopPropagation();
     networkService.unimpersonateUser()
       .then((token) => {
         setImpersonating(false);
@@ -205,6 +208,21 @@ function ChplLogin(props) {
             $rootScope.$broadcast('unimpersonating');
           });
       });
+  };
+
+  const submitChange = (e) => {
+    e.stopPropagation();
+    changeFormik.handleSubmit();
+  };
+
+  const submitReset = (e) => {
+    e.stopPropagation();
+    resetFormik.handleSubmit();
+  };
+
+  const submitSignin = (e) => {
+    e.stopPropagation();
+    signinFormik.handleSubmit();
   };
 
   const updatePassword = (event) => {
@@ -392,7 +410,7 @@ function ChplLogin(props) {
           <Button
             color="primary"
             variant="outlined"
-            onClick={() => setState('CHANGEPASSWORD')}
+            onClick={(e) => { setState('CHANGEPASSWORD'); e.stopPropagation(); }}
           >
             Change Password
           </Button>
@@ -402,7 +420,7 @@ function ChplLogin(props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={signinFormik.handleSubmit}
+            onClick={submitSignin}
           >
             Log In
           </Button>
@@ -412,7 +430,7 @@ function ChplLogin(props) {
           <Button
             color="primary"
             variant="outlined"
-            onClick={() => setState('FORGOTPASSWORD')}
+            onClick={(e) => { setState('FORGOTPASSWORD'); e.stopPropagation(); }}
           >
             Forgot Password
           </Button>
@@ -422,7 +440,7 @@ function ChplLogin(props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={resetFormik.handleSubmit}
+            onClick={submitReset}
           >
             Send reset email
           </Button>
@@ -432,7 +450,7 @@ function ChplLogin(props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={changeFormik.handleSubmit}
+            onClick={submitChange}
           >
             Confirm new Password
           </Button>
