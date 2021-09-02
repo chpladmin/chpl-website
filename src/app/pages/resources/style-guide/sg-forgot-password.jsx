@@ -13,7 +13,7 @@ import { ChplTextField } from '../../../components/util';
 
 const useStyles = makeStyles({
     loginCard: {
-      maxWidth:'400px',
+      maxWidth:'350px',
     },
     content:{
         display: 'grid',

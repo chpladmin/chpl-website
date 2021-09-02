@@ -46,18 +46,22 @@ import SgTemplate from './sg-template';
 /*Custom CSS for Style Guide*/
 const useStyles = makeStyles({
   chplContainer: {
-    backgroundColor: '#f2f2f2',
-    padding: '32px',
-    paddingTop: '64px',
     gap: '16px',
     display: 'grid',
+    backgroundColor: '#f2f2f2',
+    padding: '32px',
+    paddingTop:'64px',
     overflowWrap: 'anywhere',
   },
   rowContainer: {
     gap: '16px',
     display: 'grid',
     gridTemplateColumns: '3fr 9fr',
-    alignItems:'start',
+  },
+  tableContainer:{
+    gap: '16px',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
   },
   columnContainer:{
     gap: '16px',
@@ -128,11 +132,11 @@ function Elements() {
               </Typography>
               <Typography gutterBottom variant="h5">h5. Heading</Typography>
               <Typography gutterBottom variant="body1">
-                H5 comes in handy for call outs. If chpl wanted to focus on a certain obecjt, h5 should be used. Card Header will be using h5 as a default in CHPL.
+                H5 comes in handy for call outs. If chpl wanted to focus on a certain object, h5 should be used. Card Header will be using h5 as a default in CHPL.
               </Typography>
               <Typography gutterBottom variant="h6">h6. Heading</Typography>
               <Typography gutterBottom variant="body1">
-                Should only be used it pages are dense with other heading tags. It highly likely we used this. H6 is slighty bigger then body text so user can still see the difference for easy reading hiearchy.
+                Should only be used it pages are dense with other heading tags. It highly likely we used this. H6 is slightly bigger then body text so user can still see the difference for easy reading hiearchy.
               </Typography>
               <Typography gutterBottom variant="subtitle1">
                 subtitle1. used on static label headers. See real-life example below.
@@ -154,7 +158,7 @@ function Elements() {
               </Typography>
               <Typography gutterBottom variant="body1" display="block">
                 The chpl ellipis can be used to hide large amount of text without losing the ability to access the information.
-                <ChplEllipsis maxLength="39" text="Use the eillipis to read more content. Donec id ex id neque maximus faucibus quis non lectus. Cras luctus leo at venenatis sollicitudin. Donec vitae augue molestie, eleifend dui nec, lacinia ante. Fusce ex lacus, facilisis eget rutrum non, pulvinar sed neque. Vestibulum aliquet leo a orci bibendum, sit amet consequat leo molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse auctor quam dui, vel dictum nunc ultricies id. Nullam iaculis mauris nec dapibus porttitor. Quisque auctor venenatis sem nec maximus. Cras bibendum lacus vitae elementum feugiat. Vestibulum augue mauris, tristique ut ultrices quis, maximus a eros. Pellentesque at feugiat sapien. Integer ultricies sed orci eu porta. Praesent condimentum odio id nisl ultricies tincidunt." />
+                <ChplEllipsis maxLength="39" text="Use the ellipsis to read more content. Donec id ex id neque maximus faucibus quis non lectus. Cras luctus leo at venenatis sollicitudin. Donec vitae augue molestie, eleifend dui nec, lacinia ante. Fusce ex lacus, facilisis eget rutrum non, pulvinar sed neque. Vestibulum aliquet leo a orci bibendum, sit amet consequat leo molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse auctor quam dui, vel dictum nunc ultricies id. Nullam iaculis mauris nec dapibus porttitor. Quisque auctor venenatis sem nec maximus. Cras bibendum lacus vitae elementum feugiat. Vestibulum augue mauris, tristique ut ultrices quis, maximus a eros. Pellentesque at feugiat sapien. Integer ultricies sed orci eu porta. Praesent condimentum odio id nisl ultricies tincidunt." />
               </Typography>
               <Typography gutterBottom variant="button" display="block">
                 button text - Defaulted to all caps.
@@ -179,12 +183,12 @@ function Elements() {
               <List aria-label="chpl button rules">
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    1. All buttons should have text that assoicated with the action.
+                    1. All buttons should have text that associated with the action.
                   </Typography>
                 </ListItem>
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    2. All buttons should have an icon assoicated with the given button.
+                    2. All buttons should have an icon associated with the given button.
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -237,7 +241,7 @@ function Elements() {
                 <div>
                   <SgDefaultButton />
                   <Typography gutterBottom variant="body1">
-                    Default Button should be used on cancelling a certian process/form. Be sure to use the variant contained.
+                    Default Button should be used on cancelling a certain process/form. Be sure to use the variant contained.
                   </Typography>
                 </div>
                 <div>
@@ -245,7 +249,7 @@ function Elements() {
                     disabled Button
                   </Button>
                   <Typography gutterBottom variant="body1">
-                    Disabled button should be shown when an action can not be completed until a user makes a seperate action. You can use the disabled on any button and styling will change
+                    Disabled button should be shown when an action can not be completed until a user makes a separate action. You can use the disabled on any button and styling will change
                   </Typography>
                 </div>
                 <div>
@@ -255,7 +259,7 @@ function Elements() {
                 <div>
                   <SgDeleteButton />
                   <Typography gutterBottom variant="body1">
-                    Delete button should be used only when there is an action to delete a proccess/item. Be sure to use the variant contained.
+                    Delete button should be used only when there is an action to delete a process/item. Be sure to use the variant contained.
                   </Typography>
                 </div>
                 <div>
@@ -368,7 +372,7 @@ function Elements() {
                 </ListItem>
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    3. Chips are not buttons, so they shouldnt have a link or action behind it. 
+                    3. Chips are not buttons, so they shouldn't have a link or action behind it. 
                   </Typography>
                 </ListItem>
               </List>
@@ -390,7 +394,9 @@ function Elements() {
         {/* Table*/}
         <div>
           <Typography gutterBottom variant="h2">Tables:</Typography>
+          <div className={classes.tableContainer}>
           <SgTable />
+          </div>
         </div>
         {/*End of Table*/}
         <Typography gutterBottom gutterBottom variant="h2">Chpl Forms & TextField:</Typography>
@@ -412,7 +418,7 @@ function Elements() {
                 </ListItem>
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    3. Inputs should use the componet ChplTextField.
+                    3. Inputs should use the component ChplTextField.
                   </Typography>
                 </ListItem>
               </List>
@@ -490,7 +496,7 @@ function Elements() {
             <List>
               <ListItem>
                 <Typography gutterBottom variant="body1">
-                  1. CHPL uses the power of 4 for padding and margin on components. This means you should ONLY use numbers such as 4 | 8 | 16 | 32 | 64 | 128 | 256 (256 should be the largest number used if necesscary, contact designer if needed)
+                  1. CHPL uses the power of 4 for padding and margin on components. This means you should ONLY use numbers such as 4 | 8 | 16 | 32 | 64 | 128 | 256 (256 should be the largest number used if necessary, contact designer if needed)
                 </Typography>
               </ListItem>
               <ListItem>
@@ -500,12 +506,12 @@ function Elements() {
               </ListItem>
               <ListItem>
                 <Typography gutterBottom variant="body1">
-                  3. Chpl uses a custom grid system that is very flexiable depending on the content. The grid should always be applied within a component. For example a card, accordion, table and more.
+                  3. Chpl uses a custom grid system that is very flexible depending on the content. The grid should always be applied within a component. For example a card, accordion, table and more.
                 </Typography>
               </ListItem>
               <ListItem>
                 <Typography gutterBottom variant="body1">
-                  4. The power of our grid comes from using gridTemplateColumns, gridTemplateRows and gridGap to create a clean, modern design for our application. Chpl will use Media Querys that effect these css styles to our interface is responsive on all screens.
+                  4. The power of our grid comes from using gridTemplateColumns, gridTemplateRows and gridGap to create a clean, modern design for our application. Chpl will use Media query's that effect these css styles to our interface is responsive on all screens.
                 </Typography>
               </ListItem>
             </List>
