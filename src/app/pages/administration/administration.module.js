@@ -18,7 +18,6 @@ angular
     'toaster',
     'ui.bootstrap',
     'ui.router',
-    'zxcvbn',
   ])
   .config((IdleProvider, KeepaliveProvider) => {
     // configure Idle settings
