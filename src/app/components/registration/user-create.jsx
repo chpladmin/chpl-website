@@ -3,9 +3,7 @@ import {
   func,
 } from 'prop-types';
 import {
-  Box,
   Button,
-  LinearProgress,
   Paper,
   ThemeProvider,
   Typography,
@@ -16,40 +14,9 @@ import * as yup from 'yup';
 
 import theme from '../../themes/theme';
 import { ChplTextField } from '../util';
+import { PasswordStrengthMeter } from '../login';
 
 const zxcvbn = require('zxcvbn');
-
-function PasswordStrengthMeter(props) {
-  const score = props.value * 25;
-  let text;
-  switch (props.value) {
-    case 0: text = 'Awful'; break;
-    case 1: text = 'Weak'; break;
-    case 2: text = 'Moderate'; break;
-    case 3: text = 'Strong'; break;
-    case 4: text = 'Excellent'; break;
-    default: text = 'Awful';
-  }
-  const newProps = {
-    ...props,
-    value: score,
-  };
-  return (
-    <Box display="flex" alignItems="center">
-      <Box width="100%" mr={1}>
-        <LinearProgress
-          variant="determinate"
-          {...newProps}
-        />
-      </Box>
-      <Box minWidth={70}>
-        <Typography variant="body2" color="textSecondary">
-          { text }
-        </Typography>
-      </Box>
-    </Box>
-  );
-}
 
 const useStyles = makeStyles(() => ({
   content: {
