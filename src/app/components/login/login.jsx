@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { func } from 'prop-types';
 import {
   Button,
@@ -13,6 +13,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { getAngularService } from '../../services/angular-react-helper';
+import { UserContext } from '../../shared/contexts';
 import { ChplTextField } from '../util';
 
 const useStyles = makeStyles(() => ({
@@ -38,6 +39,9 @@ function ChplLogin(props) {
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
+  const {
+    user, setUser, // isImpersonating, toggleImpersonation,
+  } = useContext(UserContext);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -47,9 +51,10 @@ function ChplLogin(props) {
     networkService.login({ userName: formik.values.userName, password: formik.values.password })
       .then(() => {
         networkService.getUserById(authService.getUserId())
-          .then((user) => {
+          .then((data) => {
+            setUser(data);
             $analytics.eventTrack('Log In', { category: 'Authentication' });
-            authService.saveCurrentUser(user);
+            authService.saveCurrentUser(data);
             Idle.watch();
             Keepalive.ping();
             $rootScope.$broadcast('loggedIn');
@@ -75,6 +80,7 @@ function ChplLogin(props) {
     <Card>
       <CardHeader title="Login required" />
       <CardContent className={classes.grid}>
+        { user && user.fullName }
         <ChplTextField
           id="user-name"
           name="userName"

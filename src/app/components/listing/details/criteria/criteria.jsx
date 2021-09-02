@@ -24,7 +24,7 @@ import {
   resources as resourceDefinition,
   qmsStandard,
 } from '../../../../shared/prop-types';
-import FlagContext from '../../../../shared/contexts';
+import { FlagContext } from '../../../../shared/contexts';
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {

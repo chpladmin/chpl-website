@@ -7,7 +7,7 @@ import {
 
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplLogin } from '../../../components/login';
+import { ChplLogin, UserWrapper } from '../../../components/login';
 
 function ChplLoginPage(props) {
   /* eslint-disable react/destructuring-assignment */
@@ -24,13 +24,15 @@ function ChplLoginPage(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container id="login-component">
-        <ChplLogin
-          dispatch={handleLogin}
-        />
-      </Container>
-    </ThemeProvider>
+    <UserWrapper>
+      <ThemeProvider theme={theme}>
+        <Container id="login-component">
+          <ChplLogin
+            dispatch={handleLogin}
+          />
+        </Container>
+      </ThemeProvider>
+    </UserWrapper>
   );
 }
 

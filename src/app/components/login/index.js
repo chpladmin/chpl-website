@@ -1,3 +1,4 @@
 import ChplLogin from './login';
+import UserWrapper from './user-wrapper';
 
-export { ChplLogin };
+export { ChplLogin, UserWrapper };
