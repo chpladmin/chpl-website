@@ -75,7 +75,8 @@ function ChplLogin(props) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
-  let changeFormik, resetFormik, signinFormik;
+  let changeFormik; let resetFormik; let
+    signinFormik;
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
@@ -99,11 +100,11 @@ function ChplLogin(props) {
       default:
         setState('');
     }
-  }
+  };
 
   const changePassword = () => {
     networkService.changePassword({ oldPassword: changeFormik.values.oldPassword, newPassword: changeFormik.values.newPassword })
-      .then(response => {
+      .then((response) => {
         if (response.passwordUpdated) {
           $analytics.eventTrack('Change Password', { category: 'Authentication' });
           setState('LOGGEDIN');
@@ -118,7 +119,7 @@ function ChplLogin(props) {
             body += response.warning;
           }
           if (response.suggestions && response.suggestions.length > 0) {
-            body += 'Suggestion' + (response.suggestions.length > 1 ? 's' : '') + ': ' + response.suggestions.join(' ');
+            body += `Suggestion${response.suggestions.length > 1 ? 's' : ''}: ${response.suggestions.join(' ')}`;
           }
           if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
             body += 'Please try again with a stronger password.';
@@ -129,12 +130,12 @@ function ChplLogin(props) {
           });
         }
       }, () => {
-          toaster.pop({
-            type: 'error',
-            body: 'Error. Please check your credentials or contact the administrator',
-          });
+        toaster.pop({
+          type: 'error',
+          body: 'Error. Please check your credentials or contact the administrator',
+        });
       });
-  }
+  };
 
   const getTitle = () => {
     switch (state) {
@@ -144,8 +145,8 @@ function ChplLogin(props) {
       case 'LOGGEDIN': return user.fullName;
       case 'SIGNIN': return 'Login required';
       default: return 'Unknown state';
-    };
-  }
+    }
+  };
 
   const login = () => {
     networkService.login({ userName: signinFormik.values.userName, password: signinFormik.values.password })
@@ -171,7 +172,7 @@ function ChplLogin(props) {
     $analytics.eventTrack('Log Out', { category: 'Authentication' });
     Idle.unwatch();
     $rootScope.$broadcast('loggedOut');
-  }
+  };
 
   const sendReset = () => {
     networkService.emailResetPassword({ email: resetFormik.values.email })
@@ -189,22 +190,22 @@ function ChplLogin(props) {
           body: 'Invalid username/email combination. Please check your credentials or contact the administrator',
         });
       });
-  }
+  };
 
   const stopImpersonating = () => {
     networkService.unimpersonateUser()
-      .then(token => {
+      .then((token) => {
         setImpersonating(false);
         authService.saveToken(token.token);
         networkService.getUserById(authService.getUserId())
-          .then(data => {
+          .then((data) => {
             setUser(data);
             setState('LOGGEDIN');
             authService.saveCurrentUser(data);
             $rootScope.$broadcast('unimpersonating');
           });
       });
-  }
+  };
 
   const updatePassword = (event) => {
     const vals = ['chpl'];
@@ -267,7 +268,8 @@ function ChplLogin(props) {
     <Card>
       <CardHeader title={getTitle()} />
       <CardContent className={classes.grid}>
-        { state === 'CHANGEPASSWORD' &&
+        { state === 'CHANGEPASSWORD'
+          && (
           <>
             <ChplTextField
               type="password"
@@ -317,8 +319,9 @@ function ChplLogin(props) {
               helperText={changeFormik.touched.verificationPassword && changeFormik.errors.verificationPassword}
             />
           </>
-        }
-        { state === 'FORGOTPASSWORD' &&
+          )}
+        { state === 'FORGOTPASSWORD'
+          && (
           <ChplTextField
             id="email"
             name="email"
@@ -330,8 +333,9 @@ function ChplLogin(props) {
             error={resetFormik.touched.email && !!resetFormik.errors.email}
             helperText={resetFormik.touched.email && resetFormik.errors.email}
           />
-        }
-        { state === 'SIGNIN' &&
+          )}
+        { state === 'SIGNIN'
+          && (
           <>
             <ChplTextField
               id="user-name"
@@ -360,10 +364,11 @@ function ChplLogin(props) {
               This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.
             </Typography>
           </>
-        }
+          )}
       </CardContent>
       <CardActions>
-        { state === 'IMPERSONATING' &&
+        { state === 'IMPERSONATING'
+          && (
           <Button
             color="primary"
             variant="outlined"
@@ -371,8 +376,9 @@ function ChplLogin(props) {
           >
             Stop Impersonating
           </Button>
-        }
-        { (state === 'LOGGEDIN' || state === 'IMPERSONATING') &&
+          )}
+        { (state === 'LOGGEDIN' || state === 'IMPERSONATING')
+          && (
           <Button
             color="primary"
             variant="outlined"
@@ -380,15 +386,19 @@ function ChplLogin(props) {
           >
             Log Out
           </Button>
-        }
-        { state === 'LOGGEDIN' &&
+          )}
+        { state === 'LOGGEDIN'
+          && (
           <Button
             color="primary"
             variant="outlined"
             onClick={() => setState('CHANGEPASSWORD')}
-          >Change Password</Button>
-        }
-        { state === 'SIGNIN' &&
+          >
+            Change Password
+          </Button>
+          )}
+        { state === 'SIGNIN'
+          && (
           <Button
             color="primary"
             variant="contained"
@@ -396,35 +406,47 @@ function ChplLogin(props) {
           >
             Log In
           </Button>
-        }
-        { state === 'SIGNIN' &&
+          )}
+        { state === 'SIGNIN'
+          && (
           <Button
             color="primary"
             variant="outlined"
             onClick={() => setState('FORGOTPASSWORD')}
-          >Forgot Password</Button>
-        }
-        { state === 'FORGOTPASSWORD' &&
+          >
+            Forgot Password
+          </Button>
+          )}
+        { state === 'FORGOTPASSWORD'
+          && (
           <Button
             color="primary"
             variant="contained"
             onClick={resetFormik.handleSubmit}
-          >Send reset email</Button>
-        }
-        { state === 'CHANGEPASSWORD' &&
+          >
+            Send reset email
+          </Button>
+          )}
+        { state === 'CHANGEPASSWORD'
+          && (
           <Button
             color="primary"
             variant="contained"
             onClick={changeFormik.handleSubmit}
-          >Confirm new Password</Button>
-        }
-        { (state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD') &&
+          >
+            Confirm new Password
+          </Button>
+          )}
+        { (state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD')
+          && (
           <Button
             color="primary"
             variant="outlined"
             onClick={cancel}
-          >Cancel</Button>
-        }
+          >
+            Cancel
+          </Button>
+          )}
       </CardActions>
     </Card>
   );
