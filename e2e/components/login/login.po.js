@@ -3,13 +3,12 @@ import credentials from '../../config/credentials';
 class LoginComponent {
   constructor() {
     this.elements = {
-      component: '#login-component',
-      loginToggle: '//*[@id="login-toggle"]',
+      component: '#admin',
+      loginToggle: '#login-toggle',
       userName: '[name="userName"]',
-      username: '[name="username"]',
       password: '[name="password"]',
       login: 'button=Log In',
-      logout: '//button[text()="Log Out"]',
+      logout: 'button=Log Out',
     };
   }
 
@@ -18,30 +17,17 @@ class LoginComponent {
   }
 
   toggleLoginComponent() {
-    $(this.elements.loginToggle).scrollAndClick();
+    $(this.elements.loginToggle).click();
   }
 
   logIn(user) {
-    const usingLegacy = !($(this.elements.component).isDisplayed());
-    let un;
-    let pw;
-    let btn;
-    if (usingLegacy) {
-      this.toggleLoginComponent();
-      un = $(this.elements.username);
-      pw = $(this.elements.password);
-      btn = $(this.elements.login);
-    } else {
-      un = $(this.elements.component).$(this.elements.userName);
-      pw = $(this.elements.component).$(this.elements.password);
-      btn = $(this.elements.component).$(this.elements.login);
-    }
+    const un = $(this.elements.component).$(this.elements.userName);
+    const pw = $(this.elements.component).$(this.elements.password);
+    const btn = $(this.elements.component).$(this.elements.login);
+    this.toggleLoginComponent();
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
-    btn.scrollAndClick();
-    if (!usingLegacy) {
-      this.toggleLoginComponent();
-    }
+    btn.click();
     $(this.elements.logout).waitForDisplayed();
     this.toggleLoginComponent();
   }
@@ -50,7 +36,7 @@ class LoginComponent {
     if (!($(this.elements.logout).isDisplayed())) {
       this.toggleLoginComponent();
     }
-    $(this.elements.logout).scrollAndClick();
+    $(this.elements.logout).click();
     browser.waitUntil(() => this.getLoggedInUserName() === 'Administrator Login');
     this.toggleLoginComponent();
   }
