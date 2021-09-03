@@ -121,13 +121,7 @@
       });
       $scope.$on('$destroy', flags);
 
-      var warn = $scope.$on('IdleWarn', function (e, countdown) {
-        $log.warn('User will be logged out in ' + countdown + ' seconds');
-      });
-      $scope.$on('$destroy', warn);
-
       var logout = $scope.$on('IdleTimeout', function () {
-        $log.warn('User has been logged out');
         vm.logout();
       });
       $scope.$on('$destroy', logout);
