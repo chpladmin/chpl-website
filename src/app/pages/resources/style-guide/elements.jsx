@@ -528,7 +528,7 @@ function Elements() {
             <SgAdministratorLoginChangePassword />
             <Typography gutterBottom variant="body1">Login Options</Typography>
             <SgAdministratorLoginOptions />
-            <Typography gutterBottom variant="body1">Full Screen Template for <a href='https://chpl.ahrqdev.org/#/administration'>Administration Screen</a></Typography>
+            <Typography gutterBottom variant="body1">Full Screen Template for <a href='https://chpl.ahrqdev.org/#/administration'>Administration Screen</a> or <a href='https://chpl.ahrqdev.org/#/login'>Login Screen</a></Typography>
             <SgAdministratorLoginRequired />
           </div>
         </div>
