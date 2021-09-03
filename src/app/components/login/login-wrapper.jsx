@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ThemeProvider
+  ThemeProvider,
 } from '@material-ui/core';
 
 import theme from '../../themes/theme';
