@@ -2,7 +2,9 @@ import UploadApiDocumentationComponent from './upload-api-documentation.po';
 import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks, loginComponent, uploadcomponent;
+let hooks;
+let loginComponent;
+let uploadcomponent;
 
 beforeAll(async () => {
   uploadcomponent = new UploadApiDocumentationComponent();
@@ -12,8 +14,7 @@ beforeAll(async () => {
 });
 
 describe('When uploading API documentation files as ADMIN', () => {
-
-  beforeAll(function () {
+  beforeAll(() => {
     loginComponent.logIn('admin');
   });
 

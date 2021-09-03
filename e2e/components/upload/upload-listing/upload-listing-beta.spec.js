@@ -3,7 +3,10 @@ import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../toast/toast.po';
 
-let hooks, loginComponent, toast,uploadListingComponent;
+let hooks;
+let loginComponent;
+let toast;
+let uploadListingComponent;
 
 const inputs = require('./upload-listing-beta-dp');
 
@@ -16,25 +19,25 @@ beforeEach(async () => {
 });
 
 describe('When ONC-ACB uploads - ', () => {
-  if(process.env.ENV !== 'stage') {
-    beforeEach(function () {
+  if (process.env.ENV !== 'stage') {
+    beforeEach(() => {
       loginComponent.logIn('acb');
     });
 
-    afterEach(function () {
+    afterEach(() => {
       hooks.waitForSpinnerToDisappear();
       toast.clearAllToast();
       loginComponent.logOut();
     });
 
-    inputs.forEach(input => {
-      let testName = input.testName;
-      let path = input.path;
-      let message = input.message;
+    inputs.forEach((input) => {
+      const { testName } = input;
+      const { path } = input;
+      const { message } = input;
 
       it(`${testName} - shows ${message} status of upload`, () => {
         uploadListingComponent.uploadListingBeta(path);
-        browser.waitUntil( () => toast.toastTitle.isDisplayed());
+        browser.waitUntil(() => toast.toastTitle.isDisplayed());
         expect(toast.toastTitle.getText()).toBe(message);
       });
     });

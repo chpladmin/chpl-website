@@ -2,7 +2,9 @@ import UploadListingComponent from './upload-listing.po';
 import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks, loginComponent, uploadListingComponent;
+let hooks;
+let loginComponent;
+let uploadListingComponent;
 
 beforeEach(async () => {
   uploadListingComponent = new UploadListingComponent();
@@ -12,11 +14,11 @@ beforeEach(async () => {
 });
 
 describe('When uploading a listing as ONC-ACB', () => {
-  beforeEach(function () {
+  beforeEach(() => {
     loginComponent.logIn('acb');
   });
 
-  afterEach(function () {
+  afterEach(() => {
     loginComponent.logOut();
   });
 

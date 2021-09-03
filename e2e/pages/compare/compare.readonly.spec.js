@@ -1,7 +1,8 @@
 import ComparePage from './compare.po';
 import Hooks from '../../utilities/hooks';
 
-let hooks, page;
+let hooks;
+let page;
 
 beforeEach(async () => {
   page = new ComparePage();
@@ -10,7 +11,6 @@ beforeEach(async () => {
 });
 
 describe('on compare page after clicking show all-', () => {
-
   it('should display all of the 78 certification criterias', () => {
     page.checkShowAllCheckbox();
     page.certificationCriteriaLink.scrollIntoView();

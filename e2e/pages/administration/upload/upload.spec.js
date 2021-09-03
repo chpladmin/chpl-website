@@ -3,7 +3,10 @@ import UploadAPIDocumentationComponent from '../../../components/upload/upload-a
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks, loginComponent, uploadAPIDocumentationComponent, uploadListingComponent;
+let hooks;
+let loginComponent;
+let uploadAPIDocumentationComponent;
+let uploadListingComponent;
 
 beforeAll(async () => {
   uploadListingComponent = new UploadListingComponent();
@@ -14,7 +17,7 @@ beforeAll(async () => {
 });
 
 describe('Upload Page', () => {
-  beforeAll(function () {
+  beforeAll(() => {
     loginComponent.logIn('admin');
   });
 
@@ -25,5 +28,4 @@ describe('Upload Page', () => {
   it('has correct title for upload api documentation component', () => {
     expect(uploadAPIDocumentationComponent.title.getText()).toContain('Upload API Documentation Information');
   });
-
 });
