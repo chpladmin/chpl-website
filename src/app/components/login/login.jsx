@@ -16,7 +16,7 @@ import { getAngularService } from '../../services/angular-react-helper';
 import { UserContext } from '../../shared/contexts';
 import { ChplTextField } from '../util';
 import PasswordStrengthMeter from './password-strength-meter';
-
+ 
 const zxcvbn = require('zxcvbn');
 
 const useStyles = makeStyles(() => ({
@@ -384,10 +384,10 @@ function ChplLogin(props) {
           </>
           )}
       </CardContent>
-      <CardActions>
         { state === 'IMPERSONATING'
           && (
           <Button
+            fullWidth
             color="primary"
             variant="outlined"
             onClick={stopImpersonating}
@@ -398,6 +398,7 @@ function ChplLogin(props) {
         { (state === 'LOGGEDIN' || state === 'IMPERSONATING')
           && (
           <Button
+            fullWidth
             color="primary"
             variant="outlined"
             onClick={logout}
@@ -408,6 +409,7 @@ function ChplLogin(props) {
         { state === 'LOGGEDIN'
           && (
           <Button
+            fullWidth
             color="primary"
             variant="outlined"
             onClick={(e) => { setState('CHANGEPASSWORD'); e.stopPropagation(); }}
@@ -418,6 +420,7 @@ function ChplLogin(props) {
         { state === 'SIGNIN'
           && (
           <Button
+            fullWidth
             color="primary"
             variant="contained"
             onClick={submitSignin}
@@ -428,6 +431,7 @@ function ChplLogin(props) {
         { state === 'SIGNIN'
           && (
           <Button
+            fullWidth
             color="primary"
             variant="outlined"
             onClick={(e) => { setState('FORGOTPASSWORD'); e.stopPropagation(); }}
@@ -438,6 +442,7 @@ function ChplLogin(props) {
         { state === 'FORGOTPASSWORD'
           && (
           <Button
+            fullWidth
             color="primary"
             variant="contained"
             onClick={submitReset}
@@ -448,6 +453,7 @@ function ChplLogin(props) {
         { state === 'CHANGEPASSWORD'
           && (
           <Button
+            fullWidth
             color="primary"
             variant="contained"
             onClick={submitChange}
@@ -458,6 +464,7 @@ function ChplLogin(props) {
         { (state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD')
           && (
           <Button
+            fullWidth
             color="primary"
             variant="outlined"
             onClick={cancel}
@@ -465,7 +472,7 @@ function ChplLogin(props) {
             Cancel
           </Button>
           )}
-      </CardActions>
+      
     </Card>
   );
 }
