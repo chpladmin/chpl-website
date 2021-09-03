@@ -19,11 +19,11 @@ describe('Upload Page', () => {
   });
 
   it('has correct title for upload listing component', () => {
-    assert.include(uploadListingComponent.title.getText(),'Upload Certified Products');
+    expect(uploadListingComponent.title.getText()).toContain('Upload Certified Products');
   });
 
   it('has correct title for upload api documentation component', () => {
-    assert.include(uploadAPIDocumentationComponent.title.getText(),'Upload API Documentation Information');
+    expect(uploadAPIDocumentationComponent.title.getText()).toContain('Upload API Documentation Information');
   });
 
 });

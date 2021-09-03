@@ -33,7 +33,7 @@ describe('On cms reverse look up page', () => {
         for ( var j = 1; j <= length; j++ ) {
           ls.push(cmsLookup.chplProductNumberFromTable(j).getText());
         }
-        assert.equal(ls.toString(),input.chplProductNumbers.toString());
+        expect(ls.toString()).toBe(input.chplProductNumbers.toString());
       });
 
       it('should have download results button and download file should contain correct listings Ids', () => {
@@ -44,7 +44,7 @@ describe('On cms reverse look up page', () => {
           cmsLookup.downloadResultsButton.scrollAndClick();
         }
         browser.waitForFileExists(filePath,config.timeout);
-        assert.isTrue(fs.existsSync(filePath));
+        expect(fs.existsSync(filePath)).toBe(true);
         const fileContents = fs.readFileSync(filePath, 'utf-8');
         var count = 0;
         for ( var k = 0; k < input.chplProductNumbers.length; k ++) {
@@ -52,7 +52,7 @@ describe('On cms reverse look up page', () => {
             count ++;
           }
         }
-        assert.equal(count,input.chplProductNumbers.length, 'All chpl product numbers aren\'t present in the download file');
+        expect(count,input.chplProductNumbers.length).toBe('All chpl product numbers aren\'t present in the download file');
       });
     });
   });
@@ -68,16 +68,15 @@ describe('On cms reverse look up page', () => {
     });
 
     it('should show correct message', () => {
-      assert.equal(cmsLookup.certidLookupErrorText.getText(),'"' + invalidCmsId + '" is not a valid CMS EHR Certification ID format.');
+      expect(cmsLookup.certidLookupErrorText.getText()).toBe('"' + invalidCmsId + '" is not a valid CMS EHR Certification ID format.');
     });
 
     it('should not display look up results table', () => {
-      assert.isFalse(cmsLookup.lookupResultsTable.isExisting());
+      expect(cmsLookup.lookupResultsTable.isExisting()).toBe(false);
     });
 
     it('should not have download results button', () => {
-      assert.isFalse(cmsLookup.downloadResultsButton.isExisting());
+      expect(cmsLookup.downloadResultsButton.isExisting()).toBe(false);
     });
   });
 });
-

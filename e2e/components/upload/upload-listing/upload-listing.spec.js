@@ -22,16 +22,18 @@ describe('When uploading a listing as ONC-ACB', () => {
 
   it('can\'t upload a file which doesn\'t match current template', () => {
     uploadListingComponent.uploadListing('../../../resources/upload-listing-beta/2015_WithCriteria.csv');
-    assert.include(uploadListingComponent.listingUploadText.getText(),'was not uploaded successfully');
+    expect(uploadListingComponent.listingUploadText.getText()).toContain('was not uploaded successfully');
   });
 
   it('can upload v19 template', () => {
     uploadListingComponent.uploadListing('../../../resources/listings/2015_v19_AQA1.csv');
-    assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
+    expect(uploadListingComponent.listingUploadText.getText()).toContain('was uploaded successfully. 1 pending products are ready for confirmation.');
+    expect(uploadListingComponent.listingUploadText.getText()).toContain('File has uploaded successfully');
   });
 
   it('can upload v20 template', () => {
     uploadListingComponent.uploadListing('../../../resources/listings/2015_v20_AQA5.csv');
-    assert.include(uploadListingComponent.listingUploadText.getText(),'was uploaded successfully. 1 pending products are ready for confirmation.', 'File has uploaded successfully');
+    expect(uploadListingComponent.listingUploadText.getText()).toContain('was uploaded successfully. 1 pending products are ready for confirmation.');
+    expect(uploadListingComponent.listingUploadText.getText()).toContain('File has uploaded successfully');
   });
 });

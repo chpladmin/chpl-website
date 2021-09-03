@@ -4,7 +4,6 @@ import UploadPage from '../../pages/administration/upload/upload.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import { assert } from 'chai';
 
 let confirmPage , hooks, loginComponent, uploadPage;
 
@@ -27,6 +26,6 @@ describe('when ACB inspects uploaded listing with both cures and original criter
 
   it('should show correct error message', () => {
     confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA5.03.01.1.200620');
-    assert.include(confirmPage.errorMessage.getText(), 'Cannot select both 170.315 (b)(3) and 170.315 (b)(3) (Cures Update).');
+    expect(confirmPage.errorMessage.getText()).toContain('Cannot select both 170.315 (b)(3) and 170.315 (b)(3) (Cures Update).');
   });
 });

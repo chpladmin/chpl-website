@@ -20,12 +20,12 @@ describe('on compare widget', () => {
 
     it('should not have compare products button', () => {
       compare.compareWidget.click();
-      assert.isFalse(compare.compareProductsButton.isDisplayed());
+      expect(compare.compareProductsButton.isDisplayed()).toBe(false);
     });
 
     it('should not have remove all products button', () => {
       compare.compareWidget.click();
-      assert.isFalse(compare.removeProductsButton.isDisplayed());
+      expect(compare.removeProductsButton.isDisplayed()).toBe(false);
     });
   });
 
@@ -38,19 +38,19 @@ describe('on compare widget', () => {
     });
 
     it('should have compare products button but disabled', () => {
-      assert.isTrue(compare.compareProductsButton.isDisplayed());
-      assert.isFalse(compare.compareProductsButton.isClickable());
+      expect(compare.compareProductsButton.isDisplayed()).toBe(true);
+      expect(compare.compareProductsButton.isClickable()).toBe(false);
     });
 
     it('should have remove all products button and enabled', () => {
-      assert.isTrue(compare.removeProductsButton.isDisplayed());
-      assert.isTrue(compare.removeProductsButton.isClickable());
+      expect(compare.removeProductsButton.isDisplayed()).toBe(true);
+      expect(compare.removeProductsButton.isClickable()).toBe(true);
     });
 
     it('remove products removes products', () => {
       compare.removeProductsButton.click();
-      assert.isFalse(compare.removeProductsButton.isDisplayed());
-      assert.isFalse(compare.compareProductsButton.isDisplayed());
+      expect(compare.removeProductsButton.isDisplayed()).toBe(false);
+      expect(compare.compareProductsButton.isDisplayed()).toBe(false);
     });
   });
 
@@ -67,18 +67,18 @@ describe('on compare widget', () => {
     });
 
     it('should have compare products button and enabled', () => {
-      assert.isTrue(compare.compareProductsButton.isDisplayed());
-      assert.isTrue(compare.compareProductsButton.isClickable());
+      expect(compare.compareProductsButton.isDisplayed()).toBe(true);
+      expect(compare.compareProductsButton.isClickable()).toBe(true);
     });
 
     it('should have remove all products button and enabled', () => {
-      assert.isTrue(compare.removeProductsButton.isDisplayed());
-      assert.isTrue(compare.removeProductsButton.isClickable());
+      expect(compare.removeProductsButton.isDisplayed()).toBe(true);
+      expect(compare.removeProductsButton.isClickable()).toBe(true);
     });
 
     it('compare products button opens compare page for the selected listings', () => {
       compare.compareProductsButton.click();
-      assert.include(browser.getUrl(),'/compare/' + ListingId1 + '&' + ListingId2);
+      expect(browser.getUrl()).toContain('/compare/' + ListingId1 + '&' + ListingId2)
     });
   });
 });

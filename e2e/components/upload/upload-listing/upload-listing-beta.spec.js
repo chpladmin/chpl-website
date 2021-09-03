@@ -35,7 +35,7 @@ describe('When ONC-ACB uploads - ', () => {
       it(`${testName} - shows ${message} status of upload`, () => {
         uploadListingComponent.uploadListingBeta(path);
         browser.waitUntil( () => toast.toastTitle.isDisplayed());
-        assert.equal(toast.toastTitle.getText(), message);
+        expect(toast.toastTitle.getText()).toBe(message);
       });
     });
   }
