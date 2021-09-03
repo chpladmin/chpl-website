@@ -187,9 +187,10 @@ function ChplLogin(props) {
           body: 'Password email sent; please check your email',
         });
       }, () => {
+        const body = `Email could not be sent to ${resetFormik.values.email}`;
         toaster.pop({
           type: 'error',
-          body: 'Invalid username/email combination. Please check your credentials or contact the administrator',
+          body,
         });
       });
   };
