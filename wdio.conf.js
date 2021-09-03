@@ -163,6 +163,6 @@ exports.config = {
     })));
   },
   afterTest() {
-    console.log(`afterTesthook: ${browser.getLogs('browser')}`);
+    console.log('start afterTestHook', browser.getLogs('browser'), 'end afterTestHook');
   },
 };
