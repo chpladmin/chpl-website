@@ -75,8 +75,9 @@ function ChplLogin(props) {
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
-  let changeFormik; let resetFormik; let
-    signinFormik;
+  let changeFormik;
+  let resetFormik;
+  let signinFormik;
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
-import { LoginWrapper } from './login';
+import IndexWrapper from '../index-wrapper';
 import {
   ChplComplaintAdd,
   ChplComplaintEdit,
@@ -66,4 +66,4 @@ angular
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
-  .component('loginWrapperBridge', reactToAngularComponent(LoginWrapper));
+  .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));

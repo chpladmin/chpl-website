@@ -188,7 +188,8 @@ module.exports = (env) => {
     new webpack.DefinePlugin({
       DEVELOPER_MODE: JSON.stringify(env.NODE_ENV === 'development'),
       ENABLE_LOGGING: JSON.stringify(env.NODE_ENV === 'development'),
-      MINUTES_UNTIL_IDLE: env.NODE_ENV === 'development' ? 150 : 50,
+      MINUTES_UNTIL_IDLE: env.NODE_ENV === 'development' ? 2 : 50,
+      MINUTES_UNTIL_LOGOUT: env.NODE_ENV === 'development' ? 2 : 5,
       MINUTES_BETWEEN_KEEPALIVE: 1,
     }),
   );
