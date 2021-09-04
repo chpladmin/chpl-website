@@ -121,8 +121,9 @@ exports.config = {
    */
   before() {
     browser.addCommand('getFlag', () => {
-      this.url(this.options.baseUrl + urls.ff4jURL);
-      const jsonObj = JSON.parse($('body').getText());
+      browser.url(this.baseUrl + urls.ff4jURL);
+      const json = $('body').getText();
+      const jsonObj = JSON.parse(json);
       return jsonObj;
     });
     global.flagObj = browser.getFlag();
