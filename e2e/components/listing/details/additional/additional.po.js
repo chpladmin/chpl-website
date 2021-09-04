@@ -30,7 +30,7 @@ class AdditionalComponent {
   }
 
   expandAdditional() {
-    $('//div[text()="Additional Information"]/following-sibling::div').scrollAndClick();
+    this.additionalHeader.$('..').scrollAndClick();
   }
 }
 
