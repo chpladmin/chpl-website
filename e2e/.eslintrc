@@ -3,13 +3,13 @@
         "eslint:recommended",
     ],
     "globals": {
-        "browser": false,
-        "element": false,
-        "by": false,
-        "$": false,
-        "$$": false,
-        "__dirname": false,
-        "global": false
+        "browser": "readable",
+        "element": "readable",
+        "by": "readable",
+        "$": "readable",
+        "$$": "readable",
+        "__dirname": "readable",
+        "global": "readable"
     },
     "parser": "babel-eslint",
     "rules": {
