@@ -61,10 +61,11 @@ exports.config = {
   connectionRetryCount: 3,
   services: ['chromedriver'],
   framework: 'jasmine',
-  jasmineNodeOpts: {
+  jasmineOpts: {
     ui: 'bdd',
     defaultTimeoutInterval: 60000,
-    helpers: [require.resolve('@babel/register')],
+    requires: ['@babel/register'], // think this is the new one
+    helpers: [require.resolve('@babel/register')], // not sure if this is needed
     expectationResultHandler(passed, assertion) {
       if (passed) {
         return;
