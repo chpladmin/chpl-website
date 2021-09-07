@@ -6,6 +6,7 @@ class AdditionalComponent {
       icsRelationshipModal: '#modalLabel',
       compareButton: '//button[text()="Compare all Products"]',
       testResultsSummary: '#panel-additional-information-test-results-summary',
+      modalHeader: '.modal-header',
     };
   }
 
@@ -29,8 +30,12 @@ class AdditionalComponent {
     return $(this.elements.compareButton);
   }
 
+  closeModal() {
+    $(this.elements.modalHeader).$('//button').click();
+  }
+
   expandAdditional() {
-    this.additionalHeader.$('..').scrollAndClick();
+    this.additionalHeader.parentElement().click();
   }
 }
 
