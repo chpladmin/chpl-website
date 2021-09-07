@@ -306,197 +306,207 @@ function ChplLogin(props) {
       <CardHeader className={classes.loginHeader} title={getTitle()} />
       <CardContent className={classes.grid}>
         {state === 'CHANGEPASSWORD'
-          && (
-            <>
-              <ChplTextField
-                type="password"
-                id="old-password"
-                name="oldPassword"
-                label="Old Password"
-                required
-                value={changeFormik.values.oldPassword}
-                onChange={changeFormik.handleChange}
-                onBlur={changeFormik.handleBlur}
-                error={changeFormik.touched.oldPassword && !!changeFormik.errors.oldPassword}
-                helperText={changeFormik.touched.oldPassword && changeFormik.errors.oldPassword}
-              />
-              <ChplTextField
-                type="password"
-                id="new-password"
-                name="newPassword"
-                label="New Password"
-                required
-                value={changeFormik.values.newPassword}
-                onChange={updatePassword}
-                onBlur={changeFormik.handleBlur}
-                error={changeFormik.touched.newPassword && !!changeFormik.errors.newPassword}
-                helperText={changeFormik.touched.newPassword && changeFormik.errors.newPassword}
-              />
-              <PasswordStrengthMeter
-                value={strength}
-              />
-              {passwordMessages.length > 0
-                && (
-                  <ul>
-                    {passwordMessages.map((msg) => (
-                      <li key={msg}>{msg}</li>
-                    ))}
-                  </ul>
-                )}
-              <ChplTextField
-                type="password"
-                id="password-verification"
-                name="verificationPassword"
-                label="Verification Password"
-                required
-                value={changeFormik.values.verificationPassword}
-                onChange={changeFormik.handleChange}
-                onBlur={changeFormik.handleBlur}
-                error={changeFormik.touched.verificationPassword && !!changeFormik.errors.verificationPassword}
-                helperText={changeFormik.touched.verificationPassword && changeFormik.errors.verificationPassword}
-              />
-            </>
-          )}
+         && (
+           <>
+             <ChplTextField
+               type="password"
+               id="old-password"
+               name="oldPassword"
+               label="Old Password"
+               required
+               value={changeFormik.values.oldPassword}
+               onChange={changeFormik.handleChange}
+               onBlur={changeFormik.handleBlur}
+               error={changeFormik.touched.oldPassword && !!changeFormik.errors.oldPassword}
+               helperText={changeFormik.touched.oldPassword && changeFormik.errors.oldPassword}
+             />
+             <ChplTextField
+               type="password"
+               id="new-password"
+               name="newPassword"
+               label="New Password"
+               required
+               value={changeFormik.values.newPassword}
+               onChange={updatePassword}
+               onBlur={changeFormik.handleBlur}
+               error={changeFormik.touched.newPassword && !!changeFormik.errors.newPassword}
+               helperText={changeFormik.touched.newPassword && changeFormik.errors.newPassword}
+             />
+             <PasswordStrengthMeter
+               value={strength}
+             />
+             {passwordMessages.length > 0
+              && (
+                <ul>
+                  {passwordMessages.map((msg) => (
+                    <li key={msg}>{msg}</li>
+                  ))}
+                </ul>
+              )}
+             <ChplTextField
+               type="password"
+               id="password-verification"
+               name="verificationPassword"
+               label="Verification Password"
+               required
+               value={changeFormik.values.verificationPassword}
+               onChange={changeFormik.handleChange}
+               onBlur={changeFormik.handleBlur}
+               error={changeFormik.touched.verificationPassword && !!changeFormik.errors.verificationPassword}
+               helperText={changeFormik.touched.verificationPassword && changeFormik.errors.verificationPassword}
+             />
+           </>
+         )}
         {state === 'FORGOTPASSWORD'
-          && (
-            <ChplTextField
-              id="email"
-              name="email"
-              label="Email"
-              required
-              value={resetFormik.values.email}
-              onChange={resetFormik.handleChange}
-              onBlur={resetFormik.handleBlur}
-              error={resetFormik.touched.email && !!resetFormik.errors.email}
-              helperText={resetFormik.touched.email && resetFormik.errors.email}
-            />
-          )}
+         && (
+           <ChplTextField
+             id="email"
+             name="email"
+             label="Email"
+             required
+             value={resetFormik.values.email}
+             onChange={resetFormik.handleChange}
+             onBlur={resetFormik.handleBlur}
+             error={resetFormik.touched.email && !!resetFormik.errors.email}
+             helperText={resetFormik.touched.email && resetFormik.errors.email}
+           />
+         )}
         {state === 'SIGNIN'
-          && (
-            <>
-              <ChplTextField
-                id="user-name"
-                name="userName"
-                label="Email (or User Name)"
-                required
-                value={signinFormik.values.userName}
-                onChange={signinFormik.handleChange}
-                onBlur={signinFormik.handleBlur}
-                error={signinFormik.touched.userName && !!signinFormik.errors.userName}
-                helperText={signinFormik.touched.userName && signinFormik.errors.userName}
-              />
-              <ChplTextField
-                type="password"
-                id="password"
-                name="password"
-                label="Password"
-                required
-                value={signinFormik.values.password}
-                onChange={signinFormik.handleChange}
-                onBlur={signinFormik.handleBlur}
-                error={signinFormik.touched.password && !!signinFormik.errors.password}
-                helperText={signinFormik.touched.password && signinFormik.errors.password}
-              />
+         && (
+           <>
+             <ChplTextField
+               id="user-name"
+               name="userName"
+               label="Email (or User Name)"
+               required
+               value={signinFormik.values.userName}
+               onChange={signinFormik.handleChange}
+               onBlur={signinFormik.handleBlur}
+               error={signinFormik.touched.userName && !!signinFormik.errors.userName}
+               helperText={signinFormik.touched.userName && signinFormik.errors.userName}
+             />
+             <ChplTextField
+               type="password"
+               id="password"
+               name="password"
+               label="Password"
+               required
+               value={signinFormik.values.password}
+               onChange={signinFormik.handleChange}
+               onBlur={signinFormik.handleBlur}
+               error={signinFormik.touched.password && !!signinFormik.errors.password}
+               helperText={signinFormik.touched.password && signinFormik.errors.password}
+             />
 
-            </>
-          )}
-
-        <div className={classes.grid}>
-          {state === 'IMPERSONATING'
-            && (
-              <Button
-                fullWidth
-                color="secondary"
-                variant="contained"
-                onClick={stopImpersonating}
-              >
-                Stop Impersonating <NotInterestedIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-          {(state === 'LOGGEDIN' || state === 'IMPERSONATING')
-            && (
-              <Button
-                fullWidth
-                color="primary"
-                variant="contained"
-                onClick={logout}
-              >
-                Log Out<ExitToAppIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-          {state === 'LOGGEDIN'
-            && (
-              <Button
-                fullWidth
-                color="secondary"
-                variant="contained"
-                onClick={(e) => { setState('CHANGEPASSWORD'); e.stopPropagation(); }}
-              >
-                Change Password<CreateIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-          {state === 'SIGNIN'
-            && (
-              <Button
-                fullWidth
-                color="primary"
-                variant="contained"
-                onClick={submitSignin}
-              >
-                Log In
-                <VpnKeyIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-          {state === 'SIGNIN'
-            && (
-              <Button
-                fullWidth
-                color="secondary"
-                variant="contained"
-                onClick={(e) => { setState('FORGOTPASSWORD'); e.stopPropagation(); }}
-              >
-                Forgot Password
-                <HelpOutlineIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-          {state === 'FORGOTPASSWORD'
-            && (
-              <Button
-                fullWidth
-                color="primary"
-                variant="contained"
-                onClick={submitReset}
-              >
-                Send reset email <SendIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-          {state === 'CHANGEPASSWORD'
-            && (
-              <Button
-                fullWidth
-                color="primary"
-                variant="contained"
-                onClick={submitChange}
-              >
-                Confirm new Password<VpnKeyIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-          {(state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD')
-            && (
-              <Button
-                fullWidth
-                color="default"
-                variant="contained"
-                onClick={cancel}
-              >
-                Cancel<ClearIcon className={classes.iconSpacing} />
-              </Button>
-            )}
-        </div>
-        <Typography variant="body2">This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties.
-        </Typography>
-        <Typography variant="body2">At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.
-        </Typography>
+           </>
+         )}
+        {state === 'IMPERSONATING'
+         && (
+           <Button
+             fullWidth
+             color="secondary"
+             variant="contained"
+             onClick={stopImpersonating}
+           >
+             Stop Impersonating
+             <NotInterestedIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {(state === 'LOGGEDIN' || state === 'IMPERSONATING')
+         && (
+           <Button
+             fullWidth
+             color="primary"
+             variant="contained"
+             onClick={logout}
+           >
+             Log Out
+             <ExitToAppIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {state === 'LOGGEDIN'
+         && (
+           <Button
+             fullWidth
+             color="secondary"
+             variant="contained"
+             onClick={(e) => { setState('CHANGEPASSWORD'); e.stopPropagation(); }}
+           >
+             Change Password
+             <CreateIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {state === 'SIGNIN'
+         && (
+           <Button
+             fullWidth
+             color="primary"
+             variant="contained"
+             onClick={submitSignin}
+           >
+             Log In
+             <VpnKeyIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {state === 'SIGNIN'
+         && (
+           <Button
+             fullWidth
+             color="secondary"
+             variant="contained"
+             onClick={(e) => { setState('FORGOTPASSWORD'); e.stopPropagation(); }}
+           >
+             Forgot Password
+             <HelpOutlineIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {state === 'FORGOTPASSWORD'
+         && (
+           <Button
+             fullWidth
+             color="primary"
+             variant="contained"
+             onClick={submitReset}
+           >
+             Send reset email
+             <SendIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {state === 'CHANGEPASSWORD'
+         && (
+           <Button
+             fullWidth
+             color="primary"
+             variant="contained"
+             onClick={submitChange}
+           >
+             Confirm new Password
+             <VpnKeyIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {(state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD')
+         && (
+           <Button
+             fullWidth
+             color="default"
+             variant="contained"
+             onClick={cancel}
+           >
+             Cancel
+             <ClearIcon className={classes.iconSpacing} />
+           </Button>
+         )}
+        {state === 'SIGNIN'
+         && (
+         <>
+           <Typography variant="body2">
+             This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties.
+           </Typography>
+           <Typography variant="body2">
+             At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.
+           </Typography>
+         </>
+         )}
       </CardContent>
     </Card>
   );
@@ -509,5 +519,5 @@ ChplLogin.propTypes = {
 };
 
 ChplLogin.defaultProps = {
-  dispatch: () => { },
+  dispatch: () => {},
 };
