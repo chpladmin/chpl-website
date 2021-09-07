@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { func } from 'prop-types';
 import {
   Button,
   Card,
@@ -8,6 +7,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -64,6 +64,25 @@ const changeSchema = yup.object({
 });
 
 const resetSchema = yup.object({
+  userName: yup.string()
+    .required('Email (or User Name) is required'),
+  newPassword: yup.string()
+    .required('Password is required')
+    .test(
+      'password-strength',
+      'Password is not strong enough',
+      (value, context) => context.parent.passwordStrength >= 3,
+    ),
+  verificationPassword: yup.string()
+    .required('Verification Password is required')
+    .test(
+      'password-matches',
+      'Verification Password does not match Password',
+      (value, context) => value === context.parent.newPassword,
+    ),
+});
+
+const sendResetSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Email format is invalid'),
@@ -91,11 +110,20 @@ function ChplLogin(props) {
   const [state, setState] = useState('SIGNIN');
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [strength, setStrength] = useState(0);
+  const [resetToken, setResetToken] = useState('');
   const classes = useStyles();
   let changeFormik;
   let resetFormik;
+  let sendResetFormik;
   let signinFormik;
   /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    if (props?.resetToken.length > 0) {
+      setResetToken(props.resetToken);
+      setState('RESETTING');
+    }
+  }, [props.resetToken]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     if (user?.fullName) {
@@ -162,6 +190,7 @@ function ChplLogin(props) {
       case 'FORGOTPASSWORD': return 'Reset password';
       case 'IMPERSONATING': return `Impersonating ${user.fullName}`;
       case 'LOGGEDIN': return user.fullName;
+      case 'RESETTING': return 'Reset password';
       case 'SIGNIN': return 'Login required';
       default: return 'Unknown state';
     }
@@ -194,18 +223,57 @@ function ChplLogin(props) {
     $rootScope.$broadcast('loggedOut');
   };
 
+  const reset = () => {
+    networkService.resetPassword({
+      token: resetToken,
+      userName: resetFormik.values.userName,
+      newPassword: resetFormik.values.newPassword,
+    })
+      .then((response) => {
+        if (response.passwordUpdated) {
+          setState('SIGNIN');
+          resetFormik.resetForm();
+          toaster.pop({
+            type: 'success',
+            body: 'Password successfully changed',
+          });
+        } else {
+          let body = 'Your password was not changed. ';
+          if (response.warning) {
+            body += response.warning;
+          }
+          if (response.suggestions && response.suggestions.length > 0) {
+            body += `Suggestion${response.suggestions.length > 1 ? 's' : ''}: ${response.suggestions.join(' ')}`;
+          }
+          if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
+            body += 'Your token was invalid or you need a stronger password.';
+          }
+          toaster.pop({
+            type: 'error',
+            body,
+          });
+        }
+      }, () => {
+        const body = 'There was an error changing your password';
+        toaster.pop({
+          type: 'error',
+          body,
+        });
+      });
+  };
+
   const sendReset = () => {
-    networkService.emailResetPassword({ email: resetFormik.values.email })
+    networkService.emailResetPassword({ email: sendResetFormik.values.email })
       .then(() => {
         $analytics.eventTrack('Send Reset Email', { category: 'Authentication' });
         setState('SIGNIN');
-        resetFormik.resetForm();
+        sendResetFormik.resetForm();
         toaster.pop({
           type: 'success',
           body: 'Password email sent; please check your email',
         });
       }, () => {
-        const body = `Email could not be sent to ${resetFormik.values.email}`;
+        const body = `Email could not be sent to ${sendResetFormik.values.email}`;
         toaster.pop({
           type: 'error',
           body,
@@ -239,12 +307,17 @@ function ChplLogin(props) {
     resetFormik.handleSubmit();
   };
 
+  const submitResetRequest = (e) => {
+    e.stopPropagation();
+    sendResetFormik.handleSubmit();
+  };
+
   const submitSignin = (e) => {
     e.stopPropagation();
     signinFormik.handleSubmit();
   };
 
-  const updatePassword = (event) => {
+  const updateChangePassword = (event) => {
     const vals = ['chpl'];
     if (user?.fullName) { vals.push(user.fullName); }
     if (user?.friendlyName) { vals.push(user.friendlyName); }
@@ -259,6 +332,19 @@ function ChplLogin(props) {
         .filter((msg) => msg),
     );
     changeFormik.handleChange(event);
+  };
+
+  const updateResetPassword = (event) => {
+    const vals = ['chpl'];
+    const passwordStrength = zxcvbn(event.target.value, vals);
+    resetFormik.values.passwordStrength = passwordStrength.score;
+    setStrength(passwordStrength.score);
+    setPasswordMessages(
+      [passwordStrength.feedback?.warning]
+        .concat(passwordStrength.feedback?.suggestions)
+        .filter((msg) => msg),
+    );
+    resetFormik.handleChange(event);
   };
 
   changeFormik = useFormik({
@@ -278,6 +364,21 @@ function ChplLogin(props) {
 
   resetFormik = useFormik({
     validationSchema: resetSchema,
+    initialValues: {
+      newPassword: '',
+      verificationPassword: '',
+      passwordStrength: 0,
+      userName: '',
+    },
+    validateOnChange: false,
+    validateOnBlur: true,
+    onSubmit: () => {
+      reset();
+    },
+  });
+
+  sendResetFormik = useFormik({
+    validationSchema: sendResetSchema,
     initialValues: {
       email: '',
     },
@@ -327,7 +428,7 @@ function ChplLogin(props) {
                label="New Password"
                required
                value={changeFormik.values.newPassword}
-               onChange={updatePassword}
+               onChange={updateChangePassword}
                onBlur={changeFormik.handleBlur}
                error={changeFormik.touched.newPassword && !!changeFormik.errors.newPassword}
                helperText={changeFormik.touched.newPassword && changeFormik.errors.newPassword}
@@ -364,12 +465,63 @@ function ChplLogin(props) {
              name="email"
              label="Email"
              required
-             value={resetFormik.values.email}
-             onChange={resetFormik.handleChange}
-             onBlur={resetFormik.handleBlur}
-             error={resetFormik.touched.email && !!resetFormik.errors.email}
-             helperText={resetFormik.touched.email && resetFormik.errors.email}
+             value={sendResetFormik.values.email}
+             onChange={sendResetFormik.handleChange}
+             onBlur={sendResetFormik.handleBlur}
+             error={sendResetFormik.touched.email && !!sendResetFormik.errors.email}
+             helperText={sendResetFormik.touched.email && sendResetFormik.errors.email}
            />
+         )}
+        {state === 'RESETTING'
+         && (
+           <>
+             <ChplTextField
+               id="user-name"
+               name="userName"
+               label="Email (or User Name)"
+               required
+               value={resetFormik.values.userName}
+               onChange={resetFormik.handleChange}
+               onBlur={resetFormik.handleBlur}
+               error={resetFormik.touched.userName && !!resetFormik.errors.userName}
+               helperText={resetFormik.touched.userName && resetFormik.errors.userName}
+             />
+             <ChplTextField
+               type="password"
+               id="new-password"
+               name="newPassword"
+               label="New Password"
+               required
+               value={resetFormik.values.newPassword}
+               onChange={updateResetPassword}
+               onBlur={resetFormik.handleBlur}
+               error={resetFormik.touched.newPassword && !!resetFormik.errors.newPassword}
+               helperText={resetFormik.touched.newPassword && resetFormik.errors.newPassword}
+             />
+             <PasswordStrengthMeter
+               value={strength}
+             />
+             {passwordMessages.length > 0
+              && (
+                <ul>
+                  {passwordMessages.map((msg) => (
+                    <li key={msg}>{msg}</li>
+                  ))}
+                </ul>
+              )}
+             <ChplTextField
+               type="password"
+               id="password-verification"
+               name="verificationPassword"
+               label="Verification Password"
+               required
+               value={resetFormik.values.verificationPassword}
+               onChange={resetFormik.handleChange}
+               onBlur={resetFormik.handleBlur}
+               error={resetFormik.touched.verificationPassword && !!resetFormik.errors.verificationPassword}
+               helperText={resetFormik.touched.verificationPassword && resetFormik.errors.verificationPassword}
+             />
+           </>
          )}
         {state === 'SIGNIN'
          && (
@@ -397,7 +549,6 @@ function ChplLogin(props) {
                error={signinFormik.touched.password && !!signinFormik.errors.password}
                helperText={signinFormik.touched.password && signinFormik.errors.password}
              />
-
            </>
          )}
         {state === 'IMPERSONATING'
@@ -436,6 +587,18 @@ function ChplLogin(props) {
              <CreateIcon className={classes.iconSpacing} />
            </Button>
          )}
+        {state === 'RESETTING'
+         && (
+           <Button
+             fullWidth
+             color="primary"
+             variant="contained"
+             onClick={submitReset}
+           >
+             Confirm Password Reset
+             <VpnKeyIcon className={classes.iconSpacing} />
+           </Button>
+         )}
         {state === 'SIGNIN'
          && (
            <Button
@@ -466,7 +629,7 @@ function ChplLogin(props) {
              fullWidth
              color="primary"
              variant="contained"
-             onClick={submitReset}
+             onClick={submitResetRequest}
            >
              Send reset email
              <SendIcon className={classes.iconSpacing} />
@@ -516,8 +679,10 @@ export default ChplLogin;
 
 ChplLogin.propTypes = {
   dispatch: func,
+  resetToken: string,
 };
 
 ChplLogin.defaultProps = {
   dispatch: () => {},
+  resetToken: '',
 };

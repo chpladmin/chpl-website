@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
   ThemeProvider,
 } from '@material-ui/core';
+import { string } from 'prop-types';
 
 import theme from './themes/theme';
 import {
@@ -10,7 +11,8 @@ import {
 } from './components/login';
 import { getAngularService } from './services/angular-react-helper';
 
-function IndexWrapper() {
+function IndexWrapper(props) {
+  const { resetToken } = props;
   const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
   const Keepalive = getAngularService('Keepalive');
@@ -38,10 +40,20 @@ function IndexWrapper() {
   return (
     <UserWrapper>
       <ThemeProvider theme={theme}>
-        <ChplLogin />
+        <ChplLogin
+          resetToken={resetToken}
+        />
       </ThemeProvider>
     </UserWrapper>
   );
 }
 
 export default IndexWrapper;
+
+IndexWrapper.propTypes = {
+  resetToken: string,
+};
+
+IndexWrapper.defaultProps = {
+  resetToken: '',
+};
