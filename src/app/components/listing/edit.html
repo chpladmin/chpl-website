@@ -207,10 +207,10 @@
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpSvapNoticeUrl.$touched) && $ctrl.form.cpSvapNoticeUrl.$error.maxlength">Field is too long</div>
   </div>
   <div class="form-group">
-    <label for="cp-transparency-att-url">Mandatory Disclosures</label>
-    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024" ng-change="$ctrl.update()">
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpTransparencyAttUrl.$touched) && $ctrl.form.cpTransparencyAttUrl.$error.maxlength">Field is too long</div>
+    <label for="mandatory-disclosures">Mandatory Disclosures</label>
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.mandatoryDisclosures" id="mandatory-disclosures" name="mandatoryDisclosures" ng-maxlength="1024" ng-change="$ctrl.update()">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.url">Improper format (http://www.example.com)</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.maxlength">Field is too long</div>
   </div>
   <br />
   <div class="form-group" ng-if="$ctrl.workType !== 'confirm'">

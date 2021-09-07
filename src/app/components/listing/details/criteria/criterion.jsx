@@ -5,7 +5,7 @@ import {
   func,
 } from 'prop-types';
 import CloudDoneIcon from '@material-ui/icons/CloudDone';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
+import CheckIcon from '@material-ui/icons/Check';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SyncIcon from '@material-ui/icons/Sync';
@@ -74,12 +74,14 @@ function ChplCriterion(props) {
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const $analytics = getAngularService('$analytics');
+  const utilService = getAngularService('utilService');
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   const handleAccordionChange = (event, isExpanded) => {
-    if (!isExpanded) {
-      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: criterion.criterion.number });
+    if (isExpanded) {
+      const label = criterion.criterion.number + (utilService.isCures(criterion.criterion) ? ' (Cures Update)' : '');
+      $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
     }
   };
 
@@ -106,7 +108,7 @@ function ChplCriterion(props) {
     <Accordion
       disabled={!criterion.success && !(criterion.g1Success !== null || criterion.g2Success !== null) && !canEdit}
       className={classes.criterionAccordion}
-      onChange={() => handleAccordionChange()}
+      onChange={handleAccordionChange}
       id={`criterion-id-${criterion.criterion.id}`}
     >
       <AccordionSummary
@@ -118,7 +120,7 @@ function ChplCriterion(props) {
           <Grid item xs={1}>
             { criterion.success
               && (
-                <DoneAllIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
+                <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
               )}
           </Grid>
           <Grid item xs={3}>

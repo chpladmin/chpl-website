@@ -749,6 +749,7 @@ const ReportsListingsComponent = {
           { key: 'sedTesting', display: 'SED Tested' },
           { key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date' },
           { key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL' },
+          { key: 'mandatoryDisclosures', display: 'Mandatory Disclosures URL' },
           { key: 'rwtPlansUrl', display: 'Real World Testing Plans URL' },
           { key: 'rwtPlansCheckDate', display: 'Real World Testing Plans Last Completeness Check Date', filter: 'date' },
           { key: 'rwtResultsUrl', display: 'Real World Testing Results URL' },
@@ -790,7 +791,7 @@ const ReportsListingsComponent = {
 
           for (j = 0; j < simpleCpFields.length; j += 1) {
             change = this.ReportService.compareItem(item.originalData, item.newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
-            if (change) {
+            if (change && this.shouldShowChange(item, simpleCpFields[j].key)) {
               activity.details.push(change);
             }
           }
@@ -1023,6 +1024,15 @@ const ReportsListingsComponent = {
         this.searchSingleProductId();
       } else {
         this.searchAllListings();
+      }
+    }
+
+    shouldShowChange(item, key) {
+      switch (key) {
+        case 'transparencyAttestationUrl':
+          return item.originalData.mandatoryDisclosures === undefined;
+        default:
+          return true;
       }
     }
   },

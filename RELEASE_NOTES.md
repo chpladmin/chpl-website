@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 11.20.1
+_7 September 2021_
+
+### Technical Update
+* Update Quarterly Surveillance Reporting to use non-deprecated fields
+
+---
+
+## Version 11.20.0
+_31 August 2021_
+
+### Features
+* Track Analytics separately on Cures vs. non-Cures criteria
+* Require confirmation of cancel and delete in certain circumstances
+
+---
+
 ## Version 11.19.0
 _23 August 2021_
 

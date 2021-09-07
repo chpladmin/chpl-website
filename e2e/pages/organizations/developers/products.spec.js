@@ -66,7 +66,7 @@ describe('the Product part of the Developers page', () => {
           expect(page.getMergeButton(product)).not.toExist();
         });
 
-        it.skip('should show correct error message when spliting product with listings owned by different ACBs', () => {
+        it('should show correct error message when spliting product with listings owned by different ACBs', () => {
           const newName = `${name} - split - ${(new Date()).getTime()}`;
           const newCode = newName.substring(newName.length - 4);
           const movingVersionId = '2039';
