@@ -30,13 +30,13 @@ class UploadMuuPiComponent {
   uploadMuu(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadMuuButton.addValue(browser.uploadFile(filePath));
-    this.uploadButton.scrollAndClick();
+    this.uploadButton.click();
   }
 
   uploadPi(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadPiButton.addValue(browser.uploadFile(filePath));
-    this.uploadButton.scrollAndClick();
+    this.uploadButton.click();
   }
 }
 

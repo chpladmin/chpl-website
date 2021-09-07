@@ -44,7 +44,7 @@ class ConfirmPage {
   }
 
   rejectCheckbox (chplId) {
-    $('//input[@id=\'pending-surveillance-reject-' + chplId + '\']').scrollAndClick();
+    $('//input[@id=\'pending-surveillance-reject-' + chplId + '\']').click();
   }
 
   rejectSurveillance (chplId) {
@@ -63,7 +63,7 @@ class ConfirmPage {
   }
 
   inspectButton (chplId) {
-    $('//button[@id="pending-surveillance-inspect-' + chplId + '"]').scrollAndClick();
+    $('//button[@id="pending-surveillance-inspect-' + chplId + '"]').click();
   }
 }
 
