@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import {
-  Button,
   ThemeProvider,
 } from '@material-ui/core';
 
 import theme from './themes/theme';
 import {
-  ChplLogin,
+  ChplLoginToggle,
   UserWrapper,
 } from './components/login';
 import { getAngularService } from './services/angular-react-helper';
@@ -39,8 +38,7 @@ function IndexWrapper() {
   return (
     <ThemeProvider theme={theme}>
       <UserWrapper>
-        <Button>Here be the toggle</Button>
-        <ChplLogin />
+        <ChplLoginToggle />
       </UserWrapper>
     </ThemeProvider>
   );

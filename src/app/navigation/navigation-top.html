@@ -134,17 +134,9 @@
           </li>
         </ul><!-- /admin nav -->
         <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown" uib-dropdown auto-close="outsideClick" is-open="vm.adminLoginIsOpen">
-            <button class="btn btn-default navbar-btn dropdown-toggle" id="login-toggle" uib-dropdown-toggle
-              aria-haspopup="true" aria-expanded="vm.adminLoginIsOpen"><span ng-if="!vm.getFullname()">Administrator
-                Login</span>{{ vm.getFullname() }} <span class="fa"
-                ng-class="vm.adminLoginIsOpen ? 'fa-caret-down' : 'fa-caret-left'"></span></button>
-            <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
-              <li>
-                <index-wrapper-bridge>
-                </index-wrapper-bridge>
-              </li>
-            </ul>
+          <li>
+            <index-wrapper-bridge>
+            </index-wrapper-bridge>
           </li>
         </ul>
       </div>
