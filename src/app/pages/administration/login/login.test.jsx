@@ -12,6 +12,10 @@ const $stateMock = {
   go: jest.fn(() => {}),
 };
 
+const $stateParamsMock = {
+  token: 'fake token',
+};
+
 const authServiceMock = {
   getCurrentUser: jest.fn(() => {}),
   isImpersonating: jest.fn(() => false),
@@ -25,9 +29,15 @@ const returnToMock = {
 
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$state').mockReturnValue($stateMock);
+when(angularReactHelper.getAngularService).calledWith('$stateParams').mockReturnValue($stateParamsMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 
 jest.mock('../../../components/login/login', () => ({
+  __esModule: true,
+  default: () => null,
+}));
+
+jest.mock('../../../components/login/user-wrapper', () => ({
   __esModule: true,
   default: () => null,
 }));
