@@ -3,17 +3,10 @@ const AdministrationComponent = {
   bindings: {
   },
   controller: class AdministrationComponent {
-    constructor($log, $stateParams) {
+    constructor($log) {
       'ngInject';
 
       this.$log = $log;
-      this.$stateParams = $stateParams;
-    }
-
-    $onInit() {
-      if (this.$stateParams.token) {
-        this.resetToken = this.$stateParams.token;
-      }
     }
   },
 };

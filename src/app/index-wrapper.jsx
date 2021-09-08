@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import {
+  Button,
   ThemeProvider,
 } from '@material-ui/core';
-import { string } from 'prop-types';
 
 import theme from './themes/theme';
 import {
@@ -11,8 +11,7 @@ import {
 } from './components/login';
 import { getAngularService } from './services/angular-react-helper';
 
-function IndexWrapper(props) {
-  const { resetToken } = props;
+function IndexWrapper() {
   const $rootScope = getAngularService('$rootScope');
   const Idle = getAngularService('Idle');
   const Keepalive = getAngularService('Keepalive');
@@ -38,22 +37,13 @@ function IndexWrapper(props) {
   }, [$rootScope, Idle, Keepalive, authService, networkService]);
 
   return (
-    <UserWrapper>
-      <ThemeProvider theme={theme}>
-        <ChplLogin
-          resetToken={resetToken}
-        />
-      </ThemeProvider>
-    </UserWrapper>
+    <ThemeProvider theme={theme}>
+      <UserWrapper>
+        <Button>Here be the toggle</Button>
+        <ChplLogin />
+      </UserWrapper>
+    </ThemeProvider>
   );
 }
 
 export default IndexWrapper;
-
-IndexWrapper.propTypes = {
-  resetToken: string,
-};
-
-IndexWrapper.defaultProps = {
-  resetToken: '',
-};

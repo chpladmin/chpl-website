@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { element } from 'prop-types';
+import {
+  ThemeProvider,
+} from '@material-ui/core';
+import { node } from 'prop-types';
 
+import theme from '../../themes/theme';
+import ChplLogin from './login';
 import { getAngularService } from '../../services/angular-react-helper';
 import { UserContext } from '../../shared/contexts';
 
@@ -37,14 +42,20 @@ function UserWrapper(props) {
   };
 
   return (
-    <UserContext.Provider value={userState}>
-      { children }
-    </UserContext.Provider>
+    <ThemeProvider theme={theme}>
+      <UserContext.Provider value={userState}>
+        { children }
+      </UserContext.Provider>
+    </ThemeProvider>
   );
 }
 
 export default UserWrapper;
 
 UserWrapper.propTypes = {
-  children: element.isRequired,
+  children: node,
+};
+
+UserWrapper.defaultProps = {
+  children: <ChplLogin />,
 };
