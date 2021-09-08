@@ -365,7 +365,7 @@ function ChplCriterionDetailsEdit(props) {
                       hasIcs={hasIcs}
                       isConfirming={isConfirming}
                       testTools={criterion.testToolsUsed}
-                      options={resources.testTools.data}
+                      options={criterion.allowedTestTools}
                       onChange={handleDetailChange}
                     />
                   </div>

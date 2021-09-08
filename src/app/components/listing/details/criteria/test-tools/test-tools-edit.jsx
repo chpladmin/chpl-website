@@ -51,6 +51,23 @@ const validationSchema = yup.object({
     .required('Version is required'),
 });
 
+const mergeTestTools = (availableTestTools, usedTestTools) => {
+  let mergedTestTools = [];
+  if (Array.isArray(availableTestTools)) {
+    mergedTestTools = availableTestTools;
+    usedTestTools.forEach((tt) => {
+      if (!availableTestTools.find((att) => att.id === tt.testToolId)) {
+        mergedTestTools.push({
+          id: tt.testToolId,
+          name: tt.testToolName,
+          retired: tt.retired,
+        });
+      }
+    });
+  }
+  return mergedTestTools;
+};
+
 function ChplTestToolsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
@@ -58,7 +75,7 @@ function ChplTestToolsEdit(props) {
   const [isConfirming] = useState(props.isConfirming);
   const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.testToolName < b.testToolName ? -1 : 1)));
   const [options, setOptions] = useState(
-    props.options
+    mergeTestTools(props.options, testToolsUsed)
       .filter((option) => !(props.testTools.find((used) => used.testToolId === option.id)))
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
   );
