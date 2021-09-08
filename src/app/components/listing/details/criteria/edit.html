@@ -187,7 +187,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.testProcedures || $ctrl.cert.testProcedures.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testToolsUsed !== null">
+        <tr ng-if="$ctrl.cert.success && (($ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0) || ($ctrl.cert.allowedTestTools && $ctrl.cert.allowedTestTools.length >0))">
           <td>Test tool</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -196,8 +196,8 @@
                   <chpl-expandable-list
                     identifier="testTools"
                     item-key="id"
-                    item-text="dropDownText"
-                    items="$ctrl.resources.testTools.data"
+                    item-text="name"
+                    items="$ctrl.cert.allowedTestTools"
                     item-disabled="$ctrl.isToolDisabled(item)"
                     selected-item-keys="$ctrl.selectedTestToolKeys"
                     placeholder="Select a Test Tool"
