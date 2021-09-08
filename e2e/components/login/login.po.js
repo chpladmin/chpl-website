@@ -3,10 +3,10 @@ import credentials from '../../config/credentials';
 class LoginComponent {
   constructor() {
     this.elements = {
-      component: '#admin',
+      component: '#admin-login-form',
       loginToggle: '#login-toggle',
-      userName: '[name="userName"]',
-      password: '[name="password"]',
+      userName: '#user-name',
+      password: '#password',
       login: 'button=Log In',
       logout: 'button=Log Out',
     };
@@ -21,24 +21,27 @@ class LoginComponent {
   }
 
   logIn(user) {
+    if (!($(this.elements.component).isDisplayed())) {
+      this.toggleLoginComponent();
+    }
     const un = $(this.elements.component).$(this.elements.userName);
     const pw = $(this.elements.component).$(this.elements.password);
     const btn = $(this.elements.component).$(this.elements.login);
-    this.toggleLoginComponent();
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
     btn.click();
     $(this.elements.logout).waitForDisplayed();
-    this.toggleLoginComponent();
+    browser.keys('Escape');
   }
 
   logOut() {
-    if (!($(this.elements.logout).isDisplayed())) {
+    if (!($(this.elements.component).isDisplayed())) {
       this.toggleLoginComponent();
     }
-    $(this.elements.logout).click();
-    browser.waitUntil(() => this.getLoggedInUserName() === 'Administrator Login');
-    this.toggleLoginComponent();
+    const btn = $(this.elements.component).$(this.elements.logout);
+    btn.click();
+    browser.waitUntil(() => /Administrator Login/i.test(this.getLoggedInUserName()));
+    browser.keys('Escape');
   }
 }
 

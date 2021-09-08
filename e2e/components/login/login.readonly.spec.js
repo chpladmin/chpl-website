@@ -18,17 +18,17 @@ describe('the login component', () => {
 
     it('should be able to log in as drummond ACB', () => {
       component.logIn('drummond');
-      expect(component.getLoggedInUserName()).toBe('AQA Drummond');
+      expect(/AQA Drummond/i.test(component.getLoggedInUserName())).toBe(true);
     });
 
     it('should be able to log in as ONC', () => {
       component.logIn('onc');
-      expect(component.getLoggedInUserName()).toBe('AQA ONC');
+      expect(/AQA ONC/i.test(component.getLoggedInUserName())).toBe(true);
     });
 
     it('should be able to log in as ADMIN', () => {
       component.logIn('admin');
-      expect(component.getLoggedInUserName()).toBe('AQA Admin');
+      expect(/AQA Admin/i.test(component.getLoggedInUserName())).toBe(true);
     });
   });
 
@@ -36,6 +36,6 @@ describe('the login component', () => {
     component.logIn('onc');
     expect(component.getLoggedInUserName()).toBe('AQA ONC');
     component.logOut();
-    expect(component.getLoggedInUserName()).toBe('Administrator Login');
+    expect(/Administrator Login/i.test(component.getLoggedInUserName())).toBe(true);
   });
 });
