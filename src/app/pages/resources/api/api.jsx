@@ -8,6 +8,7 @@ import {
 import SwaggerUI from 'swagger-ui-react';
 
 import theme from '../../../themes/theme';
+import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplLink } from '../../../components/util';
 import { ChplApiKeyRegistration } from '../../../components/api-key';
 
@@ -32,6 +33,7 @@ const useStyles = makeStyles({
 });
 
 function ChplResourcesApi() {
+  const { hasAnyRole } = getAngularService('authService');
   const classes = useStyles();
   const url = `${window.location.href.split('#')[0]}rest/v3/api-docs`;
 
@@ -87,11 +89,20 @@ function ChplResourcesApi() {
         <div
           className={classes.fullWidth}
         >
-          <SwaggerUI
-            url={url}
-            docExpansion="none"
-            supportedSubmitMethods={[]}
-          />
+          { hasAnyRole(['ROLE_ADMIN'])
+            ? (
+              <SwaggerUI
+                url={url}
+                docExpansion="none"
+              />
+            )
+            : (
+              <SwaggerUI
+                url={url}
+                docExpansion="none"
+                supportedSubmitMethods={[]}
+              />
+            )}
         </div>
       </div>
     </ThemeProvider>
