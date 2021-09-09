@@ -4,7 +4,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -37,12 +36,6 @@ const useStyles = makeStyles(() => ({
   loginHeader: {
     backgroundColor: '#ffffff',
     padding: '16px 0px 0px 16px',
-  },
-  loginCard: {
-    width: '300px',
-    [theme.breakpoints.up('md')]: {
-      width: '375px',
-    },
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -414,8 +407,7 @@ function ChplLogin(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-    <Card className={classes.loginCard}>
+    <Card>
       <CardHeader className={classes.loginHeader} title={getTitle()} />
       <CardContent className={classes.grid}>
         {state === 'CHANGEPASSWORD'
@@ -684,7 +676,6 @@ function ChplLogin(props) {
          )}
       </CardContent>
     </Card>
-    </ThemeProvider>
   );
 }
 

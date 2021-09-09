@@ -2,12 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Popover,
+  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
 import PersonIcon from '@material-ui/icons/Person';
 import { UserContext } from '../../shared/contexts';
 import ChplLogin from './login';
+import theme from '../../themes/theme';
+
 
 const useStyles = makeStyles(() => ({
   iconSpacing: {
@@ -18,6 +21,12 @@ const useStyles = makeStyles(() => ({
   },
   popoverSpacing:{
     marginLeft:'8px',
+  },
+  loginCard:{
+    width: '300px',
+    [theme.breakpoints.up('md')]: {
+      width: '375px',
+    },
   },
 }));
 
@@ -51,6 +60,7 @@ function ChplLoginToggle() {
 
   return (
     <>
+    <ThemeProvider theme={theme}>
       <Button
         color="secondary"
         variant="contained"
@@ -76,8 +86,11 @@ function ChplLoginToggle() {
         }}
         className={classes.popoverSpacing}
       >
-        <ChplLogin />
+        <div className={classes.loginCard}>
+        <ChplLogin/>
+        </div>
       </Popover>
+      </ThemeProvider>
     </>
   );
 }
