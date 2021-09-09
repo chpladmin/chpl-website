@@ -32,6 +32,7 @@ class LoginComponent {
     btn.click();
     $(this.elements.logout).waitForDisplayed();
     browser.keys('Escape');
+    browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
   }
 
   logOut() {
@@ -40,8 +41,9 @@ class LoginComponent {
     }
     const btn = $(this.elements.component).$(this.elements.logout);
     btn.click();
-    browser.waitUntil(() => /Administrator Login/i.test(this.getLoggedInUserName()));
+    $(this.elements.login).waitForDisplayed();
     browser.keys('Escape');
+    browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
   }
 }
 
