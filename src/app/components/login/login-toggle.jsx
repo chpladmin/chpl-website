@@ -8,7 +8,6 @@ import {
 import PersonIcon from '@material-ui/icons/Person';
 import { UserContext } from '../../shared/contexts';
 import ChplLogin from './login';
-import { CallMissedSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   iconSpacing: {
