@@ -194,6 +194,10 @@ const theme = createMuiTheme({
       },
     },
     MuiOutlinedInput:{
+      input:{
+        paddingTop: '18.5px',
+        paddingBottom: '14px',
+      },
       inputMarginDense:{
         paddingTop: '14.5px',
         paddingBottom: '10px',
