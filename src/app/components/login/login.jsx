@@ -4,6 +4,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -18,6 +19,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
 import SendIcon from '@material-ui/icons/Send';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import theme from '../../themes/theme';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { UserContext } from '../../shared/contexts';
@@ -37,7 +39,10 @@ const useStyles = makeStyles(() => ({
     padding: '16px 0px 0px 16px',
   },
   loginCard: {
-    width: '375px',
+    width: '300px',
+    [theme.breakpoints.up('md')]: {
+      width: '375px',
+    },
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -409,6 +414,7 @@ function ChplLogin(props) {
   });
 
   return (
+    <ThemeProvider theme={theme}>
     <Card className={classes.loginCard}>
       <CardHeader className={classes.loginHeader} title={getTitle()} />
       <CardContent className={classes.grid}>
@@ -678,6 +684,7 @@ function ChplLogin(props) {
          )}
       </CardContent>
     </Card>
+    </ThemeProvider>
   );
 }
 

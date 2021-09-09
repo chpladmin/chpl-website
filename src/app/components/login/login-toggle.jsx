@@ -52,8 +52,8 @@ function ChplLoginToggle() {
   return (
     <>
       <Button
-        color="primary"
-        variant="outlined"
+        color="secondary"
+        variant="contained"
         id="login-toggle"
         aria-describedby="admin-login-form"
         onClick={handleClick}
