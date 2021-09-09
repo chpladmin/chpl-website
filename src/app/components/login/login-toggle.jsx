@@ -2,10 +2,19 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Popover,
+  makeStyles,
 } from '@material-ui/core';
 
+import PersonIcon from '@material-ui/icons/Person';
 import { UserContext } from '../../shared/contexts';
 import ChplLogin from './login';
+import { CallMissedSharp } from '@material-ui/icons';
+
+const useStyles = makeStyles(() => ({
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+}));
 
 function ChplLoginToggle() {
   /* eslint-disable react/destructuring-assignment */
@@ -16,7 +25,7 @@ function ChplLoginToggle() {
     user, impersonating,
   } = useContext(UserContext);
   /* eslint-enable react/destructuring-assignment */
-
+  const classes = useStyles();
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
     setOpen(true);
@@ -44,7 +53,7 @@ function ChplLoginToggle() {
         aria-describedby="admin-login-form"
         onClick={handleClick}
       >
-        { title }
+        { title }<PersonIcon className={classes.iconSpacing}/>
       </Button>
       <Popover
         id="admin-login-form"
