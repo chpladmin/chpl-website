@@ -90,6 +90,7 @@ function ChplResourcesApi() {
           <SwaggerUI
             url={url}
             docExpansion="none"
+            supportedSubmitMethods={[]}
           />
         </div>
       </div>
