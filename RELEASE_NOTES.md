@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.20.1
+_7 September 2021_
+
+### Technical Update
+* Update Quarterly Surveillance Reporting to use non-deprecated fields
+
+---
+
 ## Version 11.20.0
 _31 August 2021_
 

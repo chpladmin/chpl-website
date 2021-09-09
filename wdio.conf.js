@@ -8,13 +8,9 @@ const downloadDir = path.join(`${__dirname}`, 'test_reports/e2e/');
 // Store the directory path in a global, which allows us to access this path inside our tests
 global.downloadDir = downloadDir;
 
-let baseUrl = 'http://localhost:3000/';
-if (process.env.ENV === 'dev') {
-  baseUrl = urls.devURL;
-} else if (process.env.ENV === 'qa') {
-  baseUrl = urls.qaURL;
-} else if (process.env.ENV === 'stage') {
-  baseUrl = urls.stageURL;
+let baseUrl='http://localhost:3000/';
+if (process.env.ENV) {
+  baseUrl = urls[`${process.env.ENV}URL`];
 }
 exports.config = {
   runner: 'local',
