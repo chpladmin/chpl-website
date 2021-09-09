@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
     padding: '16px 0px 0px 16px',
   },
   loginCard: {
-    minWidth: '375px',
+    width: '375px',
   },
   iconSpacing: {
     marginLeft: '4px',

@@ -13,6 +13,12 @@ const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
   },
+  loginSpacing:{
+    margin:'8px',
+  },
+  popoverSpacing:{
+    marginLeft:'8px',
+  },
 }));
 
 function ChplLoginToggle() {
@@ -51,6 +57,7 @@ function ChplLoginToggle() {
         id="login-toggle"
         aria-describedby="admin-login-form"
         onClick={handleClick}
+        className={classes.loginSpacing}
       >
         { title }<PersonIcon className={classes.iconSpacing}/>
       </Button>
@@ -67,6 +74,7 @@ function ChplLoginToggle() {
           vertical: 'top',
           horizontal: 'right',
         }}
+        className={classes.popoverSpacing}
       >
         <ChplLogin />
       </Popover>
