@@ -6,13 +6,19 @@ import '@testing-library/jest-dom';
 import { when } from 'jest-when';
 
 import * as angularReactHelper from '../../../services/angular-react-helper';
+
 import ChplResourcesApi from './api';
 
 const $analyticsMock = {
   eventTrack: jest.fn(), // shouldn't need to mock this; this call is only made in a dependent component, but I can't figure out how to mock that dependent component
 };
+
+const authServiceMock = {
+  hasAnyRole: jest.fn(),
+};
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
+when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 
 describe('the ChplResourcesApi page', () => {
   afterEach(() => {
