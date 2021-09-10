@@ -784,7 +784,7 @@
       });
 
       it('should getCollection', () => {
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl,serviceBaseUrlList$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,mandatoryDisclosures,serviceBaseUrlList$/).respond(200, { data: 'response' });
         networkService.getCollection('apiDocumentation').then((response) => {
           expect(response.data).toEqual('response');
         });
@@ -1291,7 +1291,6 @@
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_types$/).respond(200, { data: 'surveillance_types' });
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirement_types$/).respond(200, { data: 'surveillance_requirement_types' });
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_result_types$/).respond(200, { data: 'surveillance_result_types' });
-        $httpBackend.expectGET(/^\/rest\/data\/nonconformity_status_types$/).respond(200, { data: 'nonconformity_status_types' });
         $httpBackend.expectGET(/^\/rest\/data\/surveillance-requirements$/).respond(200, { data: 'surveillance_requirements' });
         $httpBackend.expectGET(/^\/rest\/data\/nonconformity-types$/).respond(200, { data: 'nonconformity_types' });
         const response = networkService.getSurveillanceLookups();
@@ -1300,7 +1299,6 @@
           surveillanceTypes: { data: 'surveillance_types' },
           surveillanceRequirementTypes: { data: 'surveillance_requirement_types' },
           surveillanceResultTypes: { data: 'surveillance_result_types' },
-          nonconformityStatusTypes: { data: 'nonconformity_status_types' },
           surveillanceRequirements: { data: 'surveillance_requirements' },
           nonconformityTypes: { data: 'nonconformity_types' },
         });

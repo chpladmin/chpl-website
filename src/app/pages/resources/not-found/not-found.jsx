@@ -71,7 +71,7 @@ function ChplNotFound() {
             <Typography>|</Typography>
             <Typography>
               <Link
-                href="https://www.healthit.gov/form/healthit-feedback-form"
+                href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51"
               >
                 Support Portal
               </Link>

@@ -136,8 +136,8 @@
             </div>
             <div class="product-element" id="listing-information-mandatory-disclosures">
               <h2 class="product-heading">Mandatory Disclosures</h2>
-              <chpl-link-bridge ng-if="$ctrl.listing.transparencyAttestationUrl" href="$ctrl.listing.transparencyAttestationUrl" analytics="{event:'Transparency Disclosure', category: 'Download Details', label: $ctrl.listing.transparencyAttestationUrl}"></chpl-link-bridge>
-              <p ng-if="!$ctrl.listing.transparencyAttestationUrl">No report on file</p>
+              <chpl-link-bridge ng-if="$ctrl.listing.mandatoryDisclosures" href="$ctrl.listing.mandatoryDisclosures" analytics="{event:'Transparency Disclosure', category: 'Download Details', label: $ctrl.listing.mandatoryDisclosures}"></chpl-link-bridge>
+              <p ng-if="!$ctrl.listing.mandatoryDisclosures">No report on file</p>
               <div class="clearfix"></div>
             </div>
           </div>

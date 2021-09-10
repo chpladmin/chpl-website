@@ -1,34 +1,33 @@
-const downloadElements = {
-  downloadListing: '.resources-download__listings',
-  complianceActivityBullet: '.resources-download__compliance',
-  download: '#downloadSelect',
-  definitionFile: '#downloadChplDefinitionLink',
-  dataFile: '#downloadChplLink',
-};
-
 class DownloadPage {
-  constructor () { }
-
-  get downloadListingText () {
-    return $(downloadElements.downloadListing);
+  constructor() {
+    this.elements = {
+      downloadBridge: 'chpl-resources-download-bridge',
+      download: '#download-select',
+      downloadDefinitionFileButton: '#download-chpl-definition-button',
+      downloadDataFileButton: '#download-chpl-data-button',
+    };
   }
 
-  get complianceActivityText () {
-    return $(downloadElements.complianceActivityBullet);
+  get downloadPage() {
+    return $(this.elements.downloadBridge);
   }
 
-  get downloadDropdown () {
-    return $(downloadElements.download);
+  selectFile(file) {
+    $(this.elements.download).click();
+    browser.pause(1000);
+    $(`li[data-value="${file}"]`).click();
+    browser.pause(1000);
   }
 
-  get definitionFile () {
-    return $(downloadElements.definitionFile);
+  downloadDataFile(file) {
+    this.selectFile(file);
+    $(this.elements.downloadDataFileButton).click();
   }
 
-  get dataFile () {
-    return $(downloadElements.dataFile);
+  downloadDefinitionFile(file) {
+    this.selectFile(file);
+    $(this.elements.downloadDefinitionFileButton).click();
   }
-
 }
 
 export default DownloadPage;

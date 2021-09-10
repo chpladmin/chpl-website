@@ -38,4 +38,10 @@ describe('when uploading a surveillance activity as ONC-ACB', () => {
     browser.waitUntil(() => toast.toastTitle.isDisplayed());
     expect(toast.toastTitle.getText()).toBe('Error');
   });
+
+  it('can\'t upload surveillance activity file if non conformity status is closed but CAP date is null', () => {
+    uploadSurveillanceComponent.uploadSurveillance('../../../resources/surveillance/SAQA4.csv');
+    browser.waitUntil(() => toast.toastTitle.isDisplayed());
+    expect(toast.toastTitle.getText()).toBe('Error');
+  });
 });

@@ -66,13 +66,13 @@ On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpa
 
 #### E2E testing
 
-By default, E2E tests will be executed against http://localhost:3000/. To run against different environments, pass ENV variable with 'dev', 'qa' ,'stage' options. For example: `ENV='Environment you want to run on' yarn e2e` would set all tests to run against environment passed in.
+By default, E2E tests will be executed against http://localhost:3000/. To run against different environments, pass ENV variable with 'dev', 'qa' ,'stage' options. For example: `ENV='Environment you want to run on' yarn e2e` would set all tests to run against the environment passed in.
 
-If a single spec file should be tested, instead of all of them, the command `ENV='Environment you want to run on' yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
+If a single spec file should be tested, instead of all of them, the command `yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
 
-To change the loglevel, test could be run as `ENV='Environment you want to run on' yarn e2e --l info`
+To change the loglevel, test could be run as `yarn e2e --l info`
 
-To run a suite of tests, execute `ENV='Environment you want to run on' yarn e2e --suite suite-name`. For example, `ENV='Environment you want to run on' yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
+To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
 
 When debugging, taking screenshots can be useful. The command `browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root
 

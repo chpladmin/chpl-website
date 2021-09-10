@@ -1,5 +1,75 @@
 # Release Notes
 
+## Version 11.20.1
+_7 September 2021_
+
+### Technical Update
+* Update Quarterly Surveillance Reporting to use non-deprecated fields
+
+---
+
+## Version 11.20.0
+_31 August 2021_
+
+### Features
+* Track Analytics separately on Cures vs. non-Cures criteria
+* Require confirmation of cancel and delete in certain circumstances
+
+---
+
+## Version 11.19.0
+_23 August 2021_
+
+### Features
+* Add new Non-conformity close date field to CHPL
+* Indicate when API Key registration email was not sent
+* Report errors on user invitation failure
+* Enable ONC_STAFF users to get to allowed reports
+* Allow download of SVAP Reports for authorized users
+
+### User Interface Updates
+* Use updated link for ONC "Contact Us" form
+* Update description of Surveillance and Non-conformity types in hover text
+
+### Bug Fixes
+* Allow removal of invalid Criteria objects
+
+### Flagged Bug Fixes
+* Stop displaying invalid Test Standards
+
+---
+
+## Version 11.18.0
+_9 August 2021_
+
+### Features
+* Require Complaint dates to be "logical"
+
+### User Interface Updates
+* Display Complaints in updated UX
+
+### Flagged Features
+* Add Attestation change request
+
+### Flagged Bug Fixes
+* Re-enable invitation of ROLE_DEVELOPER users
+
+---
+
+## Version 11.17.0
+_2 August 2021_
+
+### Features
+* Enable Real World Testing data entry / view for all 2015 Edition Listings
+
+### Flagged Features
+* Display "Promoting Interoperability" where applicable
+
+### Bug Fixes
+* Provide correct link in Search Results download file
+
+---
+
 ## Version 11.16.0
 _12 July 2021_
 

@@ -245,7 +245,7 @@ function ChplUserCreate(props) {
         <Typography>
           If you require accessibility assistance, please visit the
           {' '}
-          <a href="https://inquiry.healthit.gov/">Health IT Feedback and Inquiry Portal</a>
+          <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
           {' '}
           and select “Certified Health IT Product List (CHPL)” to submit a ticket.
         </Typography>

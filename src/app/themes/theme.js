@@ -6,8 +6,11 @@ const theme = createMuiTheme({
     display: 'flex',
   },
   spacing: 4,
+<<<<<<< HEAD
 
    /*Start of CHPL Colorwave*/
+=======
+>>>>>>> staging
   palette: {
     background: {
       default: '#f9f9f9',
@@ -28,9 +31,12 @@ const theme = createMuiTheme({
       main: '#c44f65',
     },
   },
+<<<<<<< HEAD
  /*End of CHPL Colorwave*/
 
  /*Start of Typography*/ 
+=======
+>>>>>>> staging
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
@@ -56,9 +62,11 @@ const theme = createMuiTheme({
     h6: {
       fontSize: '1.125em',
       fontWeight: 400,
+      lineHeight:'1.3em'
     },
     body1: {
       fontSize: '1em',
+      lineHeight:'1.3em'
     },
     body2: {
       fontSize: '0.875em',
@@ -74,9 +82,12 @@ const theme = createMuiTheme({
       fontSize: '0.875em',
     },
   },
+<<<<<<< HEAD
 /*End of Typography*/
 
 /*Start of Overides */
+=======
+>>>>>>> staging
   overrides: {
     MuiAccordionSummary: {
       root: {
@@ -246,7 +257,11 @@ const theme = createMuiTheme({
     },
     MuiTableCell: {
       root: {
+<<<<<<< HEAD
         fontSize: "1em",
+=======
+        fontSize: '1em',
+>>>>>>> staging
       },
       head: {
         color: '#156dac',
@@ -303,6 +318,43 @@ const theme = createMuiTheme({
       },
       icon: {
         color: '#000000',
+      },
+    },
+    MuiTablePagination: {
+      root: {
+        display: 'flex',
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        fontSize: '1em',
+      },
+      toolbar: {
+        backgroundColor: '#ffffff',
+        margin: '16px 0px 4px 0px',
+        boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+        borderRadius: '64px',
+      },
+      select: {
+        color: '#156dac',
+        fontWeight: '500',
+      },
+      actions: {
+        color: '#156dac',
+      },
+    },
+    MuiSelect: {
+      icon: {
+        position: 'inherit',
+        color: '#156dac',
+      },
+    },
+    MuiTableSortLabel: {
+      active: {
+        color: '#000',
+      },
+      icon: {
+        color: '#000',
       },
     },
   },
