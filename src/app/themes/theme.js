@@ -6,11 +6,8 @@ const theme = createMuiTheme({
     display: 'flex',
   },
   spacing: 4,
-<<<<<<< HEAD
-
-   /*Start of CHPL Colorwave*/
-=======
->>>>>>> staging
+  
+   /*Start of CHPL Palette*/
   palette: {
     background: {
       default: '#f9f9f9',
@@ -31,12 +28,9 @@ const theme = createMuiTheme({
       main: '#c44f65',
     },
   },
-<<<<<<< HEAD
- /*End of CHPL Colorwave*/
+ /*End of of CHPL Palette*/
 
  /*Start of Typography*/ 
-=======
->>>>>>> staging
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
@@ -82,20 +76,27 @@ const theme = createMuiTheme({
       fontSize: '0.875em',
     },
   },
-<<<<<<< HEAD
 /*End of Typography*/
 
 /*Start of Overides */
-=======
->>>>>>> staging
   overrides: {
     MuiAccordionSummary: {
       root: {
-        backgroundColor: '#f5f9fd',
-        padding: '4px 8px',
+        padding: '8px',
       },
       content: {
-        padding: '4px',
+        padding: '4px 8px',
+      },
+      expandIcon:{
+        transform:'none',
+        '&$expanded': {
+          transform:'none',
+        },
+      },
+    },
+    MuiAccordionDetails:{
+      root:{
+        padding:'16px 0px',
       },
     },
     MuiButton: {
@@ -257,11 +258,7 @@ const theme = createMuiTheme({
     },
     MuiTableCell: {
       root: {
-<<<<<<< HEAD
         fontSize: "1em",
-=======
-        fontSize: '1em',
->>>>>>> staging
       },
       head: {
         color: '#156dac',
