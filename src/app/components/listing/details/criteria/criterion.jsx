@@ -85,13 +85,13 @@ function ChplCriterion(props) {
   const getIcon = () => (expanded
     ? (
       <>
-        Show Details
+        Hide Details
         <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
       </>
     )
     : (
       <>
-        Hide Details
+        Show Details
         <ExpandMoreIcon color="primary" fontSize="large" />
       </>
     ));
