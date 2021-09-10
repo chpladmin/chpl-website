@@ -40,7 +40,7 @@ describe('the Api Documentation collection page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     describe('using certification status filter to select withdrawn by developer', () => {
@@ -107,7 +107,7 @@ describe('the Api Documentation collection page', () => {
   describe('when clicking on api documentation download button', () => {
 
     it('should download a file', () => {
-      page.downloadApiDocButton.click();
+      page.downloadApiDocButton.scrollAndClick();
       let fileName;
       const apiFileName = 'APIDocData';
       browser.pause(config.timeout);

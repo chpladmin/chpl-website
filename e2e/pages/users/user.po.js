@@ -42,7 +42,7 @@ class UsersPage {
 
   editUser(fullName) {
     $(`button[title="Edit ${fullName}"]`).scrollIntoView({ block: 'center', inline: 'center' });
-    $(`button[title="Edit ${fullName}"]`).click();
+    $(`button[title="Edit ${fullName}"]`).scrollAndClick();
   }
 
   userInformation(fullName) {
@@ -51,7 +51,7 @@ class UsersPage {
 
   impersonateUser(fullName) {
     $(`button[title="Impersonate ${fullName}"]`).scrollIntoView({ block: 'center', inline: 'center' });
-    $(`button[title="Impersonate ${fullName}"]`).click();
+    $(`button[title="Impersonate ${fullName}"]`).scrollAndClick();
   }
 }
 

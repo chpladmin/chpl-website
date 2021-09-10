@@ -28,7 +28,7 @@ inputs.forEach((input) => {
     describe('When ONC logged in', () => {
       beforeEach(async () => {
         login.logIn('onc');
-        page.editCertifiedProduct.click();
+        page.editCertifiedProduct.scrollAndClick();
         hooks.waitForSpinnerToDisappear();
       });
 
@@ -42,10 +42,10 @@ inputs.forEach((input) => {
         if (criteria.uiUpgradeFlag()) {
           criteria.expandCriteria(id);
           criteria.editCriteria(id);
-          criteria.attestToggle.click();
+          criteria.attestToggle.scrollAndClick();
           criteria.addItem('test-procedures');
           criteria.testProcedure.scrollIntoView({ block: 'center', inline: 'center' });
-          criteria.testProcedure.click();
+          criteria.testProcedure.scrollAndClick();
           const actual = new Set(criteria.testProcedureDropdownOptions.map((item) => item.getText()));
           expect(actual.size).toBe(expected.length);
           expected.forEach((exp) => {

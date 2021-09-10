@@ -11,7 +11,7 @@ class CriteriaComponent {
   }
 
   expandCqm() {
-    $('//div[text()="Clinical Quality Measures"]/following-sibling::div').click();
+    $('//div[text()="Clinical Quality Measures"]/following-sibling::div').scrollAndClick();
   }
 
   cqmCount() {

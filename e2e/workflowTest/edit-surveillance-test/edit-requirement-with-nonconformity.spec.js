@@ -33,9 +33,9 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     hooks.waitForSpinnerToDisappear();
     edit.editSurveillance();
     hooks.waitForSpinnerToDisappear();
-    edit.editRequirement.click();
-    edit.removeNonConformity.click();
-    edit.saveButton.click();
+    edit.editRequirement.scrollAndClick();
+    edit.removeNonConformity.scrollAndClick();
+    edit.saveButton.scrollAndClick();
     expect(edit.errorMessages.getText()).toContain(error);
   });
 });

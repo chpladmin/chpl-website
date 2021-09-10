@@ -63,9 +63,9 @@ describe('the search page', () => {
 
   describe('when browsing all listings', () => {
     beforeEach(() => {
-      page.browseAllButton.click();
+      page.browseAllButton.scrollAndClick();
       if (!page.downloadResultsButton.isDisplayed()) {
-        page.browseAllButton.click();
+        page.browseAllButton.scrollAndClick();
       }
       page.waitForUpdatedListingResultsCount();
     });
@@ -94,7 +94,7 @@ describe('the search page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     it('should only show listings that match the developer', () => {
@@ -113,7 +113,7 @@ describe('the search page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     it('should only show listings that match the product', () => {
@@ -133,7 +133,7 @@ describe('the search page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     it('should only the listing that has that ACB ID', () => {
@@ -151,7 +151,7 @@ describe('the search page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     it('should show only the listing that has that CHPL ID', () => {
@@ -164,20 +164,20 @@ describe('the search page', () => {
     let countBefore;
     let countAfter;
     beforeEach(() => {
-      page.browseAll.click();
+      page.browseAll.scrollAndClick();
       hooks.waitForSpinnerToDisappear();
       page.waitForUpdatedListingResultsCount();
       countBefore = page.listingTotalCount();
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     describe('using certification status as "Retired" ', () => {
       beforeEach(() => {
-        page.expandFilterOptions('status').click();
-        page.statusRetiredFilterOption.click();
+        page.expandFilterOptions('status').scrollAndClick();
+        page.statusRetiredFilterOption.scrollAndClick();
         page.waitForUpdatedListingResultsCount();
       });
 
@@ -200,8 +200,8 @@ describe('the search page', () => {
 
     describe('using certification edition 2014', () => {
       beforeEach(() => {
-        page.expandFilterOptions('edition').click();
-        page.edition2014FilterOption.click();
+        page.expandFilterOptions('edition').scrollAndClick();
+        page.edition2014FilterOption.scrollAndClick();
         page.waitForUpdatedListingResultsCount();
       });
 
@@ -224,9 +224,9 @@ describe('the search page', () => {
 
     describe('using certification criteria 170.315 (a)(1)', () => {
       beforeEach(() => {
-        page.expandFilterOptions('criteria').click();
-        page.criteria2015FilterExpand.click();
-        page.criteria2015FilterOption.click();
+        page.expandFilterOptions('criteria').scrollAndClick();
+        page.criteria2015FilterExpand.scrollAndClick();
+        page.criteria2015FilterOption.scrollAndClick();
         page.waitForUpdatedListingResultsCount();
       });
 
@@ -238,22 +238,22 @@ describe('the search page', () => {
 
     describe('with compliance activity', () => {
       beforeEach(() => {
-        page.expandFilterOptions('compliance').click();
+        page.expandFilterOptions('compliance').scrollAndClick();
       });
 
       afterEach(() => {
-        page.clearFilters.click();
+        page.clearFilters.scrollAndClick();
       });
 
       it('should filter listing results on "has never had a compliance activity"', () => {
-        page.complianceNeverHadActivityFilter.click();
+        page.complianceNeverHadActivityFilter.scrollAndClick();
         page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
 
       it('should filter listing results on "has had a compliance activity"', () => {
-        page.complianceHasHadActivityFilter.click();
+        page.complianceHasHadActivityFilter.scrollAndClick();
         page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
@@ -261,31 +261,31 @@ describe('the search page', () => {
 
       describe('while in the "has had a compliance activity" filter', () => {
         beforeEach(() => {
-          page.complianceHasHadActivityFilter.click();
+          page.complianceHasHadActivityFilter.scrollAndClick();
           page.waitForUpdatedListingResultsCount();
           countBefore = page.listingTotalCount();
         });
 
         afterEach(() => {
-          page.clearFilters.click();
+          page.clearFilters.scrollAndClick();
         });
 
         it('should filter listing results on "never had"', () => {
-          page.complianceNeverHadNonConformityFilter.click();
+          page.complianceNeverHadNonConformityFilter.scrollAndClick();
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
         });
 
         it('should filter listing results on "open"', () => {
-          page.complianceOpenNonConformityFilter.click();
+          page.complianceOpenNonConformityFilter.scrollAndClick();
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
         });
 
         it('should filter listing results on "closed"', () => {
-          page.complianceClosedNonConformityFilter.click();
+          page.complianceClosedNonConformityFilter.scrollAndClick();
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
@@ -295,18 +295,18 @@ describe('the search page', () => {
 
     describe('in the "More" dropdown', () => {
       beforeEach(() => {
-        page.moreFilterButton.click();
+        page.moreFilterButton.scrollAndClick();
       });
 
       afterEach(() => {
-        page.clearFilters.click();
+        page.clearFilters.scrollAndClick();
       });
 
       describe('the "Clinical Quality Measures" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View Clinical Quality Measures ').click();
-          page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').click();
-          page.moreCqmFilterOptions('CMS2').click();
+          page.moreFilterExpand(' View Clinical Quality Measures ').scrollAndClick();
+          page.moreFilterExpand(' View 2014/2015 Clinical Quality Measures ').scrollAndClick();
+          page.moreCqmFilterOptions('CMS2').scrollAndClick();
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
@@ -315,8 +315,8 @@ describe('the search page', () => {
 
       describe('the "ONC/ACBs" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View ONC-ACBs ').click();
-          page.moreOncAcbFilterOptions('Drummond_Group').click();
+          page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
+          page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
@@ -325,7 +325,7 @@ describe('the search page', () => {
 
       describe('the "Practice Type" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View Practice Type (2011 and 2014 Editions) ').click();
+          page.moreFilterExpand(' View Practice Type (2011 and 2014 Editions) ').scrollAndClick();
           page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
@@ -335,7 +335,7 @@ describe('the search page', () => {
 
       describe('the "Certification Date" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View Certification Date ').click();
+          page.moreFilterExpand(' View Certification Date ').scrollAndClick();
           page.moreCertificationEndDateFilter.addValue('01/01/2019');
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
@@ -374,13 +374,13 @@ describe('the search page', () => {
     });
 
     it('should clear all filtered results and show all listings with the "clear filters" button', () => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
       page.waitForUpdatedListingResultsCount();
       expect(page.listingTotalCount()).toBeGreaterThan(900);
     });
 
     it('should show all listings with the "browse all" button', () => {
-      page.browseAll.click();
+      page.browseAll.scrollAndClick();
       page.waitForUpdatedListingResultsCount();
       expect(page.listingTotalCount()).toBeGreaterThan(900);
     });
@@ -388,12 +388,12 @@ describe('the search page', () => {
 
   describe('when downloading results', () => {
     it('should download a file', () => {
-      page.downloadResultsButton.click();
-      page.downloadResultsAction.click();
+      page.downloadResultsButton.scrollAndClick();
+      page.downloadResultsAction.scrollAndClick();
       const fileName = 'search-results.csv';
       const filePath = path.join(global.downloadDir, fileName);
       if (!fs.existsSync(filePath)) {
-        page.downloadResultsAction.click();
+        page.downloadResultsAction.scrollAndClick();
       }
       browser.waitForFileExists(filePath, config.timeout);
       expect(fs.existsSync(filePath)).toBe(true);
@@ -402,7 +402,7 @@ describe('the search page', () => {
     describe('with more than 50 results', () => {
       it('should indicate it will download however many results there are', () => {
         page.pageSize.selectByVisibleText('250');
-        page.downloadResultsButton.click();
+        page.downloadResultsButton.scrollAndClick();
         expect(page.downloadResultsAction.getText()).toBe('Download 250 displayed results');
       });
     });

@@ -48,10 +48,10 @@ describe('the ONC-ATL Management page', () => {
 
     afterEach(() => {
       const atl = 'UL LLC';
-      page.organizationNameButton(atl).click();
-      page.organizationEditButton.click();
+      page.organizationNameButton(atl).scrollAndClick();
+      page.organizationEditButton.scrollAndClick();
       page.organizationName.setValue(atl);
-      page.saveOrganizationButton.click();
+      page.saveOrganizationButton.scrollAndClick();
       login.logOut();
     });
 
@@ -60,12 +60,12 @@ describe('the ONC-ATL Management page', () => {
       const newAtlName = `${atl} - ${timestamp}`;
       const organizationType = 'ATL';
       const atlId = '1';
-      page.organizationNameButton(atl).click();
-      page.organizationEditButton.click();
+      page.organizationNameButton(atl).scrollAndClick();
+      page.organizationEditButton.scrollAndClick();
       page.organizationName.setValue(newAtlName);
       page.organizationWebsite.setValue(websiteUrl);
       address.set(atlAddress);
-      page.saveOrganizationButton.click();
+      page.saveOrganizationButton.scrollAndClick();
       toast.clearAllToast();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain(newAtlName);
       expect(page.generalInformation(organizationType, atlId).getText()).toContain(websiteUrl);
@@ -88,14 +88,14 @@ describe('the ONC-ATL Management page', () => {
 
     it('should allow user to Create a new ATL', () => {
       const newAtlName = `${'Zatl-'}${timestamp}`;
-      page.createOrganizationButton('ATL').click();
+      page.createOrganizationButton('ATL').scrollAndClick();
       page.organizationName.addValue(newAtlName);
       page.organizationWebsite.addValue(websiteUrl);
       address.set(atlAddress);
-      page.saveOrganizationButton.click();
+      page.saveOrganizationButton.scrollAndClick();
       hooks.waitForSpinnerToDisappear();
       toast.clearAllToast();
-      page.organizationNameButton(newAtlName).click();
+      page.organizationNameButton(newAtlName).scrollAndClick();
       expect(page.newOrganizationGeneralInfo.getText()).toContain(newAtlName);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(websiteUrl);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(atlAddress.address);

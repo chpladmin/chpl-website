@@ -7,7 +7,7 @@ class ToastComponent {
   constructor () { }
 
   clearAllToast () {
-    $(elements.container).$$('div').forEach(toast => toast.click());
+    $(elements.container).$$('div').forEach(toast => toast.scrollAndClick());
   }
 
   get toastTitle () {

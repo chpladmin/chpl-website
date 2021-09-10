@@ -36,7 +36,7 @@ describe('On 2015 Listing details page', () => {
   describe('When ACB is logged in and opens listing page in edit mode', () => {
     beforeEach(async () => {
       login.logIn('drummond');
-      page.editCertifiedProduct.click();
+      page.editCertifiedProduct.scrollAndClick();
       hooks.waitForSpinnerToDisappear();
     });
 

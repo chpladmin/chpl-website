@@ -51,7 +51,7 @@ describe('the ONC-ACB Management page', () => {
 
     it('should display registered users under UL', () => {
       const acb = 'UL LLC';
-      page.organizationNameButton(acb).click();
+      page.organizationNameButton(acb).scrollAndClick();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
       expect(page.manageUsersPanel.getText()).toContain('ROLE_ACB');
       expect(page.manageUsersPanel.getText()).toContain('UL LLC');
@@ -59,21 +59,21 @@ describe('the ONC-ACB Management page', () => {
 
     it('should not present the option to edit ACB details for Drummond Group', () => {
       const acb = 'Drummond Group';
-      page.organizationNameButton(acb).click();
+      page.organizationNameButton(acb).scrollAndClick();
       expect(page.organizationEditButton.isDisplayed()).toBe(false);
     });
 
     it('should not display registered users under Drummond Group', () => {
       const acb = 'Drummond Group';
-      page.organizationNameButton(acb).click();
+      page.organizationNameButton(acb).scrollAndClick();
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);
     });
 
     describe('when editing UL details', () => {
       beforeEach(() => {
         const acb = 'UL LLC';
-        page.organizationNameButton(acb).click();
-        page.organizationEditButton.click();
+        page.organizationNameButton(acb).scrollAndClick();
+        page.organizationEditButton.scrollAndClick();
       });
 
       it('should show error for missing input in required field - ACB Name', () => {
@@ -106,21 +106,21 @@ describe('the ONC-ACB Management page', () => {
       const acb = 'CCHIT';
       const acbId = '2';
       const organizationType = 'ACB';
-      page.organizationNameButton(acb).click();
-      page.organizationEditButton.click();
-      page.retireOrganizationCheckbox.click();
+      page.organizationNameButton(acb).scrollAndClick();
+      page.organizationEditButton.scrollAndClick();
+      page.retireOrganizationCheckbox.scrollAndClick();
       page.organizationWebsite.setValue(websiteUrl);
       address.set(acbAddress);
-      page.saveOrganizationButton.click();
+      page.saveOrganizationButton.scrollAndClick();
       expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-acbs');
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(acb).click();
+      page.organizationNameButton(acb).scrollAndClick();
       hooks.waitForSpinnerToDisappear();
-      page.organizationEditButton.click();
-      page.retireOrganizationCheckbox.click();
+      page.organizationEditButton.scrollAndClick();
+      page.retireOrganizationCheckbox.scrollAndClick();
       page.retirementDate.setValue(today);
-      page.saveOrganizationButton.click();
+      page.saveOrganizationButton.scrollAndClick();
       hooks.waitForSpinnerToDisappear();
       expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: Yes');
     });

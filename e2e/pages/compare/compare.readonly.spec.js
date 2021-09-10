@@ -14,14 +14,14 @@ describe('on compare page after clicking show all-', () => {
   it('should display all of the 78 certification criterias', () => {
     page.checkShowAllCheckbox();
     page.certificationCriteriaLink.scrollIntoView();
-    page.certificationCriteriaLink.click();
+    page.certificationCriteriaLink.scrollAndClick();
     expect(page.allCCCQM.length).toBe(78);
   });
 
   it('should display all of the 100 CQMs', () => {
     page.checkShowAllCheckbox();
     page.clinicalQualityMeasuresLink.scrollIntoView();
-    page.clinicalQualityMeasuresLink.click();
+    page.clinicalQualityMeasuresLink.scrollAndClick();
     expect(page.allCCCQM.length).toBe(100);
   });
 });

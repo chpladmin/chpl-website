@@ -25,7 +25,7 @@ class CompareWidgetComponent {
 
   addListingToCompare (listingId) {
     this.compareButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
-    this.compareButton(listingId).click();
+    this.compareButton(listingId).scrollAndClick();
   }
 
   addToCompare (listingId){

@@ -62,7 +62,7 @@ describe('the Version part of the Developers page', () => {
           page.versionName.clearValue();
           page.versionName.addValue(newVersion);
           actionBar.cancel();
-          actionConfirmation.yes.click();
+          actionConfirmation.yes.scrollAndClick();
           page.productsHeader.waitForDisplayed();
           product = page.getProduct(name);
           product.scrollIntoView({ block: 'center', inline: 'center' });
@@ -112,24 +112,24 @@ describe('the Version part of the Developers page', () => {
       });
 
       it('should have a split for the Version, but not the Product, for a Product that has only one Version, with two Listings', () => {
-        page.getSplitButton(product).click();
+        page.getSplitButton(product).scrollAndClick();
         expect(page.getSplitButton(product)).toExist();
         expect(page.getProductSplitButton(product).getText()).toBe('Product\n(Cannot split Product with only one Version)');
         expect(page.getVersionSplitButton(product).getText()).toBe('Version\n(Select a specific Version to split)');
         page.selectVersion(product, productId, version);
-        page.getSplitButton(product).click();
+        page.getSplitButton(product).scrollAndClick();
         expect(page.getVersionSplitButton(product).getText()).toBe('Version');
       });
 
       it('should allow cancellation of a split', () => {
         const versionCount = page.getVersionCount(product).getText();
         page.selectVersion(product, productId, version);
-        page.getSplitButton(product).click();
-        page.getVersionSplitButton(product).click();
+        page.getSplitButton(product).scrollAndClick();
+        page.getVersionSplitButton(product).scrollAndClick();
         page.splitVersionVersion.clearValue();
         page.splitVersionVersion.setValue(Math.random());
         actionBar.cancel();
-        actionConfirmation.yes.click();
+        actionConfirmation.yes.scrollAndClick();
         page.selectAllCertificationStatus();
         page.productsHeader.waitForDisplayed();
         expect(page.getVersionCount(product).getText()).toBe(versionCount);

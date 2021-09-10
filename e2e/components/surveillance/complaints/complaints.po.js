@@ -15,18 +15,18 @@ class ComplaintsComponent {
   }
 
   set(fields) {
-    $(this.elements.certificationBody).click();
-    $(`//li[text()="${fields.body}"]`).click();
+    $(this.elements.certificationBody).scrollAndClick();
+    $(`//li[text()="${fields.body}"]`).scrollAndClick();
     $(this.elements.receivedDate).addValue(fields.receivedDate);
     $(this.elements.acbComplaintId).addValue(fields.acbId);
     $(this.elements.summary).addValue(fields.summary);
     $(this.elements.complainantType).scrollIntoView();
-    $(this.elements.complainantType).click();
-    $(`//li[text()="${fields.type}"]`).click();
+    $(this.elements.complainantType).scrollAndClick();
+    $(`//li[text()="${fields.type}"]`).scrollAndClick();
   }
 
   saveComplaint() {
-    return $(this.elements.saveComplaint).click();
+    return $(this.elements.saveComplaint).scrollAndClick();
   }
 
   get closedDate() {
@@ -42,7 +42,7 @@ class ComplaintsComponent {
   }
 
   addNewComplaint() {
-    return $(this.elements.newComplaint).click();
+    return $(this.elements.newComplaint).scrollAndClick();
   }
 
   get filter() {
@@ -51,19 +51,19 @@ class ComplaintsComponent {
 
   editComplaint(id) {
     this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').click();
+    $('//*[text()="Edit"]/parent::button').scrollAndClick();
   }
 
   viewComplaint(id) {
     this.filter.addValue(id);
-    $('//span[text()="View"]/parent::button').click();
+    $('//span[text()="View"]/parent::button').scrollAndClick();
   }
 
   deleteComplaint(id) {
     this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').click();
-    $('//span[text()="Delete"]/parent::button').click();
-    $('//span[text()="Yes"]/parent::button').click();
+    $('//*[text()="Edit"]/parent::button').scrollAndClick();
+    $('//span[text()="Delete"]/parent::button').scrollAndClick();
+    $('//span[text()="Yes"]/parent::button').scrollAndClick();
   }
 }
 

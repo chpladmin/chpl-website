@@ -26,7 +26,7 @@ beforeAll(async () => {
 describe('on cms widget', () => {
   describe('if there is no listing added (View preliminary popup) - ', () => {
     beforeAll(() => {
-      cms.cmsWidget.click();
+      cms.cmsWidget.scrollAndClick();
     });
 
     it('should say No Products Selected text', () => {
@@ -104,7 +104,7 @@ describe('on cms widget', () => {
     });
 
     it('remove products button should remove products from widget', () => {
-      cms.removeProductsButton.click();
+      cms.removeProductsButton.scrollAndClick();
       expect(cms.removeProductsButton.isDisplayed()).toBeFalse;
     });
   });
@@ -156,7 +156,7 @@ describe('on cms widget', () => {
     });
 
     it('get cert ID button generates CMS ID for the listings added', () => {
-      cms.getCertIdButton.click();
+      cms.getCertIdButton.scrollAndClick();
       hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
       expect(cms.cmsCertificationIdText.isDisplayed()).toBeTrue;
@@ -164,7 +164,7 @@ describe('on cms widget', () => {
     });
 
     it('PDF is downloaded after generating CMS ID', () => {
-      cms.downloadPdfButton.click();
+      cms.downloadPdfButton.scrollAndClick();
       const fileName = cmsId + '.pdf';
       const filePath = path.join(global.downloadDir, fileName);
       browser.waitForFileExists(filePath,config.timeout);
@@ -176,7 +176,7 @@ describe('on cms widget', () => {
     });
 
     it('compare products button should open compare widget', () => {
-      cms.compareProductsButton.click();
+      cms.compareProductsButton.scrollAndClick();
       expect(cms.compareWidgetDropdown.isDisplayed()).toBeTrue;
     });
   });

@@ -43,7 +43,7 @@ describe('when on 2015 listing page - ', () => {
 
   describe('clicking on return to search link', () => {
     beforeEach(async () => {
-      page.returnToSearch.click();
+      page.returnToSearch.scrollAndClick();
     });
 
     it('should go back to search page', () => {
@@ -57,7 +57,7 @@ describe('when on 2015 listing page - ', () => {
 
   describe('when clicking on product history button', () => {
     beforeEach(() => {
-      page.productHistory.click();
+      page.productHistory.scrollAndClick();
     });
 
     it('should open product history modal', () => {
@@ -66,7 +66,7 @@ describe('when on 2015 listing page - ', () => {
 
     describe('when clicking on Go to API button from product history', () => {
       beforeEach(() => {
-        page.goToApi.click();
+        page.goToApi.scrollAndClick();
         hooks.waitForSpinnerToDisappear();
       });
 
@@ -78,7 +78,7 @@ describe('when on 2015 listing page - ', () => {
 
   describe('when clicking on cms id button', () => {
     beforeEach(async () => {
-      cmsComponent.addToCms('9833').click();
+      cmsComponent.addToCms('9833').scrollAndClick();
       hooks.waitForSpinnerToDisappear();
       cmsComponent.waitForProcessingSpinnerToDisappear();
     });
@@ -89,7 +89,7 @@ describe('when on 2015 listing page - ', () => {
   });
   describe('when clicking on compare button', () => {
     beforeEach(async () => {
-      compareComponent.addToCompare('9833').click();
+      compareComponent.addToCompare('9833').scrollAndClick();
     });
 
     it('should add listing to compare widget', () => {
@@ -110,7 +110,7 @@ describe('when on 2014 listing page - ', () => {
   });
   describe('when clicking on return to search link', () => {
     beforeEach(() => {
-      page.returnToSearch.click();
+      page.returnToSearch.scrollAndClick();
     });
 
     it('should go back to search page', () => {
@@ -124,7 +124,7 @@ describe('when on 2014 listing page - ', () => {
 
   describe('when clicking on product history button', () => {
     beforeEach(() => {
-      page.productHistory.click();
+      page.productHistory.scrollAndClick();
     });
 
     it('should open product history modal', () => {
@@ -133,7 +133,7 @@ describe('when on 2014 listing page - ', () => {
 
     describe('when clicking on Go to API button from product history', () => {
       beforeEach(() => {
-        page.goToApi.click();
+        page.goToApi.scrollAndClick();
         hooks.waitForSpinnerToDisappear();
       });
 
@@ -149,7 +149,7 @@ describe('when on 2014 listing page - ', () => {
 
   describe('when clicking on  cms id button', () => {
     beforeEach(() => {
-      compareComponent.addToCompare('8490').click();
+      compareComponent.addToCompare('8490').scrollAndClick();
     });
 
     it('should add listing to compare widget after clicking on compare button', () => {

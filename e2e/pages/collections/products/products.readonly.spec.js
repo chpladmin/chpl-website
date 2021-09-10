@@ -32,7 +32,7 @@ describe('the Decertified Products collection page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     describe('using acb filter to de select drummond group', () => {
@@ -68,7 +68,7 @@ describe('the Decertified Products collection page', () => {
     describe('using date filter', () => {
 
       it('should filter listing results', () => {
-        page.dateFilter.click();
+        page.dateFilter.scrollAndClick();
         page.fromDate.addValue('09/01/2017');
         page.toDate.addValue('10/01/2020');
         page.waitForUpdatedListingResultsCount();

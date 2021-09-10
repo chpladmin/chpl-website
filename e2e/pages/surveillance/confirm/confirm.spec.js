@@ -37,8 +37,8 @@ describe('when ACB user is on confirm surveillance page', () => {
       hooks.open('#/surveillance/confirm');
       hooks.waitForSpinnerToDisappear();
       confirmPage.rejectCheckbox(rejectListingId1);
-      confirmPage.rejectButton.click();
-      confirmPage.yesConfirmation.click();
+      confirmPage.rejectButton.scrollAndClick();
+      confirmPage.yesConfirmation.scrollAndClick();
       expect(confirmPage.findSurveillancetoReject(rejectListingId1).isDisplayed()).toBeFalse;
     });
   });
@@ -53,9 +53,9 @@ describe('when ACB user is on confirm surveillance page', () => {
     it('should allow user to mass reject all surveillance activities', () => {
       hooks.open('#/surveillance/confirm');
       hooks.waitForSpinnerToDisappear();
-      confirmPage.selectAlltoRejectButton.click();
+      confirmPage.selectAlltoRejectButton.scrollAndClick();
       confirmPage.rejectButton.waitAndClick();
-      confirmPage.yesConfirmation.click();
+      confirmPage.yesConfirmation.scrollAndClick();
       expect(confirmPage.findSurveillancetoReject(rejectListingId2).isDisplayed()).toBeFalse;
     });
   });

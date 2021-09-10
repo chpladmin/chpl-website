@@ -39,7 +39,7 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.clearFilters.scrollAndClick();
     });
 
     describe('using acb filter to de select drummond group', () => {
@@ -118,7 +118,7 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
   describe('when clicking on sed details download button', () => {
 
     it('should download a file', () => {
-      page.sedDetailsDownloadButton.click();
+      page.sedDetailsDownloadButton.scrollAndClick();
       let fileName;
       const sedFileName = 'chpl-sed-all-details';
       browser.pause(config.timeout); // can't add explicit timeout as file name is dynamic here

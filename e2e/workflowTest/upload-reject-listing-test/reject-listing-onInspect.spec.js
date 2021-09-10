@@ -26,8 +26,8 @@ describe('When user rejects a listing while inspecting uploaded listing', () => 
   it('should allow listing to get rejected', () => {
     confirmPage.gotoPendingListingPage(listingId);
     hooks.waitForSpinnerToDisappear();
-    confirmPage.rejectButtonOnInspectListing.click();
-    confirmPage.yesConfirmation.click();
+    confirmPage.rejectButtonOnInspectListing.scrollAndClick();
+    confirmPage.yesConfirmation.scrollAndClick();
     browser.waitUntil( () => !confirmPage.inspectLabel.isDisplayed());
     hooks.waitForSpinnerToDisappear();
     expect(confirmPage.findListingToReject(listingId).isDisplayed()).toBe(false);

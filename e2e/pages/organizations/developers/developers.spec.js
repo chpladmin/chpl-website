@@ -69,7 +69,7 @@ describe('the Developers page', () => {
 
       describe('when editing developer information', () => {
         beforeEach(() => {
-          page.editDeveloper.click();
+          page.editDeveloper.scrollAndClick();
         });
 
         it('should not have friendly name text box under POC', () => {
@@ -114,7 +114,7 @@ describe('the Developers page', () => {
       });
 
       it('should show correct error message', () => {
-        page.splitDeveloper.click();
+        page.splitDeveloper.scrollAndClick();
         page.developerName.addValue(`New developer${timestamp}`);
         contact.set(developerContact);
         address.set(developerAddress);
@@ -148,7 +148,7 @@ describe('the Developers page', () => {
       });
 
       it('should allow merge to happen', () => {
-        page.mergeDeveloper.click();
+        page.mergeDeveloper.scrollAndClick();
         page.moveDeveloperToBeMerged('ABH Enterprises, LLC');
         contact.set(developerContact);
         actionBar.save();
@@ -166,7 +166,7 @@ describe('the Developers page', () => {
       });
 
       it('should allow split to happen', () => {
-        page.splitDeveloper.click();
+        page.splitDeveloper.scrollAndClick();
         page.developerName.addValue(`New developer${timestamp}`);
         contact.set(developerContact);
         address.set(developerAddress);

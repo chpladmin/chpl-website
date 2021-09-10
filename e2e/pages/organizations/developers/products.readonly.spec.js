@@ -153,7 +153,7 @@ describe('the Product part of the Developers page', () => {
           page.editProductName.clearValue();
           page.editProductName.setValue(Math.random());
           actionBar.cancel();
-          actionConfirmation.yes.click();
+          actionConfirmation.yes.scrollAndClick();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           expect(page.getProduct(productName)).toExist();

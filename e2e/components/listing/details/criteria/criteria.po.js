@@ -23,7 +23,7 @@ class CriteriaComponent {
   }
 
   editCriteria(id) {
-    $(`#criterion-id-${id}-edit`).click();
+    $(`#criterion-id-${id}-edit`).scrollAndClick();
   }
 
   get testProcedure() {
@@ -51,7 +51,7 @@ class CriteriaComponent {
   }
 
   expandRemovedCriteria() {
-    $(this.elements.removedCriteria).$$('div')[1].click();
+    $(this.elements.removedCriteria).$$('div')[1].scrollAndClick();
   }
 
   uiUpgradeFlag() {
@@ -61,9 +61,9 @@ class CriteriaComponent {
   expandCriteria(id, criteria) {
     if (this.uiUpgradeFlag()) {
       $(`#criterion-id-${id}-header`).scrollIntoView();
-      $(`#criterion-id-${id}-header`).$$('div')[1].click();
+      $(`#criterion-id-${id}-header`).$$('div')[1].scrollAndClick();
     } else {
-      $(`//*[@id="criteria_${criteria}_details_link"]`).click();
+      $(`//*[@id="criteria_${criteria}_details_link"]`).scrollAndClick();
     }
   }
 
@@ -90,23 +90,23 @@ class CriteriaComponent {
   }
 
   addItem(type) {
-    $(`#${type}-add-item`).click();
+    $(`#${type}-add-item`).scrollAndClick();
   }
 
   checkItem(type) {
-    $(`#${type}-check-item`).click();
+    $(`#${type}-check-item`).scrollAndClick();
   }
 
   choosePrivacySecurityFramework(value) {
-    $('#privacy-security-framework').click();
-    $(`//*[@data-value="${value}"]`).click();
+    $('#privacy-security-framework').scrollAndClick();
+    $(`//*[@data-value="${value}"]`).scrollAndClick();
   }
 
   addTestProcedures(name, version) {
     this.addItem('test-procedures');
     $(this.elements.testProcedureName).scrollIntoView({ block: 'center', inline: 'center' });
-    $(this.elements.testProcedureName).click();
-    $('#menu-name').$(`li*=${name}`).click();
+    $(this.elements.testProcedureName).scrollAndClick();
+    $('#menu-name').$(`li*=${name}`).scrollAndClick();
     $(this.elements.version).addValue(version);
     this.checkItem('test-procedures');
   }
@@ -114,38 +114,38 @@ class CriteriaComponent {
   addTestTools(name, version) {
     this.addItem('test-tools');
     $(this.elements.testToolsName).scrollIntoView({ block: 'center', inline: 'center' });
-    $(this.elements.testToolsName).click();
-    $('#menu-tt').$(`li*=${name}`).click();
+    $(this.elements.testToolsName).scrollAndClick();
+    $('#menu-tt').$(`li*=${name}`).scrollAndClick();
     $(this.elements.version).addValue(version);
     this.checkItem('test-tools');
   }
 
   addPrivacySecurity(value) {
     $(this.elements.privacySecurityName).scrollIntoView({ block: 'center', inline: 'center' });
-    $(this.elements.privacySecurityName).click();
-    $(`//*[@data-value="${value}"]`).click();
+    $(this.elements.privacySecurityName).scrollAndClick();
+    $(`//*[@data-value="${value}"]`).scrollAndClick();
   }
 
   openAttestedCriteriaOld(editCriteriaId, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].click();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].scrollAndClick();
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].click();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].scrollAndClick();
     }
   }
 
   openUnattestedCriteriaOld(editCriteriaId, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$('button').click();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$('button').scrollAndClick();
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$('button').click();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$('button').scrollAndClick();
     }
   }
 
   attestCriteriaOld(criteria) {
-    $(`//*[@id="data${criteria}"]`).click();
+    $(`//*[@id="data${criteria}"]`).scrollAndClick();
   }
 
   addTestProceduresOld(name, version) {

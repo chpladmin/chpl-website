@@ -27,7 +27,7 @@ class ComparePage {
 
   checkShowAllCheckbox () {
     if (!this.showAllCheckbox.isSelected()) {
-      this.showAllCheckbox.click();
+      this.showAllCheckbox.scrollAndClick();
     }
   }
 }

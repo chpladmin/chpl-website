@@ -26,7 +26,7 @@ describe('the 2015 listing page', () => {
 
   describe('when clicked on see all cqms', () => {
     beforeEach(async () => {
-      page.seeAll.click();
+      page.seeAll.scrollAndClick();
     });
 
     it('should display all cqms', () => {
@@ -50,7 +50,7 @@ describe('the 2014 listing page', () => {
 
   describe('when clicked on see all cqms', () => {
     beforeEach(async () => {
-      page.seeAll.click();
+      page.seeAll.scrollAndClick();
     });
 
     it('should display all cqms', () => {

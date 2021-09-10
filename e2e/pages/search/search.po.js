@@ -164,8 +164,8 @@ class SearchPage {
   }
 
   gotoResourcePage () {
-    this.chplResourceButton.click();
-    this.overviewPageButton.click();
+    this.chplResourceButton.scrollAndClick();
+    this.overviewPageButton.scrollAndClick();
   }
 
   searchForListing (chplId) {

@@ -111,7 +111,7 @@ class DevelopersPage {
 
   selectDeveloper (developerName) {
     this.developersSelect.selectByVisibleText(developerName);
-    this.developersButton.click();
+    this.developersButton.scrollAndClick();
   }
 
   getEditButton (product) {
@@ -143,7 +143,7 @@ class DevelopersPage {
   }
 
   selectProduct (product) {
-    product.$('.products__product-header').click();
+    product.$('.products__product-header').scrollAndClick();
   }
 
   getSelectableVersions (product, productId) {
@@ -155,20 +155,20 @@ class DevelopersPage {
   }
 
   editProduct (product) {
-    this.getEditButton(product).click();
-    product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
+    this.getEditButton(product).scrollAndClick();
+    product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].scrollAndClick();
   }
 
   splitProduct (product) {
-    this.getSplitButton(product).click();
+    this.getSplitButton(product).scrollAndClick();
     const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
-    btn.click();
+    btn.scrollAndClick();
   }
 
   mergeProduct (product) {
-    this.getMergeButton(product).click();
+    this.getMergeButton(product).scrollAndClick();
     const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
-    btn.click();
+    btn.scrollAndClick();
   }
 
   moveProductToBeMerged (productName) {
@@ -176,21 +176,21 @@ class DevelopersPage {
     for (var i = 0; i < count; i++) {
       if ($$(elements.list)[i].getText() === productName) {
         $$(elements.list)[i].scrollIntoView({block: 'center', inline: 'center'});
-        $$(elements.list)[i].click();
+        $$(elements.list)[i].scrollAndClick();
       }
     }
   }
 
   moveVersion (id) {
-    $('#products-version-move-new-' + id).click();
+    $('#products-version-move-new-' + id).scrollAndClick();
   }
 
   moveListing (id) {
-    $('#listings-listing-move-new-' + id).click();
+    $('#listings-listing-move-new-' + id).scrollAndClick();
   }
 
   restoreListing (id) {
-    $('#listings-listing-move-old-' + id).click();
+    $('#listings-listing-move-old-' + id).scrollAndClick();
   }
 
   getActiveVersion (product, productId) {
@@ -202,14 +202,14 @@ class DevelopersPage {
   }
 
   editVersion (product) {
-    this.getEditButton(product).click();
-    product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
+    this.getEditButton(product).scrollAndClick();
+    product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].scrollAndClick();
   }
 
   mergeVersion (product) {
-    this.getMergeButton(product).click();
+    this.getMergeButton(product).scrollAndClick();
     const btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
-    btn.click();
+    btn.scrollAndClick();
   }
 
   get versionMergeButton () {
@@ -224,7 +224,7 @@ class DevelopersPage {
     const count = $$(elements.list).length;
     for (var i = 0; i < count; i++) {
       if ($$(elements.list)[i].getText() === versionName) {
-        $$(elements.list)[i].click();
+        $$(elements.list)[i].scrollAndClick();
       }
     }
   }
@@ -262,17 +262,17 @@ class DevelopersPage {
   }
 
   moveDeveloperToSplit (id) {
-    $('#developers-product-move-new-' + id).click();
+    $('#developers-product-move-new-' + id).scrollAndClick();
   }
 
   moveDeveloperToBeMerged (developerName) {
-    $('//div[text()=\'' + developerName + '\']').click();
+    $('//div[text()=\'' + developerName + '\']').scrollAndClick();
   }
 
   selectAllCertificationStatus () {
-    $('#filter-button').click();
-    $('chpl-filter-multiple').$$('.filter-multiple__item')[0].click();
-    $('#filter-button').click();
+    $('#filter-button').scrollAndClick();
+    $('chpl-filter-multiple').$$('.filter-multiple__item')[0].scrollAndClick();
+    $('#filter-button').scrollAndClick();
   }
 }
 

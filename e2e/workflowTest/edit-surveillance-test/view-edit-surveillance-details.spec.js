@@ -31,8 +31,8 @@ beforeEach(async () => {
 
 afterEach(() =>{
   while (edit.cancel.isClickable()) {
-    edit.cancel.click();
-    confirmPage.yesConfirmation.click();
+    edit.cancel.scrollAndClick();
+    confirmPage.yesConfirmation.scrollAndClick();
   }
   loginComponent.logOut();
 });
@@ -59,7 +59,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
     edit.endDate.setValue(surveillanceDetails.endDate);
     edit.surveillanceType.selectByVisibleText(surveillanceDetails.type);
     edit.siteSurveilled.setValue(surveillanceDetails.site);
-    edit.saveButton.click();
+    edit.saveButton.scrollAndClick();
     expect(edit.surveillanceDetails.getText()).toContain(surveillanceDetails.startDateInDetails);
     expect(edit.surveillanceDetails.getText()).toContain(surveillanceDetails.endDateInDetails);
     expect(edit.surveillanceDetails.getText()).toContain(surveillanceDetails.type);
@@ -71,8 +71,8 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
   it('should not be allowed to remove all requirements', () => {
     edit.editSurveillance();
-    edit.removeButton.click();
-    edit.saveButton.click();
+    edit.removeButton.scrollAndClick();
+    edit.saveButton.scrollAndClick();
     expect(edit.errorMessages.getText()).toContain(error);
   });
 });
