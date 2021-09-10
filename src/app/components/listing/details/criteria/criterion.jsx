@@ -85,13 +85,13 @@ function ChplCriterion(props) {
   const getIcon = () => (expanded
     ? (
       <>
-        See Less
+        Show Details
         <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
       </>
     )
     : (
       <>
-        See More
+        Hide Details
         <ExpandMoreIcon color="primary" fontSize="large" />
       </>
     ));
@@ -135,7 +135,7 @@ function ChplCriterion(props) {
         expandIcon={getIcon()}
         id={`criterion-id-${criterion.criterion.id}-header`}
       >
-        <Grid container spacing={4}>
+        <Grid container alignItems='center' spacing={4}>
           <Grid item xs={1}>
             { criterion.success
               && (

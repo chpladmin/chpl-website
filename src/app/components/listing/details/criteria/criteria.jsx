@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
   },
   NestedAccordionLevelOneSummary: {
-    backgroundColor: '#f9f9f9!important',
+    backgroundColor: '#f9f9f9',
     borderRadius: '8px',
   },
 }));

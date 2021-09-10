@@ -74,11 +74,6 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
-    MuiAccordion:{
-      root:{
-        paddingBottom:'16px',
-      },
-    },
     MuiAccordionSummary: {
       root: {
         padding: '8px',
@@ -91,6 +86,11 @@ const theme = createMuiTheme({
         '&$expanded': {
           transform:'none',
         },
+      },
+    },
+    MuiAccordionDetails:{
+      root:{
+        padding:'16px 0px',
       },
     },
     MuiPaper: {
