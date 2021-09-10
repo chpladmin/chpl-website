@@ -74,12 +74,23 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiAccordion:{
+      root:{
+        paddingBottom:'16px',
+      },
+    },
     MuiAccordionSummary: {
       root: {
-        padding: '4px 8px',
+        padding: '8px',
       },
       content: {
-        padding: '4px',
+        padding: '4px 8px',
+      },
+      expandIcon:{
+        transform:'none',
+        '&$expanded': {
+          transform:'none',
+        },
       },
     },
     MuiPaper: {
@@ -114,11 +125,6 @@ const theme = createMuiTheme({
         '&: selected': {
           backgroundColor: '#599bde',
         },
-      },
-    },
-    MuiButtonBase:{
-      root:{
-      backgroundColor: '',
       },
     },
     MuiListItem: {
