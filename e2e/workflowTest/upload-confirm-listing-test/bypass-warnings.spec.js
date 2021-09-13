@@ -75,7 +75,7 @@ describe('listing with warnings on confirm and no errors', () => {
     confirmPage.gotoConfirmListingPage(listingIdWithWarning);
     confirmPage.confirmListing();
     hooks.waitForSpinnerToDisappear();
-    confirmPage.warningCheckbox.scrollAndClick();
+    confirmPage.warningCheckbox.click();
     confirmPage.confirmListing();
     browser.waitUntil(() => toast.toastContainer.isDisplayed());
     expect(toast.toastTitle.getText()).toBe('Please stand by');

@@ -31,8 +31,8 @@ afterEach(() => {
     toast.clearAllToast();
   }
   else if (edit.cancel.isClickable()) {
-    edit.cancel.scrollAndClick();
-    confirmPage.yesConfirmation.scrollAndClick();
+    edit.cancel.click();
+    confirmPage.yesConfirmation.click();
   }
   loginComponent.logOut();
 });
@@ -42,8 +42,8 @@ describe('when confirming surveillance, ACB', () => {
   it('should be able to confirm surveillance', () => {
     browser.waitUntil( () => confirmPage.table.isDisplayed());
     confirmPage.inspectButton(listingId);
-    confirmPage.confirmButton.scrollAndClick();
-    confirmPage.yesConfirmation.scrollAndClick();
+    confirmPage.confirmButton.click();
+    confirmPage.yesConfirmation.click();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil( () => toast.toastTitle.isDisplayed());
     expect(toast.toastTitle.getText()).toBe('Update processing');
@@ -56,10 +56,10 @@ describe('when confirming surveillance, ACB', () => {
     edit.editSurveillance();
     edit.addRequirement('Certified Capability', '170.315 (g)(10): Standardized API for Patient and Population Services', 'No Non-Conformity');
     do {
-      edit.saveButton.scrollAndClick();
+      edit.saveButton.click();
     } while (!confirmPage.confirmButton.isClickable());
-    confirmPage.confirmButton.scrollAndClick();
-    confirmPage.yesConfirmation.scrollAndClick();
+    confirmPage.confirmButton.click();
+    confirmPage.yesConfirmation.click();
     browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
     expect(confirmPage.errorOnConfirm.getText()).toContain(error1);
   });
@@ -80,13 +80,13 @@ describe('when confirming surveillance, ACB', () => {
     confirmPage.inspectButton(listingId);
     hooks.waitForSpinnerToDisappear();
     edit.editSurveillance();
-    edit.editRequirement.scrollAndClick();
+    edit.editRequirement.click();
     edit.addnonConformity(nonConformitydetails , 'Reactive');
     do {
-      edit.saveButton.scrollAndClick();
+      edit.saveButton.click();
     } while (!confirmPage.confirmButton.isClickable());
-    confirmPage.confirmButton.scrollAndClick();
-    confirmPage.yesConfirmation.scrollAndClick();
+    confirmPage.confirmButton.click();
+    confirmPage.yesConfirmation.click();
     browser.waitUntil( () => confirmPage.errorOnConfirm.isDisplayed());
     expect(confirmPage.errorOnConfirm.getText()).toContain(error2);
   });

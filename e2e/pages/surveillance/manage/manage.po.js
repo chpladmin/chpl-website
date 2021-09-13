@@ -23,7 +23,7 @@ class ManagePage {
   }
 
   chooseDropdownValue(value) {
-    $(`//*[@data-value="${value}"]`).scrollAndClick();
+    $(`//*[@data-value="${value}"]`).click();
   }
 }
 

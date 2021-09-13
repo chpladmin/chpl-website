@@ -50,7 +50,7 @@ describe('the 2015 listing page for listing with ICS value true', () => {
 
     describe('when clicking on ICS relationship button', () => {
       it('should display ICS relationship modal and compare button after clicking on ICS relationship button', () => {
-        additional.icsButton.scrollAndClick();
+        additional.icsButton.click();
         browser.waitUntil(() => additional.icsRelationshipModal.isDisplayed());
         expect(additional.icsRelationshipModal.isDisplayed()).toBe(true);
         expect(additional.compareButton.isDisplayed()).toBe(true);

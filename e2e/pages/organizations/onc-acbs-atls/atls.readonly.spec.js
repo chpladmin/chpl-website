@@ -60,7 +60,7 @@ describe('the ONC-ATL Management page', () => {
 
     it('should display registered users under UL', () => {
       const atl = 'UL LLC';
-      page.organizationNameButton(atl).scrollAndClick();
+      page.organizationNameButton(atl).click();
       hooks.waitForSpinnerToDisappear();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
       expect(page.manageUsersPanel.getText()).toContain('ROLE_ATL');
@@ -69,13 +69,13 @@ describe('the ONC-ATL Management page', () => {
 
     it('should not present the option to edit ATL details for Drummond Group', () => {
       const atl = 'Drummond Group';
-      page.organizationNameButton(atl).scrollAndClick();
+      page.organizationNameButton(atl).click();
       expect(page.organizationEditButton.isDisplayed()).toBe(false);
     });
 
     it('should not display registered users under Drummond Group ', () => {
       const atl = 'Drummond Group';
-      page.organizationNameButton(atl).scrollAndClick();
+      page.organizationNameButton(atl).click();
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);
     });
   });
@@ -95,23 +95,23 @@ describe('the ONC-ATL Management page', () => {
       const atlId = '2';
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(atl).scrollAndClick();
+      page.organizationNameButton(atl).click();
       hooks.waitForSpinnerToDisappear();
-      page.organizationEditButton.scrollAndClick();
-      page.retireOrganizationCheckbox.scrollAndClick();
+      page.organizationEditButton.click();
+      page.retireOrganizationCheckbox.click();
       page.organizationWebsite.setValue(websiteUrl);
       address.set(atlAddress);
-      page.saveOrganizationButton.scrollAndClick();
+      page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(atl).scrollAndClick();
+      page.organizationNameButton(atl).click();
       hooks.waitForSpinnerToDisappear();
-      page.organizationEditButton.scrollAndClick();
-      page.retireOrganizationCheckbox.scrollAndClick();
+      page.organizationEditButton.click();
+      page.retireOrganizationCheckbox.click();
       page.retirementDate.setValue(today);
-      page.saveOrganizationButton.scrollAndClick();
+      page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: Yes');
     });

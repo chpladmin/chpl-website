@@ -37,10 +37,10 @@ describe('the ONC-ACB Management page', () => {
 
     afterEach(() => {
       const organizationName = 'UL LLC';
-      page.organizationNameButton(organizationName).scrollAndClick();
-      page.organizationEditButton.scrollAndClick();
+      page.organizationNameButton(organizationName).click();
+      page.organizationEditButton.click();
       page.organizationName.setValue(organizationName);
-      page.saveOrganizationButton.scrollAndClick();
+      page.saveOrganizationButton.click();
       login.logOut();
     });
 
@@ -48,12 +48,12 @@ describe('the ONC-ACB Management page', () => {
       const acb = 'UL LLC';
       const newAcbName = `${acb} - ${timestamp}`;
       const acbId = '1';
-      page.organizationNameButton(acb).scrollAndClick();
-      page.organizationEditButton.scrollAndClick();
+      page.organizationNameButton(acb).click();
+      page.organizationEditButton.click();
       page.organizationName.setValue(newAcbName);
       page.organizationWebsite.setValue(websiteUrl);
       address.set(acbAddress);
-      page.saveOrganizationButton.scrollAndClick();
+      page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
       expect(page.generalInformation(organizationType, acbId).getText()).toContain(newAcbName);
       expect(page.generalInformation(organizationType, acbId).getText()).toContain(websiteUrl);
@@ -76,13 +76,13 @@ describe('the ONC-ACB Management page', () => {
 
     it('should allow user to create a new ACB', () => {
       const newAcbName = `${'Zacb-'}${timestamp}`;
-      page.createOrganizationButton('ACB').scrollAndClick();
+      page.createOrganizationButton('ACB').click();
       page.organizationName.addValue(newAcbName);
       page.organizationWebsite.addValue(websiteUrl);
       address.set(acbAddress);
-      page.saveOrganizationButton.scrollAndClick();
+      page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(newAcbName).scrollAndClick();
+      page.organizationNameButton(newAcbName).click();
       expect(page.newOrganizationGeneralInfo.getText()).toContain(newAcbName);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(websiteUrl);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(acbAddress.address);

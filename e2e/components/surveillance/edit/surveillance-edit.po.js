@@ -173,7 +173,7 @@ class SurveillanceEditComponent {
   }
 
   addnonConformity(details, type) {
-    this.newnonConformityButton.scrollAndClick();
+    this.newnonConformityButton.click();
     this.nonConformityType.selectByVisibleText(details.type);
     this.nonConformityCloseDate.setValue(details.nonConformityCloseDate);
     this.determinationDate.setValue(details.determinationDate);
@@ -193,14 +193,14 @@ class SurveillanceEditComponent {
   }
 
   editSurveillance() {
-    this.editButton.scrollAndClick();
+    this.editButton.click();
     if (!$('#edit-surveillance-label').isDisplayed()) {
-      this.editButton.scrollAndClick();
+      this.editButton.click();
     }
   }
 
   addRequirement(type, capability, result) {
-    this.newRequirementButton.scrollAndClick();
+    this.newRequirementButton.click();
     this.requirementType.selectByVisibleText(type);
     if (type === 'Other Requirement') {
       this.requirementCapability.setValue(capability);

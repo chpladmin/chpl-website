@@ -31,11 +31,11 @@ class AdditionalComponent {
   }
 
   closeModal() {
-    $(this.elements.modalHeader).$('//button').scrollAndClick();
+    $(this.elements.modalHeader).$('//button').click();
   }
 
   expandAdditional() {
-    this.additionalHeader.parentElement().scrollAndClick();
+    this.additionalHeader.parentElement().click();
   }
 }
 

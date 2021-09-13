@@ -17,7 +17,7 @@ class LoginComponent {
   }
 
   toggleLoginComponent() {
-    $(this.elements.loginToggle).scrollAndClick();
+    $(this.elements.loginToggle).click();
   }
 
   logIn(user) {
@@ -38,7 +38,7 @@ class LoginComponent {
     }
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
-    btn.scrollAndClick();
+    btn.click();
     browser.waitUntil(() => !(/Administrator Login/i.test(this.getLoggedInUserName())));
     browser.keys('Escape');
     browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
@@ -49,7 +49,7 @@ class LoginComponent {
       this.toggleLoginComponent();
     }
     const btn = $(this.elements.component).$(this.elements.logout);
-    btn.scrollAndClick();
+    btn.click();
     $(this.elements.login).waitForDisplayed();
     browser.keys('Escape');
     browser.waitUntil(() => !($(this.elements.component).isDisplayed()));

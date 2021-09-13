@@ -19,8 +19,8 @@ beforeEach(async () => {
 describe('ONC STAFF can ', () => {
   beforeEach(() => {
     loginComponent.logIn('oncstaff');
-    page.usersButton.scrollAndClick();
-    page.userManagementButton.scrollAndClick();
+    page.usersButton.click();
+    page.userManagementButton.click();
   });
 
   afterEach(() => {

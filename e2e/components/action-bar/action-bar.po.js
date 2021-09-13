@@ -8,11 +8,11 @@ class ActionBarComponent {
   constructor () { }
 
   cancel () {
-    $(elements.cancel).scrollAndClick();
+    $(elements.cancel).click();
   }
 
   save () {
-    $(elements.save).scrollAndClick();
+    $(elements.save).click();
   }
 
   get errorMessages () {

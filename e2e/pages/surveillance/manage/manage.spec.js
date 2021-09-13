@@ -30,15 +30,15 @@ describe('on manage surveillance page', () => {
 
     describe('When on reporting tab', () => {
       beforeEach(() => {
-        manage.reportingTab.scrollAndClick();
+        manage.reportingTab.click();
       });
 
       it('should be able to download results based on year and quarter chosen', () => {
-        manage.year.scrollAndClick();
+        manage.year.click();
         manage.chooseDropdownValue('2020');
-        manage.quarter.scrollAndClick();
+        manage.quarter.click();
         manage.chooseDropdownValue('q1');
-        manage.downloadResultsButton.scrollAndClick();
+        manage.downloadResultsButton.click();
         expect(toast.toastTitle.getText()).toBe('Success');
       });
     });

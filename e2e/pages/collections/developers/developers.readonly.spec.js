@@ -34,7 +34,7 @@ describe('the Developers Under Certification Ban collection page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.scrollAndClick();
+      page.clearFilters.click();
     });
 
     describe('using acb filter to de select drummond group', () => {
@@ -50,7 +50,7 @@ describe('the Developers Under Certification Ban collection page', () => {
     describe('using date filter', () => {
 
       it('should filter listing results', () => {
-        page.dateFilter.scrollAndClick();
+        page.dateFilter.click();
         page.fromDate.addValue('09/01/2017');
         page.toDate.addValue('10/01/2019');
         page.waitForUpdatedListingResultsCount();

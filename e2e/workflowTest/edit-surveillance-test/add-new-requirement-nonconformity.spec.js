@@ -26,8 +26,8 @@ beforeEach(async () => {
 
 afterEach(() =>{
   while (edit.cancel.isClickable()) {
-    edit.cancel.scrollAndClick();
-    confirmPage.yesConfirmation.scrollAndClick();
+    edit.cancel.click();
+    confirmPage.yesConfirmation.click();
   }
   loginComponent.logOut();
 });
@@ -52,7 +52,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'No Non-Conformity');
       do {
-        edit.saveButton.scrollAndClick();
+        edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
       var countAfter = edit.requirementTableRows().length;
       expect(countAfter).toBe(countBefore + 1);
@@ -77,11 +77,11 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.addnonConformity(nonConformitydetails , 'Reactive');
       expect(edit.sites.isEnabled()).toBeFalse;
       expect(edit.totalSites.isEnabled()).toBeFalse;
-      edit.saveButton.scrollAndClick();
+      edit.saveButton.click();
       expect(edit.nonConformityTableRows().length).toEqual(1);
       expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Closed');
       do {
-        edit.saveButton.scrollAndClick();
+        edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
       var countAfter = edit.requirementTableRows().length;
       expect(countAfter).toEqual(countBefore + 1);
@@ -91,7 +91,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'Non-Conformity');
       do {
-        edit.saveButton.scrollAndClick();
+        edit.saveButton.click();
       } while (!edit.errorMessages.isDisplayed());
       expect(edit.errorMessages.getText()).toContain(error);
     });
@@ -131,11 +131,11 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'Non-Conformity');
       edit.addnonConformity(nonConformitydetails , 'Randomized');
-      edit.saveButton.scrollAndClick();
+      edit.saveButton.click();
       expect(edit.nonConformityTableRows().length).toEqual(1);
       expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Open');
       do {
-        edit.saveButton.scrollAndClick();
+        edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
       var countAfter = edit.requirementTableRows().length;
       expect(countAfter).toEqual(countBefore + 1);

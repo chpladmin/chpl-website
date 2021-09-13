@@ -26,7 +26,7 @@ describe('On the 2015 Listing page', () => {
   describe('When ONC logged in', () => {
     beforeEach(async () => {
       login.logIn('onc');
-      page.editCertifiedProduct.scrollAndClick();
+      page.editCertifiedProduct.click();
       hooks.waitForSpinnerToDisappear();
     });
 
@@ -37,8 +37,8 @@ describe('On the 2015 Listing page', () => {
       if (criteria.uiUpgradeFlag()) {
         criteria.expandCriteria('174');
         criteria.editCriteria('174');
-        criteria.attestToggle.scrollAndClick();
-        criteria.accept.scrollAndClick();
+        criteria.attestToggle.click();
+        criteria.accept.click();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
       } else {
         criteria.openAttestedCriteriaOld('170.315 (d)(3)', true);
@@ -59,12 +59,12 @@ describe('On the 2015 Listing page', () => {
       if (criteria.uiUpgradeFlag()) {
         criteria.expandCriteria('180');
         criteria.editCriteria('180');
-        criteria.attestToggle.scrollAndClick();
+        criteria.attestToggle.click();
         hooks.waitForSpinnerToDisappear();
         criteria.addTestProcedures('ONC Test Method', '1.1');
         criteria.addTestTools('Cypress', '1.1');
         criteria.addTestTools('Edge Testing Tool', '2.1');
-        criteria.accept.scrollAndClick();
+        criteria.accept.click();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
       } else {
         criteria.openUnattestedCriteriaOld('170.315 (g)(6)', true);

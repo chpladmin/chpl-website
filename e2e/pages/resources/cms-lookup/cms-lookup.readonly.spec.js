@@ -23,7 +23,7 @@ describe('On cms reverse look up page', () => {
       beforeAll(() => {
         cmsLookup.searchField.clearValue();
         cmsLookup.searchField.addValue(input.cmsId);
-        cmsLookup.searchIdButton.scrollAndClick();
+        cmsLookup.searchIdButton.click();
         hooks.waitForSpinnerToDisappear();
       });
 
@@ -38,11 +38,11 @@ describe('On cms reverse look up page', () => {
       });
 
       it('should have download results button and download file should contain correct listings Ids', () => {
-        cmsLookup.downloadResultsButton.scrollAndClick();
+        cmsLookup.downloadResultsButton.click();
         const fileName = `CMS_ID.${input.cmsId}.csv`;
         const filePath = path.join(global.downloadDir, fileName);
         if (!fs.existsSync(filePath)) {
-          cmsLookup.downloadResultsButton.scrollAndClick();
+          cmsLookup.downloadResultsButton.click();
         }
         browser.waitForFileExists(filePath, config.timeout);
         expect(fs.existsSync(filePath)).toBe(true);
@@ -64,7 +64,7 @@ describe('On cms reverse look up page', () => {
     beforeAll(() => {
       cmsLookup.searchField.clearValue();
       cmsLookup.searchField.addValue(invalidCmsId);
-      cmsLookup.searchIdButton.scrollAndClick();
+      cmsLookup.searchIdButton.click();
       hooks.waitForSpinnerToDisappear();
     });
 

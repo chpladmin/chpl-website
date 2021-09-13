@@ -102,7 +102,7 @@ describe('the Version part of the Developers page', () => {
           page.editVersionName.clearValue();
           page.editVersionName.setValue(newVersion);
           actionBar.cancel();
-          actionConfirmation.yes.scrollAndClick();
+          actionConfirmation.yes.click();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
           product = page.getProduct(productName);
@@ -127,8 +127,8 @@ describe('the Version part of the Developers page', () => {
           const newCode = newVersion.substring(newVersion.length - 2);
           const movingListingId = '6299';
           page.selectVersion(product, productId, version);
-          page.getSplitButton(product).scrollAndClick();
-          page.getVersionSplitButton(product).scrollAndClick();
+          page.getSplitButton(product).click();
+          page.getVersionSplitButton(product).click();
           page.splitVersionVersion.setValue(newVersion);
           page.editVersionCode.setValue(newCode);
           page.moveListing(movingListingId);
@@ -215,12 +215,12 @@ describe('the Version part of the Developers page', () => {
       });
 
       it('should have a version split, but not a product split', () => {
-        page.getSplitButton(product).scrollAndClick();
+        page.getSplitButton(product).click();
         expect(page.getSplitButton(product)).toExist();
         expect(page.getProductSplitButton(product).getText()).toBe('Product\n(Cannot split Product with only one Version)');
         expect(page.getVersionSplitButton(product).getText()).toBe('Version\n(Select a specific Version to split)');
         page.selectVersion(product, productId, version);
-        page.getSplitButton(product).scrollAndClick();
+        page.getSplitButton(product).click();
         expect(page.getVersionSplitButton(product).getText()).toBe('Version');
       });
 
@@ -232,8 +232,8 @@ describe('the Version part of the Developers page', () => {
         const newCode = newVersion.substring(newVersion.length - 2);
         const movingListingId = '6678';
         page.selectVersion(product, productId, version);
-        page.getSplitButton(product).scrollAndClick();
-        page.getVersionSplitButton(product).scrollAndClick();
+        page.getSplitButton(product).click();
+        page.getVersionSplitButton(product).click();
         page.splitVersionVersion.setValue(newVersion);
         page.editVersionCode.setValue(newCode);
         page.moveListing(movingListingId);

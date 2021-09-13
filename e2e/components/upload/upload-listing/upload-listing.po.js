@@ -40,7 +40,7 @@ class UploadListingComponent {
   uploadListingBeta (uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadListingBetaButton.addValue(browser.uploadFile(filePath));
-    this.uploadBetaButton.scrollAndClick();
+    this.uploadBetaButton.click();
   }
 
   uploadListing (uploadfilePath) {

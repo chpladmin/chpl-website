@@ -32,7 +32,7 @@ class UploadApiDocumentationComponent {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadAPIDocumentation.addValue(browser.uploadFile(filePath));
     this.uploadButton.scrollIntoView();
-    this.uploadButton.scrollAndClick();
+    this.uploadButton.click();
     browser.waitUntil( () => this.apiDocUploadText.isDisplayed());
   }
 }

@@ -19,12 +19,12 @@ beforeAll(async () => {
 describe('on compare widget', () => {
   describe('if there is no listing added for compare', () => {
     it('should not have compare products button', () => {
-      compare.compareWidget.scrollAndClick();
+      compare.compareWidget.click();
       expect(compare.compareProductsButton.isDisplayed()).toBe(false);
     });
 
     it('should not have remove all products button', () => {
-      compare.compareWidget.scrollAndClick();
+      compare.compareWidget.click();
       expect(compare.removeProductsButton.isDisplayed()).toBe(false);
     });
   });
@@ -48,7 +48,7 @@ describe('on compare widget', () => {
     });
 
     it('remove products removes products', () => {
-      compare.removeProductsButton.scrollAndClick();
+      compare.removeProductsButton.click();
       expect(compare.removeProductsButton.isDisplayed()).toBe(false);
       expect(compare.compareProductsButton.isDisplayed()).toBe(false);
     });
@@ -77,7 +77,7 @@ describe('on compare widget', () => {
     });
 
     it('compare products button opens compare page for the selected listings', () => {
-      compare.compareProductsButton.scrollAndClick();
+      compare.compareProductsButton.click();
       expect(browser.getUrl()).toContain(`/compare/${ListingId1}&${ListingId2}`);
     });
   });

@@ -32,7 +32,7 @@ describe('the Corrective Action collection page', () => {
     });
 
     afterEach(() => {
-      page.clearFilters.scrollAndClick();
+      page.clearFilters.click();
     });
 
     describe('using acb filter to de select drummond group', () => {

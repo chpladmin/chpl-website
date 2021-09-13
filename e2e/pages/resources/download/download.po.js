@@ -13,20 +13,20 @@ class DownloadPage {
   }
 
   selectFile(file) {
-    $(this.elements.download).scrollAndClick();
+    $(this.elements.download).click();
     browser.pause(1000);
-    $(`li[data-value="${file}"]`).scrollAndClick();
+    $(`li[data-value="${file}"]`).click();
     browser.pause(1000);
   }
 
   downloadDataFile(file) {
     this.selectFile(file);
-    $(this.elements.downloadDataFileButton).scrollAndClick();
+    $(this.elements.downloadDataFileButton).click();
   }
 
   downloadDefinitionFile(file) {
     this.selectFile(file);
-    $(this.elements.downloadDefinitionFileButton).scrollAndClick();
+    $(this.elements.downloadDefinitionFileButton).click();
   }
 }
 

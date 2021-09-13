@@ -56,7 +56,7 @@ describe('the charts page', () => {
 
   describe('non-conformity charts tab', () => {
     beforeEach(() => {
-      page.chartTabs('Nonconformity charts').scrollAndClick();
+      page.chartTabs('Nonconformity charts').click();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
@@ -86,7 +86,7 @@ describe('the charts page', () => {
 
   describe('SED participant charts tab', () => {
     beforeEach(() => {
-      page.chartTabs('SED Participant charts').scrollAndClick();
+      page.chartTabs('SED Participant charts').click();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
@@ -98,7 +98,7 @@ describe('the charts page', () => {
 
   describe('developer charts tab', () => {
     beforeEach(() => {
-      page.chartTabs('Developer charts').scrollAndClick();
+      page.chartTabs('Developer charts').click();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => page.chartTitle.isDisplayed(), config.shortTimeout);
     });

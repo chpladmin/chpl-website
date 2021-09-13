@@ -31,7 +31,7 @@ describe('when logged in', () => {
         'Products',
         'Versions',
       ];
-      component.reportsToggle.scrollAndClick();
+      component.reportsToggle.click();
       const reports = new Set(component.reports.map((item) => item.getText()));
       expect(reports.size).toBe(expected.length);
       expected.forEach((exp) => {
@@ -58,7 +58,7 @@ describe('when logged in', () => {
         'Users',
         'Versions',
       ];
-      component.reportsToggle.scrollAndClick();
+      component.reportsToggle.click();
       const reports = new Set(component.reports.map((item) => item.getText()));
       expect(reports.size).toBe(expected.length);
       expected.forEach((exp) => {
@@ -71,7 +71,7 @@ describe('when logged in', () => {
         'Complaints Reporting',
         'Reporting',
       ];
-      component.surveillanceToggle.scrollAndClick();
+      component.surveillanceToggle.click();
       const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
       expect(surveillanceOptions.size).toBe(expected.length);
       expected.forEach((exp) => {
@@ -89,7 +89,7 @@ describe('when logged in', () => {
         'Complaints Reporting',
         'Reporting',
       ];
-      component.surveillanceToggle.scrollAndClick();
+      component.surveillanceToggle.click();
       const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
       expect(surveillanceOptions.size).toBe(expected.length);
       expected.forEach((exp) => {
@@ -105,7 +105,7 @@ describe('when logged in', () => {
         'Users',
         'Versions',
       ];
-      component.reportsToggle.scrollAndClick();
+      component.reportsToggle.click();
       const reports = new Set(component.reports.map((item) => item.getText()));
       expect(reports.size).toBe(expected.length);
       expected.forEach((exp) => {
@@ -126,7 +126,7 @@ describe('when logged in', () => {
         'Complaints Reporting',
         'Reporting',
       ];
-      component.surveillanceToggle.scrollAndClick();
+      component.surveillanceToggle.click();
       const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
       expect(surveillanceOptions.size).toBe(expected.length);
       expected.forEach((exp) => {

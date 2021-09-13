@@ -80,12 +80,12 @@ class ListingEditComponent {
   }
 
   openEditCriteria(editCriteriaId, cures) {
-    this.editcertifiedProduct.scrollAndClick();
+    this.editcertifiedProduct.click();
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].scrollAndClick();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].click();
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].scrollAndClick();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].click();
     }
   }
 
@@ -115,7 +115,7 @@ class ListingEditComponent {
   }
 
   removeTestProcToolData(name) {
-    $(`//span[text()="${name}"]/parent::button`).scrollAndClick();
+    $(`//span[text()="${name}"]/parent::button`).click();
   }
 
   viewDetailsCriteria(criteriaId, cures) {
