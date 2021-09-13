@@ -298,6 +298,7 @@ function ChplResourcesOverview() {
                 <TableCell>Eligible Professionals &amp; Eligible Hospital complaints regarding an EHR product</TableCell>
                 <TableCell>
                   Please refer to the ONC Health IT Certification Program&apos;s
+                  {' '}
                   <a href="https://www.healthit.gov/topic/certified-health-it-complaint-process">Provider Complaint Process</a>
                 </TableCell>
               </TableRow>
@@ -313,6 +314,7 @@ function ChplResourcesOverview() {
                 <TableCell>Other comments or complaints</TableCell>
                 <TableCell>
                   Please use
+                  {' '}
                   <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">ONC&apos;s Health IT Feedback Form</a>
                 </TableCell>
               </TableRow>
