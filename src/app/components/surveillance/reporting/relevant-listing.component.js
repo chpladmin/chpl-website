@@ -8,13 +8,14 @@ export const SurveillanceReportRelevantListingComponent = {
     onCancel: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
-    constructor($log, $state, $stateParams, $uibModal, authService, networkService) {
+    constructor($log, $state, $stateParams, $uibModal, DateUtil, authService, networkService) {
       'ngInject';
 
       this.$log = $log;
       this.$state = $state;
       this.$stateParams = $stateParams;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
     }
