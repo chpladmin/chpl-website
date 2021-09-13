@@ -17,19 +17,18 @@ inputs.forEach((input) => {
   cures ,
   testToolsOptions } = input;
 
-  describe('On the 2015 Listing editing page', () => {
+  describe('As an ONC user, On the 2015 Listing editing page', () => {
     beforeEach(async () => {
       page = new ListingPage();
       hooks = new Hooks();
       login = new LoginComponent();
       criteria = new CriteriaComponent();
-      await hooks.open('#/listing/10599');
+      await hooks.open('#/listing/10599/view/edit');
     });
 
     describe('When ONC logged in', () => {
       beforeEach(async () => {
         login.logIn('onc');
-        page.editCertifiedProduct.click();
         hooks.waitForSpinnerToDisappear();
       });
 
@@ -38,33 +37,9 @@ inputs.forEach((input) => {
         login.logOut();
       });
 
-      it(`should be able to see only correct options for test tools for ${criteriaName}`, () => {
-        const expected = testToolsOptions;
-        if (criteria.uiUpgradeFlag()) {
-          criteria.expandCriteria(id);
-          criteria.editCriteria(id);
-          criteria.attestToggle.click();
-          criteria.addItem('test-tools');
-          criteria.testTools.scrollIntoView({ block: 'center', inline: 'center' });
-          criteria.testTools.click();
-          const actual = new Set(criteria.testToolsDropdownOptions.map((item) => item.getText()));
-          expect(actual.size).toBe(expected.length);
-          expected.forEach((exp) => {
-            expect(actual.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
-          });
-        } else {
-          criteria.openUnattestedCriteriaOld(criteriaOld, cures);
-          criteria.attestCriteriaOld(criteriaOld);
-          const actual = new Set(criteria.testToolsDropdownOptionsOld.map((item) => item.getText()));
-          expect(actual.size - 2).toBe(expected.length);
-          expected.forEach((exp) => {
-            expect(actual.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
-          });
-        }
-      });
-
-      it(`should be able to see only correct options for test procedures for ${criteriaName}`, () => {
-        const expected = testProcedureOptions;
+      it(`can see correct options for test tools and test procedures for ${criteriaName}`, () => {
+        const expectedTt = testToolsOptions;
+        const expectedTp = testProcedureOptions;
         if (criteria.uiUpgradeFlag()) {
           criteria.expandCriteria(id);
           criteria.editCriteria(id);
@@ -72,18 +47,32 @@ inputs.forEach((input) => {
           criteria.addItem('test-procedures');
           criteria.testProcedure.scrollIntoView({ block: 'center', inline: 'center' });
           criteria.testProcedure.click();
-          const actual = new Set(criteria.testProcedureDropdownOptions.map((item) => item.getText()));
-          expect(actual.size).toBe(expected.length);
-          expected.forEach((exp) => {
-            expect(actual.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
+          const actualTp = new Set(criteria.testProcedureDropdownOptions.map((item) => item.getText()));
+          expect(actualTp.size).toBe(expectedTp.length);
+          expectedTp.forEach((exp) => {
+            expect(actualTp.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
+          });
+          browser.keys('Escape');
+          criteria.addItem('test-tools');
+          criteria.testTools.scrollIntoView({ block: 'center', inline: 'center' });
+          criteria.testTools.click();
+          const actualTt = new Set(criteria.testToolsDropdownOptions.map((item) => item.getText()));
+          expect(actualTt.size).toBe(expectedTt.length);
+          expectedTt.forEach((exp) => {
+            expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
           });
         } else {
           criteria.openUnattestedCriteriaOld(criteriaOld, cures);
           criteria.attestCriteriaOld(criteriaOld);
-          const actual = new Set(criteria.testProcedureDropdownOptionsOld.map((item) => item.getText()));
-          expect(actual.size - 2).toBe(expected.length);
-          expected.forEach((exp) => {
-            expect(actual.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
+          const actualTt = new Set(criteria.testToolsDropdownOptionsOld.map((item) => item.getText()));
+          expect(actualTt.size - 2).toBe(expectedTt.length);
+          expectedTt.forEach((exp) => {
+            expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
+          });
+          const actualTp = new Set(criteria.testProcedureDropdownOptionsOld.map((item) => item.getText()));
+          expect(actualTp.size - 2).toBe(expectedTp.length);
+          expectedTp.forEach((exp) => {
+            expect(actualTp.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
           });
         }
       });
