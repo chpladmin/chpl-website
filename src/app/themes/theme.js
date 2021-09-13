@@ -6,7 +6,6 @@ const theme = createMuiTheme({
     display: 'flex',
   },
   spacing: 4,
-  /*Start of CHPL Palette */
   palette: {
     background: {
       default: '#f9f9f9',
@@ -23,11 +22,7 @@ const theme = createMuiTheme({
       dark: '#c2c6ca',
       contrastText: '#000000',
     },
-    error: {
-      main: '#c44f65',
-    },
   },
-  /*End of CHPL Palette */
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
@@ -40,7 +35,7 @@ const theme = createMuiTheme({
     },
     h3: {
       fontSize: '1.750em',
-      fontWeight: 400,
+      fontWeight: 800,
     },
     h4: {
       fontSize: '1.5em',
@@ -48,7 +43,7 @@ const theme = createMuiTheme({
     },
     h5: {
       fontSize: '1.25em',
-      fontWeight: 400,
+      fontWeight: 800,
     },
     h6: {
       fontSize: '1.125em',

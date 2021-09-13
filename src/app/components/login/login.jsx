@@ -18,7 +18,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
 import SendIcon from '@material-ui/icons/Send';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import theme from '../../themes/theme';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { UserContext } from '../../shared/contexts';

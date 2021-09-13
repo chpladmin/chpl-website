@@ -246,7 +246,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell component="th" scope="row">
                   Test Procedure
                   <ChplTooltip title="The type of test procedure and the version used during testing of the certification criterion functionality.">
-                    <IconButton color="primary">
+                    <IconButton>
                       <InfoIcon
                         className={classes.iconSpacing}
                         color="primary"
