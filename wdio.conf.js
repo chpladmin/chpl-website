@@ -129,6 +129,34 @@ exports.config = {
       this.waitForDisplayed();
       this.click();
     }, true);
+    /**
+     * Attempt to scroll to element if it is not clickable.
+     * Pass { force: true } to click with JS even if element is not visible or clickable.
+     */
+    // 'click'            - name of command to be overwritten
+    // origClickFunction  - original click function
+    browser.overwriteCommand('click', function (origClickFunction, { force = false } = {}) {
+      if (!force) {
+        try {
+          // attempt to click
+          return origClickFunction()
+        } catch (err) {
+          if (err.message.includes('not clickable at point')) {
+            console.warn('WARN: Element', this.selector, 'is not clickable.',
+                         'Scrolling to it before clicking again.')
+            // scroll to element and click again
+            this.scrollIntoView({ block: 'center', inline: 'center' })
+            return origClickFunction()
+          }
+          throw err
+        }
+      }
+      // clicking with js
+      console.warn('WARN: Using force click for', this.selector)
+      browser.execute((el) => {
+        el.click()
+      }, this)
+    }, true); // don't forget to pass `true` as 3rd argument
     browser.addCommand('scrollAndClick', () => {
       // `this` is return value of $(selector)
       const runInBrowser = (argument) => {
