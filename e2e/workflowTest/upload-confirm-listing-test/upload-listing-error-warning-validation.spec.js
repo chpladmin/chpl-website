@@ -13,6 +13,7 @@ const inputs = require('./dataProviders/upload-listing-error-warning-validation-
 
 const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
 
+if (process.env.ENV !== 'stage') {
 beforeAll(() => {
   confirmPage = new ConfirmPage();
   uploadListingComponent = new UploadListingComponent();
@@ -37,7 +38,6 @@ inputs.forEach((input) => {
 
   describe(`User uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields or missing required criteria`, () => {
 
-    if (process.env.ENV !== 'stage') {
       beforeEach(() => {
         hooks.open('#/administration/confirm/listings');
       });
@@ -75,12 +75,10 @@ inputs.forEach((input) => {
         });
         expect(count).toBe(expectedWarnings.length);
       });
-    }
   });
 });
 
 describe('User inspects uploaded listing with valid CHPL ID', () => {
-  if (process.env.ENV !== 'stage') {
     beforeEach(() => {
       hooks.open('#/administration/confirm/listings');
     });
@@ -89,5 +87,6 @@ describe('User inspects uploaded listing with valid CHPL ID', () => {
       confirmPage.gotoPendingListingPage(validListingId);
       expect(confirmPage.errorOnInspect.length).toBe(0);
     });
-  }
 });
+
+}
