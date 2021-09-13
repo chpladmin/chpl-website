@@ -336,7 +336,7 @@ describe('the search page', () => {
       describe('the "Certification Date" filter', () => {
         it('should filter listing results', () => {
           page.moreFilterExpand(' View Certification Date ').click();
-          page.moreCertificationEndDateFilter.addValue('01/01/2019');
+          page.moreCertificationEndDateFilter.setValue(['01', 'Jan', 'Tab', '2019']);
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
