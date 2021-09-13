@@ -10,12 +10,12 @@ let page;
 const inputs = require('./dataProviders/attribute-value-options-dp');
 
 inputs.forEach((input) => {
-  const { criteriaName } = input;
-  const { testProcedureOptions } = input;
-  const { id } = input;
-  const { criteriaOld } = input;
-  const { cures } = input;
-  const { testToolsOptions } = input;
+  const { criteriaName ,
+  testProcedureOptions ,
+  id ,
+  criteriaOld ,
+  cures ,
+  testToolsOptions } = input;
 
   describe('On the 2015 Listing editing page', () => {
     beforeEach(async () => {
