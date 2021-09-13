@@ -149,6 +149,12 @@ function ChplLogin(props) {
     }
   };
 
+  const catchEnter = (e, target) => {
+    if (e.key === 'Enter') {
+      target(e);
+    }
+  };
+
   const changePassword = () => {
     networkService.changePassword({ oldPassword: changeFormik.values.oldPassword, newPassword: changeFormik.values.newPassword })
       .then((response) => {
@@ -424,6 +430,7 @@ function ChplLogin(props) {
                value={changeFormik.values.oldPassword}
                onChange={changeFormik.handleChange}
                onBlur={changeFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitChange)}
                error={changeFormik.touched.oldPassword && !!changeFormik.errors.oldPassword}
                helperText={changeFormik.touched.oldPassword && changeFormik.errors.oldPassword}
              />
@@ -436,6 +443,7 @@ function ChplLogin(props) {
                value={changeFormik.values.newPassword}
                onChange={updateChangePassword}
                onBlur={changeFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitChange)}
                error={changeFormik.touched.newPassword && !!changeFormik.errors.newPassword}
                helperText={changeFormik.touched.newPassword && changeFormik.errors.newPassword}
              />
@@ -459,6 +467,7 @@ function ChplLogin(props) {
                value={changeFormik.values.verificationPassword}
                onChange={changeFormik.handleChange}
                onBlur={changeFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitChange)}
                error={changeFormik.touched.verificationPassword && !!changeFormik.errors.verificationPassword}
                helperText={changeFormik.touched.verificationPassword && changeFormik.errors.verificationPassword}
              />
@@ -474,6 +483,7 @@ function ChplLogin(props) {
              value={sendResetFormik.values.email}
              onChange={sendResetFormik.handleChange}
              onBlur={sendResetFormik.handleBlur}
+             onKeyPress={(e) => catchEnter(e, submitResetRequest)}
              error={sendResetFormik.touched.email && !!sendResetFormik.errors.email}
              helperText={sendResetFormik.touched.email && sendResetFormik.errors.email}
            />
@@ -489,6 +499,7 @@ function ChplLogin(props) {
                value={resetFormik.values.userName}
                onChange={resetFormik.handleChange}
                onBlur={resetFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitReset)}
                error={resetFormik.touched.userName && !!resetFormik.errors.userName}
                helperText={resetFormik.touched.userName && resetFormik.errors.userName}
              />
@@ -501,6 +512,7 @@ function ChplLogin(props) {
                value={resetFormik.values.newPassword}
                onChange={updateResetPassword}
                onBlur={resetFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitReset)}
                error={resetFormik.touched.newPassword && !!resetFormik.errors.newPassword}
                helperText={resetFormik.touched.newPassword && resetFormik.errors.newPassword}
              />
@@ -524,6 +536,7 @@ function ChplLogin(props) {
                value={resetFormik.values.verificationPassword}
                onChange={resetFormik.handleChange}
                onBlur={resetFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitReset)}
                error={resetFormik.touched.verificationPassword && !!resetFormik.errors.verificationPassword}
                helperText={resetFormik.touched.verificationPassword && resetFormik.errors.verificationPassword}
              />
@@ -540,6 +553,7 @@ function ChplLogin(props) {
                value={signinFormik.values.userName}
                onChange={signinFormik.handleChange}
                onBlur={signinFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitSignin)}
                error={signinFormik.touched.userName && !!signinFormik.errors.userName}
                helperText={signinFormik.touched.userName && signinFormik.errors.userName}
              />
@@ -552,6 +566,7 @@ function ChplLogin(props) {
                value={signinFormik.values.password}
                onChange={signinFormik.handleChange}
                onBlur={signinFormik.handleBlur}
+               onKeyPress={(e) => catchEnter(e, submitSignin)}
                error={signinFormik.touched.password && !!signinFormik.errors.password}
                helperText={signinFormik.touched.password && signinFormik.errors.password}
              />
