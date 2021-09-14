@@ -55,7 +55,6 @@ const CertificationCriteriaEditComponent = {
       this.sortedTestFunctionalities = this.getSortedTestFunctionalities();
       this.selectedSvapKeys = this.getSelectedSvapKeys();
       this.setAvailableTestValues();
-      this.setTestToolDropDownText();
       this.setSvapDisplayText();
       this.setAvailableTestTools();
     }
@@ -324,25 +323,25 @@ const CertificationCriteriaEditComponent = {
       }
     }
 
-    setTestToolDropDownText() {
-      this.resources.testTools.data = this.resources.testTools.data.map((tt) => ({
-        ...tt,
-        dropDownText: tt.name + (tt.retired ? ' (Retired)' : ''),
-      }));
-    }
-
     setAvailableTestTools() {
       if (Array.isArray(this.cert.allowedTestTools)) {
+        this.cert.allowedTestTools = this.cert.allowedTestTools
+          .map((att) => ({
+            ...att,
+            dropDownText: att.name + (att.retired ? ' (Retired)' : ''),
+          }));
         this.cert.testToolsUsed.forEach((tt) => {
           if (!this.cert.allowedTestTools.find((att) => att.id === tt.testToolId)) {
             this.cert.allowedTestTools.push({
               id: tt.testToolId,
               name: tt.testToolName,
               retired: tt.retired,
+              dropDownText: tt.testToolName + (tt.retired ? ' (Retired)' : ''),
             });
           }
         });
       }
+      this.$log.info(this.cert.allowedTestTools);
     }
   },
 };
