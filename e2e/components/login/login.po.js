@@ -21,16 +21,25 @@ class LoginComponent {
   }
 
   logIn(user) {
+    let un;
+    let pw;
+    let btn;
     if (!($(this.elements.component).isDisplayed())) {
-      this.toggleLoginComponent();
+      if ($(this.elements.userName).isDisplayed()) {
+        un = $(this.elements.userName);
+        pw = $(this.elements.password);
+        btn = $(this.elements.login);
+      } else {
+        this.toggleLoginComponent();
+        un = $(this.elements.component).$(this.elements.userName);
+        pw = $(this.elements.component).$(this.elements.password);
+        btn = $(this.elements.component).$(this.elements.login);
+      }
     }
-    const un = $(this.elements.component).$(this.elements.userName);
-    const pw = $(this.elements.component).$(this.elements.password);
-    const btn = $(this.elements.component).$(this.elements.login);
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
     btn.click();
-    $(this.elements.logout).waitForDisplayed();
+    browser.waitUntil(() => !(/Administrator Login/i.test(this.getLoggedInUserName())));
     browser.keys('Escape');
     browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
   }
