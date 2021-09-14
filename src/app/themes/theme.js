@@ -7,7 +7,6 @@ const theme = createMuiTheme({
   },
   spacing: 4,
   
-   /*Start of CHPL Palette*/
   palette: {
     background: {
       default: '#f9f9f9',
@@ -28,9 +27,7 @@ const theme = createMuiTheme({
       main: '#c44f65',
     },
   },
- /*End of of CHPL Palette*/
 
- /*Start of Typography*/ 
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
@@ -76,9 +73,7 @@ const theme = createMuiTheme({
       fontSize: '0.875em',
     },
   },
-/*End of Typography*/
 
-/*Start of Overides */
   overrides: {
     MuiAccordionSummary: {
       root: {
@@ -356,5 +351,4 @@ const theme = createMuiTheme({
     },
   },
 });
-/*End of Overides */
 export default theme;

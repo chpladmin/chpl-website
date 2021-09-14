@@ -13,5 +13,5 @@ angular
     'swaggerUi',
   ])
   .component('chplNotFoundBridge', reactToAngularComponent(ChplNotFound))
-  .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide));
+  .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide))
   .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload));
