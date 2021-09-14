@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button,
   ButtonGroup,
-  InputBase,
   Paper,
   Table,
   TableBody,
@@ -11,8 +10,6 @@ import {
   TableRow,
   TablePagination,
   makeStyles,
-  useMediaQuery,
-  Typography,
 } from '@material-ui/core';
 
 import ChplSortableHeaders from '../../../components/util/chpl-sortable-headers';
@@ -23,34 +20,32 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 
-
 const useStyles = makeStyles({
   container: {
     display: "grid",
     gridTemplateColumns: "1fr",
     gridTemplateRows: "1fr",
-    gap:'16px',
+    gap: '16px',
   },
-
-  stickyColumn:{
+  stickyColumn: {
     position: 'sticky',
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor:'#ffffff',
+    backgroundColor: '#ffffff',
   },
   tableContainer: {
     maxHeight: "800px",
-    overflowWrap:'normal',
-    border:'.5px solid #c2c6ca',
+    overflowWrap: 'normal',
+    border: '.5px solid #c2c6ca',
   },
   tableActionContainer: {
     display: "grid",
-    justifyContent:'end',
+    justifyContent: 'end',
   },
-  widgetContainer:{
-    gap:'8px',
-    display:'grid',
-    alignContent:'space-between',
+  widgetContainer: {
+    gap: '8px',
+    display: 'grid',
+    alignContent: 'space-between',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -67,7 +62,7 @@ function ChplStyleGuideTable() {
       product: 'Infection Control Antimicrobial Use and Resistance Reporting',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'OPEN',
       actions: 'Y | N',
     }, {
@@ -77,7 +72,7 @@ function ChplStyleGuideTable() {
       product: 'Syndromic Surveillance Reporting',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'OPEN',
       actions: 'Y | N',
     }, {
@@ -87,7 +82,7 @@ function ChplStyleGuideTable() {
       product: 'Beaker Reportable Labs Reporting',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'OPEN',
       actions: 'Y | N',
     }, {
@@ -97,7 +92,7 @@ function ChplStyleGuideTable() {
       product: 'Carefluence Open API',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'OPEN',
       actions: 'Y | N',
     }, {
@@ -107,7 +102,7 @@ function ChplStyleGuideTable() {
       product: 'ModuleMD WISE™',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -117,7 +112,7 @@ function ChplStyleGuideTable() {
       product: 'Allscripts TouchWorks EHR',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -127,7 +122,7 @@ function ChplStyleGuideTable() {
       product: 'Allscripts Sunrise Acute Care',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -137,7 +132,7 @@ function ChplStyleGuideTable() {
       product: 'Allscripts Sunrise Ambulatory Care',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -147,7 +142,7 @@ function ChplStyleGuideTable() {
       product: 'EpicCare Ambulatory EHR Suite',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -157,7 +152,7 @@ function ChplStyleGuideTable() {
       product: 'EpicCare Inpatient EHR Suite',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -167,7 +162,7 @@ function ChplStyleGuideTable() {
       product: 'Beacon Cancer Registry Reporting',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -177,7 +172,7 @@ function ChplStyleGuideTable() {
       product: 'CQMsolution',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -195,7 +190,7 @@ function ChplStyleGuideTable() {
       product: 'Beaker Reportable Labs Reporting',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -205,7 +200,7 @@ function ChplStyleGuideTable() {
       product: 'Beaker Reportable Labs Reporting',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     }, {
@@ -215,7 +210,7 @@ function ChplStyleGuideTable() {
       product: 'Beaker Reportable Labs Reporting',
       edition: '2015',
       version: 'Epic 2017',
-      certifcationDate:'July, 2021',
+      certifcationDate: 'July, 2021',
       status: 'CLOSED',
       actions: 'Y | N',
     },
@@ -249,22 +244,21 @@ function ChplStyleGuideTable() {
     setListings(listings.sort(listingSortComparator(orderDirection + property)).map((listing) => listing));
   };
 
-
   return (
     <div className={classes.container}>
       <TableContainer>
-          <div className={classes.tableActionContainer}>
-            <ButtonGroup>
+        <div className={classes.tableActionContainer}>
+          <ButtonGroup>
             <Button fullWidth color="secondary" variant="contained">Download
-              <GetAppIcon className={classes.iconSpacing}/>
+              <GetAppIcon className={classes.iconSpacing} />
             </Button>
             <Button fullWidth color="secondary" variant="contained">Columns Settings
-              <SettingsIcon className={classes.iconSpacing}/>
+              <SettingsIcon className={classes.iconSpacing} />
             </Button>
             <Button fullWidth color="secondary" variant="contained">Add
-              <PlaylistAddIcon className={classes.iconSpacing}/>
+              <PlaylistAddIcon className={classes.iconSpacing} />
             </Button>
-            </ButtonGroup>
+          </ButtonGroup>
         </div>
       </TableContainer>
       <TableContainer className={classes.tableContainer} component={Paper}>
@@ -277,11 +271,11 @@ function ChplStyleGuideTable() {
             {listings
               .map((listing) => (
                 <TableRow key={listing.id}>
-                  <TableCell className={classes.stickyColumn}> 
-                  <Button color="primary" variant="contained">
-                  {listing.chplProductNumber}
-                  <ArrowForwardIcon className={classes.iconSpacing} />
-                  </Button>
+                  <TableCell className={classes.stickyColumn}>
+                    <Button color="primary" variant="contained">
+                      {listing.chplProductNumber}
+                      <ArrowForwardIcon className={classes.iconSpacing} />
+                    </Button>
                   </TableCell>
                   <TableCell>
                     <a href='#'>{listing.developer}</a>
@@ -292,14 +286,14 @@ function ChplStyleGuideTable() {
                   <TableCell>{listing.certifcationDate}</TableCell>
                   <TableCell>{listing.status}</TableCell>
                   <TableCell align="right">
-                      <Button fullWidth color="secondary" variant="contained">
-                        CERT ID
-                        <AssignmentOutlinedIcon className={classes.iconSpacing} />
-                      </Button>
-                      <Button fullWidth color="secondary" variant="contained">
-                        Compare
-                        <CompareArrowsIcon className={classes.iconSpacing} />
-                      </Button>
+                    <Button fullWidth color="secondary" variant="contained">
+                      CERT ID
+                      <AssignmentOutlinedIcon className={classes.iconSpacing} />
+                    </Button>
+                    <Button fullWidth color="secondary" variant="contained">
+                      Compare
+                      <CompareArrowsIcon className={classes.iconSpacing} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -310,7 +304,6 @@ function ChplStyleGuideTable() {
         rowsPerPageOptions={[50, 100, 200, { label: 'All' }]}
         component="div"
       />
-
     </div>
   );
 }
