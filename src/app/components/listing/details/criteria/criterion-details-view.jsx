@@ -23,8 +23,8 @@ import {
 import { FlagContext } from '../../../../shared/contexts';
 
 const useStyles = makeStyles(() => ({
-  iconSpacing: {
-    marginLeft: '4px',
+  infoIcon: {
+    float: 'right',
   },
   unindentedData: {
     marginLeft: '-25px',
@@ -69,15 +69,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="additionalSoftware">
                 <TableCell component="th" scope="row">
-                  Relied Upon Software
                   <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criterion.">
-                    <IconButton >
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary" className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Relied Upon Software
                 </TableCell>
                 <TableCell><ChplReliedUponSoftwareView sw={criterion.additionalSoftware} /></TableCell>
               </TableRow>
@@ -86,15 +85,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="gap">
                 <TableCell component="th" scope="row">
-                  Gap
                   <ChplTooltip title="The corresponding certification criterion are gap certified (True or False).">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Gap
                 </TableCell>
                 <TableCell>{criterion.gap ? 'True' : 'False'}</TableCell>
               </TableRow>
@@ -103,32 +101,30 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="svap">
                 <TableCell component="th" scope="row">
-                  Standards Version Advancement Process
                   <ChplTooltip title="Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Standards Version Advancement Process
                 </TableCell>
                 <TableCell>
                   <ul className={classes.unindentedData}>
                     { criterion.svaps.map((svap, index) => (
                       <li key={svap.id || svap.key || index}>
-                        <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength={100} wordBoundaries />
                         { svap.replaced
                           && (
                             <ChplTooltip title="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.">
-                              <IconButton>
+                              <IconButton className={classes.infoIcon}>
                                 <InfoIcon
-                                  className={classes.iconSpacing}
                                   color="primary"
                                 />
                               </IconButton>
                             </ChplTooltip>
                           )}
+                        <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength={100} wordBoundaries />
                       </li>
                     ))}
                   </ul>
@@ -139,15 +135,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="optionalStandards">
                 <TableCell component="th" scope="row">
-                  Optional Standard
                   <ChplTooltip title="The standard(s) used to meet a certification criterion where additional, optional standards are permitted.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Optional Standard
                 </TableCell>
                 <TableCell>
                   { criterion.optionalStandards?.length > 0
@@ -179,15 +174,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="g1Success">
                 <TableCell component="th" scope="row">
-                  Measure Successfully Tested for G1
                   <ChplTooltip title="The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(1)).">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Measure Successfully Tested for G1
                 </TableCell>
                 <TableCell>{criterion.g1Success ? 'True' : 'False'}</TableCell>
               </TableRow>
@@ -196,15 +190,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="g2Success">
                 <TableCell component="th" scope="row">
-                  Measure Successfully Tested for G2
                   <ChplTooltip title="The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(2)).">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Measure Successfully Tested for G2
                 </TableCell>
                 <TableCell>{criterion.g2Success ? 'True' : 'False'}</TableCell>
               </TableRow>
@@ -213,15 +206,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="testFunctionality">
                 <TableCell component="th" scope="row">
-                  Functionality Tested
                   <ChplTooltip title="Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Functionality Tested
                 </TableCell>
                 <TableCell>
                   { criterion.testFunctionality.length > 0
@@ -244,15 +236,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">
-                  Test Procedure
                   <ChplTooltip title="The type of test procedure and the version used during testing of the certification criterion functionality.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Test Procedure
                 </TableCell>
                 <TableCell>
                   { criterion.testProcedures.length > 0
@@ -278,15 +269,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="qms">
                 <TableCell component="th" scope="row">
-                  Quality Management System
                   <ChplTooltip title="If the corresponding certified product has a Quality Management System (QMS): 1) the standard or mapping used to meet the quality management system certification criterion, and 2) if a QMS standard or mapping was modified, documentation on the changes made. Specific requirements for 2015 Edition are different than for 2014 Edition.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Quality Management System
                 </TableCell>
                 <TableCell>
                   { qmsStandards?.length > 0
@@ -320,15 +310,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="accessibility">
                 <TableCell component="th" scope="row">
-                  Accessibility Standard
                   <ChplTooltip title="The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Accessibility Standard
                 </TableCell>
                 <TableCell>
                   { accessibilityStandards?.length > 0
@@ -349,15 +338,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="testToolsUsed">
                 <TableCell component="th" scope="row">
-                  Test Tool
                   <ChplTooltip title="The name and version of the test tool used during testing of the certification criterion functionality.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Test Tool
                 </TableCell>
                 <TableCell>
                   { criterion.testToolsUsed.length > 0
@@ -383,15 +371,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="testDataUsed">
                 <TableCell component="th" scope="row">
-                  Test Data
                   <ChplTooltip title="The test data version and any alterations or modifications to the ONC-approved test data. It is an optional field except for the products testing for automated numerator recording (&sect;170.314(g)(1) or &sect;170.315(g)(1)) and automated measure calculation (&sect; 170.314(g)(2) or &sect;170.315(g)(2)). For those products, the field is required.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Test Data
                 </TableCell>
                 <TableCell>
                   { criterion.testDataUsed.length > 0
@@ -420,15 +407,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="apiDocumentation">
                 <TableCell component="th" scope="row">
-                  API Documentation
                   <ChplTooltip title="The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9)).">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  API Documentation
                 </TableCell>
                 <TableCell>
                   { criterion.apiDocumentation
@@ -441,15 +427,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="exportDocumentation">
                 <TableCell component="th" scope="row">
-                  Export Documentation
                   <ChplTooltip title="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Export Documentation
                 </TableCell>
                 <TableCell>
                   { criterion.exportDocumentation
@@ -462,15 +447,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="attestationAnswer">
                 <TableCell component="th" scope="row">
-                  Attestation
                   <ChplTooltip title="Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Attestation
                 </TableCell>
                 <TableCell>{criterion.attestationAnswer ? 'Yes' : 'No'}</TableCell>
               </TableRow>
@@ -479,15 +463,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="documentationUrl">
                 <TableCell component="th" scope="row">
-                  Documentation
                   <ChplTooltip title="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Documentation
                 </TableCell>
                 <TableCell>
                   { criterion.documentationUrl
@@ -500,15 +483,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="useCases">
                 <TableCell component="th" scope="row">
-                  Use Case(s)
                   <ChplTooltip title="Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Use Case(s)
                 </TableCell>
                 <TableCell>
                   { criterion.useCases
@@ -521,15 +503,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="serviceBaseUrlList">
                 <TableCell component="th" scope="row">
-                  Service Base URL List
                   <ChplTooltip title="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Service Base URL List
                 </TableCell>
                 <TableCell>
                   { criterion.serviceBaseUrlList
@@ -542,15 +523,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="privacySecurityFramework">
                 <TableCell component="th" scope="row">
-                  Privacy &amp; Security Framework
                   <ChplTooltip title="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). ">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  Privacy &amp; Security Framework
                 </TableCell>
                 <TableCell>{criterion.privacySecurityFramework}</TableCell>
               </TableRow>
@@ -559,15 +539,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="sed">
                 <TableCell component="th" scope="row">
-                  SED
                   <ChplTooltip title="The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition.">
-                    <IconButton>
+                    <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        className={classes.iconSpacing}
                         color="primary"
                       />
                     </IconButton>
                   </ChplTooltip>
+                  SED
                 </TableCell>
                 <TableCell>{criterion.sed ? 'True' : 'False'}</TableCell>
               </TableRow>
