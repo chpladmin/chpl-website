@@ -57,7 +57,7 @@ exports.config = {
   connectionRetryCount: 3,
   services: ['chromedriver'],
   framework: 'jasmine',
-  jasmineOpts: {
+  jasmineOpts: { // used to be jasmineNodeOpts; when jasmine.DEFAULT_TIMEOUT_INTERVAL is 10000 this isn't being taken into account
     ui: 'bdd',
     defaultTimeoutInterval: 60000,
     requires: ['@babel/register'], // think this is the new one
