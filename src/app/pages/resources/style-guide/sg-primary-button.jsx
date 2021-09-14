@@ -17,10 +17,10 @@ function SgPrimaryButton() {
 
   return (
     <Button color="primary" variant="contained">
-    Primary Button
-    <ArrowForwardIcon className={classes.iconSpacing}
-    fontSize="small"
-    />
+      Primary Button
+      <ArrowForwardIcon className={classes.iconSpacing}
+        fontSize="small"
+      />
     </Button>
   );
 }

@@ -17,10 +17,10 @@ function SgSecondaryButton() {
 
   return (
     <Button color="secondary" variant="contained">
-    Secondary Button
-    <ArrowBackIcon className={classes.iconSpacing}
-    fontSize="small"
-    />
+      Secondary Button
+      <ArrowBackIcon className={classes.iconSpacing}
+        fontSize="small"
+      />
     </Button>
   );
 }
