@@ -21,7 +21,7 @@ import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-/*Utility Componets*/
+/*Utility Components*/
 import { ChplEllipsis } from '../../../components/util';
 import ChplActionBar from '../../../components/action-bar/action-bar';
 
@@ -436,7 +436,22 @@ function Elements() {
               <List aria-label="Card rules">
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    1.
+                    1. The top level of the accordion should have the follow light blue as a card header.
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    2. Content should always be contained in the accordion details element.
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    3. Nest accordions should have the background color of #f9f9f9. See example to the right. 
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    4. Nested accordions should be contained in a div with the class .accordion for smooth & equal padding.
                   </Typography>
                 </ListItem>
               </List>
