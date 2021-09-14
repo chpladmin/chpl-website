@@ -12,17 +12,17 @@ const useStyles = makeStyles({
   },
 });
 
-function SgAdministratorLogin () {
+function SgAdministratorLogin() {
   const classes = useStyles();
 
   return (
     <SgLogin
-    anchor={
-     <Button variant="contained" color="secondary">
-       Administrator Login  
-      <PersonIcon className={classes.iconSpacing}/>
-    </Button>
-    } 
+      anchor={
+        <Button variant="contained" color="secondary">
+          Administrator Login
+          <PersonIcon className={classes.iconSpacing} />
+        </Button>
+      }
     />
   );
 }
