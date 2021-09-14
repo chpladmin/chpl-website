@@ -57,6 +57,7 @@ const useStyles = makeStyles({
     gap: '16px',
     display: 'grid',
     gridTemplateColumns: '3fr 9fr',
+    alignItems: 'start',
   },
   tableContainer: {
     gap: '16px',
@@ -312,17 +313,22 @@ function Elements() {
               <List aria-label="Card rules">
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    1.
+                    1. Cards should always contained a title.
                   </Typography>
                 </ListItem>
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    2.
+                    2. All content should be contained in the CardContent element.
                   </Typography>
                 </ListItem>
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    3.
+                    3. Chpl cards can also contained buttons in the CardActions element. Buttons should only be related to the content within the card. However, a chpl card doesn't need a button to be used.
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Typography gutterBottom variant="body1">
+                    4. If the Chpl cards has more then 3 buttons, please contain them in a buttonGroup.
                   </Typography>
                 </ListItem>
               </List>
@@ -338,8 +344,7 @@ function Elements() {
               <Divider></Divider>
               <Typography gutterBottom variant="body1">
                 Body 1 is being shown
-
-                {'Dont you like this font? If so download it here'}
+                {' Dont you like this font? If so download it here'}
               </Typography>
             </CardContent>
             <CardActions>
@@ -446,7 +451,7 @@ function Elements() {
                 </ListItem>
                 <ListItem>
                   <Typography gutterBottom variant="body1">
-                    3. Nest accordions should have the background color of #f9f9f9. See example to the right. 
+                    3. Nest accordions should have the background color of #f9f9f9. See example to the right.
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -535,7 +540,7 @@ function Elements() {
             </CardContent>
           </Card>
           <div className={classes.columnContainer}>
-          <Typography gutterBottom variant="body1">Login </Typography>
+            <Typography gutterBottom variant="body1">Login </Typography>
             <SgAdministratorLogin />
             <Typography gutterBottom variant="body1">Forgot Password </Typography>
             <SgAdministratorLoginForgotPassword />
