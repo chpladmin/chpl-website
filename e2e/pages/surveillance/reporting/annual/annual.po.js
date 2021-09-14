@@ -18,6 +18,11 @@ class AnnualPage {
   get download() {
     return $(this.elements.download);
   }
+
+  set(fields) {
+    $(this.elements.obstacle).setValue(fields.obstacle);
+    $(this.elements.priority).setValue(fields.priority);
+  }
 }
 
 export default AnnualPage;

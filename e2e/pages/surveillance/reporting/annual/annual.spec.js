@@ -45,8 +45,10 @@ describe('ROLE_ONC user', () => {
 
 describe('ROLE_ACB user', () => {
   const timestamp = (new Date()).getTime();
-  const obstacle = `obstacle summary ${timestamp}`;
-  const priority = `priority summary ${timestamp}`;
+  const fields = {
+    obstacle: `Obstacle summary ${timestamp}`,
+    priority: `Priority summary ${timestamp}`,
+  };
 
   beforeEach(() => {
     loginComponent.logIn('drummond');
@@ -57,41 +59,43 @@ describe('ROLE_ACB user', () => {
   });
 
   it('can initiate annual report', () => {
-    reportingPage.initiateAnnualReport('Drummond Group', 2021).click();
+    reportingPage.initiateAnnualReport('Drummond Group', 2022).click();
     action.yes();
     hooks.waitForSpinnerToDisappear();
-    annualPage.obstacleSummary.setValue(obstacle);
-    annualPage.prioritySummary.setValue(priority);
+    annualPage.set(fields);
     action.save();
     hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.initiateAnnualReport('Drummond Group', 2021).isExisting()).toBe(false);
+    expect(reportingPage.initiateAnnualReport('Drummond Group', 2022).isExisting()).toBe(false);
   });
 
   it('can edit annual report', () => {
-    reportingPage.editAnnualReport('Drummond Group', 2021).click();
+    const updatedFields = {
+      obstacle: `Obstacle summary Updated ${timestamp}`,
+      priority: `Priority summary Updated ${timestamp}`,
+    };
+    reportingPage.editAnnualReport('Drummond Group', 2022).click();
     expect(annualPage.obstacleSummary.isDisplayed()).toBe(true);
-    annualPage.obstacleSummary.setValue(`${obstacle}-updated`);
     expect(annualPage.prioritySummary.isDisplayed()).toBe(true);
-    annualPage.prioritySummary.setValue(`${priority}-updated`);
+    annualPage.set(updatedFields);
     action.save();
     hooks.waitForSpinnerToDisappear();
-    reportingPage.editAnnualReport('Drummond Group', 2021).click();
-    expect(annualPage.prioritySummary.getValue()).toBe(`${priority}-updated`);
-    expect(annualPage.obstacleSummary.getValue()).toBe(`${obstacle}-updated`);
+    reportingPage.editAnnualReport('Drummond Group', 2022).click();
+    expect(annualPage.prioritySummary.getValue()).toBe(updatedFields.priority);
+    expect(annualPage.obstacleSummary.getValue()).toBe(updatedFields.obstacle);
   });
 
   it('can download annual report', () => {
-    reportingPage.editAnnualReport('Drummond Group', 2021).click();
+    reportingPage.editAnnualReport('Drummond Group', 2022).click();
     annualPage.download.click();
     expect(toast.toastTitle.getText()).toBe('Report is being generated');
   });
 
   it('can delete annual report', () => {
-    reportingPage.editAnnualReport('Drummond Group', 2021).click();
+    reportingPage.editAnnualReport('Drummond Group', 2022).click();
     action.delete();
     action.yes();
     hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.editAnnualReport('Drummond Group', 2021).isExisting()).toBe(false);
+    expect(reportingPage.editAnnualReport('Drummond Group', 2022).isExisting()).toBe(false);
   });
 });
 

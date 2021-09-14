@@ -11,7 +11,12 @@ class ComplaintsComponent {
       filter: '#data-filter',
       downloadResultsButton: '#download-results',
       newComplaint: '//*[text()="Add New Complaint"]',
+      editButton: '//*[text()="Edit"]/parent::button',
     };
+  }
+
+  get editButton() {
+    return $(this.elements.editButton);
   }
 
   set(fields) {
