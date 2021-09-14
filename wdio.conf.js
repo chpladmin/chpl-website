@@ -124,10 +124,10 @@ exports.config = {
       return jsonObj;
     });
     global.flagObj = browser.getFlag();
-    browser.addCommand('waitAndClick', () => {
-      // `this` is return value of $(selector)
-      this.waitForDisplayed();
-      this.click();
+    browser.addCommand('waitAndClick', async function () {
+      // `this` is return value of $(selector), but only when not using shorthand function definitions
+      await this.waitForDisplayed();
+      await this.click();
     }, true);
     /**
      * Attempt to scroll to element if it is not clickable.
