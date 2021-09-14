@@ -14,30 +14,28 @@ const inputs = require('./dataProviders/upload-listing-error-warning-validation-
 const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
 
 if (process.env.ENV !== 'stage') {
-beforeAll(() => {
-  confirmPage = new ConfirmPage();
-  uploadListingComponent = new UploadListingComponent();
-  loginComponent = new LoginComponent();
-  hooks = new Hooks();
-  toast = new ToastComponent();
-  hooks.open('#/administration/upload');
-  loginComponent.logIn('admin');
-  uploadListingComponent.uploadListingBeta('../../../resources/upload-listing-beta/2015_InvalidData.csv');
-  browser.waitUntil(() => toast.toastTitle.isDisplayed());
-  toast.clearAllToast();
-  uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
-  browser.waitUntil(() => toast.toastTitle.isDisplayed());
-  toast.clearAllToast();
-});
+  beforeAll(() => {
+    confirmPage = new ConfirmPage();
+    uploadListingComponent = new UploadListingComponent();
+    loginComponent = new LoginComponent();
+    hooks = new Hooks();
+    toast = new ToastComponent();
+    hooks.open('#/administration/upload');
+    loginComponent.logIn('admin');
+    uploadListingComponent.uploadListingBeta('../../../resources/upload-listing-beta/2015_InvalidData.csv');
+    browser.waitUntil(() => toast.toastTitle.isDisplayed());
+    toast.clearAllToast();
+    uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
+    browser.waitUntil(() => toast.toastTitle.isDisplayed());
+    toast.clearAllToast();
+  });
 
+  inputs.forEach((input) => {
+    const { listingId } = input;
+    const { expectedErrors } = input;
+    const { expectedWarnings } = input;
 
-inputs.forEach((input) => {
-  const { listingId } = input;
-  const { expectedErrors } = input;
-  const { expectedWarnings } = input;
-
-  describe(`User uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields or missing required criteria`, () => {
-
+    describe(`User uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields or missing required criteria`, () => {
       beforeEach(() => {
         hooks.open('#/administration/confirm/listings');
       });
@@ -75,10 +73,10 @@ inputs.forEach((input) => {
         });
         expect(count).toBe(expectedWarnings.length);
       });
+    });
   });
-});
 
-describe('User inspects uploaded listing with valid CHPL ID', () => {
+  describe('User inspects uploaded listing with valid CHPL ID', () => {
     beforeEach(() => {
       hooks.open('#/administration/confirm/listings');
     });
@@ -87,6 +85,5 @@ describe('User inspects uploaded listing with valid CHPL ID', () => {
       confirmPage.gotoPendingListingPage(validListingId);
       expect(confirmPage.errorOnInspect.length).toBe(0);
     });
-});
-
+  });
 }
