@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Avatar,
     Button,
-    ButtonGroup,
     Card,
     CardContent,
     Divider,
@@ -10,7 +9,6 @@ import {
     makeStyles,
 } from '@material-ui/core';
 
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
@@ -39,8 +37,8 @@ const useStyles = makeStyles({
         gap: '8px',
         alignItems: 'center',
     },
-    widgetProductContainer:{
-        alignContent:'space-between',
+    widgetProductContainer: {
+        alignContent: 'space-between',
         display: 'grid',
         gap: '8px',
     },
