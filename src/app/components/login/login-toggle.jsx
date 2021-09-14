@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Popover,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
@@ -60,7 +59,6 @@ function ChplLoginToggle() {
 
   return (
     <>
-    <ThemeProvider theme={theme}>
       <Button
         color="secondary"
         variant="contained"
@@ -90,7 +88,6 @@ function ChplLoginToggle() {
         <ChplLogin/>
         </div>
       </Popover>
-      </ThemeProvider>
     </>
   );
 }
