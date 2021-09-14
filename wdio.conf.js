@@ -157,14 +157,6 @@ exports.config = {
         el.click()
       }, this)
     }, true); // don't forget to pass `true` as 3rd argument
-    browser.addCommand('scrollAndClick', () => {
-      // `this` is return value of $(selector)
-      const runInBrowser = (argument) => {
-        argument.click();
-      };
-      this.scrollIntoView({ block: 'center', inline: 'center' });
-      browser.execute(runInBrowser, this);
-    }, true);
     browser.addCommand('waitForFileExists', (filePath, timeout) => new Promise(((resolve, reject) => {
       const dir = path.dirname(filePath);
       const basename = path.basename(filePath);
