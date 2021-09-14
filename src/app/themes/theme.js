@@ -48,11 +48,11 @@ const theme = createMuiTheme({
     h6: {
       fontSize: '1.125em',
       fontWeight: 400,
-      lineHeight:'1.3em'
+      lineHeight: '1.3em'
     },
     body1: {
       fontSize: '1em',
-      lineHeight:'1.3em'
+      lineHeight: '1.3em'
     },
     body2: {
       fontSize: '0.875em',
@@ -69,6 +69,25 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiAccordionSummary: {
+      root: {
+        padding: '8px',
+      },
+      content: {
+        padding: '4px 8px',
+      },
+      expandIcon:{
+        transform:'none',
+        '&$expanded': {
+          transform:'none',
+        },
+      },
+    },
+    MuiAccordionDetails:{
+      root:{
+        padding:'16px 0px',
+      },
+    },
     MuiPaper: {
       rounded: {
         borderRadius: '8px',
@@ -146,6 +165,12 @@ const theme = createMuiTheme({
     MuiFormHelperText: {
       root: {
         fontSize: 12,
+      },
+    },
+    MuiFormLabel: {
+      asterisk: {
+        fontSize: '2em',
+        verticalAlign: 'text-top',
       },
     },
     MuiTable: {
@@ -238,6 +263,16 @@ const theme = createMuiTheme({
       },
       icon: {
         color: '#000',
+      },
+    },
+    MuiOutlinedInput: {
+      input: {
+        paddingTop: '18.5px',
+        paddingBottom: '14px',
+      },
+      inputMarginDense: {
+        paddingTop: '14.5px',
+        paddingBottom: '10px',
       },
     },
   },

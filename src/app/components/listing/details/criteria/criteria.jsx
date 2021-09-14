@@ -6,7 +6,7 @@ import {
 } from 'prop-types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 import {
   Accordion,
   AccordionDetails,
@@ -97,7 +97,7 @@ function ChplCriteria(props) {
               >
                 Removed Certification Criteria
                 <ChplTooltip title="These certification criteria have been removed from the Program.">
-                  <InfoOutlinedIcon fontSize="large" />
+                  <InfoIcon fontSize="large" />
                 </ChplTooltip>
               </AccordionSummary>
               <AccordionDetails>

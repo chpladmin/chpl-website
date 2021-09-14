@@ -2,10 +2,32 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Popover,
+  makeStyles,
 } from '@material-ui/core';
 
+import PersonIcon from '@material-ui/icons/Person';
 import { UserContext } from '../../shared/contexts';
 import ChplLogin from './login';
+import theme from '../../themes/theme';
+
+
+const useStyles = makeStyles(() => ({
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+  loginSpacing:{
+    margin:'8px',
+  },
+  popoverSpacing:{
+    marginLeft:'8px',
+  },
+  loginCard:{
+    width: '300px',
+    [theme.breakpoints.up('md')]: {
+      width: '375px',
+    },
+  },
+}));
 
 function ChplLoginToggle() {
   /* eslint-disable react/destructuring-assignment */
@@ -16,7 +38,7 @@ function ChplLoginToggle() {
     user, impersonating,
   } = useContext(UserContext);
   /* eslint-enable react/destructuring-assignment */
-
+  const classes = useStyles();
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
     setOpen(true);
@@ -38,13 +60,14 @@ function ChplLoginToggle() {
   return (
     <>
       <Button
-        color="primary"
-        variant="outlined"
+        color="secondary"
+        variant="contained"
         id="login-toggle"
         aria-describedby="admin-login-form"
         onClick={handleClick}
+        className={classes.loginSpacing}
       >
-        { title }
+        { title }<PersonIcon className={classes.iconSpacing}/>
       </Button>
       <Popover
         id="admin-login-form"
@@ -59,8 +82,11 @@ function ChplLoginToggle() {
           vertical: 'top',
           horizontal: 'right',
         }}
+        className={classes.popoverSpacing}
       >
-        <ChplLogin />
+        <div className={classes.loginCard}>
+        <ChplLogin/>
+        </div>
       </Popover>
     </>
   );

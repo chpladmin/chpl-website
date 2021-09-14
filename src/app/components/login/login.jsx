@@ -36,9 +36,6 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
     padding: '16px 0px 0px 16px',
   },
-  loginCard: {
-    minWidth: '375px',
-  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -415,7 +412,7 @@ function ChplLogin(props) {
   });
 
   return (
-    <Card className={classes.loginCard}>
+    <Card>
       <CardHeader className={classes.loginHeader} title={getTitle()} />
       <CardContent className={classes.grid}>
         {state === 'CHANGEPASSWORD'
