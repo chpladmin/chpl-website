@@ -27,8 +27,8 @@ const useStyles = makeStyles({
     filterContainer: {
         display: 'grid',
         gridTemplateColumns: 'auto',
-        justifyItems:'start',
-        alignItems:'start',
+        justifyItems: 'start',
+        alignItems: 'start',
     },
     filterHeaderContainer: {
         display: 'grid',
@@ -78,7 +78,6 @@ const useStyles = makeStyles({
     iconSpacing: {
         marginLeft: '4px',
     },
-
 });
 
 function SgAdvancedSearchPopover(props) {

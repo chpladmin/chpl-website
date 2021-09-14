@@ -18,13 +18,13 @@ function SgAdvancedSearch() {
 
   return (
     <SgAdvancedSearchPopover
-    anchor={
-     <Button color="primary">
-       Advanced Search
-      <FilterListIcon className={classes.iconSpacing}
-      />
-    </Button>
-    } 
+      anchor={
+        <Button color="primary">
+          Advanced Search
+          <FilterListIcon className={classes.iconSpacing}
+          />
+        </Button>
+      }
     />
   );
 }
