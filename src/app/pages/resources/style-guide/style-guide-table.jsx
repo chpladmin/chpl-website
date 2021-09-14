@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { ChplSortableHeaders } from '../../../components/util/chpl-sortable-headers';
+import ChplSortableHeaders from '../../../components/util/chpl-sortable-headers';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import SettingsIcon from '@material-ui/icons/Settings';
