@@ -1,40 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-    IconButton, 
-    Container,
-    ThemeProvider,
+    IconButton,
     makeStyles,
     Typography,
 } from '@material-ui/core';
 
-
 import { ChplTooltip } from '../../../components/util';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoIcon from '@material-ui/icons/Info';
 
 const useStyles = makeStyles(() => ({
+    accordion: {
+        padding: '16px',
+    },
     content: {
         display: 'grid',
         gap: '16px',
         gridTemplateColumns: '1fr',
         alignItems: 'start',
     },
-    NestedAccordionSummary: {
+    nestedAccordionSummary: {
         backgroundColor: '#f9f9f9',
         borderRadius: '8px',
-        margin:'8px',
     },
-    NestedAccordionDetails: {
+    nestedAccordionDetails: {
         borderRadius: '8px',
         display: 'grid',
         gridTemplateColumns: '1fr',
-        margin:'8px',
+        margin: '16px',
     },
-    infoButton:{
-        padding:'0px 0px 0px 4px',
+    infoButton: {
+        padding: '0px 0px 0px 4px',
     }
 }));
 
@@ -43,37 +42,72 @@ function SgAccordion() {
 
     return (
         <div>
-            <Accordion>
+            <Accordion>      
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
                     id="removed-header"
                 >
-                    Accordion Level 1
+                    Accordion Level 1 | Criteria
                     <ChplTooltip title="These certification criteria have been removed from the Program.">
                         <IconButton color="primary" className={classes.infoButton}>
-                        <InfoOutlinedIcon fontSize="medium" />
+                            <InfoIcon fontSize="medium" />
                         </IconButton>
                     </ChplTooltip>
                 </AccordionSummary>
-                        <Accordion>
-                            <AccordionSummary
-                                className={classes.NestedAccordionSummary}
-                                expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
-                                id="removed-header"
-                            >
-                                Nested Accordion
-                                <ChplTooltip title="Nested Accordion.">
-                                <IconButton color="primary" className={classes.infoButton}>
-                                <InfoOutlinedIcon fontSize="medium" />
-                                </IconButton>
-                                </ChplTooltip>
-                            </AccordionSummary>
-                            <AccordionDetails className={classes.NestedAccordionDetails}>
-                                    <div className={classes.content}>
-                                    <Typography>Something</Typography>
-                                    </div>                            
-                            </AccordionDetails>
-                        </Accordion>
+                <div className={classes.accordion}>
+                <Accordion>
+                    <AccordionSummary
+                        className={classes.nestedAccordionSummary}
+                        expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
+                        id="removed-header"
+                    >
+                        Example Accordion 1
+                        <ChplTooltip title="nested Accordion.">
+                            <IconButton color="primary" className={classes.infoButton}>
+                                <InfoIcon fontSize="medium" />
+                            </IconButton>
+                        </ChplTooltip>
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.nestedAccordionDetails}>
+                        <div className={classes.content}>
+                            <Typography>Something</Typography>
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion>
+                    <AccordionSummary
+                        className={classes.nestedAccordionSummary}
+                        expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
+                        id="removed-header"
+                    >
+                        Example Accordion 2
+                        <ChplTooltip title="nested Accordion.">
+                            <IconButton color="primary" className={classes.infoButton}>
+                                <InfoIcon fontSize="medium" />
+                            </IconButton>
+                        </ChplTooltip>
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.nestedAccordionDetails}>
+                        <div className={classes.content}>
+                            <Typography>Something</Typography>
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion disabled>
+                    <AccordionSummary
+                        className={classes.nestedAccordionSummary}
+                        expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
+                        id="removed-header"
+                    >
+                        Disabled Accordion
+                        <ChplTooltip title="nested Accordion.">
+                            <IconButton color="primary" className={classes.infoButton}>
+                                <InfoIcon fontSize="medium" />
+                            </IconButton>
+                        </ChplTooltip>
+                    </AccordionSummary>
+                </Accordion>
+                </div>
             </Accordion>
         </div>
     );

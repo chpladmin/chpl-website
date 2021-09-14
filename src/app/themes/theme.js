@@ -78,6 +78,7 @@ const theme = createMuiTheme({
     MuiAccordionSummary: {
       root: {
         padding: '8px',
+        backgroundColor:'#f5f9fd'
       },
       content: {
         padding: '4px 8px',
