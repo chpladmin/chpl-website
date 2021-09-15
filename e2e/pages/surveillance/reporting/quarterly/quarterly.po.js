@@ -22,7 +22,7 @@ class QuarterlyPage {
       nondisclosureEvaluation: '#nondisclosure-evaluation',
       directionDeveloperResolution: '#direction-developer-resolution',
       verificationCap: '#completed-cap-verification',
-      saveSurveillanceData: '#save-surveillance-data',
+      surveillanceData: '#save-surveillance-data',
     };
   }
 
@@ -118,7 +118,11 @@ class QuarterlyPage {
   }
 
   saveSurveillanceData() {
-    $(this.elements.saveSurveillanceData).click();
+    $(this.elements.surveillanceData).scrollAndClick();
+  }
+
+  get surveillanceData() {
+    return $(this.elements.surveillanceData);
   }
 
   getListingId(row, col) {
@@ -126,11 +130,26 @@ class QuarterlyPage {
   }
 
   editSurveillanceData() {
-    $('//*[starts-with(@id,"edit-surveillance-data-")]').click();
+    $('//*[starts-with(@id,"edit-surveillance-data-")]').waitAndClick();
   }
 
   viewSurveillanceData(listingId) {
-    $(`#view-listing-data-${listingId}`).scrollAndClick();
+    $(`//button[@id="view-listing-data-${listingId}"]`).scrollAndClick();
+  }
+
+  setSurvData(fields) {
+    $(this.elements.outcome).selectByVisibleText(fields.outcome);
+    $(this.elements.processType).selectByVisibleText(fields.processType);
+    $(this.elements.grounds).setValue(fields.grounds);
+    $(this.elements.nonCoformityCause).setValue(fields.nonCoformityCause);
+    $(this.elements.nonConformityNature).setValue(fields.nonConformityNature);
+    $(this.elements.stepsSurveil).setValue(fields.stepsSurveil);
+    $(this.elements.stepsEngage).setValue(fields.stepsEngage);
+    $(this.elements.cost).setValue(fields.cost);
+    $(this.elements.limitationsEvaluation).setValue(fields.limitationsEvaluation);
+    $(this.elements.nondisclosureEvaluation).setValue(fields.nondisclosureEvaluation);
+    $(this.elements.directionDeveloperResolution).setValue(fields.directionDeveloperResolution);
+    $(this.elements.verificationCap).setValue(fields.verificationCap);
   }
 }
 

@@ -19,7 +19,7 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/reporting');
 });
 
-describe('ROLE_ONC user', () => {
+describe('when logged in as a ROLE_ONC', () => {
   beforeEach(() => {
     loginComponent.logIn('onc');
     reportingPage.expandAcb('Drummond Group');
@@ -28,17 +28,17 @@ describe('ROLE_ONC user', () => {
   });
 
   afterEach(() => {
+    if (toast.toastTitle.isExisting()) {
+      toast.clearAllToast();
+    }
     loginComponent.logOut();
   });
 
   it('can only view initiated quarterly report', () => {
-    expect(quarterlyPage.surveillanceActivity.isDisplayed()).toBe(true);
+    browser.waitUntil(() => quarterlyPage.surveillanceActivity.isDisplayed());
     expect(quarterlyPage.surveillanceActivity.isEnabled()).toBe(false);
-    expect(quarterlyPage.reactiveSurveillance.isDisplayed()).toBe(true);
     expect(quarterlyPage.reactiveSurveillance.isEnabled()).toBe(false);
-    expect(quarterlyPage.prioritizedElement.isDisplayed()).toBe(true);
     expect(quarterlyPage.prioritizedElement.isEnabled()).toBe(false);
-    expect(quarterlyPage.disclosureSummary.isDisplayed()).toBe(true);
     expect(quarterlyPage.disclosureSummary.isEnabled()).toBe(false);
     quarterlyPage.relevantListingsHeader.scrollAndClick();
     expect(quarterlyPage.surveillanceTableRows).toBeGreaterThan(1);
@@ -53,7 +53,7 @@ describe('ROLE_ONC user', () => {
     expect(toast.toastTitle.getText()).toBe('Report is being generated');
   });
 
-  it('can view surveillance data of relevant listings under quarterly report', () => {
+  it('can only view surveillance data of relevant listings under quarterly report', () => {
     quarterlyPage.relevantListingsHeader.scrollAndClick();
     quarterlyPage.viewSurveillanceData(quarterlyPage.getListingId(1, 1));
     quarterlyPage.editSurveillanceData();
@@ -69,7 +69,7 @@ describe('ROLE_ONC user', () => {
     expect(quarterlyPage.nondisclosureEvaluation.isEnabled()).toBe(false);
     expect(quarterlyPage.directionDeveloperResolution.isEnabled()).toBe(false);
     expect(quarterlyPage.verificationCap.isEnabled()).toBe(false);
-    expect(quarterlyPage.saveSurveillanceData.isDisplayed()).toBe(false);
+    expect(quarterlyPage.surveillanceData.isDisplayed()).toBe(false);
   });
 
   it('can only view complaints', () => {
@@ -79,7 +79,7 @@ describe('ROLE_ONC user', () => {
   });
 });
 
-describe('ROLE_ACB user', () => {
+describe('when logged in as a ROLE_ACB', () => {
   const timestamp = (new Date()).getTime();
   const fields = {
     surveillanceActivity: `Surveillance Activity ${timestamp}`,
@@ -93,7 +93,20 @@ describe('ROLE_ACB user', () => {
   });
 
   afterEach(() => {
+    if (toast.toastTitle.isExisting()) {
+      toast.clearAllToast();
+    }
     loginComponent.logOut();
+  });
+
+  xit('can cancel initiating of quarterly report', () => {
+    reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').click();
+    action.yes();
+    hooks.waitForSpinnerToDisappear();
+    action.cancel();
+    action.yes();
+    hooks.waitForSpinnerToDisappear();
+    expect(reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(true);
   });
 
   it('can initiate quarterly report', () => {
@@ -110,8 +123,8 @@ describe('ROLE_ACB user', () => {
     quarterlyPage.complaintsHeader.scrollAndClick();
     expect(quarterlyPage.complaintsTableRows).toBeGreaterThan(1);
     action.save();
-    hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(false);
+    browser.waitUntil(() => reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting());
+    expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(true);
   });
 
   it('can edit quarterly report', () => {
@@ -122,7 +135,7 @@ describe('ROLE_ACB user', () => {
       disclosureSummary: `Disclosure Summary Updated ${timestamp}`,
     };
     reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
-    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil(() => quarterlyPage.surveillanceActivity.isDisplayed());
     quarterlyPage.set(updatedFields);
     action.save();
     hooks.waitForSpinnerToDisappear();
@@ -139,29 +152,59 @@ describe('ROLE_ACB user', () => {
     expect(toast.toastTitle.getText()).toBe('Report is being generated');
   });
 
+  it('can edit surveillance data of relevant listings under quarterly report', () => {
+    const surData = {
+      outcome: 'Non-conformity substantiated - Unresolved - Corrective action ongoing',
+      processType: 'In-the-Field',
+      grounds: `grounds ${timestamp}`,
+      nonCoformityCause: `nonCoformityCause ${timestamp}`,
+      nonConformityNature: `nonConformityNature ${timestamp}`,
+      stepsSurveil: `stepsSurveil ${timestamp}`,
+      stepsEngage: `stepsEngage ${timestamp}`,
+      cost: `cost ${timestamp}`,
+      limitationsEvaluation: `limitationsEvaluation ${timestamp}`,
+      nondisclosureEvaluation: `nondisclosureEvaluation ${timestamp}`,
+      directionDeveloperResolution: `directionDeveloperResolution ${timestamp}`,
+      verificationCap: `verificationCap ${timestamp}`,
+    };
+    reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
+    hooks.waitForSpinnerToDisappear();
+    quarterlyPage.relevantListingsHeader.scrollAndClick();
+    quarterlyPage.viewSurveillanceData(quarterlyPage.getListingId(1, 1));
+    quarterlyPage.editSurveillanceData();
+    quarterlyPage.setSurvData(surData);
+    quarterlyPage.saveSurveillanceData();
+    hooks.waitForSpinnerToDisappear();
+    quarterlyPage.editSurveillanceData();
+    hooks.waitForSpinnerToDisappear();
+    expect(quarterlyPage.outcome.getText()).toBe(surData.outcome);
+    expect(quarterlyPage.processType.getText()).toBe(surData.processType);
+    expect(quarterlyPage.grounds.getValue()).toBe(surData.grounds);
+    expect(quarterlyPage.nonCoformityCause.getValue()).toBe(surData.nonCoformityCause);
+    expect(quarterlyPage.nonConformityNature.getValue()).toBe(surData.nonConformityNature);
+    expect(quarterlyPage.stepsSurveil.getValue()).toBe(surData.stepsSurveil);
+    expect(quarterlyPage.stepsEngage.getValue()).toBe(surData.stepsEngage);
+    expect(quarterlyPage.cost.getValue()).toBe(surData.cost);
+    expect(quarterlyPage.limitationsEvaluation.getValue()).toBe(surData.limitationsEvaluation);
+    expect(quarterlyPage.nondisclosureEvaluation.getValue()).toBe(surData.nondisclosureEvaluation);
+    expect(quarterlyPage.directionDeveloperResolution.getValue()).toBe(surData.directionDeveloperResolution);
+    expect(quarterlyPage.verificationCap.getValue()).toBe(surData.verificationCap);
+  });
+
+  it('can edit complaints', () => {
+    reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
+    hooks.waitForSpinnerToDisappear();
+    quarterlyPage.complaintsHeader.scrollAndClick();
+    complaints.viewComplaint('SC - 000132');
+    expect(complaints.editButton.isDisplayed()).toBe(true);
+  });
+
   it('can delete quarterly report', () => {
     reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     action.delete();
     action.yes();
     hooks.waitForSpinnerToDisappear();
     expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(false);
-  });
-
-  it('can edit surveillance data of relevant listings under quarterly report', () => {
-    reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q1').click();
-    hooks.waitForSpinnerToDisappear();
-    quarterlyPage.relevantListingsHeader.scrollAndClick();
-    quarterlyPage.viewSurveillanceData(quarterlyPage.getListingId(1, 1));
-    quarterlyPage.editSurveillanceData();
-    // quarterlyPage.verificationCap.setValue(`${surveillanceActivity}-updated`);
-    quarterlyPage.saveSurveillanceData();
-    hooks.waitForSpinnerToDisappear();
-  });
-
-  it('can edit complaints', () => {
-    quarterlyPage.complaintsHeader.scrollAndClick();
-    complaints.viewComplaint('SC-000031');
-    expect(complaints.editButton.isDisplayed()).toBe(true);
   });
 });
 

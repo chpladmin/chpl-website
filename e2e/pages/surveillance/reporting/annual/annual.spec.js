@@ -17,7 +17,7 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/reporting');
 });
 
-describe('ROLE_ONC user', () => {
+describe('when logged in as a ROLE_ONC', () => {
   beforeEach(() => {
     loginComponent.logIn('onc');
     reportingPage.expandAcb('Drummond Group');
@@ -25,12 +25,14 @@ describe('ROLE_ONC user', () => {
   });
 
   afterEach(() => {
+    if (toast.toastTitle.isExisting()) {
+      toast.clearAllToast();
+    }
     loginComponent.logOut();
   });
 
   it('can only view initiated annual report', () => {
-    expect(annualPage.obstacleSummary.isDisplayed()).toBe(true);
-    expect(annualPage.prioritySummary.isDisplayed()).toBe(true);
+    browser.waitUntil(() => annualPage.obstacleSummary.isDisplayed());
     expect(annualPage.obstacleSummary.isEnabled()).toBe(false);
     expect(annualPage.prioritySummary.isEnabled()).toBe(false);
     expect(action.deleteButton.isDisplayed()).toBe(false);
@@ -43,7 +45,7 @@ describe('ROLE_ONC user', () => {
   });
 });
 
-describe('ROLE_ACB user', () => {
+describe('when logged in as a ROLE_ACB', () => {
   const timestamp = (new Date()).getTime();
   const fields = {
     obstacle: `Obstacle summary ${timestamp}`,
@@ -52,20 +54,34 @@ describe('ROLE_ACB user', () => {
 
   beforeEach(() => {
     loginComponent.logIn('drummond');
+    browser.pause(5000);
   });
 
   afterEach(() => {
+    if (toast.toastTitle.isExisting()) {
+      toast.clearAllToast();
+    }
     loginComponent.logOut();
+  });
+
+  xit('can cancel initiating of annual report', () => {
+    reportingPage.initiateAnnualReport('Drummond Group', 2022).click();
+    action.yes();
+    hooks.waitForSpinnerToDisappear();
+    action.cancel();
+    action.yes();
+    hooks.waitForSpinnerToDisappear();
+    expect(reportingPage.initiateAnnualReport('Drummond Group', 2022).isExisting()).toBe(true);
   });
 
   it('can initiate annual report', () => {
     reportingPage.initiateAnnualReport('Drummond Group', 2022).click();
     action.yes();
-    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil(() => annualPage.obstacleSummary.isDisplayed());
     annualPage.set(fields);
     action.save();
-    hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.initiateAnnualReport('Drummond Group', 2022).isExisting()).toBe(false);
+    browser.waitUntil(() => reportingPage.editAnnualReport('Drummond Group', 2022).isExisting());
+    expect(reportingPage.editAnnualReport('Drummond Group', 2022).isExisting()).toBe(true);
   });
 
   it('can edit annual report', () => {
@@ -74,8 +90,7 @@ describe('ROLE_ACB user', () => {
       priority: `Priority summary Updated ${timestamp}`,
     };
     reportingPage.editAnnualReport('Drummond Group', 2022).click();
-    expect(annualPage.obstacleSummary.isDisplayed()).toBe(true);
-    expect(annualPage.prioritySummary.isDisplayed()).toBe(true);
+    browser.waitUntil(() => annualPage.obstacleSummary.isDisplayed());
     annualPage.set(updatedFields);
     action.save();
     hooks.waitForSpinnerToDisappear();
