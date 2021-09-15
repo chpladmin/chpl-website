@@ -5,9 +5,10 @@ export const SurveillanceManagementViewComponent = {
     takeAction: '&',
   },
   controller: class SurveillanceManagementViewComponent {
-    constructor ($log, authService, utilService) {
+    constructor ($log, DateUtil, authService, utilService) {
       'ngInject';
       this.$log = $log;
+      this.DateUtil = DateUtil;
       this.certificationStatus = utilService.certificationStatus;
       this.hasAnyRole = authService.hasAnyRole;
     }

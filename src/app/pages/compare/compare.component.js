@@ -1,13 +1,14 @@
 export const CompareComponent = {
   templateUrl: 'chpl.compare/compare.html',
   controller: class CompareComponent {
-    constructor ($analytics, $filter, $log, $scope, $stateParams, networkService, utilService) {
+    constructor ($analytics, $filter, $log, $scope, $stateParams, DateUtil, networkService, utilService) {
       'ngInject';
       this.$analytics = $analytics;
       this.$filter = $filter;
       this.$log = $log;
       this.$scope = $scope;
       this.$stateParams = $stateParams;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.certificationStatus = utilService.certificationStatus;
       this.sortCerts = utilService.sortCert;

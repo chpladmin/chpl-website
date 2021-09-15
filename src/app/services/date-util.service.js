@@ -18,14 +18,8 @@ class DateUtil {
     };
   }
 
-  getCertificationDate(listing) {
-    if (listing.certificationStatusHistory) {
-      return this.getDisplayDateFormat(
-        listing.certificationStatusHistory
-          .sort((a, b) => (a.effectiveDate < b.effectiveDate ? -1 : 1))[0]);
-    } else {
-      return this.getDisplayDateFormat(listing.certificationDate);
-    }
+  getCertificationDay(listing) {
+    return this.getDisplayDateFormat(listing.certificationDate);
   }
 
   getDisplayDateFormat(date, fallback) {

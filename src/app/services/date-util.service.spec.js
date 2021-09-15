@@ -26,6 +26,15 @@
       }
     });
 
+    describe('when getting the certification date of a listing', () => {
+      it('should convert a "long" object into the standard form', () => {
+        const listing = {
+          certificationDate: mock.dateLong,
+        };
+        expect(date.getCertificationDay(listing)).toBe('Aug 7, 2020');
+      });
+    });
+
     describe('when converting dates to display form', () => {
       it('should convert a "Date" object into standard form', () => {
         let localDate = '2020-09-09';

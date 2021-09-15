@@ -120,7 +120,7 @@
               <a ui-sref="listing.view.edit({id: activity.objectId })" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
             </td>
             <td>
-              {{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}
+              {{ $ctrl.DateUtil.getCertificationDay(activity) }}
             </td>
             <td>
               <button class="btn btn-link pull-right" ng-if="!activity.action && !activity.showDetails" ng-click="$ctrl.parse(activity); activity.showDetails = true">Details</button>

@@ -4,13 +4,14 @@ const ReportsListingsComponent = {
     productId: '<',
   },
   controller: class ReportsListingsComponent {
-    constructor($filter, $log, $state, $uibModal, ReportService, authService, networkService, utilService) {
+    constructor($filter, $log, $state, $uibModal, DateUtil, ReportService, authService, networkService, utilService) {
       'ngInject';
 
       this.$filter = $filter;
       this.$log = $log;
       this.$state = $state;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.ReportService = ReportService;
       this.authService = authService;
       this.networkService = networkService;
