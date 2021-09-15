@@ -104,7 +104,13 @@ const ListingEditComponent = {
     }
 
     improperFirstStatus() {
-      return this.workType === 'confirm' ? false : this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject')[0].status.name !== 'Active';
+      if (this.workType === 'confirm') {
+        return false;
+      }
+      if (!this.listing.certificationEvents || this.listing.certificationEvents.length === 0) {
+        return true;
+      }
+      return this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject')[0].status.name !== 'Active';
     }
 
     isValid() {
