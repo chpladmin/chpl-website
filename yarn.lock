@@ -2418,7 +2418,7 @@
     split2 "^3.2.2"
     stream-buffers "^3.0.2"
 
-"@wdio/logger@7.7.0":
+"@wdio/logger@7.7.0", "@wdio/logger@^7.5.3":
   version "7.7.0"
   resolved "https://registry.yarnpkg.com/@wdio/logger/-/logger-7.7.0.tgz#cac834008b7570f3b6ae30ed731545618c51da40"
   integrity sha512-XX/OkC8NlvsBdhKsb9j7ZbuQtF/Vuo0xf38PXdqYtVezOrYbDuba0hPG++g/IGNuAF34ZbSi+49cvz4u5w92kQ==
@@ -7820,7 +7820,7 @@ fs-extra@^6.0.1:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
-fs-extra@^9.0.0:
+fs-extra@^9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
   integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==
@@ -17922,12 +17922,14 @@ wcwidth@>=1.0.1, wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-wdio-chromedriver-service@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-6.0.3.tgz#ac1ff82f772dce9b77500e9df5384c73786d8b5a"
-  integrity sha512-1KZUQH1/b5iD/3B/VJ3EOy8fArNA7cuIop9GPFxxRAmkA33qeCrx+5TbZ6hQl6+GUZtRQoqGeUUZ5y0W0afQLw==
+wdio-chromedriver-service@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-7.2.0.tgz#748e2a8e1143d2bb4db48ff0dcbc43cd67b36428"
+  integrity sha512-0N/mEE0Bk/aoc7YZNwS5sbzzGrPWb7Lo4nA+t/bF9BwQRAokeHl/70vD2JKe/D4Wo05J2X0C1RxRS7e4iwW6KQ==
   dependencies:
-    fs-extra "^9.0.0"
+    "@wdio/logger" "^7.5.3"
+    fs-extra "^9.1.0"
+    split2 "^3.2.2"
 
 webdriver@7.11.0:
   version "7.11.0"
