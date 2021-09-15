@@ -378,16 +378,16 @@ const ReportsListingsComponent = {
       c = 0;
       while (pUcd[p] || cUcd[c]) {
         if (!pUcd[p]) {
-          ret.push('<li>UCD Process Name "' + cUcd[c].name + '" was added</li>');
+          ret.push(`<li>UCD Process Name "${cUcd[c].name}" was added</li>`);
           c++;
         } else if (!cUcd[c]) {
-          ret.push('<li>UCD Process Name "' + pUcd[p].name + '" was removed</li>');
+          ret.push(`<li>UCD Process Name "${pUcd[p].name}" was removed</li>`);
           p++;
         } else if (pUcd[p].name > cUcd[c].name) {
-          ret.push('<li>UCD Process Name "' + cUcd[c].name + '" was added</li>');
+          ret.push(`<li>UCD Process Name "${cUcd[c].name}" was added</li>`);
           c++;
         } else if (pUcd[p].name < cUcd[c].name) {
-          ret.push('<li>UCD Process Name "' + pUcd[p].name + '" was removed</li>');
+          ret.push(`<li>UCD Process Name "${pUcd[p].name}" was removed</li>`);
           p++;
         } else {
           changes = [];
@@ -430,16 +430,16 @@ const ReportsListingsComponent = {
       c = 0;
       while (pTask[p] || cTask[c]) {
         if (!pTask[p]) { // reached the end of the previous tasks; all remaining were added
-          ret.push('<li>Task Description "' + cTask[c].description + '" was added</li>');
+          ret.push(`<li>Task Description "${cTask[c].description}" was added</li>`);
           c++;
         } else if (!cTask[c]) { // reached the end of the current tasks; all remaining were removed
-          ret.push('<li>Task Description "' + pTask[p].description + '" was removed</li>');
+          ret.push(`<li>Task Description "${pTask[p].description}" was removed</li>`);
           p++;
         } else if (pTask[p].description > cTask[c].description) { // found a new current task; it's added
-          ret.push('<li>Task Description "' + cTask[c].description + '" was added</li>');
+          ret.push(`<li>Task Description "${cTask[c].description}" was added</li>`);
           c++;
         } else if (pTask[p].description < cTask[c].description) { // found a previous task that's not in the current set; it's removed
-          ret.push('<li>Task Description "' + pTask[p].description + '" was removed</li>');
+          ret.push(`<li>Task Description "${pTask[p].description}" was removed</li>`);
           p++;
         } else {
           changes = [];
