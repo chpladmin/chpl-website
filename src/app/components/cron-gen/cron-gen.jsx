@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 import {
   func, string,
 } from 'prop-types';
+import theme from '../../themes/theme';
 
 const useStyles = makeStyles({
   content: {
@@ -31,43 +36,91 @@ const useStyles = makeStyles({
 });
 
 function ChplCronGen(props) {
+  const [daySelection, setDaySelection] = React.useState('every');
   const [cron, setCron] = useState('');
   const classes = useStyles();
 
+  const handleDay = (event) => {
+    setDaySelection(event.target.value);
+  };
+
   return (
-    <div className={classes.content}>
-      <div className={classes.output}>
-        Cron value:
-        {' '}
-        <code>{cron}</code>
+    <ThemeProvider theme={theme}>
+      <div className={classes.content}>
+        <div className={classes.output}>
+          Cron value:
+          {' '}
+          <code>{cron}</code>
+        </div>
+        <div className={classes.everyDay}>
+          <FormControlLabel
+            label="Every day"
+            control={
+              <Radio
+                checked={daySelection === 'every'}
+                onChange={handleDay}
+                value="every"
+                name="daySelection"
+                inputProps={{ 'aria-label': 'every' }}
+              />
+            } />
+        </div>
+        <div className={classes.selectDay}>
+          <FormControlLabel
+            label="Specific Day(s)"
+            control={
+              <Radio
+                checked={daySelection === 'specific'}
+                onChange={handleDay}
+                value="specific"
+                name="daySelection"
+                inputProps={{ 'aria-label': 'specific days' }}
+              />
+            } />
+          <FormControlLabel
+            label="Sunday"
+            control={<Checkbox/>}
+          />
+          <FormControlLabel
+            label="Monday"
+            control={<Checkbox/>}
+          />
+          <FormControlLabel
+            label="Tuesday"
+            control={<Checkbox/>}
+          />
+          <FormControlLabel
+            label="Wednesday"
+            control={<Checkbox/>}
+          />
+          <FormControlLabel
+            label="Thursday"
+            control={<Checkbox/>}
+          />
+          <FormControlLabel
+            label="Friday"
+            control={<Checkbox/>}
+          />
+          <FormControlLabel
+            label="Saturday"
+            control={<Checkbox/>}
+          />
+        </div>
+        <div className={classes.time}>
+          At:
+          <label>Hour:
+            <input type="number" min="1" max="12" />
+          </label>
+          <label>Minute:
+            <input type="number" min="0" max="59" />
+          </label>
+          <select>
+            <option>AM</option>
+            <option>PM</option>
+          </select>
+        </div>
       </div>
-      <div className={classes.everyDay}>
-        <label><input type="radio" name="dayOfWeek" value="every" />Every day</label>
-      </div>
-      <div className={classes.selectDay}>
-        <label><input type="radio" name="dayOfWeek" value="specific" />Specific day(s)</label>
-        <label><input type="checkbox" value="Sun" />Sunday</label>
-        <label><input type="checkbox" value="Mon" />Monday</label>
-        <label><input type="checkbox" value="Tue" />Tuesday</label>
-        <label><input type="checkbox" value="Wed" />Wednesday</label>
-        <label><input type="checkbox" value="Thu" />Thursday</label>
-        <label><input type="checkbox" value="Fri" />Friday</label>
-        <label><input type="checkbox" value="Sat" />Saturday</label>
-      </div>
-      <div className={classes.time}>
-        At:
-        <label>Hour:
-          <input type="number" min="1" max="12" />
-        </label>
-        <label>Minute:
-          <input type="number" min="0" max="59" />
-        </label>
-        <select>
-          <option>AM</option>
-          <option>PM</option>
-        </select>
-      </div>
-    </div>
+    </ThemeProvider>
   );
 }
 
