@@ -341,7 +341,6 @@ const CertificationCriteriaEditComponent = {
           }
         });
       }
-      this.$log.info(this.cert.allowedTestTools);
     }
   },
 };
