@@ -9,7 +9,7 @@ class QuarterlyPage {
       surveillanceRoot: 'chpl-surveillance-report-relevant-listings',
       complaintsRoot: 'chpl-complaints-bridge',
       complaintsHeader: '#complaints-header',
-      download: '//*[contains(@id,"surveillance-report-download")]',
+      download: '#surveillance-report-download',
       outcome: '#surveillance-outcome',
       processType: '#surveillance-process-type',
       grounds: '#grounds-for-initiating',

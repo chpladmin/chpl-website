@@ -3,7 +3,7 @@ class AnnualPage {
     this.elements = {
       obstacle: '#obstacle',
       priority: '#priority',
-      download: '//*[contains(@id,"surveillance-report-download")]',
+      download: '#surveillance-report-download',
     };
   }
 

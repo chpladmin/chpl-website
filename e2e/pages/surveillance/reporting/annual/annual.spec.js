@@ -17,18 +17,18 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/reporting');
 });
 
+afterEach(() => {
+  if (toast.toastTitle.isExisting()) {
+    toast.clearAllToast();
+  }
+  loginComponent.logOut();
+});
+
 describe('when logged in as a ROLE_ONC', () => {
   beforeEach(() => {
     loginComponent.logIn('onc');
     reportingPage.expandAcb('Drummond Group');
     reportingPage.editAnnualReport('Drummond Group', 2019).click();
-  });
-
-  afterEach(() => {
-    if (toast.toastTitle.isExisting()) {
-      toast.clearAllToast();
-    }
-    loginComponent.logOut();
   });
 
   it('can only view initiated annual report', () => {
@@ -57,23 +57,6 @@ describe('when logged in as a ROLE_ACB', () => {
     browser.pause(5000);
   });
 
-  afterEach(() => {
-    if (toast.toastTitle.isExisting()) {
-      toast.clearAllToast();
-    }
-    loginComponent.logOut();
-  });
-
-  xit('can cancel initiating of annual report', () => {
-    reportingPage.initiateAnnualReport('Drummond Group', 2022).click();
-    action.yes();
-    hooks.waitForSpinnerToDisappear();
-    action.cancel();
-    action.yes();
-    hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.initiateAnnualReport('Drummond Group', 2022).isExisting()).toBe(true);
-  });
-
   it('can initiate annual report', () => {
     reportingPage.initiateAnnualReport('Drummond Group', 2022).click();
     action.yes();
@@ -82,6 +65,15 @@ describe('when logged in as a ROLE_ACB', () => {
     action.save();
     browser.waitUntil(() => reportingPage.editAnnualReport('Drummond Group', 2022).isExisting());
     expect(reportingPage.editAnnualReport('Drummond Group', 2022).isExisting()).toBe(true);
+  });
+
+  it('can cancel editing of annual report', () => {
+    reportingPage.editAnnualReport('Drummond Group', 2022).click();
+    hooks.waitForSpinnerToDisappear();
+    action.cancel();
+    action.yes();
+    hooks.waitForSpinnerToDisappear();
+    expect(reportingPage.editAnnualReport('Drummond Group', 2022).isDisplayed()).toBe(true);
   });
 
   it('can edit annual report', () => {

@@ -19,19 +19,19 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/reporting');
 });
 
+afterEach(() => {
+  if (toast.toastTitle.isExisting()) {
+    toast.clearAllToast();
+  }
+  loginComponent.logOut();
+});
+
 describe('when logged in as a ROLE_ONC', () => {
   beforeEach(() => {
     loginComponent.logIn('onc');
     reportingPage.expandAcb('Drummond Group');
     reportingPage.editQuarterlyReport('Drummond Group', 2020, 'Q1').click();
     hooks.waitForSpinnerToDisappear();
-  });
-
-  afterEach(() => {
-    if (toast.toastTitle.isExisting()) {
-      toast.clearAllToast();
-    }
-    loginComponent.logOut();
   });
 
   it('can only view initiated quarterly report', () => {
@@ -92,23 +92,6 @@ describe('when logged in as a ROLE_ACB', () => {
     loginComponent.logIn('drummond');
   });
 
-  afterEach(() => {
-    if (toast.toastTitle.isExisting()) {
-      toast.clearAllToast();
-    }
-    loginComponent.logOut();
-  });
-
-  xit('can cancel initiating of quarterly report', () => {
-    reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').click();
-    action.yes();
-    hooks.waitForSpinnerToDisappear();
-    action.cancel();
-    action.yes();
-    hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(true);
-  });
-
   it('can initiate quarterly report', () => {
     reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     action.yes();
@@ -125,6 +108,15 @@ describe('when logged in as a ROLE_ACB', () => {
     action.save();
     browser.waitUntil(() => reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting());
     expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(true);
+  });
+
+  it('can cancel editing of quarterly report', () => {
+    reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
+    hooks.waitForSpinnerToDisappear();
+    action.cancel();
+    action.yes();
+    hooks.waitForSpinnerToDisappear();
+    expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isDisplayed()).toBe(true);
   });
 
   it('can edit quarterly report', () => {

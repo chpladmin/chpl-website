@@ -1,5 +1,5 @@
 class ActionBarComponent {
-  constructor () {
+  constructor() {
     this.elements = {
       cancel: '#action-bar-cancel',
       save: '#action-bar-save',
@@ -7,33 +7,33 @@ class ActionBarComponent {
       yes: '//*[text()="Yes"]',
       delete: '#action-bar-delete',
     };
-   }
+  }
 
-  cancel () {
+  cancel() {
     $(this.elements.cancel).click();
   }
 
-  save () {
+  save() {
     $(this.elements.save).click();
   }
 
-  get errorMessages () {
+  get errorMessages() {
     return $(this.elements.errorMessages);
   }
 
-  get deleteButton () {
+  get deleteButton() {
     return $(this.elements.delete);
   }
 
-  get saveButton () {
+  get saveButton() {
     return $(this.elements.save);
   }
 
-  yes (){
+  yes() {
     $(this.elements.yes).click();
   }
 
-  delete () {
+  delete() {
     $(this.elements.delete).click();
   }
 }

@@ -2,8 +2,7 @@ import ReportingPage from './reporting.po';
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let loginComponent; let
-  page;
+let hooks; let loginComponent; let page;
 
 beforeEach(async () => {
   loginComponent = new LoginComponent();
@@ -22,7 +21,7 @@ describe('when ACB user is on surveillance reporting page', () => {
   });
 
   it('should only see their own reporting', () => {
-    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil(() => page.acbReportingCount > 0);
     expect(page.acbReportingCount).toBe(1);
   });
 });
