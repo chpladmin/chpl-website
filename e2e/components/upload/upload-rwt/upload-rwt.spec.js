@@ -26,7 +26,6 @@ describe('When uploading rwt file as ONC-ACB', () => {
     uploadRwtComponent.uploadRwt('../../../resources/rwt/RWT_Upload_File.csv');
     browser.waitUntil(() => !uploadRwtComponent.uploadButton.isDisplayed());
     expect(uploadRwtComponent.fileUploadText.getText()).toContain('was uploaded successfully. The file will be processed and an email will be sent to');
-    expect(uploadRwtComponent.fileUploadText.getText()).toContain('File has uploaded successfully');
   });
 
   it('cant upload invalid format of rwt file', () => {
