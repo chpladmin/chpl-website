@@ -53,6 +53,7 @@ inputs.forEach((input) => {
             expect(actualTp.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
           });
           browser.keys('Escape');
+          criteria.closeItem('test-procedures');
           criteria.addItem('test-tools');
           criteria.testTools.scrollIntoView({ block: 'center', inline: 'center' });
           criteria.testTools.click();

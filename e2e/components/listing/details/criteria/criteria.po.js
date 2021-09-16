@@ -181,6 +181,10 @@ class CriteriaComponent {
   get testToolsDropdownOptionsOld () {
     return this.testToolsOld.$$('option');
   }
+
+  closeItem(type) {
+    $(`#${type}-close-item`).scrollAndClick();
+  }
 }
 
 export default CriteriaComponent;

@@ -62,7 +62,7 @@ describe('On the 2015 Listing page', () => {
         criteria.attestToggle.click();
         hooks.waitForSpinnerToDisappear();
         criteria.addTestProcedures('ONC Test Method', '1.1');
-        criteria.addTestTools('Cypress', '1.1');
+        criteria.addTestTools('Not Applicable', '1.1');
         criteria.addTestTools('Edge Testing Tool', '2.1');
         criteria.accept.scrollAndClick();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
