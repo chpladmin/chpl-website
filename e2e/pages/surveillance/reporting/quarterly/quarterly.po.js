@@ -106,7 +106,7 @@ class QuarterlyPage {
   }
 
   get nondisclosureEvaluation() {
-    return $(this.elements.limitationsEvaluation);
+    return $(this.elements.nondisclosureEvaluation);
   }
 
   get directionDeveloperResolution() {
@@ -138,8 +138,8 @@ class QuarterlyPage {
   }
 
   setSurvData(fields) {
-    $(this.elements.outcome).selectByVisibleText(fields.outcome);
-    $(this.elements.processType).selectByVisibleText(fields.processType);
+    $(this.elements.outcome).selectByAttribute('value', fields.outcome);
+    $(this.elements.processType).selectByAttribute('value', fields.processType);
     $(this.elements.grounds).setValue(fields.grounds);
     $(this.elements.nonCoformityCause).setValue(fields.nonCoformityCause);
     $(this.elements.nonConformityNature).setValue(fields.nonConformityNature);

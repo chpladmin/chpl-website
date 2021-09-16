@@ -112,7 +112,7 @@ describe('when logged in as a ROLE_ACB', () => {
   it('can initiate quarterly report', () => {
     reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     action.yes();
-    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil(() => quarterlyPage.surveillanceActivity.isDisplayed());
     expect(quarterlyPage.surveillanceActivity.isDisplayed()).toBe(true);
     expect(quarterlyPage.reactiveSurveillance.isDisplayed()).toBe(true);
     expect(quarterlyPage.prioritizedElement.isDisplayed()).toBe(true);
@@ -154,8 +154,8 @@ describe('when logged in as a ROLE_ACB', () => {
 
   it('can edit surveillance data of relevant listings under quarterly report', () => {
     const surData = {
-      outcome: 'Non-conformity substantiated - Unresolved - Corrective action ongoing',
-      processType: 'In-the-Field',
+      outcome: '3',
+      processType: '1',
       grounds: `grounds ${timestamp}`,
       nonCoformityCause: `nonCoformityCause ${timestamp}`,
       nonConformityNature: `nonConformityNature ${timestamp}`,
@@ -177,8 +177,8 @@ describe('when logged in as a ROLE_ACB', () => {
     hooks.waitForSpinnerToDisappear();
     quarterlyPage.editSurveillanceData();
     hooks.waitForSpinnerToDisappear();
-    expect(quarterlyPage.outcome.getText()).toBe(surData.outcome);
-    expect(quarterlyPage.processType.getText()).toBe(surData.processType);
+    expect(quarterlyPage.outcome.getValue()).toBe(surData.outcome);
+    expect(quarterlyPage.processType.getValue()).toBe(surData.processType);
     expect(quarterlyPage.grounds.getValue()).toBe(surData.grounds);
     expect(quarterlyPage.nonCoformityCause.getValue()).toBe(surData.nonCoformityCause);
     expect(quarterlyPage.nonConformityNature.getValue()).toBe(surData.nonConformityNature);
