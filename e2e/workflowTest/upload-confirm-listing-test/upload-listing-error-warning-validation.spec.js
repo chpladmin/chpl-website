@@ -35,7 +35,7 @@ if (process.env.ENV !== 'stage') {
     const { expectedErrors } = input;
     const { expectedWarnings } = input;
 
-    describe(`User uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields or missing required criteria`, () => {
+    describe(`When admin uploads a listing with CHPL ID ${listingId} that has invalid inputs in various fields`, () => {
       beforeEach(() => {
         hooks.open('#/administration/confirm/listings');
       });
