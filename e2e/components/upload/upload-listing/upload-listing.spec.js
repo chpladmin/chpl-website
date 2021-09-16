@@ -30,12 +30,10 @@ describe('When uploading a listing as ONC-ACB', () => {
   it('can upload v19 template', () => {
     uploadListingComponent.uploadListing('../../../resources/listings/2015_v19_AQA1.csv');
     expect(uploadListingComponent.listingUploadText.getText()).toContain('was uploaded successfully. 1 pending products are ready for confirmation.');
-    expect(uploadListingComponent.listingUploadText.getText()).toContain('File has uploaded successfully');
   });
 
   it('can upload v20 template', () => {
     uploadListingComponent.uploadListing('../../../resources/listings/2015_v20_AQA5.csv');
     expect(uploadListingComponent.listingUploadText.getText()).toContain('was uploaded successfully. 1 pending products are ready for confirmation.');
-    expect(uploadListingComponent.listingUploadText.getText()).toContain('File has uploaded successfully');
   });
 });

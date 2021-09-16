@@ -53,7 +53,7 @@ describe('On cms reverse look up page', () => {
             count += 1;
           }
         }
-        expect(count, input.chplProductNumbers.length).toBe('All chpl product numbers aren\'t present in the download file');
+        expect(count).toBe(input.chplProductNumbers.length);
       });
     });
   });

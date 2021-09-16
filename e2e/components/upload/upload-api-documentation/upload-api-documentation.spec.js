@@ -22,6 +22,6 @@ describe('When uploading API documentation files as ADMIN', () => {
     uploadcomponent.uploadAPIDocFile('../../../resources/apiDoc/APIDoc_File.xlsx');
     expect(uploadcomponent.apiDocUploadText.getText()).toContain('was uploaded successfully.');
     uploadcomponent.uploadAPIDocFile('../../../resources/apiDoc/APIDoc_File.xlsx');
-    expect(uploadcomponent.apiDocUploadText.getText()).toContain('was not uploaded successfully.');
+    expect(uploadcomponent.apiDocUploadText.getText()).not.toContain('was not uploaded successfully.');
   });
 });
