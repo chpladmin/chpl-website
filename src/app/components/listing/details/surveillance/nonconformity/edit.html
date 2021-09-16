@@ -87,7 +87,7 @@
       <label for="non-conformity-close-day" class="col-sm-3">Non-conformity Close Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDay" is-open="$ctrl.nonconformity.nonconformityCloseDayPicker" close-text="Close" id="non-conformity-close-day" name="nonconformityCloseDay">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDay" is-open="$ctrl.nonconformity.nonconformityCloseDayPicker" close-text="Close" id="non-conformity-close-day" name="nonconformityCloseDay" chpl-local-date-formatter>
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonconformityCloseDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
