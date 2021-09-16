@@ -1,6 +1,6 @@
 import 'angular-swagger-ui';
 import ChplNotFound from './not-found';
-import { ChplStyleGuide } from './style-guide';
+import ChplStyleGuide from './style-guide';
 import ChplResourcesDownload from './download';
 import { reactToAngularComponent } from '../../services/angular-react-helper';
 
@@ -13,5 +13,5 @@ angular
     'swaggerUi',
   ])
   .component('chplNotFoundBridge', reactToAngularComponent(ChplNotFound))
-  .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide))
-  .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload));
+  .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload))
+  .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide));
