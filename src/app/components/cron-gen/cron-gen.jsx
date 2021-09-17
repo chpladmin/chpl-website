@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Card,
+  CardContent,
   Checkbox,
+  Divider,
   FormControlLabel,
   ThemeProvider,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -17,14 +21,35 @@ import { ChplTextField } from '../util';
 const useStyles = makeStyles({
   content: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: '1fr',
+    gap:'16px',
+    margin:'16px 0',
   },
-  output: {
-    gridColumn: '1 / -1',
+  cron:{
+    display: 'flex',
+    gap:'8px',
+    flexDirection:'row',
+    alignItems:'center',
   },
-  day: { },
-  time: { },
+  cronValue:{
+    color: '#156dac',
+    backgroundColor:'#599bde15',
+    borderRadius:'64px',
+    padding:'8px',
+    fontWeight:'800',
+  },
+  time:{
+    display: 'flex',
+    gap:'8px',
+    flexDirection:'row',
+    alignItems:'center',
+  },
+  day: {
+    display: 'flex',
+    flexDirection:'row',
+    flexWrap:'wrap',
+   },
 });
 
 const validationSchema = yup.object({
@@ -95,13 +120,15 @@ function ChplCronGen(props) {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.content}>
-        <div className={classes.output}>
-          Cron value:
-          {' '}
-          <code>{cron}</code>
+        <Card>
+        <CardContent>
+        <div className={classes.cron}>
+         <Typography variant="subtitle2">Cron value:</Typography> 
+          <code className={classes.cronValue}>{cron}</code>
         </div>
-        <div className={classes.day}>
-          Every:
+        <Divider/>
+        <Typography variant="subtitle2">Every:</Typography>
+          <div className={classes.day}>
           <FormControlLabel
             label="Sunday"
             control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
@@ -131,8 +158,8 @@ function ChplCronGen(props) {
             control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
           />
         </div>
+        <Typography gutterBottom variant="subtitle2"> At:</Typography>
         <div className={classes.time}>
-          At:
           <ChplTextField
             id="hour"
             name="hour"
@@ -156,6 +183,8 @@ function ChplCronGen(props) {
             helperText={formik.touched.minute && formik.errors.minute}
           />
         </div>
+      </CardContent>
+      </Card>
       </div>
     </ThemeProvider>
   );
