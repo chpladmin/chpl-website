@@ -5,7 +5,7 @@ module.exports = [
     criteriaOld: '170.315 (b)(3)',
     cures: true,
     testProcedureOptions: ['ONC Test Method'],
-    testToolsOptions: ['NCPDP Electronic Prescribing (eRx) Testing Tool','Edge Testing Tool','Not Applicable'],
+    testToolsOptions: ['NCPDP Electronic Prescribing (eRx) Testing Tool','Electronic Prescribing','Edge Testing Tool','Not Applicable'],
   },
   {
     criteriaName: '170.315 (b)(3)',
@@ -171,7 +171,7 @@ module.exports = [
     criteriaOld: '170.315 (f)(2)',
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
-    testToolsOptions: ['HL7v2 Syndromic Surveillance Test Suite','Not Applicable'],
+    testToolsOptions: ['HL7v2 Syndromic Surveillance Test Suite','HL7 v2 Syndromic Surveillance Reporting Validation Tool','Not Applicable'],
   },
 
   {
@@ -188,7 +188,7 @@ module.exports = [
     criteriaOld: '170.315 (f)(7)',
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
-    testToolsOptions: ['NHCS IG Release 1 Validator','NHCS IG Release 1.2 Validator','NIST General Validation Tool (GVT)','Not Applicable'],
+    testToolsOptions: ['NHCS IG Release 1 Validator','NHCS IG Release 1.2 Validator','NIST General Validation Tool (GVT)','HL7 CDA National Health Care Surveys Validator','Not Applicable'],
   },
   {
     criteriaName: '170.315 (f)(4)',
