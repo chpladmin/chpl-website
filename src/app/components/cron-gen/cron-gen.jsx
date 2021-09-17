@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Checkbox,
   FormControlLabel,
-  Radio,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
@@ -46,7 +45,7 @@ function ChplCronGen(props) {
   const [days, setDays] = useState(new Set());
   const classes = useStyles();
 
-  let formik;;
+  let formik;
 
   useEffect(() => {
     const parts = props.initialValue.split(' ');
@@ -60,23 +59,22 @@ function ChplCronGen(props) {
     setCron(props.initialValue);
   }, []);
 
-
   const handleDays = (event) => {
     const day = event.target.value;
     const adding = event.target.checked;
     if (adding) {
-      setDays(prev => new Set(prev.add(day)));
+      setDays((prev) => new Set(prev.add(day)));
     } else {
-      setDays(prev => new Set([...prev].filter(x => x !== day)))
+      setDays((prev) => new Set([...prev].filter((x) => x !== day)));
     }
   };
 
   const updateCron = () => {
     let updated;
     if (days.size === 0 || days.size === 7) {
-      updated = '0 ' + formik.values.minute + ' ' + formik.values.hour + ' 1/1 * ? *';
+      updated = `0 ${formik.values.minute} ${formik.values.hour} 1/1 * ? *`;
     } else {
-      updated = '0 ' + formik.values.minute + ' ' + formik.values.hour + ' ? * ' + [...days].join(',') + ' *';
+      updated = `0 ${formik.values.minute} ${formik.values.hour} ? * ${[...days].join(',')} *`;
     }
     setCron(updated);
     props.dispatch(updated);

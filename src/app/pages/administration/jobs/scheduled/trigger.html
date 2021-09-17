@@ -92,7 +92,6 @@
       <div class="col-md-12">
         Set the time at which you would like to receive the report. Please note this is in UTC time, which is currently {{ $ctrl.now | date : 'mediumTime' : 'UTC' }}
         <chpl-cron-gen-bridge initial-value="$ctrl.trigger.cronSchedule" dispatch="::$ctrl.handleDispatch"></chpl-cron-gen-bridge>
-        <p><strong>Schedule, in cron format: {{ $ctrl.trigger.cronSchedule }}</strong></p>
       </div>
     </div>
   </span>
