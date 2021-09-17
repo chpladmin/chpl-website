@@ -115,7 +115,7 @@ describe('when logged in as a ROLE_ACB', () => {
     hooks.waitForSpinnerToDisappear();
     action.cancel();
     action.yes();
-    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil(() => reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isDisplayed());
     expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isDisplayed()).toBe(true);
   });
 
