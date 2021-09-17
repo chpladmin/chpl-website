@@ -15,6 +15,7 @@ export const JobsScheduledTriggerComponent = {
       this.$log = $log;
       this.selectedDateTime = new Date();
       this.parameters = [];
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onInit () {
@@ -38,7 +39,7 @@ export const JobsScheduledTriggerComponent = {
       }
       if (this.trigger) {
         if (!this.trigger.cronSchedule) {
-          this.trigger.cronSchedule = this._getDefaultCron();
+          this.trigger.cronSchedule = '0 0 4 1/1 * ? *';
         }
         if (this.trigger.acb) {
           this.selectedAcb = this.trigger.acb.split(',').map(acb => ({id: acb}));
@@ -46,11 +47,14 @@ export const JobsScheduledTriggerComponent = {
         if (this.trigger.job.jobDataMap.parameters) {
           this.parameters = JSON.parse(this.trigger.job.jobDataMap.parameters);
         }
-        this.schConfig = this._getScheduleConfig();
       }
       if (this.acbs && !this.selectedAcb) {
         this.selectedAcb = this.acbs;
       }
+    }
+
+    handleDispatch(cron) {
+      this.trigger.cronSchedule = cron;
     }
 
     save () {
@@ -78,66 +82,6 @@ export const JobsScheduledTriggerComponent = {
       this.onDelete({
         trigger: this.trigger,
       });
-    }
-
-    _getDefaultCron () {
-      let ret = '';
-      if (this.trigger.job && this.trigger.job.frequency) {
-        switch (this.trigger.job.frequency) {
-        case 'MONTHLY':
-          //first day of every month 4am UTC
-          ret = '0 0 4 1 1/1 ? *';
-          break;
-        case 'WEEKLY':
-          //every monday at 3am UTC
-          ret = '0 0 3 ? * MON *';
-          break;
-        case 'HOURLY':
-          //every hour at 30 minutes past the hour
-          ret = '0 30 0/1 1/1 * ? *';
-          break;
-        default:
-          //daily at 4am UTC
-          ret = '0 0 4 1/1 * ? *';
-          break;
-        }
-      }
-      return ret;
-    }
-
-    _getScheduleConfig () {
-      return Object.assign(
-        this._getTimingRestrictions(this.trigger.job),
-        {
-          formInputClass: '',
-          formSelectClass: '',
-          formRadioClass: '',
-          formCheckboxClass: '',
-          //use24HourTime: true,
-        });
-    }
-
-    _getTimingRestrictions (job) {
-      let ret = {
-        hideSeconds: true,
-        hideMinutesTab: false,
-        hideHourlyTab: false,
-        hideDailyTab: false,
-      };
-      if (job && job.frequency) {
-        switch (job.frequency) {
-        case 'WEEKLY':
-          ret.hideDailyTab = true;
-          //falls through
-        case 'DAILY':
-          ret.hideHourlyTab = true;
-          //falls through
-        case 'HOURLY':
-          ret.hideMinutesTab = true;
-                    //no default
-        }
-      }
-      return ret;
     }
   },
 };
