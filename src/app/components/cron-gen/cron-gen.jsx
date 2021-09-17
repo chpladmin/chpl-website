@@ -20,36 +20,30 @@ import { ChplTextField } from '../util';
 
 const useStyles = makeStyles({
   content: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridTemplateRows: '1fr',
-    gap:'16px',
-    margin:'16px 0',
+    margin: '16px 0',
   },
-  cron:{
+  cron: {
     display: 'flex',
-    gap:'8px',
-    flexDirection:'row',
-    alignItems:'center',
+    gap: '8px',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  cronValue:{
+  cronValue: {
     color: '#156dac',
-    backgroundColor:'#599bde15',
-    borderRadius:'64px',
-    padding:'8px',
-    fontWeight:'800',
+    backgroundColor: '#599bde15',
+    borderRadius: '64px',
+    padding: '8px',
+    fontWeight: '800',
   },
-  time:{
+  time: {
     display: 'flex',
-    gap:'8px',
-    flexDirection:'row',
-    alignItems:'center',
+    gap: '8px',
+    alignItems: 'flex-start',
   },
   day: {
     display: 'flex',
-    flexDirection:'row',
-    flexWrap:'wrap',
-   },
+    flexWrap: 'wrap',
+  },
 });
 
 const validationSchema = yup.object({
@@ -121,70 +115,70 @@ function ChplCronGen(props) {
     <ThemeProvider theme={theme}>
       <div className={classes.content}>
         <Card>
-        <CardContent>
-        <div className={classes.cron}>
-         <Typography variant="subtitle2">Cron value:</Typography> 
-          <code className={classes.cronValue}>{cron}</code>
-        </div>
-        <Divider/>
-        <Typography variant="subtitle2">Every:</Typography>
-          <div className={classes.day}>
-          <FormControlLabel
-            label="Sunday"
-            control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
-          />
-          <FormControlLabel
-            label="Monday"
-            control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
-          />
-          <FormControlLabel
-            label="Tuesday"
-            control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
-          />
-          <FormControlLabel
-            label="Wednesday"
-            control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
-          />
-          <FormControlLabel
-            label="Thursday"
-            control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
-          />
-          <FormControlLabel
-            label="Friday"
-            control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
-          />
-          <FormControlLabel
-            label="Saturday"
-            control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
-          />
-        </div>
-        <Typography gutterBottom variant="subtitle2"> At:</Typography>
-        <div className={classes.time}>
-          <ChplTextField
-            id="hour"
-            name="hour"
-            label="Hour"
-            required
-            value={formik.values.hour}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.hour && !!formik.errors.hour}
-            helperText={formik.touched.hour && formik.errors.hour}
-          />
-          <ChplTextField
-            id="minute"
-            name="minute"
-            label="Minute"
-            required
-            value={formik.values.minute}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.minute && !!formik.errors.minute}
-            helperText={formik.touched.minute && formik.errors.minute}
-          />
-        </div>
-      </CardContent>
-      </Card>
+          <CardContent>
+            <div className={classes.cron}>
+              <Typography variant="subtitle2">Cron value:</Typography>
+              <code className={classes.cronValue}>{cron}</code>
+            </div>
+            <Divider />
+            <Typography variant="subtitle2">Every:</Typography>
+            <div className={classes.day}>
+              <FormControlLabel
+                label="Sunday"
+                control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
+              />
+              <FormControlLabel
+                label="Monday"
+                control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
+              />
+              <FormControlLabel
+                label="Tuesday"
+                control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
+              />
+              <FormControlLabel
+                label="Wednesday"
+                control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
+              />
+              <FormControlLabel
+                label="Thursday"
+                control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
+              />
+              <FormControlLabel
+                label="Friday"
+                control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
+              />
+              <FormControlLabel
+                label="Saturday"
+                control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
+              />
+            </div>
+            <Typography gutterBottom variant="subtitle2">At:</Typography>
+            <div className={classes.time}>
+              <ChplTextField
+                id="hour"
+                name="hour"
+                label="Hour"
+                required
+                value={formik.values.hour}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.hour && !!formik.errors.hour}
+                helperText={formik.touched.hour && formik.errors.hour}
+              />
+              <ChplTextField
+                id="minute"
+                name="minute"
+                label="Minute"
+                required
+                value={formik.values.minute}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.minute && !!formik.errors.minute}
+                helperText={formik.touched.minute && formik.errors.minute}
+              />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </ThemeProvider>
   );
