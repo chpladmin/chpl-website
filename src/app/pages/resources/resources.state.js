@@ -40,6 +40,14 @@ const states = [
     },
     component: 'chplNotFoundBridge',
     data: { title: 'Error: page not found' },
+  }, {
+    name: 'style-guide',
+    url: '/style-guide',
+    component: 'chplStyleGuideBridge',
+    data: {
+      title: 'CHPL Style Guide',
+      roles: ['ROLE_ADMIN'],
+    },
   },
 ];
 
