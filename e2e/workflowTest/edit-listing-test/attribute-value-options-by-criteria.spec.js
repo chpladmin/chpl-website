@@ -45,7 +45,6 @@ inputs.forEach((input) => {
           criteria.editCriteria(id);
           criteria.attestToggle.click();
           criteria.addItem('test-procedures');
-          criteria.testProcedure.scrollIntoView({ block: 'center', inline: 'center' });
           criteria.testProcedure.click();
           const actualTp = new Set(criteria.testProcedureDropdownOptions.map((item) => item.getText()));
           expect(actualTp.size).toBe(expectedTp.length);
@@ -55,7 +54,6 @@ inputs.forEach((input) => {
           browser.keys('Escape');
           criteria.closeItem('test-procedures');
           criteria.addItem('test-tools');
-          criteria.testTools.scrollIntoView({ block: 'center', inline: 'center' });
           criteria.testTools.click();
           const actualTt = new Set(criteria.testToolsDropdownOptions.map((item) => item.getText()));
           expect(actualTt.size).toBe(expectedTt.length);

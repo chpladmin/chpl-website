@@ -183,7 +183,7 @@ class CriteriaComponent {
   }
 
   closeItem(type) {
-    $(`#${type}-close-item`).scrollAndClick();
+    $(`#${type}-close-item`).click();
   }
 }
 
