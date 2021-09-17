@@ -54,7 +54,7 @@ function ChplCronGen(props) {
     if (parts[5] === '?') {
       setDays(() => new Set());
     } else {
-      setDays(() => new Set(parts[5].split(',')));
+      setDays(() => new Set(parts[5].split(',').filter((p) => p.length === 3)));
     }
     setCron(props.initialValue);
   }, []);
