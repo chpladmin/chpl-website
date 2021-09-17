@@ -40,9 +40,9 @@ describe('when logged in as a ROLE_ONC', () => {
     expect(quarterlyPage.reactiveSurveillance.isEnabled()).toBe(false);
     expect(quarterlyPage.prioritizedElement.isEnabled()).toBe(false);
     expect(quarterlyPage.disclosureSummary.isEnabled()).toBe(false);
-    quarterlyPage.relevantListingsHeader.scrollAndClick();
+    quarterlyPage.relevantListingsHeader.click();
     expect(quarterlyPage.surveillanceTableRows).toBeGreaterThan(1);
-    quarterlyPage.complaintsHeader.scrollAndClick();
+    quarterlyPage.complaintsHeader.click();
     expect(quarterlyPage.complaintsTableRows).toBeGreaterThan(1);
     expect(action.deleteButton.isDisplayed()).toBe(false);
     expect(action.saveButton.isDisplayed()).toBe(false);
@@ -54,7 +54,7 @@ describe('when logged in as a ROLE_ONC', () => {
   });
 
   it('can only view surveillance data of relevant listings under quarterly report', () => {
-    quarterlyPage.relevantListingsHeader.scrollAndClick();
+    quarterlyPage.relevantListingsHeader.click();
     quarterlyPage.viewSurveillanceData(quarterlyPage.getListingId(1, 1));
     quarterlyPage.editSurveillanceData();
     expect(quarterlyPage.outcome.isEnabled()).toBe(false);
@@ -73,7 +73,7 @@ describe('when logged in as a ROLE_ONC', () => {
   });
 
   it('can only view complaints', () => {
-    quarterlyPage.complaintsHeader.scrollAndClick();
+    quarterlyPage.complaintsHeader.click();
     complaints.viewComplaint('SC-000031');
     expect(complaints.editButton.isDisplayed()).toBe(false);
   });
@@ -101,9 +101,9 @@ describe('when logged in as a ROLE_ACB', () => {
     expect(quarterlyPage.prioritizedElement.isDisplayed()).toBe(true);
     expect(quarterlyPage.disclosureSummary.isDisplayed()).toBe(true);
     quarterlyPage.set(fields);
-    quarterlyPage.relevantListingsHeader.scrollAndClick();
+    quarterlyPage.relevantListingsHeader.click();
     expect(quarterlyPage.surveillanceTableRows).toBeGreaterThan(1);
-    quarterlyPage.complaintsHeader.scrollAndClick();
+    quarterlyPage.complaintsHeader.click();
     expect(quarterlyPage.complaintsTableRows).toBeGreaterThan(1);
     action.save();
     browser.waitUntil(() => reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting());
@@ -161,7 +161,7 @@ describe('when logged in as a ROLE_ACB', () => {
     };
     reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     hooks.waitForSpinnerToDisappear();
-    quarterlyPage.relevantListingsHeader.scrollAndClick();
+    quarterlyPage.relevantListingsHeader.click();
     quarterlyPage.viewSurveillanceData(quarterlyPage.getListingId(1, 1));
     quarterlyPage.editSurveillanceData();
     quarterlyPage.setSurvData(surData);
@@ -186,7 +186,7 @@ describe('when logged in as a ROLE_ACB', () => {
   it('can edit complaints', () => {
     reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     hooks.waitForSpinnerToDisappear();
-    quarterlyPage.complaintsHeader.scrollAndClick();
+    quarterlyPage.complaintsHeader.click();
     complaints.viewComplaint('SC - 000132');
     expect(complaints.editButton.isDisplayed()).toBe(true);
   });

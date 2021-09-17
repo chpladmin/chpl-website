@@ -118,7 +118,7 @@ class QuarterlyPage {
   }
 
   saveSurveillanceData() {
-    $(this.elements.surveillanceData).scrollAndClick();
+    $(this.elements.surveillanceData).click();
   }
 
   get surveillanceData() {
@@ -134,7 +134,7 @@ class QuarterlyPage {
   }
 
   viewSurveillanceData(listingId) {
-    $(`//button[@id="view-listing-data-${listingId}"]`).scrollAndClick();
+    $(`//button[@id="view-listing-data-${listingId}"]`).click();
   }
 
   setSurvData(fields) {
