@@ -45,6 +45,7 @@ inputs.forEach((input) => {
           criteria.editCriteria(id);
           criteria.attestToggle.click();
           criteria.addItem('test-procedures');
+          criteria.testProcedure.scrollIntoView({ block: 'center', inline: 'center' });
           criteria.testProcedure.click();
           const actualTp = new Set(criteria.testProcedureDropdownOptions.map((item) => item.getText()));
           expect(actualTp.size).toBe(expectedTp.length);

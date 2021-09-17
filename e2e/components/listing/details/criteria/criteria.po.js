@@ -23,7 +23,7 @@ class CriteriaComponent {
   }
 
   editCriteria(id) {
-    $(`#criterion-id-${id}-edit`).scrollAndClick();
+    $(`button#criterion-id-${id}-edit`).$('span').click();
   }
 
   get testProcedure() {
@@ -68,8 +68,8 @@ class CriteriaComponent {
 
   expandCriteria(id, criteria) {
     if (this.uiUpgradeFlag()) {
-      $(`#criterion-id-${id}-header`).scrollIntoView();
-      $(`#criterion-id-${id}-header`).$$('div')[1].scrollAndClick();
+      $(`#criterion-id-${id}-header`).scrollIntoView({ block: 'center', inline: 'center' });
+      $(`#criterion-id-${id}-header`).$$('div')[2].click();
     } else {
       $(`//*[@id="criteria_${criteria}_details_link"]`).scrollAndClick();
     }

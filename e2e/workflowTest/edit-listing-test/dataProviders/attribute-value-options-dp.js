@@ -5,7 +5,7 @@ module.exports = [
     criteriaOld: '170.315 (b)(3)',
     cures: true,
     testProcedureOptions: ['ONC Test Method'],
-    testToolsOptions: ['NCPDP Electronic Prescribing (eRx) Testing Tool','Electronic Prescribing','Edge Testing Tool','Not Applicable'],
+    testToolsOptions: ['NCPDP Electronic Prescribing (eRx) Testing Tool','Electronic Prescribing','Not Applicable'],
   },
   {
     criteriaName: '170.315 (b)(3)',
@@ -13,7 +13,7 @@ module.exports = [
     criteriaOld: '170.315 (b)(3)',
     cures: false,
     testProcedureOptions: ['ONC Test Method', 'ONC Test Method - Surescripts (Alternative)'],
-    testToolsOptions: ['NCPDP Electronic Prescribing (eRx) Testing Tool','Edge Testing Tool','Not Applicable'],
+    testToolsOptions: ['NCPDP Electronic Prescribing (eRx) Testing Tool','Electronic Prescribing','Not Applicable'],
   },
   {
     criteriaName: '170.315 (b)(1)',
@@ -33,7 +33,7 @@ module.exports = [
   },
   {
     criteriaName: '170.315 (c)(1)',
-    id: '21',
+    id: '25',
     criteriaOld: '170.315 (c)(1)',
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
@@ -44,25 +44,23 @@ module.exports = [
     id: '26',
     criteriaOld: '170.315 (c)(2)',
     cures: false,
-    testProcedureOptions: ['ONC Test Method'],
+    testProcedureOptions: ['ONC Test Method','NCQA eCQM Test Method'],
     testToolsOptions: ['Cypress','NCQA ONC Health IT Testing','Not Applicable'],
   },
-
   {
     criteriaName: '170.315 (c)(3)',
     id:'27',
     criteriaOld: '170.315 (c)(3)',
     cures: false,
-    testProcedureOptions: ['ONC Test Method'],
+    testProcedureOptions: ['ONC Test Method','NCQA eCQM Test Method'],
     testToolsOptions: ['Cypress','NCQA ONC Health IT Testing','Not Applicable'],
   },
-
   {
     criteriaName: '170.315 (c)(4)',
     id: '28',
     criteriaOld: '170.315 (c)(4)',
     cures: false,
-    testProcedureOptions: ['ONC Test Method'],
+    testProcedureOptions: ['ONC Test Method','NCQA eCQM Test Method'],
     testToolsOptions: ['Cypress','NCQA ONC Health IT Testing','Not Applicable'],
   },
   {
@@ -72,9 +70,10 @@ module.exports = [
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
     testToolsOptions: ['Edge Testing Tool','Direct Certificate Discovery Tool','Not Applicable'],
-  },{
+  },
+  {
     criteriaName: '170.315 (h)(2)',
-    id: '62',
+    id: '60',
     criteriaOld: '170.315 (h)(2)',
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
@@ -86,21 +85,24 @@ module.exports = [
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
     testToolsOptions: ['Edge Testing Tool','Not Applicable'],
-  },{
+  },
+  {
     criteriaName: '170.315 (b)(6)',
     id: '21',
     criteriaOld: '170.315 (b)(6)',
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
     testToolsOptions: ['Edge Testing Tool','Not Applicable'],
-  },{
+  },
+  {
     criteriaName: '170.315 (b)(7)',
     id: '22',
     criteriaOld: '170.315 (b)(7)',
     cures: false,
     testProcedureOptions: ['ONC Test Method'],
     testToolsOptions: ['Edge Testing Tool','Not Applicable'],
-  },{
+  },
+  {
     criteriaName: '170.315 (b)(8)',
     id: '23',
     criteriaOld: '170.315 (b)(8)',
@@ -140,7 +142,6 @@ module.exports = [
     testProcedureOptions: ['ONC Test Method'],
     testToolsOptions: ['Edge Testing Tool','Not Applicable'],
   },
-
   {
     criteriaName: '170.315 (g)(9)',
     id: '58',
@@ -154,7 +155,7 @@ module.exports = [
     id: '43',
     criteriaOld: '170.315 (f)(1)',
     cures: false,
-    testProcedureOptions: ['ONC Test Method'],
+    testProcedureOptions: ['ONC Test Method','HIMSS-IIP Test Method'],
     testToolsOptions: ['HL7v2 Immunization Test Suite','HIMSS Immunization Integration Program','Not Applicable'],
   },
   {
@@ -173,7 +174,6 @@ module.exports = [
     testProcedureOptions: ['ONC Test Method'],
     testToolsOptions: ['HL7v2 Syndromic Surveillance Test Suite','HL7 v2 Syndromic Surveillance Reporting Validation Tool','Not Applicable'],
   },
-
   {
     criteriaName: '170.315 (g)(10)',
     id: '182',
