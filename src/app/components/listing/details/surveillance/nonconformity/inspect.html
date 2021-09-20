@@ -23,27 +23,27 @@
             </tr>
             <tr>
               <th scope="row">Date of Determination</th>
-              <td>{{ noncon.dateOfDetermination | date : 'mediumDate' : 'UTC' }}</td>
+              <td>{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.dateOfDeterminationDay) }}</td>
             </tr>
             <tr>
               <th scope="row">Corrective Action Plan approval date</th>
-              <td ng-if="noncon.capApprovalDate">{{ noncon.capApprovalDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td ng-if="!noncon.capApprovalDate">N/A</td>
+              <td ng-if="noncon.capApprovalDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capApprovalDay) }}</td>
+              <td ng-if="!noncon.capApprovalDay">N/A</td>
             </tr>
             <tr>
               <th scope="row">Corrective Action Plan start date</th>
-              <td ng-if="noncon.capStartDate">{{ noncon.capStartDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td ng-if="!noncon.capStartDate">N/A</td>
+              <td ng-if="noncon.capStartDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capStartDay) }}</td>
+              <td ng-if="!noncon.capStartDay">N/A</td>
             </tr>
             <tr>
               <th scope="row">Corrective Action Plan end date</th>
-              <td ng-if="noncon.capEndDate">{{ noncon.capEndDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td ng-if="!noncon.capEndDate">N/A</td>
+              <td ng-if="noncon.capEndDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capEndDay) }}</td>
+              <td ng-if="!noncon.capEndDay">N/A</td>
             </tr>
             <tr>
               <th scope="row">Corrective Action Plan must complete date</th>
-              <td ng-if="noncon.capMustCompleteDate">{{ noncon.capMustCompleteDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td ng-if="!noncon.capMustCompleteDate">N/A</td>
+              <td ng-if="noncon.capMustCompleteDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capMustCompleteDay) }}</td>
+              <td ng-if="!noncon.capMustCompleteDay">N/A</td>
             </tr>
             <tr>
               <th scope="row">Non-conformity Status</th>

@@ -1,4 +1,4 @@
-export const SurveillanceReportRelevantListingsComponent = {
+const SurveillanceReportRelevantListingsComponent = {
   templateUrl: 'chpl.components/surveillance/reporting/relevant-listings.html',
   bindings: {
     listings: '<',
@@ -9,22 +9,25 @@ export const SurveillanceReportRelevantListingsComponent = {
     onSave: '&',
   },
   controller: class SurveillanceReportRelevantListingComponent {
-    constructor ($log) {
+    constructor($log, DateUtil) {
       'ngInject';
+
       this.$log = $log;
+      this.DateUtil = DateUtil;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.listings) {
         this.listings = angular.copy(changes.listings.currentValue);
         if (Array.isArray(this.listings)) {
-          this.listings.forEach(listing => {
-            listing.formattedCertificationDate = new Date(listing.certificationDate);
-            listing.lastModifiedDate = parseInt(listing.lastModifiedDate, 10);
-            listing.formattedLastModifiedDate = new Date(listing.lastModifiedDate);
-            listing.surveillanceCount = listing.surveillances.length;
-            listing.edition = listing.edition + (listing.curesUpdate ? ' Cures Update' : '');
-          });
+          this.listings = this.listings.map((listing) => ({
+            ...listing,
+            formattedCertificationDate: new Date(listing.certificationDate),
+            lastModifiedDate: parseInt(listing.lastModifiedDate, 10),
+            formattedLastModifiedDate: new Date(listing.lastModifiedDate),
+            surveillanceCount: listing.surveillances.length,
+            edition: listing.edition + (listing.curesUpdate ? ' Cures Update' : ''),
+          }));
         }
       }
       if (changes.quarterlyReport) {
@@ -40,16 +43,16 @@ export const SurveillanceReportRelevantListingsComponent = {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
       }
       if (this.listings && this.relevantListing) {
-        this.activeListing = this.listings.find(l => l.id === this.relevantListing.id);
+        this.activeListing = this.listings.find((l) => l.id === this.relevantListing.id);
       }
     }
 
-    cancelEdit () {
+    cancelEdit() {
       this.activeListing = undefined;
     }
 
-    save (listing) {
-      this.onSave({ listing: listing });
+    save(listing) {
+      this.onSave({ listing });
       this.activeListing = undefined;
     }
   },
@@ -57,3 +60,5 @@ export const SurveillanceReportRelevantListingsComponent = {
 
 angular.module('chpl.components')
   .component('chplSurveillanceReportRelevantListings', SurveillanceReportRelevantListingsComponent);
+
+export default SurveillanceReportRelevantListingsComponent;

@@ -70,7 +70,7 @@ describe('the Download page', () => {
       dataLines,
     } = input;
 
-    describe(`when downloading the ${file} definition file`, () => {
+    xdescribe(`when downloading the ${file} definition file`, () => {
       it(`should download file successfully with file size more than ${definitionFileSize} KB`, () => {
         if (!(file.includes('2014 edition products (xml)') || file.includes('2011 edition products (xml)'))) {
           page.downloadDefinitionFile(file);
@@ -94,7 +94,7 @@ describe('the Download page', () => {
       }
     });
 
-    describe(`when downloading the ${file} data file`, () => {
+    xdescribe(`when downloading the ${file} data file`, () => {
       it(`should download file successfully with file size more than ${dataFileSize} KB`, () => {
         page.downloadDataFile(file);
         browser.pause(config.timeout);

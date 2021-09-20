@@ -1,4 +1,4 @@
-export const SurveillanceNonconformityEditComponent = {
+const SurveillanceNonconformityEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/nonconformity/edit.html',
   bindings: {
     resolve: '<',
@@ -6,12 +6,11 @@ export const SurveillanceNonconformityEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceNonconformityEditController {
-    constructor($log, API, DateUtil, Upload, authService, networkService, utilService) {
+    constructor($log, API, Upload, authService, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
       this.API = API;
-      this.DateUtil = DateUtil;
       this.Upload = Upload;
       this.networkService = networkService;
       this.utilService = utilService;
@@ -36,24 +35,6 @@ export const SurveillanceNonconformityEditComponent = {
       this.workType = this.resolve.workType;
       this.item.url = `${this.API}/surveillance/${this.surveillanceId}/nonconformity/${this.nonconformity.id}/document`;
 
-      if (this.nonconformity.dateOfDetermination) {
-        this.nonconformity.dateOfDeterminationObject = new Date(this.nonconformity.dateOfDetermination);
-      }
-      if (this.nonconformity.capApprovalDate) {
-        this.nonconformity.capApprovalDateObject = new Date(this.nonconformity.capApprovalDate);
-      }
-      if (this.nonconformity.capStartDate) {
-        this.nonconformity.capStartDateObject = new Date(this.nonconformity.capStartDate);
-      }
-      if (this.nonconformity.capEndDate) {
-        this.nonconformity.capEndDateObject = new Date(this.nonconformity.capEndDate);
-      }
-      if (this.nonconformity.capMustCompleteDate) {
-        this.nonconformity.capMustCompleteDateObject = new Date(this.nonconformity.capMustCompleteDate);
-      }
-      if (this.nonconformity.nonconformityCloseDate) {
-        this.nonconformity.nonconformityCloseDateObject = new Date(this.DateUtil.localDateToTimestamp(this.nonconformity.nonconformityCloseDate));
-      }
       if (this.nonconformity.criterion) {
         this.nonconformityType = this.data.nonconformityTypes.data
           .find((t) => t.number === this.nonconformity.criterion.number && t.title === this.nonconformity.criterion.title);
@@ -71,7 +52,7 @@ export const SurveillanceNonconformityEditComponent = {
       const that = this;
       this.networkService.deleteSurveillanceDocument(this.surveillanceId, docId)
         .then(() => {
-          for (let i = 0; i < this.nonconformity.documents.length; i++) {
+          for (let i = 0; i < this.nonconformity.documents.length; i += 1) {
             if (this.nonconformity.documents[i].id === docId) {
               this.nonconformity.documents.splice(i, 1);
             }
@@ -87,36 +68,9 @@ export const SurveillanceNonconformityEditComponent = {
     }
 
     save() {
-      if (this.nonconformity.dateOfDeterminationObject) {
-        this.nonconformity.dateOfDetermination = this.nonconformity.dateOfDeterminationObject.getTime();
-      } else {
-        this.nonconformity.dateOfDetermination = null;
-      }
-      if (this.nonconformity.capApprovalDateObject) {
-        this.nonconformity.capApprovalDate = this.nonconformity.capApprovalDateObject.getTime();
-      } else {
-        this.nonconformity.capApprovalDate = null;
-      }
-      if (this.nonconformity.capStartDateObject) {
-        this.nonconformity.capStartDate = this.nonconformity.capStartDateObject.getTime();
-      } else {
-        this.nonconformity.capStartDate = null;
-      }
-      if (this.nonconformity.capEndDateObject) {
-        this.nonconformity.capEndDate = this.nonconformity.capEndDateObject.getTime();
-      } else {
-        this.nonconformity.capEndDate = null;
-      }
-      if (this.nonconformity.capMustCompleteDateObject) {
-        this.nonconformity.capMustCompleteDate = this.nonconformity.capMustCompleteDateObject.getTime();
-      } else {
-        this.nonconformity.capMustCompleteDate = null;
-      }
-      if (this.nonconformity.nonconformityCloseDateObject) {
-        this.nonconformity.nonconformityCloseDate = this.DateUtil.timestampToString(this.nonconformity.nonconformityCloseDateObject.getTime(), 'uuuu-MM-dd');
+      if (this.nonconformity.nonconformityCloseDay) {
         this.nonconformity.nonconformityStatus = 'Closed';
       } else {
-        this.nonconformity.nonconformityCloseDate = null;
         this.nonconformity.nonconformityStatus = 'Open';
       }
       if (this.nonconformityType.title) {
@@ -157,7 +111,7 @@ export const SurveillanceNonconformityEditComponent = {
           that.uploadSuccess = false;
           that.file = undefined;
         }, (event) => {
-          that.progressPercentage = parseInt(100.0 * event.loaded / event.total, 10);
+          that.progressPercentage = parseInt(100.0 * (event.loaded / event.total), 10);
           that.$log.info(`progress: ${that.progressPercentage}% ${event.config.data.file.name}`);
         });
       }
@@ -168,3 +122,5 @@ export const SurveillanceNonconformityEditComponent = {
 angular
   .module('chpl.components')
   .component('aiSurveillanceNonconformityEdit', SurveillanceNonconformityEditComponent);
+
+export default SurveillanceNonconformityEditComponent;
