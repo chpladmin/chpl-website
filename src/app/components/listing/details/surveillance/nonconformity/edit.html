@@ -19,80 +19,80 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="date-of-determination" class="col-sm-3">Date Of Determination <span class="text-danger">*</span></label>
+      <label for="date-of-determination-day" class="col-sm-3">Date Of Determination <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.dateOfDeterminationObject" is-open="$ctrl.nonconformity.dateOfDeterminationPicker" close-text="Close" id="date-of-determination" name="dateOfDetermination" ng-model-options="{ timezone: 'UTC' }" required>
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.dateOfDeterminationDay" is-open="$ctrl.nonconformity.dateOfDeterminationDayPicker" close-text="Close" id="date-of-determination-day" name="dateOfDeterminationDay" chpl-local-date-formatter required>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.dateOfDeterminationDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDetermination.$touched) && $ctrl.editForm.dateOfDetermination.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDetermination.$touched) && $ctrl.editForm.dateOfDetermination.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDeterminationDay.$touched) && $ctrl.editForm.dateOfDeterminationDay.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDeterminationDay.$touched) && $ctrl.editForm.dateOfDeterminationDay.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cap-approval-date" class="col-sm-3">Corrective Action Plan Approval Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDateObject">*</span></label>
+      <label for="cap-approval-day" class="col-sm-3">Corrective Action Plan Approval Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDay">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capApprovalDateObject" is-open="$ctrl.nonconformity.capApprovalDatePicker" close-text="Close" id="cap-approval-date" name="capApprovalDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capEndDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capApprovalDay" is-open="$ctrl.nonconformity.capApprovalDayPicker" close-text="Close" id="cap-approval-day" name="capApprovalDay" chpl-local-date-formatter ng-required="$ctrl.nonconformity.capEndDay">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capApprovalDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capApprovalDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDate.$touched) && $ctrl.editForm.capApprovalDate.$error.parse">Improper format (MM/dd/yyyy)</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDate.$touched) && $ctrl.editForm.capApprovalDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDay.$touched) && $ctrl.editForm.capApprovalDay.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDay.$touched) && $ctrl.editForm.capApprovalDay.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cap-start-date" class="col-sm-3">Corrective Action Plan Start Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDateObject">*</span></label>
+      <label for="cap-start-day" class="col-sm-3">Corrective Action Plan Start Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDay">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capStartDateObject" is-open="$ctrl.nonconformity.capStartDatePicker" close-text="Close" id="cap-start-date" name="capStartDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capEndDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capStartDay" is-open="$ctrl.nonconformity.capStartDayPicker" close-text="Close" id="cap-start-day" name="capStartDay" chpl-local-date-formatter ng-required="$ctrl.nonconformity.capEndDay">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capStartDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capStartDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDate.$touched) && $ctrl.editForm.capStartDate.$error.parse">Improper format (MM/dd/yyyy)</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDate.$touched) && $ctrl.editForm.capStartDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDay.$touched) && $ctrl.editForm.capStartDay.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDay.$touched) && $ctrl.editForm.capStartDay.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cap-end-date" class="col-sm-3">Corrective Action Plan End Date</label>
+      <label for="cap-end-day" class="col-sm-3">Corrective Action Plan End Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capEndDateObject" is-open="$ctrl.nonconformity.capEndDatePicker" close-text="Close" id="cap-end-date" name="capEndDate" ng-model-options="{ timezone: 'UTC' }" ng-disabled="!$ctrl.nonconformity.capApprovalDateObject || !$ctrl.nonconformity.capStartDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capEndDay" is-open="$ctrl.nonconformity.capEndDayPicker" close-text="Close" id="cap-end-day" name="capEndDay" chpl-local-date-formatter ng-disabled="!$ctrl.nonconformity.capApprovalDay || !$ctrl.nonconformity.capStartDay">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capEndDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capEndDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDate.$touched) && $ctrl.editForm.capEndDate.$error.parse">Improper format (MM/dd/yyyy)</div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDate.$touched) && $ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject">Corrective Action Plan End Date must be after the Start Date</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDay.$touched) && $ctrl.editForm.capEndDay.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDay.$touched) && $ctrl.nonconformity.capEndDay && $ctrl.nonconformity.capEndDay < $ctrl.nonconformity.capStartDay">Corrective Action Plan End Date must be after the Start Date</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cap-must-complete-date" class="col-sm-3">Corrective Action Plan Must Complete Date <span class="text-danger" ng-if="$ctrl.nonconformity.capApprovalDateObject">*</span></label>
+      <label for="cap-must-complete-day" class="col-sm-3">Corrective Action Plan Must Complete Date <span class="text-danger" ng-if="$ctrl.nonconformity.capApprovalDay">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capMustCompleteDateObject" is-open="$ctrl.nonconformity.capMustCompleteDatePicker" close-text="Close" id="cap-must-complete-date" name="capMustCompleteDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capApprovalDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capMustCompleteDay" is-open="$ctrl.nonconformity.capMustCompleteDayPicker" close-text="Close" id="cap-must-complete-day" name="capMustCompleteDay" chpl-local-date-formatter ng-required="$ctrl.nonconformity.capApprovalDay">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capMustCompleteDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capMustCompleteDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capMustCompleteDate.$touched) && $ctrl.editForm.capMustCompleteDate.$error.parse">Improper format (MM/dd/yyyy)</div>
-        <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.capMustCompleteDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capMustCompleteDay.$touched) && $ctrl.editForm.capMustCompleteDay.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.capMustCompleteDay.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="non-conformity-close-date" class="col-sm-3">Non-conformity Close Date</label>
+      <label for="non-conformity-close-day" class="col-sm-3">Non-conformity Close Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDateObject" is-open="$ctrl.nonconformity.nonconformityCloseDatePicker" close-text="Close" id="non-conformity-close-date" name="nonconformityCloseDate">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.nonconformityCloseDay" is-open="$ctrl.nonconformity.nonconformityCloseDayPicker" close-text="Close" id="non-conformity-close-day" name="nonconformityCloseDay" chpl-local-date-formatter>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonconformityCloseDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.nonconformityCloseDayPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityCloseDate.$touched) && $ctrl.editForm.nonconformityCloseDate.$error.parse">Improper format (MM/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityCloseDay.$touched) && $ctrl.editForm.nonconformityCloseDay.$error.parse">Improper format (MM/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
@@ -135,9 +135,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.nonconformityCloseDateObject">*</span></label>
+      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.nonconformityCloseDay">*</span></label>
       <div class="col-sm-9">
-        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.nonconformityCloseDateObject" ng-disabled="!$ctrl.nonconformity.nonconformityCloseDateObject"></textarea>
+        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.nonconformityCloseDay" ng-disabled="!$ctrl.nonconformity.nonconformityCloseDay"></textarea>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.resolution.$touched) && $ctrl.editForm.resolution.$error.required">Field is required</div>
       </div>
     </div>
@@ -211,21 +211,21 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger text-left" ng-if="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject)) && $ctrl.showFormErrors">
+    <div class="text-danger text-left" ng-if="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDay && $ctrl.nonconformity.capEndDay < $ctrl.nonconformity.capStartDay)) && $ctrl.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="$ctrl.editForm.nonconformityType.$error.required">Non-Conformity Type is required</li>
         <li ng-if="$ctrl.editForm.nonconformityStatus.$error.required">Non-Conformity Status is required</li>
-        <li ng-if="$ctrl.editForm.dateOfDetermination.$error.required">Date of Determination is required</li>
-        <li ng-if="$ctrl.editForm.dateOfDetermination.$error.parse">Date of Determination is an improper format (MM/dd/yyyy)</li>
-        <li ng-if="$ctrl.editForm.capApprovalDate.$error.required">Corrective Action Plan Approval Date is required</li>
-        <li ng-if="$ctrl.editForm.capApprovalDate.$error.parse">Corrective Action Plan Approval Date is an improper format (MM/dd/yyyy)</li>
-        <li ng-if="$ctrl.editForm.capStartDate.$error.required">Corrective Action Plan Start Date is required</li>
-        <li ng-if="$ctrl.editForm.capStartDate.$error.parse">Corrective Action Plan Start Date is an improper format (MM/dd/yyyy)</li>
-        <li ng-if="$ctrl.editForm.capEndDate.$error.required">Corrective Action Plan End Date is required</li>
-        <li ng-if="$ctrl.editForm.capEndDate.$error.parse">Corrective Action Plan End Date is an improper format (MM/dd/yyyy)</li>
-        <li ng-if="$ctrl.editForm.capMustCompleteDate.$error.required">Corrective Action Plan Must Complete Date is required</li>
-        <li ng-if="$ctrl.editForm.capMustCompleteDate.$error.parse">Corrective Action Plan Must Complete Date is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.dateOfDeterminationDay.$error.required">Date of Determination is required</li>
+        <li ng-if="$ctrl.editForm.dateOfDeterminationDay.$error.parse">Date of Determination is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capApprovalDay.$error.required">Corrective Action Plan Approval Date is required</li>
+        <li ng-if="$ctrl.editForm.capApprovalDay.$error.parse">Corrective Action Plan Approval Date is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capStartDay.$error.required">Corrective Action Plan Start Date is required</li>
+        <li ng-if="$ctrl.editForm.capStartDay.$error.parse">Corrective Action Plan Start Date is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capEndDay.$error.required">Corrective Action Plan End Date is required</li>
+        <li ng-if="$ctrl.editForm.capEndDay.$error.parse">Corrective Action Plan End Date is an improper format (MM/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capMustCompleteDay.$error.required">Corrective Action Plan Must Complete Date is required</li>
+        <li ng-if="$ctrl.editForm.capMustCompleteDay.$error.parse">Corrective Action Plan Must Complete Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.sitesPassed.$error.required">Number of sites passed is required</li>
         <li ng-if="$ctrl.editForm.sitesPassed.$error.number">Number of sites passed must be a number</li>
         <li ng-if="$ctrl.editForm.totalSites.$error.required">Total sites is required</li>
@@ -234,12 +234,12 @@
         <li ng-if="$ctrl.editForm.findings.$error.required">Findings is required</li>
         <li ng-if="$ctrl.editForm.developerExplanation.$error.required">Developer Explanation is required</li>
         <li ng-if="$ctrl.editForm.resolution.$error.required">Resolution is required</li>
-        <li ng-if="$ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject">Corrective Action Plan End Date must be after the Start Date</li>
+        <li ng-if="$ctrl.nonconformity.capEndDay && $ctrl.nonconformity.capEndDay < $ctrl.nonconformity.capStartDay">Corrective Action Plan End Date must be after the Start Date</li>
         <li ng-if="$ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites">Sites passed must be less than or equal to the total number of sites</li>
         <li ng-if="$ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed">Total sites must be less than or equal to the number of randomized sites used: {{ $ctrl.randomizedSitesUsed }}</li>
       </ul>
     </div>
-    <button ng-disabled="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject) || ($ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed) || ($ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites)) && $ctrl.showFormErrors && !$ctrl.disableValidation"
+    <button ng-disabled="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDay && $ctrl.nonconformity.capEndDay < $ctrl.nonconformity.capStartDay) || ($ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed) || ($ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites)) && $ctrl.showFormErrors && !$ctrl.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="$ctrl.showFormErrors = true"
             ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>

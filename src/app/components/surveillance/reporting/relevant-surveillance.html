@@ -3,10 +3,10 @@
     <strong>{{ $ctrl.surveillance.friendlyId }}</strong>
   </div>
   <div class="col-md-2">
-    <strong>{{ $ctrl.surveillance.startDate | date : 'mediumDate' : 'UTC' }}</strong>
+    <strong>{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.surveillance.startDay) }}</strong>
   </div>
   <div class="col-md-2">
-    <strong>{{ $ctrl.surveillance.endDate | date : 'mediumDate' : 'UTC' }}</strong>
+    <strong>{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.surveillance.endDay) }}</strong>
   </div>
   <div class="col-md-2">
     <strong>{{ $ctrl.surveillance.numOpenNonconformities }} Open</strong>
