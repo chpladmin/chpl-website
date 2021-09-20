@@ -6,7 +6,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
   ButtonGroup,
-  Container,
   IconButton,
   MenuItem,
   Paper,
@@ -107,7 +106,7 @@ function ChplSvapsEdit(props) {
   };
 
   return (
-    <Container className={classes.container}>
+    <div className={classes.container}>
       { svaps.length > 0
         && (
           <TableContainer component={Paper}>
@@ -205,7 +204,7 @@ function ChplSvapsEdit(props) {
             </>
           )}
       </div>
-    </Container>
+    </div>
   );
 }
 

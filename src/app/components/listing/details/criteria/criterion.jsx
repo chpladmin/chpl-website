@@ -34,11 +34,17 @@ import {
 const useStyles = makeStyles(() => ({
   criterionAccordion: {
     borderRadius: '8px',
-    display: 'grid',
+    display: 'grid',    
   },
   criterionAccordionSummary: {
     backgroundColor: '#f9f9f9',
     borderRadius: '8px',
+  },
+  criterionAccordionDetails: {
+    borderBottom:'.5px solid #c2c6ca',
+    borderLeft: '.5px solid #c2c6ca',
+    borderRight: '.5px solid #c2c6ca',
+    borderRadius: '0 0 8px 8px',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -170,6 +176,7 @@ function ChplCriterion(props) {
         </Grid>
       </AccordionSummary>
       <AccordionDetails
+        className={classes.criterionAccordionDetails}
         id={`criterion-id-${criterion.criterion.id}-details`}
       >
         <Container>

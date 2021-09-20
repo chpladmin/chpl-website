@@ -7,7 +7,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Container,
   Collapse,
   Divider,
   FormControlLabel,
@@ -115,7 +114,7 @@ function ChplCriterionDetailsEdit(props) {
   };
 
   return (
-    <Container>
+    
       <Card>
         <CardContent>
           <Typography
@@ -630,7 +629,6 @@ function ChplCriterionDetailsEdit(props) {
           </Button>
         </CardActions>
       </Card>
-    </Container>
   );
 }
 

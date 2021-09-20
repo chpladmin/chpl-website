@@ -123,7 +123,7 @@ function ChplTestToolsEdit(props) {
   };
 
   return (
-    <Container className={classes.container}>
+    <div className={classes.container}>
       { testToolsUsed.length > 0
         && (
           <TableContainer component={Paper}>
@@ -232,7 +232,7 @@ function ChplTestToolsEdit(props) {
             </>
           )}
       </div>
-    </Container>
+    </div>
   );
 }
 
