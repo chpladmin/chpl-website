@@ -75,7 +75,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.startDate) }</TableCell>
+              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.startDay) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -86,7 +86,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.endDate) }</TableCell>
+              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.endDay) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">

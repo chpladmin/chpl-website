@@ -4,7 +4,7 @@
   </div>
   <div ng-repeat="surv in $ctrl.certifiedProduct.surveillance | orderBy: 'friendlyId'">
     <div class="pull-right">
-      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a>
+      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ $ctrl.DateUtil.getDisplayDateFormat(surv.startDay) }}</span></a>
       <button class="btn btn-sm btn-ai-success" ng-click="$ctrl.editSurveillance(surv)" ng-if="$ctrl.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
     </div>
     <p><strong>{{ $ctrl.getTitle(surv) }}</strong></p>
@@ -20,12 +20,12 @@
         <tbody>
           <tr>
             <th scope="row"><a href uib-tooltip="The date surveillance was initiated" tooltip-trigger="'mouseenter focus click'">Date Surveillance Began</a></th>
-            <td>{{ surv.startDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ $ctrl.DateUtil.getDisplayDateFormat(surv.startDay) }}</td>
           </tr>
           <tr>
             <th scope="row"><a href uib-tooltip="The date surveillance was completed" tooltip-trigger="'mouseenter focus click'">Date Surveillance Ended</a></th>
-            <td ng-if="surv.endDate">{{ surv.endDate | date : 'mediumDate' : 'UTC' }}</td>
-            <td ng-if="!surv.endDate">N/A</td>
+            <td ng-if="surv.endDay">{{ $ctrl.DateUtil.getDisplayDateFormat(surv.endDay) }}</td>
+            <td ng-if="!surv.endDay">N/A</td>
           </tr>
           <tr>
             <th scope="row"><a href uib-tooltip="The type of surveillance conducted (either randomized or reactive)." tooltip-trigger="'mouseenter focus click'">Surveillance Type</a></th>
@@ -87,16 +87,16 @@
               </thead>
               <tbody>
                 <tr>
-                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination | date : 'mediumDate' : 'UTC' }}</td>
-                  <td ng-if="!noncon.dateOfDetermination">N/A</td>
-                  <td ng-if="noncon.capApprovalDate">{{ noncon.capApprovalDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td ng-if="!noncon.capApprovalDate">N/A</td>
-                  <td ng-if="noncon.capStartDate">{{ noncon.capStartDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td ng-if="!noncon.capStartDate">N/A</td>
-                  <td ng-if="noncon.capMustCompleteDate">{{ noncon.capMustCompleteDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td ng-if="!noncon.capMustCompleteDate">N/A</td>
-                  <td ng-if="noncon.capEndDate">{{ noncon.capEndDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td ng-if="!noncon.capEndDate">N/A</td>
+                  <td ng-if="noncon.dateOfDeterminationDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.dateOfDeterminationDay) }}</td>
+                  <td ng-if="!noncon.dateOfDeterminationDay">N/A</td>
+                  <td ng-if="noncon.capApprovalDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capApprovalDay) }}</td>
+                  <td ng-if="!noncon.capApprovalDay">N/A</td>
+                  <td ng-if="noncon.capStartDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capStartDay) }}</td>
+                  <td ng-if="!noncon.capStartDay">N/A</td>
+                  <td ng-if="noncon.capMustCompleteDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capMustCompleteDay) }}</td>
+                  <td ng-if="!noncon.capMustCompleteDay">N/A</td>
+                  <td ng-if="noncon.capEndDay">{{ $ctrl.DateUtil.getDisplayDateFormat(noncon.capEndDay) }}</td>
+                  <td ng-if="!noncon.capEndDay">N/A</td>
                 </tr>
               </tbody>
             </table>

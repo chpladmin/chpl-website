@@ -1,4 +1,4 @@
-export const SurveillanceReportRelevantSurveillanceComponent = {
+const SurveillanceReportRelevantSurveillanceComponent = {
   templateUrl: 'chpl.components/surveillance/reporting/relevant-surveillance.html',
   bindings: {
     surveillance: '<',
@@ -8,13 +8,15 @@ export const SurveillanceReportRelevantSurveillanceComponent = {
     onSave: '&',
   },
   controller: class SurveillanceReportRelevantSurveillanceComponent {
-    constructor ($log, authService) {
+    constructor($log, DateUtil, authService) {
       'ngInject';
+
       this.$log = $log;
+      this.DateUtil = DateUtil;
       this.hasAnyRole = authService.hasAnyRole;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.surveillance) {
         this.surveillance = angular.copy(changes.surveillance.currentValue);
       }
@@ -25,18 +27,18 @@ export const SurveillanceReportRelevantSurveillanceComponent = {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
       }
       if (this.surveillanceOutcomes) {
-        this.surveillanceOutcomes.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+        this.surveillanceOutcomes.sort((a, b) => (a.name < b.name ? -1 : 1));
       }
       if (this.surveillanceProcessTypes) {
-        this.surveillanceProcessTypes.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+        this.surveillanceProcessTypes.sort((a, b) => (a.name < b.name ? -1 : 1));
       }
     }
 
-    save () {
-      this.onSave({surveillance: this.surveillance});
+    save() {
+      this.onSave({ surveillance: this.surveillance });
     }
 
-    cancel () {
+    cancel() {
       this.onCancel();
     }
   },
@@ -44,3 +46,5 @@ export const SurveillanceReportRelevantSurveillanceComponent = {
 
 angular.module('chpl.components')
   .component('chplSurveillanceReportRelevantSurveillance', SurveillanceReportRelevantSurveillanceComponent);
+
+export default SurveillanceReportRelevantSurveillanceComponent;
