@@ -164,10 +164,6 @@ const theme = createMuiTheme({
         fontSize: '.8em',
       },
     },
-    MuiContainer:{
-      paddingRight:'8px',
-      paddingLeft:'8px',
-    },
     MuiDialogActions: {
       root: {
         padding: '16px',
