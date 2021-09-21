@@ -39,6 +39,7 @@ const useStyles = makeStyles(() => ({
   criterionAccordionSummary: {
     backgroundColor: '#f9f9f9',
     borderRadius: '8px',
+    border: '.5px solid #c2c6ca',
   },
   criterionAccordionDetails: {
     borderBottom:'.5px solid #c2c6ca',
