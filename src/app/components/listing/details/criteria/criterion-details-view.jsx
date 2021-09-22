@@ -236,7 +236,7 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="conformanceMethods">
                 <TableCell component="th" scope="row">
-                  Test Procedure
+                  Conformance Method
                   <ChplTooltip title="TBD">
                     <Button>
                       <InfoOutlinedIcon
