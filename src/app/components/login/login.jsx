@@ -7,7 +7,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func, string } from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -220,6 +220,12 @@ function ChplLogin(props) {
             $rootScope.$broadcast('loggedIn');
             props.dispatch('loggedIn');
           });
+      }, () => {
+        const body = 'Bad username and password combination or account is locked / disabled.';
+        toaster.pop({
+          type: 'error',
+          body,
+        });
       });
   };
 
