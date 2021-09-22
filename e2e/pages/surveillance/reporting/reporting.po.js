@@ -5,6 +5,10 @@ class ReportingPage {
     };
   }
 
+  get acbHeader() {
+    return $(this.elements.acbHeader);
+  }
+
   get acbReportingCount() {
     return $$(this.elements.acbHeader).length;
   }

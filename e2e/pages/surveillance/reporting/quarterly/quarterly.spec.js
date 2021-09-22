@@ -106,7 +106,8 @@ describe('when logged in as a ROLE_ACB', () => {
     quarterlyPage.complaintsHeader.click();
     expect(quarterlyPage.complaintsTableRows).toBeGreaterThan(1);
     action.save();
-    browser.waitUntil(() => reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting());
+    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil(() => reportingPage.acbHeader.isDisplayed());
     expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(true);
   });
 
@@ -115,8 +116,8 @@ describe('when logged in as a ROLE_ACB', () => {
     hooks.waitForSpinnerToDisappear();
     action.cancel();
     action.yes();
-    browser.waitUntil(() => reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isDisplayed());
-    expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isDisplayed()).toBe(true);
+    hooks.waitForSpinnerToDisappear();
+    expect(reportingPage.acbHeader.isDisplayed()).toBe(true);
   });
 
   it('can edit quarterly report', () => {

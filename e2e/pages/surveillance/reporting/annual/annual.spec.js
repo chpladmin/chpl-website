@@ -63,7 +63,8 @@ describe('when logged in as a ROLE_ACB', () => {
     browser.waitUntil(() => annualPage.obstacleSummary.isDisplayed());
     annualPage.set(fields);
     action.save();
-    browser.waitUntil(() => reportingPage.editAnnualReport('Drummond Group', 2022).isDisplayed());
+    hooks.waitForSpinnerToDisappear();
+    browser.waitUntil(() => reportingPage.acbHeader.isDisplayed());
     expect(reportingPage.editAnnualReport('Drummond Group', 2022).isDisplayed()).toBe(true);
   });
 
@@ -73,8 +74,7 @@ describe('when logged in as a ROLE_ACB', () => {
     action.cancel();
     action.yes();
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil (() => reportingPage.editAnnualReport('Drummond Group', 2022).isDisplayed())
-    expect(reportingPage.editAnnualReport('Drummond Group', 2022).isDisplayed()).toBe(true);
+    expect(reportingPage.acbHeader.isDisplayed()).toBe(true);
   });
 
   it('can edit annual report', () => {
