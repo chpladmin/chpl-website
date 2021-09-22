@@ -73,7 +73,7 @@
       <label class="sr-only" for="certification-event-add-new-date">Add new Certification Status Date</label>
       <div class="input-group">
         <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['certificationEvents'].statusDateObject"
-               is-open="statusEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
+               is-open="statusEvent.statusDatePicker" close-text="Close"
                id="certification-event-add-new-date" name="certificationEventAddNewDate" required>
         <span class="input-group-btn">
           <button type="button" class="btn btn-secondary btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
