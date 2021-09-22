@@ -232,6 +232,39 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
+          { criterion.success && criterion.conformanceMethods
+            && (
+              <TableRow key="conformanceMethods">
+                <TableCell component="th" scope="row">
+                  Test Procedure
+                  <ChplTooltip title="TBD">
+                    <Button>
+                      <InfoOutlinedIcon
+                        className={classes.iconSpacing}
+                      />
+                    </Button>
+                  </ChplTooltip>
+                </TableCell>
+                <TableCell>
+                  { criterion.conformanceMethods.length > 0
+                    && (
+                      <ul className={classes.unindentedData}>
+                        { criterion.conformanceMethods.map((cm, index) => (
+                          <li key={cm.id || cm.key || index}>
+                            Name:
+                            {' '}
+                            { cm.conformanceMethod.name }
+                            ; Version:
+                            {' '}
+                            { cm.conformanceMethodVersion }
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  { criterion.conformanceMethods.length === 0 && 'None' }
+                </TableCell>
+              </TableRow>
+            )}
           { criterion.success && criterion.testProcedures
             && (
               <TableRow key="testProcedures">

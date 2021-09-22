@@ -20,6 +20,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
+import ChplConformanceMethodsEdit from './conformance-methods';
 import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
 import ChplTestFunctionalityEdit from './test-functionality';
@@ -322,6 +323,27 @@ function ChplCriterionDetailsEdit(props) {
                     <ChplTestFunctionalityEdit
                       testFunctionality={criterion.testFunctionality}
                       options={criterion.allowedTestFunctionalities}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { criterion.conformanceMethods
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Conformance Method
+                    </Typography>
+                    <ChplConformanceMethodsEdit
+                      conformanceMethods={criterion.conformanceMethods}
+                      options={criterion.allowedConformanceMethods}
                       onChange={handleDetailChange}
                     />
                   </div>
