@@ -17,6 +17,8 @@ const $rootScopeMock = {
   $broadcast: jest.fn(() => {}),
 };
 
+const $stateParamsMock = { };
+
 const IdleMock = {
   watch: jest.fn(() => {}),
 };
@@ -42,6 +44,7 @@ const hocMock = {
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
 when(angularReactHelper.getAngularService).calledWith('$rootScope').mockReturnValue($rootScopeMock);
+when(angularReactHelper.getAngularService).calledWith('$stateParams').mockReturnValue($stateParamsMock);
 when(angularReactHelper.getAngularService).calledWith('Idle').mockReturnValue(IdleMock);
 when(angularReactHelper.getAngularService).calledWith('Keepalive').mockReturnValue(KeepaliveMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
