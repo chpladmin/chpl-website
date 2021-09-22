@@ -140,6 +140,7 @@ function ChplLogin(props) {
         setState('LOGGEDIN');
         break;
       case 'FORGOTPASSWORD':
+      case 'RESETTING':
         setState('SIGNIN');
         break;
       default:
@@ -672,7 +673,7 @@ function ChplLogin(props) {
              <VpnKeyIcon className={classes.iconSpacing} />
            </Button>
          )}
-        {(state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD')
+        {(state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD' || state === 'RESETTING')
          && (
            <Button
              fullWidth
