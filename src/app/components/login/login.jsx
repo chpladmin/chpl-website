@@ -96,6 +96,7 @@ function ChplLogin(props) {
   /* eslint-disable react/destructuring-assignment */
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
+  const $stateParams = getAngularService('$stateParams');
   const Idle = getAngularService('Idle');
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
@@ -106,8 +107,8 @@ function ChplLogin(props) {
   } = useContext(UserContext);
   const [state, setState] = useState('SIGNIN');
   const [passwordMessages, setPasswordMessages] = useState([]);
-  const [strength, setStrength] = useState(0);
   const [resetToken, setResetToken] = useState('');
+  const [strength, setStrength] = useState(0);
   const classes = useStyles();
   let changeFormik;
   let resetFormik;
@@ -116,11 +117,11 @@ function ChplLogin(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    if (props?.resetToken.length > 0) {
-      setResetToken(props.resetToken);
+    if ($stateParams.token) {
+      setResetToken($stateParams.token);
       setState('RESETTING');
     }
-  }, [props.resetToken]); // eslint-disable-line react/destructuring-assignment
+  }, [$stateParams]);
 
   useEffect(() => {
     if (user?.fullName) {
@@ -697,10 +698,8 @@ export default ChplLogin;
 
 ChplLogin.propTypes = {
   dispatch: func,
-  resetToken: string,
 };
 
 ChplLogin.defaultProps = {
   dispatch: () => {},
-  resetToken: '',
 };

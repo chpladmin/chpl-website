@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { func, shape } from 'prop-types';
 import {
   Container,
@@ -12,18 +12,10 @@ import { ChplLogin, UserWrapper } from '../../../components/login';
 function ChplLoginPage(props) {
   /* eslint-disable react/destructuring-assignment */
   const $state = getAngularService('$state');
-  const $stateParams = getAngularService('$stateParams');
   const state = props.returnTo.state();
   const params = props.returnTo.params();
   const options = { ...props.returnTo.options(), reload: true };
-  const [resetToken, setResetToken] = useState('');
   /* eslint-enable react/destructuring-assignment */
-
-  useEffect(() => {
-    if ($stateParams.token) {
-      setResetToken($stateParams.token);
-    }
-  }, [$stateParams]);
 
   const handleLogin = (action) => {
     if (action === 'loggedIn') {
@@ -37,7 +29,6 @@ function ChplLoginPage(props) {
         <Container id="login-component">
           <ChplLogin
             dispatch={handleLogin}
-            resetToken={resetToken}
           />
         </Container>
       </ThemeProvider>
