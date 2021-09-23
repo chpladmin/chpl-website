@@ -221,12 +221,24 @@ function ChplLogin(props) {
             $rootScope.$broadcast('loggedIn');
             props.dispatch('loggedIn');
           });
-      }, () => {
-        const body = 'Bad username and password combination or account is locked / disabled.';
-        toaster.pop({
-          type: 'error',
-          body,
-        });
+      }, (error) => {
+        if (error?.data?.error === 'The user is required to change their password on next login.') {
+          console.log('before', state);
+          setState('CHANGEPASSWORD', () => {
+            console.log('after', state);
+          });
+          const body = 'Password change is required';
+          toaster.pop({
+            type: 'info',
+            body,
+          });
+        } else {
+          const body = 'Bad username and password combination or account is locked / disabled.';
+          toaster.pop({
+            type: 'error',
+            body,
+          });
+        }
       });
   };
 
