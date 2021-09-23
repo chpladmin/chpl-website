@@ -206,6 +206,7 @@ describe('the Product part of the Developers page', () => {
 
           // act
           actionBar.save();
+          browser.waitUntil(() => toast.toastTitle.isDisplayed());
           toast.clearAllToast();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();

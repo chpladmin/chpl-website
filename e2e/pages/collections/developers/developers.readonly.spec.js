@@ -49,8 +49,8 @@ describe('the Developers Under Certification Ban collection page', () => {
     describe('using date filter', () => {
       it('should filter listing results', () => {
         page.dateFilter.click();
-        page.fromDate.setValue(['01', 'Sep', 'Tab', '2017']);
-        page.toDate.setValue(['01', 'Oct', 'Tab', '2019']);
+        page.fromDate.setValue('09/01/2017')
+        page.toDate.setValue('10/01/2019');
         page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
