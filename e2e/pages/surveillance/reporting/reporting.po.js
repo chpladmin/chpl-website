@@ -1,8 +1,13 @@
 class ReportingPage {
   constructor() {
     this.elements = {
-      acbHeader: '.panel-default',
+      acbHeader: '.panel.panel-default',
+      secondaryPageTitle: 'h2',
     };
+  }
+
+  get secondaryPageTitle() {
+    return $(this.elements.secondaryPageTitle);
   }
 
   get acbHeader() {

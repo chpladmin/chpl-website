@@ -95,6 +95,7 @@ describe('when logged in as a ROLE_ACB', () => {
   it('can initiate quarterly report', () => {
     reportingPage.initiateQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     action.yes();
+    hooks.waitForSpinnerToDisappear();
     browser.waitUntil(() => quarterlyPage.surveillanceActivity.isDisplayed());
     expect(quarterlyPage.surveillanceActivity.isDisplayed()).toBe(true);
     expect(quarterlyPage.reactiveSurveillance.isDisplayed()).toBe(true);
@@ -106,18 +107,21 @@ describe('when logged in as a ROLE_ACB', () => {
     quarterlyPage.complaintsHeader.click();
     expect(quarterlyPage.complaintsTableRows).toBeGreaterThan(1);
     action.save();
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil(() => reportingPage.acbHeader.isDisplayed());
     expect(reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').isExisting()).toBe(true);
   });
 
-  it('can cancel editing of quarterly report', () => {
+  it('can cancel editing of quarterly report and navigates back to reporting screen', () => {
     reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     hooks.waitForSpinnerToDisappear();
     action.cancel();
     action.yes();
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.acbHeader.isDisplayed()).toBe(true);
+    browser.waitUntil(() => reportingPage.acbHeader.isDisplayed())
+    expect(reportingPage.secondaryPageTitle.getText()).toBe("Available reports");
   });
 
   it('can edit quarterly report', () => {
