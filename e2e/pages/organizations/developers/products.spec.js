@@ -29,15 +29,12 @@ describe('the Product part of the Developers page', () => {
     if (toast.toastContainer.isDisplayed()) {
       toast.clearAllToast();
     }
+    login.logOut();
   });
 
   describe('when logged in as Drummond ACB', () => {
     beforeEach(() => {
       login.logIn('drummond');
-    });
-
-    afterEach(() => {
-      login.logOut();
     });
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
@@ -172,10 +169,6 @@ describe('the Product part of the Developers page', () => {
       login.logIn('onc');
     });
 
-    afterEach(() => {
-      login.logOut();
-    });
-
     describe('when on the "Medical Information Technology, Inc. (MEDITECH)" Developer page', () => {
       const developer = 'Medical Information Technology, Inc. (MEDITECH)';
       let product;
@@ -213,6 +206,7 @@ describe('the Product part of the Developers page', () => {
 
           // act
           actionBar.save();
+          toast.clearAllToast();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
 

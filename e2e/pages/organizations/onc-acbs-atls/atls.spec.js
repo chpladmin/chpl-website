@@ -52,6 +52,8 @@ describe('the ONC-ATL Management page', () => {
       page.organizationEditButton.click();
       page.organizationName.setValue(atl);
       page.saveOrganizationButton.click();
+      hook.waitForSpinnerToDisappear();
+      toast.clearAllToast();
       login.logOut();
     });
 
