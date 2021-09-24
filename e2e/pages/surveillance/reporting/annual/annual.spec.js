@@ -57,19 +57,27 @@ describe('when logged in as a ROLE_ACB', () => {
     browser.pause(5000);
   });
 
+  it('can delete annual report', () => {
+    reportingPage.editAnnualReport('Drummond Group', 2020).click();
+    action.delete();
+    action.yes();
+    hooks.waitForSpinnerToDisappear();
+    expect(reportingPage.editAnnualReport('Drummond Group', 2020).isExisting()).toBe(false);
+  });
+
   it('can initiate annual report', () => {
-    reportingPage.initiateAnnualReport('Drummond Group', 2022).click();
+    reportingPage.initiateAnnualReport('Drummond Group', 2020).click();
     action.yes();
     browser.waitUntil(() => annualPage.obstacleSummary.isDisplayed());
     annualPage.set(fields);
     action.save();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil(() => reportingPage.acbHeader.isDisplayed());
-    expect(reportingPage.editAnnualReport('Drummond Group', 2022).isDisplayed()).toBe(true);
+    expect(reportingPage.editAnnualReport('Drummond Group', 2020).isDisplayed()).toBe(true);
   });
 
   it('can cancel editing of annual report and navigates back to reporting screen', () => {
-    reportingPage.editAnnualReport('Drummond Group', 2022).click();
+    reportingPage.editAnnualReport('Drummond Group', 2020).click();
     hooks.waitForSpinnerToDisappear();
     action.cancel();
     action.yes();
@@ -83,28 +91,21 @@ describe('when logged in as a ROLE_ACB', () => {
       obstacle: `Obstacle summary Updated ${timestamp}`,
       priority: `Priority summary Updated ${timestamp}`,
     };
-    reportingPage.editAnnualReport('Drummond Group', 2022).click();
+    reportingPage.editAnnualReport('Drummond Group', 2020).click();
     browser.waitUntil(() => annualPage.obstacleSummary.isDisplayed());
     annualPage.set(updatedFields);
     action.save();
     hooks.waitForSpinnerToDisappear();
-    reportingPage.editAnnualReport('Drummond Group', 2022).click();
+    reportingPage.editAnnualReport('Drummond Group', 2020).click();
     expect(annualPage.prioritySummary.getValue()).toBe(updatedFields.priority);
     expect(annualPage.obstacleSummary.getValue()).toBe(updatedFields.obstacle);
   });
 
   it('can download annual report', () => {
-    reportingPage.editAnnualReport('Drummond Group', 2022).click();
+    reportingPage.editAnnualReport('Drummond Group', 2020).click();
     annualPage.download.click();
     expect(toast.toastTitle.getText()).toBe('Report is being generated');
   });
 
-  it('can delete annual report', () => {
-    reportingPage.editAnnualReport('Drummond Group', 2022).click();
-    action.delete();
-    action.yes();
-    hooks.waitForSpinnerToDisappear();
-    expect(reportingPage.editAnnualReport('Drummond Group', 2022).isExisting()).toBe(false);
-  });
 });
 
