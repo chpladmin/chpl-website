@@ -52,7 +52,8 @@ describe('the ONC-ATL Management page', () => {
       page.organizationEditButton.click();
       page.organizationName.setValue(atl);
       page.saveOrganizationButton.click();
-      hook.waitForSpinnerToDisappear();
+      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil (() => toast.toastTitle.isDisplayed())
       toast.clearAllToast();
       login.logOut();
     });
@@ -68,6 +69,8 @@ describe('the ONC-ATL Management page', () => {
       page.organizationWebsite.setValue(websiteUrl);
       address.set(atlAddress);
       page.saveOrganizationButton.click();
+      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil (() => toast.toastTitle.isDisplayed())
       toast.clearAllToast();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain(newAtlName);
       expect(page.generalInformation(organizationType, atlId).getText()).toContain(websiteUrl);
@@ -96,7 +99,6 @@ describe('the ONC-ATL Management page', () => {
       address.set(atlAddress);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      toast.clearAllToast();
       page.organizationNameButton(newAtlName).click();
       expect(page.newOrganizationGeneralInfo.getText()).toContain(newAtlName);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(websiteUrl);
