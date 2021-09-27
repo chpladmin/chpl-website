@@ -8,7 +8,6 @@ import angular from 'angular';
 import 'angular-avatar';
 import 'angular-breadcrumb';
 import /* angularConfirm from */ 'angular-confirm';
-import /* angularCronGen from */ 'angular-cron-gen';
 import /* angularLoadingBar from */ 'angular-loading-bar';
 import /* angulartics from */ 'angulartics';
 import /* angularticsGoogleTagManager from */ 'angulartics-google-tag-manager';

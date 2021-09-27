@@ -5,7 +5,6 @@ import { reactToAngularComponent } from '../../services/angular-react-helper';
 
 angular
   .module('chpl.administration', [
-    'angular-cron-gen',
     'angular-confirm',
     'chpl.constants',
     'chpl.services',

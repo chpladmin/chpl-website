@@ -1,5 +1,6 @@
 import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
 import { ChplAttestationChangeRequest } from './attestation';
+import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
@@ -56,6 +57,7 @@ angular
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
+  .component('chplCronGenBridge', reactToAngularComponent(ChplCronGen))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
