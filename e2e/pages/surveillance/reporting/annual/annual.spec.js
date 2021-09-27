@@ -54,13 +54,14 @@ describe('when logged in as a ROLE_ACB', () => {
 
   beforeEach(() => {
     loginComponent.logIn('drummond');
-    browser.pause(5000);
+    hooks.waitForSpinnerToDisappear();
   });
 
   it('can delete annual report', () => {
     reportingPage.editAnnualReport('Drummond Group', 2020).click();
     action.delete();
     action.yes();
+    hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     expect(reportingPage.editAnnualReport('Drummond Group', 2020).isExisting()).toBe(false);
   });
