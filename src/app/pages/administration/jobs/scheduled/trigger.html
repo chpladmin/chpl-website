@@ -91,8 +91,7 @@
     <div class="row">
       <div class="col-md-12">
         Set the time at which you would like to receive the report. Please note this is in UTC time, which is currently {{ $ctrl.now | date : 'mediumTime' : 'UTC' }}
-        <cron-gen ng-model="$ctrl.trigger.cronSchedule" options="$ctrl.schConfig"></cron-gen>
-        <p><strong>Schedule, in cron format: {{ $ctrl.trigger.cronSchedule }}</strong></p>
+        <chpl-cron-gen-bridge initial-value="$ctrl.trigger.cronSchedule" dispatch="::$ctrl.handleDispatch"></chpl-cron-gen-bridge>
       </div>
     </div>
   </span>
