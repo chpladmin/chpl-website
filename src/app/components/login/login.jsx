@@ -207,6 +207,8 @@ function ChplLogin(props) {
     }
   };
 
+  let sendReset;
+
   const login = () => {
     networkService.login({ userName: signinFormik.values.userName, password: signinFormik.values.password })
       .then(() => {
@@ -223,15 +225,13 @@ function ChplLogin(props) {
           });
       }, (error) => {
         if (error?.data?.error === 'The user is required to change their password on next login.') {
-          console.log('before', state);
-          setState('CHANGEPASSWORD', () => {
-            console.log('after', state);
-          });
           const body = 'Password change is required';
           toaster.pop({
             type: 'info',
             body,
           });
+          sendResetFormik.values.email = signinFormik.values.userName;
+          sendReset();
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
           toaster.pop({
@@ -291,7 +291,7 @@ function ChplLogin(props) {
       });
   };
 
-  const sendReset = () => {
+  sendReset = () => {
     networkService.emailResetPassword({ email: sendResetFormik.values.email })
       .then(() => {
         $analytics.eventTrack('Send Reset Email', { category: 'Authentication' });
@@ -299,7 +299,7 @@ function ChplLogin(props) {
         sendResetFormik.resetForm();
         toaster.pop({
           type: 'success',
-          body: 'Password email sent; please check your email',
+          body: `Password email reset sent to ${sendResetFormik.values.email}; please check your email`,
         });
       }, () => {
         const body = `Email could not be sent to ${sendResetFormik.values.email}`;
