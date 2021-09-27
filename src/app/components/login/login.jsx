@@ -679,7 +679,6 @@ function ChplLogin(props) {
              fullWidth
              color="primary"
              variant="contained"
-             disabled={!changeFormik.isValid}
              onClick={submitChange}
            >
              Confirm new Password
