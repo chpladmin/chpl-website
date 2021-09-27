@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "11.20.0",
+  "version": "11.20.1",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -43,7 +43,6 @@
     "angular-avatar": "https://github.com/andlar/angular-avatar#master",
     "angular-breadcrumb": "^0.5.0",
     "angular-confirm": "1.2",
-    "angular-cron-gen": "^0.0.26",
     "angular-feature-flags": "^1.6.1",
     "angular-file-saver": "^1.1.3",
     "angular-google-chart": "^0.1.0",
@@ -97,7 +96,7 @@
     "babel-plugin-angularjs-annotate": "^0.9.0",
     "browser-sync": "~2.9.11",
     "browser-sync-spa": "~1.0.3",
-    "chromedriver": "^91.0.0",
+    "chromedriver": "^93.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.6.1",
     "css-loader": "^0.28.11",

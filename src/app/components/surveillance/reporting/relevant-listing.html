@@ -18,8 +18,8 @@
         <thead>
           <tr>
             <th scope="col" class="search-header" st-sort="friendlyId" st-skip-natural="true">Surveillance ID</th>
-            <th scope="col" class="search-header" st-sort="startDate" st-skip-natural="true" st-sort-default="reverse">Began Date</th>
-            <th scope="col" class="search-header" st-sort="endDate" st-skip-natural="true">Ended Date</th>
+            <th scope="col" class="search-header" st-sort="startDay" st-skip-natural="true" st-sort-default="reverse">Began Date</th>
+            <th scope="col" class="search-header" st-sort="endDay" st-skip-natural="true">Ended Date</th>
             <th scope="col" class="search-header" st-sort="numOpenNonconformities" st-skip-natural="true">Open Non-Conformities</th>
             <th scope="col" class="search-header" st-sort="numClosedNonconformities" st-skip-natural="true">Closed Non-Conformities</th>
             <th scope="col" class="search-header" st-sort="completed" st-skip-natural="true">Surveillance Data</th>
@@ -37,8 +37,8 @@
             <td>
               <button class="btn btn-link" ng-click="$ctrl.displaySurveillance(surveillance)">{{ surveillance.friendlyId }}</button>
             </td>
-            <td>{{ surveillance.startDate | date : 'mediumDate' : 'UTC' }}</td>
-            <td>{{ surveillance.endDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ $ctrl.DateUtil.getDisplayDateFormat(surveillance.startDay) }}</td>
+            <td>{{ $ctrl.DateUtil.getDisplayDateFormat(surveillance.endDay) }}</td>
             <td>{{ surveillance.numOpenNonconformities }}</td>
             <td>{{ surveillance.numClosedNonconformities }}</td>
             <td class="row">
