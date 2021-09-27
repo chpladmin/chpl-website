@@ -5,7 +5,6 @@ import { reactToAngularComponent } from '../../services/angular-react-helper';
 
 angular
   .module('chpl.administration', [
-    'angular-cron-gen',
     'angular-confirm',
     'chpl.constants',
     'chpl.services',
@@ -23,9 +22,8 @@ angular
   .config((IdleProvider, KeepaliveProvider) => {
     // configure Idle settings
     IdleProvider.idle(60 * MINUTES_UNTIL_IDLE); // in seconds
-    //This is required to be > 0 for the IdleProvider to broadcast IdleTimeout event
+    // This is required to be > 0 for the IdleProvider to broadcast IdleTimeout event
     IdleProvider.timeout(1); // in seconds
     KeepaliveProvider.interval(60 * MINUTES_BETWEEN_KEEPALIVE); // in seconds
   })
   .component('chplLoginBridge', reactToAngularComponent(ChplLogin));
-;
