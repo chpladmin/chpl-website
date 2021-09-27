@@ -59,7 +59,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineOpts: { // used to be jasmineNodeOpts; when jasmine.DEFAULT_TIMEOUT_INTERVAL is 10000 this isn't being taken into account
     ui: 'bdd',
-    defaultTimeoutInterval: 60000,
+    defaultTimeoutInterval: 80000,
     requires: ['@babel/register'], // think this is the new one
     helpers: [require.resolve('@babel/register')], // not sure if this is needed
     expectationResultHandler(passed, assertion) {
