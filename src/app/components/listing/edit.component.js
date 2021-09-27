@@ -71,7 +71,7 @@ const ListingEditComponent = {
     }
 
     disabledStatus(name) {
-      return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
+      return (this.workType === 'confirm' && name !== 'Active');
     }
 
     generateErrorMessages() {
@@ -104,12 +104,6 @@ const ListingEditComponent = {
     }
 
     improperFirstStatus() {
-      if (this.workType === 'confirm') {
-        return false;
-      }
-      if (!this.listing.certificationEvents || this.listing.certificationEvents.length === 0) {
-        return true;
-      }
       return this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject')[0].status.name !== 'Active';
     }
 
