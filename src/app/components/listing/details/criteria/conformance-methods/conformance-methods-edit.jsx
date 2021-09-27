@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
   dataEntry: {
     display: 'grid',
-    gridTemplateColumns: '4fr 1fr',
+    gridTemplateColumns: '2fr 2fr 1fr',
     gap: '4px',
   },
   dataEntryActions: {
@@ -47,15 +47,17 @@ const useStyles = makeStyles(() => ({
 const validationSchema = yup.object({
   cm: yup.object()
     .required('Conformance Method is required'),
+  version: yup.string()
+    .required('Version is required'),
 });
 
 function ChplConformanceMethodsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [conformanceMethods, setConformanceMethods] = useState(props.conformanceMethods.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  const [conformanceMethods, setConformanceMethods] = useState(props.conformanceMethods.sort((a, b) => (a.conformanceMethod.name < b.conformanceMethod.name ? -1 : 1)));
   const [options, setOptions] = useState(
     props.options
-      .filter((option) => !(props.conformanceMethods.find((used) => used.id === option.id)))
+      .filter((option) => !(props.conformanceMethods.find((used) => used.conformanceMethod.id === option.id)))
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
   );
   const classes = useStyles();
@@ -71,8 +73,11 @@ function ChplConformanceMethodsEdit(props) {
     const updated = [
       ...conformanceMethods,
       {
-        id: formik.values.cm.id,
-        name: formik.values.cm.name,
+        conformanceMethod: {
+          id: formik.values.cm.id,
+          name: formik.values.cm.name,
+        },
+        conformanceMethodVersion: formik.values.version,
         key: Date.now(),
       },
     ];
@@ -92,9 +97,9 @@ function ChplConformanceMethodsEdit(props) {
   const removeItem = (item) => {
     const updated = conformanceMethods.filter((m) => {
       if (m.id) {
-        return m.id !== item.id;
+        return m.conformanceMethod.id !== item.id;
       }
-      return m.name !== item.name;
+      return m.conformanceMethod.name !== item.name;
     });
     setConformanceMethods(updated);
     setOptions([
@@ -110,6 +115,7 @@ function ChplConformanceMethodsEdit(props) {
   formik = useFormik({
     initialValues: {
       cm: '',
+      version: '',
     },
     onSubmit: () => {
       addNew();
@@ -128,6 +134,7 @@ function ChplConformanceMethodsEdit(props) {
               <TableHead>
                 <TableRow>
                   <TableCell><Typography variant="body2">Name</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Version</Typography></TableCell>
                   <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
                 </TableRow>
               </TableHead>
@@ -135,7 +142,10 @@ function ChplConformanceMethodsEdit(props) {
                 { conformanceMethods.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2"><ChplEllipsis text={item.name} maxLength={100} wordBoundaries /></Typography>
+                      <Typography variant="body2"><ChplEllipsis text={item.conformanceMethod.name} maxLength={100} wordBoundaries /></Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2">{ item.conformanceMethodVersion }</Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding
@@ -192,6 +202,17 @@ function ChplConformanceMethodsEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
+              <ChplTextField
+                id="version"
+                name="version"
+                label="Version"
+                required
+                value={formik.values.version}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.version && !!formik.errors.version}
+                helperText={formik.touched.version && formik.errors.version}
+              />
               <ButtonGroup
                 color="primary"
                 className={classes.dataEntryActions}

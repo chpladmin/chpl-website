@@ -7,9 +7,9 @@ const conformanceMethod = shape({
 });
 
 const selectedConformanceMethod = shape({
+  conformanceMethod,
+  conformanceMethodVersion: string,
   id: number,
-  name: string,
-  conformanceMethodId: number,
 });
 
 export { conformanceMethod, selectedConformanceMethod };
