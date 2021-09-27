@@ -2783,11 +2783,6 @@ angular-confirm@1.2:
   resolved "https://registry.yarnpkg.com/angular-confirm/-/angular-confirm-1.2.6.tgz#7988e5ee0bd7929142e6f6219f5baccc28b5199b"
   integrity sha1-eYjl7gvXkpFC5vYhn1uszCi1GZs=
 
-angular-cron-gen@^0.0.26:
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/angular-cron-gen/-/angular-cron-gen-0.0.26.tgz#cdb63b61c21fa0d3d2086c68b763941d3283f2c3"
-  integrity sha1-zbY7YcIfoNPSCGxot2OUHTKD8sM=
-
 angular-feature-flags@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/angular-feature-flags/-/angular-feature-flags-1.6.1.tgz#c0955589607399566aac707af5bbe22a3989fae5"
