@@ -1,3 +1,3 @@
-import ChplLogin from './login';
+import ChplLoginPage from './login';
 
-export default ChplLogin;
+export default ChplLoginPage;

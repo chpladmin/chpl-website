@@ -64,7 +64,7 @@ class ConfirmPage {
   }
 
   gotoConfirmListingPage (inspectListingId ) {
-    $('//button[@id="process-pending-listing-' + inspectListingId + '"]').scrollAndClick();
+    $('//button[@id="process-pending-listing-' + inspectListingId + '"]').click();
     this.inspectNextButton.waitAndClick();
     this.inspectNextButton.waitAndClick();
     this.inspectNextButton.waitAndClick();
@@ -78,11 +78,11 @@ class ConfirmPage {
 
   gotoPendingListingPage (pendingListingId ) {
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
-    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').scrollAndClick();
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').click();
   }
 
   rejectListingCheckbox (chplId) {
-    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').click();
   }
 
   findListingToReject (chplId) {
@@ -90,7 +90,7 @@ class ConfirmPage {
   }
 
   rejectListing (chplId) {
-    $('//input[@id="reject-pending-listing-' + chplId + '"]').scrollAndClick();
+    $('//input[@id="reject-pending-listing-' + chplId + '"]').click();
     if (this.rejectButton.isClickable()) {
       this.rejectButton.waitAndClick();
     } else {
@@ -100,7 +100,7 @@ class ConfirmPage {
   }
 
   confirmListing () {
-    this.confirmButton.scrollAndClick();
+    this.confirmButton.click();
     this.yesConfirmation.waitAndClick();
   }
 

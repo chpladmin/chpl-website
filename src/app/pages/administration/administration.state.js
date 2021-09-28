@@ -298,7 +298,7 @@ const states = {
     }, {
       name: 'login',
       url: '/login',
-      component: 'chplLoginBridge',
+      component: 'chplLoginPageBridge',
       resolve: { returnTo },
       data: { title: 'CHPL Login' },
     },

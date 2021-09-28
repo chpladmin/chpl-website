@@ -1,3 +1,7 @@
 import FlagContext from './flag-context';
+import UserContext from './user-context';
 
-export default FlagContext;
+export {
+  FlagContext,
+  UserContext,
+};

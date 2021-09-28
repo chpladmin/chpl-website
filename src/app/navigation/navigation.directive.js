@@ -45,6 +45,7 @@
     vm.isOn = featureFlags.isOn;
     vm.hasAnyRole = authService.hasAnyRole;
     vm.loadAnnouncements = loadAnnouncements;
+    vm.logout = authService.logout;
     vm.showCmsWidget = showCmsWidget;
     vm.showCompareWidget = showCompareWidget;
     vm.toggleNavClosed = toggleNavClosed;
@@ -119,6 +120,11 @@
         }
       });
       $scope.$on('$destroy', flags);
+
+      var logout = $scope.$on('IdleTimeout', function () {
+        vm.logout();
+      });
+      $scope.$on('$destroy', logout);
     };
 
     function clear () {

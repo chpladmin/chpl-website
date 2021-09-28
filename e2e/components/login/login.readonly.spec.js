@@ -4,43 +4,7 @@ import Hooks from '../../utilities/hooks';
 let component;
 let hooks;
 
-describe('the new login component', () => {
-  beforeEach(async () => {
-    component = new LoginComponent();
-    hooks = new Hooks();
-    await hooks.open('#/login');
-  });
-
-  describe('when logging in', () => {
-    afterEach(() => {
-      component.logOut();
-    });
-
-    it('should be able to log in as drummond ACB', () => {
-      component.logIn('drummond');
-      expect(component.getLoggedInUserName()).toBe('AQA Drummond');
-    });
-
-    it('should be able to log in as ONC', () => {
-      component.logIn('onc');
-      expect(component.getLoggedInUserName()).toBe('AQA ONC');
-    });
-
-    it('should be able to log in as ADMIN', () => {
-      component.logIn('admin');
-      expect(component.getLoggedInUserName()).toBe('AQA Admin');
-    });
-  });
-
-  it('should be able to log out', () => {
-    component.logIn('onc');
-    expect(component.getLoggedInUserName()).toBe('AQA ONC');
-    component.logOut();
-    expect(component.getLoggedInUserName()).toBe('Administrator Login');
-  });
-});
-
-describe('the legacy login component', () => {
+describe('the login component', () => {
   beforeEach(async () => {
     component = new LoginComponent();
     hooks = new Hooks();
@@ -54,17 +18,17 @@ describe('the legacy login component', () => {
 
     it('should be able to log in as drummond ACB', () => {
       component.logIn('drummond');
-      expect(component.getLoggedInUserName()).toBe('AQA Drummond');
+      expect(/AQA Drummond/i.test(component.getLoggedInUserName())).toBe(true);
     });
 
     it('should be able to log in as ONC', () => {
       component.logIn('onc');
-      expect(component.getLoggedInUserName()).toBe('AQA ONC');
+      expect(/AQA ONC/i.test(component.getLoggedInUserName())).toBe(true);
     });
 
     it('should be able to log in as ADMIN', () => {
       component.logIn('admin');
-      expect(component.getLoggedInUserName()).toBe('AQA Admin');
+      expect(/AQA Admin/i.test(component.getLoggedInUserName())).toBe(true);
     });
   });
 
@@ -72,6 +36,6 @@ describe('the legacy login component', () => {
     component.logIn('onc');
     expect(component.getLoggedInUserName()).toBe('AQA ONC');
     component.logOut();
-    expect(component.getLoggedInUserName()).toBe('Administrator Login');
+    expect(/Administrator Login/i.test(component.getLoggedInUserName())).toBe(true);
   });
 });
