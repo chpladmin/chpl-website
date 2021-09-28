@@ -236,14 +236,14 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="conformanceMethods">
                 <TableCell component="th" scope="row">
-                  Conformance Method
                   <ChplTooltip title="TBD">
-                    <Button>
-                      <InfoOutlinedIcon
-                        className={classes.iconSpacing}
+                    <IconButton className={classes.infoIcon}>
+                      <InfoIcon
+                        color="primary"
                       />
-                    </Button>
+                    </IconButton>
                   </ChplTooltip>
+                  Conformance Method
                 </TableCell>
                 <TableCell>
                   { criterion.conformanceMethods.length > 0
