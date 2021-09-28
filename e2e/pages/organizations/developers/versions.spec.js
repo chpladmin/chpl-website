@@ -28,15 +28,12 @@ describe('the Version part of the Developers page', () => {
     if (toast.toastContainer.isDisplayed()) {
       toast.clearAllToast();
     }
+    login.logOut();
   });
 
   describe('when logged in as drummond ACB', () => {
     beforeEach(() => {
       login.logIn('drummond');
-    });
-
-    afterEach(() => {
-      login.logOut();
     });
 
     describe('when on the "Procentive" Developer page, on the "Procentive" Product', () => {
@@ -144,10 +141,6 @@ describe('the Version part of the Developers page', () => {
       login.logIn('admin');
     });
 
-    afterEach(() => {
-      login.logOut();
-    });
-
     describe('when on the "Greenway Health, LLC" Developer page', () => {
       const name = 'Greenway Intergy Meaningful Use Edition';
       const productId = 837;
@@ -240,6 +233,7 @@ describe('the Version part of the Developers page', () => {
 
         // act
         actionBar.save();
+        toast.clearAllToast();
         page.selectAllCertificationStatus();
         page.productsHeader.waitForDisplayed();
         product = page.getProduct(productName);

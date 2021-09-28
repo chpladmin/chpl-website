@@ -20,7 +20,7 @@ class SedComponent {
   }
 
   expandSed() {
-    $('//div[text()="Safety Enhanced Design (SED)"]/following-sibling::div').scrollAndClick();
+    $('//div[text()="Safety Enhanced Design (SED)"]/following-sibling::div').click();
   }
 
   criteriaUcdCount() {

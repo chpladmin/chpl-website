@@ -10,7 +10,7 @@ class MeasuresComponent {
   }
 
   expandMeasures() {
-    $('//div[text()="Successfully Tested G1/G2 Measures"]/following-sibling::div').scrollAndClick();
+    $('//div[text()="Successfully Tested G1/G2 Measures"]/following-sibling::div').click();
   }
 
   measuresCount() {
