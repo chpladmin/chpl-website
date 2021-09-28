@@ -71,7 +71,7 @@ describe('On the 2015 Listing page', () => {
 
         criteria.attestCriteriaOld('170.315 (g)(6)');
         criteria.addTestProceduresOld('ONC Test Method', '1.1');
-        criteria.addTestToolsOld('Cypress', '1.1');
+        criteria.addTestToolsOld('Edge Testing Tool', '1.1');
         criteria.saveCertifiedProductOld.waitAndClick();
       }
       action.save();
