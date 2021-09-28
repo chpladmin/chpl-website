@@ -95,6 +95,11 @@ const theme = createMuiTheme({
         padding:'16px 0px',
       },
     },
+    MuiPaper: {
+      rounded: {
+        borderRadius: '8px',
+      },
+    },
     MuiButton: {
       root: {
         boxShadow: 'none',
@@ -354,6 +359,16 @@ const theme = createMuiTheme({
       },
       icon: {
         color: '#000',
+      },
+    },
+    MuiOutlinedInput: {
+      input: {
+        paddingTop: '18.5px',
+        paddingBottom: '14px',
+      },
+      inputMarginDense: {
+        paddingTop: '14.5px',
+        paddingBottom: '10px',
       },
     },
   },

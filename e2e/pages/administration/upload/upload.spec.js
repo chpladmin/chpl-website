@@ -3,7 +3,10 @@ import UploadAPIDocumentationComponent from '../../../components/upload/upload-a
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks, loginComponent, uploadAPIDocumentationComponent, uploadListingComponent;
+let hooks;
+let loginComponent;
+let uploadAPIDocumentationComponent;
+let uploadListingComponent;
 
 beforeAll(async () => {
   uploadListingComponent = new UploadListingComponent();
@@ -14,16 +17,15 @@ beforeAll(async () => {
 });
 
 describe('Upload Page', () => {
-  beforeAll(function () {
+  beforeAll(() => {
     loginComponent.logIn('admin');
   });
 
   it('has correct title for upload listing component', () => {
-    assert.include(uploadListingComponent.title.getText(),'Upload Certified Products');
+    expect(uploadListingComponent.title.getText()).toContain('Upload Certified Products');
   });
 
   it('has correct title for upload api documentation component', () => {
-    assert.include(uploadAPIDocumentationComponent.title.getText(),'Upload API Documentation Information');
+    expect(uploadAPIDocumentationComponent.title.getText()).toContain('Upload API Documentation Information');
   });
-
 });

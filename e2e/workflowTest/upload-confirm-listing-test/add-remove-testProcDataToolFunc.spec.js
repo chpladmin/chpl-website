@@ -39,10 +39,10 @@ describe('an ACB user', () => {
     listingEditComponent.addTestTools('Inferno', '3');
     listingEditComponent.saveCertifiedProduct.waitAndClick();
     listingEditComponent.viewDetailsCriteria('170.315 (b)(3)', true);
-    assert.include(listingEditComponent.getTestFunctionalityDetail('170.315 (b)(3)', true).getText(), 'Request to send an additional supply of medication (Resupply)');
-    assert.include(listingEditComponent.getTestProcedureDetail('170.315 (b)(3)', true).getText(), 'ONC Test Method - Surescripts (Alternative)');
-    assert.include(listingEditComponent.getTestDataDetail('170.315 (b)(3)', true).getText(), 'ONC Test Method');
-    assert.include(listingEditComponent.getTestToolDetail('170.315 (b)(3)', true).getText(), 'Inferno');
+    expect(listingEditComponent.getTestFunctionalityDetail('170.315 (b)(3)', true).getText()).toContain('Request to send an additional supply of medication (Resupply)');
+    expect(listingEditComponent.getTestProcedureDetail('170.315 (b)(3)', true).getText()).toContain('ONC Test Method - Surescripts (Alternative)');
+    expect(listingEditComponent.getTestDataDetail('170.315 (b)(3)', true).getText()).toContain('ONC Test Method');
+    expect(listingEditComponent.getTestToolDetail('170.315 (b)(3)', true).getText()).toContain('Inferno');
   });
 
   it.skip('should be able to remove uploaded test procedure, test tools (170.315 (b)(3) cures criteria)', () => {
@@ -54,8 +54,8 @@ describe('an ACB user', () => {
     listingEditComponent.removeTestProcToolData('Remove item ONC Test Method');
     listingEditComponent.saveCertifiedProduct.waitAndClick();
     listingEditComponent.viewDetailsCriteria('170.315 (b)(3)', true);
-    assert.notInclude(listingEditComponent.getTestProcedureDetail('170.315 (b)(3)', true).getText(), 'ONC Test Method');
-    assert.notInclude(listingEditComponent.getTestToolDetail('170.315 (b)(3)', true).getText(), 'HL7v2 Immunization Test Suite');
+    expect(listingEditComponent.getTestProcedureDetail('170.315 (b)(3)', true).getText()).not.toContain('ONC Test Method');
+    expect(listingEditComponent.getTestToolDetail('170.315 (b)(3)', true).getText()).not.toContain('HL7v2 Immunization Test Suite');
   });
 
   afterEach(() => {

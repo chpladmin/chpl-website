@@ -315,8 +315,8 @@ describe('the search page', () => {
 
       describe('the "ONC/ACBs" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View ONC-ACBs ').scrollAndClick();
-          page.moreOncAcbFilterOptions('Drummond_Group').scrollAndClick();
+          page.moreFilterExpand(' View ONC-ACBs ').click();
+          page.moreOncAcbFilterOptions('Drummond_Group').click();
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
@@ -325,7 +325,7 @@ describe('the search page', () => {
 
       describe('the "Practice Type" filter', () => {
         it('should filter listing results', () => {
-          page.moreFilterExpand(' View Practice Type (2011 and 2014 Editions) ').scrollAndClick();
+          page.moreFilterExpand(' View Practice Type (2011 and 2014 Editions) ').click();
           page.morePracticeTypeDropdownOptions.selectByVisibleText('Inpatient');
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
@@ -336,7 +336,7 @@ describe('the search page', () => {
       describe('the "Certification Date" filter', () => {
         it('should filter listing results', () => {
           page.moreFilterExpand(' View Certification Date ').click();
-          page.moreCertificationEndDateFilter.addValue('01/01/2019');
+          page.moreCertificationEndDateFilter.setValue('01/01/2019');
           page.waitForUpdatedListingResultsCount();
           countAfter = page.listingTotalCount();
           expect(countAfter).toBeLessThan(countBefore);
@@ -388,12 +388,12 @@ describe('the search page', () => {
 
   describe('when downloading results', () => {
     it('should download a file', () => {
-      page.downloadResultsButton.scrollAndClick();
-      page.downloadResultsAction.scrollAndClick();
+      page.downloadResultsButton.click();
+      page.downloadResultsAction.click();
       const fileName = 'search-results.csv';
       const filePath = path.join(global.downloadDir, fileName);
       if (!fs.existsSync(filePath)) {
-        page.downloadResultsAction.scrollAndClick();
+        page.downloadResultsAction.click();
       }
       browser.waitForFileExists(filePath, config.timeout);
       expect(fs.existsSync(filePath)).toBe(true);
@@ -402,7 +402,7 @@ describe('the search page', () => {
     describe('with more than 50 results', () => {
       it('should indicate it will download however many results there are', () => {
         page.pageSize.selectByVisibleText('250');
-        page.downloadResultsButton.scrollAndClick();
+        page.downloadResultsButton.click();
         expect(page.downloadResultsAction.getText()).toBe('Download 250 displayed results');
       });
     });

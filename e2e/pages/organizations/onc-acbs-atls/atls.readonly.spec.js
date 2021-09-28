@@ -3,11 +3,13 @@ import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.po';
 import UsersPage from '../../users/user.po';
+import ToastComponent from '../../../components/toast/toast.po';
 
 let address;
 let hooks;
 let login;
 let page;
+let toast;
 let user;
 
 describe('the ONC-ATL Management page', () => {
@@ -28,6 +30,7 @@ describe('the ONC-ATL Management page', () => {
     login = new LoginComponent();
     address = new AddressComponent();
     user = new UsersPage();
+    toast = new ToastComponent();
     await hooks.open('#/organizations/onc-atls');
   });
 
@@ -103,6 +106,7 @@ describe('the ONC-ATL Management page', () => {
       address.set(atlAddress);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
+      toast.clearAllToast();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
@@ -113,6 +117,7 @@ describe('the ONC-ATL Management page', () => {
       page.retirementDate.setValue(today);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
+      toast.clearAllToast();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: Yes');
     });
   });
