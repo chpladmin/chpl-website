@@ -4,9 +4,11 @@ import UploadPage from '../../pages/administration/upload/upload.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import { assert } from 'chai';
 
-let confirmPage , hooks, loginComponent, uploadPage;
+let confirmPage;
+let hooks;
+let loginComponent;
+let uploadPage;
 
 beforeEach(() => {
   uploadPage = new UploadPage();
@@ -18,7 +20,7 @@ beforeEach(() => {
 });
 
 describe('when ACB inspects uploaded listing with both cures and original criteria', () => {
-  beforeEach(function () {
+  beforeEach(() => {
     hooks.open('#/administration/upload');
     uploadPage.uploadListing('../../../resources/listings/2015_v20_AQA5.csv');
     uploadPage.waitForSuccessfulUpload('AQA5');
@@ -27,6 +29,6 @@ describe('when ACB inspects uploaded listing with both cures and original criter
 
   it('should show correct error message', () => {
     confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA5.03.01.1.200620');
-    assert.include(confirmPage.errorMessage.getText(), 'Cannot select both 170.315 (b)(3) and 170.315 (b)(3) (Cures Update).');
+    expect(confirmPage.errorMessage.getText()).toContain('Cannot select both 170.315 (b)(3) and 170.315 (b)(3) (Cures Update).');
   });
 });

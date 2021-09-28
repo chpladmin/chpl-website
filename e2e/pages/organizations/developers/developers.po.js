@@ -160,13 +160,13 @@ class DevelopersPage {
   }
 
   splitProduct (product) {
-    this.getSplitButton(product).scrollAndClick();
+    this.getSplitButton(product).click();
     const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
-    btn.scrollAndClick();
+    btn.click();
   }
 
   mergeProduct (product) {
-    this.getMergeButton(product).scrollAndClick();
+    this.getMergeButton(product).click();
     const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
     btn.click();
   }
@@ -262,7 +262,7 @@ class DevelopersPage {
   }
 
   moveDeveloperToSplit (id) {
-    $('#developers-product-move-new-' + id).scrollAndClick();
+    $('#developers-product-move-new-' + id).click();
   }
 
   moveDeveloperToBeMerged (developerName) {

@@ -37,8 +37,7 @@ describe('the Developers Under Certification Ban collection page', () => {
       page.clearFilters.click();
     });
 
-    describe('using acb filter to de select drummond group', () => {
-
+    describe('using acb filter to de-select drummond group', () => {
       it('should filter listing results', () => {
         page.selectFilter('acb', 'Drummond_Group');
         page.waitForUpdatedListingResultsCount();
@@ -48,18 +47,17 @@ describe('the Developers Under Certification Ban collection page', () => {
     });
 
     describe('using date filter', () => {
-
       it('should filter listing results', () => {
         page.dateFilter.click();
-        page.fromDate.addValue('09/01/2017');
-        page.toDate.addValue('10/01/2019');
+        page.fromDate.setValue('09/01/2017')
+        page.toDate.setValue('10/01/2019');
         page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
       });
     });
   });
-  
+
   describe('when searching listing by developer', () => {
     const DEVELOPER_COL_IDX = 1;
     const developerName = 'Rabbit';
@@ -67,7 +65,7 @@ describe('the Developers Under Certification Ban collection page', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
       const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
+      for (let i = 1; i <= count; i += 1) {
         expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
       }
     });

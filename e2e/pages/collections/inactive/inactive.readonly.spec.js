@@ -1,7 +1,8 @@
 import InactivePage from './inactive.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let page;
+let hooks;
+let page;
 
 describe('the Inactive Certificates collection page', () => {
   beforeEach(async () => {
@@ -35,8 +36,7 @@ describe('the Inactive Certificates collection page', () => {
       page.clearFilters.click();
     });
 
-    describe('using acb filter to de select drummond group', () => {
-
+    describe('using acb filter to de-select drummond group', () => {
       it('should filter listing results', () => {
         page.selectFilter('acb', 'Drummond_Group');
         page.waitForUpdatedListingResultsCount();
@@ -45,8 +45,7 @@ describe('the Inactive Certificates collection page', () => {
       });
     });
 
-    describe('using certification edition filter to de select 2015 cures update', () => {
-
+    describe('using certification edition filter to de-select 2015 cures update', () => {
       it('should filter listing results', () => {
         page.selectFilter('edition', '2015_Cures_Update');
         page.waitForUpdatedListingResultsCount();
@@ -56,11 +55,10 @@ describe('the Inactive Certificates collection page', () => {
     });
 
     describe('using date filter', () => {
-
       it('should filter listing results', () => {
         page.dateFilter.click();
-        page.fromDate.addValue('09/01/2017');
-        page.toDate.addValue('10/01/2020');
+        page.fromDate.setValue('09/01/2017');
+        page.toDate.setValue('10/01/2020');
         page.waitForUpdatedListingResultsCount();
         countAfter = page.listingTotalCount();
         expect(countAfter).toBeLessThan(countBefore);
@@ -75,7 +73,7 @@ describe('the Inactive Certificates collection page', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();
       const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
+      for (let i = 1; i <= count; i += 1) {
         expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
       }
     });
@@ -88,7 +86,7 @@ describe('the Inactive Certificates collection page', () => {
       page.searchForListing(versionName);
       page.waitForUpdatedListingResultsCount();
       const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
+      for (let i = 1; i <= count; i += 1) {
         expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
       }
     });
@@ -101,7 +99,7 @@ describe('the Inactive Certificates collection page', () => {
       page.searchForListing(productName);
       page.waitForUpdatedListingResultsCount();
       const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
+      for (let i = 1; i <= count; i += 1) {
         expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
       }
     });
@@ -114,7 +112,7 @@ describe('the Inactive Certificates collection page', () => {
       page.searchForListing(chplIdName);
       page.waitForUpdatedListingResultsCount();
       const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
+      for (let i = 1; i <= count; i += 1) {
         expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);
       }
     });

@@ -29,7 +29,7 @@ class UploadRwtComponent {
   uploadRwt (uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadRwtButton.addValue(browser.uploadFile(filePath));
-    this.uploadButton.scrollAndClick();
+    this.uploadButton.click();
     browser.waitUntil( () => this.fileUploadText.isDisplayed());
   }
 

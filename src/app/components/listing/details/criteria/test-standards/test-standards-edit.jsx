@@ -24,7 +24,7 @@ import * as yup from 'yup';
 
 import { ChplEllipsis, ChplTextField } from '../../../../util';
 import { testStandard, selectedTestStandard } from '../../../../../shared/prop-types';
-import FlagContext from '../../../../../shared/contexts';
+import { FlagContext } from '../../../../../shared/contexts';
 
 const useStyles = makeStyles(() => ({
   container: {

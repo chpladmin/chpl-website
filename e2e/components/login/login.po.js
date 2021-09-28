@@ -3,13 +3,12 @@ import credentials from '../../config/credentials';
 class LoginComponent {
   constructor() {
     this.elements = {
-      component: '#login-component',
-      loginToggle: '//*[@id="login-toggle"]',
-      userName: '[name="userName"]',
-      username: '[name="username"]',
-      password: '[name="password"]',
+      component: '#admin-login-form',
+      loginToggle: '#login-toggle',
+      userName: '#user-name',
+      password: '#password',
       login: 'button=Log In',
-      logout: '//button[text()="Log Out"]',
+      logout: 'button=Log Out',
     };
   }
 
@@ -18,41 +17,42 @@ class LoginComponent {
   }
 
   toggleLoginComponent() {
-    $(this.elements.loginToggle).scrollAndClick();
+    $(this.elements.loginToggle).click();
   }
 
   logIn(user) {
-    const usingLegacy = !($(this.elements.component).isDisplayed());
     let un;
     let pw;
     let btn;
-    if (usingLegacy) {
-      this.toggleLoginComponent();
-      un = $(this.elements.username);
-      pw = $(this.elements.password);
-      btn = $(this.elements.login);
-    } else {
-      un = $(this.elements.component).$(this.elements.userName);
-      pw = $(this.elements.component).$(this.elements.password);
-      btn = $(this.elements.component).$(this.elements.login);
+    if (!($(this.elements.component).isDisplayed())) {
+      if ($(this.elements.userName).isDisplayed()) {
+        un = $(this.elements.userName);
+        pw = $(this.elements.password);
+        btn = $(this.elements.login);
+      } else {
+        this.toggleLoginComponent();
+        un = $(this.elements.component).$(this.elements.userName);
+        pw = $(this.elements.component).$(this.elements.password);
+        btn = $(this.elements.component).$(this.elements.login);
+      }
     }
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
-    btn.scrollAndClick();
-    if (!usingLegacy) {
-      this.toggleLoginComponent();
-    }
-    $(this.elements.logout).waitForDisplayed();
-    this.toggleLoginComponent();
+    btn.click();
+    browser.waitUntil(() => !(/Administrator Login/i.test(this.getLoggedInUserName())));
+    browser.keys('Escape');
+    browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
   }
 
   logOut() {
-    if (!($(this.elements.logout).isDisplayed())) {
+    if (!($(this.elements.component).isDisplayed())) {
       this.toggleLoginComponent();
     }
-    $(this.elements.logout).scrollAndClick();
-    browser.waitUntil(() => this.getLoggedInUserName() === 'Administrator Login');
-    this.toggleLoginComponent();
+    const btn = $(this.elements.component).$(this.elements.logout);
+    btn.click();
+    $(this.elements.login).waitForDisplayed();
+    browser.keys('Escape');
+    browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
   }
 }
 

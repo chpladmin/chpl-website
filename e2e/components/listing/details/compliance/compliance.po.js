@@ -20,15 +20,15 @@ class ComplianceComponent {
   }
 
   expandCompliance() {
-    $('//div[text()="Compliance Activities"]/following-sibling::div').scrollAndClick();
+    $('//div[text()="Compliance Activities"]/following-sibling::div').click();
   }
 
   expandSurveillance() {
-    $('//div[text()="Surveillance Activities"]/following-sibling::div').scrollAndClick();
+    $('//div[text()="Surveillance Activities"]/following-sibling::div').click();
   }
 
   expandDr() {
-    $('//div[text()="Direct Review Activities"]/following-sibling::div').scrollAndClick();
+    $('//div[text()="Direct Review Activities"]/following-sibling::div').click();
   }
 
   get survActivity() {

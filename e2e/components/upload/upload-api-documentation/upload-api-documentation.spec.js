@@ -2,7 +2,9 @@ import UploadApiDocumentationComponent from './upload-api-documentation.po';
 import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks, loginComponent, uploadcomponent;
+let hooks;
+let loginComponent;
+let uploadcomponent;
 
 beforeAll(async () => {
   uploadcomponent = new UploadApiDocumentationComponent();
@@ -12,16 +14,14 @@ beforeAll(async () => {
 });
 
 describe('When uploading API documentation files as ADMIN', () => {
-
-  beforeAll(function () {
+  beforeAll(() => {
     loginComponent.logIn('admin');
   });
 
   it('can be uploaded successfully back to back', () => {
     uploadcomponent.uploadAPIDocFile('../../../resources/apiDoc/APIDoc_File.xlsx');
-    assert.include(uploadcomponent.apiDocUploadText.getText(),'was uploaded successfully.');
+    expect(uploadcomponent.apiDocUploadText.getText()).toContain('was uploaded successfully.');
     uploadcomponent.uploadAPIDocFile('../../../resources/apiDoc/APIDoc_File.xlsx');
-    assert.notInclude(uploadcomponent.apiDocUploadText.getText(),'was not uploaded successfully.');
+    expect(uploadcomponent.apiDocUploadText.getText()).not.toContain('was not uploaded successfully.');
   });
-
 });

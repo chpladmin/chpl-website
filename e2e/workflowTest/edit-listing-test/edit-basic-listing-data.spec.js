@@ -52,6 +52,7 @@ describe('On 2015 Listing details page', () => {
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
+      toast.clearAllToast();
       expect(page.listingBasicInformation.getText()).toContain(testPlansUrl);
       expect(page.listingBasicInformation.getText()).toContain(`Last ONC-ACB Completeness Check: ${plansDateDisplay}`);
       expect(page.listingBasicInformation.getText()).toContain(testResultsUrl);

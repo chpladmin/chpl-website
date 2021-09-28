@@ -33,7 +33,7 @@ import {
   certificationResult,
   resources as resourceDefinition,
 } from '../../../../shared/prop-types';
-import FlagContext from '../../../../shared/contexts';
+import { FlagContext } from '../../../../shared/contexts';
 
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
