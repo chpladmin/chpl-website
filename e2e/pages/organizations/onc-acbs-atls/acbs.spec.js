@@ -33,6 +33,7 @@ describe('the ONC-ACB Management page', () => {
   describe('when logged in as UL', () => {
     beforeEach(() => {
       login.logIn('ul');
+      hooks.waitForSpinnerToDisappear();
     });
 
     afterEach(() => {
@@ -68,6 +69,7 @@ describe('the ONC-ACB Management page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
+      hooks.waitForSpinnerToDisappear();
     });
 
     afterEach(() => {

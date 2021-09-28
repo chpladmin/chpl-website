@@ -31,7 +31,7 @@ beforeEach(async () => {
 
 afterEach(() =>{
   while (edit.cancel.isClickable()) {
-    edit.cancel.scrollAndClick();
+    edit.cancel.click();
     confirmPage.yesConfirmation.click();
   }
   loginComponent.logOut();
@@ -71,7 +71,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
   it('should not be allowed to remove all requirements', () => {
     edit.editSurveillance();
-    edit.removeButton.scrollAndClick();
+    edit.removeButton.click();
     edit.saveButton.click();
     expect(edit.errorMessages.getText()).toContain(error);
   });

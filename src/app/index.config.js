@@ -26,8 +26,6 @@
     // Enable log
     $logProvider.debugEnabled(ENABLE_LOGGING);
 
-    TitleProvider.enabled(false);
-
     // Set smart-table pagination template
     stConfig.pagination.template = 'chpl.components/smart-table/stPagination.html'; // eslint-disable-line no-param-reassign
   }

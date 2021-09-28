@@ -1,8 +1,8 @@
-
 class CriteriaComponent {
   constructor() {
     this.elements = {
       cqmHeader: '//div[text()="Clinical Quality Measures"]',
+      panel: '#panel-cqm',
     };
   }
 
@@ -11,11 +11,11 @@ class CriteriaComponent {
   }
 
   expandCqm() {
-    $('//div[text()="Clinical Quality Measures"]/following-sibling::div').scrollAndClick();
+    this.cqmHeader.parentElement().click();
   }
 
   cqmCount() {
-    return $('#panel-cqm').$('table').$('tbody').$$('tr').length;
+    return $(this.elements.panel).$('table').$('tbody').$$('tr').length;
   }
 }
 
