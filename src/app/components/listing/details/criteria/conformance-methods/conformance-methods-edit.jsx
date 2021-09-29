@@ -6,7 +6,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
   ButtonGroup,
-  Container,
   IconButton,
   MenuItem,
   Paper,
@@ -121,7 +120,7 @@ function ChplConformanceMethodsEdit(props) {
   });
 
   return (
-    <Container className={classes.container}>
+    <div className={classes.container}>
       { conformanceMethods.length > 0
         && (
           <TableContainer component={Paper}>
@@ -230,7 +229,7 @@ function ChplConformanceMethodsEdit(props) {
             </>
           )}
       </div>
-    </Container>
+    </div>
   );
 }
 
