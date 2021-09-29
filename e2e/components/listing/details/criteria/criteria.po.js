@@ -23,11 +23,7 @@ class CriteriaComponent {
   }
 
   editCriteria(id) {
-<<<<<<< HEAD
     $(`button#criterion-id-${id}-edit`).$('span').click();
-=======
-    $(`#criterion-id-${id}-edit`).click();
->>>>>>> staging
   }
 
   get testProcedure() {
