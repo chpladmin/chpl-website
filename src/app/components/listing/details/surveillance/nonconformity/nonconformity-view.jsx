@@ -93,7 +93,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.dateOfDetermination) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.dateOfDeterminationDay) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -104,7 +104,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capApprovalDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capApprovalDay) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -115,7 +115,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capStartDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capStartDay) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -126,7 +126,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capMustCompleteDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capMustCompleteDay) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">
@@ -137,7 +137,7 @@ function ChplNonconformityView(props) {
                       />
                     </ChplTooltip>
                   </TableCell>
-                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capEndDate) }</TableCell>
+                  <TableCell>{ DateUtil.getDisplayDateFormat(nonconformity.capEndDay) }</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell component="th" scope="row">

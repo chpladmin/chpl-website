@@ -11,7 +11,12 @@ class ComplaintsComponent {
       filter: '#data-filter',
       downloadResultsButton: '#download-results',
       newComplaint: '//*[text()="Add New Complaint"]',
+      editButton: '//*[text()="Edit"]/parent::button',
     };
+  }
+
+  get editButton() {
+    return $(this.elements.editButton);
   }
 
   set(fields) {
@@ -26,7 +31,7 @@ class ComplaintsComponent {
   }
 
   saveComplaint() {
-    return $(this.elements.saveComplaint).scrollAndClick();
+    return $(this.elements.saveComplaint).click();
   }
 
   get closedDate() {
@@ -42,7 +47,7 @@ class ComplaintsComponent {
   }
 
   addNewComplaint() {
-    return $(this.elements.newComplaint).scrollAndClick();
+    return $(this.elements.newComplaint).click();
   }
 
   get filter() {
@@ -51,19 +56,19 @@ class ComplaintsComponent {
 
   editComplaint(id) {
     this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').scrollAndClick();
+    $('//*[text()="Edit"]/parent::button').click();
   }
 
   viewComplaint(id) {
     this.filter.addValue(id);
-    $('//span[text()="View"]/parent::button').scrollAndClick();
+    $('//span[text()="View"]/parent::button').click();
   }
 
   deleteComplaint(id) {
     this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').scrollAndClick();
-    $('//span[text()="Delete"]/parent::button').scrollAndClick();
-    $('//span[text()="Yes"]/parent::button').scrollAndClick();
+    $('//*[text()="Edit"]/parent::button').click();
+    $('//span[text()="Delete"]/parent::button').click();
+    $('//span[text()="Yes"]/parent::button').click();
   }
 }
 

@@ -31,7 +31,7 @@ describe('the 2015 listing page', () => {
 
   describe('when clicked on see all criteria', () => {
     beforeEach(async () => {
-      page.seeAll.scrollAndClick();
+      page.seeAll.click();
     });
 
     it('should display all criteria', () => {
@@ -69,7 +69,7 @@ describe('the 2014 listing page', () => {
 
   describe('when clicked on see all criteria', () => {
     beforeEach(async () => {
-      page.seeAll.scrollAndClick();
+      page.seeAll.click();
     });
 
     it('should display all criteria', () => {

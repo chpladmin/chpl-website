@@ -1,7 +1,8 @@
 import ComparePage from './compare.po';
 import Hooks from '../../utilities/hooks';
 
-let hooks, page;
+let hooks;
+let page;
 
 beforeEach(async () => {
   page = new ComparePage();
@@ -10,18 +11,17 @@ beforeEach(async () => {
 });
 
 describe('on compare page after clicking show all-', () => {
-
   it('should display all of the 78 certification criterias', () => {
     page.checkShowAllCheckbox();
     page.certificationCriteriaLink.scrollIntoView();
     page.certificationCriteriaLink.click();
-    assert.equal(page.allCCCQM.length,78);
+    expect(page.allCCCQM.length).toBe(78);
   });
 
   it('should display all of the 100 CQMs', () => {
     page.checkShowAllCheckbox();
     page.clinicalQualityMeasuresLink.scrollIntoView();
     page.clinicalQualityMeasuresLink.click();
-    assert.equal(page.allCCCQM.length,100);
+    expect(page.allCCCQM.length).toBe(100);
   });
 });

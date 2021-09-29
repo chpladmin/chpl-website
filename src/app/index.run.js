@@ -3,7 +3,7 @@ import { states as administrationStates } from './pages/administration/administr
 
 (() => {
   /** @ngInject */
-  function runBlock($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, authService, featureFlags, networkService) {
+  function runBlock($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, Title, authService, featureFlags, networkService) {
     const loadFlags = () => {
       // get flag state from API
       featureFlags.set($http.get('/rest/feature-flags'))
@@ -65,7 +65,7 @@ import { states as administrationStates } from './pages/administration/administr
         if (title instanceof Function) {
           title = title.call(transition.to(), transition.params());
         }
-        $window.document.title = title; // eslint-disable-line no-param-reassign
+        Title.value(title);
 
         // Set currentPage for internal page links
         $rootScope.currentPage = $location.path(); // eslint-disable-line no-param-reassign

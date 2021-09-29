@@ -66,6 +66,9 @@ const useStyles = makeStyles(() => ({
   editCriterion: {
     margin: '8px 0px',
   },
+  rotate: {
+    transform: 'rotate(180deg)',
+  },
 }));
 
 function ChplCriterion(props) {
@@ -75,6 +78,7 @@ function ChplCriterion(props) {
   const [editing, setEditing] = useState(false);
   const [hasIcs] = useState(props.hasIcs);
   const [isConfirming] = useState(props.isConfirming);
+  const [expanded, setExpanded] = useState(false);
   const [pending, setPending] = useState(false);
   const [resources] = useState(props.resources);
   const [staged, setStaged] = useState(false);
@@ -85,7 +89,22 @@ function ChplCriterion(props) {
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
+  const getIcon = () => (expanded
+    ? (
+      <>
+        Hide Details
+        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+      </>
+    )
+    : (
+      <>
+        Show Details
+        <ExpandMoreIcon color="primary" fontSize="large" />
+      </>
+    ));
+
   const handleAccordionChange = (event, isExpanded) => {
+    setExpanded(!expanded);
     if (isExpanded) {
       const label = criterion.criterion.number + (utilService.isCures(criterion.criterion) ? ' (Cures Update)' : '');
       $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
@@ -120,10 +139,10 @@ function ChplCriterion(props) {
     >
       <AccordionSummary
         className={classes.criterionAccordionSummary}
-        expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
+        expandIcon={getIcon()}
         id={`criterion-id-${criterion.criterion.id}-header`}
       >
-        <Grid container spacing={4}>
+        <Grid container alignItems='center' spacing={4}>
           <Grid item xs={1}>
             { criterion.success
               && (

@@ -8,7 +8,6 @@ import angular from 'angular';
 import 'angular-avatar';
 import 'angular-breadcrumb';
 import /* angularConfirm from */ 'angular-confirm';
-import /* angularCronGen from */ 'angular-cron-gen';
 import /* angularLoadingBar from */ 'angular-loading-bar';
 import /* angulartics from */ 'angulartics';
 import /* angularticsGoogleTagManager from */ 'angulartics-google-tag-manager';
@@ -28,8 +27,6 @@ import /* toaster from */ 'angularjs-toaster';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
 import /* ngFileSaver from */ 'angular-file-saver';
 import /* ngStorage from */ 'ngstorage';
-import 'angular-zxcvbn';
-import 'zxcvbn';
 import 'angular-ui-router';
 
 // import app modules
@@ -77,7 +74,6 @@ const dependencies = [
   'toaster',
   'ui.bootstrap',
   'ui.router',
-  'zxcvbn',
   administration.name,
   compare.name,
   listing.name,
