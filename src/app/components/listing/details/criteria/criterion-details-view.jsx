@@ -37,7 +37,7 @@ function ChplCriterionDetailsView(props) {
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const classes = useStyles();
-  const { optionalStandardsIsOn } = useContext(FlagContext);
+  const { conformanceMethodIsOn, optionalStandardsIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -232,7 +232,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.conformanceMethods
+          { criterion.success && criterion.conformanceMethods && conformanceMethodIsOn
             && (
               <TableRow key="conformanceMethods">
                 <TableCell component="th" scope="row">
@@ -265,7 +265,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.testProcedures
+          { criterion.success && ((conformanceMethodIsOn && !criterion.conformanceMethods) || (!conformanceMethodIsOn && criterion.testProcedures))
             && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">

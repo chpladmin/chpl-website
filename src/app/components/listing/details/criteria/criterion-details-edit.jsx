@@ -59,7 +59,7 @@ function ChplCriterionDetailsEdit(props) {
   const [isConfirming] = useState(props.isConfirming);
   const [resources] = useState(props.resources);
   const classes = useStyles();
-  const { optionalStandardsIsOn } = useContext(FlagContext);
+  const { conformanceMethodIsOn, optionalStandardsIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -328,7 +328,7 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { criterion.conformanceMethods
+            { criterion.conformanceMethods && conformanceMethodIsOn
               && (
                 <>
                   <div>
@@ -349,7 +349,7 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { criterion.testProcedures
+            { ((conformanceMethodIsOn && (!criterion.conformanceMethods || criterion.testProcedures?.length > 0)) || (!conformanceMethodIsOn && criterion.testProcedures))
               && (
                 <>
                   <div>

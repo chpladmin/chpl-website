@@ -159,7 +159,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.testFunctionality || $ctrl.cert.testFunctionality.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null && $ctrl.isOn('conformance-method')">
           <td>Conformance method</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -187,7 +187,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.conformanceMethods || $ctrl.cert.conformanceMethods.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null && (($ctrl.isOn('conformance-method') && (!$ctrl.cert.conformanceMethods || $ctrl.cert.testProcedures.length > 0)) || !$ctrl.isOn('conformance-method'))">
           <td>Test procedure</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
