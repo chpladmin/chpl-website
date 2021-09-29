@@ -134,6 +134,7 @@ function ChplTestToolsEdit(props) {
       {
         id: item.testToolId,
         name: item.testToolName,
+        retired: item.retired,
       },
     ].sort((a, b) => (a.name < b.name ? -1 : 1)));
     update(updated);
@@ -156,7 +157,7 @@ function ChplTestToolsEdit(props) {
                 { testToolsUsed.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2">{ item.testToolName }</Typography>
+                      <Typography variant="body2">{`${item.testToolName}${item.retired ? ' (Retired)' : ''}`}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2">{ item.testToolVersion }</Typography>
@@ -213,7 +214,7 @@ function ChplTestToolsEdit(props) {
                 helperText={formik.touched.tt && formik.errors.tt}
               >
                 { options.map((item) => (
-                  <MenuItem value={item} key={item.id} disabled={isDisabled(item)}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id} disabled={isDisabled(item)}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
                 ))}
               </ChplTextField>
               <ChplTextField
