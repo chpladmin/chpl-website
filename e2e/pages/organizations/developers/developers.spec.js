@@ -47,15 +47,12 @@ describe('the Developers page', () => {
     if (toast.toastContainer.isDisplayed()) {
       toast.clearAllToast();
     }
-  });
+    login.logOut();
+   });
 
   describe('when logged in as Drummond ACB', () => {
     beforeEach(() => {
       login.logIn('drummond');
-    });
-
-    afterEach(() => {
-      login.logOut();
     });
 
     describe('when on the "Greenway Health, LLC" Developer page', () => {
@@ -85,6 +82,7 @@ describe('the Developers page', () => {
           page.editWebsite.setValue(website);
           actionBar.save();
           expect(toast.toastTitle.getText()).toEqual('Update processing');
+          toast.clearAllToast();
           hooks.waitForSpinnerToDisappear();
           expect(page.developerContact).toHaveTextContaining(developerContact.full);
           expect(page.developerContact).toHaveTextContaining(developerContact.title);
@@ -128,10 +126,6 @@ describe('the Developers page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
-    });
-
-    afterEach(() => {
-      login.logOut();
     });
 
     describe('when on the "Altos Solutions, Inc" Developer page', () => {

@@ -16,10 +16,10 @@ class CollectionsPage {
   selectFilter(name, value) {
     if (name === 'nonconformities') {
       $(`#filter-button-${name}`).click();
-      $(`#filter-${value}`).scrollAndClick();
+      $(`#filter-${value}`).click();
     } else {
       $(`#filter-button-${name}`).click();
-      $(`#filter-list-${value}`).scrollAndClick();
+      $(`#filter-list-${value}`).click();
     }
   }
 

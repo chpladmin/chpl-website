@@ -26,7 +26,7 @@ beforeEach(async () => {
 
 afterEach(() =>{
   while (edit.cancel.isClickable()) {
-    edit.cancel.scrollAndClick();
+    edit.cancel.click();
     confirmPage.yesConfirmation.click();
   }
   loginComponent.logOut();
@@ -77,7 +77,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.addnonConformity(nonConformitydetails , 'Reactive');
       expect(edit.sites.isEnabled()).toBeFalse;
       expect(edit.totalSites.isEnabled()).toBeFalse;
-      edit.saveButton.scrollAndClick();
+      edit.saveButton.click();
       expect(edit.nonConformityTableRows().length).toEqual(1);
       expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Closed');
       do {
@@ -131,7 +131,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'Non-Conformity');
       edit.addnonConformity(nonConformitydetails , 'Randomized');
-      edit.saveButton.scrollAndClick();
+      edit.saveButton.click();
       expect(edit.nonConformityTableRows().length).toEqual(1);
       expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Open');
       do {

@@ -23,7 +23,11 @@ class CriteriaComponent {
   }
 
   editCriteria(id) {
+<<<<<<< HEAD
     $(`button#criterion-id-${id}-edit`).$('span').click();
+=======
+    $(`#criterion-id-${id}-edit`).click();
+>>>>>>> staging
   }
 
   get testProcedure() {
@@ -59,7 +63,7 @@ class CriteriaComponent {
   }
 
   expandRemovedCriteria() {
-    $(this.elements.removedCriteria).$$('div')[1].scrollAndClick();
+    $(this.elements.removedCriteria).$$('div')[1].click();
   }
 
   uiUpgradeFlag() {
@@ -71,7 +75,7 @@ class CriteriaComponent {
       $(`#criterion-id-${id}-header`).scrollIntoView({ block: 'center', inline: 'center' });
       $(`#criterion-id-${id}-header`).$$('div')[2].click();
     } else {
-      $(`//*[@id="criteria_${criteria}_details_link"]`).scrollAndClick();
+      $(`//*[@id="criteria_${criteria}_details_link"]`).click();
     }
   }
 
@@ -98,11 +102,11 @@ class CriteriaComponent {
   }
 
   addItem(type) {
-    $(`#${type}-add-item`).scrollAndClick();
+    $(`#${type}-add-item`).click();
   }
 
   checkItem(type) {
-    $(`#${type}-check-item`).scrollAndClick();
+    $(`#${type}-check-item`).click();
   }
 
   choosePrivacySecurityFramework(value) {
@@ -137,18 +141,18 @@ class CriteriaComponent {
   openAttestedCriteriaOld(editCriteriaId, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].scrollAndClick();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].click();
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].scrollAndClick();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].click();
     }
   }
 
   openUnattestedCriteriaOld(editCriteriaId, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$('button').scrollAndClick();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$('button').click();
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$('button').scrollAndClick();
+      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$('button').click();
     }
   }
 

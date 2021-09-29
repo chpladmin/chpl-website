@@ -5,7 +5,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import FlagContext from '../../../../../shared/contexts';
+import { FlagContext } from '../../../../../shared/contexts';
 import ChplTestStandardsEdit from './test-standards-edit';
 
 const hocMock = {
