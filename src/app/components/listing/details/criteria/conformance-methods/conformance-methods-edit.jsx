@@ -95,18 +95,13 @@ function ChplConformanceMethodsEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = conformanceMethods.filter((m) => {
-      if (m.id) {
-        return m.conformanceMethod.id !== item.id;
-      }
-      return m.conformanceMethod.name !== item.name;
-    });
+    const updated = conformanceMethods.filter((m) => m.conformanceMethod.id !== item.conformanceMethod.id);
     setConformanceMethods(updated);
     setOptions([
       ...options,
       {
-        name: item.name,
-        id: item.id,
+        name: item.conformanceMethod.name,
+        id: item.conformanceMethod.id,
       },
     ].sort((a, b) => (a.name < b.name ? -1 : 1)));
     update(updated);

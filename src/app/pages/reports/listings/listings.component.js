@@ -640,7 +640,7 @@ const ReportsListingsComponent = {
               if (!cur.found && !pre.found && pre.conformanceMethod.name === cur.conformanceMethod.name) {
                 pre.found = true;
                 cur.found = true;
-                ret.push(`<li>COnformance Method "${pre.conformanceMethod.name}" version changed from "${pre.conformanceMethodVersion}" to "${cur.conformanceMethodVersion}"</li>`);
+                ret.push(`<li>Conformance Method "${pre.conformanceMethod.name}" version changed from "${pre.conformanceMethodVersion}" to "${cur.conformanceMethodVersion}"</li>`);
               }
             });
             if (!pre.found) {
