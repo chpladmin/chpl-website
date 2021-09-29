@@ -21,8 +21,8 @@ describe('the ChplConformanceMethodsEdit component', () => {
       render(
         <ChplConformanceMethodsEdit
           conformanceMethods={[
-            { name: 'zz name', id: 2 },
-            { name: 'name 1', id: 3 },
+            { conformanceMethod: { name: 'zz name', id: 2 }, id: 2, conformanceMethodVersion: 'ver z' },
+            { conformanceMethod: { name: 'name 1', id: 3 }, id: 3, conformanceMethodVersion: 'ver n' },
           ]}
           options={[
             { name: 'zz name', id: 2 },
@@ -48,7 +48,7 @@ describe('the ChplConformanceMethodsEdit component', () => {
 
     it('should sort the available conformance methods by name', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Conformance Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Conformance Method/i }));
 
       await waitFor(() => {
         const options = within(screen.getByRole('listbox')).getAllByRole('option');
@@ -60,7 +60,7 @@ describe('the ChplConformanceMethodsEdit component', () => {
 
     it('should remove selected items from the list available to add', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Conformance Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Conformance Method/i }));
 
       await waitFor(() => {
         const options = within(screen.getByRole('listbox')).getAllByRole('option');
@@ -74,8 +74,8 @@ describe('the ChplConformanceMethodsEdit component', () => {
       render(
         <ChplConformanceMethodsEdit
           conformanceMethods={[
-            { name: 'zz name', id: 2 },
-            { name: 'name 1', id: 3 },
+            { conformanceMethod: { name: 'zz name', id: 2 }, id: 2, conformanceMethodVersion: 'ver z' },
+            { conformanceMethod: { name: 'name 1', id: 3 }, id: 3, conformanceMethodVersion: 'ver n' },
           ]}
           options={[
             { name: 'zz name', id: 2 },
@@ -89,8 +89,9 @@ describe('the ChplConformanceMethodsEdit component', () => {
 
     it('should add the option to the table', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Conformance Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Conformance Method/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      userEvent.type(screen.getByLabelText(/Version/i), 'new version');
       userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
       await waitFor(() => {
@@ -104,7 +105,7 @@ describe('the ChplConformanceMethodsEdit component', () => {
 
     it('should allow cancellation', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Conformance Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Conformance Method/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
       userEvent.click(screen.getByRole('button', { name: /Cancel adding item/i }));
 
@@ -118,8 +119,9 @@ describe('the ChplConformanceMethodsEdit component', () => {
 
     it('should remove the "add item" button when all options are selected', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Conformance Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Conformance Method/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      userEvent.type(screen.getByLabelText(/Version/i), 'new version');
       userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
       await waitFor(() => {
@@ -130,17 +132,18 @@ describe('the ChplConformanceMethodsEdit component', () => {
     it('should call the callback', async () => {
       hocMock.onChange.mockClear();
       userEvent.click(screen.getByRole('button', { name: /Add Item/i }));
-      userEvent.click(screen.getByRole('button', { name: /Conformance Standard/i }));
+      userEvent.click(screen.getByRole('button', { name: /Conformance Method/i }));
       userEvent.click(within(screen.getByRole('listbox')).getByText('a name'));
+      userEvent.type(screen.getByLabelText(/Version/i), 'new version');
       userEvent.click(screen.getByRole('button', { name: /Confirm adding item/i }));
 
       /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { id: 3, name: 'name 1' },
-            { id: 2, name: 'zz name' },
-            { id: 4, name: 'a name', key: expect.any(Number) },
+            { id: 3, conformanceMethod: { id: 3, name: 'name 1' }, conformanceMethodVersion: 'ver n' },
+            { id: 2, conformanceMethod: { id: 2, name: 'zz name' }, conformanceMethodVersion: 'ver z' },
+            { key: expect.any(Number), conformanceMethod: { name: 'a name', id: 4 }, conformanceMethodVersion: 'new version' },
           ],
           key: 'conformanceMethods',
         });
@@ -153,8 +156,8 @@ describe('the ChplConformanceMethodsEdit component', () => {
       render(
         <ChplConformanceMethodsEdit
           conformanceMethods={[
-            { name: 'zz name', id: 2 },
-            { name: 'name 1', id: 3 },
+            { conformanceMethod: { name: 'zz name', id: 2 }, id: 2, conformanceMethodVersion: 'ver z' },
+            { conformanceMethod: { name: 'name 1', id: 3 }, id: 3, conformanceMethodVersion: 'ver n' },
           ]}
           options={[
             { name: 'zz name', id: 2 },
@@ -183,7 +186,7 @@ describe('the ChplConformanceMethodsEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { id: 2, name: 'zz name' },
+            { id: 2, conformanceMethod: { id: 2, name: 'zz name' }, conformanceMethodVersion: 'ver z' },
           ],
           key: 'conformanceMethods',
         });
