@@ -6,21 +6,19 @@ import {
   CardContent,
   CardHeader,
   TextField,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
 import { getAngularService } from '../../services/angular-react-helper';
 
 const useStyles = makeStyles(() => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gridRowGap: '8px',
+    gridRowGap: '16px',
   },
   longLabelFix: {
     paddingRight: '4px',
@@ -85,57 +83,56 @@ function ChplApiKeyRegistration() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Card>
-        <CardHeader title="Register" />
-        <CardContent>
-          <div className={classes.grid}>
-            <Typography variant="body1">
-              You must register to use this API.
-            </Typography>
-            <TextField
-              fullWidth
-              variant="outlined"
-              id="name-organization"
-              name="nameOrganization"
-              label="Name or Organization"
-              required
-              value={formik.values.nameOrganization}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.nameOrganization && !!formik.errors.nameOrganization}
-              helperText={formik.touched.nameOrganization && formik.errors.nameOrganization}
-              InputLabelProps={{ classes: { root: classes.longLabelFix } }}
-            />
-            <TextField
-              fullWidth
-              variant="outlined"
-              id="email"
-              name="email"
-              label="Email"
-              required
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.email && !!formik.errors.email}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-          </div>
-        </CardContent>
-        <CardActions>
-          <Button
+    <Card>
+      <CardHeader title="Register" />
+      <CardContent>
+        <div className={classes.grid}>
+          <Typography variant="body1">
+            You must register to use this API.
+          </Typography>
+          <TextField
             fullWidth
-            color="primary"
-            id="register-button"
-            name="registerButton"
-            variant="contained"
-            onClick={formik.handleSubmit}
-          >
-            Register
-          </Button>
-        </CardActions>
-      </Card>
-    </ThemeProvider>
+            variant="outlined"
+            id="name-organization"
+            name="nameOrganization"
+            label="Name or Organization"
+            required
+            value={formik.values.nameOrganization}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.nameOrganization && !!formik.errors.nameOrganization}
+            helperText={formik.touched.nameOrganization && formik.errors.nameOrganization}
+            InputLabelProps={{ classes: { root: classes.longLabelFix } }}
+          />
+          <TextField
+            fullWidth
+            variant="outlined"
+            id="email"
+            name="email"
+            label="Email"
+            required
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
+            InputLabelProps={{ classes: { root: classes.longLabelFix } }}
+          />
+        </div>
+      </CardContent>
+      <CardActions>
+        <Button
+          fullWidth
+          color="primary"
+          id="register-button"
+          name="registerButton"
+          variant="contained"
+          onClick={formik.handleSubmit}
+        >
+          Register
+        </Button>
+      </CardActions>
+    </Card>
   );
 }
 
