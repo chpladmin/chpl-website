@@ -13,7 +13,7 @@ class CriteriaComponent {
       accept: '//span[text()="Accept"]',
       testProcedureName: 'div#name',
       version: '#version',
-      testToolsName: '#tt',
+      testToolsName: 'div#tt',
       privacySecurityName: '#privacy-security-framework',
     };
   }
@@ -23,15 +23,23 @@ class CriteriaComponent {
   }
 
   editCriteria(id) {
-    $(`#criterion-id-${id}-edit`).click();
+    $(`button#criterion-id-${id}-edit`).$('span').click();
   }
 
   get testProcedure() {
     return $(this.elements.testProcedureName);
   }
 
+  get testTools() {
+    return $(this.elements.testToolsName);
+  }
+
   get testProcedureOld() {
     return $(elementsOld.testProcedureName);
+  }
+
+  get testToolsOld() {
+    return $(elementsOld.testToolsName);
   }
 
   get attestToggle() {
@@ -60,8 +68,8 @@ class CriteriaComponent {
 
   expandCriteria(id, criteria) {
     if (this.uiUpgradeFlag()) {
-      $(`#criterion-id-${id}-header`).scrollIntoView();
-      $(`#criterion-id-${id}-header`).$$('div')[1].click();
+      $(`#criterion-id-${id}-header`).scrollIntoView({ block: 'center', inline: 'center' });
+      $(`#criterion-id-${id}-header`).$$('div')[2].click();
     } else {
       $(`//*[@id="criteria_${criteria}_details_link"]`).click();
     }
@@ -162,8 +170,20 @@ class CriteriaComponent {
     return $('#menu-name').$$('li');
   }
 
+  get testToolsDropdownOptions () {
+    return $('#menu-tt').$$('li');
+  }
+
   get testProcedureDropdownOptionsOld () {
     return this.testProcedureOld.$$('option');
+  }
+
+  get testToolsDropdownOptionsOld () {
+    return this.testToolsOld.$$('option');
+  }
+
+  closeItem(type) {
+    $(`#${type}-close-item`).click();
   }
 }
 

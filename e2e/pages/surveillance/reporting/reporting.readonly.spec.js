@@ -37,6 +37,6 @@ describe('when ONC user is on surveillance reporting page', () => {
 
   it('should see all ACB\'s reporting', () => {
     hooks.waitForSpinnerToDisappear();
-    expect(page.acbReportingCount).toBe(4);
+    expect(page.acbReportingCount).toBeGreaterThanOrEqual(4);
   });
 });
