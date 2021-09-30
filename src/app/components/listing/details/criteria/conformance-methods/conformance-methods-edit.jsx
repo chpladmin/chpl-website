@@ -47,7 +47,9 @@ const validationSchema = yup.object({
   cm: yup.object()
     .required('Conformance Method is required'),
   version: yup.string()
-    .required('Version is required'),
+    .test('conditionallyRequired',
+      'Version is required',
+      (value, context) => (!!value || context.parent.cm?.name === 'Attestation')),
 });
 
 function ChplConformanceMethodsEdit(props) {
@@ -200,7 +202,7 @@ function ChplConformanceMethodsEdit(props) {
                 id="version"
                 name="version"
                 label="Version"
-                required
+                required={formik.values.cm.name !== 'Attestation'}
                 value={formik.values.version}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

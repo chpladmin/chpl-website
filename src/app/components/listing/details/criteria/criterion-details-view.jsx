@@ -254,9 +254,14 @@ function ChplCriterionDetailsView(props) {
                             Name:
                             {' '}
                             { cm.conformanceMethod.name }
-                            ; Version:
-                            {' '}
-                            { cm.conformanceMethodVersion }
+                            { cm.conformanceMethod.name !== 'Attestation'
+                              && (
+                                <>
+                                  ; Version:
+                                  {' '}
+                                  { cm.conformanceMethodVersion }
+                                </>
+                              )}
                           </li>
                         ))}
                       </ul>
