@@ -1,0 +1,117 @@
+.swagger-ui {
+
+    .btn.authorize {
+        color: #384903;
+        border-color: #384903;
+    }
+
+    .btn.authorize svg {
+        fill: #384903;
+    }
+
+    .info {
+        border-top: 1px solid rgba(59, 65, 81, .3);
+        padding-top: 32px;
+    }
+
+    .info {
+
+        a {
+            color: #156dac;
+            text-decoration: underline;
+        }
+
+    }
+
+    .info .title small.version-stamp {
+        background-color: #384903;
+    }
+
+    .info .title small {
+        background: #000000;
+    }
+
+    .info .title {
+        color: #3b4151;
+        font-size: 1.75em;
+        margin: 0;
+        font-weight: 400;
+        font-family: "Lato";
+    }
+
+    .opblock.opblock-get {
+        border-color: #156dac;
+    }
+
+    .opblock.opblock-get .opblock-summary-method {
+        background: #156dac;
+    }
+
+    .opblock.opblock-put {
+        border-color: #7a5000;
+    }
+
+    .opblock.opblock-put .opblock-summary-method {
+        background: #7a5000;
+    }
+
+    .opblock.opblock-post {
+        border-color: #384903;
+    }
+
+    .opblock.opblock-post .opblock-summary-method {
+        background: #384903;
+    }
+
+    .opblock.opblock-delete {
+        border-color: #c44f65;
+    }
+
+    .opblock.opblock-delete .opblock-summary-method {
+        background: #c44f65;
+    }
+
+    .opblock.opblock-deprecated {
+        opacity: 1;
+    }
+
+    .opblock.opblock-deprecated .opblock-summary-method {
+        background: #eeeeee;
+        color: #3b495f;
+    }
+
+    .parameter__extension .swagger-ui .parameter__in {
+        color: #000000;
+    }
+
+    .parameter__name .required span {
+        color: #c44f65;
+        font-size: 24px;
+        vertical-align: middle;
+    }
+
+    pre {
+        background-color: transparent;
+        border: none;
+    }
+
+    .servers {
+        padding-top: 8px;
+    }
+
+    @media only screen and (max-width: 600px) {
+       
+        .scheme-container .schemes {
+            display: grid;
+            gap: 8px;
+            justify-items: start;
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .wrapper {
+        max-width: none;
+        padding: 0 8px;
+    }
+
+}

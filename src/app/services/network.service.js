@@ -602,10 +602,6 @@ export default class NetworkService {
     return this.apiGET('/data/test_standards');
   }
 
-  getTestTools() {
-    return this.apiGET('/data/test_tools');
-  }
-
   getUcdProcesses() {
     return this.apiGET('/data/ucd_processes');
   }

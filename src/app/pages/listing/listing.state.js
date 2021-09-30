@@ -37,7 +37,6 @@ const states = [{
         networkService.getTestFunctionality().then((response) => { resources.testFunctionalities = response; }),
         networkService.getTestProcedures().then((response) => { resources.testProcedures = response; }),
         networkService.getTestStandards().then((response) => { resources.testStandards = response; }),
-        networkService.getTestTools().then((response) => { resources.testTools = response; }),
         networkService.getUcdProcesses().then((response) => { resources.ucdProcesses = response; }),
       ]).then(() => resources);
     },

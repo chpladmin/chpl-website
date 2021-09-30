@@ -8,6 +8,7 @@ import ChplSortableHeaders from './chpl-sortable-headers';
 import ChplNonProdIndicator from './non-prod-indicator';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
+import InternalScrollButton from './internal-scroll-button';
 
 export {
   ChplConfirmation,
@@ -20,4 +21,5 @@ export {
   ChplNonProdIndicator,
   ChplTextField,
   ChplTooltip,
+  InternalScrollButton,
 };

@@ -1368,14 +1368,6 @@
         $httpBackend.flush();
       });
 
-      it('should getTestTools', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/test_tools$/).respond(200, { data: 'response' });
-        networkService.getTestTools().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getUcdProcesses', () => {
         $httpBackend.expectGET(/^\/rest\/data\/ucd_processes$/).respond(200, { data: 'response' });
         networkService.getUcdProcesses().then((response) => {
