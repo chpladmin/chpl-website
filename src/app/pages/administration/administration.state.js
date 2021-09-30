@@ -28,8 +28,6 @@ const getResources = ($q, networkService) => {
       .then((response) => ({ testStandards: response })),
     networkService.getTestFunctionality()
       .then((response) => ({ testFunctionalities: response })),
-    networkService.getTestTools()
-      .then((response) => ({ testTools: response })),
     networkService.getTargetedUsers()
       .then((response) => ({ targetedUsers: response })),
   ];

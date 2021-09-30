@@ -51,6 +51,23 @@ const validationSchema = yup.object({
     .required('Version is required'),
 });
 
+const mergeTestTools = (availableTestTools, usedTestTools) => {
+  let mergedTestTools = [];
+  if (Array.isArray(availableTestTools)) {
+    mergedTestTools = availableTestTools;
+    usedTestTools.forEach((tt) => {
+      if (!availableTestTools.find((att) => att.id === tt.testToolId)) {
+        mergedTestTools.push({
+          id: tt.testToolId,
+          name: tt.testToolName,
+          retired: tt.retired,
+        });
+      }
+    });
+  }
+  return mergedTestTools;
+};
+
 function ChplTestToolsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
@@ -58,7 +75,7 @@ function ChplTestToolsEdit(props) {
   const [isConfirming] = useState(props.isConfirming);
   const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.testToolName < b.testToolName ? -1 : 1)));
   const [options, setOptions] = useState(
-    props.options
+    mergeTestTools(props.options, testToolsUsed)
       .filter((option) => !(props.testTools.find((used) => used.testToolId === option.id)))
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
   );
@@ -117,6 +134,7 @@ function ChplTestToolsEdit(props) {
       {
         id: item.testToolId,
         name: item.testToolName,
+        retired: item.retired,
       },
     ].sort((a, b) => (a.name < b.name ? -1 : 1)));
     update(updated);
@@ -139,7 +157,7 @@ function ChplTestToolsEdit(props) {
                 { testToolsUsed.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2">{ item.testToolName }</Typography>
+                      <Typography variant="body2">{`${item.testToolName}${item.retired ? ' (Retired)' : ''}`}</Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2">{ item.testToolVersion }</Typography>
@@ -196,7 +214,7 @@ function ChplTestToolsEdit(props) {
                 helperText={formik.touched.tt && formik.errors.tt}
               >
                 { options.map((item) => (
-                  <MenuItem value={item} key={item.id} disabled={isDisabled(item)}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id} disabled={isDisabled(item)}>{`${item.name}${item.retired ? ' (Retired)' : ''}`}</MenuItem>
                 ))}
               </ChplTextField>
               <ChplTextField

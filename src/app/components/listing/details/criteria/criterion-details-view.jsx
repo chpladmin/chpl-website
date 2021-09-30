@@ -393,7 +393,7 @@ function ChplCriterionDetailsView(props) {
                           <li key={tt.id || tt.key || index}>
                             Tool:
                             {' '}
-                            { tt.testToolName }
+                            {`${tt.testToolName}${tt.retired ? ' (Retired)' : ''}`}
                             ; Version:
                             {' '}
                             { tt.testToolVersion || 'N/A' }
