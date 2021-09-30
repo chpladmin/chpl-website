@@ -1,4 +1,4 @@
-import { ChplApiKeyConfirm, ChplApiKeyRegistration } from './api-key';
+import { ChplApiKeyConfirm } from './api-key';
 import { ChplAttestationChangeRequest } from './attestation';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
@@ -47,7 +47,6 @@ angular
     'ui.router',
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
-  .component('chplApiKeyRegistrationBridge', reactToAngularComponent(ChplApiKeyRegistration))
   .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))

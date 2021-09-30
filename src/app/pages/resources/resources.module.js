@@ -1,7 +1,9 @@
-import 'angular-swagger-ui';
 import ChplNotFound from './not-found';
-import ChplStyleGuide from './style-guide';
+import ChplResourcesApi from './api';
 import ChplResourcesDownload from './download';
+import ChplResourcesOverview from './overview';
+import ChplStyleGuide from './style-guide';
+
 import { reactToAngularComponent } from '../../services/angular-react-helper';
 
 angular
@@ -10,8 +12,9 @@ angular
     'chpl.constants',
     'chpl.services',
     'ngStorage',
-    'swaggerUi',
   ])
   .component('chplNotFoundBridge', reactToAngularComponent(ChplNotFound))
+  .component('chplResourcesApiBridge', reactToAngularComponent(ChplResourcesApi))
   .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload))
+  .component('chplResourcesOverviewBridge', reactToAngularComponent(ChplResourcesOverview))
   .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide));

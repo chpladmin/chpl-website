@@ -259,7 +259,7 @@ const theme = createMuiTheme({
     },
     MuiTableCell: {
       root: {
-        fontSize: "1em",
+        fontSize: '1em',
       },
       head: {
         color: '#156dac',
@@ -316,6 +316,12 @@ const theme = createMuiTheme({
       },
       icon: {
         color: '#000000',
+      },
+    },
+    MuiFormLabel: {
+      asterisk: {
+        fontSize: '2em',
+        verticalAlign: 'top',
       },
     },
     MuiTablePagination: {
