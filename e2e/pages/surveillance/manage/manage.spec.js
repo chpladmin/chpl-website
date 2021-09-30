@@ -24,10 +24,10 @@ describe('on manage surveillance page', () => {
   describe('When ONC user is logged in', () => {
     beforeEach(() => {
       loginComponent.logIn('onc');
+      hooks.waitForSpinnerToDisappear();
     });
 
     it('should see reporting tab', () => {
-      hooks.waitForSpinnerToDisappear();
       expect(manage.reportingTab.isDisplayed()).toBe(true);
     });
 

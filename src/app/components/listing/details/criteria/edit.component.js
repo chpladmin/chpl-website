@@ -55,8 +55,8 @@ const CertificationCriteriaEditComponent = {
       this.sortedTestFunctionalities = this.getSortedTestFunctionalities();
       this.selectedSvapKeys = this.getSelectedSvapKeys();
       this.setAvailableTestValues();
-      this.setTestToolDropDownText();
       this.setSvapDisplayText();
+      this.setAvailableTestTools();
     }
 
     cancel() {
@@ -89,7 +89,7 @@ const CertificationCriteriaEditComponent = {
         case 'Add':
           this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
           break;
-          // no default
+        // no default
       }
     }
 
@@ -98,8 +98,8 @@ const CertificationCriteriaEditComponent = {
         case 'Remove':
           this.cert.testDataUsed = this.cert.testDataUsed
             .filter((crtd) => !(crtd.testData.id === action.item.item.id
-                              && crtd.version === action.item.additionalInputValue
-                              && crtd.alteration === action.item.additionalInput2Value));
+              && crtd.version === action.item.additionalInputValue
+              && crtd.alteration === action.item.additionalInput2Value));
           break;
         case 'Add':
           this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
@@ -107,7 +107,7 @@ const CertificationCriteriaEditComponent = {
         case 'Edit':
           this.cert.testDataUsed = action.item.map((i) => new this.CertificationResultTestData(i.item, i.additionalInputValue, i.additionalInput2Value));
           break;
-          // no default
+        // no default
       }
     }
 
@@ -129,7 +129,7 @@ const CertificationCriteriaEditComponent = {
         case 'Remove':
           this.cert.testProcedures = this.cert.testProcedures
             .filter((crtp) => !(crtp.testProcedure.id === action.item.item.id
-                              && crtp.testProcedureVersion === action.item.additionalInputValue));
+              && crtp.testProcedureVersion === action.item.additionalInputValue));
           break;
         case 'Add':
           this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
@@ -137,7 +137,7 @@ const CertificationCriteriaEditComponent = {
         case 'Edit':
           this.cert.testProcedures = action.item.map((i) => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
           break;
-          // no default
+        // no default
       }
     }
 
@@ -181,7 +181,7 @@ const CertificationCriteriaEditComponent = {
         case 'Remove':
           this.cert.testToolsUsed = this.cert.testToolsUsed
             .filter((crtt) => !(crtt.testToolId === action.item.item.id
-                              && crtt.testToolVersion === action.item.additionalInputValue));
+              && crtt.testToolVersion === action.item.additionalInputValue));
           break;
         case 'Add':
           this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
@@ -189,7 +189,7 @@ const CertificationCriteriaEditComponent = {
         case 'Edit':
           this.cert.testToolsUsed = action.item.map((i) => new this.CertificationResultTestTool(i.item, i.additionalInputValue));
           break;
-          // no default
+        // no default
       }
     }
 
@@ -255,9 +255,9 @@ const CertificationCriteriaEditComponent = {
       }
       return this.cert.optionalStandards
         .filter((os) => os.optionalStandardId
-            && that.cert.allowedOptionalStandards
-            && that.cert.allowedOptionalStandards.length > 0
-            && that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length > 0)
+          && that.cert.allowedOptionalStandards
+          && that.cert.allowedOptionalStandards.length > 0
+          && that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length > 0)
         .map((os) => ({ key: os.optionalStandardId }));
     }
 
@@ -268,9 +268,9 @@ const CertificationCriteriaEditComponent = {
       }
       return this.cert.optionalStandards
         .filter((os) => !os.optionalStandardId
-            || !that.cert.allowedOptionalStandards
-            || that.cert.allowedOptionalStandards.length === 0
-            || that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length === 0)
+          || !that.cert.allowedOptionalStandards
+          || that.cert.allowedOptionalStandards.length === 0
+          || that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length === 0)
         .map((os) => os.citation);
     }
 
@@ -323,11 +323,24 @@ const CertificationCriteriaEditComponent = {
       }
     }
 
-    setTestToolDropDownText() {
-      this.resources.testTools.data = this.resources.testTools.data.map((tt) => ({
-        ...tt,
-        dropDownText: tt.name + (tt.retired ? ' (Retired)' : ''),
-      }));
+    setAvailableTestTools() {
+      if (Array.isArray(this.cert.allowedTestTools)) {
+        this.cert.allowedTestTools = this.cert.allowedTestTools
+          .map((att) => ({
+            ...att,
+            dropDownText: att.name + (att.retired ? ' (Retired)' : ''),
+          }));
+        this.cert.testToolsUsed.forEach((tt) => {
+          if (!this.cert.allowedTestTools.find((att) => att.id === tt.testToolId)) {
+            this.cert.allowedTestTools.push({
+              id: tt.testToolId,
+              name: tt.testToolName,
+              retired: tt.retired,
+              dropDownText: tt.testToolName + (tt.retired ? ' (Retired)' : ''),
+            });
+          }
+        });
+      }
     }
   },
 };
