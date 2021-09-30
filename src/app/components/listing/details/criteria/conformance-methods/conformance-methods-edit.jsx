@@ -203,6 +203,7 @@ function ChplConformanceMethodsEdit(props) {
                 name="version"
                 label="Version"
                 required={formik.values.cm.name !== 'Attestation'}
+                disabled={formik.values.cm.name === 'Attestation'}
                 value={formik.values.version}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
