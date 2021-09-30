@@ -306,7 +306,7 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { criterion.testFunctionality
+            { (criterion.testFunctionality?.length > 0 || criterion.allowedTestFunctionalities?.length > 0)
               && (
                 <>
                   <div>
