@@ -407,7 +407,7 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="apiDocumentation">
                 <TableCell component="th" scope="row">
-                  <ChplTooltip title="The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9)).">
+                  <ChplTooltip title="The publicly accessible hyperlink to the required documentation used to meet the applicable API certification criteria (&sect;170.315(g)(7) through 170.315(g)(10)).">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
                         color="primary"
