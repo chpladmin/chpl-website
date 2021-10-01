@@ -14,13 +14,14 @@ import {
 } from '@material-ui/core';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
-import { ChplReliedUponSoftwareView } from './relied-upon-software';
 import {
   accessibilityStandard,
   certificationResult,
   qmsStandard,
 } from '../../../../shared/prop-types';
 import { FlagContext } from '../../../../shared/contexts';
+
+import { ChplReliedUponSoftwareView } from './relied-upon-software';
 
 const useStyles = makeStyles(() => ({
   infoIcon: {
