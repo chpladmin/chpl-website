@@ -1,5 +1,5 @@
 import { ChplApiKeyConfirm } from './api-key';
-import { ChplAttestationChangeRequest } from './attestation';
+import ChplAttestationChangeRequest from './attestation';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
