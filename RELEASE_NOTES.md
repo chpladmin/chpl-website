@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 11.21.0
+_5 October 2021_
+
+### Features
+* Revise list of test tools to select for a 2015 Edition listing
+* Create new UX for Job Scheduling schedule selector
+* Give user warning when they are about to be logged out
+
+### User Interface Updates
+* Update Login component with new look & feel
+* Display Overview and CHPL API pages in new style
+
+### Bug Fixes
+* Hide Test Functionality edit on criteria that has no available Test Functionality to select
+* Allow editing of Relevant Surveillance for 2015 Cures Edition Listings
+* Show error messages when password reset request fails
+
+---
+
 ## Version 11.20.1
 _7 September 2021_
 
