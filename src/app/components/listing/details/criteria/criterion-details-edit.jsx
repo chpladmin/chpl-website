@@ -32,7 +32,7 @@ import {
   certificationResult,
   resources as resourceDefinition,
 } from '../../../../shared/prop-types';
-import FlagContext from '../../../../shared/contexts';
+import { FlagContext } from '../../../../shared/contexts';
 
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
@@ -306,7 +306,7 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { criterion.testFunctionality
+            { (criterion.testFunctionality?.length > 0 || criterion.allowedTestFunctionalities?.length > 0)
               && (
                 <>
                   <div>
@@ -365,7 +365,7 @@ function ChplCriterionDetailsEdit(props) {
                       hasIcs={hasIcs}
                       isConfirming={isConfirming}
                       testTools={criterion.testToolsUsed}
-                      options={resources.testTools.data}
+                      options={criterion.allowedTestTools}
                       onChange={handleDetailChange}
                     />
                   </div>

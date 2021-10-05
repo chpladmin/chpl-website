@@ -62,16 +62,16 @@ describe('On the 2015 Listing page', () => {
         criteria.attestToggle.click();
         hooks.waitForSpinnerToDisappear();
         criteria.addTestProcedures('ONC Test Method', '1.1');
-        criteria.addTestTools('Cypress', '1.1');
+        criteria.addTestTools('Not Applicable', '1.1');
         criteria.addTestTools('Edge Testing Tool', '2.1');
-        criteria.accept.scrollAndClick();
+        criteria.accept.click();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
       } else {
         criteria.openUnattestedCriteriaOld('170.315 (g)(6)', true);
 
         criteria.attestCriteriaOld('170.315 (g)(6)');
         criteria.addTestProceduresOld('ONC Test Method', '1.1');
-        criteria.addTestToolsOld('Cypress', '1.1');
+        criteria.addTestToolsOld('Edge Testing Tool', '1.1');
         criteria.saveCertifiedProductOld.waitAndClick();
       }
       action.save();

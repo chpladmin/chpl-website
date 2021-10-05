@@ -31,10 +31,11 @@
   "rules": {
     "max-len": ["off"],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "import/order": ["error", {"newlines-between": "always"}],
   },
   "overrides": [
     {
-      "files": ["*.jsx", "*.spec.js"],
+      "files": ["*.jsx", "*.spec.js", "jest.config.js", "karma.conf.js", "wdio.conf.js", "webpack.config.js"],
       "rules": {
         "no-console": ["off"],
       },

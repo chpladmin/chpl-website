@@ -1,4 +1,4 @@
-export const SurveillanceInspectComponent = {
+const SurveillanceInspectComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/inspect.html',
   bindings: {
     resolve: '<',
@@ -6,52 +6,54 @@ export const SurveillanceInspectComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceInspectController {
-    constructor ($log, $uibModal, authService, networkService, utilService) {
+    constructor($log, $uibModal, DateUtil, authService, networkService, utilService) {
       'ngInject';
+
       this.$log = $log;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.utilService = utilService;
       this.sortRequirements = utilService.sortRequirements;
     }
 
-    $onInit () {
+    $onInit() {
       this.surveillance = angular.copy(this.resolve.surveillance);
       this.errorMessages = [];
       this.surveillanceTypes = this.networkService.getSurveillanceLookups();
     }
 
-    cancel () {
+    cancel() {
       this.dismiss();
     }
 
-    confirm () {
+    confirm() {
       this.networkService.confirmPendingSurveillance(this.surveillance)
         .then(() => {
-          this.close({$value: {status: 'confirmed'}});
-        }, error => {
+          this.close({ $value: { status: 'confirmed' } });
+        }, (error) => {
           if (error.data.contact) {
-            this.close({$value: {
-              contact: error.data.contact,
-              objectId: error.data.objectId,
-              status: 'resolved',
-            }});
+            this.close({
+              $value: {
+                contact: error.data.contact,
+                objectId: error.data.objectId,
+                status: 'resolved',
+              },
+            });
+          } else if (error.data.errorMessages) {
+            this.errorMessages = error.data.errorMessages;
           } else {
-            if (error.data.errorMessages) {
-              this.errorMessages = error.data.errorMessages;
-            } else {
-              this.errorMessages = [error.statusText];
-            }
+            this.errorMessages = [error.statusText];
           }
         });
     }
 
-    editSurveillance () {
+    editSurveillance() {
       this.fixRequirementOptions();
       if (this.hasAnyRole(['ROLE_ACB'])) {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter(option => !option.removed);
-        this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter(option => !option.removed);
+        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
+        this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter((option) => !option.removed);
       }
       this.editModalInstance = this.$uibModal.open({
         component: 'aiSurveillanceEdit',
@@ -65,16 +67,16 @@ export const SurveillanceInspectComponent = {
           workType: () => 'confirm',
         },
       });
-      this.editModalInstance.result.then(result => {
+      this.editModalInstance.result.then((result) => {
         this.surveillance = result;
-      }, result => {
+      }, (result) => {
         if (result !== 'cancelled') {
           this.$log.info('dismissed', result);
         }
       });
     }
 
-    inspectNonconformities (noncons) {
+    inspectNonconformities(noncons) {
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceNonconformityInspect',
         animation: false,
@@ -87,26 +89,28 @@ export const SurveillanceInspectComponent = {
       });
     }
 
-    reject () {
+    reject() {
       this.networkService.rejectPendingSurveillance(this.surveillance.id)
         .then(() => {
-          this.close({$value: {status: 'rejected'}});
-        }, error => {
+          this.close({ $value: { status: 'rejected' } });
+        }, (error) => {
           if (error.data.contact) {
-            this.close({$value: {
-              contact: error.data.contact,
-              objectId: error.data.objectId,
-              status: 'resolved',
-            }});
+            this.close({
+              $value: {
+                contact: error.data.contact,
+                objectId: error.data.objectId,
+                status: 'resolved',
+              },
+            });
           } else {
             this.errorMessages = error.data.errorMessages;
           }
         });
     }
 
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
 
-    fixRequirementOptions () {
+    fixRequirementOptions() {
       if (this.surveillance.certifiedProduct.edition === '2015') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
       } else if (this.surveillance.certifiedProduct.edition === '2014') {
@@ -121,3 +125,5 @@ export const SurveillanceInspectComponent = {
 angular
   .module('chpl.components')
   .component('aiSurveillanceInspect', SurveillanceInspectComponent);
+
+export default SurveillanceInspectComponent;

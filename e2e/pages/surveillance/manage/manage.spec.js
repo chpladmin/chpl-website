@@ -14,17 +14,20 @@ describe('on manage surveillance page', () => {
     await hooks.open('#/surveillance/manage');
   });
 
+  afterEach(() => {
+    if (toast.toastContainer.isDisplayed()) {
+      toast.clearAllToast();
+    }
+    loginComponent.logOut();
+  });
+
   describe('When ONC user is logged in', () => {
     beforeEach(() => {
       loginComponent.logIn('onc');
-    });
-
-    afterEach(() => {
-      loginComponent.logOut();
+      hooks.waitForSpinnerToDisappear();
     });
 
     it('should see reporting tab', () => {
-      hooks.waitForSpinnerToDisappear();
       expect(manage.reportingTab.isDisplayed()).toBe(true);
     });
 
@@ -47,10 +50,6 @@ describe('on manage surveillance page', () => {
   describe('When ACB user is logged in', () => {
     beforeEach(() => {
       loginComponent.logIn('drummond');
-    });
-
-    afterEach(() => {
-      loginComponent.logOut();
     });
 
     it('should not see reporting tab', () => {
