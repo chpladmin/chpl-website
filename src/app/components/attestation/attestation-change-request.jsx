@@ -10,13 +10,16 @@ import {
   ThemeProvider,
   Typography,
 } from '@material-ui/core';
-import { func, object } from 'prop-types';
+import { func } from 'prop-types';
 
+import { developer as developerPropType } from '../../shared/prop-types';
 import theme from '../../themes/theme';
 
 function ChplAttestationChangeRequest(props) {
+  /* eslint-disable react/destructuring-assignment */
   const [attestation, setAttestation] = useState(false);
   const [developer] = useState(props.developer);
+  /* eslint-enable react/destructuring-assignment */
 
   const createAttestationChangeRequest = () => {
     const request = { attestation: Date.now().toString() };
@@ -29,15 +32,21 @@ function ChplAttestationChangeRequest(props) {
         <CardHeader title="Attestations" />
         <CardContent>
           <Typography variant="body1">
-            By checking this box, I attest that I am authorized to submit the Attestations related to Conditions of Certification on behalf of { developer.name }.
+            By checking this box, I attest that I am authorized to submit the Attestations related to Conditions of Certification on behalf of
+            {' '}
+            { developer.name }
+            .
           </Typography>
           <FormControlLabel
             label="I attest"
-            control={<Checkbox
-                       name="attest"
-                       value="attest"
-                       onChange={() => setAttestation(!attestation)} checked={attestation}
-                     />}
+            control={(
+              <Checkbox
+                name="attest"
+                value="attest"
+                onChange={() => setAttestation(!attestation)}
+                checked={attestation}
+              />
+)}
           />
         </CardContent>
         <CardActions>
@@ -61,5 +70,5 @@ export default ChplAttestationChangeRequest;
 
 ChplAttestationChangeRequest.propTypes = {
   dispatch: func.isRequired,
-  developer: object.isRequired,
+  developer: developerPropType.isRequired,
 };
