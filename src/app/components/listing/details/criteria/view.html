@@ -145,7 +145,7 @@
           </tr>
           <tr ng-if="$ctrl.cert.apiDocumentation !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Api_Documentation{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
-              API Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9)).</span><i class="fa fa-info-circle fa-lg"></i></button>
+              API Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink to the required documentation used to meet the applicable API certification criteria (&sect;170.315(g)(7) through 170.315(g)(10))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink to the required documentation used to meet the applicable API certification criteria (&sect;170.315(g)(7) through 170.315(g)(10)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.apiDocumentation"><a ai-a href="{{ $ctrl.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.apiDocumentation }">{{ $ctrl.cert.apiDocumentation }}</a></td>
             <td ng-if="!$ctrl.cert.apiDocumentation">None</td>
