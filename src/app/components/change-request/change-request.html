@@ -2,7 +2,8 @@
   <span ng-switch-when="log">
     <chpl-change-request-history-bridge
       change-requests="$ctrl.changeRequest.statuses"
-      dispatch="::$ctrl.handleDispatch"></chpl-change-request-history-bridge>
+      dispatch="::$ctrl.handleDispatch"
+      ></chpl-change-request-history-bridge>
   </span>
   <span ng-switch-when="edit|withdraw" ng-switch-when-separator="|">
     <div class="row">
@@ -104,6 +105,10 @@
     </div>
   </span>
   <span ng-switch-default>
+    <chpl-change-request-bridge
+      change-request="$ctrl.changeRequest"
+      dispatch="::$ctrl.handleDispatch"
+      ></chpl-change-request-bridge>
     <div class="row">
       <div class="col-md-12">
         <button class="btn btn-default pull-right" ng-click="$ctrl.cancel()" uib-tooltip="Close" tooltip-trigger="'mouseenter focus click'"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
