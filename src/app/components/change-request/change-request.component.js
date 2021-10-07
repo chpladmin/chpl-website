@@ -14,6 +14,7 @@ export const ChangeRequestComponent = {
       'ngInject';
       this.$log = $log;
       this.backup = {};
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onChanges (changes) {
@@ -64,6 +65,12 @@ export const ChangeRequestComponent = {
       this.takeAction({
         action: 'cancel',
       });
+    }
+
+    handleDispatch(action) {
+      if (action === 'close') {
+        this.cancel();
+      }
     }
 
     update () {
