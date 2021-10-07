@@ -5,6 +5,8 @@
         <button class="btn btn-default pull-right" aria-label="Cancel"
                 uib-tooltip="Close" tooltip-trigger="'mouseenter focus click'"
                 ng-click="$ctrl.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
+        <chpl-change-request-history-bridge
+          change-requests="$ctrl.changeRequest.statuses"></chpl-change-request-history-bridge>
         <table class="table">
           <thead>
             <tr>
