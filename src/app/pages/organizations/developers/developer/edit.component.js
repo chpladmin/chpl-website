@@ -64,11 +64,13 @@ const DevelopersEditComponent = {
           } else {
             body = 'An unexpected error has occurred.';
           }
-          that.toaster.pop({
-            type: 'error',
-            title: 'Error',
-            body,
-          });
+          if (body) {
+            that.toaster.pop({
+              type: 'error',
+              title: 'Error',
+              body,
+            });
+          }
         }, (error) => {
           let body;
           if (error.data.errorMessages) {
