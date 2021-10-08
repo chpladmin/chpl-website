@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 function ChplChangeRequestHistory(props) {
   /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
-  const [items, setItms] = useState(props.changeRequest.statuses);
+  const [items, setItems] = useState(props.changeRequest.statuses);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 

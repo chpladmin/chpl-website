@@ -129,7 +129,11 @@ function ChplChangeRequestView(props) {
           { getChangeRequestDetails(changeRequest) }
           <div className={classes.widgetProductContainer}>
             <div>
-              <Button color='secondary' variant='contained' fullWidth>
+              <Button
+                color='secondary'
+                variant='contained'
+                fullWidth
+                onClick={() => props.dispatch('edit')}>
                 Edit Change Request
               </Button>
             </div>
