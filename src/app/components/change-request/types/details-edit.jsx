@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestDetails(props) {
+function ChplChangeRequestDetailsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
   const classes = useStyles();
@@ -33,7 +33,6 @@ function ChplChangeRequestDetails(props) {
       </div>
       <div>
         Submitted details
-        <br />
         <Card>
           <CardContent>
             {changeRequest.developer.name}
@@ -44,8 +43,8 @@ function ChplChangeRequestDetails(props) {
   );
 }
 
-export default ChplChangeRequestDetails;
+export default ChplChangeRequestDetailsEdit;
 
-ChplChangeRequestDetails.propTypes = {
+ChplChangeRequestDetailsEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
 };

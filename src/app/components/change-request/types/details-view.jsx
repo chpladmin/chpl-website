@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {
+  Card,
+  CardContent,
   makeStyles,
 } from '@material-ui/core';
 
@@ -13,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestWebsite(props) {
+function ChplChangeRequestDetailsView(props) {
   /* eslint-disable react/destructuring-assignment */
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
   const classes = useStyles();
@@ -22,21 +24,27 @@ function ChplChangeRequestWebsite(props) {
   return (
     <div className={classes.container}>
       <div>
-        Current website
-        <br />
-        {changeRequest.developer.website}
+        Current details
+        <Card>
+          <CardContent>
+            {changeRequest.developer.name}
+          </CardContent>
+        </Card>
       </div>
       <div>
-        Submitted website
-        <br />
-        {changeRequest.details.website}
+        Submitted details
+        <Card>
+          <CardContent>
+            {changeRequest.developer.name}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 }
 
-export default ChplChangeRequestWebsite;
+export default ChplChangeRequestDetailsView;
 
-ChplChangeRequestWebsite.propTypes = {
+ChplChangeRequestDetailsView.propTypes = {
   changeRequest: changeRequestProp.isRequired,
 };

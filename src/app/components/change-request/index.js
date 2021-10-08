@@ -1,7 +1,7 @@
-import ChplChangeRequest from './change-request';
-import ChplChangeRequestHistory from './change-request-history';
+import ChplChangeRequestEdit from './change-request-edit';
+import ChplChangeRequestView from './change-request-view';
 
 export {
-  ChplChangeRequest,
-  ChplChangeRequestHistory,
+  ChplChangeRequestEdit,
+  ChplChangeRequestView,
 };

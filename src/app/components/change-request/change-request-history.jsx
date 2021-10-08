@@ -9,7 +9,6 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
@@ -23,16 +22,12 @@ const useStyles = makeStyles({
   tableContainer: {
     border: '.5px solid #c2c6ca',
   },
-  tableActionContainer: {
-    display: 'grid',
-    justifyContent: 'end',
-  },
 });
 
 function ChplChangeRequestHistory(props) {
   /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
-  const [changeRequests, setChangeRequests] = useState(props.changeRequests);
+  const [items, setItms] = useState(props.changeRequest.statuses);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -57,20 +52,13 @@ function ChplChangeRequestHistory(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    setChangeRequests(changeRequests.sort(sortComparator(orderDirection + property)).map((cr) => cr));
+    setItems(items.sort(sortComparator(orderDirection + property)).map((item) => item));
   };
 
   return (
     <div className={classes.container}>
-      <div className={classes.tableActionContainer}>
-        <Button
-          fullWidth
-          color="secondary"
-          variant="contained"
-          onClick={() => props.dispatch('close')}
-        >
-          Close
-        </Button>
+      <div>
+        Change Request History
       </div>
       <TableContainer className={classes.tableContainer} component={Paper}>
         <Table stickyHeader>
@@ -81,13 +69,13 @@ function ChplChangeRequestHistory(props) {
             order="desc"
           />
           <TableBody>
-            {changeRequests
-              .map((cr) => (
-                <TableRow key={cr.id}>
-                  <TableCell>{cr.actingOrganization}</TableCell>
-                  <TableCell>{DateUtil.timestampToString(cr.statusChangeDate)}</TableCell>
-                  <TableCell>{cr.changeRequestStatusType.name}</TableCell>
-                  <TableCell>{cr.comment}</TableCell>
+            {items
+              .map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell>{item.actingOrganization}</TableCell>
+                  <TableCell>{DateUtil.timestampToString(item.statusChangeDate)}</TableCell>
+                  <TableCell>{item.changeRequestStatusType.name}</TableCell>
+                  <TableCell>{item.comment}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
@@ -100,6 +88,5 @@ function ChplChangeRequestHistory(props) {
 export default ChplChangeRequestHistory;
 
 ChplChangeRequestHistory.propTypes = {
-  changeRequests: arrayOf(changeRequestProp).isRequired,
-  dispatch: func.isRequired,
+  changeRequest: changeRequestProp.isRequired,
 };

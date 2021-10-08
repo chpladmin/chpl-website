@@ -14,9 +14,10 @@ import Moment from 'react-moment';
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
 
-import ChplChangeRequestAttestation from './types/attestation';
-import ChplChangeRequestDetails from './types/details';
-import ChplChangeRequestWebsite from './types/website';
+import ChplChangeRequestHistory from './change-request-history';
+import ChplChangeRequestAttestationView from './types/attestation-view';
+import ChplChangeRequestDetailsView from './types/details-view';
+import ChplChangeRequestWebsiteView from './types/website-view';
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -70,19 +71,19 @@ const getChangeRequestDetails = (cr) => {
   switch (cr.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return (
-        <ChplChangeRequestAttestation
+        <ChplChangeRequestAttestationView
           changeRequest={cr}
         />
       );
     case 'Developer Details Change Request':
       return (
-        <ChplChangeRequestDetails
+        <ChplChangeRequestDetailsView
           changeRequest={cr}
         />
       );
     case 'Website Change Request':
       return (
-        <ChplChangeRequestWebsite
+        <ChplChangeRequestWebsiteView
           changeRequest={cr}
         />
       );
@@ -97,7 +98,7 @@ const getChangeRequestDetails = (cr) => {
 
 const getInitials = (name) => name.split(' ').map((c) => c.substring(0, 1).toUpperCase()).join('');
 
-function ChplChangeRequest(props) {
+function ChplChangeRequestView(props) {
   /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
@@ -134,13 +135,6 @@ function ChplChangeRequest(props) {
             </div>
             <div>
               <Button
-                color='secondary'
-                variant='contained'
-                fullWidth
-                onClick={() => props.dispatch('viewStatusLog')}>
-                Status Log
-              </Button>
-              <Button
                 fullWidth
                 color="secondary"
                 variant="contained"
@@ -150,15 +144,18 @@ function ChplChangeRequest(props) {
               </Button>
             </div>
           </div>
+          <ChplChangeRequestHistory
+            changeRequest={changeRequest}
+          />
         </CardContent>
       </Card>
     </div>
   );
 }
 
-export default ChplChangeRequest;
+export default ChplChangeRequestView;
 
-ChplChangeRequest.propTypes = {
+ChplChangeRequestView.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
 };

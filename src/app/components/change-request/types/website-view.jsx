@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestAttestation(props) {
+function ChplChangeRequestWebsiteView(props) {
   /* eslint-disable react/destructuring-assignment */
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
   const classes = useStyles();
@@ -22,21 +22,21 @@ function ChplChangeRequestAttestation(props) {
   return (
     <div className={classes.container}>
       <div>
-        Current attestation
+        Current website
         <br />
-        None
+        {changeRequest.developer.website}
       </div>
       <div>
-        Submitted attestation
+        Submitted website
         <br />
-        {changeRequest.details.attestation}
+        {changeRequest.details.website}
       </div>
     </div>
   );
 }
 
-export default ChplChangeRequestAttestation;
+export default ChplChangeRequestWebsiteView;
 
-ChplChangeRequestAttestation.propTypes = {
+ChplChangeRequestWebsiteView.propTypes = {
   changeRequest: changeRequestProp.isRequired,
 };
