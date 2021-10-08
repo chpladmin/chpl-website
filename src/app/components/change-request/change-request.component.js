@@ -71,6 +71,11 @@ export const ChangeRequestComponent = {
       if (action === 'close') {
         this.cancel();
       }
+      if (action === 'viewStatusLog') {
+        this.takeAction({
+          action: 'statusLog',
+        });
+      }
     }
 
     update () {

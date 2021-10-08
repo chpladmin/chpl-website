@@ -14,6 +14,10 @@ import Moment from 'react-moment';
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
 
+import ChplChangeRequestAttestation from './types/attestation';
+import ChplChangeRequestDetails from './types/details';
+import ChplChangeRequestWebsite from './types/website';
+
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
@@ -47,23 +51,49 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: 'auto auto auto',
     gap: '8px',
-
   },
   subcontent: {
     display: 'grid',
     gap: '8px',
   },
-
   developerAvatar: {
     color: '#156dac',
     backgroundColor: '#f5f9fd',
   },
-
   activeStatus: {
     color: '#66926d',
     marginLeft: '4px',
   },
 });
+
+const getChangeRequestDetails = (cr) => {
+  switch (cr.changeRequestType.name) {
+    case 'Developer Attestation Change Request':
+      return (
+        <ChplChangeRequestAttestation
+          changeRequest={cr}
+        />
+      );
+    case 'Developer Details Change Request':
+      return (
+        <ChplChangeRequestDetails
+          changeRequest={cr}
+        />
+      );
+    case 'Website Change Request':
+      return (
+        <ChplChangeRequestWebsite
+          changeRequest={cr}
+        />
+      );
+    default:
+      return (
+        <>
+          No details found
+        </>
+      );
+  }
+};
 
 const getInitials = (name) => name.split(' ').map((c) => c.substring(0, 1).toUpperCase()).join('');
 
@@ -75,65 +105,55 @@ function ChplChangeRequest(props) {
   /* eslint-enable react/destructuring-assignment */
 
   return (
-        <div>
-            <Card className={classes.productCard} >
-                <div className={classes.productCardHeaderContainer}>
-                  <Avatar className={classes.developerAvatar}>{getInitials(changeRequest.developer.name)}</Avatar>
-                    <div className={classes.subProductCardHeaderContainer}>
-                      <Typography variant='h5'>{changeRequest.changeRequestType.name}</Typography>
-                        <div className={classes.versionProductCardHeaderContainer}>
-                            <Typography variant='subtitle2'>Developer:</Typography>
-                          <Typography variant='body1'>{changeRequest.developer.name}</Typography>
-                            <Typography variant='subtitle2'>Creation Date:</Typography>
-                          <Typography variant='body1'>{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>|
-                            <Typography variant='subtitle2'>Request Status:</Typography>
-                          <Typography variant='body1'>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>|
-                            <Typography variant='subtitle2'>Time Since Last Status Change:</Typography>
-                          <Typography variant='body1'><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>|
-                        </div>
-                    </div>
-                </div>
-                <Divider />
-                <CardContent className={classes.content}>
-                    <div className={classes.subcontent}>
-                        <div>
-                            <Typography variant='subtitle1'>
-                                Edition{' '}
-                            </Typography>
-                            <Typography varient='body1'>
-                                2015
-                            </Typography>
-                        </div>
-                    </div>
-                    <div className={classes.subcontent}>
-                        <div>
-                            <Typography variant='subtitle1'>
-                                CHPL ID{' '}
-                            </Typography>
-                            <Typography varient='body1'>
-                                15.04.04.1447.Beac.AU.08.1.200220
-                            </Typography>
-                        </div>
-                    </div>
-                    <div className={classes.widgetProductContainer}>
-                        <div>
-                            <Button color='secondary' variant='contained' fullWidth>
-                                CERT ID
-
-                            </Button>
-                        </div>
-                        <div>
-                            <Button color='secondary' variant='contained' fullWidth>
-                                COMPARE
-
-                            </Button>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-        </div >
-    );
+    <div>
+      <Card className={classes.productCard}>
+        <div className={classes.productCardHeaderContainer}>
+          <Avatar className={classes.developerAvatar}>{getInitials(changeRequest.developer.name)}</Avatar>
+          <div className={classes.subProductCardHeaderContainer}>
+            <Typography variant='h5'>{changeRequest.changeRequestType.name}</Typography>
+            <div className={classes.versionProductCardHeaderContainer}>
+              <Typography variant='subtitle2'>Developer:</Typography>
+              <Typography variant='body1'>{changeRequest.developer.name}</Typography>
+              <Typography variant='subtitle2'>Creation Date:</Typography>
+              <Typography variant='body1'>{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>|
+              <Typography variant='subtitle2'>Request Status:</Typography>
+              <Typography variant='body1'>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>|
+              <Typography variant='subtitle2'>Time Since Last Status Change:</Typography>
+              <Typography variant='body1'><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>|
+            </div>
+          </div>
+        </div>
+        <Divider />
+        <CardContent>
+          { getChangeRequestDetails(changeRequest) }
+          <div className={classes.widgetProductContainer}>
+            <div>
+              <Button color='secondary' variant='contained' fullWidth>
+                Edit Change Request
+              </Button>
+            </div>
+            <div>
+              <Button
+                color='secondary'
+                variant='contained'
+                fullWidth
+                onClick={() => props.dispatch('viewStatusLog')}>
+                Status Log
+              </Button>
+              <Button
+                fullWidth
+                color="secondary"
+                variant="contained"
+                onClick={() => props.dispatch('close')}
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
 export default ChplChangeRequest;

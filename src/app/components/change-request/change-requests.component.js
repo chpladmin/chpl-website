@@ -54,6 +54,7 @@ export const ChangeRequestsComponent = {
     }
 
     act (action, data) {
+      this.$log.info({action, data});
       switch (action) {
       case 'cancel':
         this.cancel();
