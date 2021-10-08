@@ -1,3 +1,4 @@
+import ChplAvatar from './avatar';
 import ChplConfirmation from './confirmation';
 import ChplCriterionTitle from './criterion-title';
 import ChplDialogTitle from './chpl-dialog-title';
@@ -11,6 +12,7 @@ import ChplTooltip from './chpl-tooltip';
 import InternalScrollButton from './internal-scroll-button';
 
 export {
+  ChplAvatar,
   ChplConfirmation,
   ChplCriterionTitle,
   ChplDialogTitle,

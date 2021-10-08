@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Avatar,
   Button,
   Card,
   CardContent,
@@ -13,6 +12,8 @@ import Moment from 'react-moment';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
+
+import { ChplAvatar } from '../util';
 
 import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
@@ -96,8 +97,6 @@ const getChangeRequestDetails = (cr) => {
   }
 };
 
-const getInitials = (name) => name.split(' ').map((c) => c.substring(0, 1).toUpperCase()).join('');
-
 function ChplChangeRequestView(props) {
   /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
@@ -109,7 +108,10 @@ function ChplChangeRequestView(props) {
     <div>
       <Card className={classes.productCard}>
         <div className={classes.productCardHeaderContainer}>
-          <Avatar className={classes.developerAvatar}>{getInitials(changeRequest.developer.name)}</Avatar>
+          <ChplAvatar
+            className={classes.developerAvatar}
+            text={changeRequest.developer.name}
+          />
           <div className={classes.subProductCardHeaderContainer}>
             <Typography variant='h5'>{changeRequest.changeRequestType.name}</Typography>
             <div className={classes.versionProductCardHeaderContainer}>
