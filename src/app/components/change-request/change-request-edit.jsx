@@ -43,24 +43,27 @@ const validationSchema = yup.object({
     .required('Change Request status is required'),
 });
 
-const getChangeRequestDetails = (cr) => {
+const getChangeRequestDetails = (cr, handleDispatch) => {
   switch (cr.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return (
         <ChplChangeRequestAttestationEdit
           changeRequest={cr}
+          dispatch={handleDispatch}
         />
       );
     case 'Developer Details Change Request':
       return (
         <ChplChangeRequestDetailsEdit
           changeRequest={cr}
+          dispatch={handleDispatch}
         />
       );
     case 'Website Change Request':
       return (
         <ChplChangeRequestWebsiteEdit
           changeRequest={cr}
+          dispatch={handleDispatch}
         />
       );
     default:
@@ -79,14 +82,57 @@ function ChplChangeRequestEdit(props) {
   const DateUtil = getAngularService('DateUtil');
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
   const [changeRequestStatusTypes] = useState(props.changeRequestStatusTypes);
+  const [details, setDetails] = useState(props.changeRequest.details);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
+
   let formik;
 
-  const handleDispatch = (action) => {
+  const handleUpdate = (data) => {
+    switch (changeRequest.changeRequestType.name) {
+      case 'Developer Attestation Change Request':
+        setDetails({
+          ...details,
+          attestation: data.attestation,
+        });
+        break;
+      case 'Developer Details Change Request':
+        setDetails({
+          ...details,
+          address: {
+            line1: data.line1,
+            line2: data.line2,
+            city: data.city,
+            state: data.state,
+            zipcode: data.zipcode,
+            country: data.country,
+          },
+          contact: {
+            fullName: data.fullName,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            title: data.title,
+          },
+          selfDeveloper: data.selfDeveloper,
+        });
+        break;
+      case 'Website Change Request':
+        setDetails({
+          ...details,
+          website: data.website,
+        });
+        break;
+        // no default
+    }
+  }
+
+  const handleDispatch = (action, data) => {
     switch (action) {
       case 'cancel':
         props.dispatch('close');
+        break;
+      case 'update':
+        handleUpdate(data);
         break;
       case 'save':
         formik.submitForm();
@@ -101,7 +147,7 @@ function ChplChangeRequestEdit(props) {
       changeRequestStatus: '',
     },
     onSubmit: () => {
-      console.log('saving', formik.values);
+      console.log('saving', formik.values, details);
     },
     validationSchema,
     validateOnChange: false,
@@ -111,7 +157,7 @@ function ChplChangeRequestEdit(props) {
   return (
     <div className={classes.container}>
       <div>
-        {getChangeRequestDetails(changeRequest)}
+        {getChangeRequestDetails(changeRequest, handleDispatch)}
       </div>
       <div>
         <ChplTextField

@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import {
   makeStyles,
 } from '@material-ui/core';
+import { func } from 'prop-types';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
+import { ChplTextField } from '../../util';
 import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
 
 const useStyles = makeStyles({
@@ -13,11 +17,38 @@ const useStyles = makeStyles({
   },
 });
 
+const validationSchema = yup.object({
+  website: yup.string()
+    .url('Website is not in a valid format')
+    .required('Website is required'),
+});
+
 function ChplChangeRequestWebsiteEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
+
+  let formik;
+
+  const handleChange = (...args) => {
+    formik.handleChange(...args);
+    if (formik.isValid) {
+      formik.submitForm();
+    }
+  };
+
+  formik = useFormik({
+    initialValues: {
+      website: changeRequest.details.website,
+    },
+    onSubmit: () => {
+      props.dispatch('update', formik.values);
+    },
+    validationSchema,
+    validateOnChange: true,
+    validateOnMount: true,
+  });
 
   return (
     <div className={classes.container}>
@@ -29,7 +60,17 @@ function ChplChangeRequestWebsiteEdit(props) {
       <div>
         Submitted website
         <br />
-        {changeRequest.details.website}
+        <ChplTextField
+          id="website"
+          name="website"
+          label="Website"
+          required
+          value={formik.values.website}
+          onChange={handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.website && !!formik.errors.website}
+          helperText={formik.touched.website && formik.errors.website}
+        />
       </div>
     </div>
   );
@@ -39,4 +80,5 @@ export default ChplChangeRequestWebsiteEdit;
 
 ChplChangeRequestWebsiteEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
+  dispatch: func.isRequired,
 };
