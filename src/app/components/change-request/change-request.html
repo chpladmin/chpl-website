@@ -2,6 +2,7 @@
   <span ng-switch-when="edit|withdraw" ng-switch-when-separator="|">
     <chpl-change-request-edit-bridge
       change-request="$ctrl.changeRequest"
+      change-request-status-types="$ctrl.changeRequestStatusTypes"
       dispatch="::$ctrl.handleDispatch"
       ></chpl-change-request-edit-bridge>
     <div class="row">

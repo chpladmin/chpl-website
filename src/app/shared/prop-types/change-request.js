@@ -9,12 +9,14 @@ const changeRequestType = shape({
   name: string,
 });
 
+const changeRequestStatusType = shape({
+  id: number,
+  name: string,
+});
+
 const changeRequestStatus = shape({
   certificationBody: acb,
-  changeRequestStatusType: shape({
-    id: number,
-    name: string,
-  }),
+  changeRequestStatusType,
   comment: string,
   id: number,
   statusChangeDate: number,
@@ -37,4 +39,4 @@ const changeRequest = shape({
   submittedDate: number,
 });
 
-export default changeRequest;
+export { changeRequest, changeRequestStatusType };

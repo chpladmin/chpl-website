@@ -3,7 +3,10 @@ import accessibilityStandard from './accessibility-standard';
 import address from './address';
 import analyticsConfig from './analytics-config';
 import certificationResult from './certification-result';
-import changeRequest from './change-request';
+import {
+  changeRequest,
+  changeRequestStatusType,
+} from './change-request';
 import {
   criterion as complaintCriterion,
   complaint,
@@ -35,6 +38,7 @@ export {
   analyticsConfig,
   certificationResult,
   changeRequest,
+  changeRequestStatusType,
   complainantType,
   complaint,
   complaintCriterion,
