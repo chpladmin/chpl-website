@@ -51,27 +51,40 @@ const DevelopersEditComponent = {
       } else {
         const that = this;
         this.developer = developer;
-        this.errorMessages = [];
         this.networkService.updateDeveloper(this.developer).then((response) => {
+          let body;
           if (!response.status || response.status === 200 || angular.isObject(response.status)) {
             that.developer = response;
             that.backup.developer = angular.copy(response);
-            this.$state.go('^', undefined, { reload: true });
+            that.$state.go('^', undefined, { reload: true });
           } else if (response.data.errorMessages) {
-            that.errorMessages = response.data.errorMessages;
+            body = response.data.errorMessages.join(', ');
           } else if (response.data.error) {
-            that.errorMessages.push(response.data.error);
+            body = response.data.error;
           } else {
-            that.errorMessages = ['An error has occurred.'];
+            body = 'An unexpected error has occurred.';
+          }
+          if (body) {
+            that.toaster.pop({
+              type: 'error',
+              title: 'Error',
+              body,
+            });
           }
         }, (error) => {
+          let body;
           if (error.data.errorMessages) {
-            that.errorMessages = error.data.errorMessages;
+            body = error.data.errorMessages.join(', ');
           } else if (error.data.error) {
-            that.errorMessages.push(error.data.error);
+            body = error.data.error;
           } else {
-            that.errorMessages = ['An error has occurred.'];
+            body = 'An unexpected error has occurred.';
           }
+          that.toaster.pop({
+            type: 'error',
+            title: 'Error',
+            body,
+          });
         });
       }
     }
