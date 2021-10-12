@@ -19,6 +19,7 @@ export const ChangeRequestsComponent = {
       this.filterItems = {
         pageSize: 3,
       };
+      this.act = this.act.bind(this);
     }
 
     $onChanges (changes) {
@@ -56,28 +57,31 @@ export const ChangeRequestsComponent = {
     act (action, data) {
       this.$log.info({action, data});
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'fullCancel':
-        this.fullyCancel();
-        break;
-      case 'save':
-        this.saveChangeRequest();
-        break;
-      case 'edit':
-        this.startEditing();
-        break;
-      case 'statusLog':
-        this.viewStatusLog();
-        break;
-      case 'withdraw':
-        this.setUpToWithdrawChangeRequest();
-        break;
-      case 'update':
-        this.processChangeRequestUpdate(data);
-        break;
-                // no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'fullCancel':
+          this.fullyCancel();
+          break;
+        case 'save':
+          this.saveChangeRequest();
+          break;
+        case 'edit':
+          this.startEditing();
+          break;
+        case 'statusLog':
+          this.viewStatusLog();
+          break;
+        case 'withdraw':
+          this.setUpToWithdrawChangeRequest();
+          break;
+        case 'update':
+          this.processChangeRequestUpdate(data);
+          break;
+        case 'view':
+          this.activeChangeRequest = data;
+          break;
+          // no default
       }
     }
 

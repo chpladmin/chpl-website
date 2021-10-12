@@ -48,7 +48,6 @@ function ChplChangeRequestDetailsEdit(props) {
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
-  console.log(props.changeRequest.details);
 
   let formik;
 

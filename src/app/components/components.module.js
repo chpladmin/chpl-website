@@ -3,6 +3,7 @@ import { ChplAttestationChangeRequest } from './attestation';
 import {
   ChplChangeRequestEdit,
   ChplChangeRequestView,
+  ChplChangeRequests,
 } from './change-request';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
@@ -54,6 +55,7 @@ angular
   .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
   .component('chplChangeRequestEditBridge', reactToAngularComponent(ChplChangeRequestEdit))
   .component('chplChangeRequestViewBridge', reactToAngularComponent(ChplChangeRequestView))
+  .component('chplChangeRequestsBridge', reactToAngularComponent(ChplChangeRequests))
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
   .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
