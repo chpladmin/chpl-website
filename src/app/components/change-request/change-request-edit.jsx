@@ -81,8 +81,8 @@ function ChplChangeRequestEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
   const [changeRequest, setChangeRequest] = useState(props.changeRequest);
-  const [changeRequestStatusTypes] = useState(props.changeRequestStatusTypes);
   const [details, setDetails] = useState(props.changeRequest.details);
+  const { changeRequestStatusTypes } = props;
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 

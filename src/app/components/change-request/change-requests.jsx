@@ -16,14 +16,21 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
 
 import theme from '../../themes/theme';
+import { getAngularService } from '../../services/angular-react-helper';
+import {
+  changeRequest as changeRequestProp,
+  changeRequestStatusType,
+} from '../../shared/prop-types';
+
 import {
   ChplAvatar,
   ChplEllipsis,
   ChplPagination,
   ChplSortableHeaders,
 } from '../util';
-import { getAngularService } from '../../services/angular-react-helper';
-import { changeRequest as changeRequestProp } from '../../shared/prop-types';
+
+import ChplChangeRequestEdit from './change-request-edit';
+import ChplChangeRequestView from './change-request-view';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -59,7 +66,10 @@ const sortComparator = (property) => {
 
 function ChplChangeRequests(props) {
   /* eslint-disable react/destructuring-assignment */
+  const [action, setAction] = useState('view');
+  const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
+  const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const DateUtil = getAngularService('DateUtil');
@@ -78,14 +88,30 @@ function ChplChangeRequests(props) {
       .sort(sortComparator('-receivedDate')));
   }, [props.changeRequests]); // eslint-disable-line react/destructuring-assignment
 
+  useEffect(() => {
+    setChangeRequestStatusTypes(props.changeRequestStatusTypes.data
+      .filter((item) => item.name !== 'Cancelled by Requester')
+    );
+  }, [props.changeRequestStatusTypes]); // eslint-disable-line react/destructuring-assignment
+
+  const handleDispatch = (action, data) => {
+    switch(action) {
+      case 'close':
+        setAction('view');
+        setChangeRequest(undefined);
+        break;
+      case 'edit':
+        setAction('edit');
+        break;
+        // no default
+    }
+    console.log({action, data});
+  };
+
   const handleTableSort = (event, property, orderDirection) => {
     setChangeRequests(changeRequests
       .map((item) => item)
       .sort(sortComparator(orderDirection + property)));
-  };
-
-  const handleAction = (action, data) => {
-    props.dispatch(action, data);
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, changeRequests.length - page * rowsPerPage);
@@ -98,61 +124,78 @@ function ChplChangeRequests(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <TableContainer className={classes.container} component={Paper}>
-        <Table
-          stickyHeader
-          aria-label="Change Requests table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
-            orderBy="receivedDate"
-            order="desc"
+      { changeRequest && action === 'view' &&
+        <ChplChangeRequestView
+          changeRequest={changeRequest}
+          dispatch={handleDispatch}
+        />
+      }
+      { changeRequest && action === 'edit' &&
+        <ChplChangeRequestEdit
+          changeRequest={changeRequest}
+          changeRequestStatusTypes={changeRequestStatusTypes}
+          dispatch={handleDispatch}
+        />
+      }
+      { !changeRequest &&
+        <>
+          <TableContainer className={classes.container} component={Paper}>
+            <Table
+              stickyHeader
+              aria-label="Change Requests table"
+            >
+              <ChplSortableHeaders
+                headers={headers}
+                onTableSort={handleTableSort}
+                orderBy="receivedDate"
+                order="desc"
+              />
+              <TableBody>
+                {changeRequests
+                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                 .map((item) => (
+                   <TableRow key={item.id}>
+                     <TableCell>
+                       <ChplAvatar
+                         className={classes.developerAvatar}
+                         text={item.developerName}
+                       />
+                       {item.developerName}</TableCell>
+                     <TableCell>{item.changeRequestTypeName}</TableCell>
+                     <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>
+                     <TableCell>{item.currentStatusName}</TableCell>
+                     <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                     <TableCell align="right">
+                       <Button
+                         onClick={() => setChangeRequest(item)}
+                         variant="contained"
+                         color="primary"
+                       >
+                         View
+                         {' '}
+                         <VisibilityIcon className={classes.iconSpacing} />
+                       </Button>
+                     </TableCell>
+                   </TableRow>
+                 ))}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 33 * emptyRows }}>
+                    <TableCell colSpan={headers.length} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <ChplPagination
+            count={changeRequests.length}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[2, 10, 50, 100, 250]}
+            setPage={setPage}
+            setRowsPerPage={setRowsPerPage}
           />
-          <TableBody>
-            {changeRequests
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <ChplAvatar
-                      className={classes.developerAvatar}
-                      text={item.developerName}
-                    />
-                  {item.developerName}</TableCell>
-                  <TableCell>{item.changeRequestTypeName}</TableCell>
-                  <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>
-                  <TableCell>{item.currentStatusName}</TableCell>
-                  <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
-                  <TableCell align="right">
-                    <Button
-                      onClick={() => handleAction('view', item)}
-                      variant="contained"
-                      color="primary"
-                    >
-                      View
-                      {' '}
-                      <VisibilityIcon className={classes.iconSpacing} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={headers.length} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <ChplPagination
-        count={changeRequests.length}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[2, 10, 50, 100, 250]}
-        setPage={setPage}
-        setRowsPerPage={setRowsPerPage}
-      />
+        </>
+      }
     </ThemeProvider>
   );
 }
@@ -161,5 +204,5 @@ export default ChplChangeRequests;
 
 ChplChangeRequests.propTypes = {
   changeRequests: arrayOf(changeRequestProp).isRequired,
-  dispatch: func.isRequired,
+  changeRequestStatusTypes: arrayOf(changeRequestStatusType).isRequired,
 };
