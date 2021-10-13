@@ -80,6 +80,7 @@ export const ChangeRequestsComponent = {
           break;
         case 'view':
           this.activeChangeRequest = data;
+          this.$log.info(this.activeChangeRequest);
           break;
           // no default
       }

@@ -6,7 +6,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TablePagination,
   TableRow,
   ThemeProvider,
   Typography,
@@ -17,11 +16,14 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
 
 import theme from '../../themes/theme';
-import { ChplEllipsis, ChplSortableHeaders } from '../util';
+import {
+  ChplAvatar,
+  ChplEllipsis,
+  ChplPagination,
+  ChplSortableHeaders,
+} from '../util';
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
-
-import { ChplAvatar } from '../util';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -80,15 +82,6 @@ function ChplChangeRequests(props) {
     setChangeRequests(changeRequests
       .map((item) => item)
       .sort(sortComparator(orderDirection + property)));
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   const handleAction = (action, data) => {
@@ -152,14 +145,13 @@ function ChplChangeRequests(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 50, 100, 250]}
-        component="div"
+      <ChplPagination
         count={changeRequests.length}
-        rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[2, 10, 50, 100, 250]}
+        setPage={setPage}
+        setRowsPerPage={setRowsPerPage}
       />
     </ThemeProvider>
   );
