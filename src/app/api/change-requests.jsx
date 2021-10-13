@@ -13,7 +13,7 @@ const useFetchChangeRequests = () => {
 const useFetchChangeRequestStatusTypes = () => {
   const axios = useAxios();
   return useQuery(['change-request-status-types'], async () => {
-    const response = await axios.get('change-request-status-types');
+    const response = await axios.get('data/change-request-status-types');
     return response.data;
   });
 };
