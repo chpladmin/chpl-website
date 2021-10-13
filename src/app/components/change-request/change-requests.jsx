@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Paper,
@@ -24,6 +24,7 @@ import {
   ChplPagination,
   ChplSortableHeaders,
 } from '../util';
+import { UserContext } from '../../shared/contexts';
 
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
@@ -36,16 +37,6 @@ const useStyles = makeStyles(() => ({
     marginLeft: '4px',
   },
 }));
-
-/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const headers = [
-  { property: 'developerName', text: 'Developer', sortable: true },
-  { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
-  { property: 'receivedDate', text: 'Creation Date', sortable: true },
-  { property: 'currentStatusName', text: 'Request Status', sortable: true },
-  { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
-  { property: 'actions', text: 'Actions', invisible: true, sortable: false },
-];
 
 const sortComparator = (property) => {
   let sortOrder = 1;
@@ -62,14 +53,30 @@ const sortComparator = (property) => {
 
 function ChplChangeRequests() {
   const DateUtil = getAngularService('DateUtil');
+  const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
-  const [comparator, setComparator] = useState('-receivedDate');
+  const [comparator, setComparator] = useState('currentStatusChangeDate');
   const [mode, setMode] = useState('view');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const changeRequestQuery = useFetchChangeRequests();
   const changeRequestStatusTypesQuery = useFetchChangeRequestStatusTypes();
   const classes = useStyles();
+
+  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
+  const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
+    { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
+    { property: 'currentStatusName', text: 'Request Status', sortable: true },
+    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
+    { property: 'actions', text: 'Actions', invisible: true, sortable: false },
+  ] : [
+    { property: 'developerName', text: 'Developer', sortable: true },
+    { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
+    { property: 'receivedDate', text: 'Creation Date', sortable: true },
+    { property: 'currentStatusName', text: 'Request Status', sortable: true },
+    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
+    { property: 'actions', text: 'Actions', invisible: true, sortable: false },
+  ];
 
   const getChangeRequests = () => {
     if (!changeRequestQuery.isSuccess) { return []; }
@@ -86,8 +93,7 @@ function ChplChangeRequests() {
 
   const getChangeRequestStatusTypes = () => {
     if (!changeRequestStatusTypesQuery.isSuccess) { return []; }
-    return changeRequestStatusTypesQuery.data
-      .filter((item) => item.name !== 'Cancelled by Requester');
+    return changeRequestStatusTypesQuery.data;
   };
 
   const handleDispatch = (action) => {
@@ -119,79 +125,83 @@ function ChplChangeRequests() {
     <ThemeProvider theme={theme}>
       { changeRequest && mode === 'view'
         && (
-        <ChplChangeRequestView
-          changeRequest={changeRequest}
-          dispatch={handleDispatch}
-        />
+          <ChplChangeRequestView
+            changeRequest={changeRequest}
+            dispatch={handleDispatch}
+          />
         )}
       { changeRequest && mode === 'edit'
         && (
-        <ChplChangeRequestEdit
-          changeRequest={changeRequest}
-          changeRequestStatusTypes={getChangeRequestStatusTypes()}
-          dispatch={handleDispatch}
-        />
+          <ChplChangeRequestEdit
+            changeRequest={changeRequest}
+            changeRequestStatusTypes={getChangeRequestStatusTypes()}
+            dispatch={handleDispatch}
+          />
         )}
       { !changeRequest
         && (
-        <>
-          <TableContainer className={classes.container} component={Paper}>
-            <Table
-              stickyHeader
-              aria-label="Change Requests table"
-            >
-              <ChplSortableHeaders
-                headers={headers}
-                onTableSort={handleTableSort}
-                orderBy="receivedDate"
-                order="desc"
-              />
-              <TableBody>
-                {getChangeRequests()
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>
-                        <ChplAvatar
-                          className={classes.developerAvatar}
-                          text={item.developerName}
-                        />
-                        {item.developerName}
-                      </TableCell>
-                      <TableCell>{item.changeRequestTypeName}</TableCell>
-                      <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>
-                      <TableCell>{item.currentStatusName}</TableCell>
-                      <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
-                      <TableCell align="right">
-                        <Button
-                          onClick={() => setChangeRequest(item)}
-                          variant="contained"
-                          color="primary"
-                        >
-                          View
-                          {' '}
-                          <VisibilityIcon className={classes.iconSpacing} />
-                        </Button>
-                      </TableCell>
+          <>
+            <TableContainer className={classes.container} component={Paper}>
+              <Table
+                stickyHeader
+                aria-label="Change Requests table"
+              >
+                <ChplSortableHeaders
+                  headers={headers}
+                  onTableSort={handleTableSort}
+                  orderBy="currentStatusChangeDate"
+                  order="asc"
+                />
+                <TableBody>
+                  {getChangeRequests()
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((item) => (
+                      <TableRow key={item.id}>
+                        { !hasAnyRole(['ROLE_DEVELOPER'])
+                         && (
+                         <TableCell>
+                           <ChplAvatar
+                             className={classes.developerAvatar}
+                             text={item.developerName}
+                           />
+                           {item.developerName}
+                         </TableCell>
+                         )}
+                        <TableCell>{item.changeRequestTypeName}</TableCell>
+                        { !hasAnyRole(['ROLE_DEVELOPER'])
+                         && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
+                        <TableCell>{item.currentStatusName}</TableCell>
+                        <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                        <TableCell align="right">
+                          <Button
+                            onClick={() => setChangeRequest(item)}
+                            variant="contained"
+                            color="primary"
+                          >
+                            View
+                            {' '}
+                            <VisibilityIcon className={classes.iconSpacing} />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  {emptyRows > 0 && false && (
+                    <TableRow style={{ height: 33 * emptyRows }}>
+                      <TableCell colSpan={headers.length} />
                     </TableRow>
-                  ))}
-                {emptyRows > 0 && false && (
-                <TableRow style={{ height: 33 * emptyRows }}>
-                  <TableCell colSpan={headers.length} />
-                </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <ChplPagination
-            count={getChangeRequests().length}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[2, 10, 50, 100, 250]}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
-          />
-        </>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <ChplPagination
+              count={getChangeRequests().length}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              rowsPerPageOptions={[2, 10, 50, 100, 250]}
+              setPage={setPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </>
         )}
     </ThemeProvider>
   );
