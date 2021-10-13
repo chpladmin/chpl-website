@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -16,10 +16,8 @@ const useStyles = makeStyles({
 });
 
 function ChplChangeRequestDetailsView(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [changeRequest, setChangeRequest] = useState(props.changeRequest);
+  const { changeRequest } = props;
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   return (
     <div className={classes.container}>

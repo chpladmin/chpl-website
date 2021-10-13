@@ -8,10 +8,9 @@ import {
   TableContainer,
   TableRow,
   ThemeProvider,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
+import { arrayOf } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
 
@@ -21,10 +20,8 @@ import {
   changeRequest as changeRequestProp,
   changeRequestStatusType,
 } from '../../shared/prop-types';
-
 import {
   ChplAvatar,
-  ChplEllipsis,
   ChplPagination,
   ChplSortableHeaders,
 } from '../util';
@@ -66,10 +63,10 @@ const sortComparator = (property) => {
 
 function ChplChangeRequests(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [action, setAction] = useState('view');
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
+  const [mode, setMode] = useState('view');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const DateUtil = getAngularService('DateUtil');
@@ -90,22 +87,21 @@ function ChplChangeRequests(props) {
 
   useEffect(() => {
     setChangeRequestStatusTypes(props.changeRequestStatusTypes.data
-      .filter((item) => item.name !== 'Cancelled by Requester')
-    );
+      .filter((item) => item.name !== 'Cancelled by Requester'));
   }, [props.changeRequestStatusTypes]); // eslint-disable-line react/destructuring-assignment
 
   const handleDispatch = (action, data) => {
-    switch(action) {
+    switch (action) {
       case 'close':
-        setAction('view');
+        setMode('view');
         setChangeRequest(undefined);
         break;
       case 'edit':
-        setAction('edit');
+        setMode('edit');
         break;
         // no default
     }
-    console.log({action, data});
+    console.log({ action, data });
   };
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -124,20 +120,23 @@ function ChplChangeRequests(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      { changeRequest && action === 'view' &&
+      { changeRequest && mode === 'view'
+        && (
         <ChplChangeRequestView
           changeRequest={changeRequest}
           dispatch={handleDispatch}
         />
-      }
-      { changeRequest && action === 'edit' &&
+        )}
+      { changeRequest && mode === 'edit'
+        && (
         <ChplChangeRequestEdit
           changeRequest={changeRequest}
           changeRequestStatusTypes={changeRequestStatusTypes}
           dispatch={handleDispatch}
         />
-      }
-      { !changeRequest &&
+        )}
+      { !changeRequest
+        && (
         <>
           <TableContainer className={classes.container} component={Paper}>
             <Table
@@ -152,36 +151,37 @@ function ChplChangeRequests(props) {
               />
               <TableBody>
                 {changeRequests
-                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                 .map((item) => (
-                   <TableRow key={item.id}>
-                     <TableCell>
-                       <ChplAvatar
-                         className={classes.developerAvatar}
-                         text={item.developerName}
-                       />
-                       {item.developerName}</TableCell>
-                     <TableCell>{item.changeRequestTypeName}</TableCell>
-                     <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>
-                     <TableCell>{item.currentStatusName}</TableCell>
-                     <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
-                     <TableCell align="right">
-                       <Button
-                         onClick={() => setChangeRequest(item)}
-                         variant="contained"
-                         color="primary"
-                       >
-                         View
-                         {' '}
-                         <VisibilityIcon className={classes.iconSpacing} />
-                       </Button>
-                     </TableCell>
-                   </TableRow>
-                 ))}
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <ChplAvatar
+                          className={classes.developerAvatar}
+                          text={item.developerName}
+                        />
+                        {item.developerName}
+                      </TableCell>
+                      <TableCell>{item.changeRequestTypeName}</TableCell>
+                      <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>
+                      <TableCell>{item.currentStatusName}</TableCell>
+                      <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                      <TableCell align="right">
+                        <Button
+                          onClick={() => setChangeRequest(item)}
+                          variant="contained"
+                          color="primary"
+                        >
+                          View
+                          {' '}
+                          <VisibilityIcon className={classes.iconSpacing} />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: 33 * emptyRows }}>
-                    <TableCell colSpan={headers.length} />
-                  </TableRow>
+                <TableRow style={{ height: 33 * emptyRows }}>
+                  <TableCell colSpan={headers.length} />
+                </TableRow>
                 )}
               </TableBody>
             </Table>
@@ -195,7 +195,7 @@ function ChplChangeRequests(props) {
             setRowsPerPage={setRowsPerPage}
           />
         </>
-      }
+        )}
     </ThemeProvider>
   );
 }

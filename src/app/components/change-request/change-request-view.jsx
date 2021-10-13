@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
   Card,
@@ -12,7 +12,6 @@ import Moment from 'react-moment';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
-
 import { ChplAvatar } from '../util';
 
 import ChplChangeRequestHistory from './change-request-history';
@@ -98,11 +97,9 @@ const getChangeRequestDetails = (cr) => {
 };
 
 function ChplChangeRequestView(props) {
-  /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
-  const [changeRequest, setChangeRequest] = useState(props.changeRequest);
+  const { changeRequest } = props;
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   return (
     <div>
@@ -113,16 +110,19 @@ function ChplChangeRequestView(props) {
             text={changeRequest.developer.name}
           />
           <div className={classes.subProductCardHeaderContainer}>
-            <Typography variant='h5'>{changeRequest.changeRequestType.name}</Typography>
+            <Typography variant="h5">{changeRequest.changeRequestType.name}</Typography>
             <div className={classes.versionProductCardHeaderContainer}>
-              <Typography variant='subtitle2'>Developer:</Typography>
-              <Typography variant='body1'>{changeRequest.developer.name}</Typography>
-              <Typography variant='subtitle2'>Creation Date:</Typography>
-              <Typography variant='body1'>{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>|
-              <Typography variant='subtitle2'>Request Status:</Typography>
-              <Typography variant='body1'>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>|
-              <Typography variant='subtitle2'>Time Since Last Status Change:</Typography>
-              <Typography variant='body1'><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>|
+              <Typography variant="subtitle2">Developer:</Typography>
+              <Typography variant="body1">{changeRequest.developer.name}</Typography>
+              <Typography variant="subtitle2">Creation Date:</Typography>
+              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+              |
+              <Typography variant="subtitle2">Request Status:</Typography>
+              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+              |
+              <Typography variant="subtitle2">Time Since Last Status Change:</Typography>
+              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
+              |
             </div>
           </div>
         </div>
@@ -132,10 +132,11 @@ function ChplChangeRequestView(props) {
           <div className={classes.widgetProductContainer}>
             <div>
               <Button
-                color='secondary'
-                variant='contained'
+                color="secondary"
+                variant="contained"
                 fullWidth
-                onClick={() => props.dispatch('edit')}>
+                onClick={() => props.dispatch('edit')}
+              >
                 Edit Change Request
               </Button>
             </div>

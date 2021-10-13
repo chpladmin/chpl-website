@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   makeStyles,
 } from '@material-ui/core';
@@ -24,11 +24,8 @@ const validationSchema = yup.object({
 });
 
 function ChplChangeRequestWebsiteEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [changeRequest, setChangeRequest] = useState(props.changeRequest);
+  const { changeRequest } = props;
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
   let formik;
 
   const handleChange = (...args) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -44,11 +44,8 @@ const validationSchema = yup.object({
 });
 
 function ChplChangeRequestDetailsEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [changeRequest, setChangeRequest] = useState(props.changeRequest);
+  const { changeRequest } = props;
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
   let formik;
 
   const handleChange = (...args) => {
@@ -225,4 +222,5 @@ export default ChplChangeRequestDetailsEdit;
 
 ChplChangeRequestDetailsEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
+  dispatch: func.isRequired,
 };
