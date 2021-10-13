@@ -20,6 +20,9 @@ import {
   changeRequest as changeRequestProp,
   changeRequestStatusType,
 } from '../../shared/prop-types';
+
+import { useFetchChangeRequests } from '../../api/change-requests';
+
 import {
   ChplAvatar,
   ChplPagination,
@@ -61,20 +64,9 @@ const sortComparator = (property) => {
   };
 };
 
-function ChplChangeRequests(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [changeRequest, setChangeRequest] = useState(undefined);
-  const [changeRequests, setChangeRequests] = useState([]);
-  const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
-  const [mode, setMode] = useState('view');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const DateUtil = getAngularService('DateUtil');
-  const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
-  useEffect(() => {
-    setChangeRequests(props.changeRequests
+const getChangeRequests = (query) => {
+  if (!query.isSuccess) { return []; }
+  return query.data
       .map((item) => ({
         ...item,
         developerName: item.developer.name,
@@ -82,8 +74,26 @@ function ChplChangeRequests(props) {
         currentStatusName: item.currentStatus.changeRequestStatusType.name,
         currentStatusChangeDate: item.currentStatus.statusChangeDate,
       }))
-      .sort(sortComparator('-receivedDate')));
-  }, [props.changeRequests]); // eslint-disable-line react/destructuring-assignment
+      .sort(sortComparator('-receivedDate'));
+};
+
+
+function ChplChangeRequests(props) {
+  /* eslint-disable react/destructuring-assignment */
+  const DateUtil = getAngularService('DateUtil');
+  const [changeRequest, setChangeRequest] = useState(undefined);
+  const [changeRequests, setChangeRequests] = useState([]);
+  const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
+  const [mode, setMode] = useState('view');
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const changeRequestQuery = useFetchChangeRequests();
+  const classes = useStyles();
+  /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setChangeRequests(getChangeRequests(changeRequestQuery));
+  }, []);
 
   useEffect(() => {
     setChangeRequestStatusTypes(props.changeRequestStatusTypes.data
@@ -203,6 +213,9 @@ function ChplChangeRequests(props) {
 export default ChplChangeRequests;
 
 ChplChangeRequests.propTypes = {
-  changeRequests: arrayOf(changeRequestProp).isRequired,
-  changeRequestStatusTypes: arrayOf(changeRequestStatusType).isRequired,
+  changeRequestStatusTypes: arrayOf(changeRequestStatusType),
+};
+
+ChplChangeRequests.defaultProps = {
+  changeRequestStatusTypes: {data: []},
 };
