@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { UserWrapper } from '../login';
-import ChplChangeRequests from './change-requests';
 import ApiWrapper from '../../api/api-wrapper';
+
+import ChplChangeRequests from './change-requests';
 
 function ChplChangeRequestsWrapper() {
   return (
