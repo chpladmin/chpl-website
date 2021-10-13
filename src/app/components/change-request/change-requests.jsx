@@ -18,6 +18,7 @@ import { getAngularService } from '../../services/angular-react-helper';
 import {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
+  usePutChangeRequest,
 } from '../../api/change-requests';
 import {
   ChplAvatar,
@@ -61,6 +62,7 @@ function ChplChangeRequests() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const changeRequestQuery = useFetchChangeRequests();
   const changeRequestStatusTypesQuery = useFetchChangeRequestStatusTypes();
+  const updateChangeRequest = usePutChangeRequest();
   const classes = useStyles();
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -93,10 +95,10 @@ function ChplChangeRequests() {
 
   const getChangeRequestStatusTypes = () => {
     if (!changeRequestStatusTypesQuery.isSuccess) { return []; }
-    return changeRequestStatusTypesQuery.data;
+    return changeRequestStatusTypesQuery.data.data;
   };
 
-  const handleDispatch = (action) => {
+  const handleDispatch = (action, data) => {
     switch (action) {
       case 'close':
         setMode('view');
@@ -104,6 +106,9 @@ function ChplChangeRequests() {
         break;
       case 'edit':
         setMode('edit');
+        break;
+      case 'save':
+        save(data);
         break;
         // no default
     }
@@ -114,6 +119,13 @@ function ChplChangeRequests() {
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, getChangeRequests().length - page * rowsPerPage);
+
+  const save = (data) => {
+    console.log('saving', changeRequest, data);
+    updateChangeRequest.mutate(data);
+    //setMode('view');
+    //setChangeRequest(undefined);
+  };
 
   if (getChangeRequests().length === 0) {
     return (

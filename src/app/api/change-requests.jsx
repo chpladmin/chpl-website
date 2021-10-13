@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import { useAxios } from './axios';
 
@@ -18,7 +18,15 @@ const useFetchChangeRequestStatusTypes = () => {
   });
 };
 
+const usePutChangeRequest = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => {
+    return await axios.put('change-requests', data);
+  });
+};
+
 export {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
+  usePutChangeRequest,
 };

@@ -138,7 +138,15 @@ function ChplChangeRequestEdit(props) {
       changeRequestStatus: '',
     },
     onSubmit: () => {
-      console.log('saving', formik.values, details);
+      const updated = {
+        ...changeRequest,
+        currentStatus: {
+          comment: formik.values.comment,
+          changeRequestStatus: formik.values.changeRequestStatus,
+        },
+        details: details,
+      };
+      props.dispatch('save', updated);
     },
     validationSchema,
     validateOnChange: false,
