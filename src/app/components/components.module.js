@@ -3,7 +3,7 @@ import { reactToAngularComponent } from '../services/angular-react-helper';
 
 import { ChplApiKeyConfirm } from './api-key';
 import { ChplAttestationChangeRequest } from './attestation';
-import { ChplChangeRequests } from './change-request';
+import { ChplChangeRequestsWrapper } from './change-request';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
@@ -50,7 +50,7 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
-  .component('chplChangeRequestsBridge', reactToAngularComponent(ChplChangeRequests))
+  .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
   .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))

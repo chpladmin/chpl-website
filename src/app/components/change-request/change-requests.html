@@ -1,8 +1,5 @@
 <span ng-show="!$ctrl.activeChangeRequest">
-  <chpl-change-requests-bridge
-    change-requests="$ctrl.changeRequests"
-    change-request-status-types="$ctrl.changeRequestStatusTypes"
-    ></chpl-change-requests-bridge>
+  <chpl-change-requests-wrapper-bridge></chpl-change-requests-wrapper-bridge>
   <div class="panel panel-default" st-table="$ctrl.displayedChangeRequests" st-safe-src="$ctrl.changeRequests" st-set-filter="customFilter">
     <div class="panel-heading change-requests__requests-header">
       <div><h2 class="panel-title">Tracking</h2></div>
