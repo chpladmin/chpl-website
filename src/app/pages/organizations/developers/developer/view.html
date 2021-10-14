@@ -41,7 +41,8 @@
     </div>
     <div class="col-md-8">
       <div ng-if="$ctrl.can('manageTracking')">
-        <chpl-change-requests-wrapper-bridge></chpl-change-requests-wrapper-bridge>
+        <chpl-change-requests-wrapper-bridge
+          scope="$ctrl.$scope"></chpl-change-requests-wrapper-bridge>
         <chpl-change-requests change-requests="$ctrl.changeRequests"
                               change-request-types="$ctrl.changeRequestTypes"
                               change-request-status-types="$ctrl.changeRequestStatusTypes"

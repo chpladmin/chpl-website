@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
+import { object } from 'prop-types';
 
 import theme from '../../themes/theme';
 import { getAngularService } from '../../services/angular-react-helper';
@@ -52,8 +53,10 @@ const sortComparator = (property) => {
   };
 };
 
-function ChplChangeRequests() {
+function ChplChangeRequests(props) {
+  const $scope = props.scope;
   const DateUtil = getAngularService('DateUtil');
+  const toaster = getAngularService('toaster');
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [comparator, setComparator] = useState('currentStatusChangeDate');
@@ -122,9 +125,22 @@ function ChplChangeRequests() {
 
   const save = (data) => {
     console.log('saving', changeRequest, data);
-    updateChangeRequest.mutate(data);
-    //setMode('view');
-    //setChangeRequest(undefined);
+    updateChangeRequest.mutate(data, {
+      onSuccess: () => {
+        setMode('view');
+        setChangeRequest(undefined);
+      },
+      onError: (error) => {
+        console.log('error', error.response.data.error);
+        toaster.pop({
+          type: 'error',
+          title: 'Error',
+          body: error.response.data.error,
+        });
+        console.log($scope);
+        $scope.$apply();
+      },
+    });
   };
 
   if (getChangeRequests().length === 0) {
@@ -222,4 +238,5 @@ function ChplChangeRequests() {
 export default ChplChangeRequests;
 
 ChplChangeRequests.propTypes = {
+  scope: object,
 };

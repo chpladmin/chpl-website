@@ -9,10 +9,11 @@ export const ChangeRequestsComponent = {
     takeAction: '&',
   },
   controller: class ChangeRequestsComponent {
-    constructor ($filter, $log, authService) {
+    constructor ($filter, $log, $scope, authService) {
       'ngInject';
       this.$filter = $filter;
       this.$log = $log;
+      this.$scope = $scope;
       this.hasAnyRole = authService.hasAnyRole;
       this.backup = {};
       this.filename = 'Reports_' + $filter('date')(new Date(), 'yyyy-MM-dd_HH-mm-ss') + '.csv';

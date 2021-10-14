@@ -1,15 +1,17 @@
 import React from 'react';
+import { object } from 'prop-types';
 
 import { UserWrapper } from '../login';
 import ApiWrapper from '../../api/api-wrapper';
 
 import ChplChangeRequests from './change-requests';
 
-function ChplChangeRequestsWrapper() {
+function ChplChangeRequestsWrapper(props) {
+  const scope = props.scope;
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplChangeRequests />
+        <ChplChangeRequests scope={scope}/>
       </ApiWrapper>
     </UserWrapper>
   );
@@ -18,4 +20,5 @@ function ChplChangeRequestsWrapper() {
 export default ChplChangeRequestsWrapper;
 
 ChplChangeRequestsWrapper.propTypes = {
+  scope: object,
 };
