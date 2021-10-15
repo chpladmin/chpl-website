@@ -155,7 +155,6 @@ function ChplLogin(props) {
   };
 
   const toastWhenUsernameUsed = (enteredUsername, loggedInUser) => {
-    console.log(loggedInUser);
     if (enteredUsername !== loggedInUser.email) {
       toaster.pop({
         type: 'Warn',
