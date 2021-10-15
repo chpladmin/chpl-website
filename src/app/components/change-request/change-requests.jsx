@@ -189,7 +189,6 @@ function ChplChangeRequests(props) {
                          && (
                          <TableCell>
                            <ChplAvatar
-                             className={classes.developerAvatar}
                              text={item.developerName}
                            />
                            {item.developerName}
