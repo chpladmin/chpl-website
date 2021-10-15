@@ -706,17 +706,16 @@ const ReportsListingsComponent = {
       if (!curr.optionalStandards) {
         curr.optionalStandards = [];
       }
-      const addedOptionalStandards = curr.optionalStandards
-        .filter((currOS) => prev.optionalStandards.filter((prevOS) => currOS.citation === prevOS.citation).length === 0);
-      addedOptionalStandards.forEach((addedOS) => {
-        ret.push(`<li>Optional Standard "${addedOS.citation}: ${addedOS.description}" was added</li>`);
-      });
-      const removedOptionalStandards = prev.optionalStandards
-        .filter((prevOS) => curr.optionalStandards.filter((currOS) => prevOS.citation === currOS.citation).length === 0);
-      removedOptionalStandards.forEach((removedOS) => {
-        ret.push(`<li>Optional Standard "${removedOS.citation}: ${removedOS.description}" was removed</li>`);
-      });
-
+      curr.optionalStandards.filter((currOS) => prev.optionalStandards.filter((prevOS) => currOS.citation === prevOS.citation).length === 0)
+        .forEach((addedOS) => {
+          ret.push(`<li>Optional Standard "${addedOS.citation}: ${addedOS.description}" was added</li>`);
+        }
+        );
+      prev.optionalStandards.filter((prevOS) => curr.optionalStandards.filter((currOS) => prevOS.citation === currOS.citation).length === 0)
+        .forEach((removedOS) => {
+          ret.push(`<li>Optional Standard "${removedOS.citation}: ${removedOS.description}" was removed</li>`);
+        }
+        );
       return ret;
     }
 
