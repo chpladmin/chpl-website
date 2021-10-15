@@ -30,8 +30,8 @@ const validationSchema = yup.object({
   comment: yup.string()
     .test('conditionallyRequired',
       'Reason for Change is required',
-      (value, context) => (!!value || (context.parent.changeRequestStatus?.name !== 'Rejected' && context.parent.changeRequestStatus?.name !== 'Pending Developer Action'))),
-  changeRequestStatus: yup.object()
+      (value, context) => (!!value || (context.parent.changeRequestStatusType?.name !== 'Rejected' && context.parent.changeRequestStatusType?.name !== 'Pending Developer Action'))),
+  changeRequestStatusType: yup.object()
     .required('Change Request status is required'),
 });
 
@@ -135,14 +135,14 @@ function ChplChangeRequestEdit(props) {
   formik = useFormik({
     initialValues: {
       comment: '',
-      changeRequestStatus: '',
+      changeRequestStatusType: '',
     },
     onSubmit: () => {
       const updated = {
         ...changeRequest,
         currentStatus: {
           comment: formik.values.comment,
-          changeRequestStatus: formik.values.changeRequestStatus,
+          changeRequestStatusType: formik.values.changeRequestStatusType,
         },
         details: details,
       };
@@ -176,15 +176,15 @@ function ChplChangeRequestEdit(props) {
         {changeRequest.currentStatus.changeRequestStatusType.name}
         <ChplTextField
           select
-          id="change-request-status"
-          name="changeRequestStatus"
+          id="change-request-status-type"
+          name="changeRequestStatusType"
           label="Change Status"
           required
-          value={formik.values.changeRequestStatus}
+          value={formik.values.changeRequestStatusType}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.changeRequestStatus && !!formik.errors.changeRequestStatus}
-          helperText={formik.touched.changeRequestStatus && formik.errors.changeRequestStatus}
+          error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
+          helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
         >
           { changeRequestStatusTypes.map((item) => (
             <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
