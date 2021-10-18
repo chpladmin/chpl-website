@@ -129,11 +129,21 @@ function ChplChangeRequests(props) {
         setChangeRequest(undefined);
       },
       onError: (error) => {
-        toaster.pop({
-          type: 'error',
-          title: 'Error',
-          body: error.response.data.error,
-        });
+        if (error.response.data.error.startsWith('Email could not be sent to')) {
+          toaster.pop({
+            type: 'info',
+            title: 'Notice',
+            body: `${error.response.data.error} However, the changes have been applied`,
+          });
+          setMode('view');
+          setChangeRequest(undefined);
+        } else {
+          toaster.pop({
+            type: 'error',
+            title: 'Error',
+            body: error.response.data.error,
+          });
+        }
         $scope.$apply();
       },
     });

@@ -26,20 +26,19 @@ const usePutChangeRequest = () => {
       return await axios.put('change-requests', data)
         .then((response) => response)
         .catch((error) => {
-          console.log('error-put', error, error.response);
           throw error;
         });
     } catch (error) {
-      console.log('caught error', error, error.response.data.error);
       throw error;
     }
   }, {
     onSuccess: () => {
-      console.log('invalidate');
       queryClient.invalidateQueries('change-requests');
     },
     onError: (error, variables, context) => {
-      console.log('error-api', error.response.data);
+      if (error.response.data.error.startsWith('Email could not be sent to')) {
+        queryClient.invalidateQueries('change-requests');
+      };
       return error;
     },
   });
