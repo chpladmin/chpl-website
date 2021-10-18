@@ -37,16 +37,8 @@
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
   </div>
   <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
-  <div class="form-group">
-    <label for="cp-cert-date">Certification Date</label>
-    <div class="input-group">
-      <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.listing.certDate" is-open="$ctrl.listing.certDatePicker" close-text="Close" id="cp-cert-date" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" ng-change="$ctrl.update()" required>
-      <span class="input-group-btn">
-        <button type="button" class="btn btn-secondary btn-sm" ng-click="$ctrl.listing.certDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
-      </span>
-    </div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.required">Field is required</div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpCertDate.$touched) && $ctrl.form.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
+  <div>
+    <strong>Certification Date</strong> {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}
   </div>
   <div class="manage-list__container">
     <div class="data-label">Certification Status</div>
@@ -81,7 +73,7 @@
       <label class="sr-only" for="certification-event-add-new-date">Add new Certification Status Date</label>
       <div class="input-group">
         <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['certificationEvents'].statusDateObject"
-               is-open="statusEvent.statusDatePicker" close-text="Close" ng-model-options="{ timezone: 'UTC' }"
+               is-open="statusEvent.statusDatePicker" close-text="Close"
                id="certification-event-add-new-date" name="certificationEventAddNewDate" required>
         <span class="input-group-btn">
           <button type="button" class="btn btn-secondary btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>

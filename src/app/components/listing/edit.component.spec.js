@@ -134,15 +134,6 @@
       });
     });
 
-    it('should know which statuses should be disabled', () => {
-      ctrl.workType = 'edit';
-      expect(ctrl.disabledStatus('Pending')).toBe(true);
-      expect(ctrl.disabledStatus('Active')).toBe(false);
-      ctrl.workType = 'confirm';
-      expect(ctrl.disabledStatus('Pending')).toBe(false);
-      expect(ctrl.disabledStatus('Active')).toBe(true);
-    });
-
     xit('should attach the model for the select boxes', () => {
       ctrl.listing.practiceType = { id: 1 };
       ctrl.listing.classificationType = { id: 1 };
@@ -206,12 +197,6 @@
         ];
         expect(ctrl.improperFirstStatus()).toBe(true);
         ctrl.listing.certificationEvents[1].statusDateObject = new Date('1/1/2017');
-        expect(ctrl.improperFirstStatus()).toBe(false);
-      });
-
-      it('should not error on improper first status when confirming', () => {
-        ctrl.workType = 'confirm';
-        ctrl.listing.certificationEvents = [];
         expect(ctrl.improperFirstStatus()).toBe(false);
       });
 

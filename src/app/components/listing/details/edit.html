@@ -196,7 +196,7 @@
               <div class="data-element sr-only"><label for="ics-add-new">Add new ICS Source</label></div>
               <select class="form-control" ng-model="$ctrl.newItem['ics'].chplProductNumber"
                       id="ics-add-new" name="icsAddNew" required
-                      ng-options="option.chplProductNumber as (option.chplProductNumber + ' (' + (option.certificationDate | date : 'mediumDate' : 'UTC') + ')') for option in $ctrl.filterListEditItems('ics', $ctrl.relatedListings) | orderBy:'certificationDate'">
+                      ng-options="option.chplProductNumber as (option.chplProductNumber + ' (' + ($ctrl.DateUtil.getCertificationDay(option)) + ')') for option in $ctrl.filterListEditItems('ics', $ctrl.relatedListings) | orderBy:'certificationDate'">
               </select>
             </div>
             <div class="manage-list__item--start" ng-if="$ctrl.addingItem['ics'] && ($ctrl.creatingItem['ics'] || $ctrl.filterListEditItems('ics', $ctrl.relatedListings).length === 0)">

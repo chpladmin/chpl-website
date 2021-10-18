@@ -132,7 +132,7 @@
                 </div>
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Certification&nbsp;Date</div>
-                  <div class="product__listing-element">{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
+                  <div class="product__listing-element">{{ $ctrl.DateUtil.getCertificationDay(listing) }}</div>
                 </div>
               </div>
             </div>
