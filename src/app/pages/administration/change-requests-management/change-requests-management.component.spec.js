@@ -5,7 +5,9 @@
     let $compile, $log, ctrl, el, scope;
 
     beforeEach(() => {
-      angular.mock.module('chpl.administration');
+      angular.mock.module('chpl.administration', ($provide) => {
+        $provide.factory('chplChangeRequestsWrapperBridgeDirective', () => ({}));
+      });
 
       inject((_$compile_, _$log_, $rootScope) => {
         $compile = _$compile_;
