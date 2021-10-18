@@ -1,10 +1,12 @@
 (() => {
   /** @ngInject */
-  function InspectController($log, $uibModal, $uibModalInstance, beta, developers, inspectingCp, networkService, resources, toaster, utilService) {
+  function InspectController($log, $uibModal, $uibModalInstance, DateUtil, beta, developers, inspectingCp, networkService, resources, toaster, utilService) {
     const vm = this;
     function activate() {
       vm.cp = angular.copy(inspectingCp);
       vm.stage = 'dev';
+
+      vm.DateUtil = DateUtil;
 
       vm.beta = beta;
       vm.developers = developers;

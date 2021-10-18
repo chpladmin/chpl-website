@@ -1,6 +1,30 @@
 import compliance from '../smart-table/filters/compliance';
 
-export const ProductsComponent = {
+const getListingCounts = (product) => {
+  const counts = product.versions
+    .filter((v) => v.version !== 'All')
+    .reduce((acc, v) => {
+      acc.active += v.listings
+        .filter((l) => l.displayed)
+        .filter((l) => l.certificationStatus === 'Active')
+        .length;
+      acc.total += v.listings
+        .filter((l) => l.displayed)
+        .length;
+      return acc;
+    }, { active: 0, total: 0 });
+  let ret = '';
+  if (counts.active > 0) {
+    ret += `${counts.active} active / `;
+  }
+  ret += `${counts.total} listing`;
+  if (counts.total !== 1) {
+    ret += 's';
+  }
+  return ret;
+};
+
+const ProductsComponent = {
   templateUrl: 'chpl.components/products/products.html',
   bindings: {
     onCancel: '&?',
@@ -11,12 +35,14 @@ export const ProductsComponent = {
     searchOptions: '<',
   },
   controller: class ProductsComponent {
-    constructor ($log, $q, $state, $uibModal, authService, networkService, utilService) {
+    constructor($log, $q, $state, $uibModal, DateUtil, authService, networkService, utilService) {
       'ngInject';
+
       this.$log = $log;
       this.$q = $q;
       this.$state = $state;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.filter = {
         items: [],
         surveillance: {
@@ -33,8 +59,8 @@ export const ProductsComponent = {
       this.networkService = networkService;
       this.statusFont = utilService.statusFont;
       this.defaultRefine = {
-        'Active': true,
-        'Retired': false,
+        Active: true,
+        Retired: false,
         'Suspended by ONC-ACB': true,
         'Withdrawn by Developer': true,
         'Withdrawn by Developer Under Surveillance/Review': true,
@@ -44,17 +70,17 @@ export const ProductsComponent = {
       };
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.products) {
         this.products = changes.products.currentValue
-          .map(p => {
-            let all = {
+          .map((p) => {
+            const all = {
               version: 'All',
               listings: [],
             };
             p.versions
-              .forEach(v => {
-                v.listings = v.listings.map(l => {
+              .forEach((v) => {
+                v.listings = v.listings.map((l) => {
                   l.compliance = JSON.stringify({
                     complianceCount: l.surveillanceCount,
                     openNonConformityCount: l.openSurveillanceNonConformityCount,
@@ -72,23 +98,23 @@ export const ProductsComponent = {
             if (a.hasActiveListings !== b.hasActiveListings) {
               return a.hasActiveListings ? -1 : 1;
             }
-            return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+            return a.name < b.name ? -1 : 1;
           });
       }
       if (changes.searchOptions && changes.searchOptions.currentValue && changes.searchOptions.currentValue.certificationStatuses) {
         this.statusItems = changes.searchOptions.currentValue.certificationStatuses
-          .map(cs => {
-            let status = {
+          .map((cs) => {
+            const status = {
               value: cs.name,
               selected: this.defaultRefine[cs.name],
             };
             return status;
           })
-          .sort((a, b) => (a.value < b.value ? -1 : a.value > b.value ? 1 : 0));
+          .sort((a, b) => (a.value < b.value ? -1 : 1));
       }
       if (this.products && this.productId) {
         this.activeProduct = this.products
-          .filter(p => p.productId === parseInt(this.productId, 10))[0];
+          .filter((p) => p.productId === parseInt(this.productId, 10))[0];
       }
       if (this.products && this.statusItems) {
         this.backupStatusItems = angular.copy(this.statusItems);
@@ -97,12 +123,12 @@ export const ProductsComponent = {
       }
     }
 
-    cancel () {
+    cancel() {
       this.activeProduct = undefined;
       this.onCancel();
     }
 
-    clearFilters () {
+    clearFilters() {
       this.statusItems = angular.copy(this.backupStatusItems);
       this.filter.items = [...this.statusItems];
       this.filter.surveillance = {
@@ -117,17 +143,17 @@ export const ProductsComponent = {
       this.doFilter();
     }
 
-    doFilter () {
+    doFilter() {
       this.displayedProducts = this.products
-        .map(p => {
+        .map((p) => {
           p.openSurveillance = 0;
           p.totalSurveillance = 0;
           p.hasActiveListings = false;
           p.availableVersions = p.versions
-            .map(v => {
+            .map((v) => {
               if (v.listings) {
-                v.listings.forEach(l => {
-                  l.displayed = this.filter.items.find(i => i.value === l.certificationStatus).selected
+                v.listings.forEach((l) => {
+                  l.displayed = this.filter.items.find((i) => i.value === l.certificationStatus).selected
                     && (!this.filter.surveillance.compliance || compliance(l.compliance, this.filter.surveillance));
                   if (v.version !== 'All' && l.displayed) {
                     p.openSurveillance += l.openSurveillanceCount;
@@ -138,69 +164,45 @@ export const ProductsComponent = {
               }
               return v;
             })
-            .filter(v => v.listings.filter(l => l.displayed).length > 0);
-          p.listingCounts = this.getListingCounts(p);
+            .filter((v) => v.listings.filter((l) => l.displayed).length > 0);
+          p.listingCounts = getListingCounts(p);
           return p;
         })
-        .filter(p => p.listingCounts !== '0 listings')
+        .filter((p) => p.listingCounts !== '0 listings')
         .sort((a, b) => {
           if (a.hasActiveListings !== b.hasActiveListings) {
             return a.hasActiveListings ? -1 : 1;
           }
-          return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+          return a.name < b.name ? -1 : 1;
         });
     }
 
-    editProduct (product) {
+    editProduct(product) {
       this.$state.go('organizations.developers.developer.product.edit', {
         productId: product.productId,
       });
     }
 
-    editVersion (product) {
+    editVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.edit', {
         productId: product.productId,
         versionId: product.activeVersion.versionId,
       });
     }
 
-    getListingCounts (product) {
-      let counts = product.versions
-        .filter(v => v.version !== 'All')
-        .reduce((acc, v) => {
-          acc.active += v.listings
-            .filter(l => l.displayed)
-            .filter(l => l.certificationStatus === 'Active')
-            .length;
-          acc.total += v.listings
-            .filter(l => l.displayed)
-            .length;
-          return acc;
-        }, {active: 0, total: 0});
-      let ret = '';
-      if (counts.active > 0) {
-        ret += counts.active + ' active / ';
-      }
-      ret += counts.total + ' listing';
-      if (counts.total !== 1) {
-        ret += 's';
-      }
-      return ret;
-    }
-
-    handleEdit (action, data) {
+    handleEdit(action, data) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'edit':
-        this.save(data);
-        break;
-          //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'edit':
+          this.save(data);
+          break;
+          // no default
       }
     }
 
-    handleFilter (filter) {
+    handleFilter(filter) {
       if (filter.surveillance) {
         this.filter.surveillance = angular.copy(filter.surveillance);
       } else {
@@ -209,42 +211,42 @@ export const ProductsComponent = {
       this.doFilter();
     }
 
-    isFiltered () {
+    isFiltered() {
       return this.filter.surveillance.compliance
         || this.backupStatusItems.reduce((acc, item) => acc || (this.filter.items.filter((i) => i.value === item.value)[0].selected !== item.selected), false);
     }
 
-    mergeProduct (product) {
+    mergeProduct(product) {
       this.$state.go('organizations.developers.developer.product.merge', {
         productId: product.productId,
       });
     }
 
-    mergeVersion (product) {
+    mergeVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.merge', {
         productId: product.productId,
         versionId: product.activeVersion.versionId,
       });
     }
 
-    save (data) {
-      this.onEdit({data: data});
+    save(data) {
+      this.onEdit({ data });
     }
 
-    splitProduct (product) {
+    splitProduct(product) {
       this.$state.go('organizations.developers.developer.product.split', {
         productId: product.productId,
       });
     }
 
-    splitVersion (product) {
+    splitVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.split', {
         productId: product.productId,
         versionId: product.activeVersion.versionId,
       });
     }
 
-    viewCertificationStatusLegend () {
+    viewCertificationStatusLegend() {
       this.viewCertificationStatusLegendInstance = this.$uibModal.open({
         templateUrl: 'chpl.components/certification-status/certification-status.html',
         controller: 'CertificationStatusController',
@@ -254,14 +256,11 @@ export const ProductsComponent = {
         keyboard: false,
         size: 'lg',
       });
-      this.viewCertificationStatusLegendInstance.result.then(() => {
-        angular.noop;
-      }, () => {
-        angular.noop;
-      });
     }
   },
 };
 
 angular.module('chpl.components')
   .component('chplProducts', ProductsComponent);
+
+export default ProductsComponent;

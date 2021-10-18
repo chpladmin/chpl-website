@@ -50,7 +50,7 @@
               </div>
               <div>
                 <div class="data-label listing__enhanced-label">Certification Date</div>
-                <div class="read-only-data">{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}</div>
+                <div class="read-only-data">{{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}</div>
               </div>
               <div class="listing__developer-information">
                 <div class="data-label listing__enhanced-label">Developer</div>
