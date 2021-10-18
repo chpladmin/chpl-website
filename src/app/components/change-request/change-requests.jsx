@@ -13,6 +13,7 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Moment from 'react-moment';
 import { object } from 'prop-types';
+import { ExportToCsv } from 'export-to-csv';
 
 import theme from '../../themes/theme';
 import { getAngularService } from '../../services/angular-react-helper';
@@ -30,6 +31,17 @@ import { UserContext } from '../../shared/contexts';
 
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
+
+const csvOptions = {
+  showLabels: true,
+  headers: [
+    {headerName: 'Developer', objectKey: 'developerName'},
+    {headerName: 'Request Type', objectKey: 'changeRequestTypeName'},
+    {headerName: 'Creation Date', objectKey: 'friendlyReceivedDate'},
+    {headerName: 'Request Status', objectKey: 'currentStatusName'},
+    {headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate'},
+  ],
+};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -55,6 +67,7 @@ const sortComparator = (property) => {
 
 function ChplChangeRequests(props) {
   const $scope = props.scope;
+  const csvExporter = new ExportToCsv(csvOptions);
   const DateUtil = getAngularService('DateUtil');
   const toaster = getAngularService('toaster');
   const { hasAnyRole } = useContext(UserContext);
@@ -92,6 +105,8 @@ function ChplChangeRequests(props) {
         changeRequestTypeName: item.changeRequestType.name,
         currentStatusName: item.currentStatus.changeRequestStatusType.name,
         currentStatusChangeDate: item.currentStatus.statusChangeDate,
+        friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
+        friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
       }))
       .sort(sortComparator(comparator));
   };
@@ -124,20 +139,17 @@ function ChplChangeRequests(props) {
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, getChangeRequests().length - page * rowsPerPage);
 
   const save = (data) => {
-    console.log('saving', changeRequest, data);
     updateChangeRequest.mutate(data, {
       onSuccess: () => {
         setMode('view');
         setChangeRequest(undefined);
       },
       onError: (error) => {
-        console.log('error', error.response.data.error);
         toaster.pop({
           type: 'error',
           title: 'Error',
           body: error.response.data.error,
         });
-        console.log($scope);
         $scope.$apply();
       },
     });
@@ -228,6 +240,9 @@ function ChplChangeRequests(props) {
               setPage={setPage}
               setRowsPerPage={setRowsPerPage}
             />
+            <Button
+              onClick={() => csvExporter.generateCsv(getChangeRequests())}
+            >Download</Button>
           </>
         )}
     </ThemeProvider>

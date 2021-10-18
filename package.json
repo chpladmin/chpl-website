@@ -60,6 +60,7 @@
     "axios": "^0.21.1",
     "bootstrap-sass": "3.4.1",
     "cytoscape": "2.6",
+    "export-to-csv": "andlar/export-to-csv",
     "font-awesome": "^4.7.0",
     "formik": "^2.2.6",
     "jspdf": "^2.3.1",
