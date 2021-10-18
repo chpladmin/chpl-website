@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
 import { object } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
@@ -49,6 +50,15 @@ const useStyles = makeStyles(() => ({
   },
   iconSpacing: {
     marginLeft: '4px',
+  },
+  tableActionContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    paddingBottom: '16px',
+    paddingTop: '16px',
+    gap: '8px',
   },
 }));
 
@@ -151,7 +161,7 @@ function ChplChangeRequests(props) {
       case 'save':
         save(data);
         break;
-        // no default
+      // no default
     }
   };
 
@@ -169,14 +179,14 @@ function ChplChangeRequests(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      { changeRequest && mode === 'view'
+      {changeRequest && mode === 'view'
         && (
           <ChplChangeRequestView
             changeRequest={changeRequest}
             dispatch={handleDispatch}
           />
         )}
-      { changeRequest && mode === 'edit'
+      {changeRequest && mode === 'edit'
         && (
           <ChplChangeRequestEdit
             changeRequest={changeRequest}
@@ -184,9 +194,18 @@ function ChplChangeRequests(props) {
             dispatch={handleDispatch}
           />
         )}
-      { !changeRequest
+      {!changeRequest
         && (
           <>
+            <TableContainer>
+              <div className={classes.tableActionContainer} component={Paper}>
+              <div>
+                <Button color="secondary" variant="contained" onClick={() => csvExporter.generateCsv(getChangeRequests())}>Download Request
+                  <GetAppIcon className={classes.iconSpacing} />
+                </Button>
+              </div>
+              </div>
+            </TableContainer>
             <TableContainer className={classes.container} component={Paper}>
               <Table
                 stickyHeader
@@ -203,18 +222,18 @@ function ChplChangeRequests(props) {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((item) => (
                       <TableRow key={item.id}>
-                        { !hasAnyRole(['ROLE_DEVELOPER'])
-                         && (
-                         <TableCell>
-                           <ChplAvatar
-                             text={item.developerName}
-                           />
-                           {item.developerName}
-                         </TableCell>
-                         )}
+                        {!hasAnyRole(['ROLE_DEVELOPER'])
+                          && (
+                            <TableCell>
+                              <ChplAvatar
+                                text={item.developerName}
+                              />
+                              {item.developerName}
+                            </TableCell>
+                          )}
                         <TableCell>{item.changeRequestTypeName}</TableCell>
-                        { !hasAnyRole(['ROLE_DEVELOPER'])
-                         && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
+                        {!hasAnyRole(['ROLE_DEVELOPER'])
+                          && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
                         <TableCell>{item.currentStatusName}</TableCell>
                         <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
                         <TableCell align="right">
@@ -246,11 +265,6 @@ function ChplChangeRequests(props) {
               setPage={setPage}
               setRowsPerPage={setRowsPerPage}
             />
-            <Button
-              onClick={() => csvExporter.generateCsv(getChangeRequests())}
-            >
-              Download
-            </Button>
           </>
         )}
     </ThemeProvider>
