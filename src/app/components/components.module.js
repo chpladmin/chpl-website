@@ -2,8 +2,8 @@ import IndexWrapper from '../index-wrapper';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 
 import { ChplApiKeyConfirm } from './api-key';
-import { ChplAttestationChangeRequest } from './attestation';
 import { ChplChangeRequestsWrapper } from './change-request';
+import ChplAttestationChangeRequest from './attestation';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';

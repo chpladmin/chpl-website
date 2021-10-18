@@ -40,7 +40,7 @@
       </tr>
       <tr>
         <th scope="row">Certification Date</th>
-        <td>{{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+        <td>{{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}</td>
       </tr>
     </tbody>
   </table>

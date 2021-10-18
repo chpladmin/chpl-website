@@ -6,10 +6,11 @@ const InspectListingComponent = {
     resources: '<',
   },
   controller: class InspectListingController {
-    constructor($log) {
+    constructor($log, DateUtil) {
       'ngInject';
 
       this.$log = $log;
+      this.DateUtil = DateUtil;
     }
 
     $onChanges(changes) {

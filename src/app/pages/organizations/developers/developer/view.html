@@ -35,8 +35,10 @@
           </div>
         </div>
       </div>
-      <div ng-if="$ctrl.displayAttestations()">
-        <chpl-attestation-change-request-bridge on-save-request="::$ctrl.saveRequest"></chpl-attestation-change-request-bridge>
+      <div ng-if="$ctrl.can('displayAttestations')">
+        <chpl-attestation-change-request-bridge developer="$ctrl.developer"
+                                                dispatch="::$ctrl.handleAttestationDispatch"
+                                                ></chpl-attestation-change-request-bridge>
       </div>
     </div>
     <div class="col-md-8">

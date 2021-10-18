@@ -1,13 +1,15 @@
 export const CompareComponent = {
   templateUrl: 'chpl.compare/compare.html',
   controller: class CompareComponent {
-    constructor ($analytics, $filter, $log, $scope, $stateParams, networkService, utilService) {
+    constructor($analytics, $filter, $log, $scope, $stateParams, DateUtil, networkService, utilService) {
       'ngInject';
+
       this.$analytics = $analytics;
       this.$filter = $filter;
       this.$log = $log;
       this.$scope = $scope;
       this.$stateParams = $stateParams;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.certificationStatus = utilService.certificationStatus;
       this.sortCerts = utilService.sortCert;
@@ -18,18 +20,18 @@ export const CompareComponent = {
       this.allCqms = {};
     }
 
-    $onInit () {
+    $onInit() {
       if (this.$stateParams.compareIds) {
         this.compareIds = this.$stateParams.compareIds.split('&');
         this.parse();
       }
     }
 
-    parse () {
-      let that = this;
-      this.compareIds.forEach(id => {
+    parse() {
+      const that = this;
+      this.compareIds.forEach((id) => {
         this.networkService.getListing(id)
-          .then(listing => {
+          .then((listing) => {
             that.updateListingList(listing);
             that.updateCerts(listing);
             that.updateCqms(listing);
@@ -41,8 +43,9 @@ export const CompareComponent = {
       });
     }
 
-    fillInBlanks () {
-      var cert, i, k, listing, needToAddBlank;
+    fillInBlanks() {
+      let cert; let i; let k; let listing; let
+        needToAddBlank;
       for (i = 0; i < this.listingList.length; i++) {
         listing = this.listingList[i];
         for (cert in this.allCerts) {
@@ -60,7 +63,7 @@ export const CompareComponent = {
             });
           }
         }
-        for (var cqm in this.allCqms) {
+        for (const cqm in this.allCqms) {
           needToAddBlank = true;
           for (k = 0; k < this.allCqms[cqm].values.length; k++) {
             if (this.allCqms[cqm].values[k].listingId === listing.id) {
@@ -78,37 +81,37 @@ export const CompareComponent = {
       }
     }
 
-    isShowing (elem) {
+    isShowing(elem) {
       return this.openCert === elem;
     }
 
-    sortAllCerts () {
+    sortAllCerts() {
       this.sortedCerts = [];
-      for (var cert in this.allCerts) {
+      for (const cert in this.allCerts) {
         this.sortedCerts.push(cert);
       }
-      this.sortedCerts = this.$filter('orderBy')(this.sortedCerts,this.sortCerts);
+      this.sortedCerts = this.$filter('orderBy')(this.sortedCerts, this.sortCerts);
     }
 
-    sortAllCqms () {
+    sortAllCqms() {
       this.sortedCqms = [];
-      for (var cqm in this.allCqms) {
+      for (const cqm in this.allCqms) {
         this.sortedCqms.push(cqm);
       }
       this.sortedCqms = this.$filter('orderBy')(this.sortedCqms, this.sortCqms);
     }
 
-    toggle (elem) {
+    toggle(elem) {
       if (!this.isShowing(elem)) {
-        let event = (elem === 'certifications' ? 'View Criteria Details' : 'View CQM Details');
+        const event = (elem === 'certifications' ? 'View Criteria Details' : 'View CQM Details');
         this.$analytics.eventTrack(event, { category: 'Compare Page' });
       }
       this.openCert = this.openCert === elem ? '' : elem;
     }
 
-    updateCerts (listing) {
-      listing.certificationResults.forEach(cert => {
-        let key = cert.number + ': ' + cert.title;
+    updateCerts(listing) {
+      listing.certificationResults.forEach((cert) => {
+        const key = `${cert.number}: ${cert.title}`;
         if (!this.allCerts[key]) {
           this.allCerts[key] = {
             number: cert.criterion.number,
@@ -127,14 +130,14 @@ export const CompareComponent = {
       });
     }
 
-    updateCqms (listing) {
-      listing.cqmResults.forEach(cqm => {
+    updateCqms(listing) {
+      listing.cqmResults.forEach((cqm) => {
         if (cqm.cmsId) {
           cqm.displayId = cqm.cmsId;
         } else {
-          cqm.displayId = 'NQF-' + cqm.nqfNumber;
+          cqm.displayId = `NQF-${cqm.nqfNumber}`;
         }
-        let key = cqm.displayId;
+        const key = cqm.displayId;
         if (!this.allCqms[key]) {
           this.allCqms[key] = {
             displayId: cqm.displayId,
@@ -153,7 +156,7 @@ export const CompareComponent = {
       });
     }
 
-    updateListingList (listing) {
+    updateListingList(listing) {
       this.hasNon2015 = this.hasNon2015 || listing.certificationEdition.name !== '2015';
       this.listingList.push({
         id: listing.id,

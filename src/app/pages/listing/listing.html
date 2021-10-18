@@ -18,7 +18,7 @@
           </div>
           <div class="col-sm-8 text-right">
             <p>
-              Certification Date: {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }}
+              Certification Date: {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}
               |
               Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
               <span feature-flag="promoting-interoperability">
