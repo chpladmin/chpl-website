@@ -113,7 +113,13 @@ function ChplChangeRequests(props) {
 
   const getChangeRequestStatusTypes = () => {
     if (!changeRequestStatusTypesQuery.isSuccess) { return []; }
-    return changeRequestStatusTypesQuery.data.data;
+    return changeRequestStatusTypesQuery.data.data.filter((type) => {
+      if (hasAnyRole(['ROLE_DEVELOPER'])) {
+        return type.name === 'Pending ONC-ACB Action' || type.name === 'Cancelled by Requester';
+      }
+      return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
+    })
+      .sort((a, b) => a.name < b.name ? -1: 1);
   };
 
   const handleDispatch = (action, data) => {

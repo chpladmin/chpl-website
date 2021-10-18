@@ -131,14 +131,19 @@ function ChplChangeRequestView(props) {
           { getChangeRequestDetails(changeRequest) }
           <div className={classes.widgetProductContainer}>
             <div>
-              <Button
-                color="secondary"
-                variant="contained"
-                fullWidth
-                onClick={() => props.dispatch('edit')}
-              >
-                Edit Change Request
-              </Button>
+              { changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
+                && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
+                && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
+                &&
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  fullWidth
+                  onClick={() => props.dispatch('edit')}
+                >
+                  Edit Change Request
+                </Button>
+              }
             </div>
             <div>
               <Button

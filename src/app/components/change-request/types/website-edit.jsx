@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   makeStyles,
 } from '@material-ui/core';
@@ -8,6 +8,7 @@ import * as yup from 'yup';
 
 import { ChplTextField } from '../../util';
 import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
+import { UserContext } from '../../../shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -24,6 +25,7 @@ const validationSchema = yup.object({
 });
 
 function ChplChangeRequestWebsiteEdit(props) {
+  const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
   let formik;
@@ -62,6 +64,7 @@ function ChplChangeRequestWebsiteEdit(props) {
           name="website"
           label="Website"
           required
+          disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
           value={formik.values.website}
           onChange={handleChange}
           onBlur={formik.handleBlur}

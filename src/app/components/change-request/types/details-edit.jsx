@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Card,
   CardContent,
@@ -12,6 +12,7 @@ import * as yup from 'yup';
 
 import { ChplTextField } from '../../util';
 import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
+import { UserContext } from '../../../shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -44,6 +45,7 @@ const validationSchema = yup.object({
 });
 
 function ChplChangeRequestDetailsEdit(props) {
+  const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
   let formik;
@@ -97,6 +99,7 @@ function ChplChangeRequestDetailsEdit(props) {
                   id="self-developer"
                   name="selfDeveloper"
                   color="primary"
+                  disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
                   checked={formik.values.selfDeveloper}
                   onChange={handleChange}
                 />
@@ -108,6 +111,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="fullName"
               label="Full Name"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.fullName}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -118,6 +122,7 @@ function ChplChangeRequestDetailsEdit(props) {
               id="title"
               name="title"
               label="Title"
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.title}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -129,6 +134,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="email"
               label="Email"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.email}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -140,6 +146,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="phoneNumber"
               label="Phone"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.phoneNumber}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -151,6 +158,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="line1"
               label="Address"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.line1}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -161,6 +169,7 @@ function ChplChangeRequestDetailsEdit(props) {
               id="line2"
               name="line2"
               label="Line 2"
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.line2}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -172,6 +181,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="city"
               label="City"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.city}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -183,6 +193,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="state"
               label="State"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.state}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -194,6 +205,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="zipcode"
               label="Zip"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.zipcode}
               onChange={handleChange}
               onBlur={formik.handleBlur}
@@ -205,6 +217,7 @@ function ChplChangeRequestDetailsEdit(props) {
               name="country"
               label="Country"
               required
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
               value={formik.values.country}
               onChange={handleChange}
               onBlur={formik.handleBlur}

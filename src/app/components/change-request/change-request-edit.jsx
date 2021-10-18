@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   MenuItem,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
@@ -13,6 +14,7 @@ import {
 } from '../../shared/prop-types';
 import ChplActionBar from '../action-bar';
 import { ChplTextField } from '../util';
+import { UserContext } from '../../shared/contexts';
 
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
 import ChplChangeRequestDetailsEdit from './types/details-edit';
@@ -69,6 +71,7 @@ const getChangeRequestDetails = (cr, handleDispatch) => {
 
 function ChplChangeRequestEdit(props) {
   /* eslint-disable react/destructuring-assignment */
+  const { hasAnyRole } = useContext(UserContext);
   const [details, setDetails] = useState(props.changeRequest.details);
   const {
     changeRequest,
@@ -78,6 +81,17 @@ function ChplChangeRequestEdit(props) {
   /* eslint-enable react/destructuring-assignment */
 
   let formik;
+
+  const getInitialStatusState = () => {
+    if (hasAnyRole(['ROLE_DEVELOPER'])) {
+      if (changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action') {
+        return changeRequestStatusTypes.filter((type) => type.name === 'Pending ONC-ACB Action')[0];
+      } else {
+        return changeRequestStatusTypes.filter((type) => type.name === 'Pending Developer Action')[0];
+      }
+    }
+    return '';
+  }
 
   const handleUpdate = (data) => {
     switch (changeRequest.changeRequestType.name) {
@@ -132,10 +146,19 @@ function ChplChangeRequestEdit(props) {
     }
   };
 
+  const isReasonDisabled = () => {
+    return hasAnyRole(['ROLE_DEVELOPER']) && changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action';
+  }
+
+  const isReasonRequired = () => {
+    return formik.values.changeRequestStatusType?.name === 'Rejected'
+      || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
+  }
+
   formik = useFormik({
     initialValues: {
       comment: '',
-      changeRequestStatusType: '',
+      changeRequestStatusType: getInitialStatusState(),
     },
     onSubmit: () => {
       const updated = {
@@ -163,33 +186,52 @@ function ChplChangeRequestEdit(props) {
           id="comment"
           name="comment"
           label="Reason for Change"
-          required
           multiline
+          required={isReasonRequired()}
+          disabled={isReasonDisabled()}
           value={formik.values.comment}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.comment && !!formik.errors.comment}
           helperText={formik.touched.comment && formik.errors.comment}
         />
-        Current status:
-        {' '}
-        {changeRequest.currentStatus.changeRequestStatusType.name}
-        <ChplTextField
-          select
-          id="change-request-status-type"
-          name="changeRequestStatusType"
-          label="Change Status"
-          required
-          value={formik.values.changeRequestStatusType}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
-          helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
-        >
-          { changeRequestStatusTypes.map((item) => (
-            <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-          ))}
-        </ChplTextField>
+        <Typography>
+          Current status:
+          {' '}
+          {changeRequest.currentStatus.changeRequestStatusType.name}
+        </Typography>
+
+        { hasAnyRole(['ROLE_DEVELOPER']) ?
+          <Typography>
+            { changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action' &&
+              <>
+                Status will be set to "Pending ONC-ACB Action"
+              </>
+            }
+            { changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action' &&
+              <>
+                No status change will occur
+              </>
+            }
+          </Typography>
+          :
+          <ChplTextField
+            select
+            id="change-request-status-type"
+            name="changeRequestStatusType"
+            label="Change Status"
+            required
+            value={formik.values.changeRequestStatusType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
+            helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
+          >
+            { changeRequestStatusTypes.map((item) => (
+              <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+            ))}
+          </ChplTextField>
+        }
       </div>
       <ChplActionBar
         dispatch={handleDispatch}
