@@ -43,12 +43,6 @@
       <div ng-if="$ctrl.can('manageTracking')">
         <chpl-change-requests-wrapper-bridge
           scope="$ctrl.$scope"></chpl-change-requests-wrapper-bridge>
-        <chpl-change-requests change-requests="$ctrl.changeRequests"
-                              change-request-types="$ctrl.changeRequestTypes"
-                              change-request-status-types="$ctrl.changeRequestStatusTypes"
-                              developer="$ctrl.developer"
-                              take-action="$ctrl.takeCrAction(action, data)"
-                              ></chpl-change-requests>
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
