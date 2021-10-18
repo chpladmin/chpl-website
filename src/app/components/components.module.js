@@ -33,7 +33,6 @@ import { UserWrapper } from './login';
 
 angular
   .module('chpl.components', [
-    'angularMoment',
     'angulartics',
     'chpl.services',
     'feature-flags',
