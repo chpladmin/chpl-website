@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 11.22.0
+_18 October 2021_
+
+### Features
+* Disallow editing of Certification Date directly
+
+### User Interface Updates
+* Update text describing API Documentation
+
+### Bug Fixes
+* Give user an error message when saving Developer with bad URL
+* Require at least one Certification Status history item on edit
+
+### Flagged Features
+* Require user to attest before submitting Attestations
+
+---
+
 ## Version 11.21.0
 _5 October 2021_
 
