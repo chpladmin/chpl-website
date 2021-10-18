@@ -7,11 +7,11 @@ import ApiWrapper from '../../api/api-wrapper';
 import ChplChangeRequests from './change-requests';
 
 function ChplChangeRequestsWrapper(props) {
-  const scope = props.scope;
+  const { scope } = props;
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplChangeRequests scope={scope}/>
+        <ChplChangeRequests scope={scope} />
       </ApiWrapper>
     </UserWrapper>
   );
@@ -20,5 +20,5 @@ function ChplChangeRequestsWrapper(props) {
 export default ChplChangeRequestsWrapper;
 
 ChplChangeRequestsWrapper.propTypes = {
-  scope: object,
+  scope: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
