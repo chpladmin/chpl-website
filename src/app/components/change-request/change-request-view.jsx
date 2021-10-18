@@ -113,7 +113,7 @@ function ChplChangeRequestView(props) {
     && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
     && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
     && changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action';
-  }
+  };
 
   return (
     <div>

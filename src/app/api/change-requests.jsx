@@ -20,25 +20,19 @@ const useFetchChangeRequestStatusTypes = () => {
 
 const usePutChangeRequest = () => {
   const axios = useAxios();
-  const queryClient = useQueryClient()
-  return useMutation(async (data) => {
-    try {
-      return await axios.put('change-requests', data)
-        .then((response) => response)
-        .catch((error) => {
-          throw error;
-        });
-    } catch (error) {
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('change-requests', data)
+    .then((response) => response)
+    .catch((error) => {
       throw error;
-    }
-  }, {
+    }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
     },
-    onError: (error, variables, context) => {
+    onError: (error) => {
       if (error.response.data.error.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
-      };
+      }
       return error;
     },
   });
