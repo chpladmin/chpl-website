@@ -25,6 +25,7 @@ const DeveloperViewComponent = {
       this.roles = ['ROLE_DEVELOPER'];
       this.users = [];
       this.closeConfirmation = this.closeConfirmation.bind(this);
+      this.handleAttestationDispatch = this.handleAttestationDispatch.bind(this);
     }
 
     $onInit() {
@@ -47,7 +48,6 @@ const DeveloperViewComponent = {
           that.directReviews = results;
         }, () => { that.drStatus = 'error'; });
       this.takeUserAction = this.takeUserAction.bind(this);
-      this.saveRequest = this.saveRequest.bind(this);
     }
 
     $onChanges(changes) {
@@ -66,6 +66,7 @@ const DeveloperViewComponent = {
 
     can(action) {
       if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
+      if (action === 'displayAttestations') { return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations') && this.hasAnyRole(['ROLE_DEVELOPER']); }
       if (action === 'manageTracking' && !this.hasAnyRole(['ROLE_DEVELOPER'])) { return false; } // only DEVELOPER can manage tracking
       if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
@@ -119,7 +120,7 @@ const DeveloperViewComponent = {
       }
     }
 
-    saveRequest(data) {
+    handleAttestationDispatch(data) {
       const that = this;
       const request = {
         developer: this.developer,
@@ -215,10 +216,6 @@ const DeveloperViewComponent = {
         // no default
       }
       this.$scope.$apply();
-    }
-
-    displayAttestations() {
-      return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations') && this.hasAnyRole(['ROLE_DEVELOPER']) && this.canManageDeveloper(this.developer);
     }
   },
 };

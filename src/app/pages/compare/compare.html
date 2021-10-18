@@ -54,7 +54,7 @@
           </tr>
           <tr>
             <th scope="row">Certification Date</th>
-            <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ listing.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ $ctrl.DateUtil.getCertificationDay(listing) }}</td>
           </tr>
           <tr>
             <th scope="row">CHPL Product Number</th>

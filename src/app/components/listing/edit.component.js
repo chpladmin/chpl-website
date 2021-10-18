@@ -44,7 +44,6 @@ const ListingEditComponent = {
     }
 
     prepareFields() {
-      this.listing.certDate = new Date(this.listing.certificationDate);
       if (this.listing.chplProductNumber.length > 12) {
         const idFields = this.listing.chplProductNumber.split('.');
         this.idFields = {
@@ -72,7 +71,7 @@ const ListingEditComponent = {
     }
 
     disabledStatus(name) {
-      return ((name === 'Pending' && this.workType === 'edit') || (name !== 'Pending' && this.workType === 'confirm'));
+      return (this.workType === 'confirm' && name !== 'Active');
     }
 
     generateErrorMessages() {
@@ -105,7 +104,7 @@ const ListingEditComponent = {
     }
 
     improperFirstStatus() {
-      return this.workType === 'confirm' ? false : this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject')[0].status.name !== 'Active';
+      return this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject')[0].status.name !== 'Active';
     }
 
     isValid() {
@@ -171,7 +170,6 @@ const ListingEditComponent = {
           this.idFields.ics}.${
           this.idFields.suffix}`;
       }
-      this.listing.certificationDate = this.listing.certDate.getTime();
       if (this.listing.rwtPlansCheckDateObject) {
         this.listing.rwtPlansCheckDate = this.DateUtil.timestampToString(this.listing.rwtPlansCheckDateObject.getTime(), 'yyyy-MM-dd');
       } else {

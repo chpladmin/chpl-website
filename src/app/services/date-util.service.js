@@ -2,14 +2,23 @@ import '../../../node_modules/@js-joda/timezone';
 import { Locale } from '../../../node_modules/@js-joda/locale_en-us';
 import * as jsJoda from '../../../node_modules/@js-joda/core';
 
-class DateUtil {
+const isLocalDate = (dateToTest) => {
+  try {
+    jsJoda.LocalDate.parse(dateToTest);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
 
+class DateUtil {
   constructor($filter, $log) {
     'ngInject';
+
     this.$filter = $filter;
     this.$log = $log;
 
-    this._ZONE_ID = jsJoda.ZoneId.of('America/New_York');
+    this.ZONE_ID = jsJoda.ZoneId.of('America/New_York');
 
     this.TimeOfDay = {
       BEGINNING_OF_DAY: 'min',
@@ -18,10 +27,14 @@ class DateUtil {
     };
   }
 
+  getCertificationDay(listing) {
+    return this.getDisplayDateFormat(listing.certificationDate);
+  }
+
   getDisplayDateFormat(date, fallback) {
     if (typeof (date) === 'number') {
       return this.$filter('date')(date, 'mediumDate', 'UTC');
-    } else if (typeof (date) === 'string' && this._isLocalDate(date)) {
+    } if (typeof (date) === 'string' && isLocalDate(date)) {
       return this.localDateToString(date, 'MMM d, y');
     }
     return fallback || 'N/A';
@@ -31,7 +44,7 @@ class DateUtil {
     let time;
     switch (arguments.length) {
       case 4:
-        time = this._localTimeFromTimeOfDay(hour);
+        time = this.localTimeFromTimeOfDay(hour);
         break;
       case 7:
         time = jsJoda.LocalTime.of(hour, minute, second, nano);
@@ -39,14 +52,14 @@ class DateUtil {
       default:
         time = jsJoda.LocalTime.MIN;
     }
-    return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), time, this._ZONE_ID).toInstant().toEpochMilli();
+    return jsJoda.ZonedDateTime.of3(jsJoda.LocalDate.of(year, month, day), time, this.ZONE_ID).toInstant().toEpochMilli();
   }
 
   updateTimePortionOfTimestamp(timestamp, newHour, newMinute, newSecond, newNano) {
     let time;
     switch (arguments.length) {
       case 2:
-        time = this._localTimeFromTimeOfDay(newHour);
+        time = this.localTimeFromTimeOfDay(newHour);
         break;
       case 5:
         time = jsJoda.LocalTime.of(newHour, newMinute, newSecond, newNano);
@@ -54,33 +67,28 @@ class DateUtil {
       default:
         return jsJoda.LocalTime.MIN;
     }
-    return this._timestampToZonedDateTime(timestamp).with(time).toInstant().toEpochMilli();
+    return this.timestampToZonedDateTime(timestamp).with(time).toInstant().toEpochMilli();
   }
 
-  timestampToString(timestamp, format) {
-    format = format || 'MMM d, y h:mm:ss a z';
-    let formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
-    return this._timestampToZonedDateTime(timestamp).format(formatter);
+  timestampToString(timestamp, format = 'MMM d, y h:mm:ss a z') {
+    const formatter = jsJoda.DateTimeFormatter.ofPattern(format).withLocale(Locale.US);
+    return this.timestampToZonedDateTime(timestamp).format(formatter);
   }
 
   localDateToTimestamp(localDateString) {
     const localDate = jsJoda.LocalDate.parse(localDateString);
     const localTime = jsJoda.LocalTime.MIDNIGHT;
-    return jsJoda.ZonedDateTime.of3(localDate, localTime, this._ZONE_ID).toInstant().toEpochMilli();
+    return jsJoda.ZonedDateTime.of3(localDate, localTime, this.ZONE_ID).toInstant().toEpochMilli();
   }
 
-  localDateToString(localDateString, format) {
-    format = format || 'MM/dd/yyyy';
+  localDateToString(localDateString, format = 'MM/dd/yyyy') {
     if (localDateString) {
       return this.timestampToString(this.localDateToTimestamp(localDateString), format);
-    } else {
-      return null;
     }
+    return null;
   }
 
-  /////////////////////////////////////////////////////////////////////////////////////////////
-
-  _localTimeFromTimeOfDay(timeOfDay) {
+  localTimeFromTimeOfDay(timeOfDay) {
     switch (timeOfDay) {
       case this.TimeOfDay.BEGINNING_OF_DAY:
         return jsJoda.LocalTime.MIN;
@@ -93,17 +101,8 @@ class DateUtil {
     }
   }
 
-  _timestampToZonedDateTime(dateLong) {
-    return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), this._ZONE_ID);
-  }
-
-  _isLocalDate(dateToTest) {
-    try {
-      jsJoda.LocalDate.parse(dateToTest);
-      return true;
-    } catch (err) {
-      return false;
-    }
+  timestampToZonedDateTime(dateLong) {
+    return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), this.ZONE_ID);
   }
 }
 

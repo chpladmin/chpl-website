@@ -1,11 +1,13 @@
+import IndexWrapper from '../index-wrapper';
+import { reactToAngularComponent } from '../services/angular-react-helper';
+
 import { ChplApiKeyConfirm } from './api-key';
-import { ChplAttestationChangeRequest } from './attestation';
+import ChplAttestationChangeRequest from './attestation';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
 import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
-import IndexWrapper from '../index-wrapper';
 import {
   ChplComplaintAdd,
   ChplComplaintEdit,
@@ -27,7 +29,6 @@ import {
   ChplNonProdIndicator,
 } from './util';
 import { UserWrapper } from './login';
-import { reactToAngularComponent } from '../services/angular-react-helper';
 
 angular
   .module('chpl.components', [

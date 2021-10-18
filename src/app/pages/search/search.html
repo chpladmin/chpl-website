@@ -428,7 +428,7 @@
                   </td>
                   <td>{{ cp.product }}</td>
                   <td>{{ cp.version }}</td>
-                  <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC'}}</td>
+                  <td>{{ vm.DateUtil.getCertificationDay(cp) }}</td>
                   <td>{{ cp.chplProductNumber }}</td>
                   <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
                   <td>

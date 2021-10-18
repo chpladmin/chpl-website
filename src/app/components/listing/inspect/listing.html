@@ -13,7 +13,7 @@
       <div class="panel-body" ng-if="!$ctrl.isEditing">
         <span>
           <strong>ACB Certification Id:</strong> {{ $ctrl.listing.acbCertificationId }} <br />
-          <strong>Certification Date:</strong> {{ $ctrl.listing.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
+          <strong>Certification Date:</strong> {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }} <br />
           <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
           <strong>Certification Body:</strong> {{ $ctrl.listing.certifyingBody.name }} <br />
           <strong>Testing Lab<span ng-if="$ctrl.listing.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!$ctrl.listing.testingLabs || $ctrl.listing.testingLabs.length === 0">None<br /></span>
