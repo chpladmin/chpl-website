@@ -134,7 +134,7 @@ function ChplChangeRequestView(props) {
               { changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
                 && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
                 && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
-                &&
+                && (
                 <Button
                   color="secondary"
                   variant="contained"
@@ -143,7 +143,7 @@ function ChplChangeRequestView(props) {
                 >
                   Edit Change Request
                 </Button>
-              }
+                )}
             </div>
             <div>
               <Button

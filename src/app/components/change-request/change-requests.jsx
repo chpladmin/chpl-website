@@ -35,11 +35,11 @@ import ChplChangeRequestView from './change-request-view';
 const csvOptions = {
   showLabels: true,
   headers: [
-    {headerName: 'Developer', objectKey: 'developerName'},
-    {headerName: 'Request Type', objectKey: 'changeRequestTypeName'},
-    {headerName: 'Creation Date', objectKey: 'friendlyReceivedDate'},
-    {headerName: 'Request Status', objectKey: 'currentStatusName'},
-    {headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate'},
+    { headerName: 'Developer', objectKey: 'developerName' },
+    { headerName: 'Request Type', objectKey: 'changeRequestTypeName' },
+    { headerName: 'Creation Date', objectKey: 'friendlyReceivedDate' },
+    { headerName: 'Request Status', objectKey: 'currentStatusName' },
+    { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate' },
   ],
 };
 
@@ -66,7 +66,7 @@ const sortComparator = (property) => {
 };
 
 function ChplChangeRequests(props) {
-  const $scope = props.scope;
+  const $scope = props.scope; // eslint-disable-line react/destructuring-assignment
   const csvExporter = new ExportToCsv(csvOptions);
   const DateUtil = getAngularService('DateUtil');
   const toaster = getAngularService('toaster');
@@ -119,7 +119,24 @@ function ChplChangeRequests(props) {
       }
       return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
     })
-      .sort((a, b) => a.name < b.name ? -1: 1);
+      .sort((a, b) => (a.name < b.name ? -1 : 1));
+  };
+
+  const save = (data) => {
+    updateChangeRequest.mutate(data, {
+      onSuccess: () => {
+        setMode('view');
+        setChangeRequest(undefined);
+      },
+      onError: (error) => {
+        toaster.pop({
+          type: 'error',
+          title: 'Error',
+          body: error.response.data.error,
+        });
+        $scope.$apply();
+      },
+    });
   };
 
   const handleDispatch = (action, data) => {
@@ -143,23 +160,6 @@ function ChplChangeRequests(props) {
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, getChangeRequests().length - page * rowsPerPage);
-
-  const save = (data) => {
-    updateChangeRequest.mutate(data, {
-      onSuccess: () => {
-        setMode('view');
-        setChangeRequest(undefined);
-      },
-      onError: (error) => {
-        toaster.pop({
-          type: 'error',
-          title: 'Error',
-          body: error.response.data.error,
-        });
-        $scope.$apply();
-      },
-    });
-  };
 
   if (getChangeRequests().length === 0) {
     return (
@@ -248,7 +248,9 @@ function ChplChangeRequests(props) {
             />
             <Button
               onClick={() => csvExporter.generateCsv(getChangeRequests())}
-            >Download</Button>
+            >
+              Download
+            </Button>
           </>
         )}
     </ThemeProvider>
@@ -258,5 +260,5 @@ function ChplChangeRequests(props) {
 export default ChplChangeRequests;
 
 ChplChangeRequests.propTypes = {
-  scope: object,
+  scope: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
