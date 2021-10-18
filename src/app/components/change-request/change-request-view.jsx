@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   },
   versionProductCardHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: 'auto auto auto auto 1fr',
+    gridTemplateColumns: 'auto auto',
     gap: '8px',
     alignItems: 'center',
   },
@@ -64,6 +64,11 @@ const useStyles = makeStyles({
   activeStatus: {
     color: '#66926d',
     marginLeft: '4px',
+  },
+  cardContentContainer:{
+    gridTemplateColumns: '1fr auto',
+    display: 'grid',
+    gap: '8px',
   },
 });
 
@@ -110,51 +115,53 @@ function ChplChangeRequestView(props) {
             text={changeRequest.developer.name}
           />
           <div className={classes.subProductCardHeaderContainer}>
-            <Typography variant="h5">{changeRequest.changeRequestType.name}</Typography>
+            <Typography variant='h5'>{changeRequest.changeRequestType.name}</Typography>
             <div className={classes.versionProductCardHeaderContainer}>
-              <Typography variant="subtitle2">Developer:</Typography>
-              <Typography variant="body1">{changeRequest.developer.name}</Typography>
-              <Typography variant="subtitle2">Creation Date:</Typography>
-              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
-              |
-              <Typography variant="subtitle2">Request Status:</Typography>
-              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-              |
-              <Typography variant="subtitle2">Time Since Last Status Change:</Typography>
+              <Typography variant="subtitle2">Developer:
+              <Typography variant="body1">{changeRequest.developer.name}</Typography></Typography>
+              <Typography variant="subtitle2">Creation Date:
+              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography></Typography>
+              <Typography variant="subtitle2">Request Status:
+              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography></Typography>
+              <Typography variant="subtitle2">Time Since Last Status Change:
               <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
-              |
+              </Typography>
             </div>
           </div>
         </div>
         <Divider />
         <CardContent>
-          { getChangeRequestDetails(changeRequest) }
+          <div className={classes.cardContentContainer}>
+            <div>
+            {getChangeRequestDetails(changeRequest)}
+            </div>
           <div className={classes.widgetProductContainer}>
             <div>
-              { changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
+              {changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
                 && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
                 && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
                 && (
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  fullWidth
-                  onClick={() => props.dispatch('edit')}
-                >
-                  Edit Change Request
-                </Button>
+                  <Button
+                    fullWidth
+                    color="secondary"
+                    variant="contained"
+                    onClick={() => props.dispatch('edit')}
+                  >
+                    Edit Change Request
+                  </Button>
                 )}
             </div>
             <div>
               <Button
                 fullWidth
-                color="secondary"
+                color="default"
                 variant="contained"
                 onClick={() => props.dispatch('close')}
               >
                 Close
               </Button>
             </div>
+          </div>
           </div>
           <ChplChangeRequestHistory
             changeRequest={changeRequest}
