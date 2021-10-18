@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -13,6 +13,7 @@ import Moment from 'react-moment';
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
 import { ChplAvatar } from '../util';
+import { UserContext } from '../../shared/contexts';
 
 import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
@@ -98,8 +99,21 @@ const getChangeRequestDetails = (cr) => {
 
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
+  const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
+
+  const canEdit = () => {
+    if (hasAnyRole(['ROLE_DEVELOPER'])) {
+      return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
+      && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
+      && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester';
+    }
+    return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
+    && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
+    && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
+    && changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action';
+  }
 
   return (
     <div>
@@ -131,9 +145,7 @@ function ChplChangeRequestView(props) {
           { getChangeRequestDetails(changeRequest) }
           <div className={classes.widgetProductContainer}>
             <div>
-              { changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
-                && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
-                && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
+              { canEdit()
                 && (
                 <Button
                   color="secondary"
