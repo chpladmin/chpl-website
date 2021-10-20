@@ -110,7 +110,6 @@ module.exports = [
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\'.',
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\'.',
       'Criteria 170.315 (a)(1) contains an invalid test functionality \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
-      'Criteria 170.315 (b)(1) (Cures Update) contains a test standard \'test standard\' which does not exist for edition 2015.',
       'Criteria 170.315 (b)(1) (Cures Update) contains an invalid test tool \'test tool\'. It has been removed from the pending listing.',
       'Criteria 170.315 (d)(12) indicates additional software should be present but none was found.',
       'Export Documentation is required for certification 170.315 (b)(10).',
@@ -132,7 +131,6 @@ module.exports = [
     ],
     expectedWarnings: ['The test participant with unique ID \'ID02\' is never referenced in the listing and will be ignored.',
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
-      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Standard: Number \'170.207(i)\'. The duplicates have been removed.',
       'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
       'Test data \'test data\' is invalid for certification 170.315 (b)(1) (Cures Update). ONC Test Method will be used instead.'
     ],
@@ -244,5 +242,18 @@ module.exports = [
       'The G2 Measure: Patient Electronic Access: Eligible Professional for RT2 may not be referenced since this listing does not have ICS. The measure has been removed.'
     ],
     expectedWarnings: [],
+  },
+  {
+    listingId: '15.04.04.1722.OPTS.V1.00.1.210607',
+    expectedErrors: [
+      'Criteria 170.315 (b)(1) (Cures Update) contains an optional standard \'BAD OS\' which does not exist.',
+      'Optional Standard 170.204(a)(2) is not valid for criteria 170.315 (b)(1) (Cures Update).',
+      '170.315 (g)(3) is required but was not found.',
+      'No listing was found with the unique ID \'15.07.04.2916.smar.07.01.1.190328\'. ICS parent listings must reference existing listings in the CHPL.'
+    ],
+    expectedWarnings: [
+      'Optional Standards are not applicable for the criterion 170.315 (a)(1). They have been removed.',
+      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Optional Standard: \'170.207(a)(4)\'. The duplicates have been removed.',
+    ],
   },
 ];
