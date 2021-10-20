@@ -7,7 +7,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Container,
   Collapse,
   Divider,
   FormControlLabel,
@@ -20,6 +19,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
+import ChplConformanceMethodsEdit from './conformance-methods';
 import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
 import ChplTestFunctionalityEdit from './test-functionality';
@@ -58,7 +58,7 @@ function ChplCriterionDetailsEdit(props) {
   const [isConfirming] = useState(props.isConfirming);
   const [resources] = useState(props.resources);
   const classes = useStyles();
-  const { optionalStandardsIsOn } = useContext(FlagContext);
+  const { conformanceMethodIsOn, optionalStandardsIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -115,7 +115,7 @@ function ChplCriterionDetailsEdit(props) {
   };
 
   return (
-    <Container>
+    
       <Card>
         <CardContent>
           <Typography
@@ -327,7 +327,28 @@ function ChplCriterionDetailsEdit(props) {
                   </div>
                 </>
               )}
-            { criterion.testProcedures
+            { criterion.conformanceMethods && conformanceMethodIsOn
+              && (
+                <>
+                  <div>
+                    <Divider />
+                  </div>
+                  <div>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.subtitleSpacing}
+                    >
+                      Conformance Method
+                    </Typography>
+                    <ChplConformanceMethodsEdit
+                      conformanceMethods={criterion.conformanceMethods}
+                      options={criterion.allowedConformanceMethods}
+                      onChange={handleDetailChange}
+                    />
+                  </div>
+                </>
+              )}
+            { ((conformanceMethodIsOn && (!criterion.conformanceMethods || criterion.testProcedures?.length > 0)) || (!conformanceMethodIsOn && criterion.testProcedures))
               && (
                 <>
                   <div>
@@ -630,7 +651,6 @@ function ChplCriterionDetailsEdit(props) {
           </Button>
         </CardActions>
       </Card>
-    </Container>
   );
 }
 
