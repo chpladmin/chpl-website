@@ -622,6 +622,41 @@ const ReportsListingsComponent = {
 
     compareTestStuff(prev, curr) {
       const ret = [];
+      if (prev.conformanceMethods && curr.conformanceMethods) {
+        prev.conformanceMethods.forEach((pre) => {
+          if (pre.conformanceMethod) {
+            curr.conformanceMethods.forEach((cur) => {
+              if (!cur.found && !pre.found
+                && pre.conformanceMethod.name === cur.conformanceMethod.name
+                && pre.conformanceMethodVersion === cur.conformanceMethodVersion) {
+                pre.found = true;
+                cur.found = true;
+              }
+            });
+          }
+        });
+        prev.conformanceMethods.forEach((pre) => {
+          if (pre.conformanceMethod) {
+            curr.conformanceMethods.forEach((cur) => {
+              if (!cur.found && !pre.found && pre.conformanceMethod.name === cur.conformanceMethod.name) {
+                pre.found = true;
+                cur.found = true;
+                ret.push(`<li>Conformance Method "${pre.conformanceMethod.name}" version changed from "${pre.conformanceMethodVersion}" to "${cur.conformanceMethodVersion}"</li>`);
+              }
+            });
+            if (!pre.found) {
+              ret.push(`<li>Conformance Method "${pre.conformanceMethod.name}" was removed</li>`);
+            }
+          }
+        });
+        curr.conformanceMethods.forEach((cur) => {
+          if (cur.conformanceMethod) {
+            if (!cur.found) {
+              ret.push(`<li>Conformance Method "${cur.conformanceMethod.name}" was added</li>`);
+            }
+          }
+        });
+      }
       if (prev.testProcedures && curr.testProcedures) {
         prev.testProcedures.forEach((pre) => {
           if (pre.testProcedure) {
