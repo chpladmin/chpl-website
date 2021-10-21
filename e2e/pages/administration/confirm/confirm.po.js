@@ -81,6 +81,10 @@ class ConfirmPage {
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').click();
   }
 
+  waitForPendingListingToBecomeClickable (pendingListingId ) {
+    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
+  }
+
   rejectListingCheckbox (chplId) {
     $('//input[@id="reject-pending-listing-' + chplId + '"]').click();
   }
