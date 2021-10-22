@@ -76,12 +76,12 @@ class ConfirmPage {
     }
   }
 
-  gotoPendingListingPage (pendingListingId ) {
+  gotoPendingListingPage (pendingListingId) {
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').click();
   }
 
-  waitForPendingListingToBecomeClickable (pendingListingId ) {
+  waitForPendingListingToBecomeClickable (pendingListingId) {
     $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
   }
 
