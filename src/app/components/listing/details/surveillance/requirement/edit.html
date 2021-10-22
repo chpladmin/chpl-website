@@ -19,6 +19,7 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirementType.$touched) && $ctrl.editForm.requirementType.$error.required">Field is required</div>
       </div>
     </div>
+
     <div class="form-group" ng-if="$ctrl.requirement.type.name === 'Certified Capability'">
       <label for="requirement-capability" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
@@ -28,11 +29,12 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
+
     <div class="form-group" ng-if="$ctrl.requirement.type.name === 'Transparency or Disclosure Requirement'">
       <label for="requirement-transparency" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="$ctrl.requirement.requirement" id="requirement-transparency" name="requirement"
-                ng-options="type as type for type in $ctrl.data.surveillanceRequirements.transparencyOptions" required>
+                ng-options="type.item as ((type.removed ? 'Removed | ' : '') + type.item) for type in $ctrl.data.surveillanceRequirements.transparencyOptions" required>
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
       </div>
@@ -42,7 +44,7 @@
       <label for="requirement-transparency" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="$ctrl.requirement.requirement" id="requirement-rwt" name="requirement"
-                ng-options="type as type for type in $ctrl.data.surveillanceRequirements.realWorldTestingOptions" required>
+                ng-options="type.item as ((type.removed ? 'Removed | ' : '') + type.item) for type in $ctrl.data.surveillanceRequirements.realWorldTestingOptions" required>
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
       </div>
