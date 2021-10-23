@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { arrayOf } from 'prop-types';
-import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Card,
   CardActions,
@@ -16,14 +14,17 @@ import {
   Paper,
   Select,
   Switch,
-  TextField,
+  ThemeProvider,
   Typography,
 } from '@material-ui/core';
+import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import theme from '../../../themes/theme';
 import { developer } from '../../../shared/prop-types/';
+
+import { ChplTextField } from '../../util';
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -65,11 +66,8 @@ function ChplConfirmDeveloper (props) {
   const [developers] = useState(
     [{developerId: 'new', name: '   Create a new Developer'}].concat(props.developers)
       .filter(d => !d.deleted)
-      .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+      .sort((a, b) => a.name < b.name ? -1 : 1)
   );
-  const [formValues, setFormValues] = useState({
-    selfDeveloper: props.developer?.selfDeveloper || false,
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -96,10 +94,6 @@ function ChplConfirmDeveloper (props) {
     setDeveloper(developers.filter(d => d.developerId === event.target.value)[0]);
   };
 
-  const handleSwitchOnChange = event => {
-    setFormValues({ ...formValues, [event.target.name]: event.target.checked });
-  };
-
   const getAddress = (address, editing) => {
     return (
       <>
@@ -114,12 +108,11 @@ function ChplConfirmDeveloper (props) {
         <Grid container item>
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="line1"
+                <ChplTextField id="line1"
                            name="line1"
                            label="Line 1"
-                           variant="outlined"
-                           value={ formik.values.line1 }
-                           error={ formik.touched.line1 && Boolean(formik.errors.line1) }
+                                  value={ formik.values.line1 }
+                           error={ formik.touched.line1 && !!formik.errors.line1 }
                            helperText={ formik.touched.line1 && formik.errors.line1 }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
@@ -131,11 +124,10 @@ function ChplConfirmDeveloper (props) {
           }
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="line2"
+                <ChplTextField id="line2"
                            name="line2"
                            label="Line 2"
-                           variant="outlined"
-                           value={ formik.values.line2 }
+                                  value={ formik.values.line2 }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
               </Grid>
@@ -148,12 +140,11 @@ function ChplConfirmDeveloper (props) {
         <Grid container item>
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="city"
+                <ChplTextField id="city"
                            name="city"
                            label="City"
-                           variant="outlined"
-                           value={ formik.values.city }
-                           error={ formik.touched.city && Boolean(formik.errors.city) }
+                                  value={ formik.values.city }
+                           error={ formik.touched.city && !!formik.errors.city }
                            helperText={ formik.touched.city && formik.errors.city }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
@@ -165,12 +156,11 @@ function ChplConfirmDeveloper (props) {
           }
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="state"
+                <ChplTextField id="state"
                            name="state"
                            label="State"
-                           variant="outlined"
-                           value={ formik.values.state }
-                           error={ formik.touched.state && Boolean(formik.errors.state) }
+                                  value={ formik.values.state }
+                           error={ formik.touched.state && !!formik.errors.state }
                            helperText={ formik.touched.state && formik.errors.state }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
@@ -184,12 +174,11 @@ function ChplConfirmDeveloper (props) {
         <Grid container item>
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="zipcode"
+                <ChplTextField id="zipcode"
                            name="zipcode"
                            label="Zip"
-                           variant="outlined"
-                           value={ formik.values.zipcode }
-                           error={ formik.touched.zipcode && Boolean(formik.errors.zipcode) }
+                                  value={ formik.values.zipcode }
+                           error={ formik.touched.zipcode && !!formik.errors.zipcode }
                            helperText={ formik.touched.zipcode && formik.errors.zipcode }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
@@ -201,12 +190,11 @@ function ChplConfirmDeveloper (props) {
           }
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="country"
+                <ChplTextField id="country"
                            name="country"
                            label="Country"
-                           variant="outlined"
-                           value={ formik.values.country }
-                           error={ formik.touched.country && Boolean(formik.errors.country) }
+                                  value={ formik.values.country }
+                           error={ formik.touched.country && !!formik.errors.country }
                            helperText={ formik.touched.country && formik.errors.country }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
@@ -235,12 +223,11 @@ function ChplConfirmDeveloper (props) {
         <Grid container item>
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="fullName"
+                <ChplTextField id="fullName"
                            name="fullName"
                            label="Name"
-                           variant="outlined"
-                           value={ formik.values.fullName }
-                           error={ formik.touched.fullName && Boolean(formik.errors.fullName) }
+                                  value={ formik.values.fullName }
+                           error={ formik.touched.fullName && !!formik.errors.fullName }
                            helperText={ formik.touched.fullName && formik.errors.fullName }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
@@ -252,11 +239,10 @@ function ChplConfirmDeveloper (props) {
           }
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="title"
+                <ChplTextField id="title"
                            name="title"
                            label="Title"
-                           variant="outlined"
-                           value={ formik.values.title }
+                                  value={ formik.values.title }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
               </Grid>
@@ -269,15 +255,14 @@ function ChplConfirmDeveloper (props) {
         <Grid container item>
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="email"
-                           name="email"
-                           label="Email"
-                           variant="outlined"
-                           value={ formik.values.email }
-                           error={ formik.touched.email && Boolean(formik.errors.email) }
-                           helperText={ formik.touched.email && formik.errors.email }
-                           onChange={ formik.handleChange }
-                           onBlur={ formik.handleBlur } />
+                <ChplTextField id="email"
+                               name="email"
+                               label="Email"
+                               value={ formik.values.email }
+                               error={ formik.touched.email && !!formik.errors.email }
+                               helperText={ formik.touched.email && formik.errors.email }
+                               onChange={ formik.handleChange }
+                               onBlur={ formik.handleBlur } />
               </Grid>
             : <Grid item xs={ 6 }>
                 <Typography variant="subtitle2">Email</Typography>
@@ -286,12 +271,11 @@ function ChplConfirmDeveloper (props) {
           }
           { editing
             ? <Grid item xs={ 6 }>
-                <TextField id="phoneNumber"
+                <ChplTextField id="phoneNumber"
                            name="phoneNumber"
                            label="Phone"
-                           variant="outlined"
-                           value={ formik.values.phoneNumber }
-                           error={ formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber) }
+                                  value={ formik.values.phoneNumber }
+                           error={ formik.touched.phoneNumber && !!formik.errors.phoneNumber }
                            helperText={ formik.touched.phoneNumber && formik.errors.phoneNumber }
                            onChange={ formik.handleChange }
                            onBlur={ formik.handleBlur } />
@@ -328,12 +312,11 @@ function ChplConfirmDeveloper (props) {
                           <Typography variant="body1">{ developer.developerCode }</Typography>
                         </Grid>
                       : <Grid item xs={ 6 }>
-                          <TextField id="name"
+                          <ChplTextField id="name"
                                      name="name"
                                      label="Developer Name"
-                                     variant="outlined"
-                                     value={ formik.values.name }
-                                     error={ formik.touched.name && Boolean(formik.errors.name) }
+                                                      value={ formik.values.name }
+                                     error={ formik.touched.name && !!formik.errors.name }
                                      helperText={ formik.touched.name && formik.errors.name }
                                      onChange={ formik.handleChange }
                                      onBlur={ formik.handleBlur } />
@@ -346,13 +329,13 @@ function ChplConfirmDeveloper (props) {
                         </Grid>
                       : <Grid item xs={ 6 }>
                           <FormControlLabel
-                            label={ 'Self-Developer (' + (formValues.selfDeveloper ? 'Yes' : 'No') + ')' }
+                            label={ 'Self-Developer (' + (formik.values.selfDeveloper ? 'Yes' : 'No') + ')' }
                             control={
                               <Switch id="self-developer"
                                       name="selfDeveloper"
                                       color="primary"
-                                      checked={ formValues.selfDeveloper }
-                                      onChange={ handleSwitchOnChange } />
+                                      checked={ formik.values.selfDeveloper }
+                                      onChange={ formik.handleChange } />
                             } />
                         </Grid>
                     }
@@ -363,12 +346,11 @@ function ChplConfirmDeveloper (props) {
                         <Typography variant="body1">{ developer.website }</Typography>
                       </Grid>
                     : <Grid item xs={ 12 }>
-                        <TextField id="website"
+                        <ChplTextField id="website"
                                    name="website"
                                    label="Website"
-                                   variant="outlined"
-                                   value={ formik.values.website }
-                                   error={ formik.touched.website && Boolean(formik.errors.website) }
+                                                      value={ formik.values.website }
+                                   error={ formik.touched.website && !!formik.errors.website }
                                    helperText={ formik.touched.website && formik.errors.website }
                                    onChange={ formik.handleChange }
                                    onBlur={ formik.handleBlur } />
@@ -388,7 +370,6 @@ function ChplConfirmDeveloper (props) {
                   <Select
                     labelId="selected-developer-label"
                     id="selected-developer"
-                    variant="outlined"
                     value={ developer.developerId }
                     onChange={ handleSelectOnChange }
                   >
@@ -408,9 +389,10 @@ function ChplConfirmDeveloper (props) {
   );
 }
 
-export { ChplConfirmDeveloper };
+export default ChplConfirmDeveloper;
 
 ChplConfirmDeveloper.propTypes = {
-  developer: developer,
-  developers: arrayOf(developer),
+  developer: developer.isRequired,
+  developers: arrayOf(developer).isRequired,
+  dispatch: func.isRequired,
 };

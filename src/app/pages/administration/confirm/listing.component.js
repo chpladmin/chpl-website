@@ -45,6 +45,10 @@ export const ConfirmListingComponent = {
       }
     }
 
+    handleDeveloperDispatch(action, data) {
+      this.$log.info({action, data});
+    }
+
     loadDev () {
       let that = this;
       if (this.pending.developer && this.pending.developer.developerId) {
