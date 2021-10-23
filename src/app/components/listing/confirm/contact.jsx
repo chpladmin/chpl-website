@@ -1,106 +1,110 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Container,
   Divider,
-  FormControl,
-  FormControlLabel,
   Grid,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Switch,
-  ThemeProvider,
   Typography,
 } from '@material-ui/core';
 import { bool, object } from 'prop-types';
 
 import { ChplTextField } from '../../util';
 
-function ChplConfirmDeveloperContact ({address, editing, formik}) {
+function ChplConfirmDeveloperContact({ contact, editing, formik }) {
   return (
     <>
-      { (contact || !editing) &&
-        <Grid item xs={ 12 }>
+      { (contact || !editing)
+        && (
+        <Grid item xs={12}>
           <Typography variant="subtitle1">
             Contact
           </Typography>
-          <Divider/>
+          <Divider />
         </Grid>
-      }
+        )}
       <Grid container item>
         { editing
-          ? <Grid item xs={ 6 }>
+          ? (
+            <Grid item xs={6}>
               <ChplTextField
                 id="fullName"
-                      name="fullName"
-                      label="Name"
-                      value={ formik.values.fullName }
-                      error={ formik.touched.fullName && !!formik.errors.fullName }
-                      helperText={ formik.touched.fullName && formik.errors.fullName }
-                      onChange={ formik.handleChange }
-                      onBlur={ formik.handleBlur } />
-     </Grid>
-          : <Grid item xs={ 6 }>
-   <Typography variant="subtitle2">Name</Typography>
-                <Typography variant="body1">{ contact?.fullName }</Typography>
-              </Grid>
-        }
+                name="fullName"
+                label="Name"
+                value={formik.values.fullName}
+                error={formik.touched.fullName && !!formik.errors.fullName}
+                helperText={formik.touched.fullName && formik.errors.fullName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </Grid>
+          )
+          : (
+            <Grid item xs={6}>
+              <Typography variant="subtitle2">Name</Typography>
+              <Typography variant="body1">{ contact?.fullName }</Typography>
+            </Grid>
+          )}
         { editing
-          ? <Grid item xs={ 6 }>
+          ? (
+            <Grid item xs={6}>
               <ChplTextField
                 id="title"
-                     name="title"
-                     label="Title"
-                     value={ formik.values.title }
-                     onChange={ formik.handleChange }
-                     onBlur={ formik.handleBlur } />
-                    </Grid>
-          : <Grid item xs={ 6 }>
-                                                                <Typography variant="subtitle2">Title</Typography>
-                <Typography variant="body1">{ contact?.title }</Typography>
-              </Grid>
-        }
+                name="title"
+                label="Title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </Grid>
+          )
+          : (
+            <Grid item xs={6}>
+              <Typography variant="subtitle2">Title</Typography>
+              <Typography variant="body1">{ contact?.title }</Typography>
+            </Grid>
+          )}
       </Grid>
       <Grid container item>
         { editing
-          ? <Grid item xs={ 6 }>
+          ? (
+            <Grid item xs={6}>
               <ChplTextField
                 id="email"
-                      name="email"
-                      label="Email"
-                      value={ formik.values.email }
-                      error={ formik.touched.email && !!formik.errors.email }
-                      helperText={ formik.touched.email && formik.errors.email }
-                      onChange={ formik.handleChange }
-                      onBlur={ formik.handleBlur } />
-                       </Grid>
-          : <Grid item xs={ 6 }>
-               <Typography variant="subtitle2">Email</Typography>
-                <Typography variant="body1">{ contact?.email }</Typography>
-              </Grid>
-        }
+                name="email"
+                label="Email"
+                value={formik.values.email}
+                error={formik.touched.email && !!formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </Grid>
+          )
+          : (
+            <Grid item xs={6}>
+              <Typography variant="subtitle2">Email</Typography>
+              <Typography variant="body1">{ contact?.email }</Typography>
+            </Grid>
+          )}
         { editing
-          ? <Grid item xs={ 6 }>
+          ? (
+            <Grid item xs={6}>
               <ChplTextField
                 id="phoneNumber"
-                                             name="phoneNumber"
-                                             label="Phone"
-                                             value={ formik.values.phoneNumber }
-                                             error={ formik.touched.phoneNumber && !!formik.errors.phoneNumber }
-                                             helperText={ formik.touched.phoneNumber && formik.errors.phoneNumber }
-                                             onChange={ formik.handleChange }
-                                             onBlur={ formik.handleBlur } />
-                                     </Grid>
-          : <Grid item xs={ 6 }>
-           <Typography variant="subtitle2">Phone</Typography>
-           <Typography variant="body1">{ contact?.phoneNumber }</Typography>
-         </Grid>
-        }
+                name="phoneNumber"
+                label="Phone"
+                value={formik.values.phoneNumber}
+                error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
+                helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </Grid>
+          )
+          : (
+            <Grid item xs={6}>
+              <Typography variant="subtitle2">Phone</Typography>
+              <Typography variant="body1">{ contact?.phoneNumber }</Typography>
+            </Grid>
+          )}
       </Grid>
     </>
   );
@@ -109,7 +113,7 @@ function ChplConfirmDeveloperContact ({address, editing, formik}) {
 export default ChplConfirmDeveloperContact;
 
 ChplConfirmDeveloperContact.propTypes = {
-  address: object.isRequired,
+  contact: object.isRequired,
   editing: bool.isRequired,
   formik: object.isRequired,
 };
