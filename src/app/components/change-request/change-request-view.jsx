@@ -20,6 +20,9 @@ import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDetailsView from './types/details-view';
 import ChplChangeRequestWebsiteView from './types/website-view';
 
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
@@ -166,7 +169,7 @@ function ChplChangeRequestView(props) {
                     variant="contained"
                     onClick={() => props.dispatch('edit')}
                   >
-                    Edit Change Request
+                    Edit Change Request<EditOutlinedIcon className={classes.iconSpacing}></EditOutlinedIcon>
                   </Button>
                 )}
             </div>
@@ -177,7 +180,7 @@ function ChplChangeRequestView(props) {
                 variant="contained"
                 onClick={() => props.dispatch('close')}
               >
-                Close
+                Close<CloseOutlinedIcon className={classes.iconSpacing}></CloseOutlinedIcon>
               </Button>
             </div>
           </div>
