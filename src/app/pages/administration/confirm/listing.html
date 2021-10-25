@@ -1,4 +1,4 @@
-<div class="listing-inspect" ng-form="$ctrl.form">
+<div class="listing-inspect">
   <div ng-switch="$ctrl.stage" class="listing-inspect__header">
     <div>
       <h1 ng-switch-when="developer">Developer</h1>
@@ -17,7 +17,7 @@
       </uib-progressbar>
     </div>
   </div>
-  <div ng-switch="$ctrl.stage">
+  <div ng-switch="$ctrl.stage" ng-form="$ctrl.form">
     <div ng-switch-when="developer">
       <chpl-confirm-developer-bridge
         developer="$ctrl.pending.developer"
