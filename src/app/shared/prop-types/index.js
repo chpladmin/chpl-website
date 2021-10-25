@@ -28,6 +28,7 @@ import { testProcedure, selectedTestProcedure } from './test-procedure';
 import { testStandard, selectedTestStandard } from './test-standard';
 import { testTool, selectedTestTool } from './test-tool';
 import user from './user';
+import version from './version';
 
 export {
   acb,
@@ -66,4 +67,5 @@ export {
   testStandard,
   testTool,
   user,
+  version,
 };

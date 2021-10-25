@@ -33,12 +33,11 @@
         ></chpl-confirm-product-bridge>
     </div>
     <div ng-switch-when="version">
-      <chpl-confirm-version
-        product="$ctrl.pending.product"
-        show-form-errors="$ctrl.showFormErrors"
-        take-action="$ctrl.takeVersionAction(action, payload)"
-        uploaded="$ctrl.uploaded.version"
-        ></chpl-confirm-version>
+      <chpl-confirm-version-bridge
+        version="$ctrl.uploaded.version"
+        versions="$ctrl.versions"
+        dispatch="::$ctrl.handleVersionDispatch"
+        ></chpl-confirm-version-bridge>
     </div>
     <div ng-switch-when="listing">
       <chpl-inspect-listing

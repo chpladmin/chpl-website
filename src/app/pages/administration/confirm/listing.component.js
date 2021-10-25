@@ -20,6 +20,7 @@ export const ConfirmListingComponent = {
       this.resources = {};
       this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
       this.handleProductDispatch = this.handleProductDispatch.bind(this);
+      this.handleVersionDispatch = this.handleVersionDispatch.bind(this);
     }
 
     $onInit () {
@@ -72,6 +73,19 @@ export const ConfirmListingComponent = {
       this.$scope.$digest();
     }
 
+    handleVersionDispatch(action, data) {
+      switch (action) {
+        case 'select':
+          this.pending.version = data;
+          break;
+        case 'edit':
+          this.pending.version = data;
+          break;
+      }
+      this.$log.info(action, data);
+      this.$scope.$digest();
+    }
+
     loadDeveloper () {
       let that = this;
       if (this.pending.developer && this.pending.developer.developerId) {
@@ -96,12 +110,20 @@ export const ConfirmListingComponent = {
       }
     }
 
-    selectInspectingVersion (versionId) {
-      this.pending.version.versionId = versionId;
-    }
-
-    setVersionChoice (choice) {
-      this.versionChoice = choice;
+    loadVersions () {
+      let that = this;
+      if (this.pending.product && this.pending.product.productId) {
+        this.networkService.getVersionsByProduct(this.pending.product.productId)
+          .then(result => that.versions = result);
+      } else {
+        that.versions = [];
+      }
+      if (this.pending.version && this.pending.version.versionId) {
+        this.networkService.getSimpleVersion(this.pending.version.versionId)
+          .then(result => that.pending.version = result);
+      } else {
+        that.pending.version = {};
+      }
     }
 
     takeAction (action) {
@@ -179,19 +201,20 @@ export const ConfirmListingComponent = {
 
     next () {
       switch (this.stage) {
-      case 'developer':
+        case 'developer':
           this.stage = 'product';
           this.loadProducts();
-        break;
-      case 'product':
-        this.stage = 'version';
-        this.loadFamily();
-        break;
-      case 'version':
-        this.stage = 'listing';
-        break;
-      default:
-        break;
+          break;
+        case 'product':
+          this.stage = 'version';
+          this.loadFamily();
+          this.loadVersions();
+          break;
+        case 'version':
+          this.stage = 'listing';
+          break;
+        default:
+          break;
       }
     }
 

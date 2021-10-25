@@ -16,38 +16,38 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import theme from '../../../themes/theme';
-import { product as productProp } from '../../../shared/prop-types';
+import { version as versionProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
 
 const validationSchema = yup.object({
-  name: yup.string()
-    .required('Product Name is required'),
+  version: yup.string()
+    .required('Version is required'),
 });
 
-function ChplConfirmProduct(props) {
+function ChplConfirmVersion(props) {
   /* eslint-disable react/destructuring-assignment */
-  const product = {
-    ...props.product,
+  const version = {
+    ...props.version,
   };
-  const [selectedProduct, setSelectedProduct] = useState('');
-  const products = props.products
-    .sort((a, b) => (a.name < b.name ? -1 : 1));
+  const [selectedVersion, setSelectedVersion] = useState('');
+  const versions = props.versions
+    .sort((a, b) => (a.version < b.version ? -1 : 1));
   const [isCreating, setIsCreating] = useState(true);
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    const selected = props.products.filter((p) => p.productId === props.product.productId)[0];
+    const selected = props.versions.filter((p) => p.versionId === props.version.versionId)[0];
     if (selected) {
-      setSelectedProduct(selected);
+      setSelectedVersion(selected);
     }
-    setIsCreating(!props.product.productId || props.products.length === 0);
-  }, [props.product, props.products]);
+    setIsCreating(!props.version.versionId || props.versions.length === 0);
+  }, [props.version, props.versions]);
 
   let formik;
 
   const handleCreationToggle = () => {
     if (isCreating) {
-      props.dispatch('select', selectedProduct);
+      props.dispatch('select', selectedVersion);
     } else {
       formik.handleSubmit();
     }
@@ -61,18 +61,18 @@ function ChplConfirmProduct(props) {
 
   const handleSelectOnChange = (event) => {
     props.dispatch('select', event.target.value);
-    setSelectedProduct(event.target.value);
+    setSelectedVersion(event.target.value);
   };
 
   const submit = () => {
     props.dispatch('edit', {
-      name: formik.values.name,
+      version: formik.values.version,
     });
   };
 
   formik = useFormik({
     initialValues: {
-      name: product?.name || '',
+      version: version?.version || '',
     },
     onSubmit: () => {
       submit();
@@ -91,27 +91,27 @@ function ChplConfirmProduct(props) {
               <CardContent>
                 <Grid container spacing={4}>
                   <Grid item xs={4}>
-                    Create a product
+                    Create a version
                   </Grid>
                   <Grid item xs={4}>
                     <Switch
                       id="create-toggle"
-                      name="createProduct"
+                      name="createVersion"
                       color="primary"
-                      disabled={products?.length === 0}
+                      disabled={versions?.length === 0}
                       checked={!isCreating}
                       onChange={handleCreationToggle}
                     />
                   </Grid>
                   <Grid item xs={4}>
-                    { !!selectedProduct
+                    { !!selectedVersion
                       ? (
                         <>
-                          Use { selectedProduct.name }
+                          Use { selectedVersion.version }
                         </>
                       ) : (
                         <>
-                          Choose a product to use
+                          Choose a version to use
                         </>
                       )
                     }
@@ -120,7 +120,7 @@ function ChplConfirmProduct(props) {
                 <Grid container spacing={4}>
                   <Grid item xs={12}>
                     <Typography variant="subtitle1">
-                      Product Information
+                      Version Information
                     </Typography>
                     <Divider />
                   </Grid>
@@ -129,12 +129,12 @@ function ChplConfirmProduct(props) {
                       <Grid container spacing={4}>
                         <Grid item xs={6}>
                           <ChplTextField
-                            id="name"
-                            name="name"
-                            label="Product Name"
-                            value={formik.values.name}
-                            error={formik.touched.name && !!formik.errors.name}
-                            helperText={formik.touched.name && formik.errors.name}
+                            id="version"
+                            name="version"
+                            label="Version"
+                            value={formik.values.version}
+                            error={formik.touched.version && !!formik.errors.version}
+                            helperText={formik.touched.version && formik.errors.version}
                             onChange={handleChange}
                             onBlur={formik.handleBlur}
                           />
@@ -146,16 +146,16 @@ function ChplConfirmProduct(props) {
                         <Grid item xs={12}>
                           <ChplTextField
                             select
-                            id="selected-product"
-                            name="selectedProduct"
-                            label="Select a Product"
+                            id="selected-version"
+                            name="selectedVersion"
+                            label="Select a Version"
                             required
-                            value={selectedProduct}
+                            value={selectedVersion}
                             onChange={handleSelectOnChange}
                           >
-                            { products.map((item) => (
-                              <MenuItem value={item} key={item.productId}>
-                                { item.name }
+                            { versions.map((item) => (
+                              <MenuItem value={item} key={item.versionId}>
+                                { item.version }
                               </MenuItem>
                             ))}
                           </ChplTextField>
@@ -173,10 +173,10 @@ function ChplConfirmProduct(props) {
   );
 }
 
-export default ChplConfirmProduct;
+export default ChplConfirmVersion;
 
-ChplConfirmProduct.propTypes = {
-  product: productProp.isRequired,
-  products: arrayOf(productProp).isRequired,
+ChplConfirmVersion.propTypes = {
+  version: versionProp.isRequired,
+  versions: arrayOf(versionProp).isRequired,
   dispatch: func.isRequired,
 };
