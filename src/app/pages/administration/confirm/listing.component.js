@@ -5,9 +5,10 @@ export const ConfirmListingComponent = {
     developers: '<',
   },
   controller: class ConfirmListingComponent {
-    constructor ($log, $state, networkService, toaster) {
+    constructor ($log, $scope, $state, networkService, toaster) {
       'ngInject';
       this.$log = $log;
+      this.$scope = $scope;
       this.$state = $state;
       this.networkService = networkService;
       this.toaster = toaster;
@@ -17,6 +18,7 @@ export const ConfirmListingComponent = {
       this.errorMessages = [];
       this.systemRequirements = [];
       this.resources = {};
+      this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
     }
 
     $onInit () {
@@ -46,7 +48,16 @@ export const ConfirmListingComponent = {
     }
 
     handleDeveloperDispatch(action, data) {
+      switch (action) {
+        case 'select':
+          this.pending.developer = data;
+          break;
+        case 'edit':
+          this.pending.developer = data;
+          break;
+      }
       this.$log.info({action, data});
+      this.$scope.$digest();
     }
 
     loadDev () {

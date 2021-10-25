@@ -4,11 +4,11 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { bool, object } from 'prop-types';
+import { bool, func, object } from 'prop-types';
 
 import { ChplTextField } from '../../util';
 
-function ChplConfirmDeveloperContact({ contact, editing, formik }) {
+function ChplConfirmDeveloperContact({ contact, editing, formik, handleChange }) {
   return (
     <>
       { (contact || !editing)
@@ -31,7 +31,7 @@ function ChplConfirmDeveloperContact({ contact, editing, formik }) {
                 value={formik.values.fullName}
                 error={formik.touched.fullName && !!formik.errors.fullName}
                 helperText={formik.touched.fullName && formik.errors.fullName}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -50,7 +50,7 @@ function ChplConfirmDeveloperContact({ contact, editing, formik }) {
                 name="title"
                 label="Title"
                 value={formik.values.title}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -73,7 +73,7 @@ function ChplConfirmDeveloperContact({ contact, editing, formik }) {
                 value={formik.values.email}
                 error={formik.touched.email && !!formik.errors.email}
                 helperText={formik.touched.email && formik.errors.email}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -94,7 +94,7 @@ function ChplConfirmDeveloperContact({ contact, editing, formik }) {
                 value={formik.values.phoneNumber}
                 error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
                 helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -116,4 +116,9 @@ ChplConfirmDeveloperContact.propTypes = {
   contact: object.isRequired,
   editing: bool.isRequired,
   formik: object.isRequired,
+  handleChange: func,
+};
+
+ChplConfirmDeveloperContact.defaultProps = {
+  handleChange: () => {},
 };

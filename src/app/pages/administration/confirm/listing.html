@@ -20,7 +20,7 @@
   <div ng-switch="$ctrl.stage" ng-form="$ctrl.form">
     <div ng-switch-when="developer">
       <chpl-confirm-developer-bridge
-        developer="$ctrl.pending.developer"
+        developer="$ctrl.uploaded.developer"
         developers="$ctrl.developers"
         dispatch="::$ctrl.handleDeveloperDispatch"
         ></chpl-confirm-developer-bridge>

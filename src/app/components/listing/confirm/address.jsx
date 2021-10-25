@@ -4,11 +4,11 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { bool, object } from 'prop-types';
+import { bool, func, object } from 'prop-types';
 
 import { ChplTextField } from '../../util';
 
-function ChplConfirmDeveloperAddress({ address, editing, formik }) {
+function ChplConfirmDeveloperAddress({ address, editing, formik, handleChange }) {
   return (
     <>
       { (address || !editing)
@@ -31,7 +31,7 @@ function ChplConfirmDeveloperAddress({ address, editing, formik }) {
                 value={formik.values.line1}
                 error={formik.touched.line1 && !!formik.errors.line1}
                 helperText={formik.touched.line1 && formik.errors.line1}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -50,7 +50,7 @@ function ChplConfirmDeveloperAddress({ address, editing, formik }) {
                 name="line2"
                 label="Line 2"
                 value={formik.values.line2}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -73,7 +73,7 @@ function ChplConfirmDeveloperAddress({ address, editing, formik }) {
                 value={formik.values.city}
                 error={formik.touched.city && !!formik.errors.city}
                 helperText={formik.touched.city && formik.errors.city}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -94,7 +94,7 @@ function ChplConfirmDeveloperAddress({ address, editing, formik }) {
                 value={formik.values.state}
                 error={formik.touched.state && !!formik.errors.state}
                 helperText={formik.touched.state && formik.errors.state}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -117,7 +117,7 @@ function ChplConfirmDeveloperAddress({ address, editing, formik }) {
                 value={formik.values.zipcode}
                 error={formik.touched.zipcode && !!formik.errors.zipcode}
                 helperText={formik.touched.zipcode && formik.errors.zipcode}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -138,7 +138,7 @@ function ChplConfirmDeveloperAddress({ address, editing, formik }) {
                 value={formik.values.country}
                 error={formik.touched.country && !!formik.errors.country}
                 helperText={formik.touched.country && formik.errors.country}
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
             </Grid>
@@ -160,4 +160,9 @@ ChplConfirmDeveloperAddress.propTypes = {
   address: object.isRequired,
   editing: bool.isRequired,
   formik: object.isRequired,
+  handleChange: func,
+};
+
+ChplConfirmDeveloperAddress.defaultProps = {
+  handleChange: () => {},
 };
