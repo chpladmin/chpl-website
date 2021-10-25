@@ -59,8 +59,12 @@ const ListingEditComponent = {
         statusDateObject: new Date(ce.eventDate),
       }));
 
-      this.listing.practiceType = this.utilService.findModel(this.listing.practiceType, this.resources.practices);
-      this.listing.classificationType = this.utilService.findModel(this.listing.classificationType, this.resources.classifications);
+      if (this.listing.practiceType) {
+        this.listing.practiceType = this.utilService.findModel(this.listing.practiceType, this.resources.practices);
+      }
+      if (this.listing.classificationType) {
+        this.listing.classificationType = this.utilService.findModel(this.listing.classificationType, this.resources.classifications);
+      }
       this.listing.certifyingBody = this.utilService.findModel(this.listing.certifyingBody, this.resources.bodies);
       if (this.listing.rwtPlansCheckDate) {
         this.listing.rwtPlansCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlansCheckDate));

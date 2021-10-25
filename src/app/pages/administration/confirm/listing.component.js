@@ -5,9 +5,10 @@ export const ConfirmListingComponent = {
     developers: '<',
   },
   controller: class ConfirmListingComponent {
-    constructor ($log, $scope, $state, networkService, toaster) {
+    constructor ($log, $q, $scope, $state, networkService, toaster) {
       'ngInject';
       this.$log = $log;
+      this.$q = $q;
       this.$scope = $scope;
       this.$state = $state;
       this.networkService = networkService;
@@ -25,6 +26,28 @@ export const ConfirmListingComponent = {
 
     $onInit () {
       this.loadDeveloper();
+      const pending = {};
+      this.$q.all([
+        this.networkService.getSearchOptions()
+          .then((response) => {
+            pending.bodies = response.acbs;
+            pending.classifications = response.productClassifications;
+            pending.editions = response.editions;
+            pending.practices = response.practiceTypes;
+            pending.statuses = response.certificationStatuses;
+          }),
+        this.networkService.getAccessibilityStandards().then((response) => { pending.accessibilityStandards = response; }),
+        this.networkService.getAtls(false).then((response) => { pending.testingLabs = response.atls; }),
+        this.networkService.getMeasures().then((response) => { pending.measures = response; }),
+        this.networkService.getMeasureTypes().then((response) => { pending.measureTypes = response; }),
+        this.networkService.getQmsStandards().then((response) => { pending.qmsStandards = response; }),
+        this.networkService.getTargetedUsers().then((response) => { pending.targetedUsers = response; }),
+        this.networkService.getTestData().then((response) => { pending.testData = response; }),
+        this.networkService.getTestFunctionality().then((response) => { pending.testFunctionalities = response; }),
+        this.networkService.getTestProcedures().then((response) => { pending.testProcedures = response; }),
+        this.networkService.getTestStandards().then((response) => { pending.testStandards = response; }),
+        this.networkService.getUcdProcesses().then((response) => { pending.ucdProcesses = response; }),
+      ]).then(() => this.resources = pending);
     }
 
     $onChanges (changes) {
