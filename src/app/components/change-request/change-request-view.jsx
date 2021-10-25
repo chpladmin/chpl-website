@@ -53,7 +53,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: 'auto auto auto',
     gap: '8px',
   },
-  subcontent: {
+  subContent: {
     display: 'grid',
     gap: '8px',
   },
@@ -69,6 +69,9 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr auto',
     display: 'grid',
     gap: '8px',
+  },
+  cardHeader:{
+    fontWeight:'600',
   },
 });
 
@@ -115,15 +118,15 @@ function ChplChangeRequestView(props) {
             text={changeRequest.developer.name}
           />
           <div className={classes.subProductCardHeaderContainer}>
-            <Typography variant='h5'>{changeRequest.changeRequestType.name}</Typography>
+            <Typography gutterBottom className={classes.cardHeader} variant='h4'>{changeRequest.changeRequestType.name}</Typography>
             <div className={classes.versionProductCardHeaderContainer}>
-              <Typography variant="subtitle2">Developer:
+              <Typography gutterBottom variant="subtitle2">Developer:
               <Typography variant="body1">{changeRequest.developer.name}</Typography></Typography>
-              <Typography variant="subtitle2">Creation Date:
+              <Typography gutterBottom variant="subtitle2">Creation Date:
               <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography></Typography>
-              <Typography variant="subtitle2">Request Status:
+              <Typography gutterBottom variant="subtitle2">Request Status:
               <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography></Typography>
-              <Typography variant="subtitle2">Time Since Last Status Change:
+              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:
               <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
               </Typography>
             </div>
