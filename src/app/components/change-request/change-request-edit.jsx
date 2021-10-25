@@ -3,6 +3,9 @@ import {
   MenuItem,
   Typography,
   makeStyles,
+  Card,
+  CardContent,
+  Divider,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -23,7 +26,7 @@ import ChplChangeRequestWebsiteEdit from './types/website-edit';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '2fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
   },
 });
@@ -172,15 +175,19 @@ function ChplChangeRequestEdit(props) {
   });
 
   return (
+    <Card>
+    <CardContent>
     <div className={classes.container}>
       <div>
         {getChangeRequestDetails(changeRequest, handleDispatch)}
       </div>
+      <Divider/>
       <div>
+      <Typography gutterBottom variant='subtitle2'>Reason for change:</Typography>
         <ChplTextField
           id="comment"
           name="comment"
-          label="Reason for Change"
+          label="Add Comment"
           multiline
           required={isReasonRequired()}
           disabled={isReasonDisabled()}
@@ -237,6 +244,8 @@ function ChplChangeRequestEdit(props) {
         isDisabled={!formik.isValid}
       />
     </div>
+    </CardContent>
+    </Card>
   );
 }
 

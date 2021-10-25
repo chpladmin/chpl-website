@@ -22,19 +22,15 @@ function ChplChangeRequestDetailsView(props) {
   return (
     <div className={classes.container}>
       <div>
-        Current details
+      <Typography gutterBottom variant='subtitle2'>Current details</Typography>
         <Card>
-          <CardContent>
             {changeRequest.developer.name}
-          </CardContent>
         </Card>
       </div>
       <div>
-        Submitted details
+      <Typography gutterBottom variant='subtitle2'>Submitted details</Typography>
         <Card>
-          <CardContent>
             {changeRequest.developer.name}
-          </CardContent>
         </Card>
       </div>
     </div>

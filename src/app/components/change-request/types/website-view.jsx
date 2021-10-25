@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 
 import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
@@ -20,13 +21,11 @@ function ChplChangeRequestWebsiteView(props) {
   return (
     <div className={classes.container}>
       <div>
-        Current website
-        <br />
+      <Typography gutterBottom variant='subtitle2'>Current website</Typography>
         {changeRequest.developer.website}
       </div>
       <div>
-        Submitted website
-        <br />
+      <Typography gutterBottom variant='subtitle2'>Submitted website</Typography>
         {changeRequest.details.website}
       </div>
     </div>

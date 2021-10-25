@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import {
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -51,13 +52,11 @@ function ChplChangeRequestAttestationEdit(props) {
   return (
     <div className={classes.container}>
       <div>
-        Current attestation
-        <br />
+        <Typography gutterBottom variant='subtitle2'>Current Attestation:</Typography>
         None
       </div>
       <div>
-        Submitted attestation
-        <br />
+      <Typography gutterBottom variant='subtitle2'>Submitted attestation:</Typography>
         <ChplTextField
           id="attestation"
           name="attestation"

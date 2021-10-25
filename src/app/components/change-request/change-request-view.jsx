@@ -66,6 +66,9 @@ const useStyles = makeStyles({
     marginLeft: '4px',
   },
   cardContentContainer:{
+    padding:'16px 32px 32px 70px',
+  },
+  cardContentChangeRequest:{
     gridTemplateColumns: '1fr auto',
     display: 'grid',
     gap: '8px',
@@ -133,8 +136,8 @@ function ChplChangeRequestView(props) {
           </div>
         </div>
         <Divider />
-        <CardContent>
-          <div className={classes.cardContentContainer}>
+        <CardContent className={classes.cardContentContainer}>
+          <div className={classes.cardContentChangeRequest}>
             <div>
             {getChangeRequestDetails(changeRequest)}
             </div>
