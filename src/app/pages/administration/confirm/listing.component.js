@@ -19,10 +19,11 @@ export const ConfirmListingComponent = {
       this.systemRequirements = [];
       this.resources = {};
       this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
+      this.handleProductDispatch = this.handleProductDispatch.bind(this);
     }
 
     $onInit () {
-      this.loadDev();
+      this.loadDeveloper();
     }
 
     $onChanges (changes) {
@@ -56,11 +57,22 @@ export const ConfirmListingComponent = {
           this.pending.developer = data;
           break;
       }
-      this.$log.info({action, data});
       this.$scope.$digest();
     }
 
-    loadDev () {
+    handleProductDispatch(action, data) {
+      switch (action) {
+        case 'select':
+          this.pending.product = data;
+          break;
+        case 'edit':
+          this.pending.product = data;
+          break;
+      }
+      this.$scope.$digest();
+    }
+
+    loadDeveloper () {
       let that = this;
       if (this.pending.developer && this.pending.developer.developerId) {
         this.networkService.getDeveloper(this.pending.developer.developerId)
@@ -68,31 +80,20 @@ export const ConfirmListingComponent = {
       }
     }
 
-    takeDeveloperAction (action, payload) {
-      switch (action) {
-      case 'clear':
-        break;
-      case 'select':
-        this.pending.developer.developerId = payload;
-        if (payload) {
-          this.loadDev();
-        } else {
-          this.pending.developer = angular.copy(this.uploaded.developer);
-          this.pending.developer.developerId = undefined;
-        }
-        break;
-        //no default
+    loadProducts () {
+      let that = this;
+      if (this.pending.developer && this.pending.developer.developerId) {
+        this.networkService.getProductsByDeveloper(this.pending.developer.developerId)
+          .then(result => that.products = result.products);
+      } else {
+        that.products = [];
       }
-      this.form.$setPristine();
-      this.showFormErrors = false;
-    }
-
-    selectInspectingProduct (productId) {
-      this.pending.product.productId = productId;
-    }
-
-    setProductChoice (choice) {
-      this.productChoice = choice;
+      if (this.pending.product && this.pending.product.productId) {
+        this.networkService.getSimpleProduct(this.pending.product.productId)
+          .then(result => that.pending.product = result);
+      } else {
+        that.pending.product = {};
+      }
     }
 
     selectInspectingVersion (versionId) {
@@ -179,7 +180,8 @@ export const ConfirmListingComponent = {
     next () {
       switch (this.stage) {
       case 'developer':
-        this.stage = 'product';
+          this.stage = 'product';
+          this.loadProducts();
         break;
       case 'product':
         this.stage = 'version';

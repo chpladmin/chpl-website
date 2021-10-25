@@ -26,12 +26,11 @@
         ></chpl-confirm-developer-bridge>
     </div>
     <div ng-switch-when="product">
-      <chpl-confirm-product
-        developer="$ctrl.pending.developer"
-        show-form-errors="$ctrl.showFormErrors"
-        take-action="$ctrl.takeProductAction(action, payload)"
-        uploaded="$ctrl.uploaded.product"
-        ></chpl-confirm-product>
+      <chpl-confirm-product-bridge
+        product="$ctrl.uploaded.product"
+        products="$ctrl.products"
+        dispatch="::$ctrl.handleProductDispatch"
+        ></chpl-confirm-product-bridge>
     </div>
     <div ng-switch-when="version">
       <chpl-confirm-version

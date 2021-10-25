@@ -12,6 +12,7 @@ import {
 import contact from './contact';
 import criterion from './criterion';
 import developer from './developer';
+import product from './product';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
@@ -43,6 +44,7 @@ export {
   developer,
   listing,
   optionalStandard,
+  product,
   qmsStandard,
   reliedUponSoftware,
   resources,
