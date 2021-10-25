@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: 'auto 11fr',
     padding: '16px',
     gap: '16px',
-    alignItems: 'center',
+    alignItems: 'start',
   },
   subProductCardHeaderContainer: {
     display: 'grid',
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   },
   versionProductCardHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: 'auto auto',
+    gridTemplateColumns: '1fr 1fr 1fr',
     gap: '8px',
     alignItems: 'center',
   },
@@ -76,6 +76,7 @@ const useStyles = makeStyles({
   },
   cardHeader:{
     fontWeight:'600',
+    paddingBottom:'4px',
   },
 });
 

@@ -57,7 +57,6 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     flexWrap: 'wrap',
     paddingBottom: '16px',
-    paddingTop: '16px',
     gap: '8px',
   },
 }));
