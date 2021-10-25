@@ -34,6 +34,7 @@ if (process.env.ENV !== 'stage') {
     loginComponent = new LoginComponent();
     hooks = new Hooks();
     toast = new ToastComponent();
+    hooks.open('#/administration/upload');
     loginComponent.logIn('admin');
 
     let itemsToUpload = [
@@ -43,7 +44,7 @@ if (process.env.ENV !== 'stage') {
       },
       {
         file: '../../../resources/upload-listing-beta/2015_Measures.csv',
-        listingIds: invalidMeasureInputs.map(item => item.listingId)
+        listingIds: invalidMeasureInputs.map(item => item.listingId),
       },
       {
         file: '../../../resources/upload-listing-beta/2015_OptionalStandards.csv',
