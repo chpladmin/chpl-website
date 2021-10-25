@@ -183,10 +183,10 @@ function ChplChangeRequestEdit(props) {
       </div>
       <Divider/>
       <div>
-      <Typography gutterBottom variant='subtitle2'>Reason for change:</Typography>
+      <Typography gutterBottom variant='subtitle1'>Reason for change:</Typography>
         <ChplTextField
-          id="comment"
-          name="comment"
+          id="Reason for change"
+          name="Reason for change"
           label="Add Comment"
           multiline
           required={isReasonRequired()}

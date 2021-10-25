@@ -73,7 +73,7 @@ const useStyles = makeStyles({
     padding:'16px 32px 32px 70px',
   },
   cardContentChangeRequest:{
-    gridTemplateColumns: '1fr auto',
+    gridTemplateColumns: '1fr .5fr',
     display: 'grid',
     gap: '8px',
   },
