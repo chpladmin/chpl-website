@@ -154,6 +154,18 @@ const SurveillanceComponent = {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
       }
     }
+
+    isRequirementRemoved(name) {
+      let requirement = this.surveillanceTypes.surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === name);
+      if (requirement) {
+        return requirement.removed;
+      }
+      requirement = this.surveillanceTypes.surveillanceRequirements.transparencyOptions.find((req) => req.item === name);
+      if (requirement) {
+        return requirement.removed;
+      }
+      return false;
+    }
   },
 };
 

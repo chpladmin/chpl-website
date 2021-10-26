@@ -37,7 +37,7 @@
               <span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">
                 {{ req.type.name }}:
                 <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title }}</span>
-                <span ng-if="!req.criterion">{{ req.requirement }}</span><br />
+                <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
               </span>
             </td>
           </tr>
@@ -60,13 +60,13 @@
           <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</span></a>
           <p>Non-Conformity related to
             <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
-            <span ng-if="!req.criterion">{{ req.requirement }} </span>
+            <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
             Details
           </p>
           <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to
               <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
-              <span ng-if="!req.criterion">{{ req.requirement }} </span>
+              <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
               Dates
             </p>
             <table class="table table-condensed">
