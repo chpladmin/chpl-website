@@ -40,61 +40,63 @@
   <div>
     <strong>Certification Date</strong> {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}
   </div>
-  <div class="manage-list__container">
-    <div class="data-label">Certification Status</div>
-    <div class="data-label">Effective Date</div>
-    <div class="data-label">Reason for status change</div>
-    <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
-      {{ item.status.name }}
-      <div class="text-danger" ng-if="!$last && $ctrl.matchesPreviousStatus(item)">Certification Status must differ from previous Status</div>
-      <div class="text-danger" ng-if="$first && $ctrl.mayCauseSuspension($ctrl.certificationStatusWhenEditing($ctrl.listing))">Setting this product to this status may trigger a ban by ONC</div>
-      <div class="text-danger" ng-if="$first && $ctrl.certificationStatusWhenEditing($ctrl.listing) === 'Terminated by ONC'">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
-      <div class="text-danger" ng-if="$first && $ctrl.certificationStatusWhenEditing($ctrl.listing) === 'Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
-      <div class="text-danger" ng-if="$first && $ctrl.certificationStatusWhenEditing($ctrl.listing) === 'Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
-    </div>
-    <div>
-      {{ item.eventDate | date : 'mediumDate' : 'GMT' }}
-      <div class="text-danger" ng-if="$ctrl.matchesPreviousDate(item)">Only one change of status allowed per day</div>
-    </div>
-    <div>
-      {{ item.reason }}
-    </div>
-    <div class="manage-list__item--end" ng-repeat-end>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('certificationEvents', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
-    </div>
-    <div class="manage-list__item--start" ng-if="$ctrl.addingItem['certificationEvents']">
-      <label for="certification-event-add-new-status" class="sr-only"><span ng-if="$first">Current </span>Certification Status</label>
-      <select ng-model="$ctrl.newItem['certificationEvents'].status" required
-              ng-options="status as status.name disable when $ctrl.disabledStatus(status.name) for status in $ctrl.resources.statuses | orderBy:'name'"
-              id="certification-event-add-new-status" name="certificationEventAddNewStatus" class="input-sm form-control">
-      </select>
-    </div>
-    <div ng-if="$ctrl.addingItem['certificationEvents']">
-      <label class="sr-only" for="certification-event-add-new-date">Add new Certification Status Date</label>
-      <div class="input-group">
-        <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['certificationEvents'].statusDateObject"
-               is-open="statusEvent.statusDatePicker" close-text="Close"
-               id="certification-event-add-new-date" name="certificationEventAddNewDate" required>
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-secondary btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
-        </span>
+  <span ng-if="$ctrl.listing.currentStatus">
+    <div class="manage-list__container">
+      <div class="data-label">Certification Status</div>
+      <div class="data-label">Effective Date</div>
+      <div class="data-label">Reason for status change</div>
+      <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
+        {{ item.status.name }}
+        <div class="text-danger" ng-if="!$last && $ctrl.matchesPreviousStatus(item)">Certification Status must differ from previous Status</div>
+        <div class="text-danger" ng-if="$first && $ctrl.mayCauseSuspension($ctrl.certificationStatusWhenEditing($ctrl.listing))">Setting this product to this status may trigger a ban by ONC</div>
+        <div class="text-danger" ng-if="$first && $ctrl.certificationStatusWhenEditing($ctrl.listing) === 'Terminated by ONC'">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
+        <div class="text-danger" ng-if="$first && $ctrl.certificationStatusWhenEditing($ctrl.listing) === 'Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
+        <div class="text-danger" ng-if="$first && $ctrl.certificationStatusWhenEditing($ctrl.listing) === 'Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
+      </div>
+      <div>
+        {{ item.eventDate | date : 'mediumDate' : 'GMT' }}
+        <div class="text-danger" ng-if="$ctrl.matchesPreviousDate(item)">Only one change of status allowed per day</div>
+      </div>
+      <div>
+        {{ item.reason }}
+      </div>
+      <div class="manage-list__item--end" ng-repeat-end>
+        <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('certificationEvents', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
+      </div>
+      <div class="manage-list__item--start" ng-if="$ctrl.addingItem['certificationEvents']">
+        <label for="certification-event-add-new-status" class="sr-only"><span ng-if="$first">Current </span>Certification Status</label>
+        <select ng-model="$ctrl.newItem['certificationEvents'].status" required
+                ng-options="status as status.name disable when $ctrl.disabledStatus(status.name) for status in $ctrl.resources.statuses | orderBy:'name'"
+                id="certification-event-add-new-status" name="certificationEventAddNewStatus" class="input-sm form-control">
+        </select>
+      </div>
+      <div ng-if="$ctrl.addingItem['certificationEvents']">
+        <label class="sr-only" for="certification-event-add-new-date">Add new Certification Status Date</label>
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newItem['certificationEvents'].statusDateObject"
+                 is-open="statusEvent.statusDatePicker" close-text="Close"
+                 id="certification-event-add-new-date" name="certificationEventAddNewDate" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-secondary btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i><span class="sr-only">Open Datepicker</span></button>
+          </span>
+        </div>
+      </div>
+      <div ng-if="$ctrl.addingItem['certificationEvents']">
+        <label for="certification-event-add-new-reason" class="sr-only">Add new Reason for Change</label>
+        <input class="input-sm form-control" type="text" ng-model="$ctrl.newItem['certificationEvents'].reason"
+               ng-maxlength="500" id="certification-event-add-new-reason" name="certificationEventAddNewReason">
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNewReason.$touched) && $ctrl.form.certificationEventAddNewReason.$error.maxlength">Field is too long</div>
+      </div>
+      <div class="manage-list__item--end" ng-if="$ctrl.addingItem['certificationEvents']">
+        <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('certificationEvents')" ng-mouseover="$ctrl.showFormErrors = true"
+                ng-disabled="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNewStatus.$touched || $ctrl.form.certificationEventAddNewDate.$touched || $ctrl.form.certificationEventAddNewReason.$touched) && ($ctrl.form.certificationEventAddNewStatus.$error.required || $ctrl.form.certificationEventAddNewStatus.$error.required)"><i class="fa fa-save"></i></button>
+        <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('certificationEvents')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
+      </div>
+      <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['certificationEvents']">
+        <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['certificationEvents'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
       </div>
     </div>
-    <div ng-if="$ctrl.addingItem['certificationEvents']">
-      <label for="certification-event-add-new-reason" class="sr-only">Add new Reason for Change</label>
-      <input class="input-sm form-control" type="text" ng-model="$ctrl.newItem['certificationEvents'].reason"
-               ng-maxlength="500" id="certification-event-add-new-reason" name="certificationEventAddNewReason">
-      <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNewReason.$touched) && $ctrl.form.certificationEventAddNewReason.$error.maxlength">Field is too long</div>
-    </div>
-    <div class="manage-list__item--end" ng-if="$ctrl.addingItem['certificationEvents']">
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('certificationEvents')" ng-mouseover="$ctrl.showFormErrors = true"
-              ng-disabled="($ctrl.showFormErrors || $ctrl.form.certificationEventAddNewStatus.$touched || $ctrl.form.certificationEventAddNewDate.$touched || $ctrl.form.certificationEventAddNewReason.$touched) && ($ctrl.form.certificationEventAddNewStatus.$error.required || $ctrl.form.certificationEventAddNewStatus.$error.required)"><i class="fa fa-save"></i></button>
-      <button class="btn btn-link btn-sm" ng-click="$ctrl.cancelNewItem('certificationEvents')"><i class="fa fa-times"></i><span class="sr-only">Cancel New Item</span></button>
-    </div>
-    <div class="manage-list__item--start" ng-if="!$ctrl.addingItem['certificationEvents']">
-      <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['certificationEvents'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
-    </div>
-  </div>
+  </span>
   <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
     <label for="cp-practice">Practice Type</label>
     <select class="input-sm form-control" ng-model="$ctrl.listing.practiceType" id="cp-practice" name="cpPractice"

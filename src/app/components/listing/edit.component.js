@@ -108,7 +108,8 @@ const ListingEditComponent = {
     }
 
     improperFirstStatus() {
-      return this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject')[0].status.name !== 'Active';
+      return this.currentStatus
+       && this.$filter('orderBy')(this.listing.certificationEvents, 'statusDateObject')[0].status.name !== 'Active';
     }
 
     isValid() {
