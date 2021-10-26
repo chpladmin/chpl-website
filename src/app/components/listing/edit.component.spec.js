@@ -191,6 +191,7 @@
       });
 
       it('should know when the "earliest" status is not "Active"', () => {
+        ctrl.listing.currentStatus = { status: { name: 'something' } };
         ctrl.listing.certificationEvents = [
           { statusDateObject: new Date('1/1/2018'), status: { name: 'Withdrawn by Developer' } },
           { statusDateObject: new Date('2/2/2018'), status: { name: 'Active' } },
