@@ -83,7 +83,8 @@
           </thead>
           <tbody>
             <tr ng-repeat="noncon in $ctrl.requirement.nonconformities track by $index">
-              <td ng-class="{'removed' : noncon.criterion && noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
+              <td ng-if="noncon.criterion" ng-class="{'removed' : noncon.criterion && noncon.criterion.removed}">{{ (noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title }}</td>
+              <td ng-if="!noncon.criterion" ng-class="{'removed' : $ctrl.isNonconformityTypeRemoved(noncon.nonconformityType)}">{{ ($ctrl.isNonconformityTypeRemoved(noncon.nonconformityType) ? 'Removed | ' : '') + noncon.nonconformityType }}</td>
               <td>{{ noncon.nonconformityStatus }}</td>
               <td>{{ noncon.summary }}</td>
               <td>

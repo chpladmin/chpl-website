@@ -44,7 +44,6 @@ export const SurveillanceRequirementEditComponent = {
       if (this.hasAnyRole(['ROLE_ACB'])) {
         data.nonconformityTypes.data = data.nonconformityTypes.data.filter(option => !option.removed);
       }
-      this.$log.info(data);
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceNonconformityEdit',
         animation: false,
@@ -136,6 +135,14 @@ export const SurveillanceRequirementEditComponent = {
         }
       }
       this.close({ $value: this.requirement });
+    }
+
+    isNonconformityTypeRemoved(type) {
+      let nonconformityType = this.data.nonconformityTypes.data.find(ncType => ncType.number === type)
+      if (nonconformityType) {
+        return nonconformityType.removed;
+      }
+      return false;
     }
   },
 };
