@@ -236,6 +236,26 @@ const SurveillanceEditComponent = {
           });
       }
     }
+
+    isRequirementRemoved(name) {
+      this.$log.info('Name: ' + name);
+      this.$log.info(this.data.surveillanceRequirements.realWorldTestingOptions);
+      let requirement = this.data.surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === name);
+      if (requirement) {
+        this.$log.info('Found RWT Req');
+        this.$log.info(requirement);
+        return requirement.removed;
+      }
+      this.$log.info(this.data.surveillanceRequirements.transparencyOptions);
+      requirement = this.data.surveillanceRequirements.transparencyOptions.find((req) => req.item === name);
+      if (requirement) {
+        this.$log.info('Found Transp Req');
+        this.$log.info(requirement);
+        return requirement.removed;
+      }
+      this.$log.info('Not Found RWT');
+      return false;
+    }
   },
 };
 
