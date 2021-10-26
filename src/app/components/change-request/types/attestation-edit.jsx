@@ -17,6 +17,10 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '8px',
   },
+  cardHeader:{
+    fontWeight:'600',
+    paddingBottom:'4px',
+  },
 });
 
 const validationSchema = yup.object({
@@ -50,13 +54,14 @@ function ChplChangeRequestAttestationEdit(props) {
   });
 
   return (
+    <div><Typography className={classes.cardHeader} gutterBottom variant='h4'>Editing Change Request:</Typography>
     <div className={classes.container}>
       <div>
-        <Typography gutterBottom variant='subtitle2'>Current Attestation:</Typography>
+        <Typography gutterBottom variant='subtitle1'>Current Attestation:</Typography>
         None
       </div>
       <div>
-      <Typography gutterBottom variant='subtitle2'>Submitted attestation:</Typography>
+      <Typography gutterBottom variant='subtitle1'>Submitted attestation:</Typography>
         <ChplTextField
           id="attestation"
           name="attestation"
@@ -71,6 +76,7 @@ function ChplChangeRequestAttestationEdit(props) {
         />
       </div>
     </div>
+  </div>
   );
 }
 

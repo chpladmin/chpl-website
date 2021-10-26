@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import {
+  Divider,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -13,8 +15,12 @@ import { UserContext } from '../../../shared/contexts';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr auto 1fr',
     gap: '8px',
+  },
+  cardHeader:{
+    fontWeight:'600',
+    paddingBottom:'4px',
   },
 });
 
@@ -50,15 +56,15 @@ function ChplChangeRequestWebsiteEdit(props) {
   });
 
   return (
+    <div><Typography className={classes.cardHeader} gutterBottom variant='h4'>Editing Change Request:</Typography>
     <div className={classes.container}>
       <div>
-        Current website
-        <br />
+      <Typography gutterBottom variant='subtitle1'>Current website:</Typography>
         {changeRequest.developer.website}
       </div>
+      <Divider orientation='vertical'></Divider>
       <div>
-        Submitted website
-        <br />
+      <Typography gutterBottom variant='subtitle1'>Submitted website:</Typography>
         <ChplTextField
           id="website"
           name="website"
@@ -73,6 +79,7 @@ function ChplChangeRequestWebsiteEdit(props) {
         />
       </div>
     </div>
+    </div> 
   );
 }
 

@@ -219,6 +219,10 @@ const theme = createMuiTheme({
         paddingTop: '14.5px',
         paddingBottom: '10px',
       },
+      multiline:{
+          paddingTop: '14.5px',
+          paddingBottom: '10px',
+        },
     },
     MuiList: {
       padding: {

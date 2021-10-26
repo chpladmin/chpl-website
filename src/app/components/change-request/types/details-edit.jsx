@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import {
-  Card,
-  CardContent,
+  Divider,
   FormControlLabel,
   Switch,
   Typography,
@@ -18,7 +17,7 @@ import { UserContext } from '../../../shared/contexts';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr auto 1fr',
     gap: '16px',
   },
   submittedDetailsContainer:{
@@ -102,6 +101,7 @@ function ChplChangeRequestDetailsEdit(props) {
           {changeRequest.developer.name}
         </div>
       </div>
+      <Divider orientation='vertical'></Divider>
       <div className={classes.submittedDetailsContainer}>
         <div><Typography gutterBottom variant='subtitle1'>Submitted details:</Typography></div>
         <div>
@@ -168,6 +168,9 @@ function ChplChangeRequestDetailsEdit(props) {
               error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
               helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
             />
+          
+          
+          
           </div>
           <div><Typography gutterBottom variant='subtitle2'>Address</Typography></div>
           <div className={classes.submittedDetailsSubContainer}>
