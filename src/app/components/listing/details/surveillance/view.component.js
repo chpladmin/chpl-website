@@ -166,6 +166,15 @@ const SurveillanceComponent = {
       }
       return false;
     }
+
+    isNonconformityTypeRemoved(type) {
+      this.$log.info(this.surveillanceTypes);
+      const nonconformityType = this.surveillanceTypes.nonconformityTypes.data.find((ncType) => ncType.number === type);
+      if (nonconformityType) {
+        return nonconformityType.removed;
+      }
+      return false;
+    }
   },
 };
 

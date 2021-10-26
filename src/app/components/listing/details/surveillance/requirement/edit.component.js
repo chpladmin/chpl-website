@@ -138,7 +138,7 @@ export const SurveillanceRequirementEditComponent = {
     }
 
     isNonconformityTypeRemoved(type) {
-      let nonconformityType = this.data.nonconformityTypes.data.find(ncType => ncType.number === type)
+      const nonconformityType = this.data.nonconformityTypes.data.find((ncType) => ncType.number === type);
       if (nonconformityType) {
         return nonconformityType.removed;
       }
