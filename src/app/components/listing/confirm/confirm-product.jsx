@@ -41,7 +41,7 @@ function ChplConfirmProduct(props) {
       setSelectedProduct(selected);
     }
     setIsCreating(!props.product.productId || props.products.length === 0);
-  }, [props.product, props.products]);
+  }, [props.product, props.products]); // eslint-disable-line react/destructuring-assignment
 
   let formik;
 
@@ -104,17 +104,18 @@ function ChplConfirmProduct(props) {
                     />
                   </Grid>
                   <Grid item xs={4}>
-                    { !!selectedProduct
+                    { selectedProduct
                       ? (
                         <>
-                          Use { selectedProduct.name }
+                          Use
+                          {' '}
+                          { selectedProduct.name }
                         </>
                       ) : (
                         <>
                           Choose a product to use
                         </>
-                      )
-                    }
+                      )}
                   </Grid>
                 </Grid>
                 <Grid container spacing={4}>
@@ -161,8 +162,7 @@ function ChplConfirmProduct(props) {
                           </ChplTextField>
                         </Grid>
                       </Grid>
-                    )
-                  }
+                    )}
                 </Grid>
               </CardContent>
             </Card>

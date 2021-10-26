@@ -62,7 +62,7 @@ function ChplConfirmDeveloper(props) {
 
   useEffect(() => {
     setSelectedDeveloper(props.developers.filter((d) => d.developerId === props.developer.developerId)[0]);
-  }, [props.developer, props.developers]);
+  }, [props.developer, props.developers]); // eslint-disable-line react/destructuring-assignment
 
   let formik;
 
@@ -152,17 +152,18 @@ function ChplConfirmDeveloper(props) {
                     />
                   </Grid>
                   <Grid item xs={4}>
-                    { !!selectedDeveloper
+                    { selectedDeveloper
                       ? (
                         <>
-                          Use { selectedDeveloper.name }
+                          Use
+                          {' '}
+                          { selectedDeveloper.name }
                         </>
                       ) : (
                         <>
                           Choose a developer to use
                         </>
-                      )
-                    }
+                      )}
                   </Grid>
                 </Grid>
                 <Grid container spacing={4}>
@@ -216,7 +217,7 @@ function ChplConfirmDeveloper(props) {
                         <Grid item xs={12}>
                           <ChplConfirmDeveloperAddress
                             address={developer.address}
-                            editing={true}
+                            editing
                             formik={formik}
                             handleChange={handleChange}
                           />
@@ -224,7 +225,7 @@ function ChplConfirmDeveloper(props) {
                         <Grid item xs={12}>
                           <ChplConfirmDeveloperContact
                             contact={developer.contact}
-                            editing={true}
+                            editing
                             formik={formik}
                             handleChange={handleChange}
                           />
@@ -252,8 +253,7 @@ function ChplConfirmDeveloper(props) {
                           </ChplTextField>
                         </Grid>
                       </Grid>
-                    )
-                  }
+                    )}
                 </Grid>
               </CardContent>
             </Card>

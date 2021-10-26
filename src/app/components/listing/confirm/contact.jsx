@@ -4,11 +4,14 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { bool, func, object } from 'prop-types';
+import { bool, func } from 'prop-types';
 
+import { contact as contactProp, formik as formikProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
 
-function ChplConfirmDeveloperContact({ contact, editing, formik, handleChange }) {
+function ChplConfirmDeveloperContact({
+  contact, editing, formik, handleChange,
+}) {
   return (
     <>
       { (contact || !editing)
@@ -113,9 +116,9 @@ function ChplConfirmDeveloperContact({ contact, editing, formik, handleChange })
 export default ChplConfirmDeveloperContact;
 
 ChplConfirmDeveloperContact.propTypes = {
-  contact: object.isRequired,
+  contact: contactProp.isRequired,
   editing: bool.isRequired,
-  formik: object.isRequired,
+  formik: formikProp.isRequired,
   handleChange: func,
 };
 

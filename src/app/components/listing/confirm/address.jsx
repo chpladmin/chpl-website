@@ -4,11 +4,14 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { bool, func, object } from 'prop-types';
+import { bool, func } from 'prop-types';
 
+import { address as addressProp, formik as formikProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
 
-function ChplConfirmDeveloperAddress({ address, editing, formik, handleChange }) {
+function ChplConfirmDeveloperAddress({
+  address, editing, formik, handleChange,
+}) {
   return (
     <>
       { (address || !editing)
@@ -157,9 +160,9 @@ function ChplConfirmDeveloperAddress({ address, editing, formik, handleChange })
 export default ChplConfirmDeveloperAddress;
 
 ChplConfirmDeveloperAddress.propTypes = {
-  address: object.isRequired,
+  address: addressProp.isRequired,
   editing: bool.isRequired,
-  formik: object.isRequired,
+  formik: formikProp.isRequired,
   handleChange: func,
 };
 
