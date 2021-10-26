@@ -144,9 +144,6 @@
             </div>
           </div>
         </uib-tab>
-        <uib-tab ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])" index="1" heading="Reporting">
-          <chpl-surveillance-activity-reporting-date-selector-bridge></chpl-surveillance-activity-reporting-date-selector-bridge>
-        </uib-tab>
         <uib-tab index="tab.id" ng-repeat="tab in $ctrl.tabs">
           <uib-tab-heading>
             <span ng-if="!tab.listing"><i class="fa fa-spin fa-spinner"></i></span> {{ tab.chplProductNumber }} <button class="btn btn-default" ng-click="$ctrl.takeTabAction('close', {id: tab.id}, $event)"><i class="fa fa-close"></i><span class="sr-only">Close</span></button>
