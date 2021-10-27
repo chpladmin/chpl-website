@@ -77,10 +77,10 @@ const useStyles = makeStyles({
     color: '#66926d',
     marginLeft: '4px',
   },
-  cardContentContainer:{
-    padding:'16px',
+  cardContentContainer: {
+    padding: '16px',
   },
-  cardContentChangeRequest:{
+  cardContentChangeRequest: {
     gridTemplateColumns: '1fr',
     display: 'grid',
     gap: '8px',
@@ -88,8 +88,8 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr .5fr',
     },
   },
-  cardHeader:{
-    fontWeight:'600',
+  cardHeader: {
+    fontWeight: '600',
   },
 });
 
@@ -131,77 +131,77 @@ function ChplChangeRequestView(props) {
   const canEdit = () => {
     if (hasAnyRole(['ROLE_DEVELOPER'])) {
       return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
-      && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
-      && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester';
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester';
     }
     return changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
-    && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
-    && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
-    && changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action';
+      && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
+      && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
+      && changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action';
   };
 
   return (
     <ThemeProvider>
-    <div>
-      <Card className={classes.productCard}>
-        <div className={classes.productCardHeaderContainer}>
-          <ChplAvatar
-            className={classes.developerAvatar}
-            text={changeRequest.developer.name}
-          />
-          <div className={classes.subProductCardHeaderContainer}>
-            <Typography gutterBottom className={classes.cardHeader} variant='h4'>{changeRequest.changeRequestType.name}</Typography>
-          </div>
-          </div> 
-            <div className={classes.versionProductCardHeaderContainer}>
-              <Typography gutterBottom variant="subtitle2">Developer:</Typography>
-              <Typography variant="body1">{changeRequest.developer.name}</Typography>
-              <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
-              <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
-              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment>
-              </Typography>
-        </div>
-        <Divider/>
-        <CardContent className={classes.cardContentContainer}>
-          <div className={classes.cardContentChangeRequest}>
-            <div>
-            {getChangeRequestDetails(changeRequest)}
+      <div>
+        <Card className={classes.productCard}>
+          <div className={classes.productCardHeaderContainer}>
+            <ChplAvatar
+              className={classes.developerAvatar}
+              text={changeRequest.developer.name}
+            />
+            <div className={classes.subProductCardHeaderContainer}>
+              <Typography gutterBottom className={classes.cardHeader} variant='h4'>{changeRequest.changeRequestType.name}</Typography>
             </div>
-          <div className={classes.widgetProductContainer}>
-            <div>
-              { canEdit()
-                && (
+          </div>
+          <div className={classes.versionProductCardHeaderContainer}>
+            <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+            <Typography variant="body1">{changeRequest.developer.name}</Typography>
+            <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+            <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+            <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+            <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+            <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+            <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment>
+            </Typography>
+          </div>
+          <Divider />
+          <CardContent className={classes.cardContentContainer}>
+            <div className={classes.cardContentChangeRequest}>
+              <div>
+                {getChangeRequestDetails(changeRequest)}
+              </div>
+              <div className={classes.widgetProductContainer}>
+                <div>
+                  {canEdit()
+                    && (
+                      <Button
+                        fullWidth
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => props.dispatch('edit')}
+                      >
+                        Edit Change Request<EditOutlinedIcon className={classes.iconSpacing}></EditOutlinedIcon>
+                      </Button>
+                    )}
+                </div>
+                <div>
                   <Button
                     fullWidth
-                    color="secondary"
+                    color="default"
                     variant="contained"
-                    onClick={() => props.dispatch('edit')}
+                    onClick={() => props.dispatch('close')}
                   >
-                    Edit Change Request<EditOutlinedIcon className={classes.iconSpacing}></EditOutlinedIcon>
+                    Close<CloseOutlinedIcon className={classes.iconSpacing}></CloseOutlinedIcon>
                   </Button>
-                )}
+                </div>
+              </div>
             </div>
-            <div>
-              <Button
-                fullWidth
-                color="default"
-                variant="contained"
-                onClick={() => props.dispatch('close')}
-              >
-                Close<CloseOutlinedIcon className={classes.iconSpacing}></CloseOutlinedIcon>
-              </Button>
-            </div>
-          </div>
-          </div>
-          <ChplChangeRequestHistory
-            changeRequest={changeRequest}
-          />
-        </CardContent>
-      </Card>
-    </div>
+            <ChplChangeRequestHistory
+              changeRequest={changeRequest}
+            />
+          </CardContent>
+        </Card>
+      </div>
     </ThemeProvider>
   );
 }

@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  ThemeProvider,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -20,6 +21,7 @@ import ChplActionBar from '../action-bar';
 import { ChplTextField } from '../util';
 import { UserContext } from '../../shared/contexts';
 
+import theme from '../../../app/themes/theme';
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
 import ChplChangeRequestDetailsEdit from './types/details-edit';
 import ChplChangeRequestWebsiteEdit from './types/website-edit';
@@ -27,14 +29,24 @@ import ChplChangeRequestWebsiteEdit from './types/website-edit';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '2fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '16px',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '2fr 1fr',
+    },
   },
   crActionContainer: {
     display: 'grid',
     gap: '16px',
-    gridTemplateColumns: 'auto 1fr',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'auto 1fr',
+    },
   },
+  crSubActionContainer: {
+      display: 'grid',
+      gap: '4px',
+    },
 });
 
 const validationSchema = yup.object({
@@ -181,6 +193,7 @@ function ChplChangeRequestEdit(props) {
   });
 
   return (
+    <ThemeProvider>
     <Card>
       <CardHeader className={classes.cardHeader} title='Editing Change Request:'>     
       </CardHeader>
@@ -191,13 +204,13 @@ function ChplChangeRequestEdit(props) {
           </div>
           <div className={classes.crActionContainer}>
             <Divider orientation='vertical' />
-            <div>
+            <div className={classes.crSubActionContainer}>
               <Typography gutterBottom variant='subtitle1'>Reason For Change:</Typography>
               <Typography gutterBottom variant='subtitle2'>Current status:</Typography>
               <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
               {hasAnyRole(['ROLE_DEVELOPER'])
                 ? (
-                  <Typography>
+                  <Typography gutterBottom>
                     {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
                       && (
                         <>
@@ -255,6 +268,7 @@ function ChplChangeRequestEdit(props) {
         </div>
       </CardContent>
     </Card>
+    </ThemeProvider>
   );
 }
 
