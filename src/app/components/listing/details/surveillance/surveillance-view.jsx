@@ -52,8 +52,10 @@ function ChplSurveillanceView(props) {
   const DateUtil = getAngularService('DateUtil');
   const [surveillance] = useState(props.surveillance);
   const [surveillanceRequirements] = useState(props.surveillanceRequirements);
+  const [nonconformityTypes] = useState(props.nonconformityTypes);
   const [surveillanceResults, setSurveillanceResults] = useState([]);
 
+  console.log(nonconformityTypes);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -79,9 +81,7 @@ function ChplSurveillanceView(props) {
         <Table size="small" aria-label="Surveillance Table">
           <TableHead>
             <TableRow>
-              <TableCell
-                style={{ width: '33%' }}
-              >
+              <TableCell style={{ width: '33%' }}>
                 Attribute
               </TableCell>
               <TableCell>Value</TableCell>
@@ -136,7 +136,7 @@ function ChplSurveillanceView(props) {
                     <ul className={classes.unindentedData}>
                       { surveillance.requirements.map((req) => (
                         <li key={req.id}>
-                          { `${req.type.name}`  }
+                          { `${req.type.name}` }
                           :
                           { req.criterion && <ChplCriterionTitle criterion={req.criterion} useRemovedClass /> }
                           { !req.criterion
@@ -194,7 +194,7 @@ function ChplSurveillanceView(props) {
           <div data-testid="non-conformity-component-container">
             { surveillance.requirements.map((requirement) => (
               requirement.nonconformities.map((nonconformity) => (
-                <ChplSurveillanceNonconformity key={requirement.id} surveillance={surveillance} requirement={requirement} nonconformity={nonconformity} data-testid="non-conformity-component" />
+                <ChplSurveillanceNonconformity key={requirement.id} surveillance={surveillance} requirement={requirement} nonconformity={nonconformity} nonconformityTypes={nonconformityTypes} data-testid="non-conformity-component" />
               ))
             ))}
           </div>
@@ -220,4 +220,5 @@ ChplSurveillanceView.propTypes = {
       removed: bool,
     })),
   }).isRequired,
+  nonconformityTypes: arrayOf(criterionPropType),
 };

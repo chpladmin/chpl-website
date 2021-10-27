@@ -82,7 +82,8 @@ export const SurveillanceReportRelevantListingComponent = {
             size: 'lg',
             resolve: {
               surveillance: () => surveillance,
-              surveillanceRequirements: () => that.surveillanceTypes.surveillanceRequirements
+              surveillanceRequirements: () => that.surveillanceTypes.surveillanceRequirements,
+              nonconformityTypes: () => that.surveillanceTypes.nonconformityTypes.data,
             },
           });
       });
