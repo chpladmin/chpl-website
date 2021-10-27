@@ -14,6 +14,8 @@ export const ConfirmListingComponent = {
       this.networkService = networkService;
       this.toaster = toaster;
       this.stage = 'developer';
+      this.products = [];
+      this.versions = [];
       this.resources = {};
       this.progress = {
         value: 0,
