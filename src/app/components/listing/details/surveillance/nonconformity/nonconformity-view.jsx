@@ -55,9 +55,7 @@ function ChplNonconformityView(props) {
   /* eslint-enable react/destructuring-assignment */
 
   const isNonconformityTypeRemoved = (type) => {
-    console.log('Looking for type - ' + type);
     const foundNonconformityType = nonconformityTypes.find((ncType) => ncType.number === type);
-    console.log(foundNonconformityType);
     if (foundNonconformityType) {
       return foundNonconformityType.removed;
     }
