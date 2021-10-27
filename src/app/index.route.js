@@ -1,6 +1,6 @@
 import { administrationStatesConfig as administrationStates } from './pages/administration/administration.state';
 import { chartsStatesConfig as chartsStates } from './pages/charts/charts.state';
-import { collectionsStatesConfig as collectionsStates } from './pages/collections/collections.state';
+import collectionsStates from './pages/collections/collections.state';
 import { compareStatesConfig as compareStates } from './pages/compare/compare.state';
 import listingStates from './pages/listing/listing.state';
 import organizationsStates from './pages/organizations/organizations.state';
