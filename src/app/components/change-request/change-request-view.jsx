@@ -6,6 +6,7 @@ import {
   Divider,
   Typography,
   makeStyles,
+  ThemeProvider,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import Moment from 'react-moment';
@@ -15,6 +16,7 @@ import { changeRequest as changeRequestProp } from '../../shared/prop-types';
 import { ChplAvatar } from '../util';
 import { UserContext } from '../../shared/contexts';
 
+import theme from '../../../app/themes/theme';
 import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDetailsView from './types/details-view';
@@ -44,10 +46,13 @@ const useStyles = makeStyles({
   },
   versionProductCardHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
     alignItems: 'start',
     padding: '16px',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr 1fr 1fr',
+    },
   },
   widgetProductContainer: {
     alignContent: 'space-between',
@@ -56,8 +61,9 @@ const useStyles = makeStyles({
   },
   content: {
     display: 'grid',
-    gridTemplateColumns: 'auto auto auto',
+    gridTemplateColumns: '1fr',
     gap: '8px',
+
   },
   subContent: {
     display: 'grid',
@@ -75,9 +81,12 @@ const useStyles = makeStyles({
     padding:'16px',
   },
   cardContentChangeRequest:{
-    gridTemplateColumns: '1fr .5fr',
+    gridTemplateColumns: '1fr',
     display: 'grid',
     gap: '8px',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr .5fr',
+    },
   },
   cardHeader:{
     fontWeight:'600',
@@ -132,6 +141,7 @@ function ChplChangeRequestView(props) {
   };
 
   return (
+    <ThemeProvider>
     <div>
       <Card className={classes.productCard}>
         <div className={classes.productCardHeaderContainer}>
@@ -144,17 +154,17 @@ function ChplChangeRequestView(props) {
           </div>
           </div> 
             <div className={classes.versionProductCardHeaderContainer}>
-              <Typography gutterBottom variant="subtitle2">Developer:
-              <Typography variant="body1">{changeRequest.developer.name}</Typography></Typography>
-              <Typography gutterBottom variant="subtitle2">Creation Date:
-              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography></Typography>
-              <Typography gutterBottom variant="subtitle2">Request Status:
-              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography></Typography>
-              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:
-              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
+              <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+              <Typography variant="body1">{changeRequest.developer.name}</Typography>
+              <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+              <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment>
               </Typography>
         </div>
-        <Divider />
+        <Divider/>
         <CardContent className={classes.cardContentContainer}>
           <div className={classes.cardContentChangeRequest}>
             <div>
@@ -192,6 +202,7 @@ function ChplChangeRequestView(props) {
         </CardContent>
       </Card>
     </div>
+    </ThemeProvider>
   );
 }
 
