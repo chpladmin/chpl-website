@@ -84,6 +84,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     display: 'grid',
     gap: '8px',
+    paddingBottom:'16px',
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr .5fr',
     },
@@ -186,6 +187,7 @@ function ChplChangeRequestView(props) {
                 </div>
                 <div>
                   <Button
+                    
                     fullWidth
                     color="default"
                     variant="contained"

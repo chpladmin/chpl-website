@@ -14,7 +14,7 @@ import { UserContext } from '../../../shared/contexts';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: '1fr 1fr',
     gap: '8px',
   },
   submittedDetailsContainer:{
