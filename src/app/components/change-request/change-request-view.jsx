@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
   versionProductCardHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: '1fr 1fr',
     gap: '8px',
     alignItems: 'start',
     padding: '16px',
@@ -84,7 +84,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     display: 'grid',
     gap: '8px',
-    paddingBottom:'16px',
+    paddingBottom: '16px',
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr .5fr',
     },
@@ -155,15 +155,23 @@ function ChplChangeRequestView(props) {
             </div>
           </div>
           <div className={classes.versionProductCardHeaderContainer}>
-            <Typography gutterBottom variant="subtitle2">Developer:</Typography>
-            <Typography variant="body1">{changeRequest.developer.name}</Typography>
-            <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-            <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
-            <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
-            <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-            <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-            <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment>
-            </Typography>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+              <Typography variant="body1">{changeRequest.developer.name}</Typography>
+              </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+              </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+              </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment>
+              </Typography>
+              </div>
           </div>
           <Divider />
           <CardContent className={classes.cardContentContainer}>
@@ -187,7 +195,7 @@ function ChplChangeRequestView(props) {
                 </div>
                 <div>
                   <Button
-                    
+
                     fullWidth
                     color="default"
                     variant="contained"
