@@ -17,21 +17,17 @@ import { UserContext } from '../../../shared/contexts';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr auto 1fr',
+    gridTemplateColumns: '1fr',
     gap: '16px',
   },
   submittedDetailsContainer:{
     display: 'grid',
-    gap: '8px',
+    gap: '4px',
   },
   submittedDetailsSubContainer:{
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '16px',
-  },
-  cardHeader:{
-    fontWeight:'600',
-    paddingBottom:'4px',
   },
 });
 
@@ -93,7 +89,6 @@ function ChplChangeRequestDetailsEdit(props) {
   });
 
   return (
-    <div><Typography className={classes.cardHeader} gutterBottom variant='h4'>Editing Change Request:</Typography>
     <div className={classes.container}>
       <div>
         <Typography gutterBottom variant='subtitle1'>Current details:</Typography>
@@ -101,7 +96,7 @@ function ChplChangeRequestDetailsEdit(props) {
           {changeRequest.developer.name}
         </div>
       </div>
-      <Divider orientation='vertical'></Divider>
+      <Divider/>
       <div className={classes.submittedDetailsContainer}>
         <div><Typography gutterBottom variant='subtitle1'>Submitted details:</Typography></div>
         <div>
@@ -248,7 +243,6 @@ function ChplChangeRequestDetailsEdit(props) {
           </div>
         </div>
         </div>
-    </div>
   );
 }
 

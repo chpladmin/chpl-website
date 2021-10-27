@@ -15,12 +15,12 @@ import { UserContext } from '../../../shared/contexts';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr auto 1fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
   },
-  cardHeader:{
-    fontWeight:'600',
-    paddingBottom:'4px',
+  submittedDetailsContainer:{
+    display: 'grid',
+    gap: '4px',
   },
 });
 
@@ -56,14 +56,13 @@ function ChplChangeRequestWebsiteEdit(props) {
   });
 
   return (
-    <div><Typography className={classes.cardHeader} gutterBottom variant='h4'>Editing Change Request:</Typography>
     <div className={classes.container}>
       <div>
       <Typography gutterBottom variant='subtitle1'>Current website:</Typography>
         {changeRequest.developer.website}
       </div>
-      <Divider orientation='vertical'></Divider>
-      <div>
+      <Divider/>
+      <div className={classes.submittedDetailsContainer}>
       <Typography gutterBottom variant='subtitle1'>Submitted website:</Typography>
         <ChplTextField
           id="website"
@@ -78,7 +77,6 @@ function ChplChangeRequestWebsiteEdit(props) {
           helperText={formik.touched.website && formik.errors.website}
         />
       </div>
-    </div>
     </div> 
   );
 }

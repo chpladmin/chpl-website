@@ -5,6 +5,7 @@ import {
   makeStyles,
   Card,
   CardContent,
+  CardHeader,
   Divider,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
@@ -26,8 +27,16 @@ import ChplChangeRequestWebsiteEdit from './types/website-edit';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '8px',
+    gridTemplateColumns: '2fr 1fr',
+    gap: '16px',
+  },
+  crActionContainer: {
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: 'auto 1fr',
+  },
+  cardHeader: {
+    fontWeight: '600',
   },
 });
 
@@ -176,66 +185,71 @@ function ChplChangeRequestEdit(props) {
 
   return (
     <Card>
+      <CardHeader className={classes.cardHeader} title='Editing Change Request:'>     
+      </CardHeader>
       <CardContent>
         <div className={classes.container}>
           <div>
             {getChangeRequestDetails(changeRequest, handleDispatch)}
           </div>
-          <Divider />
-          <div>
-            <Typography gutterBottom variant='subtitle2'>Reason for change:</Typography>
-            <ChplTextField
-              id="comment"
-              name="comment"
-              label="Comment"
-              margin="none"
-              required
-              multiline
-              value={formik.values.comment}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.comment && !!formik.errors.comment}
-              helperText={formik.touched.comment && formik.errors.comment}
-            />
-            <br/>
-            <br/>
-            <Typography gutterBottom variant='subtitle2'>Current status:</Typography>
-            <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-            {hasAnyRole(['ROLE_DEVELOPER'])
-              ? (
-                <Typography>
-                  {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
-                    && (
-                      <>
-                        Status will be set to &quot;Pending ONC-ACB Action&quot;
-                      </>
-                    )}
-                  {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
-                    && (
-                      <>
-                        No status change will occur
-                      </>
-                    )}
-                </Typography>
-              )
-              : (
-                <ChplTextField
-                  select
-                  id="change-request-status-type"
-                  name="changeRequestStatusType"
-                  label="Change Status"
-                  required
-                  value={formik.values.changeRequestStatusType}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
-                  helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
-                >
-                  {changeRequestStatusTypes.map((item) => (
-                    <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                  ))}
-                </ChplTextField>
-              )}
+          <div className={classes.crActionContainer}>
+            <Divider orientation='vertical' />
+            <div>
+              <Typography gutterBottom variant='subtitle1'>Reason For Change:</Typography>
+              <Typography gutterBottom variant='subtitle2'>Current status:</Typography>
+              <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+              {hasAnyRole(['ROLE_DEVELOPER'])
+                ? (
+                  <Typography>
+                    {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
+                      && (
+                        <>
+                          Status will be set to &quot;Pending ONC-ACB Action&quot;
+                        </>
+                      )}
+                    {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
+                      && (
+                        <>
+                          No status change will occur
+                        </>
+                      )}
+                  </Typography>
+                )
+                : (
+                  <ChplTextField
+                    select
+                    id="change-request-status-type"
+                    name="changeRequestStatusType"
+                    label="Change Status"
+                    required
+                    value={formik.values.changeRequestStatusType}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
+                    helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
+                  >
+                    {changeRequestStatusTypes.map((item) => (
+                      <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                    ))}
+                  </ChplTextField>
+                )}
+              <br />
+              <Typography gutterBottom variant='subtitle2'>Reason for change:</Typography>
+              <ChplTextField
+                id="comment"
+                name="comment"
+                label="Comment"
+                margin="none"
+                required
+                multiline
+                value={formik.values.comment}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.comment && !!formik.errors.comment}
+                helperText={formik.touched.comment && formik.errors.comment}
+                rows={4}
+              />
+            </div>
           </div>
           <ChplActionBar
             dispatch={handleDispatch}

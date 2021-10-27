@@ -14,12 +14,12 @@ import { UserContext } from '../../../shared/contexts';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
   },
-  cardHeader:{
-    fontWeight:'600',
-    paddingBottom:'4px',
+  submittedDetailsContainer:{
+    display: 'grid',
+    gap: '4px',
   },
 });
 
@@ -54,14 +54,13 @@ function ChplChangeRequestAttestationEdit(props) {
   });
 
   return (
-    <div><Typography className={classes.cardHeader} gutterBottom variant='h4'>Editing Change Request:</Typography>
     <div className={classes.container}>
       <div>
         <Typography gutterBottom variant='subtitle1'>Current Attestation:</Typography>
         None
       </div>
-      <div>
-      <Typography gutterBottom variant='subtitle1'>Submitted attestation:</Typography>
+      <div className={classes.submittedDetailsContainer}>
+        <Typography gutterBottom variant='subtitle1'>Submitted attestation:</Typography>
         <ChplTextField
           id="attestation"
           name="attestation"
@@ -76,7 +75,6 @@ function ChplChangeRequestAttestationEdit(props) {
         />
       </div>
     </div>
-  </div>
   );
 }
 

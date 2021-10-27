@@ -156,6 +156,9 @@ const theme = createMuiTheme({
       root: {
         backgroundColor: '#f5f9fd',
       },
+      title:{
+        fontWeight:'600',
+      },
     },
     MuiCheckbox: {
       root: {
@@ -222,7 +225,11 @@ const theme = createMuiTheme({
       multiline:{
           paddingTop: '14.5px',
           paddingBottom: '10px',
+          height:'256px',
         },
+      inputMultiline:{
+        height:'256px',
+      },
     },
     MuiList: {
       padding: {
