@@ -59,6 +59,20 @@ const useStyles = makeStyles(() => ({
     paddingBottom: '16px',
     gap: '8px',
   },
+  tableFirstColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+    backgroundColor: '#ffffff',
+  },
+  tableDeveloperCell: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  developerName: {
+    fontWeight: '600',
+  }
 }));
 
 const sortComparator = (property) => {
@@ -208,11 +222,11 @@ function ChplChangeRequests(props) {
           <>
             <TableContainer>
               <div className={classes.tableActionContainer} component={Paper}>
-              <div>
-                <Button color="secondary" variant="contained" onClick={() => csvExporter.generateCsv(getChangeRequests())}>Download Request
-                  <GetAppIcon className={classes.iconSpacing} />
-                </Button>
-              </div>
+                <div>
+                  <Button color="secondary" variant="contained" onClick={() => csvExporter.generateCsv(getChangeRequests())}>Download Request
+                    <GetAppIcon className={classes.iconSpacing} />
+                  </Button>
+                </div>
               </div>
             </TableContainer>
             <TableContainer className={classes.container} component={Paper}>
@@ -233,11 +247,16 @@ function ChplChangeRequests(props) {
                       <TableRow key={item.id}>
                         {!hasAnyRole(['ROLE_DEVELOPER'])
                           && (
-                            <TableCell>
-                              <ChplAvatar
-                                text={item.developerName}
-                              />
-                              {item.developerName}
+                            <TableCell className={classes.tableFirstColumn}>
+                              <div className={classes.tableDeveloperCell}>
+                                <div>
+                                  <ChplAvatar
+                                    text={item.developerName}
+                                  />
+                                </div>
+                                <div className={classes.developerName}>{item.developerName}
+                                </div>
+                              </div>
                             </TableCell>
                           )}
                         <TableCell>{item.changeRequestTypeName}</TableCell>
