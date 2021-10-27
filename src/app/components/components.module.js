@@ -9,6 +9,7 @@ import {
   ChplConfirmDeveloper,
   ChplConfirmListings,
   ChplConfirmProduct,
+  ChplConfirmProgress,
   ChplConfirmVersion,
 } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
@@ -62,6 +63,7 @@ angular
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
+  .component('chplConfirmProgressBridge', reactToAngularComponent(ChplConfirmProgress))
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))

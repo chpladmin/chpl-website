@@ -15,6 +15,10 @@ export const ConfirmListingComponent = {
       this.toaster = toaster;
       this.stage = 'developer';
       this.resources = {};
+      this.progress = {
+        value: 0,
+        label: '',
+      };
       this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
       this.handleProductDispatch = this.handleProductDispatch.bind(this);
       this.handleVersionDispatch = this.handleVersionDispatch.bind(this);
@@ -22,6 +26,7 @@ export const ConfirmListingComponent = {
     }
 
     $onInit () {
+      this.progress = this.getProgress();
       this.loadDeveloper();
       const pending = {};
       this.$q.all([
@@ -239,6 +244,7 @@ export const ConfirmListingComponent = {
         default:
           break;
       }
+      this.progress = this.getProgress();
     }
 
     previous () {
@@ -252,31 +258,35 @@ export const ConfirmListingComponent = {
       default:
         break;
       }
-    }
-
-    isDisabled () {
-      switch (this.stage) {
-      case 'developer':
-        return this.form.$invalid;
-      case 'product':
-        return (this.productChoice === 'choose' && !this.pending.product.productId);
-      case 'version':
-        return (this.versionChoice === 'choose' && !this.pending.version.versionId);
-      default:
-        return true;
-      }
+      this.progress = this.getProgress();
     }
 
     cancel () {
       this.$state.go('^', {}, {reload: true});
     }
 
-    getStage () {
+    getProgress () {
       switch (this.stage) {
-      case 'developer': return 1;
-      case 'product': return 2;
-      case 'version': return 3;
-      case 'listing': return 4;
+        case 'developer':
+          return {
+            value: 25,
+            label: 'Developer',
+          };
+      case 'product':
+          return {
+            value: 50,
+            label: 'Product',
+          };
+      case 'version':
+          return {
+            value: 75,
+            label: 'Version',
+          };
+      case 'listing':
+          return {
+            value: 100,
+            label: 'Listing',
+          };
         //no default
       }
     }

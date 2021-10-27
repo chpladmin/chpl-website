@@ -8,13 +8,9 @@
       <h2>Inspecting Listing: {{ $ctrl.listing.chplProductNumber }}</h2>
     </div>
     <div>
-      <uib-progressbar
-        class="progress-striped active"
-        type="info"
-        value="$ctrl.getStage()"
-        max="4"
-        title="{{ $ctrl.stage }}">{{ $ctrl.stage }}
-      </uib-progressbar>
+      <chpl-confirm-progress-bridge
+        value="$ctrl.progress"
+        ></chpl-confirm-progress-bridge>
     </div>
   </div>
   <div ng-switch="$ctrl.stage" ng-form="$ctrl.form">
