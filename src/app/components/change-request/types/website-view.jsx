@@ -2,6 +2,7 @@ import React from 'react';
 import {
   makeStyles,
   Typography,
+  Divider,
 } from '@material-ui/core';
 
 import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
@@ -9,7 +10,7 @@ import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
   },
 });

@@ -35,7 +35,8 @@ const useStyles = makeStyles({
     gridTemplateColumns: 'auto 11fr',
     padding: '16px',
     gap: '16px',
-    alignItems: 'start',
+    alignItems: 'end',
+    backgroundColor: '#f5f9fd',
   },
   subProductCardHeaderContainer: {
     display: 'grid',
@@ -45,7 +46,8 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     gap: '8px',
-    alignItems: 'center',
+    alignItems: 'start',
+    padding: '16px',
   },
   widgetProductContainer: {
     alignContent: 'space-between',
@@ -62,15 +64,15 @@ const useStyles = makeStyles({
     gap: '8px',
   },
   developerAvatar: {
-    color: '#156dac',
-    backgroundColor: '#f5f9fd',
+    color: '#fff',
+    backgroundColor: '#bbb',
   },
   activeStatus: {
     color: '#66926d',
     marginLeft: '4px',
   },
   cardContentContainer:{
-    padding:'16px 32px 32px 70px',
+    padding:'16px',
   },
   cardContentChangeRequest:{
     gridTemplateColumns: '1fr .5fr',
@@ -79,7 +81,6 @@ const useStyles = makeStyles({
   },
   cardHeader:{
     fontWeight:'600',
-    paddingBottom:'4px',
   },
 });
 
@@ -140,6 +141,8 @@ function ChplChangeRequestView(props) {
           />
           <div className={classes.subProductCardHeaderContainer}>
             <Typography gutterBottom className={classes.cardHeader} variant='h4'>{changeRequest.changeRequestType.name}</Typography>
+          </div>
+          </div> 
             <div className={classes.versionProductCardHeaderContainer}>
               <Typography gutterBottom variant="subtitle2">Developer:
               <Typography variant="body1">{changeRequest.developer.name}</Typography></Typography>
@@ -150,8 +153,6 @@ function ChplChangeRequestView(props) {
               <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:
               <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
               </Typography>
-            </div>
-          </div>
         </div>
         <Divider />
         <CardContent className={classes.cardContentContainer}>

@@ -61,7 +61,7 @@ function ChplChangeRequestWebsiteEdit(props) {
       <Typography gutterBottom variant='subtitle1'>Current website:</Typography>
         {changeRequest.developer.website}
       </div>
-      <Divider/>
+      <Divider></Divider>
       <div className={classes.submittedDetailsContainer}>
       <Typography gutterBottom variant='subtitle1'>Submitted website:</Typography>
         <ChplTextField

@@ -35,9 +35,6 @@ const useStyles = makeStyles({
     gap: '16px',
     gridTemplateColumns: 'auto 1fr',
   },
-  cardHeader: {
-    fontWeight: '600',
-  },
 });
 
 const validationSchema = yup.object({
