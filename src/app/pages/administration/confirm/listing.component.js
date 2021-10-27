@@ -14,14 +14,11 @@ export const ConfirmListingComponent = {
       this.networkService = networkService;
       this.toaster = toaster;
       this.stage = 'developer';
-      this.products = [];
-      this.versions = [];
-      this.errorMessages = [];
-      this.systemRequirements = [];
       this.resources = {};
       this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
       this.handleProductDispatch = this.handleProductDispatch.bind(this);
       this.handleVersionDispatch = this.handleVersionDispatch.bind(this);
+      this.handleWizardDispatch = this.handleWizardDispatch.bind(this);
     }
 
     $onInit () {
@@ -64,12 +61,17 @@ export const ConfirmListingComponent = {
     }
 
     canAct (action) {
+      let ret;
       switch (action) {
-      case 'confirm': return this.stage === 'listing';
-      case 'next': return this.showFormErrors && (this.form.$pristine || !this.pending.developer.developerId) && !this.isDisabled();
-      case 'previous': return this.stage !== 'developer';
-        // no default
+        case 'confirm': ret = this.stage === 'listing';
+          break;
+        case 'next': ret = this.stage !== 'listing'; // todo: validation on "create" data
+          break;
+        case 'previous': ret = this.stage !== 'developer';
+          break;
+          // no default
       }
+      return ret;
     }
 
     handleDeveloperDispatch(action, data) {
@@ -105,7 +107,23 @@ export const ConfirmListingComponent = {
           this.pending.version = data;
           break;
       }
-      this.$log.info(action, data);
+      this.$scope.$digest();
+    }
+
+    handleWizardDispatch(action, data) {
+      switch (action) {
+        case 'cancel': this.cancel();
+          break;
+        case 'confirm': this.confirm();
+          break;
+        case 'next': this.next();
+          break;
+        case 'previous': this.previous();
+          break;
+        case 'reject': this.reject();
+          break;
+          // no default
+      }
       this.$scope.$digest();
     }
 
@@ -146,24 +164,6 @@ export const ConfirmListingComponent = {
           .then(result => that.pending.version = result);
       } else {
         that.pending.version = {};
-      }
-    }
-
-    takeAction (action) {
-      switch (action) {
-      case 'cancel': this.cancel();
-        break;
-      case 'confirm': this.confirm();
-        break;
-      case 'mouseover': this.showFormErrors = true;
-        break;
-      case 'next': this.next();
-        break;
-      case 'previous': this.previous();
-        break;
-      case 'reject': this.reject();
-        break;
-        // no default
       }
     }
 

@@ -4,7 +4,7 @@ import {
 } from 'prop-types';
 import { getAngularService } from '.';
 
-import ChplActionBar from '../action-bar';
+import { ChplActionBar } from '../action-bar';
 
 const dependencies = {
   getChplLogService: () => require('../../services/services-bridge.jsx').default,

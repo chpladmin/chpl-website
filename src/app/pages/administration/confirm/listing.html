@@ -47,10 +47,12 @@
         ></chpl-inspect-listing>
     </div>
   </div>
-  <chpl-action-bar can-act="$ctrl.canAct(action)"
-                   error-messages="$ctrl.listing.errorMessages"
-                   warning-messages="$ctrl.listing.warningMessages"
-                   is-wizard="true"
-                   take-action="$ctrl.takeAction(action)">
-  </chpl-action-bar>
+  <chpl-wizard-bar-bridge
+    can-confirm="$ctrl.canAct('confirm')"
+    can-next="$ctrl.canAct('next')"
+    can-previous="$ctrl.canAct('previous')"
+    error-messages="$ctrl.listing.errorMessages"
+    warning-messages="$ctrl.listing.warningMessages"
+    dispatch="::$ctrl.handleWizardDispatch">
+  </chpl-wizard-bar-bridge>
 </div>
