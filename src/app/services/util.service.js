@@ -634,7 +634,7 @@
         '170.315 (h)(1)',
         '170.315 (h)(2)',
         '170.523 (k)(1)',
-        '170.523 (k)(2) (Removed)',
+        '170.523 (k)(2)',
         '170.523 (l)',
         'Annual Real World Testing Plan',
         'Annual Real World Testing Results',

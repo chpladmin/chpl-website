@@ -201,7 +201,7 @@
         var criteria2015_e_1 = { number: '170.315 (e)(1)' };
         var criteria2015_g_4 = { number: '170.315 (g)(4)' };
         var criteria2015_g_10 = { number: '170.315 (g)(10)' };
-        var transparency_k_2 = { number: '170.523 (k)(2) (Removed)' };
+        var transparency_k_2 = { number: '170.523 (k)(2)' };
         var other = { number: 'Other Non-Conformity' };
         expect(util.sortNonconformityTypes(criteria2014_a_4)).toBeLessThan(util.sortNonconformityTypes(criteria2014_a_10));
         expect(util.sortNonconformityTypes(criteria2014_a_10)).toBeLessThan(util.sortNonconformityTypes(criteria2015_d_1));
