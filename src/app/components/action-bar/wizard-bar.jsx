@@ -5,6 +5,8 @@ import {
 import {
   Button,
   ButtonGroup,
+  Checkbox,
+  FormControlLabel,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
@@ -14,8 +16,9 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
-import ChplActionBarConfirmation from './action-bar-confirmation';
 import theme from '../../themes/theme';
+
+import ChplActionBarConfirmation from './action-bar-confirmation';
 
 const useStyles = makeStyles(() => ({
   buttons: {
@@ -38,15 +41,15 @@ function ChplWizardBar(props) {
   const [pendingAction, setPendingAction] = useState('');
   const [pendingMessage, setPendingMessage] = useState('');
   const [isConfirming, setIsConfirming] = useState(false);
+  const [warningsAcknowledged, setWarningsAcknowledged] = useState(false);
   const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
   const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
   const [showMessages, setShowMessages] = useState(true);
   const classes = useStyles();
+  const { canConfirm, canNext, canPrevious } = props;
   /* eslint-enable react/destructuring-assignment */
 
-  const act = (action, data) => {
-    return props.dispatch(action, data);
-  };
+  const act = (action, data) => props.dispatch(action, data);
 
   const confirmCancel = () => {
     setIsConfirming(true);
@@ -84,7 +87,7 @@ function ChplWizardBar(props) {
             pendingMessage={pendingMessage}
           />
           )}
-        { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
+        { (errors?.length > 0 || warnings?.length > 0)
           && (
             <>
               <div className="action-bar__error-toggle">
@@ -94,16 +97,16 @@ function ChplWizardBar(props) {
                   tabIndex={0}
                   role="button"
                 >
-                  { errors && errors.length > 0
+                  { errors?.length > 0
                     && (
                       <>
                         Error
                         { errors.length > 1 && 's'}
                       </>
                     )}
-                  { errors && errors.length > 0 && warnings && warnings.length > 0
+                  { errors?.length > 0 && warnings?.length > 0
                     && <> and </>}
-                  { warnings && warnings.length > 0
+                  { warnings?.length > 0
                     && (
                       <>
                         Warning
@@ -119,7 +122,7 @@ function ChplWizardBar(props) {
           && (
             <>
               <div className="action-bar__messages">
-                { errors && errors.length > 0
+                { errors?.length > 0
                   && (
                     <div className="action-bar__errors">
                       <strong>
@@ -135,7 +138,7 @@ function ChplWizardBar(props) {
                       </ul>
                     </div>
                   )}
-                { warnings && warnings.length > 0
+                { warnings?.length > 0
                   && (
                     <>
                       <div className="action-bar__warnings">
@@ -156,6 +159,22 @@ function ChplWizardBar(props) {
               </div>
             </>
           )}
+        { warnings?.length > 0
+          && (
+            <div className="action-bar__acknowledge-warnings">
+              <FormControlLabel
+                label="I have reviewed the warning(s) and wish to proceed with this update"
+                control={(
+                  <Checkbox
+                    name="acknowledgeWarnings"
+                    value="yes"
+                    onChange={() => setWarningsAcknowledged(!warningsAcknowledged)}
+                    checked={warningsAcknowledged}
+                  />
+                )}
+              />
+            </div>
+          )}
         <div className="action-bar__buttons">
           <ButtonGroup
             color="primary"
@@ -174,7 +193,7 @@ function ChplWizardBar(props) {
             <Button
               id="action-bar-previous"
               variant="outlined"
-              disabled={!props.canPrevious}
+              disabled={!canPrevious}
               onClick={() => act('previous')}
               className={classes.buttons}
             >
@@ -183,7 +202,7 @@ function ChplWizardBar(props) {
                 className={classes.iconSpacing}
               />
             </Button>
-            { props.canNext
+            { canNext
               && (
                 <Button
                   id="action-bar-next"
@@ -197,12 +216,12 @@ function ChplWizardBar(props) {
                   />
                 </Button>
               )}
-            { !props.canNext
+            { !canNext
               && (
                 <Button
                   id="action-bar-confirm"
                   variant="contained"
-                  disabled={!props.canConfirm}
+                  disabled={!canConfirm}
                   onClick={() => confirmConfirm()}
                   className={classes.buttons}
                 >
