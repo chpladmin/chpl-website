@@ -49,7 +49,7 @@ const useStyles = makeStyles({
     },
   },
   actionsContainer: {
-    alignContent: 'space-between',
+    alignContent: 'flex-start',
     display: 'grid',
     gap: '8px',
   },

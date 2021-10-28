@@ -20,6 +20,15 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
   },
+  currentDetailsContainer: {
+    display: 'grid',
+    gap: '4px',
+  },
+  currentDetailsSubContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '16px',
+  },
   submittedDetailsContainer: {
     display: 'grid',
     gap: '4px',
@@ -90,9 +99,69 @@ function ChplChangeRequestDetailsEdit(props) {
 
   return (
     <div className={classes.container}>
-      <div>
+      <div className={classes.currentDetailsContainer}>
         <Typography gutterBottom variant="subtitle1">Current details</Typography>
-        {changeRequest.developer.name}
+        <Typography>
+          Self-Developer:
+          {' '}
+          { changeRequest.developer.selfDeveloper ? 'Yes' : 'No' }
+        </Typography>
+        <Typography gutterBottom variant="subtitle2">Contact</Typography>
+        <div className={classes.currentDetailsSubContainer}>
+          <Typography>
+            Full Name:
+            {' '}
+            { changeRequest.developer.contact.fullName }
+          </Typography>
+          <Typography>
+            Title:
+            {' '}
+            { changeRequest.developer.contact.title }
+          </Typography>
+          <Typography>
+            Email:
+            {' '}
+            { changeRequest.developer.contact.email }
+          </Typography>
+          <Typography>
+            Phone:
+            {' '}
+            { changeRequest.developer.contact.phoneNumber }
+          </Typography>
+        </div>
+        <Typography gutterBottom variant="subtitle2">Address</Typography>
+        <div className={classes.currentDetailsSubContainer}>
+          <Typography>
+            Address:
+            {' '}
+            { changeRequest.developer.address.line1 }
+          </Typography>
+          <Typography>
+            Line 2:
+            {' '}
+            { changeRequest.developer.address.line2 }
+          </Typography>
+          <Typography>
+            City:
+            {' '}
+            { changeRequest.developer.address.city }
+          </Typography>
+          <Typography>
+            State:
+            {' '}
+            { changeRequest.developer.address.state }
+          </Typography>
+          <Typography>
+            Zip:
+            {' '}
+            { changeRequest.developer.address.zipcode }
+          </Typography>
+          <Typography>
+            Country:
+            {' '}
+            { changeRequest.developer.address.country }
+          </Typography>
+        </div>
       </div>
       <Divider />
       <div className={classes.submittedDetailsContainer}>
