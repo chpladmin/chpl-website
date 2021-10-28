@@ -5,7 +5,6 @@ import '../assets/favicons/favicons';
 import 'swagger-ui-react/swagger-ui.css';
 
 import angular from 'angular';
-import 'angular-avatar';
 import 'angular-breadcrumb';
 import /* angularConfirm from */ 'angular-confirm';
 import /* angularLoadingBar from */ 'angular-loading-bar';

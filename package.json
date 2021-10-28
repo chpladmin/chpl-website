@@ -40,7 +40,6 @@
     "angular": "^1.7.2",
     "angular-animate": "^1.7.2",
     "angular-aria": "^1.7.2",
-    "angular-avatar": "https://github.com/andlar/angular-avatar#master",
     "angular-breadcrumb": "^0.5.0",
     "angular-confirm": "1.2",
     "angular-feature-flags": "^1.6.1",
