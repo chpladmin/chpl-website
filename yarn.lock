@@ -3941,13 +3941,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"angular-avatar@https://github.com/andlar/angular-avatar#master":
-  version: 1.3.0
-  resolution: "angular-avatar@https://github.com/andlar/angular-avatar.git#commit=4d2c0e39e6e3bfd3a07517f1c58ed9138358c4db"
-  checksum: 91a5ebe1f6844eac23ca41b68c360e5fa0900c52b6283678f0f1f7d52294d9bf36159c69ab249ba554a0c97c8e14dad21e4911c1eea1ee07bfbf8821843092cc
-  languageName: node
-  linkType: hard
-
 "angular-breadcrumb@npm:^0.5.0":
   version: 0.5.0
   resolution: "angular-breadcrumb@npm:0.5.0"
@@ -6362,7 +6355,6 @@ __metadata:
     angular: ^1.7.2
     angular-animate: ^1.7.2
     angular-aria: ^1.7.2
-    angular-avatar: "https://github.com/andlar/angular-avatar#master"
     angular-breadcrumb: ^0.5.0
     angular-confirm: 1.2
     angular-feature-flags: ^1.6.1

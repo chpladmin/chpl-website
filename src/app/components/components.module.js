@@ -36,7 +36,6 @@ angular
     'angulartics',
     'chpl.services',
     'feature-flags',
-    'ngAvatar',
     'ngCytoscape',
     'ngFileUpload',
     'ngIdle',
