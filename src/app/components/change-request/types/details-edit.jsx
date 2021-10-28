@@ -20,23 +20,14 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '16px',
   },
-  currentDetailsContainer: {
+  detailsContainer: {
     display: 'grid',
     gap: '8px',
   },
-  currentDetailsSubContainer: {
+  detailsSubContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '8px',
-  },
-  submittedDetailsContainer: {
-    display: 'grid',
-    gap: '8px',
-  },
-  submittedDetailsSubContainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '16px',
   },
 });
 
@@ -99,7 +90,7 @@ function ChplChangeRequestDetailsEdit(props) {
 
   return (
     <div className={classes.container}>
-      <div className={classes.currentDetailsContainer}>
+      <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Current details</Typography>
         <Typography>
           Self-Developer:
@@ -107,7 +98,7 @@ function ChplChangeRequestDetailsEdit(props) {
           { changeRequest.developer.selfDeveloper ? 'Yes' : 'No' }
         </Typography>
         <Typography variant="subtitle2">Contact</Typography>
-        <div className={classes.currentDetailsSubContainer}>
+        <div className={classes.detailsSubContainer}>
           <Typography>
             Full Name:
             {' '}
@@ -129,8 +120,8 @@ function ChplChangeRequestDetailsEdit(props) {
             { changeRequest.developer.contact.phoneNumber }
           </Typography>
         </div>
-        <Typography  variant="subtitle2">Address</Typography>
-        <div className={classes.currentDetailsSubContainer}>
+        <Typography variant="subtitle2">Address</Typography>
+        <div className={classes.detailsSubContainer}>
           <Typography>
             Address:
             {' '}
@@ -164,7 +155,7 @@ function ChplChangeRequestDetailsEdit(props) {
         </div>
       </div>
       <Divider />
-      <div className={classes.submittedDetailsContainer}>
+      <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
         <FormControlLabel
           control={(
@@ -179,8 +170,8 @@ function ChplChangeRequestDetailsEdit(props) {
           )}
           label="Self-Developer"
         />
-        <Typography  variant="subtitle2">Contact</Typography>
-        <div className={classes.submittedDetailsSubContainer}>
+        <Typography variant="subtitle2">Contact</Typography>
+        <div className={classes.detailsSubContainer}>
           <ChplTextField
             id="full-name"
             name="fullName"
@@ -230,7 +221,7 @@ function ChplChangeRequestDetailsEdit(props) {
           />
         </div>
         <Typography variant="subtitle2">Address</Typography>
-        <div className={classes.submittedDetailsSubContainer}>
+        <div className={classes.detailsSubContainer}>
           <ChplTextField
             id="line1"
             name="line1"

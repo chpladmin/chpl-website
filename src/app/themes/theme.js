@@ -151,7 +151,7 @@ const theme = createMuiTheme({
       root: {
         backgroundColor: '#f5f9fd',
       },
-      title: { // All cards using title have been checked, UI used to have h5 which were bolded in old version of theme.
+      title: {
         fontWeight: '600',
       },
     },
@@ -280,7 +280,7 @@ const theme = createMuiTheme({
         display: 'flex',
         justifyContent: 'center',
         padding: '8px 32px',
-        paddingRight:'16px',
+        paddingRight: '16px',
       },
       select: {
         color: '#156dac',
