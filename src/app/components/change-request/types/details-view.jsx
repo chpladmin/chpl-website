@@ -10,25 +10,25 @@ const useStyles = makeStyles({
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '8px',
+    gap: '16px',
   },
   currentDetailsContainer: {
     display: 'grid',
-    gap: '4px',
+    gap: '8px',
   },
   currentDetailsSubContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '16px',
+    gap: '8px',
   },
   submittedDetailsContainer: {
     display: 'grid',
-    gap: '4px',
+    gap: '8px',
   },
   submittedDetailsSubContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '16px',
+    gap: '8px',
   },
 });
 
@@ -39,13 +39,13 @@ function ChplChangeRequestDetailsView(props) {
   return (
     <div className={classes.container}>
       <div className={classes.currentDetailsContainer}>
-        <Typography gutterBottom variant="subtitle1">Current details</Typography>
+        <Typography variant="subtitle1">Current details</Typography>
         <Typography>
           Self-Developer:
           {' '}
           { changeRequest.developer.selfDeveloper ? 'Yes' : 'No' }
         </Typography>
-        <Typography gutterBottom variant="subtitle2">Contact</Typography>
+        <Typography variant="subtitle2">Contact</Typography>
         <div className={classes.currentDetailsSubContainer}>
           <Typography>
             Full Name:
@@ -68,7 +68,7 @@ function ChplChangeRequestDetailsView(props) {
             { changeRequest.developer.contact.phoneNumber }
           </Typography>
         </div>
-        <Typography gutterBottom variant="subtitle2">Address</Typography>
+        <Typography variant="subtitle2">Address</Typography>
         <div className={classes.currentDetailsSubContainer}>
           <Typography>
             Address:
@@ -103,13 +103,13 @@ function ChplChangeRequestDetailsView(props) {
         </div>
       </div>
       <div className={classes.submittedDetailsContainer}>
-        <Typography gutterBottom variant="subtitle1">Submitted details</Typography>
+        <Typography variant="subtitle1">Submitted details</Typography>
         <Typography>
           Self-Developer:
           {' '}
           { changeRequest.details.selfDeveloper ? 'Yes' : 'No' }
         </Typography>
-        <Typography gutterBottom variant="subtitle2">Contact</Typography>
+        <Typography variant="subtitle2">Contact</Typography>
         <div className={classes.submittedDetailsSubContainer}>
           <Typography>
             Full Name:
@@ -132,7 +132,7 @@ function ChplChangeRequestDetailsView(props) {
             { changeRequest.details.contact.phoneNumber }
           </Typography>
         </div>
-        <Typography gutterBottom variant="subtitle2">Address</Typography>
+        <Typography variant="subtitle2">Address</Typography>
         <div className={classes.submittedDetailsSubContainer}>
           <Typography>
             Address:

@@ -151,7 +151,7 @@ const theme = createMuiTheme({
       root: {
         backgroundColor: '#f5f9fd',
       },
-      title: { // has this been checked on all of the Cards?
+      title: { // All cards using title have been checked, UI used to have h5 which were bolded in old version of theme.
         fontWeight: '600',
       },
     },
@@ -280,6 +280,7 @@ const theme = createMuiTheme({
         display: 'flex',
         justifyContent: 'center',
         padding: '8px 32px',
+        paddingRight:'16px',
       },
       select: {
         color: '#156dac',
@@ -299,31 +300,7 @@ const theme = createMuiTheme({
     MuiFormLabel: {
       asterisk: {
         fontSize: '2em',
-        verticalAlign: 'top', // this key was in two places, with both of these values
-        verticalAlign: 'text-top', // don't know which is right
-      },
-    },
-    MuiTablePagination: { // see line 266 for a duplicate definition
-      root: {
-        display: 'flex',
-        alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        fontSize: '1em',
-      },
-      toolbar: {
-        backgroundColor: '#ffffff',
-        margin: '16px 0px 4px 0px',
-        boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-        borderRadius: '64px',
-      },
-      select: {
-        color: '#156dac',
-        fontWeight: '500',
-      },
-      actions: {
-        color: '#156dac',
+        verticalAlign: 'text-top',
       },
     },
     MuiTableSortLabel: {
@@ -346,7 +323,6 @@ const theme = createMuiTheme({
       multiline: {
         paddingTop: '14.5px',
         paddingBottom: '10px',
-        height: '256px',
       },
       inputMultiline: {
         height: '256px',
