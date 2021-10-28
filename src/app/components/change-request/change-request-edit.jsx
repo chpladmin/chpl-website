@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react';
 import {
-  MenuItem,
-  Typography,
-  makeStyles,
   Card,
   CardContent,
   CardHeader,
   Divider,
-  ThemeProvider,
+  MenuItem,
+  Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -20,8 +19,8 @@ import {
 import ChplActionBar from '../action-bar';
 import { ChplTextField } from '../util';
 import { UserContext } from '../../shared/contexts';
+import theme from '../../themes/theme';
 
-import theme from '../../../app/themes/theme';
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
 import ChplChangeRequestDetailsEdit from './types/details-edit';
 import ChplChangeRequestWebsiteEdit from './types/website-edit';
@@ -35,7 +34,7 @@ const useStyles = makeStyles({
       gridTemplateColumns: '2fr 1fr',
     },
   },
-  crActionContainer: {
+  actionContainer: {
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
@@ -43,10 +42,11 @@ const useStyles = makeStyles({
       gridTemplateColumns: 'auto 1fr',
     },
   },
-  crSubActionContainer: {
-      display: 'grid',
-      gap: '4px',
-    },
+  actionSubContainer: {
+    display: 'grid',
+    gap: '8px',
+    alignContent: 'flex-start',
+  },
 });
 
 const validationSchema = yup.object({
@@ -147,7 +147,7 @@ function ChplChangeRequestEdit(props) {
           website: data.website,
         });
         break;
-      // no default
+        // no default
     }
   };
 
@@ -162,14 +162,14 @@ function ChplChangeRequestEdit(props) {
       case 'save':
         formik.submitForm();
         break;
-      // no default
+        // no default
     }
   };
 
   const isReasonDisabled = () => hasAnyRole(['ROLE_DEVELOPER']) && changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action';
 
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
-    || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
+        || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
 
   formik = useFormik({
     initialValues: {
@@ -193,36 +193,34 @@ function ChplChangeRequestEdit(props) {
   });
 
   return (
-    <ThemeProvider>
     <Card>
-      <CardHeader className={classes.cardHeader} title='Editing Change Request:'>     
-      </CardHeader>
+      <CardHeader className={classes.cardHeader} title="Edit Change Request" />
       <CardContent>
         <div className={classes.container}>
           <div>
             {getChangeRequestDetails(changeRequest, handleDispatch)}
           </div>
-          <div className={classes.crActionContainer}>
-            <Divider orientation='vertical' />
-            <div className={classes.crSubActionContainer}>
-              <Typography gutterBottom variant='subtitle1'>Reason For Change:</Typography>
-              <Typography gutterBottom variant='subtitle2'>Current status:</Typography>
+          <div className={classes.actionContainer}>
+            <Divider orientation="vertical" />
+            <div className={classes.actionSubContainer}>
+              <Typography gutterBottom variant="subtitle1">Change Request change data</Typography>
+              <Typography gutterBottom variant="subtitle2">Current status</Typography>
               <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
               {hasAnyRole(['ROLE_DEVELOPER'])
                 ? (
-                  <Typography gutterBottom>
+                  <Typography>
                     {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
-                      && (
-                        <>
-                          Status will be set to &quot;Pending ONC-ACB Action&quot;
-                        </>
-                      )}
+                    && (
+                      <>
+                        Status will be set to &quot;Pending ONC-ACB Action&quot;
+                      </>
+                    )}
                     {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
-                      && (
-                        <>
-                          No status change will occur
-                        </>
-                      )}
+                    && (
+                      <>
+                        No status change will occur
+                      </>
+                    )}
                   </Typography>
                 )
                 : (
@@ -230,7 +228,7 @@ function ChplChangeRequestEdit(props) {
                     select
                     id="change-request-status-type"
                     name="changeRequestStatusType"
-                    label="Change Status"
+                    label="Select new Status"
                     required
                     value={formik.values.changeRequestStatusType}
                     onChange={formik.handleChange}
@@ -243,14 +241,13 @@ function ChplChangeRequestEdit(props) {
                     ))}
                   </ChplTextField>
                 )}
-              <br />
-              <Typography gutterBottom variant='subtitle2'>Reason for change:</Typography>
               <ChplTextField
                 id="comment"
                 name="comment"
-                label="Comment"
+                label="Reason for change"
                 margin="none"
-                required
+                required={isReasonRequired()}
+                disabled={isReasonDisabled()}
                 multiline
                 value={formik.values.comment}
                 onChange={formik.handleChange}
@@ -268,7 +265,6 @@ function ChplChangeRequestEdit(props) {
         </div>
       </CardContent>
     </Card>
-    </ThemeProvider>
   );
 }
 

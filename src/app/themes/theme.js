@@ -6,7 +6,7 @@ const theme = createMuiTheme({
     display: 'flex',
   },
   spacing: 4,
-  
+
   palette: {
     background: {
       default: '#f9f9f9',
@@ -53,11 +53,11 @@ const theme = createMuiTheme({
     h6: {
       fontSize: '1.125em',
       fontWeight: 400,
-      lineHeight: '1.3em'
+      lineHeight: '1.3em',
     },
     body1: {
       fontSize: '1em',
-      lineHeight: '1.3em'
+      lineHeight: '1.3em',
     },
     body2: {
       fontSize: '0.875em',
@@ -78,30 +78,25 @@ const theme = createMuiTheme({
     MuiAccordionSummary: {
       root: {
         padding: '8px',
-        backgroundColor:'#f5f9fd',
+        backgroundColor: '#f5f9fd',
         '&$expanded': {
-          boxShadow:'0px 4px 8px rgb(149 157 165 / 30%)',
+          boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
+        },
       },
-    },
 
       content: {
         padding: '4px 8px',
       },
-      expandIcon:{
-        transform:'none',
+      expandIcon: {
+        transform: 'none',
         '&$expanded': {
-          transform:'none',
+          transform: 'none',
         },
       },
     },
-    MuiAccordionDetails:{
-      root:{
-        padding:'16px 0px',
-      },
-    },
-    MuiPaper: {
-      rounded: {
-        borderRadius: '8px',
+    MuiAccordionDetails: {
+      root: {
+        padding: '16px 0px',
       },
     },
     MuiButton: {
@@ -156,8 +151,8 @@ const theme = createMuiTheme({
       root: {
         backgroundColor: '#f5f9fd',
       },
-      title:{
-        fontWeight:'600',
+      title: { // has this been checked on all of the Cards?
+        fontWeight: '600',
       },
     },
     MuiCheckbox: {
@@ -207,30 +202,6 @@ const theme = createMuiTheme({
         fontSize: 12,
       },
     },
-    MuiFormLabel: {
-      asterisk: {
-        fontSize: '2em',
-        verticalAlign: 'text-top',
-      },
-    },
-    MuiOutlinedInput:{
-      input:{
-        paddingTop: '18.5px',
-        paddingBottom: '14px',
-      },
-      inputMarginDense:{
-        paddingTop: '14.5px',
-        paddingBottom: '10px',
-      },
-      multiline:{
-          paddingTop: '14.5px',
-          paddingBottom: '10px',
-          height:'256px',
-        },
-      inputMultiline:{
-        height:'256px',
-      },
-    },
     MuiList: {
       padding: {
         paddingTop: '0',
@@ -259,7 +230,7 @@ const theme = createMuiTheme({
       },
       elevation1: {
         boxShadow: '0px 4px 8px rgb(149 157 165 / 10%)',
-      }
+      },
     },
     MuiSelect: {
       icon: {
@@ -281,8 +252,8 @@ const theme = createMuiTheme({
         fontWeight: 800,
       },
       stickyHeader: {
-        backgroundColor: '#ffffff'
-      }
+        backgroundColor: '#ffffff',
+      },
     },
     MuiTableHead: {
       root: {
@@ -325,21 +296,14 @@ const theme = createMuiTheme({
         },
       },
     },
-    MuiTableSortLabel: {
-      active: {
-        color: '#000000',
-      },
-      icon: {
-        color: '#000000',
-      },
-    },
     MuiFormLabel: {
       asterisk: {
         fontSize: '2em',
-        verticalAlign: 'top',
+        verticalAlign: 'top', // this key was in two places, with both of these values
+        verticalAlign: 'text-top', // don't know which is right
       },
     },
-    MuiTablePagination: {
+    MuiTablePagination: { // see line 266 for a duplicate definition
       root: {
         display: 'flex',
         alignItems: 'center',
@@ -362,12 +326,6 @@ const theme = createMuiTheme({
         color: '#156dac',
       },
     },
-    MuiSelect: {
-      icon: {
-        position: 'inherit',
-        color: '#156dac',
-      },
-    },
     MuiTableSortLabel: {
       active: {
         color: '#000',
@@ -384,6 +342,14 @@ const theme = createMuiTheme({
       inputMarginDense: {
         paddingTop: '14.5px',
         paddingBottom: '10px',
+      },
+      multiline: {
+        paddingTop: '14.5px',
+        paddingBottom: '10px',
+        height: '256px',
+      },
+      inputMultiline: {
+        height: '256px',
       },
     },
   },

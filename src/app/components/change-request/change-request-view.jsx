@@ -6,24 +6,22 @@ import {
   Divider,
   Typography,
   makeStyles,
-  ThemeProvider,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import Moment from 'react-moment';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 
 import { getAngularService } from '../../services/angular-react-helper';
 import { changeRequest as changeRequestProp } from '../../shared/prop-types';
 import { ChplAvatar } from '../util';
 import { UserContext } from '../../shared/contexts';
+import theme from '../../themes/theme';
 
-import theme from '../../../app/themes/theme';
 import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDetailsView from './types/details-view';
 import ChplChangeRequestWebsiteView from './types/website-view';
-
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -32,7 +30,7 @@ const useStyles = makeStyles({
   productCard: {
     paddingBottom: '8px',
   },
-  productCardHeaderContainer: {
+  cardHeaderContainer: {
     display: 'grid',
     gridTemplateColumns: 'auto 11fr',
     padding: '16px',
@@ -40,11 +38,7 @@ const useStyles = makeStyles({
     alignItems: 'end',
     backgroundColor: '#f5f9fd',
   },
-  subProductCardHeaderContainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-  },
-  versionProductCardHeaderContainer: {
+  cardSubHeaderContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '8px',
@@ -54,7 +48,7 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr 1fr 1fr',
     },
   },
-  widgetProductContainer: {
+  actionsContainer: {
     alignContent: 'space-between',
     display: 'grid',
     gap: '8px',
@@ -63,15 +57,10 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gap: '8px',
-
   },
   subContent: {
     display: 'grid',
     gap: '8px',
-  },
-  developerAvatar: {
-    color: '#fff',
-    backgroundColor: '#bbb',
   },
   activeStatus: {
     color: '#66926d',
@@ -142,77 +131,70 @@ function ChplChangeRequestView(props) {
   };
 
   return (
-    <ThemeProvider>
-      <div>
-        <Card className={classes.productCard}>
-          <div className={classes.productCardHeaderContainer}>
-            <ChplAvatar
-              className={classes.developerAvatar}
-              text={changeRequest.developer.name}
-            />
-            <div className={classes.subProductCardHeaderContainer}>
-              <Typography gutterBottom className={classes.cardHeader} variant='h4'>{changeRequest.changeRequestType.name}</Typography>
-            </div>
-          </div>
-          <div className={classes.versionProductCardHeaderContainer}>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Developer:</Typography>
-              <Typography variant="body1">{changeRequest.developer.name}</Typography>
-              </div>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
-              </div>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
-              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-              </div>
-            <div>
-              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment>
-              </Typography>
-              </div>
-          </div>
-          <Divider />
-          <CardContent className={classes.cardContentContainer}>
-            <div className={classes.cardContentChangeRequest}>
-              <div>
-                {getChangeRequestDetails(changeRequest)}
-              </div>
-              <div className={classes.widgetProductContainer}>
-                <div>
-                  {canEdit()
-                    && (
-                      <Button
-                        fullWidth
-                        color="secondary"
-                        variant="contained"
-                        onClick={() => props.dispatch('edit')}
-                      >
-                        Edit Change Request<EditOutlinedIcon className={classes.iconSpacing}></EditOutlinedIcon>
-                      </Button>
-                    )}
-                </div>
-                <div>
-                  <Button
-
-                    fullWidth
-                    color="default"
-                    variant="contained"
-                    onClick={() => props.dispatch('close')}
-                  >
-                    Close<CloseOutlinedIcon className={classes.iconSpacing}></CloseOutlinedIcon>
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <ChplChangeRequestHistory
-              changeRequest={changeRequest}
-            />
-          </CardContent>
-        </Card>
+    <Card className={classes.productCard}>
+      <div className={classes.cardHeaderContainer}>
+        <ChplAvatar
+          text={changeRequest.developer.name}
+        />
+        <Typography gutterBottom className={classes.cardHeader} variant="h4">{changeRequest.changeRequestType.name}</Typography>
       </div>
-    </ThemeProvider>
+      <div className={classes.cardSubHeaderContainer}>
+        <div>
+          <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+          <Typography variant="body1">{changeRequest.developer.name}</Typography>
+        </div>
+        <div>
+          <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+          <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+        </div>
+        <div>
+          <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+          <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+        </div>
+        <div>
+          <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+          <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
+        </div>
+      </div>
+      <Divider />
+      <CardContent className={classes.cardContentContainer}>
+        <div className={classes.cardContentChangeRequest}>
+          <div>
+            {getChangeRequestDetails(changeRequest)}
+          </div>
+          <div className={classes.actionsContainer}>
+            <div>
+              {canEdit()
+               && (
+                 <Button
+                   fullWidth
+                   color="secondary"
+                   variant="contained"
+                   onClick={() => props.dispatch('edit')}
+                 >
+                   Edit Change Request
+                   <EditOutlinedIcon className={classes.iconSpacing} />
+                 </Button>
+               )}
+            </div>
+            <div>
+              <Button
+                fullWidth
+                color="default"
+                variant="contained"
+                onClick={() => props.dispatch('close')}
+              >
+                Close
+                <CloseOutlinedIcon className={classes.iconSpacing} />
+              </Button>
+            </div>
+          </div>
+        </div>
+        <ChplChangeRequestHistory
+          changeRequest={changeRequest}
+        />
+      </CardContent>
+    </Card>
   );
 }
 

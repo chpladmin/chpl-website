@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import {
   Divider,
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     gap: '8px',
   },
-  submittedDetailsContainer:{
+  submittedDetailsContainer: {
     display: 'grid',
     gap: '4px',
   },
@@ -58,12 +58,12 @@ function ChplChangeRequestWebsiteEdit(props) {
   return (
     <div className={classes.container}>
       <div>
-      <Typography gutterBottom variant='subtitle1'>Current website:</Typography>
+        <Typography gutterBottom variant="subtitle1">Current website</Typography>
         {changeRequest.developer.website}
       </div>
-      <Divider></Divider>
+      <Divider />
       <div className={classes.submittedDetailsContainer}>
-      <Typography gutterBottom variant='subtitle1'>Submitted website:</Typography>
+        <Typography gutterBottom variant="subtitle1">Submitted website</Typography>
         <ChplTextField
           id="website"
           name="website"
@@ -77,7 +77,7 @@ function ChplChangeRequestWebsiteEdit(props) {
           helperText={formik.touched.website && formik.errors.website}
         />
       </div>
-    </div> 
+    </div>
   );
 }
 

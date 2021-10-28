@@ -17,14 +17,14 @@ import { UserContext } from '../../../shared/contexts';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '16px',
   },
-  submittedDetailsContainer:{
+  submittedDetailsContainer: {
     display: 'grid',
     gap: '4px',
   },
-  submittedDetailsSubContainer:{
+  submittedDetailsSubContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '16px',
@@ -91,158 +91,151 @@ function ChplChangeRequestDetailsEdit(props) {
   return (
     <div className={classes.container}>
       <div>
-        <Typography gutterBottom variant='subtitle1'>Current details:</Typography>
-        <div>
-          {changeRequest.developer.name}
+        <Typography gutterBottom variant="subtitle1">Current details</Typography>
+        {changeRequest.developer.name}
+      </div>
+      <Divider />
+      <div className={classes.submittedDetailsContainer}>
+        <Typography gutterBottom variant="subtitle1">Submitted details</Typography>
+        <FormControlLabel
+          control={(
+            <Switch
+              id="self-developer"
+              name="selfDeveloper"
+              color="primary"
+              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+              checked={formik.values.selfDeveloper}
+              onChange={handleChange}
+            />
+          )}
+          label="Self-Developer"
+        />
+        <Typography gutterBottom variant="subtitle2">Contact</Typography>
+        <div className={classes.submittedDetailsSubContainer}>
+          <ChplTextField
+            id="full-name"
+            name="fullName"
+            label="Full Name"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.fullName}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.fullName && !!formik.errors.fullName}
+            helperText={formik.touched.fullName && formik.errors.fullName}
+          />
+          <ChplTextField
+            id="title"
+            name="title"
+            label="Title"
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.title}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.title && !!formik.errors.title}
+            helperText={formik.touched.title && formik.errors.title}
+          />
+          <ChplTextField
+            id="email"
+            name="email"
+            label="Email"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.email}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <ChplTextField
+            id="phone-number"
+            name="phoneNumber"
+            label="Phone"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.phoneNumber}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+          />
+        </div>
+        <Typography gutterBottom variant="subtitle2">Address</Typography>
+        <div className={classes.submittedDetailsSubContainer}>
+          <ChplTextField
+            id="line1"
+            name="line1"
+            label="Address"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.line1}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.line1 && !!formik.errors.line1}
+            helperText={formik.touched.line1 && formik.errors.line1}
+          />
+          <ChplTextField
+            id="line2"
+            name="line2"
+            label="Line 2"
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.line2}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.line2 && !!formik.errors.line2}
+            helperText={formik.touched.line2 && formik.errors.line2}
+          />
+          <ChplTextField
+            id="city"
+            name="city"
+            label="City"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.city}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.city && !!formik.errors.city}
+            helperText={formik.touched.city && formik.errors.city}
+          />
+          <ChplTextField
+            id="state"
+            name="state"
+            label="State"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.state}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.state && !!formik.errors.state}
+            helperText={formik.touched.state && formik.errors.state}
+          />
+          <ChplTextField
+            id="zipcode"
+            name="zipcode"
+            label="Zip"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.zipcode}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.zipcode && !!formik.errors.zipcode}
+            helperText={formik.touched.zipcode && formik.errors.zipcode}
+          />
+          <ChplTextField
+            id="country"
+            name="country"
+            label="Country"
+            required
+            disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+            value={formik.values.country}
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.country && !!formik.errors.country}
+            helperText={formik.touched.country && formik.errors.country}
+          />
         </div>
       </div>
-      <Divider/>
-      <div className={classes.submittedDetailsContainer}>
-        <div><Typography gutterBottom variant='subtitle1'>Submitted details:</Typography></div>
-        <div>
-          <FormControlLabel
-            control={(
-              <Switch
-                id="self-developer"
-                name="selfDeveloper"
-                color="primary"
-                disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-                checked={formik.values.selfDeveloper}
-                onChange={handleChange}
-              />
-            )}
-            label="Self-Developer"
-          />
-          </div>
-          <div><Typography gutterBottom variant='subtitle2'>Contact</Typography></div>
-          <div className={classes.submittedDetailsSubContainer}>
-            <ChplTextField
-              id="full-name"
-              name="fullName"
-              label="Full Name"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.fullName}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.fullName && !!formik.errors.fullName}
-              helperText={formik.touched.fullName && formik.errors.fullName}
-            />
-            <ChplTextField
-              id="title"
-              name="title"
-              label="Title"
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.title}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.title && !!formik.errors.title}
-              helperText={formik.touched.title && formik.errors.title}
-            />
-            <ChplTextField
-              id="email"
-              name="email"
-              label="Email"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.email}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.email && !!formik.errors.email}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-            <ChplTextField
-              id="phone-number"
-              name="phoneNumber"
-              label="Phone"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.phoneNumber}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-              helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-            />
-          
-          
-          
-          </div>
-          <div><Typography gutterBottom variant='subtitle2'>Address</Typography></div>
-          <div className={classes.submittedDetailsSubContainer}>
-            <ChplTextField
-              id="line1"
-              name="line1"
-              label="Address"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.line1}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.line1 && !!formik.errors.line1}
-              helperText={formik.touched.line1 && formik.errors.line1}
-            />
-            <ChplTextField
-              id="line2"
-              name="line2"
-              label="Line 2"
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.line2}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.line2 && !!formik.errors.line2}
-              helperText={formik.touched.line2 && formik.errors.line2}
-            />
-            <ChplTextField
-              id="city"
-              name="city"
-              label="City"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.city}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.city && !!formik.errors.city}
-              helperText={formik.touched.city && formik.errors.city}
-            />
-            <ChplTextField
-              id="state"
-              name="state"
-              label="State"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.state}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.state && !!formik.errors.state}
-              helperText={formik.touched.state && formik.errors.state}
-            />
-            <ChplTextField
-              id="zipcode"
-              name="zipcode"
-              label="Zip"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.zipcode}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.zipcode && !!formik.errors.zipcode}
-              helperText={formik.touched.zipcode && formik.errors.zipcode}
-            />
-            <ChplTextField
-              id="country"
-              name="country"
-              label="Country"
-              required
-              disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-              value={formik.values.country}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.country && !!formik.errors.country}
-              helperText={formik.touched.country && formik.errors.country}
-            />
-          </div>
-        </div>
-        </div>
+    </div>
   );
 }
 

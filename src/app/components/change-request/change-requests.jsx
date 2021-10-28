@@ -72,7 +72,7 @@ const useStyles = makeStyles(() => ({
   },
   developerName: {
     fontWeight: '600',
-  }
+  },
 }));
 
 const sortComparator = (property) => {
@@ -202,14 +202,14 @@ function ChplChangeRequests(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      {changeRequest && mode === 'view'
+      { changeRequest && mode === 'view'
         && (
           <ChplChangeRequestView
             changeRequest={changeRequest}
             dispatch={handleDispatch}
           />
         )}
-      {changeRequest && mode === 'edit'
+      { changeRequest && mode === 'edit'
         && (
           <ChplChangeRequestEdit
             changeRequest={changeRequest}
@@ -217,18 +217,17 @@ function ChplChangeRequests(props) {
             dispatch={handleDispatch}
           />
         )}
-      {!changeRequest
+      { !changeRequest
         && (
           <>
-            <TableContainer>
-              <div className={classes.tableActionContainer} component={Paper}>
-                <div>
-                  <Button color="secondary" variant="contained" onClick={() => csvExporter.generateCsv(getChangeRequests())}>Download Request
-                    <GetAppIcon className={classes.iconSpacing} />
-                  </Button>
-                </div>
+            <div className={classes.tableActionContainer} component={Paper}>
+              <div>
+                <Button color="secondary" variant="contained" onClick={() => csvExporter.generateCsv(getChangeRequests())}>
+                  Download Requests
+                  <GetAppIcon className={classes.iconSpacing} />
+                </Button>
               </div>
-            </TableContainer>
+            </div>
             <TableContainer className={classes.container} component={Paper}>
               <Table
                 stickyHeader
@@ -245,23 +244,24 @@ function ChplChangeRequests(props) {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((item) => (
                       <TableRow key={item.id}>
-                        {!hasAnyRole(['ROLE_DEVELOPER'])
-                          && (
-                            <TableCell className={classes.tableFirstColumn}>
-                              <div className={classes.tableDeveloperCell}>
-                                <div>
-                                  <ChplAvatar
-                                    text={item.developerName}
-                                  />
-                                </div>
-                                <div className={classes.developerName}>{item.developerName}
-                                </div>
-                              </div>
-                            </TableCell>
-                          )}
+                        { !hasAnyRole(['ROLE_DEVELOPER'])
+                         && (
+                           <TableCell className={classes.tableFirstColumn}>
+                             <div className={classes.tableDeveloperCell}>
+                               <div>
+                                 <ChplAvatar
+                                   text={item.developerName}
+                                 />
+                               </div>
+                               <div className={classes.developerName}>
+                                 {item.developerName}
+                               </div>
+                             </div>
+                           </TableCell>
+                         )}
                         <TableCell>{item.changeRequestTypeName}</TableCell>
-                        {!hasAnyRole(['ROLE_DEVELOPER'])
-                          && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
+                        { !hasAnyRole(['ROLE_DEVELOPER'])
+                         && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
                         <TableCell>{item.currentStatusName}</TableCell>
                         <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
                         <TableCell align="right">

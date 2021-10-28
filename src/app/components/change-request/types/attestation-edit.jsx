@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import {
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '8px',
   },
-  submittedDetailsContainer:{
+  submittedDetailsContainer: {
     display: 'grid',
     gap: '4px',
   },
@@ -56,11 +56,11 @@ function ChplChangeRequestAttestationEdit(props) {
   return (
     <div className={classes.container}>
       <div>
-        <Typography gutterBottom variant='subtitle1'>Current Attestation:</Typography>
+        <Typography gutterBottom variant="subtitle1">Current Attestation</Typography>
         None
       </div>
       <div className={classes.submittedDetailsContainer}>
-        <Typography gutterBottom variant='subtitle1'>Submitted attestation:</Typography>
+        <Typography gutterBottom variant="subtitle1">Submitted attestation</Typography>
         <ChplTextField
           id="attestation"
           name="attestation"

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 
 import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
@@ -21,11 +21,11 @@ function ChplChangeRequestAttestationView(props) {
   return (
     <div className={classes.container}>
       <div>
-        <Typography gutterBottom variant='subtitle2'>Current attestation:</Typography> 
+        <Typography gutterBottom variant="subtitle2">Current attestation</Typography>
         None
       </div>
       <div>
-      <Typography gutterBottom variant='subtitle2'>Submitted attestation:</Typography>
+        <Typography gutterBottom variant="subtitle2">Submitted attestation</Typography>
         {changeRequest.details.attestation}
       </div>
     </div>
