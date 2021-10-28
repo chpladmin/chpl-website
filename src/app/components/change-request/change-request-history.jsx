@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -25,11 +25,31 @@ const useStyles = makeStyles({
 });
 
 function ChplChangeRequestHistory(props) {
-  /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
-  const [items, setItems] = useState(props.changeRequest.statuses);
+  const [items, setItems] = useState([]);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setItems(props.changeRequest.statuses.map((item) => {
+      const updated = {
+        ...item,
+      };
+      switch (item.userPermission.authority) {
+        case 'ROLE_ADMIN':
+        case 'ROLE_ONC':
+          updated.actingOrganization = 'ONC';
+          break;
+        case 'ROLE_ACB':
+          updated.actingOrganization = item.certificationBody.name;
+          break;
+        case 'ROLE_DEVELOPER':
+          updated.actingOrganization = props.changeRequest.developer.name;
+          break;
+          // no default
+      }
+      return updated;
+    }));
+  }, [props.changeRequest.developer.name, props.changeRequest.statuses]); // eslint-disable-line react/destructuring-assignment
 
   const headers = [
     { text: 'Acting Organization', property: 'actingOrganization', sortable: true },
