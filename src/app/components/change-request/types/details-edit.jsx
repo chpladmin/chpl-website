@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import {
-  Card,
-  CardContent,
+  Divider,
   FormControlLabel,
   Switch,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
@@ -18,7 +18,16 @@ const useStyles = makeStyles({
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '8px',
+    gap: '16px',
+  },
+  submittedDetailsContainer:{
+    display: 'grid',
+    gap: '4px',
+  },
+  submittedDetailsSubContainer:{
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '16px',
   },
 });
 
@@ -82,30 +91,31 @@ function ChplChangeRequestDetailsEdit(props) {
   return (
     <div className={classes.container}>
       <div>
-        Current details
-        <Card>
-          <CardContent>
-            {changeRequest.developer.name}
-          </CardContent>
-        </Card>
+        <Typography gutterBottom variant='subtitle1'>Current details:</Typography>
+        <div>
+          {changeRequest.developer.name}
+        </div>
       </div>
-      <div>
-        Submitted details
-        <Card>
-          <CardContent>
-            <FormControlLabel
-              control={(
-                <Switch
-                  id="self-developer"
-                  name="selfDeveloper"
-                  color="primary"
-                  disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-                  checked={formik.values.selfDeveloper}
-                  onChange={handleChange}
-                />
-              )}
-              label="Self-Developer"
-            />
+      <Divider/>
+      <div className={classes.submittedDetailsContainer}>
+        <div><Typography gutterBottom variant='subtitle1'>Submitted details:</Typography></div>
+        <div>
+          <FormControlLabel
+            control={(
+              <Switch
+                id="self-developer"
+                name="selfDeveloper"
+                color="primary"
+                disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+                checked={formik.values.selfDeveloper}
+                onChange={handleChange}
+              />
+            )}
+            label="Self-Developer"
+          />
+          </div>
+          <div><Typography gutterBottom variant='subtitle2'>Contact</Typography></div>
+          <div className={classes.submittedDetailsSubContainer}>
             <ChplTextField
               id="full-name"
               name="fullName"
@@ -153,6 +163,12 @@ function ChplChangeRequestDetailsEdit(props) {
               error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
               helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
             />
+          
+          
+          
+          </div>
+          <div><Typography gutterBottom variant='subtitle2'>Address</Typography></div>
+          <div className={classes.submittedDetailsSubContainer}>
             <ChplTextField
               id="line1"
               name="line1"
@@ -224,10 +240,9 @@ function ChplChangeRequestDetailsEdit(props) {
               error={formik.touched.country && !!formik.errors.country}
               helperText={formik.touched.country && formik.errors.country}
             />
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+          </div>
+        </div>
+        </div>
   );
 }
 

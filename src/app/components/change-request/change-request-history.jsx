@@ -7,6 +7,8 @@ import {
   TableContainer,
   TableRow,
   makeStyles,
+  Typography,
+  Divider,
 } from '@material-ui/core';
 
 import { getAngularService } from '../../services/angular-react-helper';
@@ -57,7 +59,7 @@ function ChplChangeRequestHistory(props) {
   return (
     <div className={classes.container}>
       <div>
-        Change Request History
+        <Typography variant='subtitle2'> Change Request History:</Typography>
       </div>
       <TableContainer className={classes.tableContainer} component={Paper}>
         <Table stickyHeader>
