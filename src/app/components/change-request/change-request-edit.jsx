@@ -44,9 +44,16 @@ const useStyles = makeStyles({
   },
   actionSubContainer: {
     display: 'grid',
-    gap: '8px',
+    gap: '16px',
     alignContent: 'flex-start',
   },
+  crDivider: {
+    display:'none',
+    [theme.breakpoints.up('sm')]: {
+      display:'inline',
+    },
+  },
+
 });
 
 const validationSchema = yup.object({
@@ -201,10 +208,10 @@ function ChplChangeRequestEdit(props) {
             {getChangeRequestDetails(changeRequest, handleDispatch)}
           </div>
           <div className={classes.actionContainer}>
-            <Divider orientation="vertical" />
+            <Divider className={classes.crDivider} orientation="vertical" />
             <div className={classes.actionSubContainer}>
-              <Typography gutterBottom variant="subtitle1">Change Request change data</Typography>
-              <Typography gutterBottom variant="subtitle2">Current status</Typography>
+              <Typography variant="subtitle1">Change Request change data</Typography>
+              <Typography variant="subtitle2">Current status</Typography>
               <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
               {hasAnyRole(['ROLE_DEVELOPER'])
                 ? (
