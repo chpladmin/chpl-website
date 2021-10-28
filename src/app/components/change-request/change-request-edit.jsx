@@ -64,38 +64,6 @@ const validationSchema = yup.object({
     .required('Change Request status is required'),
 });
 
-const getChangeRequestDetails = (cr, handleDispatch) => {
-  switch (cr.changeRequestType.name) {
-    case 'Developer Attestation Change Request':
-      return (
-        <ChplChangeRequestAttestationEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
-      );
-    case 'Developer Details Change Request':
-      return (
-        <ChplChangeRequestDetailsEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
-      );
-    case 'Website Change Request':
-      return (
-        <ChplChangeRequestWebsiteEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
-      );
-    default:
-      return (
-        <>
-          No details found
-        </>
-      );
-  }
-};
-
 function ChplChangeRequestEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const { hasAnyRole } = useContext(UserContext);
@@ -204,7 +172,27 @@ function ChplChangeRequestEdit(props) {
       <CardContent>
         <div className={classes.container}>
           <div>
-            {getChangeRequestDetails(changeRequest, handleDispatch)}
+            { changeRequest.changeRequestType.name === 'Developer Attestation Change Request'
+              && (
+                <ChplChangeRequestAttestationEdit
+                  changeRequest={changeRequest}
+                  dispatch={handleDispatch}
+                />
+              )}
+            { changeRequest.changeRequestType.name === 'Developer Details Change Request'
+              && (
+                <ChplChangeRequestDetailsEdit
+                  changeRequest={changeRequest}
+                  dispatch={handleDispatch}
+                />
+              )}
+            { changeRequest.changeRequestType.name === 'Website Change Request'
+              && (
+                <ChplChangeRequestWebsiteEdit
+                  changeRequest={changeRequest}
+                  dispatch={handleDispatch}
+                />
+              )}
           </div>
           <div className={classes.actionContainer}>
             <Divider className={classes.actionDivider} orientation="vertical" />
