@@ -32,6 +32,9 @@ import {
   ChplSortableHeaders,
 } from '../../../components/util';
 
+import { FilterProvider, useFilterContext } from './filter-context';
+import ChplFilterChips from './filter-chips';
+
 const csvOptions = {
   showLabels: true,
   headers: [
@@ -91,6 +94,13 @@ function ChplRealWorldTestingCollectionPage() {
     sortDescending: sortDescending,
   });
 
+  const filterContext = useFilterContext();
+
+  const initialFilters = [
+    { key: 'certificationEdition', values: ['2015', '2015 Cures Update'] },
+    { key: 'certificationStatus', values: ['Active'] },
+  ];
+
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'chpl_id', text: 'CHPL ID', sortable: true },
@@ -127,7 +137,9 @@ function ChplRealWorldTestingCollectionPage() {
   }
 
   return (
-    <>
+    <FilterProvider
+      filters={initialFilters}
+    >
       <div className={classes.rowHeader}>
         <Typography variant="h1">Collections Page</Typography>
       </div>
@@ -159,12 +171,6 @@ function ChplRealWorldTestingCollectionPage() {
           </Card>
         </div>
       </div>
-      <Button
-        onClick={() => setPageNumber((pageNumber + 1) % 50)}
-      >
-        Next page
-      </Button>
-
       <Toolbar className={classes.searchContainer}>
         <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
         <div className={classes.searchBarContainer}>
@@ -178,6 +184,8 @@ function ChplRealWorldTestingCollectionPage() {
         </div>
         <Button fullWidth color="primary"><SgAdvancedSearch /></Button>
       </Toolbar>
+
+      <ChplFilterChips/>
 
       <TableContainer className={classes.container} component={Paper}>
         <Table
@@ -211,6 +219,11 @@ function ChplRealWorldTestingCollectionPage() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button
+        onClick={() => setPageNumber((pageNumber + 1) % 50)}
+      >
+        Next page
+      </Button>
       { /*
           <ChplPagination
           count={getListings().length}
@@ -226,7 +239,7 @@ function ChplRealWorldTestingCollectionPage() {
       >
         Download
       </Button>
-    </>
+    </FilterProvider>
   );
 }
 
