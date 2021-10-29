@@ -6,6 +6,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  InputBase,
   Paper,
   Table,
   TableBody,
@@ -13,12 +14,15 @@ import {
   TableContainer,
   TableRow,
   ThemeProvider,
+  Toolbar,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import SearchIcon from '@material-ui/icons/Search';
 //import { ExportToCsv } from 'export-to-csv';
 
+import SgAdvancedSearch from '../../../pages/resources/style-guide/sg-advanced-search';
 import theme from '../../../themes/theme';
 import {
   useFetchRealWorldTestingCollection,
@@ -89,13 +93,13 @@ function ChplRealWorldTestingCollectionPage() {
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
+    { property: 'chpl_id', text: 'CHPL ID', sortable: true },
     { property: 'developer', text: 'Developer', sortable: true },
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
-    { property: 'chpl_id', text: 'CHPL ID', sortable: true },
     { text: 'API Documentation' },
-    { text: 'Service Base URL List' },
-    { text: 'Mandatory Disclosures URL' },
+    { text: 'Real World Testing Plans URL' },
+    { text: 'Real World Testing Results URL' },
   ];
 
   const getListings = () => {
@@ -160,6 +164,21 @@ function ChplRealWorldTestingCollectionPage() {
       >
         Next page
       </Button>
+
+      <Toolbar className={classes.searchContainer}>
+        <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
+        <div className={classes.searchBarContainer}>
+          <div className={classes.searchBar}>
+            <InputBase
+              className={classes.searchInput}
+              placeholder="Search by Developer, Product, or CHPL ID..."
+            />
+            <Button className={classes.goButton} size="medium" variant="contained" color="primary">Go</Button>
+          </div>
+        </div>
+        <Button fullWidth color="primary"><SgAdvancedSearch /></Button>
+      </Toolbar>
+
       <TableContainer className={classes.container} component={Paper}>
         <Table
           stickyHeader
@@ -175,13 +194,13 @@ function ChplRealWorldTestingCollectionPage() {
             {getListings()
              .map((item) => (
                <TableRow key={item.id}>
+                 <TableCell>{item.chplProductNumber}</TableCell>
                  <TableCell>{item.developer}</TableCell>
                  <TableCell>{item.product}</TableCell>
                  <TableCell>{item.version}</TableCell>
-                 <TableCell>{item.chplProductNumber}</TableCell>
                  <TableCell>{item.apiDocumentation}</TableCell>
-                 <TableCell>{item.serviceBaseUrlList}</TableCell>
-                 <TableCell>{item.mandatoryDisclosures}</TableCell>
+                 <TableCell>{item.rwtPlansUrl}</TableCell>
+                 <TableCell>{item.rwtResultsUrl}</TableCell>
                </TableRow>
              ))}
             {emptyRows > 0 && false && (
