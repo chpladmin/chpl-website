@@ -10,7 +10,6 @@ import { UserContext } from '../../shared/contexts';
 import ChplLogin from './login';
 import theme from '../../themes/theme';
 
-
 const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
@@ -39,6 +38,7 @@ function ChplLoginToggle() {
   } = useContext(UserContext);
   /* eslint-enable react/destructuring-assignment */
   const classes = useStyles();
+
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
     setOpen(true);

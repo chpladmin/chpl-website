@@ -20,9 +20,11 @@ import {
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import SearchIcon from '@material-ui/icons/Search';
+import FilterListIcon from '@material-ui/icons/FilterList';
 //import { ExportToCsv } from 'export-to-csv';
 
-import SgAdvancedSearch from '../../../pages/resources/style-guide/sg-advanced-search';
+import ChplAdvancedSearch from './advanced-search';
+import SgAdvancedSearchPopover from '../../../pages/resources/style-guide/sg-advanced-search-popover';
 import theme from '../../../themes/theme';
 import {
   useFetchRealWorldTestingCollection,
@@ -177,9 +179,15 @@ function ChplRealWorldTestingCollectionPage() {
             <Button className={classes.goButton} size="medium" variant="contained" color="primary">Go</Button>
           </div>
         </div>
-        <Button fullWidth color="primary">
-          SgAdvancedSearch
-        </Button>
+        <ChplAdvancedSearch />
+        <SgAdvancedSearchPopover
+          anchor={
+            <Button color="primary">
+              Advanced Search (sg)
+              <FilterListIcon className={classes.iconSpacing} />
+            </Button>
+          }
+        />
       </Toolbar>
 
       <ChplFilterChips/>
