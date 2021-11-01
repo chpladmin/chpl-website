@@ -32,7 +32,7 @@ import {
   ChplSortableHeaders,
 } from '../../../components/util';
 
-import { FilterProvider, useFilterContext } from './filter-context';
+import { useFilterContext } from './filter-context';
 import ChplFilterChips from './filter-chips';
 
 const csvOptions = {
@@ -87,6 +87,8 @@ function ChplRealWorldTestingCollectionPage() {
   const [pageSize, setPageSize] = useState(50);
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
+
+  const filterContext = useFilterContext();
   const rwtQuery = useFetchRealWorldTestingCollection({
     orderBy: orderBy,
     pageNumber: pageNumber,
@@ -94,13 +96,6 @@ function ChplRealWorldTestingCollectionPage() {
     sortDescending: sortDescending,
     query: filterContext.queryString(),
   });
-
-  const filterContext = useFilterContext();
-
-  const initialFilters = [
-    { key: 'certificationEdition', values: ['2015', '2015 Cures Update'] },
-    { key: 'certificationStatus', values: ['Active'] },
-  ];
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
@@ -138,9 +133,7 @@ function ChplRealWorldTestingCollectionPage() {
   }
 
   return (
-    <FilterProvider
-      filters={initialFilters}
-    >
+    <>
       <div className={classes.rowHeader}>
         <Typography variant="h1">Collections Page</Typography>
       </div>
@@ -240,7 +233,7 @@ function ChplRealWorldTestingCollectionPage() {
       >
         Download
       </Button>
-    </FilterProvider>
+    </>
   );
 }
 
