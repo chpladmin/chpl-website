@@ -203,7 +203,7 @@ function ChplRealWorldTestingCollectionPage() {
                  <TableCell>{item.developer}</TableCell>
                  <TableCell>{item.product}</TableCell>
                  <TableCell>{item.version}</TableCell>
-                 <TableCell>{item.certificationStatus} / {item.edition}</TableCell>
+                 <TableCell>{item.certificationStatus} / {item.edition} {item.curesUpdate ? 'Cures Update' : '' }</TableCell>
                  <TableCell>{item.apiDocumentation}</TableCell>
                  <TableCell>{item.rwtPlansUrl}</TableCell>
                  <TableCell>{item.rwtResultsUrl}</TableCell>

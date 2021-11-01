@@ -8,8 +8,8 @@ import ChplRealWorldTestingCollectionPage from './real-world-testing';
 
 function ChplRealWorldTestingCollectionPageWrapper() {
   const initialFilters = [
-    { key: 'certificationEdition', values: ['2015', '2015 Cures Update'] },
-    { key: 'certificationStatus', values: ['Active', 'Withdrawn by Developer'] },
+    { key: 'certificationEditions', values: ['2015', '2015 Cures Update'] },
+    { key: 'certificationStatuses', values: ['Active', 'Withdrawn by Developer'] },
   ];
 
   return (
