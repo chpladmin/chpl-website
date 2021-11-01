@@ -7,10 +7,11 @@ const useFetchRealWorldTestingCollection = ({
   pageNumber,
   pageSize,
   sortDescending,
+  query,
 }) => {
   const axios = useAxios();
-  return useQuery(['realWorldTestingCollection', orderBy, pageNumber, pageSize, sortDescending], async () => {
-    const response = await axios.get(`/search/beta?certificationEditions=2015&certificationCriteriaIds=56,57,58,181,182&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+  return useQuery(['realWorldTestingCollection', orderBy, pageNumber, pageSize, sortDescending, query], async () => {
+    const response = await axios.get(`/search/beta?${query}&certificationCriteriaIds=56,57,58,181,182&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };

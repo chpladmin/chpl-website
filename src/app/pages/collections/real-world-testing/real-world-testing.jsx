@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -92,6 +92,7 @@ function ChplRealWorldTestingCollectionPage() {
     pageNumber: pageNumber,
     pageSize: pageSize,
     sortDescending: sortDescending,
+    query: filterContext.queryString(),
   });
 
   const filterContext = useFilterContext();
