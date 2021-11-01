@@ -24,7 +24,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 //import { ExportToCsv } from 'export-to-csv';
 
 import ChplAdvancedSearch from './advanced-search';
-import SgAdvancedSearchPopover from '../../../pages/resources/style-guide/sg-advanced-search-popover';
 import theme from '../../../themes/theme';
 import {
   useFetchRealWorldTestingCollection,
@@ -180,14 +179,6 @@ function ChplRealWorldTestingCollectionPage() {
           </div>
         </div>
         <ChplAdvancedSearch />
-        <SgAdvancedSearchPopover
-          anchor={
-            <Button color="primary">
-              Advanced Search (sg)
-              <FilterListIcon className={classes.iconSpacing} />
-            </Button>
-          }
-        />
       </Toolbar>
 
       <ChplFilterChips/>

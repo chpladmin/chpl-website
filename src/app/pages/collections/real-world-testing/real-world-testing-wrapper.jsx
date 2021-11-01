@@ -7,16 +7,43 @@ import { FilterProvider } from './filter-context';
 import ChplRealWorldTestingCollectionPage from './real-world-testing';
 
 function ChplRealWorldTestingCollectionPageWrapper() {
-  const initialFilters = [
-    { key: 'certificationEditions', values: ['2015', '2015 Cures Update'] },
-    { key: 'certificationStatuses', values: ['Active', 'Withdrawn by Developer'] },
-  ];
+  const filters = [{
+    key: 'certificationEditions',
+    display: 'Certification Edition',
+    values: [{
+      value: '2011',
+    }, {
+      value: '2014',
+    }, {
+      value: '2015',
+      selected: true,
+      default: true,
+    }, {
+      value: '2015 Cures Update',
+      selected: true,
+      default: true,
+    }],
+  }, {
+    key: 'certificationStatuses',
+    display: 'Certification Status',
+    values: [{
+      value: 'Active',
+      selected: true,
+      default: true,
+    }, {
+      value: 'Withdrawn by Developer',
+      selected: true,
+      default: true,
+    }, {
+      value: 'Retired',
+    }],
+  }];
 
   return (
     <UserWrapper>
       <ApiWrapper>
         <FilterProvider
-          filters={initialFilters}
+          filters={filters}
         >
           <ChplRealWorldTestingCollectionPage />
         </FilterProvider>

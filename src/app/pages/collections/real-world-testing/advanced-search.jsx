@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -87,7 +87,18 @@ function ChplAdvancedSearch(props) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(null);
+  const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
+
+  useEffect(() => {
+    setFilters(filterContext.filters
+               .sort((a, b) => a.key < b.key ? -1 : 1)
+               .map((f) => ({
+                 ...f,
+                 values: f.values.sort((a, b) => a.value < b.value ? -1 : 1),
+               }))
+              );
+  }, [filterContext.filters]);
 
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
@@ -101,8 +112,13 @@ function ChplAdvancedSearch(props) {
 
   const handleSecondaryToggle = (value) => {
     filterContext.dispatch('toggle', active, value);
-    console.log({active, value});
+    setActive(null);
   };
+
+  const handleAction = (action) => {
+    filterContext.dispatch(action, active)
+    setActive(null);
+  }
 
   const toggleActive = (filter) => {
     if (active === filter) {
@@ -177,14 +193,14 @@ function ChplAdvancedSearch(props) {
                 }>
                 <div className={classes.filterSubHeaderContainer}>
                   <div className={classes.filterContainer}>
-                    { filterContext.filters.map((f) => (
+                    { filters.map((f) => (
                       <Button
                         key={f.key}
                         color="primary"
                         variant={f === active ? 'outlined' : 'text'}
                         onClick={() => toggleActive(f)}
                       >
-                        {f.key}
+                        {f.display}
                       </Button>
                     ))}
                   </div>
@@ -207,8 +223,16 @@ function ChplAdvancedSearch(props) {
                       color="primary"
                       size="medium"
                       aria-label="apply to filter dropdown">
-                      <Button>Clear</Button>
-                      <Button>Reset</Button>
+                      <Button
+                        onClick={() => handleAction('clear')}
+                      >
+                        Clear
+                      </Button>
+                      <Button
+                        onClick={() => handleAction('reset')}
+                      >
+                        Reset
+                      </Button>
                     </ButtonGroup>
                   </div>
                 </ListSubheader>
@@ -216,10 +240,10 @@ function ChplAdvancedSearch(props) {
               { active && (
                 <div className={classes.filterGroupTwoContainer}>
                   { active.values.map((v) => {
-                    const labelId = `advanced-search-secondary-items-${v}`;
+                    const labelId = `advanced-search-secondary-items-${v.value}`;
                     return (
                       <ListItem
-                        key={v}
+                        key={v.value}
                         button
                         onClick={() => handleSecondaryToggle(v)}
                       >
@@ -227,11 +251,12 @@ function ChplAdvancedSearch(props) {
                           <Checkbox
                             color="primary"
                             edge="start"
+                            checked={v.selected}
                             tabIndex={-1}
                             inputProps={{ 'aria-labelledby': labelId }}
                           />
                         </ListItemIcon>
-                        <ListItemText id={labelId}>{v}</ListItemText>
+                        <ListItemText id={labelId}>{v.value}</ListItemText>
                       </ListItem>
                     );
                   })}

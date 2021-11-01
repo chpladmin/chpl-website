@@ -6,24 +6,52 @@ function FilterProvider(props) {
   const [filters, setFilters] = useState(props.filters);
 
   const dispatch = (action, category, value) => {
+    const filter = filters.find((f) => f.key === category.key);
+    let updatedFilter, updatedFilters;
     switch (action) {
-      case 'delete':
-        const filter = filters.find((f) => f.key === category.key);
-        const updatedFilter = {
+      case 'clear':
+        updatedFilter = {
           ...filter,
-          values: filter.values.filter((v) => v !== value),
+          values: filter.values.map((v) => ({
+            ...v,
+            selected: false,
+          })),
+        };
+        break;
+      case 'reset':
+        updatedFilter = {
+          ...filter,
+          values: filter.values.map((v) => ({
+            ...v,
+            selected: v.default,
+          })),
+        };
+        break;
+      case 'toggle':
+        const item = filter.values.find((v) => v.value === value.value);
+        const updatedItem = {
+          ...item,
+          selected: !item.selected,
+        };
+        updatedFilter = {
+          ...filter,
+          values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
         }
-        const updated = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-        setFilters(updated);
         break;
       default:
         console.log({action, category, value});
     }
+    updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    setFilters(updatedFilters);
   };
 
   const queryString = () => filters
+        .map((f) => ({
+          ...f,
+          values: f.values.filter((v) => v.selected),
+        }))
         .filter((f) => f.values.length > 0)
-        .map((f) => `${f.key}=${f.values.join(',')}`)
+        .map((f) => `${f.key}=${f.values.map((v) => v.value).join(',')}`)
         .join('&');
 
   const filterData = { dispatch, filters, queryString };
