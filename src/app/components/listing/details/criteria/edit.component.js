@@ -6,7 +6,7 @@ const CertificationCriteriaEditComponent = {
     dismiss: '&',
   },
   controller: class CertificationCriteriaEditController {
-    constructor($filter, $log, authService, featureFlags, utilService, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+    constructor($filter, $log, authService, featureFlags, utilService, CertificationResultConformanceMethod, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
       'ngInject';
 
       this.$filter = $filter;
@@ -15,6 +15,7 @@ const CertificationCriteriaEditComponent = {
       this.isOn = featureFlags.isOn;
       this.addNewValue = utilService.addNewValue;
       this.extendSelect = utilService.extendSelect;
+      this.CertificationResultConformanceMethod = CertificationResultConformanceMethod;
       this.CertificationResultOptionalStandard = CertificationResultOptionalStandard;
       this.CertificationResultTestData = CertificationResultTestData;
       this.CertificationResultTestFunctionality = CertificationResultTestFunctionality;
@@ -44,6 +45,7 @@ const CertificationCriteriaEditComponent = {
       this.cert.metViaAdditionalSoftware = this.cert.additionalSoftware && this.cert.additionalSoftware.length > 0;
       this.certSave = angular.copy(this.cert);
 
+      this.selectedConformanceMethodKeys = this.getSelectedConformanceMethodKeys();
       this.selectedTestDataKeys = this.getSelectedTestDataKeys();
       this.selectedTestFunctionalityKeys = this.getSelectedTestFunctionalityKeys();
       this.selectedTestProcedureKeys = this.getSelectedTestProcedureKeys();
@@ -78,6 +80,23 @@ const CertificationCriteriaEditComponent = {
 
     save() {
       this.close({ $value: this.cert });
+    }
+
+    conformanceMethodsOnChange(action) {
+      switch (action.action) {
+        case 'Remove':
+          this.cert.conformanceMethods = this.cert.conformanceMethods
+            .filter((crcm) => !(crcm.conformanceMethod.id === action.item.item.id
+                              && crcm.conformanceMethodVersion === action.item.additionalInputValue));
+          break;
+        case 'Add':
+          this.cert.conformanceMethods.push(new this.CertificationResultConformanceMethod(action.item.item, action.item.additionalInputValue));
+          break;
+        case 'Edit':
+          this.cert.conformanceMethods = action.item.map((i) => new this.CertificationResultConformanceMethod(i.item, i.additionalInputValue));
+          break;
+          // no default
+      }
     }
 
     svapOnChange(action) {
@@ -213,6 +232,22 @@ const CertificationCriteriaEditComponent = {
     /// /////////////////////////////////////////////////////////////////
 
     // setup helper functions
+    getSelectedConformanceMethodKeys() {
+      const that = this;
+      if (!this.cert.conformanceMethods) {
+        return [];
+      }
+      return this.cert.conformanceMethods
+        .filter((cm) => cm.conformanceMethod.id
+            && that.cert.allowedConformanceMethods
+            && that.cert.allowedConformanceMethods.length > 0
+            && that.cert.allowedConformanceMethods.filter((acm) => acm.id === cm.conformanceMethod.id).length > 0)
+        .map((cm) => ({
+          key: cm.conformanceMethod.id,
+          additionalInputValue: cm.conformanceMethodVersion,
+        }));
+    }
+
     getSelectedSvapKeys() {
       if (!this.cert.svaps) {
         return [];

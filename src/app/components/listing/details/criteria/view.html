@@ -94,7 +94,16 @@
             </td>
             <td ng-if="!$ctrl.cert.testFunctionality || $ctrl.cert.testFunctionality.length === 0">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_procedure{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null && $ctrl.isOn('conformance-method')" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_conformance_method{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+            <td>
+              Conformance Method <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.conformanceMethods && $ctrl.cert.conformanceMethods.length > 0">
+              <div ng-repeat="m in $ctrl.cert.conformanceMethods">Name: {{ m.conformanceMethod.name }}<span ng-if="m.conformanceMethod.name !== 'Attestation'">; Version: {{ m.conformanceMethodVersion }}</span></div>
+            </td>
+            <td ng-if="!$ctrl.cert.conformanceMethods || $ctrl.cert.conformanceMethods.length === 0">None</td>
+          </tr>
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null && (($ctrl.isOn('conformance-method') && !$ctrl.cert.conformanceMethods) || !$ctrl.isOn('conformance-method'))" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_procedure{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Test Procedure <button class="btn btn-link btn-xs pull-right" uib-tooltip="The type of test procedure and the version used during testing of the certification criterion functionality." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The type of test procedure and the version used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>

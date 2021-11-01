@@ -7,6 +7,7 @@ import {
   Button,
   ButtonGroup,
   IconButton,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -20,8 +21,8 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from '../../../../util';
-import { reliedUponSoftware } from '../../../../../shared/prop-types';
+import { ChplEllipsis, ChplTextField } from '../../../../util';
+import { conformanceMethod, selectedConformanceMethod } from '../../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -34,62 +35,58 @@ const useStyles = makeStyles(() => ({
     gap: '4px',
   },
   dataEntryActions: {
-    gridColumn: '3 / 4',
-    gridRow: '1 / 3',
     alignSelf: 'center',
     justifySelf: 'center',
   },
   dataEntryAddNew: {
     gridColumn: '1 / -1',
-    gridRow: '1 / 3',
   },
 }));
 
 const validationSchema = yup.object({
+  cm: yup.object()
+    .required('Conformance Method is required'),
+  version: yup.string()
+    .test('conditionallyRequired',
+      'Version is required',
+      (value, context) => (!!value || context.parent.cm?.name === 'Attestation')),
 });
 
-function ChplReliedUponSoftwareEdit(props) {
+function ChplConformanceMethodsEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [software, setSoftware] = useState(props.software);
+  const [conformanceMethods, setConformanceMethods] = useState(props.conformanceMethods.sort((a, b) => (a.conformanceMethod.name < b.conformanceMethod.name ? -1 : 1)));
+  const [options, setOptions] = useState(
+    props.options
+      .filter((option) => !(props.conformanceMethods.find((used) => used.conformanceMethod.id === option.id)))
+      .sort((a, b) => (a.name < b.name ? -1 : 1)),
+  );
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
-  let addNew;
-
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      version: '',
-      certifiedProductNumber: '',
-      grouping: '',
-    },
-    onSubmit: () => {
-      addNew();
-    },
-    validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
-  });
+  let formik;
 
   const update = (updated) => {
-    props.onChange({ key: 'additionalSoftware', data: updated });
+    props.onChange({ key: 'conformanceMethods', data: updated });
   };
 
-  addNew = () => {
+  const addNew = () => {
     const updated = [
-      ...software,
+      ...conformanceMethods,
       {
-        name: formik.values.name || null,
-        version: formik.values.version || null,
-        certifiedProductNumber: formik.values.certifiedProductNumber || null,
-        grouping: formik.values.grouping,
-        key: (new Date()).getTime(),
+        conformanceMethod: {
+          id: formik.values.cm.id,
+          name: formik.values.cm.name,
+        },
+        conformanceMethodVersion: formik.values.version,
+        key: Date.now(),
       },
     ];
+    const removed = formik.values.cm.id;
     setAdding(false);
     formik.resetForm();
-    setSoftware(updated);
+    setConformanceMethods(updated);
+    setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
 
@@ -99,14 +96,34 @@ function ChplReliedUponSoftwareEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = software.filter((s) => !(s.id === item.id && s.key === item.key));
-    setSoftware(updated);
+    const updated = conformanceMethods.filter((m) => m.conformanceMethod.id !== item.conformanceMethod.id);
+    setConformanceMethods(updated);
+    setOptions([
+      ...options,
+      {
+        name: item.conformanceMethod.name,
+        id: item.conformanceMethod.id,
+      },
+    ].sort((a, b) => (a.name < b.name ? -1 : 1)));
     update(updated);
   };
 
+  formik = useFormik({
+    initialValues: {
+      cm: '',
+      version: '',
+    },
+    onSubmit: () => {
+      addNew();
+    },
+    validationSchema,
+    validateOnChange: false,
+    validateOnMount: true,
+  });
+
   return (
     <div className={classes.container}>
-      { software.length > 0
+      { conformanceMethods.length > 0
         && (
           <TableContainer component={Paper}>
             <Table>
@@ -114,25 +131,17 @@ function ChplReliedUponSoftwareEdit(props) {
                 <TableRow>
                   <TableCell><Typography variant="body2">Name</Typography></TableCell>
                   <TableCell><Typography variant="body2">Version</Typography></TableCell>
-                  <TableCell><Typography variant="body2">CHPL ID</Typography></TableCell>
-                  <TableCell><Typography variant="body2">Group</Typography></TableCell>
                   <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                { software.map((item, index) => (
+                { conformanceMethods.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
-                      <Typography variant="body2">{ item.name }</Typography>
+                      <Typography variant="body2"><ChplEllipsis text={item.conformanceMethod.name} maxLength={100} wordBoundaries /></Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2">{ item.version }</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{ item.certifiedProductNumber }</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{ item.grouping }</Typography>
+                      <Typography variant="body2">{ item.conformanceMethodVersion }</Typography>
                     </TableCell>
                     <TableCell align="right">
                       { !adding
@@ -155,14 +164,14 @@ function ChplReliedUponSoftwareEdit(props) {
           </TableContainer>
         )}
       <div className={classes.dataEntry}>
-        { !adding
+        { !adding && options.length > 0
           && (
             <div className={classes.dataEntryAddNew}>
               <Button
                 color="primary"
                 variant="outlined"
                 onClick={() => setAdding(true)}
-                id="relied-upon-software-add-item"
+                id="conformance-methods-add-item"
               >
                 Add item
                 {' '}
@@ -174,47 +183,32 @@ function ChplReliedUponSoftwareEdit(props) {
           && (
             <>
               <ChplTextField
-                id="name"
-                name="name"
-                label="Name"
-                value={formik.values.name}
+                select
+                id="cm"
+                name="cm"
+                label="Conformance Method"
+                required
+                value={formik.values.cm}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                disabled={!!formik.values.certifiedProductNumber}
-                error={formik.touched.name && formik.errors.name}
-                helperText={formik.touched.name && formik.errors.name}
-              />
+                error={formik.touched.cm && !!formik.errors.cm}
+                helperText={formik.touched.cm && formik.errors.cm}
+              >
+                { options.map((item) => (
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                ))}
+              </ChplTextField>
               <ChplTextField
                 id="version"
                 name="version"
                 label="Version"
+                required={formik.values.cm.name !== 'Attestation'}
+                disabled={formik.values.cm.name === 'Attestation'}
                 value={formik.values.version}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                disabled={!!formik.values.certifiedProductNumber}
-                error={formik.touched.version && formik.errors.version}
+                error={formik.touched.version && !!formik.errors.version}
                 helperText={formik.touched.version && formik.errors.version}
-              />
-              <ChplTextField
-                id="certified-product-number"
-                name="certifiedProductNumber"
-                label="Certified Product Number"
-                value={formik.values.certifiedProductNumber}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                disabled={!!(formik.values.name || formik.values.version)}
-                error={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
-                helperText={formik.touched.certifiedProductNumber && formik.errors.certifiedProductNumber}
-              />
-              <ChplTextField
-                id="grouping"
-                name="grouping"
-                label="Grouping"
-                value={formik.values.grouping}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.grouping && formik.errors.grouping}
-                helperText={formik.touched.grouping && formik.errors.grouping}
               />
               <ButtonGroup
                 color="primary"
@@ -223,14 +217,14 @@ function ChplReliedUponSoftwareEdit(props) {
                 <Button
                   onClick={formik.handleSubmit}
                   aria-label="Confirm adding item"
-                  id="relied-upon-software-check-item"
+                  id="conformance-methods-check-item"
                 >
                   <CheckIcon />
                 </Button>
                 <Button
                   onClick={() => cancelAdd()}
                   aria-label="Cancel adding item"
-                  id="relied-upon-software-close-item"
+                  id="conformance-methods-close-item"
                 >
                   <CloseIcon />
                 </Button>
@@ -242,9 +236,10 @@ function ChplReliedUponSoftwareEdit(props) {
   );
 }
 
-export default ChplReliedUponSoftwareEdit;
+export default ChplConformanceMethodsEdit;
 
-ChplReliedUponSoftwareEdit.propTypes = {
+ChplConformanceMethodsEdit.propTypes = {
+  conformanceMethods: arrayOf(selectedConformanceMethod).isRequired,
+  options: arrayOf(conformanceMethod).isRequired,
   onChange: func.isRequired,
-  software: arrayOf(reliedUponSoftware).isRequired,
 };
