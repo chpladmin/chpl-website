@@ -103,6 +103,7 @@ function ChplRealWorldTestingCollectionPage() {
     { property: 'developer', text: 'Developer', sortable: true },
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
+    { text: 'Status/Edition' },
     { text: 'API Documentation' },
     { text: 'Real World Testing Plans URL' },
     { text: 'Real World Testing Results URL' },
@@ -176,7 +177,9 @@ function ChplRealWorldTestingCollectionPage() {
             <Button className={classes.goButton} size="medium" variant="contained" color="primary">Go</Button>
           </div>
         </div>
-        <Button fullWidth color="primary"><SgAdvancedSearch /></Button>
+        <Button fullWidth color="primary">
+          SgAdvancedSearch
+        </Button>
       </Toolbar>
 
       <ChplFilterChips/>
@@ -200,6 +203,7 @@ function ChplRealWorldTestingCollectionPage() {
                  <TableCell>{item.developer}</TableCell>
                  <TableCell>{item.product}</TableCell>
                  <TableCell>{item.version}</TableCell>
+                 <TableCell>{item.certificationStatus} / {item.edition}</TableCell>
                  <TableCell>{item.apiDocumentation}</TableCell>
                  <TableCell>{item.rwtPlansUrl}</TableCell>
                  <TableCell>{item.rwtResultsUrl}</TableCell>
