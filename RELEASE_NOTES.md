@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 11.22.1
+_1 November 2021_
+
+### Flagged Features
+* Enable view/edit of Conformance Methods
+
+### Bug Fixes
+* Display added Optional Standards in Listing Report
+
+### Flagged Bug Fixes
+* Enable progress through confirmation wizard ignoring "warning" checkbox
+
+---
+
 ## Version 11.22.0
 _18 October 2021_
 
