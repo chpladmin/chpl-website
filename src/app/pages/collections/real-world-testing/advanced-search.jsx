@@ -224,12 +224,12 @@ function ChplAdvancedSearch(props) {
                       size="medium"
                       aria-label="apply to filter dropdown">
                       <Button
-                        onClick={() => handleAction('clear')}
+                        onClick={() => handleAction('clearFilter')}
                       >
                         Clear
                       </Button>
                       <Button
-                        onClick={() => handleAction('reset')}
+                        onClick={() => handleAction('resetFilter')}
                       >
                         Reset
                       </Button>

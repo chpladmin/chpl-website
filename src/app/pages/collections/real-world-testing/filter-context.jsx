@@ -4,12 +4,13 @@ const FilterContext = createContext();
 
 function FilterProvider(props) {
   const [filters, setFilters] = useState(props.filters);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const dispatch = (action, category, value) => {
     const filter = filters.find((f) => f.key === category.key);
     let updatedFilter, updatedFilters;
     switch (action) {
-      case 'clear':
+      case 'clearFilter':
         updatedFilter = {
           ...filter,
           values: filter.values.map((v) => ({
@@ -18,7 +19,7 @@ function FilterProvider(props) {
           })),
         };
         break;
-      case 'reset':
+      case 'resetFilter':
         updatedFilter = {
           ...filter,
           values: filter.values.map((v) => ({
@@ -52,9 +53,10 @@ function FilterProvider(props) {
         }))
         .filter((f) => f.values.length > 0)
         .map((f) => `${f.key}=${f.values.map((v) => v.value).join(',')}`)
+        .concat(searchTerm ? `searchTerm=${searchTerm}` : '')
         .join('&');
 
-  const filterData = { dispatch, filters, queryString };
+  const filterData = { dispatch, filters, queryString, setSearchTerm };
 
   return <FilterContext.Provider value={filterData} {...props} />;
 }

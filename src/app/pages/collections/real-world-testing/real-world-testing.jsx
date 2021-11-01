@@ -86,6 +86,7 @@ function ChplRealWorldTestingCollectionPage() {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(50);
+  const [searchTerm, setSearchTerm] = useState('');
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
@@ -118,6 +119,10 @@ function ChplRealWorldTestingCollectionPage() {
       }));
   };
 
+  const handleGo = () => {
+    filterContext.setSearchTerm(searchTerm);
+  }
+
   const handleTableSort = (event, property, orderDirection) => {
     if (orderBy === property) {
       setSortDescending(!sortDescending);
@@ -125,6 +130,10 @@ function ChplRealWorldTestingCollectionPage() {
       setOrderBy(property);
     }
   };
+
+  const handleSearchTerm = (event) => {
+    setSearchTerm(event.target.value);
+  }
 
   const emptyRows = pageSize - Math.min(pageSize, getListings().length - pageNumber * pageSize);
 
@@ -174,8 +183,18 @@ function ChplRealWorldTestingCollectionPage() {
             <InputBase
               className={classes.searchInput}
               placeholder="Search by Developer, Product, or CHPL ID..."
+              value={searchTerm}
+              onChange={handleSearchTerm}
             />
-            <Button className={classes.goButton} size="medium" variant="contained" color="primary">Go</Button>
+            <Button
+              className={classes.goButton}
+              size="medium"
+              variant="contained"
+              color="primary"
+              onClick={handleGo}
+            >
+              Go
+            </Button>
           </div>
         </div>
         <ChplAdvancedSearch />
