@@ -30,6 +30,7 @@ import {
   useFetchRealWorldTestingCollection,
 } from '../../../api/collections';
 import {
+  ChplLink,
 //  ChplPagination,
   ChplSortableHeaders,
 } from '../../../components/util';
@@ -248,8 +249,24 @@ function ChplRealWorldTestingCollectionPage() {
                        <TableCell>{item.product}</TableCell>
                        <TableCell>{item.version}</TableCell>
                        <TableCell>{item.certificationStatus} / {item.edition} {item.curesUpdate ? 'Cures Update' : '' }</TableCell>
-                       <TableCell>{item.rwtPlansUrl}</TableCell>
-                       <TableCell>{item.rwtResultsUrl}</TableCell>
+                       <TableCell>
+                         {item.rwtPlansUrl &&
+                          (
+                            <ChplLink
+                              href={item.rwtPlansUrl}
+                              analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
+                            />
+                          )}
+                       </TableCell>
+                       <TableCell>
+                         {item.rwtResultsUrl &&
+                          (
+                            <ChplLink
+                              href={item.rwtResultsUrl}
+                              analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
+                            />
+                          )}
+                       </TableCell>
                      </TableRow>
                    ))}
                 </TableBody>
