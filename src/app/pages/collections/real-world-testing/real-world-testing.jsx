@@ -158,7 +158,8 @@ function ChplRealWorldTestingCollectionPage() {
 
   const toggleNotification = (open) => setNotificationOpen(open);
 
-  const emptyRows = pageSize - Math.min(pageSize, listings.length - pageNumber * pageSize);
+  const pageStart = (pageNumber * pageSize) + 1;
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
@@ -216,7 +217,9 @@ function ChplRealWorldTestingCollectionPage() {
             <div className={classes.tableResultsHeaderContainer}>
               <div className={`${classes.resultsContainer} ${classes.wrap}`}>
                 <Typography variant='subtitle2'>Search Results:</Typography>
-                <Typography variant='body2'>({pageNumber * pageSize + 1}-{Math.min(pageSize - emptyRows, pageNumber * pageSize + pageSize)} of {recordCount} Results)</Typography>
+                <Typography variant='body2'>
+                  {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                </Typography>
               </div>
               <ButtonGroup size='small' className={classes.wrap}>
                 <Button
