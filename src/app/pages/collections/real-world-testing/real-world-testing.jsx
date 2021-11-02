@@ -145,7 +145,6 @@ function ChplRealWorldTestingCollectionPage() {
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
     { text: 'Status/Edition' },
-    { text: 'API Documentation' },
     { text: 'Real World Testing Plans URL' },
     { text: 'Real World Testing Results URL' },
   ];
@@ -271,7 +270,6 @@ function ChplRealWorldTestingCollectionPage() {
                        <TableCell>{item.product}</TableCell>
                        <TableCell>{item.version}</TableCell>
                        <TableCell>{item.certificationStatus} / {item.edition} {item.curesUpdate ? 'Cures Update' : '' }</TableCell>
-                       <TableCell>{item.apiDocumentation}</TableCell>
                        <TableCell>{item.rwtPlansUrl}</TableCell>
                        <TableCell>{item.rwtResultsUrl}</TableCell>
                      </TableRow>

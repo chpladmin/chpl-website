@@ -145,7 +145,7 @@ function ChplAdvancedSearch(props) {
         <FilterListIcon className={classes.iconSpacing} />
       </Button>
       <Popover
-        id="advandced-search-form"
+        id="advanced-search-form"
         open={open}
         anchorEl={anchor}
         onClose={handleClose}

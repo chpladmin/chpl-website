@@ -11,7 +11,7 @@ const useFetchRealWorldTestingCollection = ({
 }) => {
   const axios = useAxios();
   return useQuery(['realWorldTestingCollection', orderBy, pageNumber, pageSize, sortDescending, query], async () => {
-    const response = await axios.get(`/search/beta?${query}&certificationCriteriaIds=56,57,58,181,182&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    const response = await axios.get(`/search/beta?rwtOptions=has_plans_url,has_results_url&rwtOperator=or&${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };
