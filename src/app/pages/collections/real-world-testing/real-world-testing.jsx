@@ -7,7 +7,6 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  InputBase,
   Paper,
   Table,
   TableBody,
@@ -20,10 +19,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import SettingsIcon from '@material-ui/icons/Settings';
-import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
-//import { ExportToCsv } from 'export-to-csv';
 
 import ChplAdvancedSearch from './advanced-search';
 import theme from '../../../themes/theme';
@@ -37,6 +33,7 @@ import {
 
 import { useFilterContext } from './filter-context';
 import ChplFilterChips from './filter-chips';
+import ChplFilterSearchTerm from './filter-search-term';
 
 const csvOptions = {
   showLabels: true,
@@ -106,13 +103,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplRealWorldTestingCollectionPage() {
-  //const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(50);
   const [recordCount, setRecordCount] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
@@ -129,7 +124,6 @@ function ChplRealWorldTestingCollectionPage() {
     if (!rwtQuery.isSuccess) {
       setListings([]);
     } else {
-      console.log(rwtQuery.data);
       setListings(rwtQuery.data.results
                   .map((item) => ({
                     ...item,
@@ -149,10 +143,6 @@ function ChplRealWorldTestingCollectionPage() {
     { text: 'Real World Testing Results URL' },
   ];
 
-  const handleGo = () => {
-    filterContext.setSearchTerm(searchTerm);
-  }
-
   const handleTableSort = (event, property, orderDirection) => {
     if (orderBy === property) {
       setSortDescending(!sortDescending);
@@ -160,10 +150,6 @@ function ChplRealWorldTestingCollectionPage() {
       setOrderBy(property);
     }
   };
-
-  const handleSearchTerm = (event) => {
-    setSearchTerm(event.target.value);
-  }
 
   const emptyRows = pageSize - Math.min(pageSize, listings.length - pageNumber * pageSize);
 
@@ -201,26 +187,7 @@ function ChplRealWorldTestingCollectionPage() {
         </div>
       </div>
       <Toolbar className={classes.searchContainer}>
-        <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
-        <div className={classes.searchBarContainer}>
-          <div className={classes.searchBar}>
-            <InputBase
-              className={classes.searchInput}
-              placeholder="Search by Developer, Product, or CHPL ID..."
-              value={searchTerm}
-              onChange={handleSearchTerm}
-            />
-            <Button
-              className={classes.goButton}
-              size="medium"
-              variant="contained"
-              color="primary"
-              onClick={handleGo}
-            >
-              Go
-            </Button>
-          </div>
-        </div>
+        <ChplFilterSearchTerm />
         <ChplAdvancedSearch />
       </Toolbar>
 
@@ -244,9 +211,6 @@ function ChplRealWorldTestingCollectionPage() {
                   onClick={() => csvExporter.generateCsv(listings)}
                 >Download Results
                   <GetAppIcon className={classes.iconSpacing} />
-                </Button>
-                <Button color="secondary" variant="contained" fullWidth>View Mode
-                  <SettingsIcon className={classes.iconSpacing} />
                 </Button>
               </ButtonGroup>
             </div>
