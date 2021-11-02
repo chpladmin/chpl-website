@@ -87,6 +87,7 @@ function ChplAdvancedSearch(props) {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(null);
+  const [activeKey, setActiveKey] = useState('');
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
 
@@ -100,6 +101,10 @@ function ChplAdvancedSearch(props) {
               );
   }, [filterContext.filters]);
 
+  useEffect(() => {
+    setActive(filters.find((f) => f.key === activeKey));
+  }, [filters, activeKey]);
+
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
     setOpen(true);
@@ -108,23 +113,22 @@ function ChplAdvancedSearch(props) {
   const handleClose = () => {
     setAnchor(null);
     setOpen(false);
+    setActiveKey('');
   };
 
   const handleSecondaryToggle = (value) => {
     filterContext.dispatch('toggle', active, value);
-    setActive(null);
   };
 
   const handleAction = (action) => {
     filterContext.dispatch(action, active)
-    setActive(null);
   }
 
   const toggleActive = (filter) => {
     if (active === filter) {
-      setActive(null);
+      setActiveKey('');
     } else {
-      setActive(filter);
+      setActiveKey(filter.key);
     }
   };
 
