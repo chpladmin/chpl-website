@@ -7,7 +7,9 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  IconButton,
   Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -18,8 +20,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import CloseIcon from '@material-ui/icons/Close';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import ChplAdvancedSearch from './advanced-search';
 import theme from '../../../themes/theme';
@@ -109,6 +112,7 @@ function ChplRealWorldTestingCollectionPage() {
   const [pageSize, setPageSize] = useState(50);
   const [recordCount, setRecordCount] = useState(0);
   const [sortDescending, setSortDescending] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
@@ -151,6 +155,8 @@ function ChplRealWorldTestingCollectionPage() {
     }
   };
 
+  const toggleNotification = (open) => setNotificationOpen(open);
+
   const emptyRows = pageSize - Math.min(pageSize, listings.length - pageNumber * pageSize);
 
   return (
@@ -181,7 +187,15 @@ function ChplRealWorldTestingCollectionPage() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button color="primary" variant="contained">Download All <GetAppIcon className={classes.iconSpacing} /></Button>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => toggleNotification(true)}
+              >
+                Download All
+                {' ' }
+                <GetAppIcon className={classes.iconSpacing} />
+              </Button>
             </CardActions>
           </Card>
         </div>
@@ -208,7 +222,7 @@ function ChplRealWorldTestingCollectionPage() {
                   color="secondary"
                   variant="contained"
                   fullWidth
-                  onClick={() => csvExporter.generateCsv(listings)}
+                  onClick={() => toggleNotification(true)}
                 >Download Results
                   <GetAppIcon className={classes.iconSpacing} />
                 </Button>
@@ -238,11 +252,6 @@ function ChplRealWorldTestingCollectionPage() {
                        <TableCell>{item.rwtResultsUrl}</TableCell>
                      </TableRow>
                    ))}
-                  {emptyRows > 0 && false && (
-                    <TableRow style={{ height: 33 * emptyRows }}>
-                      <TableCell colSpan={headers.length} />
-                    </TableRow>
-                  )}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -263,6 +272,11 @@ function ChplRealWorldTestingCollectionPage() {
               */ }
           </>
         )}
+      <Snackbar
+        open={notificationOpen}
+        onClose={() => toggleNotification(false)}
+        message="Download will be implemented at a later date"
+      />
     </>
   );
 }
