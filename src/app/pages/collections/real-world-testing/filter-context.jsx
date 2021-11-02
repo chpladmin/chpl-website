@@ -2,48 +2,64 @@ import React, { createContext, useContext, useState } from 'react';
 
 const FilterContext = createContext();
 
+const clearFilter = (filter, category, setFilters) => {
+  setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
+    ...filter,
+    values: filter.values.map((v) => ({
+      ...v,
+      selected: false,
+    })),
+  }));
+};
+
+const resetFilter = (filter, category, setFilters) => {
+  setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
+    ...filter,
+    values: filter.values.map((v) => ({
+      ...v,
+      selected: v.default,
+    })),
+  }));
+};
+
 function FilterProvider(props) {
   const [filters, setFilters] = useState(props.filters);
   const [searchTerm, setSearchTerm] = useState('');
 
   const dispatch = (action, category, value) => {
-    const filter = filters.find((f) => f.key === category.key);
-    let updatedFilter, updatedFilters;
     switch (action) {
       case 'clearFilter':
-        updatedFilter = {
-          ...filter,
-          values: filter.values.map((v) => ({
-            ...v,
-            selected: false,
-          })),
-        };
+        clearFilter(filters.find((f) => f.key === category.key), category, setFilters);
         break;
       case 'resetFilter':
-        updatedFilter = {
-          ...filter,
-          values: filter.values.map((v) => ({
+        resetFilter(filters.find((f) => f.key === category.key), category, setFilters);
+        break;
+      case 'resetAll':
+        setFilters(filters.map((f) => ({
+          ...f,
+          values: f.values.map((v) => ({
             ...v,
             selected: v.default,
           })),
-        };
+        })));
         break;
       case 'toggle':
+        const filter = filters.find((f) => f.key === category.key);
         const item = filter.values.find((v) => v.value === value.value);
         const updatedItem = {
           ...item,
           selected: !item.selected,
         };
-        updatedFilter = {
+        const updatedFilter = {
           ...filter,
           values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
         }
+        const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+        setFilters(updatedFilters);
         break;
       default:
         console.log({action, category, value});
     }
-    updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-    setFilters(updatedFilters);
   };
 
   const queryString = () => filters

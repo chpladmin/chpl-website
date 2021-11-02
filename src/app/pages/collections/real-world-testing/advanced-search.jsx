@@ -188,6 +188,7 @@ function ChplAdvancedSearch(props) {
                         size="medium"
                         aria-label="apply to filter dropdown">
                         <Button
+                          onClick={() => handleAction('resetAll')}
                         >
                           Reset All Filters
                         </Button>
