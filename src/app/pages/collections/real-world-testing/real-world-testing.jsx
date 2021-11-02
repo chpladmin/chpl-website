@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
+  ButtonGroup,
   Card,
   CardActions,
   CardContent,
@@ -19,6 +20,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 //import { ExportToCsv } from 'export-to-csv';
@@ -79,13 +81,37 @@ const useStyles = makeStyles(() => ({
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
   },
+  tableResultsHeaderContainer: {
+    display: 'grid',
+    gap: '8px',
+    margin: '16px 32px',
+    justifyContent: 'start',
+    gridTemplateColumns: '1fr',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'auto auto',
+    },
+  },
+  resultsContainer: {
+    display: 'grid',
+    gap: '8px',
+    justifyContent: 'start',
+    gridTemplateColumns: 'auto auto',
+    alignItems: 'center',
+  },
+  wrap: {
+    flexFlow: 'wrap',
+  },
 }));
 
 function ChplRealWorldTestingCollectionPage() {
   //const csvExporter = new ExportToCsv(csvOptions);
+  const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(50);
+  const [recordCount, setRecordCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
@@ -99,6 +125,19 @@ function ChplRealWorldTestingCollectionPage() {
     query: filterContext.queryString(),
   });
 
+  useEffect(() => {
+    if (!rwtQuery.isSuccess) {
+      setListings([]);
+    } else {
+      console.log(rwtQuery.data);
+      setListings(rwtQuery.data.results
+                  .map((item) => ({
+                    ...item,
+                  })));
+      setRecordCount(rwtQuery.data.recordCount);
+    }
+  }, [rwtQuery.isSuccess, rwtQuery.data?.results, rwtQuery.data?.recordCount]);
+
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'chpl_id', text: 'CHPL ID', sortable: true },
@@ -110,14 +149,6 @@ function ChplRealWorldTestingCollectionPage() {
     { text: 'Real World Testing Plans URL' },
     { text: 'Real World Testing Results URL' },
   ];
-
-  const getListings = () => {
-    if (!rwtQuery.isSuccess) { return []; }
-    return rwtQuery.data.results
-      .map((item) => ({
-        ...item,
-      }));
-  };
 
   const handleGo = () => {
     filterContext.setSearchTerm(searchTerm);
@@ -135,13 +166,7 @@ function ChplRealWorldTestingCollectionPage() {
     setSearchTerm(event.target.value);
   }
 
-  const emptyRows = pageSize - Math.min(pageSize, getListings().length - pageNumber * pageSize);
-
-  if (getListings().length === 0) {
-    return (
-      <>No results found</>
-    );
-  }
+  const emptyRows = pageSize - Math.min(pageSize, listings.length - pageNumber * pageSize);
 
   return (
     <>
@@ -200,61 +225,82 @@ function ChplRealWorldTestingCollectionPage() {
         <ChplAdvancedSearch />
       </Toolbar>
 
-      <ChplFilterChips/>
+      <ChplFilterChips />
 
-      <TableContainer className={classes.container} component={Paper}>
-        <Table
-          stickyHeader
-          aria-label="Real World Testing Collections table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
-            orderBy={orderBy}
-            order={sortDescending ? 'desc' : 'asc'}
-          />
-          <TableBody>
-            {getListings()
-             .map((item) => (
-               <TableRow key={item.id}>
-                 <TableCell>{item.chplProductNumber}</TableCell>
-                 <TableCell>{item.developer}</TableCell>
-                 <TableCell>{item.product}</TableCell>
-                 <TableCell>{item.version}</TableCell>
-                 <TableCell>{item.certificationStatus} / {item.edition} {item.curesUpdate ? 'Cures Update' : '' }</TableCell>
-                 <TableCell>{item.apiDocumentation}</TableCell>
-                 <TableCell>{item.rwtPlansUrl}</TableCell>
-                 <TableCell>{item.rwtResultsUrl}</TableCell>
-               </TableRow>
-             ))}
-            {emptyRows > 0 && false && (
-              <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={headers.length} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button
-        onClick={() => setPageNumber((pageNumber + 1) % 50)}
-      >
-        Next page
-      </Button>
-      { /*
-          <ChplPagination
-          count={getListings().length}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[2, 10, 50, 100, 250]}
-          setPage={setPage}
-          setRowsPerPage={setRowsPerPage}
-          />
-        */ }
-      <Button
-        onClick={() => csvExporter.generateCsv(getChangeRequests())}
-      >
-        Download
-      </Button>
+      { listings.length === 0 ?
+        (
+          <>No results found</>
+        ) : (
+          <>
+            <div className={classes.tableResultsHeaderContainer}>
+              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                <Typography variant='subtitle2'>Search Results:</Typography>
+                <Typography variant='body2'>({pageNumber * pageSize + 1}-{Math.min(pageSize - emptyRows, pageNumber * pageSize + pageSize)} of {recordCount} Results)</Typography>
+              </div>
+              <ButtonGroup size='small' className={classes.wrap}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  fullWidth
+                  onClick={() => csvExporter.generateCsv(listings)}
+                >Download Results
+                  <GetAppIcon className={classes.iconSpacing} />
+                </Button>
+                <Button color="secondary" variant="contained" fullWidth>View Mode
+                  <SettingsIcon className={classes.iconSpacing} />
+                </Button>
+              </ButtonGroup>
+            </div>
+            <TableContainer className={classes.container} component={Paper}>
+              <Table
+                stickyHeader
+                aria-label="Real World Testing Collections table"
+              >
+                <ChplSortableHeaders
+                  headers={headers}
+                  onTableSort={handleTableSort}
+                  orderBy={orderBy}
+                  order={sortDescending ? 'desc' : 'asc'}
+                />
+                <TableBody>
+                  {listings
+                   .map((item) => (
+                     <TableRow key={item.id}>
+                       <TableCell>{item.chplProductNumber}</TableCell>
+                       <TableCell>{item.developer}</TableCell>
+                       <TableCell>{item.product}</TableCell>
+                       <TableCell>{item.version}</TableCell>
+                       <TableCell>{item.certificationStatus} / {item.edition} {item.curesUpdate ? 'Cures Update' : '' }</TableCell>
+                       <TableCell>{item.apiDocumentation}</TableCell>
+                       <TableCell>{item.rwtPlansUrl}</TableCell>
+                       <TableCell>{item.rwtResultsUrl}</TableCell>
+                     </TableRow>
+                   ))}
+                  {emptyRows > 0 && false && (
+                    <TableRow style={{ height: 33 * emptyRows }}>
+                      <TableCell colSpan={headers.length} />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Button
+              onClick={() => setPageNumber((pageNumber + 1) % 50)}
+            >
+              Next page
+            </Button>
+            { /*
+                <ChplPagination
+                count={getListings().length}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[2, 10, 50, 100, 250]}
+                setPage={setPage}
+                setRowsPerPage={setRowsPerPage}
+                />
+              */ }
+          </>
+        )}
     </>
   );
 }
