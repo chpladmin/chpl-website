@@ -24,7 +24,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
-import ChplAdvancedSearch from './advanced-search';
+import ChplFilterPanel from './filter-panel';
 import theme from '../../../themes/theme';
 import {
   useFetchRealWorldTestingCollection,
@@ -204,7 +204,7 @@ function ChplRealWorldTestingCollectionPage() {
       </div>
       <Toolbar className={classes.searchContainer}>
         <ChplFilterSearchTerm />
-        <ChplAdvancedSearch />
+        <ChplFilterPanel />
       </Toolbar>
 
       <ChplFilterChips />

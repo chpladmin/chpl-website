@@ -20,7 +20,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { useFilterContext } from './filter-context';
 
 const useStyles = makeStyles({
-  advancedSearchContainer: {
+  filterPanelContainer: {
     background: '#E7F0F8',
     display: 'grid',
     gridTemplateColumns: '6fr 2fr 4fr',
@@ -82,7 +82,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAdvancedSearch(props) {
+function ChplFilterPanel(props) {
   const classes = useStyles();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -136,8 +136,8 @@ function ChplAdvancedSearch(props) {
     <>
       <Button
         color="primary"
-        id="advanced-search-toggle"
-        aria-describedby="advanced-search-form"
+        id="filter-panel-toggle"
+        aria-describedby="filter-panel-form"
         onClick={handleClick}
       >
         Advanced Search
@@ -145,7 +145,7 @@ function ChplAdvancedSearch(props) {
         <FilterListIcon className={classes.iconSpacing} />
       </Button>
       <Popover
-        id="advanced-search-form"
+        id="filter-panel-form"
         open={open}
         anchorEl={anchor}
         onClose={handleClose}
@@ -169,7 +169,7 @@ function ChplAdvancedSearch(props) {
           },
         }}
       >
-        <div className={classes.advancedSearchContainer}>
+        <div className={classes.filterPanelContainer}>
           <div>
             <div>
               <List
@@ -178,7 +178,7 @@ function ChplAdvancedSearch(props) {
                   <ListSubheader
                     disableSticky
                     component="div"
-                    id="advanced-search-primary-subheader"
+                    id="filter-panel-primary-subheader"
                   >
                     <div className={classes.filterHeaderContainer}>
                       <Typography variant="subtitle1"> Filter By: </Typography>
@@ -220,7 +220,7 @@ function ChplAdvancedSearch(props) {
                 <ListSubheader
                   disableSticky
                   component="div"
-                  id="advanced-search-secondary-subheader"
+                  id="filter-panel-secondary-subheader"
                 >
                   <div className={classes.filterSubHeaderContainer}>
                     <ButtonGroup
@@ -245,7 +245,7 @@ function ChplAdvancedSearch(props) {
               { active?.values.length > 0 && (
                 <div className={classes.filterGroupTwoContainer}>
                   { active.values.map((v) => {
-                    const labelId = `advanced-search-secondary-items-${v.value}`;
+                    const labelId = `filter-panel-secondary-items-${v.value}`;
                     return (
                       <ListItem
                         key={v.value}
@@ -276,7 +276,7 @@ function ChplAdvancedSearch(props) {
                 <ListSubheader
                   disableSticky
                   component="div"
-                  id="advanced-search-tertiary-subheader"
+                  id="filter-panel-tertiary-subheader"
                 >
                   <div className={classes.filterSubHeaderGroupThreeContainer}>
                     <div className={classes.searchInput}>
@@ -352,7 +352,7 @@ function ChplAdvancedSearch(props) {
   );
 }
 
-export default ChplAdvancedSearch;
+export default ChplFilterPanel;
 
-ChplAdvancedSearch.propTypes = {
+ChplFilterPanel.propTypes = {
 };
