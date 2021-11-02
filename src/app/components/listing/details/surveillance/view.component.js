@@ -135,7 +135,12 @@ const SurveillanceComponent = {
             result += surv.requirements[i].criterion.removed ? 'Removed | ' : '';
             result += `${surv.requirements[i].criterion.number}: ${surv.requirements[i].criterion.title}</span>`;
           } else {
-            result += surv.requirements[i].requirement;
+            if (this.isNonconformityTypeRemoved(surv.requirements[i].requirement)) {
+              result += '<span class="removed">';
+              result += `Removed | ${surv.requirements[i].requirement}</span>`;
+            } else {
+              result += surv.requirements[i].requirement;
+            }
           }
           result += '<br />';
           results.push(result);
@@ -168,7 +173,6 @@ const SurveillanceComponent = {
     }
 
     isNonconformityTypeRemoved(type) {
-      this.$log.info(this.surveillanceTypes);
       const nonconformityType = this.surveillanceTypes.nonconformityTypes.data.find((ncType) => ncType.number === type);
       if (nonconformityType) {
         return nonconformityType.removed;
