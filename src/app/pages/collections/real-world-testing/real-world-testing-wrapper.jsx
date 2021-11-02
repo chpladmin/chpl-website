@@ -10,33 +10,25 @@ function ChplRealWorldTestingCollectionPageWrapper() {
   const filters = [{
     key: 'certificationEditions',
     display: 'Certification Edition',
-    values: [{
-      value: '2011',
-    }, {
-      value: '2014',
-    }, {
-      value: '2015',
-      selected: true,
-      default: true,
-    }, {
-      value: '2015 Cures Update',
-      selected: true,
-      default: true,
-    }],
+    values: [
+      { value: '2011' },
+      { value: '2014' },
+      { value: '2015', default: true },
+      { value: '2015 Cures Update', default: true },
+    ],
   }, {
     key: 'certificationStatuses',
     display: 'Certification Status',
-    values: [{
-      value: 'Active',
-      selected: true,
-      default: true,
-    }, {
-      value: 'Withdrawn by Developer',
-      selected: true,
-      default: true,
-    }, {
-      value: 'Retired',
-    }],
+    values: [
+      { value: 'Active', default: true },
+      { value: 'Suspended by ONC', default: true },
+      { value: 'Suspended by ONC-ACB', default: true },
+      { value: 'Terminated by ONC' },
+      { value: 'Withdrawn by Developer Under Surveillance/Review' },
+      { value: 'Withdrawn by ONC-ACB' },
+      { value: 'Withdrawn by Developer' },
+      { value: 'Retired'},
+    ],
   }];
 
   return (
