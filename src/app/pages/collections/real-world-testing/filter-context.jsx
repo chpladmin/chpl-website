@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { arrayOf, object } from 'prop-types';
 
 const FilterContext = createContext();
 
@@ -23,8 +24,19 @@ const resetFilter = (filter, category, setFilters) => {
 };
 
 function FilterProvider(props) {
-  const [filters, setFilters] = useState(props.filters);
+  const [filters, setFilters] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    setFilters(props.filters.map((filter) => ({
+      ...filter,
+      values: filter.values.map((value) => ({
+        ...value,
+        selected: !!value.default,
+        default: !!value.default,
+      }))
+    })));
+  }, [props.filters]);
 
   const dispatch = (action, category, value) => {
     switch (action) {
@@ -80,6 +92,10 @@ function FilterProvider(props) {
 
   return <FilterContext.Provider value={filterData} {...props} />;
 }
+
+FilterProvider.propTypes = {
+  filters: arrayOf(object).isRequired,
+};
 
 function useFilterContext() {
   return useContext(FilterContext);

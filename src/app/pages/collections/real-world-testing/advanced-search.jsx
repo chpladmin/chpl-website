@@ -242,7 +242,7 @@ function ChplAdvancedSearch(props) {
                   </div>
                 </ListSubheader>
               }>
-              { active && (
+              { active?.values.length > 0 && (
                 <div className={classes.filterGroupTwoContainer}>
                   { active.values.map((v) => {
                     const labelId = `advanced-search-secondary-items-${v.value}`;
