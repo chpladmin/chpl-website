@@ -47,13 +47,17 @@ function FilterProvider(props) {
   };
 
   const queryString = () => filters
+        .concat({
+          key: 'searchTerm',
+          values: [{value: searchTerm, selected: searchTerm}],
+        })
         .map((f) => ({
           ...f,
           values: f.values.filter((v) => v.selected),
         }))
         .filter((f) => f.values.length > 0)
-        .map((f) => `${f.key}=${f.values.map((v) => v.value).join(',')}`)
-        .concat(searchTerm ? `searchTerm=${searchTerm}` : '')
+        .sort((a, b) => a.key < b.key ? -1 : 1)
+        .map((f) => `${f.key}=${f.values.sort((a, b) => a.value < b.value ? -1 : 1).map((v) => v.value).join(',')}`)
         .join('&');
 
   const filterData = { dispatch, filters, queryString, setSearchTerm };
