@@ -162,6 +162,10 @@ function ChplChangeRequestEdit(props) {
       case 'cancel':
         props.dispatch('close');
         break;
+      case 'delete':
+        formik.values.changeRequestStatusType = changeRequestStatusTypes.find((st) => st.name === 'Cancelled by Requester');
+        formik.submitForm();
+        break;
       case 'update':
         handleUpdate(data);
         break;
@@ -267,6 +271,7 @@ function ChplChangeRequestEdit(props) {
           <ChplActionBar
             dispatch={handleDispatch}
             isDisabled={!formik.isValid}
+            canDelete={hasAnyRole(['ROLE_DEVELOPER'])}
           />
         </div>
       </CardContent>
