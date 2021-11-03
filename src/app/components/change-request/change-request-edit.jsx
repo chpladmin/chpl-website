@@ -111,10 +111,7 @@ function ChplChangeRequestEdit(props) {
 
   const getInitialStatusState = () => {
     if (hasAnyRole(['ROLE_DEVELOPER'])) {
-      if (changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action') {
-        return changeRequestStatusTypes.filter((type) => type.name === 'Pending ONC-ACB Action')[0];
-      }
-      return changeRequestStatusTypes.filter((type) => type.name === 'Pending Developer Action')[0];
+      return changeRequestStatusTypes.find((type) => type.name === 'Pending ONC-ACB Action');
     }
     return '';
   };
@@ -163,7 +160,7 @@ function ChplChangeRequestEdit(props) {
         props.dispatch('close');
         break;
       case 'delete':
-        formik.values.changeRequestStatusType = changeRequestStatusTypes.find((st) => st.name === 'Cancelled by Requester');
+        formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
         formik.submitForm();
         break;
       case 'update':

@@ -146,12 +146,15 @@ function ChplChangeRequests(props) {
   };
 
   const save = (data) => {
+    console.log({data});
     updateChangeRequest.mutate(data, {
       onSuccess: () => {
+        console.log('onsuccess');
         setMode('view');
         setChangeRequest(undefined);
       },
       onError: (error) => {
+        console.log('onerror');
         if (error.response.data.error.startsWith('Email could not be sent to')) {
           toaster.pop({
             type: 'info',
@@ -173,6 +176,7 @@ function ChplChangeRequests(props) {
   };
 
   const handleDispatch = (action, data) => {
+    console.log('crs handledispatch', action, data);
     switch (action) {
       case 'close':
         setMode('view');
@@ -182,6 +186,7 @@ function ChplChangeRequests(props) {
         setMode('edit');
         break;
       case 'save':
+        console.log({action, data});
         save(data);
         break;
       // no default
