@@ -1,6 +1,7 @@
 import LoginComponent from '../login/login.po';
-import NavigationComponent from './navigation.po';
 import Hooks from '../../utilities/hooks';
+
+import NavigationComponent from './navigation.po';
 
 let component;
 let hooks;
@@ -43,6 +44,7 @@ describe('when logged in', () => {
   describe('as ROLE_ONC', () => {
     beforeEach(() => {
       login.logIn('onc');
+      component.showNavigation();
     });
 
     it('should have specific reports', () => {
@@ -65,6 +67,7 @@ describe('when logged in', () => {
         expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
       });
     });
+
     it('should have specific options under surveillance', () => {
       const expected = [
         'Manage',
@@ -78,10 +81,32 @@ describe('when logged in', () => {
         expect(surveillanceOptions.has(exp)).toBe(true);
       });
     });
+
+    it('should have specific options under shortcuts', () => {
+      const expected = [
+        'API Info for 2015 Ed. Products',
+        'Banned Developers',
+        'Charts',
+        'Decertified Products',
+        'Real World Testing',
+        'Inactive Certificates',
+        'Products: Corrective Action',
+        'SED Info for 2015 Ed. Products',
+      ];
+      component.shortcutToggle.click();
+      const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
+      expect(shortcuts.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(shortcuts.has(exp)).toBe(true, `did not find expected shortcut: "${exp}"`);
+      });
+      component.shortcutToggle.click();
+    });
   });
+
   describe('as ROLE_ONC_STAFF', () => {
     beforeEach(() => {
       login.logIn('oncstaff');
+      component.showNavigation();
     });
 
     it('should have specific options under surveillance', () => {
@@ -93,9 +118,10 @@ describe('when logged in', () => {
       const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
       expect(surveillanceOptions.size).toBe(expected.length);
       expected.forEach((exp) => {
-        expect(surveillanceOptions.has(exp)).toBe(true);
+        expect(surveillanceOptions.has(exp)).toBe(true, `did not find expected surveillance option: "${exp}"`);
       });
     });
+
     it('should have specific reports', () => {
       const expected = [
         'Developers',
@@ -112,7 +138,27 @@ describe('when logged in', () => {
         expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
       });
     });
+
+    it('should have specific options under shortcuts', () => {
+      const expected = [
+        'API Info for 2015 Ed. Products',
+        'Banned Developers',
+        'Charts',
+        'Decertified Products',
+        'Inactive Certificates',
+        'Products: Corrective Action',
+        'SED Info for 2015 Ed. Products',
+      ];
+      component.shortcutToggle.click();
+      const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
+      expect(shortcuts.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(shortcuts.has(exp)).toBe(true, `did not find expected shortcut: "${exp}"`);
+      });
+      component.shortcutToggle.click();
+    });
   });
+
   describe('as ROLE_ADMIN', () => {
     beforeEach(() => {
       login.logIn('admin');
@@ -130,7 +176,7 @@ describe('when logged in', () => {
       const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
       expect(surveillanceOptions.size).toBe(expected.length);
       expected.forEach((exp) => {
-        expect(surveillanceOptions.has(exp)).toBe(true);
+        expect(surveillanceOptions.has(exp)).toBe(true, `did not find expected surveillance option: "${exp}"`);
       });
     });
   });
