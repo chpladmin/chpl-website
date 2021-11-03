@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  arrayOf, shape, string,
+  arrayOf, bool, shape, string,
 } from 'prop-types';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
@@ -14,7 +14,6 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core';
-import { bool } from 'yup';
 
 import { ChplCriterionTitle, ChplTooltip } from '../../../util';
 import { getAngularService } from '../../../../services/angular-react-helper';
@@ -55,7 +54,6 @@ function ChplSurveillanceView(props) {
   const [nonconformityTypes] = useState(props.nonconformityTypes);
   const [surveillanceResults, setSurveillanceResults] = useState([]);
 
-  console.log(nonconformityTypes);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -220,5 +218,5 @@ ChplSurveillanceView.propTypes = {
       removed: bool,
     })),
   }).isRequired,
-  nonconformityTypes: arrayOf(criterionPropType),
+  nonconformityTypes: arrayOf(criterionPropType).isRequired,
 };
