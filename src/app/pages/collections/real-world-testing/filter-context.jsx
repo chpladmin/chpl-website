@@ -101,4 +101,4 @@ function useFilterContext() {
   return useContext(FilterContext);
 }
 
-export { FilterContext, FilterProvider, useFilterContext };
+export { FilterProvider, useFilterContext };

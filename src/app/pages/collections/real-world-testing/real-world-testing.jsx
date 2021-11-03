@@ -24,7 +24,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
-import ChplFilterPanel from './filter-panel';
 import theme from '../../../themes/theme';
 import {
   useFetchRealWorldTestingCollection,
@@ -37,6 +36,7 @@ import {
 
 import { useFilterContext } from './filter-context';
 import ChplFilterChips from './filter-chips';
+import ChplFilterPanel from './filter-panel';
 import ChplFilterSearchTerm from './filter-search-term';
 
 const csvOptions = {
