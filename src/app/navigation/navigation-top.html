@@ -45,7 +45,7 @@
               <li><a ui-sref="collections.developers" analytics-on="click" analytics-event="Go to Banned Developers Page" analytics-properties="{ category: 'Navigation' }">Banned Developers</a></li>
               <li><a ui-sref="charts" analytics-on="click" analytics-event="Go to Charts Page" analytics-properties="{ category: 'Navigation' }">Charts</a></li>
               <li><a ui-sref="collections.products" analytics-on="click" analytics-event="Go to Decertified Products Page" analytics-properties="{ category: 'Navigation' }">Decertified Products</a></li>
-              <li><a ui-sref="collections.real-world-testing" analytics-on="click" analytics-event="Go to Real World Testing Page" analytics-properties="{ category: 'Navigation' }">Real World Testing</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="collections.real-world-testing" analytics-on="click" analytics-event="Go to Real World Testing Page" analytics-properties="{ category: 'Navigation' }">Real World Testing</a></li>
               <li><a ui-sref="collections.inactive" analytics-on="click" analytics-event="Go to Inactive Certificates Page" analytics-properties="{ category: 'Navigation' }">Inactive Certificates</a></li>
               <li><a ui-sref="collections.corrective-action" analytics-on="click" analytics-event="Go to Products: Corrective Action Page" analytics-properties="{ category: 'Navigation' }">Products: Corrective Action</a></li>
               <li><a ui-sref="collections.sed" analytics-on="click" analytics-event="Go to SED Info for 2015 Ed. Products Page" analytics-properties="{ category: 'Navigation' }">SED Info for 2015 Ed. Products</a></li>
