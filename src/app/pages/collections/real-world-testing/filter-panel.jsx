@@ -15,19 +15,28 @@ import {
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useFilterContext } from './filter-context';
+import theme from '../../../themes/theme';
 
 const useStyles = makeStyles({
   filterPanelContainer: {
-    background: '#E7F0F8',
+    background: '#fafdff',
     display: 'grid',
-    gridTemplateColumns: '6fr 2fr 4fr',
+    gridTemplateColumns: '1fr',
     padding: '16px',
+    rowGap:'16px',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr 1fr',
+    },
+  },
+  filterBold:{
+    fontWeight:'600',
   },
   filterContainer: {
     display: 'grid',
     gridTemplateColumns: 'auto',
     justifyItems: 'start',
     alignItems: 'start',
+    gap:'8px',
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -42,7 +51,7 @@ const useStyles = makeStyles({
   },
   filterSubHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     justifyItems: 'start',
     gap: '8px',
   },
@@ -142,7 +151,7 @@ function ChplFilterPanel() {
             background: '#E7F0F8',
             display: 'grid',
             width: '100%',
-            marginTop: '21px',
+            marginTop: '20px',
             borderRadius: '0px',
             boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
           },
@@ -181,13 +190,16 @@ function ChplFilterPanel() {
                   <div className={classes.filterContainer}>
                     { filters.map((f) => (
                       <Button
+                        fullWidth
                         key={f.key}
-                        color="primary"
+                        color={f === active ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
-                        variant={f === active ? 'outlined' : 'text'}
+                        variant='outlined'
                         onClick={() => toggleActive(f)}
                       >
+                        <span className={f === active ? classes.filterBold : undefined}>
                         {f.display}
+                        </span>
                       </Button>
                     ))}
                   </div>

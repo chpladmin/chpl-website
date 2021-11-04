@@ -51,6 +51,26 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: '1fr 1fr',
     },
   },
+  filterApplied:{
+    paddingTop:'4px',
+  },
+  filterContainer: {
+    display: 'flex',
+    padding: '16px 32px',
+    gap: '8px',
+    backgroundColor: '#fafdff',
+    borderBottom: '1px solid #bbb',
+    boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0px 8px',
+    flexWrap:'wrap',
+    flexFlow:'column',
+    [theme.breakpoints.up('md')]: {
+      flexFlow:'row',
+      flexWrap:'wrap',
+    },
+  },
+  linkWrap:{
+    overflowWrap:'anywhere',
+  },
   rowHeader: {
     display: 'grid',
     gap: '16px',
@@ -66,6 +86,31 @@ const useStyles = makeStyles(() => ({
     alignItems: 'start',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
+  },
+  searchContainer: {
+    backgroundColor: '#C6D5E5',
+    padding: '16px 32px',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '16px',
+    alignItems:'center',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: 'auto 10fr auto',
+    },
+  },
+  stickyColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+    backgroundColor: '#ffffff',
+    overflowWrap:'anywhere',
+  },
+  tableContainer: {
+    maxHeight: "800px",
+    overflowWrap: 'normal',
+    border: '.5px solid #c2c6ca',
+    margin: '0px 32px',
+    width: 'auto',
   },
   tableResultsHeaderContainer: {
     display: 'grid',
@@ -188,15 +233,16 @@ function ChplRealWorldTestingCollectionPage() {
           </Card>
         </div>
       </div>
-      <Toolbar className={classes.searchContainer}>
+      <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
         <ChplFilterPanel />
-      </Toolbar>
-
-      <ChplFilterChips />
-
-      { listings.length === 0
-        ? (
+      </div>
+      <div className={classes.filterContainer}>
+        <Typography className={classes.filterApplied} variant='subtitle1'>Filters Applied:</Typography>
+        <ChplFilterChips/>
+      </div>
+      { listings.length === 0 ?
+        (
           <>No results found</>
         ) : (
           <>
@@ -219,8 +265,8 @@ function ChplRealWorldTestingCollectionPage() {
                 </Button>
               </ButtonGroup>
             </div>
-            <TableContainer className={classes.container} component={Paper}>
-              <Table
+            <TableContainer className={classes.tableContainer} component={Paper}>
+              <Table 
                 stickyHeader
                 aria-label="Real World Testing Collections table"
               >
@@ -229,12 +275,13 @@ function ChplRealWorldTestingCollectionPage() {
                   onTableSort={handleTableSort}
                   orderBy={orderBy}
                   order={sortDescending ? 'desc' : 'asc'}
+                  stickyHeader
                 />
                 <TableBody>
                   {listings
                     .map((item) => (
                       <TableRow key={item.id}>
-                        <TableCell><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></TableCell>
+                        <TableCell className={classes.stickyColumn}><strong><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></strong></TableCell>
                         <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
                         <TableCell>{item.product}</TableCell>
                         <TableCell>{item.version}</TableCell>
@@ -247,7 +294,7 @@ function ChplRealWorldTestingCollectionPage() {
                           {' '}
                           {item.curesUpdate ? 'Cures Update' : '' }
                         </TableCell>
-                        <TableCell>
+                        <TableCell className={classes.linkWrap}>
                           {item.rwtPlansUrl
                           && (
                             <ChplLink
@@ -256,7 +303,7 @@ function ChplRealWorldTestingCollectionPage() {
                             />
                           )}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className={classes.linkWrap}>
                           {item.rwtResultsUrl
                           && (
                             <ChplLink
