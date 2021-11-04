@@ -3,18 +3,15 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
-  InputBase,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListSubheader,
   Popover,
-  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useFilterContext } from './filter-context';
@@ -43,17 +40,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
     borderLeft: '1px solid #599bde',
   },
-  filterGroupThreeContainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-  },
-  filterSubHeaderGroupThreeContainer: {
-    display: 'grid',
-    gridTemplateColumns: '10fr auto auto',
-    alignItems: 'center',
-    gap: '8px',
-  },
   filterSubHeaderContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -70,12 +56,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
     display: 'grid',
     gridTemplateColumns: 'auto 1fr',
-  },
-  switchGroupThreeContainer: {
-    display: 'grid',
-    gridTemplateColumns: '10fr auto auto',
-    alignItems: 'center',
-    gap: '4px',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -272,84 +252,6 @@ function ChplFilterPanel() {
                 </div>
               </List>
             )}
-          </div>
-          <div>
-            <List
-              dense
-              subheader={(
-                <ListSubheader
-                  disableSticky
-                  component="div"
-                  id="filter-panel-tertiary-subheader"
-                >
-                  <div className={classes.filterSubHeaderGroupThreeContainer}>
-                    <div className={classes.searchInput}>
-                      <SearchIcon />
-                      <InputBase
-                        placeholder="Search for something..."
-                      />
-                    </div>
-                    <Typography variant="subtitle1"> Matching: </Typography>
-                    <div className={classes.switchGroupThreeContainer}>
-                      <Typography variant="body1"> Any </Typography>
-                      <Switch color="primary" />
-                      <Typography variant="body1"> All </Typography>
-                    </div>
-                  </div>
-                </ListSubheader>
-              )}
-            >
-              <div className={classes.filterGroupThreeContainer}>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>All</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.315 (a)(1): Computerized Provider Order Entry (CPOE) - Medications</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.315 (a)(3): CPOE - Diagnostic Imaging</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.315 (a)(5): Demographics</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(5): Demographics</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(6): Problem list</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(7): Medication list</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(8): Medication allergy list</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(9): Clinical decision support</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(10): Drug-formulary and preferred drug list checks</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(11): Smoking status</ListItemText>
-                </ListItem>
-                <ListItem>
-                  <Checkbox color="primary" edge="start" />
-                  <ListItemText>170.302 (a)(12): Family health history</ListItemText>
-                </ListItem>
-              </div>
-            </List>
           </div>
         </div>
       </Popover>
