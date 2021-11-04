@@ -249,7 +249,7 @@ function ChplFilterPanel() {
               { active?.values.length > 0 && (
                 <div className={classes.filterGroupTwoContainer}>
                   { active.values.map((v) => {
-                    const labelId = `filter-panel-secondary-items-${v.value}`;
+                    const labelId = `filter-panel-secondary-items-${v.value.replaceAll(' ', '_')}`;
                     return (
                       <ListItem
                         key={v.value}
