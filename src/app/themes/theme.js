@@ -6,7 +6,6 @@ const theme = createMuiTheme({
     display: 'flex',
   },
   spacing: 4,
-  
   palette: {
     background: {
       default: '#f9f9f9',
@@ -87,16 +86,16 @@ const theme = createMuiTheme({
       content: {
         padding: '4px 8px',
       },
-      expandIcon:{
-        transform:'none',
+      expandIcon: {
+        transform: 'none',
         '&$expanded': {
-          transform:'none',
+          transform: 'none',
         },
       },
     },
-    MuiAccordionDetails:{
-      root:{
-        padding:'16px 0px',
+    MuiAccordionDetails: {
+      root: {
+        padding: '16px 0px',
       },
     },
     MuiPaper: {
@@ -172,6 +171,21 @@ const theme = createMuiTheme({
       root: {
         fontSize: '.8em',
       },
+      outlinedPrimary: {
+        backgroundColor: '#ffffff',
+        fontWeight:'600',
+      },
+      deleteIcon: {
+        width: '16px',
+        height: '16px',
+        color: '#bbb',
+      },
+      deleteIconOutlinedColorPrimary:{
+        color: '#bbb',
+        '&:hover, selected': {
+          color: '#c44f65',
+        },
+      },
     },
     MuiDialogActions: {
       root: {
@@ -236,6 +250,7 @@ const theme = createMuiTheme({
     MuiListSubheader: {
       root: {
         fontSize: '0.875em',
+        color:'#000',
       },
       gutters: {
         paddingLeft: '8px',
