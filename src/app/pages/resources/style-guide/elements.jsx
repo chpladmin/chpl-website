@@ -23,7 +23,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 /*Utility Components*/
 import { ChplEllipsis } from '../../../components/util';
-import ChplActionBar from '../../../components/action-bar/action-bar';
+import { ChplActionBar } from '../../../components/action-bar';
 
 /* Style Guide Componets*/
 import SgAccordion from './sg-accordion';
