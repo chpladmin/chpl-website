@@ -1,23 +1,27 @@
-const elements = {
-  container: '#toast-container',
-  title: '.toast-title',
-};
-
 class ToastComponent {
-  constructor () { }
-
-  clearAllToast () {
-    $(elements.container).$$('div').forEach(toast => toast.click());
+  constructor() {
+    this.container = '#toast-container';
+    this.title = '.toast-title';
+    this.message = '.toast-message>div';
   }
 
-  get toastTitle () {
-    return $(elements.title);
+  get toastTitle() {
+    return $(this.title);
   }
 
-  get toastContainer () {
-    return $(elements.container);
+  get toastContainer() {
+    return $(this.container);
   }
 
+  get toastMessage() {
+    return $(this.message);
+  }
+
+  clearAllToast() {
+    if ($(this.container) && $(this.container).$$(this.message)) {
+      $(this.container).$$(this.message).forEach((toast) => toast.click());
+    }
+  }
 }
 
 export default ToastComponent;
