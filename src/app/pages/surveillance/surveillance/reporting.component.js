@@ -1,8 +1,8 @@
-const SurveillanceManagementReportingComponent = {
+const SurveillanceActivityReportingComponent = {
   templateUrl: 'chpl.surveillance/surveillance/reporting.html',
   bindings: {
   },
-  controller: class SurveillanceManagementReportingComponent {
+  controller: class SurveillanceActivityReportingComponent {
     constructor($log) {
       'ngInject';
 
@@ -12,6 +12,6 @@ const SurveillanceManagementReportingComponent = {
 };
 
 angular.module('chpl.surveillance')
-  .component('chplSurveillanceManagementReporting', SurveillanceManagementReportingComponent);
+  .component('chplSurveillanceActivityReporting', SurveillanceActivityReportingComponent);
 
-export default SurveillanceManagementReportingComponent;
+export default SurveillanceActivityReportingComponent;

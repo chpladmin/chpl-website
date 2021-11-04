@@ -2,20 +2,20 @@ import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../../components/toast/toast.po';
 
-import OtherReportingPage from './reporting.po';
+import ActivityReportingPage from './reporting.po';
 
 let hooks;
 let loginComponent;
 let page;
 let toast;
 
-describe('on "other reporting" page', () => {
+describe('on "activity reporting" page', () => {
   beforeEach(async () => {
     loginComponent = new LoginComponent();
-    page = new OtherReportingPage();
+    page = new ActivityReportingPage();
     hooks = new Hooks();
     toast = new ToastComponent();
-    await hooks.open('#/surveillance/other');
+    await hooks.open('#/surveillance/activity-reporting');
   });
 
   afterEach(() => {

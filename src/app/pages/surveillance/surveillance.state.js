@@ -70,15 +70,15 @@ const states = [{
     label: 'Manage',
   },
 }, {
-  name: 'surveillance.other-reporting',
-  url: '/other',
-  component: 'chplSurveillanceManagementReporting',
+  name: 'surveillance.activity-reporting',
+  url: '/activity-reporting',
+  component: 'chplSurveillanceActivityReporting',
   data: {
-    title: 'CHPL Surveillance - Other Reporting',
+    title: 'CHPL Surveillance - Activity Reporting',
     roles: ['ROLE_ADMIN', 'ROLE_ONC'],
   },
   ncyBreadcrumb: {
-    label: 'Other Reporting',
+    label: 'Activity Reporting',
   },
 }, {
   name: 'surveillance.reporting',
