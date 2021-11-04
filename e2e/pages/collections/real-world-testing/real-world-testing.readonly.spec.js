@@ -57,8 +57,7 @@ describe('the Real World Testing collection page', () => {
 
     describe('when adding "withdrawn by developer"', () => {
       it('should filter listing results', () => {
-        //page.selectFilter('certificationStatuses', 'Withdrawn by Developer');
-        page.selectFilter('certificationStatuses', 'Retired');
+        page.selectFilter('certificationStatuses', 'Withdrawn_by_Developer');
         countAfter = page.getListingTotalCount();
         expect(countAfter).toBeGreaterThan(countBefore);
       });

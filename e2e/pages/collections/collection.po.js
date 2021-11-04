@@ -41,7 +41,6 @@ class CollectionPage {
     $(elements.filterPanelToggle).click();
     $(elements.resetAllFiltersButton).click();
     browser.keys('Escape');
-    //$(elements.filterPanelToggle).click();
     browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount, {timeout: 1000});
   }
 
@@ -56,18 +55,10 @@ class CollectionPage {
 
   selectFilter(category, value) {
     const initialListingCount = this.getListingTotalCount();
-    browser.saveScreenshot(`test_reports/e2e/screenshot/selectfilter-${Date.now()}.png`);
     $(elements.filterPanelToggle).click();
-    browser.saveScreenshot(`test_reports/e2e/screenshot/selectfilter-${Date.now()}.png`);
     $(`#filter-panel-primary-items-${category}`).click();
-    browser.saveScreenshot(`test_reports/e2e/screenshot/selectfilter-${Date.now()}.png`);
-    $(`#filter-panel-secondary-items-${value}`).scrollIntoView({block: 'center'});
-    browser.saveScreenshot(`test_reports/e2e/screenshot/selectfilter-${Date.now()}.png`);
     $(`#filter-panel-secondary-items-${value}`).click();
-    browser.saveScreenshot(`test_reports/e2e/screenshot/selectfilter-${Date.now()}.png`);
     browser.keys('Escape');
-    //$(elements.filterPanelToggle).click();
-    browser.saveScreenshot(`test_reports/e2e/screenshot/selectfilter-${Date.now()}.png`);
     try {
       browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount, {timeout: 1000});
     } catch (err) {
