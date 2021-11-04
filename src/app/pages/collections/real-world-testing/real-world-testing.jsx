@@ -7,7 +7,6 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  IconButton,
   Paper,
   Snackbar,
   Table,
@@ -15,13 +14,10 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  ThemeProvider,
   Toolbar,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 import theme from '../../../themes/theme';
@@ -30,7 +26,7 @@ import {
 } from '../../../api/collections';
 import {
   ChplLink,
-//  ChplPagination,
+  //  ChplPagination,
   ChplSortableHeaders,
 } from '../../../components/util';
 
@@ -38,17 +34,6 @@ import { useFilterContext } from './filter-context';
 import ChplFilterChips from './filter-chips';
 import ChplFilterPanel from './filter-panel';
 import ChplFilterSearchTerm from './filter-search-term';
-
-const csvOptions = {
-  showLabels: true,
-  headers: [
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Request Type', objectKey: 'changeRequestTypeName' },
-    { headerName: 'Creation Date', objectKey: 'friendlyReceivedDate' },
-    { headerName: 'Request Status', objectKey: 'currentStatusName' },
-    { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate' },
-  ],
-};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -86,7 +71,6 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gap: '8px',
     margin: '16px 32px',
-    justifyContent: 'start',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -118,10 +102,10 @@ function ChplRealWorldTestingCollectionPage() {
 
   const filterContext = useFilterContext();
   const rwtQuery = useFetchRealWorldTestingCollection({
-    orderBy: orderBy,
-    pageNumber: pageNumber,
-    pageSize: pageSize,
-    sortDescending: sortDescending,
+    orderBy,
+    pageNumber,
+    pageSize,
+    sortDescending,
     query: filterContext.queryString(),
   });
 
@@ -130,9 +114,9 @@ function ChplRealWorldTestingCollectionPage() {
       setListings([]);
     } else {
       setListings(rwtQuery.data.results
-                  .map((item) => ({
-                    ...item,
-                  })));
+        .map((item) => ({
+          ...item,
+        })));
       setRecordCount(rwtQuery.data.recordCount);
     }
   }, [rwtQuery.isSuccess, rwtQuery.data?.results, rwtQuery.data?.recordCount]);
@@ -148,7 +132,7 @@ function ChplRealWorldTestingCollectionPage() {
     { text: 'Real World Testing Results URL' },
   ];
 
-  const handleTableSort = (event, property, orderDirection) => {
+  const handleTableSort = (event, property) => {
     if (orderBy === property) {
       setSortDescending(!sortDescending);
     } else {
@@ -178,7 +162,9 @@ function ChplRealWorldTestingCollectionPage() {
               Ut volutpat mi ligula, sit amet pulvinar felis tincidunt in. Nam libero dui, molestie in volutpat eu, faucibus et urna. Vestibulum vitae leo rhoncus, interdum leo non, euismod erat. Proin vitae ex risus. Integer ac dapibus est, ut ullamcorper mauris. Morbi tincidunt ac ante id vulputate. Sed ut facilisis dui. Nunc ac fermentum libero. Ut sed ligula sit amet eros accumsan placerat.                    Ut volutpat mi ligula, sit amet pulvinar felis tincidunt in. Nam libero dui, molestie in volutpat eu, faucibus et urna. Vestibulum vitae leo rhoncus, interdum leo non, euismod erat. Proin vitae ex risus. Integer ac dapibus est, ut ullamcorper mauris. Morbi tincidunt ac ante id vulputate. Sed ut facilisis dui. Nunc ac fermentum libero. Ut sed ligula sit amet eros accumsan placerat.
             </Typography>
             <Typography>
-              For more information <a href="#">visit here</a>
+              For more information
+              {' '}
+              <a href="#">visit here</a>
             </Typography>
           </div>
           <Card>
@@ -209,25 +195,26 @@ function ChplRealWorldTestingCollectionPage() {
 
       <ChplFilterChips />
 
-      { listings.length === 0 ?
-        (
+      { listings.length === 0
+        ? (
           <>No results found</>
         ) : (
           <>
             <div className={classes.tableResultsHeaderContainer}>
               <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant='subtitle2'>Search Results:</Typography>
-                <Typography variant='body2'>
+                <Typography variant="subtitle2">Search Results:</Typography>
+                <Typography variant="body2">
                   {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                 </Typography>
               </div>
-              <ButtonGroup size='small' className={classes.wrap}>
+              <ButtonGroup size="small" className={classes.wrap}>
                 <Button
                   color="secondary"
                   variant="contained"
                   fullWidth
                   onClick={() => toggleNotification(true)}
-                >Download Results
+                >
+                  Download Results
                   <GetAppIcon className={classes.iconSpacing} />
                 </Button>
               </ButtonGroup>
@@ -245,33 +232,41 @@ function ChplRealWorldTestingCollectionPage() {
                 />
                 <TableBody>
                   {listings
-                   .map((item) => (
-                     <TableRow key={item.id}>
-                       <TableCell><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></TableCell>
-                       <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
-                       <TableCell>{item.product}</TableCell>
-                       <TableCell>{item.version}</TableCell>
-                       <TableCell>{item.certificationStatus} / {item.edition} {item.curesUpdate ? 'Cures Update' : '' }</TableCell>
-                       <TableCell>
-                         {item.rwtPlansUrl &&
-                          (
+                    .map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></TableCell>
+                        <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
+                        <TableCell>{item.product}</TableCell>
+                        <TableCell>{item.version}</TableCell>
+                        <TableCell>
+                          {item.certificationStatus}
+                          {' '}
+                          /
+                          {' '}
+                          {item.edition}
+                          {' '}
+                          {item.curesUpdate ? 'Cures Update' : '' }
+                        </TableCell>
+                        <TableCell>
+                          {item.rwtPlansUrl
+                          && (
                             <ChplLink
                               href={item.rwtPlansUrl}
                               analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
                             />
                           )}
-                       </TableCell>
-                       <TableCell>
-                         {item.rwtResultsUrl &&
-                          (
+                        </TableCell>
+                        <TableCell>
+                          {item.rwtResultsUrl
+                          && (
                             <ChplLink
                               href={item.rwtResultsUrl}
                               analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
                             />
                           )}
-                       </TableCell>
-                     </TableRow>
-                   ))}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>

@@ -13,7 +13,7 @@ const mockContext = {
 
 const mockApi = {
   isSuccess: false,
-}
+};
 
 jest.mock('./filter-context', () => ({
   __esModule: true,
@@ -25,9 +25,11 @@ jest.mock('../../../api/collections', () => ({
   useFetchRealWorldTestingCollection: () => mockApi,
 }));
 
+/* eslint-disable react/display-name */
 jest.mock('./filter-chips', () => () => <div>Chips</div>);
 jest.mock('./filter-search-term', () => () => <div>Search Term</div>);
 jest.mock('./filter-panel', () => () => <div>Panel</div>);
+/* eslint-enable react/display-name */
 
 describe('the ChplRealWorldTestingCollectionPage component', () => {
   afterEach(() => {

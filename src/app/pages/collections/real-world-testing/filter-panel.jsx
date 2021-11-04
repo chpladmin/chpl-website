@@ -82,7 +82,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplFilterPanel(props) {
+function ChplFilterPanel() {
   const classes = useStyles();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -93,12 +93,11 @@ function ChplFilterPanel(props) {
 
   useEffect(() => {
     setFilters(filterContext.filters
-               .sort((a, b) => a.display < b.display ? -1 : 1)
-               .map((f) => ({
-                 ...f,
-                 values: f.values.sort((a, b) => a.display < b.display ? -1 : 1),
-               }))
-              );
+      .sort((a, b) => (a.display < b.display ? -1 : 1))
+      .map((f) => ({
+        ...f,
+        values: f.values.sort((a, b) => (a.display < b.display ? -1 : 1)),
+      })));
   }, [filterContext.filters]);
 
   useEffect(() => {
@@ -108,7 +107,7 @@ function ChplFilterPanel(props) {
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
     setOpen(true);
-  }
+  };
 
   const handleClose = () => {
     setAnchor(null);
@@ -121,8 +120,8 @@ function ChplFilterPanel(props) {
   };
 
   const handleAction = (action) => {
-    filterContext.dispatch(action, active)
-  }
+    filterContext.dispatch(action, active);
+  };
 
   const toggleActive = (filter) => {
     if (active === filter) {
@@ -174,7 +173,7 @@ function ChplFilterPanel(props) {
             <div>
               <List
                 dense
-                subheader={
+                subheader={(
                   <ListSubheader
                     disableSticky
                     component="div"
@@ -186,7 +185,8 @@ function ChplFilterPanel(props) {
                         variant="text"
                         color="primary"
                         size="medium"
-                        aria-label="apply to filter dropdown">
+                        aria-label="apply to filter dropdown"
+                      >
                         <Button
                           onClick={() => handleAction('resetAll')}
                         >
@@ -195,7 +195,8 @@ function ChplFilterPanel(props) {
                       </ButtonGroup>
                     </div>
                   </ListSubheader>
-                }>
+                )}
+              >
                 <div className={classes.filterSubHeaderContainer}>
                   <div className={classes.filterContainer}>
                     { filters.map((f) => (
@@ -216,7 +217,7 @@ function ChplFilterPanel(props) {
           <div>
             <List
               dense
-              subheader={
+              subheader={(
                 <ListSubheader
                   disableSticky
                   component="div"
@@ -227,7 +228,8 @@ function ChplFilterPanel(props) {
                       variant="text"
                       color="primary"
                       size="medium"
-                      aria-label="apply to filter dropdown">
+                      aria-label="apply to filter dropdown"
+                    >
                       <Button
                         onClick={() => handleAction('clearFilter')}
                       >
@@ -241,7 +243,8 @@ function ChplFilterPanel(props) {
                     </ButtonGroup>
                   </div>
                 </ListSubheader>
-              }>
+              )}
+            >
               { active?.values.length > 0 && (
                 <div className={classes.filterGroupTwoContainer}>
                   { active.values.map((v) => {
@@ -272,7 +275,7 @@ function ChplFilterPanel(props) {
           <div>
             <List
               dense
-              subheader={
+              subheader={(
                 <ListSubheader
                   disableSticky
                   component="div"
@@ -293,7 +296,8 @@ function ChplFilterPanel(props) {
                     </div>
                   </div>
                 </ListSubheader>
-              }>
+              )}
+            >
               <div className={classes.filterGroupThreeContainer}>
                 <ListItem>
                   <Checkbox color="primary" edge="start" />
