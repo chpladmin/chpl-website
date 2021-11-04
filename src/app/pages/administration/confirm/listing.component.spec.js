@@ -14,7 +14,19 @@
       angular.mock.module('chpl.administration', 'chpl.mock', $provide => {
         $provide.decorator('networkService', $delegate => {
           $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
+          $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
+          $delegate.getAtls = jasmine.createSpy('getAtls');
           $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
+          $delegate.getMeasureTypes = jasmine.createSpy('getMeasureTypes');
+          $delegate.getMeasures = jasmine.createSpy('getMeasures');
+          $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
+          $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
+          $delegate.getTargetedUsers = jasmine.createSpy('getTargetedUsers');
+          $delegate.getTestData = jasmine.createSpy('getTestData');
+          $delegate.getTestFunctionality = jasmine.createSpy('getTestFunctionality');
+          $delegate.getTestProcedures = jasmine.createSpy('getTestProcedures');
+          $delegate.getTestStandards = jasmine.createSpy('getTestStandards');
+          $delegate.getUcdProcesses = jasmine.createSpy('getUcdProcesses');
           $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
 
           return $delegate;
@@ -28,7 +40,19 @@
         Mock = _Mock_;
         networkService = _networkService_;
         networkService.confirmPendingCp.and.returnValue($q.when({}));
+        networkService.getAccessibilityStandards.and.returnValue($q.when({}));
+        networkService.getAtls.and.returnValue($q.when({}));
         networkService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
+        networkService.getMeasureTypes.and.returnValue($q.when({}));
+        networkService.getMeasures.and.returnValue($q.when({}));
+        networkService.getQmsStandards.and.returnValue($q.when({}));
+        networkService.getSearchOptions.and.returnValue($q.when({}));
+        networkService.getTargetedUsers.and.returnValue($q.when({}));
+        networkService.getTestData.and.returnValue($q.when({}));
+        networkService.getTestFunctionality.and.returnValue($q.when({}));
+        networkService.getTestProcedures.and.returnValue($q.when({}));
+        networkService.getTestStandards.and.returnValue($q.when({}));
+        networkService.getUcdProcesses.and.returnValue($q.when({}));
         networkService.rejectPendingCp.and.returnValue($q.when({}));
 
         scope = $rootScope.$new();
