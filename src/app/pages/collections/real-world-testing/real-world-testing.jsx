@@ -247,8 +247,8 @@ function ChplRealWorldTestingCollectionPage() {
                   {listings
                    .map((item) => (
                      <TableRow key={item.id}>
-                       <TableCell>{item.chplProductNumber}</TableCell>
-                       <TableCell>{item.developer}</TableCell>
+                       <TableCell><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></TableCell>
+                       <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
                        <TableCell>{item.product}</TableCell>
                        <TableCell>{item.version}</TableCell>
                        <TableCell>{item.certificationStatus} / {item.edition} {item.curesUpdate ? 'Cures Update' : '' }</TableCell>
