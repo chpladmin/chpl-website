@@ -29,6 +29,14 @@ function ChplRealWorldTestingCollectionPageWrapper() {
       { value: 'Withdrawn by Developer' },
       { value: 'Retired'},
     ],
+  }, {
+    key: 'rwtOptions',
+    display: 'Real World Testing',
+    values: [
+      { value: 'is_eligible', display: 'Is Eligible', default: true },
+      { value: 'has_plans_url', display: 'Has Plans URL', default: true },
+      { value: 'has_results_url', display: 'Has Results URL', default: true },
+    ],
   }];
 
   return (
