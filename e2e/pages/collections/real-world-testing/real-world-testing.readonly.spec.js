@@ -36,22 +36,30 @@ describe('the Real World Testing collection page', () => {
     expect(page.downloadAllRwtButton.isDisplayed()).toBe(true);
   });
 
-  xdescribe('when filtering', () => {
+  describe('when filtering', () => {
     let countBefore;
     let countAfter;
     beforeEach(() => {
-      countBefore = page.listingTotalCount();
+      countBefore = page.getListingTotalCount();
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.resetFilters();
+    });
+
+    describe('when removing "2015"', () => {
+      it('should filter listing results', () => {
+        page.removeFilter('Certification Edition', '2015');
+        countAfter = page.getListingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
+      });
     });
 
     describe('when adding "withdrawn by developer"', () => {
       it('should filter listing results', () => {
-        page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
-        page.waitForUpdatedListingResultsCount();
-        countAfter = page.listingTotalCount();
+        //page.selectFilter('certificationStatuses', 'Withdrawn by Developer');
+        page.selectFilter('certificationStatuses', 'Retired');
+        countAfter = page.getListingTotalCount();
         expect(countAfter).toBeGreaterThan(countBefore);
       });
     });
