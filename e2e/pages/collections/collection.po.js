@@ -1,39 +1,54 @@
+/* eslint-disable class-methods-use-this */
 const elements = {
   bodyText: '.makeStyles-content-3',
-  listingTable: 'table',
+  table: 'table',
   searchResultsHeader: 'h6=Search Results:',
   filterPanelToggle: '#filter-panel-toggle',
   resetAllFiltersButton: 'button=Reset All Filters',
+  filterSearchTermInput: '#filter-search-term-input',
+  filterSearchTermGo: '#filter-search-term-go',
 };
 
 class CollectionPage {
-  constructor() {
-    this.elements = elements;
-  }
-
   get bodyText() {
     return $(elements.bodyText);
   }
 
-  getListingTableHeaders() {
-    return $(elements.listingTable).$('thead').$$('th');
+  getTableHeaders() {
+    return $(elements.table).$('thead').$$('th');
   }
 
-  getColumnText(rowNumber, columnNumber) {
-    return $(elements.listingTable)
+  get results() {
+    return $(elements.table)
       .$('tbody')
-      .$(`tr[${rowNumber}]`)
-      .$(`td[${columnNumber}]`)
+      .$$('tr');
+  }
+
+  getTableCellText(row, col) {
+    return row.$$('td')[col]
       .getText();
   }
 
   getListingTotalCount() {
     const data = $(elements.searchResultsHeader)
-          .parentElement()
-          .$('p')
-          .getText()
-          .split(' ');
+      .parentElement()
+      .$('p')
+      .getText()
+      .split(' ');
     return parseInt(data[2], 10);
+  }
+
+  getListingPageCount() {
+    const data = $(elements.searchResultsHeader)
+      .parentElement()
+      .$('p')
+      .getText()
+      .split(' ');
+    return parseInt(data[0].split('-')[1], 10);
+  }
+
+  clearSearchTerm() {
+    this.searchForText('');
   }
 
   resetFilters() {
@@ -41,7 +56,7 @@ class CollectionPage {
     $(elements.filterPanelToggle).click();
     $(elements.resetAllFiltersButton).click();
     browser.keys('Escape');
-    browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount, {timeout: 1000});
+    browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
   }
 
   removeFilter(category, value) {
@@ -50,7 +65,7 @@ class CollectionPage {
       .parentElement()
       .$('svg')
       .click();
-    browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount, {timeout: 1000});
+    browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
   }
 
   selectFilter(category, value) {
@@ -60,11 +75,21 @@ class CollectionPage {
     $(`#filter-panel-secondary-items-${value}`).click();
     browser.keys('Escape');
     try {
-      browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount, {timeout: 1000});
+      browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
     } catch (err) {
       console.log(err);
     }
-    browser.saveScreenshot(`test_reports/e2e/screenshot/selectfilter-final-${Date.now()}.png`);
+  }
+
+  searchForText(text) {
+    const initialListingCount = this.getListingTotalCount();
+    $(elements.filterSearchTermInput).setValue(text);
+    $(elements.filterSearchTermGo).click();
+    try {
+      browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 
