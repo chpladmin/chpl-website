@@ -37,12 +37,14 @@ function ChplFilterSearchTerm(props) {
             placeholder={placeholder}
             value={searchTerm}
             onChange={handleSearchTerm}
+            id="filter-search-term-input"
           />
           <Button
             className={classes.goButton}
             size="medium"
             variant="contained"
             color="primary"
+            id="filter-search-term-go"
             onClick={handleGo}
           >
             Go
