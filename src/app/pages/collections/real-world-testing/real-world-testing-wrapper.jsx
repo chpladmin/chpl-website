@@ -27,7 +27,7 @@ function ChplRealWorldTestingCollectionPageWrapper() {
       { value: 'Withdrawn by Developer Under Surveillance/Review' },
       { value: 'Withdrawn by ONC-ACB' },
       { value: 'Withdrawn by Developer' },
-      { value: 'Retired'},
+      { value: 'Retired' },
     ],
   }, {
     key: 'rwtOptions',

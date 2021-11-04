@@ -23,6 +23,7 @@ describe('the ChplFilterPanel component', () => {
         values: [{
           selected: true,
           value: 'value',
+          display: 'value',
         }],
       }],
       dispatch: jest.fn(() => {}),

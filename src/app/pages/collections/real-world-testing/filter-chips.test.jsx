@@ -23,6 +23,7 @@ describe('the ChplFilterChips component', () => {
         values: [{
           selected: true,
           value: 'value',
+          display: 'value',
         }],
       }],
       dispatch: jest.fn(() => {}),
@@ -74,8 +75,8 @@ describe('the ChplFilterChips component', () => {
     it('sorts values inside filter categories', async () => {
       mockValue.filters[0].values = [
         ...mockValue.filters[0].values,
-        { selected: true, value: 'whatever' },
-        { selected: true, value: 'first' },
+        { selected: true, value: 'whatever', display: 'whatever' },
+        { selected: true, value: 'first', display: 'first' },
       ];
 
       render(
@@ -98,13 +99,15 @@ describe('the ChplFilterChips component', () => {
           values: [{
             selected: true,
             value: 'value',
+            display: 'value',
           }],
         }, {
           key: 'first',
-          display: 'first',
+          display: 'a first',
           values: [{
             selected: true,
             value: 'value',
+            display: 'value',
           }],
         },
       ];
@@ -116,7 +119,7 @@ describe('the ChplFilterChips component', () => {
       await waitFor(() => {
         expect(screen.getByText('display: value')).toBeInTheDocument();
         expect(screen.getByText('display: value').parentElement.parentElement.nextSibling).toHaveTextContent('third: value');
-        expect(screen.getByText('display: value').parentElement.parentElement.previousSibling).toHaveTextContent('first: value');
+        expect(screen.getByText('display: value').parentElement.parentElement.previousSibling).toHaveTextContent('a first: value');
       });
     });
   });
