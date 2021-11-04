@@ -203,6 +203,7 @@ function ChplFilterPanel() {
                       <Button
                         key={f.key}
                         color="primary"
+                        id={`filter-panel-primary-items-${f.key}`}
                         variant={f === active ? 'outlined' : 'text'}
                         onClick={() => toggleActive(f)}
                       >
