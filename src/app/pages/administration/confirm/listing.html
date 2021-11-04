@@ -8,37 +8,32 @@
       <h2>Inspecting Listing: {{ $ctrl.listing.chplProductNumber }}</h2>
     </div>
     <div>
-      <uib-progressbar
-        class="progress-striped active"
-        type="info"
-        value="$ctrl.getStage()"
-        max="4"
-        title="{{ $ctrl.stage }}">{{ $ctrl.stage }}
-      </uib-progressbar>
+      <chpl-confirm-progress-bridge
+        value="$ctrl.progress"
+        ></chpl-confirm-progress-bridge>
     </div>
   </div>
   <div ng-switch="$ctrl.stage" ng-form="$ctrl.form">
     <div ng-switch-when="developer">
       <chpl-confirm-developer-bridge
-        developer="$ctrl.pending.developer"
+        developer="$ctrl.uploaded.developer"
         developers="$ctrl.developers"
+        dispatch="::$ctrl.handleDeveloperDispatch"
         ></chpl-confirm-developer-bridge>
     </div>
     <div ng-switch-when="product">
-      <chpl-confirm-product
-        developer="$ctrl.pending.developer"
-        show-form-errors="$ctrl.showFormErrors"
-        take-action="$ctrl.takeProductAction(action, payload)"
-        uploaded="$ctrl.uploaded.product"
-        ></chpl-confirm-product>
+      <chpl-confirm-product-bridge
+        product="$ctrl.uploaded.product"
+        products="$ctrl.products"
+        dispatch="::$ctrl.handleProductDispatch"
+        ></chpl-confirm-product-bridge>
     </div>
     <div ng-switch-when="version">
-      <chpl-confirm-version
-        product="$ctrl.pending.product"
-        show-form-errors="$ctrl.showFormErrors"
-        take-action="$ctrl.takeVersionAction(action, payload)"
-        uploaded="$ctrl.uploaded.version"
-        ></chpl-confirm-version>
+      <chpl-confirm-version-bridge
+        version="$ctrl.uploaded.version"
+        versions="$ctrl.versions"
+        dispatch="::$ctrl.handleVersionDispatch"
+        ></chpl-confirm-version-bridge>
     </div>
     <div ng-switch-when="listing">
       <chpl-inspect-listing
@@ -48,10 +43,12 @@
         ></chpl-inspect-listing>
     </div>
   </div>
-  <chpl-action-bar can-act="$ctrl.canAct(action)"
-                   error-messages="$ctrl.listing.errorMessages"
-                   warning-messages="$ctrl.listing.warningMessages"
-                   is-wizard="true"
-                   take-action="$ctrl.takeAction(action)">
-  </chpl-action-bar>
+  <chpl-wizard-bar-bridge
+    can-confirm="$ctrl.canAct('confirm')"
+    can-next="$ctrl.canAct('next')"
+    can-previous="$ctrl.canAct('previous')"
+    errors="$ctrl.listing.errorMessages"
+    warnings="$ctrl.listing.warningMessages"
+    dispatch="::$ctrl.handleWizardDispatch">
+  </chpl-wizard-bar-bridge>
 </div>

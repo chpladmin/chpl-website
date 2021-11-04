@@ -25,7 +25,7 @@ import * as yup from 'yup';
 import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import { ChplTextField } from '../../util';
-import ChplActionBar from '../../action-bar';
+import { ChplActionBar } from '../../action-bar';
 import {
   complaintCriterion as criterionPropType,
   complaint as complaintPropType,
