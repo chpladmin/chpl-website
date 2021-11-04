@@ -93,10 +93,10 @@ function ChplFilterPanel(props) {
 
   useEffect(() => {
     setFilters(filterContext.filters
-               .sort((a, b) => a.key < b.key ? -1 : 1)
+               .sort((a, b) => a.display < b.display ? -1 : 1)
                .map((f) => ({
                  ...f,
-                 values: f.values.sort((a, b) => a.value < b.value ? -1 : 1),
+                 values: f.values.sort((a, b) => a.display < b.display ? -1 : 1),
                }))
               );
   }, [filterContext.filters]);
@@ -261,7 +261,7 @@ function ChplFilterPanel(props) {
                             inputProps={{ 'aria-labelledby': labelId }}
                           />
                         </ListItemIcon>
-                        <ListItemText id={labelId}>{v.value}</ListItemText>
+                        <ListItemText id={labelId}>{v.display}</ListItemText>
                       </ListItem>
                     );
                   })}

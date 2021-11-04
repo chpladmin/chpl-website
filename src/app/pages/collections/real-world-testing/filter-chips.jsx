@@ -10,12 +10,12 @@ function ChplFilterChips() {
 
   useEffect(() => {
     setFilters(filterContext.filters
-               .sort((a, b) => a.key < b.key ? -1 : 1)
+               .sort((a, b) => a.display < b.display ? -1 : 1)
                .map((f) => ({
                  ...f,
                  values: f.values
                    .filter((f) => f.selected)
-                   .sort((a, b) => a.value < b.value ? -1 : 1),
+                   .sort((a, b) => a.display < b.display ? -1 : 1),
                }))
                .filter((f) => f.values.length > 0)
               );
@@ -29,7 +29,7 @@ function ChplFilterChips() {
             .map((v) => (
               <Chip
                 key={v.value}
-                label={`${f.display}: ${v.value}`}
+                label={`${f.display}: ${v.display}`}
                 onDelete={() => filterContext.dispatch('toggle', f, v)}
                 color="primary"
                 variant="outlined"
