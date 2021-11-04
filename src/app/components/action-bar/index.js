@@ -1,3 +1,7 @@
 import ChplActionBar from './action-bar';
+import ChplWizardBar from './wizard-bar';
 
-export default ChplActionBar;
+export {
+  ChplActionBar,
+  ChplWizardBar,
+};
