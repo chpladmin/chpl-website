@@ -216,37 +216,37 @@ function ChplFilterPanel() {
             </div>
           </div>
           <div>
-            <List
-              dense
-              subheader={(
-                <ListSubheader
-                  disableSticky
-                  component="div"
-                  id="filter-panel-secondary-subheader"
-                >
-                  <div className={classes.filterSubHeaderContainer}>
-                    <ButtonGroup
-                      variant="text"
-                      color="primary"
-                      size="medium"
-                      aria-label="apply to filter dropdown"
-                    >
-                      <Button
-                        onClick={() => handleAction('clearFilter')}
+            { active?.values.length > 0 && (
+              <List
+                dense
+                subheader={(
+                  <ListSubheader
+                    disableSticky
+                    component="div"
+                    id="filter-panel-secondary-subheader"
+                  >
+                    <div className={classes.filterSubHeaderContainer}>
+                      <ButtonGroup
+                        variant="text"
+                        color="primary"
+                        size="medium"
+                        aria-label="apply to filter dropdown"
                       >
-                        Clear
-                      </Button>
-                      <Button
-                        onClick={() => handleAction('resetFilter')}
-                      >
-                        Reset
-                      </Button>
-                    </ButtonGroup>
-                  </div>
-                </ListSubheader>
-              )}
-            >
-              { active?.values.length > 0 && (
+                        <Button
+                          onClick={() => handleAction('clearFilter')}
+                        >
+                          Clear
+                        </Button>
+                        <Button
+                          onClick={() => handleAction('resetFilter')}
+                        >
+                          Reset
+                        </Button>
+                      </ButtonGroup>
+                    </div>
+                  </ListSubheader>
+                )}
+              >
                 <div className={classes.filterGroupTwoContainer}>
                   { active.values.map((v) => {
                     const labelId = `filter-panel-secondary-items-${v.value.replaceAll(' ', '_')}`;
@@ -270,8 +270,8 @@ function ChplFilterPanel() {
                     );
                   })}
                 </div>
-              )}
-            </List>
+              </List>
+            )}
           </div>
           <div>
             <List
