@@ -14,7 +14,6 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Toolbar,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -51,8 +50,8 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: '1fr 1fr',
     },
   },
-  filterApplied:{
-    paddingTop:'4px',
+  filterApplied: {
+    paddingTop: '4px',
   },
   filterContainer: {
     display: 'flex',
@@ -60,16 +59,16 @@ const useStyles = makeStyles(() => ({
     gap: '8px',
     backgroundColor: '#fafdff',
     borderBottom: '1px solid #bbb',
-    boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0px 8px',
-    flexWrap:'wrap',
-    flexFlow:'column',
+    boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0 8px',
+    flexWrap: 'wrap',
+    flexFlow: 'column',
     [theme.breakpoints.up('md')]: {
-      flexFlow:'row',
-      flexWrap:'wrap',
+      flexFlow: 'row',
+      flexWrap: 'wrap',
     },
   },
-  linkWrap:{
-    overflowWrap:'anywhere',
+  linkWrap: {
+    overflowWrap: 'anywhere',
   },
   rowHeader: {
     display: 'grid',
@@ -88,12 +87,12 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f9f9f9',
   },
   searchContainer: {
-    backgroundColor: '#C6D5E5',
+    backgroundColor: '#c6d5e5',
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',
     gap: '16px',
-    alignItems:'center',
+    alignItems: 'center',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 10fr auto',
     },
@@ -103,10 +102,10 @@ const useStyles = makeStyles(() => ({
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#ffffff',
-    overflowWrap:'anywhere',
+    overflowWrap: 'anywhere',
   },
   tableContainer: {
-    maxHeight: "800px",
+    maxHeight: '800px',
     overflowWrap: 'normal',
     border: '.5px solid #c2c6ca',
     margin: '0px 32px',
@@ -238,11 +237,11 @@ function ChplRealWorldTestingCollectionPage() {
         <ChplFilterPanel />
       </div>
       <div className={classes.filterContainer}>
-        <Typography className={classes.filterApplied} variant='subtitle1'>Filters Applied:</Typography>
-        <ChplFilterChips/>
+        <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied:</Typography>
+        <ChplFilterChips />
       </div>
-      { listings.length === 0 ?
-        (
+      { listings.length === 0
+        ? (
           <>No results found</>
         ) : (
           <>
@@ -266,7 +265,7 @@ function ChplRealWorldTestingCollectionPage() {
               </ButtonGroup>
             </div>
             <TableContainer className={classes.tableContainer} component={Paper}>
-              <Table 
+              <Table
                 stickyHeader
                 aria-label="Real World Testing Collections table"
               >

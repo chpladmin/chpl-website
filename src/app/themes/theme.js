@@ -52,11 +52,11 @@ const theme = createMuiTheme({
     h6: {
       fontSize: '1.125em',
       fontWeight: 400,
-      lineHeight: '1.3em'
+      lineHeight: '1.3em',
     },
     body1: {
       fontSize: '1em',
-      lineHeight: '1.3em'
+      lineHeight: '1.3em',
     },
     body2: {
       fontSize: '0.875em',
@@ -77,11 +77,11 @@ const theme = createMuiTheme({
     MuiAccordionSummary: {
       root: {
         padding: '8px',
-        backgroundColor:'#f5f9fd',
+        backgroundColor: '#f5f9fd',
         '&$expanded': {
-          boxShadow:'0px 4px 8px rgb(149 157 165 / 30%)',
+          boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
+        },
       },
-    },
 
       content: {
         padding: '4px 8px',
@@ -173,14 +173,14 @@ const theme = createMuiTheme({
       },
       outlinedPrimary: {
         backgroundColor: '#ffffff',
-        fontWeight:'600',
+        fontWeight: '600',
       },
       deleteIcon: {
         width: '16px',
         height: '16px',
         color: '#bbb',
       },
-      deleteIconOutlinedColorPrimary:{
+      deleteIconOutlinedColorPrimary: {
         color: '#bbb',
         '&:hover, selected': {
           color: '#c44f65',
@@ -224,12 +224,12 @@ const theme = createMuiTheme({
         verticalAlign: 'text-top',
       },
     },
-    MuiOutlinedInput:{
-      input:{
+    MuiOutlinedInput: {
+      input: {
         paddingTop: '18.5px',
         paddingBottom: '14px',
       },
-      inputMarginDense:{
+      inputMarginDense: {
         paddingTop: '14.5px',
         paddingBottom: '10px',
       },
@@ -250,7 +250,7 @@ const theme = createMuiTheme({
     MuiListSubheader: {
       root: {
         fontSize: '0.875em',
-        color:'#000',
+        color: '#000',
       },
       gutters: {
         paddingLeft: '8px',
@@ -263,7 +263,7 @@ const theme = createMuiTheme({
       },
       elevation1: {
         boxShadow: '0px 4px 8px rgb(149 157 165 / 10%)',
-      }
+      },
     },
     MuiSelect: {
       icon: {
@@ -285,8 +285,8 @@ const theme = createMuiTheme({
         fontWeight: 800,
       },
       stickyHeader: {
-        backgroundColor: '#ffffff'
-      }
+        backgroundColor: '#ffffff',
+      },
     },
     MuiTableHead: {
       root: {

@@ -14,8 +14,9 @@ import {
 } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-import { useFilterContext } from './filter-context';
 import theme from '../../../themes/theme';
+
+import { useFilterContext } from './filter-context';
 
 const useStyles = makeStyles({
   filterPanelContainer: {
@@ -23,20 +24,20 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr',
     padding: '16px',
-    rowGap:'16px',
+    rowGap: '16px',
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
     },
   },
-  filterBold:{
-    fontWeight:'600',
+  filterBold: {
+    fontWeight: '600',
   },
   filterContainer: {
     display: 'grid',
     gridTemplateColumns: 'auto',
     justifyItems: 'start',
     alignItems: 'start',
-    gap:'8px',
+    gap: '8px',
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -194,11 +195,11 @@ function ChplFilterPanel() {
                         key={f.key}
                         color={f === active ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
-                        variant='outlined'
+                        variant="outlined"
                         onClick={() => toggleActive(f)}
                       >
                         <span className={f === active ? classes.filterBold : undefined}>
-                        {f.display}
+                          {f.display}
                         </span>
                       </Button>
                     ))}

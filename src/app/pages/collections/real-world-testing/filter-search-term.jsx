@@ -7,22 +7,23 @@ import {
 import { string } from 'prop-types';
 import SearchIcon from '@material-ui/icons/Search';
 
-import { useFilterContext } from './filter-context';
 import theme from '../../../themes/theme';
+
+import { useFilterContext } from './filter-context';
 
 const useStyles = makeStyles(() => ({
   goButton: {
     margin: '-8px',
-    borderRadius: '0px 8px 8px 0px',
+    borderRadius: '0 8px 8px 0',
   },
   searchBar: {
     display: 'grid',
     gridTemplateColumns: '10fr auto',
   },
   searchIcon: {
-    display:'none',
+    display: 'none',
     [theme.breakpoints.up('md')]: {
-      display:'grid',
+      display: 'grid',
     },
   },
   searchInput: {
