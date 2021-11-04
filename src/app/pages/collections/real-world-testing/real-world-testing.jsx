@@ -50,23 +50,6 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: '1fr 1fr',
     },
   },
-  filterApplied: {
-    paddingTop: '4px',
-  },
-  filterContainer: {
-    display: 'flex',
-    padding: '16px 32px',
-    gap: '8px',
-    backgroundColor: '#fafdff',
-    borderBottom: '1px solid #bbb',
-    boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0 8px',
-    flexWrap: 'wrap',
-    flexFlow: 'column',
-    [theme.breakpoints.up('md')]: {
-      flexFlow: 'row',
-      flexWrap: 'wrap',
-    },
-  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -236,8 +219,7 @@ function ChplRealWorldTestingCollectionPage() {
         <ChplFilterSearchTerm />
         <ChplFilterPanel />
       </div>
-      <div className={classes.filterContainer}>
-        <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied:</Typography>
+      <div>
         <ChplFilterChips />
       </div>
       { listings.length === 0

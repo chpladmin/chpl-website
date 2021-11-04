@@ -5,9 +5,28 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import theme from '../../../themes/theme';
+
 import { useFilterContext } from './filter-context';
 
 const useStyles = makeStyles(() => ({
+  filterContainer: {
+    display: 'flex',
+    padding: '16px 32px',
+    gap: '8px',
+    backgroundColor: '#fafdff',
+    borderBottom: '1px solid #bbb',
+    boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0 8px',
+    flexWrap: 'wrap',
+    flexFlow: 'column',
+    [theme.breakpoints.up('md')]: {
+      flexFlow: 'row',
+      flexWrap: 'wrap',
+    },
+  },
+  filterApplied: {
+    paddingTop: '4px',
+  },
   filterSelectedContainer: {
     display: 'flex',
     gap: '4px',
@@ -35,7 +54,8 @@ function ChplFilterChips() {
   }, [filterContext.filters]);
 
   return (
-    <>
+    <span className={classes.filterContainer}>
+      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied:</Typography>
       { filters.map((f) => (
         <span
           className={classes.filterSelectedContainer}
@@ -59,7 +79,7 @@ function ChplFilterChips() {
             ))}
         </span>
       ))}
-    </>
+    </span>
   );
 }
 
