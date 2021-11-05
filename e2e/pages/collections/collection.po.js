@@ -7,6 +7,7 @@ const elements = {
   resetAllFiltersButton: 'button=Reset All Filters',
   filterSearchTermInput: '#filter-search-term-input',
   filterSearchTermGo: '#filter-search-term-go',
+  filterChipsSection: '#filter-chips',
 };
 
 class CollectionPage {
@@ -61,7 +62,10 @@ class CollectionPage {
 
   removeFilter(category, value) {
     const initialListingCount = this.getListingTotalCount();
-    $(`span=${category}: ${value}`)
+    $(elements.filterChipsSection)
+      .$(`p=${category}:`)
+      .parentElement()
+      .$(`span=${value}`)
       .parentElement()
       .$('svg')
       .click();
