@@ -8,7 +8,7 @@ import { FilterProvider } from 'components/filter';
 
 function ChplRealWorldTestingCollectionPageWrapper() {
   const filters = [{
-    key: 'certificationEditions',
+    key: 'derivedCertificationEditions',
     display: 'Certification Edition',
     values: [
       { value: '2011' },
