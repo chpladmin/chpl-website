@@ -54,7 +54,7 @@ function ChplFilterChips() {
   }, [filterContext.filters]);
 
   return (
-    <span className={classes.filterContainer}>
+    <span className={classes.filterContainer} id="filter-chips">
       <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied:</Typography>
       { filters.map((f) => (
         <span
