@@ -16,7 +16,7 @@ import {
   changeRequest as changeRequestProp,
   changeRequestStatusType,
 } from '../../shared/prop-types';
-import ChplActionBar from '../action-bar';
+import { ChplActionBar } from '../action-bar';
 import { ChplTextField } from '../util';
 import { UserContext } from '../../shared/contexts';
 import theme from '../../themes/theme';
