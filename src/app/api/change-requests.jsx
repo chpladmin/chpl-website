@@ -23,8 +23,14 @@ const usePutChangeRequest = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => {
     console.log('mutate', data);
-    axios.put('change-requests', data) // using this line lets "delete" work as ROLE_DEVELOPER, but doesn't refresh anything
-    // return axios.put('change-requests', data) // using line has "delete" as ROLE_DEVELOPER hang, but refreshes on all the other actions
+    if (data.currentStatus.changeRequestStatusType.name === 'Cancelled by Requester') {
+      /*
+       * using this construct lets "delete" work as ROLE_DEVELOPER, but doesn't refresh
+       */
+      axios.put('change-requests', data);
+      return {};
+    }
+    return axios.put('change-requests', data)
       .then((response) => {
         console.log('success');
         return response;
@@ -32,7 +38,7 @@ const usePutChangeRequest = () => {
       .catch((error) => {
         console.log('error');
         throw error;
-      })
+      });
   }, {
     onSuccess: () => {
       console.log('api onsuccess');
