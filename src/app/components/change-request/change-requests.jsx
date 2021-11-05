@@ -259,7 +259,9 @@ function ChplChangeRequests(props) {
                                  />
                                </div>
                                <div className={classes.developerName}>
-                                 {item.developerName}
+                                 <a href={`#/organizations/developers/${item.developer.developerId}`}>
+                                   {item.developerName}
+                                 </a>
                                </div>
                              </div>
                            </TableCell>
