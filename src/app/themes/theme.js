@@ -98,11 +98,6 @@ const theme = createMuiTheme({
         padding: '16px 0px',
       },
     },
-    MuiPaper: {
-      rounded: {
-        borderRadius: '8px',
-      },
-    },
     MuiButton: {
       root: {
         boxShadow: 'none',
@@ -308,7 +303,7 @@ const theme = createMuiTheme({
       toolbar: {
         backgroundColor: '#ffffff',
         margin: '16px',
-        boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+        boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         borderRadius: '64px',
         display: 'flex',
         justifyContent: 'center',
@@ -335,59 +330,6 @@ const theme = createMuiTheme({
       },
       icon: {
         color: '#000000',
-      },
-    },
-    MuiFormLabel: {
-      asterisk: {
-        fontSize: '2em',
-        verticalAlign: 'top',
-      },
-    },
-    MuiTablePagination: {
-      root: {
-        display: 'flex',
-        alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        fontSize: '1em',
-      },
-      toolbar: {
-        backgroundColor: '#ffffff',
-        margin: '16px 0px 4px 0px',
-        boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
-        borderRadius: '64px',
-      },
-      select: {
-        color: '#156dac',
-        fontWeight: '500',
-      },
-      actions: {
-        color: '#156dac',
-      },
-    },
-    MuiSelect: {
-      icon: {
-        position: 'inherit',
-        color: '#156dac',
-      },
-    },
-    MuiTableSortLabel: {
-      active: {
-        color: '#000',
-      },
-      icon: {
-        color: '#000',
-      },
-    },
-    MuiOutlinedInput: {
-      input: {
-        paddingTop: '18.5px',
-        paddingBottom: '14px',
-      },
-      inputMarginDense: {
-        paddingTop: '14.5px',
-        paddingBottom: '10px',
       },
     },
   },
