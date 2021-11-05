@@ -40,7 +40,7 @@ describe('the ChplFilterChips component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('display: value')).toBeInTheDocument();
+      expect(screen.getByText('value')).toBeInTheDocument();
     });
   });
 
@@ -51,7 +51,7 @@ describe('the ChplFilterChips component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.queryByText('display: value')).toBeNull();
+      expect(screen.queryByText('value')).toBeNull();
     });
   });
 
@@ -60,7 +60,7 @@ describe('the ChplFilterChips component', () => {
       <ChplFilterChips />,
     );
 
-    userEvent.click(screen.getByText('display: value').nextSibling);
+    userEvent.click(screen.getByText('value').nextSibling);
 
     await waitFor(() => {
       expect(mockValue.dispatch).toHaveBeenCalledWith(
@@ -84,9 +84,9 @@ describe('the ChplFilterChips component', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText('display: value')).toBeInTheDocument();
-        expect(screen.getByText('display: value').parentElement.nextSibling).toHaveTextContent('display: whatever');
-        expect(screen.getByText('display: value').parentElement.previousSibling).toHaveTextContent('display: first');
+        expect(screen.getByText('value')).toBeInTheDocument();
+        expect(screen.getByText('value').parentElement.nextSibling).toHaveTextContent('whatever');
+        expect(screen.getByText('value').parentElement.previousSibling).toHaveTextContent('first');
       });
     });
 
@@ -117,9 +117,9 @@ describe('the ChplFilterChips component', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText('display: value')).toBeInTheDocument();
-        expect(screen.getByText('display: value').parentElement.parentElement.nextSibling).toHaveTextContent('third: value');
-        expect(screen.getByText('display: value').parentElement.parentElement.previousSibling).toHaveTextContent('a first: value');
+        expect(screen.getByText('display:')).toBeInTheDocument();
+        expect(screen.getByText('display:').parentElement.parentElement.nextSibling).toHaveTextContent('third');
+        expect(screen.getByText('display:').parentElement.parentElement.previousSibling).toHaveTextContent('a first');
       });
     });
   });
