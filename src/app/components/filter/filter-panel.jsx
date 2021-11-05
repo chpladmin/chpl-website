@@ -14,9 +14,9 @@ import {
 } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-import theme from '../../../themes/theme';
-
 import { useFilterContext } from './filter-context';
+
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   filterPanelContainer: {

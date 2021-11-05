@@ -3,7 +3,6 @@ import {
   cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
 
 import ChplRealWorldTestingCollectionPage from './real-world-testing';
 
@@ -15,21 +14,20 @@ const mockApi = {
   isSuccess: false,
 };
 
-jest.mock('./filter-context', () => ({
+/* eslint-disable react/display-name */
+jest.mock('components/filter', () => ({
   __esModule: true,
+  ChplFilterChips: () => () => <div>Chips</div>,
+  ChplFilterPanel: () => () => <div>Panel</div>,
+  ChplFilterSearchTerm: () => () => <div>Search Term</div>,
   useFilterContext: () => mockContext,
 }));
+/* eslint-enable react/display-name */
 
-jest.mock('../../../api/collections', () => ({
+jest.mock('api/collections', () => ({
   __esModule: true,
   useFetchRealWorldTestingCollection: () => mockApi,
 }));
-
-/* eslint-disable react/display-name */
-jest.mock('./filter-chips', () => () => <div>Chips</div>);
-jest.mock('./filter-search-term', () => () => <div>Search Term</div>);
-jest.mock('./filter-panel', () => () => <div>Panel</div>);
-/* eslint-enable react/display-name */
 
 describe('the ChplRealWorldTestingCollectionPage component', () => {
   afterEach(() => {

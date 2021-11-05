@@ -1,7 +1,7 @@
 import React, {
   createContext, useContext, useEffect, useState,
 } from 'react';
-import { arrayOf, object } from 'prop-types';
+import { arrayOf, bool, shape, string } from 'prop-types';
 
 const FilterContext = createContext();
 
@@ -105,7 +105,15 @@ function FilterProvider(props) {
 }
 
 FilterProvider.propTypes = {
-  filters: arrayOf(object).isRequired,
+  filters: arrayOf(shape({
+    key: string.isRequired,
+    display: string.isRequired,
+    values: arrayOf(shape({
+      value: string.isRequired,
+      default: bool,
+      display: string,
+    })).isRequired,
+  })).isRequired,
 };
 
 function useFilterContext() {

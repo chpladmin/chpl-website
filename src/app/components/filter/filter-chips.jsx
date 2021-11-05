@@ -5,9 +5,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
-
 import { useFilterContext } from './filter-context';
+
+import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
   filterContainer: {

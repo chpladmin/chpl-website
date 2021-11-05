@@ -7,9 +7,9 @@ import {
 import { string } from 'prop-types';
 import SearchIcon from '@material-ui/icons/Search';
 
-import theme from '../../../themes/theme';
-
 import { useFilterContext } from './filter-context';
+
+import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
   goButton: {

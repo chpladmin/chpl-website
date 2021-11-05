@@ -19,20 +19,21 @@ import {
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
-import theme from '../../../themes/theme';
+import theme from 'themes/theme';
 import {
   useFetchRealWorldTestingCollection,
-} from '../../../api/collections';
+} from 'api/collections';
 import {
   ChplLink,
   //  ChplPagination,
   ChplSortableHeaders,
-} from '../../../components/util';
-
-import { useFilterContext } from './filter-context';
-import ChplFilterChips from './filter-chips';
-import ChplFilterPanel from './filter-panel';
-import ChplFilterSearchTerm from './filter-search-term';
+} from 'components/util';
+import {
+  ChplFilterChips,
+  ChplFilterPanel,
+  ChplFilterSearchTerm,
+  useFilterContext,
+} from 'components/filter';
 
 const useStyles = makeStyles(() => ({
   container: {
