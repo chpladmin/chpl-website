@@ -1,5 +1,5 @@
 (() => {
-  describe('the Surveillance Management Reporting component', () => {
+  describe('the Surveillance Activity Reporting component', () => {
     let $compile;
     let $log;
     let ctrl;
@@ -17,7 +17,7 @@
 
         scope = $rootScope.$new();
 
-        el = angular.element('<chpl-surveillance-management-reporting></chpl-surveillance-management-reporting>');
+        el = angular.element('<chpl-surveillance-activity-reporting></chpl-surveillance-activity-reporting>');
 
         $compile(el)(scope);
         scope.$digest();
