@@ -129,6 +129,7 @@ function ChplRealWorldTestingCollectionPage() {
   const classes = useStyles();
 
   const filterContext = useFilterContext();
+  /*
   const rwtQuery = useFetchRealWorldTestingCollection({
     orderBy,
     pageNumber,
@@ -136,7 +137,16 @@ function ChplRealWorldTestingCollectionPage() {
     sortDescending,
     query: filterContext.queryString(),
   });
+*/
+  const { isLoading, isError, data, error } = useFetchRealWorldTestingCollection({
+    orderBy,
+    pageNumber,
+    pageSize,
+    sortDescending,
+    query: filterContext.queryString(),
+  });
 
+  /*
   useEffect(() => {
     if (!rwtQuery.isSuccess) {
       setListings([]);
@@ -148,6 +158,7 @@ function ChplRealWorldTestingCollectionPage() {
       setRecordCount(rwtQuery.data.recordCount);
     }
   }, [rwtQuery.isSuccess, rwtQuery.data?.results, rwtQuery.data?.recordCount]);
+  */
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
@@ -171,7 +182,7 @@ function ChplRealWorldTestingCollectionPage() {
   const toggleNotification = (open) => setNotificationOpen(open);
 
   const pageStart = (pageNumber * pageSize) + 1;
-  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
   return (
     <>
@@ -223,16 +234,29 @@ function ChplRealWorldTestingCollectionPage() {
       <div>
         <ChplFilterChips />
       </div>
-      { listings.length === 0
-        ? (
+      { isLoading
+        && (
+          <>Loading</>
+        )}
+      { isError
+        && (
+          <>
+          Error
+          {error}
+          </>
+        )}
+      { !isLoading && !isError && data?.results.length === 0 &&
+        (
           <>No results found</>
-        ) : (
+        )}
+      { !isLoading && !isError && data?.results.length > 0 &&
+       (
           <>
             <div className={classes.tableResultsHeaderContainer}>
               <div className={`${classes.resultsContainer} ${classes.wrap}`}>
                 <Typography variant="subtitle2">Search Results:</Typography>
                 <Typography variant="body2">
-                  {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                  {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
                 </Typography>
               </div>
               <ButtonGroup size="small" className={classes.wrap}>
@@ -260,7 +284,7 @@ function ChplRealWorldTestingCollectionPage() {
                   stickyHeader
                 />
                 <TableBody>
-                  {listings
+                  {data.results
                     .map((item) => (
                       <TableRow key={item.id}>
                         <TableCell className={classes.stickyColumn}><strong><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></strong></TableCell>
