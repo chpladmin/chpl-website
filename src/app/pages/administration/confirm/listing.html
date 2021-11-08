@@ -38,12 +38,13 @@
     <div ng-switch-when="listing">
       <chpl-inspect-listing
         listing="$ctrl.uploaded"
-        on-change="$ctrl.editListing(listing)"
+        on-change="$ctrl.handleListing(action, data)"
         resources="$ctrl.resources"
         ></chpl-inspect-listing>
     </div>
   </div>
   <chpl-wizard-bar-bridge
+    ng-if="!$ctrl.isEditing"
     can-confirm="$ctrl.canAct('confirm')"
     can-next="$ctrl.canAct('next')"
     can-previous="$ctrl.canAct('previous')"

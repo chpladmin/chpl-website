@@ -225,8 +225,20 @@ export const ConfirmListingComponent = {
         });
     }
 
-    editListing (listing) {
-      this.pending = listing;
+    handleListing (action, data) {
+      switch (action) {
+        case 'edit':
+          this.isEditing = true;
+          break;
+        case 'cancel':
+          this.isEditing = false;
+          break;
+        case 'save':
+          this.isEditing = false;
+          this.pending = data;
+          break;
+          // no default
+      }
     }
 
     next () {
