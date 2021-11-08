@@ -20,6 +20,13 @@ const useStyles = makeStyles(() => ({
     top: 20,
     width: 1,
   },
+  stickyColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
+    backgroundColor: '#ffffff',
+    zIndex:'99',
+  },
 }));
 
 function ChplSortableHeaders(props) {
@@ -38,13 +45,14 @@ function ChplSortableHeaders(props) {
   return (
     <TableHead>
       <TableRow>
-        { props.headers.map((headCell) => (
+        { props.headers.map((headCell, index) => (
           headCell.sortable
             ? (
               <TableCell
                 key={headCell.property}
                 align="left"
                 sortDirection={orderBy === headCell.property ? order : false}
+                className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
               >
                 <TableSortLabel
                   className={classes.header}
@@ -87,9 +95,11 @@ ChplSortableHeaders.propTypes = {
     text: string,
     sortable: bool,
   })).isRequired,
+  stickyHeader: bool,
 };
 
 ChplSortableHeaders.defaultProps = {
   order: '',
   orderBy: '',
+  stickyHeader: false,
 };
