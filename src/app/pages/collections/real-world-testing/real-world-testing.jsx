@@ -36,9 +36,6 @@ import {
 } from 'components/filter';
 
 const useStyles = makeStyles({
-  container: {
-    maxHeight: '64vh',
-  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -87,9 +84,11 @@ const useStyles = makeStyles({
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#ffffff',
     overflowWrap: 'anywhere',
+    [theme.breakpoints.up('sm')]: {
+      minWidth:'275px',
+    },
   },
   tableContainer: {
-    maxHeight: '800px',
     overflowWrap: 'normal',
     border: '.5px solid #c2c6ca',
     margin: '0px 32px',
