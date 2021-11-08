@@ -120,7 +120,7 @@ const useStyles = makeStyles({
 function ChplRealWorldTestingCollectionPage() {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [sortDescending, setSortDescending] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const classes = useStyles();

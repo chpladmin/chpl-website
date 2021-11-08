@@ -59,8 +59,7 @@ function ChplFilterChips() {
 
   return (
     <span className={classes.filterContainer} id="filter-chips">
-    {/*need to add dialog box for filters applied info icon*/ }
-      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied<InfoIcon color='primary' className={classes.iconSpacing}/></Typography>
+      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied</Typography>
       { filters.map((f) => (
         <span
           className={classes.filterSelectedContainer}
@@ -69,7 +68,6 @@ function ChplFilterChips() {
           <Typography variant="body1">
             <strong>
               {f.display}
-              :
             </strong>
           </Typography>
           {f.values
