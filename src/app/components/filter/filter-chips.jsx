@@ -4,6 +4,7 @@ import {
   Chip,
   makeStyles,
 } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { useFilterContext } from './filter-context';
 
@@ -34,6 +35,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
   },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
 }));
 
 function ChplFilterChips() {
@@ -55,7 +59,8 @@ function ChplFilterChips() {
 
   return (
     <span className={classes.filterContainer} id="filter-chips">
-      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied:</Typography>
+    {/*need to add dialog box for filters applied info icon*/ }
+      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied<InfoIcon color='primary' className={classes.iconSpacing}/></Typography>
       { filters.map((f) => (
         <span
           className={classes.filterSelectedContainer}
