@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -35,7 +35,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
@@ -116,49 +116,24 @@ const useStyles = makeStyles(() => ({
   wrap: {
     flexFlow: 'wrap',
   },
-}));
+});
 
 function ChplRealWorldTestingCollectionPage() {
-  const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(50);
-  const [recordCount, setRecordCount] = useState(0);
   const [sortDescending, setSortDescending] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  /*
-  const rwtQuery = useFetchRealWorldTestingCollection({
+  const { isLoading, data } = useFetchRealWorldTestingCollection({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query: filterContext.queryString(),
   });
-*/
-  const { isLoading, isError, data, error } = useFetchRealWorldTestingCollection({
-    orderBy,
-    pageNumber,
-    pageSize,
-    sortDescending,
-    query: filterContext.queryString(),
-  });
-
-  /*
-  useEffect(() => {
-    if (!rwtQuery.isSuccess) {
-      setListings([]);
-    } else {
-      setListings(rwtQuery.data.results
-        .map((item) => ({
-          ...item,
-        })));
-      setRecordCount(rwtQuery.data.recordCount);
-    }
-  }, [rwtQuery.isSuccess, rwtQuery.data?.results, rwtQuery.data?.recordCount]);
-  */
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
@@ -238,97 +213,90 @@ function ChplRealWorldTestingCollectionPage() {
         && (
           <>Loading</>
         )}
-      { isError
+      { !isLoading && data?.results.length === 0
         && (
-          <>
-          Error
-          {error}
-          </>
-        )}
-      { !isLoading && !isError && data?.results.length === 0 &&
-        (
           <>No results found</>
         )}
-      { !isLoading && !isError && data?.results.length > 0 &&
-       (
-          <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                <Typography variant="body2">
-                  {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-                </Typography>
-              </div>
-              <ButtonGroup size="small" className={classes.wrap}>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  fullWidth
-                  onClick={() => toggleNotification(true)}
-                >
-                  Download Results
-                  <GetAppIcon className={classes.iconSpacing} />
-                </Button>
-              </ButtonGroup>
-            </div>
-            <TableContainer className={classes.tableContainer} component={Paper}>
-              <Table
-                stickyHeader
-                aria-label="Real World Testing Collections table"
-              >
-                <ChplSortableHeaders
-                  headers={headers}
-                  onTableSort={handleTableSort}
-                  orderBy={orderBy}
-                  order={sortDescending ? 'desc' : 'asc'}
-                  stickyHeader
-                />
-                <TableBody>
-                  {data.results
-                    .map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className={classes.stickyColumn}><strong><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></strong></TableCell>
-                        <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
-                        <TableCell>{item.product}</TableCell>
-                        <TableCell>{item.version}</TableCell>
-                        <TableCell>
-                          {item.certificationStatus}
-                          {' '}
-                          /
-                          {' '}
-                          {item.edition}
-                          {' '}
-                          {item.curesUpdate ? 'Cures Update' : '' }
-                        </TableCell>
-                        <TableCell className={classes.linkWrap}>
-                          {item.rwtPlansUrl
+      { !isLoading && data?.results.length > 0
+       && (
+       <>
+         <div className={classes.tableResultsHeaderContainer}>
+           <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+             <Typography variant="subtitle2">Search Results:</Typography>
+             <Typography variant="body2">
+               {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+             </Typography>
+           </div>
+           <ButtonGroup size="small" className={classes.wrap}>
+             <Button
+               color="secondary"
+               variant="contained"
+               fullWidth
+               onClick={() => toggleNotification(true)}
+             >
+               Download Results
+               <GetAppIcon className={classes.iconSpacing} />
+             </Button>
+           </ButtonGroup>
+         </div>
+         <TableContainer className={classes.tableContainer} component={Paper}>
+           <Table
+             stickyHeader
+             aria-label="Real World Testing Collections table"
+           >
+             <ChplSortableHeaders
+               headers={headers}
+               onTableSort={handleTableSort}
+               orderBy={orderBy}
+               order={sortDescending ? 'desc' : 'asc'}
+               stickyHeader
+             />
+             <TableBody>
+               {data.results
+                 .map((item) => (
+                   <TableRow key={item.id}>
+                     <TableCell className={classes.stickyColumn}><strong><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></strong></TableCell>
+                     <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
+                     <TableCell>{item.product}</TableCell>
+                     <TableCell>{item.version}</TableCell>
+                     <TableCell>
+                       {item.certificationStatus}
+                       {' '}
+                       /
+                       {' '}
+                       {item.edition}
+                       {' '}
+                       {item.curesUpdate ? 'Cures Update' : '' }
+                     </TableCell>
+                     <TableCell className={classes.linkWrap}>
+                       {item.rwtPlansUrl
                           && (
                             <ChplLink
                               href={item.rwtPlansUrl}
                               analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
                             />
                           )}
-                        </TableCell>
-                        <TableCell className={classes.linkWrap}>
-                          {item.rwtResultsUrl
+                     </TableCell>
+                     <TableCell className={classes.linkWrap}>
+                       {item.rwtResultsUrl
                           && (
                             <ChplLink
                               href={item.rwtResultsUrl}
                               analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
                             />
                           )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Button
-              onClick={() => setPageNumber((pageNumber + 1) % 50)}
-            >
-              Next page
-            </Button>
-            { /*
+                     </TableCell>
+                   </TableRow>
+                 ))}
+             </TableBody>
+           </Table>
+         </TableContainer>
+         <Button
+           onClick={() => setPageNumber((pageNumber + 1) % 50)}
+         >
+           Next page
+         </Button>
+         { /*
                 <ChplPagination
                 count={getListings().length}
                 page={page}
@@ -338,8 +306,8 @@ function ChplRealWorldTestingCollectionPage() {
                 setRowsPerPage={setRowsPerPage}
                 />
               */ }
-          </>
-        )}
+       </>
+       )}
       <Snackbar
         open={notificationOpen}
         onClose={() => toggleNotification(false)}
