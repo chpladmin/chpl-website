@@ -195,8 +195,6 @@ function ChplChangeRequestEdit(props) {
       props.dispatch('save', updated);
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (

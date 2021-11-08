@@ -21,20 +21,11 @@ const useFetchChangeRequestStatusTypes = () => {
 const usePutChangeRequest = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => {
-    if (data.currentStatus.changeRequestStatusType.name === 'Cancelled by Requester') {
-      /*
-       * using this construct lets "delete" work as ROLE_DEVELOPER, but doesn't refresh
-       */
-      axios.put('change-requests', data);
-      return {};
-    }
-    return axios.put('change-requests', data)
-      .then((response) => response)
-      .catch((error) => {
-        throw error;
-      });
-  }, {
+  return useMutation(async (data) => axios.put('change-requests', data)
+    .then((response) => response)
+    .catch((error) => {
+      throw error;
+    }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
     },
