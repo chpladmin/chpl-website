@@ -136,10 +136,11 @@ function ChplRealWorldTestingCollectionPage() {
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'chpl_id', text: 'CHPL ID', sortable: true },
+    { text: 'Certification Edition' },
     { property: 'developer', text: 'Developer', sortable: true },
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
-    { text: 'Status/Edition' },
+    { text: 'Certification Status' },
     { text: 'Real World Testing Plans URL' },
     { text: 'Real World Testing Results URL' },
   ];
@@ -235,18 +236,15 @@ function ChplRealWorldTestingCollectionPage() {
                  .map((item) => (
                    <TableRow key={item.id}>
                      <TableCell className={classes.stickyColumn}><strong><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></strong></TableCell>
-                     <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
-                     <TableCell>{item.product}</TableCell>
-                     <TableCell>{item.version}</TableCell>
                      <TableCell>
-                       {item.certificationStatus}
-                       {' '}
-                       /
-                       {' '}
                        {item.edition}
                        {' '}
                        {item.curesUpdate ? 'Cures Update' : '' }
                      </TableCell>
+                     <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
+                     <TableCell>{item.product}</TableCell>
+                     <TableCell>{item.version}</TableCell>
+                     <TableCell>{item.certificationStatus}</TableCell>
                      <TableCell className={classes.linkWrap}>
                        {item.rwtPlansUrl
                           && (
