@@ -25,7 +25,7 @@ import {
 } from 'api/collections';
 import {
   ChplLink,
-  //  ChplPagination,
+  ChplPagination,
   ChplSortableHeaders,
 } from 'components/util';
 import {
@@ -296,21 +296,14 @@ function ChplRealWorldTestingCollectionPage() {
              </TableBody>
            </Table>
          </TableContainer>
-         <Button
-           onClick={() => setPageNumber((pageNumber + 1) % 50)}
-         >
-           Next page
-         </Button>
-         { /*
-                <ChplPagination
-                count={getListings().length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[2, 10, 50, 100, 250]}
-                setPage={setPage}
-                setRowsPerPage={setRowsPerPage}
-                />
-              */ }
+         <ChplPagination
+           count={data.recordCount}
+           page={pageNumber}
+           rowsPerPage={pageSize}
+           rowsPerPageOptions={[10, 50, 100]}
+           setPage={setPageNumber}
+           setRowsPerPage={setPageSize}
+         />
        </>
        )}
       <Snackbar
