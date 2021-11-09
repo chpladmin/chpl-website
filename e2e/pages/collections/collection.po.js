@@ -63,7 +63,7 @@ class CollectionPage {
   removeFilter(category, value) {
     const initialListingCount = this.getListingTotalCount();
     $(elements.filterChipsSection)
-      .$(`p=${category}:`)
+      .$(`p=${category}`)
       .parentElement()
       .$(`span=${value}`)
       .parentElement()
