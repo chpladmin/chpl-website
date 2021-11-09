@@ -256,12 +256,14 @@ function ChplRealWorldTestingCollectionPage() {
                      </TableCell>
                      <TableCell className={classes.linkWrap}>
                        {item.rwtResultsUrl
-                          && (
-                            <ChplLink
-                              href={item.rwtResultsUrl}
-                              analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
-                            />
-                          )}
+                         ? (
+                           <ChplLink
+                             href={item.rwtResultsUrl}
+                             analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
+                           />
+                         ) : (
+                           <>N/A</>
+                         )}
                      </TableCell>
                    </TableRow>
                  ))}
