@@ -159,7 +159,35 @@
           </td>
           <td ng-if="(!$ctrl.cert.testFunctionality || $ctrl.cert.testFunctionality.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null && $ctrl.isOn('conformance-method')">
+          <td>Conformance method</td>
+          <td ng-if="$ctrl.canEdit()">
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <div class="col-sm-12">
+                  <chpl-expandable-list
+                    identifier="conformanceMethods"
+                    item-key="id"
+                    item-text="name"
+                    items="$ctrl.cert.allowedConformanceMethods"
+                    selected-item-keys="$ctrl.selectedConformanceMethodKeys"
+                    placeholder="Select a Conformance Method"
+                    on-change="$ctrl.conformanceMethodsOnChange(action)"
+                    additional-input="true"
+                    additional-input-label="Version"
+                    additional-input-max-length="50"
+                    additional-input-required="false">
+                  </chpl-expandable-list>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td ng-if="$ctrl.cert.conformanceMethods && $ctrl.cert.conformanceMethods.length > 0 && !$ctrl.canEdit()">
+            <div ng-repeat="m in $ctrl.cert.conformanceMethods">Name: {{ m.conformanceMethod.name }}; Version: {{ m.conformanceMethodVersion }}</div>
+          </td>
+          <td ng-if="(!$ctrl.cert.conformanceMethods || $ctrl.cert.conformanceMethods.length === 0) && !$ctrl.canEdit()">None</td>
+        </tr>
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null && (($ctrl.isOn('conformance-method') && (!$ctrl.cert.conformanceMethods || $ctrl.cert.testProcedures.length > 0)) || !$ctrl.isOn('conformance-method'))">
           <td>Test procedure</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">

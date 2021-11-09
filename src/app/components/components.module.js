@@ -2,10 +2,17 @@ import IndexWrapper from '../index-wrapper';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 
 import { ChplApiKeyConfirm } from './api-key';
+import { ChplChangeRequestsWrapper } from './change-request';
 import ChplAttestationChangeRequest from './attestation';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
-import { ChplConfirmDeveloper, ChplConfirmListings } from './listing/confirm';
+import {
+  ChplConfirmDeveloper,
+  ChplConfirmListings,
+  ChplConfirmProduct,
+  ChplConfirmProgress,
+  ChplConfirmVersion,
+} from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import {
@@ -28,15 +35,14 @@ import {
   ChplLink,
   ChplNonProdIndicator,
 } from './util';
+import { ChplWizardBar } from './action-bar';
 import { UserWrapper } from './login';
 
 angular
   .module('chpl.components', [
-    'angularMoment',
     'angulartics',
     'chpl.services',
     'feature-flags',
-    'ngAvatar',
     'ngCytoscape',
     'ngFileUpload',
     'ngIdle',
@@ -49,12 +55,16 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
+  .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
   .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
   .component('chplComplaintsBridge', reactToAngularComponent(ChplComplaints))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
   .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
+  .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
+  .component('chplConfirmProgressBridge', reactToAngularComponent(ChplConfirmProgress))
+  .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
   .component('chplCronGenBridge', reactToAngularComponent(ChplCronGen))
@@ -69,5 +79,6 @@ angular
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
+  .component('chplWizardBarBridge', reactToAngularComponent(ChplWizardBar))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper))
   .component('userWrapperBridge', reactToAngularComponent(UserWrapper));

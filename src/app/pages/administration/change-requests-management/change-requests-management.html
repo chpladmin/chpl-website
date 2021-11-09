@@ -1,9 +1,6 @@
 <div class="row">
   <div class="col-md-12">
-    <chpl-change-requests change-requests="$ctrl.changeRequests"
-                          change-request-status-types="$ctrl.changeRequestStatusTypes"
-                          change-request-types="$ctrl.changeRequestTypes"
-                          take-action="$ctrl.takeAction(action, data)"
-                          administration-mode="true"></chpl-change-requests>
+    <chpl-change-requests-wrapper-bridge
+      scope="$ctrl.$scope"></chpl-change-requests-wrapper-bridge>
   </div>
 </div>

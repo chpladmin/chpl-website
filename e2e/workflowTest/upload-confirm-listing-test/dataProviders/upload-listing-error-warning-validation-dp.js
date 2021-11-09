@@ -110,7 +110,6 @@ module.exports = [
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\'.',
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\'.',
       'Criteria 170.315 (a)(1) contains an invalid test functionality \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
-      'Criteria 170.315 (b)(1) (Cures Update) contains a test standard \'test standard\' which does not exist for edition 2015.',
       'Criteria 170.315 (b)(1) (Cures Update) contains an invalid test tool \'test tool\'. It has been removed from the pending listing.',
       'Criteria 170.315 (d)(12) indicates additional software should be present but none was found.',
       'Export Documentation is required for certification 170.315 (b)(10).',
@@ -132,7 +131,6 @@ module.exports = [
     ],
     expectedWarnings: ['The test participant with unique ID \'ID02\' is never referenced in the listing and will be ignored.',
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
-      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Standard: Number \'170.207(i)\'. The duplicates have been removed.',
       'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
       'Test data \'test data\' is invalid for certification 170.315 (b)(1) (Cures Update). ONC Test Method will be used instead.'
     ],
@@ -226,22 +224,6 @@ module.exports = [
       'Certification criterion \'170.315 (c)(4)\' was found but no matching Clinical Quality Measurement was found.',
       'Listing has attested to (g)(1), but no measures have been successfully tested for (g)(1).',
       'Listing has attested to (g)(2), but no measures have been successfully tested for (g)(2).'
-    ],
-    expectedWarnings: [],
-  },
-  {
-    listingId: '15.04.04.1722.MEA1.V1.00.1.210607',
-    expectedErrors: ['170.315 (g)(3) is required but was not found.',
-      'G1 Measure \'EP Stage 3\' was not found associated with 170.315 (e)(3).',
-      'G2 Measure \'EP Stage 3\' was not found associated with 170.315 (e)(3).',
-      'The G1 Measure: Electronic Prescribing: Eligible Professional for RT1 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G1 Measure: Medication/Clinical Information Reconciliation: Eligible Professional for RT9 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G1 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G1 Measure: Patient Electronic Access: Eligible Professional for RT2 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G2 Measure: Electronic Prescribing: Eligible Professional for RT1 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G2 Measure: Medication/Clinical Information Reconciliation: Eligible Professional for RT9 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G2 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G2 Measure: Patient Electronic Access: Eligible Professional for RT2 may not be referenced since this listing does not have ICS. The measure has been removed.'
     ],
     expectedWarnings: [],
   },
