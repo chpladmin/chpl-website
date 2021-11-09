@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -133,6 +133,12 @@ function ChplRealWorldTestingCollectionPage() {
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  useEffect(() => {
+    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
+      setPageNumber(0);
+    };
+  }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
