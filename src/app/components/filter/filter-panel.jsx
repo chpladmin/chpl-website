@@ -227,6 +227,7 @@ function ChplFilterPanel() {
                       >
                         <Button
                           onClick={() => handleAction('clearFilter')}
+                          disabled={active.required}
                         >
                           Clear
                         </Button>
@@ -248,6 +249,7 @@ function ChplFilterPanel() {
                         key={v.value}
                         button
                         onClick={() => handleSecondaryToggle(v)}
+                        disabled={active.required && v.selected && active.values.filter((v) => v.selected).length === 1}
                       >
                         <ListItemIcon>
                           <Checkbox

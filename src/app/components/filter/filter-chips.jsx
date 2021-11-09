@@ -74,6 +74,7 @@ function ChplFilterChips() {
                 onDelete={() => filterContext.dispatch('toggle', f, v)}
                 color="primary"
                 variant="outlined"
+                disabled={f.required && f.values.length === 1}
               />
             ))}
         </span>

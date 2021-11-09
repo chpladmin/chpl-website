@@ -10,6 +10,7 @@ function ChplRealWorldTestingCollectionPageWrapper() {
   const filters = [{
     key: 'derivedCertificationEditions',
     display: 'Certification Edition',
+    required: true,
     values: [
       { value: '2011' },
       { value: '2014' },
@@ -32,6 +33,7 @@ function ChplRealWorldTestingCollectionPageWrapper() {
   }, {
     key: 'rwtOptions',
     display: 'Real World Testing',
+    required: true,
     values: [
       { value: 'is_eligible', display: 'Is Eligible', default: true },
       { value: 'has_plans_url', display: 'Has Plans URL', default: true },

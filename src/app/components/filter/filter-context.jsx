@@ -37,7 +37,9 @@ const toggleFilter = (filters, category, value, setFilters) => {
     values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
   };
   const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-  setFilters(updatedFilters);
+  if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+    setFilters(updatedFilters);
+  }
 };
 
 function FilterProvider(props) {
@@ -47,6 +49,7 @@ function FilterProvider(props) {
   useEffect(() => {
     setFilters(props.filters.map((filter) => ({
       ...filter,
+      required: !!filter.required,
       values: filter.values.map((value) => ({
         ...value,
         selected: !!value.default,
@@ -108,6 +111,7 @@ FilterProvider.propTypes = {
   filters: arrayOf(shape({
     key: string.isRequired,
     display: string.isRequired,
+    required: bool,
     values: arrayOf(shape({
       value: string.isRequired,
       default: bool,
