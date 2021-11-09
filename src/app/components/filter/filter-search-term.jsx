@@ -52,6 +52,12 @@ function ChplFilterSearchTerm(props) {
     setSearchTerm(event.target.value);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleGo();
+    }
+  };
+
   return (
     <>
       <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
@@ -62,6 +68,7 @@ function ChplFilterSearchTerm(props) {
             placeholder={placeholder}
             value={searchTerm}
             onChange={handleSearchTerm}
+            onKeyPress={handleKeyPress}
             id="filter-search-term-input"
           />
           <Button
