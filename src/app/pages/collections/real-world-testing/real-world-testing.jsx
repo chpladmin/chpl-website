@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
   Divider,
   Paper,
   Snackbar,
@@ -44,9 +40,6 @@ const useStyles = makeStyles({
     gap: '32px',
     gridTemplateColumns: '1fr',
     alignItems: 'start',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 1fr',
-    },
   },
   linkWrap: {
     overflowWrap: 'anywhere',
@@ -186,25 +179,6 @@ function ChplRealWorldTestingCollectionPage() {
               <a href="#">visit here</a>
             </Typography>
           </div>
-          <Card>
-            <CardHeader title="Download All Real Word Testing Data" />
-            <CardContent>
-              <Typography variant="body1">
-                Please note the All RWT file contains information for all certified product listings and is not filtered based on search results.
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={() => toggleNotification(true)}
-              >
-                Download All
-                {' ' }
-                <GetAppIcon className={classes.iconSpacing} />
-              </Button>
-            </CardActions>
-          </Card>
         </div>
       </div>
       <div className={classes.searchContainer} component={Paper}>
