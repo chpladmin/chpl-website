@@ -24,16 +24,12 @@ describe('the Real World Testing collection page', () => {
   });
 
   it('should have table headers in a defined order', () => {
-    const expectedHeaders = ['CHPL ID', 'Developer\nsorted ascending', 'Product', 'Version', 'Status/Edition', 'Real World Testing Plans URL', 'Real World Testing Results URL'];
+    const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer\nsorted ascending', 'Product', 'Version', 'Certification Status', 'Real World Testing Plans URL', 'Real World Testing Results URL'];
     const actualHeaders = page.getTableHeaders();
     expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     actualHeaders.forEach((header, idx) => {
       expect(header.getText()).toBe(expectedHeaders[idx]);
     });
-  });
-
-  it('should have rwt download button', () => {
-    expect(page.downloadAllRwtButton.isDisplayed()).toBe(true);
   });
 
   describe('when filtering', () => {
@@ -77,14 +73,14 @@ describe('the Real World Testing collection page', () => {
     });
 
     it('should show only listings that match the developer', () => {
-      const columnIndex = 1;
+      const columnIndex = 2;
       const searchTerm = 'CorrecTek';
       page.searchForText(searchTerm);
       expect(page.getTableCellText(page.results[0], columnIndex)).toContain(searchTerm);
     });
 
     it('should show only listings that match the product', () => {
-      const columnIndex = 2;
+      const columnIndex = 3;
       const searchTerm = 'Veracity';
       page.searchForText(searchTerm);
       expect(page.getTableCellText(page.results[0], columnIndex)).toContain(searchTerm);
