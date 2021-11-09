@@ -389,6 +389,7 @@
             size: 'lg',
             resolve: {
               nonconformities: jasmine.any(Function),
+              nonconformityTypes: jasmine.any(Function),
             },
           };
         });
