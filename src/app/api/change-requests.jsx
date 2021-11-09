@@ -30,7 +30,7 @@ const usePutChangeRequest = () => {
       queryClient.invalidateQueries('change-requests');
     },
     onError: (error) => {
-      if (error.response.data.error.startsWith('Email could not be sent to')) {
+      if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
       }
       return error;

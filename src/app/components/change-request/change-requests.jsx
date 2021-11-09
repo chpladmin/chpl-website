@@ -152,7 +152,7 @@ function ChplChangeRequests(props) {
         setChangeRequest(undefined);
       },
       onError: (error) => {
-        if (error.response.data.error.startsWith('Email could not be sent to')) {
+        if (error.response.data.error?.startsWith('Email could not be sent to')) {
           toaster.pop({
             type: 'info',
             title: 'Notice',
@@ -161,10 +161,12 @@ function ChplChangeRequests(props) {
           setMode('view');
           setChangeRequest(undefined);
         } else {
+          const body = error.response.data?.error
+                || error.response.data?.errorMessages.join(' ');
           toaster.pop({
             type: 'error',
             title: 'Error',
-            body: error.response.data.error,
+            body,
           });
         }
         $scope.$apply();
