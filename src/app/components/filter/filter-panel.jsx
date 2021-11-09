@@ -249,7 +249,7 @@ function ChplFilterPanel() {
                         key={v.value}
                         button
                         onClick={() => handleSecondaryToggle(v)}
-                        disabled={active.required && v.selected && active.values.filter((v) => v.selected).length === 1}
+                        disabled={active.required && v.selected && active.values.filter((a) => a.selected).length === 1}
                       >
                         <ListItemIcon>
                           <Checkbox

@@ -1,7 +1,15 @@
 import React, {
-  createContext, useContext, useEffect, useState,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
 } from 'react';
-import { arrayOf, bool, shape, string } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  shape,
+  string,
+} from 'prop-types';
 
 const FilterContext = createContext();
 
