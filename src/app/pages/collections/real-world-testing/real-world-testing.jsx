@@ -36,9 +36,6 @@ import {
 } from 'components/filter';
 
 const useStyles = makeStyles({
-  container: {
-    maxHeight: '64vh',
-  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -87,9 +84,11 @@ const useStyles = makeStyles({
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#ffffff',
     overflowWrap: 'anywhere',
+    [theme.breakpoints.up('sm')]: {
+      minWidth:'275px',
+    },
   },
   tableContainer: {
-    maxHeight: '800px',
     overflowWrap: 'normal',
     border: '.5px solid #c2c6ca',
     margin: '0px 32px',
@@ -121,7 +120,7 @@ const useStyles = makeStyles({
 function ChplRealWorldTestingCollectionPage() {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [sortDescending, setSortDescending] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const classes = useStyles();

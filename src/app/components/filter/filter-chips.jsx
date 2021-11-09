@@ -55,7 +55,7 @@ function ChplFilterChips() {
 
   return (
     <span className={classes.filterContainer} id="filter-chips">
-      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied:</Typography>
+      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied</Typography>
       { filters.map((f) => (
         <span
           className={classes.filterSelectedContainer}
@@ -64,7 +64,6 @@ function ChplFilterChips() {
           <Typography variant="body1">
             <strong>
               {f.display}
-              :
             </strong>
           </Typography>
           {f.values
