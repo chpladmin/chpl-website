@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
     backgroundColor: '#ffffff',
-    zIndex:'99',
+    zIndex: '99',
   },
 }));
 

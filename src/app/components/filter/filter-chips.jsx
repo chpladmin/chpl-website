@@ -4,7 +4,6 @@ import {
   Chip,
   makeStyles,
 } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
 
 import { useFilterContext } from './filter-context';
 
@@ -34,9 +33,6 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
   },
 }));
 
