@@ -177,6 +177,7 @@ const SurveillanceEditComponent = {
         keyboard: false,
         resolve: {
           nonconformities: () => noncons,
+          nonconformityTypes: () => this.data.nonconformityTypes,
         },
         size: 'lg',
       });
