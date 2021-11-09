@@ -26,7 +26,6 @@ const theme = createMuiTheme({
       main: '#c44f65',
     },
   },
-
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
@@ -72,7 +71,6 @@ const theme = createMuiTheme({
       fontSize: '0.875em',
     },
   },
-
   overrides: {
     MuiAccordionSummary: {
       root: {
@@ -82,7 +80,6 @@ const theme = createMuiTheme({
           boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
         },
       },
-
       content: {
         padding: '4px 8px',
       },
@@ -149,6 +146,9 @@ const theme = createMuiTheme({
     MuiCardHeader: {
       root: {
         backgroundColor: '#f5f9fd',
+      },
+      title: {
+        fontWeight: '600',
       },
     },
     MuiCheckbox: {
@@ -308,6 +308,7 @@ const theme = createMuiTheme({
         display: 'flex',
         justifyContent: 'center',
         padding: '8px 32px',
+        paddingRight: '16px',
       },
       select: {
         color: '#156dac',
@@ -330,6 +331,37 @@ const theme = createMuiTheme({
       },
       icon: {
         color: '#000000',
+      },
+    },
+    MuiFormLabel: {
+      asterisk: {
+        fontSize: '2em',
+        verticalAlign: 'text-top',
+      },
+    },
+    MuiTableSortLabel: {
+      active: {
+        color: '#000',
+      },
+      icon: {
+        color: '#000',
+      },
+    },
+    MuiOutlinedInput: {
+      input: {
+        paddingTop: '18.5px',
+        paddingBottom: '14px',
+      },
+      inputMarginDense: {
+        paddingTop: '14.5px',
+        paddingBottom: '10px',
+      },
+      multiline: {
+        paddingTop: '14.5px',
+        paddingBottom: '10px',
+      },
+      inputMultiline: {
+        height: '256px',
       },
     },
   },
