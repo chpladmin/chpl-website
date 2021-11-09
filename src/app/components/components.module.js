@@ -2,6 +2,7 @@ import IndexWrapper from '../index-wrapper';
 import { reactToAngularComponent } from '../services/angular-react-helper';
 
 import { ChplApiKeyConfirm } from './api-key';
+import { ChplChangeRequestsWrapper } from './change-request';
 import ChplAttestationChangeRequest from './attestation';
 import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
@@ -39,11 +40,9 @@ import { UserWrapper } from './login';
 
 angular
   .module('chpl.components', [
-    'angularMoment',
     'angulartics',
     'chpl.services',
     'feature-flags',
-    'ngAvatar',
     'ngCytoscape',
     'ngFileUpload',
     'ngIdle',
@@ -56,6 +55,7 @@ angular
   ])
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
+  .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
   .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))

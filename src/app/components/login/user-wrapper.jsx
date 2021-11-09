@@ -5,9 +5,10 @@ import {
 import { node } from 'prop-types';
 
 import theme from '../../themes/theme';
-import ChplLogin from './login';
 import { getAngularService } from '../../services/angular-react-helper';
 import { UserContext } from '../../shared/contexts';
+
+import ChplLogin from './login';
 
 function UserWrapper(props) {
   const $rootScope = getAngularService('$rootScope');
@@ -34,11 +35,19 @@ function UserWrapper(props) {
     };
   }, [$rootScope, authService]);
 
+  const hasAnyRole = (roles) => {
+    if (!roles || roles.length === 0 || !user.role) {
+      return false;
+    }
+    return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
+  };
+
   const userState = {
-    user,
-    setUser,
+    hasAnyRole,
     impersonating,
     setImpersonating,
+    setUser,
+    user,
   };
 
   return (
