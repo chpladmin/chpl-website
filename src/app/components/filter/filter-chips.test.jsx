@@ -117,9 +117,9 @@ describe('the ChplFilterChips component', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText('display:')).toBeInTheDocument();
-        expect(screen.getByText('display:').parentElement.parentElement.nextSibling).toHaveTextContent('third');
-        expect(screen.getByText('display:').parentElement.parentElement.previousSibling).toHaveTextContent('a first');
+        expect(screen.getByText('display')).toBeInTheDocument();
+        expect(screen.getByText('display').parentElement.parentElement.nextSibling).toHaveTextContent('third');
+        expect(screen.getByText('display').parentElement.parentElement.previousSibling).toHaveTextContent('a first');
       });
     });
   });
