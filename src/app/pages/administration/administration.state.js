@@ -56,32 +56,6 @@ const states = {
       name: 'administration.change-requests',
       url: '/change-requests',
       component: 'chplChangeRequestsManagement',
-      resolve: {
-        changeRequests: (authService, featureFlags, networkService) => {
-          'ngInject';
-
-          if (featureFlags.isOn('change-request') && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-            return networkService.getChangeRequests();
-          }
-          return [];
-        },
-        changeRequestStatusTypes: (authService, featureFlags, networkService) => {
-          'ngInject';
-
-          if (featureFlags.isOn('change-request') && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-            return networkService.getChangeRequestStatusTypes();
-          }
-          return [];
-        },
-        changeRequestTypes: (authService, featureFlags, networkService) => {
-          'ngInject';
-
-          if (featureFlags.isOn('change-request') && authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-            return networkService.getChangeRequestTypes();
-          }
-          return [];
-        },
-      },
       data: {
         title: 'CHPL Administration - Change Requests',
         roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
