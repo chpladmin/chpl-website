@@ -113,7 +113,7 @@ const useStyles = makeStyles({
 function ChplRealWorldTestingCollectionPage() {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(25);
   const [sortDescending, setSortDescending] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const classes = useStyles();
@@ -274,7 +274,7 @@ function ChplRealWorldTestingCollectionPage() {
            count={data.recordCount}
            page={pageNumber}
            rowsPerPage={pageSize}
-           rowsPerPageOptions={[10, 50, 100]}
+           rowsPerPageOptions={[25, 50, 100]}
            setPage={setPageNumber}
            setRowsPerPage={setPageSize}
          />
