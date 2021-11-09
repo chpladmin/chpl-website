@@ -17,6 +17,7 @@ export const ConfirmListingComponent = {
       this.products = [];
       this.versions = [];
       this.resources = {};
+      this.staged = {};
       this.progress = {
         value: 0,
         label: '',
@@ -152,9 +153,12 @@ export const ConfirmListingComponent = {
       }
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getSimpleProduct(this.pending.product.productId)
-          .then(result => that.pending.product = result);
+          .then(result => {
+            that.staged = result;
+            that.pending.product = result;
+          });
       } else {
-        that.pending.product = {};
+        that.staged = {...that.pending.product};
       }
     }
 
@@ -168,9 +172,12 @@ export const ConfirmListingComponent = {
       }
       if (this.pending.version && this.pending.version.versionId) {
         this.networkService.getSimpleVersion(this.pending.version.versionId)
-          .then(result => that.pending.version = result);
+          .then(result => {
+            that.staged = result;
+            that.pending.version = result;
+          });
       } else {
-        that.pending.version = {};
+        that.staged = {...that.pending.version};
       }
     }
 
@@ -248,6 +255,7 @@ export const ConfirmListingComponent = {
           this.loadProducts();
           break;
         case 'product':
+          this.pending.product = {...this.staged};
           this.stage = 'version';
           this.loadFamily();
           this.loadVersions();
@@ -263,14 +271,18 @@ export const ConfirmListingComponent = {
 
     previous () {
       switch (this.stage) {
-      case 'product': this.stage = 'developer';
-        break;
-      case 'version': this.stage = 'product';
-        break;
-      case 'listing': this.stage = 'version';
-        break;
-      default:
-        break;
+        case 'product': this.stage = 'developer';
+          break;
+        case 'version':
+          this.staged = {...this.pending.product};
+          this.stage = 'product';
+          break;
+        case 'listing':
+          this.staged = {...this.pending.version};
+          this.stage = 'version';
+          break;
+        default:
+          break;
       }
       this.progress = this.getProgress();
     }

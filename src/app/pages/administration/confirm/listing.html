@@ -23,21 +23,21 @@
     </div>
     <div ng-switch-when="product">
       <chpl-confirm-product-bridge
-        product="$ctrl.uploaded.product"
+        product="$ctrl.staged"
         products="$ctrl.products"
         dispatch="::$ctrl.handleProductDispatch"
         ></chpl-confirm-product-bridge>
     </div>
     <div ng-switch-when="version">
       <chpl-confirm-version-bridge
-        version="$ctrl.uploaded.version"
+        version="$ctrl.staged"
         versions="$ctrl.versions"
         dispatch="::$ctrl.handleVersionDispatch"
         ></chpl-confirm-version-bridge>
     </div>
     <div ng-switch-when="listing">
       <chpl-inspect-listing
-        listing="$ctrl.uploaded"
+        listing="$ctrl.pending"
         on-change="$ctrl.handleListing(action, data)"
         resources="$ctrl.resources"
         ></chpl-inspect-listing>

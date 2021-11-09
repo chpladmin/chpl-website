@@ -78,8 +78,6 @@ function ChplConfirmVersion(props) {
       submit();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
