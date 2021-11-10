@@ -5,7 +5,7 @@
     .factory('utilService', utilService);
 
   /** @ngInject */
-  function utilService ($filter, $log, Blob, FileSaver) {
+  function utilService($filter, $log, Blob, FileSaver) {
     var service = {
       addDays: addDays,
       addNewValue: addNewValue,
@@ -38,13 +38,13 @@
 
     ////////////////////////////////////////////////////////////////////
 
-    function addDays (date, days) {
+    function addDays(date, days) {
       var result = new Date(date);
       result.setDate(result.getDate() + days);
       return result;
     }
 
-    function addNewValue (array, object) {
+    function addNewValue(array, object) {
       if (!array) {
         array = [];
       }
@@ -54,7 +54,7 @@
       return array;
     }
 
-    function addressRequired (address) {
+    function addressRequired(address) {
       if (!address) { return false; }
       if (address.line1 && address.line1.length > 0) { return true; }
       if (address.line2 && address.line2.length > 0) { return true; }
@@ -65,14 +65,14 @@
       return false;
     }
 
-    function arrayCompare (before, after, key) {
+    function arrayCompare(before, after, key) {
       var ret = {
         added: [],
         edited: [],
         removed: [],
       };
       if (angular.isUndefined(key)) { key = 'id'; }
-      var i,j;
+      var i, j;
       var added, removed;
       var count = Math.max(
         angular.isArray(before) ? before.length : 0,
@@ -86,13 +86,13 @@
           if (before) {
             for (j = 0; j < before.length; j++) {
               // if equal, then not added
-              if (angular.equals(after[i],before[j])) { added = false; }
+              if (angular.equals(after[i], before[j])) { added = false; }
               // if not equal, but have equal ids, then edited
               else if (angular.isDefined(after[i][key]) &&
-                                     angular.isDefined(before[j][key]) &&
-                                     after[i][key] === before[j][key]) {
+                angular.isDefined(before[j][key]) &&
+                after[i][key] === before[j][key]) {
                 added = false;
-                ret.edited.push({before: before[j], after: after[i]});
+                ret.edited.push({ before: before[j], after: after[i] });
               }
             }
           }
@@ -109,8 +109,8 @@
               if (angular.equals(before[i], after[j])) { removed = false; }
               // if not equal, but have equal ids, then edited
               else if (angular.isDefined(before[i][key]) &&
-                                     angular.isDefined(after[j][key]) &&
-                                     before[i][key] === after[j][key]) { removed = false; }
+                angular.isDefined(after[j][key]) &&
+                before[i][key] === after[j][key]) { removed = false; }
             }
           }
           if (removed) {
@@ -121,14 +121,14 @@
       return ret;
     }
 
-    function arrayToCsv (data) {
+    function arrayToCsv(data) {
       return data.map(row => {
         return row.map(cell => {
-          if (typeof(cell) === 'string' &&
-                        (cell.indexOf('"') > -1 ||
-                         cell.indexOf(',') > -1 ||
-                         cell.indexOf('\n') > -1)) {
-            return '"' + cell.replace(/"/g,'""') + '"';
+          if (typeof (cell) === 'string' &&
+            (cell.indexOf('"') > -1 ||
+              cell.indexOf(',') > -1 ||
+              cell.indexOf('\n') > -1)) {
+            return '"' + cell.replace(/"/g, '""') + '"';
           } else {
             return cell;
           }
@@ -139,7 +139,7 @@
 
     }
 
-    function certificationStatusWhenEditing (listing) {
+    function certificationStatusWhenEditing(listing) {
       if (listing.certificationEvents && listing.certificationEvents.length > 0) {
         let events = listing.certificationEvents
           .map(ce => {
@@ -154,16 +154,16 @@
       return '';
     }
 
-    function extendSelect (options, value) {
+    function extendSelect(options, value) {
       for (var i = 0; i < options.length; i++) {
         if (options[i].name === value) {
           return;
         }
       }
-      options.push({name: value});
+      options.push({ name: value });
     }
 
-    function findModel (item, options, key = 'id') {
+    function findModel(item, options, key = 'id') {
       const ret = options.filter(option => item[key] === option[key]);
       if (ret.length === 1) {
         return ret[0];
@@ -172,60 +172,60 @@
       }
     }
 
-    function isCures (criterion) {
+    function isCures(criterion) {
       return criterion.title.indexOf('Cures Update') > -1
-            || criterion.number === '170.315 (b)(10)'
-            || criterion.number === '170.315 (d)(12)'
-            || criterion.number === '170.315 (d)(13)'
-            || criterion.number === '170.315 (g)(10)';
+        || criterion.number === '170.315 (b)(10)'
+        || criterion.number === '170.315 (d)(12)'
+        || criterion.number === '170.315 (d)(13)'
+        || criterion.number === '170.315 (g)(10)';
     }
 
-    function makeCsv (data) {
+    function makeCsv(data) {
       var blob = new Blob([this.arrayToCsv(data.values)], {
         type: 'text/plain;charset=utf-8',
       });
       FileSaver.saveAs(blob, data.name);
     }
 
-    function muuCount (muuHistory) {
+    function muuCount(muuHistory) {
       return muuHistory.sort((a, b) => b.muuDate - a.muuDate)[0];
     }
 
-    function passwordClass (strength) {
+    function passwordClass(strength) {
       switch (strength) {
-      case 0:
-        return 'danger';
-      case 1:
-        return 'danger';
-      case 2:
-        return 'warning';
-      case 3:
-        return 'warning';
-      case 4:
-        return 'success';
-      default:
-        return '';
+        case 0:
+          return 'danger';
+        case 1:
+          return 'danger';
+        case 2:
+          return 'warning';
+        case 3:
+          return 'warning';
+        case 4:
+          return 'success';
+        default:
+          return '';
       }
     }
 
-    function passwordTitle (strength) {
+    function passwordTitle(strength) {
       switch (strength) {
-      case 0:
-        return 'Awful';
-      case 1:
-        return 'Weak';
-      case 2:
-        return 'Moderate';
-      case 3:
-        return 'Strong';
-      case 4:
-        return 'Excellent';
-      default:
-        return '';
+        case 0:
+          return 'Awful';
+        case 1:
+          return 'Weak';
+        case 2:
+          return 'Moderate';
+        case 3:
+          return 'Strong';
+        case 4:
+          return 'Excellent';
+        default:
+          return '';
       }
     }
 
-    function range (max, step) {
+    function range(max, step) {
       step = parseInt(step, 10) || 1;
       let ret = [];
       for (let i = 0; i < max; i += step) {
@@ -234,40 +234,40 @@
       return ret;
     }
 
-    function rangeCol (count) {
+    function rangeCol(count) {
       switch (parseInt(count, 10)) {
-      case 1:
-        return 'col-sm-12';
-      case 2:
-        return 'col-sm-6';
-      case 3:
-        return 'col-sm-4';
-      case 4:
-      case 5:
-        return 'col-sm-3';
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-      case 10:
-      case 11:
-        return 'col-sm-2';
-      case 12:
-        return 'col-sm-1';
-      default:
-        return 'col-sm-12';
+        case 1:
+          return 'col-sm-12';
+        case 2:
+          return 'col-sm-6';
+        case 3:
+          return 'col-sm-4';
+        case 4:
+        case 5:
+          return 'col-sm-3';
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+          return 'col-sm-2';
+        case 12:
+          return 'col-sm-1';
+        default:
+          return 'col-sm-12';
       }
     }
 
-    function sortCert (cert) {
+    function sortCert(cert) {
       return certificationResultSortIndex(cert);
     }
 
-    function sortCertActual (a, b) {
+    function sortCertActual(a, b) {
       return certificationResultSortComparator(a, b);
     }
 
-    function sortCertArray (array) {
+    function sortCertArray(array) {
       var ret = Number.MIN_VALUE;
       if (array.length > 0) {
         ret = this.sortCert(array[0]);
@@ -275,10 +275,10 @@
       return ret;
     }
 
-    function sortCqm (cqm) {
+    function sortCqm(cqm) {
       if (angular.isObject(cqm)) {
         cqm = cqm.name;
-        if (cqm.substring(0,3) !== 'CMS') {
+        if (cqm.substring(0, 3) !== 'CMS') {
           cqm = 'NQF-' + cqm;
         }
       }
@@ -288,34 +288,34 @@
       return ret;
     }
 
-    function sortCqmActual (a, b) {
+    function sortCqmActual(a, b) {
       return sortCqm(a) - sortCqm(b);
     }
 
-    function sortNonconformityTypes (type) {
+    function sortNonconformityTypes(type) {
       if (type.number === 'Other Non-Conformity') {
         return Number.MAX_VALUE;
       }
       return sortCert(type);
     }
 
-    function sortRequirements (req) {
+    function sortRequirements(req) {
       if (angular.isObject(req)) {
         req = req.requirement;
       }
       if (req.indexOf('(') < 0) {
         return Number.MAX_VALUE;
       }
-      var edition = parseInt(req.substring(4,7));
+      var edition = parseInt(req.substring(4, 7));
       var letter = parseInt(req.split('(')[1].charCodeAt(0)) - 96;
       var number = req.length > 11 ? parseInt(req.split(')')[1].substring(1)) : 0;
       var ret = edition * 10000 +
-                letter * 100 +
-                number;
+        letter * 100 +
+        number;
       return ret;
     }
 
-    function sortTestFunctionality (tfA, tfB) {
+    function sortTestFunctionality(tfA, tfB) {
       let matcher = /^\((.+?)\)/;
       let a = tfA.name;
       let b = tfB.name;
@@ -341,39 +341,39 @@
       return 0;
     }
 
-    function statusFont (status) {
+    function statusFont(status) {
       var ret;
       switch (status) {
-      case 'Active':
-        ret = 'fa-check-circle status-good';
-        break;
-      case 'Retired':
-        ret = 'fa-university status-neutral';
-        break;
-      case 'Suspended by ONC':
-        ret = 'fa-minus-square status-warning';
-        break;
-      case 'Suspended by ONC-ACB':
-        ret = 'fa-minus-circle status-warning';
-        break;
-      case 'Terminated by ONC':
-        ret = 'fa-window-close status-bad';
-        break;
-      case 'Withdrawn by Developer Under Surveillance/Review':
-        ret = 'fa-exclamation-circle status-bad';
-        break;
-      case 'Withdrawn by Developer':
-        ret = 'fa-stop-circle status-neutral';
-        break;
-      case 'Withdrawn by ONC-ACB':
-        ret = 'fa-times-circle status-bad';
-        break;
-                // no default
+        case 'Active':
+          ret = 'fa-check-circle status-good';
+          break;
+        case 'Retired':
+          ret = 'fa-university status-neutral';
+          break;
+        case 'Suspended by ONC':
+          ret = 'fa-minus-square status-warning';
+          break;
+        case 'Suspended by ONC-ACB':
+          ret = 'fa-minus-circle status-warning';
+          break;
+        case 'Terminated by ONC':
+          ret = 'fa-window-close status-bad';
+          break;
+        case 'Withdrawn by Developer Under Surveillance/Review':
+          ret = 'fa-exclamation-circle status-bad';
+          break;
+        case 'Withdrawn by Developer':
+          ret = 'fa-stop-circle status-neutral';
+          break;
+        case 'Withdrawn by ONC-ACB':
+          ret = 'fa-times-circle status-bad';
+          break;
+        // no default
       }
       return ret;
     }
 
-    function ternaryFilter (field) {
+    function ternaryFilter(field) {
       if (field === null) {
         return 'N/A';
       } else {
@@ -381,7 +381,7 @@
       }
     }
 
-    function isBlank (x) {
+    function isBlank(x) {
       if (typeof x === 'string' || x === undefined || x === null) {
         return !x || x.trim().length === 0;
       } else if (Array.isArray(x)) {
@@ -394,7 +394,7 @@
 
     ///////////////////////////////////////////////////
 
-    function certificationResultSortComparator (a, b) {
+    function certificationResultSortComparator(a, b) {
       let valueToFindA = a.number;
       let valueToFindB = b.number;
       if (isCertResultForCuresUpdateCriterion(a)) {
@@ -406,7 +406,7 @@
       return certificationResultSortIndex(valueToFindA) - certificationResultSortIndex(valueToFindB);
     }
 
-    function certificationResultSortIndex (certResult) {
+    function certificationResultSortIndex(certResult) {
       //Handle both criteria numbers, names and certificationResult objects
       let criterion = createCriterion(certResult);
       if (!criterion) {
@@ -426,11 +426,10 @@
       return index;
     }
 
-    function createCriterion (cert) {
+    function createCriterion(cert) {
       let criterion;
       if (cert.number) {
-        criterion = {'number': cert.number, 'title': cert.title};
-
+        criterion = { 'number': cert.number, 'title': cert.title };
       } else if (cert.name) {
         criterion = {
           'number': cert.name.indexOf(':') > -1 ? cert.name.substring(0, cert.name.indexOf(':')) : cert.name,
@@ -445,7 +444,7 @@
       return criterion;
     }
 
-    function certificationResultSortOrder () {
+    function certificationResultSortOrder() {
       return ['170.302 (a)',
         '170.302 (b)',
         '170.302 (c)',
@@ -635,10 +634,14 @@
         '170.315 (h)(1)',
         '170.315 (h)(2)',
         '170.523 (k)(1)',
-        '170.523 (k)(2)'];
+        '170.523 (k)(2)',
+        '170.523 (l)',
+        'Annual Real World Testing Plan',
+        'Annual Real World Testing Results',
+      ];
     }
 
-    function isCertResultForCuresUpdateCriterion (certResult) {
+    function isCertResultForCuresUpdateCriterion(certResult) {
       if (certResult && certResult.title) {
         return certResult.title.includes('(Cures Update)');
       } else {

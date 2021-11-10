@@ -135,7 +135,12 @@ const SurveillanceComponent = {
             result += surv.requirements[i].criterion.removed ? 'Removed | ' : '';
             result += `${surv.requirements[i].criterion.number}: ${surv.requirements[i].criterion.title}</span>`;
           } else {
-            result += surv.requirements[i].requirement;
+            if (this.isNonconformityTypeRemoved(surv.requirements[i].requirement)) {
+              result += '<span class="removed">';
+              result += `Removed | ${surv.requirements[i].requirement}</span>`;
+            } else {
+              result += surv.requirements[i].requirement;
+            }
           }
           result += '<br />';
           results.push(result);
@@ -153,6 +158,26 @@ const SurveillanceComponent = {
       } else if (this.certifiedProduct.certificationEdition.name === '2014') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
       }
+    }
+
+    isRequirementRemoved(name) {
+      let requirement = this.surveillanceTypes.surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === name);
+      if (requirement) {
+        return requirement.removed;
+      }
+      requirement = this.surveillanceTypes.surveillanceRequirements.transparencyOptions.find((req) => req.item === name);
+      if (requirement) {
+        return requirement.removed;
+      }
+      return false;
+    }
+
+    isNonconformityTypeRemoved(type) {
+      const nonconformityType = this.surveillanceTypes.nonconformityTypes.data.find((ncType) => ncType.number === type);
+      if (nonconformityType) {
+        return nonconformityType.removed;
+      }
+      return false;
     }
   },
 };

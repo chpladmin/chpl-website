@@ -6,14 +6,14 @@
 
     mock = {
       objects: [
-        {key: 'key', value: 'zeroeth'},
-        {key: 'key', value: 'first'},
-        {key: 'key', value: 'second'},
-        {key: 'key', value: 'third'},
-        {key: 'key', value: 'fourth', id: 1},
-        {key: 'key', value: 'fifth', id: 1},
-        {key: 'key', value: 'sixth', specialKey: 2},
-        {key: 'key', value: 'seventh', specialKey: 2},
+        { key: 'key', value: 'zeroeth' },
+        { key: 'key', value: 'first' },
+        { key: 'key', value: 'second' },
+        { key: 'key', value: 'third' },
+        { key: 'key', value: 'fourth', id: 1 },
+        { key: 'key', value: 'fifth', id: 1 },
+        { key: 'key', value: 'sixth', specialKey: 2 },
+        { key: 'key', value: 'seventh', specialKey: 2 },
       ],
     };
 
@@ -60,7 +60,7 @@
       it('should update the options when a new item is added', () => {
         var options = [];
         util.extendSelect(options, 'fake');
-        expect(options).toEqual([{name: 'fake'}]);
+        expect(options).toEqual([{ name: 'fake' }]);
       });
 
       it('shouldn\'t add a new object if the name is a duplicate', () => {
@@ -75,7 +75,7 @@
     describe('when adding a value to an array', () => {
       it('should create the array if necessary', () => {
         var array, object;
-        object = {id: 1};
+        object = { id: 1 };
         array = util.addNewValue(array, object);
         expect(array).toEqual([object]);
       });
@@ -93,16 +93,16 @@
 
     describe('when connecting to a model', () => {
       it('should match to a model', () => {
-        var id = {id: 2};
-        var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+        var id = { id: 2 };
+        var array = [{ id: 1, name: 'name1' }, { id: 2, name: 'name2' }];
         expect(id).not.toBe(array[1]);
         id = util.findModel(id, array);
         expect(id).toBe(array[1]);
       });
 
       it('should match with an optional key', () => {
-        var id = {name: 'name2'};
-        var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+        var id = { name: 'name2' };
+        var array = [{ id: 1, name: 'name1' }, { id: 2, name: 'name2' }];
         expect(id).not.toBe(array[1]);
         id = util.findModel(id, array, 'name');
         expect(id).toBe(array[1]);
@@ -119,11 +119,11 @@
         });
 
         it('should be able to sort objects by name', () => {
-          expect(util.sortCert({name: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({name: '170.314 (a)(10)'}));
+          expect(util.sortCert({ name: '170.314 (a)(2)' })).toBeLessThan(util.sortCert({ name: '170.314 (a)(10)' }));
         });
 
         it('should be able to sort objects by number', () => {
-          expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
+          expect(util.sortCert({ number: '170.314 (a)(2)' })).toBeLessThan(util.sortCert({ number: '170.314 (a)(10)' }));
         });
 
         it('should sort objects that are Cures Update before the original criteria', () => {
@@ -234,11 +234,11 @@
       });
 
       describe('test functionality', () => {
-        let b5 = {name: '(b)(3)(ii)(B)(5)'};
-        let b8 = {name: '(b)(3)(ii)(B)(8)'};
-        let d = {name: '(b)(3)(ii)(D)'};
-        let other = {name: '170.102(13)(ii)(C)'};
-        let other2 = {name: '170.102(19)(ii)'};
+        let b5 = { name: '(b)(3)(ii)(B)(5)' };
+        let b8 = { name: '(b)(3)(ii)(B)(8)' };
+        let d = { name: '(b)(3)(ii)(D)' };
+        let other = { name: '170.102(13)(ii)(C)' };
+        let other2 = { name: '170.102(19)(ii)' };
 
         it('should sort b5 before b8', () => {
           expect(util.sortTestFunctionality(b5, b8)).toBeLessThan(0);
@@ -298,52 +298,52 @@
 
       it('should know if an object was added to an array', () => {
         var a = [].concat(mock.objects[1]);
-        var b = [].concat(mock.objects[1],mock.objects[2]);
+        var b = [].concat(mock.objects[1], mock.objects[2]);
         ret.added.push(mock.objects[2]);
-        expect(util.arrayCompare(a,b)).toEqual(ret);
+        expect(util.arrayCompare(a, b)).toEqual(ret);
       });
 
       it('should know if an object was removed from an array', () => {
-        var a = [].concat(mock.objects[1],mock.objects[0]);
+        var a = [].concat(mock.objects[1], mock.objects[0]);
         var b = [].concat(mock.objects[1]);
         ret.removed.push(mock.objects[0]);
-        expect(util.arrayCompare(a,b)).toEqual(ret);
+        expect(util.arrayCompare(a, b)).toEqual(ret);
       });
 
       it('should know if objects were added and removed from an array', () => {
-        var a = [].concat(mock.objects[0],mock.objects[1]);
-        var b = [].concat(mock.objects[1],mock.objects[2]);
+        var a = [].concat(mock.objects[0], mock.objects[1]);
+        var b = [].concat(mock.objects[1], mock.objects[2]);
         ret.added.push(mock.objects[2]);
         ret.removed.push(mock.objects[0]);
-        expect(util.arrayCompare(a,b)).toEqual(ret);
+        expect(util.arrayCompare(a, b)).toEqual(ret);
       });
 
       it('should know if an object was changed, assuming it has an "id" value', () => {
-        var a = [].concat(mock.objects[0],mock.objects[1],mock.objects[4]);
-        var b = [].concat(mock.objects[0],mock.objects[1],mock.objects[5]);
-        ret.edited.push({before: mock.objects[4], after: mock.objects[5]});
-        expect(util.arrayCompare(a,b)).toEqual(ret);
+        var a = [].concat(mock.objects[0], mock.objects[1], mock.objects[4]);
+        var b = [].concat(mock.objects[0], mock.objects[1], mock.objects[5]);
+        ret.edited.push({ before: mock.objects[4], after: mock.objects[5] });
+        expect(util.arrayCompare(a, b)).toEqual(ret);
       });
 
       it('should allow different key values', () => {
-        var a = [].concat(mock.objects[0],mock.objects[1],mock.objects[6]);
-        var b = [].concat(mock.objects[0],mock.objects[1],mock.objects[7]);
-        ret.edited.push({before: mock.objects[6], after: mock.objects[7]});
-        expect(util.arrayCompare(a,b,'specialKey')).toEqual(ret);
+        var a = [].concat(mock.objects[0], mock.objects[1], mock.objects[6]);
+        var b = [].concat(mock.objects[0], mock.objects[1], mock.objects[7]);
+        ret.edited.push({ before: mock.objects[6], after: mock.objects[7] });
+        expect(util.arrayCompare(a, b, 'specialKey')).toEqual(ret);
       });
 
       it('should handle a null before', () => {
         var a = null;
         var b = [].concat(mock.objects[0]);
         ret.added.push(mock.objects[0]);
-        expect(util.arrayCompare(a,b)).toEqual(ret);
+        expect(util.arrayCompare(a, b)).toEqual(ret);
       });
 
       it('should handle a null after', () => {
         var a = [].concat(mock.objects[0]);
         var b = null;
         ret.removed.push(mock.objects[0]);
-        expect(util.arrayCompare(a,b)).toEqual(ret);
+        expect(util.arrayCompare(a, b)).toEqual(ret);
       });
     });
 
@@ -376,7 +376,7 @@
       });
 
       it('should handle raw numbers', () => {
-        data.values[1] = [1,2,3,4];
+        data.values[1] = [1, 2, 3, 4];
         expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n1,2,3,4');
       });
     });
@@ -498,9 +498,9 @@
     describe('when dealing with muu', () => {
       it('should know what the most current value is', () => {
         const meaningfulUseUserHistory = [
-          { id: 1, muuCount: 4, muuDate: 100},
-          { id: 3, muuCount: 23, muuDate: 300},
-          { id: 2, muuCount: 2, muuDate: 200},
+          { id: 1, muuCount: 4, muuDate: 100 },
+          { id: 3, muuCount: 23, muuDate: 300 },
+          { id: 2, muuCount: 2, muuDate: 200 },
         ];
         expect(util.muuCount(angular.copy(meaningfulUseUserHistory))).toEqual(meaningfulUseUserHistory[1]);
       });
@@ -598,7 +598,7 @@
         });
 
         it('object ' + shouldReturnFalse, () => {
-          let populatedObject = {id: 10};
+          let populatedObject = { id: 10 };
           let isBlank = util.isBlank(populatedObject);
           expect(isBlank).toBe(false);
         });
