@@ -52,10 +52,10 @@ const changeSchema = yup.object({
       (value, context) => context.parent.passwordStrength >= 3,
     ),
   verificationPassword: yup.string()
-    .required('Verification Password is required')
+    .required('Verify Password is required')
     .test(
       'password-matches',
-      'Verification Password does not match Password',
+      'Verify Password does not match Password',
       (value, context) => value === context.parent.newPassword,
     ),
 });
@@ -71,10 +71,10 @@ const resetSchema = yup.object({
       (value, context) => context.parent.passwordStrength >= 3,
     ),
   verificationPassword: yup.string()
-    .required('Verification Password is required')
+    .required('Verify Password is required')
     .test(
       'password-matches',
-      'Verification Password does not match Password',
+      'Verify Password does not match Password',
       (value, context) => value === context.parent.newPassword,
     ),
 });
@@ -490,7 +490,7 @@ function ChplLogin(props) {
                type="password"
                id="password-verification"
                name="verificationPassword"
-               label="Verification Password"
+               label="Verify Password"
                required
                value={changeFormik.values.verificationPassword}
                onChange={changeFormik.handleChange}
@@ -559,7 +559,7 @@ function ChplLogin(props) {
                type="password"
                id="password-verification"
                name="verificationPassword"
-               label="Verification Password"
+               label="Verify Password"
                required
                value={resetFormik.values.verificationPassword}
                onChange={resetFormik.handleChange}

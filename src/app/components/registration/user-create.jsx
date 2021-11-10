@@ -35,10 +35,10 @@ const validationSchema = yup.object({
       (value, context) => context.parent.passwordStrength >= 3,
     ),
   verificationPassword: yup.string()
-    .required('Verification Password is required')
+    .required('Verify Password is required')
     .test(
       'password-matches',
-      'Verification Password does not match Password',
+      'Verify Password does not match Password',
       (value, context) => value === context.parent.newPassword,
     ),
   fullName: yup.string()
@@ -192,7 +192,7 @@ function ChplUserCreate(props) {
           type="password"
           id="password-verification"
           name="verificationPassword"
-          label="Verification Password"
+          label="Verify Password"
           required
           value={formik.values.verificationPassword}
           onChange={formik.handleChange}
