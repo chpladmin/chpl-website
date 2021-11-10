@@ -85,12 +85,6 @@ function ChplConfirmListings(props) {
   const handleRejectOriginal = () => {
     networkService.massRejectPendingListings(idsToReject)
       .then(() => {
-        const message = `Rejected ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''}`;
-        toaster.pop({
-          type: 'success',
-          title: 'Success',
-          body: message,
-        });
         setIdsToReject([]);
         loadListings();
       }, (error) => {
@@ -112,12 +106,6 @@ function ChplConfirmListings(props) {
   const handleRejectBeta = () => {
     networkService.massRejectPendingListingsBeta(idsToReject)
       .then(() => {
-        const message = `Rejected ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''}`;
-        toaster.pop({
-          type: 'success',
-          title: 'Success',
-          body: message,
-        });
         setIdsToReject([]);
         loadListings();
       }, (error) => {
