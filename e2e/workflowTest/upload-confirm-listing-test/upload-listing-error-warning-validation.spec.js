@@ -14,11 +14,13 @@ const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
 const invalidDataInputs = require('./dataProviders/upload-listing-error-warning-validation-dp');
 const invalidColumnInputs = require('./dataProviders/columns-errors-and-warnings-dp');
 const invalidDataFormatInputs = require('./dataProviders/invalid-formats-errors-and-warnings-dp');
+const invalidCriteriaRelationshipInputs = require('./dataProviders/criteria-relationships-errors-and-warnings-dp');
 const invalidCqmInputs = require('./dataProviders/cqms-errors-and-warnings-dp');
+const invalidSedInputs = require('./dataProviders/sed-errors-and-warnings-dp');
 const invalidMeasureInputs = require('./dataProviders/measures-errors-and-warnings-dp');
 const invalidOptionalStandardInputs = require('./dataProviders/optional-standards-errors-and-warnings-dp');
 const allInvalidPendingDataToCheck = invalidColumnInputs.concat(invalidDataFormatInputs, invalidCqmInputs,
-        invalidMeasureInputs, invalidOptionalStandardInputs);
+        invalidSedInputs, invalidMeasureInputs, invalidOptionalStandardInputs);
 
 const uploadFileAndWaitForListingsToBeProcessed = (filename, listingIds) => {
   hooks.open('#/administration/upload');
@@ -55,9 +57,17 @@ if (process.env.ENV !== 'stage') {
         listingIds: invalidDataFormatInputs.map(item => item.listingId),
       },
       {
+        file: '../../../resources/upload-listing-beta/2015_CriteriaRelationships.csv',
+        listingIds: invalidCriteriaRelationshipInputs.map(item => item.listingId),
+      },
+      {
         file: '../../../resources/upload-listing-beta/2015_CQMs.csv',
         listingIds: invalidCqmInputs.map(item => item.listingId),
-      },,
+      },
+      {
+        file: '../../../resources/upload-listing-beta/2015_SED.csv',
+        listingIds: invalidSedInputs.map(item => item.listingId),
+      },
       {
         file: '../../../resources/upload-listing-beta/2015_Measures.csv',
         listingIds: invalidMeasureInputs.map(item => item.listingId),

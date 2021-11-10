@@ -16,9 +16,11 @@ module.exports = [
       'No certification date was found.',
       'Applicable criteria is required for each QMS Standard listed.',
       'A certification edition is required for the listing.',
+      'The ONC-ACB test� is not valid.',
     ],
     expectedWarnings: [
-      'An unrecognized character was found for ACB Certification ID'
+      'An unrecognized character was found for ACB Certification ID',
+      'An unrecognized character was found for ACB Name'
     ],
   },
   {
