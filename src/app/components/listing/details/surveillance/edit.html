@@ -85,7 +85,8 @@
           <tbody>
             <tr ng-repeat="req in $ctrl.surveillance.requirements | orderBy:['type.name',$ctrl.sortRequirements] track by $index">
               <td>{{ req.type.name }}</td>
-              <td ng-class="{'removed' : req.criterion && req.criterion.removed}">{{ req.criterion ? ((req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</td>
+              <td ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title }}</td>
+              <td ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</td>
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>

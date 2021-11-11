@@ -177,6 +177,7 @@ const SurveillanceEditComponent = {
         keyboard: false,
         resolve: {
           nonconformities: () => noncons,
+          nonconformityTypes: () => this.data.nonconformityTypes,
         },
         size: 'lg',
       });
@@ -235,6 +236,18 @@ const SurveillanceEditComponent = {
             }
           });
       }
+    }
+
+    isRequirementRemoved(name) {
+      let requirement = this.data.surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === name);
+      if (requirement) {
+        return requirement.removed;
+      }
+      requirement = this.data.surveillanceRequirements.transparencyOptions.find((req) => req.item === name);
+      if (requirement) {
+        return requirement.removed;
+      }
+      return false;
     }
   },
 };

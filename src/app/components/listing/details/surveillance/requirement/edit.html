@@ -19,6 +19,7 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirementType.$touched) && $ctrl.editForm.requirementType.$error.required">Field is required</div>
       </div>
     </div>
+
     <div class="form-group" ng-if="$ctrl.requirement.type.name === 'Certified Capability'">
       <label for="requirement-capability" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
@@ -28,15 +29,27 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
+
     <div class="form-group" ng-if="$ctrl.requirement.type.name === 'Transparency or Disclosure Requirement'">
       <label for="requirement-transparency" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="$ctrl.requirement.requirement" id="requirement-transparency" name="requirement"
-                ng-options="type as type for type in $ctrl.data.surveillanceRequirements.transparencyOptions" required>
+                ng-options="type.item as ((type.removed ? 'Removed | ' : '') + type.item) for type in $ctrl.data.surveillanceRequirements.transparencyOptions" required>
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
+
+    <div class="form-group" ng-if="$ctrl.requirement.type.name === 'Real World Testing Submission'">
+      <label for="requirement-transparency" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
+      <div class="col-sm-9">
+        <select class="input-sm form-control" ng-model="$ctrl.requirement.requirement" id="requirement-rwt" name="requirement"
+                ng-options="type.item as ((type.removed ? 'Removed | ' : '') + type.item) for type in $ctrl.data.surveillanceRequirements.realWorldTestingOptions" required>
+        </select>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
+      </div>
+    </div>
+
     <div class="form-group" ng-if="$ctrl.requirement.type.name === 'Other Requirement'">
       <label for="requirement-other" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
@@ -70,7 +83,8 @@
           </thead>
           <tbody>
             <tr ng-repeat="noncon in $ctrl.requirement.nonconformities track by $index">
-              <td ng-class="{'removed' : noncon.criterion && noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
+              <td ng-if="noncon.criterion" ng-class="{'removed' : noncon.criterion && noncon.criterion.removed}">{{ (noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title }}</td>
+              <td ng-if="!noncon.criterion" ng-class="{'removed' : $ctrl.isNonconformityTypeRemoved(noncon.nonconformityType)}">{{ ($ctrl.isNonconformityTypeRemoved(noncon.nonconformityType) ? 'Removed | ' : '') + noncon.nonconformityType }}</td>
               <td>{{ noncon.nonconformityStatus }}</td>
               <td>{{ noncon.summary }}</td>
               <td>
