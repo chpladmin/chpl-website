@@ -24,7 +24,7 @@ module.exports = [
     ],
   },
   {
-      listingId: '15.02.04.2701.REQ1.12.00.1.200620',
+      listingId: '15.02.04.2701.REQ1.12.01.1.200620',
       expectedErrors: [
       'The unique id indicates the product does have additional software but none is specified in the upload file.',
       'The ICS value is \'true\' which means this listing has inherited properties. It is required that at least one parent from which the listing inherits be provided.',
@@ -75,7 +75,7 @@ module.exports = [
     ]
   },
   {
-      listingId: '15.02.04.2701.ICS1.12.00.1.200620',
+      listingId: '15.02.04.2701.ICS1.12.00.0.200620',
       expectedErrors: [
       'The unique id indicates the product does not have ICS but the value for Inherited Certification Status is true.',
       'No listing was found with the unique ID \'CHP-00000\'. ICS parent listings must reference existing listings in the CHPL.',
