@@ -158,4 +158,4 @@ const SurveillanceReportRelevantListingComponent = {
 angular.module('chpl.components')
   .component('chplSurveillanceReportRelevantListing', SurveillanceReportRelevantListingComponent);
 
-export default SurveillanceReportRelevantListingComponent;
+export { SurveillanceReportRelevantListingComponent, calculateCompletion };

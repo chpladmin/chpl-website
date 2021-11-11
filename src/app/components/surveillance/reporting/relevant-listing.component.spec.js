@@ -1,3 +1,5 @@
+import { calculateCompletion } from './relevant-listing.component';
+
 (() => {
   'use strict';
 
@@ -77,7 +79,7 @@
         });
 
         it('should handle nulls', () => {
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
 
         it('should handle undefined', () => {
@@ -94,7 +96,7 @@
           surv.nondisclosureEvaluation = undefined;
           surv.directionDeveloperResolution = undefined;
           surv.completedCapVerification = undefined;
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
 
         it('should handle empty strings', () => {
@@ -110,7 +112,7 @@
           surv.nondisclosureEvaluation = '';
           surv.directionDeveloperResolution = '';
           surv.completedCapVerification = '';
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
 
         it('should know when it\'s complete', () => {
@@ -127,15 +129,15 @@
           surv.nondisclosureEvaluation = 'Something';
           surv.directionDeveloperResolution = 'Something';
           surv.completedCapVerification = 'Something';
-          expect(ctrl.calculateCompletion(surv).completed).toBe(100);
+          expect(calculateCompletion(surv).completed).toBe(100);
         });
 
         it('should handle k1', () => {
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
           surv.k1Reviewed = true;
-          expect(ctrl.calculateCompletion(surv).completed).toBe(8);
+          expect(calculateCompletion(surv).completed).toBe(8);
           surv.k1Reviewed = false;
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
       });
     });
