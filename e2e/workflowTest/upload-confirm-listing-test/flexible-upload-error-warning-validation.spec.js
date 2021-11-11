@@ -73,9 +73,9 @@ if (process.env.ENV !== 'stage') {
     });
 
     describe('with issues in the column headings ', () => {
-      const file = '../../../resources/upload-listing-beta/2015_BogusColumns.csv';
-      const invalidColumnInputs = require('./dataProviders/columns-errors-and-warnings-dp');
-      const listingIds = invalidColumnInputs.map(item => item.listingId);
+      let file = '../../../resources/upload-listing-beta/2015_BogusColumns.csv';
+      let invalidColumnInputs = require('./dataProviders/columns-errors-and-warnings-dp');
+      let listingIds = invalidColumnInputs.map(item => item.listingId);
 
       beforeAll(() => {
         console.log("IN BEFORE");
@@ -88,9 +88,9 @@ if (process.env.ENV !== 'stage') {
       });
 
       invalidColumnInputs.forEach((input) => {
-        const { listingId } = input;
-        const { expectedErrors } = input;
-        const { expectedWarnings } = input;
+        let { listingId } = input;
+        let { expectedErrors } = input;
+        let { expectedWarnings } = input;
     
         it('${listingId} should have expected error messages', () => {
           console.log("Checking errors for " + listingId);
@@ -99,7 +99,7 @@ if (process.env.ENV !== 'stage') {
           hooks.waitForSpinnerToDisappear();
           confirmPage.waitForBarMessages();
 
-          const errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
+          let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
           let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
           expect(matchedErrorCount).toBe(expectedErrors.length);
           expect(errorsOnPage.size).toBe(expectedErrors.length);
@@ -112,7 +112,7 @@ if (process.env.ENV !== 'stage') {
           hooks.waitForSpinnerToDisappear();
           confirmPage.waitForBarMessages();
 
-          const warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
+          let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
           let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
           expect(matchedWarningCount).toBe(expectedWarnings.length);
           expect(warningsOnPage.size).toBe(expectedWarnings.length);
@@ -121,9 +121,9 @@ if (process.env.ENV !== 'stage') {
     });
 
     describe('with invalid or missing data ', () => {
-      const file = '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv';
-      const invalidDataFormatInputs = require('./dataProviders/invalid-formats-errors-and-warnings-dp');
-      const listingIds = invalidDataFormatInputs.map(item => item.listingId);
+      let file = '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv';
+      let invalidDataFormatInputs = require('./dataProviders/invalid-formats-errors-and-warnings-dp');
+      let listingIds = invalidDataFormatInputs.map(item => item.listingId);
 
       beforeAll(() => {
         console.log("IN BEFORE");
@@ -136,9 +136,9 @@ if (process.env.ENV !== 'stage') {
       });
 
       invalidDataFormatInputs.forEach((input) => {
-        const { listingId } = input;
-        const { expectedErrors } = input;
-        const { expectedWarnings } = input;
+        let { listingId } = input;
+        let { expectedErrors } = input;
+        let { expectedWarnings } = input;
     
         it('${listingId} should have expected error messages', () => {
           console.log("Checking errors for " + listingId);
@@ -147,7 +147,7 @@ if (process.env.ENV !== 'stage') {
           hooks.waitForSpinnerToDisappear();
           confirmPage.waitForBarMessages();
 
-          const errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
+          let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
           let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
           expect(matchedErrorCount).toBe(expectedErrors.length);
           expect(errorsOnPage.size).toBe(expectedErrors.length);
@@ -160,7 +160,7 @@ if (process.env.ENV !== 'stage') {
           hooks.waitForSpinnerToDisappear();
           confirmPage.waitForBarMessages();
 
-          const warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
+          let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
           let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
           expect(matchedWarningCount).toBe(expectedWarnings.length);
           expect(warningsOnPage.size).toBe(expectedWarnings.length);
