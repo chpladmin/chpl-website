@@ -86,7 +86,8 @@ const survWith1Nonconformity = {
       id: 1,
       name: 'Certified Capability',
     },
-    requirement: '170.315 (c)(1)',
+    requirement: '170.315 (k)(1)',
+    requirementName: '170.315 (k)(1)',
     result: {
       id: 1,
       name: 'Non-Conformity',
@@ -194,6 +195,8 @@ const survWithRandomized = {
   lastModifiedDate: 1597786978488,
 };
 
+const nonconformityTypes = [];
+
 jest.mock('../../../../util/criterion-title', () => () => <div>Criteria Title</div>);
 
 const dateUtilMock = {
@@ -215,6 +218,7 @@ describe('the ChplNonconformityView component', () => {
           surveillance={survWith1Nonconformity}
           requirement={survWith1Nonconformity.requirements[0]}
           nonconformity={survWith1Nonconformity.requirements[0].nonconformities[0]}
+          nonconformityTypes={nonconformityTypes}
         />,
       );
     });
@@ -235,6 +239,7 @@ describe('the ChplNonconformityView component', () => {
           surveillance={survWith1Nonconformity}
           requirement={survWith1Nonconformity.requirements[0]}
           nonconformity={survWith1Nonconformity.requirements[0].nonconformities[0]}
+          nonconformityTypes={nonconformityTypes}
         />,
       );
     });
@@ -268,6 +273,7 @@ describe('the ChplNonconformityView component', () => {
           surveillance={survWith1Nonconformity}
           requirement={survWith1Nonconformity.requirements[1]}
           nonconformity={survWith1Nonconformity.requirements[1].nonconformities[0]}
+          nonconformityTypes={nonconformityTypes}
         />,
       );
     });
@@ -294,6 +300,7 @@ describe('the ChplNonconformityView component', () => {
           surveillance={survWithRandomized}
           requirement={survWithRandomized.requirements[0]}
           nonconformity={survWithRandomized.requirements[0].nonconformities[0]}
+          nonconformityTypes={nonconformityTypes}
         />,
       );
     });
