@@ -13,6 +13,8 @@ export const SurveillanceViewContainerComponent = {
 
     $onChanges(changes) {
       this.surveillance = angular.copy(changes.resolve.currentValue.surveillance);
+      this.surveillanceRequirements = angular.copy(changes.resolve.currentValue.surveillanceRequirements);
+      this.nonconformityTypes = angular.copy(changes.resolve.currentValue.nonconformityTypes);
     }
   },
 };

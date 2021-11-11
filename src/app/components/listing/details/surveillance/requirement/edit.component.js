@@ -6,7 +6,7 @@ export const SurveillanceRequirementEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceRequirementEditController {
-    constructor ($log, $uibModal, authService, utilService) {
+    constructor($log, $uibModal, authService, utilService) {
       'ngInject';
       this.$log = $log;
       this.$uibModal = $uibModal;
@@ -15,7 +15,7 @@ export const SurveillanceRequirementEditComponent = {
       this.sortCriteria = utilService.sortCert;
     }
 
-    $onInit () {
+    $onInit() {
       this.data = angular.copy(this.resolve.surveillanceTypes);
       this.disableValidation = this.resolve.disableValidation;
       this.randomized = this.resolve.randomized;
@@ -39,7 +39,7 @@ export const SurveillanceRequirementEditComponent = {
       }
     }
 
-    addNonconformity () {
+    addNonconformity() {
       let data = angular.copy(this.data);
       if (this.hasAnyRole(['ROLE_ACB'])) {
         data.nonconformityTypes.data = data.nonconformityTypes.data.filter(option => !option.removed);
@@ -71,19 +71,19 @@ export const SurveillanceRequirementEditComponent = {
       });
     }
 
-    cancel () {
+    cancel() {
       this.dismiss();
     }
 
-    deleteNonconformity (noncon) {
+    deleteNonconformity(noncon) {
       for (var i = 0; i < this.requirement.nonconformities.length; i++) {
         if (angular.equals(this.requirement.nonconformities[i], noncon)) {
-          this.requirement.nonconformities.splice(i,1);
+          this.requirement.nonconformities.splice(i, 1);
         }
       }
     }
 
-    editNonconformity (noncon) {
+    editNonconformity(noncon) {
       noncon.guiId = noncon.id ? noncon.id : (new Date()).getTime();
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceNonconformityEdit',
@@ -118,12 +118,12 @@ export const SurveillanceRequirementEditComponent = {
       });
     }
 
-    isNonconformityRequired () {
+    isNonconformityRequired() {
       return (this.requirement.result && this.requirement.result.name === 'Non-Conformity') &&
-                (!this.requirement.nonconformities || this.requirement.nonconformities.length === 0);
+        (!this.requirement.nonconformities || this.requirement.nonconformities.length === 0);
     }
 
-    save () {
+    save() {
       if (this.requirement.result.name === 'No Non-Conformity') {
         this.requirement.nonconformities = [];
       }
@@ -134,7 +134,15 @@ export const SurveillanceRequirementEditComponent = {
           this.requirement.requirement = this.requirementCriterionType.number;
         }
       }
-      this.close({$value: this.requirement});
+      this.close({ $value: this.requirement });
+    }
+
+    isNonconformityTypeRemoved(type) {
+      const nonconformityType = this.data.nonconformityTypes.data.find((ncType) => ncType.number === type);
+      if (nonconformityType) {
+        return nonconformityType.removed;
+      }
+      return false;
     }
   },
 };

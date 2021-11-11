@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { arrayOf } from 'prop-types';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -21,6 +22,7 @@ import {
   surveillanceRequirement as requirementPropType,
   surveillanceNonconformity as nonconformityPropType,
   surveillance as surveillancePropType,
+  criterion as nonconformityType,
 } from '../../../../../shared/prop-types';
 import theme from '../../../../../themes/theme';
 
@@ -49,7 +51,16 @@ function ChplNonconformityView(props) {
   const [surveillance] = useState(props.surveillance);
   const [requirement] = useState(props.requirement);
   const [nonconformity] = useState(props.nonconformity);
+  const [nonconformityTypes] = useState(props.nonconformityTypes);
   /* eslint-enable react/destructuring-assignment */
+
+  const isNonconformityTypeRemoved = (type) => {
+    const foundNonconformityType = nonconformityTypes.find((ncType) => ncType.number === type);
+    if (foundNonconformityType) {
+      return foundNonconformityType.removed;
+    }
+    return false;
+  };
 
   const classes = useStyles();
 
@@ -63,7 +74,7 @@ function ChplNonconformityView(props) {
           <div className={classes.nonconformityAccordionSummaryGrid}>
             <div>
               { nonconformity.criterion && <ChplCriterionTitle criterion={nonconformity.criterion} /> }
-              { !nonconformity.criterion && ` ${requirement.result.name}` }
+              { !nonconformity.criterion && `${isNonconformityTypeRemoved(requirement.requirementName) ? 'Removed | ' : ''} ${requirement.requirementName}` }
             </div>
             <div className={classes.nonconformityAccordionSummaryStatus}>
               { nonconformity.nonconformityStatus }
@@ -75,9 +86,7 @@ function ChplNonconformityView(props) {
             <Table size="small" aria-label="Non-conformity Table">
               <TableHead>
                 <TableRow>
-                  <TableCell
-                    style={{ width: '33%' }}
-                  >
+                  <TableCell style={{ width: '33%' }}>
                     Attribute
                   </TableCell>
                   <TableCell>Value</TableCell>
@@ -152,8 +161,8 @@ function ChplNonconformityView(props) {
                     { nonconformity.criterion
                       ? <ChplCriterionTitle criterion={nonconformity.criterion} useRemovedClass />
                       : (
-                        <span>
-                          {nonconformity.nonconformityType}
+                        <span className={(isNonconformityTypeRemoved(nonconformity.nonconformityType) ? 'removed' : '')}>
+                          {(isNonconformityTypeRemoved(nonconformity.nonconformityType) ? 'Removed | ' : '') + nonconformity.nonconformityType}
                         </span>
                       )}
                   </TableCell>
@@ -244,4 +253,5 @@ ChplNonconformityView.propTypes = {
   surveillance: surveillancePropType.isRequired,
   requirement: requirementPropType.isRequired,
   nonconformity: nonconformityPropType.isRequired,
+  nonconformityTypes: arrayOf(nonconformityType).isRequired,
 };

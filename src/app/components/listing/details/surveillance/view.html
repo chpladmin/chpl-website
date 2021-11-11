@@ -37,7 +37,7 @@
               <span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">
                 {{ req.type.name }}:
                 <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title }}</span>
-                <span ng-if="!req.criterion">{{ req.requirement }}</span><br />
+                <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
               </span>
             </td>
           </tr>
@@ -60,13 +60,13 @@
           <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</span></a>
           <p>Non-Conformity related to
             <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
-            <span ng-if="!req.criterion">{{ req.requirement }} </span>
+            <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
             Details
           </p>
           <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to
               <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
-              <span ng-if="!req.criterion">{{ req.requirement }} </span>
+              <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
               Dates
             </p>
             <table class="table table-condensed">
@@ -115,7 +115,8 @@
               <tbody>
                 <tr>
                   <th scope="row"><a href uib-tooltip="For non-conformities related to specific regulatory references (e.g. certified capabilities, disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l)). If the non-conformity type is designated as 'Other Non-Conformity', then the associated non-conformity does not have a relevant regulatory reference." tooltip-trigger="'mouseenter focus click'">Non-Conformity Type</a></th>
-                  <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType }}</td>
+                  <td ng-if="noncon.criterion" ng-class="{'removed' : noncon.criterion && noncon.criterion.removed}">{{ (noncon.criterion.removed ? 'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title }}</td>
+                  <td ng-if="!noncon.criterion" ng-class="{'removed' : $ctrl.isNonconformityTypeRemoved(noncon.nonconformityType)}">{{ ($ctrl.isNonconformityTypeRemoved(noncon.nonconformityType) ? 'Removed | ' : '') + noncon.nonconformityType }}</td>
                 </tr>
                 <tr>
                   <th scope="row"><a href uib-tooltip="Whether the non-conformity is open or closed (has been resolved)." tooltip-trigger="'mouseenter focus click'">Non-Conformity Status</a></th>

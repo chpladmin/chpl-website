@@ -14,7 +14,10 @@
 
         scope = $rootScope.$new();
         scope.close = jasmine.createSpy('close');
-        scope.resolve = {nonconformities: [1, 2]};
+        scope.resolve = {
+          nonconformities: [1, 2],
+          nonconformityTypes: { data: [] },
+        };
         $compile(el)(scope);
         scope.$digest();
         ctrl = el.isolateScope().$ctrl;
