@@ -11,9 +11,9 @@ let toast;
 let uploadListingComponent;
 
 const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
-const invalidDataInputs = require('./dataProviders/upload-listing-error-warning-validation-dp');
 const invalidColumnInputs = require('./dataProviders/columns-errors-and-warnings-dp');
 const invalidDataFormatInputs = require('./dataProviders/invalid-formats-errors-and-warnings-dp');
+const invalidDeveloperInputs = require('./dataProviders/developer-errors-and-warnings-dp');
 const invalidCriteriaRelationshipInputs = require('./dataProviders/criteria-relationships-errors-and-warnings-dp');
 const invalidCqmInputs = require('./dataProviders/cqms-errors-and-warnings-dp');
 const invalidSedInputs = require('./dataProviders/sed-errors-and-warnings-dp');
@@ -45,16 +45,16 @@ if (process.env.ENV !== 'stage') {
 
     let itemsToUpload = [
       {
-        file: '../../../resources/upload-listing-beta/2015_InvalidData.csv',
-        listingIds: invalidDataInputs.map(item => item.listingId),
-      },
-      {
         file: '../../../resources/upload-listing-beta/2015_BogusColumns.csv',
         listingIds: invalidColumnInputs.map(item => item.listingId),
       },
       {
-        file: '../../../resources/upload-listing-beta/2015_InvalidDataFormats.csv',
+        file: '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv',
         listingIds: invalidDataFormatInputs.map(item => item.listingId),
+      },
+      {
+        file: '../../../resources/upload-listing-beta/2015_Developer.csv',
+        listingIds: invalidDeveloperInputs.map(item => item.listingId),
       },
       {
         file: '../../../resources/upload-listing-beta/2015_CriteriaRelationships.csv',

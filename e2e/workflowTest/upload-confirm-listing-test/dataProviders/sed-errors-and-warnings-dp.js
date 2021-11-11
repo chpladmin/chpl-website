@@ -26,7 +26,8 @@ module.exports = [
       'The test task A1.2 for criteria 170.315 (a)(1) requires at least 10 participants.',
     ],
     expectedWarnings: [
-      'A non-integer numeric number was found in Test Task "A1.1" "Task Time Average" "80.7". The number has been rounded to "81"'
+      'A non-integer numeric number was found in Test Task "A1.1" "Task Time Average" "80.7". The number has been rounded to "81"',
+      'The test participant with unique ID \'ID02\' is never referenced in the listing and will be ignored.',
     ],
   },
 ];
