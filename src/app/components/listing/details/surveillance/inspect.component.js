@@ -84,6 +84,7 @@ const SurveillanceInspectComponent = {
         keyboard: false,
         resolve: {
           nonconformities: () => noncons,
+          nonconformityTypes: () => this.surveillanceTypes.nonconformityTypes,
         },
         size: 'lg',
       });
