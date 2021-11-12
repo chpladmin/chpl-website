@@ -70,7 +70,7 @@ describe('when logged in', () => {
 
     it('should have specific options under surveillance', () => {
       const expected = [
-        'Manage',
+        'Activity Reporting',
         'Complaints Reporting',
         'Reporting',
       ];
@@ -169,6 +169,7 @@ describe('when logged in', () => {
         'Upload',
         'Confirm',
         'Manage',
+        'Activity Reporting',
         'Complaints Reporting',
         'Reporting',
       ];
