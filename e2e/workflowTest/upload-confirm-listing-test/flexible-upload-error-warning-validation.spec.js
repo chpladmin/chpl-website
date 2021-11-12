@@ -50,18 +50,6 @@ const rejectListings = (listingIds) => {
   toast.clearAllToast();
 };
 
-const getMatchedMessageCount = (existingMessages, expectedMessages) => {
-  let matchedMessages = 0;
-  existingMessages.forEach((existingMessage) => {
-    expectedMessages.forEach((expectedMessage) => {
-      if (existingMessage.includes(expectedMessage)) {
-        matchedMessages++;
-      }
-    });
-  });
-  return matchedMessages;  
-};
-
 if (process.env.ENV !== 'stage') {
   console.log("NOT STG");
   describe('When admin uploads a listing ', () => {
@@ -81,13 +69,6 @@ if (process.env.ENV !== 'stage') {
       let file = suite.file;
       let invalidInputs = require(suite.messages);
       let listingIds = invalidInputs.map(item => item.listingId);
-
-      /*
-        afterAll(() => {
-        console.log("IN AFTER");
-        rejectListings(listingIds);
-        })e
-      */;
 
       describe(suite.description, () => {
         beforeEach(() => {
@@ -110,55 +91,17 @@ if (process.env.ENV !== 'stage') {
             let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
             let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
             expectedErrors.forEach((exp) => {
-              expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+              expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" as an error`);
             });
             errorsOnPage.forEach((found) => {
-              expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+              expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}" as an error`);
             });
             expectedWarnings.forEach((exp) => {
-              expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+              expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" as a warning`);
             });
             warningsOnPage.forEach((found) => {
-              expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+              expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}" as a warning`);
             });
-          });
-
-          xit(`${listingId} should have expected error messages`, () => {
-            console.log("Checking errors for " + listingId);
-            hooks.open('#/administration/confirm/listings');
-            confirmPage.gotoPendingListingPage(listingId);
-            hooks.waitForSpinnerToDisappear();
-            confirmPage.waitForBarMessages();
-
-            let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
-            //let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
-            expectedErrors.forEach((exp) => {
-              expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
-            });
-            errorsOnPage.forEach((found) => {
-              expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}"`);
-            });
-            //expect(matchedErrorCount).toBe(expectedErrors.length);
-            //expect(errorsOnPage.size).toBe(expectedErrors.length);
-          });
-
-          xit(`${listingId} should have expected warning messages`, () => {
-            console.log("Checking warnings for " + listingId);
-            hooks.open('#/administration/confirm/listings');
-            confirmPage.gotoPendingListingPage(listingId);
-            hooks.waitForSpinnerToDisappear();
-            confirmPage.waitForBarMessages();
-
-            let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
-            //let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
-            expectedWarnings.forEach((exp) => {
-              expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
-            });
-            warningsOnPage.forEach((found) => {
-              expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}"`);
-            });
-            //expect(matchedWarningCount).toBe(expectedWarnings.length);
-            //expect(warningsOnPage.size).toBe(expectedWarnings.length);
           });
         });
       });
