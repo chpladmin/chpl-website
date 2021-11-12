@@ -72,6 +72,14 @@
         expect(scope.dismiss).toHaveBeenCalled();
       });
 
+      it('should be able to determine if Non-confirmity Type is removed', () => {
+        ctrl.data = Mock.surveillanceData;
+        let removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(1)');
+        expect(removed).toBeFalse();
+        removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(2)');
+        expect(removed).toBeTrue();
+      });
+
       describe('when adding a Nonconformity', () => {
         var modalOptions;
         beforeEach(() => {
@@ -142,7 +150,7 @@
           authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
-              data: [{removed: false}, {removed: false}, {removed: true}],
+              data: [{ removed: false }, { removed: false }, { removed: true }],
             },
           };
           ctrl.addNonconformity();
@@ -153,7 +161,7 @@
           authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
-              data: [{removed: false}, {removed: false}, {removed: true}],
+              data: [{ removed: false }, { removed: false }, { removed: true }],
             },
           };
           ctrl.addNonconformity();
@@ -164,7 +172,7 @@
           authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
-              data: [{removed: false}, {removed: false}, {removed: true}],
+              data: [{ removed: false }, { removed: false }, { removed: true }],
             },
           };
           ctrl.addNonconformity();
@@ -175,7 +183,7 @@
       describe('when editing a Nonconformity', () => {
         var modalOptions, noncon;
         beforeEach(() => {
-          noncon = {id: 1, name: '1'};
+          noncon = { id: 1, name: '1' };
           modalOptions = {
             component: 'aiSurveillanceNonconformityEdit',
             animation: false,
@@ -224,15 +232,15 @@
         it('should replace the result in the list of nonconformities if it was already there', () => {
           ctrl.editNonconformity(noncon);
           ctrl.requirement.nonconformities = [noncon];
-          ctrl.modalInstance.close({id: 1, name: '2', guiId: 1});
-          expect(ctrl.requirement.nonconformities).toEqual([{id: 1, name: '2', guiId: 1}]);
+          ctrl.modalInstance.close({ id: 1, name: '2', guiId: 1 });
+          expect(ctrl.requirement.nonconformities).toEqual([{ id: 1, name: '2', guiId: 1 }]);
         });
 
         it('should add the result to the list of nonconformities if it was not there', () => {
           ctrl.editNonconformity(noncon);
           ctrl.requirement.nonconformities = [noncon];
-          ctrl.modalInstance.close({id: 2});
-          expect(ctrl.requirement.nonconformities).toEqual([{id: 1, name: '1', guiId: 1}, {id: 2}]);
+          ctrl.modalInstance.close({ id: 2 });
+          expect(ctrl.requirement.nonconformities).toEqual([{ id: 1, name: '1', guiId: 1 }, { id: 2 }]);
         });
 
         it('should log a dismissed modal', () => {
@@ -245,7 +253,7 @@
 
       describe('when deleting nonconformities', () => {
         it('should delete them', () => {
-          ctrl.requirement.nonconformities = [{id: 1}, {id: 2}];
+          ctrl.requirement.nonconformities = [{ id: 1 }, { id: 2 }];
           ctrl.deleteNonconformity(ctrl.requirement.nonconformities[1]);
           expect(ctrl.requirement.nonconformities).toEqual([ctrl.requirement.nonconformities[0]]);
         });
@@ -253,23 +261,23 @@
 
       describe('when determining if a noncon requires requirements', () => {
         it('should be if the result is NC & nonconformites are undefined', () => {
-          ctrl.requirement.result = {name: 'Non-Conformity'};
+          ctrl.requirement.result = { name: 'Non-Conformity' };
           expect(ctrl.isNonconformityRequired()).toBe(true);
         });
 
         it('should be if the result is NC & nonconformity length is 0', () => {
-          ctrl.requirement.result = {name: 'Non-Conformity'};
+          ctrl.requirement.result = { name: 'Non-Conformity' };
           ctrl.requirement.nonconformities = [];
           expect(ctrl.isNonconformityRequired()).toBe(true);
         });
 
         it('should not be if the result is NC & nonconformity length is 0', () => {
-          ctrl.requirement.result = {name: 'Non-Conformity'};
+          ctrl.requirement.result = { name: 'Non-Conformity' };
           ctrl.requirement.nonconformities = [{}];
           expect(ctrl.isNonconformityRequired()).toBe(false);
         });
         it('should not be if the result is not NC', () => {
-          ctrl.requirement.result = {name: 'No Non-Conformity'};
+          ctrl.requirement.result = { name: 'No Non-Conformity' };
           expect(ctrl.isNonconformityRequired()).toBe(false);
         });
       });
@@ -278,8 +286,8 @@
         it('should close the modal with the active requirement', () => {
           var activeReq = {
             id: 'something',
-            result: { name: 'someting'},
-            type: { name: 'something'},
+            result: { name: 'someting' },
+            type: { name: 'something' },
           };
           ctrl.requirement = activeReq;
           ctrl.save();
@@ -289,8 +297,8 @@
         it('should remove any requirements if there was no NC found', () => {
           var activeReq = {
             id: 'something',
-            result: { name: 'No Non-Conformity'},
-            type: { name: 'No Non-Conformity'},
+            result: { name: 'No Non-Conformity' },
+            type: { name: 'No Non-Conformity' },
             nonconformities: [1, 2, 3],
           };
           ctrl.requirement = activeReq;

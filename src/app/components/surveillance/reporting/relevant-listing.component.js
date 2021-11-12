@@ -1,4 +1,26 @@
-export const SurveillanceReportRelevantListingComponent = {
+const calculateCompletion = (surveillance) => {
+  const updated = {
+    ...surveillance,
+    completed: Math.round((
+      (surveillance.surveillanceOutcome ? 1 : 0)
+        + (surveillance.surveillanceProcessType ? 1 : 0)
+        + (surveillance.k1Reviewed ? 1 : 0)
+        + (surveillance.groundsForInitiating ? 1 : 0)
+        + (surveillance.nonconformityCauses ? 1 : 0)
+        + (surveillance.nonconformityNature ? 1 : 0)
+        + (surveillance.stepsToSurveil ? 1 : 0)
+        + (surveillance.stepsToEngage ? 1 : 0)
+        + (surveillance.additionalCostsEvaluation ? 1 : 0)
+        + (surveillance.limitationsEvaluation ? 1 : 0)
+        + (surveillance.nondisclosureEvaluation ? 1 : 0)
+        + (surveillance.directionDeveloperResolution ? 1 : 0)
+        + (surveillance.completedCapVerification ? 1 : 0)
+    ) * 100 / 13), // eslint-disable-line no-mixed-operators
+  };
+  return updated;
+};
+
+const SurveillanceReportRelevantListingComponent = {
   templateUrl: 'chpl.components/surveillance/reporting/relevant-listing.html',
   bindings: {
     listing: '<',
@@ -38,7 +60,7 @@ export const SurveillanceReportRelevantListingComponent = {
         this.surveillanceProcessTypes = angular.copy(changes.surveillanceProcessTypes.currentValue);
       }
       if (this.listing.surveillances) {
-        this.surveillances = this.listing.surveillances.map((s) => this.calculateCompletion(s));
+        this.surveillances = this.listing.surveillances.map((s) => calculateCompletion(s));
       }
     }
 
@@ -61,7 +83,7 @@ export const SurveillanceReportRelevantListingComponent = {
     }
 
     displaySurveillance(relevantSurveillance) {
-      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
         this.editSurveillance(relevantSurveillance);
       } else {
         this.viewSurveillance(relevantSurveillance);
@@ -70,28 +92,29 @@ export const SurveillanceReportRelevantListingComponent = {
 
     viewSurveillance(relevantSurveillance) {
       const that = this;
-      this._fixRequirementOptions();
+      this.fixRequirementOptions();
       this.networkService.getListing(this.listing.id, true).then((listing) => {
         const surveillance = listing.surveillance.find((s) => s.id === relevantSurveillance.id);
-        const component =
-          that.uibModalInstance = that.$uibModal.open({
-            component: that.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
-            animation: false,
-            backdrop: 'static',
-            keyboard: false,
-            size: 'lg',
-            resolve: {
-              surveillance: () => surveillance,
-            },
-          });
+        that.$uibModal.open({
+          component: that.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
+          animation: false,
+          backdrop: 'static',
+          keyboard: false,
+          size: 'lg',
+          resolve: {
+            surveillance: () => surveillance,
+            surveillanceRequirements: () => that.surveillanceTypes.surveillanceRequirements,
+            nonconformityTypes: () => that.surveillanceTypes.nonconformityTypes.data,
+          },
+        });
       });
     }
 
     editSurveillance(relevantSurveillance) {
-      let that = this;
-      this._fixRequirementOptions();
-      this.networkService.getListing(this.listing.id, true).then(listing => {
-        let surveillance = listing.surveillance.find(s => s.id === relevantSurveillance.id);
+      const that = this;
+      this.fixRequirementOptions();
+      this.networkService.getListing(this.listing.id, true).then((listing) => {
+        const surveillance = listing.surveillance.find((s) => s.id === relevantSurveillance.id);
         that.uibModalInstance = that.$uibModal.open({
           component: 'aiSurveillanceEdit',
           animation: false,
@@ -99,13 +122,13 @@ export const SurveillanceReportRelevantListingComponent = {
           keyboard: false,
           size: 'lg',
           resolve: {
-            surveillance: () => { return surveillance; },
-            surveillanceTypes: () => { return that.surveillanceTypes; },
-            workType: () => { return 'edit'; },
+            surveillance: () => surveillance,
+            surveillanceTypes: () => that.surveillanceTypes,
+            workType: () => 'edit',
           },
         });
         that.uibModalInstance.result.then(() => {
-          let currentState = {
+          const currentState = {
             relevantListing: that.listing.id,
           };
           that.$state.go(
@@ -117,8 +140,7 @@ export const SurveillanceReportRelevantListingComponent = {
       });
     }
 
-
-    _fixRequirementOptions() {
+    fixRequirementOptions() {
       if (this.listing.edition === '2015' || this.listing.edition === '2015 Cures Update') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
       } else if (this.listing.edition === '2014') {
@@ -130,27 +152,10 @@ export const SurveillanceReportRelevantListingComponent = {
       this.activeSurveillance = undefined;
       this.onCancel();
     }
-
-    calculateCompletion(surveillance) {
-      surveillance.completed = Math.round((
-        (surveillance.surveillanceOutcome ? 1 : 0)
-        + (surveillance.surveillanceProcessType ? 1 : 0)
-        + (surveillance.k1Reviewed ? 1 : 0)
-        + (surveillance.groundsForInitiating ? 1 : 0)
-        + (surveillance.nonconformityCauses ? 1 : 0)
-        + (surveillance.nonconformityNature ? 1 : 0)
-        + (surveillance.stepsToSurveil ? 1 : 0)
-        + (surveillance.stepsToEngage ? 1 : 0)
-        + (surveillance.additionalCostsEvaluation ? 1 : 0)
-        + (surveillance.limitationsEvaluation ? 1 : 0)
-        + (surveillance.nondisclosureEvaluation ? 1 : 0)
-        + (surveillance.directionDeveloperResolution ? 1 : 0)
-        + (surveillance.completedCapVerification ? 1 : 0)
-      ) * 100 / 13);
-      return surveillance;
-    }
   },
 };
 
 angular.module('chpl.components')
   .component('chplSurveillanceReportRelevantListing', SurveillanceReportRelevantListingComponent);
+
+export { SurveillanceReportRelevantListingComponent, calculateCompletion };

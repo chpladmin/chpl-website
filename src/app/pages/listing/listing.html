@@ -28,10 +28,10 @@
                 <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])" promoting-interoperability-is-on="false"></chpl-listing-history-bridge>
               </span>
             </p>
-            <span ng-if="$ctrl.canEdit()">
+            <div ng-if="$ctrl.canEdit()">
               <button class="btn btn-default" ui-sref=".view.edit"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</button>
-            </span>
-            <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
+            </div>
+            <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ACB'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
             <div class="btn-group">
               <div class="btn-group" ng-if="$ctrl.listing.certificationEdition.name === '2015'">
                 <ai-cms-widget-button product-id="{{ $ctrl.listing.id }}" product-name="{{ $ctrl.listing.product.name }}" chpl-product-number="{{ $ctrl.listing.chplProductNumber }}"></ai-cms-widget-button>
