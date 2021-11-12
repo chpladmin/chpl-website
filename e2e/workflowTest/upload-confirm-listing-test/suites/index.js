@@ -9,13 +9,13 @@ import sedErrorsAndWarnings from './sed-errors-and-warnings';
 
 const suites = [
   columnsErrorsAndWarnings,
-  //cqmsErrorsAndWarnings,
-  //criteriaRelationshipsErrorsAndWarnings,
-  //developerErrorsAndWarnings,
+  // cqmsErrorsAndWarnings,
+  // criteriaRelationshipsErrorsAndWarnings,
+  // developerErrorsAndWarnings,
   invalidFormatsErrorsAndWarnings,
-  //measuresErrorsAndWarnings,
-  //optionalStandardsErrorsAndWarnings,
-  //sedErrorsAndWarnings,
+  // measuresErrorsAndWarnings,
+  // optionalStandardsErrorsAndWarnings,
+  // sedErrorsAndWarnings,
 ];
 
 export {

@@ -24,7 +24,7 @@ const suite = {
       'Must use Cures Update version of \'170.315 (b)(3)\' unless ICS, for Listings certified after 2020-01-01',
       'Must use Cures Update version of \'170.315 (d)(10)\' unless ICS, for Listings certified after 2020-06-30.',
       'Must use Cures Update version of \'170.315 (d)(2)\' unless ICS, for Listings certified after 2020-06-30.',
-      'Must use Cures Update version of \'170.315 (d)(3)\' unless ICS, for Listings certified after 2020-06-30'
+      'Must use Cures Update version of \'170.315 (d)(3)\' unless ICS, for Listings certified after 2020-06-30',
     ],
     expectedWarnings: [
     ],
@@ -54,7 +54,7 @@ const suite = {
       'Certification criterion 170.315 (e)(1) (Cures Update) was found so 170.315 (d)(9) is required but was not found.',
       'Certification criterion 170.315 (h)(*) was found so 170.315 (d)(1) is required but was not found',
       'Certification criterion 170.315 (h)(*) was found so 170.315 (d)(2) or 170.315 (d)(2) (Cures Update) is required but was not found',
-      'Certification criterion 170.315 (h)(*) was found so 170.315 (d)(3) or 170.315 (d)(3) (Cures Update) is required but was not found'
+      'Certification criterion 170.315 (h)(*) was found so 170.315 (d)(3) or 170.315 (d)(3) (Cures Update) is required but was not found',
     ],
     expectedWarnings: [
     ],
@@ -80,7 +80,7 @@ const suite = {
       'Certification criterion 170.315 (f)(*) was found so 170.315 (d)(2) or 170.315 (d)(2) (Cures Update) is required but was not found',
       'Certification criterion 170.315 (f)(*) was found so 170.315 (d)(3) or 170.315 (d)(3) (Cures Update) is required but was not found',
       'Certification criterion 170.315 (f)(*) was found so 170.315 (d)(7) is required but was not found',
-      'Listing has attested to (g)(3), but no criteria were found attesting to SED.'
+      'Listing has attested to (g)(3), but no criteria were found attesting to SED.',
     ],
     expectedWarnings: [
     ],

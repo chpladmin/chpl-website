@@ -8,7 +8,7 @@ const suite = {
       'The heading \'Test Procedure\' appears to be a duplicate for certification result CRITERIA_170_315_G_5__C.',
       'The heading \'QMS Modification Description\' appears to be a duplicate in the file.',
       'The heading \'PRODUCT\' appears to be a duplicate in the file.',
-      'The heading \'CRITERIA_170_315_G_5__C\' appears to be a duplicate in the file.'
+      'The heading \'CRITERIA_170_315_G_5__C\' appears to be a duplicate in the file.',
     ],
     expectedWarnings: [
       'The heading \'CRITERIA_170_315_R_5__C\' was found in the upload file but is not recognized.',

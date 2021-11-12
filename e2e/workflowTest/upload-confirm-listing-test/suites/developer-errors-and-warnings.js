@@ -30,7 +30,7 @@ const suite = {
       'Developer city is required.',
     ],
     expectedWarnings: [
-    ]
+    ],
   }],
 };
 

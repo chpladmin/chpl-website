@@ -22,7 +22,7 @@ const suite = {
     ],
     expectedWarnings: [
       'An unrecognized character was found for ACB Certification ID',
-      'An unrecognized character was found for ACB Name'
+      'An unrecognized character was found for ACB Name',
     ],
   }, {
     listingId: '15.02.04.2701.REQ1.12.01.1.200620',
@@ -70,8 +70,8 @@ const suite = {
     expectedWarnings: [
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
       'Test data \'test data\' is invalid for certification 170.315 (b)(1) (Cures Update). ONC Test Method will be used instead.',
-      'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.'
-    ]
+      'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
+    ],
   }, {
     listingId: '15.02.04.2701.ICS1.12.00.0.200620',
     expectedErrors: [
@@ -79,7 +79,7 @@ const suite = {
       'No listing was found with the unique ID \'CHP-00000\'. ICS parent listings must reference existing listings in the CHPL.',
     ],
     expectedWarnings: [
-    ]
+    ],
   }],
 };
 
