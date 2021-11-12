@@ -97,11 +97,6 @@ const DeveloperViewComponent = {
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.$stateParams.developerId) {
         this.networkService.getUsersAtDeveloper(this.$stateParams.developerId).then((response) => { that.users = response.users; });
       }
-      if (this.hasAnyRole(['ROLE_DEVELOPER']) && this.$stateParams.developerId) {
-        this.networkService.getChangeRequests().then((response) => { that.changeRequests = response; });
-        this.networkService.getChangeRequestTypes().then((response) => { that.changeRequestTypes = response; });
-        this.networkService.getChangeRequestStatusTypes().then((response) => { that.changeRequestStatusTypes = response; });
-      }
     }
 
     takeAction(action) {

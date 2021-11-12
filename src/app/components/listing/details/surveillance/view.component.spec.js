@@ -58,6 +58,22 @@
       expect(ctrl).toEqual(jasmine.any(Object));
     });
 
+    it('should be able to determine if Non-confirmity Type is removed', () => {
+      ctrl.surveillanceTypes = Mock.surveillanceData;
+      let removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(1)');
+      expect(removed).toBeFalse();
+      removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(2)');
+      expect(removed).toBeTrue();
+    });
+
+    it('should be able to determine if Requirement is removed', () => {
+      ctrl.surveillanceTypes = Mock.surveillanceData;
+      let removed = ctrl.isRequirementRemoved('170.523 (k)(1)');
+      expect(removed).toBeFalse();
+      removed = ctrl.isRequirementRemoved('170.523 (k)(2)');
+      expect(removed).toBeTrue();
+    });
+
     describe('surveillance titles', () => {
       it('should come up with correct titles when there were no NCs', () => {
         const surv = {

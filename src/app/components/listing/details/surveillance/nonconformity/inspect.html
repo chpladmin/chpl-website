@@ -17,9 +17,10 @@
           <tbody>
             <tr>
               <th scope="row">Type</th>
-              <td ng-class="{'removed' : noncon.criterion.removed}">{{ noncon.criterion ? ((noncon.criterion.removed ?
-                'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title) : noncon.nonconformityType
+              <td ng-if="noncon.criterion" ng-class="{'removed' : noncon.criterion.removed}">{{ (noncon.criterion.removed ?
+                'Removed | ' : '') + noncon.criterion.number + ': ' + noncon.criterion.title
                 }}</td>
+                <td ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isNonconformityTypeRemoved(noncon.nonconformityType)}">{{ ($ctrl.isNonconformityTypeRemoved(noncon.nonconformityType) ? 'Removed | ' : '') + noncon.nonconformityType }}</td>
             </tr>
             <tr>
               <th scope="row">Date of Determination</th>

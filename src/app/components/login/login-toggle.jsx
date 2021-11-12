@@ -4,24 +4,24 @@ import {
   Popover,
   makeStyles,
 } from '@material-ui/core';
-
 import PersonIcon from '@material-ui/icons/Person';
+
 import { UserContext } from '../../shared/contexts';
-import ChplLogin from './login';
 import theme from '../../themes/theme';
 
+import ChplLogin from './login';
 
 const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
   },
-  loginSpacing:{
-    margin:'8px',
+  loginSpacing: {
+    margin: '8px',
   },
-  popoverSpacing:{
-    marginLeft:'8px',
+  popoverSpacing: {
+    marginLeft: '8px',
   },
-  loginCard:{
+  loginCard: {
     width: '300px',
     [theme.breakpoints.up('md')]: {
       width: '375px',
@@ -67,7 +67,8 @@ function ChplLoginToggle() {
         onClick={handleClick}
         className={classes.loginSpacing}
       >
-        { title }<PersonIcon className={classes.iconSpacing}/>
+        { title }
+        <PersonIcon className={classes.iconSpacing} />
       </Button>
       <Popover
         id="admin-login-form"
@@ -85,7 +86,7 @@ function ChplLoginToggle() {
         className={classes.popoverSpacing}
       >
         <div className={classes.loginCard}>
-        <ChplLogin/>
+          <ChplLogin />
         </div>
       </Popover>
     </>

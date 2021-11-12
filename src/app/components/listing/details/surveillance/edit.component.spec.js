@@ -95,6 +95,13 @@
         expect(scope.dismiss).toHaveBeenCalled();
       });
 
+      it('should be able to determine if Requirement is removed', () => {
+        let removed = ctrl.isRequirementRemoved('170.523 (k)(1)');
+        expect(removed).toBeFalse();
+        removed = ctrl.isRequirementRemoved('170.523 (k)(2)');
+        expect(removed).toBeTrue();
+      });
+
       describe('during activation', () => {
         it('should provide authorities', () => {
           authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ONC', false)); // user is ONC
@@ -382,6 +389,7 @@
             size: 'lg',
             resolve: {
               nonconformities: jasmine.any(Function),
+              nonconformityTypes: jasmine.any(Function),
             },
           };
         });
