@@ -7,9 +7,9 @@ export const SurveillanceManagementComponent = {
   controller: class SurveillanceManagementComponent {
     constructor($log, $stateParams, authService, networkService, utilService) {
       'ngInject';
+
       this.$log = $log;
       this.$stateParams = $stateParams;
-      this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.certificationStatus = utilService.certificationStatus;
       this.filterItems = {
@@ -55,13 +55,13 @@ export const SurveillanceManagementComponent = {
       }
       if (this.allowedAcbs && this.listings) {
         this.filterItems.acbItems = this.allowedAcbs
-          .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
-          .map(a => {
-            let ret = {
+          .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
+          .map((a) => {
+            const ret = {
               value: a.name,
             };
             if (a.retired) {
-              ret.display = a.name + ' (Retired)';
+              ret.display = `${a.name} (Retired)`;
               ret.retired = true;
               ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
             } else {
@@ -75,10 +75,10 @@ export const SurveillanceManagementComponent = {
 
     parse() {
       this.availableListings = this.listings
-        .filter(l => this.hasPermission(l))
-        .map(l => {
+        .filter((l) => this.hasPermission(l))
+        .map((l) => {
           l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
-          l.edition = l.edition + (l.curesUpdate ? ' Cures Update' : '');
+          l.edition += (l.curesUpdate ? ' Cures Update' : '');
           l.surveillance = angular.toJson({
             openSurveillanceCount: l.openSurveillanceCount,
             closedSurveillanceCount: l.closedSurveillanceCount,
@@ -104,9 +104,9 @@ export const SurveillanceManagementComponent = {
           id: listing.id,
           chplProductNumber: listing.chplProductNumber,
         });
-        let that = this;
+        const that = this;
         this.networkService.getListing(listing.id, true)
-          .then(result => that.tabs.forEach(t => {
+          .then((result) => that.tabs.forEach((t) => {
             if (t.id === listing.id) {
               t.listing = result;
             }
@@ -116,7 +116,7 @@ export const SurveillanceManagementComponent = {
 
     takeTabAction(action, data, $event) {
       if (action === 'close') {
-        this.tabs = this.tabs.filter(t => t.id !== data.id);
+        this.tabs = this.tabs.filter((t) => t.id !== data.id);
       }
       if ($event) {
         $event.preventDefault();
@@ -125,33 +125,33 @@ export const SurveillanceManagementComponent = {
     }
 
     registerClearFilter(handler) {
-      let that = this;
+      const that = this;
       this.clearFilterHs.push(handler);
-      let removeHandler = () => {
-        that.clearFilterHs = that.clearFilterHs.filter(h => h !== handler);
+      const removeHandler = () => {
+        that.clearFilterHs = that.clearFilterHs.filter((h) => h !== handler);
       };
       return removeHandler;
     }
 
     triggerClearFilters() {
-      this.clearFilterHs.forEach(h => h());
+      this.clearFilterHs.forEach((h) => h());
       if (this.tableSearchHs && this.tableSearchHs[0]) {
         this.tableSearchHs[0]();
       }
     }
 
     registerSearch(handler) {
-      let that = this;
+      const that = this;
       this.tableSearchHs = [handler];
-      let removeHandler = () => {
-        that.tableSearchHs = that.tableSearchHs.filter(h => h !== handler);
+      const removeHandler = () => {
+        that.tableSearchHs = that.tableSearchHs.filter((h) => h !== handler);
       };
       return removeHandler;
     }
 
     isCategoryChanged() {
       let changed = false;
-      angular.forEach(this.categoryChanged, v => changed = changed || v);
+      angular.forEach(this.categoryChanged, (v) => changed = changed || v);
       return changed;
     }
   },

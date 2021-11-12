@@ -1,6 +1,7 @@
 import LoginComponent from '../login/login.po';
-import NavigationComponent from './navigation.po';
 import Hooks from '../../utilities/hooks';
+
+import NavigationComponent from './navigation.po';
 
 let component;
 let hooks;
@@ -65,9 +66,10 @@ describe('when logged in', () => {
         expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
       });
     });
+
     it('should have specific options under surveillance', () => {
       const expected = [
-        'Manage',
+        'Activity Reporting',
         'Complaints Reporting',
         'Reporting',
       ];
@@ -123,6 +125,7 @@ describe('when logged in', () => {
         'Upload',
         'Confirm',
         'Manage',
+        'Activity Reporting',
         'Complaints Reporting',
         'Reporting',
       ];
