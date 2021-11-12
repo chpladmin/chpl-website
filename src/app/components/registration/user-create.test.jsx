@@ -30,7 +30,7 @@ describe('the ChplUserCreate component', () => {
       userEvent.type(screen.getByLabelText(/Full Name/), 'full name');
       userEvent.type(screen.getByLabelText(/Email/), 'email@sample.com');
       userEvent.type(screen.getByLabelText(/^Password/), 'hopefullyThisIsAValidPassword654');
-      userEvent.type(screen.getByLabelText(/Verification Password/), 'hopefullyThisIsAValidPassword654');
+      userEvent.type(screen.getByLabelText(/Verify Password/), 'hopefullyThisIsAValidPassword654');
       userEvent.click(screen.getByRole('button', { name: /Create account/i }));
 
       await waitFor(() => {
