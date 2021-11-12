@@ -17,3 +17,10 @@ update-pr.sh
 e2e/config/credentials.js
 yarn-error.log
 e2e/config/urls.js
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import {
+  arrayOf, bool, shape, string,
+} from 'prop-types';
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import {
@@ -14,9 +17,13 @@ import {
 
 import { ChplCriterionTitle, ChplTooltip } from '../../../util';
 import { getAngularService } from '../../../../services/angular-react-helper';
-import ChplSurveillanceNonconformity from './nonconformity';
-import { surveillance as surveillancePropType } from '../../../../shared/prop-types';
+import {
+  surveillance as surveillancePropType,
+  criterion as criterionPropType,
+} from '../../../../shared/prop-types';
 import theme from '../../../../themes/theme';
+
+import ChplSurveillanceNonconformity from './nonconformity';
 
 const useStyles = makeStyles(() => ({
   iconSpacing: {
@@ -43,7 +50,10 @@ function ChplSurveillanceView(props) {
   /* eslint-disable react/destructuring-assignment */
   const DateUtil = getAngularService('DateUtil');
   const [surveillance] = useState(props.surveillance);
+  const [surveillanceRequirements] = useState(props.surveillanceRequirements);
+  const [nonconformityTypes] = useState(props.nonconformityTypes);
   const [surveillanceResults, setSurveillanceResults] = useState([]);
+
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -51,15 +61,25 @@ function ChplSurveillanceView(props) {
     setSurveillanceResults(getSurveillanceResults(surveillance));
   }, [surveillance]);
 
+  const isRequirementRemoved = (requirement) => {
+    let foundReq = surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === requirement);
+    if (foundReq) {
+      return foundReq.removed;
+    }
+    foundReq = surveillanceRequirements.transparencyOptions.find((req) => req.item === requirement);
+    if (foundReq) {
+      return foundReq.removed;
+    }
+    return false;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <TableContainer component={Paper}>
         <Table size="small" aria-label="Surveillance Table">
           <TableHead>
             <TableRow>
-              <TableCell
-                style={{ width: '33%' }}
-              >
+              <TableCell style={{ width: '33%' }}>
                 Attribute
               </TableCell>
               <TableCell>Value</TableCell>
@@ -114,9 +134,15 @@ function ChplSurveillanceView(props) {
                     <ul className={classes.unindentedData}>
                       { surveillance.requirements.map((req) => (
                         <li key={req.id}>
-                          { `${req.type.name} ${req.criterion && ': '}` }
+                          { `${req.type.name}` }
+                          :
                           { req.criterion && <ChplCriterionTitle criterion={req.criterion} useRemovedClass /> }
-                          { !req.criterion && `${req.requirement}` }
+                          { !req.criterion
+                            && (
+                              <span className={(isRequirementRemoved(req.requirement) ? 'removed' : '')}>
+                                { `${(isRequirementRemoved(req.requirement) ? ' Removed | ' : ' ')} ${req.requirement}` }
+                              </span>
+                            )}
                         </li>
                       ))}
                     </ul>
@@ -141,7 +167,12 @@ function ChplSurveillanceView(props) {
                         <li key={result.id}>
                           { `${result.statusName} Non-Conformity Found for` }
                           { result.criterion && <ChplCriterionTitle criterion={result.criterion} useRemovedClass /> }
-                          { !result.criterion && `${result.requirement}` }
+                          { !result.criterion
+                            && (
+                              <span className={(isRequirementRemoved(result.requirement) ? 'removed' : '')}>
+                                { `${(isRequirementRemoved(result.requirement) ? ' Removed | ' : ' ')} ${result.requirement}` }
+                              </span>
+                            )}
                         </li>
                       ))}
                     </ul>
@@ -161,7 +192,7 @@ function ChplSurveillanceView(props) {
           <div data-testid="non-conformity-component-container">
             { surveillance.requirements.map((requirement) => (
               requirement.nonconformities.map((nonconformity) => (
-                <ChplSurveillanceNonconformity key={requirement.id} surveillance={surveillance} requirement={requirement} nonconformity={nonconformity} data-testid="non-conformity-component" />
+                <ChplSurveillanceNonconformity key={requirement.id} surveillance={surveillance} requirement={requirement} nonconformity={nonconformity} nonconformityTypes={nonconformityTypes} data-testid="non-conformity-component" />
               ))
             ))}
           </div>
@@ -175,4 +206,17 @@ export default ChplSurveillanceView;
 
 ChplSurveillanceView.propTypes = {
   surveillance: surveillancePropType.isRequired,
+  surveillanceRequirements: shape({
+    criteriaOptions2014: arrayOf(criterionPropType),
+    criteriaOptions2015: arrayOf(criterionPropType),
+    realWorldTestingOptions: arrayOf(shape({
+      item: string,
+      removed: bool,
+    })),
+    transparencyOptions: arrayOf(shape({
+      item: string,
+      removed: bool,
+    })),
+  }).isRequired,
+  nonconformityTypes: arrayOf(criterionPropType).isRequired,
 };

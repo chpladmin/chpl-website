@@ -48,7 +48,7 @@
       angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('$stateParams', () => mock.stateParams);
         $provide.factory('chplProductsDirective', () => ({}));
-        $provide.factory('chplChangeRequestsDirective', () => ({}));
+        $provide.factory('chplChangeRequestsWrapperBridgeDirective', () => ({}));
         $provide.factory('chplUsersBridgeDirective', () => ({}));
         $provide.decorator('authService', ($delegate) => ({
           ...$delegate,
@@ -58,16 +58,13 @@
         $provide.decorator('networkService', ($delegate) => ({
           ...$delegate,
           getAcbs: jasmine.createSpy('getAcbs'),
-          getChangeRequests: jasmine.createSpy('getChangeRequests'),
-          getChangeRequestTypes: jasmine.createSpy('getChangeRequestTypes'),
-          getChangeRequestStatusTypes: jasmine.createSpy('getChangeRequestStatusTypes'),
           getDeveloper: jasmine.createSpy('getDeveloper'),
           getDirectReviews: jasmine.createSpy('getDirectReviews'),
           getSearchOptions: jasmine.createSpy('getSearchOptions'),
           getUsersAtDeveloper: jasmine.createSpy('getUsersAtDeveloper'),
           inviteUser: jasmine.createSpy('inviteUser'),
           removeUserFromDeveloper: jasmine.createSpy('removeUserFromDeveloper'),
-          updateChangeRequest: jasmine.createSpy('updateChangeRequest'),
+          submitChangeRequest: jasmine.createSpy('submitChangeRequest'),
         }));
       });
       inject((_$compile_, _$log_, _$q_, _$rootScope_, _$state_, _authService_, _networkService_, _toaster_) => {
@@ -81,16 +78,13 @@
         authService.hasAnyRole.and.returnValue(true);
         networkService = _networkService_;
         networkService.getAcbs.and.returnValue($q.when({ acbs: mock.acbs }));
-        networkService.getChangeRequests.and.returnValue($q.when([]));
-        networkService.getChangeRequestTypes.and.returnValue($q.when([]));
-        networkService.getChangeRequestStatusTypes.and.returnValue($q.when([]));
         networkService.getDeveloper.and.returnValue($q.when(mock.developer));
         networkService.getDirectReviews.and.returnValue($q.when([]));
         networkService.getUsersAtDeveloper.and.returnValue($q.when({ users: mock.users }));
         networkService.getSearchOptions.and.returnValue($q.when([]));
         networkService.inviteUser.and.returnValue($q.when({}));
         networkService.removeUserFromDeveloper.and.returnValue($q.when({}));
-        networkService.updateChangeRequest.and.returnValue($q.when({}));
+        networkService.submitChangeRequest.and.returnValue($q.when({}));
         toaster = _toaster_;
 
         scope = $rootScope.$new();
@@ -131,9 +125,6 @@
           expect(networkService.getSearchOptions.calls.count()).toBe(1);
           expect(networkService.getUsersAtDeveloper).toHaveBeenCalledWith(22);
           expect(networkService.getUsersAtDeveloper.calls.count()).toBe(1);
-          expect(networkService.getChangeRequests.calls.count()).toBe(1);
-          expect(networkService.getChangeRequestTypes.calls.count()).toBe(1);
-          expect(networkService.getChangeRequestStatusTypes.calls.count()).toBe(1);
         });
 
         describe('of direct reviews', () => {
@@ -165,16 +156,10 @@
           const initCount = {
             getSearchOptions: networkService.getSearchOptions.calls.count(),
             getUsersAtDeveloper: networkService.getUsersAtDeveloper.calls.count(),
-            getChangeRequests: networkService.getChangeRequests.calls.count(),
-            getChangeRequestTypes: networkService.getChangeRequestTypes.calls.count(),
-            getChangeRequestStatusTypes: networkService.getChangeRequestStatusTypes.calls.count(),
           };
           $rootScope.$broadcast('loggedIn');
           expect(networkService.getSearchOptions.calls.count()).toBe(initCount.getSearchOptions);
           expect(networkService.getUsersAtDeveloper.calls.count()).toBe(initCount.getUsersAtDeveloper + 1);
-          expect(networkService.getChangeRequests.calls.count()).toBe(initCount.getChangeRequests + 1);
-          expect(networkService.getChangeRequestTypes.calls.count()).toBe(initCount.getChangeRequestTypes + 1);
-          expect(networkService.getChangeRequestStatusTypes.calls.count()).toBe(initCount.getChangeRequestStatusTypes + 1);
         });
       });
 
@@ -183,17 +168,11 @@
           const initCount = {
             getSearchOptions: networkService.getSearchOptions.calls.count(),
             getUsersAtDeveloper: networkService.getUsersAtDeveloper.calls.count(),
-            getChangeRequests: networkService.getChangeRequests.calls.count(),
-            getChangeRequestTypes: networkService.getChangeRequestTypes.calls.count(),
-            getChangeRequestStatusTypes: networkService.getChangeRequestStatusTypes.calls.count(),
           };
           ctrl.$onDestroy();
           $rootScope.$broadcast('loggedIn');
           expect(networkService.getSearchOptions.calls.count()).toBe(initCount.getSearchOptions);
           expect(networkService.getUsersAtDeveloper.calls.count()).toBe(initCount.getUsersAtDeveloper);
-          expect(networkService.getChangeRequests.calls.count()).toBe(initCount.getChangeRequests);
-          expect(networkService.getChangeRequestTypes.calls.count()).toBe(initCount.getChangeRequestTypes);
-          expect(networkService.getChangeRequestStatusTypes.calls.count()).toBe(initCount.getChangeRequestStatusTypes);
         });
       });
 
@@ -245,23 +224,6 @@
         it('should handle cancel', () => {
           ctrl.takeUserAction('cancel');
           expect(ctrl.action).toBeUndefined();
-        });
-      });
-
-      describe('with respect to change request callbacks', () => {
-        it('should handle cancel', () => {
-          ctrl.takeCrAction('cancel');
-          expect(ctrl.action).toBeUndefined();
-        });
-
-        it('should handle save', () => {
-          const cr = {};
-          const initCount = networkService.getChangeRequests.calls.count();
-          ctrl.takeCrAction('save', cr);
-          scope.$digest();
-          expect(ctrl.action).toBe('confirmation');
-          expect(networkService.updateChangeRequest).toHaveBeenCalledWith(cr);
-          expect(networkService.getChangeRequests.calls.count()).toBe(initCount + 1);
         });
       });
     });

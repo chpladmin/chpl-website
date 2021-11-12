@@ -4,6 +4,10 @@ import address from './address';
 import analyticsConfig from './analytics-config';
 import certificationResult from './certification-result';
 import {
+  changeRequest,
+  changeRequestStatusType,
+} from './change-request';
+import {
   criterion as complaintCriterion,
   complaint,
   complainantType,
@@ -37,6 +41,8 @@ export {
   address,
   analyticsConfig,
   certificationResult,
+  changeRequest,
+  changeRequestStatusType,
   complainantType,
   complaint,
   complaintCriterion,
