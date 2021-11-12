@@ -4,16 +4,21 @@ import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import ToastComponent from '../../components/toast/toast.po';
 
+import { suites } from './suites';
+
 let confirmPage;
 let hooks;
 let loginComponent;
 let toast;
 let uploadListingComponent;
 
+/*
 const suites = [
   {description: 'with issues in the column headings', file: '../../../resources/upload-listing-beta/2015_BogusColumns.csv', messages: './dataProviders/columns-errors-and-warnings-dp'},
   {description: 'with invalid or missing data ', file: '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv', messages: './dataProviders/invalid-formats-errors-and-warnings-dp'},
 ];
+*/
+
 //const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
 //const invalidDeveloperInputs = require('./dataProviders/developer-errors-and-warnings-dp');
 //const invalidCriteriaRelationshipInputs = require('./dataProviders/criteria-relationships-errors-and-warnings-dp');
@@ -38,18 +43,17 @@ if (process.env.ENV !== 'stage') {
     });
 
     suites.forEach((suite) => {
-      let file = suite.file;
-      let invalidInputs = require(suite.messages);
-      let listingIds = invalidInputs.map(item => item.listingId);
+      let { file, listings, description } = suite;
+      const listingIds = listings.map(item => item.listingId);
 
-      describe(suite.description, () => {
+      describe(description, () => {
         beforeEach(() => {
           console.log("IN BEFORE");
           hooks.open('#/administration/upload');
           uploadListingComponent.uploadFileAndWaitForListingsToBeProcessed(file, listingIds, toast, hooks, confirmPage);
         });
 
-        invalidInputs.forEach((input) => {
+        listings.forEach((input) => {
           let { listingId, expectedErrors, expectedWarnings } = input;
 
           it(`${listingId} should have expected messages`, () => {
