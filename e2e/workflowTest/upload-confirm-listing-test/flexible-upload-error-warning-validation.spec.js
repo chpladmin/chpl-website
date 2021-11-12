@@ -36,6 +36,7 @@ const uploadFileAndWaitForListingsToBeProcessed = (filename, listingIds) => {
 const rejectListings = (listingIds) => {
   console.log("Reject listings " + listingIds);
   hooks.open('#/administration/confirm/listings');
+  hooks.waitForSpinnerToDisappear();
   listingIds.forEach((listingId) => {
     console.log("Selecting listing " + listingId + " to reject");
     confirmPage.rejectListingCheckbox(listingId);
@@ -92,7 +93,7 @@ if (process.env.ENV !== 'stage') {
         let { expectedErrors } = input;
         let { expectedWarnings } = input;
     
-        it('${listingId} should have expected error messages', () => {
+        it(`${listingId} should have expected error messages`, () => {
           console.log("Checking errors for " + listingId);
           hooks.open('#/administration/confirm/listings');
           confirmPage.gotoPendingListingPage(listingId);
@@ -105,7 +106,7 @@ if (process.env.ENV !== 'stage') {
           expect(errorsOnPage.size).toBe(expectedErrors.length);
         });
 
-        it('${listingId} should have expected warning messages', () => {
+        it(`${listingId} should have expected warning messages`, () => {
           console.log("Checking warnings for " + listingId);
           hooks.open('#/administration/confirm/listings');
           confirmPage.gotoPendingListingPage(listingId);
@@ -140,7 +141,7 @@ if (process.env.ENV !== 'stage') {
         let { expectedErrors } = input;
         let { expectedWarnings } = input;
     
-        it('${listingId} should have expected error messages', () => {
+        it(`${listingId} should have expected error messages`, () => {
           console.log("Checking errors for " + listingId);
           hooks.open('#/administration/confirm/listings');
           confirmPage.gotoPendingListingPage(listingId);
@@ -148,12 +149,18 @@ if (process.env.ENV !== 'stage') {
           confirmPage.waitForBarMessages();
 
           let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
-          let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
-          expect(matchedErrorCount).toBe(expectedErrors.length);
-          expect(errorsOnPage.size).toBe(expectedErrors.length);
+          //let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
+          expectedErrors.forEach((exp) => {
+            expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+          });
+          errorsOnPage.forEach((found) => {
+            expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+          });
+          //expect(matchedErrorCount).toBe(expectedErrors.length);
+          //expect(errorsOnPage.size).toBe(expectedErrors.length);
         });
 
-        it('${listingId} should have expected warning messages', () => {
+        it(`${listingId} should have expected warning messages`, () => {
           console.log("Checking warnings for " + listingId);
           hooks.open('#/administration/confirm/listings');
           confirmPage.gotoPendingListingPage(listingId);
@@ -161,9 +168,15 @@ if (process.env.ENV !== 'stage') {
           confirmPage.waitForBarMessages();
 
           let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
-          let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
-          expect(matchedWarningCount).toBe(expectedWarnings.length);
-          expect(warningsOnPage.size).toBe(expectedWarnings.length);
+          //let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
+          expectedWarnings.forEach((exp) => {
+            expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+          });
+          warningsOnPage.forEach((found) => {
+            expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+          });
+          //expect(matchedWarningCount).toBe(expectedWarnings.length);
+          //expect(warningsOnPage.size).toBe(expectedWarnings.length);
         });
       });
     });
