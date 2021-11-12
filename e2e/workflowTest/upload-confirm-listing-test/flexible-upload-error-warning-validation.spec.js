@@ -22,21 +22,6 @@ const suites = [
 //const invalidMeasureInputs = require('./dataProviders/measures-errors-and-warnings-dp');
 //const invalidOptionalStandardInputs = require('./dataProviders/optional-standards-errors-and-warnings-dp');
 
-const uploadFileAndWaitForListingsToBeProcessed = (filename, listingIds) => {
-  console.log("Upload file and wait for listings to be processed");
-  hooks.open('#/administration/upload');
-  console.log('Opened upload page to upload ' + filename);
-  uploadListingComponent.uploadListingBeta(filename);
-  console.log('uploaded ' + filename);
-  browser.waitUntil(() => toast.toastTitle.isDisplayed());
-  toast.clearAllToast();
-  hooks.open('#/administration/confirm/listings');
-  listingIds.forEach((listingId) => {
-    confirmPage.waitForPendingListingToBecomeClickable(listingId);
-    console.log('Pending listing ' + listingId + ' is clickable!');
-  });
-};
-
 const rejectListings = (listingIds) => {
   console.log("Reject listings " + listingIds);
   hooks.open('#/administration/confirm/listings');
@@ -73,7 +58,8 @@ if (process.env.ENV !== 'stage') {
       describe(suite.description, () => {
         beforeEach(() => {
           console.log("IN BEFORE");
-          uploadFileAndWaitForListingsToBeProcessed(file, listingIds);
+          hooks.open('#/administration/upload');
+          uploadListingComponent.uploadFileAndWaitForListingsToBeProcessed(file, listingIds, toast, hooks, confirmPage);
         });
 
         invalidInputs.forEach((input) => {
