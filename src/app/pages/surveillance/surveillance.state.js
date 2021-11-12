@@ -64,10 +64,21 @@ const states = [{
   },
   data: {
     title: 'CHPL Surveillance - Manage',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    roles: ['ROLE_ADMIN', 'ROLE_ACB'],
   },
   ncyBreadcrumb: {
     label: 'Manage',
+  },
+}, {
+  name: 'surveillance.activity-reporting',
+  url: '/activity-reporting',
+  component: 'chplSurveillanceActivityReporting',
+  data: {
+    title: 'CHPL Surveillance - Activity Reporting',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+  },
+  ncyBreadcrumb: {
+    label: 'Activity Reporting',
   },
 }, {
   name: 'surveillance.reporting',

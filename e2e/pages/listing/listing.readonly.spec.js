@@ -34,10 +34,6 @@ describe('when on 2015 listing page', () => {
       login.logOut();
     });
 
-    it('should have correct link to go to manage surveillance activity', () => {
-      expect(page.manageSurveillanceActivity.getAttribute('href')).toContain('surveillance/manage');
-    });
-
     it('should have correct link for editing a listing', () => {
       expect(page.editCertifiedProduct.getAttribute('href')).toContain('listing/9833/view/edit');
     });
