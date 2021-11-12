@@ -22,19 +22,6 @@ const suites = [
 //const invalidMeasureInputs = require('./dataProviders/measures-errors-and-warnings-dp');
 //const invalidOptionalStandardInputs = require('./dataProviders/optional-standards-errors-and-warnings-dp');
 
-const rejectListings = (listingIds) => {
-  console.log("Reject listings " + listingIds);
-  hooks.open('#/administration/confirm/listings');
-  hooks.waitForSpinnerToDisappear();
-  listingIds.forEach((listingId) => {
-    console.log("Selecting listing " + listingId + " to reject");
-    confirmPage.rejectListingCheckbox(listingId);
-  });
-  confirmPage.rejectButton.click();
-  browser.waitUntil(() => toast.toastTitle.isDisplayed());
-  toast.clearAllToast();
-};
-
 if (process.env.ENV !== 'stage') {
   console.log("NOT STG");
   describe('When admin uploads a listing ', () => {
@@ -63,9 +50,7 @@ if (process.env.ENV !== 'stage') {
         });
 
         invalidInputs.forEach((input) => {
-          let { listingId } = input;
-          let { expectedErrors } = input;
-          let { expectedWarnings } = input;
+          let { listingId, expectedErrors, expectedWarnings } = input;
 
           it(`${listingId} should have expected messages`, () => {
             console.log("Checking messages for " + listingId);

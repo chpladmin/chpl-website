@@ -111,7 +111,6 @@ class ConfirmPage {
   waitForBarMessages () {
     $('.action-bar__messages').waitForDisplayed();
   }
-
 }
 
 export default ConfirmPage;
