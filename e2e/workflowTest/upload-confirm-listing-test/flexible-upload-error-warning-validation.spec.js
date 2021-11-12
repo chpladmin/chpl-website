@@ -63,20 +63,15 @@ if (process.env.ENV !== 'stage') {
             hooks.waitForSpinnerToDisappear();
             confirmPage.waitForBarMessages();
 
-            let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
-            let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
-            expectedErrors.forEach((exp) => {
-              expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" as an error`);
-            });
-            errorsOnPage.forEach((found) => {
-              expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}" as an error`);
-            });
-            expectedWarnings.forEach((exp) => {
-              expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" as a warning`);
-            });
-            warningsOnPage.forEach((found) => {
-              expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}" as a warning`);
-            });
+            const errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
+            const warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
+            let failures = []
+                .concat(expectedErrors.filter((exp) => !errorsOnPage.has(exp)).map((exp) => `Expected to find "${exp}" as an error`))
+                .concat(expectedWarnings.filter((exp) => !warningsOnPage.has(exp)).map((exp) => `Expected to find "${exp}" as a warning`))
+                .concat([...errorsOnPage].filter((found) => !expectedErrors.includes(found)).map((found) => `Did not expect to find "${found}" as an error`))
+                .concat([...warningsOnPage].filter((found) => !expectedWarnings.includes(found)).map((found) => `Did not expect to find "${found}" as a warning`))
+            ;
+            expect(failures.length).toBe(0, `Found or missed items: ${failures.join(', ')}`);
           });
         });
       });
