@@ -10,6 +10,10 @@ let loginComponent;
 let toast;
 let uploadListingComponent;
 
+const suites = [
+  {description: 'with issues in the column headings', file: '../../../resources/upload-listing-beta/2015_BogusColumns.csv', messages: './dataProviders/columns-errors-and-warnings-dp'},
+  {description: 'with invalid or missing data ', file: '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv', messages: './dataProviders/invalid-formats-errors-and-warnings-dp'},
+];
 //const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
 //const invalidDeveloperInputs = require('./dataProviders/developer-errors-and-warnings-dp');
 //const invalidCriteriaRelationshipInputs = require('./dataProviders/criteria-relationships-errors-and-warnings-dp');
@@ -73,113 +77,91 @@ if (process.env.ENV !== 'stage') {
       console.log("LOGGED IN!");
     });
 
-    describe('with issues in the column headings ', () => {
-      let file = '../../../resources/upload-listing-beta/2015_BogusColumns.csv';
-      let invalidColumnInputs = require('./dataProviders/columns-errors-and-warnings-dp');
-      let listingIds = invalidColumnInputs.map(item => item.listingId);
+    suites.forEach((suite) => {
+      let file = suite.file;
+      let invalidInputs = require(suite.messages);
+      let listingIds = invalidInputs.map(item => item.listingId);
 
-      beforeAll(() => {
-        console.log("IN BEFORE");
-        uploadFileAndWaitForListingsToBeProcessed(file, listingIds);
-      });
-
-      afterAll(() => {
+      /*
+        afterAll(() => {
         console.log("IN AFTER");
         rejectListings(listingIds);
-      });
+        })e
+      */;
 
-      invalidColumnInputs.forEach((input) => {
-        let { listingId } = input;
-        let { expectedErrors } = input;
-        let { expectedWarnings } = input;
-    
-        it(`${listingId} should have expected error messages`, () => {
-          console.log("Checking errors for " + listingId);
-          hooks.open('#/administration/confirm/listings');
-          confirmPage.gotoPendingListingPage(listingId);
-          hooks.waitForSpinnerToDisappear();
-          confirmPage.waitForBarMessages();
-
-          let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
-          let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
-          expect(matchedErrorCount).toBe(expectedErrors.length);
-          expect(errorsOnPage.size).toBe(expectedErrors.length);
+      describe(suite.description, () => {
+        beforeEach(() => {
+          console.log("IN BEFORE");
+          uploadFileAndWaitForListingsToBeProcessed(file, listingIds);
         });
 
-        it(`${listingId} should have expected warning messages`, () => {
-          console.log("Checking warnings for " + listingId);
-          hooks.open('#/administration/confirm/listings');
-          confirmPage.gotoPendingListingPage(listingId);
-          hooks.waitForSpinnerToDisappear();
-          confirmPage.waitForBarMessages();
+        invalidInputs.forEach((input) => {
+          let { listingId } = input;
+          let { expectedErrors } = input;
+          let { expectedWarnings } = input;
 
-          let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
-          let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
-          expect(matchedWarningCount).toBe(expectedWarnings.length);
-          expect(warningsOnPage.size).toBe(expectedWarnings.length);
+          it(`${listingId} should have expected messages`, () => {
+            console.log("Checking messages for " + listingId);
+            hooks.open('#/administration/confirm/listings');
+            confirmPage.gotoPendingListingPage(listingId);
+            hooks.waitForSpinnerToDisappear();
+            confirmPage.waitForBarMessages();
+
+            let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
+            let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
+            expectedErrors.forEach((exp) => {
+              expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+            });
+            errorsOnPage.forEach((found) => {
+              expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+            });
+            expectedWarnings.forEach((exp) => {
+              expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+            });
+            warningsOnPage.forEach((found) => {
+              expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+            });
+          });
+
+          xit(`${listingId} should have expected error messages`, () => {
+            console.log("Checking errors for " + listingId);
+            hooks.open('#/administration/confirm/listings');
+            confirmPage.gotoPendingListingPage(listingId);
+            hooks.waitForSpinnerToDisappear();
+            confirmPage.waitForBarMessages();
+
+            let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
+            //let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
+            expectedErrors.forEach((exp) => {
+              expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+            });
+            errorsOnPage.forEach((found) => {
+              expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+            });
+            //expect(matchedErrorCount).toBe(expectedErrors.length);
+            //expect(errorsOnPage.size).toBe(expectedErrors.length);
+          });
+
+          xit(`${listingId} should have expected warning messages`, () => {
+            console.log("Checking warnings for " + listingId);
+            hooks.open('#/administration/confirm/listings');
+            confirmPage.gotoPendingListingPage(listingId);
+            hooks.waitForSpinnerToDisappear();
+            confirmPage.waitForBarMessages();
+
+            let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
+            //let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
+            expectedWarnings.forEach((exp) => {
+              expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
+            });
+            warningsOnPage.forEach((found) => {
+              expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}"`);
+            });
+            //expect(matchedWarningCount).toBe(expectedWarnings.length);
+            //expect(warningsOnPage.size).toBe(expectedWarnings.length);
+          });
         });
       });
     });
-
-    describe('with invalid or missing data ', () => {
-      let file = '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv';
-      let invalidDataFormatInputs = require('./dataProviders/invalid-formats-errors-and-warnings-dp');
-      let listingIds = invalidDataFormatInputs.map(item => item.listingId);
-
-      beforeAll(() => {
-        console.log("IN BEFORE");
-        uploadFileAndWaitForListingsToBeProcessed(file, listingIds);
-      });
-
-      afterAll(() => {
-        console.log("IN AFTER");
-        rejectListings(listingIds);
-      });
-
-      invalidDataFormatInputs.forEach((input) => {
-        let { listingId } = input;
-        let { expectedErrors } = input;
-        let { expectedWarnings } = input;
-    
-        it(`${listingId} should have expected error messages`, () => {
-          console.log("Checking errors for " + listingId);
-          hooks.open('#/administration/confirm/listings');
-          confirmPage.gotoPendingListingPage(listingId);
-          hooks.waitForSpinnerToDisappear();
-          confirmPage.waitForBarMessages();
-
-          let errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
-          //let matchedErrorCount = getMatchedMessageCount(errorsOnPage, expectedErrors);
-          expectedErrors.forEach((exp) => {
-            expect(errorsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
-          });
-          errorsOnPage.forEach((found) => {
-            expect(expectedErrors.includes(found)).toBe(true, `Did not expect to find "${found}"`);
-          });
-          //expect(matchedErrorCount).toBe(expectedErrors.length);
-          //expect(errorsOnPage.size).toBe(expectedErrors.length);
-        });
-
-        it(`${listingId} should have expected warning messages`, () => {
-          console.log("Checking warnings for " + listingId);
-          hooks.open('#/administration/confirm/listings');
-          confirmPage.gotoPendingListingPage(listingId);
-          hooks.waitForSpinnerToDisappear();
-          confirmPage.waitForBarMessages();
-
-          let warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
-          //let matchedWarningCount = getMatchedMessageCount(warningsOnPage, expectedWarnings);
-          expectedWarnings.forEach((exp) => {
-            expect(warningsOnPage.has(exp)).toBe(true, `Expected to find "${exp}" on page`);
-          });
-          warningsOnPage.forEach((found) => {
-            expect(expectedWarnings.includes(found)).toBe(true, `Did not expect to find "${found}"`);
-          });
-          //expect(matchedWarningCount).toBe(expectedWarnings.length);
-          //expect(warningsOnPage.size).toBe(expectedWarnings.length);
-        });
-      });
-    });
-
   });
 }
