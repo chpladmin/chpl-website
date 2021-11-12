@@ -129,7 +129,7 @@
         });
 
         it('should do stuff with the returned data', () => {
-          var surveillance = {id: 1};
+          var surveillance = { id: 1 };
           ctrl.editSurveillance();
           ctrl.editModalInstance.close(surveillance);
           expect(ctrl.surveillance).toEqual(surveillance);
@@ -152,11 +152,11 @@
         it('should pass in only the appropriate edition of requirements', () => {
           authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ONC
           ctrl.surveillanceTypes.surveillanceRequirements = {
-            criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
-            criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
+            criteriaOptions2014: [{ removed: false }, { removed: false }, { removed: false }],
+            criteriaOptions2015: [{ removed: false }, { removed: false }, { removed: true }, { removed: true }],
           };
           ctrl.surveillanceTypes.nonconformityTypes = {
-            data: [{removed: false}, {removed: false}, {removed: true}],
+            data: [{ removed: false }, { removed: false }, { removed: true }],
           };
           ctrl.surveillance.certifiedProduct.edition = '2011';
           ctrl.editSurveillance();
@@ -173,11 +173,11 @@
         it('should filter removed ones out if ROLE_ACB', () => {
           authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
           ctrl.surveillanceTypes.surveillanceRequirements = {
-            criteriaOptions2014: [{removed: false}, {removed: false}, {removed: false}],
-            criteriaOptions2015: [{removed: false}, {removed: false}, {removed: true}, {removed: true}],
+            criteriaOptions2014: [{ removed: false }, { removed: false }, { removed: false }],
+            criteriaOptions2015: [{ removed: false }, { removed: false }, { removed: true }, { removed: true }],
           };
           ctrl.surveillanceTypes.nonconformityTypes = {
-            data: [{removed: false}, {removed: false}, {removed: true}],
+            data: [{ removed: false }, { removed: false }, { removed: true }],
           };
           ctrl.surveillance.certifiedProduct.edition = '2011';
           ctrl.editSurveillance();
@@ -196,53 +196,53 @@
         it('should close the modal if confirmation is successful', () => {
           ctrl.confirm();
           scope.$digest();
-          expect(scope.close).toHaveBeenCalledWith({status: 'confirmed'});
+          expect(scope.close).toHaveBeenCalledWith({ status: 'confirmed' });
         });
 
         it('should close the modal if rejection is successful', () => {
           ctrl.reject();
           scope.$digest();
-          expect(scope.close).toHaveBeenCalledWith({status: 'rejected'});
+          expect(scope.close).toHaveBeenCalledWith({ status: 'rejected' });
         });
 
         it('should not dismiss the modal if confirmation fails', () => {
-          networkService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+          networkService.confirmPendingSurveillance.and.returnValue($q.reject({ data: { errorMessages: [] } }));
           ctrl.confirm();
           scope.$digest();
           expect(scope.dismiss).not.toHaveBeenCalled();
         });
 
         it('should not dismiss the modal if rejection fails', () => {
-          networkService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+          networkService.rejectPendingSurveillance.and.returnValue($q.reject({ data: { errorMessages: [] } }));
           ctrl.reject();
           scope.$digest();
           expect(scope.dismiss).not.toHaveBeenCalled();
         });
 
         it('should have error messages if confirmation fails', () => {
-          networkService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+          networkService.confirmPendingSurveillance.and.returnValue($q.reject({ data: { errorMessages: [1, 2] } }));
           ctrl.confirm();
           scope.$digest();
-          expect(ctrl.errorMessages).toEqual([1,2]);
+          expect(ctrl.errorMessages).toEqual([1, 2]);
         });
 
         it('should have error messages if rejection fails', () => {
-          networkService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+          networkService.rejectPendingSurveillance.and.returnValue($q.reject({ data: { errorMessages: [1, 2] } }));
           ctrl.reject();
           scope.$digest();
-          expect(ctrl.errorMessages).toEqual([1,2]);
+          expect(ctrl.errorMessages).toEqual([1, 2]);
         });
 
         it('should have error messages as statusText if confirmation fails', () => {
-          networkService.confirmPendingSurveillance.and.returnValue($q.reject({statusText: 'an error', data: {}}));
+          networkService.confirmPendingSurveillance.and.returnValue($q.reject({ statusText: 'an error', data: {} }));
           ctrl.confirm();
           scope.$digest();
           expect(ctrl.errorMessages).toEqual(['an error']);
         });
 
         it('should dismiss the modal with the contact if the pending surveillance was already resolved on confirm', () => {
-          var contact = {name: 'person'};
-          networkService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+          var contact = { name: 'person' };
+          networkService.confirmPendingSurveillance.and.returnValue($q.reject({ data: { errorMessages: [1, 2], contact: contact, objectId: 1 } }));
           ctrl.confirm();
           scope.$digest();
           expect(scope.close).toHaveBeenCalledWith({
@@ -253,8 +253,8 @@
         });
 
         it('should dismiss the modal with the contact if the pending surveillance was already resolved on reject', () => {
-          var contact = {name: 'person'};
-          networkService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+          var contact = { name: 'person' };
+          networkService.rejectPendingSurveillance.and.returnValue($q.reject({ data: { errorMessages: [1, 2], contact: contact, objectId: 1 } }));
           ctrl.reject();
           scope.$digest();
           expect(scope.close).toHaveBeenCalledWith({
@@ -276,6 +276,7 @@
             size: 'lg',
             resolve: {
               nonconformities: jasmine.any(Function),
+              nonconformityTypes: jasmine.any(Function),
             },
           };
         });
@@ -287,7 +288,7 @@
         });
 
         it('should resolve elements on that modal', () => {
-          var noncons = [1,2,3];
+          var noncons = [1, 2, 3];
           ctrl.inspectNonconformities(noncons);
           expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
           expect(actualOptions.resolve.nonconformities()).toEqual(noncons);
