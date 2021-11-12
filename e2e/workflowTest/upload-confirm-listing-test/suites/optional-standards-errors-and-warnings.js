@@ -1,6 +1,6 @@
 const suite = {
-  description: 'TBD',
-  file: '../../../resources/upload-listing-beta/TBD',
+  description: 'with issues related to optional standards',
+  file: '../../../resources/upload-listing-beta/2015_OptionalStandards.csv',
   listings: [{
     listingId: '15.04.04.1722.OPTS.V1.02.1.210607',
     expectedErrors: [

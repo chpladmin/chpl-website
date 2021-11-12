@@ -1,6 +1,6 @@
 const suite = {
-  description: 'TBD',
-  file: '../../../resources/upload-listing-beta/TBD',
+  description: 'with developer issues',
+  file: '../../../resources/upload-listing-beta/2015_Developer.csv',
   listings: [{
     listingId: '15.02.04.1234.DEV1.12.00.1.200620',
     expectedErrors: [
