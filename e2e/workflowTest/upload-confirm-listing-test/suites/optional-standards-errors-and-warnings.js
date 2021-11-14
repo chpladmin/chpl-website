@@ -2,7 +2,7 @@ const suite = {
   description: 'with issues related to optional standards',
   file: '../../../resources/upload-listing-beta/2015_OptionalStandards.csv',
   listings: [{
-    listingId: '15.04.04.1722.OPTS.V1.02.1.210607',
+    listingId: '15.04.04.1722.OPTS.V1.00.1.210607',
     expectedErrors: [
       'Criteria 170.315 (b)(1) (Cures Update) contains an optional standard \'BAD OS\' which does not exist.',
       'Optional Standard 170.204(a)(2) is not valid for criteria 170.315 (b)(1) (Cures Update).',

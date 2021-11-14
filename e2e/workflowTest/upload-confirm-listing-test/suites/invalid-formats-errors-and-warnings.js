@@ -66,6 +66,7 @@ const suite = {
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\'.',
       'Certification 170.315 (a)(1) contains duplicate Test Procedure: \'ONC Test Method\'.',
       '170.315 (g)(3) is required but was not found.',
+      'GAP is required for certification 170.315 (d)(1).',
     ],
     expectedWarnings: [
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
