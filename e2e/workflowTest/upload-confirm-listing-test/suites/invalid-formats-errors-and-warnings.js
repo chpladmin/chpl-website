@@ -73,14 +73,6 @@ const suite = {
       'Test data \'test data\' is invalid for certification 170.315 (b)(1) (Cures Update). ONC Test Method will be used instead.',
       'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
     ],
-  }, {
-    listingId: '15.02.04.2701.ICS1.12.00.0.200620',
-    expectedErrors: [
-      'The unique id indicates the product does not have ICS but the value for Inherited Certification Status is true.',
-      'No listing was found with the unique ID \'CHP-00000\'. ICS parent listings must reference existing listings in the CHPL.',
-    ],
-    expectedWarnings: [
-    ],
   }],
 };
 

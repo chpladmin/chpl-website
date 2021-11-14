@@ -6,6 +6,8 @@ import invalidFormatsErrorsAndWarnings from './invalid-formats-errors-and-warnin
 import measuresErrorsAndWarnings from './measures-errors-and-warnings';
 import optionalStandardsErrorsAndWarnings from './optional-standards-errors-and-warnings';
 import sedErrorsAndWarnings from './sed-errors-and-warnings';
+import icsErrors from './ics-errors';
+import svapErrorsAndWarnings from './svap-errors-and-warnings'
 import noErrors from './no-errors';
 
 const suites = [
@@ -17,6 +19,8 @@ const suites = [
   measuresErrorsAndWarnings,
   optionalStandardsErrorsAndWarnings,
   sedErrorsAndWarnings,
+  icsErrors,
+  svapErrorsAndWarnings,
   noErrors,
 ];
 
@@ -29,6 +33,8 @@ export {
   measuresErrorsAndWarnings,
   optionalStandardsErrorsAndWarnings,
   sedErrorsAndWarnings,
+  icsErrors,
+  svapErrorsAndWarnings,
   noErrors,
   suites,
 };
