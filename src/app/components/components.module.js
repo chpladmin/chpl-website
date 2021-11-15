@@ -35,7 +35,7 @@ import {
   ChplLink,
   ChplNonProdIndicator,
 } from './util';
-import { ChplWizardBar } from './action-bar';
+import { ChplActionBar } from './action-bar';
 import { UserWrapper } from './login';
 
 angular
@@ -53,6 +53,7 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
+  .component('chplActionBarBridge', reactToAngularComponent(ChplActionBar))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationChangeRequestBridge', reactToAngularComponent(ChplAttestationChangeRequest))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
@@ -79,6 +80,5 @@ angular
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
-  .component('chplWizardBarBridge', reactToAngularComponent(ChplWizardBar))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper))
   .component('userWrapperBridge', reactToAngularComponent(UserWrapper));

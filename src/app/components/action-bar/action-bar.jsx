@@ -12,8 +12,9 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
-import ChplActionBarConfirmation from './action-bar-confirmation';
 import theme from '../../themes/theme';
+
+import ChplActionBarConfirmation from './action-bar-confirmation';
 
 const useStyles = makeStyles(() => ({
   buttons: {
@@ -36,6 +37,8 @@ function ChplActionBar(props) {
   const [pendingAction, setPendingAction] = useState('');
   const [pendingMessage, setPendingMessage] = useState('');
   const [canDelete] = useState(props.canDelete);
+  const [canConfirm] = useState(props.canConfirm);
+  const [canReject] = useState(props.canReject);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled] = useState(props.isDisabled);
   const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
@@ -60,6 +63,12 @@ function ChplActionBar(props) {
     setIsConfirming(true);
     setPendingAction('delete');
     setPendingMessage('Are you sure you want to delete this?');
+  };
+
+  const confirmReject = () => {
+    setIsConfirming(true);
+    setPendingAction('reject');
+    setPendingMessage('Are you sure you want to reject this?');
   };
 
   const handleConfirmation = (response) => {
@@ -167,19 +176,35 @@ function ChplActionBar(props) {
                 className={classes.iconSpacing}
               />
             </Button>
-            <Button
-              id="action-bar-save"
-              variant="contained"
-              onClick={() => act('save')}
-              disabled={isDisabled}
-              onMouseOver={() => act('mouseover')}
-              className={classes.buttons}
-            >
-              Save
-              <SaveIcon
-                className={classes.iconSpacing}
-              />
-            </Button>
+            { canConfirm
+              ? (
+                <Button
+                  id="action-bar-confirm"
+                  variant="contained"
+                  onClick={() => act('confirm')}
+                  disabled={isDisabled}
+                  className={classes.buttons}
+                >
+                  Confirm
+                  <SaveIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              ) : (
+                <Button
+                  id="action-bar-save"
+                  variant="contained"
+                  onClick={() => act('save')}
+                  disabled={isDisabled}
+                  onMouseOver={() => act('mouseover')}
+                  className={classes.buttons}
+                >
+                  Save
+                  <SaveIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
             { canDelete
               && (
                 <Button
@@ -189,6 +214,20 @@ function ChplActionBar(props) {
                   onClick={() => confirmDelete()}
                 >
                   Delete
+                  <DeleteOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
+            { canReject
+              && (
+                <Button
+                  id="action-bar-reject"
+                  variant="contained"
+                  className={`${classes.buttons} ${classes.deleteButton}`}
+                  onClick={() => confirmReject()}
+                >
+                  Reject
                   <DeleteOutlinedIcon
                     className={classes.iconSpacing}
                   />
@@ -207,13 +246,17 @@ ChplActionBar.propTypes = {
   dispatch: func.isRequired,
   errors: arrayOf(string),
   warnings: arrayOf(string),
+  canConfirm: bool,
   canDelete: bool,
+  canReject: bool,
   isDisabled: bool,
 };
 
 ChplActionBar.defaultProps = {
   errors: [],
   warnings: [],
+  canConfirm: false,
   canDelete: false,
+  canReject: false,
   isDisabled: false,
 };

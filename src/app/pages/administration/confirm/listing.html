@@ -46,13 +46,13 @@
         ></chpl-inspect-listing>
     </div>
   </div>
-  <chpl-wizard-bar-bridge
+  <chpl-action-bar-bridge
     ng-if="!$ctrl.isEditing"
-    can-confirm="$ctrl.canAct('confirm')"
-    can-next="$ctrl.canAct('next')"
-    can-previous="$ctrl.canAct('previous')"
+    can-confirm="true"
+    can-reject="true"
+    is-disabled="!$ctrl.canAct('confirm')"
     errors="$ctrl.listing.errorMessages"
     warnings="$ctrl.listing.warningMessages"
-    dispatch="::$ctrl.handleWizardDispatch">
-  </chpl-wizard-bar-bridge>
+    dispatch="::$ctrl.handleActionDispatch">
+  </chpl-action-bar-bridge>
 </div>

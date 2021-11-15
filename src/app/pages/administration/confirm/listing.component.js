@@ -23,8 +23,8 @@ const ConfirmListingComponent = {
       this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
       this.handleProductDispatch = this.handleProductDispatch.bind(this);
       this.handleVersionDispatch = this.handleVersionDispatch.bind(this);
+      this.handleActionDispatch = this.handleActionDispatch.bind(this);
       this.handleProgressDispatch = this.handleProgressDispatch.bind(this);
-      this.handleWizardDispatch = this.handleWizardDispatch.bind(this);
     }
 
     $onInit() {
@@ -132,15 +132,11 @@ const ConfirmListingComponent = {
       }
     }
 
-    handleWizardDispatch(action) {
+    handleActionDispatch(action) {
       switch (action) {
         case 'cancel': this.cancel();
           break;
         case 'confirm': this.confirm();
-          break;
-        case 'next': this.next();
-          break;
-        case 'previous': this.previous();
           break;
         case 'reject': this.reject();
           break;
