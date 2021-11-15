@@ -75,6 +75,7 @@ function ChplConfirmProgress(props) {
           <Button
             disabled={!props.canPrevious}
             onClick={() => props.dispatch('previous')}
+            id="inspect-previous"
           >
             <NavigateBeforeIcon />
             Back
@@ -82,6 +83,7 @@ function ChplConfirmProgress(props) {
           <Button
             disabled={!props.canNext}
             onClick={() => props.dispatch('next')}
+            id="inspect-next"
           >
             Next
             <NavigateNextIcon />
