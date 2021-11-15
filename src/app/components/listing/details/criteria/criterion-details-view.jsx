@@ -38,7 +38,7 @@ function ChplCriterionDetailsView(props) {
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const classes = useStyles();
-  const { optionalStandardsIsOn } = useContext(FlagContext);
+  const { conformanceMethodIsOn, optionalStandardsIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -233,7 +233,45 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.testProcedures
+          { criterion.success && criterion.conformanceMethods && conformanceMethodIsOn
+            && (
+              <TableRow key="conformanceMethods">
+                <TableCell component="th" scope="row">
+                  <ChplTooltip title="TBD">
+                    <IconButton className={classes.infoIcon}>
+                      <InfoIcon
+                        color="primary"
+                      />
+                    </IconButton>
+                  </ChplTooltip>
+                  Conformance Method
+                </TableCell>
+                <TableCell>
+                  { criterion.conformanceMethods.length > 0
+                    && (
+                      <ul className={classes.unindentedData}>
+                        { criterion.conformanceMethods.map((cm, index) => (
+                          <li key={cm.id || cm.key || index}>
+                            Name:
+                            {' '}
+                            { cm.conformanceMethod.name }
+                            { cm.conformanceMethod.name !== 'Attestation'
+                              && (
+                                <>
+                                  ; Version:
+                                  {' '}
+                                  { cm.conformanceMethodVersion }
+                                </>
+                              )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  { criterion.conformanceMethods.length === 0 && 'None' }
+                </TableCell>
+              </TableRow>
+            )}
+          { criterion.success && ((conformanceMethodIsOn && !criterion.conformanceMethods) || (!conformanceMethodIsOn && criterion.testProcedures))
             && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">

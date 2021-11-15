@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 import { when } from 'jest-when';
 
 import * as angularReactHelper from '../../services/angular-react-helper';
+
 import ChplLogin from './login';
 
 const $analyticsMock = {
@@ -41,6 +42,10 @@ const hocMock = {
   handleDispatch: jest.fn(() => {}),
 };
 
+const toasterMock = {
+  pop: jest.fn(),
+};
+
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
 when(angularReactHelper.getAngularService).calledWith('$rootScope').mockReturnValue($rootScopeMock);
@@ -49,6 +54,8 @@ when(angularReactHelper.getAngularService).calledWith('Idle').mockReturnValue(Id
 when(angularReactHelper.getAngularService).calledWith('Keepalive').mockReturnValue(KeepaliveMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
+when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
+when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
 
 describe('the ChplLogin component', () => {
   afterEach(() => {

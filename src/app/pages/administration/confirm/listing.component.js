@@ -5,22 +5,53 @@ export const ConfirmListingComponent = {
     developers: '<',
   },
   controller: class ConfirmListingComponent {
-    constructor ($log, $state, networkService, toaster) {
+    constructor ($log, $q, $scope, $state, networkService, toaster) {
       'ngInject';
       this.$log = $log;
+      this.$q = $q;
+      this.$scope = $scope;
       this.$state = $state;
       this.networkService = networkService;
       this.toaster = toaster;
       this.stage = 'developer';
       this.products = [];
       this.versions = [];
-      this.errorMessages = [];
-      this.systemRequirements = [];
       this.resources = {};
+      this.progress = {
+        value: 0,
+        label: '',
+      };
+      this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
+      this.handleProductDispatch = this.handleProductDispatch.bind(this);
+      this.handleVersionDispatch = this.handleVersionDispatch.bind(this);
+      this.handleWizardDispatch = this.handleWizardDispatch.bind(this);
     }
 
     $onInit () {
-      this.loadDev();
+      this.progress = this.getProgress();
+      this.loadDeveloper();
+      const pending = {};
+      this.$q.all([
+        this.networkService.getSearchOptions()
+          .then((response) => {
+            pending.bodies = response.acbs;
+            pending.classifications = response.productClassifications;
+            pending.editions = response.editions;
+            pending.practices = response.practiceTypes;
+            pending.statuses = response.certificationStatuses;
+          }),
+        this.networkService.getAccessibilityStandards().then((response) => { pending.accessibilityStandards = response; }),
+        this.networkService.getAtls(false).then((response) => { pending.testingLabs = response.atls; }),
+        this.networkService.getMeasures().then((response) => { pending.measures = response; }),
+        this.networkService.getMeasureTypes().then((response) => { pending.measureTypes = response; }),
+        this.networkService.getQmsStandards().then((response) => { pending.qmsStandards = response; }),
+        this.networkService.getTargetedUsers().then((response) => { pending.targetedUsers = response; }),
+        this.networkService.getTestData().then((response) => { pending.testData = response; }),
+        this.networkService.getTestFunctionality().then((response) => { pending.testFunctionalities = response; }),
+        this.networkService.getTestProcedures().then((response) => { pending.testProcedures = response; }),
+        this.networkService.getTestStandards().then((response) => { pending.testStandards = response; }),
+        this.networkService.getUcdProcesses().then((response) => { pending.ucdProcesses = response; }),
+      ]).then(() => this.resources = pending);
     }
 
     $onChanges (changes) {
@@ -37,15 +68,73 @@ export const ConfirmListingComponent = {
     }
 
     canAct (action) {
+      let ret;
       switch (action) {
-      case 'confirm': return this.stage === 'listing';
-      case 'next': return this.showFormErrors && (this.form.$pristine || !this.pending.developer.developerId) && !this.isDisabled();
-      case 'previous': return this.stage !== 'developer';
-        // no default
+        case 'confirm': ret = this.stage === 'listing';
+          break;
+        case 'next': ret = this.stage !== 'listing'; // todo: validation on "create" data
+          break;
+        case 'previous': ret = this.stage !== 'developer';
+          break;
+          // no default
       }
+      return ret;
     }
 
-    loadDev () {
+    handleDeveloperDispatch(action, data) {
+      switch (action) {
+        case 'select':
+          this.pending.developer = data;
+          break;
+        case 'edit':
+          this.pending.developer = data;
+          break;
+      }
+      this.$scope.$digest();
+    }
+
+    handleProductDispatch(action, data) {
+      switch (action) {
+        case 'select':
+          this.pending.product = data;
+          break;
+        case 'edit':
+          this.pending.product = data;
+          break;
+      }
+      this.$scope.$digest();
+    }
+
+    handleVersionDispatch(action, data) {
+      switch (action) {
+        case 'select':
+          this.pending.version = data;
+          break;
+        case 'edit':
+          this.pending.version = data;
+          break;
+      }
+      this.$scope.$digest();
+    }
+
+    handleWizardDispatch(action, data) {
+      switch (action) {
+        case 'cancel': this.cancel();
+          break;
+        case 'confirm': this.confirm();
+          break;
+        case 'next': this.next();
+          break;
+        case 'previous': this.previous();
+          break;
+        case 'reject': this.reject();
+          break;
+          // no default
+      }
+      this.$scope.$digest();
+    }
+
+    loadDeveloper () {
       let that = this;
       if (this.pending.developer && this.pending.developer.developerId) {
         this.networkService.getDeveloper(this.pending.developer.developerId)
@@ -53,56 +142,35 @@ export const ConfirmListingComponent = {
       }
     }
 
-    takeDeveloperAction (action, payload) {
-      switch (action) {
-      case 'clear':
-        break;
-      case 'select':
-        this.pending.developer.developerId = payload;
-        if (payload) {
-          this.loadDev();
-        } else {
-          this.pending.developer = angular.copy(this.uploaded.developer);
-          this.pending.developer.developerId = undefined;
-        }
-        break;
-        //no default
+    loadProducts () {
+      let that = this;
+      if (this.pending.developer && this.pending.developer.developerId) {
+        this.networkService.getProductsByDeveloper(this.pending.developer.developerId)
+          .then(result => that.products = result.products);
+      } else {
+        that.products = [];
       }
-      this.form.$setPristine();
-      this.showFormErrors = false;
+      if (this.pending.product && this.pending.product.productId) {
+        this.networkService.getSimpleProduct(this.pending.product.productId)
+          .then(result => that.pending.product = result);
+      } else {
+        that.pending.product = {};
+      }
     }
 
-    selectInspectingProduct (productId) {
-      this.pending.product.productId = productId;
-    }
-
-    setProductChoice (choice) {
-      this.productChoice = choice;
-    }
-
-    selectInspectingVersion (versionId) {
-      this.pending.version.versionId = versionId;
-    }
-
-    setVersionChoice (choice) {
-      this.versionChoice = choice;
-    }
-
-    takeAction (action) {
-      switch (action) {
-      case 'cancel': this.cancel();
-        break;
-      case 'confirm': this.confirm();
-        break;
-      case 'mouseover': this.showFormErrors = true;
-        break;
-      case 'next': this.next();
-        break;
-      case 'previous': this.previous();
-        break;
-      case 'reject': this.reject();
-        break;
-        // no default
+    loadVersions () {
+      let that = this;
+      if (this.pending.product && this.pending.product.productId) {
+        this.networkService.getVersionsByProduct(this.pending.product.productId)
+          .then(result => that.versions = result);
+      } else {
+        that.versions = [];
+      }
+      if (this.pending.version && this.pending.version.versionId) {
+        this.networkService.getSimpleVersion(this.pending.version.versionId)
+          .then(result => that.pending.version = result);
+      } else {
+        that.pending.version = {};
       }
     }
 
@@ -163,19 +231,22 @@ export const ConfirmListingComponent = {
 
     next () {
       switch (this.stage) {
-      case 'developer':
-        this.stage = 'product';
-        break;
-      case 'product':
-        this.stage = 'version';
-        this.loadFamily();
-        break;
-      case 'version':
-        this.stage = 'listing';
-        break;
-      default:
-        break;
+        case 'developer':
+          this.stage = 'product';
+          this.loadProducts();
+          break;
+        case 'product':
+          this.stage = 'version';
+          this.loadFamily();
+          this.loadVersions();
+          break;
+        case 'version':
+          this.stage = 'listing';
+          break;
+        default:
+          break;
       }
+      this.progress = this.getProgress();
     }
 
     previous () {
@@ -189,31 +260,35 @@ export const ConfirmListingComponent = {
       default:
         break;
       }
-    }
-
-    isDisabled () {
-      switch (this.stage) {
-      case 'developer':
-        return this.form.$invalid;
-      case 'product':
-        return (this.productChoice === 'choose' && !this.pending.product.productId);
-      case 'version':
-        return (this.versionChoice === 'choose' && !this.pending.version.versionId);
-      default:
-        return true;
-      }
+      this.progress = this.getProgress();
     }
 
     cancel () {
       this.$state.go('^', {}, {reload: true});
     }
 
-    getStage () {
+    getProgress () {
       switch (this.stage) {
-      case 'developer': return 1;
-      case 'product': return 2;
-      case 'version': return 3;
-      case 'listing': return 4;
+        case 'developer':
+          return {
+            value: 25,
+            label: 'Developer',
+          };
+      case 'product':
+          return {
+            value: 50,
+            label: 'Product',
+          };
+      case 'version':
+          return {
+            value: 75,
+            label: 'Version',
+          };
+      case 'listing':
+          return {
+            value: 100,
+            label: 'Listing',
+          };
         //no default
       }
     }

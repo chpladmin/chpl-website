@@ -10,7 +10,6 @@ import {
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -22,6 +21,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { getAngularService } from '../../services/angular-react-helper';
 import { UserContext } from '../../shared/contexts';
 import { ChplTextField } from '../util';
+
 import PasswordStrengthMeter from './password-strength-meter';
 
 const zxcvbn = require('zxcvbn');
@@ -52,10 +52,10 @@ const changeSchema = yup.object({
       (value, context) => context.parent.passwordStrength >= 3,
     ),
   verificationPassword: yup.string()
-    .required('Verification Password is required')
+    .required('Verify Password is required')
     .test(
       'password-matches',
-      'Verification Password does not match Password',
+      'Verify Password does not match Password',
       (value, context) => value === context.parent.newPassword,
     ),
 });
@@ -71,10 +71,10 @@ const resetSchema = yup.object({
       (value, context) => context.parent.passwordStrength >= 3,
     ),
   verificationPassword: yup.string()
-    .required('Verification Password is required')
+    .required('Verify Password is required')
     .test(
       'password-matches',
-      'Verification Password does not match Password',
+      'Verify Password does not match Password',
       (value, context) => value === context.parent.newPassword,
     ),
 });
@@ -154,6 +154,16 @@ function ChplLogin(props) {
     }
   };
 
+  const toastWhenUsernameUsed = (enteredUsername, loggedInUser) => {
+    if (enteredUsername !== loggedInUser.email) {
+      toaster.pop({
+        header: 'Warning',
+        type: 'warning',
+        body: `Please use your email address "${loggedInUser.email}" instead of your username to log in. The use of a username to log in is being phased out, and will be removed at a future date. If your email address is not valid, please update it as soon as possible`,
+      });
+    }
+  };
+
   const changePassword = () => {
     networkService.changePassword({ oldPassword: changeFormik.values.oldPassword, newPassword: changeFormik.values.newPassword })
       .then((response) => {
@@ -222,6 +232,7 @@ function ChplLogin(props) {
             Keepalive.ping();
             $rootScope.$broadcast('loggedIn');
             props.dispatch('loggedIn');
+            toastWhenUsernameUsed(signinFormik.values.userName, data);
           });
       }, (error) => {
         if (error?.data?.error === 'The user is required to change their password on next login.') {
@@ -479,7 +490,7 @@ function ChplLogin(props) {
                type="password"
                id="password-verification"
                name="verificationPassword"
-               label="Verification Password"
+               label="Verify Password"
                required
                value={changeFormik.values.verificationPassword}
                onChange={changeFormik.handleChange}
@@ -548,7 +559,7 @@ function ChplLogin(props) {
                type="password"
                id="password-verification"
                name="verificationPassword"
-               label="Verification Password"
+               label="Verify Password"
                required
                value={resetFormik.values.verificationPassword}
                onChange={resetFormik.handleChange}

@@ -9,9 +9,23 @@ let hooks;
 let loginComponent;
 let toast;
 let uploadListingComponent;
-const inputs = require('./dataProviders/upload-listing-error-warning-validation-dp');
 
 const validListingId = '15.04.04.1722.AQA4.03.01.1.200620';
+const invalidDataInputs = require('./dataProviders/upload-listing-error-warning-validation-dp');
+const invalidMeasureInputs = require('./dataProviders/upload-listing-error-warning-validation-measures-dp');
+const invalidOptionalStandardInputs = require('./dataProviders/upload-listing-error-warning-validation-optional-standards-dp');
+const allInvalidPendingDataToCheck = invalidDataInputs.concat(invalidMeasureInputs, invalidOptionalStandardInputs);
+
+const uploadFileAndWaitForListingsToBeProcessed = (filename, listingIds) => {
+  hooks.open('#/administration/upload');
+  uploadListingComponent.uploadListingBeta(filename);
+  browser.waitUntil(() => toast.toastTitle.isDisplayed());
+  toast.clearAllToast();
+  hooks.open('#/administration/confirm/listings');
+  listingIds.forEach((listingId) => {
+    confirmPage.waitForPendingListingToBecomeClickable(listingId);
+  });
+};
 
 if (process.env.ENV !== 'stage') {
   beforeAll(() => {
@@ -22,15 +36,32 @@ if (process.env.ENV !== 'stage') {
     toast = new ToastComponent();
     hooks.open('#/administration/upload');
     loginComponent.logIn('admin');
-    uploadListingComponent.uploadListingBeta('../../../resources/upload-listing-beta/2015_InvalidData.csv');
-    browser.waitUntil(() => toast.toastTitle.isDisplayed());
-    toast.clearAllToast();
-    uploadListingComponent.uploadListingBeta('../../../resources/listings/2015_v19_AQA4.csv');
-    browser.waitUntil(() => toast.toastTitle.isDisplayed());
-    toast.clearAllToast();
+
+    let itemsToUpload = [
+      {
+        file: '../../../resources/upload-listing-beta/2015_InvalidData.csv',
+        listingIds: invalidDataInputs.map(item => item.listingId),
+      },
+      {
+        file: '../../../resources/upload-listing-beta/2015_Measures.csv',
+        listingIds: invalidMeasureInputs.map(item => item.listingId),
+      },
+      {
+        file: '../../../resources/upload-listing-beta/2015_OptionalStandards.csv',
+        listingIds: invalidOptionalStandardInputs.map(item => item.listingId),
+      },
+      {
+        file: '../../../resources/listings/2015_v19_AQA4.csv',
+        listingIds: [validListingId],
+      }
+    ];
+
+    itemsToUpload.forEach((item) => {
+      uploadFileAndWaitForListingsToBeProcessed(item.file, item.listingIds);
+    });
   });
 
-  inputs.forEach((input) => {
+  allInvalidPendingDataToCheck.forEach((input) => {
     const { listingId } = input;
     const { expectedErrors } = input;
     const { expectedWarnings } = input;

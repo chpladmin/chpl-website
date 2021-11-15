@@ -46,6 +46,7 @@ function ChplCriteria(props) {
   const [isConfirming] = useState(props.isConfirming);
   const classes = useStyles();
   const flags = {
+    conformanceMethodIsOn: props.conformanceMethodIsOn,
     optionalStandardsIsOn: props.optionalStandardsIsOn,
   };
   /* eslint-enable react/destructuring-assignment */
@@ -130,6 +131,7 @@ ChplCriteria.propTypes = {
   certificationResults: arrayOf(certificationResult).isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard),
   canEdit: bool,
+  conformanceMethodIsOn: bool,
   isConfirming: bool,
   hasIcs: bool,
   onSave: func,
@@ -142,6 +144,7 @@ ChplCriteria.propTypes = {
 ChplCriteria.defaultProps = {
   accessibilityStandards: [],
   canEdit: false,
+  conformanceMethodIsOn: false,
   isConfirming: false,
   hasIcs: false,
   onSave: () => {},

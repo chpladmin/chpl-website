@@ -1,19 +1,27 @@
+import { calculateCompletion } from './relevant-listing.component';
+
 (() => {
-  'use strict';
-
   describe('the Surveillance Report Relevent Listing component', () => {
-    var $compile, $log, $q, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {
-      listing: {id: 7706, chplProductNumber: '14.02.02.2646.A001.01.00.1.160412', lastModifiedDate: 1528178797574, edition: '2014', certificationDate: 1460433600000},
+    const mock = {
+      listing: {
+        id: 7706, chplProductNumber: '14.02.02.2646.A001.01.00.1.160412', lastModifiedDate: 1528178797574, edition: '2014', certificationDate: 1460433600000,
+      },
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.components', 'chpl.services', $provide => {
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', 'chpl.services', ($provide) => {
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getSurveillanceLookups: jasmine.createSpy('getSurveillanceLookups'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
@@ -40,7 +48,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -77,7 +85,7 @@
         });
 
         it('should handle nulls', () => {
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
 
         it('should handle undefined', () => {
@@ -94,7 +102,7 @@
           surv.nondisclosureEvaluation = undefined;
           surv.directionDeveloperResolution = undefined;
           surv.completedCapVerification = undefined;
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
 
         it('should handle empty strings', () => {
@@ -110,7 +118,7 @@
           surv.nondisclosureEvaluation = '';
           surv.directionDeveloperResolution = '';
           surv.completedCapVerification = '';
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
 
         it('should know when it\'s complete', () => {
@@ -127,15 +135,15 @@
           surv.nondisclosureEvaluation = 'Something';
           surv.directionDeveloperResolution = 'Something';
           surv.completedCapVerification = 'Something';
-          expect(ctrl.calculateCompletion(surv).completed).toBe(100);
+          expect(calculateCompletion(surv).completed).toBe(100);
         });
 
         it('should handle k1', () => {
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
           surv.k1Reviewed = true;
-          expect(ctrl.calculateCompletion(surv).completed).toBe(8);
+          expect(calculateCompletion(surv).completed).toBe(8);
           surv.k1Reviewed = false;
-          expect(ctrl.calculateCompletion(surv).completed).toBe(0);
+          expect(calculateCompletion(surv).completed).toBe(0);
         });
       });
     });
