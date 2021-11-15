@@ -123,13 +123,12 @@ const ConfirmListingComponent = {
     handleProgressDispatch(action) {
       switch (action) {
         case 'next': this.next();
-          this.$scope.$digest();
           break;
         case 'previous': this.previous();
-          this.$scope.$digest();
           break;
           // no default
       }
+      this.$scope.$digest();
     }
 
     handleActionDispatch(action) {

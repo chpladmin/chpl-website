@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
@@ -40,12 +40,16 @@ function ChplActionBar(props) {
   const [canConfirm] = useState(props.canConfirm);
   const [canReject] = useState(props.canReject);
   const [isConfirming, setIsConfirming] = useState(false);
-  const [isDisabled] = useState(props.isDisabled);
+  const [isDisabled, setIsDisabled] = useState(false);
   const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
   const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
   const [showMessages, setShowMessages] = useState(true);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setIsDisabled(props.isDisabled);
+  }, [props.isDisabled]);
 
   const act = (action) => {
     if (props.dispatch) {
