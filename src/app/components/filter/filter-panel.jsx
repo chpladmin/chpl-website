@@ -126,7 +126,6 @@ function ChplFilterPanel() {
       <Button
         color="primary"
         id="filter-panel-toggle"
-        aria-describedby="filter-panel-form"
         onClick={handleClick}
       >
         Advanced Search
