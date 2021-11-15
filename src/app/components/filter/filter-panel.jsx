@@ -19,6 +19,10 @@ import { useFilterContext } from './filter-context';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
+  advancedSearchButton: {
+    color: '#000',
+  },
+
   filterPanelContainer: {
     background: '#fafdff',
     display: 'grid',
@@ -124,7 +128,8 @@ function ChplFilterPanel() {
   return (
     <>
       <Button
-        color="primary"
+        className={classes.advancedSearchButton}
+        variant="text"
         id="filter-panel-toggle"
         onClick={handleClick}
       >

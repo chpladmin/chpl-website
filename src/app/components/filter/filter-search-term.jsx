@@ -70,6 +70,7 @@ function ChplFilterSearchTerm(props) {
             onChange={handleSearchTerm}
             onKeyPress={handleKeyPress}
             id="filter-search-term-input"
+            inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
           />
           <Button
             className={classes.goButton}
