@@ -10,6 +10,9 @@
     <div>
       <chpl-confirm-progress-bridge
         value="$ctrl.progress"
+        can-next="$ctrl.canAct('next')"
+        can-previous="$ctrl.canAct('previous')"
+        dispatch="::$ctrl.handleProgressDispatch"
         ></chpl-confirm-progress-bridge>
     </div>
   </div>

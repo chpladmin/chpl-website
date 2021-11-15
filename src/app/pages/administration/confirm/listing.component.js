@@ -19,13 +19,11 @@ const ConfirmListingComponent = {
       this.versions = [];
       this.resources = {};
       this.staged = {};
-      this.progress = {
-        value: 0,
-        label: '',
-      };
+      this.progress = -1;
       this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
       this.handleProductDispatch = this.handleProductDispatch.bind(this);
       this.handleVersionDispatch = this.handleVersionDispatch.bind(this);
+      this.handleProgressDispatch = this.handleProgressDispatch.bind(this);
       this.handleWizardDispatch = this.handleWizardDispatch.bind(this);
     }
 
@@ -120,6 +118,18 @@ const ConfirmListingComponent = {
           // no default
       }
       this.$scope.$digest();
+    }
+
+    handleProgressDispatch(action) {
+      switch (action) {
+        case 'next': this.next();
+          this.$scope.$digest();
+          break;
+        case 'previous': this.previous();
+          this.$scope.$digest();
+          break;
+          // no default
+      }
     }
 
     handleWizardDispatch(action) {
@@ -298,30 +308,15 @@ const ConfirmListingComponent = {
     getProgress() {
       switch (this.stage) {
         case 'developer':
-          return {
-            value: 25,
-            label: 'Developer',
-          };
+          return 0;
         case 'product':
-          return {
-            value: 50,
-            label: 'Product',
-          };
+          return 1;
         case 'version':
-          return {
-            value: 75,
-            label: 'Version',
-          };
+          return 2;
         case 'listing':
-          return {
-            value: 100,
-            label: 'Listing',
-          };
+          return 3;
         default:
-          return {
-            value: 0,
-            label: 'Unknown',
-          };
+          return -1;
       }
     }
 
