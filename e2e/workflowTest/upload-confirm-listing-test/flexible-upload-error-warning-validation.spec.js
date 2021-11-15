@@ -41,7 +41,9 @@ if (process.env.ENV !== 'stage') {
             hooks.open('#/administration/confirm/listings');
             confirmPage.gotoPendingListingPage(listingId);
             hooks.waitForSpinnerToDisappear();
-            confirmPage.waitForBarMessages();
+            if (expectedErrors.length > 0 || expectedWarnings.length > 0) {
+              confirmPage.waitForBarMessages();
+            }
 
             const errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
             const warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
