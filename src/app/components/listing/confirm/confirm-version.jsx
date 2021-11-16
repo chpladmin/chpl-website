@@ -7,7 +7,6 @@ import {
   Container,
   Divider,
   MenuItem,
-  Switch,
   ThemeProvider,
   Typography,
   makeStyles,
@@ -30,10 +29,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     backgroundColor: '#f5f9fd',
     whiteSpace: 'pre-wrap',
-    '&:focus': {
-      boxShadow: '0px 0px 16px 4px #337ab750',
-      fontWeight: '600',
-    },
+  },
+  buttonCardFocused: {
+    boxShadow: '0px 0px 16px 4px #337ab750',
+    fontWeight: '600',
   },
   buttonContent: {
     display: 'flex',
@@ -124,13 +123,15 @@ function ChplConfirmVersion(props) {
 
   let formik;
 
-  const handleCreationToggle = () => {
-    if (isCreating) {
-      props.dispatch('select', selectedVersion);
-    } else {
-      formik.handleSubmit();
+  const handleCreationToggle = (creating) => {
+    if (isCreating !== creating) {
+      if (isCreating) {
+        props.dispatch('select', selectedVersion);
+      } else {
+        formik.handleSubmit();
+      }
+      setIsCreating(creating);
     }
-    setIsCreating(!isCreating);
   };
 
   const handleChange = (...args) => {
@@ -164,111 +165,89 @@ function ChplConfirmVersion(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <form noValidate>
-          <div className={classes.developerConfirm}>
-            <div className={classes.developerSubContainer}>
-              <Button
-                className={classes.buttonCard}
-                variant="outlined"
-                color="default"
-                fullWidth
-              >
-                <span className={classes.buttonContent}>
-                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                  Create A Version
-                </span>
-              </Button>
-              <div className={classes.orContainer}>
-                <Divider />
-                <Typography>OR</Typography>
-                <Divider />
-              </div>
-              <div>
-                {selectedVersion
+        <div className={classes.developerConfirm}>
+          <div className={classes.developerSubContainer}>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(true)}
+            >
+              <span className={classes.buttonContent}>
+                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                Create A Version
+              </span>
+            </Button>
+            <div className={classes.orContainer}>
+              <Divider />
+              <Typography>OR</Typography>
+              <Divider />
+            </div>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              disabled={versions?.length === 0}
+              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(false)}
+            >
+              <span className={classes.buttonContent}>
+                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                { selectedVersion
                   ? (
                     <>
-                      <Button
-                        variant="outlined"
-                        color="default"
-                        fullWidth
-                        className={classes.buttonCard}
-                      >
-                        <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                          Using Version
-                          {' '}
-                          { selectedVersion.version }
-                        </span>
-                      </Button>
+                      {`Use "${selectedVersion.version}"`}
                     </>
                   ) : (
                     <>
-                      <Button
-                        className={classes.buttonCard}
-                        variant="outlined"
-                        color="default"
-                        fullWidth
-                      >
-                        <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                          Choose A Version
-                        </span>
-                      </Button>
+                      Choose A Version To Use
                     </>
                   )}
-              </div>
-            </div>
-            <Divider />
-            { isCreating
-              ? (
-                <Card>
-                  <CardHeader title="Creating A New Version" />
-                  <CardContent>
-                    <ChplTextField
-                      id="version"
-                      name="version"
-                      label="Version"
-                      value={formik.values.version}
-                      error={formik.touched.version && !!formik.errors.version}
-                      helperText={formik.touched.version && formik.errors.version}
-                      onChange={handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                  </CardContent>
-                </Card>
-              )
-              : (
-                <Card>
-                  <CardHeader title="Existing Versions" />
-                  <CardContent>
-                    <ChplTextField
-                      select
-                      id="selected-version"
-                      name="selectedVersion"
-                      label="Select a Version"
-                      required
-                      value={selectedVersion}
-                      onChange={handleSelectOnChange}
-                    >
-                      { versions.map((item) => (
-                        <MenuItem value={item} key={item.versionId}>
-                          { item.version }
-                        </MenuItem>
-                      ))}
-                    </ChplTextField>
-                  </CardContent>
-                </Card>
-              )}
-            <Switch
-              id="create-toggle"
-              name="createVersion"
-              color="primary"
-              disabled={versions?.length === 0}
-              checked={!isCreating}
-              onChange={handleCreationToggle}
-            />
+              </span>
+            </Button>
           </div>
-        </form>
+          <Divider />
+          { isCreating
+            ? (
+              <Card>
+                <CardHeader title="Create A New Version" />
+                <CardContent>
+                  <ChplTextField
+                    id="version"
+                    name="version"
+                    label="Version"
+                    value={formik.values.version}
+                    error={formik.touched.version && !!formik.errors.version}
+                    helperText={formik.touched.version && formik.errors.version}
+                    onChange={handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader title="Existing Versions" />
+                <CardContent>
+                  <ChplTextField
+                    select
+                    id="selected-version"
+                    name="selectedVersion"
+                    label="Select a Version"
+                    required
+                    value={selectedVersion}
+                    onChange={handleSelectOnChange}
+                  >
+                    { versions.map((item) => (
+                      <MenuItem value={item} key={item.versionId}>
+                        { item.version }
+                      </MenuItem>
+                    ))}
+                  </ChplTextField>
+                </CardContent>
+              </Card>
+            )}
+        </div>
       </Container>
     </ThemeProvider>
   );

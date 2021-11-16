@@ -7,7 +7,6 @@ import {
   Container,
   Divider,
   MenuItem,
-  Switch,
   ThemeProvider,
   Typography,
   makeStyles,
@@ -30,10 +29,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     backgroundColor: '#f5f9fd',
     whiteSpace: 'pre-wrap',
-    '&:focus': {
-      boxShadow: '0px 0px 16px 4px #337ab750',
-      fontWeight: '600',
-    },
+  },
+  buttonCardFocused: {
+    boxShadow: '0px 0px 16px 4px #337ab750',
+    fontWeight: '600',
   },
   buttonContent: {
     display: 'flex',
@@ -124,13 +123,15 @@ function ChplConfirmProduct(props) {
 
   let formik;
 
-  const handleCreationToggle = () => {
-    if (isCreating) {
-      props.dispatch('select', selectedProduct);
-    } else {
-      formik.handleSubmit();
+  const handleCreationToggle = (creating) => {
+    if (isCreating !== creating) {
+      if (isCreating) {
+        props.dispatch('select', selectedProduct);
+      } else {
+        formik.handleSubmit();
+      }
+      setIsCreating(creating);
     }
-    setIsCreating(!isCreating);
   };
 
   const handleChange = (...args) => {
@@ -164,113 +165,92 @@ function ChplConfirmProduct(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <form noValidate>
-          <div className={classes.developerConfirm}>
-            <div className={classes.developerSubContainer}>
-              <Button
-                className={classes.buttonCard}
-                variant="outlined"
-                color="default"
-                fullWidth
-              >
-                <span className={classes.buttonContent}>
-                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                  Create a Product
-                </span>
-              </Button>
-              <div className={classes.orContainer}>
-                <Divider />
-                <Typography>OR</Typography>
-                <Divider />
-              </div>
-              <div>
-                {selectedProduct
+        <div className={classes.developerConfirm}>
+          <div className={classes.developerSubContainer}>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(true)}
+            >
+              <span className={classes.buttonContent}>
+                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                Create a Product
+              </span>
+            </Button>
+            <div className={classes.orContainer}>
+              <Divider />
+              <Typography>OR</Typography>
+              <Divider />
+            </div>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              disabled={products?.length === 0}
+              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(false)}
+            >
+              <span className={classes.buttonContent}>
+                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                { selectedProduct
                   ? (
                     <>
-                      <Button
-                        className={classes.buttonCard}
-                        variant="outlined"
-                        color="default"
-                        fullWidth
-                      >
-                        <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                          Using
-                          {' '}
-                          {selectedProduct.name}
-                        </span>
-                      </Button>
+                      {`Use "${selectedProduct.name}"`}
                     </>
                   ) : (
                     <>
-                      <Button
-                        className={classes.buttonCard}
-                        variant="outlined"
-                        color="default"
-                        fullWidth
-                      >
-                        <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                          Choose a Product to Use
-                        </span>
-                      </Button>
+                      Choose A Product To Use
                     </>
                   )}
-              </div>
-            </div>
-            <Divider />
-            {isCreating
-              ? (
-                <Card>
-                  <CardHeader title="Creating A New Product" />
-                  <CardContent>
-                    <div className={classes.formContainer}>
-                      <ChplTextField
-                        id="name"
-                        name="name"
-                        label="Product Name"
-                        value={formik.values.name}
-                        error={formik.touched.name && !!formik.errors.name}
-                        helperText={formik.touched.name && formik.errors.name}
-                        onChange={handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-              : (
-                <Card>
-                  <CardHeader title="Select An Existing Product" />
-                  <CardContent>
-                    <ChplTextField
-                      select
-                      id="selected-product"
-                      name="selectedProduct"
-                      label="Select a Product"
-                      required
-                      value={selectedProduct}
-                      onChange={handleSelectOnChange}
-                    >
-                      {products.map((item) => (
-                        <MenuItem value={item} key={item.productId}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                    </ChplTextField>
-                  </CardContent>
-                </Card>
-              )}
+              </span>
+            </Button>
+
           </div>
-          <Switch
-            id="create-toggle"
-            name="createProduct"
-            color="primary"
-            disabled={products?.length === 0}
-            checked={!isCreating}
-            onChange={handleCreationToggle}
-          />
-        </form>
+          <Divider />
+          {isCreating
+            ? (
+              <Card>
+                <CardHeader title="Create A New Product" />
+                <CardContent>
+                  <div className={classes.formContainer}>
+                    <ChplTextField
+                      id="name"
+                      name="name"
+                      label="Product Name"
+                      value={formik.values.name}
+                      error={formik.touched.name && !!formik.errors.name}
+                      helperText={formik.touched.name && formik.errors.name}
+                      onChange={handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader title="Select An Existing Product" />
+                <CardContent>
+                  <ChplTextField
+                    select
+                    id="selected-product"
+                    name="selectedProduct"
+                    label="Select a Product"
+                    required
+                    value={selectedProduct}
+                    onChange={handleSelectOnChange}
+                  >
+                    {products.map((item) => (
+                      <MenuItem value={item} key={item.productId}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </ChplTextField>
+                </CardContent>
+              </Card>
+            )}
+        </div>
       </Container>
     </ThemeProvider>
   );
