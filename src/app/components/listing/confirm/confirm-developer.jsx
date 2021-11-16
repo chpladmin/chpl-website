@@ -248,13 +248,24 @@ function ChplConfirmDeveloper(props) {
                         <span className={classes.buttonContent}>
                           <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
                           </CheckCircleIcon>
-                          Using Greenway Health,LLC
+                          Using {selectedDeveloper.name}
                         </span>
                       </Button>
                     </>
                   ) : (
                     <>
-                      Choose a developer to use
+                    <Button
+                        className={classes.buttonCard}
+                        variant="outlined"
+                        color="default"
+                        fullWidth
+                      >
+                        <span className={classes.buttonContent}>
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
+                          </CheckCircleIcon>
+                          Choose A Developer To Use
+                        </span>
+                      </Button>  
                     </>
                   )}
               </div>
