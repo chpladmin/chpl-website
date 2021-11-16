@@ -237,6 +237,11 @@ const theme = createMuiTheme({
         position: 'inherit',
         color: '#156dac',
       },
+      select: {
+        '&:focus': {
+          backgroundColor: '#fff',
+        },
+      },
     },
     MuiTable: {
       root: {
@@ -347,14 +352,14 @@ const theme = createMuiTheme({
         fontSize: '1.7em',
         '&$active': {
           boxShadow: '1px 0px 4px 4px #156dac50',
-          borderRadius:'64px'
+          borderRadius:'64px',
         },
         '&$completed':{
           color:'#356635',
         },
       },
       text: {
-        fontSize: '1rem'
+        fontSize: '1rem',
       },
     },
   },

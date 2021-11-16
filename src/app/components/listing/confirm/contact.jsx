@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Divider,
-  Grid,
+  makeStyles,
   Typography,
 } from '@material-ui/core';
 import { bool, func } from 'prop-types';
@@ -9,24 +9,36 @@ import { bool, func } from 'prop-types';
 import { contact as contactProp, formik as formikProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
 
+const useStyles = makeStyles(() => ({
+  formSubContainer: {
+    display: 'grid',
+    gap: '16px',
+    flexDirection: 'row',
+    gridTemplateColumns: 'auto auto',
+  },
+  }));
+
 function ChplConfirmDeveloperContact({
   contact, editing, formik, handleChange,
 }) {
+
+const classes = useStyles();
+
   return (
     <>
       { (contact || !editing)
         && (
-        <Grid item xs={12}>
+        <div>
           <Typography variant="subtitle1">
             Contact
           </Typography>
           <Divider />
-        </Grid>
+        </div>
         )}
-      <Grid container item>
+      <div className={classes.formSubContainer}>
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="fullName"
                 name="fullName"
@@ -37,17 +49,17 @@ function ChplConfirmDeveloperContact({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Name</Typography>
               <Typography variant="body1">{ contact?.fullName }</Typography>
-            </Grid>
+            </div>
           )}
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="title"
                 name="title"
@@ -56,19 +68,19 @@ function ChplConfirmDeveloperContact({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Title</Typography>
               <Typography variant="body1">{ contact?.title }</Typography>
-            </Grid>
+            </div>
           )}
-      </Grid>
-      <Grid container item>
+      </div>
+      <div className={classes.formSubContainer}>
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="email"
                 name="email"
@@ -79,17 +91,17 @@ function ChplConfirmDeveloperContact({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Email</Typography>
               <Typography variant="body1">{ contact?.email }</Typography>
-            </Grid>
+            </div>
           )}
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="phoneNumber"
                 name="phoneNumber"
@@ -100,15 +112,15 @@ function ChplConfirmDeveloperContact({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Phone</Typography>
               <Typography variant="body1">{ contact?.phoneNumber }</Typography>
-            </Grid>
+            </div>
           )}
-      </Grid>
+      </div>
     </>
   );
 }
