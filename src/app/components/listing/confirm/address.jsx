@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Divider,
-  Grid,
+  makeStyles,
   Typography,
 } from '@material-ui/core';
 import { bool, func } from 'prop-types';
@@ -9,24 +9,36 @@ import { bool, func } from 'prop-types';
 import { address as addressProp, formik as formikProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
 
-function ChplConfirmDeveloperAddress({
+const useStyles = makeStyles(() => ({
+  formSubContainer: {
+    display: 'grid',
+    gap: '16px',
+    flexDirection: 'row',
+    gridTemplateColumns: 'auto auto',
+  },
+  }));
+
+  function ChplConfirmDeveloperAddress({
   address, editing, formik, handleChange,
-}) {
+  }) {
+
+  const classes = useStyles();
+
   return (
     <>
       { (address || !editing)
         && (
-        <Grid item xs={12}>
+          <div>
           <Typography variant="subtitle1">
             Address
           </Typography>
           <Divider />
-        </Grid>
+        </div>
         )}
-      <Grid container item>
+      <div className={classes.formSubContainer}>
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="line1"
                 name="line1"
@@ -37,17 +49,17 @@ function ChplConfirmDeveloperAddress({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Line 1</Typography>
               <Typography variant="body1">{ address?.line1 }</Typography>
-            </Grid>
+            </div>
           )}
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="line2"
                 name="line2"
@@ -56,19 +68,19 @@ function ChplConfirmDeveloperAddress({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Line 2</Typography>
               <Typography variant="body1">{ address?.line2 }</Typography>
-            </Grid>
+            </div>
           )}
-      </Grid>
-      <Grid container item>
+      </div>
+      <div className={classes.formSubContainer}>
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="city"
                 name="city"
@@ -79,17 +91,17 @@ function ChplConfirmDeveloperAddress({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">City</Typography>
               <Typography variant="body1">{ address?.city }</Typography>
-            </Grid>
+            </div>
           )}
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="state"
                 name="state"
@@ -100,19 +112,19 @@ function ChplConfirmDeveloperAddress({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">State</Typography>
               <Typography variant="body1">{ address?.state }</Typography>
-            </Grid>
+            </div>
           )}
-      </Grid>
-      <Grid container item>
+      </div>
+      <div className={classes.formSubContainer}>
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="zipcode"
                 name="zipcode"
@@ -123,17 +135,17 @@ function ChplConfirmDeveloperAddress({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Zip</Typography>
               <Typography variant="body1">{ address?.zipcode }</Typography>
-            </Grid>
+            </div>
           )}
         { editing
           ? (
-            <Grid item xs={6}>
+            <div>
               <ChplTextField
                 id="country"
                 name="country"
@@ -144,15 +156,15 @@ function ChplConfirmDeveloperAddress({
                 onChange={handleChange}
                 onBlur={formik.handleBlur}
               />
-            </Grid>
+            </div>
           )
           : (
-            <Grid item xs={6}>
+            <div>
               <Typography variant="subtitle2">Country</Typography>
               <Typography variant="body1">{ address?.country }</Typography>
-            </Grid>
+            </div>
           )}
-      </Grid>
+      </div>
     </>
   );
 }
