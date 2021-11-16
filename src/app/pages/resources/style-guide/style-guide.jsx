@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
   Typography,
 } from '@material-ui/core';
 
@@ -11,7 +11,7 @@ import SgBackToTop from './sg-back-to-the-top';
 import Elements from './elements';
 import theme from '../../../themes/theme';
 
-const defaultTheme = createMuiTheme({});
+const defaultTheme = createTheme({});
 
 function ChplStyleGuide() {
   

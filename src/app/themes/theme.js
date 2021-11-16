@@ -1,12 +1,11 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   root: {
     width: '100%',
     display: 'flex',
   },
   spacing: 4,
-
   palette: {
     background: {
       default: '#f9f9f9',
@@ -27,7 +26,6 @@ const theme = createMuiTheme({
       main: '#c44f65',
     },
   },
-
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
@@ -73,7 +71,6 @@ const theme = createMuiTheme({
       fontSize: '0.875em',
     },
   },
-
   overrides: {
     MuiAccordionSummary: {
       root: {
@@ -83,7 +80,6 @@ const theme = createMuiTheme({
           boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
         },
       },
-
       content: {
         padding: '4px 8px',
       },
