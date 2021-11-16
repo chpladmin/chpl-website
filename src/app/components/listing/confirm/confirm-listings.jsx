@@ -9,7 +9,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableRow,
   ThemeProvider,
   makeStyles,
@@ -29,6 +28,31 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#853544',
     },
+  },
+  stickyColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+    backgroundColor: '#ffffff',
+    overflowWrap: 'anywhere',
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '200px',
+    },
+  },
+  tableContainer: {
+    overflowWrap: 'normal',
+    border: '.5px solid #c2c6ca',
+    margin: '0px 32px',
+    width: 'auto',
+  },
+  rejectFooter: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: '16px 32px'
+  },
+  wrap: {
+    overflowWrap: 'anywhere',
   },
 }));
 
@@ -71,9 +95,9 @@ function ChplConfirmListings(props) {
     }
     return (
       <>
-        { `${listing.errorCount} error${listing.errorCount !== 1 ? 's' : ''}` }
+        {`${listing.errorCount} error${listing.errorCount !== 1 ? 's' : ''}`}
         <br />
-        { `${listing.warningCount} warning${listing.warningCount !== 1 ? 's' : ''}` }
+        {`${listing.warningCount} warning${listing.warningCount !== 1 ? 's' : ''}`}
       </>
     );
   };
@@ -85,6 +109,12 @@ function ChplConfirmListings(props) {
   const handleRejectOriginal = () => {
     networkService.massRejectPendingListings(idsToReject)
       .then(() => {
+        const message = `Rejected ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''}`;
+        toaster.pop({
+          type: 'success',
+          title: 'Success',
+          body: message,
+        });
         setIdsToReject([]);
         loadListings();
       }, (error) => {
@@ -106,6 +136,12 @@ function ChplConfirmListings(props) {
   const handleRejectBeta = () => {
     networkService.massRejectPendingListingsBeta(idsToReject)
       .then(() => {
+        const message = `Rejected ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''}`;
+        toaster.pop({
+          type: 'success',
+          title: 'Success',
+          body: message,
+        });
         setIdsToReject([]);
         loadListings();
       }, (error) => {
@@ -179,41 +215,36 @@ function ChplConfirmListings(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      { listings?.length > 0
+      {listings?.length > 0
         ? (
           <>
-            <TableContainer component={Paper}>
-              <Table size="small">
+            <div className={classes.rejectFooter}>
+              <Button
+                id="reject-selected-pending-listings"
+                className={classes.deleteButton}
+                variant="contained"
+                onClick={handleReject}
+                startIcon={<DeleteIcon />}
+                disabled={idsToReject.length === 0}
+              >
+                Reject
+                {' '}
+                {(idsToReject.length > 0) ? idsToReject.length : ''}
+                {' '}
+                selected
+              </Button>
+            </div>
+            <TableContainer className={classes.tableContainer} component={Paper}>
+              <Table>
                 <ChplSortableHeaders
                   headers={headers}
                   onTableSort={handleTableSort}
                 />
-                <TableFooter>
-                  <TableRow>
-                    <TableCell colSpan={7} />
-                    <TableCell align="right">
-                      <Button
-                        id="reject-selected-pending-listings"
-                        className={classes.deleteButton}
-                        variant="contained"
-                        onClick={handleReject}
-                        startIcon={<DeleteIcon />}
-                        disabled={idsToReject.length === 0}
-                      >
-                        Reject
-                        {' '}
-                        { (idsToReject.length > 0) ? idsToReject.length : '' }
-                        {' '}
-                        selected
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                </TableFooter>
                 <TableBody>
-                  { listings
+                  {listings
                     .map((listing) => (
                       <TableRow key={listing.id}>
-                        <TableCell>
+                        <TableCell className={classes.stickyColumn} >
                           <Button
                             id={`process-pending-listing-${listing.chplProductNumber}`}
                             color="primary"
@@ -225,13 +256,13 @@ function ChplConfirmListings(props) {
                             Process Listing
                           </Button>
                         </TableCell>
-                        <TableCell>{ listing.chplProductNumber }</TableCell>
-                        <TableCell>{ beta ? listing.developer : listing.developer.name }</TableCell>
-                        <TableCell>{ beta ? listing.product : listing.product.name }</TableCell>
-                        <TableCell>{ beta ? listing.version : listing.version.version }</TableCell>
-                        <TableCell>{ DateUtil.getDisplayDateFormat(listing.certificationDate) }</TableCell>
-                        <TableCell>{ getStatus(listing) }</TableCell>
-                        <TableCell align="right">
+                        <TableCell className={classes.wrap}>{listing.chplProductNumber}</TableCell>
+                        <TableCell className={classes.wrap}>{beta ? listing.developer : listing.developer.name}</TableCell>
+                        <TableCell className={classes.wrap}>{beta ? listing.product : listing.product.name}</TableCell>
+                        <TableCell className={classes.wrap}>{beta ? listing.version : listing.version.version}</TableCell>
+                        <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
+                        <TableCell >{getStatus(listing)}</TableCell>
+                        <TableCell>
                           <Checkbox
                             id={`reject-pending-listing-${listing.chplProductNumber}`}
                             onChange={($event) => handleRejectCheckbox($event, listing)}
@@ -244,7 +275,7 @@ function ChplConfirmListings(props) {
               </Table>
             </TableContainer>
           </>
-)
+        )
         : <div>No products currently in queue</div>}
     </ThemeProvider>
   );

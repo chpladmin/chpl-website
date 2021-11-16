@@ -1,12 +1,19 @@
 <div class="listing-inspect">
   <div ng-switch="$ctrl.stage" class="listing-inspect__header">
-    <div>
+    <div class="listing-inspect__subheader">
       <h1 ng-switch-when="developer">Developer</h1>
       <h1 ng-switch-when="product">Product</h1>
       <h1 ng-switch-when="version">Version</h1>
       <h1 ng-switch-when="listing">Listing</h1>
-      <h2>Inspecting Listing: {{ $ctrl.listing.chplProductNumber }}</h2>
-    </div>
+      <div>
+        <p class="listing-inspect__text">
+          <strong>Inspecting Listing:</strong>
+          <span>
+            <p>{{ $ctrl.listing.chplProductNumber }}</p>
+          </span>
+        </p>
+      </div>
+      </div>
     <div>
       <chpl-confirm-progress-bridge
         value="$ctrl.progress"

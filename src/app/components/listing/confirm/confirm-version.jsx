@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   CardContent,
+  CardHeader,
   Container,
   Divider,
   Grid,
   MenuItem,
   Paper,
   Switch,
+  makeStyles,
   ThemeProvider,
   Typography,
 } from '@material-ui/core';
@@ -15,9 +18,88 @@ import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 import theme from '../../../themes/theme';
 import { version as versionProp } from '../../../shared/prop-types';
 import { ChplTextField } from '../../util';
+
+const useStyles = makeStyles(() => ({
+  buttonCard: {
+    padding: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#f5f9fd',
+    whiteSpace: 'pre-wrap',
+    '&:focus': {
+      boxShadow: '0px 0px 16px 4px #337ab750',
+      fontWeight: '600',
+    },
+  },
+  buttonContent: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    whiteSpace: 'pre-wrap',
+  },
+  developerConfirm: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '32px',
+    padding: '32px',
+    alignItems: 'start',
+  },
+  developerSubContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr auto 1fr',
+    alignItems: 'self-start',
+    textAlign: 'center',
+    gap: '32px',
+  },
+  developerInfo: {
+    display: 'grid',
+    gap: '16px',
+    flexDirection: 'row',
+    gridTemplateColumns: '1fr 1fr',
+  },
+  extraLargeIcons: {
+    marginBottom: '8px',
+    fontSize: '2em',
+  },
+  formContainer: {
+    display: 'flex',
+    gap: '16px',
+    flexDirection: 'column',
+  },
+  formSubContainer: {
+    display: 'grid',
+    gap: '16px',
+    flexDirection: 'row',
+    gridTemplateColumns: '1fr',
+  },
+  orContainer: {
+    display: 'flex',
+    gap: '4px',
+    flexDirection: 'column',
+    paddingTop: '32px',
+  },
+  rejectButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
+  selectedDeveloper: {
+    fontWeight: '100',
+    paddingTop: '8px',
+  },
+  verticalDivider: {
+    height: '25%',
+  },
+}));
 
 const validationSchema = yup.object({
   version: yup.string()
@@ -64,6 +146,8 @@ function ChplConfirmVersion(props) {
     setSelectedVersion(event.target.value);
   };
 
+  const classes = useStyles();
+
   const submit = () => {
     props.dispatch('edit', {
       version: formik.values.version,
@@ -82,51 +166,67 @@ function ChplConfirmVersion(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Paper>
+        <Container>
         <form noValidate>
-          <Container>
-            <Card>
-              <CardContent>
-                <Grid container spacing={4}>
-                  <Grid item xs={4}>
-                    Create a version
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Switch
-                      id="create-toggle"
-                      name="createVersion"
-                      color="primary"
-                      disabled={versions?.length === 0}
-                      checked={!isCreating}
-                      onChange={handleCreationToggle}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    { selectedVersion
-                      ? (
-                        <>
-                          Use
-                          {' '}
-                          { selectedVersion.version }
-                        </>
-                      ) : (
-                        <>
-                          Choose a version to use
-                        </>
-                      )}
-                  </Grid>
-                </Grid>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle1">
-                      Version Information
-                    </Typography>
-                    <Divider />
-                  </Grid>
+        <div className={classes.developerConfirm}>
+        <div className={classes.developerSubContainer}>
+              <Button
+                className={classes.buttonCard}
+                variant="outlined"
+                color="default"
+                fullWidth
+              >
+                <span className={classes.buttonContent}>
+                  <AddCircleIcon color="primary" className={classes.extraLargeIcons}></AddCircleIcon>
+                  Create A Version
+                </span>
+              </Button>
+              <div className={classes.orContainer}>
+                <Divider></Divider>
+                <Typography>OR</Typography>
+                <Divider ></Divider>
+              </div>
+              <div>
+                {selectedVersion
+                  ? (
+                    <>
+                      <Button
+                        variant="outlined"
+                        color="default"
+                        fullWidth
+                        className={classes.buttonCard}
+                      >
+                        <span className={classes.buttonContent}>
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
+                          </CheckCircleIcon>
+                          Using Version { selectedVersion.version }
+                        </span>
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        className={classes.buttonCard}
+                        variant="outlined"
+                        color="default"
+                        fullWidth
+                      >
+                        <span className={classes.buttonContent}>
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
+                          </CheckCircleIcon>
+                         Choose A Version
+                        </span>
+                      </Button>  
+                    </>
+                  )}
+              </div>
+            </div>
+            <Divider />
                   { isCreating
                     ? (
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
+                      <Card>
+                      <CardHeader title="Creating A New Version"></CardHeader>
+                      <CardContent>
                           <ChplTextField
                             id="version"
                             name="version"
@@ -137,12 +237,13 @@ function ChplConfirmVersion(props) {
                             onChange={handleChange}
                             onBlur={formik.handleBlur}
                           />
-                        </Grid>
-                      </Grid>
+                        </CardContent>
+                        </Card>
                     )
                     : (
-                      <Grid container spacing={4}>
-                        <Grid item xs={12}>
+                      <Card>
+                      <CardHeader title="Existing Versions"></CardHeader>
+                        <CardContent>
                           <ChplTextField
                             select
                             id="selected-version"
@@ -158,15 +259,20 @@ function ChplConfirmVersion(props) {
                               </MenuItem>
                             ))}
                           </ChplTextField>
-                        </Grid>
-                      </Grid>
+                       </CardContent>
+                       </Card>
                     )}
-                </Grid>
-              </CardContent>
-            </Card>
-          </Container>
+                  <Switch
+                    id="create-toggle"
+                    name="createVersion"
+                    color="primary"
+                    disabled={versions?.length === 0}
+                    checked={!isCreating}
+                    onChange={handleCreationToggle}
+                  />
+         </div>
         </form>
-      </Paper>
+        </Container>
     </ThemeProvider>
   );
 }

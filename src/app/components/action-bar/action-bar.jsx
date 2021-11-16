@@ -11,14 +11,75 @@ import {
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import theme from '../../themes/theme';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
 
 const useStyles = makeStyles(() => ({
-  buttons: {
+  actionBar: {
+    backgroundColor:'#fff',
+    position:'fixed',
+    bottom: '0',
+    right: '0',
+    left: '0',
+    minHeight: '50px',
+    zIndex: '1035',
+    marginBottom:'0',
+    boxShadow:'1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    display:'grid',
+    gridTemplate:'auto 1fr auto auto / 0 1fr 0',
+  },
+  actionBarButton: {
     minWidth: '15vw',
+  },
+  actionBarButtons: {
+    display:'flex',
+    justifyContent:'center',
+    gridColumn:'1 / 4',
+    padding:'16px 0',
+  },
+  actionBarError: {
+    color:'#1c1c1c',
+    backgroundColor:'#c44f6530',
+    maxHeight:'30vh',
+    padding:'16px',
+    boxShadow:'1px 4px 8px 1px rgba(149, 157, 165, .1)',
+  },
+  actionBarErrorToggle: {
+    color:'#c44f65',
+    textAlign:'center',
+    textTransform:'uppercase',
+    borderBottom:'1px solid #ddd',
+    gridColumn:'1 / 4',
+    padding:'16px',
+    boxShadow:'0 -8px 8px -4px rgba(149, 157, 165, .1)',
+  },
+  actionBarMessages: {
+    gridColumn:'2 / 3',
+    display:'grid',
+    gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',
+
+  },
+  actionBarWarnings: {
+    color:'#1c1c1c',
+    backgroundColor:'#F7E9BB30',
+    maxHeight:'30vh',
+    padding:'16px',
+    boxShadow:'1px 4px 8px 1px rgba(149, 157, 165, .1)',
+  },
+  actionBarAcknowledgeWarnings: {
+    color:'#F7E9BB',
+    textAlign:'center',
+    gridColumn:'1 / 4',
+    paddingTop:'8px',
+    marginBottom:'-8px',
+  },
+  actionBarAcknowledgeWarningLabel: {
+    color:'#F7E9BB',
+    display:'inline',
   },
   deleteButton: {
     backgroundColor: '#c44f65',
@@ -85,7 +146,7 @@ function ChplActionBar(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="action-bar">
+      <div className={classes.actionBar}>
         { isConfirming
           && (
           <ChplActionBarConfirmation
@@ -96,7 +157,7 @@ function ChplActionBar(props) {
         { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
           && (
             <>
-              <div className="action-bar__error-toggle">
+              <div className={classes.actionBarErrorToggle}>
                 <span
                   onClick={() => setShowMessages(!showMessages)}
                   onKeyDown={() => setShowMessages(!showMessages)}
@@ -119,23 +180,29 @@ function ChplActionBar(props) {
                         { warnings.length > 1 && 's'}
                       </>
                     )}
-                  <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`} />
+                  <ExpandMoreIcon
+                    className={classes.iconSpacing}
+                  />
+                  <ExpandLessIcon
+                    className={classes.iconSpacing}
+                  />
                 </span>
               </div>
             </>
+            /*Need to make icons above toggle on click, expand more should be shown when errors and warnings is closed*/
           )}
         { showMessages
           && (
             <>
-              <div className="action-bar__messages">
+              <div className={classes.actionBarMessages}>
                 { errors && errors.length > 0
                   && (
-                    <div className="action-bar__errors">
+                    <div className={classes.actionBarError}>
                       <strong>
                         Error
                         { errors.length > 1 && 's'}
                       </strong>
-                      <ul className="action-bar__error-messages">
+                      <ul>
                         {
                           errors.map((message) => (
                             <li key={message}>{message}</li>
@@ -147,12 +214,12 @@ function ChplActionBar(props) {
                 { warnings && warnings.length > 0
                   && (
                     <>
-                      <div className="action-bar__warnings">
+                      <div className={classes.actionBarWarnings}>
                         <strong>
                           Warning
                           { warnings.length > 1 && 's'}
                         </strong>
-                        <ul className="action-bar__warning-messages">
+                        <ul>
                           {
                             warnings.map((message) => (
                               <li key={message}>{message}</li>
@@ -165,7 +232,7 @@ function ChplActionBar(props) {
               </div>
             </>
           )}
-        <div className="action-bar__buttons">
+        <div className={classes.actionBarButtons}>
           <ButtonGroup
             color="primary"
           >
@@ -173,7 +240,7 @@ function ChplActionBar(props) {
               id="action-bar-cancel"
               variant="outlined"
               onClick={() => confirmCancel()}
-              className={classes.buttons}
+              className={classes.actionBarButton}
             >
               Cancel
               <CloseOutlinedIcon
@@ -187,7 +254,7 @@ function ChplActionBar(props) {
                   variant="contained"
                   onClick={() => act('confirm')}
                   disabled={isDisabled}
-                  className={classes.buttons}
+                  className={classes.actionBarButton}
                 >
                   Confirm
                   <SaveIcon
@@ -201,7 +268,7 @@ function ChplActionBar(props) {
                   onClick={() => act('save')}
                   disabled={isDisabled}
                   onMouseOver={() => act('mouseover')}
-                  className={classes.buttons}
+                  className={classes.actionBarButton}
                 >
                   Save
                   <SaveIcon
@@ -214,7 +281,7 @@ function ChplActionBar(props) {
                 <Button
                   id="action-bar-delete"
                   variant="contained"
-                  className={`${classes.buttons} ${classes.deleteButton}`}
+                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
                   onClick={() => confirmDelete()}
                 >
                   Delete
@@ -228,7 +295,7 @@ function ChplActionBar(props) {
                 <Button
                   id="action-bar-reject"
                   variant="contained"
-                  className={`${classes.buttons} ${classes.deleteButton}`}
+                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
                   onClick={() => confirmReject()}
                 >
                   Reject
