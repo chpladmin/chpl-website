@@ -47,6 +47,7 @@ const useStyles = makeStyles(() => ({
     maxHeight: '30vh',
     padding: '16px',
     boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    overflowY: 'auto',
   },
   actionBarErrorToggle: {
     color: '#c44f65',
