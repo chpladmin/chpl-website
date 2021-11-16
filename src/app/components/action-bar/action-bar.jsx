@@ -11,6 +11,8 @@ import {
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import theme from '../../themes/theme';
 
@@ -178,10 +180,16 @@ function ChplActionBar(props) {
                         { warnings.length > 1 && 's'}
                       </>
                     )}
-                  <i className={`fa ${showMessages ? 'fa-caret-down' : 'fa-caret-left'}`} />
+                  <ExpandMoreIcon
+                    className={classes.iconSpacing}
+                  />
+                  <ExpandLessIcon
+                    className={classes.iconSpacing}
+                  />
                 </span>
               </div>
             </>
+            /*Need to make icons above toggle on click, expand more should be shown when errors and warnings is closed*/
           )}
         { showMessages
           && (
