@@ -174,7 +174,6 @@ function ChplConfirmVersion(props) {
                 className={classes.buttonCard}
                 variant="outlined"
                 color="default"
-                disabled
                 fullWidth
               >
                 <span className={classes.buttonContent}>
