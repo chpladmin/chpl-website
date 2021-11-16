@@ -178,7 +178,7 @@ function ChplConfirmVersion(props) {
               >
                 <span className={classes.buttonContent}>
                   <AddCircleIcon color="primary" className={classes.extraLargeIcons}></AddCircleIcon>
-                  Create a developer
+                  Create A Version
                 </span>
               </Button>
               <div className={classes.orContainer}>
