@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Divider,
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { bool, func } from 'prop-types';
 
@@ -16,12 +16,11 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     gridTemplateColumns: 'auto auto',
   },
-  }));
+}));
 
-  function ChplConfirmDeveloperAddress({
+function ChplConfirmDeveloperAddress({
   address, editing, formik, handleChange,
-  }) {
-
+}) {
   const classes = useStyles();
 
   return (
@@ -29,11 +28,11 @@ const useStyles = makeStyles(() => ({
       { (address || !editing)
         && (
           <div>
-          <Typography variant="subtitle1">
-            Address
-          </Typography>
-          <Divider />
-        </div>
+            <Typography variant="subtitle1">
+              Address
+            </Typography>
+            <Divider />
+          </div>
         )}
       <div className={classes.formSubContainer}>
         { editing

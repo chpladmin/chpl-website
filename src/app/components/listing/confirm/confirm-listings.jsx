@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-end',
-    padding: '16px 32px'
+    padding: '16px 32px',
   },
   wrap: {
     overflowWrap: 'anywhere',
@@ -109,12 +109,6 @@ function ChplConfirmListings(props) {
   const handleRejectOriginal = () => {
     networkService.massRejectPendingListings(idsToReject)
       .then(() => {
-        const message = `Rejected ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''}`;
-        toaster.pop({
-          type: 'success',
-          title: 'Success',
-          body: message,
-        });
         setIdsToReject([]);
         loadListings();
       }, (error) => {
@@ -136,12 +130,6 @@ function ChplConfirmListings(props) {
   const handleRejectBeta = () => {
     networkService.massRejectPendingListingsBeta(idsToReject)
       .then(() => {
-        const message = `Rejected ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''}`;
-        toaster.pop({
-          type: 'success',
-          title: 'Success',
-          body: message,
-        });
         setIdsToReject([]);
         loadListings();
       }, (error) => {
@@ -244,7 +232,7 @@ function ChplConfirmListings(props) {
                   {listings
                     .map((listing) => (
                       <TableRow key={listing.id}>
-                        <TableCell className={classes.stickyColumn} >
+                        <TableCell className={classes.stickyColumn}>
                           <Button
                             id={`process-pending-listing-${listing.chplProductNumber}`}
                             color="primary"
@@ -261,7 +249,7 @@ function ChplConfirmListings(props) {
                         <TableCell className={classes.wrap}>{beta ? listing.product : listing.product.name}</TableCell>
                         <TableCell className={classes.wrap}>{beta ? listing.version : listing.version.version}</TableCell>
                         <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
-                        <TableCell >{getStatus(listing)}</TableCell>
+                        <TableCell>{getStatus(listing)}</TableCell>
                         <TableCell>
                           <Checkbox
                             id={`reject-pending-listing-${listing.chplProductNumber}`}

@@ -6,20 +6,17 @@ import {
   CardHeader,
   Container,
   Divider,
-  Grid,
   MenuItem,
-  Paper,
   Switch,
-  makeStyles,
   ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import theme from '../../../themes/theme';
 import { version as versionProp } from '../../../shared/prop-types';
@@ -166,10 +163,10 @@ function ChplConfirmVersion(props) {
 
   return (
     <ThemeProvider theme={theme}>
-        <Container>
+      <Container>
         <form noValidate>
-        <div className={classes.developerConfirm}>
-        <div className={classes.developerSubContainer}>
+          <div className={classes.developerConfirm}>
+            <div className={classes.developerSubContainer}>
               <Button
                 className={classes.buttonCard}
                 variant="outlined"
@@ -177,14 +174,14 @@ function ChplConfirmVersion(props) {
                 fullWidth
               >
                 <span className={classes.buttonContent}>
-                  <AddCircleIcon color="primary" className={classes.extraLargeIcons}></AddCircleIcon>
+                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
                   Create A Version
                 </span>
               </Button>
               <div className={classes.orContainer}>
-                <Divider></Divider>
+                <Divider />
                 <Typography>OR</Typography>
-                <Divider ></Divider>
+                <Divider />
               </div>
               <div>
                 {selectedVersion
@@ -197,9 +194,10 @@ function ChplConfirmVersion(props) {
                         className={classes.buttonCard}
                       >
                         <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
-                          </CheckCircleIcon>
-                          Using Version { selectedVersion.version }
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                          Using Version
+                          {' '}
+                          { selectedVersion.version }
                         </span>
                       </Button>
                     </>
@@ -212,67 +210,66 @@ function ChplConfirmVersion(props) {
                         fullWidth
                       >
                         <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
-                          </CheckCircleIcon>
-                         Choose A Version
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                          Choose A Version
                         </span>
-                      </Button>  
+                      </Button>
                     </>
                   )}
               </div>
             </div>
             <Divider />
-                  { isCreating
-                    ? (
-                      <Card>
-                      <CardHeader title="Creating A New Version"></CardHeader>
-                      <CardContent>
-                          <ChplTextField
-                            id="version"
-                            name="version"
-                            label="Version"
-                            value={formik.values.version}
-                            error={formik.touched.version && !!formik.errors.version}
-                            helperText={formik.touched.version && formik.errors.version}
-                            onChange={handleChange}
-                            onBlur={formik.handleBlur}
-                          />
-                        </CardContent>
-                        </Card>
-                    )
-                    : (
-                      <Card>
-                      <CardHeader title="Existing Versions"></CardHeader>
-                        <CardContent>
-                          <ChplTextField
-                            select
-                            id="selected-version"
-                            name="selectedVersion"
-                            label="Select a Version"
-                            required
-                            value={selectedVersion}
-                            onChange={handleSelectOnChange}
-                          >
-                            { versions.map((item) => (
-                              <MenuItem value={item} key={item.versionId}>
-                                { item.version }
-                              </MenuItem>
-                            ))}
-                          </ChplTextField>
-                       </CardContent>
-                       </Card>
-                    )}
-                  <Switch
-                    id="create-toggle"
-                    name="createVersion"
-                    color="primary"
-                    disabled={versions?.length === 0}
-                    checked={!isCreating}
-                    onChange={handleCreationToggle}
-                  />
-         </div>
+            { isCreating
+              ? (
+                <Card>
+                  <CardHeader title="Creating A New Version" />
+                  <CardContent>
+                    <ChplTextField
+                      id="version"
+                      name="version"
+                      label="Version"
+                      value={formik.values.version}
+                      error={formik.touched.version && !!formik.errors.version}
+                      helperText={formik.touched.version && formik.errors.version}
+                      onChange={handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </CardContent>
+                </Card>
+              )
+              : (
+                <Card>
+                  <CardHeader title="Existing Versions" />
+                  <CardContent>
+                    <ChplTextField
+                      select
+                      id="selected-version"
+                      name="selectedVersion"
+                      label="Select a Version"
+                      required
+                      value={selectedVersion}
+                      onChange={handleSelectOnChange}
+                    >
+                      { versions.map((item) => (
+                        <MenuItem value={item} key={item.versionId}>
+                          { item.version }
+                        </MenuItem>
+                      ))}
+                    </ChplTextField>
+                  </CardContent>
+                </Card>
+              )}
+            <Switch
+              id="create-toggle"
+              name="createVersion"
+              color="primary"
+              disabled={versions?.length === 0}
+              checked={!isCreating}
+              onChange={handleCreationToggle}
+            />
+          </div>
         </form>
-        </Container>
+      </Container>
     </ThemeProvider>
   );
 }

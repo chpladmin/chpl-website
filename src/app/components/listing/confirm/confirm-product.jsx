@@ -6,18 +6,14 @@ import {
   CardHeader,
   Container,
   Divider,
-  Grid,
   MenuItem,
-  Paper,
   Switch,
-  makeStyles,
   ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
-
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -178,14 +174,14 @@ function ChplConfirmProduct(props) {
                 fullWidth
               >
                 <span className={classes.buttonContent}>
-                  <AddCircleIcon color="primary" className={classes.extraLargeIcons}></AddCircleIcon>
+                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
                   Create a Product
                 </span>
               </Button>
               <div className={classes.orContainer}>
-                <Divider></Divider>
+                <Divider />
                 <Typography>OR</Typography>
-                <Divider ></Divider>
+                <Divider />
               </div>
               <div>
                 {selectedProduct
@@ -198,9 +194,10 @@ function ChplConfirmProduct(props) {
                         fullWidth
                       >
                         <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
-                          </CheckCircleIcon>
-                          Using {selectedProduct.name}
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                          Using
+                          {' '}
+                          {selectedProduct.name}
                         </span>
                       </Button>
                     </>
@@ -213,11 +210,10 @@ function ChplConfirmProduct(props) {
                         fullWidth
                       >
                         <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
-                          </CheckCircleIcon>
-                         Choose a Product to Use
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                          Choose a Product to Use
                         </span>
-                      </Button>                    
+                      </Button>
                     </>
                   )}
               </div>
@@ -226,7 +222,7 @@ function ChplConfirmProduct(props) {
             {isCreating
               ? (
                 <Card>
-                  <CardHeader title="Creating A New Product"></CardHeader>
+                  <CardHeader title="Creating A New Product" />
                   <CardContent>
                     <div className={classes.formContainer}>
                       <ChplTextField
@@ -245,7 +241,7 @@ function ChplConfirmProduct(props) {
               )
               : (
                 <Card>
-                  <CardHeader title="Select An Existing Product"></CardHeader>
+                  <CardHeader title="Select An Existing Product" />
                   <CardContent>
                     <ChplTextField
                       select

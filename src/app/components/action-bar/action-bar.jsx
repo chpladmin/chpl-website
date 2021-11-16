@@ -20,60 +20,60 @@ import ChplActionBarConfirmation from './action-bar-confirmation';
 
 const useStyles = makeStyles(() => ({
   actionBar: {
-    backgroundColor:'#fff',
-    position:'fixed',
+    backgroundColor: '#fff',
+    position: 'fixed',
     bottom: '0',
     right: '0',
     left: '0',
     minHeight: '50px',
     zIndex: '1035',
-    marginBottom:'0',
-    boxShadow:'1px 4px 8px 1px rgba(149, 157, 165, .1)',
-    display:'grid',
-    gridTemplate:'auto 1fr auto auto / 0 1fr 0',
+    marginBottom: '0',
+    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    display: 'grid',
+    // gridTemplate:'auto 1fr auto auto / 0 1fr 0',
   },
   actionBarButton: {
     minWidth: '15vw',
   },
   actionBarButtons: {
-    display:'flex',
-    justifyContent:'center',
-    gridColumn:'1 / 4',
-    padding:'16px 0',
+    display: 'flex',
+    justifyContent: 'center',
+    // gridColumn:'1 / 4',
+    padding: '16px 0',
   },
   actionBarError: {
-    color:'#1c1c1c',
-    backgroundColor:'#c44f6530',
-    maxHeight:'30vh',
-    padding:'16px',
-    boxShadow:'1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    color: '#1c1c1c',
+    backgroundColor: '#c44f6530',
+    maxHeight: '30vh',
+    padding: '16px',
+    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
   },
   actionBarErrorToggle: {
-    color:'#c44f65',
-    textAlign:'center',
-    textTransform:'uppercase',
-    borderBottom:'1px solid #ddd',
-    gridColumn:'1 / 4',
-    padding:'16px',
-    boxShadow:'0 -8px 8px -4px rgba(149, 157, 165, .1)',
+    color: '#c44f65',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    borderBottom: '1px solid #ddd',
+    // gridColumn:'1 / 4',
+    padding: '16px',
+    boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
   actionBarMessages: {
-    gridColumn:'2 / 3',
-    display:'grid',
-    gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',
-
+    // gridColumn:'2 / 3',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
   },
   actionBarWarnings: {
-    color:'#1c1c1c',
-    backgroundColor:'#F7E9BB30',
-    maxHeight:'30vh',
-    padding:'16px',
-    boxShadow:'1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    color: '#1c1c1c',
+    backgroundColor: '#F7E9BB30',
+    maxHeight: '30vh',
+    padding: '16px',
+    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
   },
+  /*
   actionBarAcknowledgeWarnings: {
     color:'#F7E9BB',
     textAlign:'center',
-    gridColumn:'1 / 4',
+    //gridColumn:'1 / 4',
     paddingTop:'8px',
     marginBottom:'-8px',
   },
@@ -81,6 +81,7 @@ const useStyles = makeStyles(() => ({
     color:'#F7E9BB',
     display:'inline',
   },
+  */
   deleteButton: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
@@ -110,7 +111,7 @@ function ChplActionBar(props) {
 
   useEffect(() => {
     setIsDisabled(props.isDisabled);
-  }, [props.isDisabled]);
+  }, [props.isDisabled]); // eslint-disable-line react/destructuring-assignment
 
   const act = (action) => {
     if (props.dispatch) {
@@ -180,16 +181,20 @@ function ChplActionBar(props) {
                         { warnings.length > 1 && 's'}
                       </>
                     )}
-                  <ExpandMoreIcon
-                    className={classes.iconSpacing}
-                  />
-                  <ExpandLessIcon
-                    className={classes.iconSpacing}
-                  />
+                  { showMessages
+                    ? (
+                      <ExpandMoreIcon
+                        className={classes.iconSpacing}
+                      />
+                    ) : (
+                      <ExpandLessIcon
+                        className={classes.iconSpacing}
+                      />
+                    )}
                 </span>
               </div>
             </>
-            /*Need to make icons above toggle on click, expand more should be shown when errors and warnings is closed*/
+            /* Need to make icons above toggle on click, expand more should be shown when errors and warnings is closed */
           )}
         { showMessages
           && (

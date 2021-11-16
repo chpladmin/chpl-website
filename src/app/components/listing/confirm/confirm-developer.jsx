@@ -9,14 +9,12 @@ import {
   FormControlLabel,
   MenuItem,
   Switch,
-  makeStyles,
   ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
-
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -215,7 +213,7 @@ function ChplConfirmDeveloper(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-      <form noValidate>
+        <form noValidate>
           <div className={classes.developerConfirm}>
             <div className={classes.developerSubContainer}>
               <Button
@@ -226,14 +224,14 @@ function ChplConfirmDeveloper(props) {
                 fullWidth
               >
                 <span className={classes.buttonContent}>
-                  <AddCircleIcon color="primary" className={classes.extraLargeIcons}></AddCircleIcon>
+                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
                   Create a developer
                 </span>
               </Button>
               <div className={classes.orContainer}>
-                <Divider></Divider>
+                <Divider />
                 <Typography>OR</Typography>
-                <Divider ></Divider>
+                <Divider />
               </div>
               <div>
                 {selectedDeveloper
@@ -246,26 +244,26 @@ function ChplConfirmDeveloper(props) {
                         className={classes.buttonCard}
                       >
                         <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
-                          </CheckCircleIcon>
-                          Using {selectedDeveloper.name}
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                          Using
+                          {' '}
+                          {selectedDeveloper.name}
                         </span>
                       </Button>
                     </>
                   ) : (
                     <>
-                    <Button
+                      <Button
                         className={classes.buttonCard}
                         variant="outlined"
                         color="default"
                         fullWidth
                       >
                         <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons}>
-                          </CheckCircleIcon>
+                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
                           Choose A Developer To Use
                         </span>
-                      </Button>  
+                      </Button>
                     </>
                   )}
               </div>
@@ -275,7 +273,7 @@ function ChplConfirmDeveloper(props) {
             {isCreating
               ? (
                 <Card>
-                  <CardHeader title="Creating A New Developer"></CardHeader>
+                  <CardHeader title="Creating A New Developer" />
                   <CardContent>
                     <div className={classes.formContainer}>
                       <div className={classes.formSubContainer}>
@@ -342,7 +340,7 @@ function ChplConfirmDeveloper(props) {
               )
               : (
                 <Card>
-                  <CardHeader title="Existing Developers"></CardHeader>
+                  <CardHeader title="Existing Developers" />
                   <CardContent>
                     <div>
                       <ChplTextField
@@ -374,7 +372,7 @@ function ChplConfirmDeveloper(props) {
             />
           </div>
         </form>
-        </Container>
+      </Container>
     </ThemeProvider>
   );
 }
@@ -386,37 +384,3 @@ ChplConfirmDeveloper.propTypes = {
   developers: arrayOf(developerProp).isRequired,
   dispatch: func.isRequired,
 };
-
-/*
-  display?
-                          { developer.developerId &&
-                          <>
-                            <Grid item xs={6}>
-                              <Typography variant="subtitle2">Developer Code</Typography>
-                              <Typography variant="body1">{ developer.developerCode }</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <Typography variant="subtitle2">Self Developer</Typography>
-                              <Typography variant="body1">{ developer.selfDeveloper ? 'Yes' : 'No' }</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="subtitle2">Website</Typography>
-                              <Typography variant="body1">{ developer.website }</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <ChplConfirmDeveloperAddress
-                                address={developer.address}
-                                editing={false}
-                                formik={formik}
-                              />
-                            </Grid>
-                            <Grid item xs={12}>
-                              <ChplConfirmDeveloperContact
-                                contact={developer.contact}
-                                editing={false}
-                                formik={formik}
-                              />
-                            </Grid>
-                          </>
-                        }
-                        */

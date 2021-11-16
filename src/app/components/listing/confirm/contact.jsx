@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Divider,
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { bool, func } from 'prop-types';
 
@@ -16,13 +16,12 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     gridTemplateColumns: 'auto auto',
   },
-  }));
+}));
 
 function ChplConfirmDeveloperContact({
   contact, editing, formik, handleChange,
 }) {
-
-const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <>
