@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 11.23.0
+_15 November 2021_
+
+### Features
+* Modify values in "Requirement" dropdown and "Non-Conformity Type" dropdown under surveillance activity
+* Alert users when using a user name to login instead of email address
+* Display surveillance components based on ROLE
+
+### User Interface Updates
+* Use "Verify Password" instead of "Verification Password"
+
+### Flagged Features
+* Manage "Change Requests" in new UX
+
+### Flagged Bug Fixes
+* Tell users if email won't be sent to relevant Developers on Change Request edits
+
+---
+
 ## Version 11.22.1
 _1 November 2021_
 
