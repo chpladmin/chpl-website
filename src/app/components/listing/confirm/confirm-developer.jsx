@@ -34,10 +34,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     backgroundColor: '#f5f9fd',
     whiteSpace: 'pre-wrap',
-    '&:focus': {
-      boxShadow: '0px 0px 16px 4px #337ab750',
-      fontWeight: '600',
-    },
+  },
+  buttonCardFocused: {
+    boxShadow: '0px 0px 16px 4px #337ab750',
+    fontWeight: '600',
   },
   buttonContent: {
     display: 'flex',
@@ -145,13 +145,15 @@ function ChplConfirmDeveloper(props) {
 
   let formik;
 
-  const handleCreationToggle = () => {
-    if (isCreating) {
-      props.dispatch('select', selectedDeveloper);
-    } else {
-      formik.handleSubmit();
+  const handleCreationToggle = (creating) => {
+    if (isCreating !== creating) {
+      if (isCreating) {
+        props.dispatch('select', selectedDeveloper);
+      } else {
+        formik.handleSubmit();
+      }
+      setIsCreating(creating);
     }
-    setIsCreating(!isCreating);
   };
 
   const handleChange = (...args) => {
@@ -213,165 +215,133 @@ function ChplConfirmDeveloper(props) {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <form noValidate>
-          <div className={classes.developerConfirm}>
-            <div className={classes.developerSubContainer}>
-              <Button
-                className={classes.buttonCard}
-                variant="outlined"
-                color="default"
-                disabled
-                fullWidth
-              >
-                <span className={classes.buttonContent}>
-                  <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                  Create a developer
-                </span>
-              </Button>
-              <div className={classes.orContainer}>
-                <Divider />
-                <Typography>OR</Typography>
-                <Divider />
-              </div>
-              <div>
-                {selectedDeveloper
+        <div className={classes.developerConfirm}>
+          <div className={classes.developerSubContainer}>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(true)}
+            >
+              <span className={classes.buttonContent}>
+                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                Create a developer
+              </span>
+            </Button>
+            <div className={classes.orContainer}>
+              <Divider />
+              <Typography>OR</Typography>
+              <Divider />
+            </div>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(false)}
+            >
+              <span className={classes.buttonContent}>
+                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                { selectedDeveloper
                   ? (
                     <>
-                      <Button
-                        variant="outlined"
-                        color="default"
-                        fullWidth
-                        className={classes.buttonCard}
-                      >
-                        <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                          Using
-                          {' '}
-                          {selectedDeveloper.name}
-                        </span>
-                      </Button>
+                      {`Use "${selectedDeveloper.name}"`}
                     </>
                   ) : (
                     <>
-                      <Button
-                        className={classes.buttonCard}
-                        variant="outlined"
-                        color="default"
-                        fullWidth
-                      >
-                        <span className={classes.buttonContent}>
-                          <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
-                          Choose A Developer To Use
-                        </span>
-                      </Button>
+                      Choose A Developer To Use
                     </>
                   )}
-              </div>
-
-            </div>
-            <Divider />
-            {isCreating
-              ? (
-                <Card>
-                  <CardHeader title="Creating A New Developer" />
-                  <CardContent>
-                    <div className={classes.formContainer}>
-                      <div className={classes.formSubContainer}>
-                        <div className={classes.developerInfo}>
-                          <div>
-                            <ChplTextField
-                              id="name"
-                              name="name"
-                              label="Developer Name"
-                              value={formik.values.name}
-                              error={formik.touched.name && !!formik.errors.name}
-                              helperText={formik.touched.name && formik.errors.name}
-                              onChange={handleChange}
-                              onBlur={formik.handleBlur}
-                            />
-                          </div>
-                          <div>
-                            <FormControlLabel
-                              label={`Self-Developer (${formik.values.selfDeveloper ? 'Yes' : 'No'})`}
-                              control={(
-                                <Switch
-                                  id="self-developer"
-                                  name="selfDeveloper"
-                                  color="primary"
-                                  checked={formik.values.selfDeveloper}
-                                  onChange={handleChange}
-                                />
-                              )}
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <ChplTextField
-                            id="website"
-                            name="website"
-                            label="Website"
-                            value={formik.values.website}
-                            error={formik.touched.website && !!formik.errors.website}
-                            helperText={formik.touched.website && formik.errors.website}
-                            onChange={handleChange}
-                            onBlur={formik.handleBlur}
-                          />
-                        </div>
-                      </div>
-                      <div className={classes.formSubContainer}>
-                        <ChplConfirmDeveloperAddress
-                          address={developer.address}
-                          editing
-                          formik={formik}
-                          handleChange={handleChange}
-                        />
-                      </div>
-                      <div className={classes.formSubContainer}>
-                        <ChplConfirmDeveloperContact
-                          contact={developer.contact}
-                          editing
-                          formik={formik}
-                          handleChange={handleChange}
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-              : (
-                <Card>
-                  <CardHeader title="Existing Developers" />
-                  <CardContent>
-                    <div>
-                      <ChplTextField
-                        select
-                        id="selected-developer"
-                        name="selectedDeveloper"
-                        label="Select a Developer"
-                        required
-                        value={selectedDeveloper}
-                        onChange={handleSelectOnChange}
-                      >
-                        {developers.map((item) => (
-                          <MenuItem value={item} key={item.developerId}>
-                            {item.name}
-                            {item.developerCode && (` (Developer Code: ${item.developerCode})`)}
-                          </MenuItem>
-                        ))}
-                      </ChplTextField>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            <Switch
-              id="create-toggle"
-              name="createDeveloper"
-              color="primary"
-              checked={!isCreating}
-              onChange={handleCreationToggle}
-            />
+              </span>
+            </Button>
           </div>
-        </form>
+          <Divider />
+          { isCreating
+            ? (
+              <Card>
+                <CardHeader title="Create A New Developer" />
+                <CardContent>
+                  <div className={classes.formContainer}>
+                    <div className={classes.formSubContainer}>
+                      <div className={classes.developerInfo}>
+                        <ChplTextField
+                          id="name"
+                          name="name"
+                          label="Developer Name"
+                          value={formik.values.name}
+                          error={formik.touched.name && !!formik.errors.name}
+                          helperText={formik.touched.name && formik.errors.name}
+                          onChange={handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        <FormControlLabel
+                          label={`Self-Developer (${formik.values.selfDeveloper ? 'Yes' : 'No'})`}
+                          control={(
+                            <Switch
+                              id="self-developer"
+                              name="selfDeveloper"
+                              color="primary"
+                              checked={formik.values.selfDeveloper}
+                              onChange={handleChange}
+                            />
+                         )}
+                        />
+                      </div>
+                      <ChplTextField
+                        id="website"
+                        name="website"
+                        label="Website"
+                        value={formik.values.website}
+                        error={formik.touched.website && !!formik.errors.website}
+                        helperText={formik.touched.website && formik.errors.website}
+                        onChange={handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                    </div>
+                    <div className={classes.formSubContainer}>
+                      <ChplConfirmDeveloperAddress
+                        address={developer.address}
+                        editing
+                        formik={formik}
+                        handleChange={handleChange}
+                      />
+                    </div>
+                    <div className={classes.formSubContainer}>
+                      <ChplConfirmDeveloperContact
+                        contact={developer.contact}
+                        editing
+                        formik={formik}
+                        handleChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader title="Existing Developers" />
+                <CardContent>
+                  <ChplTextField
+                    select
+                    id="selected-developer"
+                    name="selectedDeveloper"
+                    label="Select a Developer"
+                    required
+                    value={selectedDeveloper}
+                    onChange={handleSelectOnChange}
+                  >
+                    {developers.map((item) => (
+                      <MenuItem value={item} key={item.developerId}>
+                        {item.name}
+                        {item.developerCode && (` (Developer Code: ${item.developerCode})`)}
+                      </MenuItem>
+                    ))}
+                  </ChplTextField>
+                </CardContent>
+              </Card>
+            )}
+        </div>
       </Container>
     </ThemeProvider>
   );
