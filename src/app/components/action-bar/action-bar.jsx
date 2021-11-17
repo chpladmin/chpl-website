@@ -190,7 +190,7 @@ function ChplActionBar(props) {
                         Error
                         { errors.length > 1 && 's'}
                       </strong>
-                      <ul>
+                      <ul id="action-bar-errors">
                         {
                           errors.map((message) => (
                             <li key={message}>{message}</li>
@@ -207,7 +207,7 @@ function ChplActionBar(props) {
                           Warning
                           { warnings.length > 1 && 's'}
                         </strong>
-                        <ul>
+                        <ul id="action-bar-warnings">
                           {
                             warnings.map((message) => (
                               <li key={message}>{message}</li>
