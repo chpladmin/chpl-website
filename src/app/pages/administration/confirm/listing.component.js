@@ -146,9 +146,13 @@ const ConfirmListingComponent = {
 
     loadDeveloper() {
       const that = this;
+      this.staged = { ...this.uploaded.developer };
       if (this.pending.developer && this.pending.developer.developerId) {
         this.networkService.getDeveloper(this.pending.developer.developerId)
-          .then((result) => { that.pending.developer = result; });
+          .then((result) => {
+            that.pending.developer = result;
+            that.staged = { ...result };
+          });
       }
     }
 
@@ -279,7 +283,9 @@ const ConfirmListingComponent = {
 
     previous() {
       switch (this.stage) {
-        case 'product': this.stage = 'developer';
+        case 'product':
+          this.staged = { ...this.pending.developer };
+          this.stage = 'developer';
           break;
         case 'version':
           this.staged = { ...this.pending.product };
