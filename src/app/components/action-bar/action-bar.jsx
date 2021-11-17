@@ -30,7 +30,6 @@ const useStyles = makeStyles(() => ({
     marginBottom: '0',
     boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
     display: 'grid',
-    // gridTemplate:'auto 1fr auto auto / 0 1fr 0',
   },
   actionBarButton: {
     minWidth: '15vw',
@@ -38,7 +37,6 @@ const useStyles = makeStyles(() => ({
   actionBarButtons: {
     display: 'flex',
     justifyContent: 'center',
-    // gridColumn:'1 / 4',
     padding: '16px 0',
   },
   actionBarError: {
@@ -54,12 +52,10 @@ const useStyles = makeStyles(() => ({
     textAlign: 'center',
     textTransform: 'uppercase',
     borderBottom: '1px solid #ddd',
-    // gridColumn:'1 / 4',
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
   actionBarMessages: {
-    // gridColumn:'2 / 3',
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
   },
@@ -70,19 +66,6 @@ const useStyles = makeStyles(() => ({
     padding: '16px',
     boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
   },
-  /*
-  actionBarAcknowledgeWarnings: {
-    color:'#F7E9BB',
-    textAlign:'center',
-    //gridColumn:'1 / 4',
-    paddingTop:'8px',
-    marginBottom:'-8px',
-  },
-  actionBarAcknowledgeWarningLabel: {
-    color:'#F7E9BB',
-    display:'inline',
-  },
-  */
   deleteButton: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
@@ -195,7 +178,6 @@ function ChplActionBar(props) {
                 </span>
               </div>
             </>
-            /* Need to make icons above toggle on click, expand more should be shown when errors and warnings is closed */
           )}
         { showMessages
           && (
