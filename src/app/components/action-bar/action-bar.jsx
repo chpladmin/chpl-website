@@ -182,7 +182,7 @@ function ChplActionBar(props) {
         { showMessages
           && (
             <>
-              <div className={classes.actionBarMessages}>
+              <div id="action-bar-messages" className={classes.actionBarMessages}>
                 { errors && errors.length > 0
                   && (
                     <div className={classes.actionBarError}>
