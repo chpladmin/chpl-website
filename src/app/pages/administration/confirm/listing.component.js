@@ -264,7 +264,6 @@ const ConfirmListingComponent = {
           this.loadProducts();
           break;
         case 'product':
-          this.pending.product = { ...this.staged };
           this.stage = 'version';
           this.loadFamily();
           this.loadVersions();
