@@ -7,6 +7,7 @@ const confirmElements = {
   warningCheckbox: '#acknowledge-warnings',
   confirmButton: '#inspect-confirm',
   rejectButtonOnInspectListing: '#inspect-reject',
+  actionBarMessages: '#action-bar-messages',
   errorMessage: '.bg-danger',
   errorOnInspect: '#action-bar-errors > li',
   warningOnInspect: '#action-bar-warnings > li',
@@ -109,7 +110,7 @@ class ConfirmPage {
   }
 
   waitForBarMessages () {
-    $('.action-bar__messages').waitForDisplayed();
+    $(confirmElements.actionBarMessages).waitForDisplayed();
   }
 }
 
