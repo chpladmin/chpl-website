@@ -171,23 +171,6 @@ function ChplConfirmVersion(props) {
               variant="outlined"
               color="default"
               fullWidth
-              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
-              onClick={() => handleCreationToggle(true)}
-            >
-              <span className={classes.buttonContent}>
-                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
-                Create A Version
-              </span>
-            </Button>
-            <div className={classes.orContainer}>
-              <Divider />
-              <Typography>OR</Typography>
-              <Divider />
-            </div>
-            <Button
-              variant="outlined"
-              color="default"
-              fullWidth
               disabled={versions?.length === 0}
               className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
               onClick={() => handleCreationToggle(false)}
@@ -204,6 +187,23 @@ function ChplConfirmVersion(props) {
                       Choose A Version To Use
                     </>
                   )}
+              </span>
+            </Button>
+            <div className={classes.orContainer}>
+              <Divider />
+              <Typography>OR</Typography>
+              <Divider />
+            </div>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(true)}
+            >
+              <span className={classes.buttonContent}>
+                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                Create A Version
               </span>
             </Button>
           </div>
