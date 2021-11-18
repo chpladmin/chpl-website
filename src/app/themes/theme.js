@@ -1,12 +1,11 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   root: {
     width: '100%',
     display: 'flex',
   },
   spacing: 4,
-
   palette: {
     background: {
       default: '#f9f9f9',
@@ -27,7 +26,6 @@ const theme = createMuiTheme({
       main: '#c44f65',
     },
   },
-
   typography: {
     fontFamily: 'Lato, sans-serif',
     h1: {
@@ -73,7 +71,6 @@ const theme = createMuiTheme({
       fontSize: '0.875em',
     },
   },
-
   overrides: {
     MuiAccordionSummary: {
       root: {
@@ -83,7 +80,6 @@ const theme = createMuiTheme({
           boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
         },
       },
-
       content: {
         padding: '4px 8px',
       },
@@ -170,6 +166,21 @@ const theme = createMuiTheme({
       root: {
         fontSize: '.8em',
       },
+      outlinedPrimary: {
+        backgroundColor: '#ffffff',
+        fontWeight: '600',
+      },
+      deleteIcon: {
+        width: '16px',
+        height: '16px',
+        color: '#bbb',
+      },
+      deleteIconOutlinedColorPrimary: {
+        color: '#bbb',
+        '&:hover, selected': {
+          color: '#c44f65',
+        },
+      },
     },
     MuiDialogActions: {
       root: {
@@ -202,6 +213,22 @@ const theme = createMuiTheme({
         fontSize: 12,
       },
     },
+    MuiFormLabel: {
+      asterisk: {
+        fontSize: '2em',
+        verticalAlign: 'text-top',
+      },
+    },
+    MuiOutlinedInput: {
+      input: {
+        paddingTop: '18.5px',
+        paddingBottom: '14px',
+      },
+      inputMarginDense: {
+        paddingTop: '14.5px',
+        paddingBottom: '10px',
+      },
+    },
     MuiList: {
       padding: {
         paddingTop: '0',
@@ -218,6 +245,7 @@ const theme = createMuiTheme({
     MuiListSubheader: {
       root: {
         fontSize: '0.875em',
+        color: '#000',
       },
       gutters: {
         paddingLeft: '8px',
@@ -275,7 +303,7 @@ const theme = createMuiTheme({
       toolbar: {
         backgroundColor: '#ffffff',
         margin: '16px',
-        boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+        boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         borderRadius: '64px',
         display: 'flex',
         justifyContent: 'center',
@@ -295,6 +323,14 @@ const theme = createMuiTheme({
         '&:hover': {
           backgroundColor: 'rgb(245, 249, 253, 0.9)',
         },
+      },
+    },
+    MuiTableSortLabel: {
+      active: {
+        color: '#000000',
+      },
+      icon: {
+        color: '#000000',
       },
     },
     MuiFormLabel: {

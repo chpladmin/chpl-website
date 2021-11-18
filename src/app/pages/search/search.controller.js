@@ -3,7 +3,7 @@
     .controller('SearchController', SearchController);
 
   /** @ngInject */
-  function SearchController($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, DateUtil, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
+  function SearchController($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, DateUtil, RELOAD_TIMEOUT, SPLIT_PRIMARY, authService, networkService, utilService) {
     const vm = this;
 
     vm.DateUtil = DateUtil;
@@ -12,6 +12,7 @@
     vm.clear = clear;
     vm.clearPreviouslyCompared = clearPreviouslyCompared;
     vm.clearPreviouslyViewed = clearPreviouslyViewed;
+    vm.hasAnyRole = authService.hasAnyRole;
     vm.hasResults = hasResults;
     vm.isCategoryChanged = isCategoryChanged;
     vm.loadResults = loadResults;
