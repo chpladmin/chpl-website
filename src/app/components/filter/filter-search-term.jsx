@@ -9,6 +9,7 @@ import {
 import { string } from 'prop-types';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+
 import { useFilterContext } from './filter-context';
 
 import theme from 'themes/theme';
@@ -46,6 +47,11 @@ function ChplFilterSearchTerm(props) {
 
   const filterContext = useFilterContext();
 
+  const handleClear = () => {
+    setSearchTerm('');
+    filterContext.setSearchTerm('');
+  };
+
   const handleGo = () => {
     filterContext.setSearchTerm(searchTerm);
   };
@@ -73,10 +79,15 @@ function ChplFilterSearchTerm(props) {
             onKeyPress={handleKeyPress}
             id="filter-search-term-input"
             inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
-            endAdornment={
+            endAdornment={(
               <InputAdornment position="start">
-                <IconButton><ClearIcon/></IconButton>
-              </InputAdornment>}
+                <IconButton
+                  onClick={handleClear}
+                >
+                  <ClearIcon />
+                </IconButton>
+              </InputAdornment>
+            )}
           />
           <Button
             className={classes.goButton}
