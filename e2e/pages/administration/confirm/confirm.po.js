@@ -66,15 +66,14 @@ class ConfirmPage {
 
   gotoConfirmListingPage (inspectListingId ) {
     $('//button[@id="process-pending-listing-' + inspectListingId + '"]').click();
-    this.inspectNextButton.waitAndClick();
-    this.inspectNextButton.waitAndClick();
-    this.inspectNextButton.waitAndClick();
-    if (this.inspectConfirmButton.isDisplayed()) {
-      this.inspectConfirmButton.waitForDisplayed();
-    } else {
-      this.inspectNextButton.waitAndClick();
-      this.inspectConfirmButton.waitForDisplayed();
-    }
+    $('p=Step 1 of 4').waitForDisplayed();
+    this.inspectNextButton.click();
+    $('p=Step 2 of 4').waitForDisplayed();
+    this.inspectNextButton.click();
+    $('p=Step 3 of 4').waitForDisplayed();
+    this.inspectNextButton.click();
+    $('p=Step 4 of 4').waitForDisplayed();
+    this.inspectConfirmButton.waitForDisplayed();
   }
 
   gotoPendingListingPage (pendingListingId) {
