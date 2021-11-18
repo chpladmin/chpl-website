@@ -4,6 +4,7 @@ import {
   IconButton,
   InputBase,
   InputAdornment,
+  Tooltip,
   makeStyles,
 } from '@material-ui/core';
 import { string } from 'prop-types';
@@ -12,6 +13,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 import { useFilterContext } from './filter-context';
 
+import { ChplTooltip } from '../util';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -81,11 +83,13 @@ function ChplFilterSearchTerm(props) {
             inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
             endAdornment={(
               <InputAdornment position="start">
+            <ChplTooltip title="Clear">
                 <IconButton
                   onClick={handleClear}
                 >
                   <ClearIcon />
                 </IconButton>
+            </ChplTooltip>
               </InputAdornment>
             )}
           />
