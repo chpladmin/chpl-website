@@ -44,7 +44,7 @@ function ChplUserView(props) {
 
   useEffect(() => {
     setUser(props.user);
-  }, [props.user]);
+  }, [props.user]); // eslint-disable-line react/destructuring-assignment
 
   const edit = () => {
     props.dispatch('edit', user);
@@ -66,6 +66,16 @@ function ChplUserView(props) {
         <CardContent className={classes.content}>
           <div>
             <Typography>
+              {user.email
+               && (
+                 <>
+                   <strong>Email:</strong>
+                   <br />
+                   {user.email}
+                 </>
+               )}
+            </Typography>
+            <Typography>
               {user.title
                && (
                  <>
@@ -82,16 +92,6 @@ function ChplUserView(props) {
                    <strong>Phone Number:</strong>
                    <br />
                    {user.phoneNumber}
-                 </>
-               )}
-            </Typography>
-            <Typography>
-              {user.email
-               && (
-                 <>
-                   <strong>Email:</strong>
-                   <br />
-                   {user.email}
                  </>
                )}
             </Typography>
@@ -116,10 +116,14 @@ function ChplUserView(props) {
                )}
             </Typography>
             <Typography>
-              {user.organizations && user.organizations.length > 0
+              {user.organizations?.length > 0
                && (
                  <>
-                   <strong>Organization:</strong>
+                   <strong>
+                     Organization
+                     {user.organizations.length !== 1 ? 's' : ''}
+                     :
+                   </strong>
                    <br />
                    {user.organizations.map((org) => (org.name)).join('; ')}
                  </>
