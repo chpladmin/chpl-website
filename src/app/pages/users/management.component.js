@@ -25,7 +25,8 @@ const UserManagementComponent = {
 
     $onChanges(changes) {
       if (changes.users.currentValue) {
-        this.users = angular.copy(changes.users.currentValue.users);
+        this.users = changes.users.currentValue.users
+          .filter((user) => !['ROLE_ACB', 'ROLE_ATL', 'ROLE_DEVELOPER'].includes(user.role));
       }
     }
 
