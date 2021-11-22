@@ -2,7 +2,9 @@ class UsersComponent {
   constructor() {
     this.elements = {
       demographicPanel: 'div:nth-child(2)',
+      buttonsPanel: 'div:nth-child(3)',
       demographics: 'p',
+      title: '#title',
     };
   }
 
@@ -10,6 +12,31 @@ class UsersComponent {
     return $(`div[title="${name} Information"]`)
       .$(this.elements.demographicPanel)
       .$$(this.elements.demographics);
+  }
+
+  editUser(name) {
+    $(`div[title="${name} Information"]`).scrollIntoView({ block: 'center', inline: 'center' });
+    $(`div[title="${name} Information"]`)
+      .$(this.elements.buttonsPanel)
+      .$(`button[title="Edit ${name}"]`)
+      .click();
+  }
+
+  setTitle(title) {
+    $(this.elements.title).clearValue();
+    $(this.elements.title).setValue(title);
+  }
+
+  getTitle(name) {
+    return this.getUserDemographics(name)
+      .map((item) => {
+        const data = item.getText().split('\n');
+        return {
+          key: data[0],
+          value: data[1],
+        };
+      })
+      .find((item) => item.key === 'Title:')?.value;
   }
 }
 
