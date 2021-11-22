@@ -75,36 +75,30 @@ function ChplUserView(props) {
                  </>
                )}
             </Typography>
-            <Typography>
-              {user.title
-               && (
-                 <>
-                   <strong>Title:</strong>
-                   <br />
-                   {user.title}
-                 </>
-               )}
-            </Typography>
-            <Typography>
-              {user.phoneNumber
-               && (
-                 <>
-                   <strong>Phone Number:</strong>
-                   <br />
-                   {user.phoneNumber}
-                 </>
-               )}
-            </Typography>
-            <Typography>
-              {user.subjectName
-               && (
-                 <>
-                   <strong>User Name:</strong>
-                   <br />
-                   {user.subjectName}
-                 </>
-               )}
-            </Typography>
+            {user.title
+             && (
+               <Typography>
+                 <strong>Title:</strong>
+                 <br />
+                 {user.title}
+               </Typography>
+             )}
+            {user.phoneNumber
+             && (
+               <Typography>
+                 <strong>Phone Number:</strong>
+                 <br />
+                 {user.phoneNumber}
+               </Typography>
+             )}
+            {user.subjectName
+             && (
+               <Typography>
+                 <strong>User Name:</strong>
+                 <br />
+                 {user.subjectName}
+               </Typography>
+             )}
             <Typography>
               {user.role
                && (
@@ -115,20 +109,18 @@ function ChplUserView(props) {
                  </>
                )}
             </Typography>
-            <Typography>
-              {user.organizations?.length > 0
-               && (
-                 <>
-                   <strong>
-                     Organization
-                     {user.organizations.length !== 1 ? 's' : ''}
-                     :
-                   </strong>
-                   <br />
-                   {user.organizations.map((org) => (org.name)).join('; ')}
-                 </>
-               )}
-            </Typography>
+            {user.organizations?.length > 0
+             && (
+               <Typography>
+                 <strong>
+                   Organization
+                   {user.organizations.length !== 1 ? 's' : ''}
+                   :
+                 </strong>
+                 <br />
+                 {user.organizations.map((org) => (org.name)).join('; ')}
+               </Typography>
+             )}
           </div>
           <div>
             <Typography>
