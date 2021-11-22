@@ -5,6 +5,7 @@ class UsersComponent {
       buttonsPanel: 'div:nth-child(3)',
       demographics: 'p',
       title: '#title',
+      phoneNumber: '#phone-number',
     };
   }
 
@@ -23,11 +24,18 @@ class UsersComponent {
   }
 
   setTitle(title) {
-    $(this.elements.title).clearValue();
+    $(this.elements.title).click();
+    browser.keys(['Control', 'a', 'Delete']);
     $(this.elements.title).setValue(title);
   }
 
-  getTitle(name) {
+  setPhoneNumber(phoneNumber) {
+    $(this.elements.phoneNumber).click();
+    browser.keys(['Control', 'a', 'Delete']);
+    $(this.elements.phoneNumber).setValue(phoneNumber);
+  }
+
+  getDemographic(name, demo) {
     return this.getUserDemographics(name)
       .map((item) => {
         const data = item.getText().split('\n');
@@ -36,7 +44,7 @@ class UsersComponent {
           value: data[1],
         };
       })
-      .find((item) => item.key === 'Title:')?.value;
+      .find((item) => item.key === demo)?.value;
   }
 }
 
