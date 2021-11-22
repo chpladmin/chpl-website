@@ -20,26 +20,26 @@ describe('the users cards', () => {
   });
 
   it('should allow editing of the title', () => {
-    const user = 'AQA ONC Staff';
-    const initialTitle = component.getDemographic(user, 'Title:');
-    component.editUser(user);
+    const element = component.getComponent('AQA ONC Staff');
+    const initialTitle = component.getDemographic(element, 'Title:');
+    component.editUser(element);
     const title = `M. ${Date.now()}`;
     component.setDemographic(title, 'title');
     actionBar.save();
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil(() => component.getDemographic(user, 'Title:') !== initialTitle);
-    expect(component.getDemographic(user, 'Title:')).toBe(title);
+    browser.waitUntil(() => component.getDemographic(element, 'Title:') !== initialTitle);
+    expect(component.getDemographic(element, 'Title:')).toBe(title);
   });
 
   it('should allow editing of the phone number', () => {
-    const user = 'AQA ONC Staff';
-    const initialNumber = component.getDemographic(user, 'Phone Number:');
-    component.editUser(user);
+    const element = component.getComponent('AQA ONC Staff');
+    const initialNumber = component.getDemographic(element, 'Phone Number:');
+    component.editUser(element);
     const number = `${Date.now() % 10000000}`;
     component.setDemographic(number, 'phoneNumber');
     actionBar.save();
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil(() => component.getDemographic(user, 'Phone Number:') !== initialNumber);
-    expect(component.getDemographic(user, 'Phone Number:')).toBe(number);
+    browser.waitUntil(() => component.getDemographic(element, 'Phone Number:') !== initialNumber);
+    expect(component.getDemographic(element, 'Phone Number:')).toBe(number);
   });
 });
