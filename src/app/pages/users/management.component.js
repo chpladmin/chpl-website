@@ -67,7 +67,8 @@ const UserManagementComponent = {
         case 'refresh':
           this.networkService.getUsers()
             .then((response) => {
-              that.users = response.users;
+              that.users = response.users
+                .filter((user) => !['ROLE_ACB', 'ROLE_ATL', 'ROLE_DEVELOPER'].includes(user.role));
             });
           break;
         case 'impersonate':
