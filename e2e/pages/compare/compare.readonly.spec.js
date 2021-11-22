@@ -31,7 +31,7 @@ describe('on compare page after clicking show all-', () => {
     });
 
     it('should correctly display the retired criteria number/title', () => {
-      expect(page.getCellWithCriteriaNumber('170.315 (a)(10)').getText()).toContain('Removed | 170.315 (a)(10): Drug-Formulary and Preferred Drug List Checks');
+      expect(page.getCellWithCriteriaNumber('170.315 (a)(6)').getText()).toContain('Removed | 170.315 (a)(6): Problem List');
     });
   });
 

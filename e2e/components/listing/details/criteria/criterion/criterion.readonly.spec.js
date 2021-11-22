@@ -30,7 +30,7 @@ describe('the Criterion Component', () => {
   });
 
   it('should display removed criteria title correctly', () => {
-    const header = criterion.criterionHeader('170.315 (a)(10)', 10);
+    const header = criterion.criterionHeader('170.315 (a)(6)', 6);
     expect(header.getText().toUpperCase()).toContain('REMOVED');
   });
 });
