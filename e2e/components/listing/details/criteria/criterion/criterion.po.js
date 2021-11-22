@@ -1,24 +1,24 @@
 class CriterionComponent {
   constructor() {
-    this.originalElements = {};
-    this.updatedElements = {};
-
-    const ORIGINAL = 'ORIGINAL';
-    const UPDATED = 'UPDATED';
+    this.elements = {
+      uiFlagOnElement: 'chpl-certification-criteria',
+    };
   }
 
-  criterionHeader(criteriaNumber) {
-    if (this.uiVersion() === this.ORIGINAL) {
-      return $(`//*[@id="criteria_${criteriaNumber}_details_header"]`).$('.criteria-title').getText();
+  criterionHeader(criteriaNumber, id) {
+    const flag = this.isUiUpgradeFlagOn();
+    if (flag) {
+      return $(`//*[@id="criterion-id-${id}-header"]`).$('h6');
     }
-    return null;
+    return $(`//*[@id="criteria_${criteriaNumber}_details_header"]`).$('.criteria-title');
   }
 
-  uiVersion() {
-    if (!$('chpl-certification-criteria').isExisting()) {
-      return this.UPDATED;
+  isUiUpgradeFlagOn() {
+    const canaryElelment = $(this.elements.uiFlagOnElement);
+    if (canaryElelment?.isExisting) {
+      return !canaryElelment.isExisting();
     }
-    return this.ORIGINAL;
+    return false;
   }
 }
 
