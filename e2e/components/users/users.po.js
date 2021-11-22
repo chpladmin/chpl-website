@@ -23,16 +23,10 @@ class UsersComponent {
       .click();
   }
 
-  setTitle(title) {
-    $(this.elements.title).click();
+  setDemographic(value, demo) {
+    $(this.elements[demo]).click();
     browser.keys(['Control', 'a', 'Delete']);
-    $(this.elements.title).setValue(title);
-  }
-
-  setPhoneNumber(phoneNumber) {
-    $(this.elements.phoneNumber).click();
-    browser.keys(['Control', 'a', 'Delete']);
-    $(this.elements.phoneNumber).setValue(phoneNumber);
+    $(this.elements[demo]).setValue(value);
   }
 
   getDemographic(name, demo) {

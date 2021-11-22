@@ -24,7 +24,7 @@ describe('the users cards', () => {
     const initialTitle = component.getDemographic(user, 'Title:');
     component.editUser(user);
     const title = `M. ${Date.now()}`;
-    component.setTitle(title);
+    component.setDemographic(title, 'title');
     actionBar.save();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil(() => component.getDemographic(user, 'Title:') !== initialTitle);
@@ -36,7 +36,7 @@ describe('the users cards', () => {
     const initialNumber = component.getDemographic(user, 'Phone Number:');
     component.editUser(user);
     const number = `${Date.now() % 10000000}`;
-    component.setPhoneNumber(number);
+    component.setDemographic(number, 'phoneNumber');
     actionBar.save();
     hooks.waitForSpinnerToDisappear();
     browser.waitUntil(() => component.getDemographic(user, 'Phone Number:') !== initialNumber);
