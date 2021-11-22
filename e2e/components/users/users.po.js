@@ -9,6 +9,20 @@ class UsersComponent {
     };
   }
 
+  getRole(element) {
+    return element
+      .$(this.elements.demographicPanel)
+      .$$(this.elements.demographics)
+      .map((item) => {
+        const data = item.getText().split('\n');
+        return {
+          key: data[0],
+          value: data[1],
+        };
+      })
+      .find((item) => item.key === 'Role:').value;
+  }
+
   getUserDemographics(name) {
     return $(`div[title="${name} Information"]`)
       .$(this.elements.demographicPanel)
