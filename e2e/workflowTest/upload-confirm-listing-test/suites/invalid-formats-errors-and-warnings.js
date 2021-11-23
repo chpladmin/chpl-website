@@ -21,8 +21,8 @@ const suite = {
       'The ONC-ACB test� is not valid.',
     ],
     expectedWarnings: [
-      'An unrecognized character was found for ACB Name \'test©\'. Please check the input data.',
-      'An unrecognized character was found for ACB Certification ID \'15.04.04.©.AQA22.V1.00.0.200707\'. Please check the input data.',
+      'An unrecognized character was found for ACB Name \'test�\'. Please check the input data.',
+      'An unrecognized character was found for ACB Certification ID \'15.04.04.�.AQA22.V1.00.0.200707\'. Please check the input data.',
     ],
   }, {
     listingId: '15.02.04.2701.REQ1.12.01.1.200620',
