@@ -39,6 +39,7 @@ function ChplLoginToggle() {
   } = useContext(UserContext);
   /* eslint-enable react/destructuring-assignment */
   const classes = useStyles();
+
   const handleClick = (e) => {
     setAnchor(e.currentTarget);
     setOpen(true);
