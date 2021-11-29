@@ -66,13 +66,14 @@ const DeveloperViewComponent = {
 
     can(action) {
       if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
-      if (action === 'displayAttestations') { return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('role-developer') && this.featureFlags.isOn('attestations') && this.hasAnyRole(['ROLE_DEVELOPER']); }
-      if (action === 'manageTracking' && !this.hasAnyRole(['ROLE_DEVELOPER'])) { return false; } // only DEVELOPER can manage tracking
+      if (action === 'displayAttestations') { return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('attestations') && this.hasAnyRole(['ROLE_DEVELOPER']); }
+      if (action === 'manageTracking') { return this.featureFlags.isOn('change-request') && this.hasAnyRole(['ROLE_DEVELOPER']); } // only DEVELOPER can manage tracking
       if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
       if (action === 'merge') { return false; } // if not above roles, can't merge
       if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
-      return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); // must be active
+      if (action === 'edit' && this.featureFlags.isOn('demographic-change-request')) { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_DEVELOPER']); } // Developer can only edit based on flag
+      return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
     }
 
     cancel() {
