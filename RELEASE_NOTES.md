@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.24.0
+_29 November 2021_
+
+### Features
+* Add "Real World Testing" collections page
+
+---
+
 ## Version 11.23.0
 _15 November 2021_
 
