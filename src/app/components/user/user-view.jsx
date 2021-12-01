@@ -44,7 +44,7 @@ function ChplUserView(props) {
 
   useEffect(() => {
     setUser(props.user);
-  }, [props.user]);
+  }, [props.user]); // eslint-disable-line react/destructuring-assignment
 
   const edit = () => {
     props.dispatch('edit', user);
@@ -66,26 +66,6 @@ function ChplUserView(props) {
         <CardContent className={classes.content}>
           <div>
             <Typography>
-              {user.title
-               && (
-                 <>
-                   <strong>Title:</strong>
-                   <br />
-                   {user.title}
-                 </>
-               )}
-            </Typography>
-            <Typography>
-              {user.phoneNumber
-               && (
-                 <>
-                   <strong>Phone Number:</strong>
-                   <br />
-                   {user.phoneNumber}
-                 </>
-               )}
-            </Typography>
-            <Typography>
               {user.email
                && (
                  <>
@@ -95,16 +75,30 @@ function ChplUserView(props) {
                  </>
                )}
             </Typography>
-            <Typography>
-              {user.subjectName
-               && (
-                 <>
-                   <strong>User Name:</strong>
-                   <br />
-                   {user.subjectName}
-                 </>
-               )}
-            </Typography>
+            {user.title
+             && (
+               <Typography>
+                 <strong>Title:</strong>
+                 <br />
+                 {user.title}
+               </Typography>
+             )}
+            {user.phoneNumber
+             && (
+               <Typography>
+                 <strong>Phone Number:</strong>
+                 <br />
+                 {user.phoneNumber}
+               </Typography>
+             )}
+            {user.subjectName
+             && (
+               <Typography>
+                 <strong>User Name:</strong>
+                 <br />
+                 {user.subjectName}
+               </Typography>
+             )}
             <Typography>
               {user.role
                && (
@@ -115,16 +109,18 @@ function ChplUserView(props) {
                  </>
                )}
             </Typography>
-            <Typography>
-              {user.organizations && user.organizations.length > 0
-               && (
-                 <>
-                   <strong>Organization:</strong>
-                   <br />
-                   {user.organizations.map((org) => (org.name)).join('; ')}
-                 </>
-               )}
-            </Typography>
+            {user.organizations?.length > 0
+             && (
+               <Typography>
+                 <strong>
+                   Organization
+                   {user.organizations.length !== 1 ? 's' : ''}
+                   :
+                 </strong>
+                 <br />
+                 {user.organizations.map((org) => (org.name)).join('; ')}
+               </Typography>
+             )}
           </div>
           <div>
             <Typography>
