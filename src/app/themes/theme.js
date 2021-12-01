@@ -265,6 +265,11 @@ const theme = createTheme({
         position: 'inherit',
         color: '#156dac',
       },
+      select: {
+        '&:focus': {
+          backgroundColor: '#fff',
+        },
+      },
     },
     MuiTable: {
       root: {
@@ -362,6 +367,35 @@ const theme = createTheme({
       },
       inputMultiline: {
         height: '256px',
+      },
+    },
+    MuiStepLabel: {
+      root: {
+        flexDirection: 'column',
+      },
+      label: {
+        fontWeight: '500',
+        '&$active': {
+          fontWeight: '600',
+        },
+      },
+      iconContainer: {
+        paddingRight: '0',
+      },
+    },
+    MuiStepIcon: {
+      root: {
+        fontSize: '1.7em',
+        '&$active': {
+          boxShadow: '1px 0px 4px 4px #156dac50',
+          borderRadius: '64px',
+        },
+        '&$completed': {
+          color: '#356635',
+        },
+      },
+      text: {
+        fontSize: '1rem',
       },
     },
   },

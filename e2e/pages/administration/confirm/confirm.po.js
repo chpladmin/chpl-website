@@ -7,9 +7,10 @@ const confirmElements = {
   warningCheckbox: '#acknowledge-warnings',
   confirmButton: '#inspect-confirm',
   rejectButtonOnInspectListing: '#inspect-reject',
+  actionBarMessages: '#action-bar-messages',
   errorMessage: '.bg-danger',
-  errorOnInspect: '.action-bar__error-messages > li',
-  warningOnInspect: '.action-bar__warning-messages > li',
+  errorOnInspect: '#action-bar-errors > li',
+  warningOnInspect: '#action-bar-warnings > li',
 };
 
 class ConfirmPage {
@@ -65,15 +66,14 @@ class ConfirmPage {
 
   gotoConfirmListingPage (inspectListingId ) {
     $('//button[@id="process-pending-listing-' + inspectListingId + '"]').click();
-    this.inspectNextButton.waitAndClick();
-    this.inspectNextButton.waitAndClick();
-    this.inspectNextButton.waitAndClick();
-    if (this.inspectConfirmButton.isDisplayed()) {
-      this.inspectConfirmButton.waitForDisplayed();
-    } else {
-      this.inspectNextButton.waitAndClick();
-      this.inspectConfirmButton.waitForDisplayed();
-    }
+    $('p=Step 1 of 4').waitForDisplayed();
+    this.inspectNextButton.click();
+    $('p=Step 2 of 4').waitForDisplayed();
+    this.inspectNextButton.click();
+    $('p=Step 3 of 4').waitForDisplayed();
+    this.inspectNextButton.click();
+    $('p=Step 4 of 4').waitForDisplayed();
+    this.inspectConfirmButton.waitForDisplayed();
   }
 
   gotoPendingListingPage (pendingListingId) {
@@ -109,9 +109,8 @@ class ConfirmPage {
   }
 
   waitForBarMessages () {
-    $('.action-bar__messages').waitForDisplayed();
+    $(confirmElements.actionBarMessages).waitForDisplayed();
   }
-
 }
 
 export default ConfirmPage;
