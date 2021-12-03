@@ -15,9 +15,7 @@
   <div>
     {{ item.measureType.name }}
   </div>
-  <div>
-    {{ item.displayCriteria }}
-  </div>
+  <div ng-bind-html="item.displayCriteria"></div>
   <div class="manage-list__item--end" ng-repeat-end>
     <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem(item)"><i class="fa fa-times"></i></button>
   </div>
