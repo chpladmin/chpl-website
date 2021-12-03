@@ -1,54 +1,65 @@
 <div class="listing-inspect">
   <div ng-switch="$ctrl.stage" class="listing-inspect__header">
-    <div>
+    <div class="listing-inspect__subheader">
       <h1 ng-switch-when="developer">Developer</h1>
       <h1 ng-switch-when="product">Product</h1>
       <h1 ng-switch-when="version">Version</h1>
       <h1 ng-switch-when="listing">Listing</h1>
-      <h2>Inspecting Listing: {{ $ctrl.listing.chplProductNumber }}</h2>
-    </div>
+      <div>
+        <p class="listing-inspect__text">
+          <strong>Inspecting Listing:</strong>
+          <span>
+            <p>{{ $ctrl.listing.chplProductNumber }}</p>
+          </span>
+        </p>
+      </div>
+      </div>
     <div>
       <chpl-confirm-progress-bridge
         value="$ctrl.progress"
+        can-next="$ctrl.canAct('next')"
+        can-previous="$ctrl.canAct('previous')"
+        dispatch="::$ctrl.handleProgressDispatch"
         ></chpl-confirm-progress-bridge>
     </div>
   </div>
   <div ng-switch="$ctrl.stage" ng-form="$ctrl.form">
     <div ng-switch-when="developer">
       <chpl-confirm-developer-bridge
-        developer="$ctrl.uploaded.developer"
+        developer="$ctrl.staged"
         developers="$ctrl.developers"
         dispatch="::$ctrl.handleDeveloperDispatch"
         ></chpl-confirm-developer-bridge>
     </div>
     <div ng-switch-when="product">
       <chpl-confirm-product-bridge
-        product="$ctrl.uploaded.product"
+        product="$ctrl.staged"
         products="$ctrl.products"
         dispatch="::$ctrl.handleProductDispatch"
         ></chpl-confirm-product-bridge>
     </div>
     <div ng-switch-when="version">
       <chpl-confirm-version-bridge
-        version="$ctrl.uploaded.version"
+        version="$ctrl.staged"
         versions="$ctrl.versions"
         dispatch="::$ctrl.handleVersionDispatch"
         ></chpl-confirm-version-bridge>
     </div>
     <div ng-switch-when="listing">
       <chpl-inspect-listing
-        listing="$ctrl.uploaded"
-        on-change="$ctrl.editListing(listing)"
+        listing="$ctrl.pending"
+        on-change="$ctrl.handleListing(action, data)"
         resources="$ctrl.resources"
         ></chpl-inspect-listing>
     </div>
   </div>
-  <chpl-wizard-bar-bridge
-    can-confirm="$ctrl.canAct('confirm')"
-    can-next="$ctrl.canAct('next')"
-    can-previous="$ctrl.canAct('previous')"
+  <chpl-action-bar-bridge
+    ng-if="!$ctrl.isEditing"
+    can-confirm="true"
+    can-reject="true"
+    is-disabled="!$ctrl.canAct('confirm')"
     errors="$ctrl.listing.errorMessages"
     warnings="$ctrl.listing.warningMessages"
-    dispatch="::$ctrl.handleWizardDispatch">
-  </chpl-wizard-bar-bridge>
+    dispatch="::$ctrl.handleActionDispatch">
+  </chpl-action-bar-bridge>
 </div>

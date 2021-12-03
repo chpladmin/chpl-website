@@ -50,6 +50,15 @@ class UploadListingComponent {
     browser.waitUntil( () => this.listingUploadText.isDisplayed());
   }
 
+  uploadFileAndWaitForListingsToBeProcessed (filename, listingIds, toast, hooks, confirmPage) {
+    this.uploadListingBeta(filename);
+    browser.waitUntil(() => toast.toastTitle.isDisplayed());
+    toast.clearAllToast();
+    hooks.open('#/administration/confirm/listings');
+    listingIds.forEach((listingId) => {
+      confirmPage.waitForPendingListingToBecomeClickable(listingId);
+    });
+  }
 }
 
 export default UploadListingComponent;
