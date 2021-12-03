@@ -6,7 +6,7 @@ export const G1G2EditComponent = {
     onChange: '&',
   },
   controller: class G1G2EditComponent {
-    constructor ($log, ManageList, utilService) {
+    constructor($log, ManageList, utilService) {
       'ngInject';
       this.$log = $log;
       this.ManageList = ManageList;
@@ -14,11 +14,11 @@ export const G1G2EditComponent = {
       this.allowedMeasures = [];
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.measures && changes.measures.currentValue) {
         this.measures = changes.measures.currentValue
           .map(m => {
-            m.displayCriteria = [... new Set(m.associatedCriteria.map(c => c.number))]
+            m.displayCriteria = [... new Set(m.associatedCriteria.map(c => (c.removed ? 'Removed | ' : '') + c.number))]
               .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
               .join('; ');
             return m;
@@ -32,7 +32,7 @@ export const G1G2EditComponent = {
             if (m.removed) {
               m.displayName = 'Removed | ' + m.displayName;
             }
-            m.displayCriteria = [... new Set(m.allowedCriteria.map(c => c.number))]
+            m.displayCriteria = [... new Set(m.allowedCriteria.map(c => (c.removed ? 'Removed | ' : '') + c.number))]
               .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b));
             return m;
           })
@@ -48,25 +48,25 @@ export const G1G2EditComponent = {
       }
     }
 
-    $onDestroy () {
+    $onDestroy() {
       this.ManageList.cancel('measures');
     }
 
-    cancelNewItem (type) {
+    cancelNewItem(type) {
       this.ManageList.cancel(type);
       this.allowedMeasures = [];
     }
 
-    clearCriteria () {
+    clearCriteria() {
       this.ManageList.newItem['measures'].criteria = {};
     }
 
-    measureSort (a, b) {
+    measureSort(a, b) {
       if (!a.measureType) {
-        a = {measureType: 0, measure: a};
+        a = { measureType: 0, measure: a };
       }
       if (!b.measureType) {
-        b = {measureType: 0, measure: b};
+        b = { measureType: 0, measure: b };
       }
       if (!a.measure.id || !b.measure.id) {
         return a.measure.id ? 1 : -1;
@@ -74,32 +74,32 @@ export const G1G2EditComponent = {
       let getNum = test => parseInt(test.substring(2), 10);
       return a.measure.removed !== b.measure.removed ? (a.measure.removed ? 1 : -1) :
         a.measureType.name < b.measureType.name ? -1 : a.measureType.name > b.measureType.name ? 1 :
-        getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1 :
-        a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
-        a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1 :
-        0;
+          getNum(a.measure.abbreviation) < getNum(b.measure.abbreviation) ? -1 : getNum(a.measure.abbreviation) > getNum(b.measure.abbreviation) ? 1 :
+            a.measure.domain.name < b.measure.domain.name ? -1 : a.measure.domain.name > b.measure.domain.name ? 1 :
+              a.measure.name < b.measure.name ? -1 : a.measure.name > b.measure.name ? 1 :
+                0;
     }
 
-    readyForAdd () {
+    readyForAdd() {
       return this.ManageList.newItem['measures']
-                && this.ManageList.newItem['measures'].selectedAbbreviation
-                && this.ManageList.newItem['measures'].measure
-                && this.ManageList.newItem['measures'].typeName
-                && (!this.ManageList.newItem['measures'].measure.requiresCriteriaSelection
-                    || (this.ManageList.newItem['measures'].selectedCriteria
-                        && Object.keys(this.ManageList.newItem['measures'].selectedCriteria).filter(key => this.ManageList.newItem['measures'].selectedCriteria[key].selected).length > 0));
+        && this.ManageList.newItem['measures'].selectedAbbreviation
+        && this.ManageList.newItem['measures'].measure
+        && this.ManageList.newItem['measures'].typeName
+        && (!this.ManageList.newItem['measures'].measure.requiresCriteriaSelection
+          || (this.ManageList.newItem['measures'].selectedCriteria
+            && Object.keys(this.ManageList.newItem['measures'].selectedCriteria).filter(key => this.ManageList.newItem['measures'].selectedCriteria[key].selected).length > 0));
     }
 
-    removeItem (item) {
+    removeItem(item) {
       this.measures = this.measures
         .filter(m => !(m.id === item.id
-                               && m.measureType.name === item.measureType.name
-                               && m.measure.name === item.measure.name
-                               && m.displayCriteria === item.displayCriteria));
+          && m.measureType.name === item.measureType.name
+          && m.measure.name === item.measure.name
+          && m.displayCriteria === item.displayCriteria));
       this.update();
     }
 
-    saveNewItem () {
+    saveNewItem() {
       let type = 'measures';
       let create = object => ({
         measure: object.measure,
@@ -119,17 +119,17 @@ export const G1G2EditComponent = {
       this.update();
     }
 
-    testSort (first, second) {
+    testSort(first, second) {
       let a = parseInt(first.substring(2), 10);
       let b = parseInt(second.substring(2), 10);
       return a - b;
     }
 
-    update () {
-      this.onChange({measures: this.measures});
+    update() {
+      this.onChange({ measures: this.measures });
     }
 
-    updateAllowedMeasures () {
+    updateAllowedMeasures() {
       this.allowedMeasures = this.allMeasures.filter(m => m.abbreviation === this.ManageList.newItem['measures'].selectedAbbreviation);
       this.clearCriteria();
     }
