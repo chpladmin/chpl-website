@@ -39,7 +39,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     padding: '16px 0',
   },
-  actionBarError: {
+  actionBarErrors: {
     color: '#1c1c1c',
     backgroundColor: '#c44f6530',
     maxHeight: '30vh',
@@ -65,6 +65,7 @@ const useStyles = makeStyles(() => ({
     maxHeight: '30vh',
     padding: '16px',
     boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    overflowY: 'auto',
   },
   deleteButton: {
     backgroundColor: '#c44f65',
@@ -185,7 +186,7 @@ function ChplActionBar(props) {
               <div id="action-bar-messages" className={classes.actionBarMessages}>
                 { errors && errors.length > 0
                   && (
-                    <div className={classes.actionBarError}>
+                    <div className={classes.actionBarErrors}>
                       <strong>
                         Error
                         { errors.length > 1 && 's'}
