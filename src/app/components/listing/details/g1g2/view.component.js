@@ -39,7 +39,7 @@ export const G1G2ViewComponent = {
       if (criterion.removed) {
         return `<span class="removed"> Removed | ${criterion.number}</span>`;
       } else {
-        return `<span>${criterion.number}</span>`;
+        return criterion.number;
       }
     }
   },
