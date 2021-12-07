@@ -14,9 +14,9 @@ export const G1G2ViewComponent = {
       if (changes.measures && changes.measures.currentValue) {
         this.measures = changes.measures.currentValue
           .map(m => {
-            m.displayCriteria = m.associatedCriteria
+            m.displayCriteria = [... new Set(m.associatedCriteria
               .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
-              .map(c => this.wrapCriterionDisplayInSpan(c))
+              .map(c => this.wrapCriterionDisplayInSpan(c)))]
               .join('; ');
             return m;
           })

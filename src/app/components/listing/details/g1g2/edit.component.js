@@ -18,9 +18,9 @@ export const G1G2EditComponent = {
       if (changes.measures && changes.measures.currentValue) {
         this.measures = changes.measures.currentValue
           .map(m => {
-            m.displayCriteria = m.associatedCriteria
+            m.displayCriteria = [... new Set(m.associatedCriteria
               .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
-              .map(c => this.wrapCriterionDisplayInSpan(c))
+              .map(c => this.wrapCriterionDisplayInSpan(c)))]
               .join('; ');
             return m;
           })
@@ -33,8 +33,9 @@ export const G1G2EditComponent = {
             if (m.removed) {
               m.displayName = 'Removed | ' + m.displayName;
             }
-            m.displayCriteria = [... new Set(m.allowedCriteria.map(c => (c.removed ? 'Removed | ' : '') + c.number))]
-              .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b));
+            m.displayCriteria = [... new Set(m.allowedCriteria
+              .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
+              .map(c => this.wrapCriterionDisplayInSpan(c)))]
             return m;
           })
           .sort((a, b) => this.measureSort(a, b));
