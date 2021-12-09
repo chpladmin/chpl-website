@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   CardContent,
+  CardHeader,
   Container,
   Divider,
   FormControlLabel,
-  Grid,
   MenuItem,
-  Paper,
   Switch,
   ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -22,6 +25,82 @@ import { ChplTextField } from '../../util';
 
 import ChplConfirmDeveloperAddress from './address';
 import ChplConfirmDeveloperContact from './contact';
+
+const useStyles = makeStyles(() => ({
+  buttonCard: {
+    padding: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#f5f9fd',
+    whiteSpace: 'pre-wrap',
+  },
+  buttonCardFocused: {
+    boxShadow: '0px 0px 16px 4px #337ab750',
+    fontWeight: '600',
+  },
+  buttonContent: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    whiteSpace: 'pre-wrap',
+  },
+  developerConfirm: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '32px',
+    padding: '32px',
+    alignItems: 'start',
+  },
+  developerSubContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr auto 1fr',
+    alignItems: 'self-start',
+    textAlign: 'center',
+    gap: '32px',
+  },
+  developerInfo: {
+    display: 'grid',
+    gap: '16px',
+    flexDirection: 'row',
+    gridTemplateColumns: '1fr 1fr',
+  },
+  extraLargeIcons: {
+    marginBottom: '8px',
+    fontSize: '2em',
+  },
+  formContainer: {
+    display: 'flex',
+    gap: '16px',
+    flexDirection: 'column',
+  },
+  formSubContainer: {
+    display: 'grid',
+    gap: '16px',
+    flexDirection: 'row',
+    gridTemplateColumns: '1fr',
+  },
+  orContainer: {
+    display: 'flex',
+    gap: '4px',
+    flexDirection: 'column',
+    paddingTop: '32px',
+  },
+  rejectButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
+  selectedDeveloper: {
+    fontWeight: '100',
+    paddingTop: '8px',
+  },
+  verticalDivider: {
+    height: '25%',
+  },
+}));
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -66,13 +145,15 @@ function ChplConfirmDeveloper(props) {
 
   let formik;
 
-  const handleCreationToggle = () => {
-    if (isCreating) {
-      props.dispatch('select', selectedDeveloper);
-    } else {
-      formik.handleSubmit();
+  const handleCreationToggle = (creating) => {
+    if (isCreating !== creating) {
+      if (isCreating) {
+        props.dispatch('select', selectedDeveloper);
+      } else {
+        formik.handleSubmit();
+      }
+      setIsCreating(creating);
     }
-    setIsCreating(!isCreating);
   };
 
   const handleChange = (...args) => {
@@ -84,6 +165,8 @@ function ChplConfirmDeveloper(props) {
     props.dispatch('select', event.target.value);
     setSelectedDeveloper(event.target.value);
   };
+
+  const classes = useStyles();
 
   const submit = () => {
     props.dispatch('edit', {
@@ -127,139 +210,139 @@ function ChplConfirmDeveloper(props) {
       submit();
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnMount: true,
   });
 
   return (
     <ThemeProvider theme={theme}>
-      <Paper>
-        <form noValidate>
-          <Container>
-            <Card>
-              <CardContent>
-                <Grid container spacing={4}>
-                  <Grid item xs={4}>
-                    Create a developer
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Switch
-                      id="create-toggle"
-                      name="createDeveloper"
-                      color="primary"
-                      checked={!isCreating}
-                      onChange={handleCreationToggle}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    { selectedDeveloper
-                      ? (
-                        <>
-                          Use
-                          {' '}
-                          { selectedDeveloper.name }
-                        </>
-                      ) : (
-                        <>
-                          Choose a developer to use
-                        </>
-                      )}
-                  </Grid>
-                </Grid>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle1">
-                      Developer Information
-                    </Typography>
-                    <Divider />
-                  </Grid>
-                  { isCreating
-                    ? (
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
-                          <ChplTextField
-                            id="name"
-                            name="name"
-                            label="Developer Name"
-                            value={formik.values.name}
-                            error={formik.touched.name && !!formik.errors.name}
-                            helperText={formik.touched.name && formik.errors.name}
-                            onChange={handleChange}
-                            onBlur={formik.handleBlur}
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <FormControlLabel
-                            label={`Self-Developer (${formik.values.selfDeveloper ? 'Yes' : 'No'})`}
-                            control={(
-                              <Switch
-                                id="self-developer"
-                                name="selfDeveloper"
-                                color="primary"
-                                checked={formik.values.selfDeveloper}
-                                onChange={handleChange}
-                              />
-                            )}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <ChplTextField
-                            id="website"
-                            name="website"
-                            label="Website"
-                            value={formik.values.website}
-                            error={formik.touched.website && !!formik.errors.website}
-                            helperText={formik.touched.website && formik.errors.website}
-                            onChange={handleChange}
-                            onBlur={formik.handleBlur}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <ChplConfirmDeveloperAddress
-                            address={developer.address}
-                            editing
-                            formik={formik}
-                            handleChange={handleChange}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <ChplConfirmDeveloperContact
-                            contact={developer.contact}
-                            editing
-                            formik={formik}
-                            handleChange={handleChange}
-                          />
-                        </Grid>
-                      </Grid>
-                    )
-                    : (
-                      <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                          <ChplTextField
-                            select
-                            id="selected-developer"
-                            name="selectedDeveloper"
-                            label="Select a Developer"
-                            required
-                            value={selectedDeveloper}
-                            onChange={handleSelectOnChange}
-                          >
-                            { developers.map((item) => (
-                              <MenuItem value={item} key={item.developerId}>
-                                { item.name }
-                                { item.developerCode && (` (Developer Code: ${item.developerCode})`) }
-                              </MenuItem>
-                            ))}
-                          </ChplTextField>
-                        </Grid>
-                      </Grid>
-                    )}
-                </Grid>
-              </CardContent>
-            </Card>
-          </Container>
-        </form>
-      </Paper>
+      <Container>
+        <div className={classes.developerConfirm}>
+          <div className={classes.developerSubContainer}>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${!isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(false)}
+            >
+              <span className={classes.buttonContent}>
+                <CheckCircleIcon color="primary" className={classes.extraLargeIcons} />
+                { selectedDeveloper
+                  ? (
+                    <>
+                      {`Use "${selectedDeveloper.name}"`}
+                    </>
+                  ) : (
+                    <>
+                      Choose A Developer To Use
+                    </>
+                  )}
+              </span>
+            </Button>
+            <div className={classes.orContainer}>
+              <Divider />
+              <Typography>OR</Typography>
+              <Divider />
+            </div>
+            <Button
+              variant="outlined"
+              color="default"
+              fullWidth
+              className={`${classes.buttonCard} ${isCreating ? classes.buttonCardFocused : ''}`}
+              onClick={() => handleCreationToggle(true)}
+            >
+              <span className={classes.buttonContent}>
+                <AddCircleIcon color="primary" className={classes.extraLargeIcons} />
+                Create a developer
+              </span>
+            </Button>
+          </div>
+          <Divider />
+          { isCreating
+            ? (
+              <Card>
+                <CardHeader title="Create A New Developer" />
+                <CardContent>
+                  <div className={classes.formContainer}>
+                    <div className={classes.formSubContainer}>
+                      <div className={classes.developerInfo}>
+                        <ChplTextField
+                          id="name"
+                          name="name"
+                          label="Developer Name"
+                          value={formik.values.name}
+                          error={formik.touched.name && !!formik.errors.name}
+                          helperText={formik.touched.name && formik.errors.name}
+                          onChange={handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                        <FormControlLabel
+                          label={`Self-Developer (${formik.values.selfDeveloper ? 'Yes' : 'No'})`}
+                          control={(
+                            <Switch
+                              id="self-developer"
+                              name="selfDeveloper"
+                              color="primary"
+                              checked={formik.values.selfDeveloper}
+                              onChange={handleChange}
+                            />
+                         )}
+                        />
+                      </div>
+                      <ChplTextField
+                        id="website"
+                        name="website"
+                        label="Website"
+                        value={formik.values.website}
+                        error={formik.touched.website && !!formik.errors.website}
+                        helperText={formik.touched.website && formik.errors.website}
+                        onChange={handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                    </div>
+                    <div className={classes.formSubContainer}>
+                      <ChplConfirmDeveloperAddress
+                        address={developer.address}
+                        editing
+                        formik={formik}
+                        handleChange={handleChange}
+                      />
+                    </div>
+                    <div className={classes.formSubContainer}>
+                      <ChplConfirmDeveloperContact
+                        contact={developer.contact}
+                        editing
+                        formik={formik}
+                        handleChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardHeader title="Existing Developers" />
+                <CardContent>
+                  <ChplTextField
+                    select
+                    id="selected-developer"
+                    name="selectedDeveloper"
+                    label="Select a Developer"
+                    required
+                    value={selectedDeveloper}
+                    onChange={handleSelectOnChange}
+                  >
+                    {developers.map((item) => (
+                      <MenuItem value={item} key={item.developerId}>
+                        {item.name}
+                        {item.developerCode && (` (Developer Code: ${item.developerCode})`)}
+                      </MenuItem>
+                    ))}
+                  </ChplTextField>
+                </CardContent>
+              </Card>
+            )}
+        </div>
+      </Container>
     </ThemeProvider>
   );
 }
@@ -271,37 +354,3 @@ ChplConfirmDeveloper.propTypes = {
   developers: arrayOf(developerProp).isRequired,
   dispatch: func.isRequired,
 };
-
-/*
-  display?
-                          { developer.developerId &&
-                          <>
-                            <Grid item xs={6}>
-                              <Typography variant="subtitle2">Developer Code</Typography>
-                              <Typography variant="body1">{ developer.developerCode }</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <Typography variant="subtitle2">Self Developer</Typography>
-                              <Typography variant="body1">{ developer.selfDeveloper ? 'Yes' : 'No' }</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography variant="subtitle2">Website</Typography>
-                              <Typography variant="body1">{ developer.website }</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <ChplConfirmDeveloperAddress
-                                address={developer.address}
-                                editing={false}
-                                formik={formik}
-                              />
-                            </Grid>
-                            <Grid item xs={12}>
-                              <ChplConfirmDeveloperContact
-                                contact={developer.contact}
-                                editing={false}
-                                formik={formik}
-                              />
-                            </Grid>
-                          </>
-                        }
-                        */

@@ -35,14 +35,6 @@ describe('the login component', () => {
       component.logIn('admin');
       expect(/AQA Admin/i.test(component.getLoggedInUserName())).toBe(true);
     });
-
-    it('should display a notification when logging in with username', () => {
-      component.logIn('admin_no_email');
-      browser.waitUntil(() => toast.toastContainer.isDisplayed());
-      expect(toast.toastMessage.getText().startsWith('Please use your email address')).toBe(true);
-      toast.clearAllToast();
-      expect(/AQA Admin/i.test(component.getLoggedInUserName())).toBe(true);
-    });
   });
 
   it('should be able to log out', () => {

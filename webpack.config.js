@@ -14,6 +14,9 @@ module.exports = (env) => {
   }
   const config = {
     mode: env.NODE_ENV,
+    resolve: {
+      modules: ['src/app', 'node_modules'],
+    },
     entry: {
       app: path.resolve(__dirname, './src/app/index.js'),
       administration: path.resolve(__dirname, './src/app/pages/administration/index.js'),
