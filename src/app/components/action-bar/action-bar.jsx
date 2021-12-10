@@ -142,40 +142,38 @@ function ChplActionBar(props) {
         { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
           && (
             <>
-              <div className={classes.actionBarErrorToggle}>
-                <span
-                  onClick={() => setShowMessages(!showMessages)}
-                  onKeyDown={() => setShowMessages(!showMessages)}
-                  tabIndex={0}
-                  role="button"
-                >
-                  { errors && errors.length > 0
-                    && (
-                      <>
-                        Error
-                        { errors.length > 1 && 's'}
-                      </>
-                    )}
-                  { errors && errors.length > 0 && warnings && warnings.length > 0
-                    && <> and </>}
-                  { warnings && warnings.length > 0
-                    && (
-                      <>
-                        Warning
-                        { warnings.length > 1 && 's'}
-                      </>
-                    )}
-                  { showMessages
-                    ? (
-                      <ExpandMoreIcon
-                        className={classes.iconSpacing}
-                      />
-                    ) : (
-                      <ExpandLessIcon
-                        className={classes.iconSpacing}
-                      />
-                    )}
-                </span>
+              <div
+                onClick={() => setShowMessages(!showMessages)}
+                onKeyDown={() => setShowMessages(!showMessages)}
+                tabIndex={0}
+                role="button"
+                className={classes.actionBarErrorToggle}>
+                { errors && errors.length > 0
+                  && (
+                    <>
+                      Error
+                      { errors.length > 1 && 's'}
+                    </>
+                  )}
+                { errors && errors.length > 0 && warnings && warnings.length > 0
+                  && <> and </>}
+                { warnings && warnings.length > 0
+                  && (
+                    <>
+                      Warning
+                      { warnings.length > 1 && 's'}
+                    </>
+                  )}
+                { showMessages
+                  ? (
+                    <ExpandMoreIcon
+                      className={classes.iconSpacing}
+                    />
+                  ) : (
+                    <ExpandLessIcon
+                      className={classes.iconSpacing}
+                    />
+                  )}
               </div>
             </>
           )}
