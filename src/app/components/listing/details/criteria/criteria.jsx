@@ -15,16 +15,17 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../../themes/theme';
-import { ChplTooltip } from '../../../util';
 import { getAngularService, ChplCriterion } from '.'; // eslint-disable-line import/no-cycle
+
+import theme from 'themes/theme';
+import { ChplTooltip } from 'components/util';
 import {
   accessibilityStandard,
   certificationResult,
   resources as resourceDefinition,
   qmsStandard,
-} from '../../../../shared/prop-types';
-import { FlagContext } from '../../../../shared/contexts';
+} from 'shared/prop-types';
+import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {

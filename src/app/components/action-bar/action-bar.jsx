@@ -14,9 +14,9 @@ import SaveIcon from '@material-ui/icons/Save';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
-import theme from '../../themes/theme';
-
 import ChplActionBarConfirmation from './action-bar-confirmation';
+
+import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
   actionBar: {
@@ -147,7 +147,8 @@ function ChplActionBar(props) {
                 onKeyDown={() => setShowMessages(!showMessages)}
                 tabIndex={0}
                 role="button"
-                className={classes.actionBarErrorToggle}>
+                className={classes.actionBarErrorToggle}
+              >
                 { errors && errors.length > 0
                   && (
                     <>
