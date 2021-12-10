@@ -40,9 +40,6 @@ const useStyles = makeStyles(() => ({
 const validationSchema = yup.object({
   fullName: yup.string()
     .required('Full Name is required'),
-  email: yup.string()
-    .required('Email is required')
-    .email('Enter a valid Email'),
 });
 
 function ChplUserEdit(props) {
@@ -68,7 +65,6 @@ function ChplUserEdit(props) {
       friendlyName: formik.values.friendlyName,
       title: formik.values.title,
       phoneNumber: formik.values.phoneNumber,
-      email: formik.values.email,
       accountLocked: formik.values.accountLocked,
       accountEnabled: formik.values.accountEnabled,
       passwordResetRequired: formik.values.passwordResetRequired,
@@ -97,7 +93,6 @@ function ChplUserEdit(props) {
       friendlyName: user.friendlyName || '',
       title: user.title || '',
       phoneNumber: user.phoneNumber || '',
-      email: user.email,
       accountLocked: user.accountLocked,
       accountEnabled: user.accountEnabled,
       passwordResetRequired: user.passwordResetRequired,
@@ -115,6 +110,7 @@ function ChplUserEdit(props) {
       <Card>
         <CardHeader
           title="Edit User"
+          subheader={user.email}
         />
         <CardContent className={classes.content}>
           <div className={classes.dataEntry}>
@@ -159,17 +155,6 @@ function ChplUserEdit(props) {
               onBlur={formik.handleBlur}
               error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
               helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-            />
-            <ChplTextField
-              id="email"
-              name="email"
-              label="Email"
-              required
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.email && !!formik.errors.email}
-              helperText={formik.touched.email && formik.errors.email}
             />
           </div>
           <div className={classes.dataEntry}>
