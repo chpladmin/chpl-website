@@ -34,7 +34,7 @@ import {
 const useStyles = makeStyles(() => ({
   criterionAccordion: {
     borderRadius: '8px',
-    display: 'grid',    
+    display: 'grid',
   },
   criterionAccordionSummary: {
     backgroundColor: '#f9f9f9',

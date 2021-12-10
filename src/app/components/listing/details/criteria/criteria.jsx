@@ -109,7 +109,7 @@ function ChplCriteria(props) {
                       <ChplCriterion
                         key={cc.criterion.id}
                         certificationResult={cc}
-                        canEdit={props.canEdit && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
+                        canEdit={props.canEdit && !isConfirming && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
                         onSave={handleSave}
                         resources={prepareResources(props.resources, cc.criterion)}
                         accessibilityStandards={props.accessibilityStandards}
