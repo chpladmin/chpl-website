@@ -196,8 +196,8 @@ const ConfirmListingComponent = {
 
     confirm() {
       const that = this;
-      this.networkService.confirmPendingCp({
-        pendingListing: this.pending,
+      this.networkService.confirmListing({
+        listing: this.pending,
         acknowledgeWarnings: this.acknowledgeWarnings,
       }).then(() => {
         that.toaster.pop({
