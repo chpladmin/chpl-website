@@ -1,38 +1,95 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  LinearProgress,
+  Button,
+  ButtonGroup,
+  Step,
+  StepLabel,
+  Stepper,
   ThemeProvider,
-  Typography,
+  makeStyles,
 } from '@material-ui/core';
-import { number, shape, string } from 'prop-types';
+import { bool, func, number } from 'prop-types';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import theme from '../../../themes/theme';
 
+const useStyles = makeStyles({
+  stepperBar: {
+    padding: '8px 32px',
+  },
+  stepperContainer: {
+    borderRadius: '64px',
+    padding: '8px 16px',
+    margin: '0 32px',
+    border: '0.5px solid #c2c6ca',
+    boxShadow: 'rgb(149 157 165 / 10%) 0 4px 8px',
+    backgroundColor: '#fff',
+  },
+  stepperButton: {
+    backgroundColor: '#fff',
+    borderBottom: '0.5px solid #c2c6ca',
+    borderLeft: '0.5px solid #c2c6ca',
+    borderRight: '0.5px solid #c2c6ca',
+    borderRadius: '0 0 32px 32px',
+    padding: '0 16px 8px 16px',
+  },
+  stepperButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+});
+
 function ChplConfirmProgress(props) {
   const [value, setValue] = useState(0);
-  const [label, setLabel] = useState('');
+
+  const classes = useStyles();
 
   useEffect(() => {
-    setValue(props.value.value);
-    setLabel(props.value.label);
+    setValue(props.value);
   }, [props.value]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <ThemeProvider theme={theme}>
-      <Box display="flex" alignItems="center">
-        <Box width="100%" mr={1}>
-          <LinearProgress
-            variant="determinate"
-            value={value}
-          />
-        </Box>
-        <Box minWidth={35}>
-          <Typography variant="body2" color="textSecondary">
-            { label}
-          </Typography>
-        </Box>
-      </Box>
+      <div className={classes.stepperContainer}>
+        <Stepper
+          className={classes.stepperBar}
+          activeStep={value}
+        >
+          <Step>
+            <StepLabel>Developer</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Product</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Version</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Listing</StepLabel>
+          </Step>
+        </Stepper>
+      </div>
+      <div className={classes.stepperButtonContainer}>
+        <ButtonGroup variant="text" color="primary" className={classes.stepperButton} size="medium">
+          <Button
+            disabled={!props.canPrevious}
+            onClick={() => props.dispatch('previous')}
+            id="inspect-previous"
+          >
+            <NavigateBeforeIcon />
+            Back
+          </Button>
+          <Button
+            disabled={!props.canNext}
+            onClick={() => props.dispatch('next')}
+            id="inspect-next"
+          >
+            Next
+            <NavigateNextIcon />
+          </Button>
+        </ButtonGroup>
+      </div>
     </ThemeProvider>
   );
 }
@@ -40,8 +97,8 @@ function ChplConfirmProgress(props) {
 export default ChplConfirmProgress;
 
 ChplConfirmProgress.propTypes = {
-  value: shape({
-    value: number.isRequired,
-    label: string.isRequired,
-  }).isRequired,
+  dispatch: func.isRequired,
+  value: number.isRequired,
+  canNext: bool.isRequired,
+  canPrevious: bool.isRequired,
 };

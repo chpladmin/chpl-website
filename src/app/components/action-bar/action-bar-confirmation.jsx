@@ -13,7 +13,6 @@ import {
 import {
   func, string,
 } from 'prop-types';
-
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -61,12 +60,23 @@ function ChplActionBarConfirmation(props) {
       </DialogContent>
       <Divider />
       <DialogActions className={classes.dialogActions}>
-        <Button onClick={() => act('yes')} color="primary" variant="contained" autoFocus>
+        <Button
+          onClick={() => act('yes')}
+          color="primary"
+          variant="contained"
+          autoFocus
+          id="action-confirmation-yes"
+        >
           Yes
           {' '}
           <CheckIcon className={classes.iconSpacing} />
         </Button>
-        <Button onClick={() => act('no')} color="default" variant="contained">
+        <Button
+          onClick={() => act('no')}
+          color="default"
+          variant="contained"
+          id="action-confirmation-no"
+        >
           No
           {' '}
           <CloseIcon className={classes.iconSpacing} />

@@ -1,12 +1,13 @@
-export const ConfirmListingComponent = {
+const ConfirmListingComponent = {
   templateUrl: 'chpl.administration/confirm/listing.html',
   bindings: {
     listing: '<',
     developers: '<',
   },
   controller: class ConfirmListingComponent {
-    constructor ($log, $q, $scope, $state, networkService, toaster) {
+    constructor($log, $q, $scope, $state, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.$q = $q;
       this.$scope = $scope;
@@ -17,17 +18,16 @@ export const ConfirmListingComponent = {
       this.products = [];
       this.versions = [];
       this.resources = {};
-      this.progress = {
-        value: 0,
-        label: '',
-      };
+      this.staged = {};
+      this.progress = -1;
       this.handleDeveloperDispatch = this.handleDeveloperDispatch.bind(this);
       this.handleProductDispatch = this.handleProductDispatch.bind(this);
       this.handleVersionDispatch = this.handleVersionDispatch.bind(this);
-      this.handleWizardDispatch = this.handleWizardDispatch.bind(this);
+      this.handleActionDispatch = this.handleActionDispatch.bind(this);
+      this.handleProgressDispatch = this.handleProgressDispatch.bind(this);
     }
 
-    $onInit () {
+    $onInit() {
       this.progress = this.getProgress();
       this.loadDeveloper();
       const pending = {};
@@ -51,10 +51,10 @@ export const ConfirmListingComponent = {
         this.networkService.getTestProcedures().then((response) => { pending.testProcedures = response; }),
         this.networkService.getTestStandards().then((response) => { pending.testStandards = response; }),
         this.networkService.getUcdProcesses().then((response) => { pending.ucdProcesses = response; }),
-      ]).then(() => this.resources = pending);
+      ]).then(() => { this.resources = pending; });
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.listing) {
         this.uploaded = angular.copy(changes.listing.currentValue);
         this.pending = angular.copy(changes.listing.currentValue);
@@ -67,7 +67,7 @@ export const ConfirmListingComponent = {
       }
     }
 
-    canAct (action) {
+    canAct(action) {
       let ret;
       switch (action) {
         case 'confirm': ret = this.stage === 'listing';
@@ -89,6 +89,7 @@ export const ConfirmListingComponent = {
         case 'edit':
           this.pending.developer = data;
           break;
+          // no default
       }
       this.$scope.$digest();
     }
@@ -101,6 +102,7 @@ export const ConfirmListingComponent = {
         case 'edit':
           this.pending.product = data;
           break;
+          // no default
       }
       this.$scope.$digest();
     }
@@ -113,19 +115,27 @@ export const ConfirmListingComponent = {
         case 'edit':
           this.pending.version = data;
           break;
+          // no default
       }
       this.$scope.$digest();
     }
 
-    handleWizardDispatch(action, data) {
+    handleProgressDispatch(action) {
+      switch (action) {
+        case 'next': this.next();
+          break;
+        case 'previous': this.previous();
+          break;
+          // no default
+      }
+      this.$scope.$digest();
+    }
+
+    handleActionDispatch(action) {
       switch (action) {
         case 'cancel': this.cancel();
           break;
         case 'confirm': this.confirm();
-          break;
-        case 'next': this.next();
-          break;
-        case 'previous': this.previous();
           break;
         case 'reject': this.reject();
           break;
@@ -134,48 +144,58 @@ export const ConfirmListingComponent = {
       this.$scope.$digest();
     }
 
-    loadDeveloper () {
-      let that = this;
+    loadDeveloper() {
+      const that = this;
+      this.staged = { ...this.uploaded.developer };
       if (this.pending.developer && this.pending.developer.developerId) {
         this.networkService.getDeveloper(this.pending.developer.developerId)
-          .then(result => that.pending.developer = result);
+          .then((result) => {
+            that.pending.developer = result;
+            that.staged = { ...result };
+          });
       }
     }
 
-    loadProducts () {
-      let that = this;
+    loadProducts() {
+      const that = this;
       if (this.pending.developer && this.pending.developer.developerId) {
         this.networkService.getProductsByDeveloper(this.pending.developer.developerId)
-          .then(result => that.products = result.products);
+          .then((result) => { that.products = result.products; });
       } else {
         that.products = [];
       }
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getSimpleProduct(this.pending.product.productId)
-          .then(result => that.pending.product = result);
+          .then((result) => {
+            that.staged = result;
+            that.pending.product = result;
+          });
       } else {
-        that.pending.product = {};
+        that.staged = { ...that.pending.product };
       }
     }
 
-    loadVersions () {
-      let that = this;
+    loadVersions() {
+      const that = this;
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getVersionsByProduct(this.pending.product.productId)
-          .then(result => that.versions = result);
+          .then((result) => { that.versions = result; });
       } else {
         that.versions = [];
       }
       if (this.pending.version && this.pending.version.versionId) {
         this.networkService.getSimpleVersion(this.pending.version.versionId)
-          .then(result => that.pending.version = result);
+          .then((result) => {
+            that.staged = result;
+            that.pending.version = result;
+          });
       } else {
-        that.pending.version = {};
+        that.staged = { ...that.pending.version };
       }
     }
 
-    confirm () {
-      let that = this;
+    confirm() {
+      const that = this;
       this.networkService.confirmPendingCp({
         pendingListing: this.pending,
         acknowledgeWarnings: this.acknowledgeWarnings,
@@ -185,15 +205,15 @@ export const ConfirmListingComponent = {
           title: 'Success',
           body: 'The Listing has been confirmed',
         });
-        that.$state.go('^', {}, {reload: true});
-      }, error => {
+        that.$state.go('^', {}, { reload: true });
+      }, (error) => {
         if (error.data.contact) {
           that.toaster.pop({
             type: 'warning',
             title: 'Warning',
             body: 'The Listing was already resolved',
           });
-          that.$state.go('^', {}, {reload: true});
+          that.$state.go('^', {}, { reload: true });
         } else {
           that.errorMessages = error.data.errorMessages;
           that.warningMessages = error.data.warningMessages;
@@ -201,8 +221,8 @@ export const ConfirmListingComponent = {
       });
     }
 
-    reject () {
-      let that = this;
+    reject() {
+      const that = this;
       this.networkService.rejectPendingListing(this.uploaded.id)
         .then(() => {
           that.toaster.pop({
@@ -210,8 +230,8 @@ export const ConfirmListingComponent = {
             title: 'Success',
             body: 'The Listing has been rejected',
           });
-          that.$state.go('^', {}, {reload: true});
-        }, error => {
+          that.$state.go('^', {}, { reload: true });
+        }, (error) => {
           if (error.data.contact) {
             that.toaster.pop({
               type: 'warning',
@@ -225,11 +245,23 @@ export const ConfirmListingComponent = {
         });
     }
 
-    editListing (listing) {
-      this.pending = listing;
+    handleListing(action, data) {
+      switch (action) {
+        case 'edit':
+          this.isEditing = true;
+          break;
+        case 'cancel':
+          this.isEditing = false;
+          break;
+        case 'save':
+          this.isEditing = false;
+          this.pending = data;
+          break;
+          // no default
+      }
     }
 
-    next () {
+    next() {
       switch (this.stage) {
         case 'developer':
           this.stage = 'product';
@@ -249,55 +281,50 @@ export const ConfirmListingComponent = {
       this.progress = this.getProgress();
     }
 
-    previous () {
+    previous() {
       switch (this.stage) {
-      case 'product': this.stage = 'developer';
-        break;
-      case 'version': this.stage = 'product';
-        break;
-      case 'listing': this.stage = 'version';
-        break;
-      default:
-        break;
+        case 'product':
+          this.staged = { ...this.pending.developer };
+          this.stage = 'developer';
+          break;
+        case 'version':
+          this.staged = { ...this.pending.product };
+          this.stage = 'product';
+          break;
+        case 'listing':
+          this.staged = { ...this.pending.version };
+          this.stage = 'version';
+          break;
+        default:
+          break;
       }
       this.progress = this.getProgress();
     }
 
-    cancel () {
-      this.$state.go('^', {}, {reload: true});
+    cancel() {
+      this.$state.go('^', {}, { reload: true });
     }
 
-    getProgress () {
+    getProgress() {
       switch (this.stage) {
         case 'developer':
-          return {
-            value: 25,
-            label: 'Developer',
-          };
-      case 'product':
-          return {
-            value: 50,
-            label: 'Product',
-          };
-      case 'version':
-          return {
-            value: 75,
-            label: 'Version',
-          };
-      case 'listing':
-          return {
-            value: 100,
-            label: 'Listing',
-          };
-        //no default
+          return 0;
+        case 'product':
+          return 1;
+        case 'version':
+          return 2;
+        case 'listing':
+          return 3;
+        default:
+          return -1;
       }
     }
 
-    loadFamily () {
-      let that = this;
+    loadFamily() {
+      const that = this;
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getRelatedListings(this.pending.product.productId)
-          .then(family => that.resources.relatedListings = family.filter(item => item.edition === '2015'));
+          .then((family) => { that.resources.relatedListings = family.filter((item) => item.edition === '2015'); });
       }
     }
   },
@@ -305,3 +332,5 @@ export const ConfirmListingComponent = {
 
 angular.module('chpl.administration')
   .component('chplConfirmListing', ConfirmListingComponent);
+
+export default ConfirmListingComponent;
