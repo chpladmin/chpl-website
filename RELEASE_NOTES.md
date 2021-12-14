@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.26.0
+_13 December 2021_
+
+### Features
+* Disallow editing of user email addresses
+
+---
+
 ## Version 11.25.0
 _9 December 2021_
 
