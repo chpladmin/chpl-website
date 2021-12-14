@@ -3,32 +3,41 @@ const elements = {
   certificationCriteria: '#toggle-certification-criteria',
   clinicalQualityMeasures: '#toggle-cqms',
   allCCCQM: '.compare-rowCert.ng-binding',
+  toggleCriteriaButton: '#toggle-certification-criteria',
 };
 
 class ComparePage {
-  constructor () { }
+  constructor() { }
 
-  get showAllCheckbox () {
+  get showAllCheckbox() {
     return $(elements.showAllPossible);
   }
 
-  get certificationCriteriaLink () {
+  get certificationCriteriaLink() {
     return $(elements.certificationCriteria);
   }
 
-  get clinicalQualityMeasuresLink () {
+  get clinicalQualityMeasuresLink() {
     return $(elements.clinicalQualityMeasures);
   }
 
-  get allCCCQM () {
+  get allCCCQM() {
     $(elements.allCCCQM).waitForDisplayed();
     return $$(elements.allCCCQM);
   }
 
-  checkShowAllCheckbox () {
+  get toggleCriteriaButton() {
+    return $(elements.toggleCriteriaButton);
+  }
+
+  checkShowAllCheckbox() {
     if (!this.showAllCheckbox.isSelected()) {
       this.showAllCheckbox.click();
     }
+  }
+
+  getCellWithCriteriaNumber(criteriaNumber) {
+    return $(`th*=${criteriaNumber}`);
   }
 }
 
