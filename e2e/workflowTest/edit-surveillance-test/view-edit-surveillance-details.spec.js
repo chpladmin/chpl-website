@@ -7,7 +7,7 @@ import ToastComponent from '../../components/toast/toast.po';
 
 let confirmPage, edit, hooks, loginComponent, toast, upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
-const requirement = '170.315 (a)(13): Patient-Specific Education Resources';
+const requirement = '170.315 (g)(4): Quality Management System';
 const error = 'At least one Requirement must be surveilled';
 
 beforeEach(async () => {
