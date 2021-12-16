@@ -5,6 +5,8 @@ import {
 import {
   Button,
   ButtonGroup,
+  Checkbox,
+  FormControlLabel,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
@@ -66,6 +68,9 @@ const useStyles = makeStyles(() => ({
     padding: '16px',
     boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
   },
+  actionBarAcknowledgement: {
+    textAlign: 'center',
+  },
   deleteButton: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
@@ -82,9 +87,11 @@ function ChplActionBar(props) {
   /* eslint-disable react/destructuring-assignment */
   const [pendingAction, setPendingAction] = useState('');
   const [pendingMessage, setPendingMessage] = useState('');
+  const [acknowledged, setAcknowledged] = useState(false);
   const [canDelete] = useState(props.canDelete);
   const [canConfirm] = useState(props.canConfirm);
   const [canReject] = useState(props.canReject);
+  const [showAcknowledgement] = useState(props.showAcknowledgement);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
@@ -127,6 +134,11 @@ function ChplActionBar(props) {
     }
     setIsConfirming(false);
     setPendingAction('');
+  };
+
+  const toggleAcknowledgement = () => {
+    setAcknowledged(!acknowledged);
+    act('toggleAcknowledgement');
   };
 
   return (
@@ -219,6 +231,24 @@ function ChplActionBar(props) {
               </div>
             </>
           )}
+        { showAcknowledgement
+          && (
+            <div
+              className={classes.actionBarAcknowledgement}
+            >
+              <FormControlLabel
+                label={`I have reviewed the warning${warnings.length !== 1 ? 's' : ''} and wish to proceed with this update`}
+                control={(
+                  <Checkbox
+                    name="acknowledge"
+                    value="acknowledge"
+                    onChange={() => toggleAcknowledgement()}
+                    checked={acknowledged}
+                  />
+                )}
+              />
+            </div>
+          )}
         <div className={classes.actionBarButtons}>
           <ButtonGroup
             color="primary"
@@ -308,6 +338,7 @@ ChplActionBar.propTypes = {
   canDelete: bool,
   canReject: bool,
   isDisabled: bool,
+  showAcknowledgement: bool,
 };
 
 ChplActionBar.defaultProps = {
@@ -317,4 +348,5 @@ ChplActionBar.defaultProps = {
   canDelete: false,
   canReject: false,
   isDisabled: false,
+  showAcknowledgement: false,
 };

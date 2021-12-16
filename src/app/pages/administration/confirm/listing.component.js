@@ -29,6 +29,8 @@ const ConfirmListingComponent = {
 
     $onInit() {
       this.progress = this.getProgress();
+      this.acknowledgeWarnings = false;
+      this.showAcknowledgement = false;
       this.loadDeveloper();
       const pending = {};
       this.$q.all([
@@ -137,6 +139,8 @@ const ConfirmListingComponent = {
           break;
         case 'confirm': this.confirm();
           break;
+        case 'toggleAcknowledgement': this.acknowledgeWarnings = !this.acknowledgeWarnings;
+          break;
         case 'reject': this.reject();
           break;
           // no default
@@ -217,6 +221,12 @@ const ConfirmListingComponent = {
         } else {
           that.errorMessages = error.data.errorMessages;
           that.warningMessages = error.data.warningMessages;
+          if (that.warningMessages?.length > 0) {
+            that.showAcknowledgement = true;
+          } else {
+            that.showAcknowledgement = false;
+            that.acknowledgeWarnings = false;
+          }
         }
       });
     }

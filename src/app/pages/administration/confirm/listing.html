@@ -58,6 +58,7 @@
     can-confirm="true"
     can-reject="true"
     is-disabled="!$ctrl.canAct('confirm')"
+    show-acknowledgement="$ctrl.showAcknowledgement"
     errors="$ctrl.listing.errorMessages"
     warnings="$ctrl.listing.warningMessages"
     dispatch="::$ctrl.handleActionDispatch">
