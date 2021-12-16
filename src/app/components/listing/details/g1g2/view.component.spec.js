@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  describe('the G1/G2 view component', () => {
+  xdescribe('the G1/G2 view component', () => {
 
     var $compile, $log, Mock, ctrl, el, scope;
 
