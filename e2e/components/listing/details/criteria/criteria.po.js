@@ -59,6 +59,7 @@ class CriteriaComponent {
   }
 
   expandRemovedCriteria() {
+    $(this.elements.removedCriteria).$$('div')[1].scrollIntoView();
     $(this.elements.removedCriteria).$$('div')[1].click();
   }
 
@@ -166,19 +167,19 @@ class CriteriaComponent {
     $('//*[starts-with(@id,"testTools-additional-input")]').addValue(version);
   }
 
-  get testProcedureDropdownOptions () {
+  get testProcedureDropdownOptions() {
     return $('#menu-name').$$('li');
   }
 
-  get testToolsDropdownOptions () {
+  get testToolsDropdownOptions() {
     return $('#menu-tt').$$('li');
   }
 
-  get testProcedureDropdownOptionsOld () {
+  get testProcedureDropdownOptionsOld() {
     return this.testProcedureOld.$$('option');
   }
 
-  get testToolsDropdownOptionsOld () {
+  get testToolsDropdownOptionsOld() {
     return this.testToolsOld.$$('option');
   }
 
