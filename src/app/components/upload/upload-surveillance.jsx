@@ -30,6 +30,9 @@ const useStyles = makeStyles(() => ({
   firstRow: {
     gridColumn: '1 / -1',
   },
+  fileName: {
+    wordBreak: 'break-word',
+  },
 }));
 
 function ChplUploadSurveillance() {
@@ -123,7 +126,7 @@ function ChplUploadSurveillance() {
             </div>
             { file
               && (
-              <div>
+                <div className={classes.fileName}>
                 <strong>Filename:</strong>
                 {' '}
                 { file.name }
