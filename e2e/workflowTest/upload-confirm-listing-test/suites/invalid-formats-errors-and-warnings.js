@@ -58,8 +58,6 @@ const suite = {
       'Privacy and Security Framework is required for certification 170.315 (b)(1) (Cures Update).',
       'Export Documentation is required for certification 170.315 (b)(10).',
       'Criteria 170.315 (b)(10) indicates additional software should be present but none was found.',
-      'Criteria 170.315 (b)(1) (Cures Update) contains an invalid test tool \'test tool\'. It has been removed from the pending listing.',
-      'Criteria 170.315 (a)(1) contains an invalid test functionality \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
       'Certification 170.315 (b)(10) contains an invalid test procedure name: \'blah\'.',
       'Certification 170.315 (b)(10) contains Privacy and Security Framework value \'Approach 3 and 4\' which must match one of \'Approach 1\', \'Approach 2\', \'Approach 1;Approach 2\'.',
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\'.',
@@ -71,6 +69,8 @@ const suite = {
     expectedWarnings: [
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
       'Test data \'test data\' is invalid for certification 170.315 (b)(1) (Cures Update). ONC Test Method will be used instead.',
+      'Criteria 170.315 (b)(1) (Cures Update) contains an invalid test tool \'test tool\'. It has been removed from the pending listing.',
+      'Criteria 170.315 (a)(1) contains an invalid test functionality \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
       'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
     ],
   }],
