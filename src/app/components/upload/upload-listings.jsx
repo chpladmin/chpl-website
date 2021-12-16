@@ -127,10 +127,10 @@ function ChplUploadListings() {
             { file
               && (
                 <div className={classes.fileName}>
-                <strong>Filename:</strong>
-                {' '}
-                { file.name }
-              </div>
+                  <strong>Filename:</strong>
+                  {' '}
+                  { file.name }
+                </div>
               )}
             { file
               && (
