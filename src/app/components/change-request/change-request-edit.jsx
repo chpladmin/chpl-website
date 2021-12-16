@@ -265,7 +265,7 @@ function ChplChangeRequestEdit(props) {
           </div>
           <ChplActionBar
             dispatch={handleDispatch}
-            isDisabled={!formik.isValid}
+            isDisabled={!formik.isValid || formik.isSubmitting}
             canDelete={hasAnyRole(['ROLE_DEVELOPER'])}
           />
         </div>
