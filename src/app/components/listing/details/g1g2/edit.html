@@ -44,7 +44,7 @@
     </span>
   </div>
   <div ng-if="$ctrl.ManageList.addingItem['measures']">
-    <span ng-if="!$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection" ng-bind-html="$ctrl.ManageList.newItem['measures'].measure.displayCriteria"></span>
+    <span ng-if="!$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection" ng-bind-html="$ctrl.ManageList.newItem['measures'].measure.displayCriteria.join('; ')"></span>
     <div ng-repeat="criteria in $ctrl.ManageList.newItem['measures'].measure.displayCriteria" ng-if="$ctrl.ManageList.newItem['measures'].measure.requiresCriteriaSelection">
       <input type="checkbox" ng-model="$ctrl.ManageList.newItem['measures'].selectedCriteria[criteria].selected"
              ng-disabled="!$ctrl.ManageList.newItem['measures'].selectedAbbreviation"
