@@ -35,8 +35,7 @@ export const G1G2EditComponent = {
             }
             m.displayCriteria = [... new Set(m.allowedCriteria
               .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
-              .map(c => this.wrapCriterionDisplayInSpan(c)))]
-              .join('; ');
+              .map(c => this.wrapCriterionDisplayInSpan(c)))];
             return m;
           })
           .sort((a, b) => this.measureSort(a, b));
