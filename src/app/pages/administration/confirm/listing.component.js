@@ -63,6 +63,8 @@ const ConfirmListingComponent = {
         if (this.pending.developer && !this.pending.developer.developerId) {
           this.pending.developer.developerId = '';
         }
+        this.errorMessages = this.uploaded.errorMessages;
+        this.warningMessages = this.uploaded.warningMessages;
       }
       if (changes.developers) {
         this.developers = angular.copy(changes.developers.currentValue);
