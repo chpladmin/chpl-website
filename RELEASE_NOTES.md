@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 11.26.0
+_13 December 2021_
+
+### Features
+* Disallow editing of user email addresses
+
+---
+
+## Version 11.25.0
+_9 December 2021_
+
+### Features
+* Only display users without organizations on main user management page
+
+### User Interface Updates
+* Display "email" as first element on User card
+
+### Flagged Features
+* Enable saving of edits on pending listing before confirmation
+
+---
+
 ## Version 11.24.0
 _29 November 2021_
 
