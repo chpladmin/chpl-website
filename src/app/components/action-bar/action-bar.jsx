@@ -91,14 +91,26 @@ function ChplActionBar(props) {
   const [canDelete] = useState(props.canDelete);
   const [canConfirm] = useState(props.canConfirm);
   const [canReject] = useState(props.canReject);
-  const [showAcknowledgement] = useState(props.showAcknowledgement);
+  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
-  const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
+  const [errors, setErrors] = useState([]);
+  const [warnings, setWarnings] = useState([]);
   const [showMessages, setShowMessages] = useState(true);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setErrors(props.errors.sort((a, b) => (a < b ? 1 : -1)));
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setWarnings(props.warnings.sort((a, b) => (a < b ? 1 : -1)));
+  }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setShowAcknowledgement(props.showAcknowledgement);
+  }, [props.showAcknowledgement]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setIsDisabled(props.isDisabled);
