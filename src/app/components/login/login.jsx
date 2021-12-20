@@ -159,7 +159,7 @@ function ChplLogin(props) {
       toaster.pop({
         header: 'Warning',
         type: 'warning',
-        body: `Please use your email address "${loggedInUser.email}" instead of your username to log in. The use of a username to log in is being phased out, and will be removed at a future date. If your email address is not valid, please update it as soon as possible`,
+        body: `Please use your email address "${loggedInUser.email}" instead of your username to log in. The use of a username to log in is being phased out, and will be removed at a future date`,
       });
     }
   };

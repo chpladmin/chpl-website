@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 11.27.0
+_20 December 2021_
+
+### Features
+* Show G1/G2 measures correctly where Criteria has been removed
+
+### Flagged Features
+* Limit Demographic Change Request creation by flag
+
+---
+
+## Version 11.26.0
+_13 December 2021_
+
+### Features
+* Disallow editing of user email addresses
+
+---
+
 ## Version 11.25.0
 _9 December 2021_
 
