@@ -244,6 +244,7 @@ function ChplRealWorldTestingCollectionPage() {
                color="secondary"
                variant="contained"
                fullWidth
+               id="download-real-world-testing"
                onClick={() => csvExporter.generateCsv(prepareCsvData(data.results))}
              >
                Download Results
