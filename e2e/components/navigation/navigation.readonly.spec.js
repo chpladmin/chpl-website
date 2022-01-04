@@ -14,6 +14,45 @@ beforeEach(async () => {
   await hooks.open('#/resources/overview');
 });
 
+describe('when not logged in', () => {
+  it('should have specific options under shortcuts', () => {
+    const expected = [
+      'API Info for 2015 Ed. Products',
+      'Banned Developers',
+      'Charts',
+      'Decertified Products',
+      'Inactive Certificates',
+      'Products: Corrective Action',
+      'SED Info for 2015 Ed. Products',
+    ];
+    component.shortcutToggle.click();
+    const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
+    expect(shortcuts.size).toBe(expected.length);
+    expected.forEach((exp) => {
+      expect(shortcuts.has(exp)).toBe(true, `did not find expected shortcut: "${exp}"`);
+    });
+    component.shortcutToggle.click();
+  });
+
+  it('should have specific options under resources', () => {
+    const expected = [
+      'Overview',
+      'CHPL Public User Guide',
+      'CMS ID Reverse Lookup',
+      'Download the CHPL',
+      'CHPL API',
+      'Contact Us',
+    ];
+    component.resourceToggle.click();
+    const resources = new Set(component.resources.map((item) => item.getText()));
+    expect(resources.size).toBe(expected.length);
+    expected.forEach((exp) => {
+      expect(resources.has(exp)).toBe(true, `did not find expected resource: "${exp}"`);
+    });
+    component.resourceToggle.click();
+  });
+});
+
 describe('when logged in', () => {
   afterEach(() => {
     login.logOut();
@@ -100,6 +139,25 @@ describe('when logged in', () => {
         expect(shortcuts.has(exp)).toBe(true, `did not find expected shortcut: "${exp}"`);
       });
       component.shortcutToggle.click();
+    });
+
+    it('should have specific options under resources', () => {
+      const expected = [
+        'Overview',
+        'CHPL Public User Guide',
+        'CHPL Developers User Guide',
+        'CMS ID Reverse Lookup',
+        'Download the CHPL',
+        'CHPL API',
+        'Contact Us',
+      ];
+      component.resourceToggle.click();
+      const resources = new Set(component.resources.map((item) => item.getText()));
+      expect(resources.size).toBe(expected.length);
+      expected.forEach((exp) => {
+        expect(resources.has(exp)).toBe(true, `did not find expected resource: "${exp}"`);
+      });
+      component.resourceToggle.click();
     });
   });
 
