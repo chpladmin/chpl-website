@@ -247,7 +247,12 @@ function ChplRealWorldTestingCollectionPage() {
                id="download-real-world-testing"
                onClick={() => csvExporter.generateCsv(prepareCsvData(data.results))}
              >
-               Download Results
+               Download
+               {' '}
+               { data.results.length }
+               {' '}
+               Result
+               { data.results.length !== 1 ? 's' : '' }
                <GetAppIcon className={classes.iconSpacing} />
              </Button>
            </ButtonGroup>
