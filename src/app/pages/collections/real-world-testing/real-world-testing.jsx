@@ -36,13 +36,13 @@ const csvOptions = {
   showLabels: true,
   headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'edition' },
+    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
     { headerName: 'Developer', objectKey: 'developer' },
     { headerName: 'Product', objectKey: 'product' },
     { headerName: 'Version', objectKey: 'version' },
     { headerName: 'Certification Status', objectKey: 'certificationStatus' },
-    { headerName: 'Real World Test Plans URL', objectKey: 'rwtPlansUrl' },
-    { headerName: 'Real World Test Results URL', objectKey: 'rwtResultsUrl' },
+    { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl' },
+    { headerName: 'Real World Testing Results URL', objectKey: 'friendlyRwtResultsUrl' },
   ],
 };
 
@@ -162,6 +162,12 @@ function ChplRealWorldTestingCollectionPage() {
     }
   };
 
+  const prepareCsvData = (listings) => listings.map((listing) => ({
+    ...listing,
+    fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
+    friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
+  }));
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
@@ -238,7 +244,7 @@ function ChplRealWorldTestingCollectionPage() {
                color="secondary"
                variant="contained"
                fullWidth
-               onClick={() => csvExporter.generateCsv(data.results)}
+               onClick={() => csvExporter.generateCsv(prepareCsvData(data.results))}
              >
                Download Results
                <GetAppIcon className={classes.iconSpacing} />
