@@ -31,7 +31,6 @@ import {
   useFilterContext,
 } from 'components/filter';
 
-
 const csvOptions = {
   filename: 'real-world-testing',
   showLabels: true,
@@ -50,12 +49,6 @@ const csvOptions = {
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
-  },
-  content: {
-    display: 'grid',
-    gap: '32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'start',
   },
   linkWrap: {
     overflowWrap: 'anywhere',
@@ -180,21 +173,40 @@ function ChplRealWorldTestingCollectionPage() {
       <div className={classes.rowBody}>
         <Typography variant="h2">Real World Testing</Typography>
         <Divider />
-        <div className={classes.content}>
-          <div>
-            <Typography
-              variant="h6"
-              gutterBottom
-            >
-              Ut volutpat mi ligula, sit amet pulvinar felis tincidunt in. Nam libero dui, molestie in volutpat eu, faucibus et urna. Vestibulum vitae leo rhoncus, interdum leo non, euismod erat. Proin vitae ex risus. Integer ac dapibus est, ut ullamcorper mauris. Morbi tincidunt ac ante id vulputate. Sed ut facilisis dui. Nunc ac fermentum libero. Ut sed ligula sit amet eros accumsan placerat.                    Ut volutpat mi ligula, sit amet pulvinar felis tincidunt in. Nam libero dui, molestie in volutpat eu, faucibus et urna. Vestibulum vitae leo rhoncus, interdum leo non, euismod erat. Proin vitae ex risus. Integer ac dapibus est, ut ullamcorper mauris. Morbi tincidunt ac ante id vulputate. Sed ut facilisis dui. Nunc ac fermentum libero. Ut sed ligula sit amet eros accumsan placerat.
-            </Typography>
-            <Typography>
-              For more information
-              {' '}
-              <a href="#">visit here</a>
-            </Typography>
-          </div>
-        </div>
+        <Typography
+          variant="body1"
+        >
+          This list includes all Health IT Module(s) eligible for Real World Testing, which is an annual
+          {' '}
+          <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Condition and Maintenance of Certification requirement</a>
+          {' '}
+          for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
+          {' '}
+          <a href="https://www.healthit.gov/curesrule/">ONC&apos;s Cures Act Final Rule</a>
+          {' '}
+          must successfully test their real world use.
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          For more information, please visit the
+          {' '}
+          <a href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing">Real World Testing resources</a>
+          . Real World Testing summary data is also available through
+          {' '}
+          <a href="#/resources/download">Download the CHPL</a>
+          .
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          Please note that by default, only listings that are active or suspended are shown in the search results.
+        </Typography>
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
