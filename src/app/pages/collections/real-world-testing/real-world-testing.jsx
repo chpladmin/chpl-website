@@ -4,7 +4,6 @@ import {
   ButtonGroup,
   Divider,
   Paper,
-  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -14,6 +13,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import { ExportToCsv } from 'export-to-csv';
 
 import theme from 'themes/theme';
 import {
@@ -30,6 +30,22 @@ import {
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
+
+
+const csvOptions = {
+  filename: 'real-world-testing',
+  showLabels: true,
+  headers: [
+    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
+    { headerName: 'Certification Edition', objectKey: 'edition' },
+    { headerName: 'Developer', objectKey: 'developer' },
+    { headerName: 'Product', objectKey: 'product' },
+    { headerName: 'Version', objectKey: 'version' },
+    { headerName: 'Certification Status', objectKey: 'certificationStatus' },
+    { headerName: 'Real World Test Plans URL', objectKey: 'rwtPlansUrl' },
+    { headerName: 'Real World Test Results URL', objectKey: 'rwtResultsUrl' },
+  ],
+};
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -111,11 +127,11 @@ const useStyles = makeStyles({
 });
 
 function ChplRealWorldTestingCollectionPage() {
+  const csvExporter = new ExportToCsv(csvOptions);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
   const [sortDescending, setSortDescending] = useState(false);
-  const [notificationOpen, setNotificationOpen] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
@@ -152,8 +168,6 @@ function ChplRealWorldTestingCollectionPage() {
       setOrderBy(property);
     }
   };
-
-  const toggleNotification = (open) => setNotificationOpen(open);
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
@@ -212,7 +226,7 @@ function ChplRealWorldTestingCollectionPage() {
                color="secondary"
                variant="contained"
                fullWidth
-               onClick={() => toggleNotification(true)}
+               onClick={() => csvExporter.generateCsv(data.results)}
              >
                Download Results
                <GetAppIcon className={classes.iconSpacing} />
@@ -280,11 +294,6 @@ function ChplRealWorldTestingCollectionPage() {
          />
        </>
        )}
-      <Snackbar
-        open={notificationOpen}
-        onClose={() => toggleNotification(false)}
-        message="Download will be implemented at a later date"
-      />
     </>
   );
 }
