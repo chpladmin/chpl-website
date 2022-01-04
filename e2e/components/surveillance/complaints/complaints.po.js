@@ -28,6 +28,14 @@ class ComplaintsComponent {
     return $(this.elements.editButton);
   }
 
+  complaintsBody () {
+    return $('chpl-complaint-view-bridge').$('div').getText();
+  }
+
+  get viewButton() {
+    return $('//span[text()="View"]');
+  }
+
   selectSurveillance(surveillance) {
     $(this.elements.surveillance).click();
     $(`//li[contains(text(),"${surveillance}")]`).click();
@@ -114,6 +122,33 @@ class ComplaintsComponent {
     $('//*[text()="Edit"]/parent::button').click();
     $('//span[text()="Delete"]/parent::button').click();
     $('//span[text()="Yes"]/parent::button').click();
+  }
+
+  waitForUpdatedTableRowCount () {
+    let start;
+    let next;
+    do {
+      start = $('table').$('tbody').$$('tr').length;
+      browser.pause(2000);
+      next = $('table').$('tbody').$$('tr').length;
+    } while (start !== next);
+  }
+
+  advancedSearch () {
+    $('//button[text()="Advanced Search"]').click();
+  }
+
+  searchFilter (value) {
+    $('#data-filter').clearValue();
+    $('#data-filter').addValue(value);
+  }
+
+  advanceFilterOptions (value){
+    $(`#filter-list-${value}`).click();
+  }
+
+  chooseAdvanceSearchOption (option) {
+    $(`//button[text()="${option}"]`).click();
   }
 }
 
