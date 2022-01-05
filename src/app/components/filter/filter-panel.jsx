@@ -14,10 +14,9 @@ import {
 } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-import { getAngularService } from 'services/angular-react-helper';
-
 import { useFilterContext } from './filter-context';
 
+import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({

@@ -5,10 +5,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService } from 'services/angular-react-helper';
-
 import { useFilterContext } from './filter-context';
 
+import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -81,7 +80,7 @@ function ChplFilterChips() {
               <Chip
                 key={v.value}
                 label={`${v.display}`}
-                onDelete={removeChip}
+                onDelete={() => removeChip(f, v)}
                 color="primary"
                 variant="outlined"
                 disabled={f.required && f.values.length === 1}
@@ -95,5 +94,4 @@ function ChplFilterChips() {
 
 export default ChplFilterChips;
 
-ChplFilterChips.propTypes = {
-};
+ChplFilterChips.propTypes = {};

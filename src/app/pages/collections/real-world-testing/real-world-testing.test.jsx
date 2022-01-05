@@ -5,9 +5,9 @@ import {
 import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
-import * as angularReactHelper from 'services/angular-react-helper';
-
 import ChplRealWorldTestingCollectionPage from './real-world-testing';
+
+import * as angularReactHelper from 'services/angular-react-helper';
 
 const $analyticsMock = {
   eventTrack: jest.fn(),

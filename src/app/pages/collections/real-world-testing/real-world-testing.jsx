@@ -160,6 +160,12 @@ function ChplRealWorldTestingCollectionPage(props) {
     { text: 'Real World Testing Results URL' },
   ];
 
+  const prepareCsvData = (listings) => listings.map((listing) => ({
+    ...listing,
+    fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
+    friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
+  }));
+
   const downloadRealWorldTesting = () => {
     $analytics.eventTrack('Download Results', { category: analytics.category, label: data.results.length });
     csvExporter.generateCsv(prepareCsvData(data.results));
@@ -173,12 +179,6 @@ function ChplRealWorldTestingCollectionPage(props) {
       setOrderBy(property);
     }
   };
-
-  const prepareCsvData = (listings) => listings.map((listing) => ({
-    ...listing,
-    fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
-    friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
-  }));
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
@@ -292,7 +292,7 @@ function ChplRealWorldTestingCollectionPage(props) {
                            text={item.chplProductNumber}
                            analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                            external={false}
-                         ></ChplLink>
+                         />
                        </strong>
                      </TableCell>
                      <TableCell>
@@ -306,7 +306,7 @@ function ChplRealWorldTestingCollectionPage(props) {
                          text={item.developer}
                          analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer }}
                          external={false}
-                       ></ChplLink>
+                       />
                      </TableCell>
                      <TableCell>{item.product}</TableCell>
                      <TableCell>{item.version}</TableCell>

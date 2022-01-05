@@ -2,7 +2,9 @@ import React from 'react';
 import {
   TablePagination,
 } from '@material-ui/core';
-import { arrayOf, func, number, shape, string } from 'prop-types';
+import {
+  arrayOf, func, number, shape, string,
+} from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
 

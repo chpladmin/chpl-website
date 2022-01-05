@@ -6,9 +6,9 @@ import '@testing-library/jest-dom';
 import { when } from 'jest-when';
 import userEvent from '@testing-library/user-event';
 
-import * as angularReactHelper from 'services/angular-react-helper';
-
 import ChplFilterSearchTerm from './filter-search-term';
+
+import * as angularReactHelper from 'services/angular-react-helper';
 
 const $analyticsMock = {
   eventTrack: jest.fn(),
