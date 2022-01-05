@@ -65,10 +65,10 @@ const suite = {
       'Certification 170.315 (a)(1) contains duplicate Test Procedure: \'ONC Test Method\'.',
       '170.315 (g)(3) is required but was not found.',
       'GAP is required for certification 170.315 (d)(1).',
+      'Test data \'test data\' is invalid for the criterion 170.315 (b)(1) (Cures Update).',
     ],
     expectedWarnings: [
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
-      'Test data \'test data\' is invalid for certification 170.315 (b)(1) (Cures Update). ONC Test Method will be used instead.',
       'Criteria 170.315 (b)(1) (Cures Update) contains an invalid test tool \'test tool\'. It has been removed from the pending listing.',
       'Criteria 170.315 (a)(1) contains an invalid test functionality \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
       'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
