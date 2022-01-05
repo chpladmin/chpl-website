@@ -240,15 +240,12 @@ function ChplFilterPanel() {
                         size="medium"
                         aria-label="apply to filter dropdown"
                       >
-                        { !active.required
-                          && (
-                          <Button
-                            onClick={() => handleAction('clearFilter')}
-                            disabled={active.required}
-                          >
-                            Clear
-                          </Button>
-                          )}
+                        <Button
+                          onClick={() => handleAction('clearFilter')}
+                          disabled={active.required}
+                        >
+                          Clear
+                        </Button>
                         <Button
                           onClick={() => handleAction('resetFilter')}
                         >
