@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { string } from 'prop-types';
-import { analyticsConfig } from '../../shared/prop-types';
+import { bool, string } from 'prop-types';
 
-import { getAngularService } from '../../services/angular-react-helper';
+import { getAngularService } from 'services/angular-react-helper';
+import { analyticsConfig } from 'shared/prop-types';
 
 const prependLink = (url) => {
-  if (url.substring(0, 7) === 'http://' || url.substring(0, 8) === 'https://') {
+  if (url.substring(0, 7) === 'http://' || url.substring(0, 8) === 'https://' || url.substring(0, 2) === '#/') {
     return url;
   }
   return `http://${url}`;
 };
 
 function ChplLink(props) {
+  const {
+    external,
+  } = props;
   /* eslint-disable react/destructuring-assignment */
   const [analytics] = useState(props.analytics);
   const [href] = useState(prependLink(props.href));

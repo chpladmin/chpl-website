@@ -5,6 +5,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import { getAngularService } from 'services/angular-react-helper';
+
 import { useFilterContext } from './filter-context';
 
 import theme from 'themes/theme';
@@ -37,6 +39,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplFilterChips() {
+  const $analytics = getAngularService('$analytics');
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
   const classes = useStyles();
@@ -52,6 +55,13 @@ function ChplFilterChips() {
       }))
       .filter((filter) => filter.values.length > 0));
   }, [filterContext.filters]);
+
+  const removeChip = (f, v) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Remove Chip', { category: filterContext.analytics.category, label: `${f.display}: ${v.display}` });
+    }
+    filterContext.dispatch('toggle', f, v);
+  };
 
   return (
     <span className={classes.filterContainer} id="filter-chips">
@@ -71,7 +81,7 @@ function ChplFilterChips() {
               <Chip
                 key={v.value}
                 label={`${v.display}`}
-                onDelete={() => filterContext.dispatch('toggle', f, v)}
+                onDelete={removeChip}
                 color="primary"
                 variant="outlined"
                 disabled={f.required && f.values.length === 1}

@@ -12,6 +12,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
@@ -30,6 +31,7 @@ import {
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
+import { getAngularService } from 'services/angular-react-helper';
 
 const csvOptions = {
   filename: 'real-world-testing',
@@ -119,7 +121,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplRealWorldTestingCollectionPage() {
+function ChplRealWorldTestingCollectionPage(props) {
+  const $analytics = getAngularService('$analytics');
+  const {
+    analytics,
+  } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
@@ -154,7 +160,13 @@ function ChplRealWorldTestingCollectionPage() {
     { text: 'Real World Testing Results URL' },
   ];
 
+  const downloadRealWorldTesting = () => {
+    $analytics.eventTrack('Download Results', { category: analytics.category, label: data.results.length });
+    csvExporter.generateCsv(prepareCsvData(data.results));
+  };
+
   const handleTableSort = (event, property) => {
+    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     if (orderBy === property) {
       setSortDescending(!sortDescending);
     } else {
@@ -245,7 +257,7 @@ function ChplRealWorldTestingCollectionPage() {
                variant="contained"
                fullWidth
                id="download-real-world-testing"
-               onClick={() => csvExporter.generateCsv(prepareCsvData(data.results))}
+               onClick={downloadRealWorldTesting}
              >
                Download
                {' '}
@@ -273,13 +285,29 @@ function ChplRealWorldTestingCollectionPage() {
                {data.results
                  .map((item) => (
                    <TableRow key={item.id}>
-                     <TableCell className={classes.stickyColumn}><strong><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></strong></TableCell>
+                     <TableCell className={classes.stickyColumn}>
+                       <strong>
+                         <ChplLink
+                           href={`#/listing/${item.id}`}
+                           text={item.chplProductNumber}
+                           analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                           external={false}
+                         ></ChplLink>
+                       </strong>
+                     </TableCell>
                      <TableCell>
                        {item.edition}
                        {' '}
                        {item.curesUpdate ? 'Cures Update' : '' }
                      </TableCell>
-                     <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
+                     <TableCell>
+                       <ChplLink
+                         href={`#/organizations/developers/${item.developerId}`}
+                         text={item.developer}
+                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer }}
+                         external={false}
+                       ></ChplLink>
+                     </TableCell>
                      <TableCell>{item.product}</TableCell>
                      <TableCell>{item.version}</TableCell>
                      <TableCell>{item.certificationStatus}</TableCell>
@@ -288,7 +316,7 @@ function ChplRealWorldTestingCollectionPage() {
                           && (
                             <ChplLink
                               href={item.rwtPlansUrl}
-                              analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
+                              analytics={{ event: 'Go to Real World Testing Plans URL', category: analytics.category, label: item.rwtPlansUrl }}
                             />
                           )}
                      </TableCell>
@@ -297,7 +325,7 @@ function ChplRealWorldTestingCollectionPage() {
                          ? (
                            <ChplLink
                              href={item.rwtResultsUrl}
-                             analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
+                             analytics={{ event: 'Go to Real World Testing Results URL', category: analytics.category, label: item.rwtResultsUrl }}
                            />
                          ) : (
                            <>N/A</>
@@ -315,6 +343,7 @@ function ChplRealWorldTestingCollectionPage() {
            rowsPerPageOptions={[25, 50, 100]}
            setPage={setPageNumber}
            setRowsPerPage={setPageSize}
+           analytics={analytics}
          />
        </>
        )}
@@ -325,4 +354,7 @@ function ChplRealWorldTestingCollectionPage() {
 export default ChplRealWorldTestingCollectionPage;
 
 ChplRealWorldTestingCollectionPage.propTypes = {
+  analytics: shape({
+    category: string.isRequired,
+  }).isRequired,
 };

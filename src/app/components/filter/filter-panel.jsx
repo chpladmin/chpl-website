@@ -14,6 +14,8 @@ import {
 } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
+import { getAngularService } from 'services/angular-react-helper';
+
 import { useFilterContext } from './filter-context';
 
 import theme from 'themes/theme';
@@ -77,6 +79,7 @@ const useStyles = makeStyles({
 });
 
 function ChplFilterPanel() {
+  const $analytics = getAngularService('$analytics');
   const classes = useStyles();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -99,6 +102,9 @@ function ChplFilterPanel() {
   }, [filters, activeKey]);
 
   const handleClick = (e) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Open Advanced Search', { category: filterContext.analytics.category });
+    }
     setAnchor(e.currentTarget);
     setOpen(true);
   };
@@ -110,6 +116,9 @@ function ChplFilterPanel() {
   };
 
   const handleSecondaryToggle = (value) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${active.display}: ${value.display}` });
+    }
     filterContext.dispatch('toggle', active, value);
   };
 
@@ -121,6 +130,9 @@ function ChplFilterPanel() {
     if (active === filter) {
       setActiveKey('');
     } else {
+      if (filterContext.analytics) {
+        $analytics.eventTrack('Select Filter Category', { category: filterContext.analytics.category, label: `${filter.display}` });
+      }
       setActiveKey(filter.key);
     }
   };
