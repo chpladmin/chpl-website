@@ -3,9 +3,18 @@ import {
   cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { when } from 'jest-when';
 import userEvent from '@testing-library/user-event';
 
+import * as angularReactHelper from 'services/angular-react-helper';
+
 import ChplFilterSearchTerm from './filter-search-term';
+
+const $analyticsMock = {
+  eventTrack: jest.fn(),
+};
+angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
 
 const mockValue = {
   setSearchTerm: jest.fn(() => {}),
