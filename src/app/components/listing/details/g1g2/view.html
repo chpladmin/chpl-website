@@ -17,7 +17,7 @@
         </td>
         <td>{{ measure.measure.requiredTest }}</td>
         <td>{{ measure.measureType.name }}</td>
-        <td>{{ measure.displayCriteria }}</td>
+        <td ng-bind-html="measure.displayCriteria"></td>
       </tr>
     </tbody>
   </table>

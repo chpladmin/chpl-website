@@ -74,7 +74,6 @@ describe('when confirming surveillance, ACB', () => {
       startDate: '01/01/2019',
       completeDate: '01/01/2020',
       explanation: 'Test explanation',
-      resolution: 'Test resolution',
     };
     browser.waitUntil( () => confirmPage.table.isDisplayed());
     confirmPage.inspectButton(listingId);

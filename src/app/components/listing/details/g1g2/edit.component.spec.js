@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  describe('the G1/G2 edit component', () => {
+  xdescribe('the G1/G2 edit component', () => {
 
     var $compile, $log, ManageList, Mock, ctrl, el, scope;
 
@@ -18,8 +18,8 @@
         scope.measures = Mock.listingMeasures;
         scope.onChange = jasmine.createSpy('onChange');
         scope.resources = {
-          measures: {data: Mock.measures},
-          measureTypes: {data: Mock.measureTypes},
+          measures: { data: Mock.measures },
+          measureTypes: { data: Mock.measureTypes },
         };
         el = angular.element('<chpl-g1g2-edit measures="measures" on-change="onChange(measures)" resources="resources"></chpl-g1g2-edit>');
 
@@ -58,7 +58,7 @@
       });
 
       it('should generate a list of available measure types', () => {
-        expect(ctrl.allTypes).toEqual([{name: 'G1'}, {name: 'G2'}]);
+        expect(ctrl.allTypes).toEqual([{ name: 'G1' }, { name: 'G2' }]);
       });
 
       describe('when sorting', () => {
@@ -157,7 +157,7 @@
 
       describe('when filtering available measures', () => {
         it('should filter out ones that don\'t have the required test', () => {
-          ctrl.ManageList.newItem['measures'] = {selectedAbbreviation: 'RT1'};
+          ctrl.ManageList.newItem['measures'] = { selectedAbbreviation: 'RT1' };
           ctrl.updateAllowedMeasures();
           expect(ctrl.allowedMeasures.length).toBe(1);
         });
@@ -182,14 +182,14 @@
         it('should save new measures', () => {
           spyOn(ctrl, 'update');
           spyOn(ManageList, 'add');
-          ManageList.newItem['measures'] = {measure: {}};
+          ManageList.newItem['measures'] = { measure: {} };
           ctrl.saveNewItem();
           expect(ctrl.update).toHaveBeenCalled();
           expect(ManageList.add).toHaveBeenCalledWith('measures', jasmine.any(Function));
         });
 
         it('should update the newItem data on save', () => {
-          ManageList.newItem['measures'] = {measure: {}};
+          ManageList.newItem['measures'] = { measure: {} };
           ManageList.newItem['measures'].typeName = 'G1';
           spyOn(ManageList, 'add').and.stub();
           ctrl.saveNewItem();
