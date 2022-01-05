@@ -43,7 +43,7 @@ class ComplaintsComponent {
 
   selectListing(listings) {
     $(this.elements.listings).click();
-    $(this.elements.listings).addValue(fields.listings);
+    $(this.elements.listings).addValue(listings);
     $(`//li[contains(text(),"${listings}")]`).click();
   }
 

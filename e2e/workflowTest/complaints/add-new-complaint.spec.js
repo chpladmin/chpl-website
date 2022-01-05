@@ -36,7 +36,7 @@ describe('As a ROLE_ACB user', () => {
     expect(complaintsComponent.fieldError('summary')).toBe('Complaint Summary is required');
   });
 
-  it('should be able to add new complaint with required fields', () => {
+  it('should be able to add new complaint with only required fields', () => {
     const timestamp = (new Date()).getTime();
     const fields = {
       body: 'Drummond Group',
@@ -84,7 +84,7 @@ describe('As a ROLE_ACB user', () => {
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 
-  it('should be able to add new complaint for a 2015 listing with multiple surveillance activity', () => {
+  it('should be able to add new complaint for a 2015 listing with multiple surveillance activities', () => {
     const timestamp = (new Date()).getTime();
     const fields = {
       body: 'Drummond Group',
@@ -175,7 +175,7 @@ describe('As a ROLE_ADMIN user', () => {
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 
-  it('should not be able to add new complaint where listings is not same as acb of the complaint', () => {
+  it('should not be able to add new complaint where listings is not same as ACB of the complaint', () => {
     const timestamp = (new Date()).getTime();
     const fields = {
       body: 'Surescripts LLC (Retired)',
