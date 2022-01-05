@@ -54,7 +54,7 @@ describe('As a ROLE_ACB user - when editing complaint', () => {
     const fields = {
       body: 'Drummond Group',
       receivedDate: '01/23/2021',
-      acbId: `Test - 1640201300737`,
+      acbId: `Test - ${timestamp}`,
       type: 'Developer',
       summary: `Test Summary - ${timestamp}`,
     };
