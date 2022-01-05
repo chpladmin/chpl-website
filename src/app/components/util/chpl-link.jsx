@@ -35,15 +35,30 @@ function ChplLink(props) {
     }
   };
 
+  let disclaimerClicked = false;
+  const trackDisclaimer = (e) => {
+    if (!disclaimerClicked) {
+      e.preventDefault();
+      disclaimerClicked = true;
+      $analytics.eventTrack('Go to Website Disclaimers', {
+        category: 'Navigation',
+      });
+      e.target.click();
+    }
+  };
+
   return (
     <>
       <a href={href} onClick={track}>
         {text}
       </a>
-      <a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" className="pull-right">
-        <i className="fa fa-external-link" />
-        <span className="sr-only">Web Site Disclaimers</span>
-      </a>
+      { external
+        && (
+        <a href="http://www.hhs.gov/disclaimer.html" onClick={trackDisclaimer} title="Web Site Disclaimers" className="pull-right">
+          <i className="fa fa-external-link" />
+          <span className="sr-only">Web Site Disclaimers</span>
+        </a>
+        )}
     </>
   );
 }
@@ -54,9 +69,11 @@ ChplLink.propTypes = {
   text: string,
   href: string.isRequired,
   analytics: analyticsConfig,
+  external: bool,
 };
 
 ChplLink.defaultProps = {
   text: '',
   analytics: {},
+  external: true,
 };

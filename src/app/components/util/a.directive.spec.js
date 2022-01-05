@@ -27,7 +27,7 @@
 
     describe('template', function () {
       it('should have the disclaimer link', function () {
-        expect(el.html()).toBe('text<a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" class="pull-right"><i class="fa fa-external-link"></i><span class="sr-only">Web Site Disclaimers</span></a>');
+        expect(el.html()).toBe('text<a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" class="pull-right" analytics-on="click" analytics-event="Go to Website Disclaimers" analytics-properties="{ category: \'Navigation\'}"><i class="fa fa-external-link"></i><span class="sr-only">Web Site Disclaimers</span></a>');
       });
     });
   });
