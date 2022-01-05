@@ -145,7 +145,7 @@ describe('when logged in', () => {
       const expected = [
         'Overview',
         'CHPL Public User Guide',
-        'CHPL Developers User Guide',
+        'CHPL Developer User Guide',
         'CMS ID Reverse Lookup',
         'Download the CHPL',
         'CHPL API',
