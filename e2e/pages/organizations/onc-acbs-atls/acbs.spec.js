@@ -30,15 +30,15 @@ describe('the ONC-ACB Management page', () => {
     await hooks.open('#/organizations/onc-acbs');
   });
 
-  describe('when logged in as UL', () => {
+  describe('when logged in as ICSA Labs', () => {
     beforeEach(() => {
-      login.logIn('ul');
+      login.logIn('icsa');
       hooks.waitForSpinnerToDisappear();
     });
 
     afterEach(() => {
-      const organizationName = 'UL LLC';
-      page.organizationNameButton(organizationName).click();
+      const organizationName = 'ICSA Labs';
+      page.openOrganizationDetails(organizationName);
       page.organizationEditButton.click();
       page.organizationName.setValue(organizationName);
       page.saveOrganizationButton.click();
@@ -46,15 +46,16 @@ describe('the ONC-ACB Management page', () => {
     });
 
     it('should allow user to edit UL details', () => {
-      const acb = 'UL LLC';
+      const acb = 'ICSA Labs';
       const newAcbName = `${acb} - ${timestamp}`;
-      const acbId = '1';
-      page.organizationNameButton(acb).click();
+      const acbId = '6';
+      page.openOrganizationDetails(acb);
       page.organizationEditButton.click();
       page.organizationName.setValue(newAcbName);
       page.organizationWebsite.setValue(websiteUrl);
       address.set(acbAddress);
       page.saveOrganizationButton.click();
+      hooks.waitForSpinnerToAppear();
       hooks.waitForSpinnerToDisappear();
       expect(page.generalInformation(organizationType, acbId).getText()).toContain(newAcbName);
       expect(page.generalInformation(organizationType, acbId).getText()).toContain(websiteUrl);
@@ -78,13 +79,13 @@ describe('the ONC-ACB Management page', () => {
 
     it('should allow user to create a new ACB', () => {
       const newAcbName = `${'Zacb-'}${timestamp}`;
-      page.createOrganizationButton('ACB').click();
+      page.createOrganization('ACB');
       page.organizationName.addValue(newAcbName);
       page.organizationWebsite.addValue(websiteUrl);
       address.set(acbAddress);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(newAcbName).click();
+      page.openOrganizationDetails(newAcbName);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(newAcbName);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(websiteUrl);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(acbAddress.address);

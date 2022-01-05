@@ -2,7 +2,7 @@ import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.po';
-import UsersPage from '../../users/user.po';
+import UsersPage from '../../users/users.po';
 import ToastComponent from '../../../components/toast/toast.po';
 
 let address;
@@ -46,7 +46,7 @@ describe('the ONC-ATL Management page', () => {
     }
   });
 
-  describe('when impersonating as UL', () => {
+  xdescribe('when impersonating as UL', () => {
     beforeEach(() => {
       login.logIn('onc');
       hooks.open('#/users');
@@ -63,7 +63,7 @@ describe('the ONC-ATL Management page', () => {
 
     it('should display registered users under UL', () => {
       const atl = 'UL LLC';
-      page.organizationNameButton(atl).click();
+      page.openOrganizationDetails(atl);
       hooks.waitForSpinnerToDisappear();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
       expect(page.manageUsersPanel.getText()).toContain('ROLE_ATL');
@@ -72,13 +72,13 @@ describe('the ONC-ATL Management page', () => {
 
     it('should not present the option to edit ATL details for Drummond Group', () => {
       const atl = 'Drummond Group';
-      page.organizationNameButton(atl).click();
+      page.openOrganizationDetails(atl);
       expect(page.organizationEditButton.isDisplayed()).toBe(false);
     });
 
     it('should not display registered users under Drummond Group ', () => {
       const atl = 'Drummond Group';
-      page.organizationNameButton(atl).click();
+      page.openOrganizationDetails(atl);
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);
     });
   });
@@ -98,7 +98,7 @@ describe('the ONC-ATL Management page', () => {
       const atlId = '2';
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(atl).click();
+      page.openOrganizationDetails(atl);
       hooks.waitForSpinnerToDisappear();
       page.organizationEditButton.click();
       page.retireOrganizationCheckbox.click();
@@ -110,13 +110,14 @@ describe('the ONC-ATL Management page', () => {
       expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(atl).click();
+      page.openOrganizationDetails(atl);
       hooks.waitForSpinnerToDisappear();
       page.organizationEditButton.click();
       page.retireOrganizationCheckbox.click();
       page.retirementDate.setValue(today);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => toast.toastContainer.isDisplayed());
       toast.clearAllToast();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: Yes');
     });

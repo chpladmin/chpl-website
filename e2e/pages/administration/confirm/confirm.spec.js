@@ -41,8 +41,6 @@ describe('when user is on confirm listing page', () => {
       hooks.waitForSpinnerToDisappear();
       confirmPage.rejectListing(rejectListingId1);
       hooks.waitForSpinnerToDisappear();
-      expect(toast.toastTitle.getText()).toBe('Success');
-      toast.clearAllToast();
       expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
     });
   });
@@ -62,8 +60,6 @@ describe('when user is on confirm listing page', () => {
       confirmPage.rejectListingCheckbox(rejectListingId2);
       confirmPage.rejectButton.waitAndClick();
       hooks.waitForSpinnerToDisappear();
-      expect(toast.toastTitle.getText()).toBe('Success');
-      toast.clearAllToast();
       expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
       expect(confirmPage.findListingToReject(rejectListingId2).isDisplayed()).toBe(false);
     });
