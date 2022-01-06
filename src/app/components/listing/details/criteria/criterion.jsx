@@ -22,9 +22,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.'; // eslint-disable-line import/no-cycle
+import ChplCriterionDetailsEdit from './criterion-details-edit';
+import ChplCriterionDetailsView from './criterion-details-view';
 
 import { ChplHighlightCures } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import {
   accessibilityStandard,
   certificationResult,

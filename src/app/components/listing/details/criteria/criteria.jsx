@@ -15,10 +15,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService, ChplCriterion } from '.'; // eslint-disable-line import/no-cycle
+import ChplCriterion from './criterion';
 
 import theme from 'themes/theme';
 import { ChplTooltip } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import {
   accessibilityStandard,
   certificationResult,
