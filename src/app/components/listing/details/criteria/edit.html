@@ -57,38 +57,36 @@
           </td>
           <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <span feature-flag="optional-standards">
-          <tr ng-if="$ctrl.cert.success && (($ctrl.cert.optionalStandards && $ctrl.cert.optionalStandards.length > 0) || ($ctrl.cert.allowedOptionalStandards && $ctrl.cert.allowedOptionalStandards.length > 0))">
-            <td>
-              <span>Optional Standard</span>
-            </td>
-            <td ng-if="$ctrl.canEdit()">
-              <div class="form-horizontal">
-                <div class="form-group form-group-sm">
-                  <div class="col-sm-12">
-                    <chpl-expandable-list
-                      identifier="optionalStandard"
-                      item-key="id"
-                      item-text="citation"
-                      items="$ctrl.cert.allowedOptionalStandards"
-                      new-items="$ctrl.newOptionalStandards"
-                      selected-item-keys="$ctrl.selectedOptionalStandardKeys"
-                      placeholder="Select an Optional Standard"
-                      on-change="$ctrl.optionalStandardsOnChange(action)">
-                    </chpl-expandable-list>
-                  </div>
+        <tr ng-if="$ctrl.cert.success && (($ctrl.cert.optionalStandards && $ctrl.cert.optionalStandards.length > 0) || ($ctrl.cert.allowedOptionalStandards && $ctrl.cert.allowedOptionalStandards.length > 0))">
+          <td>
+            <span>Optional Standard</span>
+          </td>
+          <td ng-if="$ctrl.canEdit()">
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <div class="col-sm-12">
+                  <chpl-expandable-list
+                    identifier="optionalStandard"
+                    item-key="id"
+                    item-text="citation"
+                    items="$ctrl.cert.allowedOptionalStandards"
+                    new-items="$ctrl.newOptionalStandards"
+                    selected-item-keys="$ctrl.selectedOptionalStandardKeys"
+                    placeholder="Select an Optional Standard"
+                    on-change="$ctrl.optionalStandardsOnChange(action)">
+                  </chpl-expandable-list>
                 </div>
               </div>
-            </td>
-            <td ng-if="$ctrl.cert.optionalStandards && $ctrl.cert.optionalStandards.length > 0 && !$ctrl.canEdit()">
-              <ul>
-                <li ng-repeat="m in $ctrl.cert.optionalStandards">
-                  <chpl-ellipsis-bridge text="m.optionalStandard" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </span>
+            </div>
+          </td>
+          <td ng-if="$ctrl.cert.optionalStandards && $ctrl.cert.optionalStandards.length > 0 && !$ctrl.canEdit()">
+            <ul>
+              <li ng-repeat="m in $ctrl.cert.optionalStandards">
+                <chpl-ellipsis-bridge text="m.optionalStandard" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
+              </li>
+            </ul>
+          </td>
+        </tr>
         <tr ng-if="$ctrl.cert.success && ($ctrl.cert.testStandards !== null && ($ctrl.cert.testStandards.length > 0 || $ctrl.resources.testStandards.data.length > 0))">
           <td>
             <span>Test Standard</span>
