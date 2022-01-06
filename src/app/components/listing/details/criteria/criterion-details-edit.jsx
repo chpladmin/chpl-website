@@ -18,13 +18,6 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from '../../../util';
-import {
-  certificationResult,
-  resources as resourceDefinition,
-} from '../../../../shared/prop-types';
-import { FlagContext } from '../../../../shared/contexts';
-
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import ChplConformanceMethodsEdit from './conformance-methods';
 import ChplOptionalStandardsEdit from './optional-standards';
@@ -34,6 +27,13 @@ import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 import ChplTestStandardsEdit from './test-standards';
 import ChplTestToolsEdit from './test-tools';
+
+import { ChplTextField } from 'components/util';
+import { FlagContext } from 'shared/contexts';
+import {
+  certificationResult,
+  resources as resourceDefinition,
+} from 'shared/prop-types';
 
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
