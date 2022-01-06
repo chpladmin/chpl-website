@@ -4,7 +4,6 @@ import {
   ButtonGroup,
   Divider,
   Paper,
-  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -13,7 +12,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import { ExportToCsv } from 'export-to-csv';
 
 import theme from 'themes/theme';
 import {
@@ -30,16 +31,26 @@ import {
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
+import { getAngularService } from 'services/angular-react-helper';
+
+const csvOptions = {
+  filename: 'real-world-testing',
+  showLabels: true,
+  headers: [
+    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
+    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
+    { headerName: 'Developer', objectKey: 'developer' },
+    { headerName: 'Product', objectKey: 'product' },
+    { headerName: 'Version', objectKey: 'version' },
+    { headerName: 'Certification Status', objectKey: 'certificationStatus' },
+    { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl' },
+    { headerName: 'Real World Testing Results URL', objectKey: 'friendlyRwtResultsUrl' },
+  ],
+};
 
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
-  },
-  content: {
-    display: 'grid',
-    gap: '32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'start',
   },
   linkWrap: {
     overflowWrap: 'anywhere',
@@ -110,12 +121,16 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplRealWorldTestingCollectionPage() {
+function ChplRealWorldTestingCollectionPage(props) {
+  const $analytics = getAngularService('$analytics');
+  const {
+    analytics,
+  } = props;
+  const csvExporter = new ExportToCsv(csvOptions);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
   const [sortDescending, setSortDescending] = useState(false);
-  const [notificationOpen, setNotificationOpen] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
@@ -145,15 +160,25 @@ function ChplRealWorldTestingCollectionPage() {
     { text: 'Real World Testing Results URL' },
   ];
 
+  const prepareCsvData = (listings) => listings.map((listing) => ({
+    ...listing,
+    fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
+    friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
+  }));
+
+  const downloadRealWorldTesting = () => {
+    $analytics.eventTrack('Download Results', { category: analytics.category, label: data.results.length });
+    csvExporter.generateCsv(prepareCsvData(data.results));
+  };
+
   const handleTableSort = (event, property) => {
+    $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     if (orderBy === property) {
       setSortDescending(!sortDescending);
     } else {
       setOrderBy(property);
     }
   };
-
-  const toggleNotification = (open) => setNotificationOpen(open);
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
@@ -166,21 +191,40 @@ function ChplRealWorldTestingCollectionPage() {
       <div className={classes.rowBody}>
         <Typography variant="h2">Real World Testing</Typography>
         <Divider />
-        <div className={classes.content}>
-          <div>
-            <Typography
-              variant="h6"
-              gutterBottom
-            >
-              Ut volutpat mi ligula, sit amet pulvinar felis tincidunt in. Nam libero dui, molestie in volutpat eu, faucibus et urna. Vestibulum vitae leo rhoncus, interdum leo non, euismod erat. Proin vitae ex risus. Integer ac dapibus est, ut ullamcorper mauris. Morbi tincidunt ac ante id vulputate. Sed ut facilisis dui. Nunc ac fermentum libero. Ut sed ligula sit amet eros accumsan placerat.                    Ut volutpat mi ligula, sit amet pulvinar felis tincidunt in. Nam libero dui, molestie in volutpat eu, faucibus et urna. Vestibulum vitae leo rhoncus, interdum leo non, euismod erat. Proin vitae ex risus. Integer ac dapibus est, ut ullamcorper mauris. Morbi tincidunt ac ante id vulputate. Sed ut facilisis dui. Nunc ac fermentum libero. Ut sed ligula sit amet eros accumsan placerat.
-            </Typography>
-            <Typography>
-              For more information
-              {' '}
-              <a href="#">visit here</a>
-            </Typography>
-          </div>
-        </div>
+        <Typography
+          variant="body1"
+        >
+          This list includes all Health IT Module(s) eligible for Real World Testing, which is an annual
+          {' '}
+          <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Condition and Maintenance of Certification requirement</a>
+          {' '}
+          for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
+          {' '}
+          <a href="https://www.healthit.gov/curesrule/">ONC&apos;s Cures Act Final Rule</a>
+          {' '}
+          must successfully test their real world use.
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          For more information, please visit the
+          {' '}
+          <a href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing">Real World Testing resources</a>
+          . Real World Testing summary data is also available through
+          {' '}
+          <a href="#/resources/download">Download the CHPL</a>
+          .
+        </Typography>
+        <Typography
+          variant="body1"
+        >
+          Please note that by default, only listings that are active or suspended are shown in the search results.
+        </Typography>
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
@@ -212,9 +256,15 @@ function ChplRealWorldTestingCollectionPage() {
                color="secondary"
                variant="contained"
                fullWidth
-               onClick={() => toggleNotification(true)}
+               id="download-real-world-testing"
+               onClick={downloadRealWorldTesting}
              >
-               Download Results
+               Download
+               {' '}
+               { data.results.length }
+               {' '}
+               Result
+               { data.results.length !== 1 ? 's' : '' }
                <GetAppIcon className={classes.iconSpacing} />
              </Button>
            </ButtonGroup>
@@ -235,13 +285,29 @@ function ChplRealWorldTestingCollectionPage() {
                {data.results
                  .map((item) => (
                    <TableRow key={item.id}>
-                     <TableCell className={classes.stickyColumn}><strong><a href={`#/listing/${item.id}`}>{item.chplProductNumber}</a></strong></TableCell>
+                     <TableCell className={classes.stickyColumn}>
+                       <strong>
+                         <ChplLink
+                           href={`#/listing/${item.id}`}
+                           text={item.chplProductNumber}
+                           analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                           external={false}
+                         />
+                       </strong>
+                     </TableCell>
                      <TableCell>
                        {item.edition}
                        {' '}
                        {item.curesUpdate ? 'Cures Update' : '' }
                      </TableCell>
-                     <TableCell><a href={`#/organizations/developers/${item.developerId}`}>{item.developer}</a></TableCell>
+                     <TableCell>
+                       <ChplLink
+                         href={`#/organizations/developers/${item.developerId}`}
+                         text={item.developer}
+                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer }}
+                         external={false}
+                       />
+                     </TableCell>
                      <TableCell>{item.product}</TableCell>
                      <TableCell>{item.version}</TableCell>
                      <TableCell>{item.certificationStatus}</TableCell>
@@ -250,7 +316,7 @@ function ChplRealWorldTestingCollectionPage() {
                           && (
                             <ChplLink
                               href={item.rwtPlansUrl}
-                              analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
+                              analytics={{ event: 'Go to Real World Testing Plans URL', category: analytics.category, label: item.rwtPlansUrl }}
                             />
                           )}
                      </TableCell>
@@ -259,7 +325,7 @@ function ChplRealWorldTestingCollectionPage() {
                          ? (
                            <ChplLink
                              href={item.rwtResultsUrl}
-                             analytics={{ event: 'Navigation TBD', category: 'Category TBD', label: 'Label TBD' }}
+                             analytics={{ event: 'Go to Real World Testing Results URL', category: analytics.category, label: item.rwtResultsUrl }}
                            />
                          ) : (
                            <>N/A</>
@@ -277,14 +343,10 @@ function ChplRealWorldTestingCollectionPage() {
            rowsPerPageOptions={[25, 50, 100]}
            setPage={setPageNumber}
            setRowsPerPage={setPageSize}
+           analytics={analytics}
          />
        </>
        )}
-      <Snackbar
-        open={notificationOpen}
-        onClose={() => toggleNotification(false)}
-        message="Download will be implemented at a later date"
-      />
     </>
   );
 }
@@ -292,4 +354,7 @@ function ChplRealWorldTestingCollectionPage() {
 export default ChplRealWorldTestingCollectionPage;
 
 ChplRealWorldTestingCollectionPage.propTypes = {
+  analytics: shape({
+    category: string.isRequired,
+  }).isRequired,
 };

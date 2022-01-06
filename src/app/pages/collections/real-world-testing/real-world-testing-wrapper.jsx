@@ -7,6 +7,9 @@ import ApiWrapper from 'api/api-wrapper';
 import { FilterProvider } from 'components/filter';
 
 function ChplRealWorldTestingCollectionPageWrapper() {
+  const analytics = {
+    category: 'Real World Testing',
+  };
   const filters = [{
     key: 'derivedCertificationEditions',
     display: 'Certification Edition',
@@ -28,24 +31,18 @@ function ChplRealWorldTestingCollectionPageWrapper() {
       { value: 'Withdrawn by Developer' },
       { value: 'Retired' },
     ],
-  }, {
-    key: 'rwtOptions',
-    display: 'Real World Testing',
-    required: true,
-    values: [
-      { value: 'is_eligible', display: 'Is Eligible', default: true },
-      { value: 'has_plans_url', display: 'Has Plans URL', default: true },
-      { value: 'has_results_url', display: 'Has Results URL', default: true },
-    ],
   }];
 
   return (
     <UserWrapper>
       <ApiWrapper>
         <FilterProvider
+          analytics={analytics}
           filters={filters}
         >
-          <ChplRealWorldTestingCollectionPage />
+          <ChplRealWorldTestingCollectionPage
+            analytics={analytics}
+          />
         </FilterProvider>
       </ApiWrapper>
     </UserWrapper>

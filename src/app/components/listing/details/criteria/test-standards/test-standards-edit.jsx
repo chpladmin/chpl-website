@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
@@ -23,7 +23,6 @@ import * as yup from 'yup';
 
 import { ChplEllipsis, ChplTextField } from '../../../../util';
 import { testStandard, selectedTestStandard } from '../../../../../shared/prop-types';
-import { FlagContext } from '../../../../../shared/contexts';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -59,13 +58,10 @@ function ChplTestStandardsEdit(props) {
       .sort((a, b) => (a.name < b.name ? -1 : 1)),
   );
   const classes = useStyles();
-  const { optionalStandardsIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    if (optionalStandardsIsOn) {
-      setOptions(options.filter((option) => testStandards.find((s) => s.testStandardId === option.id)));
-    }
+    setOptions(options.filter((option) => testStandards.find((s) => s.testStandardId === option.id)));
   }, []);
 
   let addNew;
