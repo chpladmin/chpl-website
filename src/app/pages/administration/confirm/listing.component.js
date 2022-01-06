@@ -228,7 +228,7 @@ const ConfirmListingComponent = {
             body: 'The Listing was already resolved',
           });
           that.$state.go('^', {}, { reload: true });
-        } else {
+        } else if (error.data.errorMessages?.length > 0 || error.data.warningMessages?.length > 0) {
           that.errorMessages = error.data.errorMessages;
           that.warningMessages = error.data.warningMessages;
           if (that.warningMessages?.length > 0) {
@@ -237,6 +237,12 @@ const ConfirmListingComponent = {
             that.showAcknowledgement = false;
             that.acknowledgeWarnings = false;
           }
+        } else {
+          that.toaster.pop({
+            type: 'error',
+            title: 'Error',
+            body: 'An error occurred',
+          });
         }
       });
     }
