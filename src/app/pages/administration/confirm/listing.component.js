@@ -1,3 +1,9 @@
+const replaceDeveloperCode = (chplProductNumber, code) => {
+  const parts = chplProductNumber.split('.');
+  parts[3] = code;
+  return parts.join('.');
+};
+
 const ConfirmListingComponent = {
   templateUrl: 'chpl.administration/confirm/listing.html',
   bindings: {
@@ -89,9 +95,11 @@ const ConfirmListingComponent = {
       switch (action) {
         case 'select':
           this.pending.developer = data;
+          this.pending.chplProductNumber = replaceDeveloperCode(this.pending.chplProductNumber, data.developerCode);
           break;
         case 'edit':
           this.pending.developer = data;
+          this.pending.chplProductNumber = replaceDeveloperCode(this.pending.chplProductNumber, 'XXXX');
           break;
           // no default
       }
