@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 const elements = {
-  bodyText: '.makeStyles-content-3',
   table: 'table',
   searchResultsHeader: 'h6=Search Results:',
   filterPanelToggle: '#filter-panel-toggle',
@@ -11,10 +10,6 @@ const elements = {
 };
 
 class CollectionPage {
-  get bodyText() {
-    return $(elements.bodyText);
-  }
-
   getTableHeaders() {
     return $(elements.table).$('thead').$$('th');
   }
