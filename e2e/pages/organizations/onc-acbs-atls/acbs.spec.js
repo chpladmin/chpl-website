@@ -45,7 +45,7 @@ describe('the ONC-ACB Management page', () => {
       login.logOut();
     });
 
-    it('should allow user to edit UL details', () => {
+    it('should allow user to edit ICSA Labs details', () => {
       const acb = 'ICSA Labs';
       const newAcbName = `${acb} - ${timestamp}`;
       const acbId = '6';

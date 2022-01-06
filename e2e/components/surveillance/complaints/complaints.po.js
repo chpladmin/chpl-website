@@ -112,6 +112,7 @@ class ComplaintsComponent {
   }
 
   viewComplaint(id) {
+    this.filter.clearValue();
     this.filter.addValue(id);
     browser.waitUntil(() => $('table').$('tbody').$$('tr').length-1 === 1);
     $('//span[text()="View"]/parent::button').click();
