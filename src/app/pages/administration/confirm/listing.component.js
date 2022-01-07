@@ -174,17 +174,21 @@ const ConfirmListingComponent = {
       const that = this;
       if (this.pending.developer && this.pending.developer.developerId) {
         this.networkService.getProductsByDeveloper(this.pending.developer.developerId)
-          .then((result) => { that.products = result.products; });
+          .then((result) => {
+            that.products = result.products;
+          });
       } else {
         that.products = [];
       }
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getSimpleProduct(this.pending.product.productId)
           .then((result) => {
+            that.stage = 'product';
             that.staged = result;
             that.pending.product = result;
           });
       } else {
+        that.stage = 'product';
         that.staged = { ...that.pending.product };
       }
     }
@@ -193,17 +197,21 @@ const ConfirmListingComponent = {
       const that = this;
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getVersionsByProduct(this.pending.product.productId)
-          .then((result) => { that.versions = result; });
+          .then((result) => {
+            that.versions = result;
+          });
       } else {
         that.versions = [];
       }
       if (this.pending.version && this.pending.version.versionId) {
-        this.networkService.getSimpleVersion(this.pending.version.versionId)
+        this.networkService.getVersion(this.pending.version.versionId)
           .then((result) => {
+            that.stage = 'version';
             that.staged = result;
             that.pending.version = result;
           });
       } else {
+        that.stage = 'version';
         that.staged = { ...that.pending.version };
       }
     }
@@ -290,11 +298,9 @@ const ConfirmListingComponent = {
     next() {
       switch (this.stage) {
         case 'developer':
-          this.stage = 'product';
           this.loadProducts();
           break;
         case 'product':
-          this.stage = 'version';
           this.loadFamily();
           this.loadVersions();
           break;
