@@ -1,3 +1,3 @@
-import ChplAttestationChangeRequest from './attestation-change-request';
+import ChplAttestationChangeRequestWrapper from './attestation-change-request-wrapper';
 
-export default ChplAttestationChangeRequest;
+export default ChplAttestationChangeRequestWrapper;
