@@ -80,7 +80,7 @@ const ConfirmListingComponent = {
     canAct(action) {
       let ret;
       switch (action) {
-        case 'confirm': ret = this.stage === 'listing';
+        case 'confirm': ret = this.stage === 'listing' && !this.isSubmitting;
           break;
         case 'next': ret = this.stage !== 'listing'; // todo: validation on "create" data
           break;
@@ -218,6 +218,7 @@ const ConfirmListingComponent = {
 
     confirm() {
       const that = this;
+      this.isSubmitting = true;
       this.networkService.confirmListing({
         listing: this.pending,
         acknowledgeWarnings: this.acknowledgeWarnings ?? false,
@@ -245,12 +246,14 @@ const ConfirmListingComponent = {
             that.showAcknowledgement = false;
             that.acknowledgeWarnings = false;
           }
+          that.isSubmitting = false;
         } else {
           that.toaster.pop({
             type: 'error',
             title: 'Error',
             body: 'An error occurred',
           });
+          that.isSubmitting = false;
         }
       });
     }
