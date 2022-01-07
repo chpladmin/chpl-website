@@ -169,11 +169,10 @@ const ListingEditComponent = {
         eventDate: ce.statusDateObject.getTime(),
       }));
       if (this.listing.chplProductNumber.length > 12) {
-        this.listing.chplProductNumber = `${this.idFields.prefix}.${
-          this.idFields.prod}.${
-          this.idFields.ver}.${
-          this.idFields.ics}.${
-          this.idFields.suffix}`;
+        const {
+          prefix, prod, ver, ics, suffix,
+        } = this.idFields;
+        this.listing.chplProductNumber = `${prefix}.${prod}.${ver}.${ics}.${suffix}`;
       }
       if (this.listing.rwtPlansCheckDateObject) {
         this.listing.rwtPlansCheckDate = this.DateUtil.timestampToString(this.listing.rwtPlansCheckDateObject.getTime(), 'yyyy-MM-dd');
