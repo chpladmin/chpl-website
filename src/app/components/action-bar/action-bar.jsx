@@ -17,6 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
+import ChplActionBarErrors from './action-bar-errors';
 
 import theme from 'themes/theme';
 
@@ -337,6 +338,9 @@ function ChplActionBar(props) {
           </ButtonGroup>
         </div>
       </div>
+      <ChplActionBarErrors
+        errors={errors}
+      />
     </ThemeProvider>
   );
 }
