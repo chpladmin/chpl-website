@@ -18,13 +18,6 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from '../../../util';
-import {
-  certificationResult,
-  resources as resourceDefinition,
-} from '../../../../shared/prop-types';
-import { FlagContext } from '../../../../shared/contexts';
-
 import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import ChplConformanceMethodsEdit from './conformance-methods';
 import ChplOptionalStandardsEdit from './optional-standards';
@@ -34,6 +27,13 @@ import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 import ChplTestStandardsEdit from './test-standards';
 import ChplTestToolsEdit from './test-tools';
+
+import { ChplTextField } from 'components/util';
+import { FlagContext } from 'shared/contexts';
+import {
+  certificationResult,
+  resources as resourceDefinition,
+} from 'shared/prop-types';
 
 const validationSchema = yup.object({
   apiDocumentation: yup.string()
@@ -59,7 +59,7 @@ function ChplCriterionDetailsEdit(props) {
   const [isConfirming] = useState(props.isConfirming);
   const [resources] = useState(props.resources);
   const classes = useStyles();
-  const { conformanceMethodIsOn, optionalStandardsIsOn } = useContext(FlagContext);
+  const { conformanceMethodIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -208,7 +208,7 @@ function ChplCriterionDetailsEdit(props) {
                 </div>
               </>
             )}
-          { optionalStandardsIsOn && (criterion.optionalStandards || criterion.allowedOptionalStandards?.length > 0)
+          { (criterion.optionalStandards?.length > 0 || criterion.allowedOptionalStandards?.length > 0)
             && (
               <>
                 <div>
@@ -229,7 +229,7 @@ function ChplCriterionDetailsEdit(props) {
                 </div>
               </>
             )}
-          { criterion.testStandards && (!optionalStandardsIsOn || (criterion.testStandards.length > 0 && optionalStandardsIsOn))
+          { criterion.testStandards && criterion.testStandards.length > 0
             && (
               <>
                 <div>

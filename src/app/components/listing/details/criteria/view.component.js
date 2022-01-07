@@ -96,7 +96,7 @@ const CertificationCriteriaViewComponent = {
     showOptionalStandardsSection() {
       return this.cert.success && (
         (this.cert.optionalStandards?.length > 0)
-          || (this.cert.testStandards?.length > 0 && (!this.isOn('optional-standards') || this.cert.optionalStandards))
+          || (this.cert.testStandards?.length > 0 && this.cert.optionalStandards)
       );
     }
 
