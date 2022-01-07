@@ -2,9 +2,18 @@ import React from 'react';
 import {
   cleanup, render, screen, waitFor,
 } from '@testing-library/react';
+import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
 import ChplRealWorldTestingCollectionPage from './real-world-testing';
+
+import * as angularReactHelper from 'services/angular-react-helper';
+
+const $analyticsMock = {
+  eventTrack: jest.fn(),
+};
+angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
 
 const mockContext = {
   queryString: jest.fn(() => 'queryString'),

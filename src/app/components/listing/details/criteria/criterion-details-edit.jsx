@@ -60,8 +60,8 @@ function ChplCriterionDetailsEdit(props) {
   const [isConfirming] = useState(props.isConfirming);
   const [resources] = useState(props.resources);
   const classes = useStyles();
-  const { conformanceMethodIsOn, optionalStandardsIsOn } = useContext(FlagContext);
   const { hasAnyRole } = getAngularService('authService');
+  const { conformanceMethodIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -212,7 +212,7 @@ function ChplCriterionDetailsEdit(props) {
                     </div>
                   </>
                 )}
-              { optionalStandardsIsOn && (criterion.optionalStandards || criterion.allowedOptionalStandards?.length > 0)
+              { (criterion.optionalStandards?.length > 0 || criterion.allowedOptionalStandards?.length > 0)
                 && (
                   <>
                     <div>
@@ -233,7 +233,7 @@ function ChplCriterionDetailsEdit(props) {
                     </div>
                   </>
                 )}
-              { criterion.testStandards && (!optionalStandardsIsOn || (criterion.testStandards.length > 0 && optionalStandardsIsOn))
+              { criterion.testStandards && criterion.testStandards.length > 0
                 && (
                   <>
                     <div>

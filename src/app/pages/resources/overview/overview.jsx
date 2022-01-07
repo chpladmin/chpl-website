@@ -12,15 +12,15 @@ import {
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
+import { useFetchAcbs } from 'api/acbs';
+import { useFetchAtls } from 'api/atls';
+import ApiWrapper from 'api/api-wrapper';
 import {
   ChplLink,
   InternalScrollButton,
-} from '../../../components/util';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { useFetchAcbs } from '../../../api/acbs';
-import { useFetchAtls } from '../../../api/atls';
-import ApiWrapper from '../../../api/api-wrapper';
-import theme from '../../../themes/theme';
+} from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   content: {
@@ -200,7 +200,12 @@ function ChplResourcesOverview() {
           <Typography gutterBottom>
             For additional information on how to navigate the CHPL, please refer to the
             {' '}
-            <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a>
+            <ChplLink
+              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+              text="CHPL Public User Guide"
+              analytics={{ event: 'CHPL Public User Guide', category: 'Resources' }}
+              external={false}
+            />
           </Typography>
           <Typography gutterBottom>
             For more information on attesting for Promoting Interoperability under the Centers for Medicare &amp; Medicaid Services (CMS), please see the
