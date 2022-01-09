@@ -133,7 +133,7 @@ describe('when logged in as an ACB', () => {
           complaintsComponent.advanceFilterOptions('Open');
           complaintsComponent.waitForUpdatedTableRowCount();
           for(let i=1; i< hooks.getTableRows().length; i++){
-            expect(hooks.getCellValue(i,6)).toBe('Other - [Please Describe]');
+            expect(['Other - [Please Describe]' , 'Patient']).toContain (hooks.getCellValue(i,6));
             expect(hooks.getCellValue(i,2)).toBe('CLOSED');
           }
         });
