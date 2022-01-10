@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
-import ChplActionBarErrors from './action-bar-errors';
+import ChplActionBarMessages from './action-bar-messages';
 
 import theme from 'themes/theme';
 
@@ -165,7 +165,7 @@ function ChplActionBar(props) {
             pendingMessage={pendingMessage}
           />
           )}
-        { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
+        { ((errors && errors.length > 0) || (warnings && warnings.length > 0)) && false
           && (
             <>
               <div
@@ -338,8 +338,9 @@ function ChplActionBar(props) {
           </ButtonGroup>
         </div>
       </div>
-      <ChplActionBarErrors
+      <ChplActionBarMessages
         errors={errors}
+        warnings={warnings}
       />
     </ThemeProvider>
   );
