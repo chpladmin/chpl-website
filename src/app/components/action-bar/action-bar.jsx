@@ -204,7 +204,7 @@ function ChplActionBar(props) {
               </div>
             </>
           )}
-        { showMessages
+        { showMessages && false
           && (
             <>
               <div id="action-bar-messages" className={classes.actionBarMessages}>

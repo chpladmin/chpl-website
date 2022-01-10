@@ -1,24 +1,17 @@
-import React, { useEffect, useState, } from 'react';
-import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Divider,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {
-  arrayOf, bool, func, string,
+  arrayOf, string,
 } from 'prop-types';
-
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   drawer: {
@@ -37,7 +30,7 @@ const useStyles = makeStyles({
     borderRadius: '4px 0 0px 4px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     backgroundColor: '#eeeeee',
-    "&:hover, &.Mui-focusVisible": {
+    '&:hover, &.Mui-focusVisible': {
       backgroundColor: '#fff',
       boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     },
@@ -73,74 +66,83 @@ function ChplActionBarMessages(props) {
 
   return (
     <>
-      { !open &&
+      { !open
+        && (
         <Button
           color="default"
           variant="outlined"
           className={classes.compareWidget}
           onClick={toggleDrawer}
         >
-          { errors.length > 0 &&
+          { errors.length > 0
+            && (
             <>
-              Error{errors.length !== 1 ? 's' : ''}
+              Error
+              {errors.length !== 1 ? 's' : ''}
             </>
-          }
-          { errors.length > 0 && warnings?.length > 0 &&
+            )}
+          { errors.length > 0 && warnings?.length > 0
+            && (
             <>
               {' & '}
             </>
-          }
-          { warnings.length > 0 &&
+            )}
+          { warnings.length > 0
+            && (
             <>
-              Warning{warnings.length !== 1 ? 's' : ''}
+              Warning
+              {warnings.length !== 1 ? 's' : ''}
             </>
-          }
+            )}
           <CompareArrowsIcon className={classes.iconSpacing} />
         </Button>
-      }
+        )}
       <Drawer
-        anchor={'right'}
+        anchor="right"
         open={open}
         onClose={toggleDrawer}
         variant="persistent"
         className={classes.drawer}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
       >
         <IconButton onClick={toggleDrawer}>
           <ChevronRightIcon />
         </IconButton>
         <Divider />
-        { errors.length > 0 &&
+        { errors.length > 0
+          && (
           <>
             <Typography>
-              Error{errors.length !== 1 ? 's' : ''}
+              Error
+              {errors.length !== 1 ? 's' : ''}
             </Typography>
             <ul>
-              { errors.map((message, idx) => (
-                <li key={idx}>{ message }</li>
+              { errors.map((message) => (
+                <li key={message}>{ message }</li>
               ))}
             </ul>
           </>
-        }
-        { warnings.length > 0 &&
+          )}
+        { warnings.length > 0
+          && (
           <>
             <Typography>
-              Warning{warnings.length !== 1 ? 's' : ''}
+              Warning
+              {warnings.length !== 1 ? 's' : ''}
             </Typography>
             <ul>
-              { warnings.map((message, idx) => (
-                <li key={idx}>{ message }</li>
+              { warnings.map((message) => (
+                <li key={message}>{ message }</li>
               ))}
             </ul>
           </>
-        }
+          )}
       </Drawer>
     </>
   );
 }
-
 
 export default ChplActionBarMessages;
 
