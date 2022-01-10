@@ -68,34 +68,38 @@ function ChplActionBarMessages(props) {
     <>
       { !open
         && (
-        <Button
-          color="default"
-          variant="outlined"
-          className={classes.compareWidget}
-          onClick={toggleDrawer}
-        >
-          { errors.length > 0
-            && (
-            <>
-              Error
-              {errors.length !== 1 ? 's' : ''}
-            </>
-            )}
-          { errors.length > 0 && warnings?.length > 0
-            && (
-            <>
-              {' & '}
-            </>
-            )}
-          { warnings.length > 0
-            && (
-            <>
-              Warning
-              {warnings.length !== 1 ? 's' : ''}
-            </>
-            )}
-          <CompareArrowsIcon className={classes.iconSpacing} />
-        </Button>
+          <Button
+            color="default"
+            variant="outlined"
+            className={classes.compareWidget}
+            onClick={toggleDrawer}
+          >
+            { errors.length > 0
+              && (
+                <>
+                  { errors.length }
+                  {' '}
+                  Error
+                  {errors.length !== 1 ? 's' : ''}
+                </>
+              )}
+            { errors.length > 0 && warnings?.length > 0
+              && (
+                <>
+                  {' & '}
+                </>
+              )}
+            { warnings.length > 0
+              && (
+                <>
+                  { warnings.length }
+                  {' '}
+                  Warning
+                  {warnings.length !== 1 ? 's' : ''}
+                </>
+              )}
+            <CompareArrowsIcon className={classes.iconSpacing} />
+          </Button>
         )}
       <Drawer
         anchor="right"
@@ -113,31 +117,31 @@ function ChplActionBarMessages(props) {
         <Divider />
         { errors.length > 0
           && (
-          <>
-            <Typography>
-              Error
-              {errors.length !== 1 ? 's' : ''}
-            </Typography>
-            <ul>
-              { errors.map((message) => (
-                <li key={message}>{ message }</li>
-              ))}
-            </ul>
-          </>
+            <>
+              <Typography>
+                Error
+                {errors.length !== 1 ? 's' : ''}
+              </Typography>
+              <ul>
+                { errors.map((message) => (
+                  <li key={message}>{ message }</li>
+                ))}
+              </ul>
+            </>
           )}
         { warnings.length > 0
           && (
-          <>
-            <Typography>
-              Warning
-              {warnings.length !== 1 ? 's' : ''}
-            </Typography>
-            <ul>
-              { warnings.map((message) => (
-                <li key={message}>{ message }</li>
-              ))}
-            </ul>
-          </>
+            <>
+              <Typography>
+                Warning
+                {warnings.length !== 1 ? 's' : ''}
+              </Typography>
+              <ul>
+                { warnings.map((message) => (
+                  <li key={message}>{ message }</li>
+                ))}
+              </ul>
+            </>
           )}
       </Drawer>
     </>
