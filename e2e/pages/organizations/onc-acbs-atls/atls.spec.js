@@ -35,19 +35,17 @@ describe('the ONC-ATL Management page', () => {
     await hooks.open('#/organizations/onc-atls');
   });
 
-  xdescribe('when impersonating as UL', () => {
+  describe('when impersonating as ROLE_ATL for drummond group', () => {
+    const atl = 'Drummond Group';
     beforeEach(() => {
       login.logIn('onc');
-      hooks.open('#/users');
-      hooks.waitForSpinnerToDisappear();
-      user.impersonateUser('Chris Crescioli');
-      hooks.waitForSpinnerToDisappear();
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
+      page.openOrganizationDetails(atl);
+      user.impersonateUser('Jim Dow');
     });
 
     afterEach(() => {
-      const atl = 'UL LLC';
       page.openOrganizationDetails(atl);
       page.organizationEditButton.click();
       page.organizationName.setValue(atl);
@@ -58,11 +56,10 @@ describe('the ONC-ATL Management page', () => {
       login.logOut();
     });
 
-    it('should allow user to edit UL details', () => {
-      const atl = 'UL LLC';
+    it('should allow user to edit drummond\'s details', () => {
       const newAtlName = `${atl} - ${timestamp}`;
       const organizationType = 'ATL';
-      const atlId = '1';
+      const atlId = '3';
       page.openOrganizationDetails(atl);
       page.organizationEditButton.click();
       page.organizationName.setValue(newAtlName);

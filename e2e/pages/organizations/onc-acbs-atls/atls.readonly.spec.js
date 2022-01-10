@@ -46,39 +46,41 @@ describe('the ONC-ATL Management page', () => {
     }
   });
 
-  xdescribe('when impersonating as UL', () => {
+  describe('when impersonating as ROLE_ATL for drummond group', () => {
     beforeEach(() => {
       login.logIn('onc');
-      hooks.open('#/users');
-      hooks.waitForSpinnerToDisappear();
-      user.impersonateUser('Chris Crescioli');
-      hooks.waitForSpinnerToDisappear();
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
+      page.openOrganizationDetails('Drummond Group');
+      user.impersonateUser('Jim Dow');
     });
 
     afterEach(() => {
       login.logOut();
     });
 
-    it('should display registered users under UL', () => {
-      const atl = 'UL LLC';
+    it('should display registered users under Drummond', () => {
+      const atl = 'Drummond Group';
       page.openOrganizationDetails(atl);
       hooks.waitForSpinnerToDisappear();
       expect(page.manageUsersPanelHeader).toBeDisplayed();
       expect(page.manageUsersPanel.getText()).toContain('ROLE_ATL');
-      expect(page.manageUsersPanel.getText()).toContain('UL LLC');
+      expect(page.manageUsersPanel.getText()).toContain('Drummond Group');
     });
 
-    it('should not present the option to edit ATL details for Drummond Group', () => {
-      const atl = 'Drummond Group';
+    it('should not display the option to edit ATL details for UL LLC', () => {
+      const atl = 'UL LLC';
+      const atlId = '1'
       page.openOrganizationDetails(atl);
+      browser.waitUntil(() => page.generalInformation('ATL', atlId).isDisplayed());
       expect(page.organizationEditButton.isDisplayed()).toBe(false);
     });
 
-    it('should not display registered users under Drummond Group ', () => {
-      const atl = 'Drummond Group';
+    it('should not display registered users under UL LLC', () => {
+      const atl = 'UL LLC';
+      const atlId = '1'
       page.openOrganizationDetails(atl);
+      browser.waitUntil(() => page.generalInformation('ATL', atlId).isDisplayed());
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);
     });
   });

@@ -29,7 +29,7 @@ class ComplaintsComponent {
   }
 
   complaintsBody () {
-    return $('chpl-complaint-view-bridge').$('div').getText();
+    return $('.MuiCardContent-root').getText();
   }
 
   get viewButton() {
@@ -58,7 +58,7 @@ class ComplaintsComponent {
     $(`//li[text()="${fields.type}"]`).click();
   }
 
-  setOptional(fields) {
+  setOptionalFields(fields) {
     $(this.elements.oncId).addValue(fields.oncId);
     $(this.elements.actions).addValue(fields.actions);
     $(this.elements.criterion).click();
@@ -127,12 +127,8 @@ class ComplaintsComponent {
 
   waitForUpdatedTableRowCount () {
     let start;
-    let next;
-    do {
-      start = $('table').$('tbody').$$('tr').length;
-      browser.pause(2000);
-      next = $('table').$('tbody').$$('tr').length;
-    } while (start !== next);
+    start = $('table').$('tbody').$$('tr').length;
+    browser.waitUntil( () => $('table').$('tbody').$$('tr').length != start);
   }
 
   advancedSearch () {

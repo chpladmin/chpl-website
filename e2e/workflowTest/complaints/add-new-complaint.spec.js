@@ -75,7 +75,7 @@ describe('As a ROLE_ACB user', () => {
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.set(fields);
-    complaintsComponent.setOptional(optionalFields);
+    complaintsComponent.setOptionalFields(optionalFields);
     complaintsComponent.saveComplaint();
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
@@ -103,7 +103,7 @@ describe('As a ROLE_ACB user', () => {
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.set(fields);
-    complaintsComponent.setOptional(optionalFields);
+    complaintsComponent.setOptionalFields(optionalFields);
     complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV02');
     complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV03');
     complaintsComponent.saveComplaint();
@@ -133,7 +133,7 @@ describe('As a ROLE_ACB user', () => {
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.set(fields);
-    complaintsComponent.setOptional(optionalFields);
+    complaintsComponent.setOptionalFields(optionalFields);
     complaintsComponent.selectListing('15.04.04.3010.Onco.28.01.1.181214');
     complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV02');
     complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV03');
@@ -194,7 +194,7 @@ describe('As a ROLE_ADMIN user', () => {
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.set(fields);
-    complaintsComponent.setOptional(optionalFields);
+    complaintsComponent.setOptionalFields(optionalFields);
     complaintsComponent.saveComplaint();
     expect(hooks.getErrors()).toBe('Certified product 15.04.04.3010.Onco.28.01.1.181214 does not have the same ONC-ACB as the complaint.');
   });
