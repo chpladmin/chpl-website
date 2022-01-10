@@ -222,11 +222,12 @@ const ConfirmListingComponent = {
       this.networkService.confirmListing({
         listing: this.pending,
         acknowledgeWarnings: this.acknowledgeWarnings ?? false,
-      }).then(() => {
+      }).then((result) => {
         that.toaster.pop({
           type: 'success',
           title: 'Success',
-          body: 'The Listing has been confirmed',
+          body: `The Listing has been confirmed. Details are available at <a href="#/listing/${result.id}">${result.chplProductNumber}</a>`,
+          bodyOutputType: 'trustedHtml',
         });
         that.$state.go('^', {}, { reload: true });
       }, (error) => {
