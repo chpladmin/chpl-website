@@ -186,10 +186,12 @@ const ConfirmListingComponent = {
             that.stage = 'product';
             that.staged = result;
             that.pending.product = result;
+            that.progress = that.getProgress();
           });
       } else {
         that.stage = 'product';
         that.staged = { ...that.pending.product };
+        that.progress = that.getProgress();
       }
     }
 
@@ -209,10 +211,12 @@ const ConfirmListingComponent = {
             that.stage = 'version';
             that.staged = result;
             that.pending.version = result;
+            that.progress = that.getProgress();
           });
       } else {
         that.stage = 'version';
         that.staged = { ...that.pending.version };
+        that.progress = that.getProgress();
       }
     }
 
@@ -310,11 +314,11 @@ const ConfirmListingComponent = {
           break;
         case 'version':
           this.stage = 'listing';
+          this.progress = this.getProgress();
           break;
         default:
           break;
       }
-      this.progress = this.getProgress();
     }
 
     previous() {
