@@ -17,7 +17,7 @@ import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
-function ChplAttestationChangeRequestView(props) {
+function ChplAttestationsView(props) {
   /* eslint-disable react/destructuring-assignment */
   const { hasAnyRole } = useContext(UserContext);
   const [developer] = useState(props.developer);
@@ -66,9 +66,9 @@ function ChplAttestationChangeRequestView(props) {
   );
 }
 
-export default ChplAttestationChangeRequestView;
+export default ChplAttestationsView;
 
-ChplAttestationChangeRequestView.propTypes = {
+ChplAttestationsView.propTypes = {
   dispatch: func.isRequired,
   developer: developerPropType.isRequired,
 };

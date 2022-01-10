@@ -1,17 +1,17 @@
 import React from 'react';
 import { func } from 'prop-types';
 
-import ChplAttestationChangeRequestView from './attestation-change-request-view';
+import ChplAttestationsView from './attestations-view';
 
 import ApiWrapper from 'api/api-wrapper';
 import { UserWrapper } from 'components/login';
 import { developer as developerPropType } from 'shared/prop-types';
 
-function ChplAttestationChangeRequestWrapper(props) {
+function ChplAttestationsViewWrapper(props) {
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplAttestationChangeRequestView
+        <ChplAttestationsView
           {...props}
         />
       </ApiWrapper>
@@ -19,9 +19,9 @@ function ChplAttestationChangeRequestWrapper(props) {
   );
 }
 
-export default ChplAttestationChangeRequestWrapper;
+export default ChplAttestationsViewWrapper;
 
-ChplAttestationChangeRequestWrapper.propTypes = {
+ChplAttestationsViewWrapper.propTypes = {
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
 };

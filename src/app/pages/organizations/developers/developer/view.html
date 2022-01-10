@@ -36,9 +36,9 @@
         </div>
       </div>
       <div ng-if="$ctrl.can('displayAttestations')">
-        <chpl-attestation-change-request-wrapper-bridge developer="$ctrl.developer"
-                                                        dispatch="::$ctrl.handleAttestationDispatch"
-                                                        ></chpl-attestation-change-request-wrapper-bridge>
+        <chpl-attestations-view-wrapper-bridge developer="$ctrl.developer"
+                                               dispatch="::$ctrl.handleAttestationDispatch"
+                                               ></chpl-attestations-view-wrapper-bridge>
       </div>
     </div>
     <div class="col-md-8">

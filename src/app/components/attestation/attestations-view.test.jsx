@@ -5,7 +5,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplAttestationChangeRequestView from './attestation-change-request-view';
+import ChplAttestationsView from './attestations-view';
 
 const hocMock = {
   dispatch: jest.fn(),
@@ -15,10 +15,10 @@ const developerMock = {
   name: 'a developer name',
 };
 
-describe('the ChplAttestationChangeRequestView component', () => {
+describe('the ChplAttestationsView component', () => {
   beforeEach(async () => {
     render(
-      <ChplAttestationChangeRequestView
+      <ChplAttestationsView
         developer={developerMock}
         dispatch={hocMock.dispatch}
       />,
