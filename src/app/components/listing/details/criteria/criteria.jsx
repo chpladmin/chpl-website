@@ -17,7 +17,6 @@ import {
 
 import theme from '../../../../themes/theme';
 import { ChplTooltip } from '../../../util';
-import { getAngularService, ChplCriterion } from '.'; // eslint-disable-line import/no-cycle
 import {
   accessibilityStandard,
   certificationResult,
@@ -25,6 +24,8 @@ import {
   qmsStandard,
 } from '../../../../shared/prop-types';
 import { FlagContext } from '../../../../shared/contexts';
+
+import { getAngularService, ChplCriterion } from '.'; // eslint-disable-line import/no-cycle
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {
@@ -47,7 +48,6 @@ function ChplCriteria(props) {
   const classes = useStyles();
   const flags = {
     conformanceMethodIsOn: props.conformanceMethodIsOn,
-    optionalStandardsIsOn: props.optionalStandardsIsOn,
   };
   /* eslint-enable react/destructuring-assignment */
 
@@ -135,7 +135,6 @@ ChplCriteria.propTypes = {
   isConfirming: bool,
   hasIcs: bool,
   onSave: func,
-  optionalStandardsIsOn: bool,
   qmsStandards: arrayOf(qmsStandard),
   resources: resourceDefinition,
   viewAll: bool,
@@ -148,7 +147,6 @@ ChplCriteria.defaultProps = {
   isConfirming: false,
   hasIcs: false,
   onSave: () => {},
-  optionalStandardsIsOn: false,
   qmsStandards: [],
   resources: {},
   viewAll: false,

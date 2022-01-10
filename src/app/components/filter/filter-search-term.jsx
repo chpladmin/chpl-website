@@ -10,10 +10,10 @@ import { string } from 'prop-types';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 
-import { ChplTooltip } from '../util';
-
 import { useFilterContext } from './filter-context';
 
+import { ChplTooltip } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -43,6 +43,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplFilterSearchTerm(props) {
+  const $analytics = getAngularService('$analytics');
   const { placeholder } = props;
   const [searchTerm, setSearchTerm] = useState('');
   const classes = useStyles();
@@ -50,11 +51,17 @@ function ChplFilterSearchTerm(props) {
   const filterContext = useFilterContext();
 
   const handleClear = () => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Clear Text Filter', { category: filterContext.analytics.category });
+    }
     setSearchTerm('');
     filterContext.setSearchTerm('');
   };
 
   const handleGo = () => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Enter Value Into Text Filter', { category: filterContext.analytics.category, label: searchTerm });
+    }
     filterContext.setSearchTerm(searchTerm);
   };
 

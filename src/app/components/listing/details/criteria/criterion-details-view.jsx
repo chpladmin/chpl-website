@@ -38,7 +38,7 @@ function ChplCriterionDetailsView(props) {
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const classes = useStyles();
-  const { conformanceMethodIsOn, optionalStandardsIsOn } = useContext(FlagContext);
+  const { conformanceMethodIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -47,7 +47,7 @@ function ChplCriterionDetailsView(props) {
 
   const showOptionalStandardsSection = () => criterion.success
         && ((criterion.optionalStandards?.length > 0)
-            || (criterion.testStandards?.length > 0 && (!optionalStandardsIsOn || criterion.optionalStandards)));
+            || (criterion.testStandards?.length > 0 && criterion.optionalStandards));
 
   return (
     <TableContainer component={Paper}>

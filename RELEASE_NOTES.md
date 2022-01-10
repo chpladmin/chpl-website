@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 11.28.0
+_10 January 2022_
+
+### Features
+* Enable Download of RWT data
+* Disable the Change Request Save button upon initial click to prevent double clicks
+
+### User Interface Updates
+* Add link to "CHPL Developers User Guide"
+
+### Flagged Bug Fixes
+* Only show Optional Standard section on edit when appropriate
+
+---
+
 ## Version 11.27.0
 _20 December 2021_
 

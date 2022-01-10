@@ -11,6 +11,8 @@ import {
   string,
 } from 'prop-types';
 
+import { getAngularService } from 'services/angular-react-helper';
+
 const FilterContext = createContext();
 
 const clearFilter = (filter, category, setFilters) => {
@@ -51,6 +53,10 @@ const toggleFilter = (filters, category, value, setFilters) => {
 };
 
 function FilterProvider(props) {
+  const $analytics = getAngularService('$analytics');
+  const {
+    analytics,
+  } = props;
   const [filters, setFilters] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -70,12 +76,21 @@ function FilterProvider(props) {
   const dispatch = (action, category, value) => {
     switch (action) {
       case 'clearFilter':
+        if (analytics) {
+          $analytics.eventTrack('Clear Filter', { category: analytics.category, label: category.display });
+        }
         clearFilter(filters.find((f) => f.key === category.key), category, setFilters);
         break;
       case 'resetFilter':
+        if (analytics) {
+          $analytics.eventTrack('Reset Filter', { category: analytics.category, label: category.display });
+        }
         resetFilter(filters.find((f) => f.key === category.key), category, setFilters);
         break;
       case 'resetAll':
+        if (analytics) {
+          $analytics.eventTrack('Reset All Filters', { category: analytics.category });
+        }
         setFilters(filters.map((f) => ({
           ...f,
           values: f.values.map((v) => ({
@@ -107,7 +122,7 @@ function FilterProvider(props) {
     .join('&');
 
   const filterData = {
-    dispatch, filters, queryString, setSearchTerm,
+    analytics, dispatch, filters, queryString, setSearchTerm,
   };
 
   /* eslint-disable react/jsx-props-no-spreading */
@@ -126,6 +141,13 @@ FilterProvider.propTypes = {
       display: string,
     })).isRequired,
   })).isRequired,
+  analytics: shape({
+    category: string.isRequired,
+  }),
+};
+
+FilterProvider.defaultProps = {
+  analytics: false,
 };
 
 function useFilterContext() {

@@ -3,6 +3,8 @@ class NavigationComponent {
     this.elements = {
       reportsToggle: '#reports-toggle',
       reports: '#reports-dropdown-menu>li',
+      resourceToggle: '#resource-toggle',
+      resources: '#resource-dropdown-menu>li',
       surveillanceToggle: '#surveillance-toggle',
       surveillanceOptions: '#surveillance-dropdown-menu>li',
       shortcutToggle: '#shortcut-toggle',
@@ -17,6 +19,14 @@ class NavigationComponent {
 
   get reports() {
     return $$(this.elements.reports);
+  }
+
+  get resourceToggle() {
+    return $(this.elements.resourceToggle);
+  }
+
+  get resources() {
+    return $$(this.elements.resources);
   }
 
   get surveillanceToggle() {

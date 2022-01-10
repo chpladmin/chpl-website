@@ -18,9 +18,9 @@ describe('the Real World Testing collection page', () => {
     await hooks.waitForSpinnerToDisappear();
   });
 
-  xit('should have body text', () => {
-    expect(page.bodyText.getText()).toContain('This list includes all 2015 Edition, including Cures Update, health IT products that have been certified to at least one of the following API Criteria:');
-    expect(page.bodyText.getText()).toContain('The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer\'s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer\'s certified health IT.');
+  it('should have body text', () => {
+    expect(page.bodyText.getText()).toContain('This list includes all Health IT Module(s) eligible for Real World Testing, which is an annual');
+    expect(page.bodyText.getText()).toContain('If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.');
   });
 
   it('should have table headers in a defined order', () => {
@@ -89,15 +89,15 @@ describe('the Real World Testing collection page', () => {
 
   xdescribe('when clicking on all RWT download button', () => {
     it('should download a file', () => {
-      page.downloadAllRwtButton.click();
-      const apiFileName = 'APIDocData';
+      page.downloadRealWorldTesting.click();
+      const expectedFileName = 'real-world-testing';
       browser.pause(config.timeout);
       const files = fs.readdirSync(global.downloadDir);
-      const fileName = files.filter((file) => file.match(new RegExp(`${apiFileName}.*.xlsx`))).toString();
-      expect(fileName).toContain(apiFileName);
+      const fileName = files.filter((file) => file.match(new RegExp(`${expectedFileName}.*.csv`))).toString();
+      expect(fileName).toContain(expectedFileName);
       const filePath = path.join(global.downloadDir, fileName);
       const stat = fs.statSync(filePath);
-      expect(stat.size / 1000).toBeGreaterThan(10);
+      expect(stat.size).toBeGreaterThan(10);
     });
   });
 });
