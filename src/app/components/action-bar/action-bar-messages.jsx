@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  Checkbox,
   Divider,
   Drawer,
   IconButton,
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
   drawerPaper: {
     width: '250px',
   },
-  compareWidget: {
+  toggleDrawer: {
     zIndex: 1299,
     position: 'fixed',
     bottom: '22vh',
@@ -35,6 +36,18 @@ const useStyles = makeStyles({
       boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     },
   },
+  errors: {
+    color: '#1c1c1c',
+    backgroundColor: '#c44f6530',
+    padding: '16px',
+    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+  },
+  warnings: {
+    color: '#1c1c1c',
+    backgroundColor: '#F7E9BB30',
+    padding: '16px',
+    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -44,6 +57,7 @@ function ChplActionBarMessages(props) {
   const [errors, setErrors] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [open, setOpen] = useState(false);
+  const [anchorRight, setAnchorRight] = useState(true);
   const classes = useStyles();
 
   useEffect(() => {
@@ -64,6 +78,10 @@ function ChplActionBarMessages(props) {
     setOpen(!open);
   };
 
+  const toggleAnchor = () => {
+    setAnchorRight(!anchorRight);
+  };
+
   return (
     <>
       { !open
@@ -71,7 +89,7 @@ function ChplActionBarMessages(props) {
           <Button
             color="default"
             variant="outlined"
-            className={classes.compareWidget}
+            className={classes.toggleDrawer}
             onClick={toggleDrawer}
           >
             { errors.length > 0
@@ -102,7 +120,7 @@ function ChplActionBarMessages(props) {
           </Button>
         )}
       <Drawer
-        anchor="right"
+        anchor={anchorRight ? 'right' : 'left'}
         open={open}
         onClose={toggleDrawer}
         variant="persistent"
@@ -117,7 +135,7 @@ function ChplActionBarMessages(props) {
         <Divider />
         { errors.length > 0
           && (
-            <>
+            <div className={classes.errors}>
               <Typography>
                 Error
                 {errors.length !== 1 ? 's' : ''}
@@ -127,11 +145,11 @@ function ChplActionBarMessages(props) {
                   <li key={message}>{ message }</li>
                 ))}
               </ul>
-            </>
+            </div>
           )}
         { warnings.length > 0
           && (
-            <>
+            <div className={classes.warnings}>
               <Typography>
                 Warning
                 {warnings.length !== 1 ? 's' : ''}
@@ -141,8 +159,13 @@ function ChplActionBarMessages(props) {
                   <li key={message}>{ message }</li>
                 ))}
               </ul>
-            </>
+            </div>
           )}
+        <Checkbox
+          name="side"
+          onChange={toggleAnchor}
+          checked={anchorRight}
+        />
       </Drawer>
     </>
   );

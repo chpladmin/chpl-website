@@ -13,8 +13,6 @@ import {
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
@@ -42,36 +40,12 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     padding: '16px 0',
   },
-  actionBarErrors: {
-    color: '#1c1c1c',
-    backgroundColor: '#c44f6530',
-    maxHeight: '30vh',
-    padding: '16px',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
-    overflowY: 'auto',
-  },
-  actionBarErrorToggle: {
+  actionBarAcknowledgement: {
     color: '#c44f65',
     textAlign: 'center',
-    textTransform: 'uppercase',
     borderBottom: '1px solid #ddd',
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
-  },
-  actionBarMessages: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  },
-  actionBarWarnings: {
-    color: '#1c1c1c',
-    backgroundColor: '#F7E9BB30',
-    maxHeight: '30vh',
-    padding: '16px',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
-    overflowY: 'auto',
-  },
-  actionBarAcknowledgement: {
-    textAlign: 'center',
   },
   deleteButton: {
     backgroundColor: '#c44f65',
@@ -98,7 +72,6 @@ function ChplActionBar(props) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [errors, setErrors] = useState([]);
   const [warnings, setWarnings] = useState([]);
-  const [showMessages, setShowMessages] = useState(true);
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -164,86 +137,6 @@ function ChplActionBar(props) {
             dispatch={handleConfirmation}
             pendingMessage={pendingMessage}
           />
-          )}
-        { ((errors && errors.length > 0) || (warnings && warnings.length > 0)) && false
-          && (
-            <>
-              <div
-                onClick={() => setShowMessages(!showMessages)}
-                onKeyDown={() => setShowMessages(!showMessages)}
-                tabIndex={0}
-                role="button"
-                className={classes.actionBarErrorToggle}
-              >
-                { errors && errors.length > 0
-                  && (
-                    <>
-                      Error
-                      { errors.length > 1 && 's'}
-                    </>
-                  )}
-                { errors && errors.length > 0 && warnings && warnings.length > 0
-                  && <> and </>}
-                { warnings && warnings.length > 0
-                  && (
-                    <>
-                      Warning
-                      { warnings.length > 1 && 's'}
-                    </>
-                  )}
-                { showMessages
-                  ? (
-                    <ExpandMoreIcon
-                      className={classes.iconSpacing}
-                    />
-                  ) : (
-                    <ExpandLessIcon
-                      className={classes.iconSpacing}
-                    />
-                  )}
-              </div>
-            </>
-          )}
-        { showMessages && false
-          && (
-            <>
-              <div id="action-bar-messages" className={classes.actionBarMessages}>
-                { errors && errors.length > 0
-                  && (
-                    <div className={classes.actionBarErrors}>
-                      <strong>
-                        Error
-                        { errors.length > 1 && 's'}
-                      </strong>
-                      <ul id="action-bar-errors">
-                        {
-                          errors.map((message) => (
-                            <li key={message}>{message}</li>
-                          ))
-                        }
-                      </ul>
-                    </div>
-                  )}
-                { warnings && warnings.length > 0
-                  && (
-                    <>
-                      <div className={classes.actionBarWarnings}>
-                        <strong>
-                          Warning
-                          { warnings.length > 1 && 's'}
-                        </strong>
-                        <ul id="action-bar-warnings">
-                          {
-                            warnings.map((message) => (
-                              <li key={message}>{message}</li>
-                            ))
-                          }
-                        </ul>
-                      </div>
-                    </>
-                  )}
-              </div>
-            </>
           )}
         { showAcknowledgement
           && (
