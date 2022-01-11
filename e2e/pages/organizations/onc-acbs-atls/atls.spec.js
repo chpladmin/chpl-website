@@ -3,7 +3,7 @@ import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
-import UsersPage from '../../users/users.po';
+import UsersComponent from '../../../components/users/users.po';
 
 let address;
 let hooks;
@@ -31,7 +31,7 @@ describe('the ONC-ATL Management page', () => {
     address = new AddressComponent();
     login = new LoginComponent();
     toast = new ToastComponent();
-    user = new UsersPage();
+    user = new UsersComponent();
     await hooks.open('#/organizations/onc-atls');
   });
 

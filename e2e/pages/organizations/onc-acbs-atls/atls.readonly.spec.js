@@ -2,7 +2,7 @@ import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.po';
-import UsersPage from '../../users/users.po';
+import UsersComponent from '../../../components/users/users.po';
 import ToastComponent from '../../../components/toast/toast.po';
 
 let address;
@@ -29,7 +29,7 @@ describe('the ONC-ATL Management page', () => {
     hooks = new Hooks();
     login = new LoginComponent();
     address = new AddressComponent();
-    user = new UsersPage();
+    user = new UsersComponent();
     toast = new ToastComponent();
     await hooks.open('#/organizations/onc-atls');
   });
@@ -68,17 +68,17 @@ describe('the ONC-ATL Management page', () => {
       expect(page.manageUsersPanel.getText()).toContain('Drummond Group');
     });
 
-    it('should not display the option to edit ATL details for UL LLC', () => {
-      const atl = 'UL LLC';
-      const atlId = '1'
+    it('should not display the option to edit ATL details for ICSA Labs', () => {
+      const atl = 'ICSA Labs';
+      const atlId = '5'
       page.openOrganizationDetails(atl);
       browser.waitUntil(() => page.generalInformation('ATL', atlId).isDisplayed());
       expect(page.organizationEditButton.isDisplayed()).toBe(false);
     });
 
-    it('should not display registered users under UL LLC', () => {
-      const atl = 'UL LLC';
-      const atlId = '1'
+    it('should not display registered users under ICSA Labs', () => {
+      const atl = 'ICSA Labs';
+      const atlId = '5'
       page.openOrganizationDetails(atl);
       browser.waitUntil(() => page.generalInformation('ATL', atlId).isDisplayed());
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);

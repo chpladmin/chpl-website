@@ -14,9 +14,6 @@ class UsersPage {
     return $$(this.elements.users);
   }
 
-  impersonateUser(name) {
-    $(`//*[contains(@title, 'Impersonate ${name}')]`).click();
-  }
 }
 
 export default UsersPage;

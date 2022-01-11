@@ -47,6 +47,10 @@ class UsersComponent {
     browser.keys(['Control', 'a', 'Delete']);
     $(this.elements[demo]).setValue(value);
   }
+
+  impersonateUser(name) {
+    $(`//*[contains(@title, 'Impersonate ${name}')]`).click();
+  }
 }
 
 export default UsersComponent;
