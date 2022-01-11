@@ -31,6 +31,7 @@ function ChplAttestationCreate(props) {
   const [value, setValue] = useState(0);
   const [canNext, setCanNext] = useState(true);
   const [canPrevious, setCanPrevious] = useState(false);
+  const [signature, setSignature] = useState('');
   const { user } = useContext(UserContext);
   const classes = useStyles();
 
@@ -49,6 +50,10 @@ function ChplAttestationCreate(props) {
     }
   };
 
+  const handleChange = (event) => {
+    setSignature(event.target.value);
+  };
+
   const handleProgressDispatch = (action) => {
     switch (action) {
       case 'next':
@@ -61,11 +66,14 @@ function ChplAttestationCreate(props) {
     }
   };
 
-  const handleSignature = () => {
+  const handleSubmit = () => {
+    console.log('TODO: submit attestation change request, then navigate to confirmation (on success)');
     setValue(3);
   };
 
-  const isDisabled = () => value !== 2;
+  const isNextDisabled = () => value !== 2;
+
+  const isSubmitDisabled = () => signature !== user.fullName;
 
   return (
     <ThemeProvider theme={theme}>
@@ -151,11 +159,14 @@ function ChplAttestationCreate(props) {
             {' '}
             { developer.name }
           </Typography>
-          <div>
-            Signature:
-            {' '}
-            <ChplTextField />
-          </div>
+          <ChplTextField
+            id="signature"
+            name="signature"
+            label="Electronic Signature"
+            required
+            value={signature}
+            onChange={handleChange}
+          />
           <Typography variant="body1">
             Date:
             {' '}
@@ -168,7 +179,8 @@ function ChplAttestationCreate(props) {
             id="sign-electronically"
             variant="contained"
             color="primary"
-            onClick={handleSignature}
+            onClick={handleSubmit}
+            disabled={isSubmitDisabled()}
           >
             Sign Electronically
             <SaveIcon
@@ -190,7 +202,7 @@ function ChplAttestationCreate(props) {
         )}
       <ChplActionBar
         dispatch={handleActionBarDispatch}
-        isDisabled={isDisabled()}
+        isDisabled={isNextDisabled()}
         canCancel={value !== 3}
         canClose={value === 3}
         canSave={false}
