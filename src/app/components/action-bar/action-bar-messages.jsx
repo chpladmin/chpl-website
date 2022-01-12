@@ -23,18 +23,19 @@ const useStyles = makeStyles({
     width: 'min-content',
     boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
     alignItems: 'flex-end',
+    borderRadius: '8px',
   },
   toggleDrawer: {
     zIndex: 1299,
     position: 'fixed',
-    bottom: '64px',
+    bottom: '88px',
     right: '0',
     marginRight: '-4px',
     borderRadius: '4px 0 0px 4px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 10%)',
     backgroundColor: '#fff',
     '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#fff',
+      backgroundColor: '#eee',
       boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     },
   },
@@ -44,11 +45,11 @@ const useStyles = makeStyles({
   },
   errorContainer: {
     color: '#1c1c1c',
-    backgroundColor: '#c44f6510',
+    backgroundColor: '#c44f6520',
   },
   warningContainer: {
     color: '#1c1c1c',
-    backgroundColor: '#e6ea0b10',
+    backgroundColor: '#e6ea0b20',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -160,13 +161,9 @@ function ChplActionBarMessages(props) {
           paper: classes.drawerPaper,
         }}
       >
-        <IconButton className={classes.closeDrawer} onClick={toggleDrawer}>
-          <CloseIcon />
-        </IconButton>
-        {errors.length > 0
+                {errors.length > 0
           && (
             <div className={classes.errorContainer} id='action-bar-errors'>
-              <Divider className={classes.noMargin} />
               <div className={classes.errorHeader}>
                 Error
                 {errors.length !== 1 ? 's' : ''}
@@ -200,11 +197,17 @@ function ChplActionBarMessages(props) {
               <Divider className={classes.noMargin} />
             </div>
           )}
+       
+        <Divider className={classes.noMargin} />
         <Checkbox
           name='side'
           onChange={toggleAnchor}
           checked={anchorRight}
         />
+        <div><IconButton className={classes.closeDrawer} onClick={toggleDrawer}>
+          <CloseIcon />
+        </IconButton>
+        </div>
       </Drawer>
     </>
   );

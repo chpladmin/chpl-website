@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
     minHeight: '50px',
     zIndex: '1035',
     marginBottom: '0',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
     display: 'grid',
   },
   actionBarButton: {
