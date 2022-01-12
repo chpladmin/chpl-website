@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf, bool, func, string,
-} from 'prop-types';
-import {
   Button,
   ButtonGroup,
   Checkbox,
@@ -10,6 +7,9 @@ import {
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';

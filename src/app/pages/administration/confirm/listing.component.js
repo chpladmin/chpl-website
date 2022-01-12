@@ -288,6 +288,7 @@ const ConfirmListingComponent = {
     }
 
     handleListing(action, data) {
+      this.$log.info('handleListing', action);
       switch (action) {
         case 'edit':
           this.isEditing = true;
@@ -301,6 +302,7 @@ const ConfirmListingComponent = {
           break;
           // no default
       }
+      this.$scope.$digest();
     }
 
     next() {

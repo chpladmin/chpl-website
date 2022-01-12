@@ -4,6 +4,8 @@ const InspectListingComponent = {
     listing: '<',
     onChange: '&',
     resources: '<',
+    errors: '<',
+    warnings: '<',
   },
   controller: class InspectListingController {
     constructor($log, DateUtil) {
@@ -19,6 +21,12 @@ const InspectListingComponent = {
       }
       if (changes.resources) {
         this.resources = angular.copy(changes.resources.currentValue);
+      }
+      if (changes.errors) {
+        this.errors = angular.copy(changes.errors.currentValue);
+      }
+      if (changes.warnings) {
+        this.warnings = angular.copy(changes.warnings.currentValue);
       }
     }
 

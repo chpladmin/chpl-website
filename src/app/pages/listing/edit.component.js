@@ -6,6 +6,8 @@ const ListingEditPageComponent = {
     onCancel: '&',
     onChange: '&',
     resources: '<',
+    errors: '<',
+    warnings: '<',
   },
   controller: class ListingEditPageComponent {
     constructor($log, $q, $state, featureFlags, networkService) {
@@ -15,6 +17,11 @@ const ListingEditPageComponent = {
       this.$q = $q;
       this.$state = $state;
       this.isOn = featureFlags.isOn;
+      this.networkService = networkService;
+      this.takeActionBarAction = this.takeActionBarAction.bind(this);
+    }
+
+    $onInit() {
       this.errors = {
         basic: [],
         details: [],
@@ -25,7 +32,6 @@ const ListingEditPageComponent = {
         details: [],
         save: [],
       };
-      this.networkService = networkService;
     }
 
     $onChanges(changes) {
@@ -38,6 +44,12 @@ const ListingEditPageComponent = {
       }
       if (this.listingDetails && this.resources) {
         this.prepareResources();
+      }
+      if (changes.errors) {
+        this.higherErrors = angular.copy(changes.errors.currentValue);
+      }
+      if (changes.warnings) {
+        this.higherWarnings = angular.copy(changes.warnings.currentValue);
       }
     }
 
@@ -54,8 +66,8 @@ const ListingEditPageComponent = {
     }
 
     consolidateErrors() {
-      this.errorMessages = this.errors.basic.concat(this.errors.details).concat(this.errors.save);
-      this.warningMessages = this.warnings.basic.concat(this.warnings.details).concat(this.warnings.save);
+      this.errorMessages = [].concat(this.errors.basic, this.errors.details, this.errors.save, this.higherErrors).filter((message) => message);
+      this.warningMessages = [].concat(this.warnings.basic, this.warnings.details, this.warnings.save, this.higherWarnings).filter((message) => message);
     }
 
     isValid() {
