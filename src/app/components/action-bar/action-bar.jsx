@@ -76,11 +76,11 @@ function ChplActionBar(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? 1 : -1)));
+    setErrors(props.errors);
   }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setWarnings(props.warnings.sort((a, b) => (a < b ? 1 : -1)));
+    setWarnings(props.warnings);
   }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {

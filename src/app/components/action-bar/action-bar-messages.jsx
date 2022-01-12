@@ -120,6 +120,7 @@ function ChplActionBarMessages(props) {
           </Button>
         )}
       <Drawer
+        id="action-bar-messages"
         anchor={anchorRight ? 'right' : 'left'}
         open={open}
         onClose={toggleDrawer}
@@ -135,7 +136,7 @@ function ChplActionBarMessages(props) {
         <Divider />
         { errors.length > 0
           && (
-            <div className={classes.errors}>
+            <div className={classes.errors} id="action-bar-errors">
               <Typography>
                 Error
                 {errors.length !== 1 ? 's' : ''}
@@ -149,7 +150,7 @@ function ChplActionBarMessages(props) {
           )}
         { warnings.length > 0
           && (
-            <div className={classes.warnings}>
+            <div className={classes.warnings} id="action-bar-warnings">
               <Typography>
                 Warning
                 {warnings.length !== 1 ? 's' : ''}
