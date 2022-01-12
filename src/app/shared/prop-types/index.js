@@ -21,6 +21,7 @@ import product from './product';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
+import routerConfig from './router-config';
 import surveillance from './surveillance';
 import surveillanceNonconformity from './surveillance-nonconformity';
 import surveillanceRequirement from './surveillance-requirement';
@@ -57,6 +58,7 @@ export {
   qmsStandard,
   reliedUponSoftware,
   resources,
+  routerConfig,
   selectedConformanceMethod,
   selectedOptionalStandard,
   selectedSvap,

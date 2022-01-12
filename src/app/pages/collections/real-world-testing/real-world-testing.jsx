@@ -292,6 +292,7 @@ function ChplRealWorldTestingCollectionPage(props) {
                            text={item.chplProductNumber}
                            analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                            external={false}
+                           router={{ sref: 'listing', options: { id: item.id } }}
                          />
                        </strong>
                      </TableCell>
@@ -306,6 +307,7 @@ function ChplRealWorldTestingCollectionPage(props) {
                          text={item.developer}
                          analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer }}
                          external={false}
+                         router={{ sref: 'organizations.developers.developer', options: { developerId: item.developerId } }}
                        />
                      </TableCell>
                      <TableCell>{item.product}</TableCell>
