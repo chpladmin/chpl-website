@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
+  Chip,
   Divider,
   Drawer,
   IconButton,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import CloseIcon from '@material-ui/icons/Close';
+
 import {
   arrayOf, string,
 } from 'prop-types';
@@ -17,40 +18,70 @@ import {
 const useStyles = makeStyles({
   drawer: {
     width: '250px',
-    flexShrink: 0,
   },
   drawerPaper: {
-    width: '250px',
+    width: 'min-content',
+    boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
+    alignItems: 'flex-end',
   },
   toggleDrawer: {
     zIndex: 1299,
     position: 'fixed',
-    bottom: '22vh',
+    bottom: '64px',
     right: '0',
     marginRight: '-4px',
     borderRadius: '4px 0 0px 4px',
-    boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
-    backgroundColor: '#eeeeee',
+    boxShadow: '0 4px 8px rgb(149 157 165 / 10%)',
+    backgroundColor: '#fff',
     '&:hover, &.Mui-focusVisible': {
       backgroundColor: '#fff',
       boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     },
   },
-  errors: {
-    color: '#1c1c1c',
-    backgroundColor: '#c44f6530',
-    padding: '16px',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+  closeDrawer: {
+    justifyContent: 'flex-end',
+    marginRight: '8px',
   },
-  warnings: {
+  errorContainer: {
     color: '#1c1c1c',
-    backgroundColor: '#F7E9BB30',
-    padding: '16px',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    backgroundColor: '#c44f6510',
+  },
+  warningContainer: {
+    color: '#1c1c1c',
+    backgroundColor: '#e6ea0b10',
   },
   iconSpacing: {
     marginLeft: '4px',
   },
+  errorHeader: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    display: 'flex',
+    padding: '8px 16px',
+    fontWeight: '600',
+  },
+  warningHeader: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    display: 'flex',
+    padding: '8px 16px',
+    fontWeight: '600',
+  },
+  errorChip: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+  },
+  warningChip: {
+    backgroundColor: '#e6ea0b',
+    color: '#1c1c1c',
+  },
+  noMargin: {
+    margin: '0',
+  },
+  list: {
+    margin: '0px 0px 0px 16px',
+    padding: '8px 16px',
+  }
 });
 
 function ChplActionBarMessages(props) {
@@ -84,86 +115,93 @@ function ChplActionBarMessages(props) {
 
   return (
     <>
-      { !open
+      {!open
         && (
           <Button
-            color="default"
-            variant="outlined"
+            size='sm'
+            variant='outlined'
             className={classes.toggleDrawer}
             onClick={toggleDrawer}
           >
-            { errors.length > 0
+            {errors.length > 0
               && (
                 <>
-                  { errors.length }
+                  {errors.length}
                   {' '}
                   Error
                   {errors.length !== 1 ? 's' : ''}
                 </>
               )}
-            { errors.length > 0 && warnings?.length > 0
+            {errors.length > 0 && warnings?.length > 0
               && (
                 <>
                   {' & '}
                 </>
               )}
-            { warnings.length > 0
+            {warnings.length > 0
               && (
                 <>
-                  { warnings.length }
+                  {warnings.length}
                   {' '}
                   Warning
                   {warnings.length !== 1 ? 's' : ''}
                 </>
               )}
-            <CompareArrowsIcon className={classes.iconSpacing} />
           </Button>
         )}
       <Drawer
-        id="action-bar-messages"
+        id='action-bar-messages'
         anchor={anchorRight ? 'right' : 'left'}
         open={open}
         onClose={toggleDrawer}
-        variant="persistent"
+        variant='persistent'
         className={classes.drawer}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
-        <IconButton onClick={toggleDrawer}>
-          <ChevronRightIcon />
+        <IconButton className={classes.closeDrawer} onClick={toggleDrawer}>
+          <CloseIcon />
         </IconButton>
-        <Divider />
-        { errors.length > 0
+        {errors.length > 0
           && (
-            <div className={classes.errors} id="action-bar-errors">
-              <Typography>
+            <div className={classes.errorContainer} id='action-bar-errors'>
+              <Divider className={classes.noMargin} />
+              <div className={classes.errorHeader}>
                 Error
                 {errors.length !== 1 ? 's' : ''}
-              </Typography>
-              <ul>
-                { errors.map((message) => (
-                  <li key={message}>{ message }</li>
+                <Chip size="small" className={classes.errorChip} label={errors.length}></Chip>
+              </div>
+              <Divider className={classes.noMargin} />
+              <ul className={classes.list}>
+                {errors.map((message) => (
+                  <li key={message}><Typography gutterBottom variant='body2'>{message}</Typography></li>
                 ))}
               </ul>
             </div>
           )}
-        { warnings.length > 0
+        {warnings.length > 0
           && (
-            <div className={classes.warnings} id="action-bar-warnings">
-              <Typography>
+            <div className={classes.warningContainer} id='action-bar-warnings'>
+              <Divider className={classes.noMargin} />
+              <div className={classes.warningHeader}>
                 Warning
                 {warnings.length !== 1 ? 's' : ''}
-              </Typography>
-              <ul>
-                { warnings.map((message) => (
-                  <li key={message}>{ message }</li>
-                ))}
-              </ul>
+                <Chip size="small" className={classes.warningChip} label={warnings.length}></Chip>
+              </div>
+              <Divider className={classes.noMargin} />
+              <div>
+                <ul className={classes.list}>
+                  {warnings.map((message) => (
+                    <li key={message}><Typography gutterBottom variant='body2'>{message}</Typography></li>
+                  ))}
+                </ul>
+              </div>
+              <Divider className={classes.noMargin} />
             </div>
           )}
         <Checkbox
-          name="side"
+          name='side'
           onChange={toggleAnchor}
           checked={anchorRight}
         />
