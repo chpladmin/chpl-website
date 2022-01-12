@@ -22,6 +22,7 @@ describe('the top navigation', () => {
         'Banned Developers',
         'Charts',
         'Decertified Products',
+        'Real World Testing',
         'Inactive Certificates',
         'Products: Corrective Action',
         'SED Info for 2015 Ed. Products',
@@ -61,7 +62,7 @@ describe('the top navigation', () => {
 
     describe('as ROLE_ACB', () => {
       beforeEach(() => {
-        login.logIn('acb');
+        login.logIn('drummond');
       });
 
       it('should have specific reports', () => {
@@ -204,6 +205,7 @@ describe('the top navigation', () => {
           'Banned Developers',
           'Charts',
           'Decertified Products',
+          'Real World Testing',
           'Inactive Certificates',
           'Products: Corrective Action',
           'SED Info for 2015 Ed. Products',
