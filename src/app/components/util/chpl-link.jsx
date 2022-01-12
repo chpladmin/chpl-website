@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bool, string } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
@@ -17,12 +17,15 @@ function ChplLink(props) {
     analytics,
     router,
   } = props;
-  /* eslint-disable react/destructuring-assignment */
-  const [href] = useState(prependLink(props.href));
-  const [text] = useState(props.text || props.href);
+  const [href, setHref] = useState('');
+  const [text, setText] = useState('');
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
-  /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setHref(prependLink(props.href));
+    setText(props.text || props.href);
+  }, [props.href, props.text]); // eslint-disable-line react/destructuring-assignment
 
   let clicked = false;
   const track = (e) => {
