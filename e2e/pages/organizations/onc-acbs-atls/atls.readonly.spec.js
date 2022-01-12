@@ -53,6 +53,7 @@ describe('the ONC-ATL Management page', () => {
       hooks.waitForSpinnerToDisappear();
       page.openOrganizationDetails('Drummond Group');
       user.impersonateUser('Jim Dow');
+      hooks.open('#/organizations/onc-atls'); // added to avoid 404 page not found error
     });
 
     afterEach(() => {

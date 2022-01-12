@@ -118,13 +118,6 @@ class ComplaintsComponent {
     $('//span[text()="View"]/parent::button').click();
   }
 
-  deleteComplaint(id) {
-    this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').click();
-    $('//span[text()="Delete"]/parent::button').click();
-    $('//span[text()="Yes"]/parent::button').click();
-  }
-
   waitForUpdatedTableRowCount () {
     let start;
     start = $('table').$('tbody').$$('tr').length;
