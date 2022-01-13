@@ -13,6 +13,7 @@ class UsersPage {
   getUsers() {
     return $$(this.elements.users);
   }
+
 }
 
 export default UsersPage;
