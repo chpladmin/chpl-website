@@ -13,7 +13,7 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/manage');
 });
 
-describe('when logged in as an admin', () => {
+describe('when logged in as ROLE_ADMIN', () => {
   beforeEach(() => {
     login.logIn('admin');
   });
