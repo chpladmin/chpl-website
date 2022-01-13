@@ -1,5 +1,5 @@
 import DevelopersPage from './developers.po';
-import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import ActionBarComponent from '../../../components/action-bar/action-bar-legacy.po';
 import ActionConfirmationComponent from '../../../components/action-confirmation/action-confirmation.po';
 import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';

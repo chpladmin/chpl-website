@@ -2,7 +2,7 @@ import ReportingPage from '../reporting.po';
 import LoginComponent from '../../../../components/login/login.po';
 import Hooks from '../../../../utilities/hooks';
 import ToastComponent from '../../../../components/toast/toast.po';
-import ActionBarComponent from '../../../../components/action-bar/action-bar.po';
+import ActionBarComponent from '../../../../components/action-bar/action-bar-legacy.po';
 import QuarterlyPage from './quarterly.po';
 import ComplaintsComponent from '../../../../components/surveillance/complaints/complaints.po';
 
