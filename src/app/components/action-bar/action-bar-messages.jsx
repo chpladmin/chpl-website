@@ -3,6 +3,7 @@ import {
   Button,
   Checkbox,
   Chip,
+  Fab,
   Divider,
   Drawer,
   IconButton,
@@ -20,18 +21,24 @@ const useStyles = makeStyles({
     width: '250px',
   },
   drawerPaper: {
-    width: 'min-content',
+    width: '250px',
     boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
     alignItems: 'flex-end',
-    borderRadius: '8px',
+    borderRadius: '4px',
+    overflowX:'hidden',
+  },
+  drawerContainer: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   toggleDrawer: {
     zIndex: 1299,
     position: 'fixed',
-    bottom: '88px',
+    bottom: '80px',
     right: '0',
     marginRight: '-4px',
-    borderRadius: '4px 0 0px 4px',
+    color: '#c44f65',
+    borderRadius: '4px 0 0 4px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 10%)',
     backgroundColor: '#fff',
     '&:hover, &.Mui-focusVisible': {
@@ -40,9 +47,21 @@ const useStyles = makeStyles({
     },
   },
   closeDrawer: {
-    justifyContent: 'flex-end',
-    marginRight: '8px',
-  },
+    zIndex: 1400,
+    transition: 'all 0.5s ease',
+    position: 'fixed',
+    bottom: '16px',
+    right: '0',
+    marginRight: '-4px',
+    width:'254px',
+    border:'1px solid #eee',
+    backgroundColor:'#fff',
+    borderRadius: '4px 0 0 4px',
+    boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
+    '&:hover, &.Mui-focusVisible': {
+      backgroundColor: '#eee',
+    },
+    },
   errorContainer: {
     color: '#1c1c1c',
     backgroundColor: '#c44f6520',
@@ -50,6 +69,7 @@ const useStyles = makeStyles({
   warningContainer: {
     color: '#1c1c1c',
     backgroundColor: '#e6ea0b20',
+    paddingBottom:'16px',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -120,7 +140,6 @@ function ChplActionBarMessages(props) {
         && (
           <Button
             size='sm'
-            variant='outlined'
             className={classes.toggleDrawer}
             onClick={toggleDrawer}
           >
@@ -161,52 +180,52 @@ function ChplActionBarMessages(props) {
           paper: classes.drawerPaper,
         }}
       >
-                {errors.length > 0
-          && (
-            <div className={classes.errorContainer} id='action-bar-errors'>
-              <div className={classes.errorHeader}>
-                Error
-                {errors.length !== 1 ? 's' : ''}
-                <Chip size="small" className={classes.errorChip} label={errors.length}></Chip>
-              </div>
-              <Divider className={classes.noMargin} />
-              <ul className={classes.list}>
-                {errors.map((message) => (
-                  <li key={message}><Typography gutterBottom variant='body2'>{message}</Typography></li>
-                ))}
-              </ul>
-            </div>
-          )}
-        {warnings.length > 0
-          && (
-            <div className={classes.warningContainer} id='action-bar-warnings'>
-              <Divider className={classes.noMargin} />
-              <div className={classes.warningHeader}>
-                Warning
-                {warnings.length !== 1 ? 's' : ''}
-                <Chip size="small" className={classes.warningChip} label={warnings.length}></Chip>
-              </div>
-              <Divider className={classes.noMargin} />
-              <div>
-                <ul className={classes.list}>
-                  {warnings.map((message) => (
-                    <li key={message}><Typography gutterBottom variant='body2'>{message}</Typography></li>
-                  ))}
-                </ul>
-              </div>
-              <Divider className={classes.noMargin} />
-            </div>
-          )}
-       
-        <Divider className={classes.noMargin} />
-        <Checkbox
-          name='side'
-          onChange={toggleAnchor}
-          checked={anchorRight}
-        />
-        <div><IconButton className={classes.closeDrawer} onClick={toggleDrawer}>
-          <CloseIcon />
-        </IconButton>
+        <div className={classes.drawerContainer}>
+          <div className={classes.messageContainer}>
+            {errors.length > 0
+              && (
+                <div className={classes.errorContainer} id='action-bar-errors'>
+                  <div className={classes.errorHeader}>
+                    Error
+                    {errors.length !== 1 ? 's' : ''}
+                    <Chip size='small' className={classes.errorChip} label={errors.length}></Chip>
+                  </div>
+                  <Divider className={classes.noMargin} />
+                  <ul className={classes.list}>
+                    {errors.map((message) => (
+                      <li key={message}><Typography gutterBottom variant='body2'>{message}</Typography></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            {warnings.length > 0
+              && (
+                <div className={classes.warningContainer} id='action-bar-warnings'>
+                  <Divider className={classes.noMargin} />
+                  <div className={classes.warningHeader}>
+                    Warning
+                    {warnings.length !== 1 ? 's' : ''}
+                    <Chip size='small' className={classes.warningChip} label={warnings.length}></Chip>
+                  </div>
+                  <Divider className={classes.noMargin} />
+                  <div>
+                    <ul className={classes.list}>
+                      {warnings.map((message) => (
+                        <li key={message}><Typography gutterBottom variant='body2'>{message}</Typography></li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                
+              )}          
+          </div>
+          <Divider className={classes.noMargin} />
+
+        <div className={classes.closeDrawer}>
+          <Button color='default' fullWidth onClick={toggleDrawer}>
+           Close <CloseIcon className={classes.iconSpacing} />
+          </Button>
+        </div>
         </div>
       </Drawer>
     </>
@@ -214,6 +233,8 @@ function ChplActionBarMessages(props) {
 }
 
 export default ChplActionBarMessages;
+
+//<Checkbox name='side' onChange={toggleAnchor} checked={anchorRight}/> //
 
 ChplActionBarMessages.propTypes = {
   errors: arrayOf(string),
