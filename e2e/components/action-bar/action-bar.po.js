@@ -2,6 +2,7 @@ class ActionBarComponent {
   constructor() {
     this.elements = {
       save: '#action-bar-save',
+      delete: '#action-bar-delete',
       messages: '#action-bar-messages',
       errors: '#action-bar-errors > ul > li',
       warnings: '#action-bar-warnings > ul > li',
@@ -10,6 +11,10 @@ class ActionBarComponent {
 
   save() {
     $(this.elements.save).click();
+  }
+
+  delete() {
+    $(this.elements.delete).click();
   }
 
   get errors() {
