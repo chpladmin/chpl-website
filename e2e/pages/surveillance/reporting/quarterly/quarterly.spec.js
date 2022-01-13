@@ -3,8 +3,9 @@ import LoginComponent from '../../../../components/login/login.po';
 import Hooks from '../../../../utilities/hooks';
 import ToastComponent from '../../../../components/toast/toast.po';
 import ActionBarComponent from '../../../../components/action-bar/action-bar-legacy.po';
-import QuarterlyPage from './quarterly.po';
 import ComplaintsComponent from '../../../../components/surveillance/complaints/complaints.po';
+
+import QuarterlyPage from './quarterly.po';
 
 let action; let hooks; let loginComponent; let reportingPage; let quarterlyPage; let toast; let complaints;
 
@@ -120,8 +121,8 @@ describe('when logged in as a ROLE_ACB', () => {
     action.yes();
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil(() => reportingPage.acbHeader.isDisplayed())
-    expect(reportingPage.secondaryPageTitle.getText()).toBe("Available reports");
+    browser.waitUntil(() => reportingPage.acbHeader.isDisplayed());
+    expect(reportingPage.secondaryPageTitle.getText()).toBe('Available reports');
   });
 
   it('can edit quarterly report', () => {

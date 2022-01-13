@@ -1,8 +1,9 @@
-import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
 import LoginComponent from '../../../components/login/login.po';
 import ActionBarComponent from '../../../components/action-bar/action-bar-legacy.po';
 import ActionConfirmationComponent from '../../../components/action-confirmation/action-confirmation.po';
+
+import DevelopersPage from './developers.po';
 
 let actionBar;
 let actionConfirmation;
