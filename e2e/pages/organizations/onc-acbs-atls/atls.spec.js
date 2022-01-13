@@ -3,7 +3,7 @@ import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
-import UsersPage from '../../users/user.po';
+import UsersComponent from '../../../components/users/users.po';
 
 let address;
 let hooks;
@@ -31,24 +31,22 @@ describe('the ONC-ATL Management page', () => {
     address = new AddressComponent();
     login = new LoginComponent();
     toast = new ToastComponent();
-    user = new UsersPage();
+    user = new UsersComponent();
     await hooks.open('#/organizations/onc-atls');
   });
 
-  describe('when impersonating as UL', () => {
+  describe('when impersonating as ROLE_ATL for drummond group', () => {
+    const atl = 'Drummond Group';
     beforeEach(() => {
       login.logIn('onc');
-      hooks.open('#/users');
-      hooks.waitForSpinnerToDisappear();
-      user.impersonateUser('Chris Crescioli');
-      hooks.waitForSpinnerToDisappear();
       hooks.open('#/organizations/onc-atls');
       hooks.waitForSpinnerToDisappear();
+      page.openOrganizationDetails(atl);
+      user.impersonateUser('Jim Dow');
     });
 
     afterEach(() => {
-      const atl = 'UL LLC';
-      page.organizationNameButton(atl).click();
+      page.openOrganizationDetails(atl);
       page.organizationEditButton.click();
       page.organizationName.setValue(atl);
       page.saveOrganizationButton.click();
@@ -58,12 +56,11 @@ describe('the ONC-ATL Management page', () => {
       login.logOut();
     });
 
-    it('should allow user to edit UL details', () => {
-      const atl = 'UL LLC';
+    it('should allow user to edit drummond\'s details', () => {
       const newAtlName = `${atl} - ${timestamp}`;
       const organizationType = 'ATL';
-      const atlId = '1';
-      page.organizationNameButton(atl).click();
+      const atlId = '3';
+      page.openOrganizationDetails(atl);
       page.organizationEditButton.click();
       page.organizationName.setValue(newAtlName);
       page.organizationWebsite.setValue(websiteUrl);
@@ -93,13 +90,13 @@ describe('the ONC-ATL Management page', () => {
 
     it('should allow user to Create a new ATL', () => {
       const newAtlName = `${'Zatl-'}${timestamp}`;
-      page.createOrganizationButton('ATL').click();
+      page.createOrganization('ATL');
       page.organizationName.addValue(newAtlName);
       page.organizationWebsite.addValue(websiteUrl);
       address.set(atlAddress);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      page.organizationNameButton(newAtlName).click();
+      page.openOrganizationDetails(newAtlName);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(newAtlName);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(websiteUrl);
       expect(page.newOrganizationGeneralInfo.getText()).toContain(atlAddress.address);

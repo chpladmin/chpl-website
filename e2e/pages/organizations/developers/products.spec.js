@@ -215,6 +215,8 @@ describe('the Product part of the Developers page', () => {
 
           // act
           actionBar.save();
+          browser.waitUntil(() => toast.toastContainer.isDisplayed());
+          toast.clearAllToast();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
 
@@ -262,6 +264,7 @@ describe('the Product part of the Developers page', () => {
           page.editProductName.clearValue();
           page.editProductName.addValue(newProduct);
           actionBar.save();
+          browser.waitUntil(() => toast.toastContainer.isDisplayed());
           toast.clearAllToast();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
