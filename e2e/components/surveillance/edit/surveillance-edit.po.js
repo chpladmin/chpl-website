@@ -35,11 +35,21 @@ class SurveillanceEditComponent {
       surveillanceType: '#surveillance-type',
       totalSites: '#total-sites',
       editSurveillance : '//span[text()="Edit"]',
+      delete: '//button[text()=" Delete"]',
+      reason: '#reason-for-change'
     };
   }
 
   get cancel() {
     return $(this.elements.cancel);
+  }
+
+  get delete() {
+    return $(this.elements.delete);
+  }
+
+  get reason() {
+    return $(this.elements.reason);
   }
 
   get requirementCapability() {
