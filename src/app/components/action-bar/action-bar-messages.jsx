@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  Checkbox,
   Chip,
-  Fab,
   Divider,
   Drawer,
   IconButton,
-  ToolTip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -20,50 +17,59 @@ import {
 } from 'prop-types';
 
 const useStyles = makeStyles({
-  drawer: {
-    width: '250px',
+  //Drawer CSS//
+  closeDrawer: {
+    border: '1px solid #eee',
+    backgroundColor: '#fff',
+    borderRadius: '4px 4px',
+    bottom: '16px',
+    boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
+    marginRight: '-4px',
+    position: 'fixed',
+    right: '0',
+    width: '254px',
+    zIndex: 1400,
+    '&:hover, &.Mui-focusVisible': {
+      backgroundColor: '#eee',
+      boxShadow: '0 -4px 8px rgb(149 157 165 / 50%)',
+    },
   },
-  drawerPaper: {
-    alignItems: 'flex-end',
-    borderRadius: '4px',
-    boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
-    height:'95%',
-    overflowX: 'hidden',
+  drawer: {
     width: '250px',
   },
   drawerContainer: {
     display: 'flex',
     flexDirection: 'column',
   },
-  closeDrawer: {
-    zIndex: 1400,
-    transition: 'all 0.5s ease',
-    position: 'fixed',
-    bottom: '16px',
-    right: '0',
-    marginRight: '-4px',
-    width: '254px',
-    border: '1px solid #eee',
-    backgroundColor: '#fff',
-    borderRadius: '4px 4px',
-    boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
-    '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#eee',
-      boxShadow: '0 -4px 8px rgb(149 157 165 / 50%)',
-    },
+  drawerPaper: {
+    alignItems: 'flex-end',
+    borderRadius: '4px',
+    boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
+    height: '95%',
+    overflowX: 'hidden',
+    width: '250px',
+  },
+  //Error CSS//
+  errorChip: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    height: '32px',
+    width: '32px',
   },
   errorContainer: {
-    color: '#1c1c1c',
     backgroundColor: '#c44f6520',
-  },
-  warningContainer: {
     color: '#1c1c1c',
-    backgroundColor: '#e6ea0b20',
-    paddingBottom: '16px',
+  },
+  errorHeader: {
+    alignItems: 'center',
+    display: 'flex',
+    fontWeight: '600',
+    justifyContent: 'space-between',
+    padding: '8px 16px',
   },
   toggleError: {
-    width:'32px',
-    height:'32px',
+    width: '32px',
+    height: '32px',
     backgroundColor: '#c44f65',
     color: '#ffffff',
     fontWeight: '600',
@@ -78,59 +84,53 @@ const useStyles = makeStyles({
       boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
     },
   },
-  toggleWarning: {
-    width:'32px',
-    height:'32px',
+   //Warning CSS//
+  warningChip: {
     backgroundColor: '#e6ea0b',
     color: '#1c1c1c',
+    height: '32px',
+    width: '32px',
+  },
+  warningContainer: {
+    backgroundColor: '#e6ea0b20',
+    color: '#1c1c1c',
+    paddingBottom: '16px',
+  },
+  warningHeader: {
+    alignItems: 'center',
+    display: 'flex',
     fontWeight: '600',
-    zIndex: 1299,
-    position: 'fixed',
+    justifyContent: 'space-between',
+    padding: '8px 16px',
+  },
+  toggleWarning: {
+    backgroundColor: '#e6ea0b',
     bottom: '80px',
-    right: '0',
-    marginRight: '8px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
+    color: '#1c1c1c',
+    height: '32px',
+    fontWeight: '600',
+    marginRight: '8px',
+    position: 'fixed',
+    right: '0',
+    width: '32px',
+    zIndex: 1299,
     '&:hover, &.Mui-focusVisible': {
       backgroundColor: '#b9bc0c',
       boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
     },
   },
-  errorHeader: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    display: 'flex',
-    padding: '8px 16px',
-    fontWeight: '600',
-  },
-  warningHeader: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    display: 'flex',
-    padding: '8px 16px',
-    fontWeight: '600',
-  },
-  errorChip: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    width:'32px',
-    height:'32px',
-  },
-  warningChip: {
-    backgroundColor: '#e6ea0b',
-    color: '#1c1c1c',
-    width:'32px',
-    height:'32px',
-  },
+  //General CSS//
   iconSpacing: {
     marginLeft: '4px',
-  },
-  noMargin: {
-    margin: '0',
   },
   list: {
     margin: '0px 0px 0px 16px',
     padding: '8px 16px',
-  }
+  },
+  noMargin: {
+    margin: '0',
+  },
 });
 
 function ChplActionBarMessages(props) {
@@ -181,7 +181,6 @@ function ChplActionBarMessages(props) {
             </IconButton>
           </ChplTooltip>
         )}
-
       {!open
         && (
           <ChplTooltip placement="left" title="Warning">
@@ -246,11 +245,9 @@ function ChplActionBarMessages(props) {
                     </ul>
                   </div>
                 </div>
-
               )}
           </div>
           <Divider className={classes.noMargin} />
-
           <div className={classes.closeDrawer}>
             <Button color='primary' fullWidth onClick={toggleDrawer}>
               Close <CloseIcon className={classes.iconSpacing} />
@@ -264,10 +261,6 @@ function ChplActionBarMessages(props) {
 
 export default ChplActionBarMessages;
 
-//<Checkbox name='side' onChange={toggleAnchor} checked={anchorRight}/> //
-//{errors.length !== 1 ? 's' : ''}//
-//{warnings.length !== 1 ? 's' : ''}"//
-
 ChplActionBarMessages.propTypes = {
   errors: arrayOf(string),
   warnings: arrayOf(string),
@@ -277,3 +270,8 @@ ChplActionBarMessages.defaultProps = {
   errors: [],
   warnings: [],
 };
+
+//Unused code from Andrew Branch is below//
+//<Checkbox name='side' onChange={toggleAnchor} checked={anchorRight}/> //
+//{errors.length !== 1 ? 's' : ''}//
+//{warnings.length !== 1 ? 's' : ''}"//
