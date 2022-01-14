@@ -83,8 +83,8 @@ function ChplAttestationCreate(props) {
       <ChplAttestationProgress
         dispatch={handleProgressDispatch}
         value={value}
-        canNext={!canNext}
-        canPrevious={!canPrevious}
+        canNext={canNext}
+        canPrevious={canPrevious}
       />
       { value === 0
         && (

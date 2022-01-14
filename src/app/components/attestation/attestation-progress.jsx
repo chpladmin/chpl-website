@@ -77,7 +77,7 @@ function ChplAttestationProgress(props) {
       <div className={classes.stepperButtonContainer}>
         <ButtonGroup variant="text" color="primary" className={classes.stepperButton} size="medium">
           <Button
-            disabled={canPrevious}
+            disabled={!canPrevious}
             onClick={() => props.dispatch('previous')}
             id="inspect-previous"
           >
@@ -85,7 +85,7 @@ function ChplAttestationProgress(props) {
             Back
           </Button>
           <Button
-            disabled={canNext}
+            disabled={!canNext}
             onClick={() => props.dispatch('next')}
             id="inspect-next"
           >
