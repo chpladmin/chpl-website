@@ -3,6 +3,7 @@ class ManagePage {
     this.elements = {
       pagination: '.pagination--results-found',
       clearFilters: '//button[text()="Clear Filters"]',
+      initiate: '//button[text()= "Initiate Surveillance Reporting"]'
     };
   }
 
@@ -37,6 +38,26 @@ class ManagePage {
       browser.pause(2000);
       next = this.totalCount();
     } while (start !== next);
+  }
+
+  totalSurveillance () {
+    return $('ai-surveillance').$('.inset-content').$$('div').length;
+  }
+
+  clickOnListing (listing) {
+    $(`//button[text()= "${listing} "]`).click();
+  }
+
+  openListingTab (listing){
+    $(`//*[text()= " ${listing} "]`).click();
+  }
+
+  get initiateSurveillanceButton () {
+    return $(this.elements.initiate);
+  }
+
+  search (text) {
+    $('#generalFilter').setValue(text);
   }
 
 }
