@@ -1,9 +1,10 @@
-import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
-import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import ActionBarComponent from '../../../components/action-bar/action-bar-legacy.po';
 import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';
 import ToastComponent from '../../../components/toast/toast.po';
+
+import DevelopersPage from './developers.po';
 
 let actionBar;
 let contact;
@@ -214,6 +215,8 @@ describe('the Product part of the Developers page', () => {
 
           // act
           actionBar.save();
+          browser.waitUntil(() => toast.toastContainer.isDisplayed());
+          toast.clearAllToast();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();
 
@@ -261,6 +264,7 @@ describe('the Product part of the Developers page', () => {
           page.editProductName.clearValue();
           page.editProductName.addValue(newProduct);
           actionBar.save();
+          browser.waitUntil(() => toast.toastContainer.isDisplayed());
           toast.clearAllToast();
           page.selectAllCertificationStatus();
           page.productsHeader.waitForDisplayed();

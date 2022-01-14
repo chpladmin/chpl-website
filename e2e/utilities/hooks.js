@@ -32,6 +32,10 @@ class Hooks {
     return $('table').$('tbody').$$('tr');
   }
 
+  getErrors() {
+    return $('#action-bar-errors').getText();
+  }
+
 }
 
 export default Hooks;

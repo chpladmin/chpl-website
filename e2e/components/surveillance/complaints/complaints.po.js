@@ -12,11 +12,39 @@ class ComplaintsComponent {
       downloadResultsButton: '#download-results',
       newComplaint: '//*[text()="Add New Complaint"]',
       editButton: '//*[text()="Edit"]/parent::button',
+      actions: '#actions',
+      oncId: '#onc-complaint-id',
+      criterion: '#criteria',
+      listings: '#listings',
+      surveillance: '#surveillances',
+      complainantContacted: '#complainant-contacted',
+      developerContacted: '#developer-contacted',
+      oncAtlContacted: '#onc-atl-contacted',
+      informedOnc: '#flag-for-onc-review'
     };
   }
 
   get editButton() {
     return $(this.elements.editButton);
+  }
+
+  complaintsBody () {
+    return $('.MuiCardContent-root').getText();
+  }
+
+  get viewButton() {
+    return $('//span[text()="View"]');
+  }
+
+  selectSurveillance(surveillance) {
+    $(this.elements.surveillance).click();
+    $(`//li[contains(text(),"${surveillance}")]`).click();
+  }
+
+  selectListing(listings) {
+    $(this.elements.listings).click();
+    $(this.elements.listings).addValue(listings);
+    $(`//li[contains(text(),"${listings}")]`).click();
   }
 
   set(fields) {
@@ -30,6 +58,22 @@ class ComplaintsComponent {
     $(`//li[text()="${fields.type}"]`).click();
   }
 
+  setOptionalFields(fields) {
+    $(this.elements.oncId).addValue(fields.oncId);
+    $(this.elements.actions).addValue(fields.actions);
+    $(this.elements.criterion).click();
+    $(`//li[text()="${fields.criterion}"]`).click();
+    $(this.elements.listings).click();
+    $(this.elements.listings).addValue(fields.listings);
+    $(`//li[contains(text(),"${fields.listings}")]`).click();
+    $(this.elements.surveillance).click();
+    $(`//li[contains(text(),"${fields.surveillance}")]`).click();
+    $(this.elements.complainantContacted).click();
+    $(this.elements.developerContacted).click();
+    $(this.elements.oncAtlContacted).click();
+    $(this.elements.informedOnc).click();
+  }
+
   saveComplaint() {
     return $(this.elements.saveComplaint).click();
   }
@@ -38,12 +82,20 @@ class ComplaintsComponent {
     return $(this.elements.closedDate);
   }
 
+  setActions(actions) {
+    return $(this.elements.actions).addValue(actions);
+  }
+
   fieldError(fieldName) {
     return $(`#${fieldName}-helper-text`).getText();
   }
 
   get downloadResultsButton() {
     return $(this.elements.downloadResultsButton);
+  }
+
+  get newComplaintButton() {
+    return $(this.elements.newComplaint);
   }
 
   addNewComplaint() {
@@ -60,15 +112,33 @@ class ComplaintsComponent {
   }
 
   viewComplaint(id) {
+    this.filter.clearValue();
     this.filter.addValue(id);
+    browser.waitUntil(() => $('table').$('tbody').$$('tr').length-1 === 1);
     $('//span[text()="View"]/parent::button').click();
   }
 
-  deleteComplaint(id) {
-    this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').click();
-    $('//span[text()="Delete"]/parent::button').click();
-    $('//span[text()="Yes"]/parent::button').click();
+  waitForUpdatedTableRowCount () {
+    let start;
+    start = $('table').$('tbody').$$('tr').length;
+    browser.waitUntil( () => $('table').$('tbody').$$('tr').length != start);
+  }
+
+  advancedSearch () {
+    $('//button[text()="Advanced Search"]').click();
+  }
+
+  searchFilter (value) {
+    $('#data-filter').clearValue();
+    $('#data-filter').addValue(value);
+  }
+
+  advanceFilterOptions (value){
+    $(`#filter-list-${value}`).click();
+  }
+
+  chooseAdvanceSearchOption (option) {
+    $(`//button[text()="${option}"]`).click();
   }
 }
 
