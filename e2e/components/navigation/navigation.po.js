@@ -1,6 +1,8 @@
 class NavigationComponent {
   constructor() {
     this.elements = {
+      developersToggle: '#developers-toggle',
+      developers: '#developers-dropdown-menu>li',
       reportsToggle: '#reports-toggle',
       reports: '#reports-dropdown-menu>li',
       resourceToggle: '#resource-toggle',
@@ -11,6 +13,14 @@ class NavigationComponent {
       shortcuts: '#shortcut-dropdown-menu>li',
       showNavigation: 'button*=Show navigation',
     };
+  }
+
+  get developersToggle() {
+    return $(this.elements.developersToggle);
+  }
+
+  get developers() {
+    return $$(this.elements.developers);
   }
 
   get reportsToggle() {
