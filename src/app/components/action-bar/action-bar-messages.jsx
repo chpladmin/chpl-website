@@ -10,10 +10,11 @@ import {
   ToolTip,
   Typography,
   makeStyles,
-  Tooltip,
 } from '@material-ui/core';
+
 import CloseIcon from '@material-ui/icons/Close';
-import theme from 'themes/theme';
+import { ChplTooltip } from 'components/util';
+
 import {
   arrayOf, string,
 } from 'prop-types';
@@ -165,7 +166,7 @@ function ChplActionBarMessages(props) {
     <>
       {!open
         && (
-          <Tooltip title="Error">
+          <ChplTooltip placement="left" title="Error">
             <IconButton
               size='medium'
               onClick={toggleDrawer}
@@ -178,12 +179,12 @@ function ChplActionBarMessages(props) {
                   </>
                 )}
             </IconButton>
-          </Tooltip>
+          </ChplTooltip>
         )}
 
       {!open
         && (
-          <Tooltip title="Warning">
+          <ChplTooltip placement="left" title="Warning">
             <IconButton
               size='medium'
               onClick={toggleDrawer}
@@ -196,7 +197,7 @@ function ChplActionBarMessages(props) {
                   </>
                 )}
             </IconButton>
-          </Tooltip>
+          </ChplTooltip>
         )}
       <Drawer
         id='action-bar-messages'
