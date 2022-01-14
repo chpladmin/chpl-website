@@ -5,7 +5,7 @@ import { useAxios } from './axios';
 const useFetchAttestationData = () => {
   const axios = useAxios();
   return useQuery(['attestations'], async () => {
-    const response = await axios.get('/attestations');
+    const response = await axios.get('/attestations/form');
     return response.data;
   }, { keepPreviousData: true });
 };

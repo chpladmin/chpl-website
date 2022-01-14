@@ -121,9 +121,25 @@ function ChplAttestationCreate(props) {
           <Typography variant="h2">
             Attestations
           </Typography>
-          <Typography variant="body1">
-            Questions
-          </Typography>
+          {data.categories.sort((a, b) => a.sortOrder - b.sortOrder).map((category) => (
+            <div key={category.id}>
+              <Typography variant="h3">
+                { category.name }
+              </Typography>
+              {category.questions.sort((a, b) => a.sortOrder - b.sortOrder).map((question) => (
+                <div key={question.id}>
+                  <Typography variant="body1">
+                    { question.question }
+                  </Typography>
+                  {question.answers.sort((a, b) => a.sortOrder - b.sortOrder).map((answer) => (
+                    <div key={answer.id}>
+                      { answer.answer }
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
         </>
         )}
       { value === 2
