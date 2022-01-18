@@ -47,6 +47,35 @@ const useStyles = makeStyles({
     overflowX: 'hidden',
     width: '250px',
   },
+  toggle: {
+    width: '32px',
+    height: '32px',
+    fontWeight: '600',
+    zIndex: 1299,
+    position: 'fixed',
+    right: '0',
+    marginRight: '8px',
+  },
+  toggleError: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    bottom: '125px',
+    boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
+    '&:hover, &.Mui-focusVisible': {
+      backgroundColor: '#853544',
+      boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
+    },
+  },
+  toggleWarning: {
+    backgroundColor: '#e6ea0b',
+    color: '#1c1c1c',
+    bottom: '80px',
+    boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
+    '&:hover, &.Mui-focusVisible': {
+      backgroundColor: '#b9bc0c',
+      boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
+    },
+  },
   errorChip: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
@@ -63,23 +92,6 @@ const useStyles = makeStyles({
     fontWeight: '600',
     justifyContent: 'space-between',
     padding: '8px 16px',
-  },
-  toggleError: {
-    width: '32px',
-    height: '32px',
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    fontWeight: '600',
-    zIndex: 1299,
-    position: 'fixed',
-    bottom: '125px',
-    right: '0',
-    marginRight: '8px',
-    boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
-    '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#853544',
-      boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
-    },
   },
   warningChip: {
     backgroundColor: '#e6ea0b',
@@ -98,23 +110,6 @@ const useStyles = makeStyles({
     fontWeight: '600',
     justifyContent: 'space-between',
     padding: '8px 16px',
-  },
-  toggleWarning: {
-    backgroundColor: '#e6ea0b',
-    bottom: '80px',
-    boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
-    color: '#1c1c1c',
-    height: '32px',
-    fontWeight: '600',
-    marginRight: '8px',
-    position: 'fixed',
-    right: '0',
-    width: '32px',
-    zIndex: 1299,
-    '&:hover, &.Mui-focusVisible': {
-      backgroundColor: '#b9bc0c',
-      boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
-    },
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -154,39 +149,34 @@ function ChplActionBarMessages(props) {
 
   return (
     <>
-      { !open
+      { !open && (errors.length > 0 || warnings.length > 0)
         && (
-          <ChplTooltip placement="left" title="Error">
-            <IconButton
-              size="medium"
-              onClick={toggleDrawer}
-              className={classes.toggleError}
+          <>
+            <ChplTooltip
+              placement="left"
+              title={`Error${errors.length !== 1 ? 's' : ''}`}
             >
-              {errors.length > 0
-                && (
-                  <>
-                    {errors.length}
-                  </>
-                )}
-            </IconButton>
-          </ChplTooltip>
-        )}
-      { !open
-        && (
-          <ChplTooltip placement="left" title="Warning">
-            <IconButton
-              size="medium"
-              onClick={toggleDrawer}
-              className={classes.toggleWarning}
+              <IconButton
+                size="medium"
+                onClick={toggleDrawer}
+                className={`${classes.toggle} ${classes.toggleError}`}
+              >
+                {errors.length}
+              </IconButton>
+            </ChplTooltip>
+            <ChplTooltip
+              placement="left"
+              title={`Warning${warnings.length !== 1 ? 's' : ''}`}
             >
-              {warnings.length > 0
-                && (
-                  <>
-                    {warnings.length}
-                  </>
-                )}
-            </IconButton>
-          </ChplTooltip>
+              <IconButton
+                size="medium"
+                onClick={toggleDrawer}
+                className={`${classes.toggle} ${classes.toggleWarning}`}
+              >
+                {warnings.length}
+              </IconButton>
+            </ChplTooltip>
+          </>
         )}
       <Drawer
         id="action-bar-messages"
