@@ -36,12 +36,17 @@ class SurveillanceEditComponent {
       totalSites: '#total-sites',
       editSurveillance : '//span[text()="Edit"]',
       delete: '//button[text()=" Delete"]',
-      reason: '#reason-for-change'
+      reason: '#reason-for-change',
+      editNonConformity: '//*[@ng-click="$ctrl.editNonconformity(noncon)"]'
     };
   }
 
   get cancel() {
     return $(this.elements.cancel);
+  }
+
+  get editNonConformity() {
+    return $(this.elements.editNonConformity);
   }
 
   get delete() {

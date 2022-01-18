@@ -41,7 +41,8 @@ class ManagePage {
   }
 
   totalSurveillance () {
-    return $('ai-surveillance').$('.inset-content').$$('div').length;
+    $('ai-surveillance').scrollIntoView();
+    return $$('//ai-surveillance/div/div').length;
   }
 
   clickOnListing (listing) {
@@ -58,6 +59,14 @@ class ManagePage {
 
   search (text) {
     $('#generalFilter').setValue(text);
+  }
+
+  editSurveillanceActivity (text) {
+    $(`//*[contains(text(),"${text}")]//parent::a//following-sibling::button`).click();
+  }
+
+  surveillanceActivityInfo (text) {
+    return $(`//*[contains(text(),"${text}")]`);
   }
 
 }

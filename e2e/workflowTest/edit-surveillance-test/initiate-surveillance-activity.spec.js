@@ -3,12 +3,14 @@ import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
 import ToastComponent from '../../components/toast/toast.po';
+import ActionBarComponent from '../../components/action-bar/action-bar-legacy.po';
 
 let hooks;
 let login;
 let page;
 let surveillance;
 let toast;
+let action;
 
 beforeEach(async () => {
   page = new ManagePage();
@@ -16,22 +18,26 @@ beforeEach(async () => {
   hooks = new Hooks();
   surveillance = new SurveillanceEditComponent();
   toast= new ToastComponent();
+  action = new ActionBarComponent();
   await hooks.open('#/surveillance/manage');
 });
 
 
-describe('when logged in as an ACB', () => {
+describe('On surveillance management page, ROLE_ACB user', () => {
     let listing = '15.04.04.2838.PARA.17.00.1.171228';
     beforeEach(() => {
       login.logIn('drummond');
     });
   
     afterEach(() => {
-      browser.refresh();  /// it is very complex to exit the opened window based on uiUpgrade flag so temporary adding this
+      if(surveillance.cancel.isDisplayed()){
+          surveillance.cancel.click();
+          action.yes();
+        }
       login.logOut();
     });
 
-    it('should not allow to initiate surveillance without end date when no open non conformity', () => {
+    it('should not be allowed to initiate surveillance without end date and none open non conformity', () => {
         let error = 'End Date is required when there are no open Nonconformities';
         page.search(listing);
         page.clickOnListing(listing);
@@ -59,7 +65,7 @@ describe('when logged in as an ACB', () => {
         page.clickOnListing(listing);
         page.openListingTab(listing);
         browser.waitUntil (()=> page.initiateSurveillanceButton.isDisplayed())
-        let survBefore = page.totalSurveillance();;
+        let survBefore = page.totalSurveillance();
         page.initiateSurveillanceButton.click();
         surveillance.startDate.addValue('01/01/2020');
         surveillance.surveillanceType.selectByVisibleText('Reactive');
@@ -68,9 +74,44 @@ describe('when logged in as an ACB', () => {
         surveillance.saveButton.click();
         surveillance.saveButton.click();
         surveillance.saveButton.click();
-        hooks.waitForSpinnerToDisappear();
         browser.waitUntil (()=> toast.toastTitle.isDisplayed())
         toast.clearAllToast();
+        hooks.waitForSpinnerToDisappear();
+        let survafter = page.totalSurveillance();
+        expect(survafter).toBe(survBefore + 1);
+    });
+});
+
+describe('On surveillance management page, ROLE_ADMIN user', () => {
+    let listing = '15.04.04.2988.Heal.PC.01.1.181101';
+    beforeEach(() => {
+      login.logIn('admin');
+    });
+  
+    afterEach(() => {
+      if(surveillance.cancel.isDisplayed()){
+          surveillance.cancel.click();
+          action.yes();
+        }
+      login.logOut();
+    });
+
+    it('should be able to initiate surveillance with removed criteria requirement', () => {
+        page.search(listing);
+        page.clickOnListing(listing);
+        page.openListingTab(listing);
+        browser.waitUntil (()=> page.initiateSurveillanceButton.isDisplayed())
+        let survBefore = page.totalSurveillance();
+        page.initiateSurveillanceButton.click();
+        surveillance.startDate.addValue('01/01/2020');
+        surveillance.endDate.addValue('05/01/2020');
+        surveillance.surveillanceType.selectByVisibleText('Reactive');
+        surveillance.addRequirement('Certified Capability','Removed | 170.315 (a)(13): Patient-Specific Education Resources', 'No Non-Conformity');
+        surveillance.saveButton.click();
+        surveillance.saveButton.click();
+        browser.waitUntil (()=> toast.toastTitle.isDisplayed())
+        toast.clearAllToast();
+        hooks.waitForSpinnerToDisappear();
         let survafter = page.totalSurveillance();
         expect(survafter).toBe(survBefore + 1);
     });

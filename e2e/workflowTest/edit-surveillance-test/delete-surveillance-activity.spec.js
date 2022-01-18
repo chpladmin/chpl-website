@@ -2,7 +2,7 @@ import ManagePage from '../../pages/surveillance/manage/manage.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
-import ActionBarComponent from '../../components/action-bar/action-bar.po';
+import ActionBarComponent from '../../components/action-bar/action-bar-legacy.po';
 import ToastComponent from '../../components/toast/toast.po';
 
 let hooks;
@@ -23,7 +23,7 @@ beforeEach(async () => {
 });
 
 
-describe('when logged in as an ACB', () => {
+describe('On surveillance management page, ROLE_ACB user', () => {
   let listing = '15.04.04.2838.PARA.17.00.1.171228';
   beforeEach(() => {
     login.logIn('drummond');
@@ -49,7 +49,7 @@ describe('when logged in as an ACB', () => {
     browser.waitUntil (()=> toast.toastTitle.isDisplayed())
     toast.clearAllToast();
     let survBefore = page.totalSurveillance();
-    $('//*[contains(text(),"Jan 11, 2020")]//parent::a//following-sibling::button').click();
+    page.editSurveillanceActivity("Mar 11, 2020");
     surveillance.reason.setValue('Delete surveillance');
     surveillance.delete.click();
     action.yes();
