@@ -32,13 +32,6 @@ const useStyles = makeStyles({
       boxShadow: '0 -4px 8px rgb(149 157 165 / 50%)',
     },
   },
-  drawer: {
-    width: '250px',
-  },
-  drawerContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   drawerPaper: {
     alignItems: 'flex-end',
     borderRadius: '4px',
@@ -57,8 +50,6 @@ const useStyles = makeStyles({
     marginRight: '8px',
   },
   toggleError: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
     bottom: '125px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     '&:hover, &.Mui-focusVisible': {
@@ -67,8 +58,6 @@ const useStyles = makeStyles({
     },
   },
   toggleWarning: {
-    backgroundColor: '#e6ea0b',
-    color: '#1c1c1c',
     bottom: '80px',
     boxShadow: '0 4px 8px rgb(149 157 165 / 30%)',
     '&:hover, &.Mui-focusVisible': {
@@ -76,40 +65,32 @@ const useStyles = makeStyles({
       boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
     },
   },
-  errorChip: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    height: '32px',
-    width: '32px',
-  },
   errorContainer: {
     backgroundColor: '#c44f6520',
     color: '#1c1c1c',
   },
-  errorHeader: {
-    alignItems: 'center',
-    display: 'flex',
-    fontWeight: '600',
-    justifyContent: 'space-between',
-    padding: '8px 16px',
-  },
-  warningChip: {
-    backgroundColor: '#e6ea0b',
-    color: '#1c1c1c',
-    height: '32px',
-    width: '32px',
-  },
   warningContainer: {
     backgroundColor: '#e6ea0b20',
     color: '#1c1c1c',
-    paddingBottom: '16px',
   },
-  warningHeader: {
+  messageHeader: {
     alignItems: 'center',
     display: 'flex',
     fontWeight: '600',
     justifyContent: 'space-between',
     padding: '8px 16px',
+  },
+  messageChip: {
+    height: '32px',
+    width: '32px',
+  },
+  errorTheme: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+  },
+  warningTheme: {
+    backgroundColor: '#e6ea0b',
+    color: '#1c1c1c',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -159,7 +140,7 @@ function ChplActionBarMessages(props) {
               <IconButton
                 size="medium"
                 onClick={toggleDrawer}
-                className={`${classes.toggle} ${classes.toggleError}`}
+                className={`${classes.toggle} ${classes.toggleError} ${classes.errorTheme}`}
               >
                 {errors.length}
               </IconButton>
@@ -171,7 +152,7 @@ function ChplActionBarMessages(props) {
               <IconButton
                 size="medium"
                 onClick={toggleDrawer}
-                className={`${classes.toggle} ${classes.toggleWarning}`}
+                className={`${classes.toggle} ${classes.toggleWarning} ${classes.warningTheme}`}
               >
                 {warnings.length}
               </IconButton>
@@ -184,82 +165,76 @@ function ChplActionBarMessages(props) {
         open={open}
         onClose={toggleDrawer}
         variant="persistent"
-        className={classes.drawer}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerContainer}>
-          <div className={classes.messageContainer}>
-            {errors.length > 0
-              && (
-                <div className={classes.errorContainer} id="action-bar-errors">
-                  <div className={classes.errorHeader}>
-                    Error
-                    {errors.length !== 1 ? 's' : ''}
-                    <Chip
-                      size="small"
-                      className={classes.errorChip}
-                      label={errors.length}
-                    />
-                  </div>
-                  <Divider className={classes.noMargin} />
-                  <ul className={classes.list}>
-                    {errors.map((message) => (
-                      <li key={message}>
-                        <Typography
-                          gutterBottom
-                          variant="body2"
-                        >
-                          {message}
-                        </Typography>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            {warnings.length > 0
-              && (
-                <div className={classes.warningContainer} id="action-bar-warnings">
-                  <Divider className={classes.noMargin} />
-                  <div className={classes.warningHeader}>
-                    Warning
-                    {warnings.length !== 1 ? 's' : ''}
-                    <Chip
-                      size="small"
-                      className={classes.warningChip}
-                      label={warnings.length}
-                    />
-                  </div>
-                  <Divider className={classes.noMargin} />
-                  <div>
-                    <ul className={classes.list}>
-                      {warnings.map((message) => (
-                        <li key={message}>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                          >
-                            {message}
-                          </Typography>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-          </div>
-          <Divider className={classes.noMargin} />
-          <div className={classes.closeDrawer}>
-            <Button
-              color="primary"
-              fullWidth
-              onClick={toggleDrawer}
-            >
-              Close
-              <CloseIcon className={classes.iconSpacing} />
-            </Button>
-          </div>
+        {errors.length > 0
+         && (
+           <div className={classes.errorContainer} id="action-bar-errors">
+             <div className={classes.messageHeader}>
+               Error
+               {errors.length !== 1 ? 's' : ''}
+               <Chip
+                 size="small"
+                 className={`${classes.messageChip} ${classes.errorTheme}`}
+                 label={errors.length}
+               />
+             </div>
+             <Divider className={classes.noMargin} />
+             <ul className={classes.list}>
+               {errors.map((message) => (
+                 <li key={message}>
+                   <Typography
+                     gutterBottom
+                     variant="body2"
+                   >
+                     {message}
+                   </Typography>
+                 </li>
+               ))}
+             </ul>
+           </div>
+         )}
+        {warnings.length > 0
+         && (
+           <div className={classes.warningContainer} id="action-bar-warnings">
+             <Divider className={classes.noMargin} />
+             <div className={classes.messageHeader}>
+               Warning
+               {warnings.length !== 1 ? 's' : ''}
+               <Chip
+                 size="small"
+                 className={`${classes.messageChip} ${classes.warningTheme}`}
+                 label={warnings.length}
+               />
+             </div>
+             <Divider className={classes.noMargin} />
+             <div>
+               <ul className={classes.list}>
+                 {warnings.map((message) => (
+                   <li key={message}>
+                     <Typography
+                       gutterBottom
+                       variant="body2"
+                     >
+                       {message}
+                     </Typography>
+                   </li>
+                 ))}
+               </ul>
+             </div>
+           </div>
+         )}
+        <div className={classes.closeDrawer}>
+          <Button
+            color="primary"
+            fullWidth
+            onClick={toggleDrawer}
+          >
+            Close
+            <CloseIcon className={classes.iconSpacing} />
+          </Button>
         </div>
       </Drawer>
     </>
