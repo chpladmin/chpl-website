@@ -235,7 +235,13 @@ function ChplLogin(props) {
             toastWhenUsernameUsed(signinFormik.values.userName, data);
           });
       }, (error) => {
-        if (error?.data?.error === 'The user is required to change their password on next login.') {
+        if (error?.status === 461) {
+          const body = 'Your account has not been confirmed, please check your email to confirm your account.';
+          toaster.pop({
+            type: 'info',
+            body,
+          });
+        } else if (error?.data?.error === 'The user is required to change their password on next login.') {
           const body = 'Password change is required';
           toaster.pop({
             type: 'info',
