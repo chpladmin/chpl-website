@@ -1,12 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import Moment from 'react-moment';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import ChplAttestationProgress from './attestation-progress';
 
@@ -25,6 +32,21 @@ const useStyles = makeStyles({
   },
 });
 
+const validationSchema = yup.object({
+  question1: yup.string()
+    .required('Question 1 is required'),
+  question2: yup.string()
+    .required('Question 2 is required'),
+  question3: yup.string()
+    .required('Question 3 is required'),
+  question4: yup.string()
+    .required('Question 4 is required'),
+  question5: yup.string()
+    .required('Question 5 is required'),
+  signature: yup.string()
+    .required('Signature is required'),
+});
+
 function ChplAttestationCreate(props) {
   const { developer } = props;
   const { isLoading, data } = useFetchAttestationData();
@@ -34,6 +56,7 @@ function ChplAttestationCreate(props) {
   const [signature, setSignature] = useState('');
   const { user } = useContext(UserContext);
   const classes = useStyles();
+  let formik;
 
   useEffect(() => {
     setCanNext(value < 2);
@@ -74,6 +97,21 @@ function ChplAttestationCreate(props) {
   const isNextDisabled = () => value !== 2;
 
   const isSubmitDisabled = () => signature !== user.fullName;
+
+  formik = useFormik({
+    initialValues: {
+      question1: '',
+      question2: '',
+      question3: '',
+      question4: '',
+      question5: '',
+      signature: '',
+    },
+    onSubmit: () => {
+      save();
+    },
+    validationSchema,
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -121,23 +159,35 @@ function ChplAttestationCreate(props) {
           <Typography variant="h2">
             Attestations
           </Typography>
-          {data.categories.sort((a, b) => a.sortOrder - b.sortOrder).map((category) => (
+          {data.categories
+           .sort((a, b) => a.sortOrder - b.sortOrder)
+           .map((category) => (
             <div key={category.id}>
               <Typography variant="h3">
                 { category.name }
               </Typography>
-              {category.questions.sort((a, b) => a.sortOrder - b.sortOrder).map((question) => (
-                <div key={question.id}>
-                  <Typography variant="body1">
-                    { question.question }
-                  </Typography>
-                  {question.answers.sort((a, b) => a.sortOrder - b.sortOrder).map((answer) => (
-                    <div key={answer.id}>
-                      { answer.answer }
-                    </div>
-                  ))}
-                </div>
-              ))}
+              {category.questions
+               .sort((a, b) => a.sortOrder - b.sortOrder)
+               .map((question, idx) => (
+                 <FormControl key={question.id} component="fieldset">
+                   <FormLabel component="legend">{question.question}</FormLabel>
+                   <RadioGroup
+                     name={`question${idx}`}
+                     value={formik.values[`question${idx}`]}
+                     onChange={(event) => formik.setFieldValue(`question${idx}`, event.currentTarget.value)}
+                   >
+                     {question.answers
+                      .sort((a, b) => a.sortOrder - b.sortOrder)
+                      .map((answer) => (
+                        <FormControlLabel
+                          key={answer.id}
+                          value={answer.answer}
+                          control={<Radio />}
+                          label={answer.answer} />
+                      ))}
+                   </RadioGroup>
+                 </FormControl>
+               ))}
             </div>
           ))}
         </>
