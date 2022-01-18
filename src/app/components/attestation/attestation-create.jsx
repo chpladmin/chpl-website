@@ -94,9 +94,15 @@ function ChplAttestationCreate(props) {
     setValue(3);
   };
 
-  const isNextDisabled = () => value !== 2;
+  const isNextDisabled = () =>
+        value === 2 || (value === 1 && !formik.isValid);
 
   const isSubmitDisabled = () => signature !== user.fullName;
+
+  const setFieldValue = (name, value) => {
+    console.log(formik, formik.isValid);
+    formik.setFieldValue(name, value);
+  };
 
   formik = useFormik({
     initialValues: {
@@ -107,9 +113,7 @@ function ChplAttestationCreate(props) {
       question5: '',
       signature: '',
     },
-    onSubmit: () => {
-      save();
-    },
+    onSubmit: () => { },
     validationSchema,
   });
 
@@ -161,20 +165,20 @@ function ChplAttestationCreate(props) {
           </Typography>
           {data.categories
            .sort((a, b) => a.sortOrder - b.sortOrder)
-           .map((category) => (
+           .map((category, idx) => (
             <div key={category.id}>
               <Typography variant="h3">
                 { category.name }
               </Typography>
               {category.questions
                .sort((a, b) => a.sortOrder - b.sortOrder)
-               .map((question, idx) => (
+               .map((question) => (
                  <FormControl key={question.id} component="fieldset">
-                   <FormLabel component="legend">{question.question}</FormLabel>
+                   <FormLabel>{question.question}</FormLabel>
                    <RadioGroup
-                     name={`question${idx}`}
-                     value={formik.values[`question${idx}`]}
-                     onChange={(event) => formik.setFieldValue(`question${idx}`, event.currentTarget.value)}
+                     name={`question${idx + 1}`}
+                     value={formik.values[`question${idx + 1}`]}
+                     onChange={(event) => setFieldValue(`question${idx + 1}`, event.currentTarget.value)}
                    >
                      {question.answers
                       .sort((a, b) => a.sortOrder - b.sortOrder)

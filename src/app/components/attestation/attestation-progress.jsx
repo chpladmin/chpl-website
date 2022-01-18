@@ -42,16 +42,22 @@ const useStyles = makeStyles({
 
 function ChplAttestationProgress(props) {
   const [value, setValue] = useState(0);
-  const {
-    canPrevious,
-    canNext,
-  } = props;
+  const [canNext, setCanNext] = useState(false);
+  const [canPrevious, setCanPrevious] = useState(false);
 
   const classes = useStyles();
 
   useEffect(() => {
     setValue(props.value);
   }, [props.value]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setCanNext(props.canNext);
+  }, [props.canNext]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setCanPrevious(props.canPrevious);
+  }, [props.canPrevious]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <ThemeProvider theme={theme}>
