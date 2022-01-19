@@ -49,7 +49,7 @@ describe('the ChplRealWorldTestingCollectionView component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/^Real World Testing$/)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Real World Testing');
     });
   });
 });
