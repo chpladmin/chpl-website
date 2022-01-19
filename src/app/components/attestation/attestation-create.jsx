@@ -47,16 +47,15 @@ function ChplAttestationCreate(props) {
       return;
     }
     setResponses(data.categories
-                 .sort((a, b) => a.sortOrder - b.sortOrder)
-                 .flatMap((category) => category.questions
-                          .sort((a, b) => a.sortOrder - b.sortOrder)
-                          .map((question) => ({
-                            category,
-                            question,
-                            answers: question.answers.sort((a, b) => a.sortOrder - b.sortOrder),
-                            answer: {},
-                          }))
-                         ));
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+      .flatMap((category) => category.questions
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+        .map((question) => ({
+          category,
+          question,
+          answers: question.answers.sort((a, b) => a.sortOrder - b.sortOrder),
+          answer: {},
+        }))));
   }, [isLoading, data]);
 
   const isFormFilledOut = () => responses.reduce((filledOut, response) => filledOut && !!response.answer.id, true);
@@ -124,7 +123,7 @@ function ChplAttestationCreate(props) {
             body,
           });
         }
-        //$scope.$apply();
+        // $scope.$apply(); // TODO - see if we can make these toast things MUI options
       },
     });
   };
@@ -176,30 +175,31 @@ function ChplAttestationCreate(props) {
               Attestations
             </Typography>
             {responses
-             .map((response) => (
-               <div key={response.category.id}>
-                 <Typography variant="h3">
-                   { response.category.name }
-                 </Typography>
-                 <FormControl key={response.question.id} component="fieldset">
-                   <FormLabel>{response.question.question}</FormLabel>
-                   <RadioGroup
-                     name={`question-${response.question.id}`}
-                     value={response.answer.answer}
-                     onChange={(event) => handleAnswer(response, event.currentTarget.value)}
-                   >
-                     {response.answers
-                      .map((answer) => (
-                        <FormControlLabel
-                          key={answer.id}
-                          value={answer.answer}
-                          control={<Radio />}
-                          label={answer.answer} />
-                      ))}
-                   </RadioGroup>
-                 </FormControl>
-               </div>
-             ))}
+              .map((response) => (
+                <div key={response.category.id}>
+                  <Typography variant="h3">
+                    { response.category.name }
+                  </Typography>
+                  <FormControl key={response.question.id} component="fieldset">
+                    <FormLabel>{response.question.question}</FormLabel>
+                    <RadioGroup
+                      name={`question-${response.question.id}`}
+                      value={response.answer.answer}
+                      onChange={(event) => handleAnswer(response, event.currentTarget.value)}
+                    >
+                      {response.answers
+                        .map((answer) => (
+                          <FormControlLabel
+                            key={answer.id}
+                            value={answer.answer}
+                            control={<Radio />}
+                            label={answer.answer}
+                          />
+                        ))}
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+              ))}
           </>
         )}
       { stage === 2
