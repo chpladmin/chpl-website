@@ -2,15 +2,20 @@ import React from 'react';
 import {
   cleanup, render, screen,
 } from '@testing-library/react';
+import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
 import ChplAttestationCreate from './attestation-create';
 
-const developerMock = {
-};
+import * as angularReactHelper from 'services/angular-react-helper';
 
-const mockApi = {
-  isSuccess: false,
+const toasterMock = {
+  pop: jest.fn(),
+};
+angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
+
+const developerMock = {
 };
 
 jest.mock('./attestation-progress', () => ({
@@ -23,9 +28,19 @@ jest.mock('./attestation-progress', () => ({
   },
 }));
 
+const mockApi = {
+  isLoading: true,
+  mutate: () => {},
+};
+
 jest.mock('api/attestations', () => ({
   __esModule: true,
   useFetchAttestationData: () => mockApi,
+}));
+
+jest.mock('api/change-requests', () => ({
+  __esModule: true,
+  usePostChangeRequest: () => mockApi,
 }));
 
 describe('the ChplAttestationCreate component', () => {
@@ -41,7 +56,7 @@ describe('the ChplAttestationCreate component', () => {
     cleanup();
   });
 
-  it('should load to the "Introduction" step', () => {
-    expect(screen.getByText(/Introduction/)).toBeInTheDocument();
+  it('should have a header', () => {
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Submit Attestation');
   });
 });

@@ -7,6 +7,8 @@ import userEvent from '@testing-library/user-event';
 
 import ChplAttestationsView from './attestations-view';
 
+import { UserContext } from 'shared/contexts';
+
 const hocMock = {
   dispatch: jest.fn(),
 };
@@ -15,13 +17,28 @@ const developerMock = {
   name: 'a developer name',
 };
 
+const mockApi = {
+  isLoading: true,
+};
+
+jest.mock('api/developer', () => ({
+  __esModule: true,
+  useFetchAttestations: () => mockApi,
+}));
+
+const userContextMock = {
+  hasAnyRole: () => true,
+};
+
 describe('the ChplAttestationsView component', () => {
   beforeEach(async () => {
     render(
-      <ChplAttestationsView
-        developer={developerMock}
-        dispatch={hocMock.dispatch}
-      />,
+      <UserContext.Provider value={userContextMock}>
+        <ChplAttestationsView
+          developer={developerMock}
+          dispatch={hocMock.dispatch}
+        />
+      </UserContext.Provider>,
     );
   });
 
@@ -29,17 +46,12 @@ describe('the ChplAttestationsView component', () => {
     cleanup();
   });
 
-  it('should have the developer name in the text', () => {
-    expect(screen.getByText(/a developer name/)).toBeInTheDocument();
-  });
-
   describe('when creating an attestation change request', () => {
     it('should call the callback', async () => {
-      userEvent.click(screen.getByRole('checkbox', { name: /I attest/ }));
-      userEvent.click(screen.getByRole('button', { name: /Submit Attestation Change Request/i }));
+      userEvent.click(screen.getByRole('button', { name: /Submit Attestation/i }));
 
       await waitFor(() => {
-        expect(hocMock.dispatch).toHaveBeenCalled();
+        expect(hocMock.dispatch).toHaveBeenCalledWith('createAttestation');
       });
     });
   });
