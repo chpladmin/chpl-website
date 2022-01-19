@@ -7,7 +7,14 @@ const useFetchAttestationData = () => {
   return useQuery(['attestations'], async () => {
     const response = await axios.get('/attestations/form');
     return response.data;
-  }, { keepPreviousData: true });
+  }, {
+    refetchOnWindowFocus: false,
+    refetchOnmount: false,
+    refetchOnReconnect: false,
+    retry: false,
+    staleTime: 1000 * 60 * 60 * 24,
+    keepPreviousData: true,
+  });
 };
 
 /* eslint-disable import/prefer-default-export */
