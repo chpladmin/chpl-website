@@ -62,7 +62,7 @@ class ManagePage {
   }
 
   editSurveillanceActivity (text) {
-    $(`//*[contains(text(),"${text}")]//parent::a//following-sibling::button`).click();
+    $(`//*[contains(text(),"${text}")]/parent::p/preceding-sibling::div/button`).click();
   }
 
   surveillanceActivityInfo (text) {

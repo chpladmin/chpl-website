@@ -52,12 +52,14 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     surveillance.saveButton.click();
     surveillance.saveButton.click();
     surveillance.saveButton.click();
-    hooks.waitForSpinnerToDisappear();
     browser.waitUntil (()=> toast.toastTitle.isDisplayed())
     toast.clearAllToast();
+    hooks.waitForSpinnerToDisappear();
     page.editSurveillanceActivity("Apr 1, 2020");
     surveillance.endDate.addValue('05/01/2021');
     surveillance.saveButton.click();
+    browser.waitUntil (()=> toast.toastTitle.isDisplayed())
+    toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
     expect(page.surveillanceActivityInfo("Closed Surveillance, Ended Jan 12, 2022").isExisting()).toBe(true);
   });
@@ -84,9 +86,9 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     surveillance.saveButton.click();
     surveillance.saveButton.click();
     surveillance.saveButton.click();
-    hooks.waitForSpinnerToDisappear();
     browser.waitUntil (()=> toast.toastTitle.isDisplayed())
     toast.clearAllToast();
+    hooks.waitForSpinnerToDisappear();
     //Edit surveillance
     page.editSurveillanceActivity("May 1, 2020");
     surveillance.editRequirement.click();
@@ -100,6 +102,8 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     expect(surveillance.errorMessages.getText()).toContain(error);
     surveillance.endDate.setValue('06/01/2020');
     surveillance.saveButton.click();
+    browser.waitUntil (()=> toast.toastTitle.isDisplayed())
+    toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
     expect(page.surveillanceActivityInfo("Closed Surveillance, Ended Jun 1, 2020").isExisting()).toBe(true);
   });

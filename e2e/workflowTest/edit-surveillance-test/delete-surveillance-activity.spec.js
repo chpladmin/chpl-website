@@ -53,9 +53,9 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     surveillance.reason.setValue('Delete surveillance');
     surveillance.delete.click();
     action.yes();
-    hooks.waitForSpinnerToDisappear();
     browser.waitUntil (()=> toast.toastTitle.isDisplayed())
     toast.clearAllToast();
+    hooks.waitForSpinnerToDisappear();
     let survafter = page.totalSurveillance();
     expect(survafter).toEqual(survBefore - 1);
   });
