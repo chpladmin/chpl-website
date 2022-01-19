@@ -210,20 +210,18 @@ function ChplActionBarMessages(props) {
                />
              </div>
              <Divider className={classes.noMargin} />
-             <div>
-               <ul className={classes.list}>
-                 {warnings.map((message) => (
-                   <li key={message}>
-                     <Typography
-                       gutterBottom
-                       variant="body2"
-                     >
-                       {message}
-                     </Typography>
-                   </li>
-                 ))}
-               </ul>
-             </div>
+             <ul className={classes.list}>
+               {warnings.map((message) => (
+                 <li key={message}>
+                   <Typography
+                     gutterBottom
+                     variant="body2"
+                   >
+                     {message}
+                   </Typography>
+                 </li>
+               ))}
+             </ul>
            </div>
          )}
         <div className={classes.closeDrawer}>
