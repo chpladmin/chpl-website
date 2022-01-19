@@ -5,7 +5,7 @@ import {
 import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
-import ChplRealWorldTestingCollectionPage from './real-world-testing';
+import ChplRealWorldTestingCollectionView from './real-world-testing-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
@@ -26,9 +26,9 @@ const mockApi = {
 /* eslint-disable react/display-name */
 jest.mock('components/filter', () => ({
   __esModule: true,
-  ChplFilterChips: () => () => <div>Chips</div>,
-  ChplFilterPanel: () => () => <div>Panel</div>,
-  ChplFilterSearchTerm: () => () => <div>Search Term</div>,
+  ChplFilterChips: () => <div>Chips</div>,
+  ChplFilterPanel: () => <div>Panel</div>,
+  ChplFilterSearchTerm: () => <div>Search Term</div>,
   useFilterContext: () => mockContext,
 }));
 /* eslint-enable react/display-name */
@@ -38,18 +38,18 @@ jest.mock('api/collections', () => ({
   useFetchRealWorldTestingCollection: () => mockApi,
 }));
 
-describe('the ChplRealWorldTestingCollectionPage component', () => {
+describe('the ChplRealWorldTestingCollectionView component', () => {
   afterEach(() => {
     cleanup();
   });
 
   it('has a title', async () => {
     render(
-      <ChplRealWorldTestingCollectionPage />,
+      <ChplRealWorldTestingCollectionView analytics={{ category: 'test' }} />,
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Collections Page/)).toBeInTheDocument();
+      expect(screen.getByText(/^Real World Testing$/)).toBeInTheDocument();
     });
   });
 });
