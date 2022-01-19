@@ -44,7 +44,6 @@ function ChplAttestationProgress(props) {
   const [value, setValue] = useState(0);
   const [canNext, setCanNext] = useState(false);
   const [canPrevious, setCanPrevious] = useState(false);
-
   const classes = useStyles();
 
   useEffect(() => {
