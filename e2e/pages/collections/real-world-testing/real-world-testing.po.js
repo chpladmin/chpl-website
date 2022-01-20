@@ -4,13 +4,13 @@ class RealWorldTestingPage extends CollectionPage {
   constructor() {
     super();
     this.elements = {
-      header: 'h2=Real World Testing',
+      header: 'h1=Real World Testing',
       downloadRealWorldTesting: '#download-real-world-testing',
     };
   }
 
   get bodyText() {
-    return $(this.elements.header).parentElement();
+    return $(this.elements.header).parentElement().nextElement();
   }
 
   get downloadRealWorldTesting() {
