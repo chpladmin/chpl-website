@@ -24,6 +24,25 @@ import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
+const getElement = (matches) => (
+  <>
+    {matches[1]}
+    <a href={matches[3]}>
+      {matches[2]}
+    </a>
+    {matches[4]}
+  </>
+);
+
+const interpretLink = (question) => {
+  const regex = /^(.*)\[(.*)\]\((.*)\)(.*)$/;
+  const matches = question.question.match(regex);
+  return {
+    ...question,
+    display: getElement(matches),
+  };
+};
+
 const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
@@ -55,7 +74,7 @@ function ChplAttestationCreate(props) {
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map((question) => ({
           category,
-          question,
+          question: interpretLink(question),
           answers: question.answers.sort((a, b) => a.sortOrder - b.sortOrder),
           answer: {},
         }))));
@@ -187,7 +206,7 @@ function ChplAttestationCreate(props) {
                     { response.category.name }
                   </Typography>
                   <FormControl key={response.question.id} component="fieldset">
-                    <FormLabel>{response.question.question}</FormLabel>
+                    <FormLabel>{response.question.display}</FormLabel>
                     <RadioGroup
                       name={`question-${response.question.id}`}
                       value={response.answer.answer}
