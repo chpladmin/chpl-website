@@ -141,6 +141,7 @@ function ChplActionBarMessages(props) {
                 size="medium"
                 onClick={toggleDrawer}
                 className={`${classes.toggle} ${classes.toggleError} ${classes.errorTheme}`}
+                id="action-bar-messsages-toggle-errors"
               >
                 {errors.length}
               </IconButton>
@@ -153,6 +154,7 @@ function ChplActionBarMessages(props) {
                 size="medium"
                 onClick={toggleDrawer}
                 className={`${classes.toggle} ${classes.toggleWarning} ${classes.warningTheme}`}
+                id="action-bar-messsages-toggle-warnings"
               >
                 {warnings.length}
               </IconButton>
@@ -229,6 +231,7 @@ function ChplActionBarMessages(props) {
             color="primary"
             fullWidth
             onClick={toggleDrawer}
+            id="action-bar-messsages-close"
           >
             Close
             <CloseIcon className={classes.iconSpacing} />

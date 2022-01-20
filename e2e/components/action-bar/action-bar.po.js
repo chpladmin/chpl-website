@@ -6,6 +6,7 @@ class ActionBarComponent {
       messages: '#action-bar-messages',
       errors: '#action-bar-errors > ul > li',
       warnings: '#action-bar-warnings > ul > li',
+      closeMessages: '#action-bar-messages-close',
     };
   }
 
@@ -15,6 +16,10 @@ class ActionBarComponent {
 
   delete() {
     $(this.elements.delete).click();
+  }
+
+  closeMessages() {
+    $(this.elements.closeMessages).click();
   }
 
   get errors() {
