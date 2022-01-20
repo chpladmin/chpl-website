@@ -24,7 +24,7 @@ beforeEach(async () => {
 
 
 describe('On surveillance management page, ROLE_ACB user', () => {
-  let listing = '15.04.04.2838.PARA.17.00.1.171228';
+  let listing = '15.04.04.2958.Mill.17.00.0.170411';
   beforeEach(() => {
     login.logIn('drummond');
   });
@@ -42,18 +42,18 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     surveillance.startDate.addValue('01/11/2020');
     surveillance.endDate.addValue('03/11/2020');
     surveillance.surveillanceType.selectByVisibleText('Reactive');
-    surveillance.addRequirement('Certified Capability', '170.315 (a)(2): CPOE - Laboratory', 'No Non-Conformity');
+    surveillance.addRequirement('Certified Capability', '170.315 (g)(4): Quality Management System', 'No Non-Conformity');
     surveillance.saveButton.click();
     surveillance.saveButton.click();
-    hooks.waitForSpinnerToDisappear();
     browser.waitUntil (()=> toast.toastTitle.isDisplayed())
     toast.clearAllToast();
+    hooks.waitForSpinnerToDisappear();
     let survBefore = page.totalSurveillance();
     page.editSurveillanceActivity("Mar 11, 2020");
     surveillance.reason.setValue('Delete surveillance');
     surveillance.delete.click();
     action.yes();
-    browser.waitUntil (()=> toast.toastTitle.isDisplayed())
+    browser.waitUntil (()=> toast.toastTitle.isDisplayed());
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
     let survafter = page.totalSurveillance();

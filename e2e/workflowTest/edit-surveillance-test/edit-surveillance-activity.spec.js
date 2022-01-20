@@ -61,7 +61,7 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     browser.waitUntil (()=> toast.toastTitle.isDisplayed())
     toast.clearAllToast();
     hooks.waitForSpinnerToDisappear();
-    expect(page.surveillanceActivityInfo("Closed Surveillance, Ended Jan 12, 2022").isExisting()).toBe(true);
+    expect(page.surveillanceActivityInfo("Closed Surveillance, Ended May 1, 2021").isExisting()).toBe(true);
   });
 
   it('should be able to close surveillance by closing all non conformities', () => {
