@@ -77,8 +77,7 @@ function ChplAttestationCreate(props) {
   const canPrevious = () => stage > 0 && stage < 3;
 
   const handleActionBarDispatch = () => {
-    setStage(0);
-    console.log('TODO: go back to Developer page');
+    $state.go('organizations.developers.developer', { developerId: developer.developerId });
   };
 
   const handleProgressDispatch = (action) => setStage(stage + (action === 'next' ? 1 : -1));
@@ -102,18 +101,15 @@ function ChplAttestationCreate(props) {
 
   const handleSubmit = () => {
     const payload = {
-      changeRequestType: { id: 3 }, // TODO - fix this
+      changeRequestType,
       developer,
       details: {
-        attestationPeriod: { id: 1 }, // TODO - determine if this is necessary
         responses,
         signature,
       },
     };
     mutate(payload, {
       onSuccess: () => {
-        console.log(payload);
-        console.log('submitted attestation change request, then navigate to confirmation (on success)');
         setStage(3);
       },
       onError: (error) => {
