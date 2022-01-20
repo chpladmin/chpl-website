@@ -11,6 +11,7 @@
     beforeEach(function () {
       angular.mock.module('chpl.navigation', function ($provide) {
         $provide.decorator('authService', function ($delegate) {
+          $delegate.getCurrentUser = jasmine.createSpy('getCurrentUser');
           $delegate.getFullname = jasmine.createSpy('getFullname');
           $delegate.getUsername = jasmine.createSpy('getUsername');
           $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
@@ -35,6 +36,7 @@
       $rootScope = _$rootScope_;
       $state = _$state_;
       authService = _authService_;
+      authService.getCurrentUser.and.returnValue({organizations: []});
       authService.getFullname.and.returnValue(mock.username);
       authService.getUsername.and.returnValue(mock.username);
       authService.hasAnyRole.and.returnValue(true);
