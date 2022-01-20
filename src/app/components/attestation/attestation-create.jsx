@@ -16,7 +16,7 @@ import Moment from 'react-moment';
 import ChplAttestationProgress from './attestation-progress';
 
 import { useFetchAttestationData } from 'api/attestations';
-import { usePostChangeRequest } from 'api/change-requests';
+import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -31,10 +31,13 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationCreate(props) {
+  const $state = getAngularService('$state');
   const toaster = getAngularService('toaster');
   const { developer } = props;
   const { data, isLoading } = useFetchAttestationData();
+  const crData = useFetchChangeRequestTypes();
   const { mutate } = usePostChangeRequest();
+  const [changeRequestType, setChangeRequestType] = useState({});
   const [responses, setResponses] = useState({});
   const [signature, setSignature] = useState('');
   const [stage, setStage] = useState(0);
@@ -57,6 +60,13 @@ function ChplAttestationCreate(props) {
           answer: {},
         }))));
   }, [isLoading, data]);
+
+  useEffect(() => {
+    if (crData.isLoading) {
+      return;
+    }
+    setChangeRequestType(crData.data.data.find((type) => type.name === 'Developer Attestation Change Request'));
+  }, [crData.data, crData.isLoading]);
 
   const isFormFilledOut = () => responses.reduce((filledOut, response) => filledOut && !!response.answer.id, true);
 

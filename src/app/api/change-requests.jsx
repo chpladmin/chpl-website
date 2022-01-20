@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
 
 const useFetchChangeRequests = () => {
   const axios = useAxios();
@@ -15,7 +16,15 @@ const useFetchChangeRequestStatusTypes = () => {
   return useQuery(['change-request-status-types'], async () => {
     const response = await axios.get('data/change-request-status-types');
     return response.data;
-  });
+  }, options.daily);
+};
+
+const useFetchChangeRequestTypes = () => {
+  const axios = useAxios();
+  return useQuery(['change-request-types'], async () => {
+    const response = await axios.get('data/change-request-types');
+    return response.data;
+  }, options.daily);
 };
 
 const usePostChangeRequest = () => {
@@ -61,6 +70,7 @@ const usePutChangeRequest = () => {
 export {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
+  useFetchChangeRequestTypes,
   usePostChangeRequest,
   usePutChangeRequest,
 };

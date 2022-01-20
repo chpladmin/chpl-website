@@ -9,10 +9,14 @@ import ChplAttestationCreate from './attestation-create';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
+const $stateMock = {
+  go: jest.fn(),
+};
 const toasterMock = {
   pop: jest.fn(),
 };
 angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('$state').mockReturnValue($stateMock);
 when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
 
 const developerMock = {
@@ -40,6 +44,7 @@ jest.mock('api/attestations', () => ({
 
 jest.mock('api/change-requests', () => ({
   __esModule: true,
+  useFetchChangeRequestTypes: () => mockApi,
   usePostChangeRequest: () => mockApi,
 }));
 

@@ -1,20 +1,14 @@
 import { useQuery } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
 
 const useFetchAttestationData = () => {
   const axios = useAxios();
   return useQuery(['attestations'], async () => {
     const response = await axios.get('/attestations/form');
     return response.data;
-  }, {
-    refetchOnWindowFocus: false,
-    refetchOnmount: false,
-    refetchOnReconnect: false,
-    retry: false,
-    staleTime: 1000 * 60 * 60 * 24,
-    keepPreviousData: true,
-  });
+  }, options.daily);
 };
 
 /* eslint-disable import/prefer-default-export */
