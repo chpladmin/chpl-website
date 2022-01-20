@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bool, string } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
-import { analyticsConfig } from 'shared/prop-types';
+import { analyticsConfig, routerConfig } from 'shared/prop-types';
 
 const prependLink = (url) => {
   if (url.substring(0, 7) === 'http://' || url.substring(0, 8) === 'https://' || url.substring(0, 2) === '#/') {
@@ -14,13 +14,18 @@ const prependLink = (url) => {
 function ChplLink(props) {
   const {
     external,
+    analytics,
+    router,
   } = props;
-  /* eslint-disable react/destructuring-assignment */
-  const [analytics] = useState(props.analytics);
-  const [href] = useState(prependLink(props.href));
-  const [text] = useState(props.text || props.href);
+  const [href, setHref] = useState('');
+  const [text, setText] = useState('');
   const $analytics = getAngularService('$analytics');
-  /* eslint-enable react/destructuring-assignment */
+  const $state = getAngularService('$state');
+
+  useEffect(() => {
+    setHref(prependLink(props.href));
+    setText(props.text || props.href);
+  }, [props.href, props.text]); // eslint-disable-line react/destructuring-assignment
 
   let clicked = false;
   const track = (e) => {
@@ -31,7 +36,11 @@ function ChplLink(props) {
         category: analytics.category || null,
         label: analytics.label || null,
       });
-      e.target.click();
+      if (router.sref) {
+        $state.go(router.sref, router.options);
+      } else {
+        e.target.click();
+      }
     }
   };
 
@@ -70,10 +79,12 @@ ChplLink.propTypes = {
   href: string.isRequired,
   analytics: analyticsConfig,
   external: bool,
+  router: routerConfig,
 };
 
 ChplLink.defaultProps = {
   text: '',
   analytics: {},
   external: true,
+  router: {},
 };

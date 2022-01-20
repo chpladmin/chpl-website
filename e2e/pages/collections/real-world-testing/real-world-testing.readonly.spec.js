@@ -19,7 +19,7 @@ describe('the Real World Testing collection page', () => {
   });
 
   it('should have body text', () => {
-    expect(page.bodyText.getText()).toContain('This list includes all Health IT Module(s) eligible for Real World Testing, which is an annual');
+    expect(page.bodyText.getText()).toContain('This list includes Health IT Module(s) eligible for Real World Testing, which is an annual');
     expect(page.bodyText.getText()).toContain('If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.');
   });
 
