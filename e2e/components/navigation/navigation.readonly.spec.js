@@ -240,5 +240,25 @@ describe('the top navigation', () => {
         });
       });
     });
+
+    describe('as ROLE_DEVELOPER', () => {
+      beforeEach(() => {
+        login.logIn('developer');
+      });
+
+      it('should have developer options', () => {
+        const expected = [
+          'Cerner Corporation',
+          'Health Metrics System, Inc',
+          'Net Health',
+        ];
+        component.developersToggle.click();
+        const developers = new Set(component.developers.map((item) => item.getText()));
+        expect(developers.size).toBe(expected.length);
+        expected.forEach((exp) => {
+          expect(developers.has(exp)).toBe(true, `did not find expected developer: "${exp}"`);
+        });
+      });
+    });
   });
 });
