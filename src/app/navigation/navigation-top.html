@@ -130,6 +130,14 @@
               <li><a ui-sref="surveillance.reporting()"><i class="fa fa-caret-right" ng-if="vm.isActive('surveillance.reporting')"></i>Reporting</a></li>
             </ul>
           </li>
+          <li ng-if="vm.hasAnyRole(['ROLE_DEVELOPER'])" class="dropdown" uib-dropdown is-open="vm.developersIsOpen">
+            <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="developers-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.developersIsOpen">Developers</button>
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="developers-toggle" id="developers-dropdown-menu">
+              <li ng-repeat="developer in vm.developers | orderBy: 'name'">
+                <a ui-sref="organizations.developers.developer({developerId: '{{ developer.id }}'})">{{ developer.name }}</a>
+              </li>
+            </ul>
+          </li>
         </ul><!-- /admin nav -->
         <ul class="nav navbar-nav navbar-right">
           <li>
