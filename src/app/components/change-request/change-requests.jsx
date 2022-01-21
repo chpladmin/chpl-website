@@ -14,25 +14,27 @@ const analytics = {
   category: 'Change Requests',
 };
 
+const staticFilters = [{
+  key: 'currentStatusName',
+  display: 'Change Request Status',
+  values: [
+    { value: 'Accepted' },
+    { value: 'Cancelled by Requester' },
+    { value: 'Pending Developer Action', default: true },
+    { value: 'Pending ONC-ACB Action', default: true },
+    { value: 'Rejected' },
+  ],
+  meets: (item, values) => {
+    const canMeet = values
+      .filter((value) => value.selected)
+      .map((value) => value.value);
+    return canMeet.length === 0 || canMeet.includes(item.currentStatusName);
+  },
+}];
+
 function ChplChangeRequests(props) {
   const { scope } = props;
-  const [filters, setFilters] = useState([{
-    key: 'currentStatusName',
-    display: 'Change Request Status',
-    values: [
-      { value: 'Accepted' },
-      { value: 'Cancelled by Requester' },
-      { value: 'Pending Developer Action', default: true },
-      { value: 'Pending ONC-ACB Action', default: true },
-      { value: 'Rejected' },
-    ],
-    meets: (item, values) => {
-      const canMeet = values
-        .filter((value) => value.selected)
-        .map((value) => value.value);
-      return canMeet.length === 0 || canMeet.includes(item.currentStatusName);
-    },
-  }]);
+  const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
 
   useEffect(() => {

@@ -127,7 +127,7 @@ const sortComparator = (property) => {
 };
 
 function ChplChangeRequestsView(props) {
-  const $scope = props.scope; // eslint-disable-line react/destructuring-assignment
+  const { scope: $scope } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const DateUtil = getAngularService('DateUtil');
   const toaster = getAngularService('toaster');
