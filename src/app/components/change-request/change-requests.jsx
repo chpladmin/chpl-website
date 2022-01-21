@@ -17,7 +17,7 @@ const analytics = {
 function ChplChangeRequests(props) {
   const { scope } = props;
   const [filters, setFilters] = useState([{
-    key: 'changeRequestStatusType',
+    key: 'currentStatusName',
     display: 'Change Request Status',
     values: [
       { value: 'Accepted' },
@@ -26,6 +26,12 @@ function ChplChangeRequests(props) {
       { value: 'Pending ONC-ACB Action', default: true },
       { value: 'Rejected' },
     ],
+    meets: (item, values) => {
+      const canMeet = values
+        .filter((value) => value.selected)
+        .map((value) => value.value);
+      return canMeet.length === 0 || canMeet.includes(item.currentStatusName);
+    },
   }]);
   const crtQuery = useFetchChangeRequestTypes();
 
@@ -39,11 +45,17 @@ function ChplChangeRequests(props) {
         value: type.name,
       }));
     setFilters((f) => f
-      .filter((filter) => filter.key !== 'changeRequestType')
+      .filter((filter) => filter.key !== 'changeRequestTypeName')
       .concat({
-        key: 'changeRequestType',
+        key: 'changeRequestTypeName',
         display: 'Change Request Type',
         values,
+        meets: (item, values) => {
+          const canMeet = values
+            .filter((value) => value.selected)
+            .map((value) => value.value);
+          return canMeet.length === 0 || canMeet.includes(item.changeRequestTypeName);
+        },
       }));
   }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess]);
 
