@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Paper,
@@ -16,22 +16,28 @@ import Moment from 'react-moment';
 import { object } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
-import theme from '../../themes/theme';
-import { getAngularService } from '../../services/angular-react-helper';
+import ChplChangeRequestEdit from './change-request-edit';
+import ChplChangeRequestView from './change-request-view';
+
 import {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
   usePutChangeRequest,
-} from '../../api/change-requests';
+} from 'api/change-requests';
+import {
+  ChplFilterChips,
+  ChplFilterPanel,
+  ChplFilterSearchTerm,
+  useFilterContext,
+} from 'components/filter';
 import {
   ChplAvatar,
   ChplPagination,
   ChplSortableHeaders,
-} from '../util';
-import { UserContext } from '../../shared/contexts';
-
-import ChplChangeRequestEdit from './change-request-edit';
-import ChplChangeRequestView from './change-request-view';
+} from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
+import theme from 'themes/theme';
 
 const csvOptions = {
   showLabels: true,
@@ -95,14 +101,49 @@ function ChplChangeRequests(props) {
   const toaster = getAngularService('toaster');
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
+  const [changeRequests, setChangeRequests] = useState([]);
+  const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [comparator, setComparator] = useState('currentStatusChangeDate');
   const [mode, setMode] = useState('view');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const changeRequestQuery = useFetchChangeRequests();
-  const changeRequestStatusTypesQuery = useFetchChangeRequestStatusTypes();
-  const updateChangeRequest = usePutChangeRequest();
+  const { data, isLoading, isSuccess } = useFetchChangeRequests();
+  const crstQuery = useFetchChangeRequestStatusTypes();
+  const { mutate } = usePutChangeRequest();
   const classes = useStyles();
+
+  useEffect(() => {
+    if (crstQuery.isLoading || !crstQuery.isSuccess) {
+      return;
+    }
+    const types = crstQuery.data.data
+      .filter((type) => {
+        if (hasAnyRole(['ROLE_DEVELOPER'])) {
+          return type.name === 'Pending ONC-ACB Action' || type.name === 'Cancelled by Requester';
+        }
+        return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
+      })
+      .sort((a, b) => (a.name < b.name ? -1 : 1));
+    setChangeRequestStatusTypes(types);
+  }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    const crs = data
+      .map((item) => ({
+        ...item,
+        developerName: item.developer.name,
+        changeRequestTypeName: item.changeRequestType.name,
+        currentStatusName: item.currentStatus.changeRequestStatusType.name,
+        currentStatusChangeDate: item.currentStatus.statusChangeDate,
+        friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
+        friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
+      }))
+      .sort(sortComparator(comparator));
+    setChangeRequests(crs);
+  }, [data, isLoading, isSuccess, DateUtil, comparator]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
@@ -119,34 +160,8 @@ function ChplChangeRequests(props) {
     { property: 'actions', text: 'Actions', invisible: true, sortable: false },
   ];
 
-  const getChangeRequests = () => {
-    if (!changeRequestQuery.isSuccess) { return []; }
-    return changeRequestQuery.data
-      .map((item) => ({
-        ...item,
-        developerName: item.developer.name,
-        changeRequestTypeName: item.changeRequestType.name,
-        currentStatusName: item.currentStatus.changeRequestStatusType.name,
-        currentStatusChangeDate: item.currentStatus.statusChangeDate,
-        friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
-        friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
-      }))
-      .sort(sortComparator(comparator));
-  };
-
-  const getChangeRequestStatusTypes = () => {
-    if (!changeRequestStatusTypesQuery.isSuccess) { return []; }
-    return changeRequestStatusTypesQuery.data.data.filter((type) => {
-      if (hasAnyRole(['ROLE_DEVELOPER'])) {
-        return type.name === 'Pending ONC-ACB Action' || type.name === 'Cancelled by Requester';
-      }
-      return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
-    })
-      .sort((a, b) => (a.name < b.name ? -1 : 1));
-  };
-
-  const save = (data) => {
-    updateChangeRequest.mutate(data, {
+  const save = (request) => {
+    mutate(request, {
       onSuccess: () => {
         setMode('view');
         setChangeRequest(undefined);
@@ -174,7 +189,7 @@ function ChplChangeRequests(props) {
     });
   };
 
-  const handleDispatch = (action, data) => {
+  const handleDispatch = (action, payload) => {
     switch (action) {
       case 'close':
         setMode('view');
@@ -184,7 +199,7 @@ function ChplChangeRequests(props) {
         setMode('edit');
         break;
       case 'save':
-        save(data);
+        save(payload);
         break;
       // no default
     }
@@ -194,9 +209,9 @@ function ChplChangeRequests(props) {
     setComparator(orderDirection + property);
   };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, getChangeRequests().length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, changeRequests.length - page * rowsPerPage);
 
-  if (getChangeRequests().length === 0) {
+  if (isLoading || !isSuccess || changeRequests.length === 0) {
     return (
       <>No results found</>
     );
@@ -215,7 +230,7 @@ function ChplChangeRequests(props) {
         && (
           <ChplChangeRequestEdit
             changeRequest={changeRequest}
-            changeRequestStatusTypes={getChangeRequestStatusTypes()}
+            changeRequestStatusTypes={changeRequestStatusTypes}
             dispatch={handleDispatch}
           />
         )}
@@ -224,7 +239,7 @@ function ChplChangeRequests(props) {
           <>
             <div className={classes.tableActionContainer} component={Paper}>
               <div>
-                <Button color="secondary" variant="contained" onClick={() => csvExporter.generateCsv(getChangeRequests())}>
+                <Button color="secondary" variant="contained" onClick={() => csvExporter.generateCsv(changeRequests)}>
                   Download Requests
                   <GetAppIcon className={classes.iconSpacing} />
                 </Button>
@@ -242,7 +257,7 @@ function ChplChangeRequests(props) {
                   order="asc"
                 />
                 <TableBody>
-                  {getChangeRequests()
+                  {changeRequests
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((item) => (
                       <TableRow key={item.id}>
@@ -290,7 +305,7 @@ function ChplChangeRequests(props) {
               </Table>
             </TableContainer>
             <ChplPagination
-              count={getChangeRequests().length}
+              count={changeRequests.length}
               page={page}
               rowsPerPage={rowsPerPage}
               rowsPerPageOptions={[10, 50, 100, 250]}
