@@ -183,24 +183,27 @@ function ChplAttestationCreate(props) {
       {stage === 0
         && (
           <>
+            <br />
             <Container>
               <Card>
                 <CardContent>
                   <Typography gutterBottom variant="body1">
-                    The Conditions and Maintenance of Certification requirements express initial and ongoing requirements that a health IT developer of certified Health IT and its certified Health IT Module(s) must meet or adhere to in order to maintain their certification status in the ONC Health IT Certification Program (Program).
+                    <strong>The Conditions and Maintenance of Certification requirements express initial and ongoing requirements that a health IT developer of certified Health IT and its certified Health IT Module(s) must meet or adhere to in order to maintain their certification status in the ONC Health IT Certification Program (Program).
+                    </strong>                  
                   </Typography>
+                  <Divider/>
                   <Typography gutterBottom variant="body1">
                     The Attestations Condition and Maintenance of Certification (&quot;Attestations&quot;) at &sect; 170.406 requires that a health IT developer of certified health IT, or its authorized representative that is capable of binding the health IT developer, must provide the Secretary of Health and Human Services an attestation of compliance with the following Conditions and Maintenance of Certification requirements. Attestations are submitted to ONC-Authorized Certification Bodies (ONC-ACBs) for review and subsequent submission to ONC for public availability.
                   </Typography>
-                  <Divider />
-                  <Typography gutterBottom variant="body1">
+                  <Typography variant="body1">
                     Please proceed to review the Attestations and indicate your (health IT developer’s) compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement. Note, per &sect; 170.580, under certain circumstances, ONC may directly review a health IT developer&apos;s actions or practices or its certified health IT to determine whether it conforms to the requirements of the Program. This may result in corrective action as necessary.  In addition, you may be subject to investigation by the HHS Office of the Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
-                  </Typography>
-                  <Typography variant="body2">
-                    For assistance with the Attestations submissions process, please visit the <Link>Health IT Feedback and Inquiry Portal</Link> to submit a ticket as applicable. For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category. For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category. For technical assistance with this process, please select the &quot;CHPL&quot; category.
                   </Typography>
                 </CardContent>
               </Card>
+              <br />
+              <Typography variant="body2">
+                    For assistance with the Attestations submissions process, please visit the <Link>Health IT Feedback and Inquiry Portal</Link> to submit a ticket as applicable. For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category. For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category. For technical assistance with this process, please select the &quot;CHPL&quot; category.
+              </Typography>
             </Container>
           </>
         )}
