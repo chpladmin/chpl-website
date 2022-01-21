@@ -19,6 +19,7 @@ const ListingEditPageComponent = {
       this.isOn = featureFlags.isOn;
       this.networkService = networkService;
       this.takeActionBarAction = this.takeActionBarAction.bind(this);
+      this.showAcknowledgement = false;
     }
 
     $onInit() {
@@ -68,6 +69,7 @@ const ListingEditPageComponent = {
     consolidateErrors() {
       this.errorMessages = [].concat(this.errors.basic, this.errors.details, this.errors.save, this.higherErrors).filter((message) => message);
       this.warningMessages = [].concat(this.warnings.basic, this.warnings.details, this.warnings.save, this.higherWarnings).filter((message) => message);
+      this.showAcknowledgement = this.warningMessages.length > 0;
     }
 
     isValid() {
@@ -132,7 +134,7 @@ const ListingEditPageComponent = {
       }
     }
 
-    takeActionBarAction(action, data) {
+    takeActionBarAction(action) {
       switch (action) {
         case 'cancel':
           this.cancel();
@@ -145,8 +147,8 @@ const ListingEditPageComponent = {
         case 'save':
           this.save();
           break;
-        case 'updateAcknowledgement':
-          this.acknowledgeWarnings = data;
+        case 'toggleAcknowledgement':
+          this.acknowledgeWarnings = !this.acknowledgeWarnings;
           break;
         // no default
       }
