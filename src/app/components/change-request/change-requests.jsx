@@ -50,8 +50,8 @@ function ChplChangeRequests(props) {
         key: 'changeRequestTypeName',
         display: 'Change Request Type',
         values,
-        meets: (item, values) => {
-          const canMeet = values
+        meets: (item, vs) => {
+          const canMeet = vs
             .filter((value) => value.selected)
             .map((value) => value.value);
           return canMeet.length === 0 || canMeet.includes(item.changeRequestTypeName);

@@ -107,14 +107,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const shouldShow = (item, filters) => {
-  const show = filters.reduce((acc, filter) => {
-    const meets = filter.meets(item, filter.values);
-    return meets && acc;
-  }, true);
-  console.log({ item, show });
-  return show;
-};
+const shouldShow = (item, filters) => filters
+  .reduce((acc, filter) => filter
+    .meets(item, filter.values) && acc, true);
 
 const sortComparator = (property) => {
   let sortOrder = 1;
