@@ -140,7 +140,7 @@ function ChplChangeRequestsView(props) {
   const { data, isLoading, isSuccess } = useFetchChangeRequests();
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
-  const filterContext = useFilterContext();
+  const { filters } = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
@@ -172,11 +172,10 @@ function ChplChangeRequestsView(props) {
         friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
         friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
       }))
-      .filter((item) => shouldShow(item, filterContext.filters))
+      .filter((item) => shouldShow(item, filters))
       .sort(sortComparator(comparator));
-    console.log(filterContext.filters);
     setChangeRequests(crs);
-  }, [data, isLoading, isSuccess, DateUtil, comparator, filterContext, filterContext.filters]);
+  }, [data, isLoading, isSuccess, DateUtil, comparator, filters]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
