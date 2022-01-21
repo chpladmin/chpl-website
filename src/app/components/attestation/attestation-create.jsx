@@ -58,6 +58,13 @@ const useStyles = makeStyles({
     alignItems: 'center',
     padding: '8px 32px',
   },
+  nonCaps:{
+    textTransform: 'none',
+  },
+  radioGroup: {
+    flexDirection: 'row',
+    textTransform: 'none',
+  },
 });
 
 function ChplAttestationCreate(props) {
@@ -166,14 +173,14 @@ function ChplAttestationCreate(props) {
 
   return (
     <ThemeProvider theme={theme}>
-        <div className={classes.listingInspectHeader}>
-          <Typography variant="h1">
-            Submit Attestation
-          </Typography>
-          <Typography variant="h2">
-            Introduction
-          </Typography>
-        </div>
+      <div className={classes.listingInspectHeader}>
+        <Typography variant="h1">
+          Submit Attestation
+        </Typography>
+        <Typography variant="h2">
+          Introduction
+        </Typography>
+      </div>
       <ChplAttestationProgress
         dispatch={handleProgressDispatch}
         value={stage}
@@ -189,9 +196,9 @@ function ChplAttestationCreate(props) {
                 <CardContent>
                   <Typography gutterBottom variant="body1">
                     <strong>The Conditions and Maintenance of Certification requirements express initial and ongoing requirements that a health IT developer of certified Health IT and its certified Health IT Module(s) must meet or adhere to in order to maintain their certification status in the ONC Health IT Certification Program (Program).
-                    </strong>                  
+                    </strong>
                   </Typography>
-                  <Divider/>
+                  <Divider />
                   <Typography gutterBottom variant="body1">
                     The Attestations Condition and Maintenance of Certification (&quot;Attestations&quot;) at &sect; 170.406 requires that a health IT developer of certified health IT, or its authorized representative that is capable of binding the health IT developer, must provide the Secretary of Health and Human Services an attestation of compliance with the following Conditions and Maintenance of Certification requirements. Attestations are submitted to ONC-Authorized Certification Bodies (ONC-ACBs) for review and subsequent submission to ONC for public availability.
                   </Typography>
@@ -202,7 +209,7 @@ function ChplAttestationCreate(props) {
               </Card>
               <br />
               <Typography variant="body2">
-                    For assistance with the Attestations submissions process, please visit the <Link>Health IT Feedback and Inquiry Portal</Link> to submit a ticket as applicable. For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category. For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category. For technical assistance with this process, please select the &quot;CHPL&quot; category.
+                For assistance with the Attestations submissions process, please visit the <Link>Health IT Feedback and Inquiry Portal</Link> to submit a ticket as applicable. For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category. For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category. For technical assistance with this process, please select the &quot;CHPL&quot; category.
               </Typography>
             </Container>
           </>
@@ -210,35 +217,45 @@ function ChplAttestationCreate(props) {
       {stage === 1
         && (
           <>
-            <Typography variant="h2">
-              Attestations
-            </Typography>
-            {responses
-              .map((response) => (
-                <div key={response.category.id}>
-                  <Typography variant="h3">
-                    {response.category.name}
-                  </Typography>
-                  <FormControl key={response.question.id} component="fieldset">
-                    <FormLabel>{response.question.display}</FormLabel>
-                    <RadioGroup
-                      name={`question-${response.question.id}`}
-                      value={response.answer.answer}
-                      onChange={(event) => handleAnswer(response, event.currentTarget.value)}
-                    >
-                      {response.answers
-                        .map((answer) => (
-                          <FormControlLabel
-                            key={answer.id}
-                            value={answer.answer}
-                            control={<Radio />}
-                            label={answer.answer}
-                          />
-                        ))}
-                    </RadioGroup>
-                  </FormControl>
-                </div>
-              ))}
+            <br />
+            <Container>
+              <Card>
+                <CardContent>
+                  {responses
+                    .map((response) => (
+                      <div key={response.category.id}>
+                        <Typography variant="h3">
+                          {response.category.name}
+                        </Typography>
+                        <FormControl key={response.question.id} component="fieldset">
+                          <FormLabel
+                            className={classes.nonCaps}>
+                            {response.question.display}
+                          </FormLabel>
+                          <RadioGroup
+                            className={classes.radioGroup}
+                            name={`question-${response.question.id}`}
+                            value={response.answer.answer}
+                            onChange={(event) => handleAnswer(response, event.currentTarget.value)}
+                          >
+                            {response.answers
+                              .map((answer) => (
+                                <FormControlLabel
+                                  key={answer.id}
+                                  value={answer.answer}
+                                  control={<Radio />}
+                                  label={answer.answer}
+                                  className={classes.nonCaps}
+                                />
+                              ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <Divider />
+                      </div>
+                    ))}
+                </CardContent>
+              </Card>
+            </Container>
           </>
         )}
       {stage === 2
