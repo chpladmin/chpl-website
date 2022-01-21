@@ -58,7 +58,7 @@ function ChplAttestationCreate(props) {
           category,
           question: interpretLink(question),
           answers: question.answers.sort((a, b) => a.sortOrder - b.sortOrder),
-          answer: {},
+          answer: { answer: '' },
         }))));
   }, [isLoading, data]);
 
