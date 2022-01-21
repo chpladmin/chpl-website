@@ -18,6 +18,14 @@ const useFetchChangeRequestStatusTypes = () => {
   });
 };
 
+const useFetchChangeRequestTypes = () => {
+  const axios = useAxios();
+  return useQuery(['change-request-types'], async () => {
+    const response = await axios.get('data/change-request-types');
+    return response.data;
+  });
+};
+
 const usePutChangeRequest = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -41,5 +49,6 @@ const usePutChangeRequest = () => {
 export {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
+  useFetchChangeRequestTypes,
   usePutChangeRequest,
 };

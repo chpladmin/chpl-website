@@ -1,39 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { object } from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
 
-import { UserWrapper } from 'components/login';
+import {
+  useFetchChangeRequestTypes,
+} from 'api/change-requests';
 import ApiWrapper from 'api/api-wrapper';
 import { FilterProvider } from 'components/filter';
+import { UserWrapper } from 'components/login';
+
+const analytics = {
+  category: 'Change Requests',
+};
 
 function ChplChangeRequests(props) {
   const { scope } = props;
-  const analytics = {
-    category: 'Change Requests',
-  };
-  const filters = [{
-    key: 'derivedCertificationEditions',
-    display: 'Certification Edition',
-    required: true,
+  const [filters, setFilters] = useState([{
+    key: 'changeRequestStatusType',
+    display: 'Change Request Status',
     values: [
-      { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
+      { value: 'Accepted' },
+      { value: 'Cancelled by Requester' },
+      { value: 'Pending Developer Action', default: true },
+      { value: 'Pending ONC-ACB Action', default: true },
+      { value: 'Rejected' },
     ],
-  }, {
-    key: 'certificationStatuses',
-    display: 'Certification Status',
-    values: [
-      { value: 'Active', default: true },
-      { value: 'Suspended by ONC', default: true },
-      { value: 'Suspended by ONC-ACB', default: true },
-      { value: 'Terminated by ONC' },
-      { value: 'Withdrawn by Developer Under Surveillance/Review' },
-      { value: 'Withdrawn by ONC-ACB' },
-      { value: 'Withdrawn by Developer' },
-      { value: 'Retired' },
-    ],
-  }];
+  }]);
+  const crtQuery = useFetchChangeRequestTypes();
+
+  useEffect(() => {
+    if (crtQuery.isLoading || !crtQuery.isSuccess) {
+      return;
+    }
+    const values = crtQuery.data.data
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((type) => ({
+        value: type.name,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'changeRequestType')
+      .concat({
+        key: 'changeRequestType',
+        display: 'Change Request Type',
+        values,
+      }));
+  }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess]);
 
   return (
     <UserWrapper>
