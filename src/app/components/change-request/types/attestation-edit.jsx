@@ -7,9 +7,8 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from '../../util';
-import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
-import { UserContext } from '../../../shared/contexts';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -57,22 +56,11 @@ function ChplChangeRequestAttestationEdit(props) {
     <div className={classes.container}>
       <div>
         <Typography gutterBottom variant="subtitle1">Current Attestation</Typography>
-        None
+        TBD
       </div>
       <div className={classes.submittedDetailsContainer}>
         <Typography gutterBottom variant="subtitle1">Submitted attestation</Typography>
-        <ChplTextField
-          id="attestation"
-          name="attestation"
-          label="Attestation"
-          required
-          disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-          value={formik.values.attestation}
-          onChange={handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.attestation && !!formik.errors.attestation}
-          helperText={formik.touched.attestation && formik.errors.attestation}
-        />
+        TBD
       </div>
     </div>
   );
