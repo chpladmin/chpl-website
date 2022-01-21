@@ -83,7 +83,7 @@ describe('On surveillance management page, ROLE_ACB user', () => {
 });
 
 describe('On surveillance management page, ROLE_ADMIN user', () => {
-    let listing = '15.04.04.2988.Heal.PC.01.1.181101';
+    let listing = '15.04.04.1590.Axio.02.00.0.191227';
     beforeEach(() => {
       login.logIn('admin');
     });
@@ -106,7 +106,7 @@ describe('On surveillance management page, ROLE_ADMIN user', () => {
         surveillance.startDate.addValue('01/01/2020');
         surveillance.endDate.addValue('05/01/2020');
         surveillance.surveillanceType.selectByVisibleText('Reactive');
-        surveillance.addRequirement('Certified Capability','Removed | 170.315 (a)(13): Patient-Specific Education Resources', 'No Non-Conformity');
+        surveillance.addRequirement('Certified Capability','Removed | 170.315 (a)(11): Smoking Status', 'No Non-Conformity');
         surveillance.saveButton.click();
         surveillance.saveButton.click();
         browser.waitUntil (()=> toast.toastTitle.isDisplayed())
