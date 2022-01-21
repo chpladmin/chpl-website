@@ -107,7 +107,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const shouldShow = (item, filters) => filters
+const searchTermShouldShow = (item, searchTerm) => new RegExp(searchTerm, 'i').test(item.developerName);
+
+const filtersShouldShow = (item, filters) => filters
   .reduce((acc, filter) => filter
     .meets(item, filter.values) && acc, true);
 
@@ -140,7 +142,7 @@ function ChplChangeRequestsView(props) {
   const { data, isLoading, isSuccess } = useFetchChangeRequests();
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
-  const { filters } = useFilterContext();
+  const { filters, searchTerm } = useFilterContext();
   const classes = useStyles();
 
   useEffect(() => {
@@ -172,10 +174,11 @@ function ChplChangeRequestsView(props) {
         friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
         friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
       }))
-      .filter((item) => shouldShow(item, filters))
+      .filter((item) => searchTermShouldShow(item, searchTerm))
+      .filter((item) => filtersShouldShow(item, filters))
       .sort(sortComparator(comparator));
     setChangeRequests(crs);
-  }, [data, isLoading, isSuccess, DateUtil, comparator, filters]);
+  }, [data, isLoading, isSuccess, DateUtil, comparator, filters, searchTerm]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
@@ -264,7 +267,9 @@ function ChplChangeRequestsView(props) {
         && (
           <>
             <div className={classes.searchContainer} component={Paper}>
-              <ChplFilterSearchTerm />
+              <ChplFilterSearchTerm
+                placeholder="Search by Developer..."
+              />
               <ChplFilterPanel />
             </div>
             <div>

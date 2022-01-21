@@ -122,7 +122,7 @@ function FilterProvider(props) {
     .join('&');
 
   const filterData = {
-    analytics, dispatch, filters, queryString, setSearchTerm,
+    analytics, dispatch, filters, queryString, searchTerm, setSearchTerm,
   };
 
   /* eslint-disable react/jsx-props-no-spreading */
