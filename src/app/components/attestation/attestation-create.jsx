@@ -19,6 +19,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import Moment from 'react-moment';
 
 import ChplAttestationProgress from './attestation-progress';
+import interpretLink from './attestation-util';
 
 import { useFetchAttestationData } from 'api/attestations';
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
@@ -28,25 +29,6 @@ import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
-
-const getElement = (matches) => (
-  <>
-    {matches[1]}
-    <a href={matches[3]}>
-      {matches[2]}
-    </a>
-    {matches[4]}
-  </>
-);
-
-const interpretLink = (question) => {
-  const regex = /^(.*)\[(.*)\]\((.*)\)(.*)$/;
-  const matches = question.question.match(regex);
-  return {
-    ...question,
-    display: getElement(matches),
-  };
-};
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -94,7 +76,7 @@ function ChplAttestationCreate(props) {
           category,
           question: interpretLink(question),
           answers: question.answers.sort((a, b) => a.sortOrder - b.sortOrder),
-          answer: {},
+          answer: { answer: '' },
         }))));
   }, [isLoading, data]);
 
