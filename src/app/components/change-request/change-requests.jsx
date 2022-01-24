@@ -30,6 +30,22 @@ const staticFilters = [{
       .map((value) => value.value);
     return canMeet.length === 0 || canMeet.includes(item.currentStatusName);
   },
+}, {
+  key: 'currentStatusChangeDate',
+  display: 'Last Updated',
+  values: [
+    { value: 'Before', data: { date: Date.now() } },
+    { value: 'After', data: { date: Date.now() } },
+  ],
+  meets: (item, values) => {
+    const canMeet = values
+      .filter((value) => value.selected && value.data.date)
+      .reduce((can, value) => can && (value.value === 'Before' ? item.currentStatusChangeDate < value.data.date : value.data.date < item.currentStatusChangeDate), true);
+    return canMeet;
+  },
+  getDisplay: (value) => {
+    return value.value + value.data.date;
+  },
 }];
 
 function ChplChangeRequests(props) {
