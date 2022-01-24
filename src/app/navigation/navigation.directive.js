@@ -46,6 +46,7 @@
     vm.hasAnyRole = authService.hasAnyRole;
     vm.loadAnnouncements = loadAnnouncements;
     vm.logout = authService.logout;
+    vm.setDevelopers = setDevelopers;
     vm.showCmsWidget = showCmsWidget;
     vm.showCompareWidget = showCompareWidget;
     vm.toggleNavClosed = toggleNavClosed;
@@ -57,11 +58,14 @@
       vm.loadAnnouncements();
       $rootScope.bodyClass = 'navigation-shown';
 
+      vm.setDevelopers();
+
       if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         vm.toggleNavClosed();
       } else {
         vm.toggleNavOpen();
       }
+
       var showCmsWidget = $rootScope.$on('ShowWidget', function () {
         vm.showCmsWidget(true);
         if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
@@ -90,6 +94,7 @@
 
       var loggedIn = $scope.$on('loggedIn', function () {
         vm.loadAnnouncements();
+        vm.setDevelopers();
         if (vm.navShown) {
           vm.toggleNavClosed();
         }
@@ -98,6 +103,7 @@
 
       var loggedOut = $scope.$on('loggedOut', function () {
         vm.loadAnnouncements();
+        vm.setDevelopers();
         if (!vm.navShown) {
           vm.toggleNavOpen();
         }
@@ -105,11 +111,13 @@
       $scope.$on('$destroy', loggedOut);
 
       var impersonating = $scope.$on('impersonating', function () {
+        vm.setDevelopers();
         vm.loadAnnouncements();
       });
       $scope.$on('$destroy', impersonating);
 
       var unimpersonating = $scope.$on('unimpersonating', function () {
+        vm.setDevelopers();
         vm.loadAnnouncements();
       });
       $scope.$on('$destroy', unimpersonating);
@@ -142,6 +150,14 @@
         .then(function (result) {
           vm.announcements = result.announcements;
         });
+    }
+
+    function setDevelopers () {
+      if (vm.hasAnyRole(['ROLE_DEVELOPER'])) {
+        vm.developers = authService.getCurrentUser().organizations.map((developer) => developer);
+      } else {
+        vm.developers = [];
+      }
     }
 
     function showCmsWidget (show) {

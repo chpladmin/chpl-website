@@ -22,6 +22,7 @@ describe('the top navigation', () => {
         'Banned Developers',
         'Charts',
         'Decertified Products',
+        'Real World Testing',
         'Inactive Certificates',
         'Products: Corrective Action',
         'SED Info for 2015 Ed. Products',
@@ -61,7 +62,7 @@ describe('the top navigation', () => {
 
     describe('as ROLE_ACB', () => {
       beforeEach(() => {
-        login.logIn('acb');
+        login.logIn('drummond');
       });
 
       it('should have specific reports', () => {
@@ -204,6 +205,7 @@ describe('the top navigation', () => {
           'Banned Developers',
           'Charts',
           'Decertified Products',
+          'Real World Testing',
           'Inactive Certificates',
           'Products: Corrective Action',
           'SED Info for 2015 Ed. Products',
@@ -237,6 +239,26 @@ describe('the top navigation', () => {
         expect(surveillanceOptions.size).toBe(expected.length);
         expected.forEach((exp) => {
           expect(surveillanceOptions.has(exp)).toBe(true, `did not find expected surveillance option: "${exp}"`);
+        });
+      });
+    });
+
+    describe('as ROLE_DEVELOPER', () => {
+      beforeEach(() => {
+        login.logIn('developer');
+      });
+
+      it('should have developer options', () => {
+        const expected = [
+          'Cerner Corporation',
+          'Health Metrics System, Inc',
+          'Net Health',
+        ];
+        component.developersToggle.click();
+        const developers = new Set(component.developers.map((item) => item.getText()));
+        expect(developers.size).toBe(expected.length);
+        expected.forEach((exp) => {
+          expect(developers.has(exp)).toBe(true, `did not find expected developer: "${exp}"`);
         });
       });
     });

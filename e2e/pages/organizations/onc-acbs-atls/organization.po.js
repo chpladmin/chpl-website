@@ -15,8 +15,8 @@ class OrganizationPage {
     };
   }
 
-  organizationNameButton(organizationName) {
-    return $(`//*[contains(text(),"${organizationName}")]`);
+  openOrganizationDetails(organizationName) {
+    $(`//*[contains(text(),"${organizationName}")]`).click();
   }
 
   get organizationList() {
@@ -32,8 +32,8 @@ class OrganizationPage {
     return $(this.elements.organizationEditButton);
   }
 
-  createOrganizationButton(organization) {
-    return $(`//*[contains(text(),"Create New ONC-${organization}")]`);
+  createOrganization(organization) {
+    $(`//*[contains(text(),"Create New ONC-${organization}")]`).click();
   }
 
   get organizationName() {
