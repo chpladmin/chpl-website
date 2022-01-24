@@ -23,7 +23,6 @@ const useStyles = makeStyles({
   advancedSearchButton: {
     color: '#000',
   },
-
   filterPanelContainer: {
     background: '#fafdff',
     display: 'grid',
@@ -114,18 +113,11 @@ function ChplFilterPanel() {
     setActiveKey('');
   };
 
-  const handleSecondaryToggle = (value) => {
-    if (filterContext.analytics) {
-      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${active.display}: ${value.display}` });
-    }
-    filterContext.dispatch('toggle', active, value);
-  };
-
   const handleAction = (action) => {
     filterContext.dispatch(action, active);
   };
 
-  const toggleActive = (filter) => {
+  const handleCategoryToggle = (filter) => {
     if (active === filter) {
       setActiveKey('');
     } else {
@@ -134,6 +126,13 @@ function ChplFilterPanel() {
       }
       setActiveKey(filter.key);
     }
+  };
+
+  const handleSecondaryToggle = (value) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${active.display}: ${value.display}` });
+    }
+    filterContext.dispatch('toggle', active, value);
   };
 
   return (
@@ -211,7 +210,7 @@ function ChplFilterPanel() {
                         color={f === active ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
                         variant="outlined"
-                        onClick={() => toggleActive(f)}
+                        onClick={() => handleCategoryToggle(f)}
                       >
                         <span className={f === active ? classes.filterBold : undefined}>
                           {f.display}
