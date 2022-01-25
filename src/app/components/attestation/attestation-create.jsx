@@ -32,14 +32,15 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   iconSpacing: {
-    marginLeft: '4px',
+    marginLeft: '5px',
   },
   listingInspectHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '8px 32px',
+    padding: '8px 64px',
   },
+
   nonCaps: {
     textTransform: 'none',
   },
@@ -154,11 +155,8 @@ function ChplAttestationCreate(props) {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.listingInspectHeader}>
-        <Typography variant="h1">
+        <Typography gutterBottom variant="h1">
           Submit Attestation
-        </Typography>
-        <Typography variant="h2">
-          Introduction
         </Typography>
       </div>
       <ChplAttestationProgress
@@ -171,7 +169,10 @@ function ChplAttestationCreate(props) {
         && (
           <>
             <br />
-            <Container>
+            <Container maxWidth="md">
+              <Typography gutterBottom variant="h2">
+                Introduction
+              </Typography>
               <Card>
                 <CardContent>
                   <Typography gutterBottom variant="body1">
@@ -197,35 +198,45 @@ function ChplAttestationCreate(props) {
       {stage === 1
         && (
           <>
-            <Typography variant="h2">
-              Attestations
-            </Typography>
-            {attestations
-              .map((attestation) => (
-                <div key={attestation.id}>
-                  <Typography variant="h3">
-                    { attestation.condition.name }
-                  </Typography>
-                  <FormControl key={attestation.id} component="fieldset">
-                    <FormLabel>{attestation.display}</FormLabel>
-                    <RadioGroup
-                      name={`response-${attestation.id}`}
-                      value={attestation.response.response}
-                      onChange={(event) => handleResponse(attestation, event.currentTarget.value)}
-                    >
-                      {attestation.validResponses
-                        .map((response) => (
-                          <FormControlLabel
-                            key={response.id}
-                            value={response.response}
-                            control={<Radio />}
-                            label={response.response}
-                          />
-                        ))}
-                    </RadioGroup>
-                  </FormControl>
-                </div>
-              ))}
+            <br />
+            <Container maxWidth="md">
+              <Typography gutterBottom variant="h2">
+                Attestations
+              </Typography>
+              <Card>
+                <CardContent>
+                  {attestations
+                    .map((attestation) => (
+                      <div key={attestation.id}>
+                        <Typography variant="subtitle1">
+                          {attestation.condition.name}
+                        </Typography>
+                        <FormControl key={attestation.id} component="fieldset">
+                          <FormLabel className={classes.nonCaps}>{attestation.display}</FormLabel>
+                          <RadioGroup
+                            className={classes.radioGroup}
+                            name={`response-${attestation.id}`}
+                            value={attestation.response.response}
+                            onChange={(event) => handleResponse(attestation, event.currentTarget.value)}
+                          >
+                            {attestation.validResponses
+                              .map((response) => (
+                                <FormControlLabel
+                                  key={response.id}
+                                  value={response.response}
+                                  control={<Radio />}
+                                  label={response.response}
+                                  className={classes.nonCaps}
+                                />
+                              ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <Divider />
+                      </div>
+                    ))}
+                </CardContent>
+              </Card>
+            </Container>
           </>
         )}
       {stage === 2
@@ -244,14 +255,14 @@ function ChplAttestationCreate(props) {
                   <Typography gutterBottom variant="h3">
                     I also understand that I and my company may be subject to investigation by the HHS Office of the Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
                   </Typography>
-                  </CardContent>
+                </CardContent>
               </Card>
-              <br/>
+              <br />
               <Card>
                 <CardContent>
-                <Typography gutterBottom variant="h4">
+                  <Typography gutterBottom variant="h4">
                     Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
-                </Typography>
+                  </Typography>
                   <Typography gutterBottom variant="subtitle1">
                     Name:
                     {' '}
@@ -267,7 +278,7 @@ function ChplAttestationCreate(props) {
                     {' '}
                     {developer.name}
                   </Typography>
-                  <br/>
+                  <br />
                   <ChplTextField
                     id="signature"
                     name="signature"
