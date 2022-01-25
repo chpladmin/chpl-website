@@ -115,7 +115,7 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
 
     it(`should be able to ${testName} with non-conformity to randomized surveillance activity`, () => {
       let nonConformitydetails = {
-        type: '170.314 (a)(1): Computerized provider order entry',
+        type: 'Annual Real World Testing Plan',
         determinationDate: '01/01/2020',
         summary: 'Test summary',
         findings: 'Test findings',

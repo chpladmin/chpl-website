@@ -34,11 +34,27 @@ class SurveillanceEditComponent {
       surveillanceDetails: '.col-sm-12.ng-binding',
       surveillanceType: '#surveillance-type',
       totalSites: '#total-sites',
+      editSurveillance : '//span[text()="Edit"]',
+      delete: '//button[text()=" Delete"]',
+      reason: '#reason-for-change',
+      editNonConformity: '//*[@ng-click="$ctrl.editNonconformity(noncon)"]'
     };
   }
 
   get cancel() {
     return $(this.elements.cancel);
+  }
+
+  get editNonConformity() {
+    return $(this.elements.editNonConformity);
+  }
+
+  get delete() {
+    return $(this.elements.delete);
+  }
+
+  get reason() {
+    return $(this.elements.reason);
   }
 
   get requirementCapability() {
@@ -159,6 +175,10 @@ class SurveillanceEditComponent {
 
   get nonConformityCloseDate() {
     return $(this.elements.nonConformityCloseDate);
+  }
+
+  get editSurveillance() {
+    return $(this.elements.editSurveillance);
   }
 
   requirementTableRows() {

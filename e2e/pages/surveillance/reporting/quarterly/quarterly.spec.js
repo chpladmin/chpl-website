@@ -193,7 +193,7 @@ describe('when logged in as a ROLE_ACB', () => {
     reportingPage.editQuarterlyReport('Drummond Group', 2022, 'Q4').click();
     hooks.waitForSpinnerToDisappear();
     quarterlyPage.complaintsHeader.click();
-    complaints.viewComplaint('SC - 000136');
+    complaints.viewComplaint('SC - 000135');
     expect(complaints.editButton.isDisplayed()).toBe(true);
   });
 
