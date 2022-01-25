@@ -10,13 +10,10 @@ const getElement = (matches) => (
   </>
 );
 
-const interpretLink = (question) => {
+const interpretLink = (description) => {
   const regex = /^(.*)\[(.*)\]\((.*)\)(.*)$/;
-  const matches = question.question.match(regex);
-  return {
-    ...question,
-    display: getElement(matches),
-  };
+  const matches = description.match(regex);
+  return getElement(matches);
 };
 
 export default interpretLink;
