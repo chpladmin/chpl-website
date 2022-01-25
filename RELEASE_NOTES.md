@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 11.29.0
+_24 January 2022_
+
+### Features
+* Inform user that email confirmation has been resent
+* Display navigation to Developers user can manage
+* Make Real World Testing shortcut available to the public
+
+---
+
 ## Version 11.28.0
 _10 January 2022_
 
