@@ -36,14 +36,20 @@ function ChplAttestationsView(props) {
       <Card>
         <CardHeader title="Attestations" />
         <CardContent>
-          { (!isLoading && data)
-            ? (
+          { (isLoading || data.length === 0) &&
+            (
               <Typography variant="body1">
                 {data}
               </Typography>
-            ) : (
+            )}
+          { (!isLoading && data.length > 0) &&
+            (
               <Typography variant="body1">
-                No data exists
+                <ul>
+                  { data.map((item) => (
+                    <li>{ item }</li>
+                  ))}
+                </ul>
               </Typography>
             )}
         </CardContent>

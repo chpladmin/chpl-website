@@ -1,9 +1,11 @@
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
+import ActionBarComponent from '../../components/action-bar/action-bar.po';
 
 let hooks;
 let login;
+let action;
 let complaintsComponent;
 const ACB_ID_IDX = 4;
 const FIRST_ROW = 1;
@@ -12,6 +14,7 @@ beforeEach(async () => {
   login = new LoginComponent();
   hooks = new Hooks();
   complaintsComponent = new ComplaintsComponent();
+  action = new ActionBarComponent();
   hooks.open('#/surveillance/complaints');
   await hooks.waitForSpinnerToDisappear();
 });
@@ -152,6 +155,9 @@ describe('As a ROLE_ADMIN user', () => {
   });
 
   afterEach(() => {
+    if(action.errors.length > 0){
+      action.closeMessages();
+    }
     login.logOut();
   });
 
@@ -196,7 +202,7 @@ describe('As a ROLE_ADMIN user', () => {
     complaintsComponent.set(fields);
     complaintsComponent.setOptionalFields(optionalFields);
     complaintsComponent.saveComplaint();
-    expect(hooks.getErrors()).toBe('Certified product 15.04.04.3010.Onco.28.01.1.181214 does not have the same ONC-ACB as the complaint.');
+    expect(hooks.getErrors()).toContain('Certified product 15.04.04.3010.Onco.28.01.1.181214 does not have the same ONC-ACB as the complaint.');
   });
 });
 

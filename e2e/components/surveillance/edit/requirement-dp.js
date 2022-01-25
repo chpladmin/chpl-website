@@ -14,4 +14,9 @@ module.exports = [
     type: 'Transparency or Disclosure Requirement',
     capability: '170.523 (k)(1)',
   },
+  {
+    testName: 'add Real World Testing Submission requirement',
+    type: 'Real World Testing Submission',
+    capability: 'Annual Real World Testing Plan',
+  }
 ];
