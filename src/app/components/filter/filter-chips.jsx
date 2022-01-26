@@ -79,7 +79,7 @@ function ChplFilterChips() {
             .map((v) => (
               <Chip
                 key={v.value}
-                label={`${f.getDisplay ? f.getDisplay(v) : v.display}`}
+                label={f.getDisplay ? f.getDisplay(v) : <>{v.display}</>}
                 onDelete={() => removeChip(f, v)}
                 color="primary"
                 variant="outlined"
