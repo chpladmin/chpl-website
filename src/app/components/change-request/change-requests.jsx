@@ -59,6 +59,34 @@ const staticFilters = [{
       </>
     );
   },
+}, {
+  key: 'submittedDate',
+  display: 'Creation Date',
+  values: [
+    { value: 'Before', data: { date: '' } },
+    { value: 'After', data: { date: '' } },
+  ],
+  meets: (item, values) => {
+    const canMeet = values
+      .filter((value) => value.selected && value.data.date)
+      .reduce((can, value) => {
+        return can && (value.value === 'Before' ? item.submittedDate < (new Date(value.data.date)).getTime() : (new Date(value.data.date)).getTime() < item.submittedDate);
+      }, true);
+    return canMeet;
+  },
+  getDisplay: (value) => {
+    return (
+      <>
+        {value.value}
+        { value.data.date && (
+          <>
+            {': '}
+            <Moment fromNow>{value.data.date}</Moment>
+          </>
+        )}
+      </>
+    );
+  },
 }];
 
 function ChplChangeRequests(props) {
