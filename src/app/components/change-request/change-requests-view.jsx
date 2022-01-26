@@ -322,10 +322,10 @@ function ChplChangeRequestsView(props) {
                       />
                       <TableBody>
                         {changeRequests
-                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                         .map((item) => (
-                           <TableRow key={item.id}>
-                             { !hasAnyRole(['ROLE_DEVELOPER'])
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map((item) => (
+                            <TableRow key={item.id}>
+                              { !hasAnyRole(['ROLE_DEVELOPER'])
                                && (
                                  <TableCell className={classes.tableFirstColumn}>
                                    <div className={classes.tableDeveloperCell}>
@@ -342,24 +342,24 @@ function ChplChangeRequestsView(props) {
                                    </div>
                                  </TableCell>
                                )}
-                             <TableCell>{item.changeRequestTypeName}</TableCell>
-                             { !hasAnyRole(['ROLE_DEVELOPER'])
+                              <TableCell>{item.changeRequestTypeName}</TableCell>
+                              { !hasAnyRole(['ROLE_DEVELOPER'])
                                && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
-                             <TableCell>{item.currentStatusName}</TableCell>
-                             <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
-                             <TableCell align="right">
-                               <Button
-                                 onClick={() => setChangeRequest(item)}
-                                 variant="contained"
-                                 color="primary"
-                               >
-                                 View
-                                 {' '}
-                                 <VisibilityIcon className={classes.iconSpacing} />
-                               </Button>
-                             </TableCell>
-                           </TableRow>
-                         ))}
+                              <TableCell>{item.currentStatusName}</TableCell>
+                              <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                              <TableCell align="right">
+                                <Button
+                                  onClick={() => setChangeRequest(item)}
+                                  variant="contained"
+                                  color="primary"
+                                >
+                                  View
+                                  {' '}
+                                  <VisibilityIcon className={classes.iconSpacing} />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
                         {emptyRows > 0 && false && (
                           <TableRow style={{ height: 33 * emptyRows }}>
                             <TableCell colSpan={headers.length} />
