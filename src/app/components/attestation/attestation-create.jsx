@@ -336,6 +336,7 @@ function ChplAttestationCreate(props) {
                       required
                       value={signature}
                       onChange={handleSignature}
+                      helperText="Enter your name"
                       />
                   </CardContent>
                 </Card>
