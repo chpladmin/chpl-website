@@ -20,24 +20,15 @@ const useStyles = makeStyles({
     border: '1px solid #eee',
     backgroundColor: '#fff',
     borderRadius: '4px 4px',
-    bottom: '16px',
     boxShadow: '0 -4px 8px rgb(149 157 165 / 30%)',
-    marginRight: '-4px',
-    position: 'fixed',
-    right: '0',
-    width: '254px',
-    zIndex: 1400,
     '&:hover, &.Mui-focusVisible': {
       backgroundColor: '#eee',
       boxShadow: '0 -4px 8px rgb(149 157 165 / 50%)',
     },
   },
   drawerPaper: {
-    alignItems: 'flex-end',
     borderRadius: '4px',
     boxShadow: 'rgb(149 157 165 / 30%) -8px 0px 16px 0px',
-    height: '95%',
-    overflowX: 'hidden',
     width: '250px',
   },
   toggle: {
@@ -64,6 +55,10 @@ const useStyles = makeStyles({
       backgroundColor: '#b9bc0c',
       boxShadow: '0 4px 8px rgb(149 157 165 / 50%)',
     },
+  },
+  messageContainer: {
+    overflowY: 'auto',
+    flexGrow: 1,
   },
   errorContainer: {
     backgroundColor: '#c44f6520',
@@ -171,61 +166,66 @@ function ChplActionBarMessages(props) {
           paper: classes.drawerPaper,
         }}
       >
-        {errors.length > 0
-         && (
-           <div className={classes.errorContainer} id="action-bar-errors">
-             <div className={classes.messageHeader}>
-               Error
-               {errors.length !== 1 ? 's' : ''}
-               <Chip
-                 size="small"
-                 className={`${classes.messageChip} ${classes.errorTheme}`}
-                 label={errors.length}
-               />
+        <div className={classes.messageContainer}>
+          {errors.length > 0
+           && (
+             <div className={classes.errorContainer} id="action-bar-errors">
+               <div className={classes.messageHeader}>
+                 Error
+                 {errors.length !== 1 ? 's' : ''}
+                 <Chip
+                   size="small"
+                   className={`${classes.messageChip} ${classes.errorTheme}`}
+                   label={errors.length}
+                 />
+               </div>
+               <Divider className={classes.noMargin} />
+               <ul className={classes.list}>
+                 {errors.map((message) => (
+                   <li key={message}>
+                     <Typography
+                       gutterBottom
+                       variant="body2"
+                     >
+                       {message}
+                     </Typography>
+                   </li>
+                 ))}
+               </ul>
              </div>
+           )}
+          {errors.length > 0 && warnings.length > 0
+           && (
              <Divider className={classes.noMargin} />
-             <ul className={classes.list}>
-               {errors.map((message) => (
-                 <li key={message}>
-                   <Typography
-                     gutterBottom
-                     variant="body2"
-                   >
-                     {message}
-                   </Typography>
-                 </li>
-               ))}
-             </ul>
-           </div>
-         )}
-        {warnings.length > 0
-         && (
-           <div className={classes.warningContainer} id="action-bar-warnings">
-             <Divider className={classes.noMargin} />
-             <div className={classes.messageHeader}>
-               Warning
-               {warnings.length !== 1 ? 's' : ''}
-               <Chip
-                 size="small"
-                 className={`${classes.messageChip} ${classes.warningTheme}`}
-                 label={warnings.length}
-               />
+           )}
+          {warnings.length > 0
+           && (
+             <div className={classes.warningContainer} id="action-bar-warnings">
+               <div className={classes.messageHeader}>
+                 Warning
+                 {warnings.length !== 1 ? 's' : ''}
+                 <Chip
+                   size="small"
+                   className={`${classes.messageChip} ${classes.warningTheme}`}
+                   label={warnings.length}
+                 />
+               </div>
+               <Divider className={classes.noMargin} />
+               <ul className={classes.list}>
+                 {warnings.map((message) => (
+                   <li key={message}>
+                     <Typography
+                       gutterBottom
+                       variant="body2"
+                     >
+                       {message}
+                     </Typography>
+                   </li>
+                 ))}
+               </ul>
              </div>
-             <Divider className={classes.noMargin} />
-             <ul className={classes.list}>
-               {warnings.map((message) => (
-                 <li key={message}>
-                   <Typography
-                     gutterBottom
-                     variant="body2"
-                   >
-                     {message}
-                   </Typography>
-                 </li>
-               ))}
-             </ul>
-           </div>
-         )}
+           )}
+        </div>
         <div className={classes.closeDrawer}>
           <Button
             color="primary"
