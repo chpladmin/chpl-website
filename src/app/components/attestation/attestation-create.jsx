@@ -14,6 +14,7 @@ import {
   ThemeProvider,
   Typography,
   makeStyles,
+  Checkbox,
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import Moment from 'react-moment';
@@ -32,7 +33,7 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   iconSpacing: {
-    marginLeft: '5px',
+    marginLeft: '4px',
   },
   listingInspectHeader: {
     display: 'flex',
@@ -40,13 +41,30 @@ const useStyles = makeStyles({
     alignItems: 'center',
     padding: '8px 64px',
   },
-
+  Container
   nonCaps: {
     textTransform: 'none',
   },
   radioGroup: {
     flexDirection: 'row',
     textTransform: 'none',
+  },
+  electronicSignatureCheckboxItem: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
+  },
+  userContext: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gap:'32px',
+    justifyContent:'stretch',
+  },
+  signDateContainer: {
+    display: 'grid',
+    gridTemplateColumns: '10fr 2fr',
+    gap:'32px',
+    justifyContent:'stretch',
   },
 });
 
@@ -243,76 +261,121 @@ function ChplAttestationCreate(props) {
         && (
           <>
             <br />
-            <Container>
+            <Container maxWidth="md">
+              <Typography gutterBottom variant="h2">
+                Electronic Signature
+              </Typography>
               <Card>
                 <CardContent>
-                  <Typography gutterBottom variant="h3">
-                    As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
-                  </Typography>
-                  <Typography gutterBottom variant="h3">
-                    I understand that under certain circumstances ONC may directly review the health IT developer&apos;s actions or practices or its certified health IT to determine whether it conforms to the requirements of the Program. This may result in corrective action as necessary.
-                  </Typography>
-                  <Typography gutterBottom variant="h3">
-                    I also understand that I and my company may be subject to investigation by the HHS Office of the Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
-                  </Typography>
+                  <div className={classes.electronicSignatureCheckboxItem}>
+                    <Checkbox />
+                    <Typography gutterBottom variant="body">
+                      As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
+                    </Typography>
+                  </div>
+                  <div className={classes.electronicSignatureCheckboxItem}>
+                    <Checkbox />
+                    <Typography gutterBottom variant="body1">
+                      I understand that under certain circumstances ONC may directly review the health IT developer&apos;s actions or practices or its certified health IT to determine whether it conforms to the requirements of the Program. This may result in corrective action as necessary.
+                    </Typography>
+                  </div>
+                  <div className={classes.electronicSignatureCheckboxItem}>
+                    <Checkbox />
+                    <Typography gutterBottom variant="body1">
+                      I also understand that I and my company may be subject to investigation by the HHS Office of the Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
+                    </Typography>
+                  </div>
                 </CardContent>
               </Card>
               <br />
-              <Card>
-                <CardContent>
-                  <Typography gutterBottom variant="h4">
-                    Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
-                  </Typography>
-                  <Typography gutterBottom variant="subtitle1">
-                    Name:
-                    {' '}
-                    {user.fullName}
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    Title:
-                    {' '}
-                    {user.title}
-                  </Typography>
-                  <Typography variant="subtitle2">
-                    Health IT Developer:
-                    {' '}
-                    {developer.name}
-                  </Typography>
-                  <br />
-                  <ChplTextField
-                    id="signature"
-                    name="signature"
-                    label="Electronic Signature"
-                    required
-                    value={signature}
-                    onChange={handleSignature}
-                  />
-                  <Typography variant="body1">
-                    Date:
-                    {' '}
+              <Typography gutterBottom variant="h4">
+                Typing your name below signifies you are completing the Attestations using an electronic signature.
+              </Typography>
+              <Typography gutterBottom>To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.</Typography>
+              <br />
+
+              <div className={classes.userContext}>
+                <Card>
+                  <CardContent>
+                    <div>
+                      <Typography gutterBottom variant="subtitle1">
+                        Name:
+                      </Typography>
+                      <Typography>{user.fullName}</Typography>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent>
+                    <div>
+                      <Typography variant="subtitle1">
+                        Title:
+                      </Typography>
+                      <Typography>{user.title}</Typography>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent>
+                    <div>
+                      <Typography variant="subtitle2">
+                        Health IT Developer:
+                      </Typography>
+                      <Typography>{developer.name}</Typography>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              <br />
+              <div className={classes.signDateContainer}>
+                <Card>
+                  <CardContent>
+                    <ChplTextField
+                      id="signature"
+                      name="signature"
+                      label="Electronic Signature"
+                      required
+                      value={signature}
+                      onChange={handleSignature}
+                    />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="subtitle1">
+                      Date:
+                      {' '}
+                     = 
+                    </Typography>
+                    <Typography variant="body1">
                     <Moment
-                      date={Date.now()}
-                      format="DD MMM yyyy"
-                    />
-                  </Typography>
-                  <Button
-                    id="sign-electronically"
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    disabled={isSubmitDisabled()}
-                  >
-                    Sign Electronically
-                    <SaveIcon
-                      className={classes.iconSpacing}
-                    />
-                  </Button>
-                </CardContent>
-              </Card>
+                        date={Date.now()}
+                        format="DD MMM yyyy"
+                      />
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </div>
+              <br />
+              <Button
+                fullWidth
+                id="sign-electronically"
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                disabled={isSubmitDisabled()}
+              >
+                Sign Electronically
+                <SaveIcon
+                  className={classes.iconSpacing}
+                />
+              </Button>
             </Container>
           </>
-        )}
-      {stage === 3
+        )
+      }
+      {
+        stage === 3
         && (
           <>
             <Typography variant="h2">
@@ -322,14 +385,15 @@ function ChplAttestationCreate(props) {
               Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
             </Typography>
           </>
-        )}
+        )
+      }
       <ChplActionBar
         dispatch={handleActionBarDispatch}
         canCancel={stage !== 3}
         canClose={stage === 3}
         canSave={false}
       />
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 
