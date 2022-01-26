@@ -245,6 +245,8 @@ function ChplChangeRequestsView(props) {
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, changeRequests.length - page * rowsPerPage);
+  const pageStart = (page * rowsPerPage) + 1;
+  const pageEnd = Math.min((page + 1) * rowsPerPage, changeRequests.length);
 
   return (
     <ThemeProvider theme={theme}>
@@ -275,31 +277,6 @@ function ChplChangeRequestsView(props) {
             <div>
               <ChplFilterChips />
             </div>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                <Typography variant="body2">
-                  {`(pageStart-pageEnd of ${changeRequests.length} Results)`}
-                </Typography>
-              </div>
-              <ButtonGroup size="small" className={classes.wrap}>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  fullWidth
-                  id="download-change-requests"
-                  onClick={() => csvExporter.generateCsv(changeRequests)}
-                >
-                  Download
-                  {' '}
-                  { changeRequests.length }
-                  {' '}
-                  Result
-                  { changeRequests.length !== 1 ? 's' : '' }
-                  <GetAppIcon className={classes.iconSpacing} />
-                </Button>
-              </ButtonGroup>
-            </div>
             { (isLoading || !isSuccess || changeRequests.length === 0)
               && (
                 <>No results found</>
@@ -307,6 +284,31 @@ function ChplChangeRequestsView(props) {
             { !isLoading && isSuccess && changeRequests.length > 0
               && (
                 <>
+                  <div className={classes.tableResultsHeaderContainer}>
+                    <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                      <Typography variant="subtitle2">Search Results:</Typography>
+                      <Typography variant="body2">
+                        {`(${pageStart}-${pageEnd} of ${changeRequests.length} Results)`}
+                      </Typography>
+                    </div>
+                    <ButtonGroup size="small" className={classes.wrap}>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        fullWidth
+                        id="download-change-requests"
+                        onClick={() => csvExporter.generateCsv(changeRequests)}
+                      >
+                        Download
+                        {' '}
+                        { changeRequests.length }
+                        {' '}
+                        Result
+                        { changeRequests.length !== 1 ? 's' : '' }
+                        <GetAppIcon className={classes.iconSpacing} />
+                      </Button>
+                    </ButtonGroup>
+                  </div>
                   <TableContainer className={classes.container} component={Paper}>
                     <Table
                       stickyHeader
@@ -320,10 +322,10 @@ function ChplChangeRequestsView(props) {
                       />
                       <TableBody>
                         {changeRequests
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              { !hasAnyRole(['ROLE_DEVELOPER'])
+                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                         .map((item) => (
+                           <TableRow key={item.id}>
+                             { !hasAnyRole(['ROLE_DEVELOPER'])
                                && (
                                  <TableCell className={classes.tableFirstColumn}>
                                    <div className={classes.tableDeveloperCell}>
@@ -340,24 +342,24 @@ function ChplChangeRequestsView(props) {
                                    </div>
                                  </TableCell>
                                )}
-                              <TableCell>{item.changeRequestTypeName}</TableCell>
-                              { !hasAnyRole(['ROLE_DEVELOPER'])
+                             <TableCell>{item.changeRequestTypeName}</TableCell>
+                             { !hasAnyRole(['ROLE_DEVELOPER'])
                                && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
-                              <TableCell>{item.currentStatusName}</TableCell>
-                              <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
-                              <TableCell align="right">
-                                <Button
-                                  onClick={() => setChangeRequest(item)}
-                                  variant="contained"
-                                  color="primary"
-                                >
-                                  View
-                                  {' '}
-                                  <VisibilityIcon className={classes.iconSpacing} />
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          ))}
+                             <TableCell>{item.currentStatusName}</TableCell>
+                             <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                             <TableCell align="right">
+                               <Button
+                                 onClick={() => setChangeRequest(item)}
+                                 variant="contained"
+                                 color="primary"
+                               >
+                                 View
+                                 {' '}
+                                 <VisibilityIcon className={classes.iconSpacing} />
+                               </Button>
+                             </TableCell>
+                           </TableRow>
+                         ))}
                         {emptyRows > 0 && false && (
                           <TableRow style={{ height: 33 * emptyRows }}>
                             <TableCell colSpan={headers.length} />
