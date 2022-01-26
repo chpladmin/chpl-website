@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { object } from 'prop-types';
+import Moment from 'react-moment';
 
 import ChplChangeRequestsView from './change-requests-view';
 
@@ -34,17 +35,29 @@ const staticFilters = [{
   key: 'currentStatusChangeDate',
   display: 'Last Updated',
   values: [
-    { value: 'Before', data: { date: Date.now() } },
-    { value: 'After', data: { date: Date.now() } },
+    { value: 'Before', data: { date: '' } },
+    { value: 'After', data: { date: '' } },
   ],
   meets: (item, values) => {
     const canMeet = values
       .filter((value) => value.selected && value.data.date)
-      .reduce((can, value) => can && (value.value === 'Before' ? item.currentStatusChangeDate < value.data.date : value.data.date < item.currentStatusChangeDate), true);
+      .reduce((can, value) => {
+        return can && (value.value === 'Before' ? item.currentStatusChangeDate < (new Date(value.data.date)).getTime() : (new Date(value.data.date)).getTime() < item.currentStatusChangeDate);
+      }, true);
     return canMeet;
   },
   getDisplay: (value) => {
-    return value.value + value.data.date;
+    return (
+      <>
+        {value.value}
+        { value.data.date && (
+          <>
+            {': '}
+            <Moment fromNow>{value.data.date}</Moment>
+          </>
+        )}
+      </>
+    );
   },
 }];
 

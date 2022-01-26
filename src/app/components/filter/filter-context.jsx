@@ -85,7 +85,7 @@ function FilterProvider(props) {
         ...value,
         selected: !!value.default,
         default: !!value.default,
-        display: (filter.getDisplay && filter.getDisplay(value)) || value.display || value.value,
+        display: value.display || value.value,
       })),
     })));
   }, [props.filters]); // eslint-disable-line react/destructuring-assignment

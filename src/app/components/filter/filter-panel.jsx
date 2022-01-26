@@ -346,12 +346,13 @@ function ChplFilterPanel() {
           { activeValue &&
             (
               <div className={classes.filterGroupThreeContainer}>
-                { activeValue.display }
+                { activeCategory.getDisplay ? activeCategory.getDisplay(activeValue) : activeValue.display }
                 <Checkbox
                   checked={activeValue.selected}
                   onChange={handleTertiaryToggle}
                 />
                 <ChplTextField
+                  type="date"
                   value={activeValue.data.date}
                   onChange={handleTertiaryUpdate}
                 />
