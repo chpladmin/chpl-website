@@ -74,8 +74,8 @@ function ChplAttestationCreate(props) {
   const { data, isLoading } = useFetchAttestationData();
   const crData = useFetchChangeRequestTypes();
   const { mutate } = usePostChangeRequest();
+  const [attestationResponses, setAttestationResponses] = useState({});
   const [changeRequestType, setChangeRequestType] = useState({});
-  const [attestations, setAttestations] = useState({});
   const [signature, setSignature] = useState('');
   const [stage, setStage] = useState(0);
   const { user } = useContext(UserContext);
@@ -83,15 +83,17 @@ function ChplAttestationCreate(props) {
 
   useEffect(() => {
     if (isLoading) {
-      setAttestations([]);
+      setAttestationResponses([]);
       return;
     }
-    setAttestations(data.attestations
+    setAttestationResponses(data.attestations
       .sort((a, b) => a.sortOrder - b.sortOrder)
       .map((attestation) => ({
-        ...attestation,
-        display: interpretLink(attestation.description),
-        validResponses: attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
+        attestation: {
+          ...attestation,
+          display: interpretLink(attestation.description),
+          validResponses: attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
+        },
         response: { response: '' },
       })));
   }, [isLoading, data]);
@@ -103,7 +105,7 @@ function ChplAttestationCreate(props) {
     setChangeRequestType(crData.data.data.find((type) => type.name === 'Developer Attestation Change Request'));
   }, [crData.data, crData.isLoading]);
 
-  const isFormFilledOut = () => attestations.reduce((filledOut, attestation) => filledOut && !!attestation.response.id, true);
+  const isFormFilledOut = () => attestationResponses.reduce((filledOut, attestation) => filledOut && !!attestation.response.id, true);
 
   const isSubmitDisabled = () => signature !== user.fullName;
 
@@ -122,16 +124,16 @@ function ChplAttestationCreate(props) {
   };
 
   const handleResponse = (attestation, value) => {
-    const updated = attestations.map((att) => {
+    const updated = attestationResponses.map((att) => {
       const updatedAttestation = {
         ...att,
       };
-      if (attestation.id === att.id) {
-        updatedAttestation.response = att.validResponses.find((response) => response.response === value);
+      if (attestation.attestation.id === att.attestation.id) {
+        updatedAttestation.response = att.attestation.validResponses.find((response) => response.response === value);
       }
       return updatedAttestation;
     });
-    setAttestations(updated);
+    setAttestationResponses(updated);
   };
 
   const handleSubmit = () => {
@@ -139,7 +141,7 @@ function ChplAttestationCreate(props) {
       changeRequestType,
       developer,
       details: {
-        attestations,
+        attestationResponses,
         signature,
       },
     };
@@ -215,45 +217,35 @@ function ChplAttestationCreate(props) {
       {stage === 1
         && (
           <>
-            <br />
-            <Container maxWidth="md">
-              <Typography gutterBottom variant="h2">
-                Attestations
-              </Typography>
-              <Card>
-                <CardContent>
-                  {attestations
-                    .map((attestation) => (
-                      <div key={attestation.id}>
-                        <Typography variant="subtitle1">
-                          {attestation.condition.name}
-                        </Typography>
-                        <FormControl key={attestation.id} component="fieldset">
-                          <FormLabel className={classes.nonCaps}>{attestation.display}</FormLabel>
-                          <RadioGroup
-                            className={classes.radioGroup}
-                            name={`response-${attestation.id}`}
-                            value={attestation.response.response}
-                            onChange={(event) => handleResponse(attestation, event.currentTarget.value)}
-                          >
-                            {attestation.validResponses
-                              .map((response) => (
-                                <FormControlLabel
-                                  key={response.id}
-                                  value={response.response}
-                                  control={<Radio />}
-                                  label={response.response}
-                                  className={classes.nonCaps}
-                                />
-                              ))}
-                          </RadioGroup>
-                        </FormControl>
-                        <Divider />
-                      </div>
-                    ))}
-                </CardContent>
-              </Card>
-            </Container>
+            <Typography variant="h2">
+              Attestations
+            </Typography>
+            {attestationResponses
+              .map((attestation) => (
+                <div key={attestation.attestation.id}>
+                  <Typography variant="h3">
+                    { attestation.attestation.condition.name }
+                  </Typography>
+                  <FormControl key={attestation.attestation.id} component="fieldset">
+                    <FormLabel>{attestation.attestation.display}</FormLabel>
+                    <RadioGroup
+                      name={`response-${attestation.attestation.id}`}
+                      value={attestation.response.response}
+                      onChange={(event) => handleResponse(attestation, event.currentTarget.value)}
+                    >
+                      {attestation.attestation.validResponses
+                        .map((response) => (
+                          <FormControlLabel
+                            key={response.id}
+                            value={response.response}
+                            control={<Radio />}
+                            label={response.response}
+                          />
+                        ))}
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+              ))}
           </>
         )}
       {stage === 2
