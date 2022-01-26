@@ -69,7 +69,7 @@ const ListingEditPageComponent = {
     consolidateErrors() {
       this.errorMessages = [].concat(this.errors.basic, this.errors.details, this.errors.save, this.higherErrors).filter((message) => message);
       this.warningMessages = [].concat(this.warnings.basic, this.warnings.details, this.warnings.save, this.higherWarnings).filter((message) => message);
-      this.showAcknowledgement = this.warningMessages.length > 0;
+      this.showAcknowledgement = !this.isConfirming && this.warningMessages.length > 0;
     }
 
     isValid() {
