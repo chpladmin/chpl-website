@@ -352,7 +352,7 @@ function ChplFilterPanel() {
                   onChange={handleTertiaryToggle}
                 />
                 <ChplTextField
-                  type="date"
+                  type="datetime-local"
                   value={activeValue.data.date}
                   onChange={handleTertiaryUpdate}
                 />
