@@ -41,7 +41,6 @@ const useStyles = makeStyles({
     alignItems: 'center',
     padding: '8px 64px',
   },
-  Container
   nonCaps: {
     textTransform: 'none',
   },
@@ -308,7 +307,7 @@ function ChplAttestationCreate(props) {
                 <Card>
                   <CardContent>
                     <div>
-                      <Typography variant="subtitle1">
+                      <Typography gutterBottom variant="subtitle1">
                         Title:
                       </Typography>
                       <Typography>{user.title}</Typography>
@@ -318,7 +317,7 @@ function ChplAttestationCreate(props) {
                 <Card>
                   <CardContent>
                     <div>
-                      <Typography variant="subtitle2">
+                      <Typography gutterBottom variant="subtitle2">
                         Health IT Developer:
                       </Typography>
                       <Typography>{developer.name}</Typography>
@@ -337,15 +336,13 @@ function ChplAttestationCreate(props) {
                       required
                       value={signature}
                       onChange={handleSignature}
-                    />
+                      />
                   </CardContent>
                 </Card>
                 <Card>
                   <CardContent>
                     <Typography gutterBottom variant="subtitle1">
                       Date:
-                      {' '}
-                     = 
                     </Typography>
                     <Typography variant="body1">
                     <Moment
