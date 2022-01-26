@@ -34,12 +34,12 @@ function ChplChangeRequestAttestationView(props) {
       <div>
         <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
         <ul>
-          { changeRequest.details.responses.map((response) => (
+          { changeRequest.details.attestationResponses.map((response) => (
             <li key={response.id}>
-              { interpretLink(response.question).display }
+              { interpretLink(response.attestation.description) }
               :
               {' '}
-              { response.answer.answer }
+              { response.response.response }
             </li>
           ))}
         </ul>
