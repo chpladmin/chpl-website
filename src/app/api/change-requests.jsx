@@ -15,6 +15,13 @@ const useFetchChangeRequestStatusTypes = () => {
   return useQuery(['change-request-status-types'], async () => {
     const response = await axios.get('data/change-request-status-types');
     return response.data;
+  }, {
+    refetchOnWindowFocus: false,
+    refetchOnmount: false,
+    refetchOnReconnect: false,
+    retry: false,
+    staleTime: 1000 * 60 * 60 * 24,
+    keepPreviousData: true,
   });
 };
 
@@ -23,6 +30,13 @@ const useFetchChangeRequestTypes = () => {
   return useQuery(['change-request-types'], async () => {
     const response = await axios.get('data/change-request-types');
     return response.data;
+  }, {
+    refetchOnWindowFocus: false,
+    refetchOnmount: false,
+    refetchOnReconnect: false,
+    retry: false,
+    staleTime: 1000 * 60 * 60 * 24,
+    keepPreviousData: true,
   });
 };
 
