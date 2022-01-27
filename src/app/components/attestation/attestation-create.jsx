@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  Checkbox,
   Container,
   Divider,
   FormControl,
@@ -14,9 +15,9 @@ import {
   ThemeProvider,
   Typography,
   makeStyles,
-  Checkbox,
 } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 import Moment from 'react-moment';
 
 import ChplAttestationProgress from './attestation-progress';
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
-  listingInspectHeader: {
+  pageHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -159,7 +160,7 @@ function ChplAttestationCreate(props) {
           setStage(3);
         } else {
           const body = error.response.data?.error
-            || error.response.data?.errorMessages.join(' ');
+             error.response.data?.errorMessages.join(' ');
           toaster.pop({
             type: 'error',
             title: 'Error',
@@ -173,7 +174,7 @@ function ChplAttestationCreate(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.listingInspectHeader}>
+      <div className={classes.pageHeader}>
         <Typography gutterBottom variant="h1">
           Submit Attestation
         </Typography>
@@ -184,7 +185,7 @@ function ChplAttestationCreate(props) {
         canNext={canNext()}
         canPrevious={canPrevious()}
       />
-      {stage === 0
+      { stage === 0
         && (
           <>
             <br />
@@ -214,7 +215,7 @@ function ChplAttestationCreate(props) {
             </Container>
           </>
         )}
-      {stage === 1
+      { stage === 1
         && (
           <>
            <br />
@@ -258,7 +259,7 @@ function ChplAttestationCreate(props) {
             </Container>
           </>
         )}
-      {stage === 2
+      { stage === 2
         && (
           <>
             <br />
@@ -270,7 +271,7 @@ function ChplAttestationCreate(props) {
                 <CardContent>
                   <div className={classes.electronicSignatureCheckboxItem}>
                     <Checkbox />
-                    <Typography gutterBottom variant="body">
+                    <Typography gutterBottom variant="body1">
                       As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
                     </Typography>
                   </div>
@@ -294,7 +295,6 @@ function ChplAttestationCreate(props) {
               </Typography>
               <Typography gutterBottom>To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.</Typography>
               <br />
-
               <div className={classes.userContext}>
                 <Card>
                   <CardContent>
@@ -302,7 +302,7 @@ function ChplAttestationCreate(props) {
                       <Typography gutterBottom variant="subtitle1">
                         Name:
                       </Typography>
-                      <Typography>{user.fullName}</Typography>
+                      <Typography variant="body1">{user.fullName}</Typography>
                     </div>
                   </CardContent>
                 </Card>
@@ -312,7 +312,7 @@ function ChplAttestationCreate(props) {
                       <Typography gutterBottom variant="subtitle1">
                         Title:
                       </Typography>
-                      <Typography>{user.title}</Typography>
+                      <Typography variant="body1">{user.title}</Typography>
                     </div>
                   </CardContent>
                 </Card>
@@ -322,7 +322,7 @@ function ChplAttestationCreate(props) {
                       <Typography gutterBottom variant="subtitle2">
                         Health IT Developer:
                       </Typography>
-                      <Typography>{developer.name}</Typography>
+                      <Typography variant="body1">{developer.name}</Typography>
                     </div>
                   </CardContent>
                 </Card>
@@ -366,7 +366,7 @@ function ChplAttestationCreate(props) {
                 disabled={isSubmitDisabled()}
               >
                 Sign Electronically
-                <SaveIcon
+                <BorderColorIcon
                   className={classes.iconSpacing}
                 />
               </Button>
@@ -374,8 +374,7 @@ function ChplAttestationCreate(props) {
           </>
         )
       }
-      {
-        stage === 3
+      { stage === 3
         && (
           <>
             <Typography variant="h2">
@@ -393,7 +392,7 @@ function ChplAttestationCreate(props) {
         canClose={stage === 3}
         canSave={false}
       />
-    </ThemeProvider >
+    </ThemeProvider>
   );
 }
 
