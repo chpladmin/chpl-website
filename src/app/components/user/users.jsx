@@ -6,7 +6,6 @@ import {
 } from 'prop-types';
 import {
   Container,
-  Card,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
