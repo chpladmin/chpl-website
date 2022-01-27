@@ -271,6 +271,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiRadio:{
+      root:{
+        color:'#156dac',
+      },
+      colorSecondary:{
+        '&checked':{
+        color:'#156dac',
+        },
+      },
+    },
     MuiTable: {
       root: {
         borderRadius: '8px',
