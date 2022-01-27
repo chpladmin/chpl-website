@@ -123,6 +123,10 @@ function ChplActionBarMessages(props) {
     setOpen(!open);
   };
 
+  if (errors.length === 0 && warnings.length === 0) {
+    return null;
+  }
+
   return (
     <>
       { !open && (errors.length > 0 || warnings.length > 0)
