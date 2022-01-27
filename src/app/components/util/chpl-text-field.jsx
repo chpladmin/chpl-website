@@ -5,8 +5,9 @@ import { TextField } from '@material-ui/core';
 const useStyles = makeStyles(() => ({
   longLabelFix: {
     paddingRight: '4px',
-    backgroundColor: '#ffffff',
-  },
+    background: 'rgb(255,255,255)',
+    background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,1) 21%, rgba(255,255,255,1) 59%, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%)',
+ },
 }));
 
 function ChplTextField(props) {

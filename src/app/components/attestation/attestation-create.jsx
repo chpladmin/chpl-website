@@ -37,9 +37,6 @@ const useStyles = makeStyles({
     marginLeft: '4px',
   },
   pageHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     padding: '8px 64px',
   },
   nonCaps: {
@@ -160,7 +157,7 @@ function ChplAttestationCreate(props) {
           setStage(3);
         } else {
           const body = error.response.data?.error
-             error.response.data?.errorMessages.join(' ');
+            error.response.data?.errorMessages.join(' ');
           toaster.pop({
             type: 'error',
             title: 'Error',
