@@ -10,11 +10,12 @@ const ListingEditPageComponent = {
     warnings: '<',
   },
   controller: class ListingEditPageComponent {
-    constructor($log, $q, $state, featureFlags, networkService) {
+    constructor($log, $q, $scope, $state, featureFlags, networkService) {
       'ngInject';
 
       this.$log = $log;
       this.$q = $q;
+      this.$scope = $scope;
       this.$state = $state;
       this.isOn = featureFlags.isOn;
       this.networkService = networkService;
@@ -61,6 +62,7 @@ const ListingEditPageComponent = {
     cancel() {
       if (this.isConfirming) {
         this.onCancel();
+        this.$scope.$digest();
       } else {
         this.$state.go('^.^');
       }
@@ -97,6 +99,7 @@ const ListingEditPageComponent = {
       this.listingBasic.promotingInteroperabilityUserHistory = this.listingDetails.promotingInteroperabilityUserHistory;
       if (this.isConfirming) {
         this.onChange({ listing: this.listingBasic });
+        this.$scope.$digest();
       } else {
         const updateObject = {
           listing: this.listingBasic,
@@ -141,7 +144,6 @@ const ListingEditPageComponent = {
           break;
         case 'mouseover':
           this.consolidateErrors();
-          this.$log.info('mouseover');
           this.showFormErrors = true;
           break;
         case 'save':
