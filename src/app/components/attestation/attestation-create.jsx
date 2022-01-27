@@ -374,12 +374,15 @@ function ChplAttestationCreate(props) {
       { stage === 3
         && (
           <>
-            <Typography variant="h2">
-              Confirmation
-            </Typography>
-            <Typography variant="body1">
-              Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
-            </Typography>
+          <br />
+          <Container maxWidth="md">
+            <Typography gutterBottom variant="h2">Confirmation</Typography>
+            <Card>
+              <CardContent>
+                <Typography variant="body1">Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).</Typography>
+              </CardContent>
+            </Card>
+          </Container>
           </>
         )
       }
