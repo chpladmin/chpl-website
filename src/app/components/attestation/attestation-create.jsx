@@ -217,35 +217,45 @@ function ChplAttestationCreate(props) {
       {stage === 1
         && (
           <>
-            <Typography variant="h2">
-              Attestations
-            </Typography>
-            {attestationResponses
-              .map((attestation) => (
-                <div key={attestation.attestation.id}>
-                  <Typography variant="h3">
-                    { attestation.attestation.condition.name }
-                  </Typography>
-                  <FormControl key={attestation.attestation.id} component="fieldset">
-                    <FormLabel>{attestation.attestation.display}</FormLabel>
-                    <RadioGroup
-                      name={`response-${attestation.attestation.id}`}
-                      value={attestation.response.response}
-                      onChange={(event) => handleResponse(attestation, event.currentTarget.value)}
-                    >
-                      {attestation.attestation.validResponses
-                        .map((response) => (
-                          <FormControlLabel
-                            key={response.id}
-                            value={response.response}
-                            control={<Radio />}
-                            label={response.response}
-                          />
-                        ))}
-                    </RadioGroup>
-                  </FormControl>
-                </div>
-              ))}
+           <br />
+            <Container maxWidth="md">
+              <Typography gutterBottom variant="h2">
+                Attestations
+              </Typography>
+              <Card>
+              <CardContent>
+              {attestationResponses
+                .map((attestation) => (
+                  <div key={attestation.attestation.id}>
+                    <Typography variant="subtitle1">
+                      { attestation.attestation.condition.name }
+                    </Typography>
+                    <FormControl key={attestation.attestation.id} component="fieldset">
+                      <FormLabel className={classes.nonCaps}>{attestation.attestation.display}</FormLabel>
+                      <RadioGroup
+                        className={classes.radioGroup}
+                        name={`response-${attestation.attestation.id}`}
+                        value={attestation.response.response}
+                        onChange={(event) => handleResponse(attestation, event.currentTarget.value)}
+                      >
+                        {attestation.attestation.validResponses
+                          .map((response) => (
+                            <FormControlLabel
+                              key={response.id}
+                              value={response.response}
+                              control={<Radio />}
+                              label={response.response}
+                              className={classes.nonCaps}
+                            />
+                          ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <Divider />
+                  </div>
+                ))}
+               </CardContent>
+              </Card>
+            </Container>
           </>
         )}
       {stage === 2
