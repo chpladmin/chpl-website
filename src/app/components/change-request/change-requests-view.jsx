@@ -15,7 +15,7 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
-import { object } from 'prop-types';
+import { arrayOf, func, object, string } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
 import ChplChangeRequestEdit from './change-request-edit';
@@ -127,7 +127,7 @@ const sortComparator = (property) => {
 };
 
 function ChplChangeRequestsView(props) {
-  const { scope: $scope } = props;
+  const { disallowedFilters, preFilter, scope: $scope } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const DateUtil = getAngularService('DateUtil');
   const toaster = getAngularService('toaster');
@@ -174,11 +174,12 @@ function ChplChangeRequestsView(props) {
         friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
         friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
       }))
+      .filter((item) => preFilter(item))
       .filter((item) => searchTermShouldShow(item, searchTerm))
       .filter((item) => filtersShouldShow(item, filters))
       .sort(sortComparator(comparator));
     setChangeRequests(crs);
-  }, [data, isLoading, isSuccess, DateUtil, comparator, filters, searchTerm]);
+  }, [data, isLoading, isSuccess, DateUtil, comparator, filters, searchTerm, preFilter]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
@@ -269,9 +270,12 @@ function ChplChangeRequestsView(props) {
         && (
           <>
             <div className={classes.searchContainer} component={Paper}>
-              <ChplFilterSearchTerm
-                placeholder="Search by Developer..."
-              />
+              { !disallowedFilters.includes('searchTerm')
+                && (
+                  <ChplFilterSearchTerm
+                    placeholder="Search by Developer..."
+                  />
+                )}
               <ChplFilterPanel />
             </div>
             <div>
@@ -387,5 +391,7 @@ function ChplChangeRequestsView(props) {
 export default ChplChangeRequestsView;
 
 ChplChangeRequestsView.propTypes = {
+  disallowedFilters: arrayOf(string).isRequired,
+  preFilter: func.isRequired,
   scope: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
