@@ -276,7 +276,7 @@ const theme = createTheme({
         color:'#156dac',
       },
       colorSecondary:{
-        '&checked':{
+        '&$checked':{
         color:'#156dac',
         },
       },
