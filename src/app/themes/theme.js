@@ -108,9 +108,12 @@ const theme = createTheme({
         backgroundColor: '#eeeeee',
         boxShadow: 'none',
         fontSize: '1em',
-        '&:hover, selected': {
+        '&:hover, selected,': {
           boxShadow: 'none',
         },
+        '&.Mui-disabled': {
+        backgroundColor: '#eeeeee',
+      },
       },
       containedSecondary: {
         border: '.5px solid #156dac',
