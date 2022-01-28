@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     marginLeft: '4px',
   },
   pageHeader: {
-    padding: '8px 64px',
+    padding:'8px 0',
   },
   nonCaps: {
     textTransform: 'none',
@@ -171,11 +171,11 @@ function ChplAttestationCreate(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.pageHeader}>
+     <Container className={classes.pageHeader} maxWidth='md'>
         <Typography gutterBottom variant="h1">
           Submit Attestation
         </Typography>
-      </div>
+      </Container>
       <ChplAttestationProgress
         dispatch={handleProgressDispatch}
         value={stage}
