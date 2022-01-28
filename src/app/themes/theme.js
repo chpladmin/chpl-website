@@ -141,6 +141,14 @@ const theme = createTheme({
         border: '.5px solid #c2c6ca',
       },
     },
+    MuiCardContent:{
+      root:{
+        padding: '16px',
+          '&:last-child': {
+            paddingBottom: '16px',
+          },
+      },
+    },
     MuiCardActions: {
       root: {
         backgroundColor: '#f9f9f9',

@@ -266,24 +266,11 @@ function ChplAttestationCreate(props) {
               </Typography>
               <Card>
                 <CardContent>
-                  <div className={classes.electronicSignatureCheckboxItem}>
-                    <Checkbox />
                     <Typography gutterBottom variant="body1">
-                      As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
-                    </Typography>
-                  </div>
-                  <div className={classes.electronicSignatureCheckboxItem}>
-                    <Checkbox />
-                    <Typography gutterBottom variant="body1">
+                      As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.           
                       I understand that under certain circumstances ONC may directly review the health IT developer&apos;s actions or practices or its certified health IT to determine whether it conforms to the requirements of the Program. This may result in corrective action as necessary.
-                    </Typography>
-                  </div>
-                  <div className={classes.electronicSignatureCheckboxItem}>
-                    <Checkbox />
-                    <Typography gutterBottom variant="body1">
                       I also understand that I and my company may be subject to investigation by the HHS Office of the Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
                     </Typography>
-                  </div>
                 </CardContent>
               </Card>
               <br />
@@ -316,7 +303,7 @@ function ChplAttestationCreate(props) {
                 <Card>
                   <CardContent>
                     <div>
-                      <Typography gutterBottom variant="subtitle2">
+                      <Typography gutterBottom variant="subtitle1">
                         Health IT Developer:
                       </Typography>
                       <Typography variant="body1">{developer.name}</Typography>
