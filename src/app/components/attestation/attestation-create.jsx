@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   attestationContainer: {
     display: 'grid',
     rowGap: '16px',
-    columnGap: '32px',
+    columnGap: '16px',
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
     gridTemplateRows: 'auto',

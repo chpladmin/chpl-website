@@ -29,7 +29,7 @@ function ChplAttestationsView(props) {
       <Card>
         <CardHeader title="Attestations" />
         <CardContent>
-          <Typography variant="body1">
+          <Typography gutterBottom variant="body1">
             This section includes Developer Attestations, which is a semi-annual Condition and Maintenance of Certification requirement for health IT developers participating in the ONC Health IT Certification Program. The term &quot;Attestations Submitted&quot; means a developer’s attestations have been submitted and confirmed for the given period.
           </Typography>
           <Typography variant="body1">
