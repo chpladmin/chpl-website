@@ -1,10 +1,11 @@
-export const UploadComponent = {
+const UploadComponent = {
   templateUrl: 'chpl.administration/upload/upload.html',
   bindings: {
   },
   controller: class UploadComponent {
-    constructor ($log, authService) {
+    constructor($log, authService) {
       'ngInject';
+
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
     }
@@ -13,3 +14,5 @@ export const UploadComponent = {
 
 angular.module('chpl.administration')
   .component('chplUpload', UploadComponent);
+
+export default UploadComponent;
