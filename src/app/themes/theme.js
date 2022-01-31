@@ -108,12 +108,12 @@ const theme = createTheme({
         backgroundColor: '#eeeeee',
         boxShadow: 'none',
         fontSize: '1em',
-        '&:hover, selected,': {
+        '&:hover, selected': {
           boxShadow: 'none',
         },
         '&.Mui-disabled': {
-        backgroundColor: '#eeeeee',
-      },
+          backgroundColor: '#eeeeee',
+        },
       },
       containedSecondary: {
         border: '.5px solid #156dac',
@@ -141,12 +141,12 @@ const theme = createTheme({
         border: '.5px solid #c2c6ca',
       },
     },
-    MuiCardContent:{
-      root:{
+    MuiCardContent: {
+      root: {
         padding: '16px',
-          '&:last-child': {
-            paddingBottom: '16px',
-          },
+        '&:last-child': {
+          paddingBottom: '16px',
+        },
       },
     },
     MuiCardActions: {
@@ -282,13 +282,13 @@ const theme = createTheme({
         },
       },
     },
-    MuiRadio:{
-      root:{
-        color:'#156dac',
+    MuiRadio: {
+      root: {
+        color: '#156dac',
       },
-      colorSecondary:{
-        '&$checked':{
-        color:'#156dac',
+      colorSecondary: {
+        '&$checked': {
+          color: '#156dac',
         },
       },
     },

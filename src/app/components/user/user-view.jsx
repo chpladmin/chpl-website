@@ -28,18 +28,17 @@ import {
 const useStyles = makeStyles(() => ({
   content: {
     display: 'flex',
-    flexDirection:'row',
-    justifyContent:'space-between',
-    gapRow: '16px',
-    flexWrap:'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
     [theme.breakpoints.up('md')]: {
-    flexWrap:'nowrap',
+      flexWrap: 'nowrap',
     },
   },
   userCard: {
     display: 'flex',
-    flexDirection:'column',
-    justifyContent:'space-between',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
 }));
 
@@ -65,7 +64,8 @@ function ChplUserView(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Card className={classes.userCard}
+      <Card
+        className={classes.userCard}
         title={`${user.fullName} Information`}
       >
         <CardHeader
