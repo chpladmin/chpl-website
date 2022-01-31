@@ -46,11 +46,14 @@ const useStyles = makeStyles({
   attestationContainer: {
     display: 'grid',
     rowGap: '16px',
-    columnGap: '32px',
+    columnGap: '16px',
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
     gridTemplateRows: 'auto',
     gridTemplateAreas: '"header header header header header header" "certification certification certification certification certification certification" "instruction instruction instruction instruction instruction instruction" "continue continue continue continue continue continue" "name name title title developer developer" "signature signature signature signature signature date" "b b b b b b"',
+  },
+  forAssistanceContainer:{
+    marginTop:'16px',
   },
   headerContainer: {
     gridArea: 'header',
@@ -224,7 +227,7 @@ function ChplAttestationCreate(props) {
                   </Typography>
                 </CardContent>
               </Card>
-              <Typography variant="body2">
+              <Typography className={classes.forAssistanceContainer} variant="body2">
                 For assistance with the Attestations submissions process, please visit the
                 {' '}
                 <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>

@@ -21,10 +21,18 @@ const useStyles = makeStyles({
     borderRadius: '0 0 32px 32px',
   },
   nextButton: {
-    fontWeight: '600',
+    '&.$Mui-disabled': {
+        backgroundColor: '#eee',
+      },
   },
   backButton: {
     backgroundColor: '#fff',
+     '&:hover, selected': {
+        backgroundColor: '#eee',
+      },
+      '&.$Mui-disabled': {
+        backgroundColor: '#eee',
+      },
   },
   stepperBar: {
     padding: '8px 32px',

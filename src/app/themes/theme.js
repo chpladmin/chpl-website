@@ -230,16 +230,6 @@ const theme = createTheme({
         verticalAlign: 'text-top',
       },
     },
-    MuiOutlinedInput: {
-      input: {
-        paddingTop: '18.5px',
-        paddingBottom: '14px',
-      },
-      inputMarginDense: {
-        paddingTop: '14.5px',
-        paddingBottom: '10px',
-      },
-    },
     MuiList: {
       padding: {
         paddingTop: '0',
@@ -349,20 +339,6 @@ const theme = createTheme({
         '&:hover': {
           backgroundColor: 'rgb(245, 249, 253, 0.9)',
         },
-      },
-    },
-    MuiTableSortLabel: {
-      active: {
-        color: '#000000',
-      },
-      icon: {
-        color: '#000000',
-      },
-    },
-    MuiFormLabel: {
-      asterisk: {
-        fontSize: '2em',
-        verticalAlign: 'text-top',
       },
     },
     MuiTableSortLabel: {
