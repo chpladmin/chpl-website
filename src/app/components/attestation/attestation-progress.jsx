@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  Container,
   Step,
   StepLabel,
   Stepper,
@@ -15,28 +16,39 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
+  nextButton:{
+    padding:'8px 16px',
+    borderRadius: '0 0 32px 32px',
+    fontWeight:'600',
+  },
+  backButton:{
+    padding:'8px 16px',
+    borderRadius: '0 0 32px 32px',
+    backgroundColor:'#fff',
+  },
   stepperBar: {
     padding: '8px 32px',
+    margin: '0 16px',
   },
   stepperContainer: {
     borderRadius: '64px',
-    padding: '8px 16px',
-    margin: '0 32px',
+    padding: '8px 0px',
     border: '0.5px solid #c2c6ca',
     boxShadow: 'rgb(149 157 165 / 10%) 0 4px 8px',
     backgroundColor: '#fff',
   },
   stepperButton: {
-    backgroundColor: '#fff',
     borderBottom: '0.5px solid #c2c6ca',
     borderLeft: '0.5px solid #c2c6ca',
     borderRight: '0.5px solid #c2c6ca',
     borderRadius: '0 0 32px 32px',
-    padding: '0 16px 8px 16px',
-  },
+ },
   stepperButtonContainer: {
     display: 'flex',
     justifyContent: 'center',
+    position:'sticky',
+    top:'114px',
+    zIndex:'999',
   },
 });
 
@@ -60,6 +72,7 @@ function ChplAttestationProgress(props) {
 
   return (
     <ThemeProvider theme={theme}>
+      <Container maxWidth='md'>
       <div className={classes.stepperContainer}>
         <Stepper
           className={classes.stepperBar}
@@ -79,9 +92,13 @@ function ChplAttestationProgress(props) {
           </Step>
         </Stepper>
       </div>
+</Container>
       <div className={classes.stepperButtonContainer}>
         <ButtonGroup variant="text" color="primary" className={classes.stepperButton} size="medium">
           <Button
+            color='primary'
+            variant='text'
+            className={classes.backButton}
             disabled={!canPrevious}
             onClick={() => props.dispatch('previous')}
             id="inspect-previous"
@@ -90,6 +107,9 @@ function ChplAttestationProgress(props) {
             Back
           </Button>
           <Button
+            color='primary'
+            variant='contained'
+            className={classes.nextButton}
             disabled={!canNext}
             onClick={() => props.dispatch('next')}
             id="inspect-next"

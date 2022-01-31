@@ -6,7 +6,6 @@ import {
 } from 'prop-types';
 import {
   Container,
-  Paper,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
@@ -23,21 +22,41 @@ import {
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection:'column',
     gap: '8px',
   },
-  header: {
+ header: {
     padding: '16px',
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '4fr 64px',
+    margin:'0 8px',
+    display: 'flex',
+    flexDirection:'row',
+    gap: '8px',
+    flexDirection:'column',
+    backgroundColor:'#ffffff',
+    border:'.5px solid #c2c6ca',
+    borderRadius:'8px',
+    boxShadow:'rgb(149 157 165 / 10%) 0px 4px 8px',
+    alignItems:'stretch',  
+    [theme.breakpoints.up('lg')]: {
+    flexDirection:'row',
+    },
   },
   users: {
-    padding: '16px',
+    padding: '8px',
     display: 'grid',
+    alignItems:'stretch',  
     gap: '16px',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    alignItems: 'start',
+    gridTemplateColumns:'auto',
+    [theme.breakpoints.up('sm')]: {
+    gridTemplateColumns: 'auto auto',
+    },
+    [theme.breakpoints.up('md')]: {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
+    }, 
+    [theme.breakpoints.up('lg')]: {
+    gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))',
+    }, 
   },
 }));
 
@@ -117,7 +136,7 @@ function ChplUsers(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth={false}>
+      <Container>
         { user
           && (
             <ChplUserEdit
@@ -128,13 +147,13 @@ function ChplUsers(props) {
           )}
         { !user
           && (
-            <Paper className={classes.container}>
+            <div className={classes.container}>
               <>
                 <div className={classes.header}>
-                  <ChplTextField
+                     <ChplTextField
                     id="user-filter"
                     name="userFilter"
-                    label="Full Name, Friendly Name, Title, Email, or User Name"
+                    label="Search by Name"
                     onChange={handleFilter}
                   />
                   <ChplUserInvite
@@ -152,7 +171,7 @@ function ChplUsers(props) {
                   ))}
                 </div>
               </>
-            </Paper>
+            </div>
           )}
       </Container>
     </ThemeProvider>
