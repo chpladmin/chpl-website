@@ -3,11 +3,10 @@ export const UploadComponent = {
   bindings: {
   },
   controller: class UploadComponent {
-    constructor ($log, authService, featureFlags) {
+    constructor ($log, authService) {
       'ngInject';
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
-      this.isOn = featureFlags.isOn;
     }
   },
 };
