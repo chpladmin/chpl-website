@@ -105,6 +105,9 @@ const useStyles = makeStyles(() => ({
   developerName: {
     fontWeight: '600',
   },
+  noResultsContainer:{
+    padding: '16px 32px',
+  },
 }));
 
 const searchTermShouldShow = (item, searchTerm) => new RegExp(searchTerm, 'i').test(item.developerName);
@@ -283,7 +286,11 @@ function ChplChangeRequestsView(props) {
             </div>
             { (isLoading || !isSuccess || changeRequests.length === 0)
               && (
-                <>No results found</>
+                <>
+                  <div className={classes.noResultsContainer}>
+                    <Typography>No results found. Please check your search for typos or spelling errors - or try a differnet search term/filter. </Typography>
+                  </div>
+                </>
               )}
             { !isLoading && isSuccess && changeRequests.length > 0
               && (
