@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Card,
@@ -10,22 +10,15 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 
-import {
-  useFetchAttestations,
-} from 'api/developer';
+import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 function ChplAttestationsView(props) {
-  /* eslint-disable react/destructuring-assignment */
+  const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole } = useContext(UserContext);
-  const [developer] = useState(props.developer);
-  /* eslint-enable react/destructuring-assignment */
-
-  const { isLoading, data } = useFetchAttestations({
-    developer,
-  });
+  const { developer } = props;
 
   const createAttestationChangeRequest = () => {
     props.dispatch('createAttestation');
@@ -36,21 +29,26 @@ function ChplAttestationsView(props) {
       <Card>
         <CardHeader title="Attestations" />
         <CardContent>
-          { (isLoading || data.length === 0) &&
-            (
-              <Typography variant="body1">
-                {data}
-              </Typography>
-            )}
-          { (!isLoading && data.length > 0) &&
-            (
-              <Typography variant="body1">
-                <ul>
-                  { data.map((item) => (
-                    <li>{ item }</li>
-                  ))}
-                </ul>
-              </Typography>
+          <Typography variant="body1">
+            This section includes Developer Attestations, which is a semi-annual Condition and Maintenance of Certification requirement for health IT developers participating in the ONC Health IT Certification Program. The term &quot;Attestations Submitted&quot; means a developer’s attestations have been submitted and confirmed for the given period.
+          </Typography>
+          <Typography variant="body1">
+            If applicable, Attestations are required to be made publicly available on the CHPL each May and October, beginning in 2022. For more information, please visit the Attestation resources.
+          </Typography>
+          { (developer.attestationResponses?.length > 0)
+            && (
+              <ul>
+                { developer.attestationResponses.map((item) => (
+                  <li key={item.id}>
+                    { DateUtil.getDisplayDateFormat(item.period.periodStart) }
+                    {' '}
+                    to
+                    {' '}
+                    { DateUtil.getDisplayDateFormat(item.period.periodEnd) }
+                    : Attestations submitted
+                  </li>
+                ))}
+              </ul>
             )}
         </CardContent>
         { hasAnyRole(['ROLE_DEVELOPER'])
