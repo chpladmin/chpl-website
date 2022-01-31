@@ -234,7 +234,7 @@ function ChplRealWorldTestingCollectionView(props) {
       { !isLoading && data?.results.length === 0
         && (
           <Typography className={classes.noResultsContainer}>
-            No results found. Please check your search for typos or spelling errors - or try a different search term/filter.
+            No results found
           </Typography>
         )}
       { !isLoading && data?.results.length > 0

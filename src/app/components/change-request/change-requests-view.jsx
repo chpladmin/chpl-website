@@ -287,7 +287,7 @@ function ChplChangeRequestsView(props) {
             { (isLoading || !isSuccess || changeRequests.length === 0)
               && (
                 <Typography className={classes.noResultsContainer}>
-                  No results found. Please check your search for typos or spelling errors - or try a different search term/filter.
+                  No results found
                 </Typography>
               )}
             { !isLoading && isSuccess && changeRequests.length > 0
