@@ -99,6 +99,9 @@ function ChplChangeRequests(props) {
       .map((type) => ({
         value: type.name,
       }));
+    if (values.length <= 1) {
+      return;
+    }
     setFilters((f) => f
       .filter((filter) => filter.key !== 'changeRequestTypeName')
       .concat({
