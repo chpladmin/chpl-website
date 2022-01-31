@@ -244,7 +244,7 @@ function ChplAttestationCreate(props) {
               <Card>
                 <CardContent>
                   {attestationResponses
-                    .map((attestation) => (
+                    .map((attestation, idx) => (
                       <div key={attestation.attestation.id}>
                         <Typography variant="subtitle1">
                           { attestation.attestation.condition.name }
@@ -269,7 +269,10 @@ function ChplAttestationCreate(props) {
                               ))}
                           </RadioGroup>
                         </FormControl>
-                        <Divider />
+                        { idx !== attestationResponses.length - 1
+                          && (
+                            <Divider />
+                          )}
                       </div>
                     ))}
                 </CardContent>
