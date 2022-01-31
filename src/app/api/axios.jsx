@@ -18,7 +18,7 @@ function AxiosProvider({ children }) {
         ...config,
       };
       updated.headers['API-Key'] = '12909a978483dfb8ecd0596c98ae9094';
-      const token = localStorage.getItem('ngStorage-jwtToken').replace(/"/g, '');
+      const token = localStorage.getItem('ngStorage-jwtToken')?.replace(/"/g, '');
       if (token) {
         updated.headers.Authorization = `Bearer ${token}`;
       }
