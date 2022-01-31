@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
   developerName: {
     fontWeight: '600',
   },
-  noResultsContainer:{
+  noResultsContainer: {
     padding: '16px 32px',
   },
 }));
@@ -286,11 +286,9 @@ function ChplChangeRequestsView(props) {
             </div>
             { (isLoading || !isSuccess || changeRequests.length === 0)
               && (
-                <>
-                  <div className={classes.noResultsContainer}>
-                    <Typography>No results found. Please check your search for typos or spelling errors - or try a differnet search term/filter. </Typography>
-                  </div>
-                </>
+                <Typography className={classes.noResultsContainer}>
+                  No results found. Please check your search for typos or spelling errors - or try a different search term/filter.
+                </Typography>
               )}
             { !isLoading && isSuccess && changeRequests.length > 0
               && (
