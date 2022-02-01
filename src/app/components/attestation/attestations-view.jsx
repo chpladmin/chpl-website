@@ -20,7 +20,7 @@ function ChplAttestationsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole } = useContext(UserContext);
   const { developer } = props;
-  const { isLoading, data } = useFetchPublicAttestations({developer});
+  const { isLoading, data } = useFetchPublicAttestations({ developer });
 
   const createAttestationChangeRequest = () => {
     props.dispatch('createAttestation');

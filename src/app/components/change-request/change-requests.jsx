@@ -16,9 +16,9 @@ import Moment from 'react-moment';
 import { object } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
-import { ChplLink } from 'components/util';
-import theme from 'themes/theme';
-import { getAngularService } from 'services/angular-react-helper';
+import ChplChangeRequestEdit from './change-request-edit';
+import ChplChangeRequestView from './change-request-view';
+
 import {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
@@ -28,11 +28,11 @@ import {
   ChplAvatar,
   ChplPagination,
   ChplSortableHeaders,
-} from '../util';
+  ChplLink,
+} from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-
-import ChplChangeRequestEdit from './change-request-edit';
-import ChplChangeRequestView from './change-request-view';
+import theme from 'themes/theme';
 
 const csvOptions = {
   showLabels: true,

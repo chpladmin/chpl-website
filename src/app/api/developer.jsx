@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 
 import { useAxios } from './axios';
 
-const useFetchAttestations = ({developer}) => {
+const useFetchAttestations = ({ developer }) => {
   const axios = useAxios();
   return useQuery([`developer/${developer.developerId}/attestations`], async () => {
     const response = await axios.get(`/developers/${developer.developerId}/attestations`);
@@ -10,7 +10,7 @@ const useFetchAttestations = ({developer}) => {
   }, { keepPreviousData: true });
 };
 
-const useFetchPublicAttestations = ({developer}) => {
+const useFetchPublicAttestations = ({ developer }) => {
   const axios = useAxios();
   return useQuery([`developer/${developer.developerId}/public-attestations`], async () => {
     const response = await axios.get(`/developers/${developer.developerId}/public-attestations`);
