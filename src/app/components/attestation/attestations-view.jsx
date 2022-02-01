@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 
+import { useFetchPublicAttestations } from 'api/developer';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -19,6 +20,7 @@ function ChplAttestationsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole } = useContext(UserContext);
   const { developer } = props;
+  const { isLoading, data } = useFetchPublicAttestations({developer});
 
   const createAttestationChangeRequest = () => {
     props.dispatch('createAttestation');
@@ -35,16 +37,16 @@ function ChplAttestationsView(props) {
           <Typography variant="body1">
             If applicable, Attestations are required to be made publicly available on the CHPL each May and October, beginning in 2022. For more information, please visit the Attestation resources.
           </Typography>
-          { (developer.attestationResponses?.length > 0)
+          { (!isLoading && data?.length > 0)
             && (
               <ul>
-                { developer.attestationResponses.map((item) => (
+                { data.map((item) => (
                   <li key={item.id}>
-                    { DateUtil.getDisplayDateFormat(item.period.periodStart) }
+                    { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
                     {' '}
                     to
                     {' '}
-                    { DateUtil.getDisplayDateFormat(item.period.periodEnd) }
+                    { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
                     : Attestations submitted
                   </li>
                 ))}
