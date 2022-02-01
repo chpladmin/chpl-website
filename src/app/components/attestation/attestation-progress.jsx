@@ -23,6 +23,9 @@ const useStyles = makeStyles({
   nextButton: {
     '&.$Mui-disabled': {
         backgroundColor: '#eee',
+        '&:hover, selected': {
+        backgroundColor: '#eee',
+      },
       },
   },
   backButton: {
