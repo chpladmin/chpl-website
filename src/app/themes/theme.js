@@ -111,7 +111,7 @@ const theme = createTheme({
         '&:hover, selected': {
           boxShadow: 'none',
         },
-        '&.Mui-disabled': {
+        '&:disabled': {
           backgroundColor: '#eeeeee',
         },
       },
