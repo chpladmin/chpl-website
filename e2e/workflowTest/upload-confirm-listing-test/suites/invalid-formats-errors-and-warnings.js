@@ -72,6 +72,7 @@ const suite = {
       'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
       'Test data \'test data\' is invalid for the criterion 170.315 (b)(1) (Cures Update) and has been removed from the listing.',
       'Certification 170.315 (b)(10) contains an invalid test procedure name: \'blah\' and it has been removed from the listing.',
+      'CHPL certification ID was not found.',
     ],
   }],
 };
