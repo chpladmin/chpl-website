@@ -31,7 +31,7 @@ const mockApi = {
 
 jest.mock('api/developer', () => ({
   __esModule: true,
-  useFetchAttestations: () => mockApi,
+  useFetchPublicAttestations: () => mockApi,
 }));
 
 const userContextMock = {
