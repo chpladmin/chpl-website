@@ -105,7 +105,7 @@ function ChplFilterPanel() {
   useEffect(() => {
     if (activeCategory?.values) {
       setActiveValue(activeCategory.values.find((v) => v.value === activeValueKey));
-    };
+    }
   }, [filters, activeCategory, activeValueKey]);
 
   const handleClick = (e) => {
@@ -150,20 +150,12 @@ function ChplFilterPanel() {
       setActiveValueKey('');
       setActiveValue(null);
     } else {
-      // todo - track this?
-      if (filterContext.analytics) {
-        //$analytics.eventTrack('Select Filter Value', { value: filterContext.analytics.value, label: `${filter.display}` });
-      }
       setActiveValueKey(value.value);
       setActiveValue(value);
     }
   };
 
   const handleTertiaryToggle = (event) => {
-    /*setActiveValue({
-      ...activeValue,
-      selected: event.target.checked,
-    });*/
     filterContext.dispatch('toggle', activeCategory, {
       ...activeValue,
       selected: event.target.checked,
@@ -171,13 +163,6 @@ function ChplFilterPanel() {
   };
 
   const handleTertiaryUpdate = (event) => {
-    /*setActiveValue({
-      ...activeValue,
-      data: {
-        date: event.target.value,
-      },
-    });
-    */
     filterContext.dispatch('update', activeCategory, {
       ...activeValue,
       data: {
@@ -343,8 +328,8 @@ function ChplFilterPanel() {
               </List>
             )}
           </div>
-          { activeValue &&
-            (
+          { activeValue
+            && (
               <div className={classes.filterGroupThreeContainer}>
                 { activeCategory.getDisplay ? activeCategory.getDisplay(activeValue) : activeValue.display }
                 <Checkbox
