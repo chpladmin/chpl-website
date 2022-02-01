@@ -16,23 +16,22 @@ import Moment from 'react-moment';
 import { object } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
-import ChplChangeRequestEdit from './change-request-edit';
-import ChplChangeRequestView from './change-request-view';
-
+import theme from '../../themes/theme';
+import { getAngularService } from '../../services/angular-react-helper';
 import {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
   usePutChangeRequest,
-} from 'api/change-requests';
+} from '../../api/change-requests';
 import {
   ChplAvatar,
   ChplPagination,
   ChplSortableHeaders,
-  ChplLink,
-} from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
-import theme from 'themes/theme';
+} from '../util';
+import { UserContext } from '../../shared/contexts';
+
+import ChplChangeRequestEdit from './change-request-edit';
+import ChplChangeRequestView from './change-request-view';
 
 const csvOptions = {
   showLabels: true,
@@ -257,12 +256,9 @@ function ChplChangeRequests(props) {
                                  />
                                </div>
                                <div className={classes.developerName}>
-                                 <ChplLink
-                                   href={`#/organizations/developers/${item.developer.developerId}`}
-                                   text={item.developerName}
-                                   external={false}
-                                   router={{ sref: 'organizations.developer', options: { developerId: item.developer.developerId } }}
-                                 />
+                                 <a href={`#/organizations/developers/${item.developer.developerId}`}>
+                                   {item.developerName}
+                                 </a>
                                </div>
                              </div>
                            </TableCell>
