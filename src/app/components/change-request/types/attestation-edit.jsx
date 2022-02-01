@@ -1,14 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
-import { UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -22,35 +16,8 @@ const useStyles = makeStyles({
   },
 });
 
-const validationSchema = yup.object({
-  attestation: yup.string()
-    .required('Attestation is required'),
-});
-
-function ChplChangeRequestAttestationEdit(props) {
-  const { hasAnyRole } = useContext(UserContext);
-  const { changeRequest } = props;
+function ChplChangeRequestAttestationEdit() {
   const classes = useStyles();
-  let formik;
-
-  const handleChange = (...args) => {
-    formik.handleChange(...args);
-    if (formik.isValid) {
-      formik.submitForm();
-    }
-  };
-
-  formik = useFormik({
-    initialValues: {
-      attestation: changeRequest.details.attestation,
-    },
-    onSubmit: () => {
-      props.dispatch('update', formik.values);
-    },
-    validationSchema,
-    validateOnChange: true,
-    validateOnMount: true,
-  });
 
   return (
     <div className={classes.container}>
@@ -69,6 +36,4 @@ function ChplChangeRequestAttestationEdit(props) {
 export default ChplChangeRequestAttestationEdit;
 
 ChplChangeRequestAttestationEdit.propTypes = {
-  changeRequest: changeRequestProp.isRequired,
-  dispatch: func.isRequired,
 };

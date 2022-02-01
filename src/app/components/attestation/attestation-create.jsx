@@ -52,8 +52,8 @@ const useStyles = makeStyles({
     gridTemplateRows: 'auto',
     gridTemplateAreas: '"header header header header header header" "certification certification certification certification certification certification" "instruction instruction instruction instruction instruction instruction" "continue continue continue continue continue continue" "name name title title developer developer" "signature signature signature signature signature date" "b b b b b b"',
   },
-  forAssistanceContainer:{
-    marginTop:'16px',
+  forAssistanceContainer: {
+    marginTop: '16px',
   },
   headerContainer: {
     gridArea: 'header',

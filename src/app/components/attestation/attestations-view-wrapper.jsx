@@ -8,6 +8,7 @@ import { UserWrapper } from 'components/login';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplAttestationsViewWrapper(props) {
+  /* eslint-disable react/jsx-props-no-spreading */
   return (
     <UserWrapper>
       <ApiWrapper>
@@ -17,6 +18,7 @@ function ChplAttestationsViewWrapper(props) {
       </ApiWrapper>
     </UserWrapper>
   );
+  /* eslint-enable react/jsx-props-no-spreading */
 }
 
 export default ChplAttestationsViewWrapper;
