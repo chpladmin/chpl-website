@@ -248,7 +248,8 @@ function ChplActionBar(props) {
               && (
                 <Button
                   id="action-bar-close"
-                  variant="outlined"
+                  variant="contained"
+                  color="primary"
                   onClick={() => act('cancel')}
                   className={classes.actionBarButton}
                 >
