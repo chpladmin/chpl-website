@@ -16,19 +16,20 @@ import Moment from 'react-moment';
 import { object } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
-import theme from '../../themes/theme';
-import { getAngularService } from '../../services/angular-react-helper';
+import { ChplLink } from 'components/util';
+import theme from 'themes/theme';
+import { getAngularService } from 'services/angular-react-helper';
 import {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
   usePutChangeRequest,
-} from '../../api/change-requests';
+} from 'api/change-requests';
 import {
   ChplAvatar,
   ChplPagination,
   ChplSortableHeaders,
 } from '../util';
-import { UserContext } from '../../shared/contexts';
+import { UserContext } from 'shared/contexts';
 
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
@@ -256,9 +257,12 @@ function ChplChangeRequests(props) {
                                  />
                                </div>
                                <div className={classes.developerName}>
-                                 <a href={`#/organizations/developers/${item.developer.developerId}`}>
-                                   {item.developerName}
-                                 </a>
+                                 <ChplLink
+                                   href={`#/organizations/developers/${item.developer.developerId}`}
+                                   text={item.developerName}
+                                   external={false}
+                                   router={{ sref: 'organizations.developer', options: { developerId: item.developer.developerId } }}
+                                 />
                                </div>
                              </div>
                            </TableCell>
