@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     borderRadius: '0 0 32px 32px',
   },
   nextButton: {
-    '&.$Mui-disabled': {
+    '&.disabled': {
       backgroundColor: '#eee',
       '&:hover, selected': {
         backgroundColor: '#eee',
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     '&:hover, selected': {
       backgroundColor: '#eee',
     },
-    '&.$Mui-disabled': {
+    '&.disabled': {
       backgroundColor: '#eee',
     },
   },
