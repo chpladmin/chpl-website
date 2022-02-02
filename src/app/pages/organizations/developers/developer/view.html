@@ -22,7 +22,7 @@
                         take-action="$ctrl.takeAction(action)"
                         ></chpl-developer>
       </div>
-      <div ng-if="$ctrl.can('displayAttestations')">
+      <div feature-flag="attestations">
         <chpl-attestations-view-wrapper-bridge developer="$ctrl.developer"
                                                dispatch="::$ctrl.handleAttestationDispatch"
                                                ></chpl-attestations-view-wrapper-bridge>
