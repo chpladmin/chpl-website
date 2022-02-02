@@ -1,5 +1,12 @@
 import React from 'react';
 import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -11,7 +18,7 @@ import { changeRequest as changeRequestProp } from 'shared/prop-types';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 3fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
   },
 });
@@ -33,16 +40,29 @@ function ChplChangeRequestAttestationView(props) {
       </div>
       <div>
         <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-        <ul>
-          { changeRequest.details.attestationResponses.map((response) => (
-            <li key={response.id}>
-              { interpretLink(response.attestation.description) }
-              :
-              {' '}
-              { response.response.response }
-            </li>
-          ))}
-        </ul>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Attestation</TableCell>
+                <TableCell>Response</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { changeRequest.details.attestationResponses
+                .map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      { interpretLink(item.attestation.description) }
+                    </TableCell>
+                    <TableCell>
+                      { item.response.response }
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   );

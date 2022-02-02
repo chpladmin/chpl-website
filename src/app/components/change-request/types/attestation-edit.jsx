@@ -1,33 +1,68 @@
 import React from 'react';
 import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 
+import interpretLink from 'components/attestation/attestation-util';
+import { getAngularService } from 'services/angular-react-helper';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
+
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
-  },
-  submittedDetailsContainer: {
-    display: 'grid',
-    gap: '4px',
   },
 });
 
-function ChplChangeRequestAttestationEdit() {
+function ChplChangeRequestAttestationEdit(props) {
+  const DateUtil = getAngularService('DateUtil');
+  const { changeRequest } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
       <div>
-        <Typography gutterBottom variant="subtitle1">Current Attestation</Typography>
-        TBD
+        <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
+        { DateUtil.getDisplayDateFormat(changeRequest.details.attestationPeriod.periodStart) }
+        {' '}
+        -
+        {' '}
+        { DateUtil.getDisplayDateFormat(changeRequest.details.attestationPeriod.periodEnd) }
       </div>
-      <div className={classes.submittedDetailsContainer}>
-        <Typography gutterBottom variant="subtitle1">Submitted attestation</Typography>
-        TBD
+      <div>
+        <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Attestation</TableCell>
+                <TableCell>Response</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { changeRequest.details.attestationResponses
+                .map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      { interpretLink(item.attestation.description) }
+                    </TableCell>
+                    <TableCell>
+                      { item.response.response }
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   );
@@ -36,4 +71,5 @@ function ChplChangeRequestAttestationEdit() {
 export default ChplChangeRequestAttestationEdit;
 
 ChplChangeRequestAttestationEdit.propTypes = {
+  changeRequest: changeRequestProp.isRequired,
 };
