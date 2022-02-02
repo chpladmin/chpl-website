@@ -8,10 +8,11 @@ const InspectListingComponent = {
     warnings: '<',
   },
   controller: class InspectListingController {
-    constructor($log, DateUtil) {
+    constructor($log, $scope, DateUtil) {
       'ngInject';
 
       this.$log = $log;
+      this.$scope = $scope;
       this.DateUtil = DateUtil;
     }
 
@@ -38,12 +39,14 @@ const InspectListingComponent = {
     handleCancel() {
       this.isEditing = false;
       this.onChange({ action: 'cancel' });
+      this.$scope.$digest();
     }
 
     handleChange(listing) {
       this.isEditing = false;
       this.listing = listing;
       this.onChange({ action: 'save', data: listing });
+      this.$scope.$digest();
     }
   },
 };
