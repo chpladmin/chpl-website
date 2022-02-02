@@ -193,16 +193,6 @@
             </div>
           </div>
         </div>
-        <div class="flex-container wrap">
-          <div class="flex-item wrap" ng-repeat="acb in $ctrl.allowedAcbs | orderBy : 'name'" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !$ctrl.isChangeRequest">
-            <label for="developer-transparency-{{ acb.name }}">{{ acb.name }} Transparency Attestation</label>
-            <select class="input-sm form-control" ng-model="$ctrl.transMap[acb.name].transparencyAttestation" id="developer-transparency-{{ acb.name }}" name="developerTransparency{{ acb.name }}">
-              <option value="Negative">Negative</option>
-              <option value="Affirmative">Affirmative</option>
-              <option value="N/A">N/A</option>
-            </select>
-          </div>
-        </div>
       </div>
       <chpl-action-bar ng-if="!$ctrl.isChangeRequest"
                        is-disabled="$ctrl.showFormErrors && !$ctrl.isValid()"

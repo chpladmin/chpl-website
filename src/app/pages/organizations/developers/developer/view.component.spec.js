@@ -29,7 +29,6 @@
         },
         lastModifiedDate: null,
         deleted: null,
-        transparencyAttestations: [],
         products: [{
           name: 'a product',
         }],

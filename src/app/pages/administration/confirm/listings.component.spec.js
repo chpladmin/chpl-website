@@ -19,7 +19,7 @@
         id: 4459,
         chplProductNumber: '15.07.07.1447.t123.v1.00.1.180707',
         developer: {
-          developerId: 448, developerCode: null, name: 'Epic Systems Corporation', website: null, address: null, contact: null, lastModifiedDate: null, deleted: null, transparencyAttestations: [], statusEvents: [], status: null,
+          developerId: 448, developerCode: null, name: 'Epic Systems Corporation', website: null, address: null, contact: null, lastModifiedDate: null, deleted: null, statusEvents: [], status: null,
         },
         product: {
           productId: null, name: 'New product', reportFileLocation: null, contact: null, owner: null, ownerHistory: [], lastModifiedDate: null,

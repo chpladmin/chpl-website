@@ -171,11 +171,6 @@
               email: 'abc@abcdefg.com',
               phoneNumber: '999-999-9999',
             },
-            transparencyAttestations: [{
-              acbId: 3,
-              acbName: 'Drummond Group',
-              attestation: {transparencyAttestation: 'Affirmative', removed: true},
-            }],
           };
           ctrl.cp.developer.developerId = ctrl.developer.developerId;
           ctrl.cp.certifyingBody = {

@@ -6,7 +6,7 @@
 
     mock = {
       developers: [
-        { name: 'a developer', transparencyAttestations: [] },
+        { name: 'a developer' },
       ],
     };
 

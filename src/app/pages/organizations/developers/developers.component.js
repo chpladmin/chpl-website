@@ -9,21 +9,11 @@ export const DevelopersComponent = {
       this.$log = $log;
       this.$state = $state;
       this.hasAnyRole = authService.hasAnyRole;
-      this.activeAcbs = [];
     }
 
     $onChanges (changes) {
       if (changes.developers) {
-        let acbs = {};
-        this.developers = changes.developers.currentValue.developers.map(d => {
-          d.transMap = {};
-          d.transparencyAttestations.forEach(att => {
-            d.transMap[att.acbName] = att.attestation;
-            acbs[att.acbName] = true;
-          });
-          return d;
-        });
-        angular.forEach(acbs, (value, key) => this.activeAcbs.push(key));
+        this.developers = changes.developers.currentValue.developers.map(d => d);
       }
     }
 

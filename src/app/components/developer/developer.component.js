@@ -49,12 +49,6 @@ export const DeveloperComponent = {
             return e;
           });
         }
-        this.transMap = {};
-        if (this.developer.transparencyAttestations) {
-          this.developer.transparencyAttestations.forEach(att => {
-            this.transMap[att.acbName] = att.attestation;
-          });
-        }
         this.developerBackup = angular.copy(this.developer);
       }
       if (changes.canEdit) {
@@ -150,7 +144,6 @@ export const DeveloperComponent = {
         e.statusDate = e.statusDateObject.getTime();
         return e;
       });
-      this.developer.transparencyAttestations = Object.keys(this.transMap).map(key => { return {acbName: key, attestation: this.transMap[key]}; });
       if (!this.developer.address.line1) {
         this.developer.address = undefined;
       }

@@ -7,7 +7,6 @@
     mock = {
       listing: {
         developer: { developerId: 1},
-        transparencyAttestation: 'Affirmative',
         certifyingBody: {
           code: '04',
           name: 'Drummond Group',
