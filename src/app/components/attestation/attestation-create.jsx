@@ -49,41 +49,33 @@ const useStyles = makeStyles({
     columnGap: '16px',
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
-    gridTemplateRows: 'auto',
-    gridTemplateAreas: '"header header header header header header" "certification certification certification certification certification certification" "instruction instruction instruction instruction instruction instruction" "continue continue continue continue continue continue" "name name title title developer developer" "signature signature signature signature signature date" "b b b b b b"',
   },
   forAssistanceContainer: {
     marginTop: '16px',
   },
-  headerContainer: {
-    gridArea: 'header',
-  },
-  certificationContainer: {
-    gridArea: 'certification',
-  },
-  instructionContainer: {
-    gridArea: 'instruction',
-  },
-  continueContainer: {
-    gridArea: 'continue',
+  fullWidthContainer: {
+    gridColumn: '1 / -1',
   },
   nameContainer: {
-    gridArea: 'name',
+    gridColumn: '1 / 3',
+  },
+  nameOnlyContainer: {
+    gridColumn: '1 / 4',
   },
   titleContainer: {
-    gridArea: 'title',
+    gridColumn: '3 / 5',
   },
   developerContainer: {
-    gridArea: 'developer',
+    gridColumn: '5 / 7',
+  },
+  developerOnlyContainer: {
+    gridColumn: '4 / 7',
   },
   signatureContainer: {
-    gridArea: 'signature',
+    gridColumn: '1 / 6',
   },
   dateContainer: {
-    gridArea: 'date',
-  },
-  buttonContainer: {
-    gridArea: 'b',
+    gridColumn: '6 / 7',
   },
 });
 
@@ -287,10 +279,10 @@ function ChplAttestationCreate(props) {
         && (
           <>
             <Container maxWidth="md" className={classes.attestationContainer}>
-              <Typography variant="h2" className={classes.headerContainer}>
+              <Typography variant="h2" className={classes.fullWidthContainer}>
                 Electronic Signature
               </Typography>
-              <Card className={classes.certificationContainer}>
+              <Card className={classes.fullWidthContainer}>
                 <CardContent>
                   <Typography variant="body1">
                     As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
@@ -299,13 +291,13 @@ function ChplAttestationCreate(props) {
                   </Typography>
                 </CardContent>
               </Card>
-              <Typography variant="h4" className={classes.instructionContainer}>
+              <Typography variant="h4" className={classes.fullWidthContainer}>
                 Typing your name below signifies you are completing the Attestations using an electronic signature.
               </Typography>
-              <Typography className={classes.continueContainer}>
+              <Typography className={classes.fullWidthContainer}>
                 To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
               </Typography>
-              <Card className={classes.nameContainer}>
+              <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
                 <CardContent>
                   <div>
                     <Typography gutterBottom variant="subtitle1">
@@ -315,17 +307,19 @@ function ChplAttestationCreate(props) {
                   </div>
                 </CardContent>
               </Card>
-              <Card className={classes.titleContainer}>
-                <CardContent>
-                  <div>
-                    <Typography gutterBottom variant="subtitle1">
-                      Title:
-                    </Typography>
-                    <Typography variant="body1">{user.title}</Typography>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className={classes.developerContainer}>
+              { user.title && (
+                <Card className={classes.titleContainer}>
+                  <CardContent>
+                    <div>
+                      <Typography gutterBottom variant="subtitle1">
+                        Title:
+                      </Typography>
+                      <Typography variant="body1">{user.title}</Typography>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+              <Card className={user.title ? classes.developerContainer : classes.developerOnlyContainer}>
                 <CardContent>
                   <div>
                     <Typography gutterBottom variant="subtitle1">
@@ -361,7 +355,7 @@ function ChplAttestationCreate(props) {
                   </Typography>
                 </CardContent>
               </Card>
-              <div className={classes.buttonContainer}>
+              <div className={classes.fullWidthContainer}>
                 <Button
                   fullWidth
                   id="sign-electronically"
