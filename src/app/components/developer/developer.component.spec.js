@@ -1,35 +1,58 @@
 (() => {
-  'use strict';
-
   describe('the Developer component', () => {
-    var $compile, $log, authService, ctrl, el, mock, scope;
+    let $compile;
+    let $log;
+    let authService;
+    let ctrl;
+    let el;
+    let scope;
 
-    mock = {
+    const mock = {
       developer: {
-        developerId: 636, developerCode: '1635', name: 'Hyland Software,  Inc.', website: 'https://www.onbase.com/',
-        address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
-        contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
-        lastModifiedDate: null, deleted: null,
-        statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
-        status: {id: 1, status: 'Active'},
+        developerId: 636,
+        developerCode: '1635',
+        name: 'Hyland Software,  Inc.',
+        website: 'https://www.onbase.com/',
+        address: {
+          addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA',
+        },
+        contact: {
+          contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor',
+        },
+        lastModifiedDate: null,
+        deleted: null,
+        statusEvents: [{
+          id: null, developerId: 636, status: { id: 1, status: 'Active' }, statusDate: 1459484375763, reason: null,
+        }],
+        status: { id: 1, status: 'Active' },
       },
       developerTweaked: {
-        developerId: 636, developerCode: '1635', name: 'Hyland Software,  Inc.', website: 'https://www.onbase.com/',
-        address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
-        contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
-        lastModifiedDate: null, deleted: null,
-        statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, statusDateObject: jasmine.any(Date), reason: null, $$hashKey: jasmine.any(String)}],
-        status: {id: 1, status: 'Active'},
+        developerId: 636,
+        developerCode: '1635',
+        name: 'Hyland Software,  Inc.',
+        website: 'https://www.onbase.com/',
+        address: {
+          addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA',
+        },
+        contact: {
+          contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor',
+        },
+        lastModifiedDate: null,
+        deleted: null,
+        statusEvents: [{
+          id: null, developerId: 636, status: { id: 1, status: 'Active' }, statusDate: 1459484375763, statusDateObject: jasmine.any(Date), reason: null, $$hashKey: jasmine.any(String),
+        }],
+        status: { id: 1, status: 'Active' },
       },
-      acbs: [{name: 'Drummond'}],
+      acbs: [{ name: 'Drummond' }],
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.components', $provide => {
-        $provide.decorator('authService', $delegate => {
-          $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', ($provide) => {
+        $provide.decorator('authService', ($delegate) => ({
+          ...$delegate,
+          hasAnyRole: jasmine.createSpy('hasAnyRole'),
+        }));
       });
 
       inject((_$compile_, _$log_, $rootScope, _authService_) => {
@@ -62,7 +85,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -86,13 +109,13 @@
 
         it('shouldn\'t change anything that shouldn\'t change', () => {
           // save old state
-          let developer = ctrl.developer;
-          let allowedAcbs = ctrl.allowedAcbs;
+          const { developer } = ctrl;
+          const { allowedAcbs } = ctrl;
 
           // make changes
           ctrl.$onChanges({});
 
-          //assert
+          // assert
           expect(developer).toBe(ctrl.developer);
           expect(allowedAcbs).toBe(ctrl.allowedAcbs);
         });
@@ -102,9 +125,9 @@
         it('should allow edit based on the container, the developer status, and the user\'s role', () => {
           expect(ctrl.can('edit')).toBe(true);
           ctrl.developer.status.status = 'not active';
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ONC') > -1)); // user has ROLE_ONC
           expect(ctrl.can('edit')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ACB') > -1)); // user has ROLE_ACB
           expect(ctrl.can('edit')).toBe(false);
           ctrl.developer.status.status = 'Active';
           ctrl.canEdit = false;
@@ -113,21 +136,21 @@
 
         it('should allow merge iff the container allows it and the user is ADMIN or ONC', () => {
           expect(ctrl.can('merge')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ONC') > -1)); // user has ROLE_ONC
           expect(ctrl.can('merge')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ACB') > -1)); // user has ROLE_ACB
           expect(ctrl.can('merge')).toBe(false);
           authService.hasAnyRole.and.returnValue(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ONC') > -1)); // user has ROLE_ONC
           ctrl.canMerge = false;
           expect(ctrl.can('merge')).toBe(false);
         });
 
         it('should allow split based on the container, the developer status, and the user\'s role', () => {
           expect(ctrl.can('split')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ONC') > -1)); // user has ROLE_ONC
           expect(ctrl.can('split')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ACB') > -1)); // user has ROLE_ACB
           expect(ctrl.can('split')).toBe(true);
           ctrl.developer.status.status = 'not active';
           expect(ctrl.can('split')).toBe(false);
@@ -156,7 +179,7 @@
 
       describe('when handling edits', () => {
         it('should handle save', () => {
-          let savedObject = angular.copy(mock.developer);
+          const savedObject = angular.copy(mock.developer);
           savedObject.statusEvents[0].statusDateObject = jasmine.any(Date);
           savedObject.statusEvents[0].$$hashKey = jasmine.any(String);
           ctrl.save();
@@ -172,13 +195,13 @@
       describe('when handling callbacks', () => {
         it('should handle the address', () => {
           ctrl.developer.address = undefined;
-          ctrl.editAddress({city: 'a name'});
+          ctrl.editAddress({ city: 'a name' });
           expect(ctrl.developer.address.city).toBe('a name');
         });
 
         it('should handle the contact', () => {
           ctrl.developer.contact = undefined;
-          ctrl.editContact({name: 'a name'});
+          ctrl.editContact({ name: 'a name' });
           expect(ctrl.developer.contact.name).toBe('a name');
         });
       });
@@ -199,7 +222,7 @@
           expect(ctrl.isValid()).toBeFalsy();
           ctrl.developer.statusEvents = []; // at least one status event
           expect(ctrl.isValid()).toBe(false);
-          ctrl.developer.statusEvents.push({id: 'fake'}); // matches previous status
+          ctrl.developer.statusEvents.push({ id: 'fake' }); // matches previous status
           expect(ctrl.isValid()).toBe(false);
           pStatus = false; // matches previous date
           expect(ctrl.isValid()).toBe(false);
@@ -211,7 +234,7 @@
           beforeEach(() => {
             ctrl.developer.statusEvents = [{
               statusDateObject: new Date('2019-03-15'),
-              status: {status: 'Active'},
+              status: { status: 'Active' },
             }];
           });
 
@@ -223,7 +246,7 @@
           it('should recognize a duplicate date', () => {
             ctrl.developer.statusEvents.push({
               statusDateObject: new Date('2019-03-15'),
-              status: {status: 'Retired'},
+              status: { status: 'Retired' },
             });
             expect(ctrl.matchesPreviousStatus(ctrl.developer.statusEvents[1])).toBe(false);
             expect(ctrl.matchesPreviousDate(ctrl.developer.statusEvents[1])).toBe(true);
@@ -232,7 +255,7 @@
           it('should recognize a duplicate status', () => {
             ctrl.developer.statusEvents.push({
               statusDateObject: new Date('2019-03-16'),
-              status: {status: 'Active'},
+              status: { status: 'Active' },
             });
             expect(ctrl.matchesPreviousStatus(ctrl.developer.statusEvents[1])).toBe(true);
             expect(ctrl.matchesPreviousDate(ctrl.developer.statusEvents[1])).toBe(false);

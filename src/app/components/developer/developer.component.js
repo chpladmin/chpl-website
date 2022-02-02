@@ -18,8 +18,9 @@ export const DeveloperComponent = {
     takeAction: '&',
   },
   controller: class DeveloperComponent {
-    constructor ($filter, $log, authService, featureFlags) {
+    constructor($filter, $log, authService, featureFlags) {
       'ngInject';
+
       this.$filter = $filter;
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
@@ -28,7 +29,7 @@ export const DeveloperComponent = {
       this.errorMessages = [];
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.allowedAcbs) {
         this.allowedAcbs = angular.copy(changes.allowedAcbs.currentValue);
       }
@@ -44,7 +45,7 @@ export const DeveloperComponent = {
           this.developer.address = {};
         }
         if (this.developer.statusEvents) {
-          this.developer.statusEvents = this.developer.statusEvents.map(e => {
+          this.developer.statusEvents = this.developer.statusEvents.map((e) => {
             e.statusDateObject = new Date(e.statusDate);
             return e;
           });
@@ -90,7 +91,7 @@ export const DeveloperComponent = {
     /*
          * Allowed actions
          */
-    can (action) {
+    can(action) {
       if (action === 'edit') {
         return this.canEdit // allowed by containing component
                     && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
@@ -108,28 +109,28 @@ export const DeveloperComponent = {
       }
     }
 
-    showFooter () {
+    showFooter() {
       return this.can('edit') || this.can('merge') || this.can('split');
     }
 
     /*
          * Initiate changes
          */
-    edit () {
+    edit() {
       this.takeAction({
         action: 'edit',
         developerId: this.developer.developerId,
       });
     }
 
-    merge () {
+    merge() {
       this.takeAction({
         action: 'merge',
         developerId: this.developer.developerId,
       });
     }
 
-    split () {
+    split() {
       this.takeAction({
         action: 'split',
         developerId: this.developer.developerId,
@@ -139,67 +140,67 @@ export const DeveloperComponent = {
     /*
          * Resolve changes
          */
-    save () {
-      this.developer.statusEvents = this.developer.statusEvents.map(e => {
+    save() {
+      this.developer.statusEvents = this.developer.statusEvents.map((e) => {
         e.statusDate = e.statusDateObject.getTime();
         return e;
       });
       if (!this.developer.address.line1) {
         this.developer.address = undefined;
       }
-      this.onEdit({developer: this.developer});
+      this.onEdit({ developer: this.developer });
     }
 
-    cancel () {
+    cancel() {
       this.onCancel();
     }
 
     /*
          * Handle callbacks
          */
-    formUpdate () {
+    formUpdate() {
       if (this.isChangeRequest) {
-        this.onEdit({developer: this.developer});
+        this.onEdit({ developer: this.developer });
       }
     }
 
-    editAddress (address) {
+    editAddress(address) {
       this.developer.address = angular.copy(address);
       if (this.isChangeRequest) {
-        this.onEdit({developer: this.developer});
+        this.onEdit({ developer: this.developer });
       }
       this.generateErrorMessages();
     }
 
-    editContact (contact) {
+    editContact(contact) {
       this.developer.contact = angular.copy(contact);
       if (this.isChangeRequest) {
-        this.onEdit({developer: this.developer});
+        this.onEdit({ developer: this.developer });
       }
       this.generateErrorMessages();
     }
 
-    takeActionBarAction (action) {
+    takeActionBarAction(action) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'mouseover':
-        this.showFormErrors = true;
-        this.generateErrorMessages();
-        break;
-      case 'save':
-        this.save();
-        break;
-                //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'mouseover':
+          this.showFormErrors = true;
+          this.generateErrorMessages();
+          break;
+        case 'save':
+          this.save();
+          break;
+                // no default
       }
     }
 
     /*
          * Form validation
          */
-    generateErrorMessages () {
-      let messages = [];
+    generateErrorMessages() {
+      const messages = [];
       if (this.showFormErrors) {
         if (this.isMerging && (!this.mergingDevelopers || this.mergingDevelopers.length === 0)) {
           messages.push('At least one other Developer must be selected to merge');
@@ -208,21 +209,21 @@ export const DeveloperComponent = {
       this.errorMessages = messages;
     }
 
-    hasContact () {
+    hasContact() {
       return this.developer.contact
                 && (this.developer.contact.fullName || this.developer.contact.friendlyName
                     || this.developer.contact.email || this.developer.contact.phoneNumber
                     || this.developer.contact.title);
     }
 
-    hasAddress () {
+    hasAddress() {
       return this.developer.address
                 && (this.developer.address.line1 || this.developer.address.line2
                     || this.developer.address.city || this.developer.address.state
                     || this.developer.address.zipcode || this.developer.address.country);
     }
 
-    isValid () {
+    isValid() {
       return this.form.$valid // basic form validation
                 && !this.isInvalid // validation from outside
                 && this.developer.statusEvents && this.developer.statusEvents.length > 0 // status history exists
@@ -230,40 +231,40 @@ export const DeveloperComponent = {
                 && this.errorMessages.length === 0; // business logic error messages
     }
 
-    matchesPreviousStatus (status) {
-      let orderedStatus = this.developer.statusEvents.sort((a, b) => a.statusDateObject < b.statusDateObject ? -1 : a.statusDateObject > b.statusDateObject ? 1 : 0); // earliest first
-      let idx = orderedStatus.indexOf(status);
+    matchesPreviousStatus(status) {
+      const orderedStatus = this.developer.statusEvents.sort((a, b) => (a.statusDateObject < b.statusDateObject ? -1 : a.statusDateObject > b.statusDateObject ? 1 : 0)); // earliest first
+      const idx = orderedStatus.indexOf(status);
       return idx > 0 && status.status.status === orderedStatus[idx - 1].status.status;
     }
 
-    matchesPreviousDate (status) {
-      let orderedStatus = this.developer.statusEvents.sort((a, b) => a.statusDateObject < b.statusDateObject ? -1 : a.statusDateObject > b.statusDateObject ? 1 : 0); // earliest first
-      let idx = orderedStatus.indexOf(status);
+    matchesPreviousDate(status) {
+      const orderedStatus = this.developer.statusEvents.sort((a, b) => (a.statusDateObject < b.statusDateObject ? -1 : a.statusDateObject > b.statusDateObject ? 1 : 0)); // earliest first
+      const idx = orderedStatus.indexOf(status);
       return idx > 0 && this.$filter('date')(status.statusDateObject, 'mediumDate', 'UTC') === this.$filter('date')(orderedStatus[idx - 1].statusDateObject, 'mediumDate', 'UTC');
     }
 
-    isBeingActivatedFromOncInactiveStatus () {
-      let orderedStatus = this.developer.statusEvents.sort((a, b) => a.statusDateObject < b.statusDateObject ? 1 : a.statusDateObject > b.statusDateObject ? -1 : 0); // latest first
+    isBeingActivatedFromOncInactiveStatus() {
+      const orderedStatus = this.developer.statusEvents.sort((a, b) => (a.statusDateObject < b.statusDateObject ? 1 : a.statusDateObject > b.statusDateObject ? -1 : 0)); // latest first
       return this.developer.status.status !== 'Active' && orderedStatus[0].status && orderedStatus[0].status.status === 'Active';
     }
 
     /*
          * Form actions
          */
-    addStatus () {
-      this.developer.statusEvents.push({statusDateObject: new Date()});
+    addStatus() {
+      this.developer.statusEvents.push({ statusDateObject: new Date() });
     }
 
-    removeStatus (idx) {
+    removeStatus(idx) {
       this.developer.statusEvents.splice(idx, 1);
     }
 
     /*
          * Pill generation
          */
-    generateMergeOptions () {
+    generateMergeOptions() {
       this.mergeOptions = {
-        name: Array.from(new Set([this.developerBackup.name].concat(this.mergingDevelopers.map(d => d.name)))),
+        name: Array.from(new Set([this.developerBackup.name].concat(this.mergingDevelopers.map((d) => d.name)))),
         website: [],
       };
       this.contactOptions = {
@@ -281,7 +282,7 @@ export const DeveloperComponent = {
         country: [],
       };
       this.fillMergeOptionByDeveloper(this.developerBackup);
-      this.mergingDevelopers.forEach(d => this.fillMergeOptionByDeveloper(d));
+      this.mergingDevelopers.forEach((d) => this.fillMergeOptionByDeveloper(d));
       this.mergeOptions.website = Array.from(new Set(this.mergeOptions.website));
       this.contactOptions.fullName = Array.from(new Set(this.contactOptions.fullName));
       this.contactOptions.title = Array.from(new Set(this.contactOptions.title));
@@ -295,7 +296,7 @@ export const DeveloperComponent = {
       this.addressOptions.country = Array.from(new Set(this.addressOptions.country));
     }
 
-    fillMergeOptionByDeveloper (developer) {
+    fillMergeOptionByDeveloper(developer) {
       if (developer.website) {
         this.mergeOptions.website.push(developer.website);
       }
@@ -335,14 +336,14 @@ export const DeveloperComponent = {
       }
     }
 
-    getDifferences (predicate) {
+    getDifferences(predicate) {
       if (!this.developer || !this.mergeOptions[predicate]) { return; }
       return this.mergeOptions[predicate]
-        .filter(e => e && e.length > 0 && e !== this.developer[predicate])
-        .sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        .filter((e) => e && e.length > 0 && e !== this.developer[predicate])
+        .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     }
 
-    selectDifference (predicate, value) {
+    selectDifference(predicate, value) {
       this.developer[predicate] = value;
     }
   },

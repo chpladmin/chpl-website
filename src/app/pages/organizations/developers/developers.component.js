@@ -1,23 +1,24 @@
-export const DevelopersComponent = {
+const DevelopersComponent = {
   templateUrl: 'chpl.organizations/developers/developers.html',
   bindings: {
     developers: '<',
   },
   controller: class DevelopersComponent {
-    constructor ($log, $state, authService) {
+    constructor($log, $state, authService) {
       'ngInject';
+
       this.$log = $log;
       this.$state = $state;
       this.hasAnyRole = authService.hasAnyRole;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developers) {
-        this.developers = changes.developers.currentValue.developers.map(d => d);
+        this.developers = changes.developers.currentValue.developers.map((d) => d);
       }
     }
 
-    loadDeveloper () {
+    loadDeveloper() {
       this.$state.go('organizations.developers.developer', {
         developerId: this.developerToLoad.developerId,
       });
@@ -27,3 +28,5 @@ export const DevelopersComponent = {
 
 angular.module('chpl.organizations')
   .component('chplDevelopers', DevelopersComponent);
+
+export default DevelopersComponent;

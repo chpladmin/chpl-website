@@ -1,10 +1,12 @@
 (() => {
-  'use strict';
-
   describe('the Developers component', () => {
-    var $compile, $log, ctrl, el, mock, scope;
+    let $compile;
+    let $log;
+    let ctrl;
+    let el;
+    let scope;
 
-    mock = {
+    const mock = {
       developers: [
         { name: 'a developer' },
       ],
@@ -17,7 +19,7 @@
         $log = _$log_;
 
         scope = $rootScope.$new();
-        scope.developers = {developers: mock.developers};
+        scope.developers = { developers: mock.developers };
 
         el = angular.element('<chpl-developers developers="developers"></chpl-developers>');
 
@@ -30,7 +32,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
