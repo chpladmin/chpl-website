@@ -21,6 +21,10 @@
                         can-split="$ctrl.can('split-developer')"
                         take-action="$ctrl.takeAction(action)"
                         ></chpl-developer>
+        <chpl-developer-bridge
+          developer="$ctrl.developer"
+          dispatch="::$ctrl.takeAction"
+          ></chpl-developer-bridge>
       </div>
       <div feature-flag="role-developer">
         <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
