@@ -50,6 +50,7 @@ function ChplChangeRequestAttestationEdit(props) {
             </TableHead>
             <TableBody>
               { changeRequest.details.attestationResponses
+                .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
                 .map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>
