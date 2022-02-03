@@ -18,7 +18,7 @@ import theme from 'themes/theme';
 
 function ChplAttestationsView(props) {
   const DateUtil = getAngularService('DateUtil');
-  const { hasAnyRole } = useContext(UserContext);
+  const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { developer } = props;
   const { isLoading, data } = useFetchPublicAttestations({ developer });
 
@@ -53,7 +53,7 @@ function ChplAttestationsView(props) {
               </ul>
             )}
         </CardContent>
-        { hasAnyRole(['ROLE_DEVELOPER'])
+        { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId })
           && (
             <CardActions>
               <Button

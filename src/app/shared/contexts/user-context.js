@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 const UserContext = createContext({
   hasAnyRole: () => false,
+  hasAuthorityOn: () => false,
   impersonating: false,
   setImpersonating: () => {},
   setUser: () => {},

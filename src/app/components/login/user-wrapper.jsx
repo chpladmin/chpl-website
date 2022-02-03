@@ -42,8 +42,13 @@ function UserWrapper(props) {
     return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
   };
 
+  const hasAuthorityOn = (organization) => user?.organizations
+        .filter((org) => org.id === organization.id)
+        .length > 0;
+
   const userState = {
     hasAnyRole,
+    hasAuthorityOn,
     impersonating,
     setImpersonating,
     setUser,
