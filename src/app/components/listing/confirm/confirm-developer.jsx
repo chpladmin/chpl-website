@@ -140,7 +140,10 @@ function ChplConfirmDeveloper(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    setSelectedDeveloper(props.developers.filter((d) => d.developerId === props.developer.developerId)[0]);
+    const foundDeveloper = props.developers.find((d) => d.developerId === props.developer.developerId);
+    if (foundDeveloper) {
+      setSelectedDeveloper(foundDeveloper);
+    }
   }, [props.developer, props.developers]); // eslint-disable-line react/destructuring-assignment
 
   let formik;
@@ -148,7 +151,9 @@ function ChplConfirmDeveloper(props) {
   const handleCreationToggle = (creating) => {
     if (isCreating !== creating) {
       if (isCreating) {
-        props.dispatch('select', selectedDeveloper);
+        if (selectedDeveloper) {
+          props.dispatch('select', selectedDeveloper);
+        }
       } else {
         formik.handleSubmit();
       }
