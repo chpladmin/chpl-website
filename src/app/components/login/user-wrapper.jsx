@@ -36,7 +36,7 @@ function UserWrapper(props) {
   }, [$rootScope, authService]);
 
   const hasAnyRole = (roles) => {
-    if (!roles || roles.length === 0 || !user.role) {
+    if (!user || !roles || roles.length === 0 || !user.role) {
       return false;
     }
     return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
