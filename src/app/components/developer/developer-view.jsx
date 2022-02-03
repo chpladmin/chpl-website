@@ -4,8 +4,9 @@ import {
 } from 'prop-types';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined';
+import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import GroupIcon from '@material-ui/icons/Group';
+import CallMergeIcon from '@material-ui/icons/CallMerge';
 import {
   Button,
   ButtonGroup,
@@ -41,6 +42,22 @@ function ChplDeveloperView(props) {
   useEffect(() => {
     setDeveloper(props.developer);
   }, [props.developer]); // eslint-disable-line react/destructuring-assignment
+
+  const can = (action) => {
+    // todo - containing allowances?
+    // todo - add Developer can edit (flag & owns organization based)
+    if (action === 'edit') {
+      return hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+        || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
+    }
+    if (action === 'merge') {
+      return hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
+    }
+    if (action === 'split') {
+      return hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+        || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
+    }
+  };
 
   const edit = () => {
     props.dispatch('edit', developer);
@@ -128,30 +145,51 @@ function ChplDeveloperView(props) {
               )}
           </div>
         </CardContent>
-        <CardActions className={classes.cardActions}>
-          <ButtonGroup
-            color="primary"
-          >
-            <ChplTooltip title={`Edit ${developer.fullName}`}>
-              <Button
-                variant="contained"
-                aria-label={`Edit ${developer.fullName}`}
-                onClick={edit}
+        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+          && (
+            <CardActions className={classes.cardActions}>
+              <ButtonGroup
+                color="primary"
               >
-                <EditOutlinedIcon />
-              </Button>
-            </ChplTooltip>
-            <ChplTooltip title={`Impersonate ${developer.fullName}`}>
-              <Button
-                variant="outlined"
-                aria-label={`Impersonate ${developer.fullName}`}
-                onClick={() => {}}
-              >
-                <GroupIcon />
-              </Button>
-            </ChplTooltip>
-          </ButtonGroup>
-        </CardActions>
+                { can('edit')
+                  && (
+                    <ChplTooltip title={`Edit ${developer.name} Information`}>
+                      <Button
+                        variant="contained"
+                        aria-label={`Edit ${developer.name} Information`}
+                        onClick={edit}
+                      >
+                        <EditOutlinedIcon />
+                      </Button>
+                    </ChplTooltip>
+                  )}
+                { can('split')
+                  && (
+                <ChplTooltip title={`Split ${developer.name}`}>
+                  <Button
+                    variant="outlined"
+                    aria-label={`Split ${developer.name}`}
+                    onClick={() => {}}
+                  >
+                    <CallSplitIcon />
+                  </Button>
+                </ChplTooltip>
+                  )}
+                { can('merge')
+                  && (
+                <ChplTooltip title={`Merge ${developer.name}`}>
+                  <Button
+                    variant="outlined"
+                    aria-label={`Merge ${developer.name}`}
+                    onClick={() => {}}
+                  >
+                    <CallMergeIcon />
+                  </Button>
+                </ChplTooltip>
+                  )}
+              </ButtonGroup>
+            </CardActions>
+          )}
       </Card>
   );
 }
