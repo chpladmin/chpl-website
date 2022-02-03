@@ -14,7 +14,7 @@ import {
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
 
-import { UserContext } from 'shared/contexts';
+import { UserWrapper } from 'components/login';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
@@ -41,7 +41,7 @@ function ChplDeveloper(props) {
   };
 
   return (
-    <UserContext>
+    <UserWrapper>
       <Container>
         { isEditing
           && (
@@ -58,7 +58,7 @@ function ChplDeveloper(props) {
             />
           )}
       </Container>
-    </UserContext>
+    </UserWrapper>
   );
 }
 

@@ -18,7 +18,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { ChplTooltip } from 'components/util';
+import { ChplLink, ChplTooltip } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import { developer as developerPropType } from 'shared/prop-types';
 import { UserContext } from 'shared/contexts';
 
@@ -32,6 +33,7 @@ const useStyles = makeStyles({
 });
 
 function ChplDeveloperView(props) {
+  const DateUtil = getAngularService('DateUtil');
   const [developer, setDeveloper] = useState({});
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
@@ -46,98 +48,84 @@ function ChplDeveloperView(props) {
 
   return (
       <Card
-        title={`${developer.fullName} Information`}
+        title={`${developer.name} Information`}
       >
         <CardHeader
-          title={developer.fullName}
-          subheader={developer.friendlyName}
+          title={developer.name}
         />
         <CardContent className={classes.content}>
           <div>
             <Typography>
-              {developer.email
-               && (
-                 <>
-                   <strong>Email:</strong>
-                   <br />
-                   {developer.email}
-                 </>
-               )}
+              <strong>Developer code</strong>
+              <br />
+              {developer.developerCode}
             </Typography>
-            {developer.title
-             && (
-               <Typography>
-                 <strong>Title:</strong>
-                 <br />
-                 {developer.title}
-               </Typography>
-             )}
-            {developer.phoneNumber
-             && (
-               <Typography>
-                 <strong>Phone Number:</strong>
-                 <br />
-                 {developer.phoneNumber}
-               </Typography>
-             )}
-            {developer.subjectName
-             && (
-               <Typography>
-                 <strong>Developer Name:</strong>
-                 <br />
-                 {developer.subjectName}
-               </Typography>
-             )}
             <Typography>
-              {developer.role
-               && (
-                 <>
-                   <strong>Role:</strong>
-                   <br />
-                   {developer.role}
-                 </>
-               )}
+              <strong>Self-developer</strong>
+              <br />
+              {developer.selfDeveloper ? 'Yes' : 'No'}
             </Typography>
-            {developer.organizations?.length > 0
-             && (
-               <Typography>
-                 <strong>
-                   Organization
-                   {developer.organizations.length !== 1 ? 's' : ''}
-                   :
-                 </strong>
-                 <br />
-                 {developer.organizations.map((org) => (org.name)).join('; ')}
-               </Typography>
-             )}
+            { developer.statusEvents
+              ?.sort((a, b) => b.statusDate - a.statusDate)
+              .map((status) => (
+                <Typography key={status.id}>
+                  <strong>Status</strong>
+                  <br />
+                  {status.status.status} as of { DateUtil.getDisplayDateFormat(status.statusDate) }
+                  { status.reason
+                    && (
+                      <>
+                      <br />
+                        {status.reason}
+                      </>
+                    )}
+                </Typography>
+              ))}
           </div>
           <div>
-            <Typography>
-              <strong>Last Login:</strong>
-              <br />
-              {developer.lastLoggedInDate ? DateUtil.timestampToString(developer.lastLoggedInDate) : 'N/A'}
-            </Typography>
-            <Typography>
-              <strong>Account Locked:</strong>
-              <br />
-              {developer.accountLocked
-                ? <CheckBoxIcon />
-                : <CheckBoxOutlineBlankOutlinedIcon />}
-            </Typography>
-            <Typography>
-              <strong>Account Enabled:</strong>
-              <br />
-              { developer.accountEnabled
-                ? <CheckBoxIcon />
-                : <CheckBoxOutlineBlankOutlinedIcon />}
-            </Typography>
-            <Typography>
-              <strong>Password change on next login:</strong>
-              <br />
-              { developer.passwordResetRequired
-                ? <CheckBoxIcon />
-                : <CheckBoxOutlineBlankOutlinedIcon />}
-            </Typography>
+            { developer.contact
+              && (
+                <Typography>
+                  <strong>Contact</strong>
+                  <br />
+                  <span className="sr-only">Full name: </span>{developer.contact.fullName}
+                  {developer.contact.title
+                   && (
+                     <>
+                       , <span className="sr-only">Title: </span>{developer.contact.title}
+                     </>
+                   )}
+                  <br />
+                  <span className="sr-only">Phone: </span>{developer.contact.phoneNumber}<br />
+                  <span className="sr-only">Email: </span>{developer.contact.email}
+                </Typography>
+              )}
+            { developer.address
+              && (
+                <Typography>
+                  <strong>Address</strong>
+                  <br />
+                  <span className="sr-only">Line 1: </span>{developer.address.line1}
+                  {developer.address.line2
+                   && (
+                     <>
+                     , <span className="sr-only">Line 2: </span>{developer.address.line2}
+                     </>
+                   )}
+                  <br />
+                  <span className="sr-only">City: </span>{developer.address.city}, <span className="sr-only">State: </span>{developer.address.state} <span className="sr-only">Zipcode: </span>{developer.address.zipcode}, <span className="sr-only">Country: </span>{developer.address.country}
+                </Typography>
+              )}
+            { developer.website
+              && (
+                <Typography>
+                  <strong>Website</strong>
+                  <br />
+                  <ChplLink
+                    href={developer.website}
+                  />
+                </Typography>
+              )}
           </div>
         </CardContent>
         <CardActions className={classes.cardActions}>
@@ -153,18 +141,15 @@ function ChplDeveloperView(props) {
                 <EditOutlinedIcon />
               </Button>
             </ChplTooltip>
-            { canImpersonate
-              && (
-                <ChplTooltip title={`Impersonate ${developer.fullName}`}>
-                  <Button
-                    variant="outlined"
-                    aria-label={`Impersonate ${developer.fullName}`}
-                    onClick={impersonate}
-                  >
-                    <GroupIcon />
-                  </Button>
-                </ChplTooltip>
-              )}
+            <ChplTooltip title={`Impersonate ${developer.fullName}`}>
+              <Button
+                variant="outlined"
+                aria-label={`Impersonate ${developer.fullName}`}
+                onClick={() => {}}
+              >
+                <GroupIcon />
+              </Button>
+            </ChplTooltip>
           </ButtonGroup>
         </CardActions>
       </Card>
