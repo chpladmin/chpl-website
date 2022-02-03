@@ -205,28 +205,30 @@ function ChplAttestationCreate(props) {
           <>
             <Container maxWidth="md">
               <Typography gutterBottom variant="h2">
-                Introduction
+                Section 1 &mdash; Introduction
               </Typography>
               <Card>
                 <CardContent>
                   <Typography gutterBottom variant="body1">
                     <strong>
-                      The Conditions and Maintenance of Certification requirements express initial and ongoing requirements that a health IT developer of certified Health IT and its certified Health IT Module(s) must meet or adhere to in order to maintain their certification status in the ONC Health IT Certification Program (Program).
+                      The Conditions and Maintenance of Certification requirements are initial and ongoing requirements that a health IT developer of certified health IT and its certified Health IT Module(s) must meet or adhere to in order to maintain their certification status in the ONC Health IT Certification Program (Certification Program).
                     </strong>
                   </Typography>
                   <Divider />
                   <Typography gutterBottom variant="body1">
                     The Attestations Condition and Maintenance of Certification (&quot;Attestations&quot;) at
                     {' '}
-                    <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-D/section-170.406">&sect; 170.406</a>
+                    <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-D/section-170.406">45 CFR &sect;170.406</a>
                     {' '}
-                    requires that a health IT developer of certified health IT, or its authorized representative that is capable of binding the health IT developer, must provide the Secretary of Health and Human Services an attestation of compliance with the following Conditions and Maintenance of Certification requirements. Attestations are submitted to ONC-Authorized Certification Bodies (ONC-ACBs) for review and subsequent submission to ONC for public availability.
+                    requires that a health IT developer of certified health IT, or its authorized representative that is capable of binding the health IT developer, must provide the Secretary of Health and Human Services an attestation of compliance with the Conditions and Maintenance of Certification requirements specified in that regulation. Attestations are submitted to ONC-Authorized Certification Bodies (ONC-ACBs) for review and subsequent submission to ONC for public availability (
+                    <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-E#p-170.523(q)">45 CFR &sect;170.523(q)</a>
+                    ).
                   </Typography>
                   <Typography variant="body1">
-                    Please proceed to review the Attestations and indicate your (health IT developer’s) compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement. Note, per
+                    Please proceed to review the Attestations and indicate the compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement for your health IT developer of certified health IT. Note that, per
                     {' '}
-                    <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-E/section-170.580">&sect; 170.580</a>
-                    , under certain circumstances, ONC may directly review a health IT developer&apos;s actions or practices or its certified health IT to determine whether it conforms to the requirements of the Program. This may result in corrective action as necessary.  In addition, you may be subject to investigation by the HHS Office of the Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
+                    <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-E/section-170.580">45 CFR &sect;170.580</a>
+                    , under certain circumstances, ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program. This may result in corrective action and enforcement procedures under the Certification Program as necessary.  In addition, you may be subject to investigation by the HHS Office of Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
                   </Typography>
                 </CardContent>
               </Card>
@@ -235,8 +237,13 @@ function ChplAttestationCreate(props) {
                 {' '}
                 <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
                 {' '}
-                to submit a ticket as applicable. For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category. For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category. For technical assistance with this process, please select the &quot;CHPL&quot; category.
+                to submit a ticket as applicable.
               </Typography>
+              <ul>
+                <li>For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category.</li>
+                <li>For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category.</li>
+                <li>For technical assistance with this process, please select the &quot;CHPL&quot; category.</li>
+              </ul>
             </Container>
           </>
         )}
@@ -245,10 +252,16 @@ function ChplAttestationCreate(props) {
           <>
             <Container maxWidth="md">
               <Typography gutterBottom variant="h2">
-                Attestations
+                Section 2 &mdash; Attestations
               </Typography>
               <Card>
                 <CardContent>
+                  <Typography gutterBottom variant="body1">
+                    As a health IT developer of certified health IT that had an active certification under the ONC Health IT Certification Program at any time during the Attestation Period, please indicate your compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement for the entirety of the Attestation Period.
+                  </Typography>
+                  <Typography variant="body1">
+                    Select only one response for each statement.
+                  </Typography>
                   {attestationResponses
                     .map((attestation, idx) => (
                       <div key={attestation.attestation.id}>
@@ -291,22 +304,23 @@ function ChplAttestationCreate(props) {
           <>
             <Container maxWidth="md" className={classes.attestationContainer}>
               <Typography variant="h2" className={classes.fullWidthContainer}>
-                Electronic Signature
+                Section 3 &mdash; Electronic Signature
               </Typography>
               <Card className={classes.fullWidthContainer}>
                 <CardContent>
-                  <Typography variant="body1">
+                  <Typography gutterBottom variant="body1">
                     As a health IT developer of certified health IT, or as an authorized representative that is capable of binding the health IT developer, I certify the Attestations to the Secretary of Health and Human Services provided here are true and correct to the best of my knowledge and belief.
-                    I understand that under certain circumstances ONC may directly review the health IT developer&apos;s actions or practices or its certified health IT to determine whether it conforms to the requirements of the Program. This may result in corrective action as necessary.
-                    I also understand that I and my company may be subject to investigation by the HHS Office of the Inspector General for submitting a false attestation as specified in the 21st Century Cures Act.
+                  </Typography>
+                  <Typography gutterBottom variant="body1">
+                    I understand that under certain circumstances ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program. This may result in corrective action and enforcement procedures under the Certification Program as necessary.
+                  </Typography>
+                  <Typography variant="body1">
+                    I also understand that I and my company may be subject to investigation by the HHS Office of Inspector General for submitting a false attestation as specified in the 21st Century Cures Act and that submitting a false attestation may subject my company and me to liability under Federal law.
                   </Typography>
                 </CardContent>
               </Card>
-              <Typography variant="h4" className={classes.fullWidthContainer}>
-                Typing your name below signifies you are completing the Attestations using an electronic signature.
-              </Typography>
               <Typography className={classes.fullWidthContainer}>
-                To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
+                Typing your name below signifies you are completing the Attestations using an electronic signature. To continue with the electronic signature process, please enter your name and click the &quot;Sign Electronically&quot; button to confirm and submit the Attestations to your ONC-Authorized Certification Body (ONC-ACB) for review.
               </Typography>
               <Card className={user.title ? classes.nameContainer : classes.nameOnlyContainer}>
                 <CardContent>
@@ -388,10 +402,14 @@ function ChplAttestationCreate(props) {
         && (
           <>
             <Container maxWidth="md">
-              <Typography gutterBottom variant="h2">Confirmation</Typography>
+              <Typography variant="h2" className={classes.fullWidthContainer}>
+                Section 4 &mdash; Confirmation Page
+              </Typography>
               <Card>
                 <CardContent>
-                  <Typography variant="body1">Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).</Typography>
+                  <Typography variant="body1">
+                    Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
+                  </Typography>
                 </CardContent>
               </Card>
             </Container>
