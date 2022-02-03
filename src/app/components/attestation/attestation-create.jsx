@@ -88,6 +88,7 @@ function ChplAttestationCreate(props) {
   const { mutate } = usePostChangeRequest();
   const [attestationResponses, setAttestationResponses] = useState({});
   const [changeRequestType, setChangeRequestType] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [signature, setSignature] = useState('');
   const [stage, setStage] = useState(0);
   const { user } = useContext(UserContext);
@@ -119,7 +120,7 @@ function ChplAttestationCreate(props) {
 
   const isFormFilledOut = () => attestationResponses.reduce((filledOut, attestation) => filledOut && !!attestation.response.id, true);
 
-  const isSubmitDisabled = () => signature !== user.fullName;
+  const isSubmitDisabled = () => (signature !== user.fullName) || isSubmitting;
 
   const canNext = () => stage === 0 || (stage === 1 && isFormFilledOut());
 
@@ -149,6 +150,7 @@ function ChplAttestationCreate(props) {
   };
 
   const handleSubmit = () => {
+    setIsSubmitting(true);
     const payload = {
       changeRequestType,
       developer,
@@ -159,9 +161,11 @@ function ChplAttestationCreate(props) {
     };
     mutate(payload, {
       onSuccess: () => {
+        setIsSubmitting(false);
         setStage(3);
       },
       onError: (error) => {
+        setIsSubmitting(false);
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
           toaster.pop({
             type: 'info',
