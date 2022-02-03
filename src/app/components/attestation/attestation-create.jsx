@@ -408,7 +408,10 @@ function ChplAttestationCreate(props) {
               <Card>
                 <CardContent>
                   <Typography variant="body1">
-                    Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
+                    Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. An email confirmation has been sent to the CHPL user accounts associated with
+                    {' '}
+                    {developer.name}
+                    . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
                   </Typography>
                 </CardContent>
               </Card>
