@@ -9,3 +9,7 @@
                 on-cancel="$ctrl.cancel()"
                 on-edit="$ctrl.save(developer)"
                 ></chpl-developer>
+<chpl-developer-bridge
+  developer="$ctrl.developer"
+  dispatch="::$ctrl.takeAction"
+  ></chpl-developer-bridge>
