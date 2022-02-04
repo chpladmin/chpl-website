@@ -32,25 +32,36 @@ function ChplAttestationsView(props) {
         <CardHeader title="Attestations" />
         <CardContent>
           <Typography gutterBottom variant="body1">
-            This section includes Developer Attestations, which is a semi-annual Condition and Maintenance of Certification requirement for health IT developers participating in the ONC Health IT Certification Program. The term &quot;Attestations Submitted&quot; means a developer’s attestations have been submitted and confirmed for the given period.
-          </Typography>
-          <Typography variant="body1">
-            If applicable, Attestations are required to be made publicly available on the CHPL each May and October, beginning in 2022. For more information, please visit the Attestation resources.
+            Attestations information is displayed here if a health IT developer’s attestation of compliance with the
+            {' '}
+            <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Conditions and Maintenance of Certification requirements</a>
+            {' '}
+            was submitted. For more information, please visit the
+            {' '}
+            <a href="">Attestations Fact Sheet</a>
+            .
           </Typography>
           { (!isLoading && data?.length > 0)
             && (
-              <ul>
-                { data.map((item) => (
-                  <li key={item.id}>
-                    { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                    {' '}
-                    to
-                    {' '}
-                    { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                    : Attestations submitted
-                  </li>
-                ))}
-              </ul>
+              <>
+                <Typography>
+                  Attestation Period
+                  { data.length !== 1 ? 's' : '' }
+                  :
+                </Typography>
+                <ul>
+                  { data.map((item) => (
+                    <li key={item.id}>
+                      { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                      {' '}
+                      to
+                      {' '}
+                      { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                      : Attestations submitted
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
         </CardContent>
         { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId })
