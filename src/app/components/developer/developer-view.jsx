@@ -24,9 +24,9 @@ import { UserContext } from 'shared/contexts';
 const useStyles = makeStyles({
   content: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    minHeight: '286px',
-    gap: '8px',
+    gridTemplateColumns:'1fr 1fr',
+    gap: '16px',
+    justifyItems:'stretch'
   },
 });
 
@@ -71,14 +71,14 @@ function ChplDeveloperView(props) {
       <CardContent className={classes.content}>
         <div>
           <Typography>
-            <strong>Developer code</strong>
-            <br />
+              <strong>Developer code</strong>
+            <Typography gutterBottom>
             {developer.developerCode}
+            </Typography>
           </Typography>
           <Typography>
             <strong>Self-developer</strong>
-            <br />
-            {developer.selfDeveloper ? 'Yes' : 'No'}
+            <Typography gutterBottom>{developer.selfDeveloper ? 'Yes' : 'No'}</Typography>
           </Typography>
           { developer.statusEvents
               ?.sort((a, b) => b.statusDate - a.statusDate)
@@ -93,8 +93,9 @@ function ChplDeveloperView(props) {
                   { status.reason
                     && (
                       <>
-                        <br />
+                        <Typography gutterBottom>
                         {status.reason}
+                        </Typography>
                       </>
                     )}
                 </Typography>
@@ -122,7 +123,7 @@ function ChplDeveloperView(props) {
                   {developer.contact.phoneNumber}
                   <br />
                   <span className="sr-only">Email: </span>
-                  {developer.contact.email}
+                  <Typography gutterBottom>{developer.contact.email}</Typography>
                 </Typography>
               )}
           { developer.address
@@ -153,17 +154,21 @@ function ChplDeveloperView(props) {
                   {developer.address.zipcode}
                   ,
                   <span className="sr-only">Country: </span>
+                 <Typography gutterBottom>
                   {developer.address.country}
+                </Typography>
                 </Typography>
               )}
           { developer.website
               && (
                 <Typography>
                   <strong>Website</strong>
-                  <br />
-                  <ChplLink
+                  <div>
+                  <Typography><ChplLink
                     href={developer.website}
                   />
+                  </Typography>
+                  </div>
                 </Typography>
               )}
         </div>
