@@ -40,7 +40,6 @@ const useStyles = makeStyles({
     textTransform: 'none',
   },
   radioGroup: {
-    flexDirection: 'row',
     textTransform: 'none',
   },
   attestationContainer: {
@@ -191,7 +190,7 @@ function ChplAttestationCreate(props) {
     <ThemeProvider theme={theme}>
       <Container className={classes.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
-          Submit Attestation
+          Submit Attestations
         </Typography>
       </Container>
       <ChplAttestationProgress
@@ -262,10 +261,14 @@ function ChplAttestationCreate(props) {
                   <Typography variant="body1">
                     Select only one response for each statement.
                   </Typography>
+                  <Divider />
                   {attestationResponses
                     .map((attestation, idx) => (
                       <div key={attestation.attestation.id}>
                         <Typography variant="subtitle1">
+                          { idx + 1 }
+                          :
+                          {' '}
                           { attestation.attestation.condition.name }
                         </Typography>
                         <FormControl key={attestation.attestation.id} component="fieldset">

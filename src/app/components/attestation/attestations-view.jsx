@@ -63,7 +63,7 @@ function ChplAttestationsView(props) {
                 variant="contained"
                 onClick={createAttestationChangeRequest}
               >
-                Submit Attestation
+                Submit Attestations
               </Button>
             </CardActions>
           )}
