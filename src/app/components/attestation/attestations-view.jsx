@@ -5,8 +5,16 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 
@@ -16,11 +24,19 @@ import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
+const useStyles = makeStyles({
+  content: {
+    display: 'grid',
+    gap: '8px',
+  },
+});
+
 function ChplAttestationsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { developer } = props;
   const { isLoading, data } = useFetchPublicAttestations({ developer });
+  const classes = useStyles();
 
   const createAttestationChangeRequest = () => {
     props.dispatch('createAttestation');
@@ -30,8 +46,8 @@ function ChplAttestationsView(props) {
     <ThemeProvider theme={theme}>
       <Card>
         <CardHeader title="Attestations" />
-        <CardContent>
-          <Typography gutterBottom variant="body1">
+        <CardContent className={classes.content}>
+          <Typography variant="body1">
             Attestations information is displayed here if a health IT developer’s attestation of compliance with the
             {' '}
             <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Conditions and Maintenance of Certification requirements</a>
@@ -43,25 +59,32 @@ function ChplAttestationsView(props) {
           </Typography>
           { (!isLoading && data?.length > 0)
             && (
-              <>
-                <Typography>
-                  Attestation Period
-                  { data.length !== 1 ? 's' : '' }
-                  :
-                </Typography>
-                <ul>
-                  { data.map((item) => (
-                    <li key={item.id}>
-                      { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                      {' '}
-                      to
-                      {' '}
-                      { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                      : Attestations submitted
-                    </li>
-                  ))}
-                </ul>
-              </>
+              <TableContainer component={Paper}>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Attestation Period</TableCell>
+                      <TableCell>Status</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { data.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell>
+                          { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                          {' '}
+                          to
+                          {' '}
+                          { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                        </TableCell>
+                        <TableCell>
+                          Attestations submitted
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )}
         </CardContent>
         { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId })
