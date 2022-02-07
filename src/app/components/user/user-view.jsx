@@ -27,18 +27,17 @@ import {
 
 const useStyles = makeStyles(() => ({
   content: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    [theme.breakpoints.up('md')]: {
-      flexWrap: 'nowrap',
+    display: 'grid',
+    gridTemplateColumns:'1fr',
+    gap:'8px',
+    overflowWrap:'anywhere',
+    [theme.breakpoints.up('sm')]: {
+    gridTemplateColumns:'1fr 1fr',
     },
   },
   userCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateRows:'64px auto 50px',
   },
 }));
 
@@ -80,7 +79,7 @@ function ChplUserView(props) {
                  <>
                    <strong>Email:</strong>
                    <br />
-                   {user.email}
+                   <Typography>{user.email}</Typography>
                  </>
                )}
             </Typography>

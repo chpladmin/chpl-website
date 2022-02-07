@@ -45,13 +45,7 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     alignItems: 'stretch',
     gap: '16px',
-    gridTemplateColumns: 'auto',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
-    },
+    gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
     [theme.breakpoints.up('lg')]: {
       gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
     },
