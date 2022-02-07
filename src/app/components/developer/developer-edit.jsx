@@ -24,19 +24,29 @@ import { developer as developerPropType } from 'shared/prop-types';
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
-    gap: '16px',
+    rowGap: '8px',
+    columnGap: '16px',
     gridTemplateColumns: '1fr 1fr',
     alignItems: 'start',
-  },
-  dataEntry: {
-    display: 'grid',
-    gap: '8px',
   },
 }));
 
 const validationSchema = yup.object({
+  name: yup.string()
+    .required('Name is required')
+    .max(300, 'Name is too long'),
   fullName: yup.string()
-    .required('Full Name is required'),
+    .required('Full Name is required')
+    .max(3, 'Full Name is too long'),
+  title: yup.string()
+    .max(3, 'Title is too long'),
+  phoneNumber: yup.string()
+    .required('Phone is required')
+    .max(3, 'Phone is too long'),
+  email: yup.string()
+    .email('Bad format')
+    .required('Email is required')
+    .max(3, 'Email is too long'),
 });
 
 function ChplDeveloperEdit(props) {
@@ -51,13 +61,14 @@ function ChplDeveloperEdit(props) {
   const save = () => {
     const updatedDeveloper = {
       ...developer,
-      fullName: formik.values.fullName,
-      friendlyName: formik.values.friendlyName,
-      title: formik.values.title,
-      phoneNumber: formik.values.phoneNumber,
-      accountLocked: formik.values.accountLocked,
-      accountEnabled: formik.values.accountEnabled,
-      passwordResetRequired: formik.values.passwordResetRequired,
+      name: formik.values.name,
+      selfDeveloper: formik.values.selfDeveloper,
+      contact: {
+        fullName: formik.values.fullName,
+        title: formik.values.title,
+        phoneNumber: formik.values.phoneNumber,
+        email: formik.values.email,
+      },
     };
     dispatch('save', updatedDeveloper);
   };
@@ -76,13 +87,12 @@ function ChplDeveloperEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      fullName: developer.fullName,
-      friendlyName: developer.friendlyName || '',
-      title: developer.title || '',
-      phoneNumber: developer.phoneNumber || '',
-      accountLocked: developer.accountLocked,
-      accountEnabled: developer.accountEnabled,
-      passwordResetRequired: developer.passwordResetRequired,
+      name: developer.name || '',
+      selfDeveloper: !!developer.selfDeveloper,
+      fullName: developer.contact?.fullName || '',
+      title: developer.contact?.title || '',
+      phoneNumber: developer.contact?.phoneNumber || '',
+      email: developer.contact?.email || '',
     },
     onSubmit: () => {
       save();
@@ -94,99 +104,75 @@ function ChplDeveloperEdit(props) {
     <>
       <Card>
         <CardHeader
-          title="Edit Developer"
-          subheader={developer.email}
+          title={`Edit ${developer.name}`}
         />
         <CardContent className={classes.content}>
-          <div className={classes.dataEntry}>
-            <Typography variant="body1">Developer Information</Typography>
-            <ChplTextField
-              id="full-name"
-              name="fullName"
-              label="Full Name"
-              required
-              value={formik.values.fullName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.fullName && !!formik.errors.fullName}
-              helperText={formik.touched.fullName && formik.errors.fullName}
-            />
-            <ChplTextField
-              id="friendly-name"
-              name="friendlyName"
-              label="Friendly Name"
-              value={formik.values.friendlyName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.friendlyName && !!formik.errors.friendlyName}
-              helperText={formik.touched.friendlyName && formik.errors.friendlyName}
-            />
-            <ChplTextField
-              id="title"
-              name="title"
-              label="Title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.title && !!formik.errors.title}
-              helperText={formik.touched.title && formik.errors.title}
-            />
-            <ChplTextField
-              id="phone-number"
-              name="phoneNumber"
-              label="Phone Number"
-              value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-              helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-            />
-          </div>
-          <div className={classes.dataEntry}>
-            <Typography variant="body1">Settings</Typography>
-            <div>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id="account-locked"
-                    name="accountLocked"
-                    color="primary"
-                    checked={formik.values.accountLocked}
-                    onChange={formik.handleChange}
-                  />
-                  )}
-                label="Account Locked"
+          <ChplTextField
+            id="name"
+            name="name"
+            label="Name"
+            required
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.name && !!formik.errors.name}
+            helperText={formik.touched.name && formik.errors.name}
+          />
+          <FormControlLabel
+            control={(
+              <Switch
+                id="self-developer"
+                name="selfDeveloper"
+                color="primary"
+                checked={formik.values.selfDeveloper}
+                onChange={formik.handleChange}
               />
-            </div>
-            <div>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id="account-enabled"
-                    name="accountEnabled"
-                    color="primary"
-                    checked={formik.values.accountEnabled}
-                    onChange={formik.handleChange}
-                  />
-                  )}
-                label="Account Enabled"
-              />
-            </div>
-            <div>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id="password-reset-required"
-                    name="passwordResetRequired"
-                    color="primary"
-                    checked={formik.values.passwordResetRequired}
-                    onChange={formik.handleChange}
-                  />
-                  )}
-                label="Password change on next login"
-              />
-            </div>
-          </div>
+            )}
+            label="Self-Developer"
+          />
+          <ChplTextField
+            id="full-name"
+            name="fullName"
+            label="Full Name"
+            required
+            value={formik.values.fullName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.fullName && !!formik.errors.fullName}
+            helperText={formik.touched.fullName && formik.errors.fullName}
+          />
+          <ChplTextField
+            id="title"
+            name="title"
+            label="Title"
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.title && !!formik.errors.title}
+            helperText={formik.touched.title && formik.errors.title}
+          />
+          <ChplTextField
+            id="phone-number"
+            name="phoneNumber"
+            label="Phone"
+            required
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+          />
+          <ChplTextField
+            id="email"
+            name="email"
+            label="Email"
+            required
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
+          />
         </CardContent>
       </Card>
       <ChplActionBar
