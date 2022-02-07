@@ -49,6 +49,12 @@ const useStyles = makeStyles({
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
   },
+  attestationContainerList:{
+    fontSize: '0.875em',
+    fontFamily: 'Lato, sans-serif',
+    fontWeight: '400',
+    lineHeight: '1.43',
+  },
   forAssistanceContainer: {
     marginTop: '16px',
   },
@@ -238,13 +244,11 @@ function ChplAttestationCreate(props) {
                 {' '}
                 to submit a ticket as applicable.
               </Typography>
-              <Typography variant='body2'>
-              <ul>
+              <ul className={classes.attestationContainerList}>
                 <li>For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category.</li>
                 <li>For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category.</li>
                 <li>For technical assistance with this process, please select the &quot;CHPL&quot; category.</li>
               </ul>
-              </Typography>
             </Container>
           </>
         )}
