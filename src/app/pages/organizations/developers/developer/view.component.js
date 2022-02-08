@@ -118,15 +118,6 @@ const DeveloperViewComponent = {
 
     handleAttestationDispatch() {
       this.takeAction('attestation');
-      /*
-      const that = this;
-      const request = {
-        developer: this.developer,
-        details: data,
-      };
-      this.networkService.submitChangeRequest(request)
-        .then(that.handleResponse.bind(that), that.handleError.bind(that));
-        */
     }
 
     updateRequest(data) {
