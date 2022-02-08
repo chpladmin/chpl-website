@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Button,
+  ButtonGroup,
+  IconButton,
   Card,
   CardHeader,
   CardContent,
   FormControlLabel,
+  Paper,
   Switch,
+  Table,
+  TableContainer,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles(() => ({
@@ -65,7 +80,9 @@ const validationSchema = yup.object({
 });
 
 function ChplDeveloperEdit(props) {
+  const DateUtil = getAngularService('DateUtil');
   const { developer, dispatch } = props;
+  const [adding, setAdding] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -107,6 +124,18 @@ function ChplDeveloperEdit(props) {
         break;
         // no default
     }
+  };
+
+  const addStatus = (status) => {
+    console.log('add', status);
+  };
+
+  const cancelAdd = () => {
+    setAdding(false);
+  };
+
+  const removeStatus = (status) => {
+    console.log('remove', status);
   };
 
   formik = useFormik({
@@ -161,6 +190,120 @@ function ChplDeveloperEdit(props) {
             )}
             label="Self-Developer"
           />
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><Typography variant="body2">Developer Status</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Change Date</Typography></TableCell>
+                  <TableCell><Typography variant="body2">Reason</Typography></TableCell>
+                  <TableCell><Typography variant="srOnly">Actions</Typography></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { developer.statusEvents
+                  ?.sort((a, b) => b.statusDate - a.statusDate)
+                  .map((status) => (
+                    <TableRow key={status.id || status.key}>
+                      <TableCell>
+                        <Typography variant="body2">{ status.status.status }</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2">{ DateUtil.getDisplayDateFormat(status.statusDate) }</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2">{ status.reason }</Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        { !adding
+                          && (
+                            <IconButton
+                              onClick={() => removeStatus(status)}
+                              aria-label="Remove status"
+                            >
+                              <CloseIcon
+                                color="primary"
+                                size="small"
+                              />
+                            </IconButton>
+                          )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className={classes.dataEntry}>
+            { !adding
+              && (
+                <div className={classes.dataEntryAddNew}>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => setAdding(true)}
+                    id="relied-upon-software-add-item"
+                  >
+                    Add item
+                    {' '}
+                    <AddIcon />
+                  </Button>
+                </div>
+              )}
+            { adding
+              && (
+                <>
+                  <ChplTextField
+                    id="status"
+                    name="status"
+                    label="Developer Status"
+                    value={formik.values.status}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.status && formik.errors.status}
+                    helperText={formik.touched.status && formik.errors.status}
+                  />
+                  <ChplTextField
+                    id="date"
+                    name="date"
+                    label="Change Date"
+                    value={formik.values.date}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.date && formik.errors.date}
+                    helperText={formik.touched.date && formik.errors.date}
+                  />
+                  <ChplTextField
+                    id="reason"
+                    name="reason"
+                    label="Reason"
+                    value={formik.values.reason}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.reason && formik.errors.reason}
+                    helperText={formik.touched.reason && formik.errors.reason}
+                  />
+                  <ButtonGroup
+                    color="primary"
+                    className={classes.dataEntryActions}
+                  >
+                    <Button
+                      onClick={addStatus}
+                      aria-label="Confirm adding item"
+                      id="certification-status-add-item"
+                    >
+                      <CheckIcon />
+                    </Button>
+                    <Button
+                      onClick={cancelAdd}
+                      aria-label="Cancel adding item"
+                      id="certification-status-close-item"
+                    >
+                      <CloseIcon />
+                    </Button>
+                  </ButtonGroup>
+                </>
+              )}
+          </div>
           <ChplTextField
             id="full-name"
             name="fullName"
