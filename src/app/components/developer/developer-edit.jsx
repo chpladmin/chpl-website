@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
-import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
+import React from 'react';
 import {
   Card,
   CardHeader,
   CardContent,
   FormControlLabel,
   Switch,
-  ThemeProvider,
   makeStyles,
-  Typography,
 } from '@material-ui/core';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -37,37 +31,37 @@ const validationSchema = yup.object({
     .max(300, 'Name is too long'),
   fullName: yup.string()
     .required('Full Name is required')
-    .max(3, 'Full Name is too long'),
+    .max(500, 'Full Name is too long'),
   title: yup.string()
-    .max(3, 'Title is too long'),
+    .max(250, 'Title is too long'),
+  email: yup.string()
+    .email('Improper format (sample@example.com)')
+    .required('Email is required')
+    .max(250, 'Email is too long'),
   phoneNumber: yup.string()
     .required('Phone is required')
-    .max(3, 'Phone is too long'),
-  email: yup.string()
-    .email('Bad format')
-    .required('Email is required')
-    .max(3, 'Email is too long'),
+    .max(100, 'Phone is too long'),
   line1: yup.string()
     .required('Address is required')
-    .max(3, 'Address is too long'),
+    .max(250, 'Address is too long'),
   line2: yup.string()
-    .max(3, 'Line 2 is too long'),
+    .max(250, 'Line 2 is too long'),
   city: yup.string()
     .required('City is required')
-    .max(3, 'City is too long'),
+    .max(250, 'City is too long'),
   state: yup.string()
     .required('State is required')
-    .max(3, 'State is too long'),
+    .max(250, 'State is too long'),
   zipcode: yup.string()
     .required('Zip is required')
-    .max(3, 'Zip is too long'),
+    .max(25, 'Zip is too long'),
   country: yup.string()
     .required('Country is required')
-    .max(3, 'Country is too long'),
+    .max(250, 'Country is too long'),
   website: yup.string()
-    .url('Bad format')
+    .url('Improper format (http://www.example.com)')
     .required('Website is required')
-    .max(3, 'Website is too long'),
+    .max(300, 'Website is too long'),
 });
 
 function ChplDeveloperEdit(props) {
@@ -87,8 +81,8 @@ function ChplDeveloperEdit(props) {
       contact: {
         fullName: formik.values.fullName,
         title: formik.values.title,
-        phoneNumber: formik.values.phoneNumber,
         email: formik.values.email,
+        phoneNumber: formik.values.phoneNumber,
       },
       address: {
         line1: formik.values.line1,
@@ -121,8 +115,8 @@ function ChplDeveloperEdit(props) {
       selfDeveloper: !!developer.selfDeveloper,
       fullName: developer.contact?.fullName || '',
       title: developer.contact?.title || '',
-      phoneNumber: developer.contact?.phoneNumber || '',
       email: developer.contact?.email || '',
+      phoneNumber: developer.contact?.phoneNumber || '',
       line1: developer.address?.line1 || '',
       line2: developer.address?.line2 || '',
       city: developer.address?.city || '',
@@ -189,17 +183,6 @@ function ChplDeveloperEdit(props) {
             helperText={formik.touched.title && formik.errors.title}
           />
           <ChplTextField
-            id="phone-number"
-            name="phoneNumber"
-            label="Phone"
-            required
-            value={formik.values.phoneNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-          />
-          <ChplTextField
             id="email"
             name="email"
             label="Email"
@@ -209,6 +192,17 @@ function ChplDeveloperEdit(props) {
             onBlur={formik.handleBlur}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
+          />
+          <ChplTextField
+            id="phone-number"
+            name="phoneNumber"
+            label="Phone"
+            required
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
           />
           <ChplTextField
             id="line1"
