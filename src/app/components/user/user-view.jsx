@@ -27,18 +27,17 @@ import {
 
 const useStyles = makeStyles(() => ({
   content: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    [theme.breakpoints.up('md')]: {
-      flexWrap: 'nowrap',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '8px',
+    overflowWrap: 'anywhere',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr 1fr',
     },
   },
   userCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateRows: '64px auto 50px',
   },
 }));
 
@@ -75,14 +74,9 @@ function ChplUserView(props) {
         <CardContent className={classes.content}>
           <div>
             <Typography gutterBottom>
-              {user.email
-               && (
-                 <>
-                   <strong>Email:</strong>
-                   <br />
-                   {user.email}
-                 </>
-               )}
+              <strong>Email:</strong>
+              <br />
+              {user.email}
             </Typography>
             {user.title
              && (
@@ -109,14 +103,9 @@ function ChplUserView(props) {
                </Typography>
              )}
             <Typography gutterBottom>
-              {user.role
-               && (
-                 <>
-                   <strong>Role:</strong>
-                   <br />
-                   {user.role}
-                 </>
-               )}
+              <strong>Role:</strong>
+              <br />
+              {user.role}
             </Typography>
             {user.organizations?.length > 0
              && (
@@ -135,12 +124,12 @@ function ChplUserView(props) {
             <Typography gutterBottom>
               <strong>Last Login:</strong>
               <br />
-              {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
+              { user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A' }
             </Typography>
             <Typography gutterBottom>
               <strong>Account Locked:</strong>
               <br />
-              {user.accountLocked
+              { user.accountLocked
                 ? <CheckBoxIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>

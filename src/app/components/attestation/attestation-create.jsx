@@ -49,6 +49,9 @@ const useStyles = makeStyles({
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
   },
+  attestationContainerList: {
+    fontSize: '0.875em',
+  },
   forAssistanceContainer: {
     marginTop: '16px',
   },
@@ -231,14 +234,14 @@ function ChplAttestationCreate(props) {
                   </Typography>
                 </CardContent>
               </Card>
-              <Typography className={classes.forAssistanceContainer} variant="body2">
+              <Typography gutterBottom className={classes.forAssistanceContainer} variant="body1">
                 For assistance with the Attestations submissions process, please visit the
                 {' '}
                 <a href="https://inquiry.healthit.gov/support/plugins/servlet/loginfreeRedirMain?portalid=2&request=51">Health IT Feedback and Inquiry Portal</a>
                 {' '}
                 to submit a ticket as applicable.
               </Typography>
-              <ul>
+              <ul className={classes.attestationContainerList}>
                 <li>For questions regarding the Attestations Condition and Maintenance of Certification requirement, please select the &quot;Attestations Condition&quot; category.</li>
                 <li>For questions regarding a Condition and Maintenance of Certification requirement other than Attestations, please select the relevant Condition category.</li>
                 <li>For technical assistance with this process, please select the &quot;CHPL&quot; category.</li>
@@ -405,7 +408,7 @@ function ChplAttestationCreate(props) {
         && (
           <>
             <Container maxWidth="md">
-              <Typography variant="h2" className={classes.fullWidthContainer}>
+              <Typography gutterBottom variant="h2" className={classes.fullWidthContainer}>
                 Section 4 &mdash; Confirmation Page
               </Typography>
               <Card>
