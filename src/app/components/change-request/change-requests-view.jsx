@@ -264,140 +264,140 @@ function ChplChangeRequestsView(props) {
         <CardHeader title="Change Requests" />
         <CardContent>
           { changeRequest && mode === 'view'
-        && (
-          <ChplChangeRequestView
-            changeRequest={changeRequest}
-            dispatch={handleDispatch}
-          />
-        )}
+            && (
+              <ChplChangeRequestView
+                changeRequest={changeRequest}
+                dispatch={handleDispatch}
+              />
+            )}
           { changeRequest && mode === 'edit'
-        && (
-          <ChplChangeRequestEdit
-            changeRequest={changeRequest}
-            changeRequestStatusTypes={changeRequestStatusTypes}
-            dispatch={handleDispatch}
-          />
-        )}
+            && (
+              <ChplChangeRequestEdit
+                changeRequest={changeRequest}
+                changeRequestStatusTypes={changeRequestStatusTypes}
+                dispatch={handleDispatch}
+              />
+            )}
           { !changeRequest
-        && (
-          <>
-            <div className={classes.searchContainer} component={Paper}>
-              { !disallowedFilters.includes('searchTerm')
-                && (
-                  <ChplFilterSearchTerm
-                    placeholder="Search by Developer..."
-                  />
-                )}
-              <ChplFilterPanel />
-            </div>
-            <div>
-              <ChplFilterChips />
-            </div>
-            { (isLoading || !isSuccess || changeRequests.length === 0)
-              && (
-                <Typography className={classes.noResultsContainer}>
-                  No results found
-                </Typography>
-              )}
-            { !isLoading && isSuccess && changeRequests.length > 0
-              && (
-                <>
-                  <div className={classes.tableResultsHeaderContainer}>
-                    <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                      <Typography variant="subtitle2">Search Results:</Typography>
-                      <Typography variant="body2">
-                        {`(${pageStart}-${pageEnd} of ${changeRequests.length} Results)`}
-                      </Typography>
-                    </div>
-                    <ButtonGroup size="small" className={classes.wrap}>
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        fullWidth
-                        id="download-change-requests"
-                        onClick={() => csvExporter.generateCsv(changeRequests)}
-                      >
-                        Download
-                        {' '}
-                        { changeRequests.length }
-                        {' '}
-                        Result
-                        { changeRequests.length !== 1 ? 's' : '' }
-                        <GetAppIcon className={classes.iconSpacing} />
-                      </Button>
-                    </ButtonGroup>
-                  </div>
-                  <TableContainer className={classes.container} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="Change Requests table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy="currentStatusChangeDate"
-                        order="asc"
+            && (
+              <>
+                <div className={classes.searchContainer} component={Paper}>
+                  { !disallowedFilters.includes('searchTerm')
+                    && (
+                      <ChplFilterSearchTerm
+                        placeholder="Search by Developer..."
                       />
-                      <TableBody>
-                        {changeRequests
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              { !hasAnyRole(['ROLE_DEVELOPER'])
-                               && (
-                                 <TableCell className={classes.tableFirstColumn}>
-                                   <div className={classes.tableDeveloperCell}>
-                                     <div>
-                                       <ChplAvatar
-                                         text={item.developerName}
-                                       />
-                                     </div>
-                                     <div className={classes.developerName}>
-                                       <a href={`#/organizations/developers/${item.developer.developerId}`}>
-                                         {item.developerName}
-                                       </a>
-                                     </div>
-                                   </div>
-                                 </TableCell>
-                               )}
-                              <TableCell>{item.changeRequestTypeName}</TableCell>
-                              { !hasAnyRole(['ROLE_DEVELOPER'])
-                               && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
-                              <TableCell>{item.currentStatusName}</TableCell>
-                              <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
-                              <TableCell align="right">
-                                <Button
-                                  onClick={() => setChangeRequest(item)}
-                                  variant="contained"
-                                  color="primary"
-                                >
-                                  View
-                                  {' '}
-                                  <VisibilityIcon className={classes.iconSpacing} />
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        {emptyRows > 0 && false && (
-                          <TableRow style={{ height: 33 * emptyRows }}>
-                            <TableCell colSpan={headers.length} />
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <ChplPagination
-                    count={changeRequests.length}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[10, 50, 100, 250]}
-                    setPage={setPage}
-                    setRowsPerPage={setRowsPerPage}
-                  />
-                </>
-              )}
-          </>
-        )}
+                    )}
+                  <ChplFilterPanel />
+                </div>
+                <div>
+                  <ChplFilterChips />
+                </div>
+                { (isLoading || !isSuccess || changeRequests.length === 0)
+                  && (
+                    <Typography className={classes.noResultsContainer}>
+                      No results found
+                    </Typography>
+                  )}
+                { !isLoading && isSuccess && changeRequests.length > 0
+                  && (
+                    <>
+                      <div className={classes.tableResultsHeaderContainer}>
+                        <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                          <Typography variant="subtitle2">Search Results:</Typography>
+                          <Typography variant="body2">
+                            {`(${pageStart}-${pageEnd} of ${changeRequests.length} Results)`}
+                          </Typography>
+                        </div>
+                        <ButtonGroup size="small" className={classes.wrap}>
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            fullWidth
+                            id="download-change-requests"
+                            onClick={() => csvExporter.generateCsv(changeRequests)}
+                          >
+                            Download
+                            {' '}
+                            { changeRequests.length }
+                            {' '}
+                            Result
+                            { changeRequests.length !== 1 ? 's' : '' }
+                            <GetAppIcon className={classes.iconSpacing} />
+                          </Button>
+                        </ButtonGroup>
+                      </div>
+                      <TableContainer className={classes.container} component={Paper}>
+                        <Table
+                          stickyHeader
+                          aria-label="Change Requests table"
+                        >
+                          <ChplSortableHeaders
+                            headers={headers}
+                            onTableSort={handleTableSort}
+                            orderBy="currentStatusChangeDate"
+                            order="asc"
+                          />
+                          <TableBody>
+                            {changeRequests
+                              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                              .map((item) => (
+                                <TableRow key={item.id}>
+                                  { !hasAnyRole(['ROLE_DEVELOPER'])
+                                   && (
+                                     <TableCell className={classes.tableFirstColumn}>
+                                       <div className={classes.tableDeveloperCell}>
+                                         <div>
+                                           <ChplAvatar
+                                             text={item.developerName}
+                                           />
+                                         </div>
+                                         <div className={classes.developerName}>
+                                           <a href={`#/organizations/developers/${item.developer.developerId}`}>
+                                             {item.developerName}
+                                           </a>
+                                         </div>
+                                       </div>
+                                     </TableCell>
+                                   )}
+                                  <TableCell>{item.changeRequestTypeName}</TableCell>
+                                  { !hasAnyRole(['ROLE_DEVELOPER'])
+                                   && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
+                                  <TableCell>{item.currentStatusName}</TableCell>
+                                  <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                                  <TableCell align="right">
+                                    <Button
+                                      onClick={() => setChangeRequest(item)}
+                                      variant="contained"
+                                      color="primary"
+                                    >
+                                      View
+                                      {' '}
+                                      <VisibilityIcon className={classes.iconSpacing} />
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            {emptyRows > 0 && false && (
+                              <TableRow style={{ height: 33 * emptyRows }}>
+                                <TableCell colSpan={headers.length} />
+                              </TableRow>
+                            )}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                      <ChplPagination
+                        count={changeRequests.length}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        rowsPerPageOptions={[10, 50, 100, 250]}
+                        setPage={setPage}
+                        setRowsPerPage={setRowsPerPage}
+                      />
+                    </>
+                  )}
+              </>
+            )}
         </CardContent>
       </Card>
     </ThemeProvider>
