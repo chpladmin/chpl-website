@@ -18,7 +18,7 @@ import theme from '../../themes/theme';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   actionBar: {
     backgroundColor: '#fff',
     position: 'fixed',
@@ -77,22 +77,27 @@ const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
   },
-}));
+});
 
 function ChplActionBar(props) {
   /* eslint-disable react/destructuring-assignment */
-  const [pendingAction, setPendingAction] = useState('');
-  const [pendingMessage, setPendingMessage] = useState('');
-  const [canDelete] = useState(props.canDelete);
-  const [canConfirm] = useState(props.canConfirm);
-  const [canReject] = useState(props.canReject);
-  const [isConfirming, setIsConfirming] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
   const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
   const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
+  /* eslint-enable react/destructuring-assignment */
+  const {
+    canCancel,
+    canClose,
+    canDelete,
+    canConfirm,
+    canReject,
+    canSave,
+  } = props;
+  const [pendingAction, setPendingAction] = useState('');
+  const [pendingMessage, setPendingMessage] = useState('');
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [showMessages, setShowMessages] = useState(true);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     setIsDisabled(props.isDisabled);
@@ -225,19 +230,37 @@ function ChplActionBar(props) {
           <ButtonGroup
             color="primary"
           >
-            <Button
-              id="action-bar-cancel"
-              variant="outlined"
-              onClick={() => confirmCancel()}
-              className={classes.actionBarButton}
-            >
-              Cancel
-              <CloseOutlinedIcon
-                className={classes.iconSpacing}
-              />
-            </Button>
+            { canCancel
+              && (
+                <Button
+                  id="action-bar-cancel"
+                  variant="outlined"
+                  onClick={() => confirmCancel()}
+                  className={classes.actionBarButton}
+                >
+                  Cancel
+                  <CloseOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
+            { canClose
+              && (
+                <Button
+                  id="action-bar-close"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => act('cancel')}
+                  className={classes.actionBarButton}
+                >
+                  Close
+                  <CloseOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
             { canConfirm
-              ? (
+              && (
                 <Button
                   id="action-bar-confirm"
                   variant="contained"
@@ -250,7 +273,9 @@ function ChplActionBar(props) {
                     className={classes.iconSpacing}
                   />
                 </Button>
-              ) : (
+              )}
+            { canSave && !canConfirm
+              && (
                 <Button
                   id="action-bar-save"
                   variant="contained"
@@ -306,17 +331,23 @@ ChplActionBar.propTypes = {
   dispatch: func.isRequired,
   errors: arrayOf(string),
   warnings: arrayOf(string),
+  canCancel: bool,
+  canClose: bool,
   canConfirm: bool,
   canDelete: bool,
   canReject: bool,
+  canSave: bool,
   isDisabled: bool,
 };
 
 ChplActionBar.defaultProps = {
   errors: [],
   warnings: [],
+  canCancel: true,
+  canClose: false,
   canConfirm: false,
   canDelete: false,
   canReject: false,
+  canSave: true,
   isDisabled: false,
 };

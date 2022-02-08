@@ -28,9 +28,16 @@ import {
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    minHeight: '286px',
+    gridTemplateColumns: '1fr',
     gap: '8px',
+    overflowWrap: 'anywhere',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr 1fr',
+    },
+  },
+  userCard: {
+    display: 'grid',
+    gridTemplateRows: '64px auto 50px',
   },
 }));
 
@@ -57,6 +64,7 @@ function ChplUserView(props) {
   return (
     <ThemeProvider theme={theme}>
       <Card
+        className={classes.userCard}
         title={`${user.fullName} Information`}
       >
         <CardHeader
@@ -65,19 +73,14 @@ function ChplUserView(props) {
         />
         <CardContent className={classes.content}>
           <div>
-            <Typography>
-              {user.email
-               && (
-                 <>
-                   <strong>Email:</strong>
-                   <br />
-                   {user.email}
-                 </>
-               )}
+            <Typography gutterBottom>
+              <strong>Email:</strong>
+              <br />
+              {user.email}
             </Typography>
             {user.title
              && (
-               <Typography>
+               <Typography gutterBottom>
                  <strong>Title:</strong>
                  <br />
                  {user.title}
@@ -85,7 +88,7 @@ function ChplUserView(props) {
              )}
             {user.phoneNumber
              && (
-               <Typography>
+               <Typography gutterBottom>
                  <strong>Phone Number:</strong>
                  <br />
                  {user.phoneNumber}
@@ -93,25 +96,20 @@ function ChplUserView(props) {
              )}
             {user.subjectName
              && (
-               <Typography>
+               <Typography gutterBottom>
                  <strong>User Name:</strong>
                  <br />
                  {user.subjectName}
                </Typography>
              )}
-            <Typography>
-              {user.role
-               && (
-                 <>
-                   <strong>Role:</strong>
-                   <br />
-                   {user.role}
-                 </>
-               )}
+            <Typography gutterBottom>
+              <strong>Role:</strong>
+              <br />
+              {user.role}
             </Typography>
             {user.organizations?.length > 0
              && (
-               <Typography>
+               <Typography gutterBottom>
                  <strong>
                    Organization
                    {user.organizations.length !== 1 ? 's' : ''}
@@ -123,26 +121,26 @@ function ChplUserView(props) {
              )}
           </div>
           <div>
-            <Typography>
+            <Typography gutterBottom>
               <strong>Last Login:</strong>
               <br />
-              {user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A'}
+              { user.lastLoggedInDate ? DateUtil.timestampToString(user.lastLoggedInDate) : 'N/A' }
             </Typography>
-            <Typography>
+            <Typography gutterBottom>
               <strong>Account Locked:</strong>
               <br />
-              {user.accountLocked
+              { user.accountLocked
                 ? <CheckBoxIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>
-            <Typography>
+            <Typography gutterBottom>
               <strong>Account Enabled:</strong>
               <br />
               { user.accountEnabled
                 ? <CheckBoxIcon />
                 : <CheckBoxOutlineBlankOutlinedIcon />}
             </Typography>
-            <Typography>
+            <Typography gutterBottom>
               <strong>Password change on next login:</strong>
               <br />
               { user.passwordResetRequired
