@@ -67,10 +67,10 @@ const useStyles = makeStyles(() => ({
     gap: '16px',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      display:'flex',
-      flexDirection:'row',
-      flexWrap:'wrap',
-      justifyContent:'flex-end',
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'flex-end',
     },
   },
   tableResultsHeaderContainer: {
@@ -261,16 +261,16 @@ function ChplChangeRequestsView(props) {
   return (
     <ThemeProvider theme={theme}>
       <Card>
-      <CardHeader title='Change Request'></CardHeader>
-      <CardContent>
-      { changeRequest && mode === 'view'
+        <CardHeader title="Change Requests" />
+        <CardContent>
+          { changeRequest && mode === 'view'
         && (
           <ChplChangeRequestView
             changeRequest={changeRequest}
             dispatch={handleDispatch}
           />
         )}
-      { changeRequest && mode === 'edit'
+          { changeRequest && mode === 'edit'
         && (
           <ChplChangeRequestEdit
             changeRequest={changeRequest}
@@ -278,7 +278,7 @@ function ChplChangeRequestsView(props) {
             dispatch={handleDispatch}
           />
         )}
-      { !changeRequest
+          { !changeRequest
         && (
           <>
             <div className={classes.searchContainer} component={Paper}>
@@ -398,7 +398,7 @@ function ChplChangeRequestsView(props) {
               )}
           </>
         )}
-      </CardContent>
+        </CardContent>
       </Card>
     </ThemeProvider>
   );
