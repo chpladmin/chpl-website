@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  Card,
+  CardContent,
+  CardHeader,
   Paper,
   Table,
   TableBody,
@@ -64,7 +67,10 @@ const useStyles = makeStyles(() => ({
     gap: '16px',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
+      display:'flex',
+      flexDirection:'row',
+      flexWrap:'wrap',
+      justifyContent:'flex-end',
     },
   },
   tableResultsHeaderContainer: {
@@ -254,6 +260,9 @@ function ChplChangeRequestsView(props) {
 
   return (
     <ThemeProvider theme={theme}>
+      <Card>
+      <CardHeader title='Change Request'></CardHeader>
+      <CardContent>
       { changeRequest && mode === 'view'
         && (
           <ChplChangeRequestView
@@ -389,6 +398,8 @@ function ChplChangeRequestsView(props) {
               )}
           </>
         )}
+      </CardContent>
+      </Card>
     </ThemeProvider>
   );
 }
