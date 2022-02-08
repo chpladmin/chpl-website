@@ -49,11 +49,8 @@ const useStyles = makeStyles({
     justifyContent: 'stretch',
     gridTemplateColumns: 'repeat(6, 1fr)',
   },
-  attestationContainerList:{
+  attestationContainerList: {
     fontSize: '0.875em',
-    fontFamily: 'Lato, sans-serif',
-    fontWeight: '400',
-    lineHeight: '1.43',
   },
   forAssistanceContainer: {
     marginTop: '16px',
