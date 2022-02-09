@@ -108,6 +108,7 @@ const validationSchema = yup.object({
 function ChplDeveloperEdit(props) {
   const DateUtil = getAngularService('DateUtil');
   const { developer, dispatch } = props;
+  const [errors, setErrors] = useState([]);
   const [statusEvents, setStatusEvents] = useState([]);
   const classes = useStyles();
   let formik;
@@ -115,6 +116,31 @@ function ChplDeveloperEdit(props) {
   useEffect(() => {
     setStatusEvents(props.developer.statusEvents);
   }, [props.developer]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    if (statusEvents.length === 0) {
+      setErrors(['Developer must have at least one Status']);
+      return;
+    }
+    const msgs = [];
+    statusEvents
+      .sort((a, b) => a.statusDate - b.statusDate)
+      .forEach((status, idx, arr) => {
+        if (idx === 0) {
+          if (status.status.status !== 'Active') {
+            msgs.push('The first Developer Status must be "Active"');
+          }
+        } else {
+          if (status.status.status === arr[idx - 1].status.status) {
+            msgs.push('Developer Status may not repeat');
+          }
+          if (DateUtil.getDisplayDateFormat(status.statusDate) === DateUtil.getDisplayDateFormat(arr[idx - 1].statusDate)) {
+            msgs.push('Only one change of status allowed per day');
+          }
+        }
+      });
+    setErrors(msgs);
+  }, [DateUtil, statusEvents]);
 
   const cancel = () => {
     dispatch('cancel');
@@ -185,10 +211,7 @@ function ChplDeveloperEdit(props) {
     setStatusEvents(statusEvents.filter((item) => item.statusDate !== status.statusDate));
   };
 
-  const isActionDisabled = () => {
-    const isHistoryInvalid = false;
-    return isHistoryInvalid || !formik.isValid;
-  };
+  const isActionDisabled = () => errors.length > 0 || !formik.isValid;
 
   formik = useFormik({
     initialValues: {
@@ -491,6 +514,7 @@ function ChplDeveloperEdit(props) {
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={isActionDisabled()}
+        errors={errors}
       />
     </>
   );
