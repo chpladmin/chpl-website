@@ -9,8 +9,8 @@ const confirmElements = {
   rejectButtonOnInspectListing: '#inspect-reject',
   actionBarMessages: '#action-bar-messages',
   errorMessage: '.bg-danger',
-  errorOnInspect: '#action-bar-errors > li',
-  warningOnInspect: '#action-bar-warnings > li',
+  errorOnInspect: '#action-bar-errors > ul > li',
+  warningOnInspect: '#action-bar-warnings > ul > li',
 };
 
 class ConfirmPage {

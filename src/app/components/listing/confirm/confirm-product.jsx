@@ -104,9 +104,6 @@ const validationSchema = yup.object({
 
 function ChplConfirmProduct(props) {
   /* eslint-disable react/destructuring-assignment */
-  const product = {
-    ...props.product,
-  };
   const [selectedProduct, setSelectedProduct] = useState('');
   const products = props.products
     .sort((a, b) => (a.name < b.name ? -1 : 1));
@@ -154,7 +151,7 @@ function ChplConfirmProduct(props) {
 
   formik = useFormik({
     initialValues: {
-      name: product?.name || '',
+      name: props.product?.name || '', // eslint-disable-line react/destructuring-assignment
     },
     onSubmit: () => {
       submit();

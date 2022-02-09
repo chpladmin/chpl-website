@@ -68,7 +68,7 @@ function ChplConfirmListings(props) {
   const loadListings = useCallback(() => {
     networkService.getPendingListings(beta).then((response) => {
       setListings(response);
-      const pending = response.filter((l) => ((beta && l.status === 'PROCESSING') || (!beta && l.processing)));
+      const pending = response.filter((l) => ((beta && l.status === 'UPLOAD_PROCESSING') || (!beta && l.processing)));
       if (pending.length > 0) {
         setTimeout(loadListings, 1000);
       }
@@ -79,13 +79,13 @@ function ChplConfirmListings(props) {
     loadListings();
   }, [loadListings]);
 
-  const canProcess = (listing) => ((beta && listing.status === 'SUCCESSFUL') || (!beta && !listing.processing));
+  const canProcess = (listing) => ((beta && listing.status === 'UPLOAD_SUCCESS') || (!beta && !listing.processing));
 
   const getStatus = (listing) => {
-    if ((beta && listing.status === 'PROCESSING') || (beta && listing.processing)) {
+    if ((beta && listing.status === 'UPLOAD_PROCESSING') || (beta && listing.processing)) {
       return <CircularProgress />;
     }
-    if (listing.status === 'FAILED') {
+    if (listing.status === 'UPLOAD_FAILURE') {
       return (
         <Chip
           label="Processing error"

@@ -1,11 +1,11 @@
 <div class="row" ui-view>
   <div class="col-md-12" ng-if="!$ctrl.dropped">
-    <h2>View Products in the process of upload</h2>
+    <h1>View Products in the process of upload</h1>
     <chpl-confirm-listings-bridge
       on-process="::$ctrl.handleProcess"></chpl-confirm-listings-bridge>
   </div>
   <div class="col-md-12" feature-flag="enhanced-upload">
-    <h2>View (Beta) Products in the process of upload</h2>
+    <h1>View (Beta) Products in the process of upload</h1>
     <chpl-confirm-listings-bridge
       beta="true"
       on-process="::$ctrl.handleProcess"></chpl-confirm-listings-bridge>

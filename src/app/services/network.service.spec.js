@@ -205,6 +205,14 @@
         $httpBackend.flush();
       });
 
+      it('should confirmListing', () => {
+        $httpBackend.expectPOST(/^\/rest\/listings\/pending\/1$/).respond(200, { data: 'response' });
+        networkService.confirmListing({ listing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
+          expect(response.data).toEqual('response');
+        });
+        $httpBackend.flush();
+      });
+
       it('should confirmPendingCp', () => {
         $httpBackend.expectPOST(/^\/rest\/certified_products\/pending\/1\/beta\/confirm$/).respond(200, { data: 'response' });
         networkService.confirmPendingCp({ pendingListing: { id: 1 }, warningAcknowledgement: false }).then((response) => {

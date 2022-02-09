@@ -33,6 +33,9 @@ const useStyles = makeStyles(() => ({
   fullRow: {
     gridColumn: '1 / -1',
   },
+  fileName: {
+    wordBreak: 'break-word',
+  },
 }));
 
 const validationSchema = yup.object({
@@ -142,11 +145,11 @@ function ChplUploadMeaningfulUse() {
             </div>
             { file
               && (
-              <div>
-                <strong>Filename:</strong>
-                {' '}
-                { file.name }
-              </div>
+                <div className={classes.fileName}>
+                  <strong>Filename:</strong>
+                  {' '}
+                  { file.name }
+                </div>
               )}
             { file
               && (

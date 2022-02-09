@@ -66,7 +66,6 @@ const DeveloperViewComponent = {
 
     can(action) {
       if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
-      if (action === 'displayAttestations') { return this.featureFlags.isOn('change-request') && this.featureFlags.isOn('attestations') && this.hasAnyRole(['ROLE_DEVELOPER']); }
       if (action === 'manageTracking') { return this.featureFlags.isOn('change-request') && this.hasAnyRole(['ROLE_DEVELOPER']); } // only DEVELOPER can manage tracking
       if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
@@ -117,14 +116,8 @@ const DeveloperViewComponent = {
       }
     }
 
-    handleAttestationDispatch(data) {
-      const that = this;
-      const request = {
-        developer: this.developer,
-        details: data,
-      };
-      this.networkService.submitChangeRequest(request)
-        .then(that.handleResponse.bind(that), that.handleError.bind(that));
+    handleAttestationDispatch() {
+      this.takeAction('attestation');
     }
 
     updateRequest(data) {
