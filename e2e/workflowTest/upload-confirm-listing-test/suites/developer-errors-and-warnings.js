@@ -30,6 +30,7 @@ const suite = {
       'Developer city is required.',
     ],
     expectedWarnings: [
+      'Developer country is required. It has been defaulted to US.',
     ],
   }],
 };

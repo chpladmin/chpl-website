@@ -35,7 +35,7 @@ import {
   ChplLink,
   ChplNonProdIndicator,
 } from './util';
-import { ChplActionBar } from './action-bar';
+import { ChplActionBar, ChplActionBarWrapper } from './action-bar';
 import { UserWrapper } from './login';
 
 angular
@@ -54,6 +54,7 @@ angular
     'ui.router',
   ])
   .component('chplActionBarBridge', reactToAngularComponent(ChplActionBar))
+  .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))

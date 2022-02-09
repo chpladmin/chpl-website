@@ -15,17 +15,18 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import theme from '../../../../themes/theme';
-import { ChplTooltip } from '../../../util';
+import ChplCriterion from './criterion';
+
+import theme from 'themes/theme';
+import { ChplTooltip } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import {
   accessibilityStandard,
   certificationResult,
   resources as resourceDefinition,
   qmsStandard,
-} from '../../../../shared/prop-types';
-import { FlagContext } from '../../../../shared/contexts';
-
-import { getAngularService, ChplCriterion } from '.'; // eslint-disable-line import/no-cycle
+} from 'shared/prop-types';
+import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles(() => ({
   NestedAccordionLevelOne: {
@@ -109,7 +110,7 @@ function ChplCriteria(props) {
                       <ChplCriterion
                         key={cc.criterion.id}
                         certificationResult={cc}
-                        canEdit={props.canEdit && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
+                        canEdit={props.canEdit && !isConfirming && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
                         onSave={handleSave}
                         resources={prepareResources(props.resources, cc.criterion)}
                         accessibilityStandards={props.accessibilityStandards}
