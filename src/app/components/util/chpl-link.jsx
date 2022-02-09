@@ -32,10 +32,12 @@ function ChplLink(props) {
     if (!clicked) {
       e.preventDefault();
       clicked = true;
-      $analytics.eventTrack(analytics.event, {
-        category: analytics.category || null,
-        label: analytics.label || null,
-      });
+      if (analytics.event) {
+        $analytics.eventTrack(analytics.event, {
+          category: analytics.category || null,
+          label: analytics.label || null,
+        });
+      }
       if (router.sref) {
         $state.go(router.sref, router.options);
       } else {

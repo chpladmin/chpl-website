@@ -65,6 +65,16 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
+    name: 'organizations.developers.developer.attestation',
+    url: '/attestation',
+    views: {
+      'view@^': 'chplAttestationCreateWrapperBridge',
+    },
+    data: {
+      title: 'CHPL Developers - Attestation',
+      roles: ['ROLE_DEVELOPER'],
+    },
+  }, {
     name: 'organizations.developers.developer.product',
     url: '/products/{productId}',
     abstract: true,
