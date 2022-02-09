@@ -48,12 +48,28 @@ const validationSchema = yup.object({
   name: yup.string()
     .required('Name is required')
     .max(300, 'Name is too long'),
+  isAdding: yup.boolean()
+    .required()
+    .oneOf([false]),
   status: yup.string()
-    .required('Developer Status is required'),
+    .when('isAdding', {
+      is: true,
+      then: yup.string()
+        .required('Developer Status is required'),
+    }),
   statusDate: yup.date()
-    .required('Change Date is required'),
+    .when('isAdding', {
+      is: true,
+      then: yup.date()
+        .required('Change Date is required'),
+    }),
   reason: yup.string()
-    .max(500, 'Reason is too long'),
+    .max(500, 'Reason is too long')
+    .when('status', {
+      is: 'Under certification ban by ONC',
+      then: yup.string()
+        .required('Reason is required'),
+    }),
   fullName: yup.string()
     .required('Full Name is required')
     .max(500, 'Full Name is too long'),
@@ -93,7 +109,6 @@ function ChplDeveloperEdit(props) {
   const DateUtil = getAngularService('DateUtil');
   const { developer, dispatch } = props;
   const [statusEvents, setStatusEvents] = useState([]);
-  const [adding, setAdding] = useState(false);
   const classes = useStyles();
   let formik;
 
@@ -151,21 +166,38 @@ function ChplDeveloperEdit(props) {
         reason: formik.values.reason,
       },
     ]);
-    setAdding(false);
+    formik.setFieldValue('isAdding', false);
+    formik.setFieldValue('status', '');
+    formik.setFieldValue('statusDate', '');
+    formik.setFieldValue('reason', '');
   };
 
+  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.statusDate || !!formik.errors.reason;
+
   const cancelAdd = () => {
-    setAdding(false);
+    formik.setFieldValue('isAdding', false);
+    formik.setFieldValue('status', '');
+    formik.setFieldValue('statusDate', '');
+    formik.setFieldValue('reason', '');
   };
 
   const removeStatus = (status) => {
     setStatusEvents(statusEvents.filter((item) => item.statusDate !== status.statusDate));
   };
 
+  const isActionDisabled = () => {
+    const isHistoryInvalid = false;
+    return isHistoryInvalid || !formik.isValid;
+  };
+
   formik = useFormik({
     initialValues: {
       name: developer.name || '',
       selfDeveloper: !!developer.selfDeveloper,
+      status: '',
+      statusDate: '',
+      reason: '',
+      isAdding: false,
       fullName: developer.contact?.fullName || '',
       title: developer.contact?.title || '',
       email: developer.contact?.email || '',
@@ -177,9 +209,6 @@ function ChplDeveloperEdit(props) {
       zipcode: developer.address?.zipcode || '',
       country: developer.address?.country || '',
       website: developer.website || '',
-      status: '',
-      statusDate: '',
-      reason: '',
     },
     onSubmit: () => {
       save();
@@ -245,7 +274,7 @@ function ChplDeveloperEdit(props) {
                         <IconButton
                           onClick={() => removeStatus(status)}
                           aria-label="Remove status"
-                          disabled={adding}
+                          disabled={formik.values.isAdding}
                         >
                           <CloseIcon
                             color="primary"
@@ -258,13 +287,13 @@ function ChplDeveloperEdit(props) {
               </TableBody>
             </Table>
           </TableContainer>
-          { !adding
+          { !formik.values.isAdding
             && (
               <Button
                 className={classes.fullWidth}
                 color="primary"
                 variant="outlined"
-                onClick={() => setAdding(true)}
+                onClick={() => formik.setFieldValue('isAdding', true)}
                 id="certification-status-add-item"
               >
                 Add item
@@ -272,7 +301,7 @@ function ChplDeveloperEdit(props) {
                 <AddIcon />
               </Button>
             )}
-          { adding
+          { formik.values.isAdding
             && (
               <>
                 <ChplTextField
@@ -284,7 +313,7 @@ function ChplDeveloperEdit(props) {
                   value={formik.values.status}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={formik.touched.status && formik.errors.status}
+                  error={formik.touched.status && !!formik.errors.status}
                   helperText={formik.touched.status && formik.errors.status}
                 >
                   <MenuItem key="Active" value="Active">Active</MenuItem>
@@ -300,7 +329,7 @@ function ChplDeveloperEdit(props) {
                   value={formik.values.statusDate}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={formik.touched.statusDate && formik.errors.statusDate}
+                  error={formik.touched.statusDate && !!formik.errors.statusDate}
                   helperText={formik.touched.statusDate && formik.errors.statusDate}
                 />
                 <ChplTextField
@@ -312,7 +341,7 @@ function ChplDeveloperEdit(props) {
                   value={formik.values.reason}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={formik.touched.reason && formik.errors.reason}
+                  error={formik.touched.reason && !!formik.errors.reason}
                   helperText={formik.touched.reason && formik.errors.reason}
                 />
                 <ButtonGroup
@@ -323,6 +352,7 @@ function ChplDeveloperEdit(props) {
                     onClick={addStatus}
                     aria-label="Confirm adding item"
                     id="certification-status-add-item"
+                    disabled={isAddDisabled()}
                   >
                     <CheckIcon />
                   </Button>
@@ -460,7 +490,7 @@ function ChplDeveloperEdit(props) {
       </Card>
       <ChplActionBar
         dispatch={handleDispatch}
-        isDisabled={!formik.isValid}
+        isDisabled={isActionDisabled()}
       />
     </>
   );
