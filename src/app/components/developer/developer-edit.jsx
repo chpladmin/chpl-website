@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardContent,
   FormControlLabel,
+  MenuItem,
   Paper,
   Switch,
   Table,
@@ -38,12 +39,21 @@ const useStyles = makeStyles(() => ({
     gridTemplateColumns: '1fr 1fr',
     alignItems: 'start',
   },
+  fullWidth: {
+    gridColumn: '1 / -1',
+  },
 }));
 
 const validationSchema = yup.object({
   name: yup.string()
     .required('Name is required')
     .max(300, 'Name is too long'),
+  status: yup.string()
+    .required('Developer Status is required'),
+  statusDate: yup.date()
+    .required('Change Date is required'),
+  reason: yup.string()
+    .max(500, 'Reason is too long'),
   fullName: yup.string()
     .required('Full Name is required')
     .max(500, 'Full Name is too long'),
@@ -82,9 +92,14 @@ const validationSchema = yup.object({
 function ChplDeveloperEdit(props) {
   const DateUtil = getAngularService('DateUtil');
   const { developer, dispatch } = props;
+  const [statusEvents, setStatusEvents] = useState([]);
   const [adding, setAdding] = useState(false);
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    setStatusEvents(props.developer.statusEvents);
+  }, [props.developer]); // eslint-disable-line react/destructuring-assignment
 
   const cancel = () => {
     dispatch('cancel');
@@ -95,6 +110,7 @@ function ChplDeveloperEdit(props) {
       ...developer,
       name: formik.values.name,
       selfDeveloper: formik.values.selfDeveloper,
+      statusEvents,
       contact: {
         fullName: formik.values.fullName,
         title: formik.values.title,
@@ -126,8 +142,16 @@ function ChplDeveloperEdit(props) {
     }
   };
 
-  const addStatus = (status) => {
-    console.log('add', status);
+  const addStatus = () => {
+    setStatusEvents([
+      ...statusEvents,
+      {
+        status: { status: formik.values.status },
+        statusDate: (new Date(formik.values.statusDate)).getTime(),
+        reason: formik.values.reason,
+      },
+    ]);
+    setAdding(false);
   };
 
   const cancelAdd = () => {
@@ -135,7 +159,7 @@ function ChplDeveloperEdit(props) {
   };
 
   const removeStatus = (status) => {
-    console.log('remove', status);
+    setStatusEvents(statusEvents.filter((item) => item.statusDate !== status.statusDate));
   };
 
   formik = useFormik({
@@ -153,6 +177,9 @@ function ChplDeveloperEdit(props) {
       zipcode: developer.address?.zipcode || '',
       country: developer.address?.country || '',
       website: developer.website || '',
+      status: '',
+      statusDate: '',
+      reason: '',
     },
     onSubmit: () => {
       save();
@@ -190,7 +217,7 @@ function ChplDeveloperEdit(props) {
             )}
             label="Self-Developer"
           />
-          <TableContainer component={Paper}>
+          <TableContainer className={classes.fullWidth} component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -201,10 +228,10 @@ function ChplDeveloperEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { developer.statusEvents
+                { statusEvents
                   ?.sort((a, b) => b.statusDate - a.statusDate)
                   .map((status) => (
-                    <TableRow key={status.id || status.key}>
+                    <TableRow key={status.id || status.statusDate}>
                       <TableCell>
                         <Typography variant="body2">{ status.status.status }</Typography>
                       </TableCell>
@@ -215,95 +242,100 @@ function ChplDeveloperEdit(props) {
                         <Typography variant="body2">{ status.reason }</Typography>
                       </TableCell>
                       <TableCell align="right">
-                        { !adding
-                          && (
-                            <IconButton
-                              onClick={() => removeStatus(status)}
-                              aria-label="Remove status"
-                            >
-                              <CloseIcon
-                                color="primary"
-                                size="small"
-                              />
-                            </IconButton>
-                          )}
+                        <IconButton
+                          onClick={() => removeStatus(status)}
+                          aria-label="Remove status"
+                          disabled={adding}
+                        >
+                          <CloseIcon
+                            color="primary"
+                            size="small"
+                          />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <div className={classes.dataEntry}>
-            { !adding
-              && (
-                <div className={classes.dataEntryAddNew}>
+          { !adding
+            && (
+              <Button
+                className={classes.fullWidth}
+                color="primary"
+                variant="outlined"
+                onClick={() => setAdding(true)}
+                id="certification-status-add-item"
+              >
+                Add item
+                {' '}
+                <AddIcon />
+              </Button>
+            )}
+          { adding
+            && (
+              <>
+                <ChplTextField
+                  select
+                  id="status"
+                  name="status"
+                  label="Developer Status"
+                  required
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.status && formik.errors.status}
+                  helperText={formik.touched.status && formik.errors.status}
+                >
+                  <MenuItem key="Active" value="Active">Active</MenuItem>
+                  <MenuItem key="Suspended by ONC" value="Suspended by ONC">Suspended by ONC</MenuItem>
+                  <MenuItem key="Under certification ban by ONC" value="Under certification ban by ONC">Under certification ban by ONC</MenuItem>
+                </ChplTextField>
+                <ChplTextField
+                  type="date"
+                  id="change-date"
+                  name="statusDate"
+                  label="Change Date"
+                  required
+                  value={formik.values.statusDate}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.statusDate && formik.errors.statusDate}
+                  helperText={formik.touched.statusDate && formik.errors.statusDate}
+                />
+                <ChplTextField
+                  className={classes.fullWidth}
+                  id="reason"
+                  name="reason"
+                  label="Reason"
+                  required={formik.values.status === 'Under certification ban by ONC'}
+                  value={formik.values.reason}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.reason && formik.errors.reason}
+                  helperText={formik.touched.reason && formik.errors.reason}
+                />
+                <ButtonGroup
+                  color="primary"
+                  className={classes.fullWidth}
+                >
                   <Button
-                    color="primary"
-                    variant="outlined"
-                    onClick={() => setAdding(true)}
-                    id="relied-upon-software-add-item"
+                    onClick={addStatus}
+                    aria-label="Confirm adding item"
+                    id="certification-status-add-item"
                   >
-                    Add item
-                    {' '}
-                    <AddIcon />
+                    <CheckIcon />
                   </Button>
-                </div>
-              )}
-            { adding
-              && (
-                <>
-                  <ChplTextField
-                    id="status"
-                    name="status"
-                    label="Developer Status"
-                    value={formik.values.status}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.status && formik.errors.status}
-                    helperText={formik.touched.status && formik.errors.status}
-                  />
-                  <ChplTextField
-                    id="date"
-                    name="date"
-                    label="Change Date"
-                    value={formik.values.date}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.date && formik.errors.date}
-                    helperText={formik.touched.date && formik.errors.date}
-                  />
-                  <ChplTextField
-                    id="reason"
-                    name="reason"
-                    label="Reason"
-                    value={formik.values.reason}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.reason && formik.errors.reason}
-                    helperText={formik.touched.reason && formik.errors.reason}
-                  />
-                  <ButtonGroup
-                    color="primary"
-                    className={classes.dataEntryActions}
+                  <Button
+                    onClick={cancelAdd}
+                    aria-label="Cancel adding item"
+                    id="certification-status-close-item"
                   >
-                    <Button
-                      onClick={addStatus}
-                      aria-label="Confirm adding item"
-                      id="certification-status-add-item"
-                    >
-                      <CheckIcon />
-                    </Button>
-                    <Button
-                      onClick={cancelAdd}
-                      aria-label="Cancel adding item"
-                      id="certification-status-close-item"
-                    >
-                      <CloseIcon />
-                    </Button>
-                  </ButtonGroup>
-                </>
-              )}
-          </div>
+                    <CloseIcon />
+                  </Button>
+                </ButtonGroup>
+              </>
+            )}
           <ChplTextField
             id="full-name"
             name="fullName"
@@ -417,6 +449,7 @@ function ChplDeveloperEdit(props) {
             name="website"
             label="Website"
             required
+            className={classes.fullWidth}
             value={formik.values.website}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
