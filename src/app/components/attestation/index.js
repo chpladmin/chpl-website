@@ -1,3 +1,7 @@
-import ChplAttestationChangeRequest from './attestation-change-request';
+import ChplAttestationCreateWrapper from './attestation-create-wrapper';
+import ChplAttestationsViewWrapper from './attestations-view-wrapper';
 
-export default ChplAttestationChangeRequest;
+export {
+  ChplAttestationCreateWrapper,
+  ChplAttestationsViewWrapper,
+};

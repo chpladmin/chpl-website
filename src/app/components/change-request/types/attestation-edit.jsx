@@ -1,78 +1,69 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 
-import { ChplTextField } from '../../util';
-import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
-import { UserContext } from '../../../shared/contexts';
+import interpretLink from 'components/attestation/attestation-util';
+import { getAngularService } from 'services/angular-react-helper';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '8px',
   },
-  submittedDetailsContainer: {
-    display: 'grid',
-    gap: '4px',
-  },
-});
-
-const validationSchema = yup.object({
-  attestation: yup.string()
-    .required('Attestation is required'),
 });
 
 function ChplChangeRequestAttestationEdit(props) {
-  const { hasAnyRole } = useContext(UserContext);
+  const DateUtil = getAngularService('DateUtil');
   const { changeRequest } = props;
   const classes = useStyles();
-  let formik;
-
-  const handleChange = (...args) => {
-    formik.handleChange(...args);
-    if (formik.isValid) {
-      formik.submitForm();
-    }
-  };
-
-  formik = useFormik({
-    initialValues: {
-      attestation: changeRequest.details.attestation,
-    },
-    onSubmit: () => {
-      props.dispatch('update', formik.values);
-    },
-    validationSchema,
-    validateOnChange: true,
-    validateOnMount: true,
-  });
 
   return (
     <div className={classes.container}>
       <div>
-        <Typography gutterBottom variant="subtitle1">Current Attestation</Typography>
-        None
+        <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
+        { DateUtil.getDisplayDateFormat(changeRequest.details.attestationPeriod.periodStart) }
+        {' '}
+        -
+        {' '}
+        { DateUtil.getDisplayDateFormat(changeRequest.details.attestationPeriod.periodEnd) }
       </div>
-      <div className={classes.submittedDetailsContainer}>
-        <Typography gutterBottom variant="subtitle1">Submitted attestation</Typography>
-        <ChplTextField
-          id="attestation"
-          name="attestation"
-          label="Attestation"
-          required
-          disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
-          value={formik.values.attestation}
-          onChange={handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.attestation && !!formik.errors.attestation}
-          helperText={formik.touched.attestation && formik.errors.attestation}
-        />
+      <div>
+        <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Attestation</TableCell>
+                <TableCell>Response</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { changeRequest.details.attestationResponses
+                .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
+                .map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      { interpretLink(item.attestation.description) }
+                    </TableCell>
+                    <TableCell>
+                      { item.response.response }
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   );
@@ -82,5 +73,4 @@ export default ChplChangeRequestAttestationEdit;
 
 ChplChangeRequestAttestationEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
-  dispatch: func.isRequired,
 };

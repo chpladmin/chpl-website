@@ -19,7 +19,7 @@ import ChplActionBarMessages from './action-bar-messages';
 
 import theme from 'themes/theme';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   actionBar: {
     backgroundColor: '#fff',
     position: 'fixed',
@@ -57,23 +57,26 @@ const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
   },
-}));
+});
 
 function ChplActionBar(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [pendingAction, setPendingAction] = useState('');
-  const [pendingMessage, setPendingMessage] = useState('');
+  const {
+    canCancel,
+    canClose,
+    canDelete,
+    canConfirm,
+    canReject,
+    canSave,
+  } = props;
   const [acknowledged, setAcknowledged] = useState(false);
-  const [canDelete] = useState(props.canDelete);
-  const [canConfirm] = useState(props.canConfirm);
-  const [canReject] = useState(props.canReject);
-  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
+  const [errors, setErrors] = useState([]);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [errors, setErrors] = useState([]);
+  const [pendingAction, setPendingAction] = useState('');
+  const [pendingMessage, setPendingMessage] = useState('');
+  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     setErrors(props.errors);
@@ -160,19 +163,37 @@ function ChplActionBar(props) {
           <ButtonGroup
             color="primary"
           >
-            <Button
-              id="action-bar-cancel"
-              variant="outlined"
-              onClick={() => confirmCancel()}
-              className={classes.actionBarButton}
-            >
-              Cancel
-              <CloseOutlinedIcon
-                className={classes.iconSpacing}
-              />
-            </Button>
+            { canCancel
+              && (
+                <Button
+                  id="action-bar-cancel"
+                  variant="outlined"
+                  onClick={() => confirmCancel()}
+                  className={classes.actionBarButton}
+                >
+                  Cancel
+                  <CloseOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
+            { canClose
+              && (
+                <Button
+                  id="action-bar-close"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => act('cancel')}
+                  className={classes.actionBarButton}
+                >
+                  Close
+                  <CloseOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
             { canConfirm
-              ? (
+              && (
                 <Button
                   id="action-bar-confirm"
                   variant="contained"
@@ -185,7 +206,9 @@ function ChplActionBar(props) {
                     className={classes.iconSpacing}
                   />
                 </Button>
-              ) : (
+              )}
+            { canSave && !canConfirm
+              && (
                 <Button
                   id="action-bar-save"
                   variant="contained"
@@ -245,9 +268,12 @@ ChplActionBar.propTypes = {
   dispatch: func.isRequired,
   errors: arrayOf(string),
   warnings: arrayOf(string),
+  canCancel: bool,
+  canClose: bool,
   canConfirm: bool,
   canDelete: bool,
   canReject: bool,
+  canSave: bool,
   isDisabled: bool,
   showAcknowledgement: bool,
 };
@@ -255,9 +281,12 @@ ChplActionBar.propTypes = {
 ChplActionBar.defaultProps = {
   errors: [],
   warnings: [],
+  canCancel: true,
+  canClose: false,
   canConfirm: false,
   canDelete: false,
   canReject: false,
+  canSave: true,
   isDisabled: false,
   showAcknowledgement: false,
 };
