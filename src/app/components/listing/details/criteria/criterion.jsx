@@ -22,19 +22,22 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService, ChplCriterionDetailsEdit, ChplCriterionDetailsView } from '.'; // eslint-disable-line import/no-cycle
-import { ChplHighlightCures } from '../../../util';
+import ChplCriterionDetailsEdit from './criterion-details-edit';
+import ChplCriterionDetailsView from './criterion-details-view';
+
+import { ChplHighlightCures } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import {
   accessibilityStandard,
   certificationResult,
   resources as resourceDefinition,
   qmsStandard,
-} from '../../../../shared/prop-types';
+} from 'shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   criterionAccordion: {
     borderRadius: '8px',
-    display: 'grid',    
+    display: 'grid',
   },
   criterionAccordionSummary: {
     backgroundColor: '#f9f9f9',
@@ -42,7 +45,7 @@ const useStyles = makeStyles(() => ({
     border: '.5px solid #c2c6ca',
   },
   criterionAccordionDetails: {
-    borderBottom:'.5px solid #c2c6ca',
+    borderBottom: '.5px solid #c2c6ca',
     borderLeft: '.5px solid #c2c6ca',
     borderRight: '.5px solid #c2c6ca',
     borderRadius: '0 0 8px 8px',
@@ -142,7 +145,7 @@ function ChplCriterion(props) {
         expandIcon={getIcon()}
         id={`criterion-id-${criterion.criterion.id}-header`}
       >
-        <Grid container alignItems='center' spacing={4}>
+        <Grid container alignItems="center" spacing={4}>
           <Grid item xs={1}>
             { criterion.success
               && (

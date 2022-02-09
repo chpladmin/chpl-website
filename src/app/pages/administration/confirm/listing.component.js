@@ -1,3 +1,9 @@
+const replaceDeveloperCode = (chplProductNumber, code) => {
+  const parts = chplProductNumber.split('.');
+  parts[3] = code;
+  return parts.join('.');
+};
+
 const ConfirmListingComponent = {
   templateUrl: 'chpl.administration/confirm/listing.html',
   bindings: {
@@ -29,6 +35,8 @@ const ConfirmListingComponent = {
 
     $onInit() {
       this.progress = this.getProgress();
+      this.acknowledgeWarnings = false;
+      this.showAcknowledgement = false;
       this.loadDeveloper();
       const pending = {};
       this.$q.all([
@@ -61,6 +69,8 @@ const ConfirmListingComponent = {
         if (this.pending.developer && !this.pending.developer.developerId) {
           this.pending.developer.developerId = '';
         }
+        this.errorMessages = this.uploaded.errorMessages;
+        this.warningMessages = this.uploaded.warningMessages;
       }
       if (changes.developers) {
         this.developers = angular.copy(changes.developers.currentValue);
@@ -70,7 +80,7 @@ const ConfirmListingComponent = {
     canAct(action) {
       let ret;
       switch (action) {
-        case 'confirm': ret = this.stage === 'listing';
+        case 'confirm': ret = this.stage === 'listing' && !this.isSubmitting;
           break;
         case 'next': ret = this.stage !== 'listing'; // todo: validation on "create" data
           break;
@@ -85,9 +95,11 @@ const ConfirmListingComponent = {
       switch (action) {
         case 'select':
           this.pending.developer = data;
+          this.pending.chplProductNumber = replaceDeveloperCode(this.pending.chplProductNumber, data.developerCode);
           break;
         case 'edit':
           this.pending.developer = data;
+          this.pending.chplProductNumber = replaceDeveloperCode(this.pending.chplProductNumber, 'XXXX');
           break;
           // no default
       }
@@ -137,6 +149,8 @@ const ConfirmListingComponent = {
           break;
         case 'confirm': this.confirm();
           break;
+        case 'toggleAcknowledgement': this.acknowledgeWarnings = !this.acknowledgeWarnings;
+          break;
         case 'reject': this.reject();
           break;
           // no default
@@ -160,18 +174,24 @@ const ConfirmListingComponent = {
       const that = this;
       if (this.pending.developer && this.pending.developer.developerId) {
         this.networkService.getProductsByDeveloper(this.pending.developer.developerId)
-          .then((result) => { that.products = result.products; });
+          .then((result) => {
+            that.products = result.products;
+          });
       } else {
         that.products = [];
       }
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getSimpleProduct(this.pending.product.productId)
           .then((result) => {
+            that.stage = 'product';
             that.staged = result;
             that.pending.product = result;
+            that.progress = that.getProgress();
           });
       } else {
+        that.stage = 'product';
         that.staged = { ...that.pending.product };
+        that.progress = that.getProgress();
       }
     }
 
@@ -179,31 +199,39 @@ const ConfirmListingComponent = {
       const that = this;
       if (this.pending.product && this.pending.product.productId) {
         this.networkService.getVersionsByProduct(this.pending.product.productId)
-          .then((result) => { that.versions = result; });
+          .then((result) => {
+            that.versions = result;
+          });
       } else {
         that.versions = [];
       }
       if (this.pending.version && this.pending.version.versionId) {
-        this.networkService.getSimpleVersion(this.pending.version.versionId)
+        this.networkService.getVersion(this.pending.version.versionId)
           .then((result) => {
+            that.stage = 'version';
             that.staged = result;
             that.pending.version = result;
+            that.progress = that.getProgress();
           });
       } else {
+        that.stage = 'version';
         that.staged = { ...that.pending.version };
+        that.progress = that.getProgress();
       }
     }
 
     confirm() {
       const that = this;
-      this.networkService.confirmPendingCp({
-        pendingListing: this.pending,
-        acknowledgeWarnings: this.acknowledgeWarnings,
-      }).then(() => {
+      this.isSubmitting = true;
+      this.networkService.confirmListing({
+        listing: this.pending,
+        acknowledgeWarnings: this.acknowledgeWarnings ?? false,
+      }).then((result) => {
         that.toaster.pop({
           type: 'success',
           title: 'Success',
-          body: 'The Listing has been confirmed',
+          body: `The Listing has been confirmed. Details are available at <a href="#/listing/${result.id}">${result.chplProductNumber}</a>`,
+          bodyOutputType: 'trustedHtml',
         });
         that.$state.go('^', {}, { reload: true });
       }, (error) => {
@@ -214,9 +242,23 @@ const ConfirmListingComponent = {
             body: 'The Listing was already resolved',
           });
           that.$state.go('^', {}, { reload: true });
-        } else {
+        } else if (error.data.errorMessages?.length > 0 || error.data.warningMessages?.length > 0) {
           that.errorMessages = error.data.errorMessages;
           that.warningMessages = error.data.warningMessages;
+          if (that.warningMessages?.length > 0) {
+            that.showAcknowledgement = true;
+          } else {
+            that.showAcknowledgement = false;
+            that.acknowledgeWarnings = false;
+          }
+          that.isSubmitting = false;
+        } else {
+          that.toaster.pop({
+            type: 'error',
+            title: 'Error',
+            body: 'An error occurred',
+          });
+          that.isSubmitting = false;
         }
       });
     }
@@ -246,6 +288,7 @@ const ConfirmListingComponent = {
     }
 
     handleListing(action, data) {
+      this.$log.info('handleListing', action);
       switch (action) {
         case 'edit':
           this.isEditing = true;
@@ -259,26 +302,25 @@ const ConfirmListingComponent = {
           break;
           // no default
       }
+      this.$scope.$digest();
     }
 
     next() {
       switch (this.stage) {
         case 'developer':
-          this.stage = 'product';
           this.loadProducts();
           break;
         case 'product':
-          this.stage = 'version';
           this.loadFamily();
           this.loadVersions();
           break;
         case 'version':
           this.stage = 'listing';
+          this.progress = this.getProgress();
           break;
         default:
           break;
       }
-      this.progress = this.getProgress();
     }
 
     previous() {
