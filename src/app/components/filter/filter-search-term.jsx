@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   IconButton,
@@ -45,28 +45,32 @@ const useStyles = makeStyles(() => ({
 function ChplFilterSearchTerm(props) {
   const $analytics = getAngularService('$analytics');
   const { placeholder } = props;
-  const [searchTerm, setSearchTerm] = useState('');
+  const [term, setTerm] = useState('');
   const classes = useStyles();
 
-  const filterContext = useFilterContext();
+  const { analytics, searchTerm, setSearchTerm } = useFilterContext();
+
+  useEffect(() => {
+    setTerm(searchTerm);
+  }, [searchTerm]);
 
   const handleClear = () => {
-    if (filterContext.analytics) {
-      $analytics.eventTrack('Clear Text Filter', { category: filterContext.analytics.category });
+    if (analytics) {
+      $analytics.eventTrack('Clear Text Filter', { category: analytics.category });
     }
+    setTerm('');
     setSearchTerm('');
-    filterContext.setSearchTerm('');
   };
 
   const handleGo = () => {
-    if (filterContext.analytics) {
-      $analytics.eventTrack('Enter Value Into Text Filter', { category: filterContext.analytics.category, label: searchTerm });
+    if (analytics) {
+      $analytics.eventTrack('Enter Value Into Text Filter', { category: analytics.category, label: term });
     }
-    filterContext.setSearchTerm(searchTerm);
+    setSearchTerm(term);
   };
 
-  const handleSearchTerm = (event) => {
-    setSearchTerm(event.target.value);
+  const handleTerm = (event) => {
+    setTerm(event.target.value);
   };
 
   const handleKeyPress = (event) => {
@@ -83,8 +87,8 @@ function ChplFilterSearchTerm(props) {
           <InputBase
             className={classes.searchInput}
             placeholder={placeholder}
-            value={searchTerm}
-            onChange={handleSearchTerm}
+            value={term}
+            onChange={handleTerm}
             onKeyPress={handleKeyPress}
             id="filter-search-term-input"
             inputProps={{ 'aria-label': 'Search by Developer, Product, or CHPL ID' }}
