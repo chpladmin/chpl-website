@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 
-import { useFetchPublicAttestations } from 'api/developer';
+import { useFetchAttestations, useFetchPublicAttestations } from 'api/developer';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -36,6 +36,7 @@ function ChplAttestationsView(props) {
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const { developer } = props;
   const { isLoading, data } = useFetchPublicAttestations({ developer });
+  const attestationData = useFetchAttestations({ developer });
   const classes = useStyles();
 
   const createAttestationChangeRequest = () => {
@@ -93,9 +94,9 @@ function ChplAttestationsView(props) {
               <Button
                 color="primary"
                 id="create-attestation-change-request-button"
-                name="createAttestationChangeRequestButton"
                 variant="contained"
                 onClick={createAttestationChangeRequest}
+                disabled={!attestationData.data?.canSubmit}
               >
                 Submit Attestations
               </Button>

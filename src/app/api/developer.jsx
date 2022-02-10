@@ -6,7 +6,7 @@ const useFetchAttestations = ({ developer }) => {
   const axios = useAxios();
   return useQuery([`developer/${developer.developerId}/attestations`], async () => {
     const response = await axios.get(`/developers/${developer.developerId}/attestations`);
-    return response.data.developerAttestations;
+    return response.data;
   }, { keepPreviousData: true });
 };
 
