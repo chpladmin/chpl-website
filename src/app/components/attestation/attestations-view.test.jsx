@@ -27,15 +27,20 @@ const developerMock = {
 
 const mockApi = {
   isLoading: true,
+  data: {
+    canSubmit: true,
+  },
 };
 
 jest.mock('api/developer', () => ({
   __esModule: true,
+  useFetchAttestations: () => mockApi,
   useFetchPublicAttestations: () => mockApi,
 }));
 
 const userContextMock = {
   hasAnyRole: () => true,
+  hasAuthorityOn: () => true,
 };
 
 describe('the ChplAttestationsView component', () => {
