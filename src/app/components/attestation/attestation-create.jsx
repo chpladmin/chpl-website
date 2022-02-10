@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import Moment from 'react-moment';
+import { useSnackbar } from 'notistack';
 
 import ChplAttestationProgress from './attestation-progress';
 import interpretLink from './attestation-util';
@@ -83,7 +84,7 @@ const useStyles = makeStyles({
 
 function ChplAttestationCreate(props) {
   const $state = getAngularService('$state');
-  const toaster = getAngularService('toaster');
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { developer } = props;
   const { data, isLoading } = useFetchAttestationData();
   const crData = useFetchChangeRequestTypes();
@@ -169,22 +170,17 @@ function ChplAttestationCreate(props) {
       onError: (error) => {
         setIsSubmitting(false);
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
-          toaster.pop({
-            type: 'info',
-            title: 'Notice',
-            body: `${error.response.data.error} However, the changes have been applied`,
+          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
+            variant: 'info',
           });
           setStage(3);
         } else {
-          const body = error.response.data?.error
+          const message = error.response.data?.error
                 || error.response.data?.errorMessages.join(' ');
-          toaster.pop({
-            type: 'error',
-            title: 'Error',
-            body,
+          enqueueSnackbar(message, {
+            variant: 'error',
           });
         }
-        // $scope.$apply(); // TODO - see if we can make these toast things MUI options
       },
     });
   };
