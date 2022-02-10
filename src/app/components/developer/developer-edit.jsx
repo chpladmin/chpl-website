@@ -6,9 +6,11 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Divider,
   FormControlLabel,
   MenuItem,
   Paper,
+  Popover,
   Switch,
   Table,
   TableContainer,
@@ -33,14 +35,22 @@ import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   content: {
+    display: 'flex',
+    flexDirection:'column',
+    gap: '16px',
+    alignItems: 'stretch',
+  },
+    subContent: {
     display: 'grid',
-    rowGap: '8px',
-    columnGap: '16px',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns:'1fr 1fr',
+    gap: '16px',
     alignItems: 'start',
   },
   fullWidth: {
     gridColumn: '1 / -1',
+  },
+  iconSpacing: {
+    marginLeft:'4px',
   },
 });
 
@@ -357,13 +367,13 @@ function ChplDeveloperEdit(props) {
   });
 
   return (
-    <>
-      <Card>
+    <>  
+      <Card> 
         <CardHeader
           title={isSplitting ? 'New Developer' : `Edit ${developer.name}`}
         />
         <CardContent className={classes.content}>
-          { getEditField('name', 'Name', formik, options) }
+          <div className={classes.fullWidth}>{ getEditField('name', 'Name', formik, options) }</div>
           <FormControlLabel
             control={(
               <Switch
@@ -372,6 +382,7 @@ function ChplDeveloperEdit(props) {
                 color="primary"
                 checked={formik.values.selfDeveloper}
                 onChange={formik.handleChange}
+                className={classes.fullWidth}
               />
             )}
             label="Self-Developer"
@@ -421,19 +432,21 @@ function ChplDeveloperEdit(props) {
             && (
               <Button
                 className={classes.fullWidth}
-                color="primary"
-                variant="outlined"
+                color="secondary"
+                variant="contained"
                 onClick={() => formik.setFieldValue('isAdding', true)}
                 id="certification-status-add-item"
               >
                 Add item
                 {' '}
-                <AddIcon />
+                <AddIcon className={classes.iconSpacing}/>
               </Button>
             )}
+              <Divider/>
           { formik.values.isAdding
             && (
               <>
+                <div className={classes.subContent}>
                 <ChplTextField
                   select
                   id="status"
@@ -462,6 +475,7 @@ function ChplDeveloperEdit(props) {
                   error={formik.touched.statusDate && !!formik.errors.statusDate}
                   helperText={formik.touched.statusDate && formik.errors.statusDate}
                 />
+                </div>
                 <ChplTextField
                   className={classes.fullWidth}
                   id="reason"
@@ -474,12 +488,15 @@ function ChplDeveloperEdit(props) {
                   error={formik.touched.reason && !!formik.errors.reason}
                   helperText={formik.touched.reason && formik.errors.reason}
                 />
+              
                 <ButtonGroup
                   color="primary"
                   className={classes.fullWidth}
                 >
                   <Button
                     onClick={addStatus}
+                    color="primary"
+                    variant="contained"
                     aria-label="Confirm adding item"
                     id="certification-status-add-item"
                     disabled={isAddDisabled()}
@@ -494,19 +511,28 @@ function ChplDeveloperEdit(props) {
                     <CloseIcon />
                   </Button>
                 </ButtonGroup>
+                <Divider/>
               </>
             )}
+          <div className={classes.subContent}>
           { getEditField('fullName', 'Full Name', formik, options) }
           { getEditField('title', 'Title', formik, options) }
           { getEditField('email', 'Email', formik, options) }
           { getEditField('phoneNumber', 'Phone', formik, options) }
+          </div>
+          <Divider/>
+          <div className={classes.subContent}>
           { getEditField('line1', 'Address', formik, options) }
           { getEditField('line2', 'Line 2', formik, options) }
           { getEditField('city', 'City', formik, options) }
           { getEditField('state', 'State', formik, options) }
           { getEditField('zipcode', 'Zip', formik, options) }
           { getEditField('country', 'Country', formik, options) }
+          </div>
+          <Divider/>
+          <div className={`$(classes.subContent) $(classes.fullWidth)`}>
           { getEditField('website', 'Website', formik, options) }
+          </div>
         </CardContent>
       </Card>
       <ChplActionBar
