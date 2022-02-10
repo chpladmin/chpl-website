@@ -104,9 +104,6 @@ const validationSchema = yup.object({
 
 function ChplConfirmVersion(props) {
   /* eslint-disable react/destructuring-assignment */
-  const version = {
-    ...props.version,
-  };
   const [selectedVersion, setSelectedVersion] = useState('');
   const versions = props.versions
     .sort((a, b) => (a.version < b.version ? -1 : 1));
@@ -154,7 +151,7 @@ function ChplConfirmVersion(props) {
 
   formik = useFormik({
     initialValues: {
-      version: version?.version || '',
+      version: props.version?.version || '', // eslint-disable-line react/destructuring-assignment
     },
     onSubmit: () => {
       submit();

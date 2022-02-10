@@ -32,6 +32,10 @@ export default class NetworkService {
     return this.apiPOST('/key/confirm', hash);
   }
 
+  confirmListing(request) {
+    return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
+  }
+
   confirmPendingCp(request) {
     return this.apiPOST(`/certified_products/pending/${request.pendingListing.id}/beta/confirm`, request);
   }

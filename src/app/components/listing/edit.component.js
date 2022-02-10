@@ -87,7 +87,7 @@ const ListingEditComponent = {
         this.messages.errors.push('The earliest status of this product must be "Active"');
       }
       if (this.idFields && this.idFields.ics !== this.requiredIcsCode() && this.requiredIcsCode() > 0 && this.listing.ics.parents.length > 0) {
-        this.messages.errors.push(`ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "${this.requiredIcsCode()}`);
+        this.messages.errors.push(`ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "${this.requiredIcsCode()}"`);
       }
       if (this.hasStatusMatches()) {
         this.messages.errors.push('Certification status must not repeat');
@@ -169,11 +169,10 @@ const ListingEditComponent = {
         eventDate: ce.statusDateObject.getTime(),
       }));
       if (this.listing.chplProductNumber.length > 12) {
-        this.listing.chplProductNumber = `${this.idFields.prefix}.${
-          this.idFields.prod}.${
-          this.idFields.ver}.${
-          this.idFields.ics}.${
-          this.idFields.suffix}`;
+        const {
+          prefix, prod, ver, ics, suffix,
+        } = this.idFields;
+        this.listing.chplProductNumber = `${prefix}.${prod}.${ver}.${ics}.${suffix}`;
       }
       if (this.listing.rwtPlansCheckDateObject) {
         this.listing.rwtPlansCheckDate = this.DateUtil.timestampToString(this.listing.rwtPlansCheckDateObject.getTime(), 'yyyy-MM-dd');

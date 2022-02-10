@@ -1,11 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  func,
-} from 'prop-types';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
-import {
   Button,
   ButtonGroup,
   Card,
@@ -15,6 +9,10 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { bool, func } from 'prop-types';
+import CallSplitIcon from '@material-ui/icons/CallSplit';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import CallMergeIcon from '@material-ui/icons/CallMerge';
 
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -32,6 +30,7 @@ const useStyles = makeStyles({
 
 function ChplDeveloperView(props) {
   const DateUtil = getAngularService('DateUtil');
+  const { isSplitting } = props;
   const [developer, setDeveloper] = useState({});
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
@@ -58,7 +57,15 @@ function ChplDeveloperView(props) {
   };
 
   const edit = () => {
-    props.dispatch('edit', developer);
+    props.dispatch('edit');
+  };
+
+  const split = () => {
+    props.dispatch('split');
+  };
+
+  const merge = () => {
+    props.dispatch('merge');
   };
 
   return (
@@ -66,7 +73,7 @@ function ChplDeveloperView(props) {
       title={`${developer.name} Information`}
     >
       <CardHeader
-        title={developer.name}
+        title={isSplitting ? 'Original Developer' : developer.name}
       />
       <CardContent className={classes.content}>
         <div>
@@ -173,7 +180,7 @@ function ChplDeveloperView(props) {
               )}
         </div>
       </CardContent>
-      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !isSplitting
           && (
             <CardActions className={classes.cardActions}>
               <ButtonGroup
@@ -197,7 +204,7 @@ function ChplDeveloperView(props) {
                     <Button
                       variant="outlined"
                       aria-label={`Split ${developer.name}`}
-                      onClick={() => {}}
+                      onClick={split}
                     >
                       <CallSplitIcon />
                     </Button>
@@ -209,7 +216,7 @@ function ChplDeveloperView(props) {
                     <Button
                       variant="outlined"
                       aria-label={`Merge ${developer.name}`}
-                      onClick={() => {}}
+                      onClick={merge}
                     >
                       <CallMergeIcon />
                     </Button>
@@ -227,4 +234,5 @@ export default ChplDeveloperView;
 ChplDeveloperView.propTypes = {
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
+  isSplitting: bool.isRequired,
 };

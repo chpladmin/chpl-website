@@ -3,7 +3,7 @@ import {
   TablePagination,
 } from '@material-ui/core';
 import {
-  arrayOf, func, number, shape, string,
+  arrayOf, bool, func, oneOfType, number, shape, string,
 } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
@@ -57,9 +57,9 @@ ChplPagination.propTypes = {
   rowsPerPageOptions: arrayOf(number).isRequired,
   setPage: func.isRequired,
   setRowsPerPage: func.isRequired,
-  analytics: shape({
+  analytics: oneOfType([bool, shape({
     category: string.isRequired,
-  }),
+  })]),
 };
 
 ChplPagination.defaultProps = {

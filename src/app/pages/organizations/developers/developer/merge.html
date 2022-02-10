@@ -52,6 +52,12 @@
                       merging-developers="$ctrl.selectedDevelopers"
                       on-cancel="$ctrl.cancel()"
                       on-edit="$ctrl.merge(developer)"></chpl-developer>
+      <chpl-developer-bridge
+        developer="$ctrl.developer"
+        dispatch="::$ctrl.handleDispatch"
+        is-merging="true"
+        merging-developers="$ctrl.selectedDevelopers"
+        ></chpl-developer-bridge>
     </div>
   </div>
 </div>

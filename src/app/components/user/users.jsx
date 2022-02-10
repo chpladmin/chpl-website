@@ -6,38 +6,48 @@ import {
 } from 'prop-types';
 import {
   Container,
-  Paper,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService } from '../../services/angular-react-helper';
 import ChplUserEdit from './user-edit';
 import ChplUserInvite from './user-invite';
 import ChplUserView from './user-view';
-import { ChplTextField } from '../util';
-import theme from '../../themes/theme';
-import {
-  user as userPropType,
-} from '../../shared/prop-types';
+
+import { ChplTextField } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { user as userPropType } from 'shared/prop-types';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
   container: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '8px',
   },
   header: {
     padding: '16px',
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '4fr 64px',
+    margin: '0 8px',
+    display: 'flex',
+    gap: '8px',
+    flexDirection: 'column',
+    backgroundColor: '#ffffff',
+    border: '.5px solid #c2c6ca',
+    borderRadius: '8px',
+    boxShadow: 'rgb(149 157 165 / 10%) 0px 4px 8px',
+    alignItems: 'stretch',
+    [theme.breakpoints.up('lg')]: {
+      flexDirection: 'row',
+    },
   },
   users: {
-    padding: '16px',
+    padding: '8px',
     display: 'grid',
     gap: '16px',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-    alignItems: 'start',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+    },
   },
 }));
 
@@ -56,7 +66,7 @@ function ChplUsers(props) {
 
   useEffect(() => {
     setUsers(props.users.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
-  }, [props.users]);
+  }, [props.users]); // eslint-disable-line react/destructuring-assignment
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
@@ -117,7 +127,7 @@ function ChplUsers(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth={false}>
+      <Container>
         { user
           && (
             <ChplUserEdit
@@ -128,13 +138,13 @@ function ChplUsers(props) {
           )}
         { !user
           && (
-            <Paper className={classes.container}>
+            <div className={classes.container}>
               <>
                 <div className={classes.header}>
                   <ChplTextField
                     id="user-filter"
                     name="userFilter"
-                    label="Full Name, Friendly Name, Title, Email, or User Name"
+                    label="Search by Name, Title, or Email"
                     onChange={handleFilter}
                   />
                   <ChplUserInvite
@@ -152,7 +162,7 @@ function ChplUsers(props) {
                   ))}
                 </div>
               </>
-            </Paper>
+            </div>
           )}
       </Container>
     </ThemeProvider>

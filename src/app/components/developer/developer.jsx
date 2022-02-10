@@ -1,15 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Paper,
-  ThemeProvider,
-  makeStyles,
 } from '@material-ui/core';
+import { arrayOf, bool, func } from 'prop-types';
 
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
@@ -18,43 +11,43 @@ import { UserWrapper } from 'components/login';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
-  const [developer, setDeveloper] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
+  const {
+    developer,
+    dispatch,
+    isEditing,
+    isMerging,
+    isSplitting,
+  } = props;
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [mergingDevelopers, setMergingDevelopers] = useState([]);
 
   useEffect(() => {
-    setDeveloper(props.developer);
-  }, [props.developer]);
+    setIsInvalid(props.isInvalid);
+  }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
 
-  const handleDispatch = (action, data) => {
-    switch (action) {
-      case 'cancel':
-        setIsEditing(false);
-        break;
-      case 'edit':
-        setIsEditing(true);
-        break;
-      case 'save':
-        // todo
-        break;
-        // no default
-    }
-  };
+  useEffect(() => {
+    setMergingDevelopers(props.mergingDevelopers);
+  }, [props.mergingDevelopers]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <UserWrapper>
       <Container>
-        { isEditing
+        { (isEditing || isMerging)
           && (
             <ChplDeveloperEdit
               developer={developer}
-              dispatch={handleDispatch}
+              dispatch={dispatch}
+              isInvalid={isInvalid}
+              isSplitting={isSplitting}
+              mergingDevelopers={mergingDevelopers}
             />
           )}
-        { !isEditing
+        { !isEditing && !isMerging
           && (
             <ChplDeveloperView
               developer={developer}
-              dispatch={handleDispatch}
+              dispatch={dispatch}
+              isSplitting={isSplitting}
             />
           )}
       </Container>
@@ -66,5 +59,19 @@ export default ChplDeveloper;
 
 ChplDeveloper.propTypes = {
   developer: developerPropType.isRequired,
-  dispatch: func.isRequired,
+  dispatch: func,
+  isEditing: bool,
+  isInvalid: bool,
+  isMerging: bool,
+  isSplitting: bool,
+  mergingDevelopers: arrayOf(developerPropType),
+};
+
+ChplDeveloper.defaultProps = {
+  dispatch: () => {},
+  isEditing: false,
+  isInvalid: false,
+  isMerging: false,
+  isSplitting: false,
+  mergingDevelopers: [],
 };

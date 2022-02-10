@@ -2,7 +2,8 @@ import ReportingPage from '../reporting.po';
 import LoginComponent from '../../../../components/login/login.po';
 import Hooks from '../../../../utilities/hooks';
 import ToastComponent from '../../../../components/toast/toast.po';
-import ActionBarComponent from '../../../../components/action-bar/action-bar.po';
+import ActionBarComponent from '../../../../components/action-bar/action-bar-legacy.po';
+
 import AnnualPage from './annual.po';
 
 let action; let annualPage; let hooks; let loginComponent; let reportingPage; let toast;
@@ -83,8 +84,8 @@ describe('when logged in as a ROLE_ACB', () => {
     action.cancel();
     action.yes();
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil(() => reportingPage.acbHeader.isDisplayed())
-    expect(reportingPage.secondaryPageTitle.getText()).toBe("Available reports");
+    browser.waitUntil(() => reportingPage.acbHeader.isDisplayed());
+    expect(reportingPage.secondaryPageTitle.getText()).toBe('Available reports');
   });
 
   it('can edit annual report', () => {
@@ -107,6 +108,5 @@ describe('when logged in as a ROLE_ACB', () => {
     annualPage.download.click();
     expect(toast.toastTitle.getText()).toBe('Report is being generated');
   });
-
 });
 

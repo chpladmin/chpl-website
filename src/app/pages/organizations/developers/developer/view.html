@@ -26,7 +26,12 @@
           dispatch="::$ctrl.takeAction"
           ></chpl-developer-bridge>
       </div>
-      <div feature-flag="role-developer">
+      <div feature-flag="attestations">
+        <chpl-attestations-view-wrapper-bridge developer="$ctrl.developer"
+                                               dispatch="::$ctrl.handleAttestationDispatch"
+                                               ></chpl-attestations-view-wrapper-bridge>
+      </div>
+      <div>
         <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
           <div class="panel-heading">
             <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
@@ -38,11 +43,6 @@
                                ></chpl-users-bridge>
           </div>
         </div>
-      </div>
-      <div ng-if="$ctrl.can('displayAttestations')">
-        <chpl-attestation-change-request-bridge developer="$ctrl.developer"
-                                                dispatch="::$ctrl.handleAttestationDispatch"
-                                                ></chpl-attestation-change-request-bridge>
       </div>
     </div>
     <div class="col-md-8">

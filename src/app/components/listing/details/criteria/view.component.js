@@ -38,9 +38,9 @@ const CertificationCriteriaViewComponent = {
 
     canEdit() {
       return this.isEditing // in editing mode
-                && (this.cert.success // can always remove success
-                    || this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
-                    || !this.cert.criterion.removed); // ROLE_ACB can only edit when not removed criteria
+        && (this.cert.success // can always remove success
+            || !this.cert.criterion.removed // can always edit non-removed
+            || (!this.isConfirming && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))); // can only edit removed when given role & not confirming
     }
 
     editCert() {
