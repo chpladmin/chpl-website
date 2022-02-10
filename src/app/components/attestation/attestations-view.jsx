@@ -100,7 +100,7 @@ function ChplAttestationsView(props) {
                 id="create-attestation-change-request-button"
                 variant="contained"
                 onClick={createAttestationChangeRequest}
-                disabled={!attestationData.data?.canSubmit}
+                disabled={!attestationData.data?.canSubmitAttestationChangeRequest}
               >
                 Submit Attestations
               </Button>
@@ -114,7 +114,7 @@ function ChplAttestationsView(props) {
                 id="create-attestation-exception-button"
                 variant="contained"
                 onClick={createAttestationException}
-                disabled={attestationData.data?.canSubmit}
+                disabled={attestationData.data?.canSubmitAttestationChangeRequest}
               >
                 Create Attestations Submission Exception
               </Button>
