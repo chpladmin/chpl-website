@@ -16,6 +16,7 @@ const DevelopersEditComponent = {
       this.backup = {};
       this.activeAcbs = [];
       this.closeConfirmation = this.closeConfirmation.bind(this);
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onInit() {
@@ -43,6 +44,18 @@ const DevelopersEditComponent = {
     closeConfirmation() {
       this.action = undefined;
       this.$state.go('^', undefined, { reload: true });
+    }
+
+    handleDispatch(action, data) {
+      switch (action) {
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'save':
+          this.save(data);
+          break;
+          // no default
+      }
     }
 
     save(developer) {

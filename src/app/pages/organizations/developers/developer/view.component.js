@@ -26,6 +26,7 @@ const DeveloperViewComponent = {
       this.users = [];
       this.closeConfirmation = this.closeConfirmation.bind(this);
       this.handleAttestationDispatch = this.handleAttestationDispatch.bind(this);
+      this.takeAction = this.takeAction.bind(this);
     }
 
     $onInit() {

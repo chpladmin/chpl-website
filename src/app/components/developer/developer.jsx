@@ -1,15 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Paper,
-  ThemeProvider,
-  makeStyles,
 } from '@material-ui/core';
+import { bool, func } from 'prop-types';
 
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
@@ -18,27 +11,17 @@ import { UserWrapper } from 'components/login';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
+  const { dispatch } = props;
   const [developer, setDeveloper] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setDeveloper(props.developer);
-  }, [props.developer]);
+  }, [props.developer]); // eslint-disable-line react/destructuring-assignment
 
-  const handleDispatch = (action, data) => {
-    switch (action) {
-      case 'cancel':
-        setIsEditing(false);
-        break;
-      case 'edit':
-        setIsEditing(true);
-        break;
-      case 'save':
-        // todo
-        break;
-        // no default
-    }
-  };
+  useEffect(() => {
+    setIsEditing(props.isEditing);
+  }, [props.isEditing]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <UserWrapper>
@@ -47,14 +30,14 @@ function ChplDeveloper(props) {
           && (
             <ChplDeveloperEdit
               developer={developer}
-              dispatch={handleDispatch}
+              dispatch={dispatch}
             />
           )}
         { !isEditing
           && (
             <ChplDeveloperView
               developer={developer}
-              dispatch={handleDispatch}
+              dispatch={dispatch}
             />
           )}
       </Container>
@@ -67,4 +50,9 @@ export default ChplDeveloper;
 ChplDeveloper.propTypes = {
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
+  isEditing: bool,
+};
+
+ChplDeveloper.defaultProps = {
+  isEditing: false,
 };

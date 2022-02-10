@@ -58,7 +58,15 @@ function ChplDeveloperView(props) {
   };
 
   const edit = () => {
-    props.dispatch('edit', developer);
+    props.dispatch('edit');
+  };
+
+  const split = () => {
+    props.dispatch('split');
+  };
+
+  const merge = () => {
+    props.dispatch('merge');
   };
 
   return (
@@ -192,7 +200,7 @@ function ChplDeveloperView(props) {
                     <Button
                       variant="outlined"
                       aria-label={`Split ${developer.name}`}
-                      onClick={() => {}}
+                      onClick={split}
                     >
                       <CallSplitIcon />
                     </Button>
@@ -204,7 +212,7 @@ function ChplDeveloperView(props) {
                     <Button
                       variant="outlined"
                       aria-label={`Merge ${developer.name}`}
-                      onClick={() => {}}
+                      onClick={merge}
                     >
                       <CallMergeIcon />
                     </Button>
