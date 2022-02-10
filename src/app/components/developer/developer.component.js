@@ -2,7 +2,6 @@ export const DeveloperComponent = {
   templateUrl: 'chpl.components/developer/developer.html',
   bindings: {
     developer: '<',
-    allowedAcbs: '<',
     canEdit: '<',
     canMerge: '<',
     canSplit: '<',
@@ -30,9 +29,6 @@ export const DeveloperComponent = {
     }
 
     $onChanges(changes) {
-      if (changes.allowedAcbs) {
-        this.allowedAcbs = angular.copy(changes.allowedAcbs.currentValue);
-      }
       if (changes.developer) {
         this.developer = angular.copy(changes.developer.currentValue);
         if (!this.developer) {

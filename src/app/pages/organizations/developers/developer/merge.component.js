@@ -87,7 +87,7 @@ export const DevelopersMergeComponent = {
         .forEach(d => d.selected = !d.selected);
       this.selectedDevelopers = this.developers
         .filter(d => d.selected)
-        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+        .sort((a, b) => a.name < b.name ? -1 : 1);
       this.selectedToMerge = null;
     }
   },

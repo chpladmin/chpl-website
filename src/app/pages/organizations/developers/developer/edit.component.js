@@ -14,16 +14,8 @@ const DevelopersEditComponent = {
       this.networkService = networkService;
       this.toaster = toaster;
       this.backup = {};
-      this.activeAcbs = [];
       this.closeConfirmation = this.closeConfirmation.bind(this);
       this.handleDispatch = this.handleDispatch.bind(this);
-    }
-
-    $onInit() {
-      const that = this;
-      this.networkService.getAcbs(true).then((response) => {
-        that.allowedAcbs = response.acbs;
-      });
     }
 
     $onChanges(changes) {

@@ -22,11 +22,6 @@ export const DevelopersSplitComponent = {
       this.handleDispatch = this.handleDispatch.bind(this);
     }
 
-    $onInit () {
-      this.networkService.getAcbs(true)
-        .then(response => this.acbs = response.acbs);
-    }
-
     $onChanges (changes) {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
