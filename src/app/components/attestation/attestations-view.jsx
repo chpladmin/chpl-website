@@ -43,6 +43,10 @@ function ChplAttestationsView(props) {
     props.dispatch('createAttestation');
   };
 
+  const createAttestationException = () => {
+    console.log('do something to create an attesation exception');
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Card>
@@ -99,6 +103,20 @@ function ChplAttestationsView(props) {
                 disabled={!attestationData.data?.canSubmit}
               >
                 Submit Attestations
+              </Button>
+            </CardActions>
+          )}
+        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+          && (
+            <CardActions>
+              <Button
+                color="primary"
+                id="create-attestation-exception-button"
+                variant="contained"
+                onClick={createAttestationException}
+                disabled={attestationData.data?.canSubmit}
+              >
+                Create Attestations Submission Exception
               </Button>
             </CardActions>
           )}
