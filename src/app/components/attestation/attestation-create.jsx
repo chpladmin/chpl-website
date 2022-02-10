@@ -84,11 +84,11 @@ const useStyles = makeStyles({
 
 function ChplAttestationCreate(props) {
   const $state = getAngularService('$state');
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { developer } = props;
   const { data, isLoading } = useFetchAttestationData();
   const crData = useFetchChangeRequestTypes();
   const { mutate } = usePostChangeRequest();
+  const { enqueueSnackbar } = useSnackbar();
   const [attestationResponses, setAttestationResponses] = useState({});
   const [changeRequestType, setChangeRequestType] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -6,11 +6,11 @@ import {
 import { node } from 'prop-types';
 import { SnackbarProvider } from 'notistack';
 
+import ChplLogin from './login';
+
 import theme from 'themes/theme';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-
-import ChplLogin from './login';
 
 function UserWrapper(props) {
   const $rootScope = getAngularService('$rootScope');
@@ -70,7 +70,7 @@ function UserWrapper(props) {
         ref={notistackRef}
         action={(key) => (
           <Button onClick={onClickDismiss(key)}>
-            'Dismiss'
+            Dismiss
           </Button>
         )}
       >
