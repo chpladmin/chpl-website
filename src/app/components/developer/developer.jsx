@@ -12,12 +12,12 @@ import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
   const {
+    developer,
     dispatch,
     isEditing,
     isMerging,
     isSplitting,
   } = props;
-  const [developer, setDeveloper] = useState({});
   const [isInvalid, setIsInvalid] = useState(false);
   const [mergingDevelopers, setMergingDevelopers] = useState([]);
 
