@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Container,
-} from '@material-ui/core';
 import { arrayOf, bool, func } from 'prop-types';
 
 import ChplDeveloperEdit from './developer-edit';
@@ -31,7 +28,6 @@ function ChplDeveloper(props) {
 
   return (
     <UserWrapper>
-      <Container>
         { (isEditing || isMerging)
           && (
             <ChplDeveloperEdit
@@ -50,7 +46,6 @@ function ChplDeveloper(props) {
               isSplitting={isSplitting}
             />
           )}
-      </Container>
     </UserWrapper>
   );
 }
