@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import {
+  Button,
   ThemeProvider,
 } from '@material-ui/core';
 import { node } from 'prop-types';
+import { SnackbarProvider } from 'notistack';
 
-import theme from '../../themes/theme';
-import { getAngularService } from '../../services/angular-react-helper';
-import { UserContext } from '../../shared/contexts';
+import theme from 'themes/theme';
+import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
 
 import ChplLogin from './login';
 
@@ -55,11 +57,27 @@ function UserWrapper(props) {
     user,
   };
 
+  const notistackRef = createRef();
+
+  const onClickDismiss = (key) => () => {
+    notistackRef.current.closeSnackbar(key);
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <UserContext.Provider value={userState}>
-        { children }
-      </UserContext.Provider>
+      <SnackbarProvider
+        autoHideDuration={null}
+        ref={notistackRef}
+        action={(key) => (
+          <Button onClick={onClickDismiss(key)}>
+            'Dismiss'
+          </Button>
+        )}
+      >
+        <UserContext.Provider value={userState}>
+          { children }
+        </UserContext.Provider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
