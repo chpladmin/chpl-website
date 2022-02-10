@@ -31,7 +31,7 @@ import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     rowGap: '8px',
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
   fullWidth: {
     gridColumn: '1 / -1',
   },
-}));
+});
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -105,6 +105,109 @@ const validationSchema = yup.object({
     .max(300, 'Website is too long'),
 });
 
+const fillOptionByDeveloper = (developer, options) => {
+  if (developer.website) {
+    options.website.push(developer.website);
+  }
+  if (developer.contact) {
+    if (developer.contact.fullName) {
+      options.fullName.push(developer.contact.fullName);
+    }
+    if (developer.contact.title) {
+      options.title.push(developer.contact.title);
+    }
+    if (developer.contact.email) {
+      options.email.push(developer.contact.email);
+    }
+    if (developer.contact.phoneNumber) {
+      options.phoneNumber.push(developer.contact.phoneNumber);
+    }
+  }
+  if (developer.address) {
+    if (developer.address.line1) {
+      options.line1.push(developer.address.line1);
+    }
+    if (developer.address.line2) {
+      options.line2.push(developer.address.line2);
+    }
+    if (developer.address.city) {
+      options.city.push(developer.address.city);
+    }
+    if (developer.address.state) {
+      options.state.push(developer.address.state);
+    }
+    if (developer.address.zipcode) {
+      options.zipcode.push(developer.address.zipcode);
+    }
+    if (developer.address.country) {
+      options.country.push(developer.address.country);
+    }
+  }
+};
+
+const generateOptions = (developer, mergingDevelopers) => {
+  const options = {
+    name: Array.from(new Set([developer.name].concat(mergingDevelopers.map((d) => d.name)))),
+    website: [],
+    fullName: [],
+    title: [],
+    email: [],
+    phoneNumber: [],
+    line1: [],
+    line2: [],
+    city: [],
+    state: [],
+    zipcode: [],
+    country: [],
+  };
+  fillOptionByDeveloper(developer, options);
+  mergingDevelopers.forEach((d) => fillOptionByDeveloper(d, options));
+  options.website = Array.from(new Set(options.website));
+  options.fullName = Array.from(new Set(options.fullName));
+  options.title = Array.from(new Set(options.title));
+  options.email = Array.from(new Set(options.email));
+  options.phoneNumber = Array.from(new Set(options.phoneNumber));
+  options.line1 = Array.from(new Set(options.line1));
+  options.line2 = Array.from(new Set(options.line2));
+  options.city = Array.from(new Set(options.city));
+  options.state = Array.from(new Set(options.state));
+  options.zipcode = Array.from(new Set(options.zipcode));
+  options.country = Array.from(new Set(options.country));
+  return options;
+};
+
+const getOptions = (options, predicate, existing) => {
+  if (!options || !options[predicate]) { return []; }
+  return options[predicate]
+    .filter((o) => o && o.length > 0 && o !== existing)
+    .sort((a, b) => (a < b ? -1 : 1));
+};
+
+const getEditField = (key, display, formik, options) => (
+  <div>
+    <ChplTextField
+      id={key}
+      name={key}
+      label={display}
+      required
+      value={formik.values[key]}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched[key] && !!formik.errors[key]}
+      helperText={formik.touched[key] && formik.errors[key]}
+    />
+    { getOptions(options, key, formik.values[key]).map((o) => (
+      <Button
+        key={o}
+        id={`use-${o}-${key}`}
+        onClick={() => formik.setFieldValue(key, o)}
+      >
+        {o}
+      </Button>
+    ))}
+  </div>
+);
+
 function ChplDeveloperEdit(props) {
   const DateUtil = getAngularService('DateUtil');
   const {
@@ -114,7 +217,7 @@ function ChplDeveloperEdit(props) {
   } = props;
   const [errors, setErrors] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
-  const [mergingDevelopers, setMergingDevelopers] = useState([]);
+  const [options, setOptions] = useState({});
   const [statusEvents, setStatusEvents] = useState([]);
   const classes = useStyles();
   let formik;
@@ -128,8 +231,8 @@ function ChplDeveloperEdit(props) {
   }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setMergingDevelopers(props.mergingDevelopers);
-  }, [props.mergingDevelopers]); // eslint-disable-line react/destructuring-assignment
+    setOptions(generateOptions(developer, props.mergingDevelopers));
+  }, [props.mergingDevelopers, developer]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     if (!statusEvents || statusEvents.length === 0) {
@@ -260,17 +363,7 @@ function ChplDeveloperEdit(props) {
           title={isSplitting ? 'New Developer' : `Edit ${developer.name}`}
         />
         <CardContent className={classes.content}>
-          <ChplTextField
-            id="name"
-            name="name"
-            label="Name"
-            required
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.name && !!formik.errors.name}
-            helperText={formik.touched.name && formik.errors.name}
-          />
+          { getEditField('name', 'Name', formik, options) }
           <FormControlLabel
             control={(
               <Switch
@@ -403,126 +496,17 @@ function ChplDeveloperEdit(props) {
                 </ButtonGroup>
               </>
             )}
-          <ChplTextField
-            id="full-name"
-            name="fullName"
-            label="Full Name"
-            required
-            value={formik.values.fullName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.fullName && !!formik.errors.fullName}
-            helperText={formik.touched.fullName && formik.errors.fullName}
-          />
-          <ChplTextField
-            id="title"
-            name="title"
-            label="Title"
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.title && !!formik.errors.title}
-            helperText={formik.touched.title && formik.errors.title}
-          />
-          <ChplTextField
-            id="email"
-            name="email"
-            label="Email"
-            required
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.email && !!formik.errors.email}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-          <ChplTextField
-            id="phone-number"
-            name="phoneNumber"
-            label="Phone"
-            required
-            value={formik.values.phoneNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-          />
-          <ChplTextField
-            id="line1"
-            name="line1"
-            label="Address"
-            required
-            value={formik.values.line1}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.line1 && !!formik.errors.line1}
-            helperText={formik.touched.line1 && formik.errors.line1}
-          />
-          <ChplTextField
-            id="line2"
-            name="line2"
-            label="Line 2"
-            value={formik.values.line2}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.line2 && !!formik.errors.line2}
-            helperText={formik.touched.line2 && formik.errors.line2}
-          />
-          <ChplTextField
-            id="city"
-            name="city"
-            label="City"
-            required
-            value={formik.values.city}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.city && !!formik.errors.city}
-            helperText={formik.touched.city && formik.errors.city}
-          />
-          <ChplTextField
-            id="state"
-            name="state"
-            label="State"
-            required
-            value={formik.values.state}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.state && !!formik.errors.state}
-            helperText={formik.touched.state && formik.errors.state}
-          />
-          <ChplTextField
-            id="zipcode"
-            name="zipcode"
-            label="Zip"
-            required
-            value={formik.values.zipcode}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.zipcode && !!formik.errors.zipcode}
-            helperText={formik.touched.zipcode && formik.errors.zipcode}
-          />
-          <ChplTextField
-            id="country"
-            name="country"
-            label="Country"
-            required
-            value={formik.values.country}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.country && !!formik.errors.country}
-            helperText={formik.touched.country && formik.errors.country}
-          />
-          <ChplTextField
-            id="website"
-            name="website"
-            label="Website"
-            required
-            className={classes.fullWidth}
-            value={formik.values.website}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.website && !!formik.errors.website}
-            helperText={formik.touched.website && formik.errors.website}
-          />
+          { getEditField('fullName', 'Full Name', formik, options) }
+          { getEditField('title', 'Title', formik, options) }
+          { getEditField('email', 'Email', formik, options) }
+          { getEditField('phoneNumber', 'Phone', formik, options) }
+          { getEditField('line1', 'Address', formik, options) }
+          { getEditField('line2', 'Line 2', formik, options) }
+          { getEditField('city', 'City', formik, options) }
+          { getEditField('state', 'State', formik, options) }
+          { getEditField('zipcode', 'Zip', formik, options) }
+          { getEditField('country', 'Country', formik, options) }
+          { getEditField('website', 'Website', formik, options) }
         </CardContent>
       </Card>
       <ChplActionBar
