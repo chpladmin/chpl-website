@@ -22,7 +22,7 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -107,8 +107,13 @@ const validationSchema = yup.object({
 
 function ChplDeveloperEdit(props) {
   const DateUtil = getAngularService('DateUtil');
-  const { developer, dispatch } = props;
+  const {
+    developer,
+    dispatch,
+    isSplitting,
+  } = props;
   const [errors, setErrors] = useState([]);
+  const [isInvalid, setIsInvalid] = useState(false);
   const [statusEvents, setStatusEvents] = useState([]);
   const classes = useStyles();
   let formik;
@@ -118,7 +123,11 @@ function ChplDeveloperEdit(props) {
   }, [props.developer]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    if (statusEvents.length === 0) {
+    setIsInvalid(props.isInvalid);
+  }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    if (!statusEvents || statusEvents.length === 0) {
       setErrors(['Developer must have at least one Status']);
       return;
     }
@@ -211,7 +220,7 @@ function ChplDeveloperEdit(props) {
     setStatusEvents(statusEvents.filter((item) => item.statusDate !== status.statusDate));
   };
 
-  const isActionDisabled = () => errors.length > 0 || !formik.isValid;
+  const isActionDisabled = () => isInvalid || errors.length > 0 || !formik.isValid;
 
   formik = useFormik({
     initialValues: {
@@ -243,7 +252,7 @@ function ChplDeveloperEdit(props) {
     <>
       <Card>
         <CardHeader
-          title={`Edit ${developer.name}`}
+          title={isSplitting ? 'New Developer' : `Edit ${developer.name}`}
         />
         <CardContent className={classes.content}>
           <ChplTextField
@@ -525,4 +534,6 @@ export default ChplDeveloperEdit;
 ChplDeveloperEdit.propTypes = {
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
+  isInvalid: bool.isRequired,
+  isSplitting: bool.isRequired,
 };

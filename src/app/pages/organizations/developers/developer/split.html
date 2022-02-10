@@ -10,6 +10,12 @@
                     is-splitting="true"></chpl-developer>
   </div>
   <div class="flex-item">
+    <chpl-developer-bridge
+      developer="$ctrl.developer"
+      is-splitting="true"
+      ></chpl-developer-bridge>
+  </div>
+  <div class="flex-item">
     <chpl-developer developer="$ctrl.newDeveloper"
                     allowed-acbs="$ctrl.acbs"
                     is-editing="true"
@@ -17,6 +23,15 @@
                     is-invalid="$ctrl.products.length === 0 || $ctrl.movingProducts.length === 0"
                     on-cancel="$ctrl.cancel()"
                     on-edit="$ctrl.split(developer)"></chpl-developer>
+  </div>
+  <div class="flex-item">
+    <chpl-developer-bridge
+      developer="$ctrl.newDeveloper"
+      dispatch="::$ctrl.handleDispatch"
+      is-editing="true"
+      is-splitting="true"
+      is-invalid="$ctrl.products.length === 0 || $ctrl.movingProducts.length === 0"
+      ></chpl-developer-bridge>
   </div>
 </div>
 <div class="flex-container">

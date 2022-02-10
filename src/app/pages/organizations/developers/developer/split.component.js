@@ -16,9 +16,10 @@ export const DevelopersSplitComponent = {
         status: {status: 'Active'},
         statusEvents: [{
           status: { status: 'Active'},
-          statusDate: new Date(),
+          statusDate: (new Date()).getTime(),
         }],
       };
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onInit () {
@@ -39,6 +40,18 @@ export const DevelopersSplitComponent = {
       }, {
         reload: true,
       });
+    }
+
+    handleDispatch(action, data) {
+      switch (action) {
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'save':
+          this.split(data);
+          break;
+          // no default
+      }
     }
 
     split (developer) {

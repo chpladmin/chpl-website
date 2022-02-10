@@ -11,17 +11,21 @@ import { UserWrapper } from 'components/login';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
-  const { dispatch } = props;
+  const {
+    dispatch,
+    isEditing,
+    isSplitting,
+  } = props;
   const [developer, setDeveloper] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
 
   useEffect(() => {
     setDeveloper(props.developer);
   }, [props.developer]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setIsEditing(props.isEditing);
-  }, [props.isEditing]); // eslint-disable-line react/destructuring-assignment
+    setIsInvalid(props.isInvalid);
+  }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <UserWrapper>
@@ -31,6 +35,8 @@ function ChplDeveloper(props) {
             <ChplDeveloperEdit
               developer={developer}
               dispatch={dispatch}
+              isInvalid={isInvalid}
+              isSplitting={isSplitting}
             />
           )}
         { !isEditing
@@ -38,6 +44,7 @@ function ChplDeveloper(props) {
             <ChplDeveloperView
               developer={developer}
               dispatch={dispatch}
+              isSplitting={isSplitting}
             />
           )}
       </Container>
@@ -49,10 +56,15 @@ export default ChplDeveloper;
 
 ChplDeveloper.propTypes = {
   developer: developerPropType.isRequired,
-  dispatch: func.isRequired,
+  dispatch: func,
   isEditing: bool,
+  isInvalid: bool,
+  isSplitting: bool,
 };
 
 ChplDeveloper.defaultProps = {
+  dispatch: () => {},
   isEditing: false,
+  isInvalid: false,
+  isSplitting: false,
 };
