@@ -16,6 +16,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useFilterContext } from './filter-context';
 
+import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
@@ -23,7 +24,6 @@ const useStyles = makeStyles({
   advancedSearchButton: {
     color: '#000',
   },
-
   filterPanelContainer: {
     background: '#fafdff',
     display: 'grid',
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     padding: '16px',
     rowGap: '16px',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: '1fr 1fr 1fr',
     },
   },
   filterBold: {
@@ -82,8 +82,10 @@ function ChplFilterPanel() {
   const classes = useStyles();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(null);
-  const [activeKey, setActiveKey] = useState('');
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeValue, setActiveValue] = useState(null);
+  const [activeCategoryKey, setActiveCategoryKey] = useState('');
+  const [activeValueKey, setActiveValueKey] = useState('');
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
 
@@ -97,8 +99,14 @@ function ChplFilterPanel() {
   }, [filterContext.filters]);
 
   useEffect(() => {
-    setActive(filters.find((f) => f.key === activeKey));
-  }, [filters, activeKey]);
+    setActiveCategory(filters.find((f) => f.key === activeCategoryKey));
+  }, [filters, activeCategoryKey]);
+
+  useEffect(() => {
+    if (activeCategory?.values) {
+      setActiveValue(activeCategory.values.find((v) => v.value === activeValueKey));
+    }
+  }, [filters, activeCategory, activeValueKey]);
 
   const handleClick = (e) => {
     if (filterContext.analytics) {
@@ -111,29 +119,56 @@ function ChplFilterPanel() {
   const handleClose = () => {
     setAnchor(null);
     setOpen(false);
-    setActiveKey('');
-  };
-
-  const handleSecondaryToggle = (value) => {
-    if (filterContext.analytics) {
-      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${active.display}: ${value.display}` });
-    }
-    filterContext.dispatch('toggle', active, value);
+    setActiveCategoryKey('');
+    setActiveValueKey('');
   };
 
   const handleAction = (action) => {
-    filterContext.dispatch(action, active);
+    filterContext.dispatch(action, activeCategory);
   };
 
-  const toggleActive = (filter) => {
-    if (active === filter) {
-      setActiveKey('');
+  const handleCategoryToggle = (filter) => {
+    if (activeCategory === filter) {
+      setActiveCategoryKey('');
     } else {
       if (filterContext.analytics) {
         $analytics.eventTrack('Select Filter Category', { category: filterContext.analytics.category, label: `${filter.display}` });
       }
-      setActiveKey(filter.key);
+      setActiveCategoryKey(filter.key);
     }
+  };
+
+  const handleSecondaryToggle = (value) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${activeCategory.display}: ${value.display}` });
+    }
+    filterContext.dispatch('toggle', activeCategory, value);
+  };
+
+  const handleTertiaryValueToggle = (value) => {
+    if (activeValue === value) {
+      setActiveValueKey('');
+      setActiveValue(null);
+    } else {
+      setActiveValueKey(value.value);
+      setActiveValue(value);
+    }
+  };
+
+  const handleTertiaryToggle = (event) => {
+    filterContext.dispatch('toggle', activeCategory, {
+      ...activeValue,
+      selected: event.target.checked,
+    });
+  };
+
+  const handleTertiaryUpdate = (event) => {
+    filterContext.dispatch('update', activeCategory, {
+      ...activeValue,
+      data: {
+        date: event.target.value,
+      },
+    });
   };
 
   return (
@@ -208,12 +243,12 @@ function ChplFilterPanel() {
                       <Button
                         fullWidth
                         key={f.key}
-                        color={f === active ? 'default' : 'primary'}
+                        color={f === activeCategory ? 'default' : 'primary'}
                         id={`filter-panel-primary-items-${f.key}`}
                         variant="outlined"
-                        onClick={() => toggleActive(f)}
+                        onClick={() => handleCategoryToggle(f)}
                       >
-                        <span className={f === active ? classes.filterBold : undefined}>
+                        <span className={f === activeCategory ? classes.filterBold : undefined}>
                           {f.display}
                         </span>
                       </Button>
@@ -224,7 +259,7 @@ function ChplFilterPanel() {
             </div>
           </div>
           <div>
-            { active?.values.length > 0 && (
+            { activeCategory?.values.length > 0 && (
               <List
                 dense
                 subheader={(
@@ -242,7 +277,7 @@ function ChplFilterPanel() {
                       >
                         <Button
                           onClick={() => handleAction('clearFilter')}
-                          disabled={active.required}
+                          disabled={activeCategory.required}
                         >
                           Clear
                         </Button>
@@ -257,14 +292,24 @@ function ChplFilterPanel() {
                 )}
               >
                 <div className={classes.filterGroupTwoContainer}>
-                  { active.values.map((v) => {
+                  { activeCategory.values.map((v) => {
                     const labelId = `filter-panel-secondary-items-${v.value.replace(/ /g, '_')}`;
+                    if (v.data) {
+                      return (
+                        <Button
+                          key={v.value}
+                          onClick={() => handleTertiaryValueToggle(v)}
+                        >
+                          {v.display}
+                        </Button>
+                      );
+                    }
                     return (
                       <ListItem
                         key={v.value}
                         button
                         onClick={() => handleSecondaryToggle(v)}
-                        disabled={active.required && v.selected && active.values.filter((a) => a.selected).length === 1}
+                        disabled={activeCategory.required && v.selected && activeCategory.values.filter((a) => a.selected).length === 1}
                       >
                         <ListItemIcon>
                           <Checkbox
@@ -283,6 +328,21 @@ function ChplFilterPanel() {
               </List>
             )}
           </div>
+          { activeValue
+            && (
+              <div className={classes.filterGroupThreeContainer}>
+                { activeCategory.getDisplay ? activeCategory.getDisplay(activeValue) : activeValue.display }
+                <Checkbox
+                  checked={activeValue.selected}
+                  onChange={handleTertiaryToggle}
+                />
+                <ChplTextField
+                  type="datetime-local"
+                  value={activeValue.data.date}
+                  onChange={handleTertiaryUpdate}
+                />
+              </div>
+            )}
         </div>
       </Popover>
     </>
