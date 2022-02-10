@@ -22,7 +22,7 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import { bool, func } from 'prop-types';
+import { arrayOf, bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -114,6 +114,7 @@ function ChplDeveloperEdit(props) {
   } = props;
   const [errors, setErrors] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
+  const [mergingDevelopers, setMergingDevelopers] = useState([]);
   const [statusEvents, setStatusEvents] = useState([]);
   const classes = useStyles();
   let formik;
@@ -125,6 +126,10 @@ function ChplDeveloperEdit(props) {
   useEffect(() => {
     setIsInvalid(props.isInvalid);
   }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setMergingDevelopers(props.mergingDevelopers);
+  }, [props.mergingDevelopers]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     if (!statusEvents || statusEvents.length === 0) {
@@ -536,4 +541,5 @@ ChplDeveloperEdit.propTypes = {
   dispatch: func.isRequired,
   isInvalid: bool.isRequired,
   isSplitting: bool.isRequired,
+  mergingDevelopers: arrayOf(developerPropType).isRequired,
 };

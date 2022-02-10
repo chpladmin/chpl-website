@@ -12,6 +12,7 @@ export const DevelopersMergeComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onChanges (changes) {
@@ -38,6 +39,18 @@ export const DevelopersMergeComponent = {
       }, {
         reload: true,
       });
+    }
+
+    handleDispatch(action, data) {
+      switch (action) {
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'save':
+          this.merge(data);
+          break;
+          // no default
+      }
     }
 
     merge (developer) {
