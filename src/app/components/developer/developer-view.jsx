@@ -22,9 +22,9 @@ import { UserContext } from 'shared/contexts';
 const useStyles = makeStyles({
   content: {
     display: 'grid',
-    gridTemplateColumns:'1fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gap: '16px',
-    justifyItems:'stretch'
+    justifyItems: 'stretch'
   },
 });
 
@@ -77,16 +77,12 @@ function ChplDeveloperView(props) {
       />
       <CardContent className={classes.content}>
         <div>
-          <Typography>
-              <strong>Developer code</strong>
-            <Typography gutterBottom>
-            {developer.developerCode}
-            </Typography>
-          </Typography>
-          <Typography>
-            <strong>Self-developer</strong>
-            <Typography gutterBottom>{developer.selfDeveloper ? 'Yes' : 'No'}</Typography>
-          </Typography>
+          <Typography><strong>Developer code</strong></Typography>
+          <Typography>{developer.developerCode}</Typography>
+          <br />
+          <Typography><strong>Self-developer</strong></Typography>
+          <Typography>{developer.selfDeveloper ? 'Yes' : 'No'}</Typography>
+          <br />
           { developer.statusEvents
               ?.sort((a, b) => b.statusDate - a.statusDate)
               .map((status) => (
@@ -96,18 +92,19 @@ function ChplDeveloperView(props) {
                   {status.status.status}
                   {' '}
                   as of
+                  {' '}
                   { DateUtil.getDisplayDateFormat(status.statusDate) }
                   { status.reason
                     && (
                       <>  
-                        <br/>
-                        <Typography gutterBottom>
+                        <br />
+                        <br />
                         {status.reason}
-                        </Typography>
                       </>
                     )}
                 </Typography>
               ))}
+           <br />
         </div>
         <div>
           { developer.contact
@@ -131,9 +128,10 @@ function ChplDeveloperView(props) {
                   {developer.contact.phoneNumber}
                   <br />
                   <span className="sr-only">Email: </span>
-                  <Typography gutterBottom>{developer.contact.email}</Typography>
+                  {developer.contact.email}
                 </Typography>
               )}
+          <br />
           { developer.address
               && (
                 <Typography>
@@ -162,11 +160,10 @@ function ChplDeveloperView(props) {
                   {developer.address.zipcode}
                   ,
                   <span className="sr-only">Country: </span>
-                 <Typography gutterBottom>
                   {developer.address.country}
                 </Typography>
-                </Typography>
               )}
+          <br />
           { developer.website
               && (
                 <Typography>
