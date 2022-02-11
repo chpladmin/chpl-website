@@ -76,7 +76,7 @@ function ChplLink(props) {
   };
 
   return (
-    <div className={classes.chplLink}>
+    <span className={classes.chplLink}>
       <a href={href} onClick={track}>
         {text}
       </a>
@@ -87,7 +87,7 @@ function ChplLink(props) {
             <span className="sr-only">Web Site Disclaimers</span>
           </a>
         )}
-    </div>
+    </span>
   );
 }
 

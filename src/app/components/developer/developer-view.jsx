@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   ButtonGroup,
   Card,
@@ -25,7 +28,82 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '16px',
   },
+  historyContent: {
+    display: 'grid',
+    gap: '8px',
+  },
 });
+
+const getStatusData = (statusEvents, DateUtil, classes) => {
+  const current = statusEvents
+    .sort((a, b) => b.statusDate - a.statusDate)[0];
+  const rest = statusEvents
+    .sort((a, b) => b.statusDate - a.statusDate).slice(1);
+  return (
+    <>
+      <Typography variant="body1" gutterBottom>
+        <strong>Status</strong>
+        <br />
+        {current.status.status}
+        {' '}
+        as of
+        {' '}
+        { DateUtil.getDisplayDateFormat(current.statusDate) }
+        { current.reason
+          && (
+            <>
+              <br />
+              {current.reason}
+            </>
+          )}
+      </Typography>
+      {rest.length > 0
+       && (
+         <Accordion>
+           <AccordionSummary>
+             Status History
+           </AccordionSummary>
+           <AccordionDetails
+             className={classes.historyContent}
+           >
+             { rest.map((status) => (
+               <Typography
+                 variant="body1"
+                 key={status.id}
+               >
+                 <strong>Status</strong>
+                 <br />
+                 { status.status.status === 'Suspended by ONC'
+                   && (
+                     <>
+                       <i className="fa status-bad fa-exclamation-circle" />
+                     </>
+                   )}
+                 { status.status.status === 'Under certification ban by ONC'
+                   && (
+                     <>
+                       <i className="fa status-bad fa-ban" />
+                     </>
+                   )}
+                 {status.status.status}
+                 {' '}
+                 as of
+                 { DateUtil.getDisplayDateFormat(status.statusDate) }
+                 { status.reason
+                   && (
+                     <>
+                       <br />
+                       {status.reason}
+                     </>
+                   )}
+               </Typography>
+             ))}
+           </AccordionDetails>
+         </Accordion>
+       )}
+    </>
+  );
+};
 
 function ChplDeveloperView(props) {
   const DateUtil = getAngularService('DateUtil');
@@ -76,39 +154,22 @@ function ChplDeveloperView(props) {
       />
       <CardContent className={classes.content}>
         <div>
-          <Typography><strong>Developer code</strong></Typography>
-          <Typography>{developer.developerCode}</Typography>
-          <br />
-          <Typography><strong>Self-developer</strong></Typography>
-          <Typography>{developer.selfDeveloper ? 'Yes' : 'No'}</Typography>
-          <br />
-          { developer.statusEvents
-              ?.sort((a, b) => b.statusDate - a.statusDate)
-              .map((status) => (
-                <Typography key={status.id}>
-                  <strong>Status</strong>
-                  <br />
-                  {status.status.status}
-                  {' '}
-                  as of
-                  {' '}
-                  { DateUtil.getDisplayDateFormat(status.statusDate) }
-                  { status.reason
-                    && (
-                      <div>
-                        <br />
-                        <br />
-                        {status.reason}
-                      </div>
-                    )}
-                </Typography>
-              ))}
-          <br />
+          <Typography variant="body1" gutterBottom>
+            <strong>Developer code</strong>
+            <br />
+            {developer.developerCode}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            <strong>Self-developer</strong>
+            <br />
+            {developer.selfDeveloper ? 'Yes' : 'No'}
+          </Typography>
+          { developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes) }
         </div>
         <div>
           { developer.contact
               && (
-                <Typography>
+                <Typography variant="body1" gutterBottom>
                   <strong>Contact</strong>
                   <br />
                   <span className="sr-only">Full name: </span>
@@ -130,10 +191,9 @@ function ChplDeveloperView(props) {
                   {developer.contact.email}
                 </Typography>
               )}
-          <br />
           { developer.address
               && (
-                <Typography>
+                <Typography variant="body1" gutterBottom>
                   <strong>Address</strong>
                   <br />
                   <span className="sr-only">Line 1: </span>
@@ -158,22 +218,19 @@ function ChplDeveloperView(props) {
                   <span className="sr-only">Zipcode: </span>
                   {developer.address.zipcode}
                   ,
+                  {' '}
                   <span className="sr-only">Country: </span>
                   {developer.address.country}
                 </Typography>
               )}
-          <br />
           { developer.website
               && (
-                <Typography>
+                <Typography variant="body1" gutterBottom>
                   <strong>Website</strong>
-                  <div>
-                    <Typography>
-                      <ChplLink
-                        href={developer.website}
-                      />
-                    </Typography>
-                  </div>
+                  <br />
+                  <ChplLink
+                    href={developer.website}
+                  />
                 </Typography>
               )}
         </div>

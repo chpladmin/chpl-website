@@ -1,5 +1,7 @@
 import React from 'react';
-import { object } from 'prop-types';
+import {
+  arrayOf, func, object, string,
+} from 'prop-types';
 
 import { UserWrapper } from '../login';
 import ApiWrapper from '../../api/api-wrapper';
@@ -7,11 +9,15 @@ import ApiWrapper from '../../api/api-wrapper';
 import ChplChangeRequests from './change-requests';
 
 function ChplChangeRequestsWrapper(props) {
-  const { scope } = props;
+  const { disallowedFilters, preFilter, scope } = props;
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplChangeRequests scope={scope} />
+        <ChplChangeRequests
+          disallowedFilters={disallowedFilters}
+          preFilter={preFilter}
+          scope={scope}
+        />
       </ApiWrapper>
     </UserWrapper>
   );
@@ -20,5 +26,12 @@ function ChplChangeRequestsWrapper(props) {
 export default ChplChangeRequestsWrapper;
 
 ChplChangeRequestsWrapper.propTypes = {
+  disallowedFilters: arrayOf(string),
+  preFilter: func,
   scope: object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+
+ChplChangeRequestsWrapper.defaultProps = {
+  disallowedFilters: [],
+  preFilter: () => true,
 };

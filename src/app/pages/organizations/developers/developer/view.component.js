@@ -24,9 +24,12 @@ const DeveloperViewComponent = {
       this.activeAcbs = [];
       this.roles = ['ROLE_DEVELOPER'];
       this.users = [];
+      this.disallowedFilters = ['submittedDate', 'searchTerm'];
       this.closeConfirmation = this.closeConfirmation.bind(this);
       this.handleAttestationDispatch = this.handleAttestationDispatch.bind(this);
+      this.preFilter = this.preFilter.bind(this);
       this.takeAction = this.takeAction.bind(this);
+      this.takeUserAction = this.takeUserAction.bind(this);
     }
 
     $onInit() {
@@ -48,7 +51,6 @@ const DeveloperViewComponent = {
           that.drStatus = 'success';
           that.directReviews = results;
         }, () => { that.drStatus = 'error'; });
-      this.takeUserAction = this.takeUserAction.bind(this);
     }
 
     $onChanges(changes) {
@@ -99,6 +101,10 @@ const DeveloperViewComponent = {
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.$stateParams.developerId) {
         this.networkService.getUsersAtDeveloper(this.$stateParams.developerId).then((response) => { that.users = response.users; });
       }
+    }
+
+    preFilter(item) {
+      return item.developerName === this.developer.name;
     }
 
     takeAction(action) {
