@@ -8,7 +8,8 @@ import ChplCronGen from './cron-gen';
 import { ChplFuzzyType } from './fuzzy-type';
 import {
   ChplConfirmDeveloper,
-  ChplConfirmListings,
+  //  ChplConfirmListings,
+  ChplConfirmListingsWrapper,
   ChplConfirmProduct,
   ChplConfirmProgress,
   ChplConfirmVersion,
@@ -64,7 +65,7 @@ angular
   .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
   .component('chplComplaintsBridge', reactToAngularComponent(ChplComplaints))
   .component('chplConfirmDeveloperBridge', reactToAngularComponent(ChplConfirmDeveloper))
-  .component('chplConfirmListingsBridge', reactToAngularComponent(ChplConfirmListings))
+  .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
   .component('chplConfirmProgressBridge', reactToAngularComponent(ChplConfirmProgress))
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))

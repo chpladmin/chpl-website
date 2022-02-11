@@ -21,6 +21,8 @@ import theme from '../../../themes/theme';
 import { getAngularService } from '../../../services/angular-react-helper';
 import ChplSortableHeaders from '../../util/chpl-sortable-headers';
 
+import { useFetchPendingListings, useFetchPendingListingsBeta } from 'api/pending-listings';
+
 const useStyles = makeStyles(() => ({
   deleteButton: {
     backgroundColor: '#c44f65',
@@ -58,6 +60,8 @@ const useStyles = makeStyles(() => ({
 
 function ChplConfirmListings(props) {
   const { beta } = props;
+  const { data, isLoading } = useFetchPendingListings();
+  const { data: betaData, isLoading: betaIsLoading } = useFetchPendingListingsBeta();
   const [idsToReject, setIdsToReject] = useState([]);
   const [listings, setListings] = useState([]);
   const DateUtil = getAngularService('DateUtil');
@@ -201,70 +205,72 @@ function ChplConfirmListings(props) {
     { text: 'Reject Listing', invisible: true },
   ];
 
+  if ((beta && (betaIsLoading || betaData.length === 0)) || (!beta && (isLoading || data.length === 0))) {
+    return (
+      <div>No products currently in queue</div>
+    );
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      {listings?.length > 0
-        ? (
-          <>
-            <div className={classes.rejectFooter}>
-              <Button
-                id="reject-selected-pending-listings"
-                className={classes.deleteButton}
-                variant="contained"
-                onClick={handleReject}
-                startIcon={<DeleteIcon />}
-                disabled={idsToReject.length === 0}
-              >
-                Reject
-                {' '}
-                {(idsToReject.length > 0) ? idsToReject.length : ''}
-                {' '}
-                selected
-              </Button>
-            </div>
-            <TableContainer className={classes.tableContainer} component={Paper}>
-              <Table>
-                <ChplSortableHeaders
-                  headers={headers}
-                  onTableSort={handleTableSort}
-                />
-                <TableBody>
-                  {listings
-                    .map((listing) => (
-                      <TableRow key={listing.id}>
-                        <TableCell className={classes.stickyColumn}>
-                          <Button
-                            id={`process-pending-listing-${listing.chplProductNumber}`}
-                            color="primary"
-                            variant="contained"
-                            onClick={() => handleProcess(listing)}
-                            endIcon={<PlayArrowIcon />}
-                            disabled={!canProcess(listing)}
-                          >
-                            Process Listing
-                          </Button>
-                        </TableCell>
-                        <TableCell className={classes.wrap}>{listing.chplProductNumber}</TableCell>
-                        <TableCell className={classes.wrap}>{beta ? listing.developer : listing.developer.name}</TableCell>
-                        <TableCell className={classes.wrap}>{beta ? listing.product : listing.product.name}</TableCell>
-                        <TableCell className={classes.wrap}>{beta ? listing.version : listing.version.version}</TableCell>
-                        <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
-                        <TableCell>{getStatus(listing)}</TableCell>
-                        <TableCell>
-                          <Checkbox
-                            id={`reject-pending-listing-${listing.chplProductNumber}`}
-                            onChange={($event) => handleRejectCheckbox($event, listing)}
-                            inputProps={{ 'aria-label': `Reject Listing: ${listing.chplProductNumber}` }}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        )
-        : <div>No products currently in queue</div>}
+      <div className={classes.rejectFooter}>
+        <Button
+          id="reject-selected-pending-listings"
+          className={classes.deleteButton}
+          variant="contained"
+          onClick={handleReject}
+          startIcon={<DeleteIcon />}
+          disabled={idsToReject.length === 0}
+        >
+          Reject
+          {' '}
+          {(idsToReject.length > 0) ? idsToReject.length : ''}
+          {' '}
+          selected
+        </Button>
+      </div>
+      <TableContainer className={classes.tableContainer} component={Paper}>
+        <Table>
+          <ChplSortableHeaders
+            headers={headers}
+            onTableSort={handleTableSort}
+          />
+          <TableBody>
+            { []
+              .concat(data.filter(() => !beta))
+              .concat(betaData.filter(() => beta))
+              .map((listing) => (
+                <TableRow key={listing.id}>
+                  <TableCell className={classes.stickyColumn}>
+                    <Button
+                      id={`process-pending-listing-${listing.chplProductNumber}`}
+                      color="primary"
+                      variant="contained"
+                      onClick={() => handleProcess(listing)}
+                      endIcon={<PlayArrowIcon />}
+                      disabled={!canProcess(listing)}
+                    >
+                      Process Listing
+                    </Button>
+                  </TableCell>
+                  <TableCell className={classes.wrap}>{listing.chplProductNumber}</TableCell>
+                  <TableCell className={classes.wrap}>{beta ? listing.developer : listing.developer.name}</TableCell>
+                  <TableCell className={classes.wrap}>{beta ? listing.product : listing.product.name}</TableCell>
+                  <TableCell className={classes.wrap}>{beta ? listing.version : listing.version.version}</TableCell>
+                  <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
+                  <TableCell>{getStatus(listing)}</TableCell>
+                  <TableCell>
+                    <Checkbox
+                      id={`reject-pending-listing-${listing.chplProductNumber}`}
+                      onChange={($event) => handleRejectCheckbox($event, listing)}
+                      inputProps={{ 'aria-label': `Reject Listing: ${listing.chplProductNumber}` }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </ThemeProvider>
   );
 }
