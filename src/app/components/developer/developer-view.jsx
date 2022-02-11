@@ -26,8 +26,7 @@ const useStyles = makeStyles({
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    minHeight: '286px',
-    gap: '8px',
+    gap: '16px',
   },
   historyContent: {
     display: 'grid',

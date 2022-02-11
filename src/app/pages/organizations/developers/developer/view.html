@@ -15,15 +15,6 @@
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <div ui-view="developer">
-        <!--
-        <chpl-developer
-          developer="$ctrl.developer"
-          can-edit="$ctrl.can('edit')"
-          can-merge="$ctrl.can('merge')"
-          can-split="$ctrl.can('split-developer')"
-          take-action="$ctrl.takeAction(action)"
-          ></chpl-developer>
-        -->
         <chpl-developer-bridge
           developer="$ctrl.developer"
           dispatch="::$ctrl.takeAction"
