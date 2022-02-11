@@ -96,11 +96,11 @@ function ChplDeveloperView(props) {
                   { DateUtil.getDisplayDateFormat(status.statusDate) }
                   { status.reason
                     && (
-                      <>  
+                      <div>
                         <br />
                         <br />
                         {status.reason}
-                      </>
+                      </div>
                     )}
                 </Typography>
               ))}
