@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';import { bool, string } from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { bool, string } from 'prop-types';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getAngularService } from 'services/angular-react-helper';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
@@ -9,12 +10,12 @@ import {
 const useStyles = makeStyles({
   chplLink: {
     display: 'flex',
-    overflowWrap:'anywhere',
+    overflowWrap: 'anywhere',
     gap: '4px',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
   },
   disclaimerIcon:{
-    marginTop:'4px',
+    marginTop: '4px',
   },
 });
 
@@ -74,7 +75,6 @@ function ChplLink(props) {
   };
 
   return (
-    <>
       <div className={classes.chplLink}>
       <a href={href} onClick={track}>
         {text}
@@ -87,7 +87,6 @@ function ChplLink(props) {
         </a>
         )}
       </div>
-    </>
   );
 }
 
