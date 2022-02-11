@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { bool, string } from 'prop-types';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { getAngularService } from 'services/angular-react-helper';
-import { analyticsConfig, routerConfig } from 'shared/prop-types';
 import {
   makeStyles,
 } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { bool, string } from 'prop-types';
+
+import { getAngularService } from 'services/angular-react-helper';
+import { analyticsConfig, routerConfig } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   chplLink: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles({
     gap: '4px',
     justifyContent: 'space-between',
   },
-  disclaimerIcon:{
+  disclaimerIcon: {
     marginTop: '4px',
   },
 });
@@ -75,18 +76,18 @@ function ChplLink(props) {
   };
 
   return (
-      <div className={classes.chplLink}>
+    <div className={classes.chplLink}>
       <a href={href} onClick={track}>
         {text}
       </a>
       { external
         && (
           <a href="http://www.hhs.gov/disclaimer.html" onClick={trackDisclaimer} title="Web Site Disclaimers" className={classes.disclaimerIcon}>
-          <ExitToAppIcon/>
-          <span className="sr-only">Web Site Disclaimers</span>
-        </a>
+            <ExitToAppIcon />
+            <span className="sr-only">Web Site Disclaimers</span>
+          </a>
         )}
-      </div>
+    </div>
   );
 }
 

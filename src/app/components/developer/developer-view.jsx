@@ -24,7 +24,6 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '16px',
-    justifyItems: 'stretch'
   },
 });
 
@@ -104,7 +103,7 @@ function ChplDeveloperView(props) {
                     )}
                 </Typography>
               ))}
-           <br />
+          <br />
         </div>
         <div>
           { developer.contact
@@ -169,10 +168,11 @@ function ChplDeveloperView(props) {
                 <Typography>
                   <strong>Website</strong>
                   <div>
-                  <Typography><ChplLink
-                    href={developer.website}
-                  />
-                  </Typography>
+                    <Typography>
+                      <ChplLink
+                        href={developer.website}
+                      />
+                    </Typography>
                   </div>
                 </Typography>
               )}
