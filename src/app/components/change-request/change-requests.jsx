@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf, func, object, string,
+  arrayOf, func, string,
 } from 'prop-types';
 import Moment from 'react-moment';
 
@@ -82,7 +82,7 @@ const staticFilters = [{
 }];
 
 function ChplChangeRequests(props) {
-  const { disallowedFilters, preFilter, scope } = props;
+  const { disallowedFilters, preFilter } = props;
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
 
@@ -126,7 +126,6 @@ function ChplChangeRequests(props) {
         analytics={analytics}
         disallowedFilters={disallowedFilters}
         preFilter={preFilter}
-        scope={scope}
       />
     </FilterProvider>
   );
@@ -137,5 +136,4 @@ export default ChplChangeRequests;
 ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   preFilter: func.isRequired,
-  scope: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
