@@ -3,14 +3,44 @@ import {
   Button,
   ThemeProvider,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+
 import { node } from 'prop-types';
 import { SnackbarProvider } from 'notistack';
-
 import ChplLogin from './login';
 
 import theme from 'themes/theme';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
+
+const useStyles = makeStyles({
+    success: { 
+      backgroundColor: '#356635',
+    },
+    error: { 
+      backgroundColor: '#c44f65',
+    },
+    warning: { 
+      backgroundColor: '#e6ea0b',
+      color: '#000000',
+    },
+    info: { 
+      backgroundColor: '#0e547f', 
+    },
+    containerRoot: { 
+      flexWrap: 'nowrap',
+      marginBottom: '64px',
+      padding: '8px',
+    },
+    dismissButton: {
+      marginRight: '8px',
+    },
+    iconSpacing: {
+      marginLeft: '4px',
+    },
+  });
 
 function UserWrapper(props) {
   const $rootScope = getAngularService('$rootScope');
@@ -62,15 +92,29 @@ function UserWrapper(props) {
   const onClickDismiss = (key) => () => {
     notistackRef.current.closeSnackbar(key);
   };
+  const classes = useStyles();
 
   return (
     <ThemeProvider theme={theme}>
       <SnackbarProvider
+        className={classes.containerRoot}
+        anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+        }}
+        classes={{
+        variantSuccess: classes.success,
+        variantError: classes.error,
+        variantWarning: classes.warning,
+        variantInfo: classes.info,
+        }}
+        TransitionComponent={Collapse}
+        hideIconVariant
         autoHideDuration={null}
         ref={notistackRef}
         action={(key) => (
-          <Button onClick={onClickDismiss(key)}>
-            Dismiss
+          <Button className={classes.dismissButton} color='default' variant='contained' onClick={onClickDismiss(key)}>
+            Dismiss <CloseIcon className={classes.iconSpacing}/>
           </Button>
         )}
       >
