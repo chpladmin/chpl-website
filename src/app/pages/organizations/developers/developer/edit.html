@@ -1,15 +1,22 @@
-<chpl-confirmation-bridge
-  ng-if="$ctrl.action === 'confirmation'"
-  dispatch="::$ctrl.closeConfirmation"
-  text="$ctrl.confirmationText"
-  ></chpl-confirmation-bridge>
-<chpl-developer developer="$ctrl.developer"
-                is-editing="true"
-                on-cancel="$ctrl.cancel()"
-                on-edit="$ctrl.save(developer)"
-                ></chpl-developer>
+<div class="row">
+  <div class="col-sm-12">
+    <h1>Developer Information</h1>
+  </div>
+</div>
 <chpl-developer-bridge
   developer="$ctrl.developer"
   dispatch="::$ctrl.handleDispatch"
   is-editing="true"
   ></chpl-developer-bridge>
+<chpl-confirmation-bridge
+  ng-if="$ctrl.action === 'confirmation'"
+  dispatch="::$ctrl.closeConfirmation"
+  text="$ctrl.confirmationText"
+  ></chpl-confirmation-bridge>
+<!--
+    <chpl-developer developer="$ctrl.developer"
+                is-editing="true"
+                on-cancel="$ctrl.cancel()"
+                on-edit="$ctrl.save(developer)"
+                ></chpl-developer>
+-->
