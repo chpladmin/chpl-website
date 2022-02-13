@@ -31,10 +31,12 @@ const useStyles = makeStyles({
     },
     containerRoot: { 
       flexWrap: 'nowrap',
-      marginBottom: '64px',
       padding: '8px',
     },
-    dismissButton: {
+  root: {
+    marginBottom: '64px',
+  },
+  dismissButton: {
       marginRight: '8px',
     },
     iconSpacing: {
@@ -106,7 +108,8 @@ function UserWrapper(props) {
         variantSuccess: classes.success,
         variantError: classes.error,
         variantWarning: classes.warning,
-        variantInfo: classes.info,
+          variantInfo: classes.info,
+          containerAnchorOriginBottomCenter: classes.root,
         }}
         TransitionComponent={Collapse}
         hideIconVariant
