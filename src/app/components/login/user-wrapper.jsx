@@ -1,48 +1,15 @@
-import React, { createRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
   ThemeProvider,
-  makeStyles,
 } from '@material-ui/core';
-import Collapse from '@material-ui/core/Collapse';
-import CloseIcon from '@material-ui/icons/Close';
 import { node } from 'prop-types';
-import { SnackbarProvider } from 'notistack';
 
 import ChplLogin from './login';
 
-import theme from 'themes/theme';
+import { SnackbarWrapper } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-
-const useStyles = makeStyles({
-  success: {
-    backgroundColor: '#356635',
-  },
-  error: {
-    backgroundColor: '#c44f65',
-  },
-  warning: {
-    backgroundColor: '#e6ea0b',
-    color: '#000000',
-  },
-  info: {
-    backgroundColor: '#0e547f',
-  },
-  containerRoot: {
-    flexWrap: 'nowrap',
-    padding: '8px',
-  },
-  root: {
-    marginBottom: '64px',
-  },
-  dismissButton: {
-    marginRight: '8px',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-});
+import theme from 'themes/theme';
 
 function UserWrapper(props) {
   const $rootScope = getAngularService('$rootScope');
@@ -89,44 +56,13 @@ function UserWrapper(props) {
     user,
   };
 
-  const notistackRef = createRef();
-
-  const onClickDismiss = (key) => () => {
-    notistackRef.current.closeSnackbar(key);
-  };
-  const classes = useStyles();
-
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider
-        className={classes.containerRoot}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        classes={{
-          variantSuccess: classes.success,
-          variantError: classes.error,
-          variantWarning: classes.warning,
-          variantInfo: classes.info,
-          containerAnchorOriginBottomCenter: classes.root,
-        }}
-        TransitionComponent={Collapse}
-        hideIconVariant
-        autoHideDuration={null}
-        ref={notistackRef}
-        action={(key) => (
-          <Button className={classes.dismissButton} color="default" variant="contained" onClick={onClickDismiss(key)}>
-            Dismiss
-            {' '}
-            <CloseIcon className={classes.iconSpacing} />
-          </Button>
-        )}
-      >
+      <SnackbarWrapper>
         <UserContext.Provider value={userState}>
           { children }
         </UserContext.Provider>
-      </SnackbarProvider>
+      </SnackbarWrapper>
     </ThemeProvider>
   );
 }
