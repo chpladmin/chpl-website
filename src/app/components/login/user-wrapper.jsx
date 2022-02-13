@@ -2,13 +2,13 @@ import React, { createRef, useEffect, useState } from 'react';
 import {
   Button,
   ThemeProvider,
+  makeStyles,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
-
 import { node } from 'prop-types';
 import { SnackbarProvider } from 'notistack';
+
 import ChplLogin from './login';
 
 import theme from 'themes/theme';
@@ -16,33 +16,33 @@ import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
-    success: { 
-      backgroundColor: '#356635',
-    },
-    error: { 
-      backgroundColor: '#c44f65',
-    },
-    warning: { 
-      backgroundColor: '#e6ea0b',
-      color: '#000000',
-    },
-    info: { 
-      backgroundColor: '#0e547f', 
-    },
-    containerRoot: { 
-      flexWrap: 'nowrap',
-      padding: '8px',
-    },
+  success: {
+    backgroundColor: '#356635',
+  },
+  error: {
+    backgroundColor: '#c44f65',
+  },
+  warning: {
+    backgroundColor: '#e6ea0b',
+    color: '#000000',
+  },
+  info: {
+    backgroundColor: '#0e547f',
+  },
+  containerRoot: {
+    flexWrap: 'nowrap',
+    padding: '8px',
+  },
   root: {
     marginBottom: '64px',
   },
   dismissButton: {
-      marginRight: '8px',
-    },
-    iconSpacing: {
-      marginLeft: '4px',
-    },
-  });
+    marginRight: '8px',
+  },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+});
 
 function UserWrapper(props) {
   const $rootScope = getAngularService('$rootScope');
@@ -101,13 +101,13 @@ function UserWrapper(props) {
       <SnackbarProvider
         className={classes.containerRoot}
         anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
+          vertical: 'bottom',
+          horizontal: 'center',
         }}
         classes={{
-        variantSuccess: classes.success,
-        variantError: classes.error,
-        variantWarning: classes.warning,
+          variantSuccess: classes.success,
+          variantError: classes.error,
+          variantWarning: classes.warning,
           variantInfo: classes.info,
           containerAnchorOriginBottomCenter: classes.root,
         }}
@@ -116,8 +116,10 @@ function UserWrapper(props) {
         autoHideDuration={null}
         ref={notistackRef}
         action={(key) => (
-          <Button className={classes.dismissButton} color='default' variant='contained' onClick={onClickDismiss(key)}>
-            Dismiss <CloseIcon className={classes.iconSpacing}/>
+          <Button className={classes.dismissButton} color="default" variant="contained" onClick={onClickDismiss(key)}>
+            Dismiss
+            {' '}
+            <CloseIcon className={classes.iconSpacing} />
           </Button>
         )}
       >
