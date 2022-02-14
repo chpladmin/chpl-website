@@ -186,20 +186,22 @@ const getOptions = (options, predicate, existing) => {
     .sort((a, b) => (a < b ? -1 : 1));
 };
 
-const getEditField = (key, display, formik, options = { required: true, mergeOptions: [] }, className) => (
+const getEditField = ({
+  key, display, formik, mergeOptions = [], required = true, className,
+}) => (
   <div className={className}>
     <ChplTextField
       id={key}
       name={key}
       label={display}
-      required={options.required}
+      required={required}
       value={formik.values[key]}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}
       error={formik.touched[key] && !!formik.errors[key]}
       helperText={formik.touched[key] && formik.errors[key]}
     />
-    { getOptions(options.mergeOptions, key, formik.values[key]).map((o) => (
+    { getOptions(mergeOptions, key, formik.values[key]).map((o) => (
       <Button
         key={o}
         id={`use-${o}-${key}`}
@@ -366,7 +368,9 @@ function ChplDeveloperEdit(props) {
           title={isSplitting ? 'New Developer' : `Edit ${developer.name}`}
         />
         <CardContent className={classes.content}>
-          { getEditField('name', 'Name', formik, { required: true, mergeOptions: options }, classes.fullWidth) }
+          { getEditField({
+            key: 'name', display: 'Name', formik, mergeOptions: options, className: classes.fullWidth,
+          }) }
           <FormControlLabel
             control={(
               <Switch
@@ -504,19 +508,41 @@ function ChplDeveloperEdit(props) {
               </>
             )}
           <Divider className={classes.fullWidth} />
-          { getEditField('fullName', 'Full Name', formik, { required: true, mergeOptions: options }) }
-          { getEditField('title', 'Title', formik, { required: false, mergeOptions: options }) }
-          { getEditField('email', 'Email', formik, { required: true, mergeOptions: options }) }
-          { getEditField('phoneNumber', 'Phone', formik, { required: true, mergeOptions: options }) }
+          { getEditField({
+            key: 'fullName', display: 'Full Name', formik, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'title', display: 'Title', formik, required: false, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'email', display: 'Email', formik, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'phoneNumber', display: 'Phone', formik, mergeOptions: options,
+          }) }
           <Divider className={classes.fullWidth} />
-          { getEditField('line1', 'Address', formik, { required: true, mergeOptions: options }) }
-          { getEditField('line2', 'Line 2', formik, { required: false, mergeOptions: options }) }
-          { getEditField('city', 'City', formik, { required: true, mergeOptions: options }) }
-          { getEditField('state', 'State', formik, { required: true, mergeOptions: options }) }
-          { getEditField('zipcode', 'Zip', formik, { required: true, mergeOptions: options }) }
-          { getEditField('country', 'Country', formik, { required: true, mergeOptions: options }) }
+          { getEditField({
+            key: 'line1', display: 'Address', formik, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'line2', display: 'Line 2', formik, required: false, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'city', display: 'City', formik, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'state', display: 'State', formik, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'zipcode', display: 'Zip', formik, mergeOptions: options,
+          }) }
+          { getEditField({
+            key: 'country', display: 'Country', formik, mergeOptions: options,
+          }) }
           <Divider className={classes.fullWidth} />
-          { getEditField('website', 'Website', formik, { required: true, mergeOptions: options }, classes.fullWidth) }
+          { getEditField({
+            key: 'website', display: 'Website', formik, mergeOptions: options, className: classes.fullWidth,
+          }) }
         </CardContent>
       </Card>
       <ChplActionBar
