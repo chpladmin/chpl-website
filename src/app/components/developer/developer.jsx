@@ -5,10 +5,15 @@ import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
 
 import { UserWrapper } from 'components/login';
+import { FlagContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
   const {
+    canEdit,
+    canMerge,
+    canSplit,
+    demographicChangeRequestIsOn,
     developer,
     dispatch,
     isEditing,
@@ -17,6 +22,9 @@ function ChplDeveloper(props) {
   } = props;
   const [isInvalid, setIsInvalid] = useState(false);
   const [mergingDevelopers, setMergingDevelopers] = useState([]);
+  const flags = {
+    demographicChangeRequestIsOn,
+  };
 
   useEffect(() => {
     setIsInvalid(props.isInvalid);
@@ -28,6 +36,7 @@ function ChplDeveloper(props) {
 
   return (
     <UserWrapper>
+      <FlagContext.Provider value={flags}>
         { (isEditing || isMerging)
           && (
             <ChplDeveloperEdit
@@ -41,11 +50,15 @@ function ChplDeveloper(props) {
         { !isEditing && !isMerging
           && (
             <ChplDeveloperView
+              canEdit={canEdit}
+              canMerge={canMerge}
+              canSplit={canSplit}
               developer={developer}
               dispatch={dispatch}
               isSplitting={isSplitting}
             />
           )}
+      </FlagContext.Provider>
     </UserWrapper>
   );
 }
@@ -53,6 +66,10 @@ function ChplDeveloper(props) {
 export default ChplDeveloper;
 
 ChplDeveloper.propTypes = {
+  canEdit: bool,
+  canMerge: bool,
+  canSplit: bool,
+  demographicChangeRequestIsOn: bool,
   developer: developerPropType.isRequired,
   dispatch: func,
   isEditing: bool,
@@ -63,6 +80,10 @@ ChplDeveloper.propTypes = {
 };
 
 ChplDeveloper.defaultProps = {
+  canEdit: false,
+  canMerge: false,
+  canSplit: false,
+  demographicChangeRequestIsOn: false,
   dispatch: () => {},
   isEditing: false,
   isInvalid: false,

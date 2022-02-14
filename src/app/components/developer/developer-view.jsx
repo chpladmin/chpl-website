@@ -20,7 +20,7 @@ import CallMergeIcon from '@material-ui/icons/CallMerge';
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { developer as developerPropType } from 'shared/prop-types';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -107,8 +107,14 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
 
 function ChplDeveloperView(props) {
   const DateUtil = getAngularService('DateUtil');
-  const { isSplitting } = props;
+  const {
+    canEdit,
+    canMerge,
+    canSplit,
+    isSplitting,
+  } = props;
   const [developer, setDeveloper] = useState({});
+  const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
@@ -117,18 +123,20 @@ function ChplDeveloperView(props) {
   }, [props.developer]); // eslint-disable-line react/destructuring-assignment
 
   const can = (action) => {
-    // todo - containing allowances?
-    // todo - add Developer can edit (flag & owns organization based)
     if (action === 'edit') {
-      return hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-        || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
+      return canEdit
+        && (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+            || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+            || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'merge') {
-      return hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
+      return canMerge
+        && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
     }
     if (action === 'split') {
-      return hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-        || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
+      return canSplit
+        && (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+            || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active')); // allowed for ACB iff Developer is "Active"
     }
     return false;
   };
@@ -235,7 +243,7 @@ function ChplDeveloperView(props) {
               )}
         </div>
       </CardContent>
-      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && !isSplitting
+      { (can('edit') || can('split') || can('merge'))
           && (
             <CardActions className={classes.cardActions}>
               <ButtonGroup
@@ -287,6 +295,9 @@ function ChplDeveloperView(props) {
 export default ChplDeveloperView;
 
 ChplDeveloperView.propTypes = {
+  canEdit: bool.isRequired,
+  canMerge: bool.isRequired,
+  canSplit: bool.isRequired,
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
   isSplitting: bool.isRequired,
