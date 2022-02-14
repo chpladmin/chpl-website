@@ -36,7 +36,7 @@
 
     beforeEach(() => {
       angular.mock.module('chpl.organizations', ($provide) => {
-        $provide.factory('chplDeveloperDirective', () => ({}));
+        $provide.factory('chplDeveloperBridgeDirective', () => ({}));
         $provide.decorator('authService', ($delegate) => ({
           ...$delegate,
           hasAnyRole: jasmine.createSpy('hasAnyRole'),
@@ -84,12 +84,6 @@
     describe('controller', () => {
       it('should exist', () => {
         expect(ctrl).toEqual(jasmine.any(Object));
-      });
-
-      describe('during initialization', () => {
-        it('should get data', () => {
-          expect(networkService.getAcbs.calls.count()).toBe(1);
-        });
       });
     });
   });

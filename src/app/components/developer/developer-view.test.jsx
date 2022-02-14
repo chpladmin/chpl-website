@@ -3,29 +3,52 @@ import {
   cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import developerEvent from '@testing-library/developer-event';
+import userEvent from '@testing-library/user-event';
 import { when } from 'jest-when';
 
 import ChplDeveloperView from './developer-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
+import { FlagContext, UserContext } from 'shared/contexts';
 
 const hocMock = {
   dispatch: jest.fn(),
 };
 
+const DateUtilMock = {
+  getDisplayDateFormat: jest.fn(),
+};
+angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(DateUtilMock);
+
 const developerMock = {
-  fullName: 'full name',
-  email: 'email@sample.com',
+  name: 'developer name',
+};
+
+const userContextMock = {
+  hasAnyRole: () => true,
+  hasAuthorityOn: () => true,
+};
+
+const flagContextMock = {
+  demographicChangeRequestIsOn: false,
 };
 
 describe('the ChplDeveloperView component', () => {
   beforeEach(async () => {
     render(
-      <ChplDeveloperView
-        developer={developerMock}
-        dispatch={hocMock.dispatch}
-      />,
+      <UserContext.Provider value={userContextMock}>
+        <FlagContext.Provider value={flagContextMock}>
+          <ChplDeveloperView
+            developer={developerMock}
+            dispatch={hocMock.dispatch}
+            canEdit
+            canMerge
+            canSplit
+            isSplitting={false}
+          />
+        </FlagContext.Provider>
+      </UserContext.Provider>,
     );
   });
 
@@ -36,12 +59,11 @@ describe('the ChplDeveloperView component', () => {
   describe('when taking actions', () => {
     it('should call the callback for edit', async () => {
       hocMock.dispatch.mockClear();
-      developerEvent.click(screen.getByRole('button', { name: /Edit full name/i }));
+      userEvent.click(screen.getByRole('button', { name: /Edit developer name Information/i }));
 
       await waitFor(() => {
         expect(hocMock.dispatch).toHaveBeenCalledWith(
           'edit',
-          developerMock,
         );
       });
     });

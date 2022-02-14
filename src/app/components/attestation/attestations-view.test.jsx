@@ -36,6 +36,7 @@ jest.mock('api/developer', () => ({
 
 const userContextMock = {
   hasAnyRole: () => true,
+  hasAuthorityOn: () => true,
 };
 
 describe('the ChplAttestationsView component', () => {

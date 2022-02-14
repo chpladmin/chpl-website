@@ -244,50 +244,53 @@ function ChplDeveloperView(props) {
         </div>
       </CardContent>
       { (can('edit') || can('split') || can('merge'))
-          && (
-            <CardActions className={classes.cardActions}>
-              <ButtonGroup
-                color="primary"
-              >
-                { can('edit')
-                  && (
-                    <ChplTooltip title={`Edit ${developer.name} Information`}>
-                      <Button
-                        variant="contained"
-                        aria-label={`Edit ${developer.name} Information`}
-                        onClick={edit}
-                      >
-                        <EditOutlinedIcon />
-                      </Button>
-                    </ChplTooltip>
-                  )}
-                { can('split')
-                  && (
+        && (
+          <CardActions className={classes.cardActions}>
+            <ButtonGroup
+              color="primary"
+            >
+              { can('edit')
+                && (
+                  <ChplTooltip title={`Edit ${developer.name} Information`}>
+                    <Button
+                      variant="contained"
+                      aria-label={`Edit ${developer.name} Information`}
+                      id="edit-developer"
+                      onClick={edit}
+                    >
+                      <EditOutlinedIcon />
+                    </Button>
+                  </ChplTooltip>
+                )}
+              { can('split')
+                && (
                   <ChplTooltip title={`Split ${developer.name}`}>
                     <Button
                       variant="outlined"
                       aria-label={`Split ${developer.name}`}
+                      id="split-developer"
                       onClick={split}
                     >
                       <CallSplitIcon />
                     </Button>
                   </ChplTooltip>
-                  )}
-                { can('merge')
-                  && (
+                )}
+              { can('merge')
+                && (
                   <ChplTooltip title={`Merge ${developer.name}`}>
                     <Button
                       variant="outlined"
                       aria-label={`Merge ${developer.name}`}
+                      id="merge-developer"
                       onClick={merge}
                     >
                       <CallMergeIcon />
                     </Button>
                   </ChplTooltip>
-                  )}
-              </ButtonGroup>
-            </CardActions>
-          )}
+                )}
+            </ButtonGroup>
+          </CardActions>
+        )}
     </Card>
   );
 }
