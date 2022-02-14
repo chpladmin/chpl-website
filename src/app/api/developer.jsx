@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
@@ -18,4 +18,17 @@ const useFetchPublicAttestations = ({ developer }) => {
   }, { keepPreviousData: true });
 };
 
-export { useFetchAttestations, useFetchPublicAttestations };
+const usePostAttestationException = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post(`developers/${data.developer.developerId}/attestations/exception`, data)
+    .then((response) => response), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
+      });
+    },
+  });
+};
+
+export { useFetchAttestations, useFetchPublicAttestations, usePostAttestationException };
