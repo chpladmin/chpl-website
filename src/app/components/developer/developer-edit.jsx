@@ -377,9 +377,18 @@ function ChplDeveloperEdit(props) {
   return (
     <>
       <Card>
-        <CardHeader
-          title={isSplitting ? 'New Developer' : `Edit ${developer.name}`}
-        />
+        { isSplitting
+          && (
+            <CardHeader
+              title={'New Developer'}
+            />
+          )}
+        { !isSplitting
+          && (
+            <CardHeader
+              title={developer.name}
+            />
+          )}
         <CardContent className={classes.content}>
           { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
             && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }

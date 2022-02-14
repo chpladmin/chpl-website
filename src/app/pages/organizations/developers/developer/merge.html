@@ -46,12 +46,6 @@
         <div><i class="fa fa-close"></i></div>
       </div>
       <h3>New Merged Developer</h3>
-      <chpl-developer developer="$ctrl.developer"
-                      is-editing="true"
-                      is-merging="true"
-                      merging-developers="$ctrl.selectedDevelopers"
-                      on-cancel="$ctrl.cancel()"
-                      on-edit="$ctrl.merge(developer)"></chpl-developer>
       <chpl-developer-bridge
         developer="$ctrl.developer"
         dispatch="::$ctrl.handleDispatch"
