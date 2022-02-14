@@ -228,6 +228,7 @@ function ChplDeveloperEdit(props) {
   } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
+  const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const [options, setOptions] = useState({});
   const [statusEvents, setStatusEvents] = useState([]);
@@ -252,6 +253,7 @@ function ChplDeveloperEdit(props) {
       return;
     }
     const msgs = [];
+    const warns = [];
     statusEvents
       .sort((a, b) => a.statusDate - b.statusDate)
       .forEach((status, idx, arr) => {
@@ -266,9 +268,13 @@ function ChplDeveloperEdit(props) {
           if (DateUtil.getDisplayDateFormat(status.statusDate) === DateUtil.getDisplayDateFormat(arr[idx - 1].statusDate)) {
             msgs.push('Only one change of status allowed per day');
           }
+          if (status.status.status === 'Active') {
+            warns.push('To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.');
+          }
         }
       });
     setErrors(msgs);
+    setWarnings(warns);
   }, [DateUtil, statusEvents]);
 
   const cancel = () => {
@@ -380,7 +386,7 @@ function ChplDeveloperEdit(props) {
         { isSplitting
           && (
             <CardHeader
-              title={'New Developer'}
+              title="New Developer"
             />
           )}
         { !isSplitting
@@ -553,6 +559,7 @@ function ChplDeveloperEdit(props) {
         dispatch={handleDispatch}
         isDisabled={isActionDisabled()}
         errors={errors}
+        warnings={warnings}
       />
     </>
   );
