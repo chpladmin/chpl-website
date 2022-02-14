@@ -64,7 +64,7 @@ function ChplAttestationsView(props) {
   const createAttestationException = () => {
     setIsSubmitting(true);
     const payload = {
-      submissionEndDate: formik.values.exceptionDate,
+      exceptionEnd: formik.values.exceptionDate,
       developer,
     };
     mutate(payload, {
