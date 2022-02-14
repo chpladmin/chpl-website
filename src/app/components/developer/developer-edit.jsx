@@ -187,7 +187,12 @@ const getOptions = (options, predicate, existing) => {
 };
 
 const getEditField = ({
-  key, display, formik, mergeOptions = [], required = true, className,
+  key,
+  display,
+  formik,
+  mergeOptions = [],
+  required = true,
+  className,
 }) => (
   <div className={className}>
     <ChplTextField
@@ -267,6 +272,12 @@ function ChplDeveloperEdit(props) {
   const cancel = () => {
     dispatch('cancel');
   };
+
+  const getEnhancedEditField = (editProps) => getEditField({
+    ...editProps,
+    formik,
+    mergeOptions: options,
+  });
 
   const save = () => {
     const updatedDeveloper = {
@@ -368,9 +379,7 @@ function ChplDeveloperEdit(props) {
           title={isSplitting ? 'New Developer' : `Edit ${developer.name}`}
         />
         <CardContent className={classes.content}>
-          { getEditField({
-            key: 'name', display: 'Name', formik, mergeOptions: options, className: classes.fullWidth,
-          }) }
+          { getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
           <FormControlLabel
             control={(
               <Switch
@@ -508,41 +517,19 @@ function ChplDeveloperEdit(props) {
               </>
             )}
           <Divider className={classes.fullWidth} />
-          { getEditField({
-            key: 'fullName', display: 'Full Name', formik, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'title', display: 'Title', formik, required: false, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'email', display: 'Email', formik, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'phoneNumber', display: 'Phone', formik, mergeOptions: options,
-          }) }
+          { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
+          { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
+          { getEnhancedEditField({ key: 'email', display: 'Email' }) }
+          { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
           <Divider className={classes.fullWidth} />
-          { getEditField({
-            key: 'line1', display: 'Address', formik, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'line2', display: 'Line 2', formik, required: false, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'city', display: 'City', formik, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'state', display: 'State', formik, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'zipcode', display: 'Zip', formik, mergeOptions: options,
-          }) }
-          { getEditField({
-            key: 'country', display: 'Country', formik, mergeOptions: options,
-          }) }
+          { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
+          { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
+          { getEnhancedEditField({ key: 'city', display: 'City' }) }
+          { getEnhancedEditField({ key: 'state', display: 'State' }) }
+          { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
+          { getEnhancedEditField({ key: 'country', display: 'Country' }) }
           <Divider className={classes.fullWidth} />
-          { getEditField({
-            key: 'website', display: 'Website', formik, mergeOptions: options, className: classes.fullWidth,
-          }) }
+          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
         </CardContent>
       </Card>
       <ChplActionBar
