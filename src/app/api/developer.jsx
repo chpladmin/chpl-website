@@ -21,7 +21,7 @@ const useFetchPublicAttestations = ({ developer }) => {
 const usePostAttestationException = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post(`developers/${data.developer.developerId}/attestations/exception`, data)
+  return useMutation(async (data) => axios.post(`developers/${data.developer.developerId}/attestations/exception`)
     .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries({

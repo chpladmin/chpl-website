@@ -16,12 +16,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
 import { useFetchAttestations, useFetchPublicAttestations, usePostAttestationException } from 'api/developer';
-import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -31,12 +28,6 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '8px',
   },
-});
-
-const validationSchema = yup.object({
-  exceptionDate: yup.date()
-    .required('Exception Date is required')
-    .min(new Date(), 'Exception Date must be in the future'),
 });
 
 function ChplAttestationsView(props) {
@@ -50,11 +41,9 @@ function ChplAttestationsView(props) {
   const [isCreatingException, setIsCreatingException] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
-  let formik;
 
   const cancelCreatingException = () => {
     setIsCreatingException(false);
-    formik.resetForm();
   };
 
   const createAttestationChangeRequest = () => {
@@ -64,14 +53,16 @@ function ChplAttestationsView(props) {
   const createAttestationException = () => {
     setIsSubmitting(true);
     const payload = {
-      exceptionEnd: formik.values.exceptionDate,
       developer,
     };
     mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         setIsCreatingException(false);
         setIsSubmitting(false);
-        formik.resetForm();
+        const message = `You created an exception for ${response.developer?.name} valid until ${response.date}`;
+        enqueueSnackbar(message, {
+          variant: 'success',
+        });
       },
       onError: () => {
         const message = 'Something went wrong. Please try again or contact ONC for support';
@@ -82,16 +73,6 @@ function ChplAttestationsView(props) {
       },
     });
   };
-
-  formik = useFormik({
-    initialValues: {
-      exceptionDate: '',
-    },
-    onSubmit: () => {
-      createAttestationException();
-    },
-    validationSchema,
-  });
 
   return (
     <Card>
@@ -144,18 +125,13 @@ function ChplAttestationsView(props) {
         { isCreatingException
           && (
             <>
-              <ChplTextField
-                type="date"
-                id="exception-date"
-                name="exceptionDate"
-                label="Exception Date"
-                required
-                value={formik.values.exceptionDate}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.exceptionDate && !!formik.errors.exceptionDate}
-                helperText={formik.touched.exceptionDate && formik.errors.exceptionDate}
-              />
+              <Typography>
+                You are creating an extenstion for Attestations submission for
+                {' '}
+                { developer.name }
+                {' '}
+                that will last for seven days, or the start of the next Attestation Submission Window, whichever comes first
+              </Typography>
             </>
           )}
       </CardContent>
@@ -183,7 +159,7 @@ function ChplAttestationsView(props) {
                 id="create-attestation-exception-button"
                 variant="contained"
                 onClick={() => setIsCreatingException(true)}
-                disabled={attestationData.data?.canSubmitAttestationChangeRequest}
+                disabled={attestationData.data?.canCreateAttestationException}
               >
                 Create Attestations Submission Exception
               </Button>
@@ -195,8 +171,8 @@ function ChplAttestationsView(props) {
                     color="primary"
                     id="create-attestation-exception-button"
                     variant="contained"
-                    disabled={!formik.isValid || isSubmitting}
-                    onClick={formik.submitForm}
+                    disabled={isSubmitting}
+                    onClick={createAttestationException}
                   >
                     Create
                   </Button>
