@@ -159,6 +159,7 @@ function ChplDeveloperView(props) {
     >
       <CardHeader
         title={isSplitting ? 'Original Developer' : developer.name}
+        component="h2"
       />
       <CardContent className={classes.content}>
         <div>
