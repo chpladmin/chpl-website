@@ -256,7 +256,7 @@ function ChplDeveloperView(props) {
                     <Button
                       variant="contained"
                       aria-label={`Edit ${developer.name} Information`}
-                      id="edit-developer"
+                      id="developer-component-edit"
                       onClick={edit}
                     >
                       <EditOutlinedIcon />
@@ -269,7 +269,7 @@ function ChplDeveloperView(props) {
                     <Button
                       variant="outlined"
                       aria-label={`Split ${developer.name}`}
-                      id="split-developer"
+                      id="developer-component-split"
                       onClick={split}
                     >
                       <CallSplitIcon />
@@ -282,7 +282,7 @@ function ChplDeveloperView(props) {
                     <Button
                       variant="outlined"
                       aria-label={`Merge ${developer.name}`}
-                      id="merge-developer"
+                      id="developer-component-merge"
                       onClick={merge}
                     >
                       <CallMergeIcon />

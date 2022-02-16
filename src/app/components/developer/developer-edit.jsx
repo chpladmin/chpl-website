@@ -387,12 +387,14 @@ function ChplDeveloperEdit(props) {
           && (
             <CardHeader
               title="New Developer"
+              component="h2"
             />
           )}
         { !isSplitting
           && (
             <CardHeader
               title={developer.name}
+              component="h2"
             />
           )}
         <CardContent className={classes.content}>
