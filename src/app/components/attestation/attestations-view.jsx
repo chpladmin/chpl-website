@@ -37,7 +37,7 @@ function ChplAttestationsView(props) {
   const { isLoading, data } = useFetchPublicAttestations({ developer });
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
-  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } } = useFetchAttestations({ developer });
+  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } = {} } = useFetchAttestations({ developer });
   const [isCreatingException, setIsCreatingException] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
@@ -56,10 +56,10 @@ function ChplAttestationsView(props) {
       developer,
     };
     mutate(payload, {
-      onSuccess: (response) => {
+      onSuccess: ({ data: { exceptionEnd, developer: { name } } }) => {
         setIsCreatingException(false);
         setIsSubmitting(false);
-        const message = `You created an exception for ${response.developer?.name} valid until ${response.date}`;
+        const message = `You have re-opened the submission feature for ${name} until ${DateUtil.getDisplayDateFormat(exceptionEnd)}.`;
         enqueueSnackbar(message, {
           variant: 'success',
         });
@@ -126,10 +126,10 @@ function ChplAttestationsView(props) {
           && (
             <>
               <Typography>
-                You are re-opening Attestation submissions for
+                This action will re-open the Attestations submission feature for
                 {' '}
                 { developer.name }
-                .
+                . Please confirm you want to continue.
               </Typography>
             </>
           )}
