@@ -41,308 +41,310 @@ const elements = {
 };
 
 class DevelopersPage {
-  constructor () { }
-
-  get developersSelect () {
-    return $(elements.developersSelect);
+  constructor() {
+    this.elements = elements;
   }
 
-  get developersButton () {
-    return $(elements.developersButton);
+  get developersSelect() {
+    return $(this.elements.developersSelect);
   }
 
-  getDeveloperPageTitle (developer) {
-    return $('h2=' + developer);
+  get developersButton() {
+    return $(this.elements.developersButton);
   }
 
-  get directReviewsHeader () {
-    return $(elements.directReviewsHeader);
+  getDeveloperPageTitle(developer) {
+    return $(`h2=${developer}`);
   }
 
-  get productsHeader () {
-    return $(elements.productsHeader);
+  get directReviewsHeader() {
+    return $(this.elements.directReviewsHeader);
   }
 
-  get editProductsHeader () {
-    return $(elements.editProductsHeader);
+  get productsHeader() {
+    return $(this.elements.productsHeader);
   }
 
-  get editVersionHeader () {
-    return $(elements.editVersionHeader);
+  get editProductsHeader() {
+    return $(this.elements.editProductsHeader);
   }
 
-  get products () {
-    return $$(elements.products);
+  get editVersionHeader() {
+    return $(this.elements.editVersionHeader);
   }
 
-  get editWebsite () {
-    return $(elements.editWebsite);
+  get products() {
+    return $$(this.elements.products);
   }
 
-  getProduct (product) {
-    return $('.products__product-header-item--first=' + product).$('..').$('..');
+  get editWebsite() {
+    return $(this.elements.editWebsite);
   }
 
-  getProductInfo (product) {
+  getProduct(product) {
+    return $(`.products__product-header-item--first=${product}`).$('..').$('..');
+  }
+
+  getProductInfo(product) {
     return product.$('.product__product-info');
   }
 
-  getVersionCount (product) {
+  getVersionCount(product) {
     return product.$('.products__product-header').$$('.products__product-header-item--end')[0];
   }
 
-  getSurveillanceData (product) {
+  getSurveillanceData(product) {
     return product.$('.products__product-header').$$('.products__product-header-item')[1];
   }
 
-  getListingCount (product) {
+  getListingCount(product) {
     return product.$('.products__product-header').$$('.products__product-header-item')[2];
   }
 
-  get editProductName () {
-    return $(elements.editProductName);
+  get editProductName() {
+    return $(this.elements.editProductName);
   }
 
-  get editProductCode () {
-    return $(elements.editProductCode);
+  get editProductCode() {
+    return $(this.elements.editProductCode);
   }
 
-  get editVersionName () {
-    return $(elements.editVersionName);
+  get editVersionName() {
+    return $(this.elements.editVersionName);
   }
 
-  get splitVersionVersion () {
-    return $(elements.splitVersionVersion);
+  get splitVersionVersion() {
+    return $(this.elements.splitVersionVersion);
   }
 
-  get editVersionCode () {
-    return $(elements.editVersionCode);
+  get editVersionCode() {
+    return $(this.elements.editVersionCode);
   }
 
-  get editDeveloper () {
-    return $(elements.editDeveloper);
+  get editDeveloper() {
+    return $(this.elements.editDeveloper);
   }
 
-  selectDeveloper (developerName) {
+  selectDeveloper(developerName) {
     this.developersSelect.selectByVisibleText(developerName);
     this.developersButton.click();
   }
 
-  getEditButton (product) {
+  getEditButton(product) {
     return product.$('.product__product-info').$('#edit-button');
   }
 
-  getMergeButton (product) {
+  getMergeButton(product) {
     return product.$('.product__product-info').$('#merge-button');
   }
 
-  getSplitButton (product) {
+  getSplitButton(product) {
     return product.$('.product__product-info').$('#split-button');
   }
 
-  getProductSplitButton (product) {
+  getProductSplitButton(product) {
     return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[0];
   }
 
-  getProductMergeButton (product) {
+  getProductMergeButton(product) {
     return product.$('.product__product-info').$('ul[aria-labeledby="merge-button"]').$$('li')[0];
   }
 
-  getVersionSplitButton (product) {
+  getVersionSplitButton(product) {
     return product.$('.product__product-info').$('ul[aria-labeledby="split-button"]').$$('li')[1];
   }
 
-  getVersionMergeButton (product) {
+  getVersionMergeButton(product) {
     return product.$('.product__product-info').$('ul[aria-labeledby="merge-button"]').$$('li')[1];
   }
 
-  selectProduct (product) {
+  selectProduct(product) {
     product.$('.products__product-header').click();
   }
 
-  getSelectableVersions (product, productId) {
-    return product.$(elements.activeVersion + '-' + productId).$$('option');
+  getSelectableVersions(product, productId) {
+    return product.$(`${this.elements.activeVersion}-${productId}`).$$('option');
   }
 
-  selectVersion (product, productId, versionName) {
-    product.$(elements.activeVersion + '-' + productId).selectByVisibleText(versionName);
+  selectVersion(product, productId, versionName) {
+    product.$(`${this.elements.activeVersion}-${productId}`).selectByVisibleText(versionName);
   }
 
-  editProduct (product) {
+  editProduct(product) {
     this.getEditButton(product).click();
     product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[0].click();
   }
 
-  splitProduct (product) {
+  splitProduct(product) {
     this.getSplitButton(product).click();
-    const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
+    const btn = product.$$('li').filter((item) => item.getText() === 'Product')[0];
     btn.click();
   }
 
-  mergeProduct (product) {
+  mergeProduct(product) {
     this.getMergeButton(product).click();
-    const btn = product.$$('li').filter(item => item.getText() === 'Product')[0];
+    const btn = product.$$('li').filter((item) => item.getText() === 'Product')[0];
     btn.click();
   }
 
-  moveProductToBeMerged (productName) {
-    const count = $$(elements.list).length;
-    for (var i = 0; i < count; i++) {
-      if ($$(elements.list)[i].getText() === productName) {
-        $$(elements.list)[i].scrollIntoView({block: 'center', inline: 'center'});
-        $$(elements.list)[i].click();
+  moveProductToBeMerged(productName) {
+    const count = $$(this.elements.list).length;
+    for (let i = 0; i < count; i++) {
+      if ($$(this.elements.list)[i].getText() === productName) {
+        $$(this.elements.list)[i].scrollIntoView({ block: 'center', inline: 'center' });
+        $$(this.elements.list)[i].click();
       }
     }
   }
 
-  moveVersion (id) {
-    $('#products-version-move-new-' + id).click();
+  moveVersion(id) {
+    $(`#products-version-move-new-${id}`).click();
   }
 
-  moveListing (id) {
-    $('#listings-listing-move-new-' + id).click();
+  moveListing(id) {
+    $(`#listings-listing-move-new-${id}`).click();
   }
 
-  restoreListing (id) {
-    $('#listings-listing-move-old-' + id).click();
+  restoreListing(id) {
+    $(`#listings-listing-move-old-${id}`).click();
   }
 
-  getActiveVersion (product, productId) {
-    return product.$(elements.activeVersion + '-' + productId);
+  getActiveVersion(product, productId) {
+    return product.$(`${this.elements.activeVersion}-${productId}`);
   }
 
-  getActiveContact (product) {
+  getActiveContact(product) {
     return product.$('chpl-contact');
   }
 
-  editVersion (product) {
+  editVersion(product) {
     this.getEditButton(product).click();
     product.$('.product__product-info-item-action').$('.dropdown-menu').$$('li')[1].click();
   }
 
-  mergeVersion (product) {
+  mergeVersion(product) {
     this.getMergeButton(product).click();
-    const btn = product.$$('li').filter(itm => itm.getText() === 'Version')[0];
+    const btn = product.$$('li').filter((itm) => itm.getText() === 'Version')[0];
     btn.click();
   }
 
-  get versionMergeButton () {
+  get versionMergeButton() {
     return $$('.product__product-action-filter-item.ng-scope')[2];
   }
 
-  get versionName () {
-    return $(elements.versionName);
+  get versionName() {
+    return $(this.elements.versionName);
   }
 
-  moveVersionToBeMerged (versionName) {
-    const count = $$(elements.list).length;
-    for (var i = 0; i < count; i++) {
-      if ($$(elements.list)[i].getText() === versionName) {
-        $$(elements.list)[i].click();
+  moveVersionToBeMerged(versionName) {
+    const count = $$(this.elements.list).length;
+    for (let i = 0; i < count; i++) {
+      if ($$(this.elements.list)[i].getText() === versionName) {
+        $$(this.elements.list)[i].click();
       }
     }
   }
 
-  get errorMessage () {
-    return $(elements.errorMessage);
+  get errorMessage() {
+    return $(this.elements.errorMessage);
   }
 
-  get developerContact () {
-    return $(elements.developerContact);
+  get developerContact() {
+    return $(this.elements.developerContact);
   }
 
-  get developerWebsite () {
-    return $(elements.developerWebsite);
+  get developerWebsite() {
+    return $(this.elements.developerWebsite);
   }
 
-  get developerStatus () {
-    return $(elements.developerStatus);
+  get developerStatus() {
+    return $(this.elements.developerStatus);
   }
 
-  get splitDeveloper () {
-    return $(elements.splitDeveloper);
+  get splitDeveloper() {
+    return $(this.elements.splitDeveloper);
   }
 
-  get developerName () {
-    return $(elements.developerName);
+  get developerName() {
+    return $(this.elements.developerName);
   }
 
-  get errors () {
-    return $(elements.errors).$('ul');
+  get errors() {
+    return $(this.elements.errors).$('ul');
   }
 
-  get mergeDeveloper () {
-    return $(elements.mergeDeveloper);
+  get mergeDeveloper() {
+    return $(this.elements.mergeDeveloper);
   }
 
-  get fullName () {
-    return $(elements.contact.fullName);
+  get fullName() {
+    return $(this.elements.contact.fullName);
   }
 
-  get title () {
-    return $(elements.contact.title);
+  get title() {
+    return $(this.elements.contact.title);
   }
 
-  get email () {
-    return $(elements.contact.email);
+  get email() {
+    return $(this.elements.contact.email);
   }
 
-  get phone () {
-    return $(elements.contact.phone);
+  get phone() {
+    return $(this.elements.contact.phone);
   }
 
-  get line1 () {
-    return $(elements.address.line1);
+  get line1() {
+    return $(this.elements.address.line1);
   }
 
-  get line2 () {
-    return $(elements.address.line2);
+  get line2() {
+    return $(this.elements.address.line2);
   }
 
-  get city () {
-    return $(elements.address.city);
+  get city() {
+    return $(this.elements.address.city);
   }
 
-  get state () {
-    return $(elements.address.state);
+  get state() {
+    return $(this.elements.address.state);
   }
 
-  get zipcode () {
-    return $(elements.address.zipcode);
+  get zipcode() {
+    return $(this.elements.address.zipcode);
   }
 
-  get country () {
-    return $(elements.address.country);
+  get country() {
+    return $(this.elements.address.country);
   }
 
-  moveDeveloperToSplit (id) {
-    $('#developers-product-move-new-' + id).click();
+  moveDeveloperToSplit(id) {
+    $(`#developers-product-move-new-${id}`).click();
   }
 
-  moveDeveloperToBeMerged (developerName) {
-    $('//div[text()=\'' + developerName + '\']').click();
+  moveDeveloperToBeMerged(developerName) {
+    $(`//div[text()='${developerName}']`).click();
   }
 
-  selectAllCertificationStatus () {
+  selectAllCertificationStatus() {
     $('#filter-button').click();
     $('chpl-filter-multiple').$$('.filter-multiple__item')[0].click();
     $('#filter-button').click();
   }
 
   setAddress(address) {
-    $(elements.address.line1).setValue(address.line1);
-    $(elements.address.line2).setValue(address.line2);
-    $(elements.address.city).setValue(address.city);
-    $(elements.address.state).setValue(address.state);
-    $(elements.address.zipcode).setValue(address.zipcode);
-    $(elements.address.country).setValue(address.country);
+    $(this.elements.address.line1).setValue(address.line1);
+    $(this.elements.address.line2).setValue(address.line2);
+    $(this.elements.address.city).setValue(address.city);
+    $(this.elements.address.state).setValue(address.state);
+    $(this.elements.address.zipcode).setValue(address.zipcode);
+    $(this.elements.address.country).setValue(address.country);
   }
 
   setContact(contact) {
-    $(elements.contact.fullName).setValue(contact.fullName);
-    $(elements.contact.title).setValue(contact.title);
-    $(elements.contact.email).setValue(contact.email);
-    $(elements.contact.phone).setValue(contact.phone);
+    $(this.elements.contact.fullName).setValue(contact.fullName);
+    $(this.elements.contact.title).setValue(contact.title);
+    $(this.elements.contact.email).setValue(contact.email);
+    $(this.elements.contact.phone).setValue(contact.phone);
   }
 }
 
