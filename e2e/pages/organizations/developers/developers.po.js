@@ -16,14 +16,28 @@ const elements = {
   versionName: '#version-name',
   errorMessage: '.text-danger.ng-scope',
   list: '.selectable-item.ng-scope.selectable-item',
-  developerContact: 'chpl-contact',
+  developerContact: 'chpl-deveeloper-bridge',
   developerWebsite: '//div[text()=\'Website\']/following-sibling::div/a',
   developerStatus: '#developer-status-0',
   splitDeveloper: '#developer-component-split',
-  developerName: '#developer-name',
+  developerName: '#name',
   errors: 'div.text-danger',
   mergeDeveloper: '#developer-component-merge',
-  editWebsite: '#developer-website',
+  editWebsite: '#website',
+  contact: {
+    fullName: '#fullName',
+    title: '#title',
+    email: '#email',
+    phone: '#phoneNumber',
+  },
+  address: {
+    line1: '#line1',
+    line2: '#line2',
+    city: '#city',
+    state: '#state',
+    zipcode: '#zipcode',
+    country: '#country',
+  },
 };
 
 class DevelopersPage {
@@ -261,6 +275,46 @@ class DevelopersPage {
     return $(elements.mergeDeveloper);
   }
 
+  get fullName () {
+    return $(elements.contact.fullName);
+  }
+
+  get title () {
+    return $(elements.contact.title);
+  }
+
+  get email () {
+    return $(elements.contact.email);
+  }
+
+  get phone () {
+    return $(elements.contact.phone);
+  }
+
+  get line1 () {
+    return $(elements.address.line1);
+  }
+
+  get line2 () {
+    return $(elements.address.line2);
+  }
+
+  get city () {
+    return $(elements.address.city);
+  }
+
+  get state () {
+    return $(elements.address.state);
+  }
+
+  get zipcode () {
+    return $(elements.address.zipcode);
+  }
+
+  get country () {
+    return $(elements.address.country);
+  }
+
   moveDeveloperToSplit (id) {
     $('#developers-product-move-new-' + id).click();
   }
@@ -273,6 +327,22 @@ class DevelopersPage {
     $('#filter-button').click();
     $('chpl-filter-multiple').$$('.filter-multiple__item')[0].click();
     $('#filter-button').click();
+  }
+
+  setAddress(address) {
+    $(elements.address.line1).setValue(address.line1);
+    $(elements.address.line2).setValue(address.line2);
+    $(elements.address.city).setValue(address.city);
+    $(elements.address.state).setValue(address.state);
+    $(elements.address.zipcode).setValue(address.zipcode);
+    $(elements.address.country).setValue(address.country);
+  }
+
+  setContact(contact) {
+    $(elements.contact.fullName).setValue(contact.fullName);
+    $(elements.contact.title).setValue(contact.title);
+    $(elements.contact.email).setValue(contact.email);
+    $(elements.contact.phone).setValue(contact.phone);
   }
 }
 
