@@ -126,11 +126,10 @@ function ChplAttestationsView(props) {
           && (
             <>
               <Typography>
-                You are creating an extenstion for Attestations submission for
+                You are re-opening Attestation submissions for
                 {' '}
                 { developer.name }
-                {' '}
-                that will last for seven days, or the start of the next Attestation Submission Window, whichever comes first
+                .
               </Typography>
             </>
           )}
@@ -161,7 +160,7 @@ function ChplAttestationsView(props) {
                 onClick={() => setIsCreatingException(true)}
                 disabled={!canCreateException}
               >
-                Create Attestations Submission Exception
+                Re-Open Submission
               </Button>
               )}
             { isCreatingException
