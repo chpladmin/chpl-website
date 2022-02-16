@@ -37,7 +37,7 @@ function ChplAttestationsView(props) {
   const { isLoading, data } = useFetchPublicAttestations({ developer });
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
-  const attestationData = useFetchAttestations({ developer });
+  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } } = useFetchAttestations({ developer });
   const [isCreatingException, setIsCreatingException] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
@@ -143,7 +143,7 @@ function ChplAttestationsView(props) {
               id="create-attestation-change-request-button"
               variant="contained"
               onClick={createAttestationChangeRequest}
-              disabled={!attestationData.data?.canSubmitAttestationChangeRequest}
+              disabled={!canSubmitAttestationChangeRequest}
             >
               Submit Attestations
             </Button>
@@ -159,7 +159,7 @@ function ChplAttestationsView(props) {
                 id="create-attestation-exception-button"
                 variant="contained"
                 onClick={() => setIsCreatingException(true)}
-                disabled={attestationData.data?.canCreateAttestationException}
+                disabled={!canCreateException}
               >
                 Create Attestations Submission Exception
               </Button>
