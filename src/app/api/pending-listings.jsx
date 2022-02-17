@@ -32,28 +32,24 @@ const useFetchPendingListingsLegacy = () => {
   });
 };
 
-const usePostChangeRequest = () => {
+const useRejectPendingListing = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('change-requests', data)
-    .then((response) => response)
-    .catch((error) => {
-      throw error;
-    }), {
+  return useMutation(async (id) => axios.delete(`/listings/pending/${id}`)
+    .then((response) => response), {
     onSuccess: () => {
-      queryClient.invalidateQueries('change-requests');
-      queryClient.invalidateQueries({
-        predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
-      });
+      queryClient.invalidateQueries('listings/pending');
     },
-    onError: (error) => {
-      if (error.response.data.error?.startsWith('Email could not be sent to')) {
-        queryClient.invalidateQueries('change-requests');
-        queryClient.invalidateQueries({
-          predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
-        });
-      }
-      return error;
+  });
+};
+
+const useRejectPendingListingLegacy = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (id) => axios.delete(`/certified_products/pending/${id}`)
+    .then((response) => response), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('certified_products/pending/metadata');
     },
   });
 };
@@ -62,4 +58,6 @@ export {
   useFetchPendingListing,
   useFetchPendingListings,
   useFetchPendingListingsLegacy,
+  useRejectPendingListing,
+  useRejectPendingListingLegacy,
 };

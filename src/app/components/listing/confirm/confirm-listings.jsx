@@ -21,6 +21,8 @@ import {
   useFetchPendingListing,
   useFetchPendingListings,
   useFetchPendingListingsLegacy,
+  useRejectPendingListing,
+  useRejectPendingListingLegacy,
 } from 'api/pending-listings';
 import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
 import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
@@ -88,7 +90,6 @@ const canProcess = (listing, beta) => ((beta && listing.status === 'UPLOAD_SUCCE
 function ChplConfirmListings(props) {
   const { beta } = props;
   const DateUtil = getAngularService('DateUtil');
-  const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
   const [idsToReject, setIdsToReject] = useState([]);
   const [listingIdToLoad, setListingIdToLoad] = useState(1);
@@ -102,6 +103,8 @@ function ChplConfirmListings(props) {
   const { data: processingListing } = useFetchPendingListing({
     id: listingIdToLoad,
   });
+  const { mutate: rejectListing } = useRejectPendingListing();
+  const { mutate: rejectListingLegacy } = useRejectPendingListingLegacy();
 
   useEffect(() => {
     if (!processingListing || !beta || listings.length === 0) { return; }
@@ -116,9 +119,9 @@ function ChplConfirmListings(props) {
           warnings: processingListing.warningMessages,
         });
       setListings(updatedListings);
-      nextListing = updatedListings.find((listing) => listing.errors === undefined)?.id;
+      nextListing = updatedListings.find((listing) => listing.errors === undefined && listing.status !== 'UPLOAD_PROCESSING')?.id;
     } else {
-      nextListing = listings.find((listing) => listing.errors === undefined)?.id;
+      nextListing = listings.find((listing) => listing.errors === undefined && listing.status !== 'UPLOAD_PROCESSING')?.id;
     }
     if (nextListing) {
       setListingIdToLoad(nextListing);
@@ -138,7 +141,7 @@ function ChplConfirmListings(props) {
       canProcess: canProcess(listing, beta),
     })));
     if (beta) {
-      const nextListing = updated.find((l) => l.errors === undefined)?.id;
+      const nextListing = updated.find((l) => l.errors === undefined && l.status !== 'UPLOAD_PROCESSING')?.id;
       if (nextListing) {
         setListingIdToLoad(nextListing);
       }
@@ -149,53 +152,35 @@ function ChplConfirmListings(props) {
     props.onProcess(listing.id, beta);
   };
 
-  const handleRejectOriginal = () => {
-    networkService.massRejectPendingListings(idsToReject)
-      .then(() => {
-        setIdsToReject([]);
-        // loadListings();
-      }, (error) => {
-        let message = `Rejection of ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''} failed`;
-        if (error?.data?.errorMessages) {
-          message += `. ${error.data.errorMessages.join(', ')}`;
-        }
-        if (error?.data?.error) {
-          message += `. ${error.data.error}`;
-        }
-        toaster.pop({
-          type: 'error',
-          title: 'Error',
-          body: message,
-        });
+  const handleRejectActual = (reject) => {
+    idsToReject.forEach((id) => {
+      reject(id, {
+        onSuccess: () => {
+          setIdsToReject((ids) => ids.filter((i) => i !== id));
+        },
+        onError: (error) => {
+          let message = `Rejection of ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''} failed`;
+          if (error?.data?.errorMessages) {
+            message += `. ${error.data.errorMessages.join(', ')}`;
+          }
+          if (error?.data?.error) {
+            message += `. ${error.data.error}`;
+          }
+          toaster.pop({
+            type: 'error',
+            title: 'Error',
+            body: message,
+          });
+        },
       });
-  };
-
-  const handleRejectBeta = () => {
-    networkService.massRejectPendingListingsBeta(idsToReject)
-      .then(() => {
-        setIdsToReject([]);
-        // loadListings();
-      }, (error) => {
-        let message = `Rejection of ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''} failed`;
-        if (error?.data?.errorMessages) {
-          message += `. ${error.data.errorMessages.join(', ')}`;
-        }
-        if (error?.data?.error) {
-          message += `. ${error.data.error}`;
-        }
-        toaster.pop({
-          type: 'error',
-          title: 'Error',
-          body: message,
-        });
-      });
+    });
   };
 
   const handleReject = () => {
     if (beta) {
-      handleRejectBeta();
+      handleRejectActual(rejectListing);
     } else {
-      handleRejectOriginal();
+      handleRejectActual(rejectListingLegacy);
     }
   };
 
