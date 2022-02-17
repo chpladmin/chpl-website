@@ -55,6 +55,8 @@ const suite = {
       'The unique id indicates the product does not have additional software but some is specified in the upload file.',
       'Privacy and Security Framework is required for certification 170.315 (a)(1).',
       'Privacy and Security Framework is required for certification 170.315 (b)(1) (Cures Update).',
+      'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
+      'GAP is required for certification 170.315 (d)(1).',
       'Export Documentation is required for certification 170.315 (b)(10).',
       'Criteria 170.315 (b)(10) indicates additional software should be present but none was found.',
       'Certification 170.315 (b)(10) contains Privacy and Security Framework value \'Approach 3 and 4\' which must match one of \'Approach 1\', \'Approach 2\', \'Approach 1;Approach 2\'.',
@@ -63,7 +65,6 @@ const suite = {
       'Certification 170.315 (a)(1) contains duplicate Test Procedure: \'ONC Test Method\'.',
       '170.315 (g)(3) is required but was not found.',
       'Test procedures are required for certification criteria 170.315 (b)(10).',
-      'GAP is required for certification 170.315 (d)(1).',
     ],
     expectedWarnings: [
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
