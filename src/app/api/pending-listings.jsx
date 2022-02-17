@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
-import options from './options';
 
 const useFetchPendingListing = ({ id }) => {
   const axios = useAxios();

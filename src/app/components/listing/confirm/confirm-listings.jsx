@@ -99,26 +99,31 @@ function ChplConfirmListings(props) {
 
   const { data: legacyData } = useFetchPendingListingsLegacy();
   const { data: betaData } = useFetchPendingListings();
-  const { data: listing } = useFetchPendingListing({
+  const { data: processingListing } = useFetchPendingListing({
     id: listingIdToLoad,
   });
 
   useEffect(() => {
-    if (!listing || !beta) { return; }
-    const updated = listings.find((l) => l.id === listing.id);
-    const updatedListings = listings
-          .filter((l) => l.id !== updated.id)
-          .concat({
-            ...updated,
-            errors: listing.errorMessages,
-            warnings: listing.warningMessages,
-          })
-    setListings(updatedListings);
-    const nextListing = updatedListings.find((l) => l.errors === undefined)?.id;
+    if (!processingListing || !beta || listings.length === 0) { return; }
+    const updated = listings.find((listing) => listing.id === processingListing.id);
+    let nextListing;
+    if (updated) {
+      const updatedListings = listings
+        .filter((listing) => listing.id !== updated.id)
+        .concat({
+          ...updated,
+          errors: processingListing.errorMessages,
+          warnings: processingListing.warningMessages,
+        });
+      setListings(updatedListings);
+      nextListing = updatedListings.find((listing) => listing.errors === undefined)?.id;
+    } else {
+      nextListing = listings.find((listing) => listing.errors === undefined)?.id;
+    }
     if (nextListing) {
-      setListingIdToLoad(nextListing)
-    };
-  }, [listing, beta]);
+      setListingIdToLoad(nextListing);
+    }
+  }, [processingListing, beta]);
 
   useEffect(() => {
     let updated;
@@ -297,7 +302,7 @@ function ChplConfirmListings(props) {
                         <>
                           <br />
                           <Button
-                            onClick={() => { setErrors(listing.errors); setWarnings(listing.warnings) }}
+                            onClick={() => { setErrors(listing.errors); setWarnings(listing.warnings); }}
                           >
                             See messages
                           </Button>
