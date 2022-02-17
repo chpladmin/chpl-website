@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bool, func } from 'prop-types';
 import {
   Button,
@@ -17,11 +17,10 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-import ChplSortableHeaders from '../../util/chpl-sortable-headers';
-
-import { useFetchPendingListings, useFetchPendingListingsBeta } from 'api/pending-listings';
+import { useFetchPendingListings, useFetchPendingListingsLegacy } from 'api/pending-listings';
+import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
+import { getAngularService } from 'services/angular-react-helper';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
   deleteButton: {
@@ -58,53 +57,53 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const getStatus = (listing, beta, classes) => {
+  if ((beta && listing.status === 'UPLOAD_PROCESSING') || (!beta && listing.processing)) {
+    return <CircularProgress />;
+  }
+  if (listing.status === 'UPLOAD_FAILURE') {
+    return (
+      <Chip
+        label="Processing error"
+        className={classes.deleteButton}
+      />
+    );
+  }
+  return (
+    <>
+      {`${listing.errorCount} error${listing.errorCount !== 1 ? 's' : ''}`}
+      <br />
+      {`${listing.warningCount} warning${listing.warningCount !== 1 ? 's' : ''}`}
+    </>
+  );
+};
+
+const canProcess = (listing, beta) => ((beta && listing.status === 'UPLOAD_SUCCESS') || (!beta && !listing.processing));
+
 function ChplConfirmListings(props) {
   const { beta } = props;
-  const { data, isLoading } = useFetchPendingListings();
-  const { data: betaData, isLoading: betaIsLoading } = useFetchPendingListingsBeta();
-  const [idsToReject, setIdsToReject] = useState([]);
-  const [listings, setListings] = useState([]);
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
+  const { data } = useFetchPendingListingsLegacy();
+  const { data: betaData } = useFetchPendingListings();
+  const [idsToReject, setIdsToReject] = useState([]);
+  const [listings, setListings] = useState([]);
   const classes = useStyles();
 
-  const loadListings = useCallback(() => {
-    networkService.getPendingListings(beta).then((response) => {
-      setListings(response);
-      const pending = response.filter((l) => ((beta && l.status === 'UPLOAD_PROCESSING') || (!beta && l.processing)));
-      if (pending.length > 0) {
-        setTimeout(loadListings, 1000);
-      }
-    });
-  }, [networkService, beta]);
-
   useEffect(() => {
-    loadListings();
-  }, [loadListings]);
-
-  const canProcess = (listing) => ((beta && listing.status === 'UPLOAD_SUCCESS') || (!beta && !listing.processing));
-
-  const getStatus = (listing) => {
-    if ((beta && listing.status === 'UPLOAD_PROCESSING') || (beta && listing.processing)) {
-      return <CircularProgress />;
+    let updated;
+    if (beta) {
+      updated = betaData || [];
+    } else {
+      updated = data || [];
     }
-    if (listing.status === 'UPLOAD_FAILURE') {
-      return (
-        <Chip
-          label="Processing error"
-          className={classes.deleteButton}
-        />
-      );
-    }
-    return (
-      <>
-        {`${listing.errorCount} error${listing.errorCount !== 1 ? 's' : ''}`}
-        <br />
-        {`${listing.warningCount} warning${listing.warningCount !== 1 ? 's' : ''}`}
-      </>
-    );
-  };
+    setListings(updated.map((listing) => ({
+      ...listing,
+      displayStatus: getStatus(listing, beta, classes),
+      canProcess: canProcess(listing, beta),
+    })));
+  }, [data, betaData, beta, classes]);
 
   const handleProcess = (listing) => {
     props.onProcess(listing.id, beta);
@@ -114,7 +113,7 @@ function ChplConfirmListings(props) {
     networkService.massRejectPendingListings(idsToReject)
       .then(() => {
         setIdsToReject([]);
-        loadListings();
+        // loadListings();
       }, (error) => {
         let message = `Rejection of ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''} failed`;
         if (error?.data?.errorMessages) {
@@ -135,7 +134,7 @@ function ChplConfirmListings(props) {
     networkService.massRejectPendingListingsBeta(idsToReject)
       .then(() => {
         setIdsToReject([]);
-        loadListings();
+        // loadListings();
       }, (error) => {
         let message = `Rejection of ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''} failed`;
         if (error?.data?.errorMessages) {
@@ -205,7 +204,7 @@ function ChplConfirmListings(props) {
     { text: 'Reject Listing', invisible: true },
   ];
 
-  if ((beta && (betaIsLoading || betaData.length === 0)) || (!beta && (isLoading || data.length === 0))) {
+  if (listings.length === 0) {
     return (
       <div>No products currently in queue</div>
     );
@@ -236,9 +235,7 @@ function ChplConfirmListings(props) {
             onTableSort={handleTableSort}
           />
           <TableBody>
-            { []
-              .concat(data.filter(() => !beta))
-              .concat(betaData.filter(() => beta))
+            { listings
               .map((listing) => (
                 <TableRow key={listing.id}>
                   <TableCell className={classes.stickyColumn}>
@@ -248,7 +245,7 @@ function ChplConfirmListings(props) {
                       variant="contained"
                       onClick={() => handleProcess(listing)}
                       endIcon={<PlayArrowIcon />}
-                      disabled={!canProcess(listing)}
+                      disabled={!listing.canProcess}
                     >
                       Process Listing
                     </Button>
@@ -258,7 +255,7 @@ function ChplConfirmListings(props) {
                   <TableCell className={classes.wrap}>{beta ? listing.product : listing.product.name}</TableCell>
                   <TableCell className={classes.wrap}>{beta ? listing.version : listing.version.version}</TableCell>
                   <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
-                  <TableCell>{getStatus(listing)}</TableCell>
+                  <TableCell>{ listing.displayStatus }</TableCell>
                   <TableCell>
                     <Checkbox
                       id={`reject-pending-listing-${listing.chplProductNumber}`}
