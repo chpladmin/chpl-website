@@ -17,7 +17,12 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { useFetchPendingListings, useFetchPendingListingsLegacy } from 'api/pending-listings';
+import {
+  useFetchPendingListing,
+  useFetchPendingListings,
+  useFetchPendingListingsLegacy,
+} from 'api/pending-listings';
+import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
 import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
@@ -85,25 +90,55 @@ function ChplConfirmListings(props) {
   const DateUtil = getAngularService('DateUtil');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
-  const { data } = useFetchPendingListingsLegacy();
-  const { data: betaData } = useFetchPendingListings();
   const [idsToReject, setIdsToReject] = useState([]);
+  const [listingIdToLoad, setListingIdToLoad] = useState(1);
   const [listings, setListings] = useState([]);
+  const [errors, setErrors] = useState([]);
+  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
+
+  const { data: legacyData } = useFetchPendingListingsLegacy();
+  const { data: betaData } = useFetchPendingListings();
+  const { data: listing } = useFetchPendingListing({
+    id: listingIdToLoad,
+  });
+
+  useEffect(() => {
+    if (!listing || !beta) { return; }
+    const updated = listings.find((l) => l.id === listing.id);
+    const updatedListings = listings
+          .filter((l) => l.id !== updated.id)
+          .concat({
+            ...updated,
+            errors: listing.errorMessages,
+            warnings: listing.warningMessages,
+          })
+    setListings(updatedListings);
+    const nextListing = updatedListings.find((l) => l.errors === undefined)?.id;
+    if (nextListing) {
+      setListingIdToLoad(nextListing)
+    };
+  }, [listing, beta]);
 
   useEffect(() => {
     let updated;
     if (beta) {
       updated = betaData || [];
     } else {
-      updated = data || [];
+      updated = legacyData || [];
     }
     setListings(updated.map((listing) => ({
       ...listing,
       displayStatus: getStatus(listing, beta, classes),
       canProcess: canProcess(listing, beta),
     })));
-  }, [data, betaData, beta, classes]);
+    if (beta) {
+      const nextListing = updated.find((l) => l.errors === undefined)?.id;
+      if (nextListing) {
+        setListingIdToLoad(nextListing);
+      }
+    }
+  }, [legacyData, betaData, beta, classes]);
 
   const handleProcess = (listing) => {
     props.onProcess(listing.id, beta);
@@ -255,7 +290,20 @@ function ChplConfirmListings(props) {
                   <TableCell className={classes.wrap}>{beta ? listing.product : listing.product.name}</TableCell>
                   <TableCell className={classes.wrap}>{beta ? listing.version : listing.version.version}</TableCell>
                   <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
-                  <TableCell>{ listing.displayStatus }</TableCell>
+                  <TableCell>
+                    { listing.displayStatus }
+                    { beta && (listing.errors?.length > 0 || listing.warnings?.length > 0)
+                      && (
+                        <>
+                          <br />
+                          <Button
+                            onClick={() => { setErrors(listing.errors); setWarnings(listing.warnings) }}
+                          >
+                            See messages
+                          </Button>
+                        </>
+                      )}
+                  </TableCell>
                   <TableCell>
                     <Checkbox
                       id={`reject-pending-listing-${listing.chplProductNumber}`}
@@ -268,6 +316,10 @@ function ChplConfirmListings(props) {
           </TableBody>
         </Table>
       </TableContainer>
+      <ChplActionBarMessages
+        errors={errors}
+        warnings={warnings}
+      />
     </ThemeProvider>
   );
 }
