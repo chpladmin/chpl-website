@@ -6,6 +6,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Container,
   Divider,
   FormControlLabel,
   MenuItem,
@@ -45,6 +46,10 @@ const useStyles = makeStyles({
   },
   iconSpacing: {
     marginLeft: '4px',
+  },
+  developerHeader:{
+    margin: '0',
+    fontSize: '1.25em',  
   },
 });
 
@@ -382,18 +387,21 @@ function ChplDeveloperEdit(props) {
 
   return (
     <>
+      <Container maxWidth='md'>
       <Card>
         { isSplitting
           && (
             <CardHeader
               title="New Developer"
               component="h2"
+              className={classes.developerHeader} 
             />
           )}
         { !isSplitting
           && (
             <CardHeader
               title={developer.name}
+              className={classes.developerHeader} 
               component="h2"
             />
           )}
@@ -563,6 +571,7 @@ function ChplDeveloperEdit(props) {
         errors={errors}
         warnings={warnings}
       />
+      </Container>
     </>
   );
 }
