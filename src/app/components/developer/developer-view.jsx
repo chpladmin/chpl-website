@@ -32,6 +32,10 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '8px',
   },
+  developerHeader:{
+    margin: '0',
+    fontSize: '1.25em',  
+  },
 });
 
 const getStatusData = (statusEvents, DateUtil, classes) => {
@@ -160,6 +164,7 @@ function ChplDeveloperView(props) {
       <CardHeader
         title={isSplitting ? 'Original Developer' : developer.name}
         component="h2"
+        className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
         <div>
@@ -168,11 +173,13 @@ function ChplDeveloperView(props) {
             <br />
             {developer.developerCode}
           </Typography>
+           <br/>
           <Typography variant="body1" gutterBottom>
             <strong>Self-developer</strong>
             <br />
             {developer.selfDeveloper ? 'Yes' : 'No'}
           </Typography>
+           <br/>
           { developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes) }
         </div>
         <div>
@@ -200,6 +207,7 @@ function ChplDeveloperView(props) {
                   {developer.contact.email}
                 </Typography>
               )}
+          <br/>
           { developer.address
               && (
                 <Typography variant="body1" gutterBottom>
@@ -232,6 +240,7 @@ function ChplDeveloperView(props) {
                   {developer.address.country}
                 </Typography>
               )}
+          <br/>
           { developer.website
               && (
                 <Typography variant="body1" gutterBottom>
