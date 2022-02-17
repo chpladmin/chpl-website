@@ -24,6 +24,8 @@ import { useSnackbar } from 'notistack';
 
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
+import fillCustomAttestationFields from './types/attestation-fill-fields';
+import fillCustomWebsiteFields from './types/website-fill-fields';
 
 import {
   useFetchChangeRequests,
@@ -45,6 +47,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
+const CUSTOM_FIELD_COUNT = 7;
 const csvOptions = {
   showLabels: true,
   headers: [
@@ -53,6 +56,12 @@ const csvOptions = {
     { headerName: 'Creation Date', objectKey: 'friendlyReceivedDate' },
     { headerName: 'Request Status', objectKey: 'currentStatusName' },
     { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate' },
+    ...Array(CUSTOM_FIELD_COUNT)
+      .fill('Custom Field')
+      .map((val, idx) => ({
+        headerName: `${val} ${idx + 1}`,
+        objectKey: `field${idx + 1}`,
+      })),
   ],
 };
 
@@ -123,6 +132,24 @@ const filtersShouldShow = (item, filters) => filters
   .reduce((acc, filter) => filter
     .meets(item, filter.values) && acc, true);
 
+const fillWithBlanks = (def = '') => Array(CUSTOM_FIELD_COUNT)
+  .fill(def)
+  .reduce((obj, v, idx) => ({
+    ...obj,
+    [`field${idx + 1}`]: v,
+  }), {});
+
+const getCustomFields = (item) => {
+  switch (item.changeRequestType.name) {
+    case 'Developer Attestation Change Request':
+      return fillCustomAttestationFields(item.details);
+    case 'Website Change Request':
+      return fillCustomWebsiteFields(item);
+    default:
+      return fillWithBlanks();
+  }
+};
+
 const sortComparator = (property) => {
   let sortOrder = 1;
   let key = property;
@@ -177,6 +204,7 @@ function ChplChangeRequestsView(props) {
     const crs = data
       .map((item) => ({
         ...item,
+        ...getCustomFields(item),
         developerName: item.developer.name,
         changeRequestTypeName: item.changeRequestType.name,
         currentStatusName: item.currentStatus.changeRequestStatusType.name,
