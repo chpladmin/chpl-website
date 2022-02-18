@@ -158,9 +158,6 @@ function ChplConfirmListings(props) {
   const handleRejectActual = (reject) => {
     idsToReject.forEach((id) => {
       reject(id, {
-        onSuccess: () => {
-          setIdsToReject((ids) => ids.filter((i) => i !== id));
-        },
         onError: (error) => {
           let message = `Rejection of ${idsToReject.length} listing${idsToReject.length !== 1 ? 's' : ''} failed`;
           if (error?.data?.errorMessages) {
@@ -177,6 +174,7 @@ function ChplConfirmListings(props) {
         },
       });
     });
+    setIdsToReject([]);
   };
 
   const handleReject = () => {
