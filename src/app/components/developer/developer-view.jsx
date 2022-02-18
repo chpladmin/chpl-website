@@ -12,12 +12,16 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import TimelineConnector from '@material-ui/lab/TimelineConnector';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
+
+import { 
+Timeline, 
+TimelineItem, 
+TimelineSeparator, 
+TimelineConnector, 
+TimelineContent, 
+TimelineDot,  } 
+from '@material-ui/lab';
+
 import { bool, func } from 'prop-types';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
