@@ -30,12 +30,23 @@ const mockApi = {
   data: {
     canSubmitAttestationChangeRequest: true,
   },
+  mutate: () => {},
 };
 
 jest.mock('api/developer', () => ({
   __esModule: true,
   useFetchAttestations: () => mockApi,
   useFetchPublicAttestations: () => mockApi,
+  usePostAttestationException: () => mockApi,
+}));
+
+const mockEnqueue = jest.fn();
+
+jest.mock('notistack', () => ({
+  ...jest.requireActual('notistack'),
+  useSnackbar: () => ({
+    enqueueSnackbar: mockEnqueue,
+  }),
 }));
 
 const userContextMock = {
