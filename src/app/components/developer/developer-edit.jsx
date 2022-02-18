@@ -6,6 +6,7 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Chip,
   Container,
   Divider,
   FormControlLabel,
@@ -18,10 +19,12 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  TableFooter,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import { arrayOf, bool, func } from 'prop-types';
@@ -41,15 +44,34 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
+  developerChips: {
+    margin: '4px',
+  },
+  developerHeader:{
+    margin: '0',
+    fontSize: '1.25em',  
+  },
   fullWidth: {
     gridColumn: '1 / -1',
   },
   iconSpacing: {
     marginLeft: '4px',
   },
-  developerHeader:{
-    margin: '0',
-    fontSize: '1.25em',  
+  table: {
+    borderRadius: '8px',
+    border: '.5px solid #c2c6ca', 
+  },
+  tableFooter:{
+    display:'grid',
+    justifyItems:'flex-end',
+    borderRadius:'0 0 8px 8px',
+    borderBottom: '.5px solid #c2c6ca', 
+    borderRight: '.5px solid #c2c6ca', 
+    borderLeft: '.5px solid #c2c6ca', 
+  },
+  tableFooterButton:{
+    margin:'12px 12px',
+    textTransform:'none',
   },
 });
 
@@ -153,6 +175,9 @@ const fillOptionByDeveloper = (developer, options) => {
     }
   }
 };
+const chipStyle = {
+      margin:'8px 4px 0px 4px',
+    };
 
 const generateOptions = (developer, mergingDevelopers) => {
   const options = {
@@ -213,13 +238,16 @@ const getEditField = ({
       helperText={formik.touched[key] && formik.errors[key]}
     />
     { getOptions(mergeOptions, key, formik.values[key]).map((o) => (
-      <Button
-        key={o}
+      <Chip
+        label={o}
         id={`use-${o}-${key}`}
         onClick={() => formik.setFieldValue(key, o)}
+        variant='outlined'
+        style={chipStyle}
+        icon={<AddCircleRoundedIcon color='primary' />}
       >
         {o}
-      </Button>
+      </Chip>
     ))}
   </div>
 );
@@ -424,8 +452,8 @@ function ChplDeveloperEdit(props) {
           { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
             && (
               <>
-                <TableContainer className={classes.fullWidth} component={Paper}>
-                  <Table>
+                <TableContainer className={classes.fullWidth}>
+                  <Table className={classes.table}>
                     <TableHead>
                       <TableRow>
                         <TableCell><Typography variant="body2">Developer Status</Typography></TableCell>
@@ -455,7 +483,7 @@ function ChplDeveloperEdit(props) {
                                 disabled={formik.values.isAdding}
                               >
                                 <CloseIcon
-                                  color="primary"
+                                  color="error"
                                   size="small"
                                 />
                               </IconButton>
@@ -464,21 +492,23 @@ function ChplDeveloperEdit(props) {
                         ))}
                     </TableBody>
                   </Table>
+                   <TableFooter className={classes.tableFooter}>
+                      { !formik.values.isAdding
+                      && (
+                        <Button
+                          className={classes.tableFooterButton}
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => formik.setFieldValue('isAdding', true)}
+                          id="certification-status-add-item"
+                        >
+                          Add item
+                          {' '}
+                          <AddIcon className={classes.iconSpacing} />
+                        </Button>
+                      )}
+                    </TableFooter>
                 </TableContainer>
-                { !formik.values.isAdding
-                  && (
-                    <Button
-                      className={classes.fullWidth}
-                      color="secondary"
-                      variant="contained"
-                      onClick={() => formik.setFieldValue('isAdding', true)}
-                      id="certification-status-add-item"
-                    >
-                      Add item
-                      {' '}
-                      <AddIcon className={classes.iconSpacing} />
-                    </Button>
-                  )}
                 { formik.values.isAdding
                   && (
                     <>
