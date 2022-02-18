@@ -5,9 +5,10 @@ import ChplDialogTitle from './chpl-dialog-title';
 import ChplEllipsis from './chpl-ellipsis';
 import ChplHighlightCures from './highlight-cures';
 import ChplLink from './chpl-link';
-import ChplSortableHeaders from './chpl-sortable-headers';
 import ChplNonProdIndicator from './non-prod-indicator';
 import ChplPagination from './pagination';
+import ChplProgress from './progress';
+import ChplSortableHeaders from './chpl-sortable-headers';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
 import InternalScrollButton from './internal-scroll-button';
@@ -20,9 +21,10 @@ export {
   ChplEllipsis,
   ChplHighlightCures,
   ChplLink,
-  ChplSortableHeaders,
   ChplNonProdIndicator,
   ChplPagination,
+  ChplProgress,
+  ChplSortableHeaders,
   ChplTextField,
   ChplTooltip,
   InternalScrollButton,
