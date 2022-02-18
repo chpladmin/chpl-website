@@ -117,7 +117,8 @@ function ChplConfirmListings(props) {
           ...updated,
           errors: processingListing.errorMessages,
           warnings: processingListing.warningMessages,
-        });
+        })
+        .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1));
       setListings(updatedListings);
       nextListing = updatedListings.find((listing) => listing.errors === undefined && listing.status !== 'UPLOAD_PROCESSING')?.id;
     } else {
@@ -135,11 +136,13 @@ function ChplConfirmListings(props) {
     } else {
       updated = legacyData || [];
     }
-    setListings(updated.map((listing) => ({
-      ...listing,
-      displayStatus: getStatus(listing, beta, classes),
-      canProcess: canProcess(listing, beta),
-    })));
+    setListings(updated
+      .map((listing) => ({
+        ...listing,
+        displayStatus: getStatus(listing, beta, classes),
+        canProcess: canProcess(listing, beta),
+      }))
+      .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
     if (beta) {
       const nextListing = updated.find((l) => l.errors === undefined && l.status !== 'UPLOAD_PROCESSING')?.id;
       if (nextListing) {
