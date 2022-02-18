@@ -283,12 +283,13 @@ function ChplConfirmListings(props) {
                   <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
                   <TableCell>
                     { listing.displayStatus }
-                    { beta && (listing.errors?.length > 0 || listing.warnings?.length > 0)
+                    { beta
                       && (
                         <>
                           <br />
                           <Button
                             onClick={() => { setErrors(listing.errors); setWarnings(listing.warnings); }}
+                            disabled={!(listing.errors?.length !== 0 || listing.warnings?.length !== 0)}
                           >
                             See messages
                           </Button>
