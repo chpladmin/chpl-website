@@ -12,18 +12,15 @@ import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import {
-  changeRequest as changeRequestProp,
-  changeRequestStatusType,
-} from '../../shared/prop-types';
-import { ChplActionBar } from '../action-bar';
-import { ChplTextField } from '../util';
-import { UserContext } from '../../shared/contexts';
-import theme from '../../themes/theme';
-
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
 import ChplChangeRequestDetailsEdit from './types/details-edit';
 import ChplChangeRequestWebsiteEdit from './types/website-edit';
+
+import { ChplActionBar } from 'components/action-bar';
+import { ChplTextField } from 'components/util';
+import { UserContext } from 'shared/contexts';
+import { changeRequest as changeRequestProp, changeRequestStatusType } from 'shared/prop-types';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   container: {
@@ -227,8 +224,7 @@ function ChplChangeRequestEdit(props) {
                       </>
                     )}
                   </Typography>
-                )
-                : (
+                ) : (
                   <ChplTextField
                     select
                     id="change-request-status-type"
@@ -241,9 +237,12 @@ function ChplChangeRequestEdit(props) {
                     error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
                     helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
                   >
-                    {changeRequestStatusTypes.map((item) => (
-                      <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                    ))}
+                    { changeRequestStatusTypes
+                      .filter((item) => changeRequest.changeRequestType.name !== 'Developer Attestation Change Request'
+                             || item.name !== 'Pending Developer Action')
+                      .map((item) => (
+                        <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                      ))}
                   </ChplTextField>
                 )}
               <ChplTextField

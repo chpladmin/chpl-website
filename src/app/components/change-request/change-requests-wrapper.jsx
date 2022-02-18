@@ -3,20 +3,27 @@ import {
   arrayOf, func, string,
 } from 'prop-types';
 
-import { UserWrapper } from '../login';
-import ApiWrapper from '../../api/api-wrapper';
-
 import ChplChangeRequests from './change-requests';
 
+import ApiWrapper from 'api/api-wrapper';
+import FlagWrapper from 'api/flag-wrapper';
+import { UserWrapper } from 'components/login';
+
 function ChplChangeRequestsWrapper(props) {
-  const { disallowedFilters, preFilter } = props;
+  const {
+    disallowedFilters,
+    preFilter,
+  } = props;
+
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplChangeRequests
-          disallowedFilters={disallowedFilters}
-          preFilter={preFilter}
-        />
+        <FlagWrapper>
+          <ChplChangeRequests
+            disallowedFilters={disallowedFilters}
+            preFilter={preFilter}
+          />
+        </FlagWrapper>
       </ApiWrapper>
     </UserWrapper>
   );
