@@ -22,7 +22,7 @@ import * as yup from 'yup';
 import ChplConfirmDeveloperAddress from './address';
 import ChplConfirmDeveloperContact from './contact';
 
-import { ChplLink, ChplTextField } from 'components/util';
+import { ChplTextField } from 'components/util';
 import { developer as developerProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -343,82 +343,6 @@ function ChplConfirmDeveloper(props) {
                       </MenuItem>
                     ))}
                   </ChplTextField>
-                  <Typography variant="body1" gutterBottom>
-                    <strong>Developer code</strong>
-                    <br />
-                    {selectedDeveloper.developerCode}
-                  </Typography>
-                  <Typography variant="body1" gutterBottom>
-                    <strong>Self-developer</strong>
-                    <br />
-                    {selectedDeveloper.selfDeveloper ? 'Yes' : 'No'}
-                  </Typography>
-                  { selectedDeveloper.contact
-                    && (
-                      <Typography variant="body1" gutterBottom>
-                        <strong>Contact</strong>
-                        <br />
-                        <span className="sr-only">Full name: </span>
-                        {selectedDeveloper.contact.fullName}
-                        {selectedDeveloper.contact.title
-                         && (
-                           <>
-                             ,
-                             {' '}
-                             <span className="sr-only">Title: </span>
-                             {selectedDeveloper.contact.title}
-                           </>
-                         )}
-                        <br />
-                        <span className="sr-only">Phone: </span>
-                        {selectedDeveloper.contact.phoneNumber}
-                        <br />
-                        <span className="sr-only">Email: </span>
-                        {selectedDeveloper.contact.email}
-                      </Typography>
-                    )}
-                  { selectedDeveloper.address
-                    && (
-                      <Typography variant="body1" gutterBottom>
-                        <strong>Address</strong>
-                        <br />
-                        <span className="sr-only">Line 1: </span>
-                        {selectedDeveloper.address.line1}
-                        {selectedDeveloper.address.line2
-                         && (
-                           <>
-                             ,
-                             {' '}
-                             <span className="sr-only">Line 2: </span>
-                             {selectedDeveloper.address.line2}
-                           </>
-                         )}
-                        <br />
-                        <span className="sr-only">City: </span>
-                        {selectedDeveloper.address.city}
-                        ,
-                        {' '}
-                        <span className="sr-only">State: </span>
-                        {selectedDeveloper.address.state}
-                        {' '}
-                        <span className="sr-only">Zipcode: </span>
-                        {developer.address.zipcode}
-                        ,
-                        {' '}
-                        <span className="sr-only">Country: </span>
-                        {selectedDeveloper.address.country}
-                      </Typography>
-                    )}
-                  { selectedDeveloper.website
-                    && (
-                      <Typography variant="body1" gutterBottom>
-                        <strong>Website</strong>
-                        <br />
-                        <ChplLink
-                          href={selectedDeveloper.website}
-                        />
-                      </Typography>
-                    )}
                 </CardContent>
               </Card>
             )}
