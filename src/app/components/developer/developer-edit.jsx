@@ -350,6 +350,16 @@ function ChplDeveloperEdit(props) {
     }
   };
 
+  const cancelAdd = () => {
+    formik.setValues({
+      ...formik.values,
+      isAdding: false,
+      status: '',
+      statusDate: '',
+      reason: '',
+    });
+  };
+
   const addStatus = () => {
     setStatusEvents([
       ...statusEvents,
@@ -359,20 +369,10 @@ function ChplDeveloperEdit(props) {
         reason: formik.values.reason,
       },
     ]);
-    formik.setFieldValue('isAdding', false);
-    formik.setFieldValue('status', '');
-    formik.setFieldValue('statusDate', '');
-    formik.setFieldValue('reason', '');
+    cancelAdd();
   };
 
   const isAddDisabled = () => !!formik.errors.status || !!formik.errors.statusDate || !!formik.errors.reason;
-
-  const cancelAdd = () => {
-    formik.setFieldValue('isAdding', false);
-    formik.setFieldValue('status', '');
-    formik.setFieldValue('statusDate', '');
-    formik.setFieldValue('reason', '');
-  };
 
   const removeStatus = (status) => {
     setStatusEvents(statusEvents.filter((item) => item.statusDate !== status.statusDate));
