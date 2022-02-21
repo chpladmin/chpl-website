@@ -8,9 +8,7 @@ const states = [
   }, {
     name: 'collections.api-documentation',
     url: '/api-documentation',
-    controller: 'ApiDocumentationController',
-    controllerAs: 'vm',
-    template: require('./api-documentation/api-documentation.html'),
+    component: 'chplApiDocumentationCollectionPageBridge',
     data: { title: 'API Information for 2015 Edition Products' },
   }, {
     name: 'collections.corrective-action',
