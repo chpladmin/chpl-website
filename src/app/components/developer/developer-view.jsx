@@ -12,10 +12,19 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import {
+  Timeline,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+} from '@material-ui/lab';
 import { bool, func } from 'prop-types';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CallMergeIcon from '@material-ui/icons/CallMerge';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -30,7 +39,31 @@ const useStyles = makeStyles({
   },
   historyContent: {
     display: 'grid',
-    gap: '8px',
+    padding: '4px',
+  },
+  developerHeader: {
+    margin: '0',
+    fontSize: '1.25em',
+  },
+  statusHistorySummary: {
+    backgroundColor: '#fff',
+    boxShadow: 'none',
+    borderRadius: '8px',
+  },
+  statusHistory: {
+    boxShadow: 'none',
+    borderRadius: '8px',
+    border: '.5px solid #c2c6ca',
+    fontWeight: 'bold',
+    marginTop: '8px',
+  },
+  fullWidth: {
+    gridColumn: '1 / -1',
+  },
+  MuiAccordionroot: {
+    '&.MuiAccordion-root:before': {
+      backgroundColor: 'transparent',
+    },
   },
 });
 
@@ -48,8 +81,8 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
         {' '}
         as of
         {' '}
-        { DateUtil.getDisplayDateFormat(current.statusDate) }
-        { current.reason
+        {DateUtil.getDisplayDateFormat(current.statusDate)}
+        {current.reason
           && (
             <>
               <br />
@@ -58,49 +91,72 @@ const getStatusData = (statusEvents, DateUtil, classes) => {
           )}
       </Typography>
       {rest.length > 0
-       && (
-         <Accordion>
-           <AccordionSummary>
-             Status History
-           </AccordionSummary>
-           <AccordionDetails
-             className={classes.historyContent}
-           >
-             { rest.map((status) => (
-               <Typography
-                 variant="body1"
-                 key={status.id}
-               >
-                 <strong>Status</strong>
-                 <br />
-                 { status.status.status === 'Suspended by ONC'
-                   && (
-                     <>
-                       <i className="fa status-bad fa-exclamation-circle" />
-                     </>
-                   )}
-                 { status.status.status === 'Under certification ban by ONC'
-                   && (
-                     <>
-                       <i className="fa status-bad fa-ban" />
-                     </>
-                   )}
-                 {status.status.status}
-                 {' '}
-                 as of
-                 { DateUtil.getDisplayDateFormat(status.statusDate) }
-                 { status.reason
-                   && (
-                     <>
-                       <br />
-                       {status.reason}
-                     </>
-                   )}
-               </Typography>
-             ))}
-           </AccordionDetails>
-         </Accordion>
-       )}
+        && (
+          <Accordion
+            className={classes.statusHistory}
+            classes={{
+              root: classes.MuiAccordionroot,
+            }}
+          >
+            <AccordionSummary
+              className={classes.statusHistorySummary}
+              expandIcon={<ExpandMoreIcon color="primary" />}
+            >
+              Status History
+            </AccordionSummary>
+            <AccordionDetails
+              className={classes.historyContent}
+            >
+              {rest.map((status) => (
+                <Timeline
+                  key={status.id}
+                >
+                  <TimelineItem>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>
+                      <Typography
+                        variant="body1"
+                      >
+                        <strong>Status</strong>
+                        <br />
+                        {status.status.status === 'Suspended by ONC'
+                          && (
+                            <>
+                              <i className="fa status-bad fa-exclamation-circle" />
+                              {' '}
+                            </>
+                          )}
+                        {status.status.status === 'Under certification ban by ONC'
+                          && (
+                            <>
+                              <i className="fa status-bad fa-ban" />
+                              {' '}
+                            </>
+                          )}
+                        {status.status.status}
+                        {' '}
+                        as of
+                        {' '}
+                        {DateUtil.getDisplayDateFormat(status.statusDate)}
+                        .
+                        {' '}
+                        {status.reason
+                          && (
+                            <>
+                              {status.reason}
+                            </>
+                          )}
+                      </Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                </Timeline>
+              ))}
+            </AccordionDetails>
+          </Accordion>
+        )}
     </>
   );
 };
@@ -126,8 +182,8 @@ function ChplDeveloperView(props) {
     if (action === 'edit') {
       return canEdit
         && (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-            || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-            || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
+          || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
+          || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'merge') {
       return canMerge
@@ -136,7 +192,7 @@ function ChplDeveloperView(props) {
     if (action === 'split') {
       return canSplit
         && (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-            || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active')); // allowed for ACB iff Developer is "Active"
+          || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active')); // allowed for ACB iff Developer is "Active"
     }
     return false;
   };
@@ -160,6 +216,7 @@ function ChplDeveloperView(props) {
       <CardHeader
         title={isSplitting ? 'Original Developer' : developer.name}
         component="h2"
+        className={classes.developerHeader}
       />
       <CardContent className={classes.content}>
         <div>
@@ -168,89 +225,95 @@ function ChplDeveloperView(props) {
             <br />
             {developer.developerCode}
           </Typography>
+          <br />
+          {developer.contact
+            && (
+              <Typography variant="body1" gutterBottom>
+                <strong>Contact</strong>
+                <br />
+                <span className="sr-only">Full name: </span>
+                {developer.contact.fullName}
+                {developer.contact.title
+                  && (
+                    <>
+                      ,
+                      {' '}
+                      <span className="sr-only">Title: </span>
+                      {developer.contact.title}
+                    </>
+                  )}
+                <br />
+                <span className="sr-only">Phone: </span>
+                {developer.contact.phoneNumber}
+                <br />
+                <span className="sr-only">Email: </span>
+                {developer.contact.email}
+              </Typography>
+            )}
+        </div>
+        <div>
           <Typography variant="body1" gutterBottom>
             <strong>Self-developer</strong>
             <br />
             {developer.selfDeveloper ? 'Yes' : 'No'}
           </Typography>
-          { developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes) }
+          <br />
+          {developer.address
+            && (
+              <Typography variant="body1" gutterBottom>
+                <strong>Address</strong>
+                <br />
+                <span className="sr-only">Line 1: </span>
+                {developer.address.line1}
+                {developer.address.line2
+                  && (
+                    <>
+                      ,
+                      {' '}
+                      <span className="sr-only">Line 2: </span>
+                      {developer.address.line2}
+                    </>
+                  )}
+                <br />
+                <span className="sr-only">City: </span>
+                {developer.address.city}
+                ,
+                {' '}
+                <span className="sr-only">State: </span>
+                {developer.address.state}
+                {' '}
+                <span className="sr-only">Zipcode: </span>
+                {developer.address.zipcode}
+                ,
+                {' '}
+                <span className="sr-only">Country: </span>
+                {developer.address.country}
+              </Typography>
+            )}
         </div>
-        <div>
-          { developer.contact
-              && (
-                <Typography variant="body1" gutterBottom>
-                  <strong>Contact</strong>
-                  <br />
-                  <span className="sr-only">Full name: </span>
-                  {developer.contact.fullName}
-                  {developer.contact.title
-                   && (
-                     <>
-                       ,
-                       {' '}
-                       <span className="sr-only">Title: </span>
-                       {developer.contact.title}
-                     </>
-                   )}
-                  <br />
-                  <span className="sr-only">Phone: </span>
-                  {developer.contact.phoneNumber}
-                  <br />
-                  <span className="sr-only">Email: </span>
-                  {developer.contact.email}
-                </Typography>
-              )}
-          { developer.address
-              && (
-                <Typography variant="body1" gutterBottom>
-                  <strong>Address</strong>
-                  <br />
-                  <span className="sr-only">Line 1: </span>
-                  {developer.address.line1}
-                  {developer.address.line2
-                   && (
-                     <>
-                       ,
-                       {' '}
-                       <span className="sr-only">Line 2: </span>
-                       {developer.address.line2}
-                     </>
-                   )}
-                  <br />
-                  <span className="sr-only">City: </span>
-                  {developer.address.city}
-                  ,
-                  {' '}
-                  <span className="sr-only">State: </span>
-                  {developer.address.state}
-                  {' '}
-                  <span className="sr-only">Zipcode: </span>
-                  {developer.address.zipcode}
-                  ,
-                  {' '}
-                  <span className="sr-only">Country: </span>
-                  {developer.address.country}
-                </Typography>
-              )}
-          { developer.website
-              && (
-                <Typography variant="body1" gutterBottom>
-                  <strong>Website</strong>
-                  <br />
-                  <ChplLink
-                    href={developer.website}
-                  />
-                </Typography>
-              )}
+        <div className={classes.fullWidth}>
+          {developer.website
+            && (
+              <Typography variant="body1" gutterBottom>
+                <strong>Website</strong>
+                <br />
+                <ChplLink
+                  href={developer.website}
+                />
+              </Typography>
+            )}
+        </div>
+        <div className={classes.fullWidth}>
+          {developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes)}
         </div>
       </CardContent>
-      { (can('edit') || can('split') || can('merge'))
+      {(can('edit') || can('split') || can('merge'))
         && (
           <CardActions className={classes.cardActions}>
             <ButtonGroup
               color="primary"
             >
-              { can('edit')
+              {can('edit')
                 && (
                   <ChplTooltip title={`Edit ${developer.name} Information`}>
                     <Button
@@ -263,7 +326,7 @@ function ChplDeveloperView(props) {
                     </Button>
                   </ChplTooltip>
                 )}
-              { can('split')
+              {can('split')
                 && (
                   <ChplTooltip title={`Split ${developer.name}`}>
                     <Button
@@ -276,7 +339,7 @@ function ChplDeveloperView(props) {
                     </Button>
                   </ChplTooltip>
                 )}
-              { can('merge')
+              {can('merge')
                 && (
                   <ChplTooltip title={`Merge ${developer.name}`}>
                     <Button

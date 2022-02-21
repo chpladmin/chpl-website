@@ -6,10 +6,11 @@ import {
   Card,
   CardHeader,
   CardContent,
+  Chip,
+  Container,
   Divider,
   FormControlLabel,
   MenuItem,
-  Paper,
   Switch,
   Table,
   TableContainer,
@@ -17,10 +18,12 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  TableFooter,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import { arrayOf, bool, func } from 'prop-types';
@@ -40,11 +43,34 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'start',
   },
+  developerChips: {
+    margin: '4px',
+  },
+  developerHeader: {
+    margin: '0',
+    fontSize: '1.25em',
+  },
   fullWidth: {
     gridColumn: '1 / -1',
   },
   iconSpacing: {
     marginLeft: '4px',
+  },
+  table: {
+    borderRadius: '8px',
+    border: '.5px solid #c2c6ca',
+  },
+  tableFooter: {
+    display: 'grid',
+    justifyItems: 'flex-end',
+    borderRadius: '0 0 8px 8px',
+    borderBottom: '.5px solid #c2c6ca',
+    borderRight: '.5px solid #c2c6ca',
+    borderLeft: '.5px solid #c2c6ca',
+  },
+  tableFooterButton: {
+    margin: '12px 12px',
+    textTransform: 'none',
   },
 });
 
@@ -208,13 +234,15 @@ const getEditField = ({
       helperText={formik.touched[key] && formik.errors[key]}
     />
     { getOptions(mergeOptions, key, formik.values[key]).map((o) => (
-      <Button
+      <Chip
         key={o}
+        label={o}
         id={`use-${o}-${key}`}
         onClick={() => formik.setFieldValue(key, o)}
-      >
-        {o}
-      </Button>
+        variant="outlined"
+        style={{ margin: '8px 4px 0px' }}
+        icon={<AddCircleRoundedIcon color="primary" />}
+      />
     ))}
   </div>
 );
@@ -382,42 +410,45 @@ function ChplDeveloperEdit(props) {
 
   return (
     <>
-      <Card>
-        { isSplitting
+      <Container maxWidth="md">
+        <Card>
+          { isSplitting
           && (
             <CardHeader
               title="New Developer"
               component="h2"
+              className={classes.developerHeader}
             />
           )}
-        { !isSplitting
+          { !isSplitting
           && (
             <CardHeader
               title={developer.name}
+              className={classes.developerHeader}
               component="h2"
             />
           )}
-        <CardContent className={classes.content}>
-          { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+          <CardContent className={classes.content}>
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
             && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
-          <FormControlLabel
-            control={(
-              <Switch
-                id="self-developer"
-                name="selfDeveloper"
-                color="primary"
-                checked={formik.values.selfDeveloper}
-                onChange={formik.handleChange}
-                className={classes.fullWidth}
-              />
+            <FormControlLabel
+              control={(
+                <Switch
+                  id="self-developer"
+                  name="selfDeveloper"
+                  color="primary"
+                  checked={formik.values.selfDeveloper}
+                  onChange={formik.handleChange}
+                  className={classes.fullWidth}
+                />
             )}
-            label="Self-Developer"
-          />
-          { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+              label="Self-Developer"
+            />
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
             && (
               <>
-                <TableContainer className={classes.fullWidth} component={Paper}>
-                  <Table>
+                <TableContainer className={classes.fullWidth}>
+                  <Table className={classes.table}>
                     <TableHead>
                       <TableRow>
                         <TableCell><Typography variant="body2">Developer Status</Typography></TableCell>
@@ -447,7 +478,7 @@ function ChplDeveloperEdit(props) {
                                 disabled={formik.values.isAdding}
                               >
                                 <CloseIcon
-                                  color="primary"
+                                  color="error"
                                   size="small"
                                 />
                               </IconButton>
@@ -455,22 +486,28 @@ function ChplDeveloperEdit(props) {
                           </TableRow>
                         ))}
                     </TableBody>
+                    { !formik.values.isAdding
+                      && (
+                        <TableFooter className={classes.tableFooter}>
+                          <TableRow>
+                            <TableCell colSpan={4}>
+                              <Button
+                                className={classes.tableFooterButton}
+                                color="secondary"
+                                variant="contained"
+                                onClick={() => formik.setFieldValue('isAdding', true)}
+                                id="certification-status-add-item"
+                              >
+                                Add item
+                                {' '}
+                                <AddIcon className={classes.iconSpacing} />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        </TableFooter>
+                      )}
                   </Table>
                 </TableContainer>
-                { !formik.values.isAdding
-                  && (
-                    <Button
-                      className={classes.fullWidth}
-                      color="secondary"
-                      variant="contained"
-                      onClick={() => formik.setFieldValue('isAdding', true)}
-                      id="certification-status-add-item"
-                    >
-                      Add item
-                      {' '}
-                      <AddIcon className={classes.iconSpacing} />
-                    </Button>
-                  )}
                 { formik.values.isAdding
                   && (
                     <>
@@ -541,28 +578,29 @@ function ChplDeveloperEdit(props) {
                   )}
               </>
             )}
-          <Divider className={classes.fullWidth} />
-          { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
-          { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
-          { getEnhancedEditField({ key: 'email', display: 'Email' }) }
-          { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
-          <Divider className={classes.fullWidth} />
-          { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
-          { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
-          { getEnhancedEditField({ key: 'city', display: 'City' }) }
-          { getEnhancedEditField({ key: 'state', display: 'State' }) }
-          { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
-          { getEnhancedEditField({ key: 'country', display: 'Country' }) }
-          <Divider className={classes.fullWidth} />
-          { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
-        </CardContent>
-      </Card>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        isDisabled={isActionDisabled()}
-        errors={errors}
-        warnings={warnings}
-      />
+            <Divider className={classes.fullWidth} />
+            { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
+            { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
+            { getEnhancedEditField({ key: 'email', display: 'Email' }) }
+            { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
+            <Divider className={classes.fullWidth} />
+            { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
+            { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
+            { getEnhancedEditField({ key: 'city', display: 'City' }) }
+            { getEnhancedEditField({ key: 'state', display: 'State' }) }
+            { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
+            { getEnhancedEditField({ key: 'country', display: 'Country' }) }
+            <Divider className={classes.fullWidth} />
+            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
+          </CardContent>
+        </Card>
+        <ChplActionBar
+          dispatch={handleDispatch}
+          isDisabled={isActionDisabled()}
+          errors={errors}
+          warnings={warnings}
+        />
+      </Container>
     </>
   );
 }
