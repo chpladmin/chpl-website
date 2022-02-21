@@ -57,20 +57,15 @@ const useStyles = makeStyles({
     marginLeft: '4px',
   },
   table: {
-    borderRadius: '8px',
     border: '.5px solid #c2c6ca',
   },
-  tableFooter: {
-    display: 'grid',
-    justifyItems: 'flex-end',
-    borderRadius: '0 0 8px 8px',
-    borderBottom: '.5px solid #c2c6ca',
-    borderRight: '.5px solid #c2c6ca',
-    borderLeft: '.5px solid #c2c6ca',
-  },
   tableFooterButton: {
-    margin: '12px 12px',
+    margin: '0 -4px',
     textTransform: 'none',
+    fontSize: '1.5em',
+  },
+  errorColor: {
+    color: '#c44f65',
   },
 });
 
@@ -488,9 +483,9 @@ function ChplDeveloperEdit(props) {
                     </TableBody>
                     { !formik.values.isAdding
                       && (
-                        <TableFooter className={classes.tableFooter}>
+                        <TableFooter>
                           <TableRow>
-                            <TableCell colSpan={4}>
+                            <TableCell colSpan={4} align="right">
                               <Button
                                 className={classes.tableFooterButton}
                                 color="secondary"
@@ -552,8 +547,8 @@ function ChplDeveloperEdit(props) {
                         helperText={formik.touched.reason && formik.errors.reason}
                       />
                       <ButtonGroup
-                        color="primary"
                         className={classes.fullWidth}
+                        variant="outlined"
                       >
                         <Button
                           onClick={addStatus}
@@ -566,6 +561,7 @@ function ChplDeveloperEdit(props) {
                           <CheckIcon />
                         </Button>
                         <Button
+                          className={classes.errorColor}
                           onClick={cancelAdd}
                           aria-label="Cancel adding item"
                           id="certification-status-close-item"
