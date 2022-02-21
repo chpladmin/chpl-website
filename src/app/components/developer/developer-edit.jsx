@@ -171,6 +171,9 @@ const fillOptionByDeveloper = (developer, options) => {
 };
 
 const generateOptions = (developer, mergingDevelopers) => {
+  if (mergingDevelopers.length === 0) {
+    return {};
+  }
   const options = {
     name: Array.from(new Set([developer.name].concat(mergingDevelopers.map((d) => d.name)))),
     website: [],
