@@ -140,6 +140,10 @@ function ChplConfirmDeveloper(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const foundDeveloper = props.developers.find((d) => d.developerId === props.developer.developerId);
     if (foundDeveloper) {
       setSelectedDeveloper(foundDeveloper);
