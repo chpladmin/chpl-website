@@ -291,7 +291,7 @@ function ChplConfirmListings(props) {
                     { listing.displayStatus }
                     { beta
                       && (
-                        <>
+                        <div>
                           <Button
                             onClick={() => { setErrors(listing.errors); setWarnings(listing.warnings); }}
                             disabled={!(listing.errors?.length !== 0 || listing.warnings?.length !== 0)}
@@ -301,7 +301,7 @@ function ChplConfirmListings(props) {
                           >
                             See messages <FeedbackIcon color='primary' fontSize='small' className={classes.iconSpacing}/>
                           </Button>
-                        </>
+                        </div>
                       )}
                   </TableCell>
                   <TableCell>
