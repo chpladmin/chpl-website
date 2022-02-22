@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { bool, func } from 'prop-types';
 import {
+  Badge,
   Button,
   Checkbox,
   Chip,
@@ -16,7 +17,7 @@ import {
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import FeedbackIcon from '@material-ui/icons/Feedback';
 import {
   useFetchPendingListing,
   useFetchPendingListings,
@@ -36,6 +37,13 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#853544',
     },
+  },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+  messageButton:{
+    marginLeft: '-8px',
+    textTransform: 'none',
   },
   stickyColumn: {
     position: 'sticky',
@@ -286,12 +294,14 @@ function ChplConfirmListings(props) {
                     { beta
                       && (
                         <>
-                          <br />
                           <Button
                             onClick={() => { setErrors(listing.errors); setWarnings(listing.warnings); }}
                             disabled={!(listing.errors?.length !== 0 || listing.warnings?.length !== 0)}
+                            variant='text'
+                            color='primary'
+                            className={classes.messageButton}
                           >
-                            See messages
+                            See messages <FeedbackIcon color='primary' fontSize='small' className={classes.iconSpacing}/>
                           </Button>
                         </>
                       )}
