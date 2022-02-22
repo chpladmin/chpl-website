@@ -1,4 +1,5 @@
 import React from 'react';
+import Moment from 'react-moment';
 
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
@@ -31,6 +32,27 @@ function ChplApiDocumentationCollectionPage() {
       { value: 'Withdrawn by Developer' },
       { value: 'Retired' },
     ],
+  }, {
+    key: 'certificationDate',
+    display: 'Certification Date',
+    values: [
+      { value: 'Before', data: { date: Date.now() }, default: true },
+      { value: 'After', data: { date: (new Date('2020-06-01')).getTime() }, default: true },
+    ],
+    getQuery: (value) => value.values
+      .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${new Date(v.data.date).toISOString().slice(0, 10)}`)
+      .join('&'),
+    getDisplay: (value) => (
+      <>
+        {value.value}
+        { value.data.date && (
+          <>
+            {': '}
+            <Moment fromNow>{value.data.date}</Moment>
+          </>
+        )}
+      </>
+    ),
   }];
 
   return (

@@ -138,7 +138,7 @@ function FilterProvider(props) {
     }))
     .filter((f) => f.values.length > 0)
     .sort((a, b) => (a.key < b.key ? -1 : 1))
-    .map((f) => `${f.key}=${f.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`)
+    .map((f) => (f.getQuery && f.getQuery(f)) || `${f.key}=${f.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`)
     .join('&');
 
   const filterData = {
