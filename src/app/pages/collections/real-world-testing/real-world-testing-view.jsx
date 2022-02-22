@@ -112,6 +112,9 @@ const useStyles = makeStyles({
   wrap: {
     flexFlow: 'wrap',
   },
+  noResultsContainer: {
+    padding: '16px 32px',
+  },
 });
 
 function ChplRealWorldTestingCollectionView(props) {
@@ -230,7 +233,9 @@ function ChplRealWorldTestingCollectionView(props) {
         )}
       { !isLoading && data?.results.length === 0
         && (
-          <>No results found</>
+          <Typography className={classes.noResultsContainer}>
+            No results found
+          </Typography>
         )}
       { !isLoading && data?.results.length > 0
        && (

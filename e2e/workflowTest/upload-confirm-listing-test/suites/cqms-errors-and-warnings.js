@@ -5,14 +5,14 @@ const suite = {
     listingId: '15.02.04.2701.CQM1.12.00.1.200620',
     expectedErrors: [
       'The CQM with CMS ID \'CMS2\' does not specify a version. A version is required.',
-      'A CQM was found with versions or criteria specified but is missing the required CMS ID.',
-      'CMS ID \'CMStest\' is not a valid.',
       'The CQM with CMS ID \'CMS72\' has an invalid version \'v19\'.',
       'Clinical Quality Measurement CMS134 was found under Certification criterion 170.315 (c)(1), but the product does not attest to that criterion.',
       'Clinical Quality Measurement CMS134 was found under Certification criterion c3, but the product does not attest to that criterion.',
       'Clinical Quality Measurement CMS134 was found under Certification criterion d10, but the product does not attest to that criterion.',
     ],
     expectedWarnings: [
+      'A CQM was found with versions or criteria specified but is missing the required CMS ID. The CQM has been removed.',
+      'CMS ID \'CMStest\' is not valid. The CQM has been removed.',
     ],
   }, {
     listingId: '15.02.04.2701.CQM2.12.00.1.200620',

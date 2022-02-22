@@ -1,5 +1,6 @@
 import UploadListingComponent from '../../components/upload/upload-listing/upload-listing.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
+import ActionBarComponent from '../../components/action-bar/action-bar.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 import ToastComponent from '../../components/toast/toast.po';
@@ -11,6 +12,7 @@ let hooks;
 let loginComponent;
 let toast;
 let uploadListingComponent;
+let actionBar;
 
 if (process.env.ENV !== 'stage') {
   describe('When admin uploads a listing ', () => {
@@ -18,6 +20,7 @@ if (process.env.ENV !== 'stage') {
       confirmPage = new ConfirmPage();
       uploadListingComponent = new UploadListingComponent();
       loginComponent = new LoginComponent();
+      actionBar = new ActionBarComponent();
       hooks = new Hooks();
       toast = new ToastComponent();
       hooks.open('#/administration/upload');
@@ -42,11 +45,11 @@ if (process.env.ENV !== 'stage') {
             confirmPage.gotoPendingListingPage(listingId);
             hooks.waitForSpinnerToDisappear();
             if (expectedErrors.length > 0 || expectedWarnings.length > 0) {
-              confirmPage.waitForBarMessages();
+              actionBar.waitForMessages();
             }
 
-            const errorsOnPage = new Set(confirmPage.errorOnInspect.map((item) => item.getText()));
-            const warningsOnPage = new Set(confirmPage.warningOnInspect.map((item) => item.getText()));
+            const errorsOnPage = new Set(actionBar.errors.map((item) => item.getText()));
+            const warningsOnPage = new Set(actionBar.warnings.map((item) => item.getText()));
             const failures = []
               .concat(expectedErrors.filter((exp) => !errorsOnPage.has(exp)).map((exp) => `Expected to find "${exp}" as an error`))
               .concat(expectedWarnings.filter((exp) => !warningsOnPage.has(exp)).map((exp) => `Expected to find "${exp}" as a warning`))

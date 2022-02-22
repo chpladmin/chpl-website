@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 11.30.0
+_22 February 2022_
+
+### Features
+* Disable adding "removed" criteria during upload/confirm
+
+### User Interface Updates
+* Enable toggle of errors/warnings with entire action bar
+
+### Flagged Features
+* Add Attestation Change Request details to CR download file
+* Show basic public Attestation view
+* Enable filtering of Change Requests
+
+---
+
 ## Version 11.29.0
 _24 January 2022_
 

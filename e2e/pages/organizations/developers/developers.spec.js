@@ -1,10 +1,11 @@
-import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
 import ContactComponent from '../../../components/contact/contact.po';
 import LoginComponent from '../../../components/login/login.po';
-import ActionBarComponent from '../../../components/action-bar/action-bar.po';
+import ActionBarComponent from '../../../components/action-bar/action-bar-legacy.po';
 import ToastComponent from '../../../components/toast/toast.po';
 import AddressComponent from '../../../components/address/address.po';
+
+import DevelopersPage from './developers.po';
 
 let actionBar;
 let address;
@@ -48,7 +49,7 @@ describe('the Developers page', () => {
       toast.clearAllToast();
     }
     login.logOut();
-   });
+  });
 
   describe('when logged in as Drummond ACB', () => {
     beforeEach(() => {

@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf, bool, func, string,
-} from 'prop-types';
-import {
   Button,
   ButtonGroup,
+  Checkbox,
+  FormControlLabel,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import SaveIcon from '@material-ui/icons/Save';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-
-import theme from '../../themes/theme';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
+import ChplActionBarMessages from './action-bar-messages';
 
-const useStyles = makeStyles(() => ({
+import theme from 'themes/theme';
+
+const useStyles = makeStyles({
   actionBar: {
     backgroundColor: '#fff',
     position: 'fixed',
@@ -28,7 +29,7 @@ const useStyles = makeStyles(() => ({
     minHeight: '50px',
     zIndex: '1035',
     marginBottom: '0',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
+    boxShadow: 'rgb(149 157 165 / 30%) -8px 0 16px 0',
     display: 'grid',
   },
   actionBarButton: {
@@ -39,33 +40,12 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     padding: '16px 0',
   },
-  actionBarErrors: {
-    color: '#1c1c1c',
-    backgroundColor: '#c44f6530',
-    maxHeight: '30vh',
-    padding: '16px',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
-    overflowY: 'auto',
-  },
-  actionBarErrorToggle: {
+  actionBarAcknowledgement: {
     color: '#c44f65',
     textAlign: 'center',
-    textTransform: 'uppercase',
     borderBottom: '1px solid #ddd',
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
-  },
-  actionBarMessages: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  },
-  actionBarWarnings: {
-    color: '#1c1c1c',
-    backgroundColor: '#F7E9BB30',
-    maxHeight: '30vh',
-    padding: '16px',
-    boxShadow: '1px 4px 8px 1px rgba(149, 157, 165, .1)',
-    overflowY: 'auto',
   },
   deleteButton: {
     backgroundColor: '#c44f65',
@@ -77,22 +57,38 @@ const useStyles = makeStyles(() => ({
   iconSpacing: {
     marginLeft: '4px',
   },
-}));
+});
 
 function ChplActionBar(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [pendingAction, setPendingAction] = useState('');
-  const [pendingMessage, setPendingMessage] = useState('');
-  const [canDelete] = useState(props.canDelete);
-  const [canConfirm] = useState(props.canConfirm);
-  const [canReject] = useState(props.canReject);
+  const {
+    canCancel,
+    canClose,
+    canDelete,
+    canConfirm,
+    canReject,
+    canSave,
+  } = props;
+  const [acknowledged, setAcknowledged] = useState(false);
+  const [errors, setErrors] = useState([]);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const errors = props.errors.sort((a, b) => (a < b ? 1 : -1));
-  const warnings = props.warnings.sort((a, b) => (a < b ? 1 : -1));
-  const [showMessages, setShowMessages] = useState(true);
+  const [pendingAction, setPendingAction] = useState('');
+  const [pendingMessage, setPendingMessage] = useState('');
+  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
+  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setErrors(props.errors);
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setWarnings(props.warnings);
+  }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setShowAcknowledgement(props.showAcknowledgement);
+  }, [props.showAcknowledgement]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setIsDisabled(props.isDisabled);
@@ -130,6 +126,11 @@ function ChplActionBar(props) {
     setPendingAction('');
   };
 
+  const toggleAcknowledgement = () => {
+    setAcknowledged(!acknowledged);
+    act('toggleAcknowledgement');
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.actionBar}>
@@ -140,104 +141,59 @@ function ChplActionBar(props) {
             pendingMessage={pendingMessage}
           />
           )}
-        { ((errors && errors.length > 0) || (warnings && warnings.length > 0))
+        { showAcknowledgement
           && (
-            <>
-              <div className={classes.actionBarErrorToggle}>
-                <span
-                  onClick={() => setShowMessages(!showMessages)}
-                  onKeyDown={() => setShowMessages(!showMessages)}
-                  tabIndex={0}
-                  role="button"
-                >
-                  { errors && errors.length > 0
-                    && (
-                      <>
-                        Error
-                        { errors.length > 1 && 's'}
-                      </>
-                    )}
-                  { errors && errors.length > 0 && warnings && warnings.length > 0
-                    && <> and </>}
-                  { warnings && warnings.length > 0
-                    && (
-                      <>
-                        Warning
-                        { warnings.length > 1 && 's'}
-                      </>
-                    )}
-                  { showMessages
-                    ? (
-                      <ExpandMoreIcon
-                        className={classes.iconSpacing}
-                      />
-                    ) : (
-                      <ExpandLessIcon
-                        className={classes.iconSpacing}
-                      />
-                    )}
-                </span>
-              </div>
-            </>
-          )}
-        { showMessages
-          && (
-            <>
-              <div id="action-bar-messages" className={classes.actionBarMessages}>
-                { errors && errors.length > 0
-                  && (
-                    <div className={classes.actionBarErrors}>
-                      <strong>
-                        Error
-                        { errors.length > 1 && 's'}
-                      </strong>
-                      <ul id="action-bar-errors">
-                        {
-                          errors.map((message) => (
-                            <li key={message}>{message}</li>
-                          ))
-                        }
-                      </ul>
-                    </div>
-                  )}
-                { warnings && warnings.length > 0
-                  && (
-                    <>
-                      <div className={classes.actionBarWarnings}>
-                        <strong>
-                          Warning
-                          { warnings.length > 1 && 's'}
-                        </strong>
-                        <ul id="action-bar-warnings">
-                          {
-                            warnings.map((message) => (
-                              <li key={message}>{message}</li>
-                            ))
-                          }
-                        </ul>
-                      </div>
-                    </>
-                  )}
-              </div>
-            </>
+            <div
+              className={classes.actionBarAcknowledgement}
+            >
+              <FormControlLabel
+                label={`I have reviewed the warning${warnings.length !== 1 ? 's' : ''} and wish to proceed with this update`}
+                control={(
+                  <Checkbox
+                    name="acknowledge"
+                    value="acknowledge"
+                    onChange={() => toggleAcknowledgement()}
+                    checked={acknowledged}
+                  />
+                )}
+              />
+            </div>
           )}
         <div className={classes.actionBarButtons}>
           <ButtonGroup
             color="primary"
           >
-            <Button
-              id="action-bar-cancel"
-              variant="outlined"
-              onClick={() => confirmCancel()}
-              className={classes.actionBarButton}
-            >
-              Cancel
-              <CloseOutlinedIcon
-                className={classes.iconSpacing}
-              />
-            </Button>
+            { canCancel
+              && (
+                <Button
+                  id="action-bar-cancel"
+                  variant="outlined"
+                  onClick={() => confirmCancel()}
+                  className={classes.actionBarButton}
+                >
+                  Cancel
+                  <CloseOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
+            { canClose
+              && (
+                <Button
+                  id="action-bar-close"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => act('cancel')}
+                  className={classes.actionBarButton}
+                >
+                  Close
+                  <CloseOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
             { canConfirm
-              ? (
+              && (
                 <Button
                   id="action-bar-confirm"
                   variant="contained"
@@ -250,7 +206,9 @@ function ChplActionBar(props) {
                     className={classes.iconSpacing}
                   />
                 </Button>
-              ) : (
+              )}
+            { canSave && !canConfirm
+              && (
                 <Button
                   id="action-bar-save"
                   variant="contained"
@@ -296,6 +254,10 @@ function ChplActionBar(props) {
           </ButtonGroup>
         </div>
       </div>
+      <ChplActionBarMessages
+        errors={errors}
+        warnings={warnings}
+      />
     </ThemeProvider>
   );
 }
@@ -306,17 +268,25 @@ ChplActionBar.propTypes = {
   dispatch: func.isRequired,
   errors: arrayOf(string),
   warnings: arrayOf(string),
+  canCancel: bool,
+  canClose: bool,
   canConfirm: bool,
   canDelete: bool,
   canReject: bool,
+  canSave: bool,
   isDisabled: bool,
+  showAcknowledgement: bool,
 };
 
 ChplActionBar.defaultProps = {
   errors: [],
   warnings: [],
+  canCancel: true,
+  canClose: false,
   canConfirm: false,
   canDelete: false,
   canReject: false,
+  canSave: true,
   isDisabled: false,
+  showAcknowledgement: false,
 };

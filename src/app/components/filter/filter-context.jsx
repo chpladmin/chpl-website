@@ -52,6 +52,23 @@ const toggleFilter = (filters, category, value, setFilters) => {
   }
 };
 
+const updateFilter = (filters, category, value, setFilters) => {
+  const filter = filters.find((f) => f.key === category.key);
+  const item = filter.values.find((v) => v.value === value.value);
+  const updatedItem = {
+    ...item,
+    data: value.data,
+  };
+  const updatedFilter = {
+    ...filter,
+    values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
+  };
+  const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+  if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+    setFilters(updatedFilters);
+  }
+};
+
 function FilterProvider(props) {
   const $analytics = getAngularService('$analytics');
   const {
@@ -102,6 +119,9 @@ function FilterProvider(props) {
       case 'toggle':
         toggleFilter(filters, category, value, setFilters);
         break;
+      case 'update':
+        updateFilter(filters, category, value, setFilters);
+        break;
       default:
         console.log({ action, category, value });
     }
@@ -122,7 +142,7 @@ function FilterProvider(props) {
     .join('&');
 
   const filterData = {
-    analytics, dispatch, filters, queryString, setSearchTerm,
+    analytics, dispatch, filters, queryString, searchTerm, setSearchTerm,
   };
 
   /* eslint-disable react/jsx-props-no-spreading */

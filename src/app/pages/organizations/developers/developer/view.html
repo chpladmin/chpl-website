@@ -15,35 +15,40 @@
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <div ui-view="developer">
-        <chpl-developer developer="$ctrl.developer"
-                        can-edit="$ctrl.can('edit')"
-                        can-merge="$ctrl.can('merge')"
-                        can-split="$ctrl.can('split-developer')"
-                        take-action="$ctrl.takeAction(action)"
-                        ></chpl-developer>
+        <chpl-developer
+          developer="$ctrl.developer"
+          can-edit="$ctrl.can('edit')"
+          can-merge="$ctrl.can('merge')"
+          can-split="$ctrl.can('split-developer')"
+          take-action="$ctrl.takeAction(action)"
+          ></chpl-developer>
       </div>
-      <div feature-flag="role-developer">
+      <div feature-flag="attestations">
+        <chpl-attestations-view-wrapper-bridge
+          developer="$ctrl.developer"
+          dispatch="::$ctrl.handleAttestationDispatch"
+          ></chpl-attestations-view-wrapper-bridge>
+      </div>
+      <div>
         <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
           <div class="panel-heading">
             <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
           </div>
           <div class="panel-body">
-            <chpl-users-bridge users="$ctrl.users"
-                               roles="$ctrl.roles"
-                               dispatch="::$ctrl.takeUserAction"
-                               ></chpl-users-bridge>
+            <chpl-users-bridge
+              users="$ctrl.users"
+              roles="$ctrl.roles"
+              dispatch="::$ctrl.takeUserAction"
+              ></chpl-users-bridge>
           </div>
         </div>
-      </div>
-      <div ng-if="$ctrl.can('displayAttestations')">
-        <chpl-attestation-change-request-bridge developer="$ctrl.developer"
-                                                dispatch="::$ctrl.handleAttestationDispatch"
-                                                ></chpl-attestation-change-request-bridge>
       </div>
     </div>
     <div class="col-md-8">
       <div ng-if="$ctrl.can('manageTracking')">
         <chpl-change-requests-wrapper-bridge
+          disallowed-filters="$ctrl.disallowedFilters"
+          pre-filter="::$ctrl.preFilter"
           scope="$ctrl.$scope"></chpl-change-requests-wrapper-bridge>
       </div>
       <div class="panel panel-default">
@@ -69,10 +74,11 @@
         </div>
       </div>
       <div ui-view="products">
-        <chpl-products products="$ctrl.developer.products"
-                       search-options="$ctrl.searchOptions"
-                       on-cancel="$ctrl.cancel()"
-                       ></chpl-products>
+        <chpl-products
+          products="$ctrl.developer.products"
+          search-options="$ctrl.searchOptions"
+          on-cancel="$ctrl.cancel()"
+          ></chpl-products>
       </div>
     </div>
   </div>
