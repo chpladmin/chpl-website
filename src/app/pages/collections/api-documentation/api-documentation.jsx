@@ -40,6 +40,7 @@ function ChplApiDocumentationCollectionPage() {
       { value: 'After', data: { date: (new Date('2020-06-01')).getTime() }, default: true },
     ],
     getQuery: (value) => value.values
+      .sort((a, b) => (a.value < b.value ? -1 : 1))
       .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${new Date(v.data.date).toISOString().slice(0, 10)}`)
       .join('&'),
     getDisplay: (value) => (
