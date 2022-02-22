@@ -56,6 +56,7 @@ const csvOptions = {
     { headerName: 'Creation Date', objectKey: 'friendlyReceivedDate' },
     { headerName: 'Request Status', objectKey: 'currentStatusName' },
     { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate' },
+    { headerName: 'Relevant ONC-ACBs', objectKey: 'relevantAcbs' },
     ...Array(CUSTOM_FIELD_COUNT)
       .fill('Custom Field')
       .map((val, idx) => ({
@@ -211,6 +212,7 @@ function ChplChangeRequestsView(props) {
         currentStatusChangeDate: item.currentStatus.statusChangeDate,
         friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
         friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
+        relevantAcbs: item.certificationBodies.sort((a, b) => (a.name < b.name ? -1 : 1)).map((acb) => acb.name).join(';'),
       }))
       .filter((item) => preFilter(item))
       .filter((item) => searchTermShouldShow(item, searchTerm))

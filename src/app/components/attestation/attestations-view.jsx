@@ -88,7 +88,7 @@ function ChplAttestationsView(props) {
                 {' '}
                 was submitted. For more information, please visit the
                 {' '}
-                <a href="">Attestations Fact Sheet</a>
+                <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
                 .
               </Typography>
               { (!isLoading && data?.length > 0)
