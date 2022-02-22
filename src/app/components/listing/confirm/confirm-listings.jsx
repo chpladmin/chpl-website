@@ -100,7 +100,7 @@ function ChplConfirmListings(props) {
   const DateUtil = getAngularService('DateUtil');
   const toaster = getAngularService('toaster');
   const [idsToReject, setIdsToReject] = useState([]);
-  const [listingIdToLoad, setListingIdToLoad] = useState(1);
+  const [listingIdToLoad, setListingIdToLoad] = useState(undefined);
   const [listings, setListings] = useState([]);
   const [errors, setErrors] = useState([]);
   const [warnings, setWarnings] = useState([]);
@@ -115,7 +115,7 @@ function ChplConfirmListings(props) {
   const { mutate: rejectListingLegacy } = useRejectPendingListingLegacy();
 
   useEffect(() => {
-    if (!processingListing || !beta || listings.length === 0) { return; }
+    if (!processingListing?.id || !beta || listings.length === 0) { return; }
     const updated = listings.find((listing) => listing.id === processingListing.id);
     let nextListing;
     if (updated) {
@@ -132,9 +132,7 @@ function ChplConfirmListings(props) {
     } else {
       nextListing = listings.find((listing) => listing.errors === undefined && listing.status !== 'UPLOAD_PROCESSING')?.id;
     }
-    if (nextListing) {
-      setListingIdToLoad(nextListing);
-    }
+    setListingIdToLoad(nextListing);
   }, [processingListing, beta]);
 
   useEffect(() => {

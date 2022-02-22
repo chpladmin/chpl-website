@@ -5,8 +5,11 @@ import { useAxios } from './axios';
 const useFetchPendingListing = ({ id }) => {
   const axios = useAxios();
   return useQuery(['listings/pending', id], async () => {
-    const response = await axios.get(`/listings/pending/${id}`);
-    return response.data;
+    if (id) {
+      const response = await axios.get(`/listings/pending/${id}`);
+      return response.data;
+    }
+    return {};
   }, {
     keepPreviousData: true,
   });
