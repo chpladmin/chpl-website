@@ -1,5 +1,6 @@
 <div class="listing-inspect">
-  <div ng-switch="$ctrl.stage" class="listing-inspect__header">
+  <div ng-switch="$ctrl.stage" class="listing-inspect__header-container">
+    <div class="listing-inspect__header-container">
     <div class="listing-inspect__container">
       <div>
         <h1 class="listing-inspect__subheader">
@@ -8,13 +9,15 @@
         </h1>
       </div>
       <div>
-      <h2 class="listing-inspect__subheader" ng-switch-when="developer">Developer</h2>
-      <h2 class="listing-inspect__subheader" ng-switch-when="product">Product</h2>
-      <h2 class="listing-inspect__subheader" ng-switch-when="version">Version</h2>
-      <h2 class="listing-inspect__subheader" ng-switch-when="listing">Listing</h2>
+        <h2 class="listing-inspect__subheader" ng-switch-when="developer">Developer</h2>
+        <h2 class="listing-inspect__subheader" ng-switch-when="product">Product</h2>
+        <h2 class="listing-inspect__subheader" ng-switch-when="version">Version</h2>
+        <h2 class="listing-inspect__subheader" ng-switch-when="listing">Listing</h2>
       </div>
     </div>
-    <div>
+    </div>
+   </div>
+   <div>
       <chpl-confirm-progress-bridge
         value="$ctrl.progress"
         can-next="$ctrl.canAct('next')"
@@ -22,7 +25,6 @@
         dispatch="::$ctrl.handleProgressDispatch"
         ></chpl-confirm-progress-bridge>
     </div>
-  </div>
   <div ng-switch="$ctrl.stage" ng-form="$ctrl.form">
     <div ng-switch-when="developer">
       <chpl-confirm-developer-bridge

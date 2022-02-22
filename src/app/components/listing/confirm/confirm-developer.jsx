@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gap: '32px',
-    padding: '32px',
+    padding: '32px 0',
     alignItems: 'start',
   },
   developerSubContainer: {
@@ -219,7 +219,7 @@ function ChplConfirmDeveloper(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
+      <Container maxWidth='md'>
         <div className={classes.developerConfirm}>
           <div className={classes.developerSubContainer}>
             <Button

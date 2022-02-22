@@ -1,12 +1,14 @@
 .listing-inspect {
     display: grid;
     grid-template-rows: 1fr;
+    width: auto;
 }
 
-.listing-inspect__header {
+.listing-inspect__header-container {
     display: grid;
     grid-template-columns: 1fr;
-    align-items: center;
+    justify-items: center;
+    max-width: auto;
 }
 
 .listing-inspect__container {
@@ -14,8 +16,9 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
+    width: 960px;
     gap: 8px;
-    padding: 8px 64px;
+    padding: 8px 0;
 }
 
 .listing-inspect__subheader {
