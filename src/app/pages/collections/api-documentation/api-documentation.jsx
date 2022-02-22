@@ -2,9 +2,9 @@ import React from 'react';
 
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
-import { UserWrapper } from 'components/login';
 import ApiWrapper from 'api/api-wrapper';
 import { FilterProvider } from 'components/filter';
+import { UserWrapper } from 'components/login';
 
 function ChplApiDocumentationCollectionPage() {
   const analytics = {

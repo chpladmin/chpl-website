@@ -30,6 +30,7 @@ import {
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
+import Constants from 'shared/constants';
 import { getAngularService } from 'services/angular-react-helper';
 
 const csvOptions = {
@@ -43,7 +44,7 @@ const csvOptions = {
     { headerName: 'Version', objectKey: 'version' },
     { headerName: 'Certification Status', objectKey: 'certificationStatus' },
     { headerName: 'API Documentation', objectKey: 'apiDocumentation' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
+    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrl' },
     { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
   ],
 };
@@ -123,7 +124,9 @@ function ChplApiDocumentationCollectionView(props) {
   const {
     analytics,
   } = props;
+  const { SPLIT_SECONDARY } = Constants;
   const csvExporter = new ExportToCsv(csvOptions);
+  const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
@@ -138,6 +141,38 @@ function ChplApiDocumentationCollectionView(props) {
     sortDescending,
     query: filterContext.queryString(),
   });
+
+  const parseApiDocumentation = (listing) => {
+    if (listing.apiDocumentation.length === 0) { return 'N/A'; }
+    return (
+      <dl>
+        {listing.apiDocumentation.map((item) => {
+          const [id, url] = item.split(SPLIT_SECONDARY);
+          return (
+            <React.Fragment key={id}>
+              <dt>{ id }</dt>
+              <dd>
+                <ChplLink
+                  href={url}
+                  analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
+                />
+              </dd>
+            </React.Fragment>
+          );
+        })}
+      </dl>
+    );
+  };
+
+  useEffect(() => {
+    if (isLoading) { return; }
+    setListings(data.results.map((listing) => ({
+      ...listing,
+      fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      apiDocumentation: parseApiDocumentation(listing),
+      serviceBaseUrl: listing.serviceBaseUrlList.length > 0 ? listing.serviceBaseUrlList[0].split(SPLIT_SECONDARY)[1] : undefined,
+    })));
+  }, [isLoading, data?.results]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -158,14 +193,9 @@ function ChplApiDocumentationCollectionView(props) {
     { text: 'Mandatory Disclosures URL' },
   ];
 
-  const prepareCsvData = (listings) => listings.map((listing) => ({
-    ...listing,
-    fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
-  }));
-
   const downloadApiDocumentation = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: data.results.length });
-    csvExporter.generateCsv(prepareCsvData(data.results));
+    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
+    csvExporter.generateCsv(listings);
   };
 
   const handleTableSort = (event, property) => {
@@ -188,14 +218,14 @@ function ChplApiDocumentationCollectionView(props) {
       <div className={classes.pageBody}>
         <Typography variant="body1" gutterBottom>
           This list includes all 2015 Edition, including Cures Update, health IT products that have been certified to at least one of the following API Criteria:
-          <ul>
-            <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-            <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
-            <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-            <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
-            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
-          </ul>
         </Typography>
+        <ul>
+          <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
+          <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
+          <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
+          <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
+          <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
+        </ul>
         <Typography variant="body1" gutterBottom>
           The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
         </Typography>
@@ -214,13 +244,13 @@ function ChplApiDocumentationCollectionView(props) {
         && (
           <>Loading</>
         )}
-      { !isLoading && data?.results.length === 0
+      { !isLoading && listings.length === 0
         && (
           <Typography className={classes.noResultsContainer}>
             No results found
           </Typography>
         )}
-      { !isLoading && data?.results.length > 0
+      { !isLoading && listings.length > 0
        && (
        <>
          <div className={classes.tableResultsHeaderContainer}>
@@ -240,10 +270,10 @@ function ChplApiDocumentationCollectionView(props) {
              >
                Download
                {' '}
-               { data.results.length }
+               { listings.length }
                {' '}
                Result
-               { data.results.length !== 1 ? 's' : '' }
+               { listings.length !== 1 ? 's' : '' }
                <GetAppIcon className={classes.iconSpacing} />
              </Button>
            </ButtonGroup>
@@ -261,7 +291,7 @@ function ChplApiDocumentationCollectionView(props) {
                stickyHeader
              />
              <TableBody>
-               {data.results
+               { listings
                  .map((item) => (
                    <TableRow key={item.id}>
                      <TableCell className={classes.stickyColumn}>
@@ -296,7 +326,20 @@ function ChplApiDocumentationCollectionView(props) {
                        { item.apiDocumentation }
                      </TableCell>
                      <TableCell className={classes.linkWrap}>
-                       { item.serviceBaseUrlList }
+                       {item.serviceBaseUrl
+                         ? (
+                           <dl>
+                             <dt>170.315 (g)(10)</dt>
+                             <dd>
+                               <ChplLink
+                                 href={item.serviceBaseUrl}
+                                 analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrl }}
+                               />
+                             </dd>
+                           </dl>
+                         ) : (
+                           <>N/A</>
+                         )}
                      </TableCell>
                      <TableCell className={classes.linkWrap}>
                        {item.mandatoryDisclosures
