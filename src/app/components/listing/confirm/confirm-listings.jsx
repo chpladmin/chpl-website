@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { bool, func } from 'prop-types';
 import {
-  Badge,
   Button,
   Checkbox,
   Chip,
@@ -295,11 +294,13 @@ function ChplConfirmListings(props) {
                           <Button
                             onClick={() => { setErrors(listing.errors); setWarnings(listing.warnings); }}
                             disabled={!(listing.errors?.length !== 0 || listing.warnings?.length !== 0)}
-                            variant='text'
-                            color='primary'
+                            variant="text"
+                            color="primary"
                             className={classes.messageButton}
                           >
-                            See messages <FeedbackIcon color='primary' fontSize='small' className={classes.iconSpacing}/>
+                            See messages 
+                            {' '}
+                            <FeedbackIcon color="primary" fontSize="small" className={classes.iconSpacing}/>
                           </Button>
                         </div>
                       )}
