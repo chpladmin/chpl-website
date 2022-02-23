@@ -120,11 +120,11 @@ const useStyles = makeStyles({
 });
 
 const criteriaLookup = {
-  56: '170.315 (g)(7)',
-  57: '170.315 (g)(8)',
-  58: '170.315 (g)(9)',
-  181: '170.315 (g)(9) (Cures Update)',
-  182: '170.315 (g)(10)',
+  56: { display: '170.315 (g)(7)', sort: 0 },
+  57: { display: '170.315 (g)(8)', sort: 1 },
+  58: { display: '170.315 (g)(9)', sort: 2 },
+  181: { display: '170.315 (g)(9) (Cures Update)', sort: 3 },
+  182: { display: '170.315 (g)(10)', sort: 4 },
 };
 
 function ChplApiDocumentationCollectionView(props) {
@@ -152,23 +152,33 @@ function ChplApiDocumentationCollectionView(props) {
 
   const parseApiDocumentation = ({ apiDocumentation }) => {
     if (apiDocumentation.length === 0) { return 'N/A'; }
-    const items = apiDocumentation.map((item) => {
-      const [id, url] = item.split(SPLIT_SECONDARY);
-      return { criterion: criteriaLookup[id], urls: [url] };
-    });
+    const items = Object.entries(apiDocumentation
+      .map((item) => {
+        const [id, url] = item.split(SPLIT_SECONDARY);
+        return { id, url };
+      })
+      .reduce((map, { id, url }) => ({
+        ...map,
+        [url]: (map[url] || []).concat(id),
+      }), {}))
+      .map(([url, ids]) => ({
+        url,
+        criteria: ids
+          .sort((a, b) => criteriaLookup[a].sort - criteriaLookup[b].sort)
+          .map((id) => criteriaLookup[id].display)
+          .join(', '),
+      }));
     return (
       <dl>
-        {items.map(({ criterion, urls }) => (
-          <React.Fragment key={criterion}>
-            <dt>{ criterion }</dt>
+        {items.map(({ url, criteria }) => (
+          <React.Fragment key={url}>
+            <dt>{ criteria }</dt>
             <dd>
-              {urls.map((url) => (
-                <ChplLink
-                  key={url}
-                  href={url}
-                  analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
-                />
-              ))}
+              <ChplLink
+                key={url}
+                href={url}
+                analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
+              />
             </dd>
           </React.Fragment>
         ))}
@@ -184,7 +194,7 @@ function ChplApiDocumentationCollectionView(props) {
       apiDocumentation: parseApiDocumentation(listing),
       serviceBaseUrl: listing.serviceBaseUrlList.length > 0 ? listing.serviceBaseUrlList[0].split(SPLIT_SECONDARY)[1] : undefined,
     })));
-  }, [isLoading, data?.results]);
+  }, [isLoading, data?.results, SPLIT_SECONDARY]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
