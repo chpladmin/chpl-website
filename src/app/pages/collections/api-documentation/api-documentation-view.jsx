@@ -11,6 +11,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import Moment from 'react-moment';
 import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
@@ -18,6 +19,7 @@ import { ExportToCsv } from 'export-to-csv';
 import theme from 'themes/theme';
 import {
   useFetchApiDocumentationCollection,
+  useFetchApiDocumentationDate,
 } from 'api/collections';
 import {
   ChplLink,
@@ -62,9 +64,14 @@ const useStyles = makeStyles({
   },
   pageBody: {
     display: 'grid',
+    gridTemplateColumns: '2fr 1fr',
     gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
+  },
+  pageContent: {
+    display: 'grid',
+    gridTemplateRows: '3fr 1fr',
   },
   searchContainer: {
     backgroundColor: '#c6d5e5',
@@ -129,11 +136,14 @@ const criteriaLookup = {
 
 function ChplApiDocumentationCollectionView(props) {
   const $analytics = getAngularService('$analytics');
+  const API = getAngularService('API');
+  const authService = getAngularService('authService');
   const {
     analytics,
   } = props;
   const { SPLIT_SECONDARY } = Constants;
   const csvExporter = new ExportToCsv(csvOptions);
+  const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
@@ -149,7 +159,8 @@ function ChplApiDocumentationCollectionView(props) {
     sortDescending,
     query: filterContext.queryString(),
   });
-
+  const { data: documentation } = useFetchApiDocumentationDate();
+  console.log(documentation);
   const parseApiDocumentation = ({ apiDocumentation }) => {
     if (apiDocumentation.length === 0) { return 'N/A'; }
     const items = Object.entries(apiDocumentation
@@ -202,6 +213,10 @@ function ChplApiDocumentationCollectionView(props) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
+  useEffect(() => {
+    setDownloadLink(`${API}/files/api_documentation?api_key=${authService.getApiKey()}`);
+  }, [API, authService]);
+
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'chpl_id', text: 'CHPL ID', sortable: true },
@@ -238,22 +253,49 @@ function ChplApiDocumentationCollectionView(props) {
         <Typography variant="h1">API Information for 2015 Edition Products</Typography>
       </div>
       <div className={classes.pageBody}>
-        <Typography variant="body1" gutterBottom>
-          This list includes all 2015 Edition, including Cures Update, health IT products that have been certified to at least one of the following API Criteria:
-        </Typography>
-        <ul>
-          <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-          <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
-          <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-          <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
-          <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
-        </ul>
-        <Typography variant="body1" gutterBottom>
-          The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
-        </Typography>
-        <Typography variant="body1">
-          Please note that by default, only listings that are active or suspended are shown in the search results.
-        </Typography>
+        <div>
+          <Typography variant="body1" gutterBottom>
+            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified to at least one of the following API Criteria:
+          </Typography>
+          <ul>
+            <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
+            <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
+            <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
+            <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
+            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
+          </ul>
+          <Typography variant="body1" gutterBottom>
+            The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
+          </Typography>
+          <Typography variant="body1">
+            Please note that by default, only listings that are active or suspended are shown in the search results.
+          </Typography>
+        </div>
+        <div>
+          <h2>API Documentation Data</h2>
+          <Typography variant="body1" gutterBottom>
+            The API Documentation Data details the API syntax and authorization standard used for products certified to the API criteria based on a manual review by ONC of a developer&apos;s API documentation.
+          </Typography>
+          <ChplLink
+            href={downloadLink}
+            text="Download API Documentation Data"
+            analytics={{ event: 'Download API Documentation data', category: analytics.category }}
+            external={false}
+          />
+          { documentation?.associatedDate
+            && (
+              <Typography variant="body2">
+                Last updated
+                {' '}
+                <Moment fromNow={documentation.associatedDate} />
+                created
+                <Moment fromNow={documentation.creationDate} />
+                modified
+                <Moment fromNow={documentation.lastModifiedDate} />
+                (these should all be two-ish years ago...)
+              </Typography>
+            )}
+        </div>
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
