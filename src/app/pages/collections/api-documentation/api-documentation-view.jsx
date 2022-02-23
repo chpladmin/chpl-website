@@ -134,6 +134,42 @@ const criteriaLookup = {
   182: { display: '170.315 (g)(10)', sort: 4 },
 };
 
+const parseApiDocumentation = ({ apiDocumentation }, SPLIT_SECONDARY, analytics) => {
+  if (apiDocumentation.length === 0) { return 'N/A'; }
+  const items = Object.entries(apiDocumentation
+    .map((item) => {
+      const [id, url] = item.split(SPLIT_SECONDARY);
+      return { id, url };
+    })
+    .reduce((map, { id, url }) => ({
+      ...map,
+      [url]: (map[url] || []).concat(id),
+    }), {}))
+    .map(([url, ids]) => ({
+      url,
+      criteria: ids
+        .sort((a, b) => criteriaLookup[a].sort - criteriaLookup[b].sort)
+        .map((id) => criteriaLookup[id].display)
+        .join(', '),
+    }));
+  return (
+    <dl>
+      {items.map(({ url, criteria }) => (
+        <React.Fragment key={url}>
+          <dt>{ criteria }</dt>
+          <dd>
+            <ChplLink
+              key={url}
+              href={url}
+              analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
+            />
+          </dd>
+        </React.Fragment>
+      ))}
+    </dl>
+  );
+};
+
 function ChplApiDocumentationCollectionView(props) {
   const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
@@ -160,52 +196,15 @@ function ChplApiDocumentationCollectionView(props) {
     query: filterContext.queryString(),
   });
   const { data: documentation } = useFetchApiDocumentationDate();
-  console.log(documentation);
-  const parseApiDocumentation = ({ apiDocumentation }) => {
-    if (apiDocumentation.length === 0) { return 'N/A'; }
-    const items = Object.entries(apiDocumentation
-      .map((item) => {
-        const [id, url] = item.split(SPLIT_SECONDARY);
-        return { id, url };
-      })
-      .reduce((map, { id, url }) => ({
-        ...map,
-        [url]: (map[url] || []).concat(id),
-      }), {}))
-      .map(([url, ids]) => ({
-        url,
-        criteria: ids
-          .sort((a, b) => criteriaLookup[a].sort - criteriaLookup[b].sort)
-          .map((id) => criteriaLookup[id].display)
-          .join(', '),
-      }));
-    return (
-      <dl>
-        {items.map(({ url, criteria }) => (
-          <React.Fragment key={url}>
-            <dt>{ criteria }</dt>
-            <dd>
-              <ChplLink
-                key={url}
-                href={url}
-                analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
-              />
-            </dd>
-          </React.Fragment>
-        ))}
-      </dl>
-    );
-  };
-
   useEffect(() => {
     if (isLoading) { return; }
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      apiDocumentation: parseApiDocumentation(listing),
+      apiDocumentation: parseApiDocumentation(listing, SPLIT_SECONDARY, analytics),
       serviceBaseUrl: listing.serviceBaseUrlList.length > 0 ? listing.serviceBaseUrlList[0].split(SPLIT_SECONDARY)[1] : undefined,
     })));
-  }, [isLoading, data?.results, SPLIT_SECONDARY]);
+  }, [isLoading, data?.results, SPLIT_SECONDARY, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
