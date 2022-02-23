@@ -17,7 +17,7 @@ const useFetchApiDocumentationCollection = ({
   }, { keepPreviousData: true });
 };
 
-const useFetchApiDocumentationDate = () => {
+const useFetchApiDocumentationData = () => {
   const axios = useAxios();
   return useQuery(['files/api_documentation/details'], async () => {
     const response = await axios.get('/files/api_documentation/details');
@@ -41,6 +41,6 @@ const useFetchRealWorldTestingCollection = ({
 
 export {
   useFetchApiDocumentationCollection,
-  useFetchApiDocumentationDate,
+  useFetchApiDocumentationData,
   useFetchRealWorldTestingCollection,
 };

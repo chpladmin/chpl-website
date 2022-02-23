@@ -9,11 +9,14 @@ import ChplApiDocumentationCollectionView from './api-documentation-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
-const $analyticsMock = {
+const angularMock = {
   eventTrack: jest.fn(),
+  getApiKey: () => 'fake api key',
 };
 angularReactHelper.getAngularService = jest.fn();
-when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
+when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(angularMock);
+when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue('fakeMock');
+when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(angularMock);
 
 const mockContext = {
   queryString: jest.fn(() => 'queryString'),
@@ -21,6 +24,9 @@ const mockContext = {
 
 const mockApi = {
   isSuccess: false,
+  data: {
+    results: [],
+  },
 };
 
 /* eslint-disable react/display-name */
@@ -36,6 +42,7 @@ jest.mock('components/filter', () => ({
 jest.mock('api/collections', () => ({
   __esModule: true,
   useFetchApiDocumentationCollection: () => mockApi,
+  useFetchApiDocumentationData: () => mockApi,
 }));
 
 describe('the ChplApiDocumentationCollectionView component', () => {
@@ -49,7 +56,7 @@ describe('the ChplApiDocumentationCollectionView component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('API Documentation');
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('API Information for 2015 Edition Products');
     });
   });
 });

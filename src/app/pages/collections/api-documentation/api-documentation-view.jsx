@@ -19,7 +19,7 @@ import { ExportToCsv } from 'export-to-csv';
 import theme from 'themes/theme';
 import {
   useFetchApiDocumentationCollection,
-  useFetchApiDocumentationDate,
+  useFetchApiDocumentationData,
 } from 'api/collections';
 import {
   ChplLink,
@@ -195,7 +195,7 @@ function ChplApiDocumentationCollectionView(props) {
     sortDescending,
     query: filterContext.queryString(),
   });
-  const { data: documentation } = useFetchApiDocumentationDate();
+  const { data: documentation } = useFetchApiDocumentationData();
   useEffect(() => {
     if (isLoading) { return; }
     setListings(data.results.map((listing) => ({
