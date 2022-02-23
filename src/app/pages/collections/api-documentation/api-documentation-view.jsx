@@ -119,6 +119,14 @@ const useStyles = makeStyles({
   },
 });
 
+const criteriaLookup = {
+  56: '170.315 (g)(7)',
+  57: '170.315 (g)(8)',
+  58: '170.315 (g)(9)',
+  181: '170.315 (g)(9) (Cures Update)',
+  182: '170.315 (g)(10)',
+};
+
 function ChplApiDocumentationCollectionView(props) {
   const $analytics = getAngularService('$analytics');
   const {
@@ -142,24 +150,28 @@ function ChplApiDocumentationCollectionView(props) {
     query: filterContext.queryString(),
   });
 
-  const parseApiDocumentation = (listing) => {
-    if (listing.apiDocumentation.length === 0) { return 'N/A'; }
+  const parseApiDocumentation = ({ apiDocumentation }) => {
+    if (apiDocumentation.length === 0) { return 'N/A'; }
+    const items = apiDocumentation.map((item) => {
+      const [id, url] = item.split(SPLIT_SECONDARY);
+      return { criterion: criteriaLookup[id], urls: [url] };
+    });
     return (
       <dl>
-        {listing.apiDocumentation.map((item) => {
-          const [id, url] = item.split(SPLIT_SECONDARY);
-          return (
-            <React.Fragment key={id}>
-              <dt>{ id }</dt>
-              <dd>
+        {items.map(({ criterion, urls }) => (
+          <React.Fragment key={criterion}>
+            <dt>{ criterion }</dt>
+            <dd>
+              {urls.map((url) => (
                 <ChplLink
+                  key={url}
                   href={url}
                   analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
                 />
-              </dd>
-            </React.Fragment>
-          );
-        })}
+              ))}
+            </dd>
+          </React.Fragment>
+        ))}
       </dl>
     );
   };
