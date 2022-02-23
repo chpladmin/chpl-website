@@ -2,12 +2,14 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
-const useFetchAttestations = ({ developer }) => {
+const useFetchAttestations = ({ developer, isAuthenticated }) => {
   const axios = useAxios();
   return useQuery([`developer/${developer.developerId}/attestations`], async () => {
     const response = await axios.get(`/developers/${developer.developerId}/attestations`);
     return response.data;
-  }, { keepPreviousData: true });
+  }, {
+    enabled: isAuthenticated,
+  });
 };
 
 const useFetchPublicAttestations = ({ developer }) => {

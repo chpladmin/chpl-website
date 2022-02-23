@@ -37,7 +37,7 @@ function ChplAttestationsView(props) {
   const { isLoading, data } = useFetchPublicAttestations({ developer });
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
-  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } = {} } = useFetchAttestations({ developer });
+  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
   const [isCreatingException, setIsCreatingException] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
