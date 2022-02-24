@@ -4,7 +4,7 @@ import Moment from 'react-moment';
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
 import ApiWrapper from 'api/api-wrapper';
-import { FilterProvider } from 'components/filter';
+import { FilterProvider, defaultFilter } from 'components/filter';
 import { UserWrapper } from 'components/login';
 
 function ChplApiDocumentationCollectionPage() {
@@ -12,6 +12,7 @@ function ChplApiDocumentationCollectionPage() {
     category: 'API Information for 2015 Edition Products',
   };
   const filters = [{
+    ...defaultFilter,
     key: 'derivedCertificationEditions',
     display: 'Certification Edition',
     required: true,
@@ -20,6 +21,7 @@ function ChplApiDocumentationCollectionPage() {
       { value: '2015 Cures Update', default: true },
     ],
   }, {
+    ...defaultFilter,
     key: 'certificationStatuses',
     display: 'Certification Status',
     values: [
@@ -33,6 +35,7 @@ function ChplApiDocumentationCollectionPage() {
       { value: 'Retired' },
     ],
   }, {
+    ...defaultFilter,
     key: 'certificationDate',
     display: 'Certification Date',
     values: [
@@ -43,7 +46,7 @@ function ChplApiDocumentationCollectionPage() {
       .sort((a, b) => (a.value < b.value ? -1 : 1))
       .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${new Date(v.data.date).toISOString().slice(0, 10)}`)
       .join('&'),
-    getDisplay: (value) => (
+    getValueDisplay: (value) => (
       <>
         {value.value}
         { value.data.date && (

@@ -2,15 +2,16 @@ import React from 'react';
 
 import ChplRealWorldTestingCollectionView from './real-world-testing-view';
 
-import { UserWrapper } from 'components/login';
 import ApiWrapper from 'api/api-wrapper';
-import { FilterProvider } from 'components/filter';
+import { FilterProvider, defaultFilter } from 'components/filter';
+import { UserWrapper } from 'components/login';
 
 function ChplRealWorldTestingCollectionPage() {
   const analytics = {
     category: 'Real World Testing',
   };
   const filters = [{
+    ...defaultFilter,
     key: 'derivedCertificationEditions',
     display: 'Certification Edition',
     required: true,
@@ -19,6 +20,7 @@ function ChplRealWorldTestingCollectionPage() {
       { value: '2015 Cures Update', default: true },
     ],
   }, {
+    ...defaultFilter,
     key: 'certificationStatuses',
     display: 'Certification Status',
     values: [

@@ -15,6 +15,12 @@ import { getAngularService } from 'services/angular-react-helper';
 
 const FilterContext = createContext();
 
+const defaultFilter = {
+  getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`,
+  getFilterDisplay: (filter) => filter.display,
+  getValueDisplay: (value) => value.display,
+};
+
 const clearFilter = (filter, category, setFilters) => {
   setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
     ...filter,
@@ -138,7 +144,7 @@ function FilterProvider(props) {
     }))
     .filter((f) => f.values.length > 0)
     .sort((a, b) => (a.key < b.key ? -1 : 1))
-    .map((f) => (f.getQuery && f.getQuery(f)) || `${f.key}=${f.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`)
+    .map((f) => f.getQuery(f))
     .join('&');
 
   const filterData = {
@@ -174,4 +180,4 @@ function useFilterContext() {
   return useContext(FilterContext);
 }
 
-export { FilterProvider, useFilterContext };
+export { FilterProvider, defaultFilter, useFilterContext };

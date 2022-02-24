@@ -91,10 +91,10 @@ function ChplFilterPanel() {
 
   useEffect(() => {
     setFilters(filterContext.filters
-      .sort((a, b) => (a.display < b.display ? -1 : 1))
+      .sort((a, b) => (a.getFilterDisplay(a) < b.getFilterDisplay(b) ? -1 : 1))
       .map((f) => ({
         ...f,
-        values: f.values.sort((a, b) => (a.display < b.display ? -1 : 1)),
+        values: f.values.sort((a, b) => (f.getValueDisplay(a) < f.getValueDisplay(b) ? -1 : 1)),
       })));
   }, [filterContext.filters]);
 
@@ -132,7 +132,7 @@ function ChplFilterPanel() {
       setActiveCategoryKey('');
     } else {
       if (filterContext.analytics) {
-        $analytics.eventTrack('Select Filter Category', { category: filterContext.analytics.category, label: `${filter.display}` });
+        $analytics.eventTrack('Select Filter Category', { category: filterContext.analytics.category, label: `${filter.getFilterDisplay(filter)}` });
       }
       setActiveCategoryKey(filter.key);
     }
@@ -140,7 +140,7 @@ function ChplFilterPanel() {
 
   const handleSecondaryToggle = (value) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${activeCategory.display}: ${value.display}` });
+      $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${activeCategory.display}: ${activeCategory.getValueDisplay(value)}` });
     }
     filterContext.dispatch('toggle', activeCategory, value);
   };
@@ -249,7 +249,7 @@ function ChplFilterPanel() {
                         onClick={() => handleCategoryToggle(f)}
                       >
                         <span className={f === activeCategory ? classes.filterBold : undefined}>
-                          {f.display}
+                          {f.getFilterDisplay(f)}
                         </span>
                       </Button>
                     ))}
@@ -300,7 +300,7 @@ function ChplFilterPanel() {
                           key={v.value}
                           onClick={() => handleTertiaryValueToggle(v)}
                         >
-                          {v.display}
+                          {activeCategory.getValueDisplay(v)}
                         </Button>
                       );
                     }
@@ -320,7 +320,7 @@ function ChplFilterPanel() {
                             inputProps={{ 'aria-labelledby': labelId }}
                           />
                         </ListItemIcon>
-                        <ListItemText id={labelId}>{v.display}</ListItemText>
+                        <ListItemText id={labelId}>{activeCategory.getValueDisplay(v)}</ListItemText>
                       </ListItem>
                     );
                   })}
@@ -331,7 +331,7 @@ function ChplFilterPanel() {
           { activeValue
             && (
               <div className={classes.filterGroupThreeContainer}>
-                { activeCategory.getDisplay ? activeCategory.getDisplay(activeValue) : activeValue.display }
+                { activeCategory.getValueDisplay(activeValue) }
                 <Checkbox
                   checked={activeValue.selected}
                   onChange={handleTertiaryToggle}

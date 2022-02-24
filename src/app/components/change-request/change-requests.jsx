@@ -9,7 +9,7 @@ import ChplChangeRequestsView from './change-requests-view';
 import {
   useFetchChangeRequestTypes,
 } from 'api/change-requests';
-import { FilterProvider } from 'components/filter';
+import { FilterProvider, defaultFilter } from 'components/filter';
 import { FlagContext } from 'shared/contexts';
 
 const analytics = {
@@ -17,6 +17,7 @@ const analytics = {
 };
 
 const staticFilters = [{
+  ...defaultFilter,
   key: 'currentStatusChangeDate',
   display: 'Last Updated',
   values: [
@@ -29,7 +30,7 @@ const staticFilters = [{
       .reduce((can, value) => can && (value.value === 'Before' ? item.currentStatusChangeDate < (new Date(value.data.date)).getTime() : (new Date(value.data.date)).getTime() < item.currentStatusChangeDate), true);
     return canMeet;
   },
-  getDisplay: (value) => (
+  getValueDisplay: (value) => (
     <>
       {value.value}
       { value.data.date && (
@@ -41,6 +42,7 @@ const staticFilters = [{
     </>
   ),
 }, {
+  ...defaultFilter,
   key: 'submittedDate',
   display: 'Creation Date',
   values: [
@@ -53,7 +55,7 @@ const staticFilters = [{
       .reduce((can, value) => can && (value.value === 'Before' ? item.submittedDate < (new Date(value.data.date)).getTime() : (new Date(value.data.date)).getTime() < item.submittedDate), true);
     return canMeet;
   },
-  getDisplay: (value) => (
+  getValueDisplay: (value) => (
     <>
       {value.value}
       { value.data.date && (
@@ -88,6 +90,7 @@ function ChplChangeRequests(props) {
     setFilters((f) => f
       .filter((filter) => filter.key !== 'currentStatusName')
       .concat({
+        ...defaultFilter,
         key: 'currentStatusName',
         display: 'Change Request Status',
         values,
