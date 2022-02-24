@@ -417,7 +417,7 @@ function ChplAttestationCreate(props) {
           <>
             <Container maxWidth="md">
               <Typography gutterBottom variant="h2" className={classes.fullWidthContainer}>
-                Section 4 &mdash; Confirmation Page
+                Section 4 &mdash; Confirmation
               </Typography>
               <Card>
                 <CardContent>
