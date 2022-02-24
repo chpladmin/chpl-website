@@ -4,9 +4,6 @@ import {
   ButtonGroup,
   Checkbox,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   ListSubheader,
   Popover,
   Typography,
@@ -294,35 +291,13 @@ function ChplFilterPanel() {
                 <div className={classes.filterGroupTwoContainer}>
                   { activeCategory.values.map((v) => {
                     const labelId = `filter-panel-secondary-items-${v.value.replace(/ /g, '_')}`;
-                    if (v.data) {
-                      return (
-                        <Button
-                          key={v.value}
-                          onClick={() => handleTertiaryValueToggle(v)}
-                        >
-                          {activeCategory.getValueDisplay(v)}
-                        </Button>
-                      );
-                    }
-                    return (
-                      <ListItem
-                        key={v.value}
-                        button
-                        onClick={() => handleSecondaryToggle(v)}
-                        disabled={activeCategory.required && v.selected && activeCategory.values.filter((a) => a.selected).length === 1}
-                      >
-                        <ListItemIcon>
-                          <Checkbox
-                            color="primary"
-                            edge="start"
-                            checked={v.selected}
-                            tabIndex={-1}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </ListItemIcon>
-                        <ListItemText id={labelId}>{activeCategory.getValueDisplay(v)}</ListItemText>
-                      </ListItem>
-                    );
+                    return activeCategory.getValueEntry({
+                      filter: activeCategory,
+                      value: v,
+                      handleSecondaryToggle,
+                      labelId,
+                      handleTertiaryValueToggle,
+                    });
                   })}
                 </div>
               </List>
