@@ -289,15 +289,10 @@ function ChplFilterPanel() {
                 )}
               >
                 <div className={classes.filterGroupTwoContainer}>
-                  { activeCategory.values.map((v) => {
-                    const labelId = `filter-panel-secondary-items-${v.value.replace(/ /g, '_')}`;
-                    return activeCategory.getValueEntry({
-                      filter: activeCategory,
-                      value: v,
-                      handleSecondaryToggle,
-                      labelId,
-                      handleTertiaryValueToggle,
-                    });
+                  { activeCategory.getValueEntry({
+                    filter: activeCategory,
+                    handleSecondaryToggle,
+                    handleTertiaryValueToggle,
                   })}
                 </div>
               </List>

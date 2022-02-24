@@ -5,6 +5,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  Button,
   Checkbox,
   ListItem,
   ListItemIcon,
@@ -22,26 +23,38 @@ import { getAngularService } from 'services/angular-react-helper';
 const FilterContext = createContext();
 
 const getDefaultValueEntry = ({
-  filter, value, handleSecondaryToggle, labelId,
-}) => (
-  <ListItem
+  filter, handleSecondaryToggle,
+}) => filter.values.map((value) => {
+  const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
+  return (
+    <ListItem
+      key={value.value}
+      button
+      onClick={() => handleSecondaryToggle(value)}
+      disabled={filter.required && value.selected && filter.values.filter((a) => a.selected).length === 1}
+    >
+      <ListItemIcon>
+        <Checkbox
+          color="primary"
+          edge="start"
+          checked={value.selected}
+          tabIndex={-1}
+          inputProps={{ 'aria-labelledby': labelId }}
+        />
+      </ListItemIcon>
+      <ListItemText id={labelId}>{filter.getValueDisplay(value)}</ListItemText>
+    </ListItem>
+  );
+});
+
+const getDateEntry = ({ filter, handleTertiaryValueToggle }) => filter.values.map((value) => (
+  <Button
     key={value.value}
-    button
-    onClick={() => handleSecondaryToggle(value)}
-    disabled={filter.required && value.selected && filter.values.filter((a) => a.selected).length === 1}
+    onClick={() => handleTertiaryValueToggle(value)}
   >
-    <ListItemIcon>
-      <Checkbox
-        color="primary"
-        edge="start"
-        checked={value.selected}
-        tabIndex={-1}
-        inputProps={{ 'aria-labelledby': labelId }}
-      />
-    </ListItemIcon>
-    <ListItemText id={labelId}>{filter.getValueDisplay(value)}</ListItemText>
-  </ListItem>
-);
+    {filter.getValueDisplay(value)}
+  </Button>
+));
 
 const defaultFilter = {
   getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`,
@@ -209,4 +222,6 @@ function useFilterContext() {
   return useContext(FilterContext);
 }
 
-export { FilterProvider, defaultFilter, useFilterContext };
+export {
+  FilterProvider, defaultFilter, getDateEntry, useFilterContext,
+};

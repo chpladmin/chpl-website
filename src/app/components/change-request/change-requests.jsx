@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
-} from '@material-ui/core';
-import {
   arrayOf, func, object, string,
 } from 'prop-types';
 import Moment from 'react-moment';
@@ -12,21 +9,12 @@ import ChplChangeRequestsView from './change-requests-view';
 import {
   useFetchChangeRequestTypes,
 } from 'api/change-requests';
-import { FilterProvider, defaultFilter } from 'components/filter';
+import { FilterProvider, defaultFilter, getDateEntry } from 'components/filter';
 import { FlagContext } from 'shared/contexts';
 
 const analytics = {
   category: 'Change Requests',
 };
-
-const getDateEntry = ({ filter, value, handleTertiaryValueToggle }) => (
-  <Button
-    key={value.value}
-    onClick={() => handleTertiaryValueToggle(value)}
-  >
-    {filter.getValueDisplay(value)}
-  </Button>
-);
 
 const staticFilters = [{
   ...defaultFilter,

@@ -1,23 +1,11 @@
 import React from 'react';
-import {
-  Button,
-} from '@material-ui/core';
 import Moment from 'react-moment';
 
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
 import ApiWrapper from 'api/api-wrapper';
-import { FilterProvider, defaultFilter } from 'components/filter';
+import { FilterProvider, defaultFilter, getDateEntry } from 'components/filter';
 import { UserWrapper } from 'components/login';
-
-const getDateEntry = ({ filter, value, handleTertiaryValueToggle }) => (
-  <Button
-    key={value.value}
-    onClick={() => handleTertiaryValueToggle(value)}
-  >
-    {filter.getValueDisplay(value)}
-  </Button>
-);
 
 function ChplApiDocumentationCollectionPage() {
   const analytics = {
