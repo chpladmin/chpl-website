@@ -38,6 +38,7 @@ const useStyles = makeStyles(() => ({
   buttonCardFocused: {
     boxShadow: '0px 0px 16px 4px #337ab750',
     fontWeight: '600',
+    backgroundColor: '#f9f9f9',
   },
   buttonContent: {
     display: 'flex',
@@ -49,7 +50,7 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gap: '32px',
-    padding: '32px',
+    padding: '32px 0',
     alignItems: 'start',
   },
   developerSubContainer: {
@@ -223,7 +224,7 @@ function ChplConfirmDeveloper(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
+      <Container maxWidth="md">
         <div className={classes.developerConfirm}>
           <div className={classes.developerSubContainer}>
             <Button
