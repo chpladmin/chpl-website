@@ -38,10 +38,10 @@ const csvOptions = {
   headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
     { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developer' },
-    { headerName: 'Product', objectKey: 'product' },
-    { headerName: 'Version', objectKey: 'version' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatus' },
+    { headerName: 'Developer', objectKey: 'developerName' },
+    { headerName: 'Product', objectKey: 'productName' },
+    { headerName: 'Version', objectKey: 'versionName' },
+    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
     { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl' },
     { headerName: 'Real World Testing Results URL', objectKey: 'friendlyRwtResultsUrl' },
   ],
@@ -123,6 +123,7 @@ function ChplRealWorldTestingCollectionView(props) {
     analytics,
   } = props;
   const csvExporter = new ExportToCsv(csvOptions);
+  const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
@@ -144,6 +145,19 @@ function ChplRealWorldTestingCollectionView(props) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
+  useEffect(() => {
+    if (isLoading || !data.results) { return; }
+    setListings(data.results.map((listing) => ({
+      ...listing,
+      fullEdition: `${listing.edition.year}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
+      developerName: listing.developer.name,
+      productName: listing.product.name,
+      versionName: listing.version.name,
+      certificationStatusName: listing.certificationStatus.name,
+    })));
+  }, [data?.results, isLoading]);
+
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'chpl_id', text: 'CHPL ID', sortable: true },
@@ -156,15 +170,9 @@ function ChplRealWorldTestingCollectionView(props) {
     { text: 'Real World Testing Results URL' },
   ];
 
-  const prepareCsvData = (listings) => listings.map((listing) => ({
-    ...listing,
-    fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
-    friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
-  }));
-
   const downloadRealWorldTesting = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: data.results.length });
-    csvExporter.generateCsv(prepareCsvData(data.results));
+    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
+    csvExporter.generateCsv(listings);
   };
 
   const handleTableSort = (event, property) => {
@@ -231,13 +239,13 @@ function ChplRealWorldTestingCollectionView(props) {
         && (
           <>Loading</>
         )}
-      { !isLoading && data?.results.length === 0
+      { !isLoading && listings.length === 0
         && (
           <Typography className={classes.noResultsContainer}>
             No results found
           </Typography>
         )}
-      { !isLoading && data?.results.length > 0
+      { !isLoading && listings.length > 0
        && (
        <>
          <div className={classes.tableResultsHeaderContainer}>
@@ -257,10 +265,10 @@ function ChplRealWorldTestingCollectionView(props) {
              >
                Download
                {' '}
-               { data.results.length }
+               { listings.length }
                {' '}
                Result
-               { data.results.length !== 1 ? 's' : '' }
+               { listings.length !== 1 ? 's' : '' }
                <GetAppIcon className={classes.iconSpacing} />
              </Button>
            </ButtonGroup>
@@ -278,7 +286,7 @@ function ChplRealWorldTestingCollectionView(props) {
                stickyHeader
              />
              <TableBody>
-               {data.results
+               {listings
                  .map((item) => (
                    <TableRow key={item.id}>
                      <TableCell className={classes.stickyColumn}>
@@ -292,23 +300,19 @@ function ChplRealWorldTestingCollectionView(props) {
                          />
                        </strong>
                      </TableCell>
-                     <TableCell>
-                       {item.edition}
-                       {' '}
-                       {item.curesUpdate ? 'Cures Update' : '' }
-                     </TableCell>
+                     <TableCell>{item.fullEdition}</TableCell>
                      <TableCell>
                        <ChplLink
-                         href={`#/organizations/developers/${item.developerId}`}
-                         text={item.developer}
-                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer }}
+                         href={`#/organizations/developers/${item.developer.id}`}
+                         text={item.developer.name}
+                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
                          external={false}
-                         router={{ sref: 'organizations.developers.developer', options: { developerId: item.developerId } }}
+                         router={{ sref: 'organizations.developers.developer', options: { developerId: item.developer.id } }}
                        />
                      </TableCell>
-                     <TableCell>{item.product}</TableCell>
-                     <TableCell>{item.version}</TableCell>
-                     <TableCell>{item.certificationStatus}</TableCell>
+                     <TableCell>{item.product.name}</TableCell>
+                     <TableCell>{item.version.name}</TableCell>
+                     <TableCell>{item.certificationStatus.name}</TableCell>
                      <TableCell className={classes.linkWrap}>
                        {item.rwtPlansUrl
                           && (
