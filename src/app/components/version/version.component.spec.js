@@ -1,17 +1,30 @@
 (() => {
-  'use strict';
-
   describe('the Version component', () => {
-    var $compile, $log, authService, ctrl, el, mock, scope;
+    let $compile;
+    let $log;
+    let authService;
+    let ctrl;
+    let el;
+    let scope;
 
-    mock = {
+    const mock = {
       developer: {
-        developerId: 636, developerCode: '1635', name: 'Hyland Software,  Inc.', website: 'https://www.onbase.com/',
-        address: {addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA'},
-        contact: {contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor'},
-        lastModifiedDate: null, deleted: null, transparencyAttestations: [],
-        statusEvents: [{id: null, developerId: 636, status: {id: 1, status: 'Active'}, statusDate: 1459484375763, reason: null}],
-        status: {id: 1, status: 'Active'},
+        developerId: 636,
+        developerCode: '1635',
+        name: 'Hyland Software,  Inc.',
+        website: 'https://www.onbase.com/',
+        address: {
+          addressId: 177, line1: '28500 Clemens Road', line2: null, city: 'Westlake', state: 'OH', zipcode: '44145', country: 'USA',
+        },
+        contact: {
+          contactId: 612, fullName: 'Kress Van Voorhis', friendlyName: null, email: 'kc.van.voorhis@onbase.com', phoneNumber: '440.788.5347', title: 'Customer Advisor',
+        },
+        lastModifiedDate: null,
+        deleted: null,
+        statusEvents: [{
+          id: null, developerId: 636, status: { id: 1, status: 'Active' }, statusDate: 1459484375763, reason: null,
+        }],
+        status: { id: 1, status: 'Active' },
       },
       version: {
         versionId: 636, version: 'v1.', lastModifiedDate: null,
@@ -19,11 +32,11 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.components', $provide => {
-        $provide.decorator('authService', $delegate => {
-          $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', ($provide) => {
+        $provide.decorator('authService', ($delegate) => ({
+          ...$delegate,
+          hasAnyRole: jasmine.createSpy('hasAnyRole'),
+        }));
       });
 
       inject((_$compile_, _$log_, $rootScope, _authService_) => {
@@ -57,7 +70,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -83,13 +96,13 @@
 
         it('shouldn\'t change anything that shouldn\'t change', () => {
           // save old state
-          let version = ctrl.version;
-          let developer = ctrl.developer;
+          const { version } = ctrl;
+          const { developer } = ctrl;
 
           // make changes
           ctrl.$onChanges({});
 
-          //assert
+          // assert
           expect(version).toBe(ctrl.version);
           expect(developer).toBe(ctrl.developer);
         });
@@ -98,10 +111,10 @@
       describe('when figuring out what it can do', () => {
         it('should allow edit based on the container, the developer status, and the user\'s role', () => {
           expect(ctrl.can('edit')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ONC') > -1)); // user has ROLE_ONC
           ctrl.developer.status.status = 'not active';
           expect(ctrl.can('edit')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ACB') > -1)); // user has ROLE_ACB
           expect(ctrl.can('edit')).toBe(false);
           ctrl.developer.status.status = 'Active';
           ctrl.canEdit = false;
@@ -119,9 +132,9 @@
 
         it('should allow split based on the container, the developer status, and the user\'s role', () => {
           expect(ctrl.can('split')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ONC') > -1 ? true : false); // user has ROLE_ONC
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ONC') > -1)); // user has ROLE_ONC
           expect(ctrl.can('split')).toBe(true);
-          authService.hasAnyRole.and.callFake(roles => roles.indexOf('ROLE_ACB') > -1 ? true : false); // user has ROLE_ACB
+          authService.hasAnyRole.and.callFake((roles) => (roles.indexOf('ROLE_ACB') > -1)); // user has ROLE_ACB
           expect(ctrl.can('split')).toBe(true);
           ctrl.developer.status.status = 'not active';
           expect(ctrl.can('split')).toBe(false);

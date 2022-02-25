@@ -1,36 +1,41 @@
 (() => {
-  'use strict';
-
   describe('the Confirm Listing component', () => {
-    var $compile, $log, $q, Mock, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let Mock;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {};
-    mock.listing = {
-      developer: { developerId: 1 },
-      certificationEdition: { name: 2015 },
+    const mock = {
+      listing: {
+        developer: { developerId: 1 },
+        certificationEdition: { name: 2015 },
+      },
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.administration', 'chpl.mock', $provide => {
-        $provide.decorator('networkService', $delegate => {
-          $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
-          $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
-          $delegate.getAtls = jasmine.createSpy('getAtls');
-          $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
-          $delegate.getMeasureTypes = jasmine.createSpy('getMeasureTypes');
-          $delegate.getMeasures = jasmine.createSpy('getMeasures');
-          $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
-          $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
-          $delegate.getTargetedUsers = jasmine.createSpy('getTargetedUsers');
-          $delegate.getTestData = jasmine.createSpy('getTestData');
-          $delegate.getTestFunctionality = jasmine.createSpy('getTestFunctionality');
-          $delegate.getTestProcedures = jasmine.createSpy('getTestProcedures');
-          $delegate.getTestStandards = jasmine.createSpy('getTestStandards');
-          $delegate.getUcdProcesses = jasmine.createSpy('getUcdProcesses');
-          $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
-
-          return $delegate;
-        });
+      angular.mock.module('chpl.administration', 'chpl.mock', ($provide) => {
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          confirmPendingCp: jasmine.createSpy('confirmPendingCp'),
+          getAccessibilityStandards: jasmine.createSpy('getAccessibilityStandards'),
+          getAtls: jasmine.createSpy('getAtls'),
+          getDeveloper: jasmine.createSpy('getDeveloper'),
+          getMeasureTypes: jasmine.createSpy('getMeasureTypes'),
+          getMeasures: jasmine.createSpy('getMeasures'),
+          getQmsStandards: jasmine.createSpy('getQmsStandards'),
+          getSearchOptions: jasmine.createSpy('getSearchOptions'),
+          getTargetedUsers: jasmine.createSpy('getTargetedUsers'),
+          getTestData: jasmine.createSpy('getTestData'),
+          getTestFunctionality: jasmine.createSpy('getTestFunctionality'),
+          getTestProcedures: jasmine.createSpy('getTestProcedures'),
+          getTestStandards: jasmine.createSpy('getTestStandards'),
+          getUcdProcesses: jasmine.createSpy('getUcdProcesses'),
+          rejectPendingCp: jasmine.createSpy('rejectPendingCp'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) => {
@@ -68,7 +73,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -98,56 +103,56 @@
         it('should close the modal if rejection is successful', () => {
           ctrl.reject();
           scope.$digest();
-          expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 'rejected'});
+          expect(Mock.modalInstance.close).toHaveBeenCalledWith({ status: 'rejected' });
         });
 
         it('should not dismiss the modal if confirmation fails', () => {
-          networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
+          networkService.confirmPendingCp.and.returnValue($q.reject({ data: { errorMessages: [] } }));
           ctrl.confirm();
           scope.$digest();
           expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
         });
 
         it('should not dismiss the modal if rejection fails', () => {
-          networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
+          networkService.rejectPendingCp.and.returnValue($q.reject({ data: { errorMessages: [] } }));
           ctrl.reject();
           scope.$digest();
           expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
         });
 
         it('should have error messages if confirmation fails', () => {
-          networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+          networkService.confirmPendingCp.and.returnValue($q.reject({ data: { errorMessages: [1, 2] } }));
           ctrl.confirm();
           scope.$digest();
-          expect(ctrl.errorMessages).toEqual([1,2]);
+          expect(ctrl.errorMessages).toEqual([1, 2]);
         });
 
         it('should have error messages if rejection fails', () => {
-          networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+          networkService.rejectPendingCp.and.returnValue($q.reject({ data: { errorMessages: [1, 2] } }));
           ctrl.reject();
           scope.$digest();
-          expect(ctrl.errorMessages).toEqual([1,2]);
+          expect(ctrl.errorMessages).toEqual([1, 2]);
         });
 
         it('should dismiss the modal with the contact if the pending listing was already resolved on confirmation', () => {
-          var contact = {name: 'person'};
-          networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+          const contact = { name: 'person' };
+          networkService.confirmPendingCp.and.returnValue($q.reject({ data: { errorMessages: [1, 2], contact, objectId: 1 } }));
           ctrl.confirm();
           scope.$digest();
           expect(Mock.modalInstance.close).toHaveBeenCalledWith({
-            contact: contact,
+            contact,
             objectId: 1,
             status: 'resolved',
           });
         });
 
         it('should dismiss the modal with the contact if the pending listing was already resolved on rejection', () => {
-          var contact = {name: 'person'};
-          networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+          const contact = { name: 'person' };
+          networkService.rejectPendingCp.and.returnValue($q.reject({ data: { errorMessages: [1, 2], contact, objectId: 1 } }));
           ctrl.reject();
           scope.$digest();
           expect(Mock.modalInstance.close).toHaveBeenCalledWith({
-            contact: contact,
+            contact,
             objectId: 1,
             status: 'resolved',
           });
@@ -171,11 +176,6 @@
               email: 'abc@abcdefg.com',
               phoneNumber: '999-999-9999',
             },
-            transparencyAttestations: [{
-              acbId: 3,
-              acbName: 'Drummond Group',
-              attestation: {transparencyAttestation: 'Affirmative', removed: true},
-            }],
           };
           ctrl.cp.developer.developerId = ctrl.developer.developerId;
           ctrl.cp.certifyingBody = {
@@ -187,7 +187,7 @@
 
         describe('with respect to system developer info', () => {
           describe('that is missing', () => {
-            function testMissingData (developerObj, propToRemove) {
+            function testMissingData(developerObj, propToRemove) {
               expect(developerObj[propToRemove]).toBeTruthy();
               expect(ctrl.isDisabled()).toBe(false);
 
@@ -200,46 +200,46 @@
 
             const shouldDisableNextButton = 'then it should disable the next button';
 
-            it('developer name ' + shouldDisableNextButton, () => {
+            it(`developer name ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer, 'name');
             });
 
-            it('developer website ' + shouldDisableNextButton, () => {
+            it(`developer website ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer, 'website');
             });
 
-            it('contact full name ' + shouldDisableNextButton, () => {
+            it(`contact full name ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer.contact, 'fullName');
             });
 
-            it('contact email ' + shouldDisableNextButton, () => {
+            it(`contact email ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer.contact, 'email');
             });
 
-            it('contact phone number ' + shouldDisableNextButton, () => {
+            it(`contact phone number ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer.contact, 'phoneNumber');
             });
 
-            it('address line1 ' + shouldDisableNextButton, () => {
+            it(`address line1 ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer.address, 'line1');
             });
 
-            it('address city ' + shouldDisableNextButton, () => {
+            it(`address city ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer.address, 'city');
             });
 
-            it('address state ' + shouldDisableNextButton, () => {
+            it(`address state ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer.address, 'state');
             });
 
-            it('address zipcode ' + shouldDisableNextButton, () => {
+            it(`address zipcode ${shouldDisableNextButton}`, () => {
               testMissingData(ctrl.developer.address, 'zipcode');
             });
           });
 
           const shouldEnableNextButton = 'should enable the next button';
 
-          it('has all contact info then it ' + shouldEnableNextButton, () => {
+          it(`has all contact info then it ${shouldEnableNextButton}`, () => {
             expect(ctrl.developer.name).toBeTruthy();
             expect(ctrl.developer.website).toBeTruthy();
             expect(ctrl.developer.contact.fullName).toBeTruthy();
