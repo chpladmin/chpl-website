@@ -1,38 +1,40 @@
-export const DevelopersMergeComponent = {
+const DevelopersMergeComponent = {
   templateUrl: 'chpl.organizations/developers/developer/merge.html',
   bindings: {
     developer: '<',
     developers: '<',
   },
   controller: class DevelopersMergeController {
-    constructor ($log, $state, authService, networkService, toaster) {
+    constructor($log, $state, authService, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.$state = $state;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
       }
       if (changes.developers && changes.developers.currentValue) {
         this.developers = changes.developers.currentValue.developers
-          .filter(d => !d.deleted)
-          .map(d => {
-            d.selected = false;
-            return d;
-          })
-          .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+          .filter((d) => !d.deleted)
+          .map((d) => ({
+            ...d,
+            selected: false,
+          }))
+          .sort((a, b) => (a.name < b.name ? -1 : 1));
       }
       if (this.developer && this.developers) {
-        this.developers = this.developers.filter(d => d.developerId !== this.developer.developerId);
+        this.developers = this.developers.filter((d) => d.developerId !== this.developer.developerId);
       }
     }
 
-    cancel () {
+    cancel() {
       this.$state.go('organizations.developers.developer', {
         developerId: this.developer.developerId,
       }, {
@@ -40,26 +42,38 @@ export const DevelopersMergeComponent = {
       });
     }
 
-    merge (developer) {
-      let mergeDeveloperObject = {
-        developer: developer,
-        developerIds: this.selectedDevelopers.map(d => d.developerId),
+    handleDispatch(action, data) {
+      switch (action) {
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'save':
+          this.merge(data);
+          break;
+          // no default
+      }
+    }
+
+    merge(developer) {
+      const mergeDeveloperObject = {
+        developer,
+        developerIds: this.selectedDevelopers.map((d) => d.developerId),
       };
       mergeDeveloperObject.developerIds.push(this.developer.developerId);
-      let that = this;
+      const that = this;
       this.networkService.mergeDevelopers(mergeDeveloperObject)
-        .then(response => {
+        .then((response) => {
           if (!response.status || response.status === 200) {
             that.toaster.pop({
               type: 'success',
               title: 'Merge submitted',
-              body: 'Your action has been submitted and you\'ll get an email at ' + response.job.jobDataMap.user.email + ' when it\'s done',
+              body: `Your action has been submitted and you'll get an email at ${response.job.jobDataMap.user.email} when it's done`,
             });
             that.$state.go('organizations.developers', {}, {
               reload: true,
             });
           }
-        }, error => {
+        }, (error) => {
           that.toaster.pop({
             type: 'error',
             title: 'Merge error',
@@ -68,13 +82,13 @@ export const DevelopersMergeComponent = {
         });
     }
 
-    selectDeveloper (developer) {
+    selectDeveloper(developer) {
       this.developers
-        .filter(d => d.developerId === developer.developerId)
-        .forEach(d => d.selected = !d.selected);
+        .filter((d) => d.developerId === developer.developerId)
+        .forEach((d) => d.selected = !d.selected);
       this.selectedDevelopers = this.developers
-        .filter(d => d.selected)
-        .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+        .filter((d) => d.selected)
+        .sort((a, b) => (a.name < b.name ? -1 : 1));
       this.selectedToMerge = null;
     }
   },
@@ -83,3 +97,5 @@ export const DevelopersMergeComponent = {
 angular
   .module('chpl.organizations')
   .component('chplDevelopersMerge', DevelopersMergeComponent);
+
+export default DevelopersMergeComponent;

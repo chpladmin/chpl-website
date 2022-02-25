@@ -22,6 +22,7 @@
 
     beforeEach(() => {
       angular.mock.module('chpl.organizations', $provide => {
+        $provide.factory('chplDeveloperBridgeDirective', () => ({}));
         $provide.decorator('networkService', $delegate => {
           $delegate.getAcbs = jasmine.createSpy('getAcbs');
           $delegate.splitDeveloper = jasmine.createSpy('splitDeveloper');

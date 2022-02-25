@@ -14,15 +14,8 @@ const DevelopersEditComponent = {
       this.networkService = networkService;
       this.toaster = toaster;
       this.backup = {};
-      this.activeAcbs = [];
       this.closeConfirmation = this.closeConfirmation.bind(this);
-    }
-
-    $onInit() {
-      const that = this;
-      this.networkService.getAcbs(true).then((response) => {
-        that.allowedAcbs = response.acbs;
-      });
+      this.handleDispatch = this.handleDispatch.bind(this);
     }
 
     $onChanges(changes) {
@@ -43,6 +36,18 @@ const DevelopersEditComponent = {
     closeConfirmation() {
       this.action = undefined;
       this.$state.go('^', undefined, { reload: true });
+    }
+
+    handleDispatch(action, data) {
+      switch (action) {
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'save':
+          this.save(data);
+          break;
+          // no default
+      }
     }
 
     save(developer) {
