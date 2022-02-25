@@ -349,6 +349,13 @@ const theme = createTheme({
         color: '#000',
       },
     },
+    MuiTimelineItem: {
+      missingOppositeContent: {
+        '&:before': {
+          display: 'none',
+        },
+      },
+    },
     MuiOutlinedInput: {
       input: {
         paddingTop: '18.5px',
