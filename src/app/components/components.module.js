@@ -5,6 +5,7 @@ import { ChplApiKeyConfirm } from './api-key';
 import { ChplChangeRequestsWrapper } from './change-request';
 import { ChplAttestationCreateWrapper, ChplAttestationsViewWrapper } from './attestation';
 import ChplCronGen from './cron-gen';
+import { ChplDeveloper } from './developer';
 import { ChplFuzzyType } from './fuzzy-type';
 import {
   ChplConfirmDeveloper,
@@ -72,6 +73,7 @@ angular
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
   .component('chplCronGenBridge', reactToAngularComponent(ChplCronGen))
+  .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))

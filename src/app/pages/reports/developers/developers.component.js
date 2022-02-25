@@ -124,17 +124,20 @@ export const ReportsDevelopersComponent = {
             activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
           }
 
-          //Old format where transp attest is just string vs. new format where it is an object
-          if (this.isTransparencyAttestationObjectFormat(item.newData.transparencyAttestationMappings)) {
-            let taChanges = this.compareTransparencyAttestations(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings);
-            if (taChanges && taChanges.length > 0) {
-              activity.details.push(taChanges.join(''));
-            }
-          } else {
-            var transKeys = [{ key: 'transparencyAttestation', display: 'Transparency Attestation' }];
-            var trans = this.ReportService.compareArray(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings, transKeys, 'acbName', true);
-            for (j = 0; j < trans.length; j++) {
-              activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
+          // post OCD-3824 where Transparency Attestation is gone
+          if (item.newData.transparencyAttestationMappings) {
+            //Old format where transp attest is just string vs. new format where it is an object
+            if (this.isTransparencyAttestationObjectFormat(item.newData.transparencyAttestationMappings)) {
+              let taChanges = this.compareTransparencyAttestations(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings);
+              if (taChanges && taChanges.length > 0) {
+                activity.details.push(taChanges.join(''));
+              }
+            } else {
+              var transKeys = [{ key: 'transparencyAttestation', display: 'Transparency Attestation' }];
+              var trans = this.ReportService.compareArray(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings, transKeys, 'acbName', true);
+              for (j = 0; j < trans.length; j++) {
+                activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
+              }
             }
           }
 
