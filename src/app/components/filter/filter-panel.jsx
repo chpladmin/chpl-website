@@ -142,6 +142,15 @@ function ChplFilterPanel() {
     filterContext.dispatch('toggle', activeCategory, value);
   };
 
+  const handleSecondaryUpdate = (filter, value) => {
+    filterContext.dispatch('update', filter, {
+      ...value,
+      data: {
+        date: value.data.date
+      },
+    });
+  };
+
   const handleTertiaryValueToggle = (value) => {
     if (activeValue === value) {
       setActiveValueKey('');
@@ -292,7 +301,7 @@ function ChplFilterPanel() {
                   { activeCategory.getValueEntry({
                     filter: activeCategory,
                     handleSecondaryToggle,
-                    handleTertiaryValueToggle,
+                    handleSecondaryUpdate,
                   })}
                 </div>
               </List>

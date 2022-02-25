@@ -18,6 +18,7 @@ import {
   string,
 } from 'prop-types';
 
+import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 
 const FilterContext = createContext();
@@ -47,14 +48,19 @@ const getDefaultValueEntry = ({
   );
 });
 
-const getDateEntry = ({ filter, handleTertiaryValueToggle }) => filter.values.map((value) => (
-  <Button
-    key={value.value}
-    onClick={() => handleTertiaryValueToggle(value)}
-  >
-    {filter.getValueDisplay(value)}
-  </Button>
-));
+const getDateEntry = ({ filter, handleSecondaryUpdate }) => filter.values
+      .sort((a, b) => a.value > b.value ? -1 : 1)
+      .map((value) => (
+        <React.Fragment key={value.value}>
+          {filter.getValueDisplay(value)}
+          {value.data.date}
+          <ChplTextField
+            type="datetime-local"
+            value={value.data.date}
+            onChange={() => handleSecondaryUpdate(filter, value)}
+          />
+        </React.Fragment>
+      ));
 
 const defaultFilter = {
   getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`,
@@ -168,6 +174,7 @@ function FilterProvider(props) {
         toggleFilter(filters, category, value, setFilters);
         break;
       case 'update':
+        console.log(filters, category, value);
         updateFilter(filters, category, value, setFilters);
         break;
       default:
