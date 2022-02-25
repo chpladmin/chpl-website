@@ -1,13 +1,16 @@
 (() => {
-  'use strict';
-
   describe('the developer inspection component', () => {
-    let $compile, $log, $q, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {
+    const mock = {
       listing: {
-        developer: { developerId: 1},
-        transparencyAttestation: 'Affirmative',
+        developer: { developerId: 1 },
         certifyingBody: {
           code: '04',
           name: 'Drummond Group',
@@ -30,12 +33,11 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.components', $provide => {
-        $provide.decorator('networkService', $delegate => {
-          $delegate.updateDeveloper = jasmine.createSpy('updateDeveloper');
-
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', ($provide) => {
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          updateDeveloper: jasmine.createSpy('updateDeveloper'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
@@ -59,7 +61,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
