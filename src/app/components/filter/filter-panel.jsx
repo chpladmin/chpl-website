@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
-  Checkbox,
   List,
   ListSubheader,
   Popover,
@@ -13,7 +12,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { useFilterContext } from './filter-context';
 
-import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
@@ -28,7 +26,7 @@ const useStyles = makeStyles({
     padding: '16px',
     rowGap: '16px',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr',
     },
   },
   filterBold: {
@@ -80,9 +78,7 @@ function ChplFilterPanel() {
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
-  const [activeValue, setActiveValue] = useState(null);
   const [activeCategoryKey, setActiveCategoryKey] = useState('');
-  const [activeValueKey, setActiveValueKey] = useState('');
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
 
@@ -99,12 +95,6 @@ function ChplFilterPanel() {
     setActiveCategory(filters.find((f) => f.key === activeCategoryKey));
   }, [filters, activeCategoryKey]);
 
-  useEffect(() => {
-    if (activeCategory?.values) {
-      setActiveValue(activeCategory.values.find((v) => v.value === activeValueKey));
-    }
-  }, [filters, activeCategory, activeValueKey]);
-
   const handleClick = (e) => {
     if (filterContext.analytics) {
       $analytics.eventTrack('Open Advanced Search', { category: filterContext.analytics.category });
@@ -117,7 +107,6 @@ function ChplFilterPanel() {
     setAnchor(null);
     setOpen(false);
     setActiveCategoryKey('');
-    setActiveValueKey('');
   };
 
   const handleAction = (action) => {
@@ -135,45 +124,17 @@ function ChplFilterPanel() {
     }
   };
 
-  const handleSecondaryToggle = (value) => {
+  const handleFilterToggle = (value) => {
     if (filterContext.analytics) {
       $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${activeCategory.display}: ${activeCategory.getValueDisplay(value)}` });
     }
     filterContext.dispatch('toggle', activeCategory, value);
   };
 
-  const handleSecondaryUpdate = (filter, value) => {
+  const handleFilterUpdate = (event, filter, value) => {
     filterContext.dispatch('update', filter, {
       ...value,
-      data: {
-        date: value.data.date
-      },
-    });
-  };
-
-  const handleTertiaryValueToggle = (value) => {
-    if (activeValue === value) {
-      setActiveValueKey('');
-      setActiveValue(null);
-    } else {
-      setActiveValueKey(value.value);
-      setActiveValue(value);
-    }
-  };
-
-  const handleTertiaryToggle = (event) => {
-    filterContext.dispatch('toggle', activeCategory, {
-      ...activeValue,
-      selected: event.target.checked,
-    });
-  };
-
-  const handleTertiaryUpdate = (event) => {
-    filterContext.dispatch('update', activeCategory, {
-      ...activeValue,
-      data: {
-        date: event.target.value,
-      },
+      selected: event.target.value,
     });
   };
 
@@ -300,28 +261,13 @@ function ChplFilterPanel() {
                 <div className={classes.filterGroupTwoContainer}>
                   { activeCategory.getValueEntry({
                     filter: activeCategory,
-                    handleSecondaryToggle,
-                    handleSecondaryUpdate,
+                    handleFilterToggle,
+                    handleFilterUpdate,
                   })}
                 </div>
               </List>
             )}
           </div>
-          { activeValue
-            && (
-              <div className={classes.filterGroupThreeContainer}>
-                { activeCategory.getValueDisplay(activeValue) }
-                <Checkbox
-                  checked={activeValue.selected}
-                  onChange={handleTertiaryToggle}
-                />
-                <ChplTextField
-                  type="datetime-local"
-                  value={activeValue.data.date}
-                  onChange={handleTertiaryUpdate}
-                />
-              </div>
-            )}
         </div>
       </Popover>
     </>

@@ -1,10 +1,11 @@
 import React from 'react';
-import Moment from 'react-moment';
 
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
 import ApiWrapper from 'api/api-wrapper';
-import { FilterProvider, defaultFilter, getDateEntry } from 'components/filter';
+import {
+  FilterProvider, defaultFilter, getDateDisplay, getDateEntry,
+} from 'components/filter';
 import { UserWrapper } from 'components/login';
 
 function ChplApiDocumentationCollectionPage() {
@@ -39,24 +40,14 @@ function ChplApiDocumentationCollectionPage() {
     key: 'certificationDate',
     display: 'Certification Date',
     values: [
-      { value: 'Before', data: { date: Date.now() }, default: true },
-      { value: 'After', data: { date: (new Date('2020-06-01')).getTime() }, default: true },
+      { value: 'Before', default: new Date().toISOString().slice(0, 10) },
+      { value: 'After', default: '2020-06-01' },
     ],
     getQuery: (value) => value.values
       .sort((a, b) => (a.value < b.value ? -1 : 1))
-      .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${new Date(v.data.date).toISOString().slice(0, 10)}`)
+      .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${v.selected}`)
       .join('&'),
-    getValueDisplay: (value) => (
-      <>
-        {value.value}
-        { value.data.date && (
-          <>
-            {': '}
-            <Moment fromNow>{value.data.date}</Moment>
-          </>
-        )}
-      </>
-    ),
+    getValueDisplay: getDateDisplay,
     getValueEntry: getDateEntry,
   }];
 
