@@ -1,5 +1,11 @@
 import React from 'react';
 import {
+  Checkbox,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core';
+import {
   cleanup, render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -9,6 +15,35 @@ import userEvent from '@testing-library/user-event';
 import ChplFilterPanel from './filter-panel';
 
 import * as angularReactHelper from 'services/angular-react-helper';
+
+// this should be imported, but I don't know why it can't be
+const getDefaultValueEntry = ({ filter, handleFilterToggle }) => filter.values
+  .map((value) => {
+    const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
+    return (
+      <ListItem
+        key={value.value}
+        button
+        onClick={() => handleFilterToggle(value)}
+      >
+        <ListItemIcon>
+          <Checkbox
+            checked={value.selected}
+            tabIndex={-1}
+            inputProps={{ 'aria-labelledby': labelId }}
+          />
+        </ListItemIcon>
+        <ListItemText id={labelId}>{filter.getValueDisplay(value)}</ListItemText>
+      </ListItem>
+    );
+  });
+
+const defaultFilter = { // this should be imported, but I don't know why it can't be
+  getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`,
+  getFilterDisplay: (filter) => filter.display,
+  getValueDisplay: (value) => value.display,
+  getValueEntry: getDefaultValueEntry,
+};
 
 const $analyticsMock = {
   eventTrack: jest.fn(),
@@ -27,6 +62,7 @@ describe('the ChplFilterPanel component', () => {
   beforeEach(() => {
     mockValue = {
       filters: [{
+        ...defaultFilter,
         key: 'key',
         display: 'display',
         values: [{
