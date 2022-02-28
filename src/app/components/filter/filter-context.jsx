@@ -211,6 +211,7 @@ function FilterProvider(props) {
 
   const queryString = () => filters
     .concat({
+      ...defaultFilter,
       key: 'searchTerm',
       values: [{ value: searchTerm, selected: searchTerm }],
     })
