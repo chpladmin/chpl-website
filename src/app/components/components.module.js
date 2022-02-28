@@ -9,7 +9,6 @@ import { ChplDeveloper } from './developer';
 import { ChplFuzzyType } from './fuzzy-type';
 import {
   ChplConfirmDeveloper,
-  //  ChplConfirmListings,
   ChplConfirmListingsWrapper,
   ChplConfirmProduct,
   ChplConfirmProgress,
