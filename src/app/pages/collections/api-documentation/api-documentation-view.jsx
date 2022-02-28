@@ -286,12 +286,13 @@ function ChplApiDocumentationCollectionView(props) {
               <Typography variant="body2">
                 Last updated
                 {' '}
-                <Moment fromNow={documentation.associatedDate} />
-                created
-                <Moment fromNow={documentation.creationDate} />
-                modified
-                <Moment fromNow={documentation.lastModifiedDate} />
-                (these should all be two-ish years ago...)
+                <Moment
+                  fromNow
+                  withTitle
+                  titleFormat="DD MMM yyyy"
+                >
+                  {documentation.associatedDate}
+                </Moment>
               </Typography>
             )}
         </div>

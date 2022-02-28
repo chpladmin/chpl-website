@@ -53,6 +53,7 @@ const getDateDisplay = (value) => (
   <>
     {value.value}
     :
+    {' '}
     { value.selected
       ? (
         <Moment
