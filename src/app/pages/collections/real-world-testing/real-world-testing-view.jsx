@@ -149,7 +149,7 @@ function ChplRealWorldTestingCollectionView(props) {
     if (isLoading || !data.results) { return; }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.year}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
       friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
       developerName: listing.developer.name,
       productName: listing.product.name,
