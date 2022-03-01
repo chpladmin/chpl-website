@@ -173,7 +173,7 @@ function ChplAttestationsView(props) {
                     disabled={isSubmitting}
                     onClick={createAttestationException}
                   >
-                    Create
+                    Confirm
                   </Button>
                   <Button
                     color="primary"
