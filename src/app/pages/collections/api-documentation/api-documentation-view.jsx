@@ -337,7 +337,7 @@ function ChplApiDocumentationCollectionView(props) {
                color="secondary"
                variant="contained"
                fullWidth
-               id="download-real-world-testing"
+               id="download-filtered-listings"
                onClick={downloadApiDocumentation}
              >
                Download
