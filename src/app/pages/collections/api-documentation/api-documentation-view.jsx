@@ -179,6 +179,7 @@ function ChplApiDocumentationCollectionView(props) {
   } = props;
   const { SPLIT_SECONDARY } = Constants;
   const csvExporter = new ExportToCsv(csvOptions);
+  const [documentationDate, setDocumentationDate] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
@@ -196,6 +197,7 @@ function ChplApiDocumentationCollectionView(props) {
     query: filterContext.queryString(),
   });
   const { data: documentation } = useFetchApiDocumentationData();
+
   useEffect(() => {
     if (isLoading) { return; }
     setListings(data.results.map((listing) => ({
@@ -215,6 +217,11 @@ function ChplApiDocumentationCollectionView(props) {
   useEffect(() => {
     setDownloadLink(`${API}/files/api_documentation?api_key=${authService.getApiKey()}`);
   }, [API, authService]);
+
+  useEffect(() => {
+    if (!documentation?.associatedDate) { return; }
+    setDocumentationDate(documentation.associatedDate);
+  }, [documentation?.associatedDate]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
@@ -278,10 +285,11 @@ function ChplApiDocumentationCollectionView(props) {
           <ChplLink
             href={downloadLink}
             text="Download API Documentation Data"
+            id="download-api-documentation"
             analytics={{ event: 'Download API Documentation data', category: analytics.category }}
             external={false}
           />
-          { documentation?.associatedDate
+          { documentationDate
             && (
               <Typography variant="body2">
                 Last updated
@@ -291,7 +299,7 @@ function ChplApiDocumentationCollectionView(props) {
                   withTitle
                   titleFormat="DD MMM yyyy"
                 >
-                  {documentation.associatedDate}
+                  {documentationDate}
                 </Moment>
               </Typography>
             )}
