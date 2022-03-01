@@ -163,7 +163,7 @@ export const ReportsDevelopersComponent = {
 
             sortedEvents = this.$filter('orderBy')(statusEvents.added,'statusDate',true);
             for (j = 0; j < sortedEvents.length; j++) {
-              translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+              translatedEvents += '<li><strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
             }
             translatedEvents += '</ul></td>';
           }
@@ -172,7 +172,7 @@ export const ReportsDevelopersComponent = {
 
             sortedEvents = this.$filter('orderBy')(statusEvents.edited,'before.statusDate',true);
             for (j = 0; j < sortedEvents.length; j++) {
-              translatedEvents += '<li><strong>' + sortedEvents[j].before.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + sortedEvents[j].after.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
+              translatedEvents += '<li><strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
             }
             translatedEvents += '</ul></td>';
           }
@@ -181,7 +181,7 @@ export const ReportsDevelopersComponent = {
 
             sortedEvents = this.$filter('orderBy')(statusEvents.removed,'statusDate',true);
             for (j = 0; j < sortedEvents.length; j++) {
-              translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+              translatedEvents += '<li><strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
             }
             translatedEvents += '</ul></td>';
           }
