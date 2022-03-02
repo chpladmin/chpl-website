@@ -12,8 +12,8 @@ const useFetchAttestations = ({ developer }) => {
 
 const useFetchDevelopers = () => {
   const axios = useAxios();
-  return useQuery([`developers`], async () => {
-    const response = await axios.get(`/developers`);
+  return useQuery(['developers'], async () => {
+    const response = await axios.get('/developers');
     return response.data.developers;
   }, { keepPreviousData: true });
 };

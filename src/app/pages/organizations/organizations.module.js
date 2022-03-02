@@ -1,6 +1,6 @@
-import { reactToAngularComponent } from 'services/angular-react-helper';
-
 import { ChplDevelopersWrapper } from './developers';
+
+import { reactToAngularComponent } from 'services/angular-react-helper';
 
 angular
   .module('chpl.organizations', [

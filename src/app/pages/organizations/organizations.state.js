@@ -11,7 +11,6 @@ const states = [
     name: 'organizations.developers',
     url: '/developers',
     template: '<ui-view><chpl-developers-wrapper-bridge></chpl-developers-wrapper-bridge></ui-view>',
-    //component: 'chplDevelopersWrapperBridge',
     data: { title: 'CHPL Developers' },
   }, {
     name: 'organizations.developers.developer',

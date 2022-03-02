@@ -1,19 +1,15 @@
 import React from 'react';
-import {
-  arrayOf, func, object, string,
-} from 'prop-types';
+
+import ChplDevelopers from './developers';
 
 import { UserWrapper } from 'components/login';
 import ApiWrapper from 'api/api-wrapper';
 
-import ChplDevelopers from './developers';
-
-function ChplDevelopersWrapper(props) {
+function ChplDevelopersWrapper() {
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplDevelopers
-        />
+        <ChplDevelopers />
       </ApiWrapper>
     </UserWrapper>
   );
