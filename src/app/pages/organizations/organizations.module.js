@@ -1,4 +1,8 @@
-export default angular
+import { reactToAngularComponent } from 'services/angular-react-helper';
+
+import { ChplDevelopersWrapper } from './developers';
+
+angular
   .module('chpl.organizations', [
     'chpl.components',
     'chpl.services',
@@ -6,4 +10,5 @@ export default angular
     'toaster',
     'ui.bootstrap',
     'ui.router',
-  ]);
+  ])
+  .component('chplDevelopersWrapperBridge', reactToAngularComponent(ChplDevelopersWrapper));

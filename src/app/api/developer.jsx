@@ -10,6 +10,14 @@ const useFetchAttestations = ({ developer }) => {
   }, { keepPreviousData: true });
 };
 
+const useFetchDevelopers = () => {
+  const axios = useAxios();
+  return useQuery([`developers`], async () => {
+    const response = await axios.get(`/developers`);
+    return response.data.developers;
+  }, { keepPreviousData: true });
+};
+
 const useFetchPublicAttestations = ({ developer }) => {
   const axios = useAxios();
   return useQuery([`developer/${developer.developerId}/public-attestations`], async () => {
@@ -18,4 +26,4 @@ const useFetchPublicAttestations = ({ developer }) => {
   }, { keepPreviousData: true });
 };
 
-export { useFetchAttestations, useFetchPublicAttestations };
+export { useFetchAttestations, useFetchDevelopers, useFetchPublicAttestations };
