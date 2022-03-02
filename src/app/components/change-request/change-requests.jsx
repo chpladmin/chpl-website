@@ -91,7 +91,7 @@ function ChplChangeRequests(props) {
   }, [disallowedFilters]);
 
   useEffect(() => {
-    if (crtQuery.isLoading || !crtQuery.isSuccess) {
+    if (crtQuery.isLoading || !crtQuery.isSuccess || !demographicChangeRequestIsOn) {
       return;
     }
     const values = crtQuery.data.data
@@ -105,6 +105,7 @@ function ChplChangeRequests(props) {
     setFilters((f) => f
       .filter((filter) => filter.key !== 'changeRequestTypeName')
       .concat({
+        ...defaultFilter,
         key: 'changeRequestTypeName',
         display: 'Change Request Type',
         values,
@@ -115,7 +116,7 @@ function ChplChangeRequests(props) {
           return canMeet.length === 0 || canMeet.includes(item.changeRequestTypeName);
         },
       }));
-  }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess]);
+  }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess, demographicChangeRequestIsOn]);
 
   return (
     <FilterProvider
