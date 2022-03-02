@@ -6,6 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
@@ -31,6 +32,9 @@ function ChplDevelopers() {
 
   return (
     <>
+      <Typography variant="h1">
+        View Developers
+      </Typography>
       { /* eslint-disable react/jsx-props-no-spreading */ }
       <Autocomplete
         id="developers"
