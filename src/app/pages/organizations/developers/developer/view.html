@@ -15,14 +15,16 @@
         <li ng-repeat="msg in $ctrl.errorMessages">{{ msg }}</li>
       </ul>
       <div ui-view="developer">
-        <chpl-developer
+        <chpl-developer-bridge
           developer="$ctrl.developer"
+          dispatch="::$ctrl.takeAction"
           can-edit="$ctrl.can('edit')"
           can-merge="$ctrl.can('merge')"
           can-split="$ctrl.can('split-developer')"
-          take-action="$ctrl.takeAction(action)"
-          ></chpl-developer>
+          demographic-change-request-is-on="$ctrl.featureFlags.isOn('demographic-change-request')"
+          ></chpl-developer-bridge>
       </div>
+      <br />
       <div feature-flag="attestations">
         <chpl-attestations-view-wrapper-bridge
           developer="$ctrl.developer"
@@ -49,6 +51,7 @@
         <chpl-change-requests-wrapper-bridge
           disallowed-filters="$ctrl.disallowedFilters"
           pre-filter="::$ctrl.preFilter"
+          demographic-change-request-is-on="$ctrl.featureFlags.isOn('demographic-change-request')"
           scope="$ctrl.$scope"></chpl-change-requests-wrapper-bridge>
       </div>
       <div class="panel panel-default">

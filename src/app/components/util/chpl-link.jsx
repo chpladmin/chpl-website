@@ -1,8 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import {
+  makeStyles,
+} from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { bool, string } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
 import { analyticsConfig, routerConfig } from 'shared/prop-types';
+
+const useStyles = makeStyles({
+  chplLink: {
+    display: 'flex',
+    overflowWrap: 'anywhere',
+    gap: '4px',
+    justifyContent: 'space-between',
+  },
+  disclaimerIcon: {
+    marginTop: '4px',
+  },
+});
 
 const prependLink = (url) => {
   if (url.substring(0, 7) === 'http://' || url.substring(0, 8) === 'https://' || url.substring(0, 2) === '#/') {
@@ -17,6 +33,7 @@ function ChplLink(props) {
     analytics,
     router,
   } = props;
+  const classes = useStyles();
   const [href, setHref] = useState('');
   const [text, setText] = useState('');
   const $analytics = getAngularService('$analytics');
@@ -59,18 +76,18 @@ function ChplLink(props) {
   };
 
   return (
-    <>
+    <span className={classes.chplLink}>
       <a href={href} onClick={track}>
         {text}
       </a>
       { external
         && (
-        <a href="http://www.hhs.gov/disclaimer.html" onClick={trackDisclaimer} title="Web Site Disclaimers" className="pull-right">
-          <i className="fa fa-external-link" />
-          <span className="sr-only">Web Site Disclaimers</span>
-        </a>
+          <a href="http://www.hhs.gov/disclaimer.html" onClick={trackDisclaimer} title="Web Site Disclaimers" className={classes.disclaimerIcon}>
+            <ExitToAppIcon />
+            <span className="sr-only">Web Site Disclaimers</span>
+          </a>
         )}
-    </>
+    </span>
   );
 }
 

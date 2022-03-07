@@ -29,7 +29,6 @@
         },
         lastModifiedDate: null,
         deleted: null,
-        transparencyAttestations: [],
         products: [{
           name: 'a product',
         }],
@@ -47,6 +46,7 @@
     beforeEach(() => {
       angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('$stateParams', () => mock.stateParams);
+        $provide.factory('chplDeveloperBridgeDirective', () => ({}));
         $provide.factory('chplProductsDirective', () => ({}));
         $provide.factory('chplChangeRequestsWrapperBridgeDirective', () => ({}));
         $provide.factory('chplUsersBridgeDirective', () => ({}));

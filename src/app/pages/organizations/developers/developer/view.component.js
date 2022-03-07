@@ -28,6 +28,7 @@ const DeveloperViewComponent = {
       this.closeConfirmation = this.closeConfirmation.bind(this);
       this.handleAttestationDispatch = this.handleAttestationDispatch.bind(this);
       this.preFilter = this.preFilter.bind(this);
+      this.takeAction = this.takeAction.bind(this);
       this.takeUserAction = this.takeUserAction.bind(this);
     }
 

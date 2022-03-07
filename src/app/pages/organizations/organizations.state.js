@@ -38,7 +38,7 @@ const states = [
     name: 'organizations.developers.developer.edit',
     url: '/edit',
     views: {
-      'developer@^': 'chplDevelopersEdit',
+      'view@^': 'chplDevelopersEdit',
     },
     data: {
       title: 'CHPL Developers - Edit',
