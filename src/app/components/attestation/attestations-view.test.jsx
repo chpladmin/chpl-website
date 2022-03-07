@@ -23,16 +23,8 @@ const hocMock = {
 
 const developerMock = {
   name: 'a developer name',
+  attestations: [],
 };
-
-const mockApi = {
-  isLoading: true,
-};
-
-jest.mock('api/developer', () => ({
-  __esModule: true,
-  useFetchPublicAttestations: () => mockApi,
-}));
 
 const userContextMock = {
   hasAnyRole: () => true,

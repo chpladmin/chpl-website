@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,7 +18,6 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 
-import { useFetchPublicAttestations } from 'api/developer';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -34,9 +33,16 @@ const useStyles = makeStyles({
 function ChplAttestationsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const { developer } = props;
-  const { isLoading, data } = useFetchPublicAttestations({ developer });
+  const [attestations, setAttestations] = useState([]);
+  const [developer, setDeveloper] = useState({});
   const classes = useStyles();
+
+  useEffect(() => {
+    if (props?.developer) {
+      setAttestations(props.developer.attestations);
+      setDeveloper(props.developer);
+    }
+  }, [props?.developer]);
 
   const createAttestationChangeRequest = () => {
     props.dispatch('createAttestation');
@@ -57,7 +63,7 @@ function ChplAttestationsView(props) {
             <a href="">Attestations Fact Sheet</a>
             .
           </Typography>
-          { (!isLoading && data?.length > 0)
+          { attestations.length > 0
             && (
               <TableContainer component={Paper}>
                 <Table size="small">
@@ -68,7 +74,7 @@ function ChplAttestationsView(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    { data.map((item) => (
+                    { attestations.map((item) => (
                       <TableRow key={item.id}>
                         <TableCell>
                           { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }

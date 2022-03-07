@@ -141,6 +141,11 @@ export const ReportsDevelopersComponent = {
             }
           }
 
+          const attestationChanges = this.parseAttestationData(item.originalData.attestations, item.newData.attestations);
+          if (attestationChanges && attestationChanges.length > 0) {
+            activity.details.push('Attestation changes<ul>' + attestationChanges.join('') + '</ul>');
+          }
+
           var foundEvents = false;
           var statusEvents = this.utilService.arrayCompare(item.originalData.statusEvents,item.newData.statusEvents);
           var sortedEvents, translatedEvents;
@@ -312,6 +317,12 @@ export const ReportsDevelopersComponent = {
 
     isTransparencyAttestationObjectFormat (attestationMappings) {
       return attestationMappings.reduce((acc, curr) => acc || (typeof curr.transparencyAttestation === 'object' && curr.transparencyAttestation !== null) , false);
+    }
+
+    parseAttestationData (before, after) {
+      if (before?.length < after?.length) {
+        return ['<li>Attestations submitted</li>'];
+      }
     }
   },
 };
