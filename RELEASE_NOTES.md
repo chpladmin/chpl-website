@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 11.31.0
+_7 March 2022_
+
+### User Interface Updates
+* Display Developers in new UI/UX
+
+### Flagged Features
+* "Disable" edit of Attestation Change Requests
+
+---
+
 ## Version 11.30.0
 _22 February 2022_
 
