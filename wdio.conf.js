@@ -143,7 +143,7 @@ exports.config = {
         } catch (err) {
           if (err.message.includes('not clickable at point')) {
             console.warn('WARN: Element', this.selector, 'is not clickable.',
-                         'Scrolling to it before clicking again.')
+              'Scrolling to it before clicking again.')
             // scroll to element and click again
             this.scrollIntoView({ block: 'center', inline: 'center' })
             return origClickFunction()
