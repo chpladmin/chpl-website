@@ -45,7 +45,7 @@ function ChplDevelopers() {
         onInputChange={(event, newValue) => {
           setDeveloperValueToLoad(newValue);
         }}
-        getOptionLabel={(item) => item.name}
+        getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
         renderInput={(params) => <ChplTextField {...params} label="Choose Developer" />}
       />
       { /* eslint-enable react/jsx-props-no-spreading */ }
