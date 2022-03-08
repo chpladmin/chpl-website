@@ -117,9 +117,16 @@
                 <div class="data-label listing__enhanced-label">Relied Upon Software</div>
                 <div class="read-only-data">{{ $ctrl.listing.productAdditionalSoftware }}</div>
               </div>
+              <div>
+                <div class="data-label listing__enhanced-label">Conditions and Maintenance of Certification</div>
+              </div>
+              <div>
+                <div class="data-label listing__enhanced-label--small">Attestations</div>
+                <p><a ui-sref="organizations.developers.developer({developerId: $ctrl.listing.developer.developerId})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: 'Listing Details', label: $ctrl.listing.developer.name }">{{ $ctrl.listing.developer.name }}</a></p>
+              </div>
               <div ng-if="$ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate">
                 <div>
-                  <div class="data-label listing__enhanced-label">Real World Testing</div>
+                  <div class="data-label listing__enhanced-label--small">Real World Testing</div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtPlansUrl">
                   <div class="data-label listing__enhanced-label--small">Plans</div>
