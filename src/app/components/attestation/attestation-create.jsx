@@ -217,6 +217,9 @@ function ChplAttestationCreate(props) {
                   <Typography gutterBottom variant="body1">
                     A health IT developer of certified health IT, or its authorized representative that is capable of binding the health IT developer, must provide the Secretary of Health and Human Services an attestation of compliance with the Conditions and Maintenance of Certification requirements (
                     <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-D/section-170.406">45 CFR 170.406</a>
+                    ;
+                    {' '}
+                    <a href="https://www.federalregister.gov/documents/2020/05/01/2020-07419/21st-century-cures-act-interoperability-information-blocking-and-the-onc-health-it-certification#page-25781">85 FR 25781</a>
                     ). ONC-Authorized Certification Bodies (ONC-ACBs) review and submit attestations to ONC for public availability (
                     <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-E#p-170.523(q)">45 CFR 170.523(q)</a>
                     ).
@@ -226,7 +229,7 @@ function ChplAttestationCreate(props) {
                   </Typography>
                   <Typography variant="body1">
                     Irrespective of your attestation, note that under certain circumstances ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program. (
-                    <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-E/section-170.580">45 CFR 170.580</a>
+                    <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-E/section-170.580#p-170.580(a)(2)">45 CFR 170.580(a)(2)</a>
                     ).  Determinations made pursuant to such review may, as necessary, result in corrective action and enforcement procedures under the Certification Program.
                   </Typography>
                 </CardContent>
@@ -422,7 +425,7 @@ function ChplAttestationCreate(props) {
               <Card>
                 <CardContent>
                   <Typography variant="body1">
-                    Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. An email confirmation has been sent to the CHPL user accounts associated with
+                    Thank you for your Attestations Condition and Maintenance of Certification submission for the ONC Health IT Certification Program. An email confirmation has been sent to the registered CHPL users associated with
                     {' '}
                     {developer.name}
                     . Please direct any inquiries regarding your submission to your ONC-Authorized Certification Body (ONC-ACB).
