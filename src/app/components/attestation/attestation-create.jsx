@@ -228,7 +228,7 @@ function ChplAttestationCreate(props) {
                     Please proceed to review the Attestations and attest to the compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement for your health IT developer of certified health IT.
                   </Typography>
                   <Typography variant="body1">
-                    Irrespective of your attestation, note that under certain circumstances ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program. (
+                    Irrespective of your attestation, note that under certain circumstances ONC may directly review the actions or practices of a health IT developer of certified health IT, or its certified health IT, to determine whether they conform to the requirements of the Certification Program (
                     <a href="https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-D/part-170/subpart-E/section-170.580#p-170.580(a)(2)">45 CFR 170.580(a)(2)</a>
                     ).  Determinations made pursuant to such review may, as necessary, result in corrective action and enforcement procedures under the Certification Program.
                   </Typography>
