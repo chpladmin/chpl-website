@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.31.1
+_10 March 2022_
+
+### User Interface Updates
+* Remove need to enter username/email when changing password after a reset
+
+---
+
 ## Version 11.31.0
 _7 March 2022_
 
