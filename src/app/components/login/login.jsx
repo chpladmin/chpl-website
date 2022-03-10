@@ -61,8 +61,6 @@ const changeSchema = yup.object({
 });
 
 const resetSchema = yup.object({
-  userName: yup.string()
-    .required('Email (or User Name) is required'),
   newPassword: yup.string()
     .required('Password is required')
     .test(
@@ -272,7 +270,6 @@ function ChplLogin(props) {
   const reset = () => {
     networkService.resetPassword({
       token: resetToken,
-      userName: resetFormik.values.userName,
       newPassword: resetFormik.values.newPassword,
     })
       .then((response) => {
@@ -414,7 +411,6 @@ function ChplLogin(props) {
       newPassword: '',
       verificationPassword: '',
       passwordStrength: 0,
-      userName: '',
     },
     validateOnChange: false,
     validateOnBlur: true,
@@ -525,18 +521,6 @@ function ChplLogin(props) {
         {state === 'RESETTING'
          && (
            <>
-             <ChplTextField
-               id="user-name"
-               name="userName"
-               label="Email (or User Name)"
-               required
-               value={resetFormik.values.userName}
-               onChange={resetFormik.handleChange}
-               onBlur={resetFormik.handleBlur}
-               onKeyPress={(e) => catchEnter(e, submitReset)}
-               error={resetFormik.touched.userName && !!resetFormik.errors.userName}
-               helperText={resetFormik.touched.userName && resetFormik.errors.userName}
-             />
              <ChplTextField
                type="password"
                id="new-password"
