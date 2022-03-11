@@ -7,6 +7,7 @@ import {
   CardHeader,
   Dialog,
   DialogContent,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -141,11 +142,12 @@ function ChplAttestationsView(props) {
                               { canSeeAttestationData()
                                 && (
                                   <TableCell>
-                                    <Button
+                                    <IconButton
                                       onClick={() => viewAttestations(item)}
+                                      aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
                                     >
                                       <ZoomInIcon />
-                                    </Button>
+                                    </IconButton>
                                   </TableCell>
                                 )}
                             </TableRow>
