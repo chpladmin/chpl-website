@@ -14,20 +14,19 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import { useSnackbar } from 'notistack';
 
-import { useFetchPublicAttestations } from 'api/developer';
+import { useFetchAttestations, useFetchPublicAttestations, usePostAttestationException } from 'api/developer';
 import interpretLink from 'components/attestation/attestation-util';
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   content: {
@@ -43,7 +42,16 @@ function ChplAttestationsView(props) {
   const { isLoading, data } = useFetchPublicAttestations({ developer });
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsOpen, setAttestationsOpen] = useState(false);
+  const { mutate } = usePostAttestationException();
+  const { enqueueSnackbar } = useSnackbar();
+  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
+  const [isCreatingException, setIsCreatingException] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
+
+  const cancelCreatingException = () => {
+    setIsCreatingException(false);
+  };
 
   const createAttestationChangeRequest = () => {
     props.dispatch('createAttestation');
@@ -59,65 +67,105 @@ function ChplAttestationsView(props) {
     setAttestationsOpen(true);
   };
 
+  const createAttestationException = () => {
+    setIsSubmitting(true);
+    const payload = {
+      developer,
+    };
+    mutate(payload, {
+      onSuccess: ({ data: { exceptionEnd, developer: { name } } }) => {
+        setIsCreatingException(false);
+        setIsSubmitting(false);
+        const message = `You have re-opened the submission feature for ${name} until ${DateUtil.getDisplayDateFormat(exceptionEnd)}.`;
+        enqueueSnackbar(message, {
+          variant: 'success',
+        });
+      },
+      onError: () => {
+        const message = 'Something went wrong. Please try again or contact ONC for support';
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+        setIsSubmitting(false);
+      },
+    });
+  };
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Card>
         <CardHeader title="Attestations" />
         <CardContent className={classes.content}>
-          <Typography variant="body1">
-            Attestations information is displayed here if a health IT developer’s attestation of compliance with the
-            {' '}
-            <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Conditions and Maintenance of Certification requirements</a>
-            {' '}
-            was submitted. For more information, please visit the
-            {' '}
-            <a href="">Attestations Fact Sheet</a>
-            .
-          </Typography>
-          { (!isLoading && data?.length > 0)
+          { !isCreatingException
             && (
-              <TableContainer component={Paper}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Attestation Period</TableCell>
-                      <TableCell>Status</TableCell>
-                      { canSeeAttestationData()
-                        && (
-                          <TableCell>
-                            <span className="sr-only">View Details</span>
-                          </TableCell>
-                        )}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    { data.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell>
-                          { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                          {' '}
-                          to
-                          {' '}
-                          { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                        </TableCell>
-                        <TableCell>
-                          Attestations submitted
-                        </TableCell>
-                        { canSeeAttestationData()
-                          && (
-                            <TableCell>
-                              <Button
-                                onClick={() => viewAttestations(item)}
-                              >
-                                <ZoomInIcon />
-                              </Button>
-                            </TableCell>
-                          )}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <>
+                <Typography variant="body1">
+                  Attestations information is displayed here if a health IT developer’s attestation of compliance with the
+                  {' '}
+                  <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Conditions and Maintenance of Certification requirements</a>
+                  {' '}
+                  was submitted. For more information, please visit the
+                  {' '}
+                  <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
+                  .
+                </Typography>
+                { (!isLoading && data?.length > 0)
+                  && (
+                    <TableContainer component={Paper}>
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Attestation Period</TableCell>
+                            <TableCell>Status</TableCell>
+                            { canSeeAttestationData()
+                              && (
+                                <TableCell>
+                                  <span className="sr-only">View Details</span>
+                                </TableCell>
+                              )}
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          { data.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell>
+                                { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                                {' '}
+                                to
+                                {' '}
+                                { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                              </TableCell>
+                              <TableCell>
+                                Attestations submitted
+                              </TableCell>
+                              { canSeeAttestationData()
+                                && (
+                                  <TableCell>
+                                    <Button
+                                      onClick={() => viewAttestations(item)}
+                                    >
+                                      <ZoomInIcon />
+                                    </Button>
+                                  </TableCell>
+                                )}
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  )}
+              </>
+            )}
+          { isCreatingException
+            && (
+              <>
+                <Typography>
+                  This action will re-open the Attestations submission feature for
+                  {' '}
+                  { developer.name }
+                  . Please confirm you want to continue.
+                </Typography>
+              </>
             )}
         </CardContent>
         { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId })
@@ -126,12 +174,50 @@ function ChplAttestationsView(props) {
               <Button
                 color="primary"
                 id="create-attestation-change-request-button"
-                name="createAttestationChangeRequestButton"
                 variant="contained"
                 onClick={createAttestationChangeRequest}
+                disabled={!canSubmitAttestationChangeRequest}
               >
                 Submit Attestations
               </Button>
+            </CardActions>
+          )}
+        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+          && (
+            <CardActions>
+              { !isCreatingException
+                && (
+                  <Button
+                    color="primary"
+                    id="create-attestation-exception-button"
+                    variant="contained"
+                    onClick={() => setIsCreatingException(true)}
+                    disabled={!canCreateException}
+                  >
+                    Re-Open Submission
+                  </Button>
+                )}
+              { isCreatingException
+                && (
+                  <>
+                    <Button
+                      color="primary"
+                      id="create-attestation-exception-button"
+                      variant="contained"
+                      disabled={isSubmitting}
+                      onClick={createAttestationException}
+                    >
+                      Confirm
+                    </Button>
+                    <Button
+                      color="primary"
+                      id="cancel-attestation-exception-button"
+                      onClick={cancelCreatingException}
+                    >
+                      Cancel
+                    </Button>
+                  </>
+                )}
             </CardActions>
           )}
       </Card>
@@ -195,7 +281,7 @@ function ChplAttestationsView(props) {
             </DialogContent>
           </Dialog>
         )}
-    </ThemeProvider>
+    </>
   );
 }
 
