@@ -20,7 +20,8 @@ const mockContext = {
 };
 
 const mockApi = {
-  isSuccess: false,
+  isLoading: true,
+  data: {},
 };
 
 /* eslint-disable react/display-name */
