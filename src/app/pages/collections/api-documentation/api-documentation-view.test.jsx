@@ -23,10 +23,8 @@ const mockContext = {
 };
 
 const mockApi = {
-  isSuccess: false,
-  data: {
-    results: [],
-  },
+  isLoading: true,
+  data: {},
 };
 
 /* eslint-disable react/display-name */

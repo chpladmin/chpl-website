@@ -41,10 +41,10 @@ const csvOptions = {
   headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
     { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developer' },
-    { headerName: 'Product', objectKey: 'product' },
-    { headerName: 'Version', objectKey: 'version' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatus' },
+    { headerName: 'Developer', objectKey: 'developerName' },
+    { headerName: 'Product', objectKey: 'productName' },
+    { headerName: 'Version', objectKey: 'versionName' },
+    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
     { headerName: 'API Documentation', objectKey: 'apiDocumentation' },
     { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrl' },
     { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
@@ -136,6 +136,7 @@ const criteriaLookup = {
 
 const parseApiDocumentation = ({ apiDocumentation }, SPLIT_SECONDARY, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
+  return 'something';
   const items = Object.entries(apiDocumentation
     .map((item) => {
       const [id, url] = item.split(SPLIT_SECONDARY);
@@ -170,6 +171,11 @@ const parseApiDocumentation = ({ apiDocumentation }, SPLIT_SECONDARY, analytics)
   );
 };
 
+const parseServiceBaseUrlList = ({ serviceBaseUrlList }) => {
+  if (!serviceBaseUrlList) { return 'N/A'; }
+  return serviceBaseUrlList.value;
+};
+
 function ChplApiDocumentationCollectionView(props) {
   const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
@@ -199,12 +205,16 @@ function ChplApiDocumentationCollectionView(props) {
   const { data: documentation } = useFetchApiDocumentationData();
 
   useEffect(() => {
-    if (isLoading) { return; }
+    if (isLoading || !data.results) { return; }
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
       apiDocumentation: parseApiDocumentation(listing, SPLIT_SECONDARY, analytics),
-      serviceBaseUrl: listing.serviceBaseUrlList.length > 0 ? listing.serviceBaseUrlList[0].split(SPLIT_SECONDARY)[1] : undefined,
+      serviceBaseUrlList: parseServiceBaseUrlList(listing),
+      developerName: listing.developer.name,
+      productName: listing.product.name,
+      versionName: listing.version.name,
+      certificationStatusName: listing.certificationStatus.name,
     })));
   }, [isLoading, data?.results, SPLIT_SECONDARY, analytics]);
 
@@ -378,27 +388,27 @@ function ChplApiDocumentationCollectionView(props) {
                        </strong>
                      </TableCell>
                      <TableCell>
-                       {item.edition}
+                       {item.edition.name}
                        {' '}
                        {item.curesUpdate ? 'Cures Update' : '' }
                      </TableCell>
                      <TableCell>
                        <ChplLink
-                         href={`#/organizations/developers/${item.developerId}`}
-                         text={item.developer}
-                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer }}
+                         href={`#/organizations/developers/${item.developer.id}`}
+                         text={item.developer.name}
+                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
                          external={false}
-                         router={{ sref: 'organizations.developers.developer', options: { developerId: item.developerId } }}
+                         router={{ sref: 'organizations.developers.developer', options: { developerId: item.developer.id } }}
                        />
                      </TableCell>
-                     <TableCell>{item.product}</TableCell>
-                     <TableCell>{item.version}</TableCell>
-                     <TableCell>{item.certificationStatus}</TableCell>
+                     <TableCell>{item.product.name}</TableCell>
+                     <TableCell>{item.version.name}</TableCell>
+                     <TableCell>{item.certificationStatus.name}</TableCell>
                      <TableCell className={classes.linkWrap}>
                        { item.apiDocumentation }
                      </TableCell>
                      <TableCell className={classes.linkWrap}>
-                       {item.serviceBaseUrl
+                       { item.serviceBaseUrl
                          ? (
                            <dl>
                              <dt>170.315 (g)(10)</dt>
@@ -414,7 +424,7 @@ function ChplApiDocumentationCollectionView(props) {
                          )}
                      </TableCell>
                      <TableCell className={classes.linkWrap}>
-                       {item.mandatoryDisclosures
+                       { item.mandatoryDisclosures
                          ? (
                            <ChplLink
                              href={item.mandatoryDisclosures}
