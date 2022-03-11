@@ -55,7 +55,7 @@ const states = {
     {
       name: 'administration.change-requests',
       url: '/change-requests',
-      component: 'chplChangeRequestsManagement',
+      component: 'chplChangeRequestsWrapperBridge',
       data: {
         title: 'CHPL Administration - Change Requests',
         roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],

@@ -10,8 +10,8 @@ const useFetchRealWorldTestingCollection = ({
   query,
 }) => {
   const axios = useAxios();
-  return useQuery(['search/beta?rwtOptions=has_plans_url,has_results_url', orderBy, pageNumber, pageSize, sortDescending, query], async () => {
-    const response = await axios.get(`/search/beta?${query}&rwtOptions=has_plans_url,has_results_url&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+  return useQuery(['search/v2?rwtOptions=has_plans_url,has_results_url', orderBy, pageNumber, pageSize, sortDescending, query], async () => {
+    const response = await axios.get(`/search/v2?${query}&rwtOptions=has_plans_url,has_results_url&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };
