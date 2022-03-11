@@ -18,8 +18,9 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
-import { arrayOf, func, object, string } from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
+import { useSnackbar } from 'notistack';
 
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
@@ -55,6 +56,7 @@ const csvOptions = {
     { headerName: 'Creation Date', objectKey: 'friendlyReceivedDate' },
     { headerName: 'Request Status', objectKey: 'currentStatusName' },
     { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate' },
+    { headerName: 'Relevant ONC-ACBs', objectKey: 'relevantAcbs' },
     ...Array(CUSTOM_FIELD_COUNT)
       .fill('Custom Field')
       .map((val, idx) => ({
@@ -163,10 +165,10 @@ const sortComparator = (property) => {
 };
 
 function ChplChangeRequestsView(props) {
-  const { disallowedFilters, preFilter, scope: $scope } = props;
+  const { disallowedFilters, preFilter } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const DateUtil = getAngularService('DateUtil');
-  const toaster = getAngularService('toaster');
+  const { enqueueSnackbar } = useSnackbar();
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
@@ -210,6 +212,7 @@ function ChplChangeRequestsView(props) {
         currentStatusChangeDate: item.currentStatus.statusChangeDate,
         friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
         friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
+        relevantAcbs: item.certificationBodies.sort((a, b) => (a.name < b.name ? -1 : 1)).map((acb) => acb.name).join(';'),
       }))
       .filter((item) => preFilter(item))
       .filter((item) => searchTermShouldShow(item, searchTerm))
@@ -241,23 +244,18 @@ function ChplChangeRequestsView(props) {
       },
       onError: (error) => {
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
-          toaster.pop({
-            type: 'info',
-            title: 'Notice',
-            body: `${error.response.data.error} However, the changes have been applied`,
+          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
+            variant: 'info',
           });
           setMode('view');
           setChangeRequest(undefined);
         } else {
-          const body = error.response.data?.error
+          const message = error.response.data?.error
                 || error.response.data?.errorMessages.join(' ');
-          toaster.pop({
-            type: 'error',
-            title: 'Error',
-            body,
+          enqueueSnackbar(message, {
+            variant: 'error',
           });
         }
-        $scope.$apply();
       },
     });
   };
@@ -437,5 +435,4 @@ export default ChplChangeRequestsView;
 ChplChangeRequestsView.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   preFilter: func.isRequired,
-  scope: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };

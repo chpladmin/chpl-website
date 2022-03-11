@@ -37,10 +37,16 @@ const usePostChangeRequest = () => {
     }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
+      queryClient.invalidateQueries({
+        predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
+      });
     },
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
+        queryClient.invalidateQueries({
+          predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
+        });
       }
       return error;
     },
@@ -57,10 +63,16 @@ const usePutChangeRequest = () => {
     }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
+      queryClient.invalidateQueries({
+        predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
+      });
     },
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
+        queryClient.invalidateQueries({
+          predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
+        });
       }
       return error;
     },

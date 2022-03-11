@@ -4,11 +4,12 @@ import {
 } from '@material-ui/core';
 import { node } from 'prop-types';
 
-import theme from '../../themes/theme';
-import { getAngularService } from '../../services/angular-react-helper';
-import { UserContext } from '../../shared/contexts';
-
 import ChplLogin from './login';
+
+import { SnackbarWrapper } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
+import theme from 'themes/theme';
 
 function UserWrapper(props) {
   const $rootScope = getAngularService('$rootScope');
@@ -57,9 +58,11 @@ function UserWrapper(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <UserContext.Provider value={userState}>
-        { children }
-      </UserContext.Provider>
+      <SnackbarWrapper>
+        <UserContext.Provider value={userState}>
+          { children }
+        </UserContext.Provider>
+      </SnackbarWrapper>
     </ThemeProvider>
   );
 }
