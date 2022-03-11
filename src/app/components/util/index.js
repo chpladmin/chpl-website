@@ -11,6 +11,7 @@ import ChplPagination from './pagination';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
 import InternalScrollButton from './internal-scroll-button';
+import SnackbarWrapper from './snackbar-wrapper';
 
 export {
   ChplAvatar,
@@ -26,4 +27,5 @@ export {
   ChplTextField,
   ChplTooltip,
   InternalScrollButton,
+  SnackbarWrapper,
 };
