@@ -32,7 +32,6 @@ import {
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
-import Constants from 'shared/constants';
 import { getAngularService } from 'services/angular-react-helper';
 
 const csvOptions = {
@@ -45,8 +44,12 @@ const csvOptions = {
     { headerName: 'Product', objectKey: 'productName' },
     { headerName: 'Version', objectKey: 'versionName' },
     { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'API Documentation', objectKey: 'apiDocumentation' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrl' },
+    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
+    { headerName: 'API Documentation - 170.315 (g)(8)', objectKey: 'apiDocumentation57' },
+    { headerName: 'API Documentation - 170.315 (g)(9)', objectKey: 'apiDocumentation58' },
+    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
+    { headerName: 'API Documentation - 170.315 (g)(10)', objectKey: 'apiDocumentation182' },
+    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
     { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
   ],
 };
@@ -134,14 +137,13 @@ const criteriaLookup = {
   182: { display: '170.315 (g)(10)', sort: 4 },
 };
 
-const parseApiDocumentation = ({ apiDocumentation }, SPLIT_SECONDARY, analytics) => {
+const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
-  return 'something';
   const items = Object.entries(apiDocumentation
-    .map((item) => {
-      const [id, url] = item.split(SPLIT_SECONDARY);
-      return { id, url };
-    })
+    .map((item) => ({
+      id: item.criterion.id,
+      url: item.value,
+    }))
     .reduce((map, { id, url }) => ({
       ...map,
       [url]: (map[url] || []).concat(id),
@@ -171,10 +173,9 @@ const parseApiDocumentation = ({ apiDocumentation }, SPLIT_SECONDARY, analytics)
   );
 };
 
-const parseServiceBaseUrlList = ({ serviceBaseUrlList }) => {
-  if (!serviceBaseUrlList) { return 'N/A'; }
-  return serviceBaseUrlList.value;
-};
+const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation?.find((item) => item.criterion.id === id)?.value || '';
+
+const parseServiceBaseUrlList = ({ serviceBaseUrlList }) => serviceBaseUrlList?.value || '';
 
 function ChplApiDocumentationCollectionView(props) {
   const $analytics = getAngularService('$analytics');
@@ -183,7 +184,6 @@ function ChplApiDocumentationCollectionView(props) {
   const {
     analytics,
   } = props;
-  const { SPLIT_SECONDARY } = Constants;
   const csvExporter = new ExportToCsv(csvOptions);
   const [documentationDate, setDocumentationDate] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
@@ -209,14 +209,19 @@ function ChplApiDocumentationCollectionView(props) {
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      apiDocumentation: parseApiDocumentation(listing, SPLIT_SECONDARY, analytics),
+      apiDocumentation: parseApiDocumentation(listing, analytics),
+      apiDocumentation56: getApiDocumentationForCsv(listing, 56),
+      apiDocumentation57: getApiDocumentationForCsv(listing, 57),
+      apiDocumentation58: getApiDocumentationForCsv(listing, 58),
+      apiDocumentation181: getApiDocumentationForCsv(listing, 181),
+      apiDocumentation182: getApiDocumentationForCsv(listing, 182),
       serviceBaseUrlList: parseServiceBaseUrlList(listing),
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
-  }, [isLoading, data?.results, SPLIT_SECONDARY, analytics]);
+  }, [isLoading, data?.results, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -408,14 +413,14 @@ function ChplApiDocumentationCollectionView(props) {
                        { item.apiDocumentation }
                      </TableCell>
                      <TableCell className={classes.linkWrap}>
-                       { item.serviceBaseUrl
+                       { item.serviceBaseUrlList
                          ? (
                            <dl>
                              <dt>170.315 (g)(10)</dt>
                              <dd>
                                <ChplLink
-                                 href={item.serviceBaseUrl}
-                                 analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrl }}
+                                 href={item.serviceBaseUrlList}
+                                 analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
                                />
                              </dd>
                            </dl>
