@@ -115,7 +115,7 @@ function ChplChangeRequestEdit(props) {
   let formik;
 
   useEffect(() => {
-    if (changeRequest.certificationBodies.length > 1 && !hasAnyRole(['ROLE_DEVELOPER'])) {
+    if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
       setConfirmationMessage('All associated ONC-ACBs must be consulted regarding this change. Will you ensure this happens?');
       setIsConfirming(true);
     }
@@ -195,7 +195,7 @@ function ChplChangeRequestEdit(props) {
         handleUpdate(data);
         break;
       case 'save':
-        if (changeRequest.certificationBodies.length > 1 && !hasAnyRole(['ROLE_DEVELOPER'])) {
+        if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
           setConfirmationMessage('All associated ONC-ACBs have been consulted regarding this change');
           setIsConfirming(true);
         } else {
