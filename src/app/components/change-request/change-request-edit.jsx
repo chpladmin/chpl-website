@@ -43,12 +43,17 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '16px',
     alignContent: 'flex-start',
+    gridTemplateColumns: '1fr 1fr',
   },
   actionDivider: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'inline',
     },
+  },
+  fullWidth: {
+    gridColumnStart: '1',
+    gridColumnEnd: '-1',
   },
 });
 
@@ -206,11 +211,39 @@ function ChplChangeRequestEdit(props) {
             <Divider className={classes.actionDivider} orientation="vertical" />
             <div className={classes.actionSubContainer}>
               <Typography variant="subtitle1">Change Request change data</Typography>
-              <Typography variant="subtitle2">Current status</Typography>
-              <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+              <Typography variant="subtitle2">
+                { changeRequest.certificationBodies.length > 1
+                  && (
+                    <>
+                      This Change Request requires ONC-ACB coordination
+                    </>
+                  )}
+              </Typography>
+              <div>
+                <Typography variant="subtitle2">Current status</Typography>
+                <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+              </div>
+              <div>
+                <Typography variant="subtitle2">
+                  Associated ONC-ACB
+                  { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
+                </Typography>
+                { changeRequest.certificationBodies.length > 0
+                  ? (
+                    <ul>
+                      {changeRequest.certificationBodies.map((acb) => (
+                        <li key={acb.name}>{acb.name}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <Typography>
+                      None
+                    </Typography>
+                  )}
+              </div>
               {hasAnyRole(['ROLE_DEVELOPER'])
                 ? (
-                  <Typography>
+                  <Typography className={classes.fullWidth}>
                     {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
                     && (
                       <>
@@ -230,6 +263,7 @@ function ChplChangeRequestEdit(props) {
                     id="change-request-status-type"
                     name="changeRequestStatusType"
                     label="Select new Status"
+                    className={classes.fullWidth}
                     required
                     value={formik.values.changeRequestStatusType}
                     onChange={formik.handleChange}
@@ -250,6 +284,7 @@ function ChplChangeRequestEdit(props) {
                 name="comment"
                 label="Reason for change"
                 margin="none"
+                className={classes.fullWidth}
                 required={isReasonRequired()}
                 disabled={isReasonDisabled()}
                 multiline
