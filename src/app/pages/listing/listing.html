@@ -108,27 +108,6 @@
               <h2 class="product-heading">Relied Upon Software</h2>
               <p>{{ $ctrl.listing.productAdditionalSoftware }}</p>
             </div>
-            <div ng-if="$ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate">
-              <h2 class="product-heading">Real World Testing</h2>
-              <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
-                <label for="rwtPlansUrl">Plans</label>
-              </div>
-              <div ng-if="$ctrl.listing.rwtPlansUrl">
-                <p><chpl-link-bridge href="$ctrl.listing.rwtPlansUrl" name="rwtPlansUrl" id="rwt-plans-url"></chpl-link-bridge></p>
-              </div>
-              <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
-                <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtPlansCheckDate) }}</p>
-              </div>
-              <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
-                <label for="rwtRsultsURL">Results</label>
-              </div>
-              <div ng-if="$ctrl.listing.rwtResultsUrl">
-                <p><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl" id="rwt-results-url"></chpl-link-bridge></p>
-              </div>
-              <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
-                <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtResultsCheckDate) }}</p>
-              </div>
-            </div>
             <div class="product-element" id="listing-information-svap-notice" ng-if="$ctrl.listing.svapNoticeUrl">
               <h2 class="product-heading">Standards Version Advancement Process Notice</h2>
                 <chpl-link-bridge ng-if="$ctrl.listing.svapNoticeUrl" href="$ctrl.listing.svapNoticeUrl" analytics="{event: 'SVAP Notice', category: 'Download Details', label: $ctrl.listing.svapNoticeUrl }"></chpl-link-bridge>
@@ -139,6 +118,34 @@
               <chpl-link-bridge ng-if="$ctrl.listing.mandatoryDisclosures" href="$ctrl.listing.mandatoryDisclosures" analytics="{event:'Transparency Disclosure', category: 'Download Details', label: $ctrl.listing.mandatoryDisclosures}"></chpl-link-bridge>
               <p ng-if="!$ctrl.listing.mandatoryDisclosures">No report on file</p>
               <div class="clearfix"></div>
+            </div>
+            <div>
+              <h2 class="product-heading">Conditions and Maintenance of Certification</h2>
+              <div>
+                <h3 class="product-heading">Attestations</h3>
+                <p><a ui-sref="organizations.developers.developer({developerId: $ctrl.listing.developer.developerId})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: 'Listing Details', label: $ctrl.listing.developer.name }">{{ $ctrl.listing.developer.name }}</a></p>
+              </div>
+              <div ng-if="$ctrl.listing.rwtPlansUrl || $ctrl.listing.rwtPlansCheckDate || $ctrl.listing.rwtResultsUrl || $ctrl.listing.rwtResultsCheckDate">
+                <h3 class="product-heading">Real World Testing</h3>
+                <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
+                  <label for="rwtPlansUrl">Plans</label>
+                </div>
+                <div ng-if="$ctrl.listing.rwtPlansUrl">
+                  <p><chpl-link-bridge href="$ctrl.listing.rwtPlansUrl" name="rwtPlansUrl" id="rwt-plans-url"></chpl-link-bridge></p>
+                </div>
+                <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
+                  <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtPlansCheckDate) }}</p>
+                </div>
+                <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
+                  <label for="rwtRsultsURL">Results</label>
+                </div>
+                <div ng-if="$ctrl.listing.rwtResultsUrl">
+                  <p><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl" id="rwt-results-url"></chpl-link-bridge></p>
+                </div>
+                <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
+                  <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtResultsCheckDate) }}</p>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-sm-8" id="listing-information-details">
