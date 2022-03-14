@@ -5669,6 +5669,7 @@ __metadata:
     ng-file-upload: ^12.2.13
     ng-idle: ^1.3.2
     ngstorage: ^0.3.11
+    notistack: latest-mui-v4
     postcss: ^5.2.17
     postcss-import: ^11.1.0
     postcss-loader: ^2.1.5
@@ -5957,7 +5958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^1.0.4":
+"clsx@npm:^1.0.4, clsx@npm:^1.1.0":
   version: 1.1.1
   resolution: "clsx@npm:1.1.1"
   checksum: ff052650329773b9b245177305fc4c4dc3129f7b2be84af4f58dc5defa99538c61d4207be7419405a5f8f3d92007c954f4daba5a7b74e563d5de71c28c830063
@@ -15595,6 +15596,20 @@ export-to-csv@andlar/export-to-csv:
   version: 6.1.0
   resolution: "normalize-url@npm:6.1.0"
   checksum: 4a4944631173e7d521d6b80e4c85ccaeceb2870f315584fa30121f505a6dfd86439c5e3fdd8cd9e0e291290c41d0c3599f0cb12ab356722ed242584c30348e50
+  languageName: node
+  linkType: hard
+
+"notistack@npm:latest-mui-v4":
+  version: 1.0.10
+  resolution: "notistack@npm:1.0.10"
+  dependencies:
+    clsx: ^1.1.0
+    hoist-non-react-statics: ^3.3.0
+  peerDependencies:
+    "@material-ui/core": ^4.0.0
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  checksum: 50223dbb30a33318bedfc03adbd81d75e5c74c8b74ae39aa9795377c51f556f0a7daa1061a516804e2a7cabf6a2f5a124dc5ed8e96c80731eec1377d16a65b42
   languageName: node
   linkType: hard
 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  arrayOf, func, object, string,
+  arrayOf, func, string,
 } from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
@@ -52,10 +52,15 @@ const staticFilters = [{
 }];
 
 function ChplChangeRequests(props) {
-  const { disallowedFilters, preFilter, scope } = props;
-  const { demographicChangeRequestIsOn } = useContext(FlagContext);
+  const { disallowedFilters, preFilter } = props;
+  const { isOn } = useContext(FlagContext);
+  const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
+
+  useEffect(() => {
+    setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
+  }, [isOn]);
 
   useEffect(() => {
     const values = demographicChangeRequestIsOn ? [
@@ -127,7 +132,6 @@ function ChplChangeRequests(props) {
         analytics={analytics}
         disallowedFilters={disallowedFilters}
         preFilter={preFilter}
-        scope={scope}
       />
     </FilterProvider>
   );
@@ -138,5 +142,4 @@ export default ChplChangeRequests;
 ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   preFilter: func.isRequired,
-  scope: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
