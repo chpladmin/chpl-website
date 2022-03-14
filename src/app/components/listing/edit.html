@@ -149,6 +149,18 @@
     <label for="cp-additional-software">Product wide Relied Upon Software</label>
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
+  <div class="form-group">
+    <label for="cp-svap-notice-url">Standards Version Advancement Process Notice</label>
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.svapNoticeUrl" id="cp-svap-notice-url" name="cpSvapNoticeUrl" ng-maxlength="1024" ng-change="$ctrl.update()">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpSvapNoticeUrl.$touched) && $ctrl.form.cpSvapNoticeUrl.$error.url">Improper format (http://www.example.com)</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpSvapNoticeUrl.$touched) && $ctrl.form.cpSvapNoticeUrl.$error.maxlength">Field is too long</div>
+  </div>
+  <div class="form-group">
+    <label for="mandatory-disclosures">Mandatory Disclosures</label>
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.mandatoryDisclosures" id="mandatory-disclosures" name="mandatoryDisclosures" ng-maxlength="1024" ng-change="$ctrl.update()">
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.url">Improper format (http://www.example.com)</div>
+    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.maxlength">Field is too long</div>
+  </div>
   <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.workType !== 'confirm'">
     <div class="edit-listing__rwt-container-header">
       <div class="data-label">Real World Testing</div>
@@ -193,18 +205,6 @@
       </div>
       <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.rwtResultsCheckDate.$touched) && !$ctrl.form.rwtResultsCheckDate.$valid">Improper format (mm/dd/yyyy)</div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="cp-svap-notice-url">Standards Version Advancement Process Notice</label>
-    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.svapNoticeUrl" id="cp-svap-notice-url" name="cpSvapNoticeUrl" ng-maxlength="1024" ng-change="$ctrl.update()">
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpSvapNoticeUrl.$touched) && $ctrl.form.cpSvapNoticeUrl.$error.url">Improper format (http://www.example.com)</div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpSvapNoticeUrl.$touched) && $ctrl.form.cpSvapNoticeUrl.$error.maxlength">Field is too long</div>
-  </div>
-  <div class="form-group">
-    <label for="mandatory-disclosures">Mandatory Disclosures</label>
-    <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.mandatoryDisclosures" id="mandatory-disclosures" name="mandatoryDisclosures" ng-maxlength="1024" ng-change="$ctrl.update()">
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.url">Improper format (http://www.example.com)</div>
-    <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.maxlength">Field is too long</div>
   </div>
   <br />
   <div class="form-group" ng-if="$ctrl.workType !== 'confirm'">
