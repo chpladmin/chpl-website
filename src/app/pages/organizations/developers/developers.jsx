@@ -9,7 +9,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -17,10 +16,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useFetchDevelopers } from 'api/developer';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-
-import { mergeClasses } from '@material-ui/styles';
-
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   headingPadding: {
@@ -46,30 +41,29 @@ function ChplDevelopers() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <Typography className={classes.headingPadding} variant="h1">
-          View Developers
-        </Typography>
-        { /* eslint-disable react/jsx-props-no-spreading */}
-        <Card>
-          <CardContent>
-            <Autocomplete
-              id="developers"
-              name="developers"
-              options={developers}
-              onChange={goToDeveloper}
-              inputValue={developerValueToLoad}
-              onInputChange={(event, newValue) => {
-                setDeveloperValueToLoad(newValue);
-              }}
-              getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
-              renderInput={(params) => <ChplTextField {...params} label="Choose Developer" />}
-            />
-          </CardContent>
-        </Card>
-        <br />
-        { /* eslint-enable react/jsx-props-no-spreading */}
-        {developers.length > 0
+      <Typography className={classes.headingPadding} variant="h1">
+        View Developers
+      </Typography>
+      { /* eslint-disable react/jsx-props-no-spreading */}
+      <Card>
+        <CardContent>
+          <Autocomplete
+            id="developers"
+            name="developers"
+            options={developers}
+            onChange={goToDeveloper}
+            inputValue={developerValueToLoad}
+            onInputChange={(event, newValue) => {
+              setDeveloperValueToLoad(newValue);
+            }}
+            getOptionLabel={(item) => `${item.name} (${item.developerCode})`}
+            renderInput={(params) => <ChplTextField {...params} label="Choose Developer" />}
+          />
+        </CardContent>
+      </Card>
+      <br />
+      { /* eslint-enable react/jsx-props-no-spreading */}
+      {developers.length > 0
           && (
             <Card>
               <CardContent>
@@ -98,7 +92,6 @@ function ChplDevelopers() {
               </CardContent>
             </Card>
           )}
-      </ThemeProvider>
     </>
   );
 }
