@@ -233,6 +233,7 @@ function ChplChangeRequestsView(props) {
     { property: 'receivedDate', text: 'Creation Date', sortable: true },
     { property: 'currentStatusName', text: 'Request Status', sortable: true },
     { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
+    { property: 'associatedAcbs', text: 'Associated ONC-ACBs' },
     { property: 'actions', text: 'Actions', invisible: true, sortable: false },
   ];
 
@@ -391,6 +392,31 @@ function ChplChangeRequestsView(props) {
                                    && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
                                   <TableCell>{item.currentStatusName}</TableCell>
                                   <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                                  { !hasAnyRole(['ROLE_DEVELOPER'])
+                                    && (
+                                      <TableCell>
+                                        { item.certificationBodies.length === 0
+                                          && (
+                                            <>
+                                              None
+                                            </>
+                                          )}
+                                        { item.certificationBodies.length === 1
+                                          && (
+                                            <>
+                                              { item.certificationBodies[0].name }
+                                            </>
+                                          )}
+                                        { item.certificationBodies.length > 1
+                                          && (
+                                            <ul>
+                                              { item.certificationBodies.map((acb) => (
+                                                <li key={acb.name}>{ acb.name }</li>
+                                              ))}
+                                            </ul>
+                                          )}
+                                      </TableCell>
+                                    )}
                                   <TableCell align="right">
                                     <Button
                                       onClick={() => setChangeRequest(item)}
