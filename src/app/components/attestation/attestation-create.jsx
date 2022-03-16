@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -30,6 +30,7 @@ function ChplAttestationCreate(props) {
   const [attestationResponses, setAttestationResponses] = useState([]);
   const [changeRequestType, setChangeRequestType] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
   const classes = useStyles();
 
@@ -48,6 +49,7 @@ function ChplAttestationCreate(props) {
         },
         response: { response: '' },
       })));
+    setPeriod(data.period);
   }, [isLoading, data]);
 
   useEffect(() => {
@@ -109,6 +111,7 @@ function ChplAttestationCreate(props) {
         isSubmitting={isSubmitting}
         developer={developer}
         dispatch={handleDispatch}
+        period={period}
         stage={stage}
       />
     </>

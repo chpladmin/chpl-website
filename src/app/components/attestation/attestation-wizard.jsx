@@ -15,7 +15,15 @@ import {
 } from '@material-ui/core';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import Moment from 'react-moment';
-import { arrayOf, bool, func, number, object } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  func,
+  number,
+  object,
+  shape,
+  string,
+} from 'prop-types';
 
 import ChplAttestationProgress from './attestation-progress';
 
@@ -74,27 +82,32 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationCreate(props) {
+function ChplAttestationWizard(props) {
   const DateUtil = getAngularService('DateUtil');
   const { developer } = props;
   const [attestationResponses, setAttestationResponses] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signature, setSignature] = useState('');
+  const [period, setPeriod] = useState(0);
   const [stage, setStage] = useState(0);
   const { user } = useContext(UserContext);
   const classes = useStyles();
 
   useEffect(() => {
     setAttestationResponses(props.attestationResponses);
-  }, [props.attestationResponses]);
+  }, [props.attestationResponses]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setIsSubmitting(props.isSubmitting);
-  }, [props.isSubmitting]);
+  }, [props.isSubmitting]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setPeriod(props.period);
+  }, [props.period]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setStage(props.stage);
-  }, [props.stage]);
+  }, [props.stage]); // eslint-disable-line react/destructuring-assignment
 
   const isFormFilledOut = () => attestationResponses.reduce((filledOut, attestation) => filledOut && !!attestation.response.id, true);
 
@@ -105,7 +118,7 @@ function ChplAttestationCreate(props) {
   const canPrevious = () => stage > 0 && stage < 3;
 
   const handleActionBarDispatch = () => {
-    props.dispatch('cancel');
+    props.dispatch('close');
   };
 
   const handleProgressDispatch = (action) => props.dispatch('stage', (stage + (action === 'next' ? 1 : -1)));
@@ -208,11 +221,11 @@ function ChplAttestationCreate(props) {
                     <strong>Attestation Period:</strong>
                     {' '}
                     [
-                    {DateUtil.getDisplayDateFormat(data.period?.periodStart)}
+                    {DateUtil.getDisplayDateFormat(period.periodStart)}
                     {' '}
                     -
                     {' '}
-                    {DateUtil.getDisplayDateFormat(data.period?.periodEnd)}
+                    {DateUtil.getDisplayDateFormat(period.periodEnd)}
                     ]
                   </Typography>
                   <Typography gutterBottom variant="body1">
@@ -391,12 +404,16 @@ function ChplAttestationCreate(props) {
   );
 }
 
-export default ChplAttestationCreate;
+export default ChplAttestationWizard;
 
-ChplAttestationCreate.propTypes = {
-  attestationResponses: arrayOf(object).isRequired,
+ChplAttestationWizard.propTypes = {
+  attestationResponses: arrayOf(object).isRequired, // eslint-disable-line react/forbid-prop-types
   isSubmitting: bool.isRequired,
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
+  period: shape({
+    periodStart: string,
+    periodEnd: string,
+  }).isRequired,
   stage: number.isRequired,
 };
