@@ -53,6 +53,13 @@ const states = [
     views: {
       'view@^': 'chplDevelopersMerge',
     },
+    resolve: {
+      developers: (networkService) => {
+        'ngInject';
+
+        return networkService.getDevelopers();
+      },
+    },
     data: {
       title: 'CHPL Developers - Merge',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
