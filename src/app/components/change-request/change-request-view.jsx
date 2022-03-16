@@ -19,6 +19,7 @@ import ChplChangeRequestDetailsView from './types/details-view';
 import ChplChangeRequestWebsiteView from './types/website-view';
 
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
+import ChplAttestationEdit from 'components/attestation/attestation-edit';
 import { ChplAvatar } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
@@ -124,6 +125,7 @@ const getChangeRequestDetails = (cr) => {
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
   const [isConfirming, setIsConfirming] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
@@ -147,7 +149,8 @@ function ChplChangeRequestView(props) {
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
 
   const editCr = () => {
-    props.dispatch('edit');
+    setIsEditing(true);
+    //props.dispatch('edit');
     // note; for attestations, start wizard, then do a "save" with updated details
   };
 
@@ -167,6 +170,14 @@ function ChplChangeRequestView(props) {
       props.dispatch('save', payload);
     }
     setIsConfirming(false);
+  };
+
+  if (isEditing) {
+    return (
+      <ChplAttestationEdit
+        changeRequest={changeRequest}
+      />
+    );
   };
 
   return (

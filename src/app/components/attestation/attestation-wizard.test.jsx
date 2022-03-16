@@ -67,6 +67,6 @@ describe('the ChplAttestationWizard component', () => {
   });
 
   it('should have a header', () => {
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Submit Attestation');
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Section 1 &mdash; Introduction');
   });
 });

@@ -5,14 +5,14 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import {
+  object,
+} from 'prop-types';
 
 import ChplAttestationWizard from './attestation-wizard';
 import interpretLink from './attestation-util';
 
-import { useFetchAttestationData } from 'api/attestations';
-import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
-import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -22,12 +22,10 @@ const useStyles = makeStyles({
 
 function ChplAttestationEdit(props) {
   const $state = getAngularService('$state');
-  const { developer } = props;
-  const { data, isLoading } = useFetchAttestationData();
-  const crData = useFetchChangeRequestTypes();
-  const { mutate } = usePostChangeRequest();
+  const { changeRequest } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [attestationResponses, setAttestationResponses] = useState([]);
+  const [developer, setDeveloper] = useState({});
   const [changeRequestType, setChangeRequestType] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
@@ -35,40 +33,35 @@ function ChplAttestationEdit(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading) {
+    if (!changeRequest?.details?.attestationResponses) {
       setAttestationResponses([]);
       return;
     }
-    setAttestationResponses(data.attestations
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-      .map((attestation) => ({
+    setAttestationResponses(changeRequest.details.attestationResponses
+      .map((attestationResponse) => ({
+        ...attestationResponse,
         attestation: {
-          ...attestation,
-          display: interpretLink(attestation.description),
-          validResponses: attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
+          ...attestationResponse.attestation,
+          display: interpretLink(attestationResponse.attestation.description),
+          validResponses: attestationResponse.attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
         },
-        response: { response: '' },
       })));
-    setPeriod(data.period);
-  }, [isLoading, data]);
-
-  useEffect(() => {
-    if (crData.isLoading) {
-      return;
-    }
-    setChangeRequestType(crData.data.data.find((type) => type.name === 'Developer Attestation Change Request'));
-  }, [crData.data, crData.isLoading]);
+    setChangeRequestType(changeRequest.changeRequestType);
+    setPeriod(changeRequest.details.attestationPeriod);
+  }, [changeRequest]);
 
   const handleDispatch = (action, payload) => {
+    console.log({action, payload});
     switch (action) {
       case 'close':
-        $state.go('organizations.developers.developer', { developerId: developer.developerId });
+        //$state.go('organizations.developers.developer', { developerId: developer.developerId });
         break;
       case 'stage':
         setStage(payload);
         break;
       case 'submit':
         setIsSubmitting(true);
+        /*
         mutate({
           ...payload,
           changeRequestType,
@@ -94,8 +87,10 @@ function ChplAttestationEdit(props) {
             }
           },
         });
+        */
         break;
-        // no default
+      default:
+        console.log('unknown');
     }
   };
 
@@ -121,5 +116,5 @@ function ChplAttestationEdit(props) {
 export default ChplAttestationEdit;
 
 ChplAttestationEdit.propTypes = {
-  developer: developerPropType.isRequired,
+  changeRequest: object.isRequired,
 };
