@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import Moment from 'react-moment';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 
@@ -130,6 +131,22 @@ function ChplChangeRequestView(props) {
       && changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action';
   };
 
+  const canWithdraw = () => hasAnyRole(['ROLE_DEVELOPER'])
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
+        && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
+
+  const editCr = () => {
+    props.dispatch('edit');
+    // note; for attestations, start wizard, then do a "save" with updated details
+  };
+
+  const withdrawCr = () => {
+    console.log(changeRequest);
+    // note; set CR status to withdrawn, call props.dispatch('save', updated cr)
+  };
+
   return (
     <Card className={classes.productCard}>
       <div className={classes.cardHeaderContainer}>
@@ -163,31 +180,39 @@ function ChplChangeRequestView(props) {
             {getChangeRequestDetails(changeRequest)}
           </div>
           <div className={classes.actionsContainer}>
-            <div>
-              {canEdit()
-               && (
-                 <Button
-                   fullWidth
-                   color="secondary"
-                   variant="contained"
-                   onClick={() => props.dispatch('edit')}
-                 >
-                   Edit Change Request
-                   <EditOutlinedIcon className={classes.iconSpacing} />
-                 </Button>
-               )}
-            </div>
-            <div>
-              <Button
-                fullWidth
-                color="default"
-                variant="contained"
-                onClick={() => props.dispatch('close')}
-              >
-                Close
-                <CloseOutlinedIcon className={classes.iconSpacing} />
-              </Button>
-            </div>
+            {canEdit()
+             && (
+               <Button
+                 fullWidth
+                 color="secondary"
+                 variant="contained"
+                 onClick={editCr}
+               >
+                 Edit Change Request
+                 <EditOutlinedIcon className={classes.iconSpacing} />
+               </Button>
+             )}
+            {canWithdraw()
+             && (
+               <Button
+                 fullWidth
+                 color="secondary"
+                 variant="contained"
+                 onClick={withdrawCr}
+               >
+                 Withdraw Change Request
+                 <DeleteOutlinedIcon className={classes.iconSpacing} />
+               </Button>
+             )}
+            <Button
+              fullWidth
+              color="default"
+              variant="contained"
+              onClick={() => props.dispatch('close')}
+            >
+              Close
+              <CloseOutlinedIcon className={classes.iconSpacing} />
+            </Button>
           </div>
         </div>
         <ChplChangeRequestHistory
