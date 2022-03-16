@@ -83,6 +83,13 @@ const useStyles = makeStyles({
   cardHeader: {
     fontWeight: '600',
   },
+  deleteButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
 });
 
 const getChangeRequestDetails = (cr) => {
@@ -219,8 +226,8 @@ function ChplChangeRequestView(props) {
                && (
                  <Button
                    fullWidth
-                   color="secondary"
                    variant="contained"
+                   className={classes.deleteButton}
                    onClick={withdrawCr}
                  >
                    Withdraw Change Request
