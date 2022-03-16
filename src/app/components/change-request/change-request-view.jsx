@@ -143,8 +143,13 @@ function ChplChangeRequestView(props) {
   };
 
   const withdrawCr = () => {
-    console.log(changeRequest);
-    // note; set CR status to withdrawn, call props.dispatch('save', updated cr)
+    const payload = {
+      ...changeRequest,
+      currentStatus: {
+        changeRequestStatusType: { name: 'Cancelled by Requester' },
+      },
+    };
+    props.dispatch('save', payload);
   };
 
   return (

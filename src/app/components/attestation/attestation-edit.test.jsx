@@ -5,7 +5,7 @@ import {
 import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
-import ChplAttestationWizard from './attestation-wizard';
+import ChplAttestationEdit from './attestation-edit';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
@@ -53,10 +53,10 @@ jest.mock('notistack', () => ({
   }),
 }));
 
-describe('the ChplAttestationWizard component', () => {
+describe('the ChplAttestationEdit component', () => {
   beforeEach(async () => {
     render(
-      <ChplAttestationWizard
+      <ChplAttestationEdit
         developer={developerMock}
       />,
     );

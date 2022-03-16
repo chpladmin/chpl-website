@@ -187,7 +187,6 @@ function ChplChangeRequestEdit(props) {
           comment: formik.values.comment,
           changeRequestStatusType: formik.values.changeRequestStatusType,
         },
-        details,
       };
       props.dispatch('save', updated);
     },
