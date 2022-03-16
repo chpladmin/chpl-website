@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Card,
@@ -13,16 +13,17 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 
-import { getAngularService } from '../../services/angular-react-helper';
-import { changeRequest as changeRequestProp } from '../../shared/prop-types';
-import { ChplAvatar } from '../util';
-import { UserContext } from '../../shared/contexts';
-import theme from '../../themes/theme';
-
 import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDetailsView from './types/details-view';
 import ChplChangeRequestWebsiteView from './types/website-view';
+
+import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
+import { ChplAvatar } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { UserContext } from 'shared/contexts';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -115,6 +116,7 @@ const getChangeRequestDetails = (cr) => {
 
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
+  const [isConfirming, setIsConfirming] = useState(false);
   const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
@@ -143,88 +145,105 @@ function ChplChangeRequestView(props) {
   };
 
   const withdrawCr = () => {
-    const payload = {
-      ...changeRequest,
-      currentStatus: {
-        changeRequestStatusType: { name: 'Cancelled by Requester' },
-      },
-    };
-    props.dispatch('save', payload);
+    setIsConfirming(true);
+  };
+
+  const handleConfirmation = (response) => {
+    if (response === 'yes') {
+      const payload = {
+        ...changeRequest,
+        currentStatus: {
+          changeRequestStatusType: { id: 5, name: 'Cancelled by Requester' },
+          comment: '',
+        },
+      };
+      props.dispatch('save', payload);
+    }
+    setIsConfirming(false);
   };
 
   return (
-    <Card className={classes.productCard}>
-      <div className={classes.cardHeaderContainer}>
-        <ChplAvatar
-          text={changeRequest.developer.name}
-        />
-        <Typography gutterBottom className={classes.cardHeader} variant="h4">{changeRequest.changeRequestType.name}</Typography>
-      </div>
-      <div className={classes.cardSubHeaderContainer}>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Developer:</Typography>
-          <Typography variant="body1">{changeRequest.developer.name}</Typography>
+    <>
+      { isConfirming
+        && (
+          <ChplActionBarConfirmation
+            dispatch={handleConfirmation}
+            pendingMessage="Are you sure you want to withdraw this submission?"
+          />
+        )}
+      <Card className={classes.productCard}>
+        <div className={classes.cardHeaderContainer}>
+          <ChplAvatar
+            text={changeRequest.developer.name}
+          />
+          <Typography gutterBottom className={classes.cardHeader} variant="h4">{changeRequest.changeRequestType.name}</Typography>
         </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-          <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
-          <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-          <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
-        </div>
-      </div>
-      <Divider />
-      <CardContent className={classes.cardContentContainer}>
-        <div className={classes.cardContentChangeRequest}>
+        <div className={classes.cardSubHeaderContainer}>
           <div>
-            {getChangeRequestDetails(changeRequest)}
+            <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+            <Typography variant="body1">{changeRequest.developer.name}</Typography>
           </div>
-          <div className={classes.actionsContainer}>
-            {canEdit()
-             && (
-               <Button
-                 fullWidth
-                 color="secondary"
-                 variant="contained"
-                 onClick={editCr}
-               >
-                 Edit Change Request
-                 <EditOutlinedIcon className={classes.iconSpacing} />
-               </Button>
-             )}
-            {canWithdraw()
-             && (
-               <Button
-                 fullWidth
-                 color="secondary"
-                 variant="contained"
-                 onClick={withdrawCr}
-               >
-                 Withdraw Change Request
-                 <DeleteOutlinedIcon className={classes.iconSpacing} />
-               </Button>
-             )}
-            <Button
-              fullWidth
-              color="default"
-              variant="contained"
-              onClick={() => props.dispatch('close')}
-            >
-              Close
-              <CloseOutlinedIcon className={classes.iconSpacing} />
-            </Button>
+          <div>
+            <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+            <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+          </div>
+          <div>
+            <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+            <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+          </div>
+          <div>
+            <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+            <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
           </div>
         </div>
-        <ChplChangeRequestHistory
-          changeRequest={changeRequest}
-        />
-      </CardContent>
-    </Card>
+        <Divider />
+        <CardContent className={classes.cardContentContainer}>
+          <div className={classes.cardContentChangeRequest}>
+            <div>
+              {getChangeRequestDetails(changeRequest)}
+            </div>
+            <div className={classes.actionsContainer}>
+              {canEdit()
+               && (
+                 <Button
+                   fullWidth
+                   color="secondary"
+                   variant="contained"
+                   onClick={editCr}
+                 >
+                   Edit Change Request
+                   <EditOutlinedIcon className={classes.iconSpacing} />
+                 </Button>
+               )}
+              {canWithdraw()
+               && (
+                 <Button
+                   fullWidth
+                   color="secondary"
+                   variant="contained"
+                   onClick={withdrawCr}
+                 >
+                   Withdraw Change Request
+                   <DeleteOutlinedIcon className={classes.iconSpacing} />
+                 </Button>
+               )}
+              <Button
+                fullWidth
+                color="default"
+                variant="contained"
+                onClick={() => props.dispatch('close')}
+              >
+                Close
+                <CloseOutlinedIcon className={classes.iconSpacing} />
+              </Button>
+            </div>
+          </div>
+          <ChplChangeRequestHistory
+            changeRequest={changeRequest}
+          />
+        </CardContent>
+      </Card>
+    </>
   );
 }
 
