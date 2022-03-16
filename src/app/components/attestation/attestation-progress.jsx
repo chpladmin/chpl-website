@@ -6,14 +6,11 @@ import {
   Step,
   StepLabel,
   Stepper,
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 import { bool, func, number } from 'prop-types';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   buttons: {
@@ -82,7 +79,7 @@ function ChplAttestationProgress(props) {
   }, [props.canPrevious]); // eslint-disable-line react/destructuring-assignment
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container maxWidth="md" className={classes.stepperContainer}>
         <Stepper
           className={classes.stepperBar}
@@ -128,7 +125,7 @@ function ChplAttestationProgress(props) {
           </Button>
         </ButtonGroup>
       </div>
-    </ThemeProvider>
+    </>
   );
 }
 

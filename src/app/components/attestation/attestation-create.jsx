@@ -10,7 +10,6 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -28,7 +27,6 @@ import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -187,7 +185,7 @@ function ChplAttestationCreate(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container className={classes.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
           Submit Attestations
@@ -441,7 +439,7 @@ function ChplAttestationCreate(props) {
         canClose={stage === 3}
         canSave={false}
       />
-    </ThemeProvider>
+    </>
   );
 }
 
