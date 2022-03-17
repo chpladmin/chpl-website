@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -22,7 +22,7 @@ import { func } from 'prop-types';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import { useSnackbar } from 'notistack';
 
-import { useFetchAttestations, useFetchPublicAttestations, usePostAttestationException } from 'api/developer';
+import { useFetchAttestations, usePostAttestationException } from 'api/developer';
 import interpretLink from 'components/attestation/attestation-util';
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -39,10 +39,10 @@ const useStyles = makeStyles({
 function ChplAttestationsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const { developer } = props;
-  const { isLoading, data } = useFetchPublicAttestations({ developer });
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsOpen, setAttestationsOpen] = useState(false);
+  const [attestations, setAttestations] = useState([]);
+  const [developer, setDeveloper] = useState({});
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
   const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
@@ -50,6 +50,12 @@ function ChplAttestationsView(props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
 
+  useEffect(() => {
+    if (props?.developer) {
+      setAttestations(props.developer.attestations);
+      setDeveloper(props.developer);
+    }
+  }, [props?.developer]);
   const cancelCreatingException = () => {
     setIsCreatingException(false);
   };
@@ -110,7 +116,7 @@ function ChplAttestationsView(props) {
                   <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
                   .
                 </Typography>
-                { (!isLoading && data?.length > 0)
+                { attestations.length > 0
                   && (
                     <TableContainer component={Paper}>
                       <Table size="small">

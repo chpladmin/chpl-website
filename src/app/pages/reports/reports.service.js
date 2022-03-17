@@ -251,6 +251,8 @@ export class ReportService {
     var simpleFields = [
       {key: 'streetLineOne', display: 'Street Line 1'},
       {key: 'streetLineTwo', display: 'Street Line 2'},
+      {key: 'line1', display: 'Street Line 1'},
+      {key: 'line2', display: 'Street Line 2'},
       {key: 'city', display: 'City'},
       {key: 'state', display: 'State'},
       {key: 'zipcode', display: 'Zipcode'},
