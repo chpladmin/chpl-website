@@ -10,14 +10,7 @@ const states = [
   }, {
     name: 'organizations.developers',
     url: '/developers',
-    component: 'chplDevelopers',
-    resolve: {
-      developers: (networkService) => {
-        'ngInject';
-
-        return networkService.getDevelopers();
-      },
-    },
+    template: '<ui-view><chpl-developers-wrapper-bridge></chpl-developers-wrapper-bridge></ui-view>',
     data: { title: 'CHPL Developers' },
   }, {
     name: 'organizations.developers.developer',
@@ -59,6 +52,13 @@ const states = [
     url: '/merge',
     views: {
       'view@^': 'chplDevelopersMerge',
+    },
+    resolve: {
+      developers: (networkService) => {
+        'ngInject';
+
+        return networkService.getDevelopers();
+      },
     },
     data: {
       title: 'CHPL Developers - Merge',
