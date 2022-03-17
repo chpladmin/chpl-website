@@ -45,7 +45,7 @@ function ChplAttestationsView(props) {
   const [developer, setDeveloper] = useState({});
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
-  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
+  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false, developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
   const [isCreatingException, setIsCreatingException] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
@@ -56,6 +56,7 @@ function ChplAttestationsView(props) {
       setDeveloper(props.developer);
     }
   }, [props?.developer]);
+
   const cancelCreatingException = () => {
     setIsCreatingException(false);
   };
@@ -69,8 +70,8 @@ function ChplAttestationsView(props) {
 
   const closeAttestations = () => setAttestationsOpen(false);
 
-  const viewAttestations = (attestations) => {
-    setActiveAttestations(attestations);
+  const viewAttestations = (selected) => {
+    setActiveAttestations(developerAttestations.find((att) => att.id === selected.id));
     setAttestationsOpen(true);
   };
 
@@ -133,7 +134,7 @@ function ChplAttestationsView(props) {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          { data.map((item) => (
+                          { attestations.map((item) => (
                             <TableRow key={item.id}>
                               <TableCell>
                                 { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
@@ -249,16 +250,16 @@ function ChplAttestationsView(props) {
             >
               <div>
                 <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
-                { activeAttestations.attestationPeriod && DateUtil.getDisplayDateFormat(activeAttestations.attestationPeriod.periodStart) }
+                { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodStart) }
                 {' '}
                 -
                 {' '}
-                { activeAttestations.attestationPeriod && DateUtil.getDisplayDateFormat(activeAttestations.attestationPeriod.periodEnd) }
+                { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodEnd) }
               </div>
               <div>
                 <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
                 <Typography>{activeAttestations.statusText}</Typography>
-                { activeAttestations.attestationResponses
+                { activeAttestations.responses
                   && (
                     <TableContainer component={Paper}>
                       <Table>
@@ -269,7 +270,7 @@ function ChplAttestationsView(props) {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          { activeAttestations.attestationResponses
+                          { activeAttestations.responses
                             .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
                             .map((item) => (
                               <TableRow key={item.id}>
