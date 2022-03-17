@@ -30,7 +30,7 @@ const compareObject = (before, after, root = 'root') => {
 };
 
 const parseAttestationData = (before, after) => {
-  if (!before || !after) {
+  if (!before || !after || (before.length === 0 && after.length === 0)) {
     return [];
   }
   if (before.length < after.length) {
