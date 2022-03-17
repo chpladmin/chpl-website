@@ -12,11 +12,11 @@ const useFetchAttestations = ({ developer, isAuthenticated }) => {
   });
 };
 
-const useFetchPublicAttestations = ({ developer }) => {
+const useFetchDevelopers = () => {
   const axios = useAxios();
-  return useQuery([`developer/${developer.developerId}/public-attestations`], async () => {
-    const response = await axios.get(`/developers/${developer.developerId}/public-attestations`);
-    return response.data.developerAttestations;
+  return useQuery(['developers'], async () => {
+    const response = await axios.get('/developers');
+    return response.data.developers;
   }, { keepPreviousData: true });
 };
 
@@ -33,4 +33,4 @@ const usePostAttestationException = () => {
   });
 };
 
-export { useFetchAttestations, useFetchPublicAttestations, usePostAttestationException };
+export { useFetchAttestations, useFetchDevelopers, usePostAttestationException };
