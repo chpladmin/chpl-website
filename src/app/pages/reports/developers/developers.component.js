@@ -1,3 +1,44 @@
+const lookup = {
+  'attestations.id': {
+    message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+  }
+};
+
+const getMessage = (before, after, root, key) => {
+  if (lookup[`${root}.${key}`]) {
+    return lookup[`${root}.${key}`].message(before, after);
+  }
+  return `${root}.${key}: ${before[key]} => ${after[key]}`;
+};
+
+const compareObject = (before, after, root = 'root') => {
+  const keys = Object.keys(before);
+  const diffs = keys.map((key) => {
+    switch (typeof before[key]) {
+      case 'string':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'number':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'object':
+        const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
+        return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
+      default:
+        return `${typeof before[key]} - ${getMessage(before, after, root, key)}`;
+    }
+  });
+  return diffs.filter((msg) => !!msg);
+};
+
+const parseAttestationData = (before, after) => {
+  if (!before || !after || (before.length === 0 && after.length === 0)) {
+    return [];
+  }
+  if (before.length < after.length) {
+    return [`<li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li>`];
+  }
+  return compareObject(before[0], after[0], 'attestations').map((msg) => `<li>${msg}</li>`);
+};
+
 export const ReportsDevelopersComponent = {
   templateUrl: 'chpl.reports/developers/developers.html',
   controller: class ReportsDevelopersComponent {
@@ -141,6 +182,11 @@ export const ReportsDevelopersComponent = {
             }
           }
 
+          const attestationChanges = parseAttestationData(item.originalData.attestations, item.newData.attestations);
+          if (attestationChanges && attestationChanges.length > 0) {
+            activity.details.push('Attestation changes<ul>' + attestationChanges.join('') + '</ul>');
+          }
+
           var foundEvents = false;
           var statusEvents = this.utilService.arrayCompare(item.originalData.statusEvents,item.newData.statusEvents);
           var sortedEvents, translatedEvents;
@@ -163,7 +209,7 @@ export const ReportsDevelopersComponent = {
 
             sortedEvents = this.$filter('orderBy')(statusEvents.added,'statusDate',true);
             for (j = 0; j < sortedEvents.length; j++) {
-              translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+              translatedEvents += '<li><strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
             }
             translatedEvents += '</ul></td>';
           }
@@ -172,7 +218,7 @@ export const ReportsDevelopersComponent = {
 
             sortedEvents = this.$filter('orderBy')(statusEvents.edited,'before.statusDate',true);
             for (j = 0; j < sortedEvents.length; j++) {
-              translatedEvents += '<li><strong>' + sortedEvents[j].before.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + sortedEvents[j].after.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
+              translatedEvents += '<li><strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
             }
             translatedEvents += '</ul></td>';
           }
@@ -181,7 +227,7 @@ export const ReportsDevelopersComponent = {
 
             sortedEvents = this.$filter('orderBy')(statusEvents.removed,'statusDate',true);
             for (j = 0; j < sortedEvents.length; j++) {
-              translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+              translatedEvents += '<li><strong>' + (sortedEvents[j].status.statusName || sortedEvents[j].status.status) + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
             }
             translatedEvents += '</ul></td>';
           }
