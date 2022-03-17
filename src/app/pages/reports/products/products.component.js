@@ -1,3 +1,45 @@
+const lookup = {
+  'owner.name': {
+    message: (before, after) => `Developer changed from ${before.name} to ${after.name}`,
+  },
+};
+
+const getMessage = (before, after, root, key) => {
+  if (lookup[`${root}.${key}`]) {
+    return lookup[`${root}.${key}`].message(before, after);
+  }
+  return '';
+};
+
+const compareObject = (before, after, root = 'root') => {
+  if (!before || !after) { return []; }
+  const keys = Object.keys(before);
+  const diffs = keys.map((key) => {
+    switch (typeof before[key]) {
+      case 'boolean':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'string':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'number':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'object':
+        const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
+        return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
+      default:
+        return `${typeof before[key]} - ${getMessage(before, after, root, key)}`;
+    }
+  });
+  return diffs.filter((msg) => !!msg);
+};
+
+const parseOwnerData = (before, after) => {
+  if (!before || !after) {
+    return [];
+  }
+  return compareObject(before, after, 'owner').map((msg) => `<li>${msg}</li>`);
+};
+
+
 export const ReportsProductsComponent = {
   templateUrl: 'chpl.reports/products/products.html',
   controller: class ReportsProductsComponent {
@@ -102,6 +144,12 @@ export const ReportsProductsComponent = {
           if (change) {
             activity.details.push(change);
           }
+
+          const ownerChanges = parseOwnerData(item.originalData.owner, item.newData.owner);
+          if (ownerChanges && ownerChanges.length > 0) {
+            activity.details.push('Developer changes<ul>' + ownerChanges.join('') + '</ul>');
+          }
+
           var contactChanges = this.ReportService.compareContact(item.originalData.contact, item.newData.contact);
           if (contactChanges && contactChanges.length > 0) {
             activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');

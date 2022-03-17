@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,7 +18,7 @@ import {
 import { func } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
-import { useFetchAttestations, useFetchPublicAttestations, usePostAttestationException } from 'api/developer';
+import { useFetchAttestations, usePostAttestationException } from 'api/developer';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
@@ -33,8 +33,8 @@ const useStyles = makeStyles({
 function ChplAttestationsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
-  const { developer } = props;
-  const { isLoading, data } = useFetchPublicAttestations({ developer });
+  const [attestations, setAttestations] = useState([]);
+  const [developer, setDeveloper] = useState({});
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
   const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
@@ -42,6 +42,12 @@ function ChplAttestationsView(props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
 
+  useEffect(() => {
+    if (props?.developer) {
+      setAttestations(props.developer.attestations);
+      setDeveloper(props.developer);
+    }
+  }, [props?.developer]);
   const cancelCreatingException = () => {
     setIsCreatingException(false);
   };
@@ -91,7 +97,7 @@ function ChplAttestationsView(props) {
                 <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
                 .
               </Typography>
-              { (!isLoading && data?.length > 0)
+              { attestations.length > 0
                 && (
                   <TableContainer component={Paper}>
                     <Table size="small">
@@ -102,7 +108,7 @@ function ChplAttestationsView(props) {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        { data.map((item) => (
+                        { attestations.map((item) => (
                           <TableRow key={item.id}>
                             <TableCell>
                               { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
@@ -153,15 +159,15 @@ function ChplAttestationsView(props) {
           <CardActions>
             { !isCreatingException
               && (
-              <Button
-                color="primary"
-                id="create-attestation-exception-button"
-                variant="contained"
-                onClick={() => setIsCreatingException(true)}
-                disabled={!canCreateException}
-              >
-                Re-Open Submission
-              </Button>
+                <Button
+                  color="primary"
+                  id="create-attestation-exception-button"
+                  variant="contained"
+                  onClick={() => setIsCreatingException(true)}
+                  disabled={!canCreateException}
+                >
+                  Re-Open Submission
+                </Button>
               )}
             { isCreatingException
               && (

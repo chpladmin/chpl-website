@@ -23,6 +23,7 @@ const hocMock = {
 
 const developerMock = {
   name: 'a developer name',
+  attestations: [],
 };
 
 const mockApi = {
@@ -36,7 +37,6 @@ const mockApi = {
 jest.mock('api/developer', () => ({
   __esModule: true,
   useFetchAttestations: () => mockApi,
-  useFetchPublicAttestations: () => mockApi,
   usePostAttestationException: () => mockApi,
 }));
 
