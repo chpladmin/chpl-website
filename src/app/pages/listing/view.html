@@ -48,6 +48,10 @@
                 <div class="data-label listing__enhanced-label--small">ONC-ACB Certification ID</div>
                 <div class="read-only-data">{{ $ctrl.listing.acbCertificationId }}</div>
               </div>
+              <div ng-if="$ctrl.listing.chplProductNumberHistory.length > 0">
+                <div class="data-label listing__enhanced-label--small">Previous CHPL Product Numbers</div>
+                <div class="read-only-data" ng-repeat="num in $ctrl.listing.chplProductNumberHistory | orderBy:'-endDateTime'">{{ num.chplProductNumber }}</div>
+              </div>
               <div>
                 <div class="data-label listing__enhanced-label">Certification Date</div>
                 <div class="read-only-data">{{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}</div>
