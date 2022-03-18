@@ -396,24 +396,14 @@ function ChplChangeRequestsView(props) {
                                     && (
                                       <TableCell>
                                         { item.certificationBodies.length === 0
-                                          && (
+                                          ? (
                                             <>
                                               None
                                             </>
-                                          )}
-                                        { item.certificationBodies.length === 1
-                                          && (
+                                          ) : (
                                             <>
-                                              { item.certificationBodies[0].name }
+                                              { item.certificationBodies.map((acb) => acb.name).join('; ') }
                                             </>
-                                          )}
-                                        { item.certificationBodies.length > 1
-                                          && (
-                                            <ul>
-                                              { item.certificationBodies.map((acb) => (
-                                                <li key={acb.name}>{ acb.name }</li>
-                                              ))}
-                                            </ul>
                                           )}
                                       </TableCell>
                                     )}
