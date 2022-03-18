@@ -12,6 +12,7 @@ import {
 import ChplAttestationWizard from './attestation-wizard';
 import interpretLink from './attestation-util';
 
+import { usePostChangeRequest } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
@@ -24,6 +25,7 @@ function ChplAttestationEdit(props) {
   const $state = getAngularService('$state');
   const { changeRequest } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const { mutate } = usePostChangeRequest();
   const [attestationResponses, setAttestationResponses] = useState([]);
   const [developer, setDeveloper] = useState({});
   const [changeRequestType, setChangeRequestType] = useState({});
@@ -61,12 +63,13 @@ function ChplAttestationEdit(props) {
         break;
       case 'submit':
         setIsSubmitting(true);
-        /*
-        mutate({
+        const updated = {
           ...payload,
           changeRequestType,
           developer,
-        }, {
+        };
+        console.log({updated});
+        mutate(updated, {
           onSuccess: () => {
             setIsSubmitting(false);
             setStage(3);
@@ -87,7 +90,6 @@ function ChplAttestationEdit(props) {
             }
           },
         });
-        */
         break;
       default:
         console.log('unknown');
