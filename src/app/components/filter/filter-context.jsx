@@ -39,7 +39,7 @@ const getDefaultValueEntry = ({ filter, handleFilterToggle }) => filter.values
           <Checkbox
             color="primary"
             edge="start"
-            checked={value.selected}
+            checked={value?.selected || false}
             tabIndex={-1}
             inputProps={{ 'aria-labelledby': labelId }}
           />
