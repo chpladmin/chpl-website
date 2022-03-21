@@ -181,7 +181,7 @@ function ChplChangeRequestView(props) {
         changeRequest={changeRequest}
       />
     );
-  };
+  }
 
   return (
     <>
