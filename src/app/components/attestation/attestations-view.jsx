@@ -19,7 +19,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import { useSnackbar } from 'notistack';
 
 import { useFetchAttestations, usePostAttestationException } from 'api/developer';
@@ -32,7 +32,7 @@ import { developer as developerPropType } from 'shared/prop-types';
 const useStyles = makeStyles({
   content: {
     display: 'grid',
-    gap: '8px',
+    gap: '16px',
   },
 });
 
@@ -120,7 +120,7 @@ function ChplAttestationsView(props) {
                 { attestations.length > 0
                   && (
                     <TableContainer component={Paper}>
-                      <Table size="small">
+                      <Table>
                         <TableHead>
                           <TableRow>
                             <TableCell>Attestation Period</TableCell>
@@ -153,7 +153,7 @@ function ChplAttestationsView(props) {
                                       onClick={() => viewAttestations(item)}
                                       aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
                                     >
-                                      <ZoomInIcon />
+                                      <VisibilityIcon color="primary" />
                                     </IconButton>
                                   </TableCell>
                                 )}
@@ -250,15 +250,17 @@ function ChplAttestationsView(props) {
             >
               <div>
                 <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
-                { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodStart) }
-                {' '}
-                -
-                {' '}
-                { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodEnd) }
+                <Typography gutterBottom>
+                  { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodStart) }
+                  {' '}
+                  -
+                  {' '}
+                  { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodEnd) }
+                </Typography>
               </div>
               <div>
                 <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-                <Typography>{activeAttestations.statusText}</Typography>
+                <Typography gutterBottom>{activeAttestations.statusText}</Typography>
                 { activeAttestations.responses
                   && (
                     <TableContainer component={Paper}>
