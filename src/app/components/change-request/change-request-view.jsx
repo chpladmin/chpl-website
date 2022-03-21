@@ -149,9 +149,12 @@ function ChplChangeRequestView(props) {
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
 
   const editCr = () => {
-    setIsEditing(true);
-    //props.dispatch('edit');
-    // note; for attestations, start wizard, then do a "save" with updated details
+    if (hasAnyRole(['ROLE_DEVELOPER'])
+        && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
+      setIsEditing(true);
+    } else {
+      props.dispatch('edit');
+    }
   };
 
   const withdrawCr = () => {
