@@ -54,6 +54,10 @@ function ChplChangeRequestAttestationEdit(props) {
                 .map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>
+                      <strong>
+                        { item.attestation.condition.name }
+                        {': '}
+                      </strong>
                       { interpretLink(item.attestation.description) }
                     </TableCell>
                     <TableCell>
