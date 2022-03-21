@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   arrayOf, func, string,
 } from 'prop-types';
@@ -10,7 +10,6 @@ import {
   useFetchChangeRequestTypes,
 } from 'api/change-requests';
 import { FilterProvider } from 'components/filter';
-import { FlagContext } from 'shared/contexts';
 
 const analytics = {
   category: 'Change Requests',
@@ -68,25 +67,14 @@ const staticFilters = [{
 
 function ChplChangeRequests(props) {
   const { disallowedFilters, preFilter } = props;
-  const { isOn } = useContext(FlagContext);
-  const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
 
   useEffect(() => {
-    setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
-  }, [isOn]);
-
-  useEffect(() => {
-    const values = demographicChangeRequestIsOn ? [
+    const values = [
       { value: 'Accepted' },
       { value: 'Cancelled by Requester' },
       { value: 'Pending Developer Action', default: true },
-      { value: 'Pending ONC-ACB Action', default: true },
-      { value: 'Rejected' },
-    ] : [
-      { value: 'Accepted' },
-      { value: 'Cancelled by Requester' },
       { value: 'Pending ONC-ACB Action', default: true },
       { value: 'Rejected' },
     ];
@@ -103,7 +91,7 @@ function ChplChangeRequests(props) {
           return canMeet.length === 0 || canMeet.includes(item.currentStatusName);
         },
       }));
-  }, [demographicChangeRequestIsOn]);
+  }, []);
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
