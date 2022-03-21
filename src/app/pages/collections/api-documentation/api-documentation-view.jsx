@@ -208,7 +208,7 @@ function ChplApiDocumentationCollectionView(props) {
     if (isLoading || !data.results) { return; }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
       apiDocumentation: parseApiDocumentation(listing, analytics),
       apiDocumentation56: getApiDocumentationForCsv(listing, 56),
       apiDocumentation57: getApiDocumentationForCsv(listing, 57),
