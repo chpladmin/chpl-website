@@ -22,8 +22,9 @@ import { func } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { useSnackbar } from 'notistack';
 
+import ChplAttestationView from './attestation-view';
+
 import { useFetchAttestations, usePostAttestationException } from 'api/developer';
-import interpretLink from 'components/attestation/attestation-util';
 import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
@@ -248,51 +249,9 @@ function ChplAttestationsView(props) {
             <DialogContent
               dividers
             >
-              <div>
-                <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
-                <Typography gutterBottom>
-                  { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodStart) }
-                  {' '}
-                  -
-                  {' '}
-                  { activeAttestations.period && DateUtil.getDisplayDateFormat(activeAttestations.period.periodEnd) }
-                </Typography>
-              </div>
-              <div>
-                <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-                <Typography gutterBottom>{activeAttestations.statusText}</Typography>
-                { activeAttestations.responses
-                  && (
-                    <TableContainer component={Paper}>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Attestation</TableCell>
-                            <TableCell>Response</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          { activeAttestations.responses
-                            .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
-                            .map((item) => (
-                              <TableRow key={item.id}>
-                                <TableCell>
-                                  <strong>
-                                    { item.attestation.condition.name }
-                                    {': '}
-                                  </strong>
-                                  { interpretLink(item.attestation.description) }
-                                </TableCell>
-                                <TableCell>
-                                  { item.response.response }
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )}
-              </div>
+              <ChplAttestationView
+                attestations={activeAttestations}
+              />
             </DialogContent>
           </Dialog>
         )}
