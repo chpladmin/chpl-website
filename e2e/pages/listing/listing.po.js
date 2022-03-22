@@ -10,6 +10,7 @@ class ListingPage {
       productHistory: '#view-listing-history',
       goToApi: '#go-to-api',
       manageSurveillanceActivity: '//a[text()=" Manage Surveillance Activity"]',
+      listingHistoryTitle: '#listing-history-title',
       listingBasicInformation: '#listing-information-basic',
       chplProductNumber: 'p*=CHPL Product Number:',
       previousChplProductNumbersTitle: 'p=Previous CHPL Product Numbers',
@@ -57,7 +58,7 @@ class ListingPage {
   }
 
   listingHistoryModalRows() {
-    return $('//*[@id=\'listing-history-title\']/parent::div').$('table').$('tbody').$$('tr');
+    return $(this.elements.listingHistoryTitle).parentElement().$('div').$('table').$('tbody').$$('tr');
   }
 
   get listingBasicInformation() {

@@ -66,8 +66,8 @@ describe('On 2015 Listing details page', () => {
     });
 
     it('should show changes on the Listing page', () => {
-      const productCode = (Date.now() + '').substring(9);
-      const versionCode = (Date.now() + '').substring(11)
+      const productCode = (`${Date.now()}`).substring(9);
+      const versionCode = (`${Date.now()}`).substring(11);
       const initialChplProductNumber = page.chplProductNumber;
 
       login.logIn('drummond');
@@ -79,13 +79,13 @@ describe('On 2015 Listing details page', () => {
       listingEdit.chplProductNumberVerCode.addValue(versionCode);
       action.save();
       hooks.waitForSpinnerToDisappear();
-      listingEdit.warningLabel.click()
+      listingEdit.warningLabel.click();
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
       expect(page.chplProductNumber).not.toBe(initialChplProductNumber);
-      const previousChplProductNumbers = page.previousChplProductNumbers;
+      const { previousChplProductNumbers } = page;
       expect(previousChplProductNumbers.includes(initialChplProductNumber)).toBeTruthy();
     });
   });
