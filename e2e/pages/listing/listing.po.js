@@ -58,7 +58,12 @@ class ListingPage {
   }
 
   listingHistoryModalRows() {
-    return $(this.elements.listingHistoryTitle).parentElement().$('div').$('table').$('tbody').$$('tr');
+    return $(this.elements.listingHistoryTitle)
+      .parentElement()
+      .$('div')
+      .$('table')
+      .$('tbody')
+      .$$('tr');
   }
 
   get listingBasicInformation() {
