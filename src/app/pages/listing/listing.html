@@ -16,7 +16,7 @@
             <p>CHPL Product Number: {{ $ctrl.listing.chplProductNumber }}</p>
             <p ng-if="$ctrl.listing.acbCertificationId">ONC-ACB Certification ID: {{ $ctrl.listing.acbCertificationId }}</p>
             <span ng-if="$ctrl.listing.chplProductNumberHistory.length > 0">
-            <p>Previous CHPL Product Numbers</p>
+            <p>Previous CHPL Product Numbers:</p>
               <ul>
                 <li ng-repeat="num in $ctrl.listing.chplProductNumberHistory | orderBy:'-endDateTime'">
                   {{ num.chplProductNumber }}
