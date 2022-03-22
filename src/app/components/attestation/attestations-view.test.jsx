@@ -23,15 +23,30 @@ const hocMock = {
 
 const developerMock = {
   name: 'a developer name',
+  attestations: [],
 };
 
 const mockApi = {
   isLoading: true,
+  data: {
+    canSubmitAttestationChangeRequest: true,
+  },
+  mutate: () => {},
 };
 
 jest.mock('api/developer', () => ({
   __esModule: true,
-  useFetchPublicAttestations: () => mockApi,
+  useFetchAttestations: () => mockApi,
+  usePostAttestationException: () => mockApi,
+}));
+
+const mockEnqueue = jest.fn();
+
+jest.mock('notistack', () => ({
+  ...jest.requireActual('notistack'),
+  useSnackbar: () => ({
+    enqueueSnackbar: mockEnqueue,
+  }),
 }));
 
 const userContextMock = {
