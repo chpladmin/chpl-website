@@ -280,41 +280,41 @@ function ChplChangeRequestEdit(props) {
                     )}
                 </div>
                 {hasAnyRole(['ROLE_DEVELOPER'])
-                 ? (
-                   <Typography className={classes.fullWidth}>
-                     {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
+                  ? (
+                    <Typography className={classes.fullWidth}>
+                      {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
                       && (
                         <>
                           Status will be set to &quot;Pending ONC-ACB Action&quot;
                         </>
                       )}
-                     {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
+                      {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
                       && (
                         <>
                           No status change will occur
                         </>
                       )}
-                   </Typography>
-                 ) : (
-                   <ChplTextField
-                     select
-                     id="change-request-status-type"
-                     name="changeRequestStatusType"
-                     label="Select new Status"
-                     className={classes.fullWidth}
-                     required
-                     value={formik.values.changeRequestStatusType}
-                     onChange={formik.handleChange}
-                     onBlur={formik.handleBlur}
-                     error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
-                     helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
-                   >
-                     { changeRequestStatusTypes
-                       .map((item) => (
-                         <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                       ))}
-                   </ChplTextField>
-                 )}
+                    </Typography>
+                  ) : (
+                    <ChplTextField
+                      select
+                      id="change-request-status-type"
+                      name="changeRequestStatusType"
+                      label="Select new Status"
+                      className={classes.fullWidth}
+                      required
+                      value={formik.values.changeRequestStatusType}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
+                      helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
+                    >
+                      { changeRequestStatusTypes
+                        .map((item) => (
+                          <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                        ))}
+                    </ChplTextField>
+                  )}
                 <ChplTextField
                   id="comment"
                   name="comment"

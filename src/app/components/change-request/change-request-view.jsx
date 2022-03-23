@@ -19,7 +19,6 @@ import ChplChangeRequestDetailsView from './types/details-view';
 import ChplChangeRequestWebsiteView from './types/website-view';
 
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
-import ChplAttestationEdit from 'components/attestation/attestation-edit';
 import { ChplAvatar } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
@@ -125,7 +124,6 @@ const getChangeRequestDetails = (cr) => {
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
   const [isConfirming, setIsConfirming] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
@@ -149,14 +147,7 @@ function ChplChangeRequestView(props) {
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
 
   const editCr = () => {
-    /*
-    if (hasAnyRole(['ROLE_DEVELOPER'])
-        && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
-      setIsEditing(true);
-    } else {
-    */
-      props.dispatch('edit');
-  //}
+    props.dispatch('edit');
   };
 
   const withdrawCr = () => {
@@ -176,14 +167,6 @@ function ChplChangeRequestView(props) {
     }
     setIsConfirming(false);
   };
-
-  if (isEditing) {
-    return (
-      <ChplAttestationEdit
-        changeRequest={changeRequest}
-      />
-    );
-  }
 
   return (
     <>

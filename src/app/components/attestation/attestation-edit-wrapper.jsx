@@ -7,21 +7,21 @@ import ApiWrapper from 'api/api-wrapper';
 import { UserWrapper } from 'components/login';
 
 function ChplAttestationEditWrapper(props) {
-  /* eslint-disable react/jsx-props-no-spreading */
+  const { changeRequest } = props;
+
   return (
     <UserWrapper>
       <ApiWrapper>
         <ChplAttestationEdit
-          {...props}
+          changeRequest={changeRequest}
         />
       </ApiWrapper>
     </UserWrapper>
   );
-  /* eslint-enable react/jsx-props-no-spreading */
 }
 
 export default ChplAttestationEditWrapper;
 
 ChplAttestationEditWrapper.propTypes = {
-  changeRequest: object.isRequired,
+  changeRequest: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };

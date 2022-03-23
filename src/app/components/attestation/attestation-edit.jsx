@@ -61,15 +61,14 @@ function ChplAttestationEdit(props) {
         break;
       case 'submit':
         setIsSubmitting(true);
-        const updated = {
+        mutate({
           ...changeRequest,
           ...payload,
           currentStatus: {
             changeRequestStatusType: { id: 1 },
             comment: '',
           },
-        };
-        mutate(updated, {
+        }, {
           onSuccess: () => {
             setIsSubmitting(false);
             setStage(3);
@@ -117,5 +116,5 @@ function ChplAttestationEdit(props) {
 export default ChplAttestationEdit;
 
 ChplAttestationEdit.propTypes = {
-  changeRequest: object.isRequired,
+  changeRequest: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
