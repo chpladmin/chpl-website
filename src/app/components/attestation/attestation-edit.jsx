@@ -13,6 +13,7 @@ import ChplAttestationWizard from './attestation-wizard';
 import interpretLink from './attestation-util';
 
 import { usePutChangeRequest } from 'api/change-requests';
+import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationEdit(props) {
+  const $state = getAngularService('$state');
   const { changeRequest } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePutChangeRequest();
@@ -50,10 +52,9 @@ function ChplAttestationEdit(props) {
   }, [changeRequest]);
 
   const handleDispatch = (action, payload) => {
-    console.log({ action, payload });
     switch (action) {
       case 'close':
-        // $state.go('organizations.developers.developer', { developerId: developer.developerId });
+        $state.go('organizations.developers.developer', { developerId: developer.developerId });
         break;
       case 'stage':
         setStage(payload);
@@ -68,7 +69,6 @@ function ChplAttestationEdit(props) {
             comment: '',
           },
         };
-        console.log({ updated });
         mutate(updated, {
           onSuccess: () => {
             setIsSubmitting(false);
@@ -91,8 +91,7 @@ function ChplAttestationEdit(props) {
           },
         });
         break;
-      default:
-        console.log('unknown');
+        // no default
     }
   };
 

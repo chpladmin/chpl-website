@@ -80,6 +80,16 @@ const states = [
     views: {
       'view@^': 'chplAttestationEditWrapperBridge',
     },
+    params: {
+      changeRequest: null,
+    },
+    resolve: {
+      changeRequest: ($transition$) => {
+        'ngInject';
+
+        return $transition$.params().changeRequest;
+      },
+    },
     data: {
       title: 'CHPL Developers - Attestation',
       roles: ['ROLE_DEVELOPER'],
