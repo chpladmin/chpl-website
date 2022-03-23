@@ -233,6 +233,7 @@ function ChplChangeRequestsView(props) {
     { property: 'receivedDate', text: 'Creation Date', sortable: true },
     { property: 'currentStatusName', text: 'Request Status', sortable: true },
     { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
+    { property: 'associatedAcbs', text: 'Associated ONC-ACBs' },
     { property: 'actions', text: 'Actions', invisible: true, sortable: false },
   ];
 
@@ -391,6 +392,21 @@ function ChplChangeRequestsView(props) {
                                    && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
                                   <TableCell>{item.currentStatusName}</TableCell>
                                   <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                                  { !hasAnyRole(['ROLE_DEVELOPER'])
+                                    && (
+                                      <TableCell>
+                                        { item.certificationBodies.length === 0
+                                          ? (
+                                            <>
+                                              None
+                                            </>
+                                          ) : (
+                                            <>
+                                              { item.certificationBodies.map((acb) => acb.name).join('; ') }
+                                            </>
+                                          )}
+                                      </TableCell>
+                                    )}
                                   <TableCell align="right">
                                     <Button
                                       onClick={() => setChangeRequest(item)}
