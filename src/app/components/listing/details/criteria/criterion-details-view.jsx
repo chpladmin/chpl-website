@@ -13,15 +13,15 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { ChplEllipsis, ChplLink, ChplTooltip } from '../../../util';
+import { ChplReliedUponSoftwareView } from './relied-upon-software';
+
+import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import {
   accessibilityStandard,
   certificationResult,
   qmsStandard,
-} from '../../../../shared/prop-types';
-import { FlagContext } from '../../../../shared/contexts';
-
-import { ChplReliedUponSoftwareView } from './relied-upon-software';
+} from 'shared/prop-types';
+import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles(() => ({
   infoIcon: {
@@ -237,7 +237,7 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="conformanceMethods">
                 <TableCell component="th" scope="row">
-                  <ChplTooltip title="TBD">
+                  <ChplTooltip title="The method used to evaluate compliance with the certification criterion. For the Test Procedure method, this also includes the version used during testing of the certification criterion functionality.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
                         color="primary"
