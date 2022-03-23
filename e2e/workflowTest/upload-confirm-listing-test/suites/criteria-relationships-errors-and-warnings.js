@@ -8,6 +8,7 @@ const suite = {
       'Must use Cures Update version of \'170.315 (d)(2)\' unless ICS, for Listings certified after 2020-06-30.',
       'Must use Cures Update version of \'170.315 (d)(10)\' unless ICS, for Listings certified after 2020-06-30.',
       'Must use Cures Update version of \'170.315 (b)(3)\' unless ICS, for Listings certified after 2020-01-01.',
+      'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
       'Cannot select both 170.315 (g)(9) and 170.315 (g)(9) (Cures Update).',
       'Cannot select both 170.315 (g)(8) and 170.315 (g)(10).',
       'Cannot select both 170.315 (g)(6) and 170.315 (g)(6) (Cures Update).',
@@ -61,7 +62,6 @@ const suite = {
   }, {
     listingId: '15.04.04.1722.CRT3.V2.00.1.210607',
     expectedErrors: [
-      'Listing has attested to (g)(3), but no criteria were found attesting to SED.',
       '170.315 (g)(6) or 170.315 (g)(6) (Cures Update) is required but was not found.',
       'Certification criterion 170.315 (a)(*) was found so 170.315 (d)(1) is required but was not found.',
       'Certification criterion 170.315 (a)(*) was found so 170.315 (d)(2) or 170.315 (d)(2) (Cures Update) is required but was not found.',

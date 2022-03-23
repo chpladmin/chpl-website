@@ -19,12 +19,12 @@ import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../../themes/theme';
-import { developer as developerProp } from '../../../shared/prop-types';
-import { ChplTextField } from '../../util';
-
 import ChplConfirmDeveloperAddress from './address';
 import ChplConfirmDeveloperContact from './contact';
+
+import { ChplTextField } from 'components/util';
+import { developer as developerProp } from 'shared/prop-types';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
   buttonCard: {
@@ -38,6 +38,7 @@ const useStyles = makeStyles(() => ({
   buttonCardFocused: {
     boxShadow: '0px 0px 16px 4px #337ab750',
     fontWeight: '600',
+    backgroundColor: '#f9f9f9',
   },
   buttonContent: {
     display: 'flex',
@@ -49,7 +50,7 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr',
     gap: '32px',
-    padding: '32px',
+    padding: '32px 0',
     alignItems: 'start',
   },
   developerSubContainer: {
@@ -140,6 +141,10 @@ function ChplConfirmDeveloper(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const foundDeveloper = props.developers.find((d) => d.developerId === props.developer.developerId);
     if (foundDeveloper) {
       setSelectedDeveloper(foundDeveloper);
@@ -219,7 +224,7 @@ function ChplConfirmDeveloper(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
+      <Container maxWidth="md">
         <div className={classes.developerConfirm}>
           <div className={classes.developerSubContainer}>
             <Button
