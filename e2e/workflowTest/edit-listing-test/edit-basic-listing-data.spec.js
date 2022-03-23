@@ -63,7 +63,7 @@ describe('On 2015 Listing details page', () => {
     });
   });
 
-  describe('when changing CHPL Product Number data', () => {
+  xdescribe('when changing CHPL Product Number data', () => {
     beforeEach(async () => {
       await hooks.open('#/listing/9902');
     });
