@@ -49,6 +49,7 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr',
     alignItems: 'center',
     borderLeft: '1px solid #599bde',
+    paddingLeft: '16px',
   },
   filterSubHeaderContainer: {
     display: 'grid',
@@ -165,13 +166,12 @@ function ChplFilterPanel() {
         }}
         PaperProps={{
           style: {
-            height: '250px',
-            background: '#E7F0F8',
-            display: 'grid',
-            width: '100%',
+            width: '95%',
+            alignItems: 'center',
+            borderRadius: '0 0 8px 8px',
             marginTop: '20px',
-            borderRadius: '0px',
-            boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
+            border: '1px solid #c6d5e5',
+            boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
           },
         }}
       >
