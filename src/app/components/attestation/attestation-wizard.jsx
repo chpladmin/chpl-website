@@ -408,12 +408,17 @@ export default ChplAttestationWizard;
 
 ChplAttestationWizard.propTypes = {
   attestationResponses: arrayOf(object).isRequired, // eslint-disable-line react/forbid-prop-types
-  isSubmitting: bool.isRequired,
+  isSubmitting: bool,
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
   period: shape({
     periodStart: string,
     periodEnd: string,
   }).isRequired,
-  stage: number.isRequired,
+  stage: number,
+};
+
+ChplAttestationWizard.defaultProps = {
+  isSubmitting: false,
+  stage: 0,
 };
