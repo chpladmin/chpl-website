@@ -1520,14 +1520,6 @@
         $httpBackend.flush();
       });
 
-      it('should massRejectPendingListings', () => {
-        $httpBackend.expectDELETE(/^\/rest\/certified_products\/pending$/).respond(200);
-        networkService.massRejectPendingListings('payload').then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
       it('should massRejectPendingSurveillance', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance\/pending$/).respond(200);
         networkService.massRejectPendingSurveillance('payload').then((response) => {

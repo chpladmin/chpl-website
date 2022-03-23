@@ -436,10 +436,7 @@ export default class NetworkService {
     return this.apiGET('/statistics/participant_professional_experience_count');
   }
 
-  getPendingListings(beta) {
-    if (beta) {
-      return this.apiGET('/listings/pending', { ignoreLoadingBar: true });
-    }
+  getPendingListings() {
     return this.apiGET('/certified_products/pending/metadata');
   }
 
@@ -673,14 +670,6 @@ export default class NetworkService {
 
   lookupCertificationId(certId) {
     return this.apiGET(`/certification_ids/${certId}`);
-  }
-
-  massRejectPendingListings(ids) {
-    return this.apiDELETE('/certified_products/pending', { ids });
-  }
-
-  massRejectPendingListingsBeta(ids) {
-    return this.apiDELETE('/listings/pending', { ids });
   }
 
   massRejectPendingSurveillance(ids) {

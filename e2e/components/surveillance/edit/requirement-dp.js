@@ -18,5 +18,10 @@ module.exports = [
     testName: 'add Real World Testing Submission requirement',
     type: 'Real World Testing Submission',
     capability: 'Annual Real World Testing Plan',
+  },
+  {
+    testName: 'add Attestations Submission requirement',
+    type: 'Attestations Submission',
+    capability: 'Semiannual Attestations Submission',
   }
 ];
