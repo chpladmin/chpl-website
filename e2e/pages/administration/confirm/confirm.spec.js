@@ -1,10 +1,9 @@
-// This test is using AQA3 upload file
-
-import ConfirmPage from './confirm.po';
 import UploadPage from '../upload/upload.po';
 import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../../components/toast/toast.po';
+
+import ConfirmPage from './confirm.po';
 
 let confirmPage;
 let hooks;
@@ -38,10 +37,8 @@ describe('when user is on confirm listing page', () => {
 
     it('should allow user to reject a file', () => {
       hooks.open('#/administration/confirm/listings');
-      hooks.waitForSpinnerToDisappear();
       confirmPage.rejectListing(rejectListingId1);
-      hooks.waitForSpinnerToAppear();
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => !confirmPage.findListingToReject(rejectListingId1).isDisplayed());
       expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
     });
   });
@@ -56,12 +53,11 @@ describe('when user is on confirm listing page', () => {
 
     it('should allow user to mass reject multiple listings', () => {
       hooks.open('#/administration/confirm/listings');
-      hooks.waitForSpinnerToDisappear();
       confirmPage.rejectListingCheckbox(rejectListingId1);
       confirmPage.rejectListingCheckbox(rejectListingId2);
       confirmPage.rejectButton.waitAndClick();
-      hooks.waitForSpinnerToAppear();
-      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => !confirmPage.findListingToReject(rejectListingId1).isDisplayed());
+      browser.waitUntil(() => !confirmPage.findListingToReject(rejectListingId1).isDisplayed());
       expect(confirmPage.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
       expect(confirmPage.findListingToReject(rejectListingId2).isDisplayed()).toBe(false);
     });

@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     alignItems: 'start',
     padding: '16px',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr 1fr 1fr',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(256px, 1fr))',
     },
   },
   actionsContainer: {
@@ -195,32 +195,50 @@ function ChplChangeRequestView(props) {
           />
         )}
       <Card className={classes.productCard}>
-        <div className={classes.cardHeaderContainer}>
-          <ChplAvatar
-            text={changeRequest.developer.name}
-          />
-          <Typography gutterBottom className={classes.cardHeader} variant="h4">{changeRequest.changeRequestType.name}</Typography>
-        </div>
-        <div className={classes.cardSubHeaderContainer}>
-          <div>
-            <Typography gutterBottom variant="subtitle2">Developer:</Typography>
-            <Typography variant="body1">{changeRequest.developer.name}</Typography>
-          </div>
-          <div>
-            <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-            <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
-          </div>
-          <div>
-            <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
-            <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-          </div>
-          <div>
-            <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-            <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
-          </div>
-        </div>
-        <Divider />
         <CardContent className={classes.cardContentContainer}>
+          <div className={classes.cardHeaderContainer}>
+            <ChplAvatar
+              text={changeRequest.developer.name}
+            />
+            <Typography gutterBottom className={classes.cardHeader} variant="h4">{changeRequest.changeRequestType.name}</Typography>
+          </div>
+          <div className={classes.cardSubHeaderContainer}>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+              <Typography variant="body1">{changeRequest.developer.name}</Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">
+                Associated ONC-ACB
+                { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
+              </Typography>
+              { changeRequest.certificationBodies.length > 0
+                ? (
+                  <ul>
+                    {changeRequest.certificationBodies.map((acb) => (
+                      <li key={acb.name}>{acb.name}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <Typography variant="body1">
+                    None
+                  </Typography>
+                )}
+            </div>
+          </div>
+          <Divider />
           <div className={classes.cardContentChangeRequest}>
             <div>
               {getChangeRequestDetails(changeRequest)}
