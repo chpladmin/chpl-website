@@ -5,6 +5,7 @@ const suite = {
     listingId: '15.04.04.1722.MEA1.V1.00.1.210607',
     expectedErrors: [
       '170.315 (g)(3) is required but was not found.',
+      'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
       'The G1 Measure: Electronic Prescribing: Eligible Professional for RT1 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Medication/Clinical Information Reconciliation: Eligible Professional for RT9 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
@@ -21,6 +22,7 @@ const suite = {
       '170.315 (g)(3) is required but was not found.',
       'Listing has attested to (g)(1), but no measures have been successfully tested for (g)(1).',
       'Listing has attested to (g)(2), but no measures have been successfully tested for (g)(2).',
+      'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
       'Test data name was not provided for certification 170.315 (b)(2) (Cures Update).',
     ],
     expectedWarnings: [],
@@ -28,6 +30,7 @@ const suite = {
     listingId: '15.04.04.1722.MEA3.V1.00.1.210607',
     expectedErrors: [
       '170.315 (g)(3) is required but was not found.',
+      'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
     ],
     expectedWarnings: [
       'Test data \'BAD test method\' is invalid for the criterion 170.315 (b)(2) (Cures Update) and has been removed from the listing.',

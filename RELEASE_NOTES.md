@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 11.32.0
+_22 March 2022_
+
+### User Interface Updates
+* Create "Conditions and Maintenance of Certification" section on Listing page
+* Rewrite Developers page as ReactJS component
+
+### Flagged Features
+* Enable ONC to extend Developer ability to submit Attestations
+* Limit Developer ability to submit Attestations based on API data
+* Enable extension of Attestation submission window
+
+---
+
 ## Version 11.31.1
 _10 March 2022_
 

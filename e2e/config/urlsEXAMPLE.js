@@ -1,6 +1,6 @@
 module.exports = {
-  devURL: 'DEV URL',
-  qaURL: 'QA URL',
-  stageURL: 'STAGE URL',
-  ff4jURL: 'URL'
+  devURL: 'http://www.example.com/',
+  qaURL: 'http://www.example.com/',
+  stageURL: 'http://www.example.com/',
+  ff4jURL: 'rest/endpoint?api_key=1234abcd'
 };

@@ -1,15 +1,15 @@
-// This test is using AQA3 and AQA4 upload listing
-
 import UploadPage from '../../pages/administration/upload/upload.po';
 import ConfirmPage from '../../pages/administration/confirm/confirm.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 
-let confirmPage , hooks, loginComponent, uploadPage;
+let confirmPage;
+let hooks;
+let loginComponent;
+let uploadPage;
 const listingId = '15.04.04.1722.AQA3.03.01.1.200620';
 
-// **Run once before the first test case**
-beforeAll( () => {
+beforeAll(() => {
   uploadPage = new UploadPage();
   confirmPage = new ConfirmPage();
   loginComponent = new LoginComponent();
@@ -21,14 +21,13 @@ beforeAll( () => {
   hooks.open('#/administration/confirm/listings');
 });
 
-describe('When user rejects a listing while inspecting uploaded listing', () => {
-
+describe('when user rejects a listing while inspecting uploaded listing', () => {
   it('should allow listing to get rejected', () => {
     confirmPage.gotoPendingListingPage(listingId);
     hooks.waitForSpinnerToDisappear();
     confirmPage.rejectButtonOnInspectListing.click();
     confirmPage.yesConfirmation.click();
-    browser.waitUntil( () => !confirmPage.inspectLabel.isDisplayed());
+    browser.waitUntil(() => !confirmPage.inspectLabel.isDisplayed());
     hooks.waitForSpinnerToDisappear();
     expect(confirmPage.findListingToReject(listingId).isDisplayed()).toBe(false);
   });
