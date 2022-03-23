@@ -165,9 +165,10 @@ const sortComparator = (property) => {
 };
 
 function ChplChangeRequestsView(props) {
+  const $state = getAngularService('$state');
+  const DateUtil = getAngularService('DateUtil');
   const { disallowedFilters, preFilter } = props;
   const csvExporter = new ExportToCsv(csvOptions);
-  const DateUtil = getAngularService('DateUtil');
   const { enqueueSnackbar } = useSnackbar();
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
@@ -267,7 +268,13 @@ function ChplChangeRequestsView(props) {
         setChangeRequest(undefined);
         break;
       case 'edit':
-        setMode('edit');
+        if (hasAnyRole(['ROLE_DEVELOPER'])
+            && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
+          $state.go('organizations.developers.developer.attestation-edit', { changeRequest });
+          console.log('go to state', changeRequest);
+        } else {
+          setMode('edit');
+        }
         break;
       case 'save':
         save(payload);

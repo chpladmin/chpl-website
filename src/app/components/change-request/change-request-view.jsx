@@ -149,12 +149,14 @@ function ChplChangeRequestView(props) {
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
 
   const editCr = () => {
+    /*
     if (hasAnyRole(['ROLE_DEVELOPER'])
         && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
       setIsEditing(true);
     } else {
+    */
       props.dispatch('edit');
-    }
+  //}
   };
 
   const withdrawCr = () => {

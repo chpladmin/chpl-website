@@ -124,7 +124,7 @@ const DeveloperViewComponent = {
     }
 
     handleAttestationDispatch() {
-      this.takeAction('attestation');
+      this.takeAction('attestation-create');
     }
 
     updateRequest(data) {
