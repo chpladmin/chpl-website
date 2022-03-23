@@ -15,16 +15,13 @@ const $stateMock = {
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$state').mockReturnValue($stateMock);
 
-const developerMock = {
+const changeRequestMock = {
 };
 
-jest.mock('./attestation-progress', () => ({
+jest.mock('./attestation-wizard', () => ({
   __esModule: true,
-  default: function attestationProgress() {
-    return (
-      <button onClick={() => {}} type="button">mock</button>
-    );
-    // TODO: figure out how to mock the buttons in this component to trigger the "handleProgressDispatch" function in the unit under test
+  default: function attestationWizard() {
+    return null;
   },
 }));
 
@@ -33,15 +30,9 @@ const mockApi = {
   mutate: () => {},
 };
 
-jest.mock('api/attestations', () => ({
-  __esModule: true,
-  useFetchAttestationData: () => mockApi,
-}));
-
 jest.mock('api/change-requests', () => ({
   __esModule: true,
-  useFetchChangeRequestTypes: () => mockApi,
-  usePostChangeRequest: () => mockApi,
+  usePutChangeRequest: () => mockApi,
 }));
 
 const mockEnqueue = jest.fn();
@@ -57,7 +48,7 @@ describe('the ChplAttestationEdit component', () => {
   beforeEach(async () => {
     render(
       <ChplAttestationEdit
-        developer={developerMock}
+        changeRequest={changeRequestMock}
       />,
     );
   });

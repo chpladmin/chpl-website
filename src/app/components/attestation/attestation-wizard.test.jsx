@@ -17,6 +17,11 @@ when(angularReactHelper.getAngularService).calledWith('$state').mockReturnValue(
 
 const developerMock = {
 };
+const dispatchMock = jest.fn();
+const periodMock = {
+  periodStart: 'start',
+  periodEnd: 'end',
+};
 
 jest.mock('./attestation-progress', () => ({
   __esModule: true,
@@ -28,36 +33,14 @@ jest.mock('./attestation-progress', () => ({
   },
 }));
 
-const mockApi = {
-  isLoading: true,
-  mutate: () => {},
-};
-
-jest.mock('api/attestations', () => ({
-  __esModule: true,
-  useFetchAttestationData: () => mockApi,
-}));
-
-jest.mock('api/change-requests', () => ({
-  __esModule: true,
-  useFetchChangeRequestTypes: () => mockApi,
-  usePostChangeRequest: () => mockApi,
-}));
-
-const mockEnqueue = jest.fn();
-
-jest.mock('notistack', () => ({
-  ...jest.requireActual('notistack'),
-  useSnackbar: () => ({
-    enqueueSnackbar: mockEnqueue,
-  }),
-}));
-
 describe('the ChplAttestationWizard component', () => {
   beforeEach(async () => {
     render(
       <ChplAttestationWizard
+        attestationResponses={[]}
         developer={developerMock}
+        dispatch={dispatchMock}
+        period={periodMock}
       />,
     );
   });
@@ -67,6 +50,6 @@ describe('the ChplAttestationWizard component', () => {
   });
 
   it('should have a header', () => {
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Section 1 &mdash; Introduction');
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Section 1 — Introduction');
   });
 });
