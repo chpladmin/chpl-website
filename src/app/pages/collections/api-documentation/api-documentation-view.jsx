@@ -296,13 +296,13 @@ function ChplApiDocumentationCollectionView(props) {
           </Typography>
         </div>
         <div>
-          <h2>API Documentation Data</h2>
+          <h2>API Documentation Dataset</h2>
           <Typography variant="body1" gutterBottom>
-            The API Documentation Data details the API syntax and authorization standard used for products certified to the API criteria based on a manual review by ONC of a developer&apos;s API documentation.
+            The API Documentation Dataset details the API syntax and authorization standard used for products certified to the API criteria based on a manual review by ONC of a developer&apos;s API documentation.
           </Typography>
           <ChplLink
             href={downloadLink}
-            text="Download API Documentation Data"
+            text="Download API Documentation Dataset"
             id="download-api-documentation"
             analytics={{ event: 'Download API Documentation data', category: analytics.category }}
             external={false}
