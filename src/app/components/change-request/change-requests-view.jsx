@@ -271,7 +271,7 @@ function ChplChangeRequestsView(props) {
       case 'edit':
         if (hasAnyRole(['ROLE_DEVELOPER'])
             && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
-          $state.go('organizations.developers.developer.attestation-edit', { changeRequest });
+          $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
         } else {
           setMode('edit');
         }

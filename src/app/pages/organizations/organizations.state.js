@@ -65,20 +65,21 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
-    name: 'organizations.developers.developer.attestation-create',
-    url: '/attestation-create',
+    name: 'organizations.developers.developer.attestation',
+    url: '/attestation',
+  }, {
+    name: 'organizations.developers.developer.attestation.create',
     views: {
-      'view@^': 'chplAttestationCreateWrapperBridge',
+      'view@^.^': 'chplAttestationCreateWrapperBridge',
     },
     data: {
       title: 'CHPL Developers - Attestation',
       roles: ['ROLE_DEVELOPER'],
     },
   }, {
-    name: 'organizations.developers.developer.attestation-edit',
-    url: '/attestation-edit',
+    name: 'organizations.developers.developer.attestation.edit',
     views: {
-      'view@^': 'chplAttestationEditWrapperBridge',
+      'view@^.^': 'chplAttestationEditWrapperBridge',
     },
     params: {
       changeRequest: null,
