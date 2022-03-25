@@ -4,7 +4,9 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  FormControlLabel,
   MenuItem,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -57,9 +59,9 @@ const useStyles = makeStyles({
 const validationSchema = yup.object({
   title: yup.string()
     .required('Title is required'),
-  startDate: yup.number()
+  startDate: yup.date()
     .required('Start Date is required'),
-  endDate: yup.number()
+  endDate: yup.date()
     .required('End Date is required'),
 });
 
@@ -91,8 +93,8 @@ function ChplAnnouncementEdit(props) {
     initialValues: {
       title: announcement.title || '',
       text: announcement.text || '',
-      startDate: announcement.startDate || Date.now(),
-      endDate: announcement.endDate || Date.now(),
+      startDate: (new Date(announcement.startDate || Date.now())).toISOString().substring(0 ,19),
+      endDate: (new Date(announcement.endDate || Date.now())).toISOString().substring(0 ,19),
       isPublic: announcement.isPublic || false,
     },
     onSubmit: () => {
@@ -141,8 +143,9 @@ function ChplAnnouncementEdit(props) {
             id="start-date"
             name="startDate"
             label="Start Date"
-            className={classes.fullWidth}
+            type="datetime-local"
             required
+            className={classes.fullWidth}
             value={formik.values.startDate}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -153,24 +156,27 @@ function ChplAnnouncementEdit(props) {
             id="end-date"
             name="endDate"
             label="End Date"
-            className={classes.fullWidth}
+            type="datetime-local"
             required
+            className={classes.fullWidth}
             value={formik.values.endDate}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.endDate && !!formik.errors.endDate}
             helperText={formik.touched.endDate && formik.errors.endDate}
           />
-          <ChplTextField
-            id="is-public"
-            name="isPublic"
+          <FormControlLabel
+            control={(
+              <Switch
+                id="is-public"
+                name="isPublic"
+                color="primary"
+                checked={formik.values.isPublic}
+                onChange={formik.handleChange}
+                className={classes.fullWidth}
+              />
+            )}
             label="Is Public?"
-            className={classes.fullWidth}
-            value={formik.values.isPublic}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.isPublic && !!formik.errors.isPublic}
-            helperText={formik.touched.isPublic && formik.errors.isPublic}
           />
         </CardContent>
       </Card>
