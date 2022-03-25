@@ -1,0 +1,213 @@
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  CardContent,
+  CardHeader,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  ThemeProvider,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import Moment from 'react-moment';
+import { arrayOf, func, string } from 'prop-types';
+
+import ChplAnnouncementEdit from './announcement-edit';
+
+import { ChplSortableHeaders } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
+import { announcement as announcementPropType } from 'shared/prop-types';
+import theme from 'themes/theme';
+
+const headers = [
+  { property: 'title', text: 'Title', sortable: true },
+  { property: 'text', text: 'Text', sortable: true },
+  { property: 'startDate', text: 'Start Date', sortable: true },
+  { property: 'endDate', text: 'End Date', sortable: true },
+  { property: 'isPublic', text: 'Public?', sortable: true },
+  {
+    property: 'actions', text: 'Actions', invisible: true, sortable: false,
+  },
+];
+
+const useStyles = makeStyles({
+  container: {
+    maxHeight: '64vh',
+  },
+  searchContainer: {
+    backgroundColor: '#c6d5e5',
+    padding: '16px 32px',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '16px',
+    alignItems: 'center',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'flex-end',
+    },
+  },
+  tableResultsHeaderContainer: {
+    display: 'grid',
+    gap: '8px',
+    margin: '16px 32px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'auto auto',
+    },
+  },
+  resultsContainer: {
+    display: 'grid',
+    gap: '8px',
+    justifyContent: 'start',
+    gridTemplateColumns: 'auto auto',
+    alignItems: 'center',
+  },
+  wrap: {
+    flexFlow: 'wrap',
+  },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
+  tableFirstColumn: {
+    position: 'sticky',
+    left: 0,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
+    backgroundColor: '#ffffff',
+  },
+  tableDeveloperCell: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  developerName: {
+    fontWeight: '600',
+  },
+  noResultsContainer: {
+    padding: '16px 32px',
+  },
+});
+
+function ChplAnnouncementsView(props) {
+  const { announcements, dispatch } = props;
+  const DateUtil = getAngularService('DateUtil');
+  const { hasAnyRole } = useContext(UserContext);
+  const [announcement, setAnnouncement] = useState(undefined);
+  const [comparator, setComparator] = useState('currentStatusChangeDate');
+  const classes = useStyles();
+
+  const handleActionBarDispatch = (action, payload) => {
+    switch (action) {
+      default:
+        console.log({ action, payload });
+    }
+  };
+
+  const handleTableSort = (event, property, orderDirection) => {
+    setComparator(orderDirection + property);
+  };
+
+  return (
+    <Card>
+      <CardHeader title="Announcements" />
+      <CardContent>
+        { announcement
+          && (
+            <ChplAnnouncementEdit
+              announcement={announcement}
+              dispatch={handleActionBarDispatch}
+            />
+          )}
+        { !announcement
+          && (
+            <>
+              { (announcements.length === 0)
+                && (
+                  <Typography className={classes.noResultsContainer}>
+                    No results found
+                  </Typography>
+                )}
+              { announcements.length > 0
+                && (
+                  <>
+                    <div className={classes.tableResultsHeaderContainer}>
+                      <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                        <Typography variant="body2">
+                          {`${announcements.length} Results)`}
+                        </Typography>
+                      </div>
+                    </div>
+                    <TableContainer className={classes.container} component={Paper}>
+                      <Table
+                        aria-label="Announcements table"
+                      >
+                        <ChplSortableHeaders
+                          headers={headers}
+                          onTableSort={handleTableSort}
+                          orderBy="currentStatusChangeDate"
+                          order="asc"
+                        />
+                        <TableBody>
+                          { announcements
+                            .map((item) => (
+                              <TableRow key={item.id}>
+                                <TableCell className={classes.tableFirstColumn}>{ item.title }</TableCell>
+                                <TableCell>{ item.text }</TableCell>
+                                <TableCell>{ DateUtil.getDisplayDateFormat(item.startDate) }</TableCell>
+                                <TableCell>
+                                  <Moment
+                                    fromNow
+                                    withTitle
+                                    titleFormat="DD MMM yyyy, HH:mm (Z)"
+                                  >
+                                    {item.endDate}
+                                  </Moment>
+                                </TableCell>
+                                <TableCell>{ item.isPublic ? 'Yes' : 'No' }</TableCell>
+                                <TableCell align="right">
+                                  <Button
+                                    onClick={() => setAnnouncement(item)}
+                                    variant="contained"
+                                    color="primary"
+                                  >
+                                    Edit
+                                    {' '}
+                                    <EditOutlinedIcon className={classes.iconSpacing} />
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </>
+                )}
+            </>
+          )}
+      </CardContent>
+    </Card>
+  );
+}
+
+export default ChplAnnouncementsView;
+
+ChplAnnouncementsView.propTypes = {
+  announcements: arrayOf(announcementPropType),
+  dispatch: func,
+};
+
+ChplAnnouncementsView.defaultProps = {
+  announcements: [],
+  dispatch: () => {},
+};
