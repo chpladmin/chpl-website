@@ -114,7 +114,7 @@ function ChplAnnouncementEdit(props) {
   return (
     <>
       <Card>
-        <CardHeader className={classes.cardHeader} title="Edit Announcement" />
+        <CardHeader className={classes.cardHeader} title={`${announcement.id ? 'Edit' : 'Create'} Announcement`} />
         <CardContent>
           <ChplTextField
             id="title"
@@ -183,7 +183,7 @@ function ChplAnnouncementEdit(props) {
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={!formik.isValid || formik.isSubmitting}
-        canDelete
+        canDelete={announcement.id}
       />
     </>
   );

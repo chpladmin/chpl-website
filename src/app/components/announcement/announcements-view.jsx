@@ -15,6 +15,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Moment from 'react-moment';
 import { arrayOf, func, string } from 'prop-types';
@@ -142,11 +143,19 @@ function ChplAnnouncementsView(props) {
                 && (
                   <>
                     <div className={classes.tableResultsHeaderContainer}>
-                      <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                        <Typography variant="body2">
-                          {`${announcements.length} Results)`}
-                        </Typography>
-                      </div>
+                      <ButtonGroup size="small" className={classes.wrap}>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          fullWidth
+                          id="add-new-announcement"
+                          onClick={() => setAnnouncement({})}
+                        >
+                          Add Announcement
+                          {' '}
+                          <AddIcon className={classes.iconSpacing} />
+                        </Button>
+                      </ButtonGroup>
                     </div>
                     <TableContainer className={classes.container} component={Paper}>
                       <Table
