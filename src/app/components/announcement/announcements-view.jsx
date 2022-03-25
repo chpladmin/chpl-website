@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -11,32 +11,28 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Moment from 'react-moment';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 
 import ChplAnnouncementEdit from './announcement-edit';
 
 import { ChplSortableHeaders } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const headers = [
-  { property: 'title', text: 'Title', sortable: true },
-  { property: 'text', text: 'Text', sortable: true },
-  { property: 'startDate', text: 'Start Date', sortable: true },
-  { property: 'endDate', text: 'End Date', sortable: true },
-  { property: 'isPublic', text: 'Public?', sortable: true },
-  {
-    property: 'actions', text: 'Actions', invisible: true, sortable: false,
-  },
+  { property: 'title', text: 'Title' },
+  { property: 'text', text: 'Text' },
+  { property: 'startDate', text: 'Start Date' },
+  { property: 'endDate', text: 'End Date' },
+  { property: 'isPublic', text: 'Public?' },
+  { property: 'actions', text: 'Actions', invisible: true },
 ];
 
 const useStyles = makeStyles({
@@ -103,9 +99,7 @@ const useStyles = makeStyles({
 function ChplAnnouncementsView(props) {
   const { announcements, dispatch } = props;
   const DateUtil = getAngularService('DateUtil');
-  const { hasAnyRole } = useContext(UserContext);
   const [announcement, setAnnouncement] = useState(undefined);
-  const [comparator, setComparator] = useState('currentStatusChangeDate');
   const classes = useStyles();
 
   const handleActionBarDispatch = (action, payload) => {
@@ -162,7 +156,7 @@ function ChplAnnouncementsView(props) {
                       >
                         <ChplSortableHeaders
                           headers={headers}
-                          onTableSort={handleTableSort}
+                          onTableSort={() => {}}
                           orderBy="currentStatusChangeDate"
                           order="asc"
                         />

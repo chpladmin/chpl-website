@@ -1,8 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  arrayOf, func, string,
-} from 'prop-types';
-import Moment from 'react-moment';
+import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
 import ChplAnnouncementsView from './announcements-view';

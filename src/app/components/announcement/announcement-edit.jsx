@@ -1,23 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
   CardHeader,
-  Divider,
   FormControlLabel,
-  MenuItem,
   Switch,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { UserContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -67,8 +62,6 @@ const validationSchema = yup.object({
 
 function ChplAnnouncementEdit(props) {
   const { announcement, dispatch } = props;
-  const [confirmationMessage, setConfirmationMessage] = useState('');
-  const [isConfirming, setIsConfirming] = useState(false);
   const classes = useStyles();
 
   let formik;
@@ -76,16 +69,16 @@ function ChplAnnouncementEdit(props) {
   const handleDispatch = (action, data) => {
     switch (action) {
       case 'cancel':
-        props.dispatch('close');
+        dispatch('close');
         break;
       case 'delete':
-        props.dispatch('delete');
+        dispatch('delete');
         break;
       case 'save':
         formik.submitForm();
         break;
       default:
-        console.log({ action, data });
+        console.log({ file: '-edit', action, data });
     }
   };
 
@@ -93,8 +86,8 @@ function ChplAnnouncementEdit(props) {
     initialValues: {
       title: announcement.title || '',
       text: announcement.text || '',
-      startDate: (new Date(announcement.startDate || Date.now())).toISOString().substring(0 ,19),
-      endDate: (new Date(announcement.endDate || Date.now())).toISOString().substring(0 ,19),
+      startDate: (new Date(announcement.startDate || Date.now())).toISOString().substring(0, 19),
+      endDate: (new Date(announcement.endDate || Date.now())).toISOString().substring(0, 19),
       isPublic: announcement.isPublic || false,
     },
     onSubmit: () => {
@@ -183,7 +176,7 @@ function ChplAnnouncementEdit(props) {
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={!formik.isValid || formik.isSubmitting}
-        canDelete={announcement.id}
+        canDelete={!!announcement.id}
       />
     </>
   );

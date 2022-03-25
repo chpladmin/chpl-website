@@ -1,5 +1,4 @@
 import IndexWrapper from '../index-wrapper';
-import { reactToAngularComponent } from '../services/angular-react-helper';
 
 import { ChplAnnouncementsWrapper } from './announcement';
 import { ChplApiKeyConfirm } from './api-key';
@@ -39,6 +38,8 @@ import {
 } from './util';
 import { ChplActionBar, ChplActionBarWrapper } from './action-bar';
 import { UserWrapper } from './login';
+
+import { reactToAngularComponent } from 'services/angular-react-helper';
 
 angular
   .module('chpl.components', [
