@@ -9,7 +9,7 @@ import { when } from 'jest-when';
 import ChplDeveloperView from './developer-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 
 const hocMock = {
   dispatch: jest.fn(),
@@ -30,24 +30,18 @@ const userContextMock = {
   hasAuthorityOn: () => true,
 };
 
-const flagContextMock = {
-  demographicChangeRequestIsOn: false,
-};
-
 describe('the ChplDeveloperView component', () => {
   beforeEach(async () => {
     render(
       <UserContext.Provider value={userContextMock}>
-        <FlagContext.Provider value={flagContextMock}>
-          <ChplDeveloperView
-            developer={developerMock}
-            dispatch={hocMock.dispatch}
-            canEdit
-            canMerge
-            canSplit
-            isSplitting={false}
-          />
-        </FlagContext.Provider>
+        <ChplDeveloperView
+          developer={developerMock}
+          dispatch={hocMock.dispatch}
+          canEdit
+          canMerge
+          canSplit
+          isSplitting={false}
+        />
       </UserContext.Provider>,
     );
   });
