@@ -109,14 +109,13 @@ function ChplAnnouncementsView(props) {
   const classes = useStyles();
 
   const handleActionBarDispatch = (action, payload) => {
-    switch (action) {
-      default:
-        console.log({ action, payload });
+    if (action !== 'close') {
+      dispatch(action, {
+        ...announcement,
+        ...payload,
+      });
     }
-  };
-
-  const handleTableSort = (event, property, orderDirection) => {
-    setComparator(orderDirection + property);
+    setAnnouncement(undefined);
   };
 
   return (

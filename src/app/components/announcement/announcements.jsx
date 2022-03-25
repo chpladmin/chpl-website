@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack';
 import ChplAnnouncementsView from './announcements-view';
 
 import {
+  useDeleteAnnouncement,
   useFetchAnnouncements,
   usePostAnnouncement,
   usePutAnnouncement,
@@ -15,6 +16,7 @@ import {
 
 function ChplAnnouncements() {
   const { data, isLoading, isSuccess } = useFetchAnnouncements();
+  const { mutate: remove } = useDeleteAnnouncement();
   const { mutate: post } = usePostAnnouncement();
   const { mutate: put } = usePutAnnouncement();
   const { enqueueSnackbar } = useSnackbar();
@@ -27,11 +29,21 @@ function ChplAnnouncements() {
     setAnnouncements(data);
   }, [data, isLoading, isSuccess]);
 
-  const save = (request) => {
-    mutate(request, {
-      onSuccess: () => {
-        setAnnouncement(undefined);
+  const deleteAnnouncement = (request) => {
+    remove(request.id, {
+      onError: (error) => {
+        const message = error.response.data?.error
+              || error.response.data?.errorMessages.join(' ');
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
       },
+    });
+  };
+
+  const save = (request) => {
+    const mutate = request.id ? put : post;
+    mutate(request, {
       onError: (error) => {
         const message = error.response.data?.error
               || error.response.data?.errorMessages.join(' ');
@@ -44,8 +56,14 @@ function ChplAnnouncements() {
 
   const handleDispatch = (action, payload) => {
     switch (action) {
+      case 'delete':
+        deleteAnnouncement(payload);
+        break;
+      case 'save':
+        save(payload);
+        break;
       default:
-        console.log({ action, payload });
+        console.log({ file: 'root', action, payload });
     }
   };
 
