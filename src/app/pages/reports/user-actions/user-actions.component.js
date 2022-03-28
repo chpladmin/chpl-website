@@ -105,17 +105,17 @@ export const ReportsUserActionsComponent = {
 
     search () {
       this.initializeSearch();
-      this.callActivityServiceForMetadata('beta/listings');
-      this.callActivityServiceForMetadata('beta/developers');
-      this.callActivityServiceForMetadata('beta/products');
-      this.callActivityServiceForMetadata('beta/versions');
-      this.callActivityServiceForMetadata('beta/acbs');
-      this.callActivityServiceForMetadata('beta/atls');
-      this.callActivityServiceForMetadata('beta/announcements');
-      this.callActivityServiceForMetadata('beta/users');
-      this.callActivityServiceForMetadata('beta/pending-listings');
-      this.callActivityServiceForMetadata('beta/pending-surveillances');
-      this.callActivityServiceForMetadata('beta/corrective-action-plans');
+      this.callActivityServiceForMetadata('listings');
+      this.callActivityServiceForMetadata('developers');
+      this.callActivityServiceForMetadata('products');
+      this.callActivityServiceForMetadata('versions');
+      this.callActivityServiceForMetadata('acbs');
+      this.callActivityServiceForMetadata('atls');
+      this.callActivityServiceForMetadata('announcements');
+      this.callActivityServiceForMetadata('users');
+      this.callActivityServiceForMetadata('pending-listings');
+      this.callActivityServiceForMetadata('pending-surveillances');
+      this.callActivityServiceForMetadata('corrective-action-plans');
     }
 
     initializeSearch () {

@@ -1000,7 +1000,7 @@ const ReportsListingsComponent = {
 
     searchAllListings() {
       const that = this;
-      this.networkService.getActivityMetadata('beta/listings')
+      this.networkService.getActivityMetadata('listings')
         .then((results) => {
           that.results = results.activities
             .map((item) => that.prepare(item));
@@ -1021,7 +1021,7 @@ const ReportsListingsComponent = {
     addPageToData(page) {
       const that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/listings', { pageNum: page, ignoreLoadingBar: true }).then((results) => {
+      this.networkService.getActivityMetadata('listings', { pageNum: page, ignoreLoadingBar: true }).then((results) => {
         results.activities.forEach((item) => {
           that.results.push(that.prepare(item));
         });
