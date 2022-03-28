@@ -241,7 +241,7 @@ const interpretDeveloper = (activity) => {
     }
   } else if (activity.description.startsWith('Merged ')) {
     ret.change.push(`Developers ${prev.map((p) => p.name).join(' and ')} merged to form ${curr.name}`);
-    merged = prev.map((p) => p.id);
+    merged = prev.map((p) => p.id || p.developerId);
   } else if (activity.description.startsWith('Split ')) {
     ret.change.push(`Developer ${prev.name} split to become Developers ${curr[0].name} and ${curr[1].name}`);
     split = { id: prev.id, end: activity.activityDate - SPLIT_DATE_SKEW_ADJUSTMENT };
