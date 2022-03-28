@@ -298,7 +298,7 @@ function ChplApiDocumentationCollectionView(props) {
         <div>
           <h2>API Documentation Dataset</h2>
           <Typography variant="body1" gutterBottom>
-            The API Documentation Dataset details the API syntax and authorization standard used for products certified to the API criteria based on a manual review by ONC of a developer&apos;s API documentation.
+            The API Documentation Dataset is derived from a manual review by ONC of developer API documentation and details the API syntax and authorization standard used for products certified to the API criteria.
           </Typography>
           <ChplLink
             href={downloadLink}
