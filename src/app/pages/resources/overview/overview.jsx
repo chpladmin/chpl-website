@@ -13,6 +13,7 @@ import {
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import { useFetchAcbs } from 'api/acbs';
+import { useFetchAnnouncements } from 'api/announcements';
 import { useFetchAtls } from 'api/atls';
 import ApiWrapper from 'api/api-wrapper';
 import {
@@ -72,22 +73,22 @@ const getOrgs = (query, key) => {
 
 function ChplResourcesOverview() {
   const DateUtil = getAngularService('DateUtil');
-  const networkService = getAngularService('networkService');
-  const [announcements, setAnnouncements] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchAnnouncements({ isAuthenticated: false });
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
+  const [announcements, setAnnouncements] = useState([]);
   const classes = useStyles();
+
   useEffect(() => {
-    networkService.getAnnouncements(false).then((result) => {
-      setAnnouncements(result.announcements
-        .map((announcement) => ({
-          ...announcement,
-          startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
-          endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
-        }))
-        .sort((a, b) => (a.startDate - b.startDate)));
-    });
-  }, [DateUtil, networkService]);
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setAnnouncements(data.map((announcement) => ({
+      ...announcement,
+      startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
+      endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
+    })).sort((a, b) => a.startDate - b.startDate));
+  }, [data, isLoading, isSuccess, DateUtil]);
 
   return (
     <ThemeProvider theme={theme}>
