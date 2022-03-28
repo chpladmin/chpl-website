@@ -2,11 +2,14 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
-// todo: add query term "future = true/false"
-const useFetchAnnouncements = () => {
+const useFetchAnnouncements = ({ isAuthenticated }) => {
   const axios = useAxios();
-  return useQuery(['announcements'], async () => {
-    const response = await axios.get('announcements');
+  return useQuery(['announcements', isAuthenticated], async () => {
+    const response = await axios.get(`announcements?future=${isAuthenticated}`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    });
     return response.data.announcements;
   });
 };

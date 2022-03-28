@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
 import ChplAnnouncementsView from './announcements-view';
@@ -9,9 +9,11 @@ import {
   usePostAnnouncement,
   usePutAnnouncement,
 } from 'api/announcements';
+import { UserContext } from 'shared/contexts';
 
 function ChplAnnouncements() {
-  const { data, isLoading, isSuccess } = useFetchAnnouncements();
+  const { hasAnyRole } = useContext(UserContext);
+  const { data, isLoading, isSuccess } = useFetchAnnouncements({ isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) });
   const { mutate: remove } = useDeleteAnnouncement();
   const { mutate: post } = usePostAnnouncement();
   const { mutate: put } = usePutAnnouncement();
@@ -26,7 +28,7 @@ function ChplAnnouncements() {
   }, [data, isLoading, isSuccess]);
 
   const deleteAnnouncement = (request) => {
-    remove(request.id, {
+    remove(request, {
       onError: (error) => {
         const message = error.response.data?.error
               || error.response.data?.errorMessages.join(' ');
@@ -39,7 +41,11 @@ function ChplAnnouncements() {
 
   const save = (request) => {
     const mutate = request.id ? put : post;
-    mutate(request, {
+    mutate({
+      ...request,
+      startDate: (new Date(request.startDate)).getTime(),
+      endDate: (new Date(request.endDate)).getTime(),
+    }, {
       onError: (error) => {
         const message = error.response.data?.error
               || error.response.data?.errorMessages.join(' ');
