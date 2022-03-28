@@ -66,7 +66,7 @@ function ChplAnnouncementEdit(props) {
 
   let formik;
 
-  const handleDispatch = (action, data) => {
+  const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
         dispatch('close');
@@ -77,8 +77,7 @@ function ChplAnnouncementEdit(props) {
       case 'save':
         formik.submitForm();
         break;
-      default:
-        console.log({ file: '-edit', action, data });
+        // no default
     }
   };
 

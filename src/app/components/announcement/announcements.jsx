@@ -64,8 +64,7 @@ function ChplAnnouncements() {
       case 'save':
         save(payload);
         break;
-      default:
-        console.log({ file: 'root', action, payload });
+        // no default
     }
   };
 
