@@ -2,10 +2,10 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
-const useFetchAnnouncements = ({ isAuthenticated }) => {
+const useFetchAnnouncements = ({ getFuture }) => {
   const axios = useAxios();
-  return useQuery(['announcements', isAuthenticated], async () => {
-    const response = await axios.get(`announcements?future=${isAuthenticated}`, {
+  return useQuery(['announcements', getFuture], async () => {
+    const response = await axios.get(`announcements?future=${getFuture}`, {
       headers: {
         'Cache-Control': 'no-cache',
       },

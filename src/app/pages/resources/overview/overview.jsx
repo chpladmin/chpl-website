@@ -73,7 +73,7 @@ const getOrgs = (query, key) => {
 
 function ChplResourcesOverview() {
   const DateUtil = getAngularService('DateUtil');
-  const { data, isLoading, isSuccess } = useFetchAnnouncements({ isAuthenticated: false });
+  const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
   const [announcements, setAnnouncements] = useState([]);

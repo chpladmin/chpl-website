@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
 import ChplAnnouncementsView from './announcements-view';
@@ -9,11 +9,9 @@ import {
   usePostAnnouncement,
   usePutAnnouncement,
 } from 'api/announcements';
-import { UserContext } from 'shared/contexts';
 
 function ChplAnnouncements() {
-  const { hasAnyRole } = useContext(UserContext);
-  const { data, isLoading, isSuccess } = useFetchAnnouncements({ isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) });
+  const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: true });
   const { mutate: remove } = useDeleteAnnouncement();
   const { mutate: post } = usePostAnnouncement();
   const { mutate: put } = usePutAnnouncement();
