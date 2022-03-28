@@ -49,7 +49,7 @@ const interpretCertificationCriteria = (prev, curr, utilService) => {
   cCC.sort((a, b) => utilService.sortCertActual(a, b));
   for (i = 0; i < pCC.length; i += 1) {
     const obj = {
-      criteria: pCC[i].number + (pCC[i].title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
+      criteria: (pCC[i].number || pCC[i].criterion.number) + ((pCC[i].title || pCC[i].criterion.title).indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
       changes: [],
     };
 

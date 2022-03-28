@@ -162,7 +162,7 @@ const ReportsListingsComponent = {
       prev.sort((a, b) => this.utilService.sortCertActual(a, b));
       curr.sort((a, b) => this.utilService.sortCertActual(a, b));
       for (i = 0; i < prev.length; i += 1) {
-        const obj = { number: curr[i].number, title: curr[i].title, changes: [] };
+        const obj = { number: curr[i].number ?? curr[i].criterion.number, title: curr[i].title || curr[i].criterion.title, changes: [] };
         for (j = 0; j < certKeys.length; j += 1) {
           change = this.ReportService.compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
           if (change) {
