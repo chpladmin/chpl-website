@@ -21,17 +21,6 @@
       }
     });
 
-    describe('when focused on apiDocumentation', () => {
-      it('should filter on apiDocumentation', () => {
-        expect(service.translate('apiDocumentation', {results: Mock.allCps, certificationCriteria: [Mock.searchOptions.certificationCriteria]}).length).toBe(0);
-      });
-
-      xit('should generate a mainSearch', () => {
-        var results = service.translate('apiDocumentation', {results: Mock.allCps, certificationCriteria: [Mock.searchOptions.certificationCriteria]});
-        expect(results[0].mainSearch).toEqual('Carefluence|Carefluence Open API|1.0|15.04.04.2649.Care.01.0.0.160701');
-      });
-    });
-
     describe('when focused on bannedDevelopers', () => {
       it('should filter on bannedDevelopers', () => {
         expect(service.translate('bannedDevelopers', Mock.decertifiedDevelopers).length).toBe(2);

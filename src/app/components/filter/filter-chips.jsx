@@ -45,19 +45,19 @@ function ChplFilterChips() {
 
   useEffect(() => {
     setFilters(filterContext.filters
-      .sort((a, b) => (a.display < b.display ? -1 : 1))
+      .sort((a, b) => (a.getFilterDisplay(a) < b.getFilterDisplay(b) ? -1 : 1))
       .map((filter) => ({
         ...filter,
         values: filter.values
-          .filter((f) => f.selected)
-          .sort((a, b) => (a.display < b.display ? -1 : 1)),
+          .filter((v) => v.selected)
+          .sort((a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1)),
       }))
       .filter((filter) => filter.values.length > 0));
   }, [filterContext.filters]);
 
   const removeChip = (f, v) => {
     if (filterContext.analytics) {
-      $analytics.eventTrack('Remove Chip', { category: filterContext.analytics.category, label: `${f.display}: ${v.display}` });
+      $analytics.eventTrack('Remove Chip', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.getValueDisplay(v)}` });
     }
     filterContext.dispatch('toggle', f, v);
   };
@@ -72,14 +72,14 @@ function ChplFilterChips() {
         >
           <Typography variant="body1">
             <strong>
-              {f.display}
+              {f.getFilterDisplay(f)}
             </strong>
           </Typography>
           {f.values
             .map((v) => (
               <Chip
                 key={v.value}
-                label={f.getDisplay ? f.getDisplay(v) : <>{v.display}</>}
+                label={f.getValueDisplay(v)}
                 onDelete={() => removeChip(f, v)}
                 color="primary"
                 variant="outlined"

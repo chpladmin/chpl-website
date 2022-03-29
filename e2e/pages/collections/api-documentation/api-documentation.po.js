@@ -1,16 +1,20 @@
-import CollectionsPage from '../collections.po';
+import CollectionPage from '../collection.po';
 
-const elements = {
-  downloadApiDoc: '#downloadApiDocument',
-};
-
-class ApiDocumentationPage extends CollectionsPage {
+class ApiDocumentationPage extends CollectionPage {
   constructor() {
     super();
+    this.elements = {
+      header: 'h1=API Information for 2015 Edition Products',
+      downloadApiDocumentation: '#download-api-documentation',
+    };
   }
 
-  get downloadApiDocButton() {
-    return $(elements.downloadApiDoc);
+  get bodyText() {
+    return $(this.elements.header).parentElement().nextElement();
+  }
+
+  get downloadApiDocumentation() {
+    return $(this.elements.downloadApiDocumentation);
   }
 }
 

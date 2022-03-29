@@ -10,6 +10,13 @@ import ChplFilterChips from './filter-chips';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
+const defaultFilter = { // this should be imported, but I don't know why it can't be
+  getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`,
+  getFilterDisplay: (filter) => filter.display,
+  getValueDisplay: (value) => value.display,
+  getValueEntry: () => {},
+};
+
 const $analyticsMock = {
   eventTrack: jest.fn(),
 };
@@ -27,6 +34,7 @@ describe('the ChplFilterChips component', () => {
   beforeEach(() => {
     mockValue = {
       filters: [{
+        ...defaultFilter,
         key: 'key',
         display: 'display',
         values: [{
@@ -103,6 +111,7 @@ describe('the ChplFilterChips component', () => {
       mockValue.filters = [
         ...mockValue.filters,
         {
+          ...defaultFilter,
           key: 'third',
           display: 'third',
           values: [{
@@ -111,6 +120,7 @@ describe('the ChplFilterChips component', () => {
             display: 'value',
           }],
         }, {
+          ...defaultFilter,
           key: 'first',
           display: 'a first',
           values: [{

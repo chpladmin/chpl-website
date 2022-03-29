@@ -1,14 +1,16 @@
 import React from 'react';
 
-import ChplRealWorldTestingCollectionView from './real-world-testing-view';
+import ChplApiDocumentationCollectionView from './api-documentation-view';
 
 import ApiWrapper from 'api/api-wrapper';
-import { FilterProvider, defaultFilter } from 'components/filter';
+import {
+  FilterProvider, defaultFilter, getDateDisplay, getDateEntry,
+} from 'components/filter';
 import { UserWrapper } from 'components/login';
 
-function ChplRealWorldTestingCollectionPage() {
+function ChplApiDocumentationCollectionPage() {
   const analytics = {
-    category: 'Real World Testing',
+    category: 'API Information for 2015 Edition Products',
   };
   const filters = [{
     ...defaultFilter,
@@ -33,6 +35,20 @@ function ChplRealWorldTestingCollectionPage() {
       { value: 'Withdrawn by Developer' },
       { value: 'Retired' },
     ],
+  }, {
+    ...defaultFilter,
+    key: 'certificationDate',
+    display: 'Certification Date',
+    values: [
+      { value: 'Before', default: new Date().toISOString().slice(0, 10) },
+      { value: 'After', default: '2020-06-01' },
+    ],
+    getQuery: (value) => value.values
+      .sort((a, b) => (a.value < b.value ? -1 : 1))
+      .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${v.selected}`)
+      .join('&'),
+    getValueDisplay: getDateDisplay,
+    getValueEntry: getDateEntry,
   }];
 
   return (
@@ -42,7 +58,7 @@ function ChplRealWorldTestingCollectionPage() {
           analytics={analytics}
           filters={filters}
         >
-          <ChplRealWorldTestingCollectionView
+          <ChplApiDocumentationCollectionView
             analytics={analytics}
           />
         </FilterProvider>
@@ -51,7 +67,7 @@ function ChplRealWorldTestingCollectionPage() {
   );
 }
 
-export default ChplRealWorldTestingCollectionPage;
+export default ChplApiDocumentationCollectionPage;
 
-ChplRealWorldTestingCollectionPage.propTypes = {
+ChplApiDocumentationCollectionPage.propTypes = {
 };
