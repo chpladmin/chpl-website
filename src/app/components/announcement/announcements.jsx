@@ -22,7 +22,7 @@ function ChplAnnouncements() {
     if (isLoading || !isSuccess) {
       return;
     }
-    setAnnouncements(data.sort((a, b) => a.startDateTime - b.startDateTime));
+    setAnnouncements(data);
   }, [data, isLoading, isSuccess]);
 
   const deleteAnnouncement = (request) => {

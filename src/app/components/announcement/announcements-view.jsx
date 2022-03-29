@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -29,8 +29,8 @@ import theme from 'themes/theme';
 const headers = [
   { property: 'title', text: 'Title' },
   { property: 'text', text: 'Text' },
-  { property: 'startDateTime', text: 'Start Date' },
-  { property: 'endDateTime', text: 'End Date' },
+  { property: 'startDateTime', text: 'Start Date (as formated string)' },
+  { property: 'endDateTime', text: 'End Date (as relative date)' },
   { property: 'isPublic', text: 'Public?' },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
@@ -97,10 +97,15 @@ const useStyles = makeStyles({
 });
 
 function ChplAnnouncementsView(props) {
-  const { announcements, dispatch } = props;
+  const { dispatch } = props;
   const DateUtil = getAngularService('DateUtil');
   const [announcement, setAnnouncement] = useState(undefined);
+  const [announcements, setAnnouncements] = useState([]);
   const classes = useStyles();
+
+  useEffect(() => {
+    setAnnouncements(props.announcements.sort((a, b) => (a.startDateTime < b.startDateTime ? -1 : 1)));
+  }, [props.announcements]); // eslint-disable-line react/destructuring-assignment
 
   const handleActionBarDispatch = (action, payload) => {
     if (action !== 'close') {
@@ -167,17 +172,13 @@ function ChplAnnouncementsView(props) {
                                 <TableCell className={classes.tableFirstColumn}>{ item.title }</TableCell>
                                 <TableCell>{ item.text }</TableCell>
                                 <TableCell>
-                                  { item.startDateTime }
-                                  {' '}
                                   { DateUtil.getDisplayDateFormat(item.startDateTime) }
                                 </TableCell>
-                                { item.endDateTime }
-                                {' '}
                                 <TableCell>
                                   <Moment
                                     fromNow
                                     withTitle
-                                    titleFormat="DD MMM yyyy, HH:mm (Z)"
+                                    titleFormat="DD MMM yyyy, h:mm a"
                                   >
                                     {item.endDateTime}
                                   </Moment>
