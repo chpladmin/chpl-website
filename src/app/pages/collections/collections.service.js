@@ -16,8 +16,6 @@
 
     function getAnalyticsCategory (key) {
       switch (key) {
-      case 'apiDocumentation':
-        return 'API Information for 2015 Edition Products';
       case 'bannedDevelopers':
         return 'Banned Developer';
       case 'correctiveAction':
@@ -34,8 +32,6 @@
 
     function translate (key, data) {
       switch (key) {
-      case 'apiDocumentation':
-        return apiDocumentation(data.results, data.certificationCriteria);
       case 'bannedDevelopers':
         return bannedDevelopers(data);
       case 'correctiveAction':
@@ -53,59 +49,6 @@
     ////////////////////////////////////////////////////////////////////
     // translation functions
     ////////////////////////////////////////////////////////////////////
-
-    /*
-     * Listings are part of this collection if:
-     * - 2015 Edition and
-     * - at least one of:
-     *   - 170.315 (g)(7)
-     *   - 170.315 (g)(8)
-     *   - 170.315 (g)(9)
-     *   - 170.315 (g)(10)
-     */
-    function apiDocumentation (listings, certificationCriteria) {
-      let applicableCriteria = certificationCriteria
-        .filter(cc => ((cc.number === '170.315 (g)(7)' && cc.title === 'Application Access - Patient Selection')
-                         || (cc.number === '170.315 (g)(8)' && cc.title === 'Application Access - Data Category')
-                         || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request')
-                         || (cc.number === '170.315 (g)(9)' && cc.title === 'Application Access - All Data Request (Cures Update)')
-                         || (cc.number === '170.315 (g)(10)' && cc.title === 'Standardized API for Patient and Population Services')))
-        .map(cc => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
-      let ret = listings.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
-        .map(listing => {
-          listing.mainSearch = [listing.developer, listing.product, listing.version, listing.chplProductNumber].join('|');
-          listing.apiDocumentation = listing.apiDocumentation
-            .split(SPLIT_PRIMARY)
-            .map(item => {
-              let ret = {};
-              const data = item.split(SPLIT_SECONDARY);
-              ret.criteria = certificationCriteria.find(cc => (cc.id + '') === data[0]);
-              ret.url = data[1];
-              return ret;
-            })
-            .sort((a, b) => utilService.sortCert(a.criteria) - utilService.sortCert(b.criteria))
-            .map(object => object.criteria.number + (object.criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + SPLIT_SECONDARY + object.url)
-            .join(SPLIT_PRIMARY);
-          if (listing.serviceBaseUrlList !== '') {
-            listing.serviceBaseUrlList = listing.serviceBaseUrlList
-              .split(SPLIT_PRIMARY)
-              .map(item => {
-                let ret = {};
-                const data = item.split(SPLIT_SECONDARY);
-                ret.criteria = certificationCriteria.find(cc => (cc.id + '') === data[0]);
-                ret.url = data[1];
-                return ret;
-              })
-              .sort((a, b) => utilService.sortCert(a.criteria) - utilService.sortCert(b.criteria))
-              .map(object => object.criteria.number + (object.criteria.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + SPLIT_SECONDARY + object.url)
-              .join(SPLIT_PRIMARY);
-          } else {
-            listing.serviceBaseUrlList = undefined;
-          }
-          return listing;
-        });
-      return ret;
-    }
 
     /*
      * All developers found are included, but need to be transformed

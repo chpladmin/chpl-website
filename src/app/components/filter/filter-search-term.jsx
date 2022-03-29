@@ -97,6 +97,7 @@ function ChplFilterSearchTerm(props) {
                 <ChplTooltip title="Clear">
                   <IconButton
                     onClick={handleClear}
+                    aria-label="Clear search"
                   >
                     <ClearIcon />
                   </IconButton>
