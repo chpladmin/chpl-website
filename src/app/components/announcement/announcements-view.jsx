@@ -29,8 +29,8 @@ import theme from 'themes/theme';
 const headers = [
   { property: 'title', text: 'Title' },
   { property: 'text', text: 'Text' },
-  { property: 'startDate', text: 'Start Date' },
-  { property: 'endDate', text: 'End Date' },
+  { property: 'startDateTime', text: 'Start Date' },
+  { property: 'endDateTime', text: 'End Date' },
   { property: 'isPublic', text: 'Public?' },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
@@ -166,14 +166,20 @@ function ChplAnnouncementsView(props) {
                               <TableRow key={item.id}>
                                 <TableCell className={classes.tableFirstColumn}>{ item.title }</TableCell>
                                 <TableCell>{ item.text }</TableCell>
-                                <TableCell>{ DateUtil.getDisplayDateFormat(item.startDate) }</TableCell>
+                                <TableCell>
+                                  { item.startDateTime }
+                                  {' '}
+                                  { DateUtil.getDisplayDateFormat(item.startDateTime) }
+                                </TableCell>
+                                { item.endDateTime }
+                                {' '}
                                 <TableCell>
                                   <Moment
                                     fromNow
                                     withTitle
                                     titleFormat="DD MMM yyyy, HH:mm (Z)"
                                   >
-                                    {item.endDate}
+                                    {item.endDateTime}
                                   </Moment>
                                 </TableCell>
                                 <TableCell>{ item.isPublic ? 'Yes' : 'No' }</TableCell>

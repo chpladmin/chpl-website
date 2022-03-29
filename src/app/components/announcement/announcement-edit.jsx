@@ -54,9 +54,9 @@ const useStyles = makeStyles({
 const validationSchema = yup.object({
   title: yup.string()
     .required('Title is required'),
-  startDate: yup.date()
+  startDateTime: yup.date()
     .required('Start Date is required'),
-  endDate: yup.date()
+  endDateTime: yup.date()
     .required('End Date is required'),
 });
 
@@ -85,8 +85,8 @@ function ChplAnnouncementEdit(props) {
     initialValues: {
       title: announcement.title || '',
       text: announcement.text || '',
-      startDate: (new Date(announcement.startDate || Date.now())).toISOString().substring(0, 19),
-      endDate: (new Date(announcement.endDate || Date.now())).toISOString().substring(0, 19),
+      startDateTime: announcement.startDateTime || (new Date(Date.now())).toISOString().substring(0, 19),
+      endDateTime: announcement.endDateTime || (new Date(Date.now())).toISOString().substring(0, 19),
       isPublic: announcement.isPublic || false,
     },
     onSubmit: () => {
@@ -94,8 +94,8 @@ function ChplAnnouncementEdit(props) {
         ...announcement,
         title: formik.values.title,
         text: formik.values.text,
-        startDate: formik.values.startDate,
-        endDate: formik.values.endDate,
+        startDateTime: formik.values.startDateTime,
+        endDateTime: formik.values.endDateTime,
         isPublic: formik.values.isPublic,
       };
       props.dispatch('save', updated);
@@ -132,30 +132,30 @@ function ChplAnnouncementEdit(props) {
             helperText={formik.touched.text && formik.errors.text}
           />
           <ChplTextField
-            id="start-date"
-            name="startDate"
+            id="start-date-time"
+            name="startDateTime"
             label="Start Date"
             type="datetime-local"
             required
             className={classes.fullWidth}
-            value={formik.values.startDate}
+            value={formik.values.startDateTime}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.startDate && !!formik.errors.startDate}
-            helperText={formik.touched.startDate && formik.errors.startDate}
+            error={formik.touched.startDateTime && !!formik.errors.startDateTime}
+            helperText={formik.touched.startDateTime && formik.errors.startDateTime}
           />
           <ChplTextField
-            id="end-date"
-            name="endDate"
+            id="end-date-time"
+            name="endDateTime"
             label="End Date"
             type="datetime-local"
             required
             className={classes.fullWidth}
-            value={formik.values.endDate}
+            value={formik.values.endDateTime}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.endDate && !!formik.errors.endDate}
-            helperText={formik.touched.endDate && formik.errors.endDate}
+            error={formik.touched.endDateTime && !!formik.errors.endDateTime}
+            helperText={formik.touched.endDateTime && formik.errors.endDateTime}
           />
           <FormControlLabel
             control={(

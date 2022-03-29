@@ -22,7 +22,7 @@ function ChplAnnouncements() {
     if (isLoading || !isSuccess) {
       return;
     }
-    setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
+    setAnnouncements(data.sort((a, b) => a.startDateTime - b.startDateTime));
   }, [data, isLoading, isSuccess]);
 
   const deleteAnnouncement = (request) => {
@@ -41,8 +41,6 @@ function ChplAnnouncements() {
     const mutate = request.id ? put : post;
     mutate({
       ...request,
-      startDate: (new Date(request.startDate)).getTime(),
-      endDate: (new Date(request.endDate)).getTime(),
     }, {
       onError: (error) => {
         const message = error.response.data?.error
