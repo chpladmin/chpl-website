@@ -22,7 +22,7 @@ import { arrayOf, func } from 'prop-types';
 import ChplAnnouncementEdit from './announcement-edit';
 
 import { ChplSortableHeaders } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -98,7 +98,6 @@ const useStyles = makeStyles({
 
 function ChplAnnouncementsView(props) {
   const { dispatch } = props;
-  const DateUtil = getAngularService('DateUtil');
   const [announcement, setAnnouncement] = useState(undefined);
   const [announcements, setAnnouncements] = useState([]);
   const classes = useStyles();
@@ -172,7 +171,7 @@ function ChplAnnouncementsView(props) {
                                 <TableCell className={classes.tableFirstColumn}>{ item.title }</TableCell>
                                 <TableCell>{ item.text }</TableCell>
                                 <TableCell>
-                                  { DateUtil.getDisplayDateFormat(item.startDateTime) }
+                                  { getDisplayDateFormat(item.startDateTime) }
                                 </TableCell>
                                 <TableCell>
                                   <Moment
