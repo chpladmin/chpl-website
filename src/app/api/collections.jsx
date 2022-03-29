@@ -1,6 +1,29 @@
 import { useQuery } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
+
+const useFetchApiDocumentationCollection = ({
+  orderBy,
+  pageNumber,
+  pageSize,
+  sortDescending,
+  query,
+}) => {
+  const axios = useAxios();
+  return useQuery(['search/v2?certificationCriteriaIds=56,57,58,181,182', orderBy, pageNumber, pageSize, sortDescending, query], async () => {
+    const response = await axios.get(`/search/v2?${query}&certificationCriteriaIds=56,57,58,181,182&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    return response.data;
+  }, { keepPreviousData: true });
+};
+
+const useFetchApiDocumentationData = () => {
+  const axios = useAxios();
+  return useQuery(['files/api_documentation/details'], async () => {
+    const response = await axios.get('/files/api_documentation/details');
+    return response.data;
+  }, options.daily);
+};
 
 const useFetchRealWorldTestingCollection = ({
   orderBy,
@@ -16,6 +39,8 @@ const useFetchRealWorldTestingCollection = ({
   }, { keepPreviousData: true });
 };
 
-/* eslint-disable import/prefer-default-export */
-// remove eslint disable line when new api methods are added
-export { useFetchRealWorldTestingCollection };
+export {
+  useFetchApiDocumentationCollection,
+  useFetchApiDocumentationData,
+  useFetchRealWorldTestingCollection,
+};
