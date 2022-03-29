@@ -13,6 +13,7 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { jsJoda } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -85,8 +86,8 @@ function ChplAnnouncementEdit(props) {
     initialValues: {
       title: announcement.title || '',
       text: announcement.text || '',
-      startDateTime: announcement.startDateTime || (new Date(Date.now())).toISOString().substring(0, 19),
-      endDateTime: announcement.endDateTime || (new Date(Date.now())).toISOString().substring(0, 19),
+      startDateTime: announcement.startDateTime || jsJoda.LocalDateTime.now(),
+      endDateTime: announcement.endDateTime || jsJoda.LocalDateTime.now(),
       isPublic: announcement.isPublic || false,
     },
     onSubmit: () => {
