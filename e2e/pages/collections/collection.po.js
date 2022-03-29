@@ -2,6 +2,7 @@
 const elements = {
   table: 'table',
   searchResultsHeader: 'h6=Search Results:',
+  downloadFilteredListings: '#download-filtered-listings',
   filterPanelToggle: '#filter-panel-toggle',
   resetAllFiltersButton: 'button=Reset All Filters',
   filterSearchTermInput: '#filter-search-term-input',
@@ -41,6 +42,10 @@ class CollectionPage {
       .getText()
       .split(' ');
     return parseInt(data[0].split('-')[1], 10);
+  }
+
+  get downloadFilteredListings() {
+    return $(elements.downloadFilteredListings);
   }
 
   clearSearchTerm() {
