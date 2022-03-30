@@ -21,8 +21,7 @@ function ChplAnnouncementsDisplay() {
         .map((item) => (
           <p key={item.id} className="announcement nav-text spaced-out badge">
             { item.title }
-            {': '}
-            { item.text }
+            { item.text ? `: ${item.text}` : ''}
           </p>
         ))}
     </>
