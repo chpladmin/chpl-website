@@ -58,6 +58,9 @@ const validationSchema = yup.object({
   startDateTime: yup.date()
     .required('Start Date is required'),
   endDateTime: yup.date()
+    .test('mustBeAfter',
+      'End Date must be after Start Date',
+      (value, context) => (value >= context.parent.startDateTime))
     .required('End Date is required'),
 });
 
