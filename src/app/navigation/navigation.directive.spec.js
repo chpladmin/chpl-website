@@ -4,7 +4,6 @@
   describe('the CHPL Navigation', function () {
     var $compile, $localStorage, $location, $log, $q, $rootScope, $state, authService, el, mock, networkService, scope, vm;
     mock = {
-      announcements: [],
       username: 'a user name',
     };
 
@@ -20,7 +19,6 @@
         });
         $provide.decorator('networkService', function ($delegate) {
           $delegate.getAcbs = jasmine.createSpy('getAcbs');
-          $delegate.getAnnouncements = jasmine.createSpy('getAnnouncements');
           $delegate.getAtls = jasmine.createSpy('getAtls');
           return $delegate;
         });
@@ -44,7 +42,6 @@
 
       networkService = _networkService_;
       networkService.getAcbs.and.returnValue($q.when({acbs: []}));
-      networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
       networkService.getAtls.and.returnValue($q.when({atls: []}));
 
       scope = $rootScope.$new();
@@ -125,13 +122,6 @@
           $rootScope.$broadcast('HideCompareWidget');
           scope.$digest();
           expect(vm.showCompareWidget).toHaveBeenCalledWith(false);
-        });
-
-        it('should show announcements', function () {
-          spyOn(vm, 'loadAnnouncements');
-          $rootScope.$broadcast('loggedIn');
-          scope.$digest();
-          expect(vm.loadAnnouncements).toHaveBeenCalled();
         });
       });
 

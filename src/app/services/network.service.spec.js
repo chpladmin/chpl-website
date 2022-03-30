@@ -456,14 +456,6 @@
         $httpBackend.flush();
       });
 
-      it('should getAnnouncements', () => {
-        $httpBackend.expectGET(/^\/rest\/announcements\?future=payload$/).respond(200, { data: 'response' });
-        networkService.getAnnouncements('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getAnnualSurveillanceReport', () => {
         $httpBackend.expectGET(/^\/rest\/surveillance-report\/annual\/id$/).respond(200, { data: 'response' });
         networkService.getAnnualSurveillanceReport('id').then((response) => {

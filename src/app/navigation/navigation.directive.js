@@ -3,7 +3,6 @@
 
   angular.module('chpl.navigation')
     .directive('aiNavigationTop', aiNavigationTop)
-    .directive('aiNavigationBottom', aiNavigationBottom)
     .controller('NavigationController', NavigationController);
 
   /** @ngInject */
@@ -23,20 +22,7 @@
   }
 
   /** @ngInject */
-  function aiNavigationBottom () {
-    return {
-      restrict: 'E',
-      replace: true,
-      templateUrl: 'chpl.navigation/navigation-bottom.html',
-      bindToController: { },
-      scope: { },
-      controllerAs: 'vm',
-      controller: 'NavigationController',
-    };
-  }
-
-  /** @ngInject */
-  function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags, networkService) {
+  function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags) {
     var vm = this;
 
     vm.clear = clear;
@@ -44,7 +30,6 @@
     vm.isActive = isActive;
     vm.isOn = featureFlags.isOn;
     vm.hasAnyRole = authService.hasAnyRole;
-    vm.loadAnnouncements = loadAnnouncements;
     vm.logout = authService.logout;
     vm.setDevelopers = setDevelopers;
     vm.showCmsWidget = showCmsWidget;
@@ -55,7 +40,6 @@
     ////////////////////////////////////////////////////////////////////
 
     this.$onInit = function () {
-      vm.loadAnnouncements();
       $rootScope.bodyClass = 'navigation-shown';
 
       vm.setDevelopers();
@@ -93,7 +77,6 @@
       $scope.$on('$destroy', hideCompareWidget);
 
       var loggedIn = $scope.$on('loggedIn', function () {
-        vm.loadAnnouncements();
         vm.setDevelopers();
         if (vm.navShown) {
           vm.toggleNavClosed();
@@ -102,7 +85,6 @@
       $scope.$on('$destroy', loggedIn);
 
       var loggedOut = $scope.$on('loggedOut', function () {
-        vm.loadAnnouncements();
         vm.setDevelopers();
         if (!vm.navShown) {
           vm.toggleNavOpen();
@@ -112,13 +94,11 @@
 
       var impersonating = $scope.$on('impersonating', function () {
         vm.setDevelopers();
-        vm.loadAnnouncements();
       });
       $scope.$on('$destroy', impersonating);
 
       var unimpersonating = $scope.$on('unimpersonating', function () {
         vm.setDevelopers();
-        vm.loadAnnouncements();
       });
       $scope.$on('$destroy', unimpersonating);
 
@@ -143,13 +123,6 @@
 
     function isActive (state) {
       return $state.$current.name.startsWith(state);
-    }
-
-    function loadAnnouncements () {
-      networkService.getAnnouncements(false)
-        .then(function (result) {
-          vm.announcements = result.announcements;
-        });
     }
 
     function setDevelopers () {

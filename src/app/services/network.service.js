@@ -192,10 +192,6 @@ export default class NetworkService {
     return this.apiGET('/collections/certified-products');
   }
 
-  getAnnouncements(pending, forceReload) {
-    return this.apiGET(`/announcements?future=${pending}`, { forceReload });
-  }
-
   getAnnualSurveillanceReports() {
     return this.apiGET('/surveillance-report/annual');
   }
