@@ -1,154 +1,148 @@
-(function () {
-  'use strict';
+/** @ngInject */
+function aiNavigationTop() {
+  return {
+    restrict: 'E',
+    replace: true,
+    templateUrl: 'chpl.navigation/navigation-top.html',
+    bindToController: {
+      widget: '=?',
+      compareWidget: '=?',
+    },
+    scope: { },
+    controllerAs: 'vm',
+    controller: 'NavigationController',
+  };
+}
 
-  angular.module('chpl.navigation')
-    .directive('aiNavigationTop', aiNavigationTop)
-    .controller('NavigationController', NavigationController);
+/** @ngInject */
+function NavigationController($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags) {
+  const vm = this;
 
-  /** @ngInject */
-  function aiNavigationTop () {
-    return {
-      restrict: 'E',
-      replace: true,
-      templateUrl: 'chpl.navigation/navigation-top.html',
-      bindToController: {
-        widget: '=?',
-        compareWidget: '=?',
-      },
-      scope: { },
-      controllerAs: 'vm',
-      controller: 'NavigationController',
-    };
-  }
+  this.$onInit = () => {
+    $rootScope.bodyClass = 'navigation-shown';
 
-  /** @ngInject */
-  function NavigationController ($localStorage, $location, $log, $rootScope, $scope, $state, authService, featureFlags) {
-    var vm = this;
+    vm.setDevelopers();
 
-    vm.clear = clear;
-    vm.getFullname = authService.getFullname;
-    vm.isActive = isActive;
-    vm.isOn = featureFlags.isOn;
-    vm.hasAnyRole = authService.hasAnyRole;
-    vm.logout = authService.logout;
-    vm.setDevelopers = setDevelopers;
-    vm.showCmsWidget = showCmsWidget;
-    vm.showCompareWidget = showCompareWidget;
-    vm.toggleNavClosed = toggleNavClosed;
-    vm.toggleNavOpen = toggleNavOpen;
+    if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      vm.toggleNavClosed();
+    } else {
+      vm.toggleNavOpen();
+    }
 
-    ////////////////////////////////////////////////////////////////////
-
-    this.$onInit = function () {
-      $rootScope.bodyClass = 'navigation-shown';
-
-      vm.setDevelopers();
-
+    const showCmsWidgetHook = $rootScope.$on('ShowWidget', () => {
+      vm.showCmsWidget(true);
       if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
-        vm.toggleNavClosed();
-      } else {
         vm.toggleNavOpen();
       }
+    });
+    $scope.$on('$destroy', showCmsWidgetHook);
 
-      var showCmsWidget = $rootScope.$on('ShowWidget', function () {
-        vm.showCmsWidget(true);
-        if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
-          vm.toggleNavOpen();
-        }
-      });
-      $scope.$on('$destroy', showCmsWidget);
+    const hideCmsWidget = $rootScope.$on('HideWidget', () => {
+      vm.showCmsWidget(false);
+    });
+    $scope.$on('$destroy', hideCmsWidget);
 
-      var hideCmsWidget = $rootScope.$on('HideWidget', function () {
-        vm.showCmsWidget(false);
-      });
-      $scope.$on('$destroy', hideCmsWidget);
-
-      var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
-        vm.showCompareWidget(true);
-        if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
-          vm.toggleNavOpen();
-        }
-      });
-      $scope.$on('$destroy', showCompareWidget);
-
-      var hideCompareWidget = $rootScope.$on('HideCompareWidget', function () {
-        vm.showCompareWidget(false);
-      });
-      $scope.$on('$destroy', hideCompareWidget);
-
-      var loggedIn = $scope.$on('loggedIn', function () {
-        vm.setDevelopers();
-        if (vm.navShown) {
-          vm.toggleNavClosed();
-        }
-      });
-      $scope.$on('$destroy', loggedIn);
-
-      var loggedOut = $scope.$on('loggedOut', function () {
-        vm.setDevelopers();
-        if (!vm.navShown) {
-          vm.toggleNavOpen();
-        }
-      });
-      $scope.$on('$destroy', loggedOut);
-
-      var impersonating = $scope.$on('impersonating', function () {
-        vm.setDevelopers();
-      });
-      $scope.$on('$destroy', impersonating);
-
-      var unimpersonating = $scope.$on('unimpersonating', function () {
-        vm.setDevelopers();
-      });
-      $scope.$on('$destroy', unimpersonating);
-
-      var flags = $rootScope.$on('flags loaded', function () {
-        if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
-          vm.toggleNavClosed();
-        }
-      });
-      $scope.$on('$destroy', flags);
-
-      var logout = $scope.$on('IdleTimeout', function () {
-        vm.logout();
-      });
-      $scope.$on('$destroy', logout);
-    };
-
-    function clear () {
-      $rootScope.$broadcast('ClearResults', {});
-      $localStorage.clearResults = true;
-      $location.url('/search');
-    }
-
-    function isActive (state) {
-      return $state.$current.name.startsWith(state);
-    }
-
-    function setDevelopers () {
-      if (vm.hasAnyRole(['ROLE_DEVELOPER'])) {
-        vm.developers = authService.getCurrentUser().organizations.map((developer) => developer);
-      } else {
-        vm.developers = [];
+    const showCompareWidgetHook = $rootScope.$on('ShowCompareWidget', () => {
+      vm.showCompareWidget(true);
+      if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+        vm.toggleNavOpen();
       }
-    }
+    });
+    $scope.$on('$destroy', showCompareWidgetHook);
 
-    function showCmsWidget (show) {
-      vm.widgetExpanded = show;
-    }
+    const hideCompareWidget = $rootScope.$on('HideCompareWidget', () => {
+      vm.showCompareWidget(false);
+    });
+    $scope.$on('$destroy', hideCompareWidget);
 
-    function showCompareWidget (show) {
-      vm.compareWidgetExpanded = show;
-    }
+    const loggedIn = $scope.$on('loggedIn', () => {
+      vm.setDevelopers();
+      if (vm.navShown) {
+        vm.toggleNavClosed();
+      }
+    });
+    $scope.$on('$destroy', loggedIn);
 
-    function toggleNavClosed () {
-      vm.navShown = false;
-      $rootScope.bodyClass = 'navigation-hidden';
-    }
+    const loggedOut = $scope.$on('loggedOut', () => {
+      vm.setDevelopers();
+      if (!vm.navShown) {
+        vm.toggleNavOpen();
+      }
+    });
+    $scope.$on('$destroy', loggedOut);
 
-    function toggleNavOpen () {
-      vm.navShown = true;
-      $rootScope.bodyClass = 'navigation-shown';
+    const impersonating = $scope.$on('impersonating', () => {
+      vm.setDevelopers();
+    });
+    $scope.$on('$destroy', impersonating);
+
+    const unimpersonating = $scope.$on('unimpersonating', () => {
+      vm.setDevelopers();
+    });
+    $scope.$on('$destroy', unimpersonating);
+
+    const flags = $rootScope.$on('flags loaded', () => {
+      if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+        vm.toggleNavClosed();
+      }
+    });
+    $scope.$on('$destroy', flags);
+
+    const logout = $scope.$on('IdleTimeout', () => {
+      vm.logout();
+    });
+    $scope.$on('$destroy', logout);
+  };
+
+  function clear() {
+    $rootScope.$broadcast('ClearResults', {});
+    $localStorage.clearResults = true;
+    $location.url('/search');
+  }
+
+  function isActive(state) {
+    return $state.$current.name.startsWith(state);
+  }
+
+  function setDevelopers() {
+    if (vm.hasAnyRole(['ROLE_DEVELOPER'])) {
+      vm.developers = authService.getCurrentUser().organizations.map((developer) => developer);
+    } else {
+      vm.developers = [];
     }
   }
-})();
+
+  function showCmsWidget(show) {
+    vm.widgetExpanded = show;
+  }
+
+  function showCompareWidget(show) {
+    vm.compareWidgetExpanded = show;
+  }
+
+  function toggleNavClosed() {
+    vm.navShown = false;
+    $rootScope.bodyClass = 'navigation-hidden';
+  }
+
+  function toggleNavOpen() {
+    vm.navShown = true;
+    $rootScope.bodyClass = 'navigation-shown';
+  }
+
+  vm.clear = clear;
+  vm.getFullname = authService.getFullname;
+  vm.isActive = isActive;
+  vm.isOn = featureFlags.isOn;
+  vm.hasAnyRole = authService.hasAnyRole;
+  vm.logout = authService.logout;
+  vm.setDevelopers = setDevelopers;
+  vm.showCmsWidget = showCmsWidget;
+  vm.showCompareWidget = showCompareWidget;
+  vm.toggleNavClosed = toggleNavClosed;
+  vm.toggleNavOpen = toggleNavOpen;
+}
+
+angular.module('chpl.navigation')
+  .directive('aiNavigationTop', aiNavigationTop)
+  .controller('NavigationController', NavigationController);

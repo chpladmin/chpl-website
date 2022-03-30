@@ -6,6 +6,7 @@ import '@testing-library/jest-dom';
 import { when } from 'jest-when';
 
 import * as angularReactHelper from '../../../services/angular-react-helper';
+
 import ChplResourcesOverview from './overview';
 
 const $analyticsMock = {
