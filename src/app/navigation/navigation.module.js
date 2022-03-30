@@ -1,3 +1,7 @@
+import ChplNavigationBottom from './navigation-bottom';
+
+import { reactToAngularComponent } from 'services/angular-react-helper';
+
 (function () {
   'use strict';
 
@@ -11,7 +15,9 @@
     .factory('authInterceptor', authInterceptor)
     .config(function ($httpProvider) {
       $httpProvider.interceptors.push('authInterceptor');
-    });
+    })
+    .component('chplNavigationBottomBridge', reactToAngularComponent(ChplNavigationBottom))
+;
 
   /** @ngInclude */
   function authInterceptor($log, API, authService, toaster) {
