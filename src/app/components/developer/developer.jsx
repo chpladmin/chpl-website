@@ -5,6 +5,7 @@ import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
 
 import { UserWrapper } from 'components/login';
+import { FlagContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplDeveloper(props) {
@@ -12,6 +13,7 @@ function ChplDeveloper(props) {
     canEdit,
     canMerge,
     canSplit,
+    demographicChangeRequestIsOn,
     developer,
     dispatch,
     isEditing,
@@ -20,6 +22,9 @@ function ChplDeveloper(props) {
   } = props;
   const [isInvalid, setIsInvalid] = useState(false);
   const [mergingDevelopers, setMergingDevelopers] = useState([]);
+  const flags = {
+    demographicChangeRequestIsOn,
+  };
 
   useEffect(() => {
     setIsInvalid(props.isInvalid);
@@ -31,27 +36,29 @@ function ChplDeveloper(props) {
 
   return (
     <UserWrapper>
-      { (isEditing || isMerging)
-        && (
-          <ChplDeveloperEdit
-            developer={developer}
-            dispatch={dispatch}
-            isInvalid={isInvalid}
-            isSplitting={isSplitting}
-            mergingDevelopers={mergingDevelopers}
-          />
-        )}
-      { !isEditing && !isMerging
-        && (
-          <ChplDeveloperView
-            canEdit={canEdit}
-            canMerge={canMerge}
-            canSplit={canSplit}
-            developer={developer}
-            dispatch={dispatch}
-            isSplitting={isSplitting}
-          />
-        )}
+      <FlagContext.Provider value={flags}>
+        { (isEditing || isMerging)
+          && (
+            <ChplDeveloperEdit
+              developer={developer}
+              dispatch={dispatch}
+              isInvalid={isInvalid}
+              isSplitting={isSplitting}
+              mergingDevelopers={mergingDevelopers}
+            />
+          )}
+        { !isEditing && !isMerging
+          && (
+            <ChplDeveloperView
+              canEdit={canEdit}
+              canMerge={canMerge}
+              canSplit={canSplit}
+              developer={developer}
+              dispatch={dispatch}
+              isSplitting={isSplitting}
+            />
+          )}
+      </FlagContext.Provider>
     </UserWrapper>
   );
 }
@@ -62,6 +69,7 @@ ChplDeveloper.propTypes = {
   canEdit: bool,
   canMerge: bool,
   canSplit: bool,
+  demographicChangeRequestIsOn: bool,
   developer: developerPropType.isRequired,
   dispatch: func,
   isEditing: bool,
@@ -75,6 +83,7 @@ ChplDeveloper.defaultProps = {
   canEdit: false,
   canMerge: false,
   canSplit: false,
+  demographicChangeRequestIsOn: false,
   dispatch: () => {},
   isEditing: false,
   isInvalid: false,

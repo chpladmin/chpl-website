@@ -29,7 +29,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ChplLink, ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { developer as developerPropType } from 'shared/prop-types';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -170,6 +170,7 @@ function ChplDeveloperView(props) {
     isSplitting,
   } = props;
   const [developer, setDeveloper] = useState({});
+  const { demographicChangeRequestIsOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
@@ -182,7 +183,7 @@ function ChplDeveloperView(props) {
       return canEdit
         && (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
           || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
-          || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active')); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
+          || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
     if (action === 'merge') {
       return canMerge
