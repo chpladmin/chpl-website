@@ -14,6 +14,7 @@
       certificationEdition: {
         name: '2015',
       },
+      chplProductNumberHistory: [],
       developer: {
         developerId: 'id',
       },
