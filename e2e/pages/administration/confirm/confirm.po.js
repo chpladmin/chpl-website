@@ -1,71 +1,73 @@
 const config = require('../../../config/mainConfig');
-const confirmElements = {
-  inspectNext: '#inspect-next',
-  inspectConfirm: '#inspect-confirm',
-  yesConfirmation: '//button[text()="Yes"]',
-  rejectButton: '#reject-selected-pending-listings',
-  warningCheckbox: '#acknowledge-warnings',
-  confirmButton: '#inspect-confirm',
-  rejectButtonOnInspectListing: '#inspect-reject',
-  actionBarMessages: '#action-bar-messages',
-  errorMessage: '.bg-danger',
-  errorOnInspect: '#action-bar-errors > ul > li',
-  warningOnInspect: '#action-bar-warnings > ul > li',
-};
 
 class ConfirmPage {
-  constructor () { }
-
-  get inspectNextButton () {
-    return $(confirmElements.inspectNext);
+  constructor() {
+    this.elements = {
+      inspectNext: '#inspect-next',
+      inspectLabel: '#inspect-label',
+      inspectConfirm: '#inspect-confirm',
+      yesConfirmation: '//button[text()="Yes"]',
+      rejectButton: '#reject-selected-pending-listings',
+      warningCheckbox: '#acknowledge-warnings',
+      confirmButton: '#inspect-confirm',
+      rejectButtonOnInspectListing: '#inspect-reject',
+      actionBarMessages: '#action-bar-messages',
+      errorMessage: '.bg-danger',
+      errorOnInspect: '#action-bar-errors > ul > li',
+      warningOnInspect: '#action-bar-warnings > ul > li',
+    };
   }
 
-  get inspectLabel () {
-    return $('#inspect-label');
+  get inspectNextButton() {
+    return $(this.elements.inspectNext);
   }
 
-  get inspectConfirmButton () {
-    return $(confirmElements.inspectConfirm);
+  get inspectLabel() {
+    return $(this.elements.inspectLabel);
   }
 
-  get yesConfirmation () {
-    return $(confirmElements.yesConfirmation);
+  get inspectConfirmButton() {
+    return $(this.elements.inspectConfirm);
   }
 
-  get rejectButton () {
-    return $(confirmElements.rejectButton);
+  get yesConfirmation() {
+    return $(this.elements.yesConfirmation);
   }
 
-  get warningCheckbox () {
-    return $(confirmElements.warningCheckbox);
+  get rejectButton() {
+    return $(this.elements.rejectButton);
   }
 
-  get confirmButton () {
-    return $(confirmElements.confirmButton);
+  get warningCheckbox() {
+    return $(this.elements.warningCheckbox);
   }
 
-  get rejectButtonOnInspectListing () {
-    return $(confirmElements.rejectButtonOnInspectListing);
+  get confirmButton() {
+    return $(this.elements.confirmButton);
   }
 
-  get errorMessage () {
-    return $(confirmElements.errorMessage);
+  get rejectButtonOnInspectListing() {
+    return $(this.elements.rejectButtonOnInspectListing);
   }
 
-  get errorOnInspect () {
-    return $$(confirmElements.errorOnInspect);
+  get errorMessage() {
+    return $(this.elements.errorMessage);
   }
 
-  get warningOnInspect () {
-    return $$(confirmElements.warningOnInspect);
+  get errorOnInspect() {
+    return $$(this.elements.errorOnInspect);
   }
 
-  rejectCheckbox (chplId) {
-    return $('//td[text()="' + chplId + '"]/following-sibling::td[7]/input');
+  get warningOnInspect() {
+    return $$(this.elements.warningOnInspect);
   }
 
-  gotoConfirmListingPage (inspectListingId ) {
-    $('//button[@id="process-pending-listing-' + inspectListingId + '"]').click();
+  rejectCheckbox(chplId) {
+    return $(`//td[text()="${chplId}"]/following-sibling::td[7]/input`);
+  }
+
+  gotoConfirmListingPage(inspectListingId) {
+    $(`//button[@id="process-pending-listing-${inspectListingId}"]`).click();
     $('p=Step 1 of 4').waitForDisplayed();
     this.inspectNextButton.click();
     $('p=Step 2 of 4').waitForDisplayed();
@@ -76,40 +78,40 @@ class ConfirmPage {
     this.inspectConfirmButton.waitForDisplayed();
   }
 
-  gotoPendingListingPage (pendingListingId) {
-    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
-    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').click();
+  gotoPendingListingPage(pendingListingId) {
+    $(`//button[@id="process-pending-listing-${pendingListingId}"]`).waitForClickable({ timeout: config.longTimeout });
+    $(`//button[@id="process-pending-listing-${pendingListingId}"]`).click();
   }
 
-  waitForPendingListingToBecomeClickable (pendingListingId) {
-    $('//button[@id="process-pending-listing-' + pendingListingId + '"]').waitForClickable({ timeout: config.longTimeout });
+  waitForPendingListingToBecomeClickable(pendingListingId) {
+    $(`//button[@id="process-pending-listing-${pendingListingId}"]`).waitForClickable({ timeout: config.longTimeout });
   }
 
-  rejectListingCheckbox (chplId) {
-    $('//input[@id="reject-pending-listing-' + chplId + '"]').click();
+  rejectListingCheckbox(chplId) {
+    $(`//input[@id="reject-pending-listing-${chplId}"]`).click();
   }
 
-  findListingToReject (chplId) {
-    return $('chpl-confirm-listings-bridge').$('//td[text()="' + chplId + '"]');
+  findListingToReject(chplId) {
+    return $(`//input[@id="reject-pending-listing-${chplId}"]`);
   }
 
-  rejectListing (chplId) {
-    $('//input[@id="reject-pending-listing-' + chplId + '"]').click();
+  rejectListing(chplId) {
+    $(`//input[@id="reject-pending-listing-${chplId}"]`).click();
     if (this.rejectButton.isClickable()) {
       this.rejectButton.waitAndClick();
     } else {
-      $('//input[@id="reject-pending-listing-' + chplId + '"]').waitAndClick();
+      $(`//input[@id="reject-pending-listing-${chplId}"]`).waitAndClick();
       this.rejectButton.waitAndClick();
     }
   }
 
-  confirmListing () {
+  confirmListing() {
     this.confirmButton.click();
     this.yesConfirmation.waitAndClick();
   }
 
-  waitForBarMessages () {
-    $(confirmElements.actionBarMessages).waitForDisplayed();
+  waitForBarMessages() {
+    $(this.elements.actionBarMessages).waitForDisplayed();
   }
 }
 

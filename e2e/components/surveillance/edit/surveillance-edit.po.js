@@ -34,7 +34,7 @@ class SurveillanceEditComponent {
       surveillanceDetails: '.col-sm-12.ng-binding',
       surveillanceType: '#surveillance-type',
       totalSites: '#total-sites',
-      editSurveillance : '//span[text()="Edit"]',
+      editSurveillance: '//span[text()="Edit"]',
       delete: '//button[text()=" Delete"]',
       reason: '#reason-for-change',
       editNonConformity: '//*[@ng-click="$ctrl.editNonconformity(noncon)"]'

@@ -64,15 +64,34 @@ Usable on `yarn build` and `yarn start`, these parameters control configuration 
 
 On most Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpack may fail to compile if any of the linters report issues, depending on the severity of the issue.
 
-#### E2E testing
+#### E2E (AQA) Testing
 
-By default, E2E tests will be executed against http://localhost:3000/. To run against different environments, pass ENV variable with 'dev', 'qa' ,'stage' options. For example: `ENV='Environment you want to run on' yarn e2e` would set all tests to run against the environment passed in.
+##### E2E (AQA) Credentials
 
-If a single spec file should be tested, instead of all of them, the command `yarn e2e --spec path/to/file.spec.js` will exercise only that spec file
+Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
 
-To change the loglevel, test could be run as `yarn e2e --l info`
+#### E2E (AQA) Running Tests
+By default, E2E tests will be executed against http://localhost:3000/.
 
-To run a suite of tests, execute `yarn e2e --suite suite-name`. For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
+The tests can be also be executed using different environments. The other URLs for other environments need to be configured in `e2e/config/urls.js` file and URLs must have the correct format. There is a `e2e/config/urlsEXAMPLE.js` that describes the necessary entries and formatting.
+
+Copy `e2e/config/urlsEXAMPLE.js` to the file `e2e/config/urls.js` and set the urls for each environments in the file
+
+To specify the environment to run the tests against, pass ENV variable with 'dev', 'qa' ,'stage' options. For example:
+* `ENV=dev yarn e2e`
+* `ENV=qa yarn e2e`
+* `ENV=stage yarn e2e`
+
+If a single spec file should be tested, instead of all of them:
+* `yarn e2e --spec path/to/file.spec.js`
+
+To change the loglevel:
+* `yarn e2e --l info`
+
+To run a suite of tests:
+* `yarn e2e --suite suite-name`.
+
+For example, `yarn e2e --suite components` will execute only the tests on the components. See `wdio.conf.js` for a list of the suites
 
 When debugging, taking screenshots can be useful. The command `browser.saveScreenshot('path/to/file.png')` will save a screenshot to a location relative to the project root
 
@@ -80,11 +99,3 @@ When debugging, taking screenshots can be useful. The command `browser.saveScree
 [nodejs]: https://nodejs.org/en/download/
 [yarn]: https://yarnpkg.com/en/
 [webpack]: https://webpack.js.org/
-
-#### Automation credetials set up
-
-Copy `e2e/config/credentialsEXAMPLE.js` to the file `e2e/config/credentials.js` and set the passwords for the users in the file to be valid users
-
-#### Automation environment Urls set up
-
-Copy `e2e/config/urlsEXAMPLE.js` to the file `e2e/config/urls.js` and set the urls for each environments in the file

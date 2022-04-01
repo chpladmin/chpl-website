@@ -1,9 +1,12 @@
-import ApiDocumentationPage from './api-documentation.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let page;
+import ApiDocumentationPage from './api-documentation.po';
+
+let hooks;
+let page;
 const path = require('path');
 const fs = require('fs');
+
 const config = require('../../../config/mainConfig');
 
 describe('the Api Documentation collection page', () => {
@@ -20,8 +23,8 @@ describe('the Api Documentation collection page', () => {
   });
 
   it('should have table headers in a defined order', () => {
-    const expectedHeaders = ['Developer', 'Product', 'Version', 'CHPL ID', 'API Documentation', 'Service Base URL List', 'Mandatory Disclosures URL'];
-    const actualHeaders = page.getListingTableHeaders();
+    const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer\nsorted ascending', 'Product', 'Version', 'Certification Status', 'API Documentation', 'Service Base URL List', 'Mandatory Disclosures URL'];
+    const actualHeaders = page.getTableHeaders();
     expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     actualHeaders.forEach((header, idx) => {
       expect(header.getText()).toBe(expectedHeaders[idx]);
@@ -29,90 +32,71 @@ describe('the Api Documentation collection page', () => {
   });
 
   it('should have api documentation download button', () => {
-    expect(page.downloadApiDocButton.isDisplayed()).toBe(true);
+    expect(page.downloadApiDocumentation.isDisplayed()).toBe(true);
   });
 
   describe('when filtering', () => {
     let countBefore;
     let countAfter;
     beforeEach(() => {
-      countBefore = page.listingTotalCount();
+      countBefore = page.getListingTotalCount();
     });
 
     afterEach(() => {
-      page.clearFilters.click();
+      page.resetFilters();
     });
 
-    describe('using certification status filter to select withdrawn by developer', () => {
-
+    describe('when removing "2015"', () => {
       it('should filter listing results', () => {
-        page.selectFilter('certificationStatus', 'Withdrawn_by_Developer');
-        page.waitForUpdatedListingResultsCount();
-        countAfter = page.listingTotalCount();
+        page.removeFilter('Certification Edition', '2015');
+        countAfter = page.getListingTotalCount();
+        expect(countAfter).toBeLessThan(countBefore);
+      });
+    });
+
+    describe('when adding "withdrawn by developer"', () => {
+      it('should filter listing results', () => {
+        page.selectFilter('certificationStatuses', 'Withdrawn_by_Developer');
+        countAfter = page.getListingTotalCount();
         expect(countAfter).toBeGreaterThan(countBefore);
       });
     });
   });
 
-  describe('when searching listing by developer', () => {
-    const DEVELOPER_COL_IDX = 1;
-    const developerName = 'MD Charts';
-    it('should only show listings that match the developer', () => {
-      page.searchForListing(developerName);
-      page.waitForUpdatedListingResultsCount();
-      const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
-        expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
-      }
+  describe('when searching by text', () => {
+    afterEach(() => {
+      page.clearSearchTerm();
     });
-  });
-  describe('when searching listing by version', () => {
-    const VERSION_COL_IDX = 3;
-    const versionName = '2018 R1';
-    it('should only show listings that match the version', () => {
-      page.searchForListing(versionName);
-      page.waitForUpdatedListingResultsCount();
-      const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
-        expect(page.getColumnText(i, VERSION_COL_IDX)).toContain(versionName);
-      }
+
+    it('should show only listings that match the CHPL ID', () => {
+      const columnIndex = 0;
+      const searchTerm = '15.04.04';
+      page.searchForText(searchTerm);
+      expect(page.getTableCellText(page.results[0], columnIndex)).toContain(searchTerm);
     });
-  });
-  describe('when searching listing by product', () => {
-    const PRODUCT_COL_IDX = 2;
-    const productName = 'Acumen EHR';
-    it('should only show listings that match the product', () => {
-      page.searchForListing(productName);
-      page.waitForUpdatedListingResultsCount();
-      const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
-        expect(page.getColumnText(i, PRODUCT_COL_IDX)).toContain(productName);
-      }
+
+    it('should show only listings that match the developer', () => {
+      const columnIndex = 2;
+      const searchTerm = 'Eprosystem Inc.';
+      page.searchForText(searchTerm);
+      expect(page.getTableCellText(page.results[0], columnIndex)).toContain(searchTerm);
+    });
+
+    it('should show only listings that match the product', () => {
+      const columnIndex = 3;
+      const searchTerm = 'Veracity';
+      page.searchForText(searchTerm);
+      expect(page.getTableCellText(page.results[0], columnIndex)).toContain(searchTerm);
     });
   });
 
-  describe('when searching listing by CHPL ID', () => {
-    const CHPLID_COL_IDX = 4;
-    const chplIdName = '15.07.07.1582.HC01.03.00.1.200507';
-    it('should only show listings that match the product', () => {
-      page.searchForListing(chplIdName);
-      page.waitForUpdatedListingResultsCount();
-      const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i++) {
-        expect(page.getColumnText(i, CHPLID_COL_IDX)).toContain(chplIdName);
-      }
-    });
-  });
-
-  describe('when clicking on api documentation download button', () => {
-
+  xdescribe('when clicking on api documentation download button', () => {
     it('should download a file', () => {
       page.downloadApiDocButton.click();
-      let fileName;
       const apiFileName = 'APIDocData';
       browser.pause(config.timeout);
       const files = fs.readdirSync(global.downloadDir);
-      fileName = files.filter((file) => file.match(new RegExp(`${apiFileName}.*.xlsx`))).toString();
+      const fileName = files.filter((file) => file.match(new RegExp(`${apiFileName}.*.xlsx`))).toString();
       expect(fileName).toContain(apiFileName);
       const filePath = path.join(global.downloadDir, fileName);
       const stat = fs.statSync(filePath);
