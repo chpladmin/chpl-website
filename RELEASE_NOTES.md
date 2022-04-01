@@ -1,4 +1,19 @@
 # Release Notes
+## Version 11.33.0
+_1 April 2022_
+
+### Features
+* Allow selection of Attestations Requirement and Non-conformity Type values for Surveillance
+
+### User Interface Updates
+* Display "API Information" shortcut page in new UI
+
+### Flagged Features
+* Indicate when Change Request can be managed by multiple ONC-ACBs
+* Enable view of Attestations data for authorized users
+* Enable viewing of errors/warnings from Listing confirmation main page
+
+---
 
 ## Version 11.32.0
 _22 March 2022_
