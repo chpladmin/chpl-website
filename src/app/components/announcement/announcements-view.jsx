@@ -39,6 +39,9 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
+  cardSpacing: {
+    marginTop: '32px',
+  },
   searchContainer: {
     backgroundColor: '#c6d5e5',
     padding: '16px 32px',
@@ -56,7 +59,7 @@ const useStyles = makeStyles({
   tableResultsHeaderContainer: {
     display: 'grid',
     gap: '8px',
-    margin: '16px 32px',
+    marginBottom: '16px',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -117,7 +120,7 @@ function ChplAnnouncementsView(props) {
   };
 
   return (
-    <Card>
+    <Card className={classes.cardSpacing}>
       <CardHeader title="Announcements" />
       <CardContent>
         { announcement
@@ -140,7 +143,7 @@ function ChplAnnouncementsView(props) {
                 && (
                   <>
                     <div className={classes.tableResultsHeaderContainer}>
-                      <ButtonGroup size="small" className={classes.wrap}>
+                      <ButtonGroup className={classes.wrap}>
                         <Button
                           color="secondary"
                           variant="contained"
