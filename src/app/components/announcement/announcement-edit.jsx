@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     gap: '16px',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto 1fr',
+      gridTemplateColumns: '1fr 1fr',
     },
   },
   actionSubContainer: {
@@ -110,8 +110,8 @@ function ChplAnnouncementEdit(props) {
   return (
     <>
       <Card>
-        <CardHeader className={classes.cardHeader} title={`${announcement.id ? 'Edit' : 'Create'} Announcement`} />
-        <CardContent>
+        <CardHeader className={classes.cardHeader} titleTypographyProps={{ variant: 'h6' }} title={`${announcement.id ? 'Edit' : 'Create'} Announcement`} />
+        <CardContent className={classes.actionContainer}>
           <ChplTextField
             id="title"
             name="title"
@@ -141,7 +141,6 @@ function ChplAnnouncementEdit(props) {
             label="Start Date"
             type="datetime-local"
             required
-            className={classes.fullWidth}
             value={formik.values.startDateTime}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -154,7 +153,6 @@ function ChplAnnouncementEdit(props) {
             label="End Date"
             type="datetime-local"
             required
-            className={classes.fullWidth}
             value={formik.values.endDateTime}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -172,7 +170,7 @@ function ChplAnnouncementEdit(props) {
                 className={classes.fullWidth}
               />
             )}
-            label="Is Public?"
+            label="Make this announcement public?"
           />
         </CardContent>
       </Card>
