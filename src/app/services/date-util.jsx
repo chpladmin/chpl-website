@@ -1,6 +1,6 @@
-import '../../../node_modules/@js-joda/timezone';
-import { Locale } from '../../../node_modules/@js-joda/locale_en-us';
-import * as jsJoda from '../../../node_modules/@js-joda/core';
+import '@js-joda/timezone';
+import { Locale } from '@js-joda/locale_en-us';
+import * as jsJoda from '@js-joda/core';
 
 const isLocalDateTime = (dateTimeToTest) => {
   try {
