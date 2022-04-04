@@ -154,7 +154,7 @@ function ChplAnnouncementEdit(props) {
                 className={classes.fullWidth}
               />
             )}
-            label="Make this announcement public?"
+            label={formik.values.isPublic ? 'Public announcement' : 'For logged in users only'}
           />
         </CardContent>
       </Card>
