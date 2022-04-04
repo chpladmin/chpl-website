@@ -18,32 +18,12 @@ import { announcement as announcementPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '2fr 1fr',
-    },
-  },
   actionContainer: {
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
-    },
-  },
-  actionSubContainer: {
-    display: 'grid',
-    gap: '16px',
-    alignContent: 'flex-start',
-    gridTemplateColumns: '1fr 1fr',
-  },
-  actionDivider: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'inline',
     },
   },
   fullWidth: {
@@ -110,7 +90,11 @@ function ChplAnnouncementEdit(props) {
   return (
     <>
       <Card>
-        <CardHeader className={classes.cardHeader} titleTypographyProps={{ variant: 'h6' }} title={`${announcement.id ? 'Edit' : 'Create'} Announcement`} />
+        <CardHeader
+          className={classes.cardHeader}
+          titleTypographyProps={{ variant: 'h6' }}
+          title={`${announcement.id ? 'Edit' : 'Create'} Announcement`}
+        />
         <CardContent className={classes.actionContainer}>
           <ChplTextField
             id="title"
