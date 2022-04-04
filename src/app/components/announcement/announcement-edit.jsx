@@ -69,8 +69,8 @@ function ChplAnnouncementEdit(props) {
     initialValues: {
       title: announcement.title || '',
       text: announcement.text || '',
-      startDateTime: announcement.startDateTime || jsJoda.LocalDateTime.now(),
-      endDateTime: announcement.endDateTime || jsJoda.LocalDateTime.now(),
+      startDateTime: announcement.startDateTime || jsJoda.LocalDateTime.now().truncatedTo(jsJoda.ChronoUnit.MINUTES),
+      endDateTime: announcement.endDateTime || jsJoda.LocalDateTime.now().truncatedTo(jsJoda.ChronoUnit.MINUTES),
       isPublic: announcement.isPublic || false,
     },
     onSubmit: () => {
