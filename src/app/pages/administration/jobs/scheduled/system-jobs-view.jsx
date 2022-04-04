@@ -141,13 +141,18 @@ function ChplSystemJobsView(props) {
                             { item.description }
                           </TableCell>
                           <TableCell>
-                            <Moment
-                              fromNow
-                              withTitle
-                              titleFormat="DD MMM yyyy, h:mm a"
-                            >
-                              {item.nextRunDate}
-                            </Moment>
+                            { item.nextRunDate
+                              ? (
+                                <Moment
+                                  fromNow
+                                  withTitle
+                                  titleFormat="DD MMM yyyy, h:mm a"
+                                >
+                                  {item.nextRunDate}
+                                </Moment>
+                              ) : (
+                                <>In Progress</>
+                              )}
                           </TableCell>
                           <TableCell>
                             { item.triggerScheduleType }

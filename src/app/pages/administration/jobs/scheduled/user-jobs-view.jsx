@@ -19,7 +19,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
-import { job as jobPropType } from 'shared/prop-types';
+import { acb as acbPropType, job as jobPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const headers = [
@@ -94,16 +94,31 @@ const useStyles = makeStyles({
 
 function ChplUserJobsView(props) {
   const { dispatch } = props;
+  const [acbs, setAcbs] = useState([]);
   const [jobs, setJobs] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
     setJobs(props.jobs
             .sort((a, b) => (a.email < b.email ? -1 : 1))
-            .map((job) => ({
+            .map((job) => {
+              const response = {
               ...job,
-            })));
-  }, [props.jobs]); // eslint-disable-line react/destructuring-assignment
+                details: ['Schedule: ' + job.cronSchedule, 'Type: ' + job.job.name],
+              };
+              if (job.acb) {
+                let acbs = job.acb
+                    .split(',')
+                    .map((id) => parseInt(id, 10))
+                    .map((id) => props.acbs.find((acb) => acb.id === id))
+                    .map((acb) => `${acb.name} ${acb.retired ? ' (Retired)' : ''}`)
+                    .sort((a, b) => a < b ? -1 : 1)
+                    .join(', ');
+                response.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + acbs);
+              }
+              return response;
+            }));
+  }, [props.acbs, props.jobs]); // eslint-disable-line react/destructuring-assignment
 
   const handleClick = (job) => {
     console.log({job});
@@ -142,7 +157,11 @@ function ChplUserJobsView(props) {
                               { item.email }
                             </TableCell>
                             <TableCell>
-                              { item.description }
+                              <ul>
+                                { item.details.map((detail) => (
+                                  <li key={detail}>{detail}</li>
+                                ))}
+                              </ul>
                             </TableCell>
                             <TableCell align="right">
                               <Button
@@ -170,11 +189,13 @@ function ChplUserJobsView(props) {
 export default ChplUserJobsView;
 
 ChplUserJobsView.propTypes = {
+  acbs: arrayOf(acbPropType),
   jobs: arrayOf(jobPropType),
   dispatch: func,
 };
 
 ChplUserJobsView.defaultProps = {
+  acbs: [],
   jobs: [],
   dispatch: () => {},
 };

@@ -8,6 +8,7 @@ import ChplJobTypesView from './job-types-view';
 import ChplSystemJobsView from './system-jobs-view';
 import ChplUserJobsView from './user-jobs-view';
 
+import { useFetchAcbs } from 'api/acbs';
 import {
   useDeleteJob,
   useFetchJobTypes,
@@ -18,6 +19,7 @@ import {
 } from 'api/jobs';
 
 function ChplJobs() {
+  const acbQuery = useFetchAcbs();
   const jobTypeQuery = useFetchJobTypes();
   const systemQuery = useFetchSystemJobs();
   const userQuery = useFetchUserJobs();
@@ -25,9 +27,17 @@ function ChplJobs() {
   const { mutate: post } = usePostJob();
   const { mutate: put } = usePutJob();
   const { enqueueSnackbar } = useSnackbar();
+  const [acbs, setAcbs] = useState([]);
   const [userJobs, setUserJobs] = useState([]);
   const [systemJobs, setSystemJobs] = useState([]);
   const [jobTypes, setJobTypes] = useState([]);
+
+  useEffect(() => {
+    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+      return;
+    }
+    setAcbs(acbQuery.data.acbs);
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
   useEffect(() => {
     if (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess) {
@@ -89,6 +99,7 @@ function ChplJobs() {
     <>
       <Typography variant="h1">Scheduled Jobs</Typography>
       <ChplUserJobsView
+        acbs={acbs}
         jobs={userJobs}
         dispatch={handleDispatch}
       />
