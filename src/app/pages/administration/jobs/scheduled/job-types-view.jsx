@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
@@ -11,15 +10,15 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
-import { jobType as jobType } from 'shared/prop-types';
-import theme from 'themes/theme';
+import { jobType } from 'shared/prop-types';
 
 const headers = [
   { property: 'name', text: 'Job Name' },
@@ -36,9 +35,6 @@ const useStyles = makeStyles({
   cardSpacing: {
     marginTop: '32px',
   },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   firstColumn: {
     position: 'sticky',
     left: 0,
@@ -47,6 +43,55 @@ const useStyles = makeStyles({
   },
 });
 
+const groupMapping = {
+  systemJobs: 'System Job',
+  chplJobs: 'User Job',
+  subordinateJobs: 'Subordinate Job',
+};
+
+const getAction = (item, dispatch) => {
+  if (item.jobDataMap.editableJobFields) {
+    return (
+      <Button
+        onClick={() => dispatch('edit', item)}
+        variant="contained"
+        color="primary"
+        aria-label="Edit Job"
+      >
+        <EditOutlinedIcon />
+      </Button>
+    );
+  }
+  switch (item.group) {
+    case 'chplJobs':
+      return (
+        <Button
+          onClick={() => dispatch('schedule', item)}
+          variant="contained"
+          color="primary"
+          aria-label="Schedule Job"
+        >
+          <ScheduleIcon />
+        </Button>
+      );
+    case 'systemJobs':
+      return (
+        <Button
+          onClick={() => dispatch('schedule', item)}
+          variant="contained"
+          color="primary"
+          aria-label="Schedule Job"
+        >
+          <PlayArrowIcon />
+        </Button>
+      );
+    case 'subordinateJobs':
+      return null;
+      // no default
+  }
+  return null;
+};
+
 function ChplJobTypesView(props) {
   const { dispatch } = props;
   const [jobTypes, setJobTypes] = useState([]);
@@ -54,18 +99,14 @@ function ChplJobTypesView(props) {
 
   useEffect(() => {
     setJobTypes(props.jobTypes
-            .sort((a, b) => (a.name < b.name ? -1 : 1))
-            .map((job) => ({
-              ...job,
-              oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
-              jobType: job.group === 'systemJobs' ? 'System Job' : 'User Job',
-            })));
-  }, [props.jobTypes]); // eslint-disable-line react/destructuring-assignment
-
-  const handleClick = (job) => {
-    console.log({job});
-    // props.dispatch
-  };
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((job) => ({
+        ...job,
+        oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
+        jobType: groupMapping[job.group],
+        action: getAction(job, dispatch),
+      })));
+  }, [props.jobTypes, dispatch]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <Card className={classes.cardSpacing}>
@@ -99,15 +140,7 @@ function ChplJobTypesView(props) {
                       { item.jobType }
                     </TableCell>
                     <TableCell align="right">
-                      <Button
-                        onClick={() => handleClick(item)}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Edit - extract as new JSX reponse
-                        {' '}
-                        <EditOutlinedIcon className={classes.iconSpacing} />
-                      </Button>
+                      { item.action }
                     </TableCell>
                   </TableRow>
                 ))}

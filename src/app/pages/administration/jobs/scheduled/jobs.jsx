@@ -90,7 +90,7 @@ function ChplJobs() {
   const handleDispatch = (action, payload) => {
     switch (action) {
       default:
-        console.log({file: 'jobs.jsx', action, payload});
+        console.log({ file: 'jobs.jsx', action, payload });
         // no default
     }
   };
@@ -105,7 +105,6 @@ function ChplJobs() {
       />
       <ChplSystemJobsView
         jobs={systemJobs}
-        dispatch={handleDispatch}
       />
       <ChplJobTypesView
         jobTypes={jobTypes}
