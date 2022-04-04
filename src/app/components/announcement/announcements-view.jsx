@@ -166,6 +166,7 @@ function ChplAnnouncementsView(props) {
                           onTableSort={() => {}}
                           orderBy="currentStatusChangeDate"
                           order="asc"
+                          stickyHeader
                         />
                         <TableBody>
                           { announcements
