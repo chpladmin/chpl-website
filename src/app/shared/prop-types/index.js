@@ -17,6 +17,7 @@ import contact from './contact';
 import criterion from './criterion';
 import developer from './developer';
 import formik from './formik';
+import { job, jobType, scheduledSystemJob } from './jobs';
 import product from './product';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
@@ -52,6 +53,8 @@ export {
   criterion,
   developer,
   formik,
+  job,
+  jobType,
   listing,
   optionalStandard,
   product,
@@ -59,6 +62,7 @@ export {
   reliedUponSoftware,
   resources,
   routerConfig,
+  scheduledSystemJob,
   selectedConformanceMethod,
   selectedOptionalStandard,
   selectedSvap,
