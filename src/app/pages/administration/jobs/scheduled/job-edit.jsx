@@ -7,9 +7,11 @@ import {
   Switch,
   makeStyles,
 } from '@material-ui/core';
-import { func, object } from 'prop-types';
+import { func, object, oneOfType } from 'prop-types';
 
 import ChplEditableJobEdit from './editable-job-edit';
+
+import { jobType } from 'shared/prop-types';
 
 function ChplJobEdit(props) {
   const { job, dispatch } = props;
@@ -33,6 +35,6 @@ function ChplJobEdit(props) {
 export default ChplJobEdit;
 
 ChplJobEdit.propTypes = {
-  job: object.isRequired,
+  job: oneOfType([jobType, object]).isRequired,
   dispatch: func.isRequired,
 };

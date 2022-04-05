@@ -6,12 +6,13 @@ import {
   CardHeader,
   makeStyles,
 } from '@material-ui/core';
-import { func, object } from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { jobType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -116,6 +117,6 @@ function ChplEditableJobEdit(props) {
 export default ChplEditableJobEdit;
 
 ChplEditableJobEdit.propTypes = {
-  job: object.isRequired,
+  job: jobType.isRequired,
   dispatch: func.isRequired,
 };
