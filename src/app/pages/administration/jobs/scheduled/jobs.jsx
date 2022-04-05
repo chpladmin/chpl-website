@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
+import ChplJobEdit from './job-edit';
 import ChplJobTypesView from './job-types-view';
 import ChplSystemJobsView from './system-jobs-view';
 import ChplUserJobsView from './user-jobs-view';
@@ -28,35 +29,28 @@ function ChplJobs() {
   const { mutate: put } = usePutJob();
   const { enqueueSnackbar } = useSnackbar();
   const [acbs, setAcbs] = useState([]);
-  const [userJobs, setUserJobs] = useState([]);
-  const [systemJobs, setSystemJobs] = useState([]);
+  const [job, setJob] = useState(undefined);
   const [jobTypes, setJobTypes] = useState([]);
+  const [systemJobs, setSystemJobs] = useState([]);
+  const [userJobs, setUserJobs] = useState([]);
 
   useEffect(() => {
-    if (acbQuery.isLoading || !acbQuery.isSuccess) {
-      return;
-    }
+    if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
     setAcbs(acbQuery.data.acbs);
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
   useEffect(() => {
-    if (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess) {
-      return;
-    }
+    if (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess) { return; }
     setJobTypes(jobTypeQuery.data);
   }, [jobTypeQuery.data, jobTypeQuery.isLoading, jobTypeQuery.isSuccess]);
 
   useEffect(() => {
-    if (systemQuery.isLoading || !systemQuery.isSuccess) {
-      return;
-    }
+    if (systemQuery.isLoading || !systemQuery.isSuccess) { return; }
     setSystemJobs(systemQuery.data);
   }, [systemQuery.data, systemQuery.isLoading, systemQuery.isSuccess]);
 
   useEffect(() => {
-    if (userQuery.isLoading || !userQuery.isSuccess) {
-      return;
-    }
+    if (userQuery.isLoading || !userQuery.isSuccess) { return; }
     setUserJobs(userQuery.data);
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
@@ -87,10 +81,20 @@ function ChplJobs() {
     });
   };
 
-  const handleDispatch = (action, payload) => {
+  const handleDispatch = ({action, payload}) => {
     switch (action) {
+      case 'edit':
+        if (payload.jobDataMap.editableJobFields) {
+          setJob(payload);
+        } else {
+          console.log({ trace: 'jobs.jsx - edit-else', action, payload });
+        }
+        break;
+      case 'close':
+        setJob(undefined);
+        break;
       default:
-        console.log({ file: 'jobs.jsx', action, payload });
+        console.log({ trace: 'jobs.jsx - switch-default', action, payload });
         // no default
     }
   };
@@ -98,18 +102,30 @@ function ChplJobs() {
   return (
     <>
       <Typography variant="h1">Scheduled Jobs</Typography>
-      <ChplUserJobsView
-        acbs={acbs}
-        jobs={userJobs}
-        dispatch={handleDispatch}
-      />
-      <ChplSystemJobsView
-        jobs={systemJobs}
-      />
-      <ChplJobTypesView
-        jobTypes={jobTypes}
-        dispatch={handleDispatch}
-      />
+      { !job
+        && (
+          <>
+            <ChplUserJobsView
+              acbs={acbs}
+              jobs={userJobs}
+              dispatch={handleDispatch}
+            />
+            <ChplSystemJobsView
+              jobs={systemJobs}
+            />
+            <ChplJobTypesView
+              jobTypes={jobTypes}
+              dispatch={handleDispatch}
+            />
+          </>
+        )}
+      { job
+        && (
+          <ChplJobEdit
+            job={job}
+            dispatch={handleDispatch}
+          />
+        )}
     </>
   );
 }

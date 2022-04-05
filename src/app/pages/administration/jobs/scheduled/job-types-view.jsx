@@ -53,7 +53,7 @@ const getAction = (item, dispatch) => {
   if (item.jobDataMap.editableJobFields) {
     return (
       <Button
-        onClick={() => dispatch('edit', item)}
+        onClick={() => dispatch({ action: 'edit', payload: item })}
         variant="contained"
         color="primary"
         aria-label="Edit Job"

@@ -110,7 +110,7 @@ function ChplUserJobsView(props) {
                         </TableCell>
                         <TableCell align="right">
                           <Button
-                            onClick={() => dispatch('edit', item)}
+                            onClick={() => dispatch({ action: 'edit', payload: item })}
                             variant="contained"
                             color="primary"
                             aria-label="Edit Job"
