@@ -34,15 +34,6 @@ const useStyles = makeStyles({
 const validationSchema = yup.object({
   email: yup.string()
     .email('Enter a valid email'),
-  /*
-  startDateTime: yup.date()
-    .required('Start Date is required'),
-  endDateTime: yup.date()
-    .test('mustBeAfter',
-      'End Date must be after Start Date',
-      (value, context) => (value >= context.parent.startDateTime))
-    .required('End Date is required'),
-    */
 });
 
 function ChplEditableJobEdit(props) {

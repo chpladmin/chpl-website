@@ -10,6 +10,7 @@ import {
 import { func, object, oneOfType } from 'prop-types';
 
 import ChplEditableJobEdit from './editable-job-edit';
+import ChplSystemJobEdit from './system-job-edit';
 
 import { jobType } from 'shared/prop-types';
 
@@ -19,6 +20,15 @@ function ChplJobEdit(props) {
   if (job.jobDataMap.editableJobFields) {
     return (
       <ChplEditableJobEdit
+        job={job}
+        dispatch={dispatch}
+      />
+    );
+  }
+
+  if (job.group === 'systemJobs') {
+    return (
+      <ChplSystemJobEdit
         job={job}
         dispatch={dispatch}
       />

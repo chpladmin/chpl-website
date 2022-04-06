@@ -101,6 +101,9 @@ function ChplJobs() {
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
+      case 'close':
+        setJob(undefined);
+        break;
       case 'edit':
         if (payload.jobDataMap.editableJobFields) {
           setJob(payload);
@@ -108,8 +111,12 @@ function ChplJobs() {
           console.log({ trace: 'jobs.jsx - edit-else', action, payload });
         }
         break;
-      case 'close':
-        setJob(undefined);
+      case 'schedule':
+        if (payload.group === 'systemJobs') {
+          setJob(payload);
+        } else {
+          console.log({ trace: 'jobs.jsx - edit-else', action, payload });
+        }
         break;
       default:
         console.log({ trace: 'jobs.jsx - switch-default', action, payload });

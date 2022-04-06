@@ -66,7 +66,7 @@ const getAction = (item, dispatch) => {
     case 'chplJobs':
       return (
         <Button
-          onClick={() => dispatch('schedule', item)}
+          onClick={() => dispatch({ action: 'schedule', payload: item })}
           variant="contained"
           color="primary"
           aria-label="Schedule Job"
@@ -77,7 +77,7 @@ const getAction = (item, dispatch) => {
     case 'systemJobs':
       return (
         <Button
-          onClick={() => dispatch('schedule', item)}
+          onClick={() => dispatch({ action: 'schedule', payload: item })}
           variant="contained"
           color="primary"
           aria-label="Schedule Job"
