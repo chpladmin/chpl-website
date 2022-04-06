@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
@@ -18,6 +19,22 @@ import {
   usePostJob,
   usePutJob,
 } from 'api/jobs';
+import theme from 'themes/theme';
+
+const useStyles = makeStyles({
+  container: {
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr 1fr',
+    },
+  },
+  fullWidth: {
+    gridColumnStart: '1',
+    gridColumnEnd: '-1',
+  },
+});
 
 function ChplJobs() {
   const acbQuery = useFetchAcbs();
@@ -33,6 +50,7 @@ function ChplJobs() {
   const [jobTypes, setJobTypes] = useState([]);
   const [systemJobs, setSystemJobs] = useState([]);
   const [userJobs, setUserJobs] = useState([]);
+  const classes = useStyles();
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
@@ -81,7 +99,7 @@ function ChplJobs() {
     });
   };
 
-  const handleDispatch = ({action, payload}) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'edit':
         if (payload.jobDataMap.editableJobFields) {
@@ -104,7 +122,7 @@ function ChplJobs() {
       <Typography variant="h1">Scheduled Jobs</Typography>
       { !job
         && (
-          <>
+          <div className={classes.container}>
             <ChplUserJobsView
               acbs={acbs}
               jobs={userJobs}
@@ -113,11 +131,13 @@ function ChplJobs() {
             <ChplSystemJobsView
               jobs={systemJobs}
             />
-            <ChplJobTypesView
-              jobTypes={jobTypes}
-              dispatch={handleDispatch}
-            />
-          </>
+            <div className={classes.fullWidth}>
+              <ChplJobTypesView
+                jobTypes={jobTypes}
+                dispatch={handleDispatch}
+              />
+            </div>
+          </div>
         )}
       { job
         && (
