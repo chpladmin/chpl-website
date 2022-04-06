@@ -64,9 +64,9 @@ function ChplResourcesApi() {
           <Typography
             gutterBottom
           >
-            This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /search API with the searchTerm parameter set as Epic, you would make the following call (switching out the key in the URL for your key):
+            This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /acbs API, you would make the following call (switching out the key in the URL for your key):
             {' '}
-            <code>https://chpl.healthit.gov/rest/search/?api_key=YOURKEYHERE&searchTerm=Epic</code>
+            <code>https://chpl.healthit.gov/rest/acbs?api_key=YOUR_KEY_HERE</code>
           </Typography>
           <Typography
             gutterBottom
