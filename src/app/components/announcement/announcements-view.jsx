@@ -51,6 +51,9 @@ const useStyles = makeStyles({
   noResultsContainer: {
     padding: '16px 32px',
   },
+  tableResultsHeaderContainer: {
+    paddingBottom: '16px',
+  },
 });
 
 function ChplAnnouncementsView(props) {
@@ -98,9 +101,8 @@ function ChplAnnouncementsView(props) {
                   <>
                     <div className={classes.tableResultsHeaderContainer}>
                       <Button
-                        color="secondary"
+                        color="primary"
                         variant="contained"
-                        fullWidth
                         id="add-new-announcement"
                         onClick={() => setAnnouncement({})}
                       >
@@ -139,7 +141,7 @@ function ChplAnnouncementsView(props) {
                                   <Button
                                     onClick={() => setAnnouncement(item)}
                                     variant="contained"
-                                    color="primary"
+                                    color="secondary"
                                   >
                                     Edit
                                     {' '}
