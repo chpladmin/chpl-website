@@ -231,7 +231,7 @@ function ChplListingHistory(props) {
           <Typography>
             This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the
             <code>
-              /activity/certified_products/
+              /activity/metadata/listings/
               { listing.id }
             </code>
             {' '}
