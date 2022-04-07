@@ -29,6 +29,9 @@ const ListingComponent = {
     $onChanges(changes) {
       if (changes.listing) {
         this.listing = changes.listing.currentValue;
+        this.chplProductNumberHistory = [...new Set(this.listing.chplProductNumberHistory.map((item) => item.chplProductNumber))]
+          .filter((item) => item !== this.listing.chplProductNumber)
+          .sort((a, b) => (a < b ? -1 : 1));
         this.backupListing = angular.copy(this.listing);
         if (this.$localStorage.previouslyViewed) {
           this.previouslyViewed = this.$localStorage.previouslyViewed;

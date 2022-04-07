@@ -893,6 +893,13 @@ const ReportsListingsComponent = {
           if (targetedUsers.length > 0) {
             activity.details.push(`Targeted Users changes:<ul>${targetedUsers.join('')}</ul>`);
           }
+        } else if (item.description.startsWith('Changed ACB ownership')) {
+          console.log('ownership');
+          const changes = ['Changed ONC-ACB ownership'];
+          if (item.originalData.chplProductNumber !== item.newData.chplProductNumber) {
+            changes.push(`<ul><li>CHPL Product Number changed from ${item.originalData.chplProductNumber} to ${item.newData.chplProductNumber}</li></ul>`);
+          }
+          activity.action = changes.join('');
         } else if (item.description.startsWith('Surveillance')) {
           if (item.description.startsWith('Surveillance was delete')) {
             activity.action = 'Surveillance was deleted';
