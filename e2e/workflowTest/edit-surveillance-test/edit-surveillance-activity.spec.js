@@ -65,7 +65,7 @@ describe('On surveillance management page, ROLE_ACB user', () => {
   });
 
   it('should be able to close surveillance by closing all non conformities', () => {
-    let error ='End date for surveillance is required when there are no open nonconformities.'
+    let error ='End date is required when there are no open Nonconformities.'
     let nonConformitydetails = {
       type: 'Annual Real World Testing Results',
       determinationDate: '01/01/2020',
