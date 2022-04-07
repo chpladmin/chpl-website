@@ -219,6 +219,7 @@ function ChplChangeRequestEdit(props) {
     onSubmit: () => {
       const updated = {
         ...changeRequest,
+        details,
         currentStatus: {
           comment: formik.values.comment,
           changeRequestStatusType: formik.values.changeRequestStatusType,
