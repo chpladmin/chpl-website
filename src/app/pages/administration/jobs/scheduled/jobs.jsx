@@ -114,8 +114,10 @@ function ChplJobs() {
       case 'schedule':
         if (payload.group === 'systemJobs') {
           setJob(payload);
+        } else if (payload.group === 'chplJobs') {
+          setJob(payload);
         } else {
-          console.log({ trace: 'jobs.jsx - edit-else', action, payload });
+          console.log({ trace: 'jobs.jsx - schedule-else', action, payload });
         }
         break;
       default:

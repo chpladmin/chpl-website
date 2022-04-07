@@ -41,13 +41,12 @@ function ChplEditableJobEdit(props) {
   const [job, setJob] = useState({});
   const [emails, setEmails] = useState([]);
   const classes = useStyles();
+  let formik;
 
   useEffect(() => {
     setJob(props.job);
     setEmails(props.job.jobDataMap.email.split(','));
   }, [props.job]); // eslint-disable-line react/destructuring-assignment
-
-  let formik;
 
   const handleDispatch = (action) => {
     switch (action) {

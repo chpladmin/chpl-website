@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
   CardHeader,
-  FormControlLabel,
-  Switch,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func, object } from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { jobType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  actionContainer: {
+  container: {
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: '1fr',
@@ -31,30 +31,28 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  title: yup.string()
-    .required('Title is required'),
-  startDateTime: yup.date()
-    .required('Start Date is required'),
-  endDateTime: yup.date()
-    .test('mustBeAfter',
-      'End Date must be after Start Date',
-      (value, context) => (value >= context.parent.startDateTime))
-    .required('End Date is required'),
+  email: yup.string()
+    .required('Email is required')
+    .email('Enter a valid email'),
 });
 
-function ChplJobEdit(props) {
-  const { job, dispatch } = props;
+function ChplUserJobEdit(props) {
+  const { dispatch } = props;
+  const [job, setJob] = useState({});
   const classes = useStyles();
-
   let formik;
+
+  useEffect(() => {
+    setJob(props.job);
+  }, [props.job]); // eslint-disable-line react/destructuring-assignment
 
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        dispatch('close');
+        dispatch({ action: 'close' });
         break;
       case 'delete':
-        dispatch('delete');
+        dispatch({ action: 'delete' });
         break;
       case 'save':
         formik.submitForm();
@@ -65,22 +63,16 @@ function ChplJobEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      title: job.title || '',
-      text: job.text || '',
-      startDateTime: job.startDateTime || jsJoda.LocalDateTime.now().truncatedTo(jsJoda.ChronoUnit.MINUTES),
-      endDateTime: job.endDateTime || jsJoda.LocalDateTime.now().truncatedTo(jsJoda.ChronoUnit.MINUTES),
-      isPublic: job.isPublic || false,
+      email: '',
     },
     onSubmit: () => {
-      const updated = {
+      const payload = {
         ...job,
-        title: formik.values.title,
-        text: formik.values.text,
-        startDateTime: formik.values.startDateTime,
-        endDateTime: formik.values.endDateTime,
-        isPublic: formik.values.isPublic,
+        jobDataMap: {
+          ...job.jobDataMap,
+        },
       };
-      props.dispatch('save', updated);
+      props.dispatch({ action: 'save', payload });
     },
     validationSchema,
   });
@@ -91,69 +83,36 @@ function ChplJobEdit(props) {
         <CardHeader
           className={classes.cardHeader}
           titleTypographyProps={{ variant: 'h6' }}
-          title={`${job.id ? 'Edit' : 'Create'} Job`}
+          title={`${job.id ? 'Edit' : 'Create'} Job: ${job.name}`}
         />
-        <CardContent className={classes.actionContainer}>
+        <CardContent className={classes.container}>
+          <Typography>
+            Job Name
+            <br />
+            { job.name }
+          </Typography>
+          <Typography>
+            Job Description
+            <br />
+            { job.description }
+          </Typography>
           <ChplTextField
-            id="title"
-            name="title"
-            label="Title"
-            className={classes.fullWidth}
+            id="email"
+            name="email"
+            label="Email"
             required
-            value={formik.values.title}
+            value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.title && !!formik.errors.title}
-            helperText={formik.touched.title && formik.errors.title}
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
           />
-          <ChplTextField
-            id="text"
-            name="text"
-            label="Text"
-            className={classes.fullWidth}
-            value={formik.values.text}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.text && !!formik.errors.text}
-            helperText={formik.touched.text && formik.errors.text}
-          />
-          <ChplTextField
-            id="start-date-time"
-            name="startDateTime"
-            label="Start Date"
-            type="datetime-local"
-            required
-            value={formik.values.startDateTime}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.startDateTime && !!formik.errors.startDateTime}
-            helperText={formik.touched.startDateTime && formik.errors.startDateTime}
-          />
-          <ChplTextField
-            id="end-date-time"
-            name="endDateTime"
-            label="End Date"
-            type="datetime-local"
-            required
-            value={formik.values.endDateTime}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.endDateTime && !!formik.errors.endDateTime}
-            helperText={formik.touched.endDateTime && formik.errors.endDateTime}
-          />
-          <FormControlLabel
-            control={(
-              <Switch
-                id="is-public"
-                name="isPublic"
-                color="primary"
-                checked={formik.values.isPublic}
-                onChange={formik.handleChange}
-                className={classes.fullWidth}
-              />
-            )}
-            label={formik.values.isPublic ? 'Public job' : 'For logged in users only'}
-          />
+          <Typography>
+            ACB
+          </Typography>
+          <Typography>
+            Schedule
+          </Typography>
         </CardContent>
       </Card>
       <ChplActionBar
@@ -165,9 +124,9 @@ function ChplJobEdit(props) {
   );
 }
 
-export default ChplJobEdit;
+export default ChplUserJobEdit;
 
-ChplJobEdit.propTypes = {
-  job: object.isRequired,
+ChplUserJobEdit.propTypes = {
+  job: jobType.isRequired,
   dispatch: func.isRequired,
 };

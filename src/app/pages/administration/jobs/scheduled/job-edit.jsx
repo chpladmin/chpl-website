@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  FormControlLabel,
-  Switch,
-  makeStyles,
-} from '@material-ui/core';
-import { func, object, oneOfType } from 'prop-types';
+import { func } from 'prop-types';
 
 import ChplEditableJobEdit from './editable-job-edit';
 import ChplSystemJobEdit from './system-job-edit';
+import ChplUserJobEdit from './user-job-edit';
 
 import { jobType } from 'shared/prop-types';
 
@@ -35,6 +28,15 @@ function ChplJobEdit(props) {
     );
   }
 
+  if (job.group === 'chplJobs') {
+    return (
+      <ChplUserJobEdit
+        job={job}
+        dispatch={dispatch}
+      />
+    );
+  }
+
   return (
     <>
       unknown
@@ -45,6 +47,6 @@ function ChplJobEdit(props) {
 export default ChplJobEdit;
 
 ChplJobEdit.propTypes = {
-  job: oneOfType([jobType, object]).isRequired,
+  job: jobType.isRequired,
   dispatch: func.isRequired,
 };
