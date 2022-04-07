@@ -35,7 +35,7 @@ const getMessage = (before, after, root, key) => {
 };
 
 const compareObject = (before, after, root = 'root') => {
-  const keys = Object.keys(before);
+  const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
   const diffs = keys.map((key) => {
     switch (typeof before[key]) {
       case 'string':
@@ -45,8 +45,12 @@ const compareObject = (before, after, root = 'root') => {
       case 'boolean':
         return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
       case 'object':
-        const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
-        return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
+        if (before[key] !== null) {
+          const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
+          return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
+        } else {
+          return undefined;
+        }
       default:
         return `${typeof before[key]} - ${getMessage(before, after, root, key)}`;
     }
