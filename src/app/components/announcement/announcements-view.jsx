@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
@@ -16,7 +15,6 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import Moment from 'react-moment';
 import { arrayOf, func } from 'prop-types';
 
 import ChplAnnouncementEdit from './announcement-edit';
@@ -24,13 +22,12 @@ import ChplAnnouncementEdit from './announcement-edit';
 import { ChplSortableHeaders } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const headers = [
   { property: 'title', text: 'Title' },
   { property: 'text', text: 'Text' },
-  { property: 'startDateTime', text: 'Start Date (as formated string)' },
-  { property: 'endDateTime', text: 'End Date (as relative date)' },
+  { property: 'startDateTime', text: 'Start Date' },
+  { property: 'endDateTime', text: 'End Date' },
   { property: 'isPublic', text: 'Public?' },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
@@ -42,57 +39,14 @@ const useStyles = makeStyles({
   cardSpacing: {
     marginTop: '32px',
   },
-  searchContainer: {
-    backgroundColor: '#c6d5e5',
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'flex-end',
-    },
-  },
-  tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
-    marginBottom: '16px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
-  },
-  resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
-  },
-  wrap: {
-    flexFlow: 'wrap',
-  },
   iconSpacing: {
     marginLeft: '4px',
   },
-  tableFirstColumn: {
+  firstColumn: {
     position: 'sticky',
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#ffffff',
-  },
-  tableDeveloperCell: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  },
-  developerName: {
-    fontWeight: '600',
   },
   noResultsContainer: {
     padding: '16px 32px',
@@ -143,19 +97,17 @@ function ChplAnnouncementsView(props) {
                 && (
                   <>
                     <div className={classes.tableResultsHeaderContainer}>
-                      <ButtonGroup className={classes.wrap}>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          fullWidth
-                          id="add-new-announcement"
-                          onClick={() => setAnnouncement({})}
-                        >
-                          Add Announcement
-                          {' '}
-                          <AddIcon className={classes.iconSpacing} />
-                        </Button>
-                      </ButtonGroup>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        fullWidth
+                        id="add-new-announcement"
+                        onClick={() => setAnnouncement({})}
+                      >
+                        Add Announcement
+                        {' '}
+                        <AddIcon className={classes.iconSpacing} />
+                      </Button>
                     </div>
                     <TableContainer className={classes.container} component={Paper}>
                       <Table
@@ -172,21 +124,17 @@ function ChplAnnouncementsView(props) {
                           { announcements
                             .map((item) => (
                               <TableRow key={item.id}>
-                                <TableCell className={classes.tableFirstColumn}>{ item.title }</TableCell>
+                                <TableCell className={classes.firstColumn}>{ item.title }</TableCell>
                                 <TableCell>{ item.text }</TableCell>
                                 <TableCell>
                                   { getDisplayDateFormat(item.startDateTime) }
                                 </TableCell>
                                 <TableCell>
-                                  <Moment
-                                    fromNow
-                                    withTitle
-                                    titleFormat="DD MMM yyyy, h:mm a"
-                                  >
-                                    {item.endDateTime}
-                                  </Moment>
+                                  { getDisplayDateFormat(item.endDateTime) }
                                 </TableCell>
-                                <TableCell>{ item.isPublic ? 'Yes' : 'No' }</TableCell>
+                                <TableCell>
+                                  { item.isPublic ? 'Yes' : 'No' }
+                                </TableCell>
                                 <TableCell align="right">
                                   <Button
                                     onClick={() => setAnnouncement(item)}
