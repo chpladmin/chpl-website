@@ -70,6 +70,7 @@ const JobsScheduledPageComponent = {
     }
 
     saveJob(job) {
+      this.$log.info({location: 'pagecomponent - savejob', job});
       const that = this;
       this.networkService.updateJob(job)
         .then(() => {
@@ -87,6 +88,7 @@ const JobsScheduledPageComponent = {
     }
 
     saveTrigger(trigger) {
+      this.$log.info({location: 'pagecomponent - savetrigger', trigger});
       const that = this;
       if (this.isRecurring) {
         if (trigger.trigger.name) {

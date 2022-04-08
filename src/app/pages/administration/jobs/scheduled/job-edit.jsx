@@ -37,11 +37,7 @@ function ChplJobEdit(props) {
     );
   }
 
-  return (
-    <>
-      unknown
-    </>
-  );
+  return null;
 }
 
 export default ChplJobEdit;

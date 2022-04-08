@@ -17,6 +17,7 @@ import {
   useFetchSystemJobs,
   useFetchUserJobs,
   usePostJob,
+  usePostOneTimeJob,
   usePutJob,
 } from 'api/jobs';
 import theme from 'themes/theme';
@@ -43,6 +44,7 @@ function ChplJobs() {
   const userQuery = useFetchUserJobs();
   const { mutate: remove } = useDeleteJob();
   const { mutate: post } = usePostJob();
+  const postOneTimeJob = usePostOneTimeJob();
   const { mutate: put } = usePutJob();
   const { enqueueSnackbar } = useSnackbar();
   const [acbs, setAcbs] = useState([]);
@@ -109,6 +111,30 @@ function ChplJobs() {
           setJob(payload);
         } else {
           console.log({ trace: 'jobs.jsx - edit-else', action, payload });
+        }
+        break;
+      case 'save':
+        if (payload.group === 'systemJobs' && payload.runTime) {
+          postOneTimeJob.mutate({
+            job: payload,
+            runDateMillis: payload.runTime,
+          }, {
+            onSuccess: () => {
+              const message = 'Job created: one time job scheduled'
+              enqueueSnackbar(message, {
+                variant: 'success',
+              });
+            },
+            onError: (error) => {
+              const message = error.response.data?.error
+                    || error.response.data?.errorMessages.join(' ');
+              enqueueSnackbar(message, {
+                variant: 'error',
+              });
+            },
+          });
+        } else {
+          console.log({ trace: 'jobs.jsx - save-else', action, payload });
         }
         break;
       case 'schedule':
