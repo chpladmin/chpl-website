@@ -55,7 +55,7 @@ const useFetchUserJobs = () => {
 const usePostJob = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('jobs', data)
+  return useMutation(async (data) => axios.post('schedules/jobs', data)
     .then((response) => response)
     .catch((error) => {
       throw error;
@@ -80,13 +80,10 @@ const usePostOneTimeJob = () => {
 const usePutJob = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.put(`jobs/${data.id}`, data)
-    .then((response) => response)
-    .catch((error) => {
-      throw error;
-    }), {
+  return useMutation(async (data) => axios.put('schedules/jobs', data)
+    .then((response) => response), {
     onSuccess: () => {
-      queryClient.invalidateQueries('jobs');
+      queryClient.invalidateQueries('schedules/jobs');
     },
   });
 };

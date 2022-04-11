@@ -45,9 +45,9 @@ function ChplJobs() {
   const systemQuery = useFetchSystemJobs();
   const userQuery = useFetchUserJobs();
   const { mutate: remove } = useDeleteJob();
-  const { mutate: post } = usePostJob();
+  const postJob = usePostJob();
   const postOneTimeJob = usePostOneTimeJob();
-  const { mutate: put } = usePutJob();
+  const putJob = usePutJob();
   const { enqueueSnackbar } = useSnackbar();
   const [acbs, setAcbs] = useState([]);
   const [job, setJob] = useState(undefined);
@@ -116,7 +116,24 @@ function ChplJobs() {
         }
         break;
       case 'save':
-        if (payload.group === 'systemJobs' && payload.runTime) {
+        if (payload.jobDataMap.editableJobFields) {
+          putJob.mutate(payload, {
+            onSuccess: () => {
+              const message = 'Job updated';
+              enqueueSnackbar(message, {
+                variant: 'success',
+              });
+              setJob(undefined);
+            },
+            onError: (error) => {
+              const message = error.response.data?.error
+                    || error.response.data?.errorMessages.join(' ');
+              enqueueSnackbar(message, {
+                variant: 'error',
+              });
+            },
+          });
+        } else if (payload.group === 'systemJobs' && payload.runTime) {
           const runDateMillis = jsJoda.Instant
             .from(jsJoda.LocalDateTime
               .parse(payload.runTime)
