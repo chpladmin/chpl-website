@@ -14,13 +14,14 @@ import ChplUserJobsView from './user-jobs-view';
 
 import { useFetchAcbs } from 'api/acbs';
 import {
-  useDeleteJob,
+  useDeleteTrigger,
   useFetchJobTypes,
   useFetchSystemJobs,
   useFetchUserJobs,
   usePostJob,
   usePostOneTimeJob,
   usePutJob,
+  usePutTrigger,
 } from 'api/jobs';
 import theme from 'themes/theme';
 
@@ -44,10 +45,11 @@ function ChplJobs() {
   const jobTypeQuery = useFetchJobTypes();
   const systemQuery = useFetchSystemJobs();
   const userQuery = useFetchUserJobs();
-  const { mutate: remove } = useDeleteJob();
+  const deleteTrigger = useDeleteTrigger();
   const postJob = usePostJob();
   const postOneTimeJob = usePostOneTimeJob();
   const putJob = usePutJob();
+  const putTrigger = usePutTrigger();
   const { enqueueSnackbar } = useSnackbar();
   const [acbs, setAcbs] = useState([]);
   const [job, setJob] = useState(undefined);
@@ -76,47 +78,74 @@ function ChplJobs() {
     setUserJobs(userQuery.data);
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
-  const deleteJob = (request) => {
-    remove(request, {
-      onError: (error) => {
-        const message = error.response.data?.error
-              || error.response.data?.errorMessages.join(' ');
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
-      },
-    });
-  };
-
-  const save = (request) => {
-    const mutate = request.id ? put : post;
-    mutate({
-      ...request,
-    }, {
-      onError: (error) => {
-        const message = error.response.data?.error
-              || error.response.data?.errorMessages.join(' ');
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
-      },
-    });
-  };
-
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'close':
         setJob(undefined);
         break;
+      case 'delete':
+        deleteTrigger.mutate(payload, {
+          onSuccess: () => {
+            const message = 'Job deleted: Recurring job deleted';
+            enqueueSnackbar(message, {
+              variant: 'success',
+            });
+            setJob(undefined);
+          },
+          onError: (error) => {
+            const message = error.response.data?.error
+                  || error.response.data?.errorMessages.join(' ');
+            enqueueSnackbar(message, {
+              variant: 'error',
+            });
+          },
+        });
+        break;
       case 'edit':
-        if (payload.jobDataMap.editableJobFields) {
+        if (payload.job) {
+          setJob(payload);
+        } else if (payload.jobDataMap.editableJobFields) {
           setJob(payload);
         } else {
           console.log({ trace: 'jobs.jsx - edit-else', action, payload });
         }
         break;
       case 'save':
-        if (payload.jobDataMap.editableJobFields) {
+        if (payload.job && !payload.name) {
+          postJob.mutate(payload, {
+            onSuccess: () => {
+              const message = 'Job created: Recurring job scheduled';
+              enqueueSnackbar(message, {
+                variant: 'success',
+              });
+              setJob(undefined);
+            },
+            onError: (error) => {
+              const message = error.response.data?.error
+                    || error.response.data?.errorMessages.join(' ');
+              enqueueSnackbar(message, {
+                variant: 'error',
+              });
+            },
+          });
+        } else if (payload.job && payload.name) {
+          putTrigger.mutate(payload, {
+            onSuccess: () => {
+              const message = 'Job updated: Recurring job updated';
+              enqueueSnackbar(message, {
+                variant: 'success',
+              });
+              setJob(undefined);
+            },
+            onError: (error) => {
+              const message = error.response.data?.error
+                    || error.response.data?.errorMessages.join(' ');
+              enqueueSnackbar(message, {
+                variant: 'error',
+              });
+            },
+          });
+        } else if (payload.jobDataMap.editableJobFields) {
           putJob.mutate(payload, {
             onSuccess: () => {
               const message = 'Job updated';
@@ -166,7 +195,7 @@ function ChplJobs() {
         if (payload.group === 'systemJobs') {
           setJob(payload);
         } else if (payload.group === 'chplJobs') {
-          setJob(payload);
+          setJob({ job: payload });
         } else {
           console.log({ trace: 'jobs.jsx - schedule-else', action, payload });
         }
@@ -202,6 +231,7 @@ function ChplJobs() {
       { job
         && (
           <ChplJobEdit
+            acbs={acbs}
             job={job}
             dispatch={handleDispatch}
           />

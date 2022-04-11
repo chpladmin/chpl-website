@@ -61,7 +61,7 @@ function ChplUserJobsView(props) {
             .split(',')
             .map((id) => parseInt(id, 10))
             .map((id) => props.acbs.find((acb) => acb.id === id))
-            .map((acb) => `${acb.name} ${acb.retired ? ' (Retired)' : ''}`)
+            .map((acb) => `${acb.name}${acb.retired ? ' (Retired)' : ''}`)
             .sort((a, b) => (a < b ? -1 : 1))
             .join(', ');
           response.details.push(`ONC-ACB${relevant.length !== 1 ? 's: ' : ': '}${relevant}`);

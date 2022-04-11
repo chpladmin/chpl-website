@@ -1,16 +1,16 @@
 import React from 'react';
-import { func } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 
 import ChplEditableJobEdit from './editable-job-edit';
 import ChplSystemJobEdit from './system-job-edit';
 import ChplUserJobEdit from './user-job-edit';
 
-import { jobType } from 'shared/prop-types';
+import { acb as acbPropType, jobType } from 'shared/prop-types';
 
 function ChplJobEdit(props) {
-  const { job, dispatch } = props;
+  const { acbs, dispatch, job } = props;
 
-  if (job.jobDataMap.editableJobFields) {
+  if (job.jobDataMap?.editableJobFields) {
     return (
       <ChplEditableJobEdit
         job={job}
@@ -28,10 +28,11 @@ function ChplJobEdit(props) {
     );
   }
 
-  if (job.group === 'chplJobs') {
+  if (job.job.group === 'chplJobs') {
     return (
       <ChplUserJobEdit
-        job={job}
+        acbs={acbs}
+        trigger={job}
         dispatch={dispatch}
       />
     );
@@ -43,6 +44,7 @@ function ChplJobEdit(props) {
 export default ChplJobEdit;
 
 ChplJobEdit.propTypes = {
-  job: jobType.isRequired,
+  acbs: arrayOf(acbPropType).isRequired,
   dispatch: func.isRequired,
+  job: jobType.isRequired,
 };

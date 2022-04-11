@@ -2,16 +2,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
-const useDeleteJob = () => {
+const useDeleteTrigger = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.delete(`jobs/${data.id}`)
+  return useMutation(async (data) => axios.delete(`/schedules/triggers/${data.group}/${data.name}`)
     .then((response) => response)
     .catch((error) => {
       throw error;
     }), {
     onSuccess: () => {
-      queryClient.invalidateQueries('jobs');
+      queryClient.invalidateQueries(['schedules/triggers']);
     },
   });
 };
@@ -55,13 +55,13 @@ const useFetchUserJobs = () => {
 const usePostJob = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('schedules/jobs', data)
+  return useMutation(async (data) => axios.post('schedules/triggers', data)
     .then((response) => response)
     .catch((error) => {
       throw error;
     }), {
     onSuccess: () => {
-      queryClient.invalidateQueries('jobs');
+      queryClient.invalidateQueries(['schedules/triggers']);
     },
   });
 };
@@ -88,12 +88,24 @@ const usePutJob = () => {
   });
 };
 
+const usePutTrigger = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('schedules/triggers', data)
+    .then((response) => response), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('schedules/triggers');
+    },
+  });
+};
+
 export {
-  useDeleteJob,
+  useDeleteTrigger,
   useFetchJobTypes,
   useFetchSystemJobs,
   useFetchUserJobs,
   usePostJob,
   usePostOneTimeJob,
   usePutJob,
+  usePutTrigger,
 };
