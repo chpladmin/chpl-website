@@ -49,7 +49,7 @@ function ChplSystemJobsView(props) {
 
   useEffect(() => {
     setJobs(props.jobs
-      .sort((a, b) => (a.email < b.email ? -1 : 1))
+      .sort((a, b) => (a.nextRunDate - b.nextRunDate))
       .map((job) => ({
         ...job,
       })));

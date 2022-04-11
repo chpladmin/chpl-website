@@ -4,6 +4,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import * as jsJoda from '@js-joda/core';
+import '@js-joda/timezone';
 
 import ChplJobEdit from './job-edit';
 import ChplJobTypesView from './job-types-view';
@@ -115,15 +117,21 @@ function ChplJobs() {
         break;
       case 'save':
         if (payload.group === 'systemJobs' && payload.runTime) {
+          const runDateMillis = jsJoda.Instant
+            .from(jsJoda.LocalDateTime
+              .parse(payload.runTime)
+              .atZone(jsJoda.ZoneId.of('America/New_York')))
+            .toEpochMilli();
           postOneTimeJob.mutate({
             job: payload,
-            runDateMillis: payload.runTime,
+            runDateMillis,
           }, {
             onSuccess: () => {
-              const message = 'Job created: one time job scheduled'
+              const message = 'Job created: one time job scheduled';
               enqueueSnackbar(message, {
                 variant: 'success',
               });
+              setJob(undefined);
             },
             onError: (error) => {
               const message = error.response.data?.error

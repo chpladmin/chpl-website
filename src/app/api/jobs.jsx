@@ -72,7 +72,7 @@ const usePostOneTimeJob = () => {
   return useMutation(async (data) => axios.post('schedules/triggers/one_time', data)
     .then((response) => response), {
     onSuccess: () => {
-      queryClient.invalidateQueries('jobs');
+      queryClient.invalidateQueries(['schedules/triggers', 'system']);
     },
   });
 };
