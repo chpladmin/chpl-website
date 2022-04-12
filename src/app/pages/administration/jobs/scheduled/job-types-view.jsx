@@ -21,12 +21,17 @@ import { ChplSortableHeaders } from 'components/util';
 import { jobType } from 'shared/prop-types';
 
 const headers = [
-  { property: 'name', text: 'Job Name' },
+  { property: 'name', text: 'Job Name', sortable: true },
   { property: 'description', text: 'Description' },
-  { property: 'oncAcbSpecific', text: 'ONC-ACB Specific' },
-  { property: 'jobType', text: 'Job Type' },
+  { property: 'oncAcbSpecific', text: 'ONC-ACB Specific', sortable: true },
+  { property: 'jobType', text: 'Job Type', sortable: true },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
+
+const sortComparator = (property, sortDescending) => (a, b) => {
+  const result = (a[property] < b[property]) ? -1 : 1;
+  return result * (sortDescending ? -1 : 1);
+};
 
 const useStyles = makeStyles({
   container: {
@@ -95,18 +100,27 @@ const getAction = (item, dispatch) => {
 function ChplJobTypesView(props) {
   const { dispatch } = props;
   const [jobTypes, setJobTypes] = useState([]);
+  const [orderBy, setOrderBy] = useState('name');
+  const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
     setJobTypes(props.jobTypes
-      .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map((job) => ({
         ...job,
         oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
         jobType: groupMapping[job.group],
         action: getAction(job, dispatch),
-      })));
+      }))
+      .sort(sortComparator(orderBy, sortDescending)));
   }, [props.jobTypes, dispatch]); // eslint-disable-line react/destructuring-assignment
+
+  const handleTableSort = (event, property, orderDirection) => {
+    const descending = orderDirection === '';
+    setSortDescending(descending);
+    setOrderBy(property);
+    setJobTypes(jobTypes.sort(sortComparator(property, descending)));
+  };
 
   return (
     <Card className={classes.cardSpacing}>
@@ -118,9 +132,9 @@ function ChplJobTypesView(props) {
           >
             <ChplSortableHeaders
               headers={headers}
-              onTableSort={() => {}}
-              orderBy="email"
-              order="asc"
+              onTableSort={handleTableSort}
+              orderBy={orderBy}
+              order={sortDescending ? 'desc' : 'asc'}
               stickyHeader
             />
             <TableBody>
