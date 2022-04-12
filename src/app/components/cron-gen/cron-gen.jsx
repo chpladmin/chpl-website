@@ -99,7 +99,7 @@ function ChplCronGen(props) {
 
   formik = useFormik({
     initialValues: {
-      runTime: '',
+      runTime: '04:00',
     },
     validationSchema,
   });
