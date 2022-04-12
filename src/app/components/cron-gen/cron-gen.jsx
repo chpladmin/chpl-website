@@ -60,7 +60,13 @@ function ChplCronGen(props) {
 
   useEffect(() => {
     const [, minute, hour, , , day] = props.initialValue.split(' ');
-    const time = `${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`;
+    const time = jsJoda.ZonedDateTime
+      .of3(jsJoda.LocalDate.now(),
+        jsJoda.LocalTime.parse(`${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`),
+        jsJoda.ZoneId.of('UTC-00:00'))
+      .withZoneSameInstant(jsJoda.ZoneId.of('America/New_York'))
+      .toLocalTime()
+      .toString();
     formik.setFieldValue('runTime', time);
     if (day === '?') {
       setDays(() => new Set());
