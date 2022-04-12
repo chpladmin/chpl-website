@@ -1,8 +1,9 @@
 /* global MINUTES_BETWEEN_KEEPALIVE MINUTES_UNTIL_IDLE MINUTES_UNTIL_LOGOUT */
 import 'ng-file-upload';
 import ChplLoginPage from './login';
-import ChplJobsWrapper from './jobs/scheduled/jobs-wrapper';
-import { reactToAngularComponent } from '../../services/angular-react-helper';
+import ChplJobsWrapper from './jobs/jobs-wrapper';
+
+import { reactToAngularComponent } from 'services/angular-react-helper';
 
 angular
   .module('chpl.administration', [

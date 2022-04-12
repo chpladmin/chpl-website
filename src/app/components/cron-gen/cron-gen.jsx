@@ -5,7 +5,6 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -16,7 +15,6 @@ import * as jsJoda from '@js-joda/core';
 import '@js-joda/timezone';
 
 import { ChplTextField } from 'components/util';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   content: {
@@ -107,65 +105,63 @@ function ChplCronGen(props) {
   useEffect(() => updateCron(), [days, formik.values.runTime]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.content}>
-        <Card>
-          <CardContent>
-            <div className={classes.cron}>
-              <Typography variant="subtitle2">Cron value:</Typography>
-              <code className={classes.cronValue}>{cron}</code>
-            </div>
-            <Divider />
-            <Typography variant="subtitle2">Every:</Typography>
-            <div className={classes.day}>
-              <FormControlLabel
-                label="Sunday"
-                control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
-              />
-              <FormControlLabel
-                label="Monday"
-                control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
-              />
-              <FormControlLabel
-                label="Tuesday"
-                control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
-              />
-              <FormControlLabel
-                label="Wednesday"
-                control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
-              />
-              <FormControlLabel
-                label="Thursday"
-                control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
-              />
-              <FormControlLabel
-                label="Friday"
-                control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
-              />
-              <FormControlLabel
-                label="Saturday"
-                control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
-              />
-            </div>
-            <Typography gutterBottom variant="subtitle2">At:</Typography>
-            <div className={classes.time}>
-              <ChplTextField
-                id="run-time"
-                name="runTime"
-                label="Run Time"
-                type="time"
-                required
-                value={formik.values.runTime}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.runTime && !!formik.errors.runTime}
-                helperText={formik.touched.runTime && formik.errors.runTime}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </ThemeProvider>
+    <div className={classes.content}>
+      <Card>
+        <CardContent>
+          <div className={classes.cron}>
+            <Typography variant="subtitle2">Cron value:</Typography>
+            <code className={classes.cronValue}>{cron}</code>
+          </div>
+          <Divider />
+          <Typography variant="subtitle2">Every:</Typography>
+          <div className={classes.day}>
+            <FormControlLabel
+              label="Sunday"
+              control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
+            />
+            <FormControlLabel
+              label="Monday"
+              control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
+            />
+            <FormControlLabel
+              label="Tuesday"
+              control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
+            />
+            <FormControlLabel
+              label="Wednesday"
+              control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
+            />
+            <FormControlLabel
+              label="Thursday"
+              control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
+            />
+            <FormControlLabel
+              label="Friday"
+              control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
+            />
+            <FormControlLabel
+              label="Saturday"
+              control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
+            />
+          </div>
+          <Typography gutterBottom variant="subtitle2">At:</Typography>
+          <div className={classes.time}>
+            <ChplTextField
+              id="run-time"
+              name="runTime"
+              label="Run Time"
+              type="time"
+              required
+              value={formik.values.runTime}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.runTime && !!formik.errors.runTime}
+              helperText={formik.touched.runTime && formik.errors.runTime}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 

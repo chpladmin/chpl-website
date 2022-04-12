@@ -194,48 +194,18 @@ const states = {
       },
     }, {
       name: 'administration.jobs',
-      abstract: true,
       url: '/jobs',
-      template: '<ui-view/>',
-    }, {
-      name: 'administration.jobs.scheduled',
-      url: '/scheduled',
-      component: 'chplJobsScheduledPage',
-      resolve: {
-        acbs: (networkService) => {
-          'ngInject';
-
-          return networkService.getAcbs(true);
-        },
-        jobs: (authService, networkService) => {
-          'ngInject';
-
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])) {
-            return networkService.getScheduleJobs();
-          }
-          return [];
-        },
-        scheduledSystemJobs: (authService, networkService) => {
-          'ngInject';
-
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
-            return networkService.getScheduledSystemJobs();
-          }
-          return [];
-        },
-        triggers: (authService, networkService) => {
-          'ngInject';
-
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])) {
-            return networkService.getScheduleTriggers();
-          }
-          return [];
-        },
-      },
+      component: 'chplJobsWrapperBridge',
       data: {
         title: 'CHPL Administration - Jobs - Scheduled',
         roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
       },
+    }, {
+      name: 'administration.jobs.scheduled',
+      url: '/scheduled',
+      redirectTo: () => ({
+        state: 'administration.jobs',
+      }),
     }, {
       name: 'administration.upload',
       url: '/upload',
