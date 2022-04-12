@@ -3,8 +3,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  FormControlLabel,
-  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -58,7 +56,10 @@ function ChplSystemJobEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      runTime: jsJoda.LocalDateTime.now().truncatedTo(jsJoda.ChronoUnit.MINUTES),
+      runTime: jsJoda.LocalDateTime
+        .now()
+        .plusMinutes(5)
+        .truncatedTo(jsJoda.ChronoUnit.MINUTES),
     },
     onSubmit: () => {
       const payload = {
