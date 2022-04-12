@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Typography,
   makeStyles,
@@ -23,6 +23,7 @@ import {
   usePutJob,
   usePutTrigger,
 } from 'api/jobs';
+import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -41,6 +42,7 @@ const useStyles = makeStyles({
 });
 
 function ChplJobs() {
+  const { hasAnyRole } = useContext(UserContext);
   const acbQuery = useFetchAcbs();
   const jobTypeQuery = useFetchJobTypes();
   const systemQuery = useFetchSystemJobs();
@@ -212,14 +214,19 @@ function ChplJobs() {
       { !job
         && (
           <div className={classes.container}>
-            <ChplUserJobsView
-              acbs={acbs}
-              jobs={userJobs}
-              dispatch={handleDispatch}
-            />
-            <ChplSystemJobsView
-              jobs={systemJobs}
-            />
+            <div className={ hasAnyRole(['ROLE_ADMIN']) ? '' : classes.fullWidth }>
+              <ChplUserJobsView
+                acbs={acbs}
+                jobs={userJobs}
+                dispatch={handleDispatch}
+              />
+            </div>
+            { hasAnyRole(['ROLE_ADMIN'])
+              && (
+                <ChplSystemJobsView
+                  jobs={systemJobs}
+                />
+              )}
             <div className={classes.fullWidth}>
               <ChplJobTypesView
                 jobTypes={jobTypes}

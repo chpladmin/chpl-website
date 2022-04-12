@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,6 +18,7 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
+import { UserContext } from 'shared/contexts';
 import { jobType } from 'shared/prop-types';
 
 const headers = [
@@ -99,6 +100,7 @@ const getAction = (item, dispatch) => {
 
 function ChplJobTypesView(props) {
   const { dispatch } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const [jobTypes, setJobTypes] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
@@ -114,6 +116,10 @@ function ChplJobTypesView(props) {
       }))
       .sort(sortComparator(orderBy, sortDescending)));
   }, [props.jobTypes, dispatch]); // eslint-disable-line react/destructuring-assignment
+
+  const filterHeaders = () => {
+    return headers.filter((item) => hasAnyRole(['ROLE_ADMIN']) || item.property !== 'jobType');
+  };
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === '';
@@ -131,7 +137,7 @@ function ChplJobTypesView(props) {
             aria-label="Types of Jobs table"
           >
             <ChplSortableHeaders
-              headers={headers}
+              headers={filterHeaders()}
               onTableSort={handleTableSort}
               orderBy={orderBy}
               order={sortDescending ? 'desc' : 'asc'}
@@ -150,9 +156,12 @@ function ChplJobTypesView(props) {
                     <TableCell>
                       { item.oncAcbSpecific }
                     </TableCell>
-                    <TableCell>
-                      { item.jobType }
-                    </TableCell>
+                    { hasAnyRole(['ROLE_ADMIN'])
+                      && (
+                        <TableCell>
+                          { item.jobType }
+                        </TableCell>
+                      )}
                     <TableCell align="right">
                       { item.action }
                     </TableCell>
