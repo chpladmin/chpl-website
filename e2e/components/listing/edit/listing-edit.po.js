@@ -1,82 +1,97 @@
-const listingEditElements = {
-  editcertifiedProduct: '#inspect-edit',
-  testProcedureName: '//*[@id="testProcedures "]',
-  allTestProcedureVersion: '*[id^="testProcedures-additional-input"]',
-  testToolsName: '//*[@id="testTools "]',
-  allTestToolsVersion: '*[id^="testTools-additional-input"]',
-  testDataName: '//*[@id="testData "]',
-  allTestDataVersion: '*[id^="testData-additional-input"]',
-  testFunctionalityName: '*[id="testFunctionality "]',
-  saveCertifiedProduct: 'button=Save Certification Criteria',
-  closeListingEditButton: 'button.close.pull-right.ng-isolate-scope',
-  yesConfirmation: '//button[text()="Yes"]',
-  rwtPlansUrl: '#rwt-plans-url',
-  rwtPlansCheckDate: '#rwt-plans-check-date',
-  rwtResultsUrl: '#rwt-results-url',
-  rwtResultsCheckDate: '#rwt-results-check-date',
-};
-
 class ListingEditComponent {
-  constructor() { }
+  constructor() {
+    this.elements = {
+      editcertifiedProduct: '#inspect-edit',
+      testProcedureName: '//*[@id="testProcedures "]',
+      allTestProcedureVersion: '*[id^="testProcedures-additional-input"]',
+      testToolsName: '//*[@id="testTools "]',
+      allTestToolsVersion: '*[id^="testTools-additional-input"]',
+      testDataName: '//*[@id="testData "]',
+      allTestDataVersion: '*[id^="testData-additional-input"]',
+      testFunctionalityName: '*[id="testFunctionality "]',
+      saveCertifiedProduct: 'button=Save Certification Criteria',
+      closeListingEditButton: 'button.close.pull-right.ng-isolate-scope',
+      yesConfirmation: '//button[text()="Yes"]',
+      rwtPlansUrl: '#rwt-plans-url',
+      rwtPlansCheckDate: '#rwt-plans-check-date',
+      rwtResultsUrl: '#rwt-results-url',
+      rwtResultsCheckDate: '#rwt-results-check-date',
+      chplProductNumberProdCode: '#id-prod',
+      chplProductNumberVerCode: '#id-ver',
+      warningLabel: 'span*=I have reviewed the warning and wish to proceed with this update',
+    };
+  }
 
   get editcertifiedProduct() {
-    return $(listingEditElements.editcertifiedProduct);
+    return $(this.elements.editcertifiedProduct);
   }
 
   get testProcedureName() {
-    return $(listingEditElements.testProcedureName);
+    return $(this.elements.testProcedureName);
   }
 
   get allTestProcedureVersion() {
-    return $$(listingEditElements.allTestProcedureVersion);
+    return $$(this.elements.allTestProcedureVersion);
   }
 
   get testToolsName() {
-    return $(listingEditElements.testToolsName);
+    return $(this.elements.testToolsName);
   }
 
   get allTestToolsVersion() {
-    return $$(listingEditElements.allTestToolsVersion);
+    return $$(this.elements.allTestToolsVersion);
   }
 
   get testDataName() {
-    return $(listingEditElements.testDataName);
+    return $(this.elements.testDataName);
   }
 
   get allTestDataVersion() {
-    return $$(listingEditElements.allTestDataVersion);
+    return $$(this.elements.allTestDataVersion);
   }
 
   get testFunctionalityName() {
-    return $(listingEditElements.testFunctionalityName);
+    return $(this.elements.testFunctionalityName);
   }
 
   get saveCertifiedProduct() {
-    return $(listingEditElements.saveCertifiedProduct);
+    return $(this.elements.saveCertifiedProduct);
   }
 
   get rwtPlansUrl() {
-    return $(listingEditElements.rwtPlansUrl);
+    return $(this.elements.rwtPlansUrl);
   }
 
   get rwtPlansCheckDate() {
-    return $(listingEditElements.rwtPlansCheckDate);
+    return $(this.elements.rwtPlansCheckDate);
   }
 
   get rwtResultsUrl() {
-    return $(listingEditElements.rwtResultsUrl);
+    return $(this.elements.rwtResultsUrl);
   }
 
   get rwtResultsCheckDate() {
-    return $(listingEditElements.rwtResultsCheckDate);
+    return $(this.elements.rwtResultsCheckDate);
   }
 
   get closeListingEditButton() {
-    return $(listingEditElements.closeListingEditButton);
+    return $(this.elements.closeListingEditButton);
   }
 
   get yesConfirmation() {
-    return $(listingEditElements.yesConfirmation);
+    return $(this.elements.yesConfirmation);
+  }
+
+  get chplProductNumberProdCode() {
+    return $(this.elements.chplProductNumberProdCode);
+  }
+
+  get chplProductNumberVerCode() {
+    return $(this.elements.chplProductNumberVerCode);
+  }
+
+  get warningLabel() {
+    return $(this.elements.warningLabel);
   }
 
   openEditCriteria(editCriteriaId, cures) {
