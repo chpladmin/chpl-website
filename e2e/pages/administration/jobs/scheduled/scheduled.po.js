@@ -1,7 +1,9 @@
 class ScheduledPage {
   constructor() {
     this.elements = {
-      availableJobTable: 'table[aria-label="Types of Jobs table"',
+      availableJobTable: 'table[aria-label="Types of Jobs table"]',
+      button: (name) => `button[aria-label="Schedule Job ${name}"]`,
+      availableAcbs: 'ul[aria-label="ONC-ACBs available to schedule"]',
     };
   }
 
@@ -10,6 +12,17 @@ class ScheduledPage {
       .$('tbody')
       .$$('tr')
       .map((row) => row.$$('td')[0].getText());
+  }
+
+  startSchedulingAJob(name) {
+    $(this.elements.button(name)).click();
+  }
+
+  getAvailableAcbs() {
+    const list = $(this.elements.availableAcbs);
+    const items = list.$$('li');
+    const acbs = items.map((acb) => acb.getText());
+    return acbs;
   }
 }
 

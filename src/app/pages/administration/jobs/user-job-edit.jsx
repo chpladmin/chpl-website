@@ -144,7 +144,7 @@ function ChplUserJobEdit(props) {
           { trigger.job.jobDataMap.acbSpecific
             && (
               <div>
-                <ul>
+                <ul aria-label="ONC-ACBs available to schedule">
                   { acbs.map((acb) => (
                     <li key={acb.id}>
                       <FormControlLabel
