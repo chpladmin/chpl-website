@@ -62,7 +62,7 @@ const getAction = (item, dispatch) => {
         onClick={() => dispatch({ action: 'edit', payload: item })}
         variant="contained"
         color="primary"
-        aria-label="Edit Job"
+        aria-label={`Edit Job ${item.name}`}
       >
         <EditOutlinedIcon />
       </Button>
@@ -75,7 +75,7 @@ const getAction = (item, dispatch) => {
           onClick={() => dispatch({ action: 'schedule', payload: item })}
           variant="contained"
           color="primary"
-          aria-label="Schedule Job"
+          aria-label={`Schedule Job ${item.name}`}
         >
           <ScheduleIcon />
         </Button>
@@ -86,7 +86,7 @@ const getAction = (item, dispatch) => {
           onClick={() => dispatch({ action: 'schedule', payload: item })}
           variant="contained"
           color="primary"
-          aria-label="Schedule Job"
+          aria-label={`Schedule Job ${item.name}`}
         >
           <PlayArrowIcon />
         </Button>

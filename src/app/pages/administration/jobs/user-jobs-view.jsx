@@ -113,7 +113,7 @@ function ChplUserJobsView(props) {
                             onClick={() => dispatch({ action: 'edit', payload: item })}
                             variant="contained"
                             color="primary"
-                            aria-label="Edit Job"
+                            aria-label={`Edit Job ${item.name}`}
                           >
                             <EditOutlinedIcon />
                           </Button>
