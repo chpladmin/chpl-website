@@ -214,7 +214,7 @@ function ChplJobs() {
       { !job
         && (
           <div className={classes.container}>
-            <div className={ hasAnyRole(['ROLE_ADMIN']) ? '' : classes.fullWidth }>
+            <div className={hasAnyRole(['ROLE_ADMIN']) ? '' : classes.fullWidth}>
               <ChplUserJobsView
                 acbs={acbs}
                 jobs={userJobs}

@@ -117,9 +117,9 @@ function ChplJobTypesView(props) {
       .sort(sortComparator(orderBy, sortDescending)));
   }, [props.jobTypes, dispatch]); // eslint-disable-line react/destructuring-assignment
 
-  const filterHeaders = () => {
-    return headers.filter((item) => hasAnyRole(['ROLE_ADMIN']) || item.property !== 'jobType');
-  };
+  const filterHeaders = () => headers.filter((item) => hasAnyRole(['ROLE_ADMIN'])
+                          || (item.property === 'oncAcbSpecific' && hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF']))
+                          || (item.property !== 'jobType' && item.property !== 'oncAcbSpecific'));
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === '';
@@ -153,9 +153,12 @@ function ChplJobTypesView(props) {
                     <TableCell>
                       { item.description }
                     </TableCell>
-                    <TableCell>
-                      { item.oncAcbSpecific }
-                    </TableCell>
+                    { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
+                      && (
+                        <TableCell>
+                          { item.oncAcbSpecific }
+                        </TableCell>
+                      )}
                     { hasAnyRole(['ROLE_ADMIN'])
                       && (
                         <TableCell>
