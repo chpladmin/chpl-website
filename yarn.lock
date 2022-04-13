@@ -5619,7 +5619,7 @@ __metadata:
     bootstrap-sass: 3.4.1
     browser-sync: ~2.9.11
     browser-sync-spa: ~1.0.3
-    chromedriver: ^98.0.0
+    chromedriver: ^99.0.0
     clean-webpack-plugin: ^0.1.19
     concurrently: ^3.6.1
     css-loader: ^0.28.11
@@ -5724,9 +5724,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromedriver@npm:^98.0.0":
-  version: 98.0.1
-  resolution: "chromedriver@npm:98.0.1"
+"chromedriver@npm:^99.0.0":
+  version: 99.0.0
+  resolution: "chromedriver@npm:99.0.0"
   dependencies:
     "@testim/chrome-version": ^1.1.2
     axios: ^0.24.0
@@ -5737,7 +5737,7 @@ __metadata:
     tcp-port-used: ^1.0.1
   bin:
     chromedriver: bin/chromedriver
-  checksum: a3c4d1a88d07e17b79e67ac25769a85387bbf4f7f07f8bd6cbc870754b19f84fea321a9f687893c6222275b1cd1dfc6893414c3a76de35b2033f420dcaa08aa7
+  checksum: 902ed95343a8c5109ba7116b1b9a268c7d31975713d1035e13aea5947858e646b3eb5a9b12ac4e3779aca4e161628e4b1bd729d8aafd1a0f61e4e2e1e835ddc2
   languageName: node
   linkType: hard
 
