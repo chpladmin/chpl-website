@@ -28,7 +28,7 @@ const useFetchJobTypes = () => {
   });
 };
 
-const useFetchSystemJobs = () => {
+const useFetchSystemJobs = ({ isAuthenticated }) => {
   const axios = useAxios();
   return useQuery(['schedules/triggers', 'system'], async () => {
     const response = await axios.get('schedules/triggers?jobType=system', {
@@ -37,6 +37,8 @@ const useFetchSystemJobs = () => {
       },
     });
     return response.data.results;
+  }, {
+    enabled: isAuthenticated,
   });
 };
 

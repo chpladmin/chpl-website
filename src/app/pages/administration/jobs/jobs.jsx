@@ -45,7 +45,7 @@ function ChplJobs() {
   const { hasAnyRole } = useContext(UserContext);
   const acbQuery = useFetchAcbs();
   const jobTypeQuery = useFetchJobTypes();
-  const systemQuery = useFetchSystemJobs();
+  const systemQuery = useFetchSystemJobs({ isAuthenticated: hasAnyRole(['ROLE_ADMIN']) });
   const userQuery = useFetchUserJobs();
   const deleteTrigger = useDeleteTrigger();
   const postJob = usePostJob();
