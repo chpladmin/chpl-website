@@ -1,22 +1,16 @@
-const scheduledElements = {
-  scheduledJobsRoot: 'chpl-jobs-scheduled-jobs',
-};
-
 class ScheduledPage {
-  constructor () { }
-
-  get scheduledJobRows () {
-    return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr');
+  constructor() {
+    this.elements = {
+      availableJobTable: 'table[aria-label="Types of Jobs table"',
+    };
   }
 
-  scheduledJobName (rowNumber) {
-    return $(scheduledElements.scheduledJobsRoot).$('tbody').$$('tr')[rowNumber].$$('td')[0];
+  getAvailableJobs() {
+    return $(this.elements.availableJobTable)
+      .$('tbody')
+      .$$('tr')
+      .map((row) => row.$$('td')[0].getText());
   }
-
-  get scheduledJobTable () {
-    return $(scheduledElements.scheduledJobsRoot).$('tbody');
-  }
-
 }
 
 export default ScheduledPage;
