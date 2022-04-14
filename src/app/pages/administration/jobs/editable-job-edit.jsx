@@ -13,7 +13,7 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { jobType } from 'shared/prop-types';
+import { job as jobType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({

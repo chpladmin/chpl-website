@@ -2,27 +2,27 @@ import {
   number, object, shape, string,
 } from 'prop-types';
 
-const jobType = shape({
+const job = shape({
   description: string,
   group: string,
   jobDataMap: object,
   name: string,
 });
 
-const job = shape({
-  acb: string,
-  cronSchedule: string,
-  email: string,
-  group: string,
-  job: jobType,
-  name: string,
-});
-
-const scheduledSystemJob = shape({
+const scheduledSystemTrigger = shape({
   description: string,
   name: string,
   nextRunDate: number,
   triggerScheduleType: string,
 });
 
-export { job, jobType, scheduledSystemJob };
+const trigger = shape({
+  acb: string,
+  cronSchedule: string,
+  email: string,
+  group: string,
+  job,
+  name: string,
+});
+
+export { job, scheduledSystemTrigger, trigger };

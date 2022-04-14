@@ -5,7 +5,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplUserJobsView from './user-jobs-view';
+import ChplUserTriggersView from './user-triggers-view';
 
 const hocMock = {
   dispatch: jest.fn(),
@@ -13,19 +13,19 @@ const hocMock = {
 
 const acbsMock = [];
 
-const jobsMock = [{
+const triggersMock = [{
   name: 'job name',
   email: 'name@example.com',
   cronSchedule: 'cron s',
   job: { name: 'job name' },
 }];
 
-describe('the ChplUserJobsView component', () => {
+describe('the ChplUserTriggersView component', () => {
   beforeEach(async () => {
     render(
-      <ChplUserJobsView
+      <ChplUserTriggersView
         acbs={acbsMock}
-        jobs={jobsMock}
+        triggers={triggersMock}
         dispatch={hocMock.dispatch}
       />,
     );
@@ -44,7 +44,7 @@ describe('the ChplUserJobsView component', () => {
       userEvent.click(screen.getByRole('button', { name: /Edit Job job name/i }));
 
       await waitFor(() => {
-        expect(hocMock.dispatch).toHaveBeenCalledWith({ action: 'edit', payload: expect.objectContaining(jobsMock[0]) });
+        expect(hocMock.dispatch).toHaveBeenCalledWith({ action: 'edit', payload: expect.objectContaining(triggersMock[0]) });
       });
     });
   });

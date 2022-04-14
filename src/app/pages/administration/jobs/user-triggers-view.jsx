@@ -17,7 +17,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
-import { acb as acbPropType, job as jobPropType } from 'shared/prop-types';
+import { acb as acbType, trigger as triggerType } from 'shared/prop-types';
 
 const headers = [
   { property: 'email', text: 'Email' },
@@ -43,21 +43,21 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUserJobsView(props) {
+function ChplUserTriggersView(props) {
   const { dispatch } = props;
-  const [jobs, setJobs] = useState([]);
+  const [triggers, setTriggers] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setJobs(props.jobs
+    setTriggers(props.triggers
       .sort((a, b) => (a.email < b.email ? -1 : 1))
-      .map((job) => {
+      .map((trigger) => {
         const response = {
-          ...job,
-          details: [`Schedule: ${job.cronSchedule}`, `Type: ${job.job.name}`],
+          ...trigger,
+          details: [`Schedule: ${trigger.cronSchedule}`, `Type: ${trigger.job.name}`],
         };
-        if (job.acb) {
-          const relevant = job.acb
+        if (trigger.acb) {
+          const relevant = trigger.acb
             .split(',')
             .map((id) => parseInt(id, 10))
             .map((id) => props.acbs.find((acb) => acb.id === id))
@@ -68,20 +68,20 @@ function ChplUserJobsView(props) {
         }
         return response;
       }));
-  }, [props.acbs, props.jobs]); // eslint-disable-line react/destructuring-assignment
+  }, [props.acbs, props.triggers]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <Card className={classes.cardSpacing}>
       <CardHeader title="Currently Scheduled User Jobs" />
       <CardContent>
         <>
-          { (jobs.length === 0)
+          { (triggers.length === 0)
             && (
               <Typography className={classes.noResultsContainer}>
                 No results found
               </Typography>
             )}
-          { jobs.length > 0
+          { triggers.length > 0
             && (
             <TableContainer className={classes.container} component={Paper}>
               <Table
@@ -95,7 +95,7 @@ function ChplUserJobsView(props) {
                   stickyHeader
                 />
                 <TableBody>
-                  { jobs
+                  { triggers
                     .map((item) => (
                       <TableRow key={item.name}>
                         <TableCell className={classes.firstColumn}>
@@ -130,16 +130,16 @@ function ChplUserJobsView(props) {
   );
 }
 
-export default ChplUserJobsView;
+export default ChplUserTriggersView;
 
-ChplUserJobsView.propTypes = {
-  acbs: arrayOf(acbPropType),
-  jobs: arrayOf(jobPropType),
+ChplUserTriggersView.propTypes = {
+  acbs: arrayOf(acbType),
   dispatch: func,
+  triggers: arrayOf(triggerType),
 };
 
-ChplUserJobsView.defaultProps = {
+ChplUserTriggersView.defaultProps = {
   acbs: [],
-  jobs: [],
   dispatch: () => {},
+  triggers: [],
 };

@@ -4,20 +4,20 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import ChplSystemJobsView from './system-jobs-view';
+import ChplSystemTriggersView from './system-triggers-view';
 
-const jobsMock = [{
+const triggersMock = [{
   name: 'job name',
   description: 'job description',
   nextRunDate: 1649852937307,
   triggerScheduleType: 'schedule type',
 }];
 
-describe('the ChplSystemJobsView component', () => {
+describe('the ChplSystemTriggersView component', () => {
   beforeEach(async () => {
     render(
-      <ChplSystemJobsView
-        jobs={jobsMock}
+      <ChplSystemTriggersView
+        triggers={triggersMock}
       />,
     );
   });
@@ -26,7 +26,7 @@ describe('the ChplSystemJobsView component', () => {
     cleanup();
   });
 
-  it('should have a table of jobs', async () => {
+  it('should have a table of triggers', async () => {
     expect(screen.getByRole('table', { name: 'Scheduled System Jobs table' })).toBeInTheDocument();
   });
 });

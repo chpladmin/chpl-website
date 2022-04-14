@@ -5,7 +5,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplUserJobEdit from './user-job-edit';
+import ChplUserTriggerEdit from './user-trigger-edit';
 
 const hocMock = {
   dispatch: jest.fn(),
@@ -21,10 +21,10 @@ const triggerMock = {
   },
 };
 
-describe('the ChplUserJobEdit component', () => {
+describe('the ChplUserTriggerEdit component', () => {
   beforeEach(async () => {
     render(
-      <ChplUserJobEdit
+      <ChplUserTriggerEdit
         acbs={acbsMock}
         trigger={triggerMock}
         dispatch={hocMock.dispatch}

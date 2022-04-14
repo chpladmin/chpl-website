@@ -28,7 +28,7 @@ const useFetchJobTypes = () => {
   });
 };
 
-const useFetchSystemJobs = ({ isAuthenticated }) => {
+const useFetchSystemTriggers = ({ isAuthenticated }) => {
   const axios = useAxios();
   return useQuery(['schedules/triggers', 'system'], async () => {
     const response = await axios.get('schedules/triggers?jobType=system', {
@@ -42,7 +42,7 @@ const useFetchSystemJobs = ({ isAuthenticated }) => {
   });
 };
 
-const useFetchUserJobs = () => {
+const useFetchUserTriggers = () => {
   const axios = useAxios();
   return useQuery(['schedules/triggers'], async () => {
     const response = await axios.get('schedules/triggers', {
@@ -54,7 +54,7 @@ const useFetchUserJobs = () => {
   });
 };
 
-const usePostJob = () => {
+const usePostTrigger = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('schedules/triggers', data)
@@ -68,7 +68,7 @@ const usePostJob = () => {
   });
 };
 
-const usePostOneTimeJob = () => {
+const usePostOneTimeTrigger = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('schedules/triggers/one_time', data)
@@ -104,10 +104,10 @@ const usePutTrigger = () => {
 export {
   useDeleteTrigger,
   useFetchJobTypes,
-  useFetchSystemJobs,
-  useFetchUserJobs,
-  usePostJob,
-  usePostOneTimeJob,
+  useFetchSystemTriggers,
+  useFetchUserTriggers,
+  usePostTrigger,
+  usePostOneTimeTrigger,
   usePutJob,
   usePutTrigger,
 };

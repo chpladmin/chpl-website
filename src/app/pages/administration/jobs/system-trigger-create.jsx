@@ -13,7 +13,7 @@ import * as jsJoda from '@js-joda/core';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { jobType } from 'shared/prop-types';
+import { job as jobType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -36,7 +36,7 @@ const validationSchema = yup.object({
     .required('Run Time is required'),
 });
 
-function ChplSystemJobEdit(props) {
+function ChplSystemTriggerCreate(props) {
   const { job, dispatch } = props;
   const classes = useStyles();
 
@@ -112,9 +112,9 @@ function ChplSystemJobEdit(props) {
   );
 }
 
-export default ChplSystemJobEdit;
+export default ChplSystemTriggerCreate;
 
-ChplSystemJobEdit.propTypes = {
+ChplSystemTriggerCreate.propTypes = {
   job: jobType.isRequired,
   dispatch: func.isRequired,
 };

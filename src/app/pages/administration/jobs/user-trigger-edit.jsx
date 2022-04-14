@@ -15,7 +15,7 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import ChplCronGen from 'components/cron-gen';
 import { ChplTextField } from 'components/util';
-import { acb as acbPropType, job as triggerType } from 'shared/prop-types';
+import { acb as acbPropType, trigger as triggerType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -39,7 +39,7 @@ const validationSchema = yup.object({
     .email('Enter a valid email'),
 });
 
-function ChplUserJobEdit(props) {
+function ChplUserTriggerEdit(props) {
   const { dispatch } = props;
   const [acbs, setAcbs] = useState([]);
   const [trigger, setTrigger] = useState({});
@@ -183,9 +183,9 @@ function ChplUserJobEdit(props) {
   );
 }
 
-export default ChplUserJobEdit;
+export default ChplUserTriggerEdit;
 
-ChplUserJobEdit.propTypes = {
+ChplUserTriggerEdit.propTypes = {
   acbs: arrayOf(acbPropType).isRequired,
   dispatch: func.isRequired,
   trigger: triggerType.isRequired,

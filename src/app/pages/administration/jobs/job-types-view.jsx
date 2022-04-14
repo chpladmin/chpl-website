@@ -19,7 +19,7 @@ import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
 import { UserContext } from 'shared/contexts';
-import { jobType } from 'shared/prop-types';
+import { job as jobType } from 'shared/prop-types';
 
 const headers = [
   { property: 'name', text: 'Job Name', sortable: true },

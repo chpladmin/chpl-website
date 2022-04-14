@@ -9,17 +9,17 @@ import '@js-joda/timezone';
 
 import ChplJobEdit from './job-edit';
 import ChplJobTypesView from './job-types-view';
-import ChplSystemJobsView from './system-jobs-view';
-import ChplUserJobsView from './user-jobs-view';
+import ChplSystemTriggersView from './system-triggers-view';
+import ChplUserTriggersView from './user-triggers-view';
 
 import { useFetchAcbs } from 'api/acbs';
 import {
   useDeleteTrigger,
   useFetchJobTypes,
-  useFetchSystemJobs,
-  useFetchUserJobs,
-  usePostJob,
-  usePostOneTimeJob,
+  useFetchSystemTriggers,
+  useFetchUserTriggers,
+  usePostTrigger,
+  usePostOneTimeTrigger,
   usePutJob,
   usePutTrigger,
 } from 'api/jobs';
@@ -45,19 +45,19 @@ function ChplJobs() {
   const { hasAnyRole } = useContext(UserContext);
   const acbQuery = useFetchAcbs();
   const jobTypeQuery = useFetchJobTypes();
-  const systemQuery = useFetchSystemJobs({ isAuthenticated: hasAnyRole(['ROLE_ADMIN']) });
-  const userQuery = useFetchUserJobs();
+  const systemQuery = useFetchSystemTriggers({ isAuthenticated: hasAnyRole(['ROLE_ADMIN']) });
+  const userQuery = useFetchUserTriggers();
   const deleteTrigger = useDeleteTrigger();
-  const postJob = usePostJob();
-  const postOneTimeJob = usePostOneTimeJob();
+  const postTrigger = usePostTrigger();
+  const postOneTimeTrigger = usePostOneTimeTrigger();
   const putJob = usePutJob();
   const putTrigger = usePutTrigger();
   const { enqueueSnackbar } = useSnackbar();
   const [acbs, setAcbs] = useState([]);
   const [job, setJob] = useState(undefined);
   const [jobTypes, setJobTypes] = useState([]);
-  const [systemJobs, setSystemJobs] = useState([]);
-  const [userJobs, setUserJobs] = useState([]);
+  const [systemTriggers, setSystemTriggers] = useState([]);
+  const [userTriggers, setUserTriggers] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
@@ -72,12 +72,12 @@ function ChplJobs() {
 
   useEffect(() => {
     if (systemQuery.isLoading || !systemQuery.isSuccess) { return; }
-    setSystemJobs(systemQuery.data);
+    setSystemTriggers(systemQuery.data);
   }, [systemQuery.data, systemQuery.isLoading, systemQuery.isSuccess]);
 
   useEffect(() => {
     if (userQuery.isLoading || !userQuery.isSuccess) { return; }
-    setUserJobs(userQuery.data);
+    setUserTriggers(userQuery.data);
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
   const handleDispatch = ({ action, payload }) => {
@@ -114,7 +114,7 @@ function ChplJobs() {
         break;
       case 'save':
         if (payload.job && !payload.name) {
-          postJob.mutate(payload, {
+          postTrigger.mutate(payload, {
             onSuccess: () => {
               const message = 'Job created: Recurring job scheduled';
               enqueueSnackbar(message, {
@@ -170,7 +170,7 @@ function ChplJobs() {
               .parse(payload.runTime)
               .atZone(jsJoda.ZoneId.of('America/New_York')))
             .toEpochMilli();
-          postOneTimeJob.mutate({
+          postOneTimeTrigger.mutate({
             job: payload,
             runDateMillis,
           }, {
@@ -215,16 +215,16 @@ function ChplJobs() {
         && (
           <div className={classes.container}>
             <div className={hasAnyRole(['ROLE_ADMIN']) ? '' : classes.fullWidth}>
-              <ChplUserJobsView
+              <ChplUserTriggersView
                 acbs={acbs}
-                jobs={userJobs}
+                triggers={userTriggers}
                 dispatch={handleDispatch}
               />
             </div>
             { hasAnyRole(['ROLE_ADMIN'])
               && (
-                <ChplSystemJobsView
-                  jobs={systemJobs}
+                <ChplSystemTriggersView
+                  triggers={systemTriggers}
                 />
               )}
             <div className={classes.fullWidth}>

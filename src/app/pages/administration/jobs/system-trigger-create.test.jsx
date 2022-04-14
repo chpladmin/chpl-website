@@ -5,7 +5,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplSystemJobEdit from './system-job-edit';
+import ChplSystemTriggerCreate from './system-trigger-create';
 
 const hocMock = {
   dispatch: jest.fn(),
@@ -18,10 +18,10 @@ const jobMock = {
   job: { name: 'job name' },
 };
 
-describe('the ChplSystemJobEdit component', () => {
+describe('the ChplSystemTriggerCreate component', () => {
   beforeEach(async () => {
     render(
-      <ChplSystemJobEdit
+      <ChplSystemTriggerCreate
         job={jobMock}
         dispatch={hocMock.dispatch}
       />,

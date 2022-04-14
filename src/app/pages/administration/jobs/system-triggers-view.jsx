@@ -16,7 +16,7 @@ import Moment from 'react-moment';
 import { arrayOf } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
-import { scheduledSystemJob } from 'shared/prop-types';
+import { scheduledSystemTrigger } from 'shared/prop-types';
 
 const headers = [
   { property: 'name', text: 'Job Name' },
@@ -43,30 +43,30 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSystemJobsView(props) {
-  const [jobs, setJobs] = useState([]);
+function ChplSystemTriggersView(props) {
+  const [triggers, setTriggers] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setJobs(props.jobs
+    setTriggers(props.triggers
       .sort((a, b) => (a.nextRunDate - b.nextRunDate))
-      .map((job) => ({
-        ...job,
+      .map((trigger) => ({
+        ...trigger,
       })));
-  }, [props.jobs]); // eslint-disable-line react/destructuring-assignment
+  }, [props.triggers]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <Card className={classes.cardSpacing}>
       <CardHeader title="Currently Scheduled System Jobs" />
       <CardContent>
         <>
-          { (jobs.length === 0)
+          { (triggers.length === 0)
             && (
               <Typography className={classes.noResultsContainer}>
                 No results found
               </Typography>
             )}
-          { jobs.length > 0
+          { triggers.length > 0
             && (
               <TableContainer className={classes.container} component={Paper}>
                 <Table
@@ -80,7 +80,7 @@ function ChplSystemJobsView(props) {
                     stickyHeader
                   />
                   <TableBody>
-                    { jobs
+                    { triggers
                       .map((item) => (
                         <TableRow key={item.nextRunDate}>
                           <TableCell className={classes.firstColumn}>
@@ -118,12 +118,12 @@ function ChplSystemJobsView(props) {
   );
 }
 
-export default ChplSystemJobsView;
+export default ChplSystemTriggersView;
 
-ChplSystemJobsView.propTypes = {
-  jobs: arrayOf(scheduledSystemJob),
+ChplSystemTriggersView.propTypes = {
+  triggers: arrayOf(scheduledSystemTrigger),
 };
 
-ChplSystemJobsView.defaultProps = {
-  jobs: [],
+ChplSystemTriggersView.defaultProps = {
+  triggers: [],
 };

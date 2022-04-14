@@ -2,10 +2,10 @@ import React from 'react';
 import { arrayOf, func } from 'prop-types';
 
 import ChplEditableJobEdit from './editable-job-edit';
-import ChplSystemJobEdit from './system-job-edit';
-import ChplUserJobEdit from './user-job-edit';
+import ChplSystemTriggerCreate from './system-trigger-create';
+import ChplUserTriggerEdit from './user-trigger-edit';
 
-import { acb as acbPropType, jobType } from 'shared/prop-types';
+import { acb as acbPropType, job as jobType } from 'shared/prop-types';
 
 function ChplJobEdit(props) {
   const { acbs, dispatch, job } = props;
@@ -21,7 +21,7 @@ function ChplJobEdit(props) {
 
   if (job.group === 'systemJobs') {
     return (
-      <ChplSystemJobEdit
+      <ChplSystemTriggerCreate
         job={job}
         dispatch={dispatch}
       />
@@ -30,7 +30,7 @@ function ChplJobEdit(props) {
 
   if (job.job.group === 'chplJobs') {
     return (
-      <ChplUserJobEdit
+      <ChplUserTriggerEdit
         acbs={acbs}
         trigger={job}
         dispatch={dispatch}
