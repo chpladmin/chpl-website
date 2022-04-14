@@ -3,7 +3,7 @@
     <h1>Upload</h1>
     <div class="upload__items">
     <chpl-upload-listings ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-listings>
-    <chpl-upload-listings-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])" feature-flag="enhanced-upload"></chpl-upload-listings-bridge>
+    <chpl-upload-wrapper-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-wrapper-bridge>
     <chpl-upload-surveillance-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></chpl-upload-surveillance-bridge>
     <span feature-flag="promoting-interoperability">
       <chpl-upload-promoting-interoperability-bridge ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"></chpl-upload-promoting-interoperability-bridge>

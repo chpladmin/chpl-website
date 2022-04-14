@@ -24,10 +24,10 @@ import {
 } from './surveillance/complaints';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
-  ChplUploadListings,
   ChplUploadMeaningfulUse,
   ChplUploadPromotingInteroperability,
   ChplUploadSurveillance,
+  ChplUploadWrapper,
 } from './upload';
 import { ChplUsers } from './user';
 import {
@@ -79,10 +79,10 @@ angular
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
-  .component('chplUploadListingsBridge', reactToAngularComponent(ChplUploadListings))
   .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance))
+  .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper))
   .component('userWrapperBridge', reactToAngularComponent(UserWrapper));
