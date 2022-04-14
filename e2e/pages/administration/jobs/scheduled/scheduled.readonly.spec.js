@@ -26,7 +26,7 @@ describe('the Scheduled Jobs page', () => {
     });
 
     it('should have specific jobs', () => {
-      const expected = new Set([
+      const expected = [
         'All Broken Surveillance Rules Report',
         'Cures Statistics Email',
         'Developer Access Report',
@@ -41,13 +41,21 @@ describe('the Scheduled Jobs page', () => {
         'Real World Testing Email Report',
         'Summary Statistics Email',
         'Trigger Developer Ban Notification',
-      ]);
-      const jobs = page.getAvailableJobs();
-      expect(jobs.length).toBe(expected.size);
+      ];
+      let jobs = page.getAvailableJobs();
+      let errors = [];
 
       expected.forEach((exp) => {
-        expect(jobs.includes(exp)).toBe(true, `did not find expected job: "${exp}"`);
+        if (jobs.includes(exp)) {
+          jobs = jobs.filter((job) => job !== exp);
+        } else {
+          errors.push(`Did not find job: ${exp}`);
+        }
       });
+      if (jobs.length > 0) {
+        errors = errors.concat(jobs.map((job) => `Found unexpected job: ${job}`));
+      }
+      expect(errors.length).toBe(0, errors.join(';'));
     });
 
     it('should show Retired ONC-ACBs are retired on the scheduling page', () => {
