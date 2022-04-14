@@ -81,116 +81,42 @@ function ChplJobs() {
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
   const handleDispatch = ({ action, payload }) => {
+    let apiAction;
+    let message;
+    let updated = { ...payload };
     switch (action) {
       case 'close':
         setJob(undefined);
         break;
       case 'delete':
-        deleteTrigger.mutate(payload, {
-          onSuccess: () => {
-            const message = 'Job deleted: Recurring job deleted';
-            enqueueSnackbar(message, {
-              variant: 'success',
-            });
-            setJob(undefined);
-          },
-          onError: (error) => {
-            const message = error.response.data?.error
-                  || error.response.data?.errorMessages.join(' ');
-            enqueueSnackbar(message, {
-              variant: 'error',
-            });
-          },
-        });
+        apiAction = deleteTrigger.mutate;
+        message = 'Job deleted: Recurring job deleted';
         break;
       case 'edit':
-        if (payload.job) {
-          setJob(payload);
-        } else if (payload.jobDataMap.editableJobFields) {
-          setJob(payload);
-        } else {
-          console.log({ trace: 'jobs.jsx - edit-else', action, payload });
-        }
+        setJob(payload);
         break;
       case 'save':
         if (payload.job && !payload.name) {
-          postTrigger.mutate(payload, {
-            onSuccess: () => {
-              const message = 'Job created: Recurring job scheduled';
-              enqueueSnackbar(message, {
-                variant: 'success',
-              });
-              setJob(undefined);
-            },
-            onError: (error) => {
-              const message = error.response.data?.error
-                    || error.response.data?.errorMessages.join(' ');
-              enqueueSnackbar(message, {
-                variant: 'error',
-              });
-            },
-          });
+          apiAction = postTrigger.mutate;
+          message = 'Job created: Recurring job scheduled';
         } else if (payload.job && payload.name) {
-          putTrigger.mutate(payload, {
-            onSuccess: () => {
-              const message = 'Job updated: Recurring job updated';
-              enqueueSnackbar(message, {
-                variant: 'success',
-              });
-              setJob(undefined);
-            },
-            onError: (error) => {
-              const message = error.response.data?.error
-                    || error.response.data?.errorMessages.join(' ');
-              enqueueSnackbar(message, {
-                variant: 'error',
-              });
-            },
-          });
+          apiAction = putTrigger.mutate;
+          message = 'Job updated: Recurring job updated';
         } else if (payload.jobDataMap.editableJobFields) {
-          putJob.mutate(payload, {
-            onSuccess: () => {
-              const message = 'Job updated';
-              enqueueSnackbar(message, {
-                variant: 'success',
-              });
-              setJob(undefined);
-            },
-            onError: (error) => {
-              const message = error.response.data?.error
-                    || error.response.data?.errorMessages.join(' ');
-              enqueueSnackbar(message, {
-                variant: 'error',
-              });
-            },
-          });
+          apiAction = putJob.mutate;
+          message = 'Job updated';
         } else if (payload.group === 'systemJobs' && payload.runTime) {
           const runDateMillis = jsJoda.Instant
             .from(jsJoda.LocalDateTime
               .parse(payload.runTime)
               .atZone(jsJoda.ZoneId.of('America/New_York')))
             .toEpochMilli();
-          postOneTimeTrigger.mutate({
+          apiAction = postOneTimeTrigger.mutate;
+          message = 'Job created: one time job scheduled';
+          updated = {
             job: payload,
             runDateMillis,
-          }, {
-            onSuccess: () => {
-              const message = 'Job created: one time job scheduled';
-              enqueueSnackbar(message, {
-                variant: 'success',
-              });
-              setJob(undefined);
-            },
-            onError: (error) => {
-              const message = error.response.data?.error
-                    || error.response.data?.errorMessages.join(' ');
-              enqueueSnackbar(message, {
-                variant: 'error',
-              });
-            },
-          });
-        } else {
-          console.log({ trace: 'jobs.jsx - save-else', action, payload });
+          };
         }
         break;
       case 'schedule':
@@ -198,13 +124,26 @@ function ChplJobs() {
           setJob(payload);
         } else if (payload.group === 'chplJobs') {
           setJob({ job: payload });
-        } else {
-          console.log({ trace: 'jobs.jsx - schedule-else', action, payload });
         }
         break;
-      default:
-        console.log({ trace: 'jobs.jsx - switch-default', action, payload });
         // no default
+    }
+    if (apiAction) {
+      apiAction(updated, {
+        onSuccess: () => {
+          enqueueSnackbar(message, {
+            variant: 'success',
+          });
+          setJob(undefined);
+        },
+        onError: (error) => {
+          const errorMessage = error.response.data?.error
+                || error.response.data?.errorMessages.join(' ');
+          enqueueSnackbar(errorMessage, {
+            variant: 'error',
+          });
+        },
+      });
     }
   };
 
