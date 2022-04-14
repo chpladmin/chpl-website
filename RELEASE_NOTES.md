@@ -1,4 +1,13 @@
 # Release Notes
+
+## Version 11.33.1
+_13 April 2022_
+
+### User Interface Updates
+* Display previous CHPL Product Numbers on Listing details page when available
+
+---
+
 ## Version 11.33.0
 _1 April 2022_
 

@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 const elements = {
   table: 'table',
+  loading: 'body*=Loading',
   searchResultsHeader: 'h6=Search Results:',
   downloadFilteredListings: '#download-filtered-listings',
   filterPanelToggle: '#filter-panel-toggle',
@@ -13,6 +14,10 @@ const elements = {
 class CollectionPage {
   getTableHeaders() {
     return $(elements.table).$('thead').$$('th');
+  }
+
+  get isLoading() {
+    return $(elements.loading).isDisplayed();
   }
 
   get results() {
