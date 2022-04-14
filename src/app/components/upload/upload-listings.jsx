@@ -136,7 +136,7 @@ function ChplUploadListings() {
                   id="use-legacy"
                   name="useLegacy"
                   color="primary"
-                  checked={useLegacy}
+                  checked={!useLegacy}
                   onChange={() => setUseLegacy(!useLegacy)}
                 />
               )}
