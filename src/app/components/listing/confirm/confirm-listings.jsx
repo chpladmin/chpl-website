@@ -74,10 +74,7 @@ const useStyles = makeStyles({
   },
 });
 
-const getStatus = (listing, useLegacy, classes) => {
-  if ((!useLegacy && listing.status === 'UPLOAD_PROCESSING') || (useLegacy && listing.processing)) {
-    return <CircularProgress />;
-  }
+const getBasicStatus = (listing, classes) => {
   if (listing.status === 'UPLOAD_FAILURE') {
     return (
       <Chip
@@ -95,6 +92,20 @@ const getStatus = (listing, useLegacy, classes) => {
   );
 };
 
+const getStatus = (listing, classes) => {
+  if (listing.status === 'UPLOAD_PROCESSING') {
+    return <CircularProgress />;
+  }
+  return getBasicStatus(listing, classes);
+};
+
+const getLegacyStatus = (listing, classes) => {
+  if (listing.status === 'UPLOAD_PROCESSING') {
+    return <CircularProgress />;
+  }
+  return getBasicStatus(listing, classes);
+};
+
 const canProcess = (listing, useLegacy) => ((!useLegacy && listing.status === 'UPLOAD_SUCCESS') || (useLegacy && !listing.processing));
 
 function ChplConfirmListings(props) {
@@ -107,6 +118,7 @@ function ChplConfirmListings(props) {
   const [legacyUploadIsOn, setLegacyUploadIsOn] = useState(false);
   const [listingIdToLoad, setListingIdToLoad] = useState(undefined);
   const [listings, setListings] = useState([]);
+  const [legacyListings, setLegacyListings] = useState([]);
   const [useLegacy, setUseLegacy] = useState(false);
   const [warnings, setWarnings] = useState([]);
   const { data: legacyData } = useFetchPendingListingsLegacy();
@@ -126,7 +138,7 @@ function ChplConfirmListings(props) {
   }, [enhancedUploadIsOn]);
 
   useEffect(() => {
-    if (!processingListing?.id || useLegacy || listings.length === 0) { return; }
+    if (!processingListing?.id || listings.length === 0) { return; }
     const updated = listings.find((listing) => listing.id === processingListing.id);
     let nextListing;
     if (updated) {
@@ -144,32 +156,35 @@ function ChplConfirmListings(props) {
       nextListing = listings.find((listing) => listing.errors === undefined && listing.status !== 'UPLOAD_PROCESSING')?.id;
     }
     setListingIdToLoad(nextListing);
-  }, [processingListing, useLegacy]);
+  }, [processingListing]);
 
   useEffect(() => {
-    let updated;
-    if (!useLegacy) {
-      updated = modernData || [];
-    } else {
-      updated = legacyData || [];
-    }
-    setListings(updated
+    if (!modernData) { return; }
+    const updated = modernData
       .map((listing) => ({
         ...listing,
-        displayStatus: getStatus(listing, !useLegacy, classes),
-        canProcess: canProcess(listing, !useLegacy),
-        developer: !useLegacy ? listing.developer : listing.developer.name,
-        product: !useLegacy ? listing.product : listing.product.name,
-        version: !useLegacy ? listing.version : listing.version.version,
+        displayStatus: getStatus(listing, classes),
+      }))
+      .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1));
+    setListings(updated);
+    const nextListing = updated.find((l) => l.errors === undefined && l.status !== 'UPLOAD_PROCESSING')?.id;
+    if (nextListing) {
+      setListingIdToLoad(nextListing);
+    }
+  }, [modernData, classes]);
+
+  useEffect(() => {
+    if (!legacyData) { return; }
+    setLegacyListings(legacyData
+      .map((listing) => ({
+        ...listing,
+        displayStatus: getLegacyStatus(listing, classes),
+        developer: listing.developer.name,
+        product: listing.product.name,
+        version: listing.version.version,
       }))
       .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
-    if (!useLegacy) {
-      const nextListing = updated.find((l) => l.errors === undefined && l.status !== 'UPLOAD_PROCESSING')?.id;
-      if (nextListing) {
-        setListingIdToLoad(nextListing);
-      }
-    }
-  }, [legacyData, modernData, useLegacy, classes]);
+  }, [legacyData, classes]);
 
   const handleProcess = (listing) => {
     props.onProcess(listing.id, !useLegacy);
@@ -230,22 +245,24 @@ function ChplConfirmListings(props) {
     setListings(listings.map((listing) => listing).sort(listingSortComparator(orderDirection + property)));
   };
 
-  const headers = !useLegacy ? [
-    { text: 'Action', invisible: true },
-    { text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true },
-    { text: 'Developer', property: 'developer', sortable: true },
-    { text: 'Product', property: 'product', sortable: true },
-    { text: 'Version', property: 'version', sortable: true },
-    { text: 'Certification Date', property: 'certificationDate', sortable: true },
-    { text: 'Status' },
-    { text: 'Reject Listing', invisible: true },
-  ] : [
+  const getActiveListings = () => (useLegacy && legacyListings) || (!useLegacy && listings) || [];
+
+  const headers = useLegacy ? [
     { text: 'Action', invisible: true },
     { text: 'CHPL Product Number' },
     { text: 'Developer' },
     { text: 'Product' },
     { text: 'Version' },
     { text: 'Certification Date' },
+    { text: 'Status' },
+    { text: 'Reject Listing', invisible: true },
+  ] : [
+    { text: 'Action', invisible: true },
+    { text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true },
+    { text: 'Developer', property: 'developer', sortable: true },
+    { text: 'Product', property: 'product', sortable: true },
+    { text: 'Version', property: 'version', sortable: true },
+    { text: 'Certification Date', property: 'certificationDate', sortable: true },
     { text: 'Status' },
     { text: 'Reject Listing', invisible: true },
   ];
@@ -264,14 +281,14 @@ function ChplConfirmListings(props) {
                 onChange={() => setUseLegacy(!useLegacy)}
               />
             )}
-            label={useLegacy ? 'Using Legacy Workflow' : 'Using Modern Workflow'}
+            label={useLegacy ? `Using Legacy Workflow (${listings.length} pending using Modern Workflow)` : `Using Modern Workflow (${legacyListings.length} pending using Legacy Workflow)`}
           />
         )}
-      { listings.length === 0
+      { getActiveListings().length === 0
         && (
           <div>No products currently in queue</div>
         )}
-      { listings.length > 0
+      { getActiveListings().length > 0
         && (
           <>
             <div className={classes.rejectFooter}>
@@ -297,7 +314,7 @@ function ChplConfirmListings(props) {
                   onTableSort={handleTableSort}
                 />
                 <TableBody>
-                  { listings
+                  { getActiveListings()
                     .map((listing) => (
                       <TableRow key={listing.id}>
                         <TableCell className={classes.stickyColumn}>
@@ -307,7 +324,7 @@ function ChplConfirmListings(props) {
                             variant="contained"
                             onClick={() => handleProcess(listing)}
                             endIcon={<PlayArrowIcon />}
-                            disabled={!listing.canProcess}
+                            disabled={!canProcess(listing, useLegacy)}
                           >
                             Process Listing
                           </Button>
@@ -319,7 +336,7 @@ function ChplConfirmListings(props) {
                         <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
                         <TableCell>
                           { listing.displayStatus }
-                          { !useLegacy
+                          { !useLegacy && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
                             && (
                               <div>
                                 <Button
