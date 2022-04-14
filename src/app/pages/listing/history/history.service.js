@@ -26,6 +26,15 @@ const interpretActivity = (activity, utilService, ReportService) => {
         ...basicChanges,
       ];
     }
+  } else if (activity.description.startsWith('Changed ACB ownership')) {
+    const changes = [];
+    if (prev.chplProductNumber !== curr.chplProductNumber) {
+      changes.push(`CHPL Product Number changed from ${prev.chplProductNumber} to ${curr.chplProductNumber}`);
+    }
+    ret.change = [
+      ...ret.change,
+      ...changes,
+    ];
   } else if (activity.description === 'Created a certified product') {
     ret.change.push('Certified product was uploaded to the CHPL');
   } else if (activity.description.startsWith('Surveillance was added')) {
