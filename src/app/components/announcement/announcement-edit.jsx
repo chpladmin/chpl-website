@@ -4,6 +4,7 @@ import {
   CardContent,
   CardHeader,
   FormControlLabel,
+  FormHelperText,
   Switch,
   makeStyles,
 } from '@material-ui/core';
@@ -29,6 +30,9 @@ const useStyles = makeStyles({
   fullWidth: {
     gridColumnStart: '1',
     gridColumnEnd: '-1',
+  },
+  helperTextSpacing: {
+    marginLeft: '14px',
   },
 });
 
@@ -119,30 +123,36 @@ function ChplAnnouncementEdit(props) {
             error={formik.touched.text && !!formik.errors.text}
             helperText={formik.touched.text && formik.errors.text}
           />
-          <ChplTextField
-            id="start-date-time"
-            name="startDateTime"
-            label="Start Date"
-            type="datetime-local"
-            required
-            value={formik.values.startDateTime}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.startDateTime && !!formik.errors.startDateTime}
-            helperText={formik.touched.startDateTime && formik.errors.startDateTime}
-          />
-          <ChplTextField
-            id="end-date-time"
-            name="endDateTime"
-            label="End Date"
-            type="datetime-local"
-            required
-            value={formik.values.endDateTime}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.endDateTime && !!formik.errors.endDateTime}
-            helperText={formik.touched.endDateTime && formik.errors.endDateTime}
-          />
+          <div>
+            <ChplTextField
+              id="start-date-time"
+              name="startDateTime"
+              label="Start Date"
+              type="datetime-local"
+              required
+              value={formik.values.startDateTime}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.startDateTime && !!formik.errors.startDateTime}
+              helperText={formik.touched.startDateTime && formik.errors.startDateTime}
+            />
+            <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+          </div>
+          <div>
+            <ChplTextField
+              id="end-date-time"
+              name="endDateTime"
+              label="End Date"
+              type="datetime-local"
+              required
+              value={formik.values.endDateTime}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.endDateTime && !!formik.errors.endDateTime}
+              helperText={formik.touched.endDateTime && formik.errors.endDateTime}
+            />
+            <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+          </div>
           <FormControlLabel
             control={(
               <Switch
