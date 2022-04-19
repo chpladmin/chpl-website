@@ -51,17 +51,6 @@ function returnTo($transition$) {
 }
 
 const states = {
-  'change-request': [
-    {
-      name: 'administration.change-requests',
-      url: '/change-requests',
-      component: 'chplChangeRequestsWrapperBridge',
-      data: {
-        title: 'CHPL Administration - Change Requests',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
-      },
-    },
-  ],
   'enhanced-upload': [
     {
       name: 'administration.confirm.listings.listing',
@@ -124,8 +113,11 @@ const states = {
     }, {
       name: 'administration.change-requests',
       url: '/change-requests',
-      template: '<div><i class="fa fa-spin fa-spinner"></i></div>',
-      data: { title: 'CHPL Administration - Change Requests' },
+      component: 'chplChangeRequestsWrapperBridge',
+      data: {
+        title: 'CHPL Administration - Change Requests',
+        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      },
     }, {
       name: 'administration.cms',
       url: '/cms',
