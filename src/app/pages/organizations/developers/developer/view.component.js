@@ -69,7 +69,7 @@ const DeveloperViewComponent = {
 
     can(action) {
       if (!this.canManageDeveloper(this.developer)) { return false; } // basic authentication
-      if (action === 'manageTracking') { return this.featureFlags.isOn('change-request') && this.hasAnyRole(['ROLE_DEVELOPER']); } // only DEVELOPER can manage tracking
+      if (action === 'manageTracking') { return this.hasAnyRole(['ROLE_DEVELOPER']); } // only DEVELOPER can manage tracking
       if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
       if (action === 'merge') { return false; } // if not above roles, can't merge
