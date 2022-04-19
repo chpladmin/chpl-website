@@ -46,9 +46,11 @@
     beforeEach(() => {
       angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('$stateParams', () => mock.stateParams);
+        $provide.factory('chplAttestationsViewWrapperBridgeDirective', () => ({}));
+        $provide.factory('chplChangeRequestsWrapperBridgeDirective', () => ({}));
+        $provide.factory('chplConfirmationDeveloperBridgeDirective', () => ({}));
         $provide.factory('chplDeveloperBridgeDirective', () => ({}));
         $provide.factory('chplProductsDirective', () => ({}));
-        $provide.factory('chplChangeRequestsWrapperBridgeDirective', () => ({}));
         $provide.factory('chplUsersBridgeDirective', () => ({}));
         $provide.decorator('authService', ($delegate) => ({
           ...$delegate,
