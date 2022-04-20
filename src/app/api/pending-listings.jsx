@@ -35,6 +35,19 @@ const useFetchPendingListingsLegacy = () => {
   });
 };
 
+const useFetchUploadedDeveloper = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['listings/pending/submitted', id], async () => {
+    if (id) {
+      const response = await axios.get(`/listings/pending/${id}/submitted`);
+      return response.data.developer;
+    }
+    return {};
+  }, {
+    keepPreviousData: true,
+  });
+};
+
 const useRejectPendingListing = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -61,6 +74,7 @@ export {
   useFetchPendingListing,
   useFetchPendingListings,
   useFetchPendingListingsLegacy,
+  useFetchUploadedDeveloper,
   useRejectPendingListing,
   useRejectPendingListingLegacy,
 };
