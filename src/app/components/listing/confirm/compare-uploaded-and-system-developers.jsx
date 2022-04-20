@@ -124,28 +124,28 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
               >
                 <TableCell scope="row">Contact</TableCell>
                 <TableCell>{ system.contact.fullName }</TableCell>
-                <TableCell>{ uploaded.address.fullName }</TableCell>
+                <TableCell>{ uploaded.contact.fullName }</TableCell>
               </TableRow>
               <TableRow
                 className={(system.contact.title !== uploaded.contact.title) ? classes.differentValue : ''}
               >
                 <TableCell scope="row">Title</TableCell>
                 <TableCell>{ system.contact.title }</TableCell>
-                <TableCell>{ uploaded.address.title }</TableCell>
+                <TableCell>{ uploaded.contact.title }</TableCell>
               </TableRow>
               <TableRow
                 className={(system.contact.email !== uploaded.contact.email) ? classes.differentValue : ''}
               >
                 <TableCell scope="row">Email</TableCell>
                 <TableCell>{ system.contact.email }</TableCell>
-                <TableCell>{ uploaded.address.email }</TableCell>
+                <TableCell>{ uploaded.contact.email }</TableCell>
               </TableRow>
               <TableRow
                 className={(system.contact.phoneNumber !== uploaded.contact.phoneNumber) ? classes.differentValue : ''}
               >
                 <TableCell scope="row">Phone</TableCell>
                 <TableCell>{ system.contact.phoneNumber }</TableCell>
-                <TableCell>{ uploaded.address.phoneNumber }</TableCell>
+                <TableCell>{ uploaded.contact.phoneNumber }</TableCell>
               </TableRow>
             </TableBody>
           </Table>
