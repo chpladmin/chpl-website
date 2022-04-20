@@ -220,6 +220,9 @@ function ChplChangeRequestsView(props) {
       .filter((item) => filtersShouldShow(item, filters))
       .sort(sortComparator(comparator));
     setChangeRequests(crs);
+    if (changeRequest?.id) {
+      setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
+    }
   }, [data, isLoading, isSuccess, DateUtil, comparator, filters, searchTerm, preFilter]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
