@@ -88,7 +88,7 @@ function ChplUploadPromotingInteroperability() {
           title: 'Success',
           body: message,
         });
-        $state.go('administration.jobs.scheduled');
+        $state.go('administration.jobs');
       })
       .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;
