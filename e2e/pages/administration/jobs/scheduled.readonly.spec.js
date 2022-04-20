@@ -1,5 +1,5 @@
-import LoginComponent from '../../../../components/login/login.po';
-import Hooks from '../../../../utilities/hooks';
+import LoginComponent from '../../../components/login/login.po';
+import Hooks from '../../../utilities/hooks';
 
 import ScheduledPage from './scheduled.po';
 
