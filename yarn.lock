@@ -5664,7 +5664,7 @@ __metadata:
     karma-super-dots-reporter: ^0.2.0
     karma-webpack: ^3.0.0
     mini-css-extract-plugin: ^0.4.1
-    moment: ^2.29.1
+    moment: ^2.29.2
     ng-csv: ^0.3.6
     ng-file-upload: ^12.2.13
     ng-idle: ^1.3.2
@@ -15123,10 +15123,10 @@ export-to-csv@andlar/export-to-csv:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.1":
-  version: 2.29.1
-  resolution: "moment@npm:2.29.1"
-  checksum: 1e14d5f422a2687996be11dd2d50c8de3bd577c4a4ca79ba5d02c397242a933e5b941655de6c8cb90ac18f01cc4127e55b4a12ae3c527a6c0a274e455979345e
+"moment@npm:^2.29.2":
+  version: 2.29.3
+  resolution: "moment@npm:2.29.3"
+  checksum: 2e780e36d9a1823c08a1b6313cbb08bd01ecbb2a9062095820a34f42c878991ccba53abaa6abb103fd5c01e763724f295162a8c50b7e95b4f1c992ef0772d3f0
   languageName: node
   linkType: hard
 
