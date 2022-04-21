@@ -22,16 +22,27 @@ import {
 } from 'api/pending-listings';
 
 const useStyles = makeStyles({
-  differentValue: {
-    backgroundColor: '#e6ea0b20',
-  },
   closeIcon: {
     marginTop: '8px',
+  },
+  differentValue: {
+    backgroundColor: '#e6ea0b20',
   },
   sectionCell: {
     backgroundColor: '#f9f9f9',
     boxShadow: 'rgb(149 157 165 / 10%) 0px 4px 8px',
     fontWeight: 'bold',
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1,
   },
 });
 
@@ -49,7 +60,7 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
     setUploaded(data);
   }, [data]);
 
-  if (isLoading || !isSuccess || !system?.name || !uploaded) { return <CircularProgress  />; }
+  if (isLoading || !isSuccess || !system?.name || !uploaded) { return <CircularProgress />; }
 
   return (
     <Card>
@@ -71,7 +82,7 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Section</TableCell>
+                <TableCell className={classes.visuallyHidden}>Section</TableCell>
                 <TableCell>Existing Developer</TableCell>
                 <TableCell>Uploaded Developer</TableCell>
               </TableRow>
