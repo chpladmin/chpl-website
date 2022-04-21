@@ -11,11 +11,12 @@ export const SurveillanceReportQuarterComponent = {
     takeAction: '&',
   },
   controller: class SurveillanceReportQuarterComponent {
-    constructor ($log, authService, networkService, toaster) {
+    constructor ($log, DateUtil, authService, networkService, toaster) {
       'ngInject';
       this.$log = $log;
       this.backup = {};
       this.hasAnyRole = authService.hasAnyRole;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.toaster = toaster;
     }
@@ -112,10 +113,10 @@ export const SurveillanceReportQuarterComponent = {
     }
 
     isRelevantSurveillance (surveillance) {
-      let reportStart = new Date(this.report.startDate);
-      let reportEnd = new Date(this.report.endDate);
-      let surveillanceStart = new Date(surveillance.startDate);
-      let surveillanceEnd = surveillance.endDate ? new Date(surveillance.endDate) : false;
+      let reportStart = this.report.startDate;
+      let reportEnd = this.report.endDate;
+      let surveillanceStart = this.DateUtil.localDateToTimestamp(surveillance.startDay);
+      let surveillanceEnd = surveillance.endDay ? this.DateUtil.localDateToTimestamp(surveillance.endDay) : false;
       return surveillanceStart <= reportEnd &&
                 (!surveillanceEnd || surveillanceEnd >= reportStart);
     }

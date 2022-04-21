@@ -615,16 +615,6 @@ export default class NetworkService {
     return this.apiGET('/data/upload_template_versions');
   }
 
-  getUserActivities(activityRange) {
-    const call = '/activity/user_activities';
-    return this.getActivity(call, activityRange);
-  }
-
-  getUserActivity(activityRange) {
-    const call = '/activity/users';
-    return this.getActivity(call, activityRange);
-  }
-
   getUserById(id) {
     return this.apiGET(`/users/beta/${id}/details`);
   }
