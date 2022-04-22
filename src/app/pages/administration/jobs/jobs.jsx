@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Typography,
+  Container,
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
@@ -29,11 +30,11 @@ import theme from 'themes/theme';
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    gap: '16px',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr 1fr',
-    },
+    gap: '16px',
+  },
+  titlePadding: {
+    paddingTop: '16px',
   },
   fullWidth: {
     gridColumnStart: '1',
@@ -148,8 +149,8 @@ function ChplJobs() {
   };
 
   return (
-    <>
-      <Typography variant="h1">Scheduled Jobs</Typography>
+    <Container maxWidth="md">
+      <Typography className={classes.titlePadding} variant="h1">Scheduled Jobs</Typography>
       { !job
         && (
           <div className={classes.container}>
@@ -166,7 +167,7 @@ function ChplJobs() {
                   triggers={systemTriggers}
                 />
               )}
-            <div className={classes.fullWidth}>
+            <div>
               <ChplJobTypesView
                 jobTypes={jobTypes}
                 dispatch={handleDispatch}
@@ -182,7 +183,7 @@ function ChplJobs() {
             dispatch={handleDispatch}
           />
         )}
-    </>
+    </Container>
   );
 }
 

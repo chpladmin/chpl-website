@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
+  IconButton,
   Card,
   CardContent,
   CardHeader,
+  Chip,
   Paper,
   Table,
   TableBody,
@@ -12,7 +13,7 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import EditIcon from '@material-ui/icons/Edit';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import { arrayOf, func } from 'prop-types';
@@ -38,14 +39,14 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  cardSpacing: {
-    marginTop: '32px',
-  },
   firstColumn: {
     position: 'sticky',
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
+  },
+  cardSpacing: {
+    marginTop: '32px',
   },
 });
 
@@ -58,38 +59,36 @@ const groupMapping = {
 const getAction = (item, dispatch) => {
   if (item.jobDataMap.editableJobFields) {
     return (
-      <Button
+      <IconButton
         onClick={() => dispatch({ action: 'edit', payload: item })}
         variant="contained"
         color="primary"
         aria-label={`Edit Job ${item.name}`}
       >
-        <EditOutlinedIcon />
-      </Button>
+        <EditIcon />
+      </IconButton>
     );
   }
   switch (item.group) {
     case 'chplJobs':
       return (
-        <Button
+        <IconButton
           onClick={() => dispatch({ action: 'schedule', payload: item })}
-          variant="contained"
           color="primary"
           aria-label={`Schedule Job ${item.name}`}
         >
           <ScheduleIcon />
-        </Button>
+        </IconButton>
       );
     case 'systemJobs':
       return (
-        <Button
+        <IconButton
           onClick={() => dispatch({ action: 'schedule', payload: item })}
-          variant="contained"
           color="primary"
           aria-label={`Schedule Job ${item.name}`}
         >
           <PlayArrowIcon />
-        </Button>
+        </IconButton>
       );
     case 'subordinateJobs':
       return null;
@@ -162,7 +161,7 @@ function ChplJobTypesView(props) {
                     { hasAnyRole(['ROLE_ADMIN'])
                       && (
                         <TableCell>
-                          { item.jobType }
+                          <Chip size="medium" color="default" variant="outlined" label={item.jobType} />
                         </TableCell>
                       )}
                     <TableCell align="right">

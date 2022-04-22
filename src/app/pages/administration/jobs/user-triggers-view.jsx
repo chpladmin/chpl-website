@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
+  IconButton,
   Card,
   CardContent,
   CardHeader,
@@ -13,7 +13,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import EditIcon from '@material-ui/icons/Edit';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
@@ -109,14 +109,13 @@ function ChplUserTriggersView(props) {
                           </ul>
                         </TableCell>
                         <TableCell align="right">
-                          <Button
+                          <IconButton
                             onClick={() => dispatch({ action: 'edit', payload: item })}
-                            variant="contained"
                             color="primary"
                             aria-label={`Edit Job ${item.name}`}
                           >
-                            <EditOutlinedIcon />
-                          </Button>
+                            <EditIcon />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ))}
