@@ -41,13 +41,13 @@ class UploadListingComponent {
     browser.waitUntil(() => toast.isDisplayed());
   }
 
-  uploadFileAndWaitForListingsToBeProcessed(filename, listingIds, toast, hooks, confirmPage) {
+  uploadFileAndWaitForListingsToBeProcessed(filename, listingIds, hooks, confirm) {
     this.uploadListing(filename);
-    browser.waitUntil(() => toast.toastTitle.isDisplayed());
-    toast.clearAllToast();
+    $(this.elements.uploadDone(filename.split('/').pop())).parentElement().$('button*=Dismiss').click();
     hooks.open('#/administration/confirm/listings');
+    browser.waitUntil(() => confirm.isLoaded());
     listingIds.forEach((listingId) => {
-      confirmPage.waitForPendingListingToBecomeClickable(listingId);
+      confirm.waitForPendingListingToBecomeClickable(listingId);
     });
   }
 }
