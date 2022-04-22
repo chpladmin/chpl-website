@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     maxHeight: '64vh',
   },
   cardSpacing: {
-    marginTop: '32px',
+    marginTop: '0',
   },
   firstColumn: {
     position: 'sticky',
@@ -78,7 +78,7 @@ function ChplUserTriggersView(props) {
           { (triggers.length === 0)
             && (
               <Typography className={classes.noResultsContainer}>
-                No results found
+                No results found. To get started, select the type of job below click on the calender icon to set-up a schedule job.
               </Typography>
             )}
           { triggers.length > 0

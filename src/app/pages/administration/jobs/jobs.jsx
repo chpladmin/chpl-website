@@ -35,6 +35,7 @@ const useStyles = makeStyles({
   },
   titlePadding: {
     paddingTop: '16px',
+    paddingBottom: '16px',
   },
   fullWidth: {
     gridColumnStart: '1',

@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import ScheduleIcon from '@material-ui/icons/Schedule';
+import EventIcon from '@material-ui/icons/Event';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
@@ -77,7 +77,7 @@ const getAction = (item, dispatch) => {
           color="primary"
           aria-label={`Schedule Job ${item.name}`}
         >
-          <ScheduleIcon />
+          <EventIcon />
         </IconButton>
       );
     case 'systemJobs':
