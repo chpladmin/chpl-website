@@ -6,6 +6,7 @@ import {
 import ChplChangeRequests from './change-requests';
 
 import ApiWrapper from 'api/api-wrapper';
+import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 
 function ChplChangeRequestsWrapper(props) {
@@ -17,10 +18,12 @@ function ChplChangeRequestsWrapper(props) {
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplChangeRequests
-          disallowedFilters={disallowedFilters}
-          preFilter={preFilter}
-        />
+        <FlagWrapper>
+          <ChplChangeRequests
+            disallowedFilters={disallowedFilters}
+            preFilter={preFilter}
+          />
+        </FlagWrapper>
       </ApiWrapper>
     </UserWrapper>
   );

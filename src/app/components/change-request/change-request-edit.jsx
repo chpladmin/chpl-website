@@ -19,7 +19,7 @@ import ChplChangeRequestWebsiteEdit from './types/website-edit';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp, changeRequestStatusType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -101,6 +101,7 @@ const getChangeRequestDetails = (cr, handleDispatch) => {
 
 function ChplChangeRequestEdit(props) {
   /* eslint-disable react/destructuring-assignment */
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [details, setDetails] = useState(props.changeRequest.details);
@@ -311,6 +312,9 @@ function ChplChangeRequestEdit(props) {
                       helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
                     >
                       { changeRequestStatusTypes
+                        .filter((item) => isOn('attestations-edit')
+                                || changeRequest.changeRequestType.name !== 'Developer Attestation Change Request'
+                                || item.name !== 'Pending Developer Action')
                         .map((item) => (
                           <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                         ))}
