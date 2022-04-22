@@ -74,6 +74,9 @@ class ConfirmPage {
   }
 
   gotoConfirmListingPage(inspectListingId) {
+    if ($(this.elements.usingModern).isDisplayed()) {
+      $(this.elements.useLegacy).click();
+    }
     $(`//button[@id="process-pending-listing-${inspectListingId}"]`).click();
     $('p=Step 1 of 4').waitForDisplayed();
     this.inspectNextButton.click();
