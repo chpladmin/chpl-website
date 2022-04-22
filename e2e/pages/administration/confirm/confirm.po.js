@@ -85,7 +85,10 @@ class ConfirmPage {
     this.inspectConfirmButton.waitForDisplayed();
   }
 
-  gotoPendingListingPage(pendingListingId) {
+  gotoPendingListingPage(pendingListingId, legacy = false) {
+    if (legacy && $(this.elements.usingModern).isDisplayed()) {
+      $(this.elements.useLegacy).click();
+    }
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).waitForClickable({ timeout: config.longTimeout });
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).click();
   }
