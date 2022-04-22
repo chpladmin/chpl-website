@@ -46,7 +46,7 @@
     To view which products were used to create a specific CMS ID, use the <a ui-sref="resources.cms-lookup" analytics-on="click" analytics-category="CMS Widget" analytics-event="Go to CMS ID Reverse Lookup page">CMS ID Reverse Lookup</a>
   </p>
   <div ng-if="widget.searchResult.products">
-    <button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.isValid" id="get-ehr-cert-id">Get {{ widget.searchResult.year }} EHR Certification ID</button>
+    <button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.valid" id="get-ehr-cert-id">Get {{ widget.searchResult.year }} EHR Certification ID</button>
     <button ng-click="generatePdf()" class="btn btn-ai-certid btn-sm btn-block" ng-if="widget.createResponse" id="download-ehr-cert">Download PDF</button>
     <button ng-click="compare()" class="btn btn-ai btn-sm btn-block" ng-if="widget.searchResult.products.length > 1" id="cms-compare">Compare products</button>
     <button ng-click="clearProducts()" class="btn btn-ai btn-sm btn-block" ng-if="widget.searchResult.products.length > 0" id="cms-remove-all">Remove all products</button>

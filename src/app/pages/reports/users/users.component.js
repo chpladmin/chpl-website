@@ -204,7 +204,7 @@ export const ReportsUsersComponent = {
 
     search () {
       let that = this;
-      this.networkService.getActivityMetadata('beta/users')
+      this.networkService.getActivityMetadata('users')
         .then(results => {
           that.results = results.activities
             .map(item => that.prepare(item));
@@ -228,7 +228,7 @@ export const ReportsUsersComponent = {
     addPageToData (page) {
       let that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/users', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+      this.networkService.getActivityMetadata('users', {pageNum: page, ignoreLoadingBar: true}).then(results => {
         results.activities.forEach(item => {
           that.results.push(that.prepare(item));
         });
