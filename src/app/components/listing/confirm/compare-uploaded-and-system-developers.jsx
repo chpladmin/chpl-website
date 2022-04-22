@@ -75,7 +75,7 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
               >
                 <TableCell scope="row">Self-Developer</TableCell>
                 <TableCell>{ system.selfDeveloper ? 'Yes' : 'No' }</TableCell>
-                <TableCell>{ uploaded.selfDeveloper ? 'Yes' : 'No' }</TableCell>
+                <TableCell>{ uploaded.selfDeveloper === null ? '' : (uploaded.selfDeveloper ? 'Yes' : 'No') }</TableCell>
               </TableRow>
               <TableRow
                 className={(system.address.line1 !== uploaded.address.line1) ? classes.differentValue : ''}
