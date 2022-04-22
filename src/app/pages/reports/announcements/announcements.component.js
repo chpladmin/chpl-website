@@ -209,7 +209,7 @@ export const ReportsAnnouncementsComponent = {
 
     search () {
       let that = this;
-      this.networkService.getActivityMetadata('beta/announcements')
+      this.networkService.getActivityMetadata('announcements')
         .then(results => {
           that.results = results.activities
             .map(item => that.prepare(item));
@@ -233,7 +233,7 @@ export const ReportsAnnouncementsComponent = {
     addPageToData (page) {
       let that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/announcements', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+      this.networkService.getActivityMetadata('announcements', {pageNum: page, ignoreLoadingBar: true}).then(results => {
         results.activities.forEach(item => {
           that.results.push(that.prepare(item));
         });

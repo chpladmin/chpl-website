@@ -1320,54 +1320,6 @@
         $httpBackend.flush();
       });
 
-      it('should getUserActivitiesActivity', () => {
-        const aDate = new Date();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({}).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?start=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({ startDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({ endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?start=\d+&end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({ startDate: aDate, endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getUserActivity', () => {
-        const aDate = new Date();
-        $httpBackend.expectGET(/^\/rest\/activity\/users$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({}).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/users\?start=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({ startDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/users\?end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({ endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/users\?start=\d+&end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({ startDate: aDate, endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getUsers', () => {
         $httpBackend.expectGET(/^\/rest\/users$/).respond(200, { data: 'response' });
         networkService.getUsers().then((response) => {

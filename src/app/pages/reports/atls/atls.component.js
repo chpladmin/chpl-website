@@ -148,7 +148,7 @@ export const ReportsAtlsComponent = {
 
     search () {
       let that = this;
-      this.networkService.getActivityMetadata('beta/atls')
+      this.networkService.getActivityMetadata('atls')
         .then(results => {
           that.results = results.activities
             .map(item => that.prepare(item));
@@ -174,7 +174,7 @@ export const ReportsAtlsComponent = {
     addPageToData (page) {
       let that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/atls', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+      this.networkService.getActivityMetadata('atls', {pageNum: page, ignoreLoadingBar: true}).then(results => {
         results.activities.forEach(item => {
           that.results.push(that.prepare(item));
         });
