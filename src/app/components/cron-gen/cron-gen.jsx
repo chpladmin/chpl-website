@@ -85,14 +85,18 @@ function ChplCronGen(props) {
   };
 
   const updateCron = () => {
-    const utc = jsJoda.LocalDateTime
-      .ofDateAndTime(jsJoda.LocalDate.now(), jsJoda.LocalTime.parse(formik.values.runTime))
-      .atZone(jsJoda.ZoneId.of('America/New_York'))
-      .withZoneSameInstant(jsJoda.ZoneId.of('UTC-00:00'));
-    const daySpecific = !(days.size === 0 || days.size === 7);
-    const updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
-    setCron(updated);
-    props.dispatch(updated);
+    try {
+      const utc = jsJoda.LocalDateTime
+        .ofDateAndTime(jsJoda.LocalDate.now(), jsJoda.LocalTime.parse(formik.values.runTime))
+        .atZone(jsJoda.ZoneId.of('America/New_York'))
+        .withZoneSameInstant(jsJoda.ZoneId.of('UTC-00:00'));
+      const daySpecific = !(days.size === 0 || days.size === 7);
+      const updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
+      setCron(updated);
+      props.dispatch(updated);
+    } catch {
+      // noop
+    }
   };
 
   formik = useFormik({
