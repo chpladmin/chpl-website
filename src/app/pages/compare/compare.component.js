@@ -111,7 +111,7 @@ export const CompareComponent = {
 
     updateCerts(listing) {
       listing.certificationResults.forEach((cert) => {
-        const key = `${cert.number}: ${cert.title}`;
+        const key = `${cert.criterion.number}: ${cert.criterion.title}`;
         if (!this.allCerts[key]) {
           this.allCerts[key] = {
             number: cert.criterion.number,

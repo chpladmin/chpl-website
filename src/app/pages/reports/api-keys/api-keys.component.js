@@ -91,7 +91,7 @@ const ReportsApiKeysComponent = {
 
     search() {
       const that = this;
-      this.networkService.getActivityMetadata('beta/api-keys')
+      this.networkService.getActivityMetadata('api-keys')
         .then((results) => {
           that.results = results.activities
             .map((item) => that.prepare(item));
@@ -115,7 +115,7 @@ const ReportsApiKeysComponent = {
     addPageToData(page) {
       const that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/api-keys', { pageNum: page, ignoreLoadingBar: true }).then((results) => {
+      this.networkService.getActivityMetadata('api-keys', { pageNum: page, ignoreLoadingBar: true }).then((results) => {
         results.activities.forEach((item) => {
           that.results.push(that.prepare(item));
         });
