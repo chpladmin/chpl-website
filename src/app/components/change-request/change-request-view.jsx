@@ -22,7 +22,7 @@ import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirma
 import { ChplAvatar } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -124,6 +124,7 @@ const getChangeRequestDetails = (cr) => {
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
   const [isConfirming, setIsConfirming] = useState(false);
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
@@ -141,6 +142,7 @@ function ChplChangeRequestView(props) {
   };
 
   const canWithdraw = () => hasAnyRole(['ROLE_DEVELOPER'])
+        && isOn('attestations-edit')
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'

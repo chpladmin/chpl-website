@@ -44,7 +44,7 @@ import {
   ChplSortableHeaders,
 } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const CUSTOM_FIELD_COUNT = 7;
@@ -170,6 +170,7 @@ function ChplChangeRequestsView(props) {
   const { disallowedFilters, preFilter } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const { enqueueSnackbar } = useSnackbar();
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
@@ -273,7 +274,8 @@ function ChplChangeRequestsView(props) {
         break;
       case 'edit':
         if (hasAnyRole(['ROLE_DEVELOPER'])
-            && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
+            && changeRequest.changeRequestType.name === 'Developer Attestation Change Request'
+            && isOn('attestations-edit')) {
           $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
         } else {
           setMode('edit');
