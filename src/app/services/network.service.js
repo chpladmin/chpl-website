@@ -56,10 +56,6 @@ export default class NetworkService {
     return this.apiPOST('/atls', atl);
   }
 
-  createAnnouncement(announcement) {
-    return this.apiPOST('/announcements', announcement);
-  }
-
   createAnnualSurveillanceReport(report) {
     return this.apiPOST('/surveillance-report/annual', report);
   }
@@ -94,10 +90,6 @@ export default class NetworkService {
 
   createSvap(svap) {
     return this.apiPOST('/svaps', svap);
-  }
-
-  deleteAnnouncement(announcementId) {
-    return this.apiDELETE(`/announcements/${announcementId}`);
   }
 
   deleteAnnualSurveillanceReport(id) {
@@ -198,19 +190,6 @@ export default class NetworkService {
 
   getAll() {
     return this.apiGET('/collections/certified-products');
-  }
-
-  getAnnouncement(announcementId) {
-    return this.apiGET(`/announcements/${announcementId}`);
-  }
-
-  getAnnouncementActivity(activityRange) {
-    const call = '/activity/announcements';
-    return this.getActivity(call, activityRange);
-  }
-
-  getAnnouncements(pending, forceReload) {
-    return this.apiGET(`/announcements?future=${pending}`, { forceReload });
   }
 
   getAnnualSurveillanceReports() {
@@ -686,10 +665,6 @@ export default class NetworkService {
 
   modifyATL(atl) {
     return this.apiPUT(`/atls/${atl.id}`, atl);
-  }
-
-  modifyAnnouncement(announcement) {
-    return this.apiPUT(`/announcements/${announcement.id}`, announcement);
   }
 
   registerApi(user) {
