@@ -1,6 +1,6 @@
 import IndexWrapper from '../index-wrapper';
-import { reactToAngularComponent } from '../services/angular-react-helper';
 
+import { ChplAnnouncementsWrapper } from './announcement';
 import { ChplApiKeyConfirm } from './api-key';
 import { ChplChangeRequestsWrapper } from './change-request';
 import { ChplAttestationCreateWrapper, ChplAttestationsViewWrapper } from './attestation';
@@ -39,6 +39,8 @@ import {
 import { ChplActionBar, ChplActionBarWrapper } from './action-bar';
 import { UserWrapper } from './login';
 
+import { reactToAngularComponent } from 'services/angular-react-helper';
+
 angular
   .module('chpl.components', [
     'angulartics',
@@ -59,6 +61,7 @@ angular
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
+  .component('chplAnnouncementsWrapperBridge', reactToAngularComponent(ChplAnnouncementsWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))

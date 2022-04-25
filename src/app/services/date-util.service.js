@@ -11,6 +11,15 @@ const isLocalDate = (dateToTest) => {
   }
 };
 
+const isLocalDateTime = (dateTimeToTest) => {
+  try {
+    jsJoda.LocalDateTime.parse(dateTimeToTest);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 class DateUtil {
   constructor($filter, $log) {
     'ngInject';
@@ -34,8 +43,13 @@ class DateUtil {
   getDisplayDateFormat(date, fallback) {
     if (typeof (date) === 'number') {
       return this.$filter('date')(date, 'mediumDate', 'UTC');
-    } if (typeof (date) === 'string' && isLocalDate(date)) {
+    }
+    if (typeof (date) === 'string' && isLocalDate(date)) {
       return this.localDateToString(date, 'MMM d, y');
+    }
+    if (typeof (date) === 'string' && isLocalDateTime(date)) {
+      const formatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y h:mm:ss a').withLocale(Locale.US);
+      return jsJoda.LocalDateTime.parse(date).format(formatter);
     }
     return fallback || 'N/A';
   }

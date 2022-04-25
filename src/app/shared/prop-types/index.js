@@ -2,6 +2,7 @@ import acb from './acb';
 import accessibilityStandard from './accessibility-standard';
 import address from './address';
 import analyticsConfig from './analytics-config';
+import announcement from './announcement';
 import certificationResult from './certification-result';
 import {
   changeRequest,
@@ -41,6 +42,7 @@ export {
   accessibilityStandard,
   address,
   analyticsConfig,
+  announcement,
   certificationResult,
   changeRequest,
   changeRequestStatusType,
