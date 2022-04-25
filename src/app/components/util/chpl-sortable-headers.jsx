@@ -25,7 +25,6 @@ const useStyles = makeStyles(() => ({
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
     backgroundColor: '#ffffff',
-    zIndex: '99',
   },
 }));
 
@@ -71,7 +70,11 @@ function ChplSortableHeaders(props) {
               </TableCell>
             )
             : (
-              <TableCell align="left" key={headCell.text}>
+              <TableCell
+                align="left"
+                key={headCell.text}
+                className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
+              >
                 <span className={headCell.invisible && classes.visuallyHidden}>
                   { headCell.text }
                 </span>

@@ -6,15 +6,15 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: <span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.title"></span></h4>
+    <h4 class="modal-title" id="edit-criteria-label">Certification Criteria: <span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: <span chpl-highlight-cures ng-model="$ctrl.cert.criterion.title"></span></h4>
   </div>
   <div class="modal-body" ng-form="$ctrl.editForm" ng-class="{ 'removed' : $ctrl.cert.criterion.removed }">
-    <input type="checkbox" ng-model="$ctrl.cert.success" id="data{{ $ctrl.cert.number }}" name="data"></input>
-    <label class="control-label" for="data{{ $ctrl.cert.number }}"><span class="criteria-title"><span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.number }}: {{ $ctrl.cert.title }}</span></label>
+    <input type="checkbox" ng-model="$ctrl.cert.success" id="data{{ $ctrl.cert.criterion.number }}" name="data"></input>
+    <label class="control-label" for="data{{ $ctrl.cert.criterion.number }}"><span class="criteria-title"><span ng-if="$ctrl.cert.criterion.removed">Removed | </span>{{ $ctrl.cert.criterion.number }}: {{ $ctrl.cert.criterion.title }}</span></label>
     <button ng-if="$ctrl.cert.criterion.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button>
     <div ng-if="$ctrl.cert.success">
-      <input type="checkbox" ng-model="$ctrl.cert.metViaAdditionalSoftware" id="data_additionalSoftware{{ $ctrl.cert.number }}" name="data_additionalSoftware" ng-disabled="!$ctrl.canEdit()"></input>
-      <label class="control-label" for="data_additionalSoftware{{ $ctrl.cert.number }}">Certification met via relied upon software</label>
+      <input type="checkbox" ng-model="$ctrl.cert.metViaAdditionalSoftware" id="data_additionalSoftware{{ $ctrl.cert.criterion.number }}" name="data_additionalSoftware" ng-disabled="!$ctrl.canEdit()"></input>
+      <label class="control-label" for="data_additionalSoftware{{ $ctrl.cert.criterion.number }}">Certification met via relied upon software</label>
       <ai-additional-software additional-software="$ctrl.cert.additionalSoftware" is-editing="$ctrl.canEdit()" ng-if="$ctrl.cert.metViaAdditionalSoftware"></ai-additional-software>
     </div>
     <table class="table table-striped">
@@ -26,8 +26,8 @@
       </thead>
       <tbody>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.gap !== null">
-          <td><label class="control-label" for="data_gap{{ $ctrl.cert.number }}">GAP</label></td>
-          <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
+          <td><label class="control-label" for="data_gap{{ $ctrl.cert.criterion.number }}">GAP</label></td>
+          <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.criterion.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null && $ctrl.cert.allowedSvaps.length > 0">
           <td>Standards Version Advancement Process</td>
@@ -120,12 +120,12 @@
           <td ng-if="(!$ctrl.cert.testStandards || $ctrl.cert.testStandards.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
         <tr ng-if="$ctrl.cert.g1Success !== null">
-          <td><label class="control-label" for="data_g1Success{{ $ctrl.cert.number }}">Measure Successfully Tested for G1</label></td>
-          <td><select class="form-control input-sm" id="data_g1Success{{ $ctrl.cert.number }}" name="data_g1Success" ng_model="$ctrl.cert.g1Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
+          <td><label class="control-label" for="data_g1Success{{ $ctrl.cert.criterion.number }}">Measure Successfully Tested for G1</label></td>
+          <td><select class="form-control input-sm" id="data_g1Success{{ $ctrl.cert.criterion.number }}" name="data_g1Success" ng_model="$ctrl.cert.g1Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
         <tr ng-if="$ctrl.cert.g2Success !== null">
-          <td><label class="control-label" for="data_g2Success{{ $ctrl.cert.number }}">Measure Successfully Tested for G2</label></td>
-          <td><select class="form-control input-sm" id="data_g2Success{{ $ctrl.cert.number }}" name="data_g2Success" ng_model="$ctrl.cert.g2Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
+          <td><label class="control-label" for="data_g2Success{{ $ctrl.cert.criterion.number }}">Measure Successfully Tested for G2</label></td>
+          <td><select class="form-control input-sm" id="data_g2Success{{ $ctrl.cert.criterion.number }}" name="data_g2Success" ng_model="$ctrl.cert.g2Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality !== null && $ctrl.sortedTestFunctionalities.length > 0">
           <td>Functionality Tested</td>
@@ -271,61 +271,61 @@
           <td ng-if="(!$ctrl.cert.testDataUsed || $ctrl.cert.testDataUsed.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.apiDocumentation !== null">
-          <td><label class="control-label" for="data_api{{ $ctrl.cert.number }}">API Documentation</label></td>
+          <td><label class="control-label" for="data_api{{ $ctrl.cert.criterion.number }}">API Documentation</label></td>
           <td>
-            <input class="form-control input-sm" type="url" id="data_api{{ $ctrl.cert.number }}" name="data_apiDocumentation" ng-model="$ctrl.cert.apiDocumentation" ng-maxlength="1024" ng-disabled="!$ctrl.canEdit()"></input>
+            <input class="form-control input-sm" type="url" id="data_api{{ $ctrl.cert.criterion.number }}" name="data_apiDocumentation" ng-model="$ctrl.cert.apiDocumentation" ng-maxlength="1024" ng-disabled="!$ctrl.canEdit()"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_apiDocumentation.$error.maxlength">Field is too long</div>
             <div class="text-danger" ng-if="$ctrl.editForm.data_apiDocumentation.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.exportDocumentation !== null">
-          <td><label class="control-label" for="data_export{{ $ctrl.cert.number }}">Export Documentation</label></td>
+          <td><label class="control-label" for="data_export{{ $ctrl.cert.criterion.number }}">Export Documentation</label></td>
           <td>
-            <input class="form-control input-sm" type="url" id="data_export{{ $ctrl.cert.number }}" name="data_exportDocumentation" ng-model="$ctrl.cert.exportDocumentation" ng-maxlength="1024"></input>
+            <input class="form-control input-sm" type="url" id="data_export{{ $ctrl.cert.criterion.number }}" name="data_exportDocumentation" ng-model="$ctrl.cert.exportDocumentation" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_exportDocumentation.$error.maxlength">Field is too long</div>
             <div class="text-danger" ng-if="$ctrl.editForm.data_exportDocumentation.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.attestationAnswer !== null">
-          <td><label class="control-label" for="data_attestationAnswer{{ $ctrl.cert.number }}">Attestation</label></td>
-          <td><select class="form-control input-sm" id="data_attestationAnswer{{ $ctrl.cert.number }}" name="data_attestationAnswer" ng_model="$ctrl.cert.attestationAnswer" ng-options="b.value as b.name for b in $ctrl.yesNo"></select></td>
+          <td><label class="control-label" for="data_attestationAnswer{{ $ctrl.cert.criterion.number }}">Attestation</label></td>
+          <td><select class="form-control input-sm" id="data_attestationAnswer{{ $ctrl.cert.criterion.number }}" name="data_attestationAnswer" ng_model="$ctrl.cert.attestationAnswer" ng-options="b.value as b.name for b in $ctrl.yesNo"></select></td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.documentationUrl !== null">
-          <td><label class="control-label" for="data_documentation{{ $ctrl.cert.number }}">Documentation</label></td>
+          <td><label class="control-label" for="data_documentation{{ $ctrl.cert.criterion.number }}">Documentation</label></td>
           <td>
-            <input class="form-control input-sm" type="url" id="data_documentation{{ $ctrl.cert.number }}" name="data_documentationUrl" ng-model="$ctrl.cert.documentationUrl" ng-maxlength="1024"></input>
+            <input class="form-control input-sm" type="url" id="data_documentation{{ $ctrl.cert.criterion.number }}" name="data_documentationUrl" ng-model="$ctrl.cert.documentationUrl" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_documentationUrl.$error.maxlength">Field is too long</div>
             <div class="text-danger" ng-if="$ctrl.editForm.data_documentationUrl.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer">
-          <td><label class="control-label" for="data_use{{ $ctrl.cert.number }}">Use Case(s)</label></td>
+          <td><label class="control-label" for="data_use{{ $ctrl.cert.criterion.number }}">Use Case(s)</label></td>
           <td>
-            <input class="form-control input-sm" type="url" id="data_use{{ $ctrl.cert.number }}" name="data_useCases" ng-model="$ctrl.cert.useCases" ng-maxlength="1024"></input>
+            <input class="form-control input-sm" type="url" id="data_use{{ $ctrl.cert.criterion.number }}" name="data_useCases" ng-model="$ctrl.cert.useCases" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.maxlength">Field is too long</div>
             <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.serviceBaseUrlList !== null">
-          <td><label class="control-label" for="data_service_base_url_list{{ $ctrl.cert.number }}">Service Base URL List</label></td>
+          <td><label class="control-label" for="data_service_base_url_list{{ $ctrl.cert.criterion.number }}">Service Base URL List</label></td>
           <td>
-            <input class="form-control input-sm" type="url" id="data_service_base_url_list{{ $ctrl.cert.number }}" name="data_serviceBaseUrlList" ng-model="$ctrl.cert.serviceBaseUrlList" ng-maxlength="1024"></input>
+            <input class="form-control input-sm" type="url" id="data_service_base_url_list{{ $ctrl.cert.criterion.number }}" name="data_serviceBaseUrlList" ng-model="$ctrl.cert.serviceBaseUrlList" ng-maxlength="1024"></input>
             <div class="text-danger" ng-if="$ctrl.editForm.data_serviceBaseUrlList.$error.maxlength">Field is too long</div>
             <div class="text-danger" ng-if="$ctrl.editForm.data_serviceBaseUrlList.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null">
-          <td><label class="control-label" for="data_psFramework{{ $ctrl.cert.number }}">Privacy &amp; Security Framework</label></td>
-          <td><select class="form-control input-sm" id="data_psFramework{{ $ctrl.cert.number }}" name="data_psFramework" ng_model="$ctrl.cert.privacySecurityFramework" ng-disabled="!$ctrl.canEdit()">
+          <td><label class="control-label" for="data_psFramework{{ $ctrl.cert.criterion.number }}">Privacy &amp; Security Framework</label></td>
+          <td><select class="form-control input-sm" id="data_psFramework{{ $ctrl.cert.criterion.number }}" name="data_psFramework" ng_model="$ctrl.cert.privacySecurityFramework" ng-disabled="!$ctrl.canEdit()">
               <option value="Approach 1">Approach 1</option>
               <option value="Approach 2">Approach 2</option>
               <option value="Approach 1;Approach 2">Approach 1;Approach 2</option>
           </select></td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.sed !== null">
-          <td><label class="control-label" for="data_sed{{ $ctrl.cert.number }}">SED</label></td>
+          <td><label class="control-label" for="data_sed{{ $ctrl.cert.criterion.number }}">SED</label></td>
           <td>
-            <select class="form-control input-sm" id="data_sed{{ $ctrl.cert.number }}" name="data_sed" ng_model="$ctrl.cert.sed" ng-options="b.value as b.name for b in $ctrl.options" ng-ng-disabled="$ctrl.cert.certificationEdition.name === '2015'" ng-disabled="!$ctrl.canEdit()"></select>
+            <select class="form-control input-sm" id="data_sed{{ $ctrl.cert.criterion.number }}" name="data_sed" ng_model="$ctrl.cert.sed" ng-options="b.value as b.name for b in $ctrl.options" ng-ng-disabled="$ctrl.cert.certificationEdition.name === '2015'" ng-disabled="!$ctrl.canEdit()"></select>
             <div class="text-warning" ng-if="(($ctrl.editForm.data.$dirty && $ctrl.cert.success) || $ctrl.editForm.data_sed.$dirty) && $ctrl.cert.sed">Use the "Safety Enhanced Design (SED)" panel to edit SED information for this Criteria.</div>
           </td>
         </tr>

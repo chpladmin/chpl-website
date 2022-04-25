@@ -87,17 +87,7 @@ const states = {
     }, {
       name: 'administration.announcements',
       url: '/announcements',
-      component: 'chplAnnouncements',
-      resolve: {
-        announcements: (authService, networkService) => {
-          'ngInject';
-
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-            return networkService.getAnnouncements(true);
-          }
-          return [];
-        },
-      },
+      component: 'chplAnnouncementsWrapperBridge',
       data: {
         title: 'CHPL Administration - Announcements',
         roles: ['ROLE_ADMIN', 'ROLE_ONC'],

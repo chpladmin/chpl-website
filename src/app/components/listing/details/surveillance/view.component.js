@@ -71,10 +71,10 @@ const SurveillanceComponent = {
       let closed = 0;
       for (let i = 0; i < surv.requirements.length; i += 1) {
         for (let j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
-          if (surv.requirements[i].nonconformities[j].status.name === 'Open') {
+          if (surv.requirements[i].nonconformities[j].nonconformityStatus === 'Open') {
             open += 1;
           }
-          if (surv.requirements[i].nonconformities[j].status.name === 'Closed') {
+          if (surv.requirements[i].nonconformities[j].nonconformityStatus === 'Closed') {
             closed += 1;
           }
         }
@@ -129,7 +129,7 @@ const SurveillanceComponent = {
       const results = [];
       for (let i = 0; i < surv.requirements.length; i += 1) {
         for (let j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
-          let result = `${surv.requirements[i].nonconformities[j].status.name} Non-Conformity Found for `;
+          let result = `${surv.requirements[i].nonconformities[j].nonconformityStatus} Non-Conformity Found for `;
           if (surv.requirements[i].criterion) {
             result += `<span class="${surv.requirements[i].criterion.removed ? 'removed' : ''}">`;
             result += surv.requirements[i].criterion.removed ? 'Removed | ' : '';

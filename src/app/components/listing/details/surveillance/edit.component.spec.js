@@ -417,18 +417,13 @@
           expect(ctrl.missingEndDay()).toBe(false);
         });
 
-        it('should require one when all NCs are closed and there\'s no surveillance end date', () => {
-          ctrl.surveillance.requirements[0].nonconformities[0].status = { id: 2, name: 'Closed' };
-          expect(ctrl.missingEndDay()).toBe(true);
-        });
-
         it('should require one when there are no NCs and there\'s no surveillance end date', () => {
           ctrl.surveillance.requirements[0].nonconformities = [];
           expect(ctrl.missingEndDay()).toBe(true);
         });
 
         it('should not require one when all NCs are closed and the surveillance has an end date', () => {
-          ctrl.surveillance.requirements[0].nonconformities[0].status = { id: 2, name: 'Closed' };
+          ctrl.surveillance.requirements[0].nonconformities[0].nonconformityStatus = 'Closed';
           ctrl.surveillance.endDay = '2020-03-01';
           expect(ctrl.missingEndDay()).toBe(false);
         });

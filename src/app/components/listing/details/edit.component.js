@@ -146,8 +146,8 @@ const ListingDetailsEditComponent = {
 
     saveCert(cert) {
       for (let i = 0; i < this.listing.certificationResults.length; i += 1) {
-        if (this.listing.certificationResults[i].number === cert.number
-                    && this.listing.certificationResults[i].title === cert.title) {
+        if (this.listing.certificationResults[i].criterion.number === cert.criterion.number
+                    && this.listing.certificationResults[i].criterion.title === cert.criterion.title) {
           this.listing.certificationResults[i] = cert;
         }
       }
