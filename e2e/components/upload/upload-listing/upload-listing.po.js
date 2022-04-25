@@ -4,7 +4,6 @@ class UploadListingComponent {
   constructor() {
     this.elements = {
       title: '.panel-title',
-      listingUploadText: '//chpl-upload-listings/div/div[2]/div',
       chooseUploadListing: '#upload-listings',
       uploadButton: '.MuiButton-containedPrimary',
       useLegacy: '#use-legacy',
@@ -13,8 +12,8 @@ class UploadListingComponent {
     };
   }
 
-  get listingUploadText() {
-    return $(this.elements.listingUploadText);
+  uploadMessage(filename) {
+    return $(this.elements.uploadDone(filename));
   }
 
   get title() {
@@ -34,16 +33,18 @@ class UploadListingComponent {
       $(this.elements.useLegacy).click();
     }
     const filePath = path.join(__dirname, uploadfilePath);
-    const filename = uploadfilePath.split('/').pop();
     this.chooseUploadListingButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.click();
-    const toast = $(this.elements.uploadDone(filename));
+    const toast = this.uploadMessage(uploadfilePath.split('/').pop());
     browser.waitUntil(() => toast.isDisplayed());
   }
 
   uploadFileAndWaitForListingsToBeProcessed(filename, listingIds, hooks, confirm) {
     this.uploadListing(filename);
-    $(this.elements.uploadDone(filename.split('/').pop())).parentElement().$('button*=Dismiss').click();
+    this.uploadMessage(filename.split('/').pop())
+      .parentElement()
+      .$('button*=Dismiss')
+      .click();
     hooks.open('#/administration/confirm/listings');
     browser.waitUntil(() => confirm.isLoaded());
     listingIds.forEach((listingId) => {
