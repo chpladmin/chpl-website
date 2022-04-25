@@ -5,6 +5,7 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  FormHelperText,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
   },
   cron: {
     display: 'flex',
-    gap: '8px',
+    gap: '16px',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -40,7 +41,9 @@ const useStyles = makeStyles({
   },
   day: {
     display: 'flex',
-    flexWrap: 'wrap',
+  },
+  helperTextSpacing: {
+    marginLeft: '14px',
   },
 });
 
@@ -159,6 +162,7 @@ function ChplCronGen(props) {
               helperText={formik.touched.runTime && formik.errors.runTime}
             />
           </div>
+          <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
         </CardContent>
       </Card>
     </div>

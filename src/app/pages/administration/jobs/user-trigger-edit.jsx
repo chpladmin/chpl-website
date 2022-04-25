@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '16px',
     paddingTop: '16px',
-    gridTemplateColumns: '1fr auto',
+    gridTemplateColumns: '2fr 4fr',
   },
   subContainer: {
     display: 'grid',
@@ -128,7 +128,7 @@ function ChplUserTriggerEdit(props) {
       <Card>
         <CardHeader
           className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h6' }}
+          titleTypographyProps={{ variant: 'h5' }}
           title={`${trigger.id ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
         />
       </Card>
@@ -183,7 +183,7 @@ function ChplUserTriggerEdit(props) {
         <div>
           <Card>
             <CardContent>
-              <Typography variant="subtitle1">Send the report to?</Typography>
+              <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
               <ChplTextField
                 id="email"
                 name="email"
