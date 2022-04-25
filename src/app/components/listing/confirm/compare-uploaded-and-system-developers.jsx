@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { func, object } from 'prop-types';
 import {
-  IconButton,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -98,7 +98,7 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
               <TableRow
                 className={(system.website !== uploaded.website) ? classes.differentValue : ''}
               >
-                <TableCell className={classes.sectionCell} scope="row"><Typography><b>Website</b></Typography></TableCell>
+                <TableCell className={classes.sectionCell} scope="row">Website</TableCell>
                 <TableCell>{ system.website }</TableCell>
                 <TableCell>{ uploaded.website }</TableCell>
               </TableRow>
