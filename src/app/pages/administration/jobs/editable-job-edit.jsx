@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  IconButton,
   Card,
   CardContent,
   CardHeader,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -20,11 +23,31 @@ const useStyles = makeStyles({
   container: {
     display: 'grid',
     gap: '16px',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: '2fr 4fr',
+    paddingTop: '16px',
   },
   fullWidth: {
     gridColumnStart: '1',
     gridColumnEnd: '-1',
+  },
+  subContainer: {
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+  },
+  divSpacing: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '8px',
+    alignItems: 'center',
+  },
+  cardGap: {
+    gap: '16px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  iconSpacing: {
+    marginLeft: '4px',
   },
 });
 
@@ -88,58 +111,91 @@ function ChplEditableJobEdit(props) {
       <Card>
         <CardHeader
           className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h6' }}
+          titleTypographyProps={{ variant: 'h5' }}
           title={`Edit Job: ${job.name}`}
         />
-        <CardContent className={classes.container}>
-          <Typography>
-            Job Name
-            <br />
-            { job.name }
-          </Typography>
-          <Typography>
-            Job Description
-            <br />
-            { job.description }
-          </Typography>
-          <div>
-            <Typography>Subscribers</Typography>
-            <ul>
-              { emails.map((item) => (
-                <li key={item}>
-                  {item}
+      </Card>
+      <div className={classes.container}>
+        <Card>
+          <CardContent className={classes.subContainer}>
+            <div className={classes.subContainer}>
+              <div>
+                <Typography variant="subtitle1">
+                  Job Name
+                </Typography>
+                <Typography variant="body1">
+                  { job.name }
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="subtitle1">
+                  Job Description
+                </Typography>
+                <Typography variant="body1">
+                  { job.description }
+                </Typography>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <div className={classes.cardGap}>
+          <Card>
+            <CardContent>
+              <div>
+                <Typography gutterBottom variant="subtitle1">
+                  Manage Subscribers
+                </Typography>
+                <div>
+                  { emails.map((item) => (
+                    <div className={classes.divSpacing} key={item}>
+                      <div>
+                        {item}
+                      </div>
+                      <div>
+                        <IconButton
+                          onClick={() => remove(item)}
+                          color="default"
+                        >
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <div>
+                <Typography gutterBottom variant="subtitle1">
+                  Add Subscribers
+                </Typography>
+                <div className={classes.divSpacing}>
+                  <ChplTextField
+                    id="email"
+                    name="email"
+                    label="Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && !!formik.errors.email}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
                   <Button
-                    onClick={() => remove(item)}
+                    onClick={() => add()}
                     variant="contained"
                     color="primary"
                   >
-                    Remove
+                    Add
+                    <AddIcon className={classes.iconSpacing} />
                   </Button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <ChplTextField
-              id="email"
-              name="email"
-              label="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.email && !!formik.errors.email}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-            <Button
-              onClick={() => add()}
-              variant="contained"
-              color="primary"
-            >
-              Add
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={emails.length === 0}
