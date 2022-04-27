@@ -88,7 +88,7 @@ function ChplUploadPromotingInteroperability() {
           title: 'Success',
           body: message,
         });
-        $state.go('administration.jobs.scheduled');
+        $state.go('administration.jobs');
       })
       .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;
@@ -185,7 +185,7 @@ function ChplUploadPromotingInteroperability() {
             <div className={classes.fullRow}>
               <ChplTextField
                 type="date"
-                id="accurate-as-of"
+                id="promoting-interoperability-accurate-as-of"
                 name="accurateAsOf"
                 label="Enter the Accurate As of date for Promoting Interoperability Users associated with this upload"
                 required
