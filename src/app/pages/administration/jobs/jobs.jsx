@@ -106,10 +106,17 @@ function ChplJobs() {
           apiAction = putJob.mutate;
           message = 'Job updated';
         } else if (payload.group === 'systemJobs' && payload.runTime) {
-          const runDateMillis = jsJoda.Instant
-            .from(jsJoda.LocalDateTime
+          let runDate;
+          if (typeof payload.runTime === 'string') {
+            runDate = jsJoda.LocalDateTime
               .parse(payload.runTime)
-              .atZone(jsJoda.ZoneId.of('America/New_York')))
+              .atZone(jsJoda.ZoneId.of('America/New_York'));
+          } else {
+            runDate = payload.runTime
+              .atZone(jsJoda.ZoneId.of('America/New_York'));
+          }
+          const runDateMillis = jsJoda.Instant
+            .from(runDate)
             .toEpochMilli();
           apiAction = postOneTimeTrigger.mutate;
           message = 'Job created: one time job scheduled';
