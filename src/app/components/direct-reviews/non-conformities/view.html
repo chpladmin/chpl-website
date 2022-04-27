@@ -4,27 +4,7 @@
   </div>
 </div>
 <div class="non-conformities" ng-if="$ctrl.nonConformities && $ctrl.nonConformities.length > 0">
-  <div class="non-conformities__gridtable-header">
-    <div class="non-conformities__requirements-header">Direct Review Requirements</div>
-    Requirements Reviewed
-  </div>
-  <div class="non-conformities__gridtable-header">Non-Conformity Summary</div>
-  <div class="non-conformities__gridtable-header">Direct Review Result</div>
-  <div ng-repeat-start="nc in $ctrl.nonConformities" class="non-conformity__header" ng-class="nc.nonConformityStatus === 'Open' ? 'non-conformity__gridtable-header--open' : 'non-conformity__gridtable-header--closed'" ng-click="nc.open = !nc.open">
-    <div class="non-conformity__gridtable-header non-conformity__gridtable-header--first">
-      {{ nc.requirement ? nc.requirement : 'Has not been determined' }}
-    </div>
-    <div class="non-conformity__gridtable-header">
-      {{ nc.nonConformitySummary ? nc.nonConformitySummary : 'Has not been determined' }}
-    </div>
-    <div class="non-conformity__gridtable-header">
-      {{ nc.nonConformityStatus ? nc.nonConformityStatus : 'Has not been determined' }}
-    </div>
-    <div class="non-conformity__gridtable-header nonconformity__gridtable-header--last">
-      <i class="fa fa-lg" ng-class="nc.open ? 'fa-caret-down' : 'fa-caret-left'"></i>
-    </div>
-  </div>
-  <div class="non-conformity__basic-information panel-body" ng-if="nc.open" ng-repeat-end>
+  <div ng-repeat="nc in $ctrl.nonConformities" class="non-conformity__basic-information panel-body">
     <div class="non-conformity__wide non-conformity__requirement">
       <div class="data-label">
         Non-Conformity Type <button class="tooltip-button btn btn-link" uib-tooltip="Type of non-conformity found during review" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Type of non-conformity found during review</span><i class="fa fa-info-circle"></i></button>
@@ -42,22 +22,6 @@
         <ul class="non-conformity__developer-associated-listings" ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
           <li ng-repeat="dal in nc.developerAssociatedListings"><a ui-sref="listing({id: dal.id, panel: 'directReviews'})">{{ dal.chplProductNumber }}</a></li>
         </ul>
-      </div>
-    </div>
-    <div class="non-conformity__wide non-conformity__determination">
-      <div class="data-label">
-        Date of Determination <button class="tooltip-button btn btn-link" uib-tooltip="The date that ONC determined that a non-conformity was present" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date that ONC determined that a non-conformity was present</span><i class="fa fa-info-circle"></i></button>
-      </div>
-      <div class="non-conformity__data-element">
-        {{ nc.friendlyDateOfDetermination }}
-      </div>
-    </div>
-    <div class="non-conformity__wide non-conformity__findings">
-      <div class="data-label">
-        Findings <button class="tooltip-button btn btn-link" uib-tooltip="A detailed description of the ONC findings related to the non-conformity" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">A detailed description of the ONC findings related to the non-conformity</span><i class="fa fa-info-circle"></i></button>
-      </div>
-      <div class="non-conformity__data-element">
-        {{ nc.nonConformityFindings ? nc.nonConformityFindings : 'Has not been determined' }}
       </div>
     </div>
     <div class="non-conformity__narrow non-conformity__cap-approval">
@@ -94,7 +58,7 @@
     </div>
     <div class="non-conformity__wide non-conformity__resolution">
       <div class="data-label">
-        Resolution <button class="tooltip-button btn btn-link" uib-tooltip="A detailed description of how the non-conformity was resolved" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">A detailed description of how the non-conformity was resolved</span><i class="fa fa-info-circle"></i></button>
+        Resolution <button class="tooltip-button btn btn-link" uib-tooltip="Tasks completed as part of the resolution." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Tasks completed as part of the resolution.</span><i class="fa fa-info-circle"></i></button>
       </div>
       <div class="non-conformity__data-element">
         {{ nc.resolution ? nc.resolution : 'Has not been resolved' }}
