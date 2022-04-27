@@ -20,8 +20,7 @@ import theme from '../../themes/theme';
 
 import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
-import ChplChangeRequestDetailsView from './types/details-view';
-import ChplChangeRequestWebsiteView from './types/website-view';
+import ChplChangeRequestDemographicsView from './types/demographics-view';
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -91,15 +90,9 @@ const getChangeRequestDetails = (cr) => {
           changeRequest={cr}
         />
       );
-    case 'Developer Details Change Request':
+    case 'Developer Demographics Change Request':
       return (
-        <ChplChangeRequestDetailsView
-          changeRequest={cr}
-        />
-      );
-    case 'Website Change Request':
-      return (
-        <ChplChangeRequestWebsiteView
+        <ChplChangeRequestDemographicsView
           changeRequest={cr}
         />
       );

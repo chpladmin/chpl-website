@@ -13,8 +13,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
-import ChplChangeRequestDetailsEdit from './types/details-edit';
-import ChplChangeRequestWebsiteEdit from './types/website-edit';
+import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
@@ -76,16 +75,9 @@ const getChangeRequestDetails = (cr, handleDispatch) => {
           dispatch={handleDispatch}
         />
       );
-    case 'Developer Details Change Request':
+    case 'Developer Demographics Change Request':
       return (
-        <ChplChangeRequestDetailsEdit
-          changeRequest={cr}
-          dispatch={handleDispatch}
-        />
-      );
-    case 'Website Change Request':
-      return (
-        <ChplChangeRequestWebsiteEdit
+        <ChplChangeRequestDemographicsEdit
           changeRequest={cr}
           dispatch={handleDispatch}
         />
@@ -100,17 +92,15 @@ const getChangeRequestDetails = (cr, handleDispatch) => {
 };
 
 function ChplChangeRequestEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
   const { hasAnyRole } = useContext(UserContext);
-  const [confirmationMessage, setConfirmationMessage] = useState('');
-  const [details, setDetails] = useState(props.changeRequest.details);
-  const [isConfirming, setIsConfirming] = useState(false);
   const {
     changeRequest,
     changeRequestStatusTypes,
   } = props;
+  const [confirmationMessage, setConfirmationMessage] = useState('');
+  const [details, setDetails] = useState(props.changeRequest.details); // eslint-disable-line react/destructuring-assignment
+  const [isConfirming, setIsConfirming] = useState(false);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   let formik;
 
@@ -136,7 +126,7 @@ function ChplChangeRequestEdit(props) {
           attestation: data.attestation,
         });
         break;
-      case 'Developer Details Change Request':
+      case 'Developer Demographics Change Request':
         setDetails({
           ...details,
           address: {
@@ -154,11 +144,6 @@ function ChplChangeRequestEdit(props) {
             title: data.title,
           },
           selfDeveloper: data.selfDeveloper,
-        });
-        break;
-      case 'Website Change Request':
-        setDetails({
-          ...details,
           website: data.website,
         });
         break;

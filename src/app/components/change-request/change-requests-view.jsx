@@ -25,7 +25,7 @@ import { useSnackbar } from 'notistack';
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
 import fillCustomAttestationFields from './types/attestation-fill-fields';
-import fillCustomWebsiteFields from './types/website-fill-fields';
+import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
 import {
   useFetchChangeRequests,
@@ -144,8 +144,8 @@ const getCustomFields = (item) => {
   switch (item.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return fillCustomAttestationFields(item.details);
-    case 'Website Change Request':
-      return fillCustomWebsiteFields(item);
+    case 'Developer Demographics Change Request':
+      return fillCustomDemographicsFields(item);
     default:
       return fillWithBlanks();
   }
