@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   Container,
@@ -15,6 +14,7 @@ import {
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import { arrayOf, object, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
   buttonCardFocused: {
     boxShadow: '0px 0px 16px 4px #337ab750',
     fontWeight: '600',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#ffffff',
   },
   buttonContent: {
     display: 'flex',
@@ -66,6 +66,9 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gridTemplateColumns: '1fr 1fr',
   },
+  chpltextfieldSpacing: {
+    marginBottom: '16px',
+  },
   extraLargeIcons: {
     marginBottom: '8px',
     fontSize: '2em',
@@ -80,6 +83,9 @@ const useStyles = makeStyles({
     gap: '16px',
     flexDirection: 'row',
     gridTemplateColumns: '1fr',
+  },
+  iconSpacing: {
+    marginLeft: '4px',
   },
   orContainer: {
     display: 'flex',
@@ -343,6 +349,7 @@ function ChplConfirmDeveloper(props) {
                     required
                     value={selectedDeveloper}
                     onChange={handleSelectOnChange}
+                    className={classes.chpltextfieldSpacing}
                   >
                     {developers.map((item) => (
                       <MenuItem value={item} key={item.developerId}>
@@ -351,15 +358,17 @@ function ChplConfirmDeveloper(props) {
                       </MenuItem>
                     ))}
                   </ChplTextField>
+                  <br />
                   { !isShowingComparison
                     && (
-                      <CardActions>
-                        <Button
-                          onClick={() => setIsShowingComparison(true)}
-                        >
-                          Compare with uploaded information
-                        </Button>
-                      </CardActions>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => setIsShowingComparison(true)}
+                    >
+                      Compare with uploaded information
+                      <CompareArrowsIcon className={classes.iconSpacing} />
+                    </Button>
                     )}
                 </CardContent>
               </Card>
