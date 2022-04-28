@@ -109,74 +109,74 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
                 <TableCell>{ uploaded.selfDeveloper === null ? '' : (uploaded.selfDeveloper ? 'Yes' : 'No') }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address.line1 !== uploaded.address.line1) ? classes.differentValue : ''}
+                className={(system.address?.line1 !== uploaded.address?.line1) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Line 1</TableCell>
-                <TableCell>{ system.address.line1 }</TableCell>
-                <TableCell>{ uploaded.address.line1 }</TableCell>
+                <TableCell>{ system.address?.line1 }</TableCell>
+                <TableCell>{ uploaded.address?.line1 }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address.line2 !== uploaded.address.line2) ? classes.differentValue : ''}
+                className={(system.address?.line2 !== uploaded.address?.line2) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Line 2</TableCell>
-                <TableCell>{ system.address.line2 }</TableCell>
-                <TableCell>{ uploaded.address.line2 }</TableCell>
+                <TableCell>{ system.address?.line2 }</TableCell>
+                <TableCell>{ uploaded.address?.line2 }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address.city !== uploaded.address.city) ? classes.differentValue : ''}
+                className={(system.address?.city !== uploaded.address?.city) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">City</TableCell>
-                <TableCell>{ system.address.city }</TableCell>
-                <TableCell>{ uploaded.address.city }</TableCell>
+                <TableCell>{ system.address?.city }</TableCell>
+                <TableCell>{ uploaded.address?.city }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address.state !== uploaded.address.state) ? classes.differentValue : ''}
+                className={(system.address?.state !== uploaded.address?.state) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">State</TableCell>
-                <TableCell>{ system.address.state }</TableCell>
-                <TableCell>{ uploaded.address.state }</TableCell>
+                <TableCell>{ system.address?.state }</TableCell>
+                <TableCell>{ uploaded.address?.state }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address.zipcode !== uploaded.address.zipcode) ? classes.differentValue : ''}
+                className={(system.address?.zipcode !== uploaded.address?.zipcode) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Zip</TableCell>
-                <TableCell>{ system.address.zipcode }</TableCell>
-                <TableCell>{ uploaded.address.zipcode }</TableCell>
+                <TableCell>{ system.address?.zipcode }</TableCell>
+                <TableCell>{ uploaded.address?.zipcode }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address.country !== uploaded.address.country) ? classes.differentValue : ''}
+                className={(system.address?.country !== uploaded.address?.country) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Country</TableCell>
-                <TableCell>{ system.address.country }</TableCell>
-                <TableCell>{ uploaded.address.country }</TableCell>
+                <TableCell>{ system.address?.country }</TableCell>
+                <TableCell>{ uploaded.address?.country }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact.fullName !== uploaded.contact.fullName) ? classes.differentValue : ''}
+                className={(system.contact?.fullName !== uploaded.contact?.fullName) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Contact</TableCell>
-                <TableCell>{ system.contact.fullName }</TableCell>
-                <TableCell>{ uploaded.contact.fullName }</TableCell>
+                <TableCell>{ system.contact?.fullName }</TableCell>
+                <TableCell>{ uploaded.contact?.fullName }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact.title !== uploaded.contact.title) ? classes.differentValue : ''}
+                className={(system.contact?.title !== uploaded.contact?.title) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Title</TableCell>
-                <TableCell>{ system.contact.title }</TableCell>
-                <TableCell>{ uploaded.contact.title }</TableCell>
+                <TableCell>{ system.contact?.title }</TableCell>
+                <TableCell>{ uploaded.contact?.title }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact.email !== uploaded.contact.email) ? classes.differentValue : ''}
+                className={(system.contact?.email !== uploaded.contact?.email) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Email</TableCell>
-                <TableCell>{ system.contact.email }</TableCell>
-                <TableCell>{ uploaded.contact.email }</TableCell>
+                <TableCell>{ system.contact?.email }</TableCell>
+                <TableCell>{ uploaded.contact?.email }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact.phoneNumber !== uploaded.contact.phoneNumber) ? classes.differentValue : ''}
+                className={(system.contact?.phoneNumber !== uploaded.contact?.phoneNumber) ? classes.differentValue : ''}
               >
                 <TableCell className={classes.sectionCell} scope="row">Phone</TableCell>
-                <TableCell>{ system.contact.phoneNumber }</TableCell>
-                <TableCell>{ uploaded.contact.phoneNumber }</TableCell>
+                <TableCell>{ system.contact?.phoneNumber }</TableCell>
+                <TableCell>{ uploaded.contact?.phoneNumber }</TableCell>
               </TableRow>
             </TableBody>
           </Table>
