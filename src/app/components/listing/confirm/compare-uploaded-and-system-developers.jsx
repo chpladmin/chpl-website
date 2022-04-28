@@ -59,6 +59,12 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
     setUploaded(data);
   }, [data]);
 
+  const getRowClass = (a, b) => {
+    if (!a && !b) { return ''; }
+    if (a !== b) { return classes.differentValue; }
+    return '';
+  };
+
   if (isLoading || !isSuccess || !system?.name || !uploaded) { return <CircularProgress />; }
 
   return (
@@ -88,14 +94,14 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
             </TableHead>
             <TableBody>
               <TableRow
-                className={(system.name !== uploaded.name) ? classes.differentValue : ''}
+                className={getRowClass(system.name, uploaded.name)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Developer Name</TableCell>
                 <TableCell>{ system.name }</TableCell>
                 <TableCell>{ uploaded.name }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.website !== uploaded.website) ? classes.differentValue : ''}
+                className={getRowClass(system.website, uploaded.website)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Website</TableCell>
                 <TableCell>{ system.website }</TableCell>
@@ -109,70 +115,70 @@ function ChplCompareUploadedAndSystemDevelopers(props) {
                 <TableCell>{ uploaded.selfDeveloper === null ? '' : (uploaded.selfDeveloper ? 'Yes' : 'No') }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address?.line1 !== uploaded.address?.line1) ? classes.differentValue : ''}
+                className={getRowClass(system.address?.line1, uploaded.address?.line1)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Line 1</TableCell>
                 <TableCell>{ system.address?.line1 }</TableCell>
                 <TableCell>{ uploaded.address?.line1 }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address?.line2 !== uploaded.address?.line2) ? classes.differentValue : ''}
+                className={getRowClass(system.address?.line2, uploaded.address?.line2)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Line 2</TableCell>
                 <TableCell>{ system.address?.line2 }</TableCell>
                 <TableCell>{ uploaded.address?.line2 }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address?.city !== uploaded.address?.city) ? classes.differentValue : ''}
+                className={getRowClass(system.address?.city, uploaded.address?.city)}
               >
                 <TableCell className={classes.sectionCell} scope="row">City</TableCell>
                 <TableCell>{ system.address?.city }</TableCell>
                 <TableCell>{ uploaded.address?.city }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address?.state !== uploaded.address?.state) ? classes.differentValue : ''}
+                className={getRowClass(system.address?.state, uploaded.address?.state)}
               >
                 <TableCell className={classes.sectionCell} scope="row">State</TableCell>
                 <TableCell>{ system.address?.state }</TableCell>
                 <TableCell>{ uploaded.address?.state }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address?.zipcode !== uploaded.address?.zipcode) ? classes.differentValue : ''}
+                className={getRowClass(system.address?.zipcode, uploaded.address?.zipcode)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Zip</TableCell>
                 <TableCell>{ system.address?.zipcode }</TableCell>
                 <TableCell>{ uploaded.address?.zipcode }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.address?.country !== uploaded.address?.country) ? classes.differentValue : ''}
+                className={getRowClass(system.address?.country, uploaded.address?.country)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Country</TableCell>
                 <TableCell>{ system.address?.country }</TableCell>
                 <TableCell>{ uploaded.address?.country }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact?.fullName !== uploaded.contact?.fullName) ? classes.differentValue : ''}
+                className={getRowClass(system.contact?.fullName, uploaded.contact?.fullName)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Contact</TableCell>
                 <TableCell>{ system.contact?.fullName }</TableCell>
                 <TableCell>{ uploaded.contact?.fullName }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact?.title !== uploaded.contact?.title) ? classes.differentValue : ''}
+                className={getRowClass(system.contact?.title, uploaded.contact?.title)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Title</TableCell>
                 <TableCell>{ system.contact?.title }</TableCell>
                 <TableCell>{ uploaded.contact?.title }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact?.email !== uploaded.contact?.email) ? classes.differentValue : ''}
+                className={getRowClass(system.contact?.email, uploaded.contact?.email)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Email</TableCell>
                 <TableCell>{ system.contact?.email }</TableCell>
                 <TableCell>{ uploaded.contact?.email }</TableCell>
               </TableRow>
               <TableRow
-                className={(system.contact?.phoneNumber !== uploaded.contact?.phoneNumber) ? classes.differentValue : ''}
+                className={getRowClass(system.contact?.phoneNumber, uploaded.contact?.phoneNumber)}
               >
                 <TableCell className={classes.sectionCell} scope="row">Phone</TableCell>
                 <TableCell>{ system.contact?.phoneNumber }</TableCell>
