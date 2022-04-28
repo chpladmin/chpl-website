@@ -24,6 +24,7 @@ const useStyles = makeStyles({
   },
   subContent: {
     display: 'flex',
+    justifyContent: 'space-between',
   },
   cron: {
     display: 'flex',

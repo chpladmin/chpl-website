@@ -155,7 +155,7 @@ function ChplJobs() {
   };
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="lg">
       <Typography className={classes.titlePadding} variant="h1">Scheduled Jobs</Typography>
       { !job
         && (

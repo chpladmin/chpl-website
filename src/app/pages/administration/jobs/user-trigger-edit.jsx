@@ -7,6 +7,7 @@ import {
   Switch,
   Typography,
   makeStyles,
+  Container,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -20,9 +21,9 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   cardContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '16px',
-    gridTemplateColumns: '4fr 8fr',
   },
   subCardContainer: {
     display: 'grid',
@@ -129,38 +130,41 @@ function ChplUserTriggerEdit(props) {
   if (!trigger.job) { return null; }
 
   return (
-    <>
+    <Container disableGutters maxWidth="md">
       <Card>
         <CardHeader
           className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h5' }}
+          titleTypographyProps={{ gutterBottom:'true', variant: 'h5' }}
           title={`${trigger.id ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
+          subheader={`${trigger.job.description}`}
+          subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
         />
         <CardContent>
           <div className={classes.cardContainer}>
             <Card>
-              <CardContent className={classes.subContainer}>
-                <div>
-                  <Typography variant="subtitle1">
-                    Job Name
-                  </Typography>
-                  <Typography variant="body1">{ trigger.job.name }</Typography>
-                </div>
-                <div>
-                  <Typography variant="subtitle1">
-                    Job Description
-                  </Typography>
-                  <Typography gutterBottom variant="body1">
-                    { trigger.job.description }
-                  </Typography>
-                </div>
-
+              <CardContent>
+                <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
+                <ChplTextField
+                  id="email"
+                  name="email"
+                  label="Email"
+                  required
+                  disabled={!!trigger.name}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.email && !!formik.errors.email}
+                  helperText={formik.touched.email && formik.errors.email}
+                />
               </CardContent>
             </Card>
-            <div className={classes.subCardContainer}>
-              <Card>
-                <CardContent>
-                  { trigger.job.jobDataMap.acbSpecific
+            <ChplCronGen
+              initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
+              dispatch={handleCronDispatch}
+            />
+            <Card>
+              <CardContent>
+                { trigger.job.jobDataMap.acbSpecific
             && (
               <div>
                 <Typography variant="subtitle1">ONC-ACBs available to schedule</Typography>
@@ -188,31 +192,8 @@ function ChplUserTriggerEdit(props) {
                   )}
               </div>
             )}
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent>
-                  <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
-                  <ChplTextField
-                    id="email"
-                    name="email"
-                    label="Email"
-                    required
-                    disabled={!!trigger.name}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && !!formik.errors.email}
-                    helperText={formik.touched.email && formik.errors.email}
-                  />
-                </CardContent>
-              </Card>
-              <ChplCronGen
-                initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
-                dispatch={handleCronDispatch}
-              />
-
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </CardContent>
       </Card>
@@ -221,7 +202,7 @@ function ChplUserTriggerEdit(props) {
         isDisabled={!formik.isValid || formik.isSubmitting || !isAcbSelectionValid()}
         canDelete={!!trigger.name}
       />
-    </>
+    </Container>
   );
 }
 
