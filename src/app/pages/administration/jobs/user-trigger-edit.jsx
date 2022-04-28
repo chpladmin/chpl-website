@@ -22,8 +22,12 @@ const useStyles = makeStyles({
   cardContainer: {
     display: 'grid',
     gap: '16px',
-    paddingTop: '16px',
-    gridTemplateColumns: '2fr 4fr',
+    gridTemplateColumns: '4fr 8fr',
+  },
+  subCardContainer: {
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
   },
   subContainer: {
     display: 'grid',
@@ -34,9 +38,10 @@ const useStyles = makeStyles({
     gridColumnStart: '1',
     gridColumnEnd: '-1',
   },
-  flex: {
-    display: 'flex',
-    flexWrap: 'wrap',
+  acbGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto auto',
+    gridTemplateRows: '2fr',
   },
   noMargin: {
     margin: '-16px 0',
@@ -131,29 +136,35 @@ function ChplUserTriggerEdit(props) {
           titleTypographyProps={{ variant: 'h5' }}
           title={`${trigger.id ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
         />
-      </Card>
-      <div className={classes.cardContainer}>
-        <Card>
-          <CardContent className={classes.subContainer}>
-            <div>
-              <Typography variant="subtitle1">
-                Job Name
-              </Typography>
-              <Typography variant="body1">{ trigger.job.name }</Typography>
-            </div>
-            <div>
-              <Typography variant="subtitle1">
-                Job Description
-              </Typography>
-              <Typography gutterBottom variant="body1">
-                { trigger.job.description }
-              </Typography>
-            </div>
-            { trigger.job.jobDataMap.acbSpecific
+        <CardContent>
+          <div className={classes.cardContainer}>
+            <Card>
+              <CardContent className={classes.subContainer}>
+                <div>
+                  <Typography variant="subtitle1">
+                    Job Name
+                  </Typography>
+                  <Typography variant="body1">{ trigger.job.name }</Typography>
+                </div>
+                <div>
+                  <Typography variant="subtitle1">
+                    Job Description
+                  </Typography>
+                  <Typography gutterBottom variant="body1">
+                    { trigger.job.description }
+                  </Typography>
+                </div>
+
+              </CardContent>
+            </Card>
+            <div className={classes.subCardContainer}>
+              <Card>
+                <CardContent>
+                  { trigger.job.jobDataMap.acbSpecific
             && (
-              <div className={classes.fullWidth}>
+              <div>
                 <Typography variant="subtitle1">ONC-ACBs available to schedule</Typography>
-                <div className={classes.flex} aria-label="ONC-ACBs available to schedule">
+                <div className={classes.acbGrid} aria-label="ONC-ACBs available to schedule">
                   { acbs.map((acb) => (
                     <div key={acb.id}>
                       <FormControlLabel
@@ -177,33 +188,34 @@ function ChplUserTriggerEdit(props) {
                   )}
               </div>
             )}
-
-          </CardContent>
-        </Card>
-        <div>
-          <Card>
-            <CardContent>
-              <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
-              <ChplTextField
-                id="email"
-                name="email"
-                label="Email"
-                required
-                disabled={!!trigger.name}
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.email && !!formik.errors.email}
-                helperText={formik.touched.email && formik.errors.email}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
+                  <ChplTextField
+                    id="email"
+                    name="email"
+                    label="Email"
+                    required
+                    disabled={!!trigger.name}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && !!formik.errors.email}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
+                </CardContent>
+              </Card>
+              <ChplCronGen
+                initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
+                dispatch={handleCronDispatch}
               />
-            </CardContent>
-          </Card>
-          <ChplCronGen
-            initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
-            dispatch={handleCronDispatch}
-          />
-        </div>
-      </div>
+
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       <ChplActionBar
         dispatch={handleBarDispatch}
         isDisabled={!formik.isValid || formik.isSubmitting || !isAcbSelectionValid()}
