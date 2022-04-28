@@ -29,9 +29,6 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  cardSpacing: {
-    marginTop: '32px',
-  },
   firstColumn: {
     position: 'sticky',
     left: 0,
@@ -56,7 +53,7 @@ function ChplSystemTriggersView(props) {
   }, [props.triggers]); // eslint-disable-line react/destructuring-assignment
 
   return (
-    <Card className={classes.cardSpacing}>
+    <Card>
       <CardHeader title="Currently Scheduled System Jobs" />
       <CardContent>
         <>

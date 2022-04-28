@@ -29,17 +29,22 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
+    display: 'flex',
     gap: '16px',
-  },
-  titlePadding: {
-    paddingTop: '16px',
-    paddingBottom: '16px',
+    flexDirection: 'column',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('lg')]: {
+      gridTemplateColumns: '1fr 1fr',
+      display: 'grid',
+    },
   },
   fullWidth: {
     gridColumnStart: '1',
     gridColumnEnd: '-1',
+  },
+  titlePadding: {
+    paddingTop: '16px',
+    paddingBottom: '16px',
   },
 });
 
@@ -150,7 +155,7 @@ function ChplJobs() {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="xl">
       <Typography className={classes.titlePadding} variant="h1">Scheduled Jobs</Typography>
       { !job
         && (
@@ -168,7 +173,7 @@ function ChplJobs() {
                   triggers={systemTriggers}
                 />
               )}
-            <div>
+            <div className={classes.fullWidth}>
               <ChplJobTypesView
                 jobTypes={jobTypes}
                 dispatch={handleDispatch}
