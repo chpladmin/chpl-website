@@ -30,20 +30,10 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
-  fullWidth: {
-    gridColumnStart: '1',
-    gridColumnEnd: '-1',
-  },
   acbGrid: {
     display: 'grid',
     gridTemplateColumns: 'auto auto auto',
     gridTemplateRows: '2fr',
-  },
-  noMargin: {
-    margin: '-16px 0',
-  },
-  titlePadding: {
-    paddingTop: '16px',
   },
 });
 

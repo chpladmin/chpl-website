@@ -25,25 +25,11 @@ const useStyles = makeStyles({
     gap: '16px',
     gridTemplateColumns: '1fr 2fr',
   },
-  fullWidth: {
-    gridColumnStart: '1',
-    gridColumnEnd: '-1',
-  },
-  subContainer: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-  },
   divSpacing: {
     display: 'flex',
     justifyContent: 'space-between',
     gap: '8px',
     alignItems: 'center',
-  },
-  cardGap: {
-    gap: '16px',
-    display: 'flex',
-    flexDirection: 'column',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -118,7 +104,6 @@ function ChplEditableJobEdit(props) {
         <CardContent>
           <div>
             <div className={classes.container}>
-
               <Card>
                 <CardContent>
                   <div>
