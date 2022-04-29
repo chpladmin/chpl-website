@@ -118,6 +118,7 @@ function ChplUserTriggerEdit(props) {
         acb: acbs.filter((acb) => acb.selected).map((acb) => acb.id).join(','),
       };
       props.dispatch({ action: 'save', payload });
+      formik.setSubmitting(false);
     },
     validationSchema,
   });

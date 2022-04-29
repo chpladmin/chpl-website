@@ -190,7 +190,7 @@ const SurveillanceEditComponent = {
         for (let i = 0; i < this.surveillance.requirements.length; i += 1) {
           noNcs = noNcs && (!this.surveillance.requirements[i].nonconformities || this.surveillance.requirements[i].nonconformities.length === 0);
           for (let j = 0; j < this.surveillance.requirements[i].nonconformities.length; j += 1) {
-            allClosed = allClosed && (this.surveillance.requirements[i].nonconformities[j].status.name === 'Closed');
+            allClosed = allClosed && (this.surveillance.requirements[i].nonconformities[j].nonconformityStatus === 'Closed');
           }
         }
       }

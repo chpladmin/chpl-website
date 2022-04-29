@@ -395,8 +395,8 @@
     ///////////////////////////////////////////////////
 
     function certificationResultSortComparator(a, b) {
-      let valueToFindA = a.number;
-      let valueToFindB = b.number;
+      let valueToFindA = a.criterion?.number || a.number;
+      let valueToFindB = b.criterion?.number || b.number;
       if (isCertResultForCuresUpdateCriterion(a)) {
         valueToFindA += '(Cures Update)';
       }
@@ -427,6 +427,8 @@
     }
 
     function createCriterion(cert) {
+      if (!cert) { return; }
+      if (cert.criterion) { return cert.criterion; }
       let criterion;
       if (cert.number) {
         criterion = { 'number': cert.number, 'title': cert.title };
@@ -642,8 +644,8 @@
     }
 
     function isCertResultForCuresUpdateCriterion(certResult) {
-      if (certResult && certResult.title) {
-        return certResult.title.includes('(Cures Update)');
+      if (certResult && (certResult.title || certResult.criterion?.title)) {
+        return (certResult.title || certResult.criterion.title).includes('(Cures Update)');
       } else {
         return false;
       }

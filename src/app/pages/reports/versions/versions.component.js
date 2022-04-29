@@ -153,7 +153,7 @@ export const ReportsVersionsComponent = {
 
     search () {
       let that = this;
-      this.networkService.getActivityMetadata('beta/versions')
+      this.networkService.getActivityMetadata('versions')
         .then(results => {
           that.results = results.activities
             .map(item => that.prepare(item));
@@ -177,7 +177,7 @@ export const ReportsVersionsComponent = {
     addPageToData (page) {
       let that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/versions', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+      this.networkService.getActivityMetadata('versions', {pageNum: page, ignoreLoadingBar: true}).then(results => {
         results.activities.forEach(item => {
           that.results.push(that.prepare(item));
         });

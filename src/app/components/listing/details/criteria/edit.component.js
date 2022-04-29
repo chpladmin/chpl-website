@@ -344,8 +344,8 @@ const CertificationCriteriaEditComponent = {
     }
 
     setAvailableTestValues() {
-      const { number } = this.cert;
-      const { title } = this.cert;
+      const { criterion: { number } } = this.cert;
+      const { criterion: { title } } = this.cert;
       this.availableTestData = this.resources.testData.data.filter((item) => item.criteria.number === number && item.criteria.title === title);
       this.availableTestProcedures = this.resources.testProcedures.data.filter((item) => item.criteria.number === number && item.criteria.title === title);
     }

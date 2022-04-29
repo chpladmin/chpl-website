@@ -104,30 +104,6 @@
         });
         $httpBackend.flush();
       });
-
-      it('should return a promise with the data if a PUT doesn\'t return an object', () => {
-        $httpBackend.expectPUT(/announcements\/id/).respond(200, 'response');
-        networkService.modifyAnnouncement({ id: 'id' }).then((response) => {
-          response.then((reject) => {
-            expect(reject).toEqual('response');
-          });
-        }, () => {
-          // noop
-        });
-        $httpBackend.flush();
-      });
-
-      it('should return a promise with the data if a PUT responds with a failure', () => {
-        $httpBackend.expectPUT(/announcements\/id/).respond(500, 'response');
-        networkService.modifyAnnouncement({ id: 'id' }).then((response) => {
-          response.then((reject) => {
-            expect(reject).toEqual('response');
-          });
-        }, () => {
-          // noop
-        });
-        $httpBackend.flush();
-      });
     });
 
     describe('with respect to caching', () => {
@@ -238,14 +214,6 @@
         $httpBackend.flush();
       });
 
-      it('should createAnnouncement', () => {
-        $httpBackend.expectPOST(/^\/rest\/announcements$/).respond(200, { data: 'response' });
-        networkService.createAnnouncement('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should createAnnualSurveillanceReport', () => {
         $httpBackend.expectPOST(/^\/rest\/surveillance-report\/annual$/).respond(200, { data: 'response' });
         networkService.createAnnualSurveillanceReport('payload').then((response) => {
@@ -302,22 +270,6 @@
         $httpBackend.flush();
       });
 
-      it('should deleteAnnouncement', () => {
-        $httpBackend.expectDELETE(/^\/rest\/announcements\/1$/).respond(200);
-        networkService.deleteAnnouncement(1).then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
-      it('should deleteAnnouncement', () => {
-        $httpBackend.expectDELETE(/^\/rest\/filters\/1$/).respond(200);
-        networkService.deleteFilter(1).then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
       it('should deleteAnnualSurveillanceReport', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance-report\/annual\/id$/).respond(200);
         networkService.deleteAnnualSurveillanceReport('id').then((response) => {
@@ -329,6 +281,14 @@
       it('should deleteComplaint', () => {
         $httpBackend.expectDELETE(/^\/rest\/complaints\/1$/).respond(200);
         networkService.deleteComplaint(1).then((response) => {
+          expect(response.status).toEqual(200);
+        });
+        $httpBackend.flush();
+      });
+
+      it('should deleteFilter', () => {
+        $httpBackend.expectDELETE(/^\/rest\/filters\/1$/).respond(200);
+        networkService.deleteFilter(1).then((response) => {
           expect(response.status).toEqual(200);
         });
         $httpBackend.flush();
@@ -449,46 +409,6 @@
       it('should getAll', () => {
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products$/).respond(200, { data: 'response' });
         networkService.getAll().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getAnnouncement', () => {
-        $httpBackend.expectGET(/^\/rest\/announcements\/payload$/).respond(200, { data: 'response' });
-        networkService.getAnnouncement('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getAnnouncementActivity', () => {
-        const aDate = new Date();
-        $httpBackend.expectGET(/^\/rest\/activity\/announcements$/).respond(200, { data: 'response' });
-        networkService.getAnnouncementActivity({}).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/announcements\?start=\d+$/).respond(200, { data: 'response' });
-        networkService.getAnnouncementActivity({ startDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/announcements\?end=\d+$/).respond(200, { data: 'response' });
-        networkService.getAnnouncementActivity({ endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/announcements\?start=\d+&end=\d+$/).respond(200, { data: 'response' });
-        networkService.getAnnouncementActivity({ startDate: aDate, endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getAnnouncements', () => {
-        $httpBackend.expectGET(/^\/rest\/announcements\?future=payload$/).respond(200, { data: 'response' });
-        networkService.getAnnouncements('payload').then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -1334,54 +1254,6 @@
         $httpBackend.flush();
       });
 
-      it('should getUserActivitiesActivity', () => {
-        const aDate = new Date();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({}).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?start=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({ startDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({ endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/user_activities\?start=\d+&end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivities({ startDate: aDate, endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getUserActivity', () => {
-        const aDate = new Date();
-        $httpBackend.expectGET(/^\/rest\/activity\/users$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({}).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/users\?start=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({ startDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/users\?end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({ endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/activity\/users\?start=\d+&end=\d+$/).respond(200, { data: 'response' });
-        networkService.getUserActivity({ startDate: aDate, endDate: aDate }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getUsers', () => {
         $httpBackend.expectGET(/^\/rest\/users$/).respond(200, { data: 'response' });
         networkService.getUsers().then((response) => {
@@ -1529,14 +1401,6 @@
       it('should modifyATL', () => {
         $httpBackend.expectPUT(/^\/rest\/atls\/id$/).respond(200, { data: 'response' });
         networkService.modifyATL({ id: 'id' }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should modifyAnnouncement', () => {
-        $httpBackend.expectPUT(/^\/rest\/announcements\/id$/).respond(200, { data: 'response' });
-        networkService.modifyAnnouncement({ id: 'id' }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
