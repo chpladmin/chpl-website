@@ -17,7 +17,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import { arrayOf, func } from 'prop-types';
 
-import { ChplSortableHeaders } from 'components/util';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { UserContext } from 'shared/contexts';
 import { job as jobType } from 'shared/prop-types';
 
@@ -28,11 +28,6 @@ const headers = [
   { property: 'jobType', text: 'Job Type', sortable: true },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
-
-const sortComparator = (property, sortDescending) => (a, b) => {
-  const result = (a[property] < b[property]) ? -1 : 1;
-  return result * (sortDescending ? -1 : 1);
-};
 
 const useStyles = makeStyles({
   container: {
@@ -102,8 +97,8 @@ function ChplJobTypesView(props) {
   const { dispatch } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [jobTypes, setJobTypes] = useState([]);
+  const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
-  const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -114,7 +109,7 @@ function ChplJobTypesView(props) {
         jobType: groupMapping[job.group],
         action: getAction(job, dispatch),
       }))
-      .sort(sortComparator(orderBy, sortDescending)));
+      .sort(sortComparator('name')));
   }, [props.jobTypes, dispatch]); // eslint-disable-line react/destructuring-assignment
 
   const filterHeaders = () => headers.filter((item) => hasAnyRole(['ROLE_ADMIN'])
@@ -122,10 +117,11 @@ function ChplJobTypesView(props) {
                           || (item.property !== 'jobType' && item.property !== 'oncAcbSpecific'));
 
   const handleTableSort = (event, property, orderDirection) => {
-    const descending = orderDirection === '';
-    setSortDescending(descending);
+    const descending = orderDirection === 'desc';
+    const updated = jobTypes.sort(sortComparator(property, descending));
     setOrderBy(property);
-    setJobTypes(jobTypes.sort(sortComparator(property, descending)));
+    setOrder(orderDirection);
+    setJobTypes(updated);
   };
 
   return (
@@ -140,7 +136,7 @@ function ChplJobTypesView(props) {
               headers={filterHeaders()}
               onTableSort={handleTableSort}
               orderBy={orderBy}
-              order={sortDescending ? 'desc' : 'asc'}
+              order={order}
               stickyHeader
             />
             <TableBody>
