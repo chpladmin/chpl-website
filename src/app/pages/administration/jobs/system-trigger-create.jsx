@@ -3,8 +3,8 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Container,
   FormHelperText,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   container: {
     display: 'grid',
     gap: '16px',
-    gridTemplateColumns: '2fr 4fr',
+    gridTemplateColumns: '1fr',
   },
   fullWidth: {
     gridColumnStart: '1',
@@ -79,58 +79,41 @@ function ChplSystemTriggerCreate(props) {
 
   return (
     <>
-      <Card>
-        <CardHeader
-          className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h5' }}
-          title={`Run Job: ${job.name}`}
-        />
-        <CardContent>
-          <div className={classes.container}>
-            <Card>
-              <CardContent>
-                <div className={classes.subContainer}>
-                  <div>
-                    <Typography variant="subtitle1">
-                      Job Name
-                    </Typography>
-                    <Typography variant="body1">
-                      { job.name }
-                    </Typography>
-                  </div>
-                  <div>
-                    <Typography variant="subtitle1">
-                      Job Description
-                    </Typography>
-                    <Typography variant="body1">
-                      { job.description }
-                    </Typography>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <div>
-              <Card>
-                <CardContent>
-                  <ChplTextField
-                    id="run-time"
-                    name="runTime"
-                    label="Run Time"
-                    type="datetime-local"
-                    required
-                    value={formik.values.runTime}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.runTime && !!formik.errors.runTime}
-                    helperText={formik.touched.runTime && formik.errors.runTime}
-                  />
-                  <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
-                </CardContent>
-              </Card>
+      <Container maxWidth="md">
+        <Card>
+          <CardHeader
+            className={classes.cardHeader}
+            titleTypographyProps={{ variant: 'h5' }}
+            title={`Run Job: ${job.name}`}
+            subheader={`${job.description}`}
+            subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
+          />
+          <CardContent>
+            <div className={classes.container}>
+
+              <div>
+                <Card>
+                  <CardContent>
+                    <ChplTextField
+                      id="run-time"
+                      name="runTime"
+                      label="Run Time"
+                      type="datetime-local"
+                      required
+                      value={formik.values.runTime}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.runTime && !!formik.errors.runTime}
+                      helperText={formik.touched.runTime && formik.errors.runTime}
+                    />
+                    <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </Container>
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={!formik.isValid}
