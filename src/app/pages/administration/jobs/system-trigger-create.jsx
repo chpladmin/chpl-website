@@ -22,17 +22,8 @@ const useStyles = makeStyles({
     gap: '16px',
     gridTemplateColumns: '1fr',
   },
-  fullWidth: {
-    gridColumnStart: '1',
-    gridColumnEnd: '-1',
-  },
   helperTextSpacing: {
     marginLeft: '14px',
-  },
-  subContainer: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
   },
 });
 
