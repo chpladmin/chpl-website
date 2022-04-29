@@ -4,6 +4,31 @@
   </div>
 </div>
 <div class="non-conformities" ng-if="$ctrl.nonConformities && $ctrl.nonConformities.length > 0">
+  <div class="non-conformity__wide non-conformity__requirement">
+    <table class="table">
+      <tr>
+        <th>Non-conformity type</th>
+        <th>Developer associated listings</th>
+        <th>Corrective Action Plan Approval Date</th>
+        <th>Date Corrective Action Began</th>
+        <th>Date Corrective Action Must Be Completed</th>
+        <th>Date Corrective Action Was Completed</th>
+      </tr>
+      <tr ng-repeat="nc in $ctrl.nonConformities">
+        <td>{{ nc.nonConformityType ? nc.nonConformityType : 'Has not been determined' }}</td>
+        <td>
+          <ul class="non-conformity__developer-associated-listings" ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
+            <li ng-repeat="dal in nc.developerAssociatedListings"><a ui-sref="listing({id: dal.id, panel: 'directReviews'})">{{ dal.chplProductNumber }}</a></li>
+          </ul>
+        </td>
+        <td>{{ nc.friendlyCapApprovalDate }}</td>
+        <td>{{ nc.friendlyCapStartDate }}</td>
+        <td>{{ nc.friendlyCapMustCompleteDate }}</td>
+        <td>{{ nc.friendlyCapEndDate }}</td>
+      </tr>
+    </table>
+  </div>
+  <!--
   <div ng-repeat="nc in $ctrl.nonConformities" class="non-conformity__basic-information panel-body">
     <div class="non-conformity__wide non-conformity__requirement">
       <div class="data-label">
@@ -19,7 +44,7 @@
       </div>
       <div class="non-conformity__data-element">
       <div class="non-conformity__data-element" ng-if="!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0">None</div>
-        <ul class="non-conformity__developer-associated-listings" ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
+      <ul class="non-conformity__developer-associated-listings" ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
           <li ng-repeat="dal in nc.developerAssociatedListings"><a ui-sref="listing({id: dal.id, panel: 'directReviews'})">{{ dal.chplProductNumber }}</a></li>
         </ul>
       </div>
@@ -57,4 +82,5 @@
       </div>
     </div>
   </div>
+  -->
 </div>
