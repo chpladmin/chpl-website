@@ -79,7 +79,7 @@ function ChplSystemTriggerCreate(props) {
 
   return (
     <>
-      <Container maxWidth="md">
+      <Container disableGutters maxWidth="md">
         <Card>
           <CardHeader
             className={classes.cardHeader}
