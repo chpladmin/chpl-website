@@ -78,7 +78,7 @@ function ChplUserTriggersView(props) {
           { (triggers.length === 0)
             && (
               <Typography className={classes.noResultsContainer}>
-                No results found. To get started, select the type of job below click on the calender icon to set-up a schedule job.
+                No results found. To get started, select the type of job then click on the calender icon to set-up a schedule job.
               </Typography>
             )}
           { triggers.length > 0
