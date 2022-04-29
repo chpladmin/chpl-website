@@ -18,9 +18,13 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.up('sm')]: {
+      display: 'grid',
+      gap: '16px',
+      gridTemplateColumns: '1fr',
+    },
   },
   helperTextSpacing: {
     marginLeft: '14px',

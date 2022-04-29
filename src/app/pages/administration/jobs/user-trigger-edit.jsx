@@ -20,10 +20,16 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   cardContainer: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '16px',
-    gridTemplateColumns: '1fr 2fr',
-    alignItems: 'start',
+    alignItems: 'stretch',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr 2fr',
+      alignItems: 'start',
+      display: 'grid',
+    },
   },
   subContainer: {
     gap: '16px',
@@ -31,9 +37,13 @@ const useStyles = makeStyles({
     flexDirection: 'column',
   },
   acbGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto auto auto',
-    gridTemplateRows: '2fr',
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      display: 'grid',
+      gridTemplateColumns: 'auto auto auto',
+      gridTemplateRows: '2fr',
+    },
   },
 });
 

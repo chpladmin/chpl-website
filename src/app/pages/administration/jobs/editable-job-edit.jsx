@@ -23,7 +23,10 @@ const useStyles = makeStyles({
   container: {
     display: 'grid',
     gap: '16px',
-    gridTemplateColumns: '1fr 2fr',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '1fr 2fr',
+    },
   },
   divSpacing: {
     display: 'flex',

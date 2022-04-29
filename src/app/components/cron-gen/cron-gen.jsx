@@ -16,6 +16,7 @@ import * as jsJoda from '@js-joda/core';
 import '@js-joda/timezone';
 
 import { ChplTextField } from 'components/util';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   content: {
@@ -24,13 +25,21 @@ const useStyles = makeStyles({
   },
   subContent: {
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+    },
   },
   cron: {
     display: 'flex',
     gap: '16px',
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
   },
   cronValue: {
     color: '#156dac',
@@ -38,6 +47,7 @@ const useStyles = makeStyles({
     borderRadius: '64px',
     padding: '8px',
     fontWeight: '800',
+    maxWidth: 'max-content',
   },
   time: {
     display: 'flex',
