@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Container,
   FormHelperText,
   makeStyles,
 } from '@material-ui/core';
@@ -79,41 +78,38 @@ function ChplSystemTriggerCreate(props) {
 
   return (
     <>
-      <Container disableGutters maxWidth="md">
-        <Card>
-          <CardHeader
-            className={classes.cardHeader}
-            titleTypographyProps={{ variant: 'h5' }}
-            title={`Run Job: ${job.name}`}
-            subheader={`${job.description}`}
-            subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
-          />
-          <CardContent>
-            <div className={classes.container}>
-
-              <div>
-                <Card>
-                  <CardContent>
-                    <ChplTextField
-                      id="run-time"
-                      name="runTime"
-                      label="Run Time"
-                      type="datetime-local"
-                      required
-                      value={formik.values.runTime}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={formik.touched.runTime && !!formik.errors.runTime}
-                      helperText={formik.touched.runTime && formik.errors.runTime}
-                    />
-                    <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
-                  </CardContent>
-                </Card>
-              </div>
+      <Card>
+        <CardHeader
+          className={classes.cardHeader}
+          titleTypographyProps={{ variant: 'h5' }}
+          title={`Run Job: ${job.name}`}
+          subheader={`${job.description}`}
+          subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
+        />
+        <CardContent>
+          <div className={classes.container}>
+            <div>
+              <Card>
+                <CardContent>
+                  <ChplTextField
+                    id="run-time"
+                    name="runTime"
+                    label="Run Time"
+                    type="datetime-local"
+                    required
+                    value={formik.values.runTime}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.runTime && !!formik.errors.runTime}
+                    helperText={formik.touched.runTime && formik.errors.runTime}
+                  />
+                  <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+                </CardContent>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
-      </Container>
+          </div>
+        </CardContent>
+      </Card>
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={!formik.isValid}

@@ -7,7 +7,6 @@ import {
   Switch,
   Typography,
   makeStyles,
-  Container,
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -21,19 +20,15 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   cardContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
-  subCardContainer: {
     display: 'grid',
     gap: '16px',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: '1fr 2fr',
+    alignItems: 'start',
   },
   subContainer: {
-    display: 'grid',
     gap: '16px',
-    gridTemplateColumns: '1fr',
+    display: 'flex',
+    flexDirection: 'column',
   },
   fullWidth: {
     gridColumnStart: '1',
@@ -130,11 +125,11 @@ function ChplUserTriggerEdit(props) {
   if (!trigger.job) { return null; }
 
   return (
-    <Container disableGutters maxWidth="md">
+    <>
       <Card>
         <CardHeader
           className={classes.cardHeader}
-          titleTypographyProps={{ gutterBottom:'true', variant: 'h5' }}
+          titleTypographyProps={{ gutterBottom: 'true', variant: 'h5' }}
           title={`${trigger.id ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
           subheader={`${trigger.job.description}`}
           subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
@@ -158,13 +153,14 @@ function ChplUserTriggerEdit(props) {
                 />
               </CardContent>
             </Card>
-            <ChplCronGen
-              initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
-              dispatch={handleCronDispatch}
-            />
-            <Card>
-              <CardContent>
-                { trigger.job.jobDataMap.acbSpecific
+            <div className={classes.subContainer}>
+              <ChplCronGen
+                initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
+                dispatch={handleCronDispatch}
+              />
+              <Card>
+                <CardContent>
+                  { trigger.job.jobDataMap.acbSpecific
             && (
               <div>
                 <Typography variant="subtitle1">ONC-ACBs available to schedule</Typography>
@@ -192,8 +188,9 @@ function ChplUserTriggerEdit(props) {
                   )}
               </div>
             )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -202,7 +199,7 @@ function ChplUserTriggerEdit(props) {
         isDisabled={!formik.isValid || formik.isSubmitting || !isAcbSelectionValid()}
         canDelete={!!trigger.name}
       />
-    </Container>
+    </>
   );
 }
 
