@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -322,9 +323,9 @@ function ChplChangeRequestsView(props) {
                 </div>
                 { (isLoading || !isSuccess || changeRequests.length === 0)
                   && (
-                    <Typography className={classes.noResultsContainer}>
-                      No results found
-                    </Typography>
+                    <div className={classes.noResultsContainer}>
+                      <CircularProgress />
+                    </div>
                   )}
                 { !isLoading && isSuccess && changeRequests.length > 0
                   && (
