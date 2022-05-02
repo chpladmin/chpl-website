@@ -45,31 +45,40 @@ const validationSchema = yup.object({
 
 function ChplUserTriggerEdit(props) {
   const { dispatch } = props;
-  const [acbs, setAcbs] = useState([]);
+  /* eslint-disable react/destructuring-assignment */
+  const [acbs, setAcbs] = useState(
+    props.acbs
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((acb) => ({
+        ...acb,
+        selected: !acb.retired,
+        label: `${acb.name}${acb.retired ? ' (Retired)' : ''}`,
+      })),
+  );
+  /* eslint-enable react/destructuring-assignment */
   const [showRange, setShowRange] = useState(false);
   const [trigger, setTrigger] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setTrigger({
-      ...props.trigger,
-    });
+    setTrigger(props.trigger);
     formik.setFieldValue('email', props.trigger.email || '');
-    if (props.trigger.job.jobDataMap.acbSpecific) {
-      const selected = props.trigger.acb?.split(',').map((id) => parseInt(id, 10)) || props.acbs.filter((acb) => !acb.retired).map((acb) => acb.id);
-      setAcbs(props.acbs.sort((a, b) => (a.name < b.name ? -1 : 1))
-        .map((acb) => ({
-          ...acb,
-          selected: selected.includes(acb.id),
-          label: `${acb.name}${acb.retired ? ' (Retired)' : ''}`,
-        })));
-    }
     if (props.trigger.job.jobDataMap.parameters) {
       setShowRange(true);
       formik.setFieldValue('range', props.trigger.job.jobDataMap.range);
     }
-  }, [props.acbs, props.trigger]); // eslint-disable-line react/destructuring-assignment
+    if (props.trigger.job?.jobDataMap.acbSpecific) {
+      const selected = props.trigger.acb?.split(',')
+            .map((id) => parseInt(id, 10));
+      if (selected) {
+        setAcbs((previous) => previous.map((acb) => ({
+          ...acb,
+          selected: selected.includes(acb.id),
+        })));
+      }
+    }
+  }, [props.trigger]); // eslint-disable-line react/destructuring-assignment
 
   const handleAcbToggle = (clicked) => {
     setAcbs(acbs.map((acb) => ({
