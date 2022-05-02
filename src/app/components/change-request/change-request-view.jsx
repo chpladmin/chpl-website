@@ -202,13 +202,33 @@ function ChplChangeRequestView(props) {
             </div>
             <div>
               <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-              <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
+              <Typography variant="body1">
+                <Moment
+                  withTitle
+                  titleFormat="DD MMM yyyy"
+                  fromNow
+                >
+                  {changeRequest.currentStatus.statusChangeDate}
+                </Moment>
+              </Typography>
             </div>
             <div>
               <Typography gutterBottom variant="subtitle2">
                 Associated ONC-ACB
                 { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
               </Typography>
+              { changeRequest.certificationBodies.length > 0
+                ? (
+                  <ul>
+                    {changeRequest.certificationBodies.map((acb) => (
+                      <li key={acb.name}>{acb.name}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <Typography variant="body1">
+                    None
+                  </Typography>
+                )}
               { changeRequest.certificationBodies.length > 0
                 ? (
                   <ul>
