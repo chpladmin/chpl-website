@@ -1,3 +1,67 @@
+import { getDisplayDateFormat } from 'services/date-util';
+
+const lookup = {
+  'root.title': {
+    message: (before, after) => `Title changed from "${before.title}" to "${after.title}"`,
+  },
+  'root.text': {
+    message: (before, after) => `Text changed from "${before.text}" to "${after.text}"`,
+  },
+  'root.startDate': {
+    message: (before, after) => before.startDateTime ? undefined : `Start Date changed from "${getDisplayDateFormat(before.startDate)}" to "${getDisplayDateFormat(after.startDate)}"`,
+  },
+  'root.startDateTime': {
+    message: (before, after) => `Start Date changed from "${before.startDateTime}" to "${after.startDateTime}"`,
+  },
+  'root.endDate': {
+    message: (before, after) => before.endDateTime ? undefined : `End Date changed from "${getDisplayDateFormat(before.endDate)}" to "${getDisplayDateFormat(after.endDate)}"`,
+  },
+  'root.endDateTime': {
+    message: (before, after) => `End Date changed from "${before.endDateTime}" to "${after.endDateTime}"`,
+  },
+  'root.isPublic': {
+    message: (before, after) => `Public changed from "${before.isPublic ? 'Yes' : 'No'}" to "${after.isPublic ? 'Yes' : 'No'}"`,
+  },
+  'root.lastModifiedDate': {
+    message: () => undefined,
+  },
+  'root.lastModifiedUser': {
+    message: () => undefined,
+  },
+};
+
+const getMessage = (before, after, root, key) => {
+  if (lookup[`${root}.${key}`]) {
+    return lookup[`${root}.${key}`].message(before, after);
+  }
+  console.debug(`${root}.${key}: ${before[key]} => ${after[key]}`);
+  return undefined;
+};
+
+const compareObject = (before, after, root = 'root') => {
+  const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
+  const diffs = keys.map((key) => {
+    switch (typeof before[key]) {
+      case 'string':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'number':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'boolean':
+        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
+      case 'object':
+        if (before[key] !== null) {
+          const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
+          return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
+        } else {
+          return undefined;
+        }
+      default:
+        return `${typeof before[key]} - ${getMessage(before, after, root, key)}`;
+    }
+  });
+  return diffs.filter((msg) => !!msg);
+};
+
 export const ReportsAnnouncementsComponent = {
   templateUrl: 'chpl.reports/announcements/announcements.html',
   controller: class ReportsAnnouncementsComponent {
@@ -99,7 +163,7 @@ export const ReportsAnnouncementsComponent = {
           action = 'Announcement was created.';
         } else if (item.originalData && item.newData) {
           action = 'Announcement was updated.';
-          action += this.getUpdateActivity(item);
+          action += '<ul>' + compareObject(item.originalData, item.newData).map((msg) => `<li>${msg}</li>`).join('') + '</ul>';
         }
 
         meta.action = action;
@@ -113,44 +177,6 @@ export const ReportsAnnouncementsComponent = {
 
     isActivityDeletedAnnouncement (detail) {
       return detail.originalData && detail.newData === null;
-    }
-
-    getUpdateActivity (detail) {
-      let action = '<ul>';
-      action += this.wrapAction(this.compareItem(detail, 'title', 'Title'));
-      action += this.wrapAction(this.compareItem(detail, 'text', 'Text'));
-      action += this.wrapAction(this.compareItem(detail, 'startDate', 'Start Date', 'date'));
-      action += this.wrapAction(this.compareItem(detail, 'endDate', 'End Date', 'date'));
-      action += this.wrapAction(this.compareBooleanItem(detail, 'isPublic', 'Public'));
-      action += '</ul>';
-      return action;
-    }
-
-    wrapAction (change) {
-      if (change) {
-        change = '<li>' + change + '</li>';
-      } else {
-        change = '';
-      }
-      return change;
-    }
-
-    compareItem (detailObject, key, display, filter) {
-      return this.ReportService.compareItem(detailObject.originalData, detailObject.newData, key, display, filter);
-
-    }
-
-    compareBooleanItem (detailObject, key, display) {
-      if (detailObject.originalData && detailObject.newData) {
-        if (detailObject.originalData[key] && !detailObject.newData[key]) {
-          //changed to false
-          return display + ' changed from true to false';
-        } else if (!detailObject.originalData[key] && detailObject.newData[key]) {
-          //chnaged to true
-          return display + ' changed from false to true';
-        }
-      }
-      return '';
     }
 
     prepare (item) {
@@ -187,7 +213,7 @@ export const ReportsAnnouncementsComponent = {
 
     search () {
       let that = this;
-      this.networkService.getActivityMetadata('beta/announcements')
+      this.networkService.getActivityMetadata('announcements')
         .then(results => {
           that.results = results.activities
             .map(item => that.prepare(item));
@@ -211,7 +237,7 @@ export const ReportsAnnouncementsComponent = {
     addPageToData (page) {
       let that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/announcements', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+      this.networkService.getActivityMetadata('announcements', {pageNum: page, ignoreLoadingBar: true}).then(results => {
         results.activities.forEach(item => {
           that.results.push(that.prepare(item));
         });

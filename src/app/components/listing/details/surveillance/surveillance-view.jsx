@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
 
 const getSurveillanceResults = (surv) => surv.requirements.flatMap((req) => req.nonconformities.map((nc) => ({
   id: req.id,
-  statusName: nc.status.name,
+  statusName: nc.nonconformityStatus,
   criterion: req.criterion,
   requirement: req.requirement,
 })));

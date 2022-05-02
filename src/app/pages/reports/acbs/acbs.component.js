@@ -148,7 +148,7 @@ export const ReportsAcbsComponent = {
 
     search () {
       let that = this;
-      this.networkService.getActivityMetadata('beta/acbs')
+      this.networkService.getActivityMetadata('acbs')
         .then(results => {
           that.results = results.activities
             .map(item => that.prepare(item));
@@ -174,7 +174,7 @@ export const ReportsAcbsComponent = {
     addPageToData (page) {
       let that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('beta/acbs', {pageNum: page, ignoreLoadingBar: true}).then(results => {
+      this.networkService.getActivityMetadata('acbs', {pageNum: page, ignoreLoadingBar: true}).then(results => {
         results.activities.forEach(item => {
           that.results.push(that.prepare(item));
         });

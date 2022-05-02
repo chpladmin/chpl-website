@@ -1,4 +1,5 @@
 import { Visualizer } from '@uirouter/visualizer';
+
 import { states as administrationStates } from './pages/administration/administration.state';
 
 (() => {
@@ -12,15 +13,6 @@ import { states as administrationStates } from './pages/administration/administr
           const needsRedirect = false;
 
           // load states dependent on features
-          if (featureFlags.isOn('change-request')) {
-            administrationStates['change-request'].forEach((state) => {
-              if ($uiRouter.stateRegistry.get(state.name)) {
-                $uiRouter.stateRegistry.deregister(state.name);
-              }
-              $uiRouter.stateRegistry.register(state);
-              needsReload = needsReload || $state.$current.name === state.name;
-            });
-          }
           if (featureFlags.isOn('enhanced-upload')) {
             administrationStates['enhanced-upload'].forEach((state) => {
               if ($uiRouter.stateRegistry.get(state.name)) {

@@ -86,7 +86,7 @@
       it('should come up with correct titles when there was 1 open NC', () => {
         const surv = {
           endDay: '2016-03-30',
-          requirements: [{ nonconformities: [{ status: { name: 'Open' } }] }],
+          requirements: [{ nonconformities: [{ nonconformityStatus: 'Open' }] }],
         };
         expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open Non-Conformity Was Found');
       });
@@ -94,7 +94,7 @@
       it('should come up with correct titles when there were multiple open NCs', () => {
         const surv = {
           endDay: '2016-03-30',
-          requirements: [{ nonconformities: [{ status: { name: 'Open' } }] }, { nonconformities: [{ status: { name: 'Open' } }] }],
+          requirements: [{ nonconformities: [{ nonconformityStatus: 'Open' }] }, { nonconformities: [{ nonconformityStatus: 'Open' }] }],
         };
         expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Open Non-Conformities Were Found');
       });
@@ -102,7 +102,7 @@
       it('should come up with correct titles when there was 1 closed NC', () => {
         const surv = {
           endDay: '2016-03-30',
-          requirements: [{ nonconformities: [{ status: { name: 'Closed' } }] }],
+          requirements: [{ nonconformities: [{ nonconformityStatus: 'Closed' }] }],
         };
         expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Closed Non-Conformity Was Found');
       });
@@ -110,7 +110,7 @@
       it('should come up with correct titles when there were multiple closed NCs', () => {
         const surv = {
           endDay: '2016-03-30',
-          requirements: [{ nonconformities: [{ status: { name: 'Closed' } }] }, { nonconformities: [{ status: { name: 'Closed' } }] }],
+          requirements: [{ nonconformities: [{ nonconformityStatus: 'Closed' }] }, { nonconformities: [{ nonconformityStatus: 'Closed' }] }],
         };
         expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Closed Non-Conformities Were Found');
       });
@@ -118,7 +118,7 @@
       it('should come up with correct titles when there were open and closed NCs', () => {
         const surv = {
           endDay: '2016-03-30',
-          requirements: [{ nonconformities: [{ status: { name: 'Open' } }] }, { nonconformities: [{ status: { name: 'Closed' } }] }],
+          requirements: [{ nonconformities: [{ nonconformityStatus: 'Open' }] }, { nonconformities: [{ nonconformityStatus: 'Closed' }] }],
         };
         expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open and 1 Closed Non-Conformities Were Found');
       });
