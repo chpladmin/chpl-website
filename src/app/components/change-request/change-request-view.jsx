@@ -153,7 +153,15 @@ function ChplChangeRequestView(props) {
         </div>
         <div>
           <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-          <Typography variant="body1"><Moment fromNow>{changeRequest.currentStatus.statusChangeDate}</Moment></Typography>
+          <Typography variant="body1">
+            <Moment
+              withTitle
+              titleFormat="DD MMM yyyy"
+              fromNow
+            >
+              {changeRequest.currentStatus.statusChangeDate}
+            </Moment>
+          </Typography>
         </div>
         <div>
           <Typography gutterBottom variant="subtitle2">
