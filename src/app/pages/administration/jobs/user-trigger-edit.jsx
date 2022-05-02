@@ -37,11 +37,16 @@ const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Enter a valid email'),
+  range: yup.number()
+    .required('Range is required')
+    .min(1, 'Must be at least 1')
+    .max(365, 'May be no more than 365'),
 });
 
 function ChplUserTriggerEdit(props) {
   const { dispatch } = props;
   const [acbs, setAcbs] = useState([]);
+  const [showRange, setShowRange] = useState(false);
   const [trigger, setTrigger] = useState({});
   const classes = useStyles();
   let formik;
@@ -50,7 +55,7 @@ function ChplUserTriggerEdit(props) {
     setTrigger({
       ...props.trigger,
     });
-    formik.setFieldValue('email', props.trigger.email);
+    formik.setFieldValue('email', props.trigger.email || '');
     if (props.trigger.job.jobDataMap.acbSpecific) {
       const selected = props.trigger.acb?.split(',').map((id) => parseInt(id, 10)) || props.acbs.filter((acb) => !acb.retired).map((acb) => acb.id);
       setAcbs(props.acbs.sort((a, b) => (a.name < b.name ? -1 : 1))
@@ -59,6 +64,10 @@ function ChplUserTriggerEdit(props) {
           selected: selected.includes(acb.id),
           label: `${acb.name}${acb.retired ? ' (Retired)' : ''}`,
         })));
+    }
+    if (props.trigger.job.jobDataMap.parameters) {
+      setShowRange(true);
+      formik.setFieldValue('range', props.trigger.job.jobDataMap.range);
     }
   }, [props.acbs, props.trigger]); // eslint-disable-line react/destructuring-assignment
 
@@ -96,12 +105,20 @@ function ChplUserTriggerEdit(props) {
   formik = useFormik({
     initialValues: {
       email: trigger.email || '',
+      range: 7,
     },
     onSubmit: () => {
       const payload = {
         ...trigger,
         email: formik.values.email,
         acb: acbs.filter((acb) => acb.selected).map((acb) => acb.id).join(','),
+        job: {
+          ...trigger.job,
+          jobDataMap: {
+            ...trigger.job.jobDataMap,
+            range: formik.values.range,
+          },
+        },
       };
       props.dispatch({ action: 'save', payload });
       formik.setSubmitting(false);
@@ -142,6 +159,21 @@ function ChplUserTriggerEdit(props) {
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
+          { showRange
+            && (
+              <ChplTextField
+                id="range"
+                name="range"
+                label="Range (in days)"
+                type="number"
+                required
+                value={formik.values.range}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.range && !!formik.errors.range}
+                helperText={formik.touched.range && formik.errors.range}
+              />
+            )}
           { trigger.job.jobDataMap.acbSpecific
             && (
               <div>
