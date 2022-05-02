@@ -25,13 +25,17 @@ const lookup = {
   'root.lastModifiedDate': {
     message: () => undefined,
   },
+  'root.lastModifiedUser': {
+    message: () => undefined,
+  },
 };
 
 const getMessage = (before, after, root, key) => {
   if (lookup[`${root}.${key}`]) {
     return lookup[`${root}.${key}`].message(before, after);
   }
-  return `${root}.${key}: ${before[key]} => ${after[key]}`;
+  console.debug(`${root}.${key}: ${before[key]} => ${after[key]}`);
+  return undefined;
 };
 
 const compareObject = (before, after, root = 'root') => {

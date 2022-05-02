@@ -391,7 +391,15 @@ function ChplChangeRequestsView(props) {
                                   { !hasAnyRole(['ROLE_DEVELOPER'])
                                    && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
                                   <TableCell>{item.currentStatusName}</TableCell>
-                                  <TableCell><Moment fromNow>{item.currentStatusChangeDate}</Moment></TableCell>
+                                  <TableCell>
+                                    <Moment
+                                      withTitle
+                                      titleFormat="DD MMM yyyy"
+                                      fromNow
+                                    >
+                                      {item.currentStatusChangeDate}
+                                    </Moment>
+                                  </TableCell>
                                   { !hasAnyRole(['ROLE_DEVELOPER'])
                                     && (
                                       <TableCell>
