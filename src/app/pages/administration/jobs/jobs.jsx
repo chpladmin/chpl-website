@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Typography,
   Container,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
@@ -32,7 +32,6 @@ const useStyles = makeStyles({
     display: 'flex',
     gap: '16px',
     flexDirection: 'column',
-    gridTemplateColumns: '1fr',
     [theme.breakpoints.up('lg')]: {
       gridTemplateColumns: '1fr 1fr',
       display: 'grid',

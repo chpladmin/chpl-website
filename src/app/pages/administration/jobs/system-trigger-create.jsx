@@ -17,15 +17,6 @@ import { job as jobType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    [theme.breakpoints.up('sm')]: {
-      display: 'grid',
-      gap: '16px',
-      gridTemplateColumns: '1fr',
-    },
-  },
   helperTextSpacing: {
     marginLeft: '14px',
   },
@@ -82,27 +73,23 @@ function ChplSystemTriggerCreate(props) {
           subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
         />
         <CardContent>
-          <div className={classes.container}>
-            <div>
-              <Card>
-                <CardContent>
-                  <ChplTextField
-                    id="run-time"
-                    name="runTime"
-                    label="Run Time"
-                    type="datetime-local"
-                    required
-                    value={formik.values.runTime}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.runTime && !!formik.errors.runTime}
-                    helperText={formik.touched.runTime && formik.errors.runTime}
-                  />
-                  <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          <Card>
+            <CardContent>
+              <ChplTextField
+                id="run-time"
+                name="runTime"
+                label="Run Time"
+                type="datetime-local"
+                required
+                value={formik.values.runTime}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.runTime && !!formik.errors.runTime}
+                helperText={formik.touched.runTime && formik.errors.runTime}
+              />
+              <FormHelperText className={classes.helperTextSpacing}>All times should be entered as Eastern Time (ET)</FormHelperText>
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
       <ChplActionBar

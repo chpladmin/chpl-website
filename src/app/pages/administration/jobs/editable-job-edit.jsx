@@ -105,64 +105,58 @@ function ChplEditableJobEdit(props) {
           subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
         />
         <CardContent>
-          <div>
-            <div className={classes.container}>
-              <Card>
-                <CardContent>
-                  <div>
-                    <Typography gutterBottom variant="subtitle1">
-                      Add Subscribers
-                    </Typography>
-                    <div className={classes.divSpacing}>
-                      <ChplTextField
-                        id="email"
-                        name="email"
-                        label="Email"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.email && !!formik.errors.email}
-                        helperText={formik.touched.email && formik.errors.email}
-                      />
-                      <Button
-                        onClick={() => add()}
-                        variant="contained"
-                        color="primary"
-                      >
-                        Add
-                        <AddIcon className={classes.iconSpacing} />
-                      </Button>
+          <div className={classes.container}>
+            <Card>
+              <CardContent>
+                <Typography gutterBottom variant="subtitle1">
+                  Add Subscribers
+                </Typography>
+                <div className={classes.divSpacing}>
+                  <ChplTextField
+                    id="email"
+                    name="email"
+                    label="Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && !!formik.errors.email}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
+                  <Button
+                    onClick={() => add()}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Add
+                    <AddIcon className={classes.iconSpacing} />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent>
+                <Typography gutterBottom variant="subtitle1">
+                  Manage Subscribers
+                </Typography>
+                <div>
+                  { emails.map((item) => (
+                    <div className={classes.divSpacing} key={item}>
+                      <div>
+                        {item}
+                      </div>
+                      <div>
+                        <IconButton
+                          onClick={() => remove(item)}
+                          color="default"
+                        >
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent>
-                  <div>
-                    <Typography gutterBottom variant="subtitle1">
-                      Manage Subscribers
-                    </Typography>
-                    <div>
-                      { emails.map((item) => (
-                        <div className={classes.divSpacing} key={item}>
-                          <div>
-                            {item}
-                          </div>
-                          <div>
-                            <IconButton
-                              onClick={() => remove(item)}
-                              color="default"
-                            >
-                              <DeleteIcon color="error" />
-                            </IconButton>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </CardContent>
       </Card>

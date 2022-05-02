@@ -19,11 +19,7 @@ import { ChplTextField } from 'components/util';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  content: {
-    margin: '16px 0',
-    display: 'flex',
-  },
-  subContent: {
+  datetimeLayout: {
     display: 'flex',
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
@@ -104,18 +100,14 @@ function ChplCronGen(props) {
   };
 
   const updateCron = () => {
-    try {
-      const utc = jsJoda.LocalDateTime
-        .ofDateAndTime(jsJoda.LocalDate.now(), jsJoda.LocalTime.parse(formik.values.runTime))
-        .atZone(jsJoda.ZoneId.of('America/New_York'))
-        .withZoneSameInstant(jsJoda.ZoneId.of('UTC-00:00'));
-      const daySpecific = !(days.size === 0 || days.size === 7);
-      const updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
-      setCron(updated);
-      props.dispatch(updated);
-    } catch {
-      // noop
-    }
+    const utc = jsJoda.LocalDateTime
+      .ofDateAndTime(jsJoda.LocalDate.now(), jsJoda.LocalTime.parse(formik.values.runTime))
+      .atZone(jsJoda.ZoneId.of('America/New_York'))
+      .withZoneSameInstant(jsJoda.ZoneId.of('UTC-00:00'));
+    const daySpecific = !(days.size === 0 || days.size === 7);
+    const updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
+    setCron(updated);
+    props.dispatch(updated);
   };
 
   formik = useFormik({
@@ -136,7 +128,7 @@ function ChplCronGen(props) {
             <code className={classes.cronValue}>{cron}</code>
           </div>
           <Divider />
-          <div className={classes.subContent}>
+          <div className={classes.datetimeLayout}>
             <div>
               <Typography variant="subtitle2">Every:</Typography>
               <div className={classes.day}>
@@ -186,7 +178,7 @@ function ChplCronGen(props) {
                   helperText={formik.touched.runTime && formik.errors.runTime}
                 />
               </div>
-              <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+              <FormHelperText className={classes.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
             </div>
           </div>
         </CardContent>

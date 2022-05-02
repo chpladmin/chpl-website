@@ -29,9 +29,6 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  cardSpacing: {
-    marginTop: '0',
-  },
   firstColumn: {
     position: 'sticky',
     left: 0,
@@ -71,7 +68,7 @@ function ChplUserTriggersView(props) {
   }, [props.acbs, props.triggers]); // eslint-disable-line react/destructuring-assignment
 
   return (
-    <Card className={classes.cardSpacing}>
+    <Card>
       <CardHeader title="Currently Scheduled User Jobs" />
       <CardContent>
         <>
