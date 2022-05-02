@@ -51,30 +51,48 @@ const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Enter a valid email'),
+  range: yup.number()
+    .required('Range is required')
+    .min(1, 'Must be at least 1')
+    .max(365, 'May be no more than 365'),
 });
 
 function ChplUserTriggerEdit(props) {
   const { dispatch } = props;
-  const [acbs, setAcbs] = useState([]);
+  /* eslint-disable react/destructuring-assignment */
+  const [acbs, setAcbs] = useState(
+    props.acbs
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((acb) => ({
+        ...acb,
+        selected: !acb.retired,
+        label: `${acb.name}${acb.retired ? ' (Retired)' : ''}`,
+      })),
+  );
+  /* eslint-enable react/destructuring-assignment */
+  const [showRange, setShowRange] = useState(false);
   const [trigger, setTrigger] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setTrigger({
-      ...props.trigger,
-    });
-    formik.setFieldValue('email', props.trigger.email);
-    if (props.trigger.job.jobDataMap.acbSpecific) {
-      const selected = props.trigger.acb?.split(',').map((id) => parseInt(id, 10)) || props.acbs.filter((acb) => !acb.retired).map((acb) => acb.id);
-      setAcbs(props.acbs.sort((a, b) => (a.name < b.name ? -1 : 1))
-        .map((acb) => ({
+    setTrigger(props.trigger);
+    formik.setFieldValue('email', props.trigger.email || '');
+    if (props.trigger.job.jobDataMap.parameters) {
+      setShowRange(true);
+      formik.setFieldValue('range', props.trigger.job.jobDataMap.range);
+    }
+    if (props.trigger.job?.jobDataMap.acbSpecific) {
+      const selected = props.trigger.acb?.split(',')
+            .map((id) => parseInt(id, 10));
+      if (selected) {
+        setAcbs((previous) => previous.map((acb) => ({
           ...acb,
           selected: selected.includes(acb.id),
-          label: `${acb.name}${acb.retired ? ' (Retired)' : ''}`,
         })));
+      }
     }
-  }, [props.acbs, props.trigger]); // eslint-disable-line react/destructuring-assignment
+  }, [props.trigger]); // eslint-disable-line react/destructuring-assignment
 
   const handleAcbToggle = (clicked) => {
     setAcbs(acbs.map((acb) => ({
@@ -110,12 +128,20 @@ function ChplUserTriggerEdit(props) {
   formik = useFormik({
     initialValues: {
       email: trigger.email || '',
+      range: 7,
     },
     onSubmit: () => {
       const payload = {
         ...trigger,
         email: formik.values.email,
         acb: acbs.filter((acb) => acb.selected).map((acb) => acb.id).join(','),
+        job: {
+          ...trigger.job,
+          jobDataMap: {
+            ...trigger.job.jobDataMap,
+            range: formik.values.range,
+          },
+        },
       };
       props.dispatch({ action: 'save', payload });
       formik.setSubmitting(false);
@@ -135,33 +161,47 @@ function ChplUserTriggerEdit(props) {
           subheader={`${trigger.job.description}`}
           subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
         />
-        <CardContent>
-          <div className={classes.cardContainer}>
+        <CardContent className={classes.cardContainer}>
+          <Card>
+            <CardContent>
+              <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
+              <ChplTextField
+                id="email"
+                name="email"
+                label="Email"
+                required
+                disabled={!!trigger.name}
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && !!formik.errors.email}
+                helperText={formik.touched.email && formik.errors.email}
+              />
+              { showRange
+            && (
+              <ChplTextField
+                id="range"
+                name="range"
+                label="Range (in days)"
+                type="number"
+                required
+                value={formik.values.range}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.range && !!formik.errors.range}
+                helperText={formik.touched.range && formik.errors.range}
+              />
+            )}
+            </CardContent>
+          </Card>
+          <div className={classes.subContainer}>
+            <ChplCronGen
+              initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
+              dispatch={handleCronDispatch}
+            />
             <Card>
               <CardContent>
-                <Typography gutterBottom variant="subtitle1">Send the report to?</Typography>
-                <ChplTextField
-                  id="email"
-                  name="email"
-                  label="Email"
-                  required
-                  disabled={!!trigger.name}
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.email && !!formik.errors.email}
-                  helperText={formik.touched.email && formik.errors.email}
-                />
-              </CardContent>
-            </Card>
-            <div className={classes.subContainer}>
-              <ChplCronGen
-                initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
-                dispatch={handleCronDispatch}
-              />
-              <Card>
-                <CardContent>
-                  { trigger.job.jobDataMap.acbSpecific
+                { trigger.job.jobDataMap.acbSpecific
             && (
               <div>
                 <Typography variant="subtitle1">ONC-ACBs available to schedule</Typography>
@@ -189,9 +229,8 @@ function ChplUserTriggerEdit(props) {
                   )}
               </div>
             )}
-                </CardContent>
-              </Card>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </CardContent>
       </Card>
