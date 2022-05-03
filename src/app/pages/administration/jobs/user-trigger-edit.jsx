@@ -150,11 +150,10 @@ function ChplUserTriggerEdit(props) {
     <>
       <Card>
         <CardHeader
-          className={classes.cardHeader}
-          titleTypographyProps={{ gutterBottom: 'true', variant: 'h5' }}
+          titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`${trigger.id ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
           subheader={`${trigger.job.description}`}
-          subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
+          subheaderTypographyProps={{ variant: 'body1' }} // Invalid prop `color` of value `#000000` supplied to `ForwardRef(Typography)`, expected one of ["initial","inherit","primary","secondary","textPrimary","textSecondary","error"]
         />
         <CardContent className={classes.cardContainer}>
           <Card>
