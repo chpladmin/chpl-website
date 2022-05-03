@@ -74,7 +74,12 @@ const DeveloperViewComponent = {
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
       if (action === 'merge') { return false; } // if not above roles, can't merge
       if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
-      if (action === 'edit' && this.featureFlags.isOn('demographic-change-request')) { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); } // Developer can only edit based on flag
+      if (action === 'edit') {
+        if (this.featureFlags.isOn('demographic-change-request')) {
+          return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); // Developer can only edit based on flag
+        }
+        return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // ACB can only edit Active
+      }
       if (action === 'manageUsers') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB', 'ROLE_DEVELOPER']); }
       return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); // must be active
     }
@@ -124,7 +129,7 @@ const DeveloperViewComponent = {
     }
 
     handleAttestationDispatch() {
-      this.takeAction('attestation');
+      this.takeAction('attestation.create');
     }
 
     updateRequest(data) {
