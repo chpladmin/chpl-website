@@ -5,11 +5,12 @@ import {
 
 import ChplChangeRequestsView from './change-requests-view';
 
+import { useFetchChangeRequestTypes } from 'api/change-requests';
 import {
-  useFetchChangeRequestTypes,
-} from 'api/change-requests';
-import {
-  FilterProvider, defaultFilter, getDateDisplay, getDateTimeEntry,
+  FilterProvider,
+  defaultFilter,
+  getDateDisplay,
+  getDateTimeEntry,
 } from 'components/filter';
 import { FlagContext } from 'shared/contexts';
 
@@ -54,16 +55,18 @@ const staticFilters = [{
 function ChplChangeRequests(props) {
   const { disallowedFilters, preFilter } = props;
   const { isOn } = useContext(FlagContext);
+  const [attestationsEditIsOn, setAttestationsEditIsOn] = useState(false);
   const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
 
   useEffect(() => {
+    setAttestationsEditIsOn(isOn('attestations-edit'));
     setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
   }, [isOn]);
 
   useEffect(() => {
-    const values = demographicChangeRequestIsOn ? [
+    const values = (attestationsEditIsOn || demographicChangeRequestIsOn) ? [
       { value: 'Accepted' },
       { value: 'Cancelled by Requester' },
       { value: 'Pending Developer Action', default: true },
@@ -89,14 +92,14 @@ function ChplChangeRequests(props) {
           return canMeet.length === 0 || canMeet.includes(item.currentStatusName);
         },
       }));
-  }, [demographicChangeRequestIsOn]);
+  }, [attestationsEditIsOn, demographicChangeRequestIsOn]);
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
   }, [disallowedFilters]);
 
   useEffect(() => {
-    if (crtQuery.isLoading || !crtQuery.isSuccess || !demographicChangeRequestIsOn) {
+    if (crtQuery.isLoading || !crtQuery.isSuccess) {
       return;
     }
     const values = crtQuery.data.data
@@ -121,7 +124,7 @@ function ChplChangeRequests(props) {
           return canMeet.length === 0 || canMeet.includes(item.changeRequestTypeName);
         },
       }));
-  }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess, demographicChangeRequestIsOn]);
+  }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess]);
 
   return (
     <FilterProvider
