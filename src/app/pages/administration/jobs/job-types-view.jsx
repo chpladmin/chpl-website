@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  IconButton,
   Card,
   CardContent,
   CardHeader,
   Chip,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -14,8 +14,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import EventIcon from '@material-ui/icons/Event';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
@@ -39,9 +39,6 @@ const useStyles = makeStyles({
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#fff',
-  },
-  cardSpacing: {
-    marginTop: '32px',
   },
 });
 
@@ -124,7 +121,7 @@ function ChplJobTypesView(props) {
   };
 
   return (
-    <Card className={classes.cardSpacing}>
+    <Card>
       <CardHeader title="Types of Jobs" />
       <CardContent>
         <TableContainer className={classes.container} component={Paper}>

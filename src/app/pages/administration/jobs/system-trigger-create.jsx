@@ -15,7 +15,6 @@ import * as jsJoda from '@js-joda/core';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { job as jobType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   helperTextSpacing: {

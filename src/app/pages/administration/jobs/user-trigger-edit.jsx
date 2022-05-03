@@ -20,15 +20,11 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   cardContainer: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
     gap: '16px',
-    alignItems: 'stretch',
-    gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '1fr 2fr',
       alignItems: 'start',
-      display: 'grid',
     },
   },
   subContainer: {
@@ -44,8 +40,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
-      gridTemplateColumns: 'auto auto auto',
-      gridTemplateRows: '2fr',
+      gridTemplateColumns: '1fr 1fr 1fr',
     },
   },
 });
@@ -182,8 +177,14 @@ function ChplUserTriggerEdit(props) {
                 error={formik.touched.email && !!formik.errors.email}
                 helperText={formik.touched.email && formik.errors.email}
               />
+            </CardContent>
+          </Card>
+          <div className={classes.subContainer}>
               { showRange
             && (
+          <Card>
+            <CardContent>
+              <Typography gutterBottom variant="subtitle1">How much time should the report cover?</Typography>
               <ChplTextField
                 id="range"
                 name="range"
@@ -196,19 +197,17 @@ function ChplUserTriggerEdit(props) {
                 error={formik.touched.range && !!formik.errors.range}
                 helperText={formik.touched.range && formik.errors.range}
               />
-            )}
             </CardContent>
           </Card>
-          <div className={classes.subContainer}>
+            )}
             <ChplCronGen
               initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
               dispatch={handleCronDispatch}
             />
-            <Card>
-              <CardContent>
                 { trigger.job.jobDataMap.acbSpecific
             && (
-              <div>
+            <Card>
+              <CardContent>
                 <Typography variant="subtitle1">ONC-ACBs available to schedule</Typography>
                 <div className={classes.acbGrid} aria-label="ONC-ACBs available to schedule">
                   { acbs.map((acb) => (
@@ -232,10 +231,9 @@ function ChplUserTriggerEdit(props) {
                   && (
                     <Typography>At least one ONC-ACB must be selected</Typography>
                   )}
-              </div>
-            )}
               </CardContent>
             </Card>
+            )}
           </div>
         </CardContent>
       </Card>

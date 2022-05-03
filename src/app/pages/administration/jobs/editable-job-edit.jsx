@@ -109,8 +109,7 @@ function ChplEditableJobEdit(props) {
             </Typography>
           )}
         />
-        <CardContent>
-          <div className={classes.container}>
+        <CardContent className={classes.container}>
             <Card>
               <CardContent>
                 <Typography gutterBottom variant="subtitle1">
@@ -162,7 +161,6 @@ function ChplEditableJobEdit(props) {
                 </div>
               </CardContent>
             </Card>
-          </div>
         </CardContent>
       </Card>
       <ChplActionBar
