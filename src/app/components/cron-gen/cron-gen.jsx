@@ -45,11 +45,6 @@ const useStyles = makeStyles({
     fontWeight: '800',
     maxWidth: 'max-content',
   },
-  time: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'flex-start',
-  },
   day: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -120,7 +115,6 @@ function ChplCronGen(props) {
   useEffect(() => updateCron(), [days, formik.values.runTime]);
 
   return (
-    <div>
       <Card>
         <CardContent>
           <div className={classes.cron}>
@@ -164,7 +158,6 @@ function ChplCronGen(props) {
             </div>
             <div>
               <Typography gutterBottom variant="subtitle2">At:</Typography>
-              <div className={classes.time}>
                 <ChplTextField
                   id="run-time"
                   name="runTime"
@@ -177,13 +170,11 @@ function ChplCronGen(props) {
                   error={formik.touched.runTime && !!formik.errors.runTime}
                   helperText={formik.touched.runTime && formik.errors.runTime}
                 />
-              </div>
               <FormHelperText className={classes.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
             </div>
           </div>
         </CardContent>
       </Card>
-    </div>
   );
 }
 
