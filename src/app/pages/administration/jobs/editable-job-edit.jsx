@@ -37,6 +37,9 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
+  subHeaderColor: {
+    color: '#000000',
+  },
 });
 
 const validationSchema = yup.object({
@@ -98,11 +101,14 @@ function ChplEditableJobEdit(props) {
     <>
       <Card>
         <CardHeader
-          className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h5' }}
+          titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`Edit Job: ${job.name}`}
-          subheader={`${job.description}`}
-          subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
+          subheader={(
+            <Typography className={classes.subHeaderColor}>
+              {job.description}
+            </Typography>
+          )}
+          subheaderTypographyProps={{ variant: 'body1' }}
         />
         <CardContent>
           <div className={classes.container}>

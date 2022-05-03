@@ -36,6 +36,9 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  subHeaderColor: {
+    color: '#000000',
+  },
   acbGrid: {
     display: 'flex',
     flexDirection: 'column',
@@ -155,11 +158,14 @@ function ChplUserTriggerEdit(props) {
     <>
       <Card>
         <CardHeader
-          className={classes.cardHeader}
-          titleTypographyProps={{ gutterBottom: 'true', variant: 'h5' }}
-          title={`${trigger.id ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
-          subheader={`${trigger.job.description}`}
-          subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
+          titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
+          title={`${trigger.name ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
+          subheader={(
+            <Typography className={classes.subHeaderColor}>
+              {trigger.job.description}
+            </Typography>
+          )}
+          subheaderTypographyProps={{ variant: 'body1' }}
         />
         <CardContent className={classes.cardContainer}>
           <Card>

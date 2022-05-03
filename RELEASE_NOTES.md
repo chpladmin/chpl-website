@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 11.34.0
+_2 May 2022_
+
+### New Features
+* Allow announcements to be scheduled with start and end times
+
+### User Interface Updates
+* Display date of last status change on hover for Change Requests
+* Manage Announcements in new UX
+
+### Bug Fixes
+* Restore Developer activity from before Merges performed after March 2022 in Listing history popup
+
+---
+
 ## Version 11.33.1
 _13 April 2022_
 
