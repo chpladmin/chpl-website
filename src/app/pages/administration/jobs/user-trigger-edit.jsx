@@ -20,15 +20,11 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   cardContainer: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
     gap: '16px',
-    alignItems: 'stretch',
-    gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '1fr 2fr',
       alignItems: 'start',
-      display: 'grid',
     },
   },
   subContainer: {
@@ -41,8 +37,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
-      gridTemplateColumns: 'auto auto auto',
-      gridTemplateRows: '2fr',
+      gridTemplateColumns: '1fr 1fr 1fr',
     },
   },
 });
