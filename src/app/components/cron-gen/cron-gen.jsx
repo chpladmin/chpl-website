@@ -5,6 +5,7 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  FormHelperText,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,16 +16,26 @@ import * as jsJoda from '@js-joda/core';
 import '@js-joda/timezone';
 
 import { ChplTextField } from 'components/util';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  content: {
-    margin: '16px 0',
+  datetimeLayout: {
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+    },
   },
   cron: {
     display: 'flex',
-    gap: '8px',
-    flexDirection: 'row',
-    alignItems: 'center',
+    gap: '16px',
+    flexDirection: 'column',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
   },
   cronValue: {
     color: '#156dac',
@@ -32,15 +43,14 @@ const useStyles = makeStyles({
     borderRadius: '64px',
     padding: '8px',
     fontWeight: '800',
-  },
-  time: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'flex-start',
+    maxWidth: 'max-content',
   },
   day: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  helperTextSpacing: {
+    marginLeft: '14px',
   },
 });
 
@@ -109,47 +119,49 @@ function ChplCronGen(props) {
   useEffect(() => updateCron(), [days, formik.values.runTime]);
 
   return (
-    <div className={classes.content}>
-      <Card>
-        <CardContent>
-          <div className={classes.cron}>
-            <Typography variant="subtitle2">Cron value:</Typography>
-            <code className={classes.cronValue}>{cron}</code>
+    <Card>
+      <CardContent>
+        <div className={classes.cron}>
+          <Typography variant="subtitle2">Cron value:</Typography>
+          <code className={classes.cronValue}>{cron}</code>
+        </div>
+        <Divider />
+        <div className={classes.datetimeLayout}>
+          <div>
+            <Typography variant="subtitle2">Every:</Typography>
+            <div className={classes.day}>
+              <FormControlLabel
+                label="Sunday"
+                control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
+              />
+              <FormControlLabel
+                label="Monday"
+                control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
+              />
+              <FormControlLabel
+                label="Tuesday"
+                control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
+              />
+              <FormControlLabel
+                label="Wednesday"
+                control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
+              />
+              <FormControlLabel
+                label="Thursday"
+                control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
+              />
+              <FormControlLabel
+                label="Friday"
+                control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
+              />
+              <FormControlLabel
+                label="Saturday"
+                control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
+              />
+            </div>
           </div>
-          <Divider />
-          <Typography variant="subtitle2">Every:</Typography>
-          <div className={classes.day}>
-            <FormControlLabel
-              label="Sunday"
-              control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
-            />
-            <FormControlLabel
-              label="Monday"
-              control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
-            />
-            <FormControlLabel
-              label="Tuesday"
-              control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
-            />
-            <FormControlLabel
-              label="Wednesday"
-              control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
-            />
-            <FormControlLabel
-              label="Thursday"
-              control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
-            />
-            <FormControlLabel
-              label="Friday"
-              control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
-            />
-            <FormControlLabel
-              label="Saturday"
-              control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
-            />
-          </div>
-          <Typography gutterBottom variant="subtitle2">At:</Typography>
-          <div className={classes.time}>
+          <div>
+            <Typography gutterBottom variant="subtitle2">At:</Typography>
             <ChplTextField
               id="run-time"
               name="runTime"
@@ -162,10 +174,11 @@ function ChplCronGen(props) {
               error={formik.touched.runTime && !!formik.errors.runTime}
               helperText={formik.touched.runTime && formik.errors.runTime}
             />
+            <FormHelperText className={classes.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import EditIcon from '@material-ui/icons/Edit';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
@@ -28,9 +28,6 @@ const headers = [
 const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
-  },
-  cardSpacing: {
-    marginTop: '32px',
   },
   firstColumn: {
     position: 'sticky',
@@ -71,14 +68,14 @@ function ChplUserTriggersView(props) {
   }, [props.acbs, props.triggers]); // eslint-disable-line react/destructuring-assignment
 
   return (
-    <Card className={classes.cardSpacing}>
+    <Card>
       <CardHeader title="Currently Scheduled User Jobs" />
       <CardContent>
         <>
           { (triggers.length === 0)
             && (
               <Typography className={classes.noResultsContainer}>
-                No results found
+                No results found. To get started, select the type of job then click on the calender icon to set-up a schedule job.
               </Typography>
             )}
           { triggers.length > 0
@@ -109,14 +106,13 @@ function ChplUserTriggersView(props) {
                           </ul>
                         </TableCell>
                         <TableCell align="right">
-                          <Button
+                          <IconButton
                             onClick={() => dispatch({ action: 'edit', payload: item })}
-                            variant="contained"
                             color="primary"
                             aria-label={`Edit Job ${item.name}`}
                           >
-                            <EditOutlinedIcon />
-                          </Button>
+                            <EditIcon />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ))}

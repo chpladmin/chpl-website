@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -28,16 +29,21 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: '16px',
-    gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('lg')]: {
+      display: 'grid',
       gridTemplateColumns: '1fr 1fr',
     },
   },
   fullWidth: {
     gridColumnStart: '1',
     gridColumnEnd: '-1',
+  },
+  titlePadding: {
+    paddingTop: '16px',
+    paddingBottom: '16px',
   },
 });
 
@@ -155,8 +161,8 @@ function ChplJobs() {
   };
 
   return (
-    <>
-      <Typography variant="h1">Scheduled Jobs</Typography>
+    <Container maxWidth="lg">
+      <Typography className={classes.titlePadding} variant="h1">Scheduled Jobs</Typography>
       { !job
         && (
           <div className={classes.container}>
@@ -189,7 +195,7 @@ function ChplJobs() {
             dispatch={handleDispatch}
           />
         )}
-    </>
+    </Container>
   );
 }
 

@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  FormHelperText,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -14,20 +15,13 @@ import * as jsJoda from '@js-joda/core';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { job as jobType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  container: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr 1fr',
-    },
+  helperTextSpacing: {
+    marginLeft: '14px',
   },
-  fullWidth: {
-    gridColumnStart: '1',
-    gridColumnEnd: '-1',
+  subHeaderColor: {
+    color: '#000000',
   },
 });
 
@@ -75,33 +69,32 @@ function ChplSystemTriggerCreate(props) {
     <>
       <Card>
         <CardHeader
-          className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h6' }}
+          titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`Run Job: ${job.name}`}
+          subheader={(
+            <Typography className={classes.subHeaderColor} variant="body1">
+              {job.description}
+            </Typography>
+          )}
         />
-        <CardContent className={classes.container}>
-          <Typography>
-            Job Name
-            <br />
-            { job.name }
-          </Typography>
-          <Typography>
-            Job Description
-            <br />
-            { job.description }
-          </Typography>
-          <ChplTextField
-            id="run-time"
-            name="runTime"
-            label="Run Time"
-            type="datetime-local"
-            required
-            value={formik.values.runTime}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.runTime && !!formik.errors.runTime}
-            helperText={formik.touched.runTime && formik.errors.runTime}
-          />
+        <CardContent>
+          <Card>
+            <CardContent>
+              <ChplTextField
+                id="run-time"
+                name="runTime"
+                label="Run Time"
+                type="datetime-local"
+                required
+                value={formik.values.runTime}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.runTime && !!formik.errors.runTime}
+                helperText={formik.touched.runTime && formik.errors.runTime}
+              />
+              <FormHelperText className={classes.helperTextSpacing}>All times should be entered as Eastern Time (ET)</FormHelperText>
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
       <ChplActionBar
