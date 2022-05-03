@@ -173,6 +173,7 @@ function ChplUserTriggerEdit(props) {
               />
             </CardContent>
           </Card>
+          <div className={classes.subContainer}>
               { showRange
             && (
           <Card>
@@ -193,7 +194,6 @@ function ChplUserTriggerEdit(props) {
             </CardContent>
           </Card>
             )}
-          <div className={classes.subContainer}>
             <ChplCronGen
               initialValue={trigger.cronSchedule || '0 0 4 1/1 * ? *'}
               dispatch={handleCronDispatch}
