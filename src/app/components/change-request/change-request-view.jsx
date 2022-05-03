@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Card,
@@ -9,18 +9,20 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import Moment from 'react-moment';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-
-import { getAngularService } from '../../services/angular-react-helper';
-import { changeRequest as changeRequestProp } from '../../shared/prop-types';
-import { ChplAvatar } from '../util';
-import { UserContext } from '../../shared/contexts';
-import theme from '../../themes/theme';
 
 import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
+
+import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
+import { ChplAvatar } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import { FlagContext, UserContext } from 'shared/contexts';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -80,6 +82,13 @@ const useStyles = makeStyles({
   cardHeader: {
     fontWeight: '600',
   },
+  deleteButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
 });
 
 const getChangeRequestDetails = (cr) => {
@@ -107,6 +116,8 @@ const getChangeRequestDetails = (cr) => {
 
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
+  const [isConfirming, setIsConfirming] = useState(false);
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
@@ -123,80 +134,138 @@ function ChplChangeRequestView(props) {
       && changeRequest.currentStatus.changeRequestStatusType.name !== 'Pending Developer Action';
   };
 
+  const canWithdraw = () => hasAnyRole(['ROLE_DEVELOPER'])
+        && isOn('attestations-edit')
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
+        && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
+        && changeRequest.changeRequestType.name === 'Developer Attestation Change Request';
+
+  const editCr = () => {
+    props.dispatch('edit');
+  };
+
+  const withdrawCr = () => {
+    setIsConfirming(true);
+  };
+
+  const handleConfirmation = (response) => {
+    if (response === 'yes') {
+      const payload = {
+        ...changeRequest,
+        currentStatus: {
+          changeRequestStatusType: { id: 5, name: 'Cancelled by Requester' },
+          comment: '',
+        },
+      };
+      props.dispatch('save', payload);
+    }
+    setIsConfirming(false);
+  };
+
   return (
-    <Card className={classes.productCard}>
-      <div className={classes.cardHeaderContainer}>
-        <ChplAvatar
-          text={changeRequest.developer.name}
-        />
-        <Typography gutterBottom className={classes.cardHeader} variant="h4">{changeRequest.changeRequestType.name}</Typography>
-      </div>
-      <div className={classes.cardSubHeaderContainer}>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Developer:</Typography>
-          <Typography variant="body1">{changeRequest.developer.name}</Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-          <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
-          <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
-          <Typography variant="body1">
-            <Moment
-              withTitle
-              titleFormat="DD MMM yyyy"
-              fromNow
-            >
-              {changeRequest.currentStatus.statusChangeDate}
-            </Moment>
-          </Typography>
-        </div>
-        <div>
-          <Typography gutterBottom variant="subtitle2">
-            Associated ONC-ACB
-            { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
-          </Typography>
-          { changeRequest.certificationBodies.length > 0
-            ? (
-              <ul>
-                {changeRequest.certificationBodies.map((acb) => (
-                  <li key={acb.name}>{acb.name}</li>
-                ))}
-              </ul>
-            ) : (
-              <Typography variant="body1">
-                None
-              </Typography>
-            )}
-        </div>
-      </div>
-      <Divider />
-      <CardContent className={classes.cardContentContainer}>
-        <div className={classes.cardContentChangeRequest}>
-          <div>
-            {getChangeRequestDetails(changeRequest)}
+    <>
+      { isConfirming
+        && (
+          <ChplActionBarConfirmation
+            dispatch={handleConfirmation}
+            pendingMessage="Are you sure you want to withdraw this submission?"
+          />
+        )}
+      <Card className={classes.productCard}>
+        <CardContent className={classes.cardContentContainer}>
+          <div className={classes.cardHeaderContainer}>
+            <ChplAvatar
+              text={changeRequest.developer.name}
+            />
+            <Typography gutterBottom className={classes.cardHeader} variant="h4">{changeRequest.changeRequestType.name}</Typography>
           </div>
-          <div className={classes.actionsContainer}>
+          <div className={classes.cardSubHeaderContainer}>
             <div>
+              <Typography gutterBottom variant="subtitle2">Developer:</Typography>
+              <Typography variant="body1">{changeRequest.developer.name}</Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
+              <Typography variant="body1">{DateUtil.getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
+              <Typography variant="body1">{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">Time Since Last Status Change:</Typography>
+              <Typography variant="body1">
+                <Moment
+                  withTitle
+                  titleFormat="DD MMM yyyy"
+                  fromNow
+                >
+                  {changeRequest.currentStatus.statusChangeDate}
+                </Moment>
+              </Typography>
+            </div>
+            <div>
+              <Typography gutterBottom variant="subtitle2">
+                Associated ONC-ACB
+                { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
+              </Typography>
+              { changeRequest.certificationBodies.length > 0
+                ? (
+                  <ul>
+                    {changeRequest.certificationBodies.map((acb) => (
+                      <li key={acb.name}>{acb.name}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <Typography variant="body1">
+                    None
+                  </Typography>
+                )}
+              { changeRequest.certificationBodies.length > 0
+                ? (
+                  <ul>
+                    {changeRequest.certificationBodies.map((acb) => (
+                      <li key={acb.name}>{acb.name}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <Typography variant="body1">
+                    None
+                  </Typography>
+                )}
+            </div>
+          </div>
+          <Divider />
+          <div className={classes.cardContentChangeRequest}>
+            <div>
+              {getChangeRequestDetails(changeRequest)}
+            </div>
+            <div className={classes.actionsContainer}>
               {canEdit()
                && (
                  <Button
                    fullWidth
                    color="secondary"
                    variant="contained"
-                   onClick={() => props.dispatch('edit')}
+                   onClick={editCr}
                  >
                    Edit Change Request
                    <EditOutlinedIcon className={classes.iconSpacing} />
                  </Button>
                )}
-            </div>
-            <div>
+              {canWithdraw()
+               && (
+                 <Button
+                   fullWidth
+                   variant="contained"
+                   className={classes.deleteButton}
+                   onClick={withdrawCr}
+                 >
+                   Withdraw Change Request
+                   <DeleteOutlinedIcon className={classes.iconSpacing} />
+                 </Button>
+               )}
               <Button
                 fullWidth
                 color="default"
@@ -208,12 +277,12 @@ function ChplChangeRequestView(props) {
               </Button>
             </div>
           </div>
-        </div>
-        <ChplChangeRequestHistory
-          changeRequest={changeRequest}
-        />
-      </CardContent>
-    </Card>
+          <ChplChangeRequestHistory
+            changeRequest={changeRequest}
+          />
+        </CardContent>
+      </Card>
+    </>
   );
 }
 

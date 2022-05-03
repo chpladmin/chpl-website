@@ -44,7 +44,7 @@ import {
   ChplSortableHeaders,
 } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const CUSTOM_FIELD_COUNT = 7;
@@ -165,10 +165,12 @@ const sortComparator = (property) => {
 };
 
 function ChplChangeRequestsView(props) {
+  const $state = getAngularService('$state');
+  const DateUtil = getAngularService('DateUtil');
   const { disallowedFilters, preFilter } = props;
   const csvExporter = new ExportToCsv(csvOptions);
-  const DateUtil = getAngularService('DateUtil');
   const { enqueueSnackbar } = useSnackbar();
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
@@ -219,6 +221,9 @@ function ChplChangeRequestsView(props) {
       .filter((item) => filtersShouldShow(item, filters))
       .sort(sortComparator(comparator));
     setChangeRequests(crs);
+    if (changeRequest?.id) {
+      setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
+    }
   }, [data, isLoading, isSuccess, DateUtil, comparator, filters, searchTerm, preFilter]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -268,7 +273,13 @@ function ChplChangeRequestsView(props) {
         setChangeRequest(undefined);
         break;
       case 'edit':
-        setMode('edit');
+        if (hasAnyRole(['ROLE_DEVELOPER'])
+            && changeRequest.changeRequestType.name === 'Developer Attestation Change Request'
+            && isOn('attestations-edit')) {
+          $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
+        } else {
+          setMode('edit');
+        }
         break;
       case 'save':
         save(payload);
