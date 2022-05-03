@@ -102,10 +102,9 @@ function ChplEditableJobEdit(props) {
           titleTypographyProps={{ variant: 'h5' }}
           title={`Edit Job: ${job.name}`}
           subheader={`${job.description}`}
-          subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
+          subheaderTypographyProps={{ variant: 'body1' }} // Invalid prop `color` of value `#000000` supplied to `ForwardRef(Typography)`, expected one of ["initial","inherit","primary","secondary","textPrimary","textSecondary","error"]
         />
-        <CardContent>
-          <div className={classes.container}>
+        <CardContent className={classes.container}>
             <Card>
               <CardContent>
                 <Typography gutterBottom variant="subtitle1">
@@ -157,7 +156,6 @@ function ChplEditableJobEdit(props) {
                 </div>
               </CardContent>
             </Card>
-          </div>
         </CardContent>
       </Card>
       <ChplActionBar
