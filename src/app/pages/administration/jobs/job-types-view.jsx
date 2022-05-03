@@ -40,9 +40,6 @@ const useStyles = makeStyles({
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#fff',
   },
-  cardSpacing: {
-    marginTop: '32px',
-  },
 });
 
 const groupMapping = {
@@ -124,7 +121,7 @@ function ChplJobTypesView(props) {
   };
 
   return (
-    <Card className={classes.cardSpacing}>
+    <Card>
       <CardHeader title="Types of Jobs" />
       <CardContent>
         <TableContainer className={classes.container} component={Paper}>
