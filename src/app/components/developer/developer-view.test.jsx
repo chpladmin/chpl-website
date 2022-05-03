@@ -25,13 +25,13 @@ const developerMock = {
   name: 'developer name',
 };
 
+const flagContextMock = {
+  demographicChangeRequestIsOn: false,
+};
+
 const userContextMock = {
   hasAnyRole: () => true,
   hasAuthorityOn: () => true,
-};
-
-const flagContextMock = {
-  demographicChangeRequestIsOn: false,
 };
 
 describe('the ChplDeveloperView component', () => {

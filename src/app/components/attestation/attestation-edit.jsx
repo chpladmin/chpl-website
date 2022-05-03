@@ -5,14 +5,15 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import {
+  object,
+} from 'prop-types';
 
 import ChplAttestationWizard from './attestation-wizard';
 import interpretLink from './attestation-util';
 
-import { useFetchAttestationData } from 'api/attestations';
-import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
+import { usePutChangeRequest } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
-import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -20,44 +21,35 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplAttestationCreate(props) {
+function ChplAttestationEdit(props) {
   const $state = getAngularService('$state');
-  const { developer } = props;
-  const { data, isLoading } = useFetchAttestationData();
-  const crData = useFetchChangeRequestTypes();
-  const { mutate } = usePostChangeRequest();
+  const { changeRequest } = props;
   const { enqueueSnackbar } = useSnackbar();
+  const { mutate } = usePutChangeRequest();
   const [attestationResponses, setAttestationResponses] = useState([]);
-  const [changeRequestType, setChangeRequestType] = useState({});
+  const [developer, setDeveloper] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading) {
+    if (!changeRequest?.details?.attestationResponses) {
       setAttestationResponses([]);
       return;
     }
-    setAttestationResponses(data.attestations
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-      .map((attestation) => ({
+    setAttestationResponses(changeRequest.details.attestationResponses
+      .map((attestationResponse) => ({
+        ...attestationResponse,
         attestation: {
-          ...attestation,
-          display: interpretLink(attestation.description),
-          validResponses: attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
+          ...attestationResponse.attestation,
+          display: interpretLink(attestationResponse.attestation.description),
+          validResponses: attestationResponse.attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
         },
-        response: { response: '' },
       })));
-    setPeriod(data.period);
-  }, [isLoading, data]);
-
-  useEffect(() => {
-    if (crData.isLoading) {
-      return;
-    }
-    setChangeRequestType(crData.data.data.find((type) => type.name === 'Developer Attestation Change Request'));
-  }, [crData.data, crData.isLoading]);
+    setDeveloper(changeRequest.developer);
+    setPeriod(changeRequest.details.attestationPeriod);
+  }, [changeRequest]);
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -70,9 +62,12 @@ function ChplAttestationCreate(props) {
       case 'submit':
         setIsSubmitting(true);
         mutate({
+          ...changeRequest,
           ...payload,
-          changeRequestType,
-          developer,
+          currentStatus: {
+            changeRequestStatusType: { id: 1 },
+            comment: '',
+          },
         }, {
           onSuccess: () => {
             setIsSubmitting(false);
@@ -103,7 +98,7 @@ function ChplAttestationCreate(props) {
     <>
       <Container className={classes.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
-          Submit Attestations
+          Edit Attestations
         </Typography>
       </Container>
       <ChplAttestationWizard
@@ -118,8 +113,8 @@ function ChplAttestationCreate(props) {
   );
 }
 
-export default ChplAttestationCreate;
+export default ChplAttestationEdit;
 
-ChplAttestationCreate.propTypes = {
-  developer: developerPropType.isRequired,
+ChplAttestationEdit.propTypes = {
+  changeRequest: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
