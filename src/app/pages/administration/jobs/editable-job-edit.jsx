@@ -104,11 +104,10 @@ function ChplEditableJobEdit(props) {
           titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`Edit Job: ${job.name}`}
           subheader={(
-            <Typography className={classes.subHeaderColor}>
+            <Typography className={classes.subHeaderColor} variant="body1">
               {job.description}
             </Typography>
           )}
-          subheaderTypographyProps={{ variant: 'body1' }}
         />
         <CardContent>
           <div className={classes.container}>

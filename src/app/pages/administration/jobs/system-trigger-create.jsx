@@ -4,7 +4,7 @@ import {
   CardContent,
   CardHeader,
   FormHelperText,
-  Typography
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
@@ -73,11 +73,10 @@ function ChplSystemTriggerCreate(props) {
           titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`Run Job: ${job.name}`}
           subheader={(
-            <Typography className={classes.subHeaderColor}>
+            <Typography className={classes.subHeaderColor} variant="body1">
               {job.description}
             </Typography>
           )}
-          subheaderTypographyProps={{ variant: 'body1' }}
         />
         <CardContent>
           <Card>
