@@ -14,7 +14,6 @@ import * as jsJoda from '@js-joda/core';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { job as jobType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   helperTextSpacing: {
@@ -70,7 +69,7 @@ function ChplSystemTriggerCreate(props) {
           titleTypographyProps={{ variant: 'h5' }}
           title={`Run Job: ${job.name}`}
           subheader={`${job.description}`}
-          subheaderTypographyProps={{ color: '#000000', variant: 'body1' }}
+          subheaderTypographyProps={{ variant: 'body1' }} // Invalid prop `color` of value `#000000` supplied to `ForwardRef(Typography)`, expected one of ["initial","inherit","primary","secondary","textPrimary","textSecondary","error"]
         />
         <CardContent>
           <Card>
