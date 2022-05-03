@@ -29,9 +29,11 @@ import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    gap: '32px 16px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
     [theme.breakpoints.up('lg')]: {
+      display: 'grid',
       gridTemplateColumns: '1fr 1fr',
     },
   },
