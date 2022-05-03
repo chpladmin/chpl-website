@@ -4,6 +4,7 @@ import {
   CardContent,
   CardHeader,
   FormHelperText,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
@@ -18,6 +19,9 @@ import { job as jobType } from 'shared/prop-types';
 const useStyles = makeStyles({
   helperTextSpacing: {
     marginLeft: '14px',
+  },
+  subHeaderColor: {
+    color: '#000000',
   },
 });
 
@@ -65,11 +69,13 @@ function ChplSystemTriggerCreate(props) {
     <>
       <Card>
         <CardHeader
-          className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h5' }}
+          titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
           title={`Run Job: ${job.name}`}
-          subheader={`${job.description}`}
-          subheaderTypographyProps={{ variant: 'body1' }} // Invalid prop `color` of value `#000000` supplied to `ForwardRef(Typography)`, expected one of ["initial","inherit","primary","secondary","textPrimary","textSecondary","error"]
+          subheader={(
+            <Typography className={classes.subHeaderColor} variant="body1">
+              {job.description}
+            </Typography>
+          )}
         />
         <CardContent>
           <Card>

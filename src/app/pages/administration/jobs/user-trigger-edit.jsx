@@ -32,6 +32,9 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  subHeaderColor: {
+    color: '#000000',
+  },
   acbGrid: {
     display: 'flex',
     flexDirection: 'column',
@@ -151,9 +154,12 @@ function ChplUserTriggerEdit(props) {
       <Card>
         <CardHeader
           titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
-          title={`${trigger.id ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
-          subheader={`${trigger.job.description}`}
-          subheaderTypographyProps={{ variant: 'body1' }} // Invalid prop `color` of value `#000000` supplied to `ForwardRef(Typography)`, expected one of ["initial","inherit","primary","secondary","textPrimary","textSecondary","error"]
+          title={`${trigger.name ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
+          subheader={(
+            <Typography className={classes.subHeaderColor} variant="body1">
+              {trigger.job.description}
+            </Typography>
+          )}
         />
         <CardContent className={classes.cardContainer}>
           <Card>
