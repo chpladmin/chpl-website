@@ -10,9 +10,10 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { getAngularService } from '../../services/angular-react-helper';
-import { changeRequest as changeRequestProp } from '../../shared/prop-types';
 import ChplSortableHeaders from '../util/chpl-sortable-headers';
+
+import { getAngularService } from 'services/angular-react-helper';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   container: {
@@ -48,32 +49,15 @@ function ChplChangeRequestHistory(props) {
           // no default
       }
       return updated;
-    }));
+    }).sort((a, b) => b.statusChangeDate - a.statusChangeDate));
   }, [props.changeRequest.developer.name, props.changeRequest.statuses]); // eslint-disable-line react/destructuring-assignment
 
   const headers = [
-    { text: 'Acting Organization', property: 'actingOrganization', sortable: true },
-    { text: 'Date of Status Change', property: 'statusChangeDate', sortable: true },
-    { text: 'Status', property: 'changeRequestStatusTypeName', sortable: true },
+    { text: 'Acting Organization', property: 'actingOrganization' },
+    { text: 'Date of Status Change', property: 'statusChangeDate' },
+    { text: 'Status', property: 'changeRequestStatusTypeName' },
     { text: 'Comments', property: 'comment' },
   ];
-
-  const sortComparator = (property) => {
-    let sortOrder = 1;
-    let key = property;
-    if (key[0] === '-') {
-      sortOrder = -1;
-      key = key.substr(1);
-    }
-    return (a, b) => {
-      const result = (a[key] < b[key]) ? -1 : 1;
-      return result * sortOrder;
-    };
-  };
-
-  const handleTableSort = (event, property, orderDirection) => {
-    setItems(items.sort(sortComparator(orderDirection + property)).map((item) => item));
-  };
 
   return (
     <div className={classes.container}>
@@ -84,7 +68,7 @@ function ChplChangeRequestHistory(props) {
         <Table stickyHeader>
           <ChplSortableHeaders
             headers={headers}
-            onTableSort={handleTableSort}
+            onTableSort={() => {}}
             orderBy="statusChangeDate"
             order="desc"
           />
