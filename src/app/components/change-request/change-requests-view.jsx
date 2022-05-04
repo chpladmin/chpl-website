@@ -332,10 +332,16 @@ function ChplChangeRequestsView(props) {
                 <div>
                   <ChplFilterChips />
                 </div>
-                { (isLoading || !isSuccess || changeRequests.length === 0)
+                { isLoading
                   && (
                     <div className={classes.noResultsContainer}>
                       <CircularProgress />
+                    </div>
+                  )}
+                { (!isLoading && (!isSuccess || changeRequests.length === 0))
+                  && (
+                    <div className={classes.noResultsContainer}>
+                      No results found
                     </div>
                   )}
                 { !isLoading && isSuccess && changeRequests.length > 0
