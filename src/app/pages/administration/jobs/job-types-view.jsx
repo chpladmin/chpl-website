@@ -106,7 +106,7 @@ function ChplJobTypesView(props) {
         action: getAction(job, dispatch),
       }))
       .sort(sortComparator('name')));
-  }, [props.jobTypes, dispatch]); // eslint-disable-line react/destructuring-assignment
+  }, []);
 
   const filterHeaders = () => headers.filter((item) => hasAnyRole(['ROLE_ADMIN'])
                           || (item.property === 'oncAcbSpecific' && hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF']))
@@ -173,11 +173,6 @@ function ChplJobTypesView(props) {
 export default ChplJobTypesView;
 
 ChplJobTypesView.propTypes = {
-  jobTypes: arrayOf(jobType),
-  dispatch: func,
-};
-
-ChplJobTypesView.defaultProps = {
-  jobTypes: [],
-  dispatch: () => {},
+  jobTypes: arrayOf(jobType).isRequired,
+  dispatch: func.isRequired,
 };
