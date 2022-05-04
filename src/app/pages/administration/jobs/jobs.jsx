@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  CircularProgress,
   Container,
   Typography,
   makeStyles,
@@ -167,23 +168,46 @@ function ChplJobs() {
         && (
           <div className={classes.container}>
             <div className={hasAnyRole(['ROLE_ADMIN']) ? '' : classes.fullWidth}>
-              <ChplUserTriggersView
-                acbs={acbs}
-                triggers={userTriggers}
-                dispatch={handleDispatch}
-              />
+              { (userQuery.isLoading || !userQuery.isSuccess)
+                && (
+                  <CircularProgress />
+                )}
+              { !userQuery.isLoading && userQuery.isSuccess
+                && (
+                  <ChplUserTriggersView
+                    acbs={acbs}
+                    triggers={userTriggers}
+                    dispatch={handleDispatch}
+                  />
+                )}
             </div>
             { hasAnyRole(['ROLE_ADMIN'])
               && (
-                <ChplSystemTriggersView
-                  triggers={systemTriggers}
-                />
+                <>
+                  { (systemQuery.isLoading || !systemQuery.isSuccess)
+                    && (
+                      <CircularProgress />
+                    )}
+                  { !systemQuery.isLoading && systemQuery.isSuccess
+                    && (
+                      <ChplSystemTriggersView
+                        triggers={systemTriggers}
+                      />
+                    )}
+                </>
               )}
             <div className={classes.fullWidth}>
-              <ChplJobTypesView
-                jobTypes={jobTypes}
-                dispatch={handleDispatch}
-              />
+              { (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess)
+                && (
+                  <CircularProgress />
+                )}
+              { !jobTypeQuery.isLoading && jobTypeQuery.isSuccess && jobTypes.length > 0
+                && (
+                  <ChplJobTypesView
+                    jobTypes={jobTypes}
+                    dispatch={handleDispatch}
+                  />
+                )}
             </div>
           </div>
         )}
