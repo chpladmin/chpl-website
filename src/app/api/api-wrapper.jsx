@@ -4,18 +4,21 @@ import {
   QueryClientProvider,
 } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { element } from 'prop-types';
+import { bool, element } from 'prop-types';
 
 import { AxiosProvider } from './axios';
 
 const queryClient = new QueryClient();
 
-function ApiWrapper({ children }) {
+function ApiWrapper({ children, showQueryTools }) {
   return (
     <AxiosProvider>
       <QueryClientProvider client={queryClient}>
         {children}
-        <ReactQueryDevtools initialIsOpen={false} />
+        { showQueryTools
+          && (
+            <ReactQueryDevtools initialIsOpen={false} />
+          )}
       </QueryClientProvider>
     </AxiosProvider>
   );
@@ -25,4 +28,9 @@ export default ApiWrapper;
 
 ApiWrapper.propTypes = {
   children: element.isRequired,
+  showQueryTools: bool,
+};
+
+ApiWrapper.defaultProps = {
+  showQueryTools: true,
 };
