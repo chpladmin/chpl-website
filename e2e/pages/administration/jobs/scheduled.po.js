@@ -3,7 +3,7 @@ class ScheduledPage {
     this.elements = {
       availableJobTable: 'table[aria-label="Types of Jobs table"]',
       button: (name) => `button[aria-label="Schedule Job ${name}"]`,
-      availableAcbs: 'ul[aria-label="ONC-ACBs available to schedule"]',
+      availableAcbs: 'div[aria-label="ONC-ACBs available to schedule"]',
     };
   }
 
@@ -20,8 +20,8 @@ class ScheduledPage {
 
   getAvailableAcbs() {
     const list = $(this.elements.availableAcbs);
-    const items = list.$$('li');
-    const acbs = items.map((acb) => acb.getText());
+    const items = list.$$('div');
+    const acbs = items.map((acb) => acb.$('label').getText());
     return acbs;
   }
 }
