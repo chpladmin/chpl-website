@@ -131,7 +131,7 @@
 
         describe('of direct reviews', () => {
           it('should set status on success', () => {
-            networkService.getDirectReviews.and.returnValue($q.when([{id: 1, nonConformities: []}, {id: 2, nonConformities: []}]));
+            networkService.getDirectReviews.and.returnValue($q.when([{ id: 1, nonConformities: [] }, { id: 2, nonConformities: [] }]));
             ctrl.drStatus = 'unknown';
             ctrl.$onInit();
             scope.$digest();

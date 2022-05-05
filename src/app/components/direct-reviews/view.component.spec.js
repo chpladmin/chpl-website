@@ -1,53 +1,54 @@
 (() => {
-  'use strict';
-
   describe('the Direct Reviews component', () => {
-    var $log, ctrl, el, mock, scope;
+    let $log;
+    let ctrl;
+    let el;
+    let scope;
 
-    mock = [{
+    const mock = [{
       id: 'closed-1',
       nonConformities: [{
         nonConformityStatus: 'Closed',
         capApprovalDate: 30000,
         capEndDate: 40000,
       }],
-    },{
+    }, {
       id: 'closed-2',
       nonConformities: [{
         nonConformityStatus: 'Closed',
         capApprovalDate: 50000,
         capEndDate: 60000,
-      },{
+      }, {
         nonConformityStatus: 'Closed',
         capApprovalDate: 50000,
         capEndDate: 70000,
       }],
-    },{
+    }, {
       id: 'open-1',
       nonConformities: [{
         nonConformityStatus: 'Closed',
         capApprovalDate: 25000,
         capEndDate: 30000,
-      },{
+      }, {
         nonConformityStatus: 'Open',
         capApprovalDate: 25000,
         capEndDate: undefined,
-      },{
+      }, {
         nonConformityStatus: 'Closed',
         capApprovalDate: 25000,
         capEndDate: 40000,
       }],
-    },{
+    }, {
       id: 'open-2',
       nonConformities: [{
         nonConformityStatus: 'Closed',
         capApprovalDate: 20000,
         capEndDate: 30000,
-      },{
+      }, {
         nonConformityStatus: 'Open',
         capApprovalDate: 20000,
         capEndDate: undefined,
-      },{
+      }, {
         nonConformityStatus: 'Open',
         capApprovalDate: 20000,
         capEndDate: undefined,
@@ -74,7 +75,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
