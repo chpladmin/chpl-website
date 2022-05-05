@@ -13,21 +13,33 @@ export const DirectReviewsComponent = {
     $onChanges (changes) {
       if (changes.directReviews && changes.directReviews.currentValue) {
         this.directReviews = changes.directReviews.currentValue
-          .filter(dr => dr.startDate)
           .map(dr => {
             let open = dr.nonConformities
-              .filter(nc => nc.nonConformityStatus === 'Open')
-              .length;
+                .filter(nc => nc.nonConformityStatus === 'Open');
             let total = dr.nonConformities.length;
-            if (open > 0) {
-              dr.ncSummary = open + ' open / ' + total;
+            if (open.length > 0) {
+              dr.ncSummary = open.length + ' open / ' + total;
             } else if (total > 0) {
               dr.ncSummary = total + ' closed';
             } else {
               dr.ncSummary = 'no';
             }
             dr.ncSummary += ' non-conformit' + (total !== 1 ? 'ies' : 'y') + ' found';
-            return dr;
+            const startDate = dr.nonConformities
+                  .filter((nc) => nc.capApprovalDate)
+                  .sort((a, b) => a.capApprovalDate - b.capApprovalDate)
+            [0]?.capApprovalDate;
+            const endDates = dr.nonConformities
+                  .filter((nc) => nc.capApprovalDate)
+                  .filter((nc) => nc.capEndDate)
+                  .sort((a, b) => b.capEndDate - a.capEndDate);
+            const endDate = open.length === 0 && endDates[0]?.capEndDate;
+            console.log(dr.startDate, startDate, dr.endDate, endDate);
+            return {
+              ...dr,
+              startDate,
+              endDate,
+            };
           })
           .sort((a, b) => {
             if (a.endDate && b.endDate) {
