@@ -13,14 +13,12 @@ export const DirectReviewsNonConformitiesComponent = {
     $onChanges (changes) {
       if (changes.nonConformities && changes.nonConformities.currentValue) {
         this.nonConformities = changes.nonConformities.currentValue
-          .map(nc => {
-            nc.friendlyCapApprovalDate = this.DateUtil.getDisplayDateFormat(nc.capApprovalDate, 'Has not been determined');
-            nc.friendlyCapEndDate = this.DateUtil.getDisplayDateFormat(nc.capEndDate, 'Has not been completed');
-            nc.friendlyCapMustCompleteDate = this.DateUtil.getDisplayDateFormat(nc.capMustCompleteDate, 'Has not been determined');
-            nc.friendlyCapStartDate = this.DateUtil.getDisplayDateFormat(nc.capStartDate, 'Has not begun');
-            nc.friendlyDateOfDetermination = this.DateUtil.getDisplayDateFormat(nc.dateOfDetermination, 'Has not been determined');
-            return nc;
-          })
+          .map((nc) => ({
+            ...nc,
+            friendlyCapApprovalDate: this.DateUtil.getDisplayDateFormat(nc.capApprovalDate, 'Has not been determined'),
+            friendlyCapMustCompleteDate: this.DateUtil.getDisplayDateFormat(nc.capMustCompleteDate, 'Has not been determined'),
+            friendlyCapEndDate: this.DateUtil.getDisplayDateFormat(nc.capEndDate, 'Has not been completed'),
+          }))
           .sort((a, b) => {
             if (a.nonConformityStatus && b.nonConformityStatus) {
               return a.nonConformityStatus < b.nonConformityStatus ? 1 : a.nonConformityStatus > b.nonConformityStatus ? -1 : 0;

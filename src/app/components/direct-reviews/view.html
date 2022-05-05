@@ -9,10 +9,8 @@
       <div class="direct-review__header-nc-summary">{{ dr.ncSummary }}</div>
       <div class="direct-review__header-toggle"><i class="fa fa-lg" ng-class="dr.open ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
     </div>
-    <div class="direct-review__basic-information panel-body" ng-if="dr.open">
-      <div class="direct-review__non-conformities">
-        <chpl-direct-reviews-non-conformities non-conformities="dr.nonConformities"></chpl-direct-reviews-non-conformities>
-      </div>
+    <div class="panel-body" ng-if="dr.open">
+      <chpl-direct-reviews-non-conformities non-conformities="dr.nonConformities"></chpl-direct-reviews-non-conformities>
     </div>
   </div>
 </div>
