@@ -1,44 +1,46 @@
-export const DirectReviewsComponent = {
+const DirectReviewsComponent = {
   templateUrl: 'chpl.components/direct-reviews/view.html',
   bindings: {
     directReviews: '<',
   },
   controller: class DirectReviewsController {
-    constructor ($log, DateUtil) {
+    constructor($log, DateUtil) {
       'ngInject';
+
       this.$log = $log;
       this.DateUtil = DateUtil;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.directReviews && changes.directReviews.currentValue) {
         this.directReviews = changes.directReviews.currentValue
-          .map(dr => {
-            let open = dr.nonConformities
-                .filter(nc => nc.nonConformityStatus === 'Open');
-            let total = dr.nonConformities.length;
-            if (open.length > 0) {
-              dr.ncSummary = open.length + ' open / ' + total;
+          .map((dr) => {
+            const open = dr.nonConformities
+              .filter((nc) => nc.nonConformityStatus === 'Open')
+              .length;
+            const total = dr.nonConformities.length;
+            let { ncSummary } = dr;
+            if (open > 0) {
+              ncSummary = `${open} open / ${total}`;
             } else if (total > 0) {
-              dr.ncSummary = total + ' closed';
+              ncSummary = `${total} closed`;
             } else {
-              dr.ncSummary = 'no';
+              ncSummary = 'no';
             }
-            dr.ncSummary += ' non-conformit' + (total !== 1 ? 'ies' : 'y') + ' found';
+            ncSummary += ` non-conformit${total !== 1 ? 'ies' : 'y'} found`;
             const startDate = dr.nonConformities
-                  .filter((nc) => nc.capApprovalDate)
-                  .sort((a, b) => a.capApprovalDate - b.capApprovalDate)
-            [0]?.capApprovalDate;
+              .filter((nc) => nc.capApprovalDate)
+              .sort((a, b) => a.capApprovalDate - b.capApprovalDate)[0]?.capApprovalDate;
             const endDates = dr.nonConformities
-                  .filter((nc) => nc.capApprovalDate)
-                  .filter((nc) => nc.capEndDate)
-                  .sort((a, b) => b.capEndDate - a.capEndDate);
-            const endDate = open.length === 0 && endDates[0]?.capEndDate;
-            console.log(dr.startDate, startDate, dr.endDate, endDate);
+              .filter((nc) => nc.capApprovalDate)
+              .filter((nc) => nc.capEndDate)
+              .sort((a, b) => b.capEndDate - a.capEndDate);
+            const endDate = open === 0 && endDates[0]?.capEndDate;
             return {
               ...dr,
               startDate,
               endDate,
+              ncSummary,
               nonConformities: dr.nonConformities
                 .map((nc) => ({
                   ...nc,
@@ -48,7 +50,7 @@ export const DirectReviewsComponent = {
                 }))
                 .sort((a, b) => {
                   if (a.nonConformityStatus && b.nonConformityStatus) {
-                    return a.nonConformityStatus < b.nonConformityStatus ? 1 : a.nonConformityStatus > b.nonConformityStatus ? -1 : 0;
+                    return a.nonConformityStatus < b.nonConformityStatus ? 1 : -1;
                   }
                   if (!a.nonConformityStatus && !b.nonConformityStatus) {
                     return 0;
@@ -75,3 +77,5 @@ export const DirectReviewsComponent = {
 angular
   .module('chpl.components')
   .component('chplDirectReviews', DirectReviewsComponent);
+
+export default DirectReviewsComponent;
