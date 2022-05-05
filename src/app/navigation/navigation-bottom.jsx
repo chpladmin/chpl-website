@@ -7,7 +7,7 @@ import ChplAnnouncementsDisplay from 'components/announcement/announcements-disp
 function ChplNavigationBottom() {
   return (
     <UserWrapper>
-      <ApiWrapper>
+      <ApiWrapper showQueryTools={false}>
         <footer>
           <nav className="navbar navbar-default navbar-fixed-bottom">
             <div className="container-fluid">

@@ -222,18 +222,6 @@ function ChplChangeRequestView(props) {
                     None
                   </Typography>
                 )}
-              { changeRequest.certificationBodies.length > 0
-                ? (
-                  <ul>
-                    {changeRequest.certificationBodies.map((acb) => (
-                      <li key={acb.name}>{acb.name}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <Typography variant="body1">
-                    None
-                  </Typography>
-                )}
             </div>
           </div>
           <Divider />
