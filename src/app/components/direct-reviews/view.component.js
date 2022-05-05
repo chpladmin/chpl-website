@@ -49,13 +49,17 @@ const DirectReviewsComponent = {
                   friendlyCapEndDate: this.DateUtil.getDisplayDateFormat(nc.capEndDate, 'Has not been completed'),
                 }))
                 .sort((a, b) => {
-                  if (a.nonConformityStatus && b.nonConformityStatus) {
-                    return a.nonConformityStatus < b.nonConformityStatus ? 1 : -1;
+                  if (a.capApprovalDate && b.capApprovalDate) {
+                    if (a.capApprovalDate < b.capApprovalDate) { return 1; }
+                    if (a.capApprovalDate > b.capApprovalDate) { return -1; }
                   }
-                  if (!a.nonConformityStatus && !b.nonConformityStatus) {
-                    return 0;
+                  if (a.capEndDate && b.capEndDate) {
+                    if (a.capEndDate < b.capEndDate) { return 1; }
+                    if (a.capEndDate > b.capEndDate) { return -1; }
                   }
-                  return a.nonConformityStatus ? -1 : 1;
+                  if (a.capEndDate) { return -1; }
+                  if (b.capEndDate) { return 1; }
+                  return 0;
                 }),
 
             };
