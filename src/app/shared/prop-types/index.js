@@ -18,6 +18,7 @@ import contact from './contact';
 import criterion from './criterion';
 import developer from './developer';
 import formik from './formik';
+import { job, scheduledSystemTrigger, trigger } from './jobs';
 import product from './product';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
@@ -54,6 +55,7 @@ export {
   criterion,
   developer,
   formik,
+  job,
   listing,
   optionalStandard,
   product,
@@ -61,6 +63,7 @@ export {
   reliedUponSoftware,
   resources,
   routerConfig,
+  scheduledSystemTrigger,
   selectedConformanceMethod,
   selectedOptionalStandard,
   selectedSvap,
@@ -78,6 +81,7 @@ export {
   testProcedure,
   testStandard,
   testTool,
+  trigger,
   user,
   version,
 };
