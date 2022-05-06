@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Button,
   Card,
   CardContent,
   CardHeader,
+  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../themes/theme';
-import { getAngularService } from '../../services/angular-react-helper';
-import { ChplTextField } from '../util';
+import { ChplTextField } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import theme from 'themes/theme';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   deleteButton: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
   fileName: {
     wordBreak: 'break-word',
   },
-}));
+});
 
 const validationSchema = yup.object({
   accurateAsOf: yup.date()
@@ -88,7 +88,7 @@ function ChplUploadMeaningfulUse() {
           title: 'Success',
           body: message,
         });
-        $state.go('administration.jobs.scheduled');
+        $state.go('administration.jobs');
       })
       .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;
