@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 11.34.1
+_5 May 2022_
+
+### User Interface Updates
+* Indicate Change Requests are loading
+
+### Flagged Features
+* Enable Editing of Attestation CRs only when flag is on
+* Allow ONC-ACBs to send Attestation CRs back to Developers for editing
+
+---
+
 ## Version 11.34.0
 _2 May 2022_
 

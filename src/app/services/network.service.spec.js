@@ -104,21 +104,6 @@
         });
         $httpBackend.flush();
       });
-
-      it('should return a promise with the data if a DELETE responds with a failure', () => {
-        $httpBackend.expectDELETE(/schedules\/triggers\/CacheStatusAgeTrigger\/something/).respond(500, 'response');
-        networkService.deleteScheduleTrigger({
-          group: 'CacheStatusAgeTrigger',
-          name: 'something',
-        }).then((response) => {
-          response.then((reject) => {
-            expect(reject).toEqual('response');
-          });
-        }, () => {
-          // noop
-        });
-        $httpBackend.flush();
-      });
     });
 
     describe('with respect to caching', () => {
@@ -277,22 +262,6 @@
         $httpBackend.flush();
       });
 
-      it('should createScheduleOneTimeTrigger', () => {
-        $httpBackend.expectPOST(/^\/rest\/schedules\/triggers\/one_time$/).respond(200, { data: 'response' });
-        networkService.createScheduleOneTimeTrigger('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should createScheduleTrigger', () => {
-        $httpBackend.expectPOST(/^\/rest\/schedules\/triggers$/).respond(200, { data: 'response' });
-        networkService.createScheduleTrigger({ email: 'something' }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should createSvap', () => {
         $httpBackend.expectPOST(/^\/rest\/svaps$/).respond(200, { data: 'response' });
         networkService.createSvap({ svapId: 1 }).then((response) => {
@@ -328,17 +297,6 @@
       it('should deleteQuarterlySurveillanceReport', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance-report\/quarterly\/id$/).respond(200);
         networkService.deleteQuarterlySurveillanceReport('id').then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
-      it('should deleteScheduleTrigger', () => {
-        $httpBackend.expectDELETE(/^\/rest\/schedules\/triggers\/CacheStatusAgeTrigger\/something$/).respond(200);
-        networkService.deleteScheduleTrigger({
-          group: 'CacheStatusAgeTrigger',
-          name: 'something',
-        }).then((response) => {
           expect(response.status).toEqual(200);
         });
         $httpBackend.flush();
@@ -1095,30 +1053,6 @@
         $httpBackend.flush();
       });
 
-      it('should getScheduledSystemJobs', () => {
-        $httpBackend.expectGET(/^\/rest\/schedules\/triggers\?jobType=system$/).respond(200, { data: 'response' });
-        networkService.getScheduledSystemJobs().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getScheduleJobs', () => {
-        $httpBackend.expectGET(/^\/rest\/schedules\/jobs$/).respond(200, { data: 'response' });
-        networkService.getScheduleJobs().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getScheduleTriggers', () => {
-        $httpBackend.expectGET(/^\/rest\/schedules\/triggers$/).respond(200, { data: 'response' });
-        networkService.getScheduleTriggers().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getSearchOptions', () => {
         $httpBackend.expectGET(/^\/rest\/data\/search-options$/).respond(200, { data: 'response' });
         networkService.getSearchOptions().then((response) => {
@@ -1648,14 +1582,6 @@
         $httpBackend.flush();
       });
 
-      it('should updateJob', () => {
-        $httpBackend.expectPUT(/^\/rest\/schedules\/jobs$/).respond(200, { data: 'response' });
-        networkService.updateJob('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should updateQuarterlySurveillanceReport', () => {
         $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly$/).respond(200, { data: 'response' });
         networkService.updateQuarterlySurveillanceReport('payload').then((response) => {
@@ -1683,14 +1609,6 @@
       it('should updateRelevantSurveillance', () => {
         $httpBackend.expectPUT(/^\/rest\/surveillance-report\/quarterly\/qid\/surveillance\/sid$/).respond(200, { data: 'response' });
         networkService.updateRelevantSurveillance('qid', { id: 'sid' }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should updateScheduleTrigger', () => {
-        $httpBackend.expectPUT(/^\/rest\/schedules\/triggers$/).respond(200, { data: 'response' });
-        networkService.updateScheduleTrigger({ name: 'something' }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
