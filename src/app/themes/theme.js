@@ -314,6 +314,11 @@ const theme = createTheme({
     MuiTableHead: {
       root: {
         borderRadius: '8px',
+        backgroundColor: '#ffffff',
+        top: '0',
+        position: 'sticky',
+        zIndex: '100',
+        boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
         '&:hover': {
           backgroundColor: '#ffffff',
         },
