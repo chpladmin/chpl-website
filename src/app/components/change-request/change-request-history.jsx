@@ -10,8 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import ChplSortableHeaders from '../util/chpl-sortable-headers';
-
+import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
@@ -24,6 +23,13 @@ const useStyles = makeStyles({
     border: '.5px solid #c2c6ca',
   },
 });
+
+const headers = [
+  { text: 'Acting Organization', property: 'actingOrganization' },
+  { text: 'Date of Status Change', property: 'statusChangeDate' },
+  { text: 'Status', property: 'changeRequestStatusTypeName' },
+  { text: 'Comments', property: 'comment' },
+];
 
 function ChplChangeRequestHistory(props) {
   const DateUtil = getAngularService('DateUtil');
@@ -51,13 +57,6 @@ function ChplChangeRequestHistory(props) {
       return updated;
     }).sort((a, b) => b.statusChangeDate - a.statusChangeDate));
   }, [props.changeRequest.developer.name, props.changeRequest.statuses]); // eslint-disable-line react/destructuring-assignment
-
-  const headers = [
-    { text: 'Acting Organization', property: 'actingOrganization' },
-    { text: 'Date of Status Change', property: 'statusChangeDate' },
-    { text: 'Status', property: 'changeRequestStatusTypeName' },
-    { text: 'Comments', property: 'comment' },
-  ];
 
   return (
     <div className={classes.container}>
