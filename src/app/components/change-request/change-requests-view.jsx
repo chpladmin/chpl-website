@@ -42,8 +42,8 @@ import {
 import {
   ChplAvatar,
   ChplPagination,
-  ChplSortableHeaders,
 } from 'components/util';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
@@ -152,19 +152,6 @@ const getCustomFields = (item) => {
   }
 };
 
-const sortComparator = (property) => {
-  let sortOrder = 1;
-  let key = property;
-  if (key[0] === '-') {
-    sortOrder = -1;
-    key = key.substr(1);
-  }
-  return (a, b) => {
-    const result = (a[key] < b[key]) ? -1 : 1;
-    return result * sortOrder;
-  };
-};
-
 function ChplChangeRequestsView(props) {
   const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');
@@ -176,7 +163,8 @@ function ChplChangeRequestsView(props) {
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
-  const [comparator, setComparator] = useState('currentStatusChangeDate');
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('currentStatusChangeDate');
   const [mode, setMode] = useState('view');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -220,27 +208,27 @@ function ChplChangeRequestsView(props) {
       .filter((item) => preFilter(item))
       .filter((item) => searchTermShouldShow(item, searchTerm))
       .filter((item) => filtersShouldShow(item, filters))
-      .sort(sortComparator(comparator));
+      .sort(sortComparator(orderBy, order === 'desc'));
     setChangeRequests(crs);
     if (changeRequest?.id) {
       setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
     }
-  }, [data, isLoading, isSuccess, DateUtil, comparator, filters, searchTerm, preFilter]);
+  }, [data, isLoading, isSuccess, DateUtil, orderBy, order, filters, searchTerm, preFilter]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
     { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
     { property: 'currentStatusName', text: 'Request Status', sortable: true },
-    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
-    { property: 'actions', text: 'Actions', invisible: true, sortable: false },
+    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
+    { property: 'actions', text: 'Actions', invisible: true },
   ] : [
     { property: 'developerName', text: 'Developer', sortable: true },
     { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
-    { property: 'receivedDate', text: 'Creation Date', sortable: true },
+    { property: 'receivedDate', text: 'Creation Date', sortable: true, reverseDefault: true },
     { property: 'currentStatusName', text: 'Request Status', sortable: true },
-    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
+    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
     { property: 'associatedAcbs', text: 'Associated ONC-ACBs' },
-    { property: 'actions', text: 'Actions', invisible: true, sortable: false },
+    { property: 'actions', text: 'Actions', invisible: true },
   ];
 
   const save = (request) => {
@@ -290,7 +278,8 @@ function ChplChangeRequestsView(props) {
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    setComparator(orderDirection + property);
+    setOrderBy(property);
+    setOrder(orderDirection);
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, changeRequests.length - page * rowsPerPage);
@@ -380,8 +369,9 @@ function ChplChangeRequestsView(props) {
                           <ChplSortableHeaders
                             headers={headers}
                             onTableSort={handleTableSort}
-                            orderBy="currentStatusChangeDate"
-                            order="asc"
+                            orderBy={orderBy}
+                            order={order}
+                            stickyHeader
                           />
                           <TableBody>
                             {changeRequests
