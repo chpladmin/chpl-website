@@ -50,8 +50,8 @@
       vm.productChoice = choice;
     }
 
-    function selectInspectingVersion(versionId) {
-      vm.cp.version.versionId = versionId;
+    function selectInspectingVersion(id) {
+      vm.cp.version.id = id;
     }
 
     function setVersionChoice(choice) {
@@ -198,7 +198,7 @@
         case 'prd':
           return (vm.productChoice === 'choose' && !vm.cp.product.id);
         case 'ver':
-          return (vm.versionChoice === 'choose' && !vm.cp.version.versionId);
+          return (vm.versionChoice === 'choose' && !vm.cp.version.id);
         default:
           return true;
       }

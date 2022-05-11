@@ -1512,7 +1512,7 @@
 
       it('should splitVersion', () => {
         $httpBackend.expectPOST(/^\/rest\/versions\/1\/split$/).respond(200, { data: 'response' });
-        networkService.splitVersion({ oldVersion: { versionId: 1 } }).then((response) => {
+        networkService.splitVersion({ oldVersion: { id: 1 } }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

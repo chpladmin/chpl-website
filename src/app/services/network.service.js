@@ -590,8 +590,8 @@ export default class NetworkService {
     return this.apiGET(`/developers/${id}/users`);
   }
 
-  getVersion(versionId) {
-    return this.apiGET(`/versions/${versionId}`);
+  getVersion(id) {
+    return this.apiGET(`/versions/${id}`);
   }
 
   getVersionActivity(activityRange) {
@@ -700,7 +700,7 @@ export default class NetworkService {
   }
 
   splitVersion(versionObject) {
-    return this.apiPOST(`/versions/${versionObject.oldVersion.versionId}/split`, versionObject);
+    return this.apiPOST(`/versions/${versionObject.oldVersion.id}/split`, versionObject);
   }
 
   submitChangeRequest(request) {

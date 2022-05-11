@@ -7,11 +7,11 @@
     mock = {
       developer: {
         developerId: 22,
-        versions: [{versionId: 32}, {versionId: 39}, {versionId: 44}],
+        versions: [{id: 32}, {id: 39}, {id: 44}],
       },
       stateParams: {
         developerId: 22,
-        versionId: 32,
+        id: 32,
       },
     };
 
@@ -32,7 +32,7 @@
         networkService = _networkService_;
         networkService.updateVersion.and.returnValue($q.when({
           version: 'a version',
-          versionId: 32,
+          id: 32,
         }));
 
         scope = $rootScope.$new();

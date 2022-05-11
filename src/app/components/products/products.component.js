@@ -186,7 +186,7 @@ const ProductsComponent = {
     editVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.edit', {
         productId: product.id,
-        versionId: product.activeVersion.versionId,
+        versionId: product.activeVersion.id,
       });
     }
 
@@ -225,7 +225,7 @@ const ProductsComponent = {
     mergeVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.merge', {
         productId: product.id,
-        versionId: product.activeVersion.versionId,
+        versionId: product.activeVersion.id,
       });
     }
 
@@ -242,7 +242,7 @@ const ProductsComponent = {
     splitVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.split', {
         productId: product.id,
-        versionId: product.activeVersion.versionId,
+        versionId: product.activeVersion.id,
       });
     }
 

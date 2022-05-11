@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6" ng-if="!$ctrl.pendingVersion.versionId" id="version-new">
+    <div class="col-sm-6" ng-if="!$ctrl.pendingVersion.id" id="version-new">
       <h3>System version information</h3>
       <p>This is the version information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
       <div class="panel panel-ai">
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6" ng-if="$ctrl.pendingVersion.versionId" id="version-system">
+    <div class="col-sm-6" ng-if="$ctrl.pendingVersion.id" id="version-system">
       <h3>System version information</h3>
       <p>This is the version information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
       <div class="panel panel-ai">

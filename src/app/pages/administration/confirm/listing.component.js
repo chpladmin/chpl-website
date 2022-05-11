@@ -205,8 +205,8 @@ const ConfirmListingComponent = {
       } else {
         that.versions = [];
       }
-      if (this.pending.version && this.pending.version.versionId) {
-        this.networkService.getVersion(this.pending.version.versionId)
+      if (this.pending.version && this.pending.version.id) {
+        this.networkService.getVersion(this.pending.version.id)
           .then((result) => {
             that.stage = 'version';
             that.staged = result;

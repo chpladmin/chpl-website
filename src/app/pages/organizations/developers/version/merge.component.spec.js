@@ -15,7 +15,7 @@
         id: 22,
         products: [{
           id: 32,
-          versions: [{ versionId: 55 }, { versionId: 77 }, { versionId: 99 }],
+          versions: [{ id: 55 }, { id: 77 }, { id: 99 }],
         }],
       },
       stateParams: {
@@ -43,7 +43,7 @@
         networkService = _networkService_;
         networkService.updateVersion.and.returnValue($q.when({
           version: 'a version',
-          versionId: 32,
+          id: 32,
         }));
 
         scope = $rootScope.$new();
@@ -80,9 +80,9 @@
     describe('when a version merge is saved', () => {
       it('should navigate back to the developer on a good response', () => {
         spyOn($state, 'go');
-        let version = { versionId: 55 };
-        ctrl.selectedVersions = [{versionId: 77}];
-        networkService.updateVersion.and.returnValue($q.when({versionId: 200}));
+        let version = { id: 55 };
+        ctrl.selectedVersions = [{id: 77}];
+        networkService.updateVersion.and.returnValue($q.when({id: 200}));
         ctrl.merge(version);
         scope.$digest();
         expect($state.go).toHaveBeenCalledWith(
@@ -93,13 +93,13 @@
       });
 
       it('should pass the the merging version data to the network service', () => {
-        let version = { versionId: 55 };
-        ctrl.selectedVersions = [{versionId: 77}];
-        networkService.updateVersion.and.returnValue($q.when({versionId: 200}));
+        let version = { id: 55 };
+        ctrl.selectedVersions = [{id: 77}];
+        networkService.updateVersion.and.returnValue($q.when({id: 200}));
         ctrl.merge(version);
         expect(networkService.updateVersion).toHaveBeenCalledWith({
           version: version,
-          versionIds: [77, 55],
+          ids: [77, 55],
           newProductId: 32,
         });
       });

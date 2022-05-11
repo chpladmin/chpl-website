@@ -21,9 +21,9 @@ const VersionsMergeComponent = {
         this.product = this.developer.products
           .find((p) => p.id === parseInt(this.$stateParams.productId, 10));
         this.version = this.product.versions
-          .find((v) => v.versionId === parseInt(this.$stateParams.versionId, 10));
+          .find((v) => v.id === parseInt(this.$stateParams.versionId, 10));
         this.versions = this.product.versions
-          .filter((v) => v.versionId !== parseInt(this.$stateParams.versionId, 10))
+          .filter((v) => v.id !== parseInt(this.$stateParams.versionId, 10))
           .map((v) => {
             v.selected = false;
             return v;
@@ -43,10 +43,10 @@ const VersionsMergeComponent = {
     merge(version) {
       const versionToSave = {
         version,
-        versionIds: this.selectedVersions.map((d) => d.versionId),
+        ids: this.selectedVersions.map((d) => d.id),
         newProductId: this.product.id,
       };
-      versionToSave.versionIds.push(this.version.versionId);
+      versionToSave.ids.push(this.version.id);
       const that = this;
       this.networkService.updateVersion(versionToSave)
         .then(() => {
@@ -66,7 +66,7 @@ const VersionsMergeComponent = {
 
     selectVersion(version) {
       this.versions
-        .filter((d) => d.versionId === version.versionId)
+        .filter((d) => d.id === version.id)
         .forEach((d) => d.selected = !d.selected);
       this.selectedVersions = this.versions
         .filter((d) => d.selected)

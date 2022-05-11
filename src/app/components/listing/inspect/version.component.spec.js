@@ -6,18 +6,18 @@
 
     mock = {
       availableVersions: [
-        { versionId: 3 },
+        { id: 3 },
       ],
       foundVersion: {
         version: 'found',
-        versionId: 8,
+        id: 8,
       },
       newVersion: {
         version: 'version value',
       },
       systemVersion: {
         version: 'system',
-        versionId: 4,
+        id: 4,
         lastModifiedDate: 33939,
       },
       foundProduct: {
@@ -94,7 +94,7 @@
         });
 
         it('should get version data based on found version', () => {
-          expect(networkService.getVersion).toHaveBeenCalledWith(mock.foundVersion.versionId);
+          expect(networkService.getVersion).toHaveBeenCalledWith(mock.foundVersion.id);
           expect(ctrl.systemVersion).toEqual(mock.systemVersion);
         });
       });
@@ -134,7 +134,7 @@
           scope.product = mock.foundProduct;
           scope.selectSpy = selectSpy;
 
-          el = angular.element('<ai-inspect-version pending-version="pendingVersion" product="product" on-select="selectSpy(versionId)"></ai-inspect-version>');
+          el = angular.element('<ai-inspect-version pending-version="pendingVersion" product="product" on-select="selectSpy(id)"></ai-inspect-version>');
 
           $compile(el)(scope);
           scope.$digest();
@@ -151,20 +151,20 @@
         });
 
         it('should set the pendingVersion id', () => {
-          ctrl.versionSelect = { versionId: 323 };
+          ctrl.versionSelect = { id: 323 };
           ctrl.select();
-          expect(ctrl.pendingVersion.versionId).toBe(323);
+          expect(ctrl.pendingVersion.id).toBe(323);
         });
 
         it('should call the callback function', () => {
-          ctrl.versionSelect = { versionId: 33 };
+          ctrl.versionSelect = { id: 33 };
           ctrl.select();
           expect(selectSpy).toHaveBeenCalledWith(33);
         });
 
         it('should update the systemVersion', () => {
           const callCount = networkService.getVersion.calls.count();
-          ctrl.versionSelect = { versionId: 33 };
+          ctrl.versionSelect = { id: 33 };
           ctrl.select();
           scope.$digest();
           expect(networkService.getVersion.calls.count()).toBe(callCount + 1);

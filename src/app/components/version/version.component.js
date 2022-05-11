@@ -79,27 +79,27 @@ export const VersionComponent = {
     edit () {
       this.takeAction({
         action: 'edit',
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 
     merge () {
       this.takeAction({
         action: 'merge',
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 
     split () {
       this.takeAction({
         action: 'split',
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 
     view () {
       this.takeAction({
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 

@@ -114,10 +114,10 @@ function ChplListingHistory(props) {
   };
 
   const interpretedVersions = new Set();
-  const evaluateVersionActivity = (versionId, end = Date.now()) => {
-    if (!interpretedVersions.has(versionId)) {
-      networkService.getSingleVersionActivityMetadata(versionId, { end }).then((metadata) => {
-        interpretedVersions.add(versionId);
+  const evaluateVersionActivity = (id, end = Date.now()) => {
+    if (!interpretedVersions.has(id)) {
+      networkService.getSingleVersionActivityMetadata(id, { end }).then((metadata) => {
+        interpretedVersions.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
           const { interpreted, merged, split } = interpretVersion(response);
           if (interpreted.change.length > 0) {
@@ -144,7 +144,7 @@ function ChplListingHistory(props) {
     evaluateListingActivity();
     evaluateDeveloperActivity(listing.developer.id);
     evaluateProductActivity(listing.product.id);
-    evaluateVersionActivity(listing.version.versionId);
+    evaluateVersionActivity(listing.version.id);
   }, [listing]);
 
   const goToApi = () => {

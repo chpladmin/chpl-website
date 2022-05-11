@@ -9,7 +9,7 @@
         name: 'a product',
       },
       stateParams: {
-        developerId: 22,
+        id: 22,
         productId: 42,
         versionId: 32,
       },

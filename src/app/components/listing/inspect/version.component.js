@@ -20,7 +20,7 @@ export const InspectVersionComponent = {
       if (changes.product) {
         this.product = angular.copy(changes.product.currentValue);
       }
-      if (this.pendingVersion && this.pendingVersion.versionId) {
+      if (this.pendingVersion && this.pendingVersion.id) {
         this.updateVersion();
       }
       if (this.product && this.product.id) {
@@ -34,13 +34,13 @@ export const InspectVersionComponent = {
     }
 
     select () {
-      this.pendingVersion.versionId = this.versionSelect.versionId;
-      this.onSelect({versionId: this.versionSelect.versionId});
+      this.pendingVersion.id = this.versionSelect.id;
+      this.onSelect({id: this.versionSelect.id});
       this.updateVersion();
     }
 
     updateVersion () {
-      this.networkService.getVersion(this.pendingVersion.versionId)
+      this.networkService.getVersion(this.pendingVersion.id)
         .then(result => this.systemVersion = result);
     }
   },

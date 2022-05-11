@@ -18,7 +18,7 @@
     </div>
 
     <div ng-if="vm.stage === 'ver'">
-      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(versionId)" set-choice="vm.setVersionChoice(choice)"></ai-inspect-version>
+      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(id)" set-choice="vm.setVersionChoice(choice)"></ai-inspect-version>
     </div>
 
     <div ng-if="vm.stage === 'cp'">

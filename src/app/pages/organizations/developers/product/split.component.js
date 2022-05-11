@@ -61,11 +61,11 @@ export const ProductsSplitComponent = {
 
     toggleMove (version, toNew) {
       if (toNew) {
-        this.request.newVersions.push(this.request.oldVersions.find(ver => ver.versionId === version.versionId));
-        this.request.oldVersions = this.request.oldVersions.filter(ver => ver.versionId !== version.versionId);
+        this.request.newVersions.push(this.request.oldVersions.find(ver => ver.id === version.id));
+        this.request.oldVersions = this.request.oldVersions.filter(ver => ver.id !== version.id);
       } else {
-        this.request.oldVersions.push(this.request.newVersions.find(ver => ver.versionId === version.versionId));
-        this.request.newVersions = this.request.newVersions.filter(ver => ver.versionId !== version.versionId);
+        this.request.oldVersions.push(this.request.newVersions.find(ver => ver.id === version.id));
+        this.request.newVersions = this.request.newVersions.filter(ver => ver.id !== version.id);
       }
     }
 
