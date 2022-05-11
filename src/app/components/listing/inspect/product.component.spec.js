@@ -5,11 +5,10 @@
     let $q;
     let ctrl;
     let el;
-    let mock;
     let networkService;
     let scope;
 
-    mock = {
+    const mock = {
       availableProducts: [
         { id: 3 },
       ],
@@ -33,12 +32,12 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.components', $provide => {
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getProductsByDeveloper = jasmine.createSpy('getProductsByDeveloper');
-          $delegate.getSimpleProduct = jasmine.createSpy('getSimpleProduct');
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', ($provide) => {
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getProductsByDeveloper: jasmine.createSpy('getProductsByDeveloper'),
+          getSimpleProduct: jasmine.createSpy('getSimpleProduct'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
@@ -46,7 +45,7 @@
         $log = _$log_;
         $q = _$q_;
         networkService = _networkService_;
-        networkService.getProductsByDeveloper.and.returnValue($q.when({products: mock.availableProducts}));
+        networkService.getProductsByDeveloper.and.returnValue($q.when({ products: mock.availableProducts }));
         networkService.getSimpleProduct.and.returnValue($q.when(mock.systemProduct));
 
         scope = $rootScope.$new();
@@ -61,7 +60,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -147,7 +146,7 @@
         });
 
         it('should have an onChange function', () => {
-          expect(typeof(ctrl.onSelect)).toEqual('function');
+          expect(typeof (ctrl.onSelect)).toEqual('function');
         });
 
         it('should call the spy', () => {

@@ -1,10 +1,11 @@
-export const ProductsEditComponent = {
+const ProductsEditComponent = {
   templateUrl: 'chpl.organizations/developers/product/edit.html',
   bindings: {
   },
   controller: class ProductsEditComponent {
-    constructor ($log, $scope, $state, $stateParams, networkService) {
+    constructor($log, $scope, $state, $stateParams, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.$scope = $scope;
       this.$state = $state;
@@ -13,48 +14,46 @@ export const ProductsEditComponent = {
       this.backup = {};
     }
 
-    $onInit () {
-      let that = this;
+    $onInit() {
+      const that = this;
       this.productId = this.$stateParams.productId;
       this.id = this.$stateParams.id;
       this.networkService.getProduct(this.productId)
-        .then(data => {
+        .then((data) => {
           that.product = data;
           that.backup.product = angular.copy(data);
         });
     }
 
-    cancel () {
+    cancel() {
       this.product = angular.copy(this.backup.product);
       this.$state.go('organizations.developers.developer', {
         id: this.id,
-      }, {reload: true});
+      }, { reload: true });
     }
 
-    save (product) {
-      let that = this;
-      let request = {
+    save(product) {
+      const that = this;
+      const request = {
         productIds: [product.id],
-        product: product,
+        product,
         id: product.id,
       };
       this.errorMessages = [];
       this.networkService.updateProduct(request)
-        .then(response => {
+        .then((response) => {
           if (!response.status || response.status === 200 || angular.isObject(response.status)) {
             this.$state.go('organizations.developers.developer', {
               id: that.id,
-            }, {reload: true});
+            }, { reload: true });
+          } else if (response.data.errorMessages) {
+            that.errorMessages = response.data.errorMessages;
+          } else if (response.data.error) {
+            that.errorMessages.push(response.data.error);
           } else {
-            if (response.data.errorMessages) {
-              that.errorMessages = response.data.errorMessages;
-            } else if (response.data.error) {
-              that.errorMessages.push(response.data.error);
-            } else {
-              that.errorMessages = ['An error has occurred.'];
-            }
+            that.errorMessages = ['An error has occurred.'];
           }
-        }, error => {
+        }, (error) => {
           if (error.data.errorMessages) {
             that.errorMessages = error.data.errorMessages;
           } else if (error.data.error) {
@@ -65,7 +64,7 @@ export const ProductsEditComponent = {
         });
     }
 
-    takeAction (action, data) {
+    takeAction(action, data) {
       switch (action) {
         case 'cancel':
           this.cancel();
@@ -73,12 +72,13 @@ export const ProductsEditComponent = {
         case 'edit':
           this.save(data);
           break;
-          //no default
+          // no default
       }
     }
-
   },
 };
 
 angular.module('chpl.organizations')
   .component('chplProductsEdit', ProductsEditComponent);
+
+export default ProductsEditComponent;

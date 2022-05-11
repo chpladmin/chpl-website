@@ -6,11 +6,10 @@
     let $state;
     let ctrl;
     let el;
-    let mock;
     let networkService;
     let scope;
 
-    mock = {
+    const mock = {
       developer: {
         id: 22,
         products: [{ id: 32 }, { id: 39 }, { id: 44 }],
@@ -22,13 +21,13 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.organizations', $provide => {
+      angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('$stateParams', () => mock.stateParams);
         $provide.factory('chplProductEditDirective', () => ({}));
-        $provide.decorator('networkService', $delegate => {
-          $delegate.updateProduct = jasmine.createSpy('updateProduct');
-          return $delegate;
-        });
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          updateProduct: jasmine.createSpy('updateProduct'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_) => {
@@ -56,7 +55,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });

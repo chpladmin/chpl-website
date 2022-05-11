@@ -1,9 +1,20 @@
 (() => {
-  'use strict';
-
   describe('the Authorization service', () => {
-    var $localStorage, $log, $window, auth, mock;
-    mock = {
+    let $localStorage;
+    let $log;
+    let $window;
+    let auth;
+
+    const buildToken = (user) => {
+      user.exp = Math.round(new Date().getTime() / 1000) + 600;
+      return [
+        'frontPart',
+        $window.btoa(angular.toJson(user)).replace('+', '-').replace('/', '_'),
+        'backPart',
+      ].join('.');
+    };
+
+    const mock = {
       user: {
         Authority: 'ROLE_ONC',
         Identity: [31, 'username', 'Full Name'],
@@ -29,7 +40,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -55,7 +66,7 @@
     });
 
     it('should parse a JWT Token', () => {
-      var token = angular.copy(buildToken(mock.user));
+      const token = angular.copy(buildToken(mock.user));
       expect(auth.parseJwt(token).Authority).toBeUndefined;
       expect(auth.parseJwt(token).Identity).toEqual(mock.user.Identity);
     });
@@ -67,7 +78,7 @@
     });
 
     it('should save the token', () => {
-      var token = angular.copy(buildToken(mock.user));
+      const token = angular.copy(buildToken(mock.user));
       auth.saveToken(token);
       expect($localStorage.jwtToken).toBe(token);
     });
@@ -182,99 +193,90 @@
 
     describe('when current user is managing acbs', () => {
       it('should know ADMIN can manage any acb', () => {
-        let user = angular.copy(mock.user);
+        const user = angular.copy(mock.user);
         user.Authority = 'ROLE_ADMIN';
         auth.saveToken(buildToken(user));
-        expect(auth.canManageAcb({id: 5})).toBe(true);
+        expect(auth.canManageAcb({ id: 5 })).toBe(true);
       });
 
       it('should know ONC can manage any acb', () => {
-        let user = angular.copy(mock.user);
+        const user = angular.copy(mock.user);
         user.Authority = 'ROLE_ONC';
         auth.saveToken(buildToken(user));
-        expect(auth.canManageAcb({id: 5})).toBe(true);
+        expect(auth.canManageAcb({ id: 5 })).toBe(true);
       });
 
       it('should know DEVELOPER cannot manage any acb', () => {
-        let user = angular.copy(mock.user);
+        const user = angular.copy(mock.user);
         user.Authority = 'ROLE_DEVELOPER';
         auth.saveToken(buildToken(user));
-        expect(auth.canManageAcb({id: 5})).toBe(false);
+        expect(auth.canManageAcb({ id: 5 })).toBe(false);
       });
 
       describe('when the user is role ACB', () => {
         it('should allow user to manage acb', () => {
-          let user = angular.copy(mock.user);
+          const user = angular.copy(mock.user);
           user.Authority = 'ROLE_ACB';
           auth.saveToken(buildToken(user));
           $localStorage.currentUser = user;
-          $localStorage.currentUser.organizations = [{id: 2}, {id: 3}];
-          expect(auth.canManageAcb({id: 3})).toBe(true);
+          $localStorage.currentUser.organizations = [{ id: 2 }, { id: 3 }];
+          expect(auth.canManageAcb({ id: 3 })).toBe(true);
         });
 
         it('should not allow user to manage acb', () => {
-          let user = angular.copy(mock.user);
+          const user = angular.copy(mock.user);
           user.Authority = 'ROLE_ACB';
           auth.saveToken(buildToken(user));
           $localStorage.currentUser = user;
-          $localStorage.currentUser.organizations = [{id: 2}, {id: 3}];
-          expect(auth.canManageAcb({id: 4})).toBe(false);
+          $localStorage.currentUser.organizations = [{ id: 2 }, { id: 3 }];
+          expect(auth.canManageAcb({ id: 4 })).toBe(false);
         });
       });
     });
 
     describe('when current user is managing developers', () => {
       it('should know ADMIN can manage any developer', () => {
-        let user = angular.copy(mock.user);
+        const user = angular.copy(mock.user);
         user.Authority = 'ROLE_ADMIN';
         auth.saveToken(buildToken(user));
-        expect(auth.canManageDeveloper({id: 5})).toBe(true);
+        expect(auth.canManageDeveloper({ id: 5 })).toBe(true);
       });
 
       it('should know ONC can manage any developer', () => {
-        let user = angular.copy(mock.user);
+        const user = angular.copy(mock.user);
         user.Authority = 'ROLE_ONC';
         auth.saveToken(buildToken(user));
-        expect(auth.canManageDeveloper({id: 5})).toBe(true);
+        expect(auth.canManageDeveloper({ id: 5 })).toBe(true);
       });
 
       it('should know ACB can manage any developer', () => {
-        let user = angular.copy(mock.user);
+        const user = angular.copy(mock.user);
         user.Authority = 'ROLE_ACB';
         auth.saveToken(buildToken(user));
-        expect(auth.canManageDeveloper({id: 5})).toBe(true);
+        expect(auth.canManageDeveloper({ id: 5 })).toBe(true);
       });
 
       describe('when the user is role Developer', () => {
         it('should allow user to manage developer', () => {
-          let user = angular.copy(mock.user);
+          const user = angular.copy(mock.user);
           user.Authority = 'ROLE_DEVELOPER';
           auth.saveToken(buildToken(user));
           $localStorage.currentUser = user;
-          $localStorage.currentUser.organizations = [{id: 222}, {id: 333}];
-          expect(auth.canManageDeveloper({id: 333})).toBe(true);
+          $localStorage.currentUser.organizations = [{ id: 222 }, { id: 333 }];
+          expect(auth.canManageDeveloper({ id: 333 })).toBe(true);
         });
 
         it('should not allow user to manage developer', () => {
-          let user = angular.copy(mock.user);
+          const user = angular.copy(mock.user);
           user.Authority = 'ROLE_DEVELOPER';
           auth.saveToken(buildToken(user));
           $localStorage.currentUser = user;
-          $localStorage.currentUser.organizations = [{id: 222}, {id: 333}];
-          expect(auth.canManageDeveloper({id: 444})).toBe(false);
+          $localStorage.currentUser.organizations = [{ id: 222 }, { id: 333 }];
+          expect(auth.canManageDeveloper({ id: 444 })).toBe(false);
         });
       });
     });
 
-    ////////////////////////////////////////////////////////////////////////
-
-    function buildToken (user) {
-      user.exp = Math.round(new Date().getTime() / 1000) + 600;
-      return [
-        'frontPart',
-        $window.btoa(angular.toJson(user)).replace('+','-').replace('/','_'),
-        'backPart',
-      ].join('.');
-    }
+    /// /////////////////////////////////////////////////////////////////////
   });
 })();

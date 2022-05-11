@@ -1,13 +1,17 @@
 (() => {
-  'use strict';
-
   describe('the Version Split component', () => {
-    var $compile, $log, $q, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {
+    const mock = {
       developer: {
         developerId: 22,
-        versions: [{id: 32}, {id: 39}, {id: 44}],
+        versions: [{ id: 32 }, { id: 39 }, { id: 44 }],
       },
       stateParams: {
         developerId: 22,
@@ -16,13 +20,13 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.organizations', $provide => {
+      angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('$stateParams', () => mock.stateParams);
         $provide.factory('chplVersionEditDirective', () => ({}));
-        $provide.decorator('networkService', $delegate => {
-          $delegate.updateVersion = jasmine.createSpy('updateVersion');
-          return $delegate;
-        });
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          updateVersion: jasmine.createSpy('updateVersion'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
@@ -49,7 +53,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });

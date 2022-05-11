@@ -1,4 +1,4 @@
-export const InspectDeveloperComponent = {
+const InspectDeveloperComponent = {
   templateUrl: 'chpl.components/listing/inspect/developer.html',
   bindings: {
     developer: '<',
@@ -8,14 +8,15 @@ export const InspectDeveloperComponent = {
     setChoice: '&',
   },
   controller: class InspectDeveloperController {
-    constructor ($log, networkService) {
+    constructor($log, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.networkService = networkService;
       this.choice = 'choose';
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developer) {
         this.developer = angular.copy(changes.developer.currentValue);
       }
@@ -25,16 +26,16 @@ export const InspectDeveloperComponent = {
       if (changes.listing) {
         this.listing = angular.copy(changes.listing.currentValue);
       }
-      this.setChoice({choice: this.choice});
+      this.setChoice({ choice: this.choice });
     }
 
-    selectInspectingDeveloper () {
+    selectInspectingDeveloper() {
       this.listing.developer.id = this.developerSelect.id;
-      this.onSelect({id: this.developerSelect.id});
+      this.onSelect({ id: this.developerSelect.id });
     }
 
-    saveInspectingDeveloper () {
-      let developer = {
+    saveInspectingDeveloper() {
+      const developer = {
         address: this.listing.developer.address,
         contact: this.listing.developer.contact,
         developerCode: this.developer.developerCode,
@@ -48,10 +49,10 @@ export const InspectDeveloperComponent = {
       if (!developer.address.country) {
         developer.address.country = 'USA';
       }
-      let that = this;
+      const that = this;
       this.networkService.updateDeveloper(developer)
         .then(() => {
-          that.onSelect({id: developer.id});
+          that.onSelect({ id: developer.id });
         });
     }
   },
@@ -59,3 +60,5 @@ export const InspectDeveloperComponent = {
 
 angular.module('chpl.components')
   .component('aiInspectDeveloper', InspectDeveloperComponent);
+
+export default InspectDeveloperComponent;

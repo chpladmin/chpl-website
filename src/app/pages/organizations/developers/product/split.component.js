@@ -1,11 +1,12 @@
-export const ProductsSplitComponent = {
+const ProductsSplitComponent = {
   templateUrl: 'chpl.organizations/developers/product/split.html',
   bindings: {
     developer: '<',
   },
   controller: class ProductsSplitController {
-    constructor ($log, $state, $stateParams, authService, networkService, toaster) {
+    constructor($log, $state, $stateParams, authService, networkService, toaster) {
       'ngInject';
+
       this.$log = $log;
       this.$state = $state;
       this.$stateParams = $stateParams;
@@ -21,37 +22,37 @@ export const ProductsSplitComponent = {
       };
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
         this.request.oldProduct = this.developer.products
-          .find(p => p.id === parseInt(this.$stateParams.productId, 10));
+          .find((p) => p.id === parseInt(this.$stateParams.productId, 10));
         this.request.oldVersions = this.request.oldProduct.versions
-          .filter(v => !v.deleted)
-          .map(v => {
+          .filter((v) => !v.deleted)
+          .map((v) => {
             v.selected = false;
             return v;
           })
-          .sort((a, b) => a.version < b.version ? -1 : a.version > b.version ? 1 : 0);
+          .sort((a, b) => (a.version < b.version ? -1 : a.version > b.version ? 1 : 0));
       }
     }
 
-    takeActionBarAction (action) {
+    takeActionBarAction(action) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'mouseover':
-        this.showFormErrors = true;
-        break;
-      case 'save':
-        this.save();
-        break;
-        //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'mouseover':
+          this.showFormErrors = true;
+          break;
+        case 'save':
+          this.save();
+          break;
+        // no default
       }
     }
 
-    cancel () {
+    cancel() {
       this.$state.go('organizations.developers.developer', {
         id: this.developer.id,
       }, {
@@ -59,24 +60,24 @@ export const ProductsSplitComponent = {
       });
     }
 
-    toggleMove (version, toNew) {
+    toggleMove(version, toNew) {
       if (toNew) {
-        this.request.newVersions.push(this.request.oldVersions.find(ver => ver.id === version.id));
-        this.request.oldVersions = this.request.oldVersions.filter(ver => ver.id !== version.id);
+        this.request.newVersions.push(this.request.oldVersions.find((ver) => ver.id === version.id));
+        this.request.oldVersions = this.request.oldVersions.filter((ver) => ver.id !== version.id);
       } else {
-        this.request.oldVersions.push(this.request.newVersions.find(ver => ver.id === version.id));
-        this.request.newVersions = this.request.newVersions.filter(ver => ver.id !== version.id);
+        this.request.oldVersions.push(this.request.newVersions.find((ver) => ver.id === version.id));
+        this.request.newVersions = this.request.newVersions.filter((ver) => ver.id !== version.id);
       }
     }
 
-    isValid () {
+    isValid() {
       return this.form.$valid
         && this.request.newVersions && this.request.newVersions.length > 0
         && this.request.oldVersions && this.request.oldVersions.length > 0;
     }
 
-    save () {
-      let that = this;
+    save() {
+      const that = this;
       this.networkService.splitProduct(this.request)
         .then(() => {
           that.toaster.pop({
@@ -89,7 +90,7 @@ export const ProductsSplitComponent = {
           }, {
             reload: true,
           });
-        }, error => {
+        }, (error) => {
           that.errors = [error.data.error];
         });
     }
@@ -99,3 +100,5 @@ export const ProductsSplitComponent = {
 angular
   .module('chpl.organizations')
   .component('chplProductsSplit', ProductsSplitComponent);
+
+export default ProductsSplitComponent;

@@ -1,10 +1,11 @@
-export const VersionsEditComponent = {
+const VersionsEditComponent = {
   templateUrl: 'chpl.organizations/developers/version/edit.html',
   bindings: {
   },
   controller: class VersionsEditComponent {
-    constructor ($log, $scope, $state, $stateParams, networkService) {
+    constructor($log, $scope, $state, $stateParams, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.$scope = $scope;
       this.$state = $state;
@@ -13,53 +14,51 @@ export const VersionsEditComponent = {
       this.backup = {};
     }
 
-    $onInit () {
-      let that = this;
+    $onInit() {
+      const that = this;
       this.id = this.$stateParams.versionId;
       this.productId = this.$stateParams.productId;
       this.id = this.$stateParams.id;
       this.networkService.getVersion(this.id)
-        .then(data => {
+        .then((data) => {
           that.version = data;
           that.backup.version = angular.copy(data);
         });
       this.networkService.getProduct(this.productId)
-        .then(data => {
+        .then((data) => {
           that.product = data;
         });
     }
 
-    cancel () {
+    cancel() {
       this.version = angular.copy(this.backup.version);
       this.$state.go('organizations.developers.developer', {
         id: this.id,
-      }, {reload: true});
+      }, { reload: true });
     }
 
-    save (version) {
-      let that = this;
-      let request = {
+    save(version) {
+      const that = this;
+      const request = {
         ids: [version.id],
-        version: version,
+        version,
         newProductId: version.productId,
       };
       this.errorMessages = [];
       this.networkService.updateVersion(request)
-        .then(response => {
+        .then((response) => {
           if (!response.status || response.status === 200 || angular.isObject(response.status)) {
             this.$state.go('organizations.developers.developer', {
               id: that.id,
-            }, {reload: true});
+            }, { reload: true });
+          } else if (response.data.errorMessages) {
+            that.errorMessages = response.data.errorMessages;
+          } else if (response.data.error) {
+            that.errorMessages.push(response.data.error);
           } else {
-            if (response.data.errorMessages) {
-              that.errorMessages = response.data.errorMessages;
-            } else if (response.data.error) {
-              that.errorMessages.push(response.data.error);
-            } else {
-              that.errorMessages = ['An error has occurred.'];
-            }
+            that.errorMessages = ['An error has occurred.'];
           }
-        }, error => {
+        }, (error) => {
           if (error.data.errorMessages) {
             that.errorMessages = error.data.errorMessages;
           } else if (error.data.error) {
@@ -70,7 +69,7 @@ export const VersionsEditComponent = {
         });
     }
 
-    takeAction (action, data) {
+    takeAction(action, data) {
       switch (action) {
         case 'cancel':
           this.cancel();
@@ -78,12 +77,13 @@ export const VersionsEditComponent = {
         case 'edit':
           this.save(data);
           break;
-          //no default
+          // no default
       }
     }
-
   },
 };
 
 angular.module('chpl.organizations')
   .component('chplVersionsEdit', VersionsEditComponent);
+
+export default VersionsEditComponent;
