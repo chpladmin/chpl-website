@@ -10,7 +10,7 @@
       require: '^aiCmsWidget',
       restrict: 'E',
       scope: {
-        productId: '@',
+        listingId: '@',
         productName: '@',
         chplProductNumber: '@',
       },

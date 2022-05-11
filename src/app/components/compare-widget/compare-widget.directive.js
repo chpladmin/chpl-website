@@ -32,7 +32,7 @@
       getWidget();
       var compareAll = $scope.$on('compareAll', (msg, payload) => {
         vm.clearProducts();
-        payload.forEach((item) => { vm.toggleProduct(item.productId, item.name, item.chplProductNumber, true); });
+        payload.forEach((item) => { vm.toggleProduct(item.listingId, item.name, item.chplProductNumber, true); });
       });
       $scope.$on('$destroy', compareAll);
     };
@@ -41,7 +41,7 @@
       $analytics.eventTrack('Remove all Listings', { category: 'Compare Widget' });
       vm.compareWidget = {
         products: [],
-        productIds: [],
+        listingIds: [],
       };
       saveWidget();
     }
@@ -56,7 +56,7 @@
     }
 
     function queryUrl () {
-      return vm.compareWidget.productIds.join('&');
+      return vm.compareWidget.listingIds.join('&');
     }
 
     function saveProducts () {
@@ -65,9 +65,9 @@
       if (!previously) {
         previously = [];
       }
-      for (var i = 0; i < vm.compareWidget.productIds.length; i++) {
-        if (previously.indexOf(vm.compareWidget.productIds[i]) === -1) {
-          previously.push(vm.compareWidget.productIds[i]);
+      for (var i = 0; i < vm.compareWidget.listingIds.length; i++) {
+        if (previously.indexOf(vm.compareWidget.listingIds[i]) === -1) {
+          previously.push(vm.compareWidget.listingIds[i]);
         }
       }
       while (previously.length > 20) {
@@ -82,9 +82,9 @@
       } else {
         addProduct(id, name, number, doNotTrack);
       }
-      vm.compareWidget.productIds = [];
+      vm.compareWidget.listingIds = [];
       for (var i = 0; i < vm.compareWidget.products.length; i++) {
-        vm.compareWidget.productIds.push(vm.compareWidget.products[i].id);
+        vm.compareWidget.listingIds.push(vm.compareWidget.products[i].id);
       }
       saveWidget();
     }

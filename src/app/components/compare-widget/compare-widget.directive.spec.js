@@ -43,7 +43,7 @@
     it('should have isolate scope object with instanciate members', function () {
       expect(vm).toEqual(jasmine.any(Object));
       expect(vm.compareWidget).toEqual(
-        {products: [], productIds: []}
+        {products: [], listingIds: []}
       );
     });
 
@@ -75,8 +75,8 @@
         expect(vm.compareWidget.products).toEqual([]);
       });
 
-      it('should know what the productIds are', function () {
-        expect(vm.compareWidget.productIds).toEqual([1,2,3]);
+      it('should know what the listingIds are', function () {
+        expect(vm.compareWidget.listingIds).toEqual([1,2,3]);
       });
 
       it('should know what the queryUrl should be', function () {
@@ -94,10 +94,10 @@
 
     describe('when listening for the "compare all" event', () => {
       const payload = [
-        { name: 'a name', productId: '1', chplProductNumber: undefined },
-        { name: '2nd name', productId: '2', chplProductNumber: undefined },
+        { name: 'a name', listingId: '1', chplProductNumber: undefined },
+        { name: '2nd name', listingId: '2', chplProductNumber: undefined },
       ];
-      const products = payload.map((item) => { return {id: item.productId, name: item.name, chplProductNumber: item.chplProductNumber }; });
+      const products = payload.map((item) => { return {id: item.listingId, name: item.name, chplProductNumber: item.chplProductNumber }; });
 
       it('should put the items in the widget', () => {
         $rootScope.$broadcast('compareAll', payload);
@@ -110,9 +110,9 @@
         expect(vm.compareWidget.products).toEqual(products);
       });
 
-      it('should get the correct list of productIds', () => {
+      it('should get the correct list of listingIds', () => {
         $rootScope.$broadcast('compareAll', payload);
-        expect(vm.compareWidget.productIds).toEqual(['1', '2']);
+        expect(vm.compareWidget.listingIds).toEqual(['1', '2']);
       });
     });
   });

@@ -1,6 +1,6 @@
-<button class="btn btn-ai-success btn-sm" ng-class="{'btn-ai-toggleon': isInList(productId)}" ng-click="toggleProduct(productId, productName, chplProductNumber)" id="toggle-compare-{{ productId }}">
-  <i class="fa" ng-class="isInList(productId) ? 'fa-minus' : 'fa-plus'"></i>
-  <span class="sr-only" ng-if="isInList(productId)">Remove {{ productName }} from </span>
-  <span class="sr-only" ng-if="!isInList(productId)">Add {{ productName }} to </span>
+<button class="btn btn-ai-success btn-sm" ng-class="{'btn-ai-toggleon': isInList(listingId)}" ng-click="toggleProduct(listingId, productName, chplProductNumber)" id="toggle-compare-{{ listingId }}">
+  <i class="fa" ng-class="isInList(listingId) ? 'fa-minus' : 'fa-plus'"></i>
+  <span class="sr-only" ng-if="isInList(listingId)">Remove {{ productName }} from </span>
+  <span class="sr-only" ng-if="!isInList(listingId)">Add {{ productName }} to </span>
   Compare
 </button>

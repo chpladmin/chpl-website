@@ -10,7 +10,7 @@
       require: '^aiCompareWidget',
       restrict: 'E',
       scope: {
-        productId: '@',
+        listingId: '@',
         productName: '@',
         chplProductNumber: '@',
       },

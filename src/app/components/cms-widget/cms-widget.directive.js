@@ -48,7 +48,7 @@ import 'jspdf-autotable';
     function addProduct (id, number) {
       if (!isInList(id)) {
         $analytics.eventTrack('Add Listing', { category: 'CMS Widget', label: number });
-        vm.widget.productIds.push(id);
+        vm.widget.listingIds.push(id);
         vm.search();
       }
     }
@@ -56,13 +56,13 @@ import 'jspdf-autotable';
     function clearProducts () {
       $analytics.eventTrack('Remove All Listings', { category: 'CMS Widget' });
       vm.widget = {
-        productIds: [],
+        listingIds: [],
       };
       setWidget(vm.widget);
     }
 
     function compare () {
-      const payload = vm.widget.searchResult.products.map((item) => { return { productId: item.productId + '', name: item.name }; });
+      const payload = vm.widget.searchResult.products.map((item) => { return { listingId: item.listingId + '', name: item.name }; });
       $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
       $rootScope.$broadcast('compareAll', payload);
       $rootScope.$broadcast('HideWidget');
@@ -75,7 +75,7 @@ import 'jspdf-autotable';
       if (vm.widget.searchResult && vm.widget.searchResult.year) {
         $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
       }
-      networkService.createCmsId(vm.widget.productIds)
+      networkService.createCmsId(vm.widget.listingIds)
         .then(response => {
           vm.widget.createResponse = response;
           vm.widget.inProgress = false;
@@ -93,8 +93,8 @@ import 'jspdf-autotable';
     }
 
     function isInList (id) {
-      for (var i = 0; i < vm.widget.productIds.length; i++) {
-        if (vm.widget.productIds[i] === id) {
+      for (var i = 0; i < vm.widget.listingIds.length; i++) {
+        if (vm.widget.listingIds[i] === id) {
           return true;
         }
       }
@@ -103,9 +103,9 @@ import 'jspdf-autotable';
 
     function removeProduct (id, number) {
       $analytics.eventTrack('Remove Listing', { category: 'CMS Widget', label: number });
-      for (var i = 0; i < vm.widget.productIds.length; i++) {
-        if (vm.widget.productIds[i] === id || parseInt(vm.widget.productIds[i]) === parseInt(id)) {
-          vm.widget.productIds.splice(i,1);
+      for (var i = 0; i < vm.widget.listingIds.length; i++) {
+        if (vm.widget.listingIds[i] === id || parseInt(vm.widget.listingIds[i]) === parseInt(id)) {
+          vm.widget.listingIds.splice(i,1);
           vm.search();
         }
       }
@@ -121,9 +121,9 @@ import 'jspdf-autotable';
 
     function search () {
       delete vm.widget.createResponse;
-      if (vm.widget.productIds.length > 0) {
+      if (vm.widget.listingIds.length > 0) {
         vm.widget.inProgress = true;
-        networkService.getCmsIds(vm.widget.productIds.join(','))
+        networkService.getCmsIds(vm.widget.listingIds.join(','))
           .then((response) => {
             vm.widget.searchResult = response;
             vm.widget.inProgress = false;

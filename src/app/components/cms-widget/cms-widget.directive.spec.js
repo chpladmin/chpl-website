@@ -35,17 +35,17 @@
 
     it('should have isolate scope object with instanciate members', function () {
       expect(vm).toEqual(jasmine.any(Object));
-      expect(vm.widget).toEqual({productIds: []});
+      expect(vm.widget).toEqual({listingIds: []});
     });
 
     describe('adding products to the list', function () {
       it('should have a way to add product IDs to the array', function () {
         vm.addProduct(1);
-        expect(vm.widget.productIds).toEqual([1]);
+        expect(vm.widget.listingIds).toEqual([1]);
         vm.addProduct(1);
-        expect(vm.widget.productIds).toEqual([1]);
+        expect(vm.widget.listingIds).toEqual([1]);
         vm.addProduct(2);
-        expect(vm.widget.productIds).toEqual([1,2]);
+        expect(vm.widget.listingIds).toEqual([1,2]);
       });
 
       it('should call the /search endpoint when a product is added', function () {
@@ -55,7 +55,7 @@
       });
 
       it('should not call the /search endpoint when a duplicate product is added', function () {
-        vm.widget.productIds = [1];
+        vm.widget.listingIds = [1];
         spyOn(vm, 'search');
         vm.addProduct(1);
         expect(vm.search).not.toHaveBeenCalled();
@@ -64,20 +64,20 @@
 
     describe('clearing Product IDs', function () {
       beforeEach(function () {
-        vm.widget.productIds = [1,2,3];
+        vm.widget.listingIds = [1,2,3];
       });
 
       it('should have a way to remove product IDs from the array', function () {
-        expect(vm.widget.productIds).toEqual([1,2,3]);
+        expect(vm.widget.listingIds).toEqual([1,2,3]);
         vm.removeProduct(1);
-        expect(vm.widget.productIds).toEqual([2,3]);
+        expect(vm.widget.listingIds).toEqual([2,3]);
         vm.removeProduct(1);
-        expect(vm.widget.productIds).toEqual([2,3]);
+        expect(vm.widget.listingIds).toEqual([2,3]);
       });
 
       it('should treat coerce strings to numbers as IDs', function () {
         vm.removeProduct('1');
-        expect(vm.widget.productIds).toEqual([2,3]);
+        expect(vm.widget.listingIds).toEqual([2,3]);
       });
 
       it('should call the /search endpoint when a product is removed', function () {
@@ -94,23 +94,23 @@
 
       it('should have a way to clear all the product IDs', function () {
         vm.clearProducts();
-        expect(vm.widget).toEqual({productIds: []});
+        expect(vm.widget).toEqual({listingIds: []});
       });
     });
 
-    it('should have a way to toggle the state of a productId', function () {
-      vm.widget.productIds = [1,2,3];
+    it('should have a way to toggle the state of a listingId', function () {
+      vm.widget.listingIds = [1,2,3];
       vm.toggleProduct(3);
       vm.toggleProduct(4);
-      expect(vm.widget.productIds).toEqual([1,2,4]);
+      expect(vm.widget.listingIds).toEqual([1,2,4]);
     });
 
     describe('when comparing objects', () => {
       const products = [
-        { name: 'a name', productId: 1 },
-        { name: '2nd name', productId: 2 },
+        { name: 'a name', listingId: 1 },
+        { name: '2nd name', listingId: 2 },
       ];
-      const payload = products.map((item) => { return { name: item.name, productId: item.productId + ''}; });
+      const payload = products.map((item) => { return { name: item.name, listingId: item.listingId + ''}; });
 
       it('should broadcast comparing products', () => {
         spyOn($rootScope, '$broadcast');
