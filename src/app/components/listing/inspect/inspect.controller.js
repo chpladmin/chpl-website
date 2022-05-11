@@ -42,8 +42,8 @@
       vm.developerChoice = choice;
     }
 
-    function selectInspectingProduct(productId) {
-      vm.cp.product.productId = productId;
+    function selectInspectingProduct(id) {
+      vm.cp.product.id = id;
     }
 
     function setProductChoice(choice) {
@@ -139,8 +139,8 @@
     }
 
     function loadFamily() {
-      if (vm.product && vm.product.productId) {
-        networkService.getRelatedListings(vm.product.productId)
+      if (vm.product && vm.product.id) {
+        networkService.getRelatedListings(vm.product.id)
           .then((family) => {
             vm.resources.relatedListings = family.filter((item) => item.edition === '2015');
           });
@@ -196,7 +196,7 @@
         case 'dev':
           return (vm.developerChoice === 'choose' && !vm.cp.developer.id) || !isSystemDevContactInfoValid();
         case 'prd':
-          return (vm.productChoice === 'choose' && !vm.cp.product.productId);
+          return (vm.productChoice === 'choose' && !vm.cp.product.id);
         case 'ver':
           return (vm.versionChoice === 'choose' && !vm.cp.version.versionId);
         default:

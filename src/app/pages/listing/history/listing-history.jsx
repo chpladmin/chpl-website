@@ -92,10 +92,10 @@ function ChplListingHistory(props) {
   };
 
   const interpretedProducts = new Set();
-  const evaluateProductActivity = (productId, end = Date.now()) => {
-    if (!interpretedProducts.has(productId)) {
-      networkService.getSingleProductActivityMetadata(productId, { end }).then((metadata) => {
-        interpretedProducts.add(productId);
+  const evaluateProductActivity = (id, end = Date.now()) => {
+    if (!interpretedProducts.has(id)) {
+      networkService.getSingleProductActivityMetadata(id, { end }).then((metadata) => {
+        interpretedProducts.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
           const { interpreted, merged, split } = interpretProduct(response);
           if (interpreted.change.length > 0) {
@@ -143,7 +143,7 @@ function ChplListingHistory(props) {
     ]);
     evaluateListingActivity();
     evaluateDeveloperActivity(listing.developer.id);
-    evaluateProductActivity(listing.product.productId);
+    evaluateProductActivity(listing.product.id);
     evaluateVersionActivity(listing.version.versionId);
   }, [listing]);
 

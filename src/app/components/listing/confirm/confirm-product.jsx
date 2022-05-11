@@ -111,11 +111,11 @@ function ChplConfirmProduct(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    const selected = props.products.filter((p) => p.productId === props.product.productId)[0];
+    const selected = props.products.filter((p) => p.id === props.product.id)[0];
     if (selected) {
       setSelectedProduct(selected);
     }
-    setIsCreating(!props.product.productId || props.products.length === 0);
+    setIsCreating(!props.product.id || props.products.length === 0);
   }, [props.product, props.products]); // eslint-disable-line react/destructuring-assignment
 
   let formik;
@@ -238,7 +238,7 @@ function ChplConfirmProduct(props) {
                     onChange={handleSelectOnChange}
                   >
                     {products.map((item) => (
-                      <MenuItem value={item} key={item.productId}>
+                      <MenuItem value={item} key={item.id}>
                         {item.name}
                       </MenuItem>
                     ))}

@@ -950,8 +950,8 @@
       });
 
       it('should getProduct', () => {
-        $httpBackend.expectGET(/^\/rest\/products\/productId$/).respond(200, { data: 'response' });
-        networkService.getProduct('productId').then((response) => {
+        $httpBackend.expectGET(/^\/rest\/products\/id$/).respond(200, { data: 'response' });
+        networkService.getProduct('id').then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -1504,7 +1504,7 @@
 
       it('should splitProduct', () => {
         $httpBackend.expectPOST(/^\/rest\/products\/1\/split$/).respond(200, { data: 'response' });
-        networkService.splitProduct({ oldProduct: { productId: 1 } }).then((response) => {
+        networkService.splitProduct({ oldProduct: { id: 1 } }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

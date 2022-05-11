@@ -19,9 +19,9 @@ const ProductsMergeComponent = {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
         this.product = this.developer.products
-          .find((p) => p.productId === parseInt(this.$stateParams.productId, 10));
+          .find((p) => p.id === parseInt(this.$stateParams.productId, 10));
         this.products = this.developer.products
-          .filter((d) => d.productId !== parseInt(this.$stateParams.productId, 10) && !d.deleted)
+          .filter((d) => d.id !== parseInt(this.$stateParams.productId, 10) && !d.deleted)
           .map((d) => {
             d.selected = false;
             return d;
@@ -41,10 +41,10 @@ const ProductsMergeComponent = {
     merge(product) {
       const productToSave = {
         product,
-        productIds: this.selectedProducts.map((d) => d.productId),
+        ids: this.selectedProducts.map((d) => d.id),
         id: this.developer.id,
       };
-      productToSave.productIds.push(this.product.productId);
+      productToSave.ids.push(this.product.id);
       const that = this;
       this.networkService.updateProduct(productToSave)
         .then(() => {
@@ -64,7 +64,7 @@ const ProductsMergeComponent = {
 
     selectProduct(product) {
       this.products
-        .filter((d) => d.productId === product.productId)
+        .filter((d) => d.id === product.id)
         .forEach((d) => d.selected = !d.selected);
       this.selectedProducts = this.products
         .filter((d) => d.selected)

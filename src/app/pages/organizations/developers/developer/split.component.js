@@ -90,11 +90,11 @@ const DevelopersSplitComponent = {
 
     toggleMove(product, toNew) {
       if (toNew) {
-        this.movingProducts.push(this.products.find((prod) => prod.productId === product.productId));
-        this.products = this.products.filter((prod) => prod.productId !== product.productId);
+        this.movingProducts.push(this.products.find((prod) => prod.id === product.id));
+        this.products = this.products.filter((prod) => prod.id !== product.id);
       } else {
-        this.products.push(this.movingProducts.find((prod) => prod.productId === product.productId));
-        this.movingProducts = this.movingProducts.filter((prod) => prod.productId !== product.productId);
+        this.products.push(this.movingProducts.find((prod) => prod.id === product.id));
+        this.movingProducts = this.movingProducts.filter((prod) => prod.id !== product.id);
       }
     }
   },

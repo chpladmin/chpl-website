@@ -407,8 +407,8 @@ export default class NetworkService {
     return this.apiGET('/data/practice_types');
   }
 
-  getProduct(productId) {
-    return this.apiGET(`/products/${productId}`);
+  getProduct(id) {
+    return this.apiGET(`/products/${id}`);
   }
 
   getProductActivity(activityRange) {
@@ -440,8 +440,8 @@ export default class NetworkService {
     return this.apiGET('/surveillance-report/quarterly');
   }
 
-  getRelatedListings(productId) {
-    return this.apiGET(`/products/${productId}/listings`);
+  getRelatedListings(id) {
+    return this.apiGET(`/products/${id}/listings`);
   }
 
   getRelevantComplaints(report) {
@@ -460,8 +460,8 @@ export default class NetworkService {
     return this.apiGET('/statistics/sed_participant_count');
   }
 
-  getSimpleProduct(productId) {
-    return this.apiGET(`/products/${productId}`);
+  getSimpleProduct(id) {
+    return this.apiGET(`/products/${id}`);
   }
 
   getSingleDeveloperActivityMetadata(id, options) {
@@ -696,7 +696,7 @@ export default class NetworkService {
   }
 
   splitProduct(productObject) {
-    return this.apiPOST(`/products/${productObject.oldProduct.productId}/split`, productObject);
+    return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
   }
 
   splitVersion(versionObject) {

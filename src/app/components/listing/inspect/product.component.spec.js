@@ -1,23 +1,28 @@
 (() => {
-  'use strict';
-
   describe('the product inspection component', () => {
-    let $compile, $log, $q, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let ctrl;
+    let el;
+    let mock;
+    let networkService;
+    let scope;
 
     mock = {
       availableProducts: [
-        { productId: 3 },
+        { id: 3 },
       ],
       foundProduct: {
         product: 'found',
-        productId: 8,
+        id: 8,
       },
       newProduct: {
         product: 'product value',
       },
       systemProduct: {
         product: 'system',
-        productId: 4,
+        id: 4,
         lastModifiedDate: 33939,
       },
       foundDeveloper: {
@@ -94,7 +99,7 @@
         });
 
         it('should get product data based on found product', () => {
-          expect(networkService.getSimpleProduct).toHaveBeenCalledWith(mock.foundProduct.productId);
+          expect(networkService.getSimpleProduct).toHaveBeenCalledWith(mock.foundProduct.id);
           expect(ctrl.systemProduct).toEqual(mock.systemProduct);
         });
       });
@@ -134,7 +139,7 @@
           scope.developer = mock.foundDeveloper;
           scope.selectSpy = selectSpy;
 
-          el = angular.element('<ai-inspect-product pending-product="pendingProduct" developer="developer" on-select="selectSpy(productId)"></ai-inspect-product>');
+          el = angular.element('<ai-inspect-product pending-product="pendingProduct" developer="developer" on-select="selectSpy(id)"></ai-inspect-product>');
 
           $compile(el)(scope);
           scope.$digest();
@@ -151,20 +156,20 @@
         });
 
         it('should set the pendingProduct id', () => {
-          ctrl.productSelect = { productId: 323 };
+          ctrl.productSelect = { id: 323 };
           ctrl.select();
-          expect(ctrl.pendingProduct.productId).toBe(323);
+          expect(ctrl.pendingProduct.id).toBe(323);
         });
 
         it('should call the callback function', () => {
-          ctrl.productSelect = { productId: 33 };
+          ctrl.productSelect = { id: 33 };
           ctrl.select();
           expect(selectSpy).toHaveBeenCalledWith(33);
         });
 
         it('should update the systemProduct', () => {
           const callCount = networkService.getSimpleProduct.calls.count();
-          ctrl.productSelect = { productId: 33 };
+          ctrl.productSelect = { id: 33 };
           ctrl.select();
           scope.$digest();
           expect(networkService.getSimpleProduct.calls.count()).toBe(callCount + 1);

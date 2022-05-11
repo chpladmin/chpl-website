@@ -1,15 +1,21 @@
 (() => {
-  'use strict';
-
   describe('the Version Merge component', () => {
-    var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let $state;
+    let ctrl;
+    let el;
+    let mock;
+    let networkService;
+    let scope;
 
     mock = {
       developer: {
         id: 22,
         products: [{
-          productId: 32,
-          versions: [{versionId: 55}, {versionId: 77}, {versionId: 99}],
+          id: 32,
+          versions: [{ versionId: 55 }, { versionId: 77 }, { versionId: 99 }],
         }],
       },
       stateParams: {

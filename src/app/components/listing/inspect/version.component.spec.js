@@ -21,7 +21,7 @@
         lastModifiedDate: 33939,
       },
       foundProduct: {
-        productId: 2,
+        id: 2,
       },
       newProduct: {
       },
@@ -89,7 +89,7 @@
         });
 
         it('should get versions based on found product', () => {
-          expect(networkService.getVersionsByProduct).toHaveBeenCalledWith(mock.foundProduct.productId);
+          expect(networkService.getVersionsByProduct).toHaveBeenCalledWith(mock.foundProduct.id);
           expect(ctrl.availableVersions).toEqual(mock.availableVersions);
         });
 

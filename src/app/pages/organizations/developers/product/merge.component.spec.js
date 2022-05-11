@@ -1,13 +1,19 @@
 (() => {
-  'use strict';
-
   describe('the Product Merge component', () => {
-    var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let $state;
+    let ctrl;
+    let el;
+    let mock;
+    let networkService;
+    let scope;
 
     mock = {
       developer: {
         id: 22,
-        products: [{productId: 32}, {productId: 39}, {productId: 44}],
+        products: [{ id: 32 }, { id: 39 }, { id: 44 }],
       },
       stateParams: {
         id: 22,
@@ -33,7 +39,7 @@
         networkService = _networkService_;
         networkService.updateProduct.and.returnValue($q.when({
           product: 'a product',
-          productId: 32,
+          id: 32,
         }));
 
         scope = $rootScope.$new();
@@ -70,9 +76,9 @@
     describe('when a product merge is saved', () => {
       it('should navigate back to the developer on a good response', () => {
         spyOn($state, 'go');
-        let product = {productId: 32};
-        ctrl.selectedProducts = [{productId: 39}];
-        networkService.updateProduct.and.returnValue($q.when({productId: 200}));
+        const product = { id: 32 };
+        ctrl.selectedProducts = [{ id: 39 }];
+        networkService.updateProduct.and.returnValue($q.when({ id: 200 }));
         ctrl.merge(product);
         scope.$digest();
         expect($state.go).toHaveBeenCalledWith(
@@ -83,13 +89,13 @@
       });
 
       it('should pass the the merging product data to the network service', () => {
-        let product = {productId: 32};
-        ctrl.selectedProducts = [{productId: 39}];
-        networkService.updateProduct.and.returnValue($q.when({productId: 200}));
+        const product = { id: 32 };
+        ctrl.selectedProducts = [{ id: 39 }];
+        networkService.updateProduct.and.returnValue($q.when({ id: 200 }));
         ctrl.merge(product);
         expect(networkService.updateProduct).toHaveBeenCalledWith({
-          product: product,
-          productIds: [39, 32],
+          product,
+          ids: [39, 32],
           id: 22,
         });
       });

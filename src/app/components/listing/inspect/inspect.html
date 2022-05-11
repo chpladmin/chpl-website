@@ -14,7 +14,7 @@
     </div>
 
     <div ng-if="vm.stage === 'prd'">
-      <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(productId)" set-choice="vm.setProductChoice(choice)"></ai-inspect-product>
+      <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(id)" set-choice="vm.setProductChoice(choice)"></ai-inspect-product>
     </div>
 
     <div ng-if="vm.stage === 'ver'">

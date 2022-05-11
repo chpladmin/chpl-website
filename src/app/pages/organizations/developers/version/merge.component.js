@@ -19,7 +19,7 @@ const VersionsMergeComponent = {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
         this.product = this.developer.products
-          .find((p) => p.productId === parseInt(this.$stateParams.productId, 10));
+          .find((p) => p.id === parseInt(this.$stateParams.productId, 10));
         this.version = this.product.versions
           .find((v) => v.versionId === parseInt(this.$stateParams.versionId, 10));
         this.versions = this.product.versions
@@ -44,7 +44,7 @@ const VersionsMergeComponent = {
       const versionToSave = {
         version,
         versionIds: this.selectedVersions.map((d) => d.versionId),
-        newProductId: this.product.productId,
+        newProductId: this.product.id,
       };
       versionToSave.versionIds.push(this.version.versionId);
       const that = this;

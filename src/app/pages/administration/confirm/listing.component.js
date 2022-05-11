@@ -180,8 +180,8 @@ const ConfirmListingComponent = {
       } else {
         that.products = [];
       }
-      if (this.pending.product && this.pending.product.productId) {
-        this.networkService.getSimpleProduct(this.pending.product.productId)
+      if (this.pending.product && this.pending.product.id) {
+        this.networkService.getSimpleProduct(this.pending.product.id)
           .then((result) => {
             that.stage = 'product';
             that.staged = result;
@@ -197,8 +197,8 @@ const ConfirmListingComponent = {
 
     loadVersions() {
       const that = this;
-      if (this.pending.product && this.pending.product.productId) {
-        this.networkService.getVersionsByProduct(this.pending.product.productId)
+      if (this.pending.product && this.pending.product.id) {
+        this.networkService.getVersionsByProduct(this.pending.product.id)
           .then((result) => {
             that.versions = result;
           });
@@ -364,8 +364,8 @@ const ConfirmListingComponent = {
 
     loadFamily() {
       const that = this;
-      if (this.pending.product && this.pending.product.productId) {
-        this.networkService.getRelatedListings(this.pending.product.productId)
+      if (this.pending.product && this.pending.product.id) {
+        this.networkService.getRelatedListings(this.pending.product.id)
           .then((family) => { that.resources.relatedListings = family.filter((item) => item.edition === '2015'); });
       }
     }

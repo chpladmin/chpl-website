@@ -23,9 +23,9 @@ export const InspectVersionComponent = {
       if (this.pendingVersion && this.pendingVersion.versionId) {
         this.updateVersion();
       }
-      if (this.product && this.product.productId) {
+      if (this.product && this.product.id) {
         this.choice = 'choose';
-        this.networkService.getVersionsByProduct(this.product.productId)
+        this.networkService.getVersionsByProduct(this.product.id)
           .then(result => this.availableVersions = result);
       } else {
         this.choice = 'create';

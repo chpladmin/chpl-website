@@ -76,21 +76,21 @@
 
     describe('when moving a product to a new developer', () => {
       it('should remove the product from the old list and add to new', () => {
-        ctrl.products = [{productId: 1}, {productId: 2}];
+        ctrl.products = [{id: 1}, {id: 2}];
         ctrl.movingProducts = [];
-        ctrl.toggleMove({productId: 1}, true);
-        expect(ctrl.products).toEqual([{productId: 2}]);
-        expect(ctrl.movingProducts).toEqual([{productId: 1}]);
+        ctrl.toggleMove({id: 1}, true);
+        expect(ctrl.products).toEqual([{id: 2}]);
+        expect(ctrl.movingProducts).toEqual([{id: 1}]);
       });
     });
 
     describe('when moving a product back to the old developer', () => {
       it('should remove the product from the new list and add to old', () => {
         ctrl.products = [];
-        ctrl.movingProducts = [{productId: 1}, {productId: 2}];
-        ctrl.toggleMove({productId: 1});
-        expect(ctrl.products).toEqual([{productId: 1}]);
-        expect(ctrl.movingProducts).toEqual([{productId: 2}]);
+        ctrl.movingProducts = [{id: 1}, {id: 2}];
+        ctrl.toggleMove({id: 1});
+        expect(ctrl.products).toEqual([{id: 1}]);
+        expect(ctrl.movingProducts).toEqual([{id: 2}]);
       });
     });
 
