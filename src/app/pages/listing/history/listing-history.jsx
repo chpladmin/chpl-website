@@ -156,7 +156,7 @@ function ChplListingHistory(props) {
   const goToHistory = () => {
     setOpen(false);
     $state.go('reports.listings', {
-      productId: listing.id,
+      listingId: listing.id,
     });
   };
 
