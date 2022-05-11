@@ -25,7 +25,7 @@ export const ProductsSplitComponent = {
       if (changes.developer && changes.developer.currentValue) {
         this.developer = angular.copy(changes.developer.currentValue);
         this.request.oldProduct = this.developer.products
-          .find(p => p.productId === parseInt(this.$stateParams.productId, 10));
+          .find(p => p.id === parseInt(this.$stateParams.productId, 10));
         this.request.oldVersions = this.request.oldProduct.versions
           .filter(v => !v.deleted)
           .map(v => {

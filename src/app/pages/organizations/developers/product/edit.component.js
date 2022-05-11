@@ -34,7 +34,7 @@ export const ProductsEditComponent = {
     save (product) {
       let that = this;
       let request = {
-        productIds: [product.productId],
+        productIds: [product.id],
         product: product,
         id: product.id,
       };
