@@ -65,15 +65,15 @@ const ListingViewPage = {
       } if (this.authService.hasAnyRole(['ROLE_DEVELOPER'])) {
         const currentUser = this.authService.getCurrentUser();
         return currentUser.organizations
-          .filter((d) => d.id === this.listing.developer.developerId)
+          .filter((d) => d.id === this.listing.developer.id)
           .length > 0;
       }
       return false;
     }
 
-    takeDeveloperAction(action, developerId) {
+    takeDeveloperAction(action, id) {
       this.$state.go('organizations.developers.developer', {
-        developerId,
+        id,
       });
     }
   },

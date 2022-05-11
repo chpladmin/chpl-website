@@ -8,7 +8,7 @@ const developer = shape({
   address,
   contact,
   developerCode: string,
-  developerId: oneOfType([number, string]),
+  id: oneOfType([number, string]),
   name: string,
   selfDeveloper: bool,
   website: string,

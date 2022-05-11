@@ -30,13 +30,13 @@ const DevelopersMergeComponent = {
           .sort((a, b) => (a.name < b.name ? -1 : 1));
       }
       if (this.developer && this.developers) {
-        this.developers = this.developers.filter((d) => d.developerId !== this.developer.developerId);
+        this.developers = this.developers.filter((d) => d.id !== this.developer.id);
       }
     }
 
     cancel() {
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developer.developerId,
+        id: this.developer.id,
       }, {
         reload: true,
       });
@@ -57,9 +57,9 @@ const DevelopersMergeComponent = {
     merge(developer) {
       const mergeDeveloperObject = {
         developer,
-        developerIds: this.selectedDevelopers.map((d) => d.developerId),
+        ids: this.selectedDevelopers.map((d) => d.id),
       };
-      mergeDeveloperObject.developerIds.push(this.developer.developerId);
+      mergeDeveloperObject.ids.push(this.developer.id);
       const that = this;
       this.networkService.mergeDevelopers(mergeDeveloperObject)
         .then((response) => {
@@ -84,7 +84,7 @@ const DevelopersMergeComponent = {
 
     selectDeveloper(developer) {
       this.developers
-        .filter((d) => d.developerId === developer.developerId)
+        .filter((d) => d.id === developer.id)
         .forEach((d) => d.selected = !d.selected);
       this.selectedDevelopers = this.developers
         .filter((d) => d.selected)

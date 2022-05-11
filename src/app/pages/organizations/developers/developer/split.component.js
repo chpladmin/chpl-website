@@ -32,7 +32,7 @@ const DevelopersSplitComponent = {
 
     cancel() {
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developer.developerId,
+        id: this.developer.id,
       }, {
         reload: true,
       });

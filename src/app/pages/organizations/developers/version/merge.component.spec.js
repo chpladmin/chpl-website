@@ -6,14 +6,14 @@
 
     mock = {
       developer: {
-        developerId: 22,
+        id: 22,
         products: [{
           productId: 32,
           versions: [{versionId: 55}, {versionId: 77}, {versionId: 99}],
         }],
       },
       stateParams: {
-        developerId: 22,
+        id: 22,
         productId: 32,
         versionId: 55,
       },
@@ -81,7 +81,7 @@
         scope.$digest();
         expect($state.go).toHaveBeenCalledWith(
           'organizations.developers.developer',
-          { developerId: 22 },
+          { id: 22 },
           { reload: true },
         );
       });

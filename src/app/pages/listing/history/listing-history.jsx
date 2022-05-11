@@ -70,10 +70,10 @@ function ChplListingHistory(props) {
   };
 
   const interpretedDevelopers = new Set();
-  const evaluateDeveloperActivity = (developerId, end = Date.now()) => {
-    if (!interpretedDevelopers.has(developerId)) {
-      networkService.getSingleDeveloperActivityMetadata(developerId, { end }).then((metadata) => {
-        interpretedDevelopers.add(developerId);
+  const evaluateDeveloperActivity = (id, end = Date.now()) => {
+    if (!interpretedDevelopers.has(id)) {
+      networkService.getSingleDeveloperActivityMetadata(id, { end }).then((metadata) => {
+        interpretedDevelopers.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
           const { interpreted, merged, split } = interpretDeveloper(response);
           if (interpreted.change.length > 0) {
@@ -142,7 +142,7 @@ function ChplListingHistory(props) {
       ...interpretPIHistory(listing, DateUtil, flags.promotingInteroperabilityIsOn),
     ]);
     evaluateListingActivity();
-    evaluateDeveloperActivity(listing.developer.developerId);
+    evaluateDeveloperActivity(listing.developer.id);
     evaluateProductActivity(listing.product.productId);
     evaluateVersionActivity(listing.version.versionId);
   }, [listing]);

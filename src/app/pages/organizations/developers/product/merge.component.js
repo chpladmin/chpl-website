@@ -32,7 +32,7 @@ const ProductsMergeComponent = {
 
     cancel() {
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developer.developerId,
+        id: this.developer.id,
       }, {
         reload: true,
       });
@@ -42,14 +42,14 @@ const ProductsMergeComponent = {
       const productToSave = {
         product,
         productIds: this.selectedProducts.map((d) => d.productId),
-        newDeveloperId: this.developer.developerId,
+        id: this.developer.id,
       };
       productToSave.productIds.push(this.product.productId);
       const that = this;
       this.networkService.updateProduct(productToSave)
         .then(() => {
           that.$state.go('organizations.developers.developer', {
-            developerId: that.developer.developerId,
+            id: that.developer.id,
           }, {
             reload: true,
           });

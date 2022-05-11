@@ -137,7 +137,7 @@ function ChplConfirmDeveloper(props) {
   const developers = props.developers
     .filter((d) => !d.deleted)
     .sort((a, b) => (a.name < b.name ? -1 : 1));
-  const [isCreating, setIsCreating] = useState(!props.developer.developerId);
+  const [isCreating, setIsCreating] = useState(!props.developer.id);
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
@@ -145,7 +145,7 @@ function ChplConfirmDeveloper(props) {
   }, []);
 
   useEffect(() => {
-    const foundDeveloper = props.developers.find((d) => d.developerId === props.developer.developerId);
+    const foundDeveloper = props.developers.find((d) => d.id === props.developer.id);
     if (foundDeveloper) {
       setSelectedDeveloper(foundDeveloper);
     }
@@ -342,7 +342,7 @@ function ChplConfirmDeveloper(props) {
                     onChange={handleSelectOnChange}
                   >
                     {developers.map((item) => (
-                      <MenuItem value={item} key={item.developerId}>
+                      <MenuItem value={item} key={item.id}>
                         {item.name}
                         {item.developerCode && (` (Developer Code: ${item.developerCode})`)}
                       </MenuItem>

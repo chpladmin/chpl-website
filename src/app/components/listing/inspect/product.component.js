@@ -23,9 +23,9 @@ export const InspectProductComponent = {
       if (this.pendingProduct && this.pendingProduct.productId) {
         this.updateProduct();
       }
-      if (this.developer && this.developer.developerId) {
+      if (this.developer && this.developer.id) {
         this.choice = 'choose';
-        this.networkService.getProductsByDeveloper(this.developer.developerId)
+        this.networkService.getProductsByDeveloper(this.developer.id)
           .then(result => this.availableProducts = result.products);
       } else {
         this.choice = 'create';

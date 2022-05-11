@@ -17,7 +17,7 @@ export const VersionsEditComponent = {
       let that = this;
       this.versionId = this.$stateParams.versionId;
       this.productId = this.$stateParams.productId;
-      this.developerId = this.$stateParams.developerId;
+      this.id = this.$stateParams.id;
       this.networkService.getVersion(this.versionId)
         .then(data => {
           that.version = data;
@@ -32,7 +32,7 @@ export const VersionsEditComponent = {
     cancel () {
       this.version = angular.copy(this.backup.version);
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developerId,
+        id: this.id,
       }, {reload: true});
     }
 
@@ -48,7 +48,7 @@ export const VersionsEditComponent = {
         .then(response => {
           if (!response.status || response.status === 200 || angular.isObject(response.status)) {
             this.$state.go('organizations.developers.developer', {
-              developerId: that.developerId,
+              id: that.id,
             }, {reload: true});
           } else {
             if (response.data.errorMessages) {
@@ -72,13 +72,13 @@ export const VersionsEditComponent = {
 
     takeAction (action, data) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'edit':
-        this.save(data);
-        break;
-                //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'edit':
+          this.save(data);
+          break;
+          //no default
       }
     }
 

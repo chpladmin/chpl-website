@@ -10,7 +10,7 @@
   </div>
   <div class="modal-body">
     <div ng-if="vm.stage === 'dev'">
-      <ai-inspect-developer developer="vm.developer" developers="vm.developers" listing="vm.cp" on-select="vm.selectInspectingDeveloper(developerId)" set-choice="vm.setDeveloperChoice(choice)"></ai-inspect-developer>
+      <ai-inspect-developer developer="vm.developer" developers="vm.developers" listing="vm.cp" on-select="vm.selectInspectingDeveloper(id)" set-choice="vm.setDeveloperChoice(choice)"></ai-inspect-developer>
     </div>
 
     <div ng-if="vm.stage === 'prd'">

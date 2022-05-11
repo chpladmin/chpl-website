@@ -21,7 +21,7 @@
         lastModifiedDate: 33939,
       },
       foundDeveloper: {
-        developerId: 2,
+        id: 2,
       },
       newDeveloper: {
       },
@@ -89,7 +89,7 @@
         });
 
         it('should get products based on found developer', () => {
-          expect(networkService.getProductsByDeveloper).toHaveBeenCalledWith(mock.foundDeveloper.developerId);
+          expect(networkService.getProductsByDeveloper).toHaveBeenCalledWith(mock.foundDeveloper.id);
           expect(ctrl.availableProducts).toEqual(mock.availableProducts);
         });
 

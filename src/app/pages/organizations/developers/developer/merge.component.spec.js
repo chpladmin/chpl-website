@@ -72,9 +72,9 @@
     describe('when a developer merge is saved', () => {
       let developer;
       beforeEach(() => {
-        developer = {developerId: 'an id'};
+        developer = {id: 'an id'};
         ctrl.developer = developer;
-        ctrl.selectedDevelopers = [{developerId: 1}, {developerId: 2}];
+        ctrl.selectedDevelopers = [{id: 1}, {id: 2}];
       });
 
       it('should navigate back to the developers page on a good response', () => {
@@ -99,7 +99,7 @@
         ctrl.merge(developer);
         expect(networkService.mergeDevelopers).toHaveBeenCalledWith({
           developer: developer,
-          developerIds: [1, 2, 'an id'],
+          ids: [1, 2, 'an id'],
         });
       });
     });

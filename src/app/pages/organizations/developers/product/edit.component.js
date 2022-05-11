@@ -16,7 +16,7 @@ export const ProductsEditComponent = {
     $onInit () {
       let that = this;
       this.productId = this.$stateParams.productId;
-      this.developerId = this.$stateParams.developerId;
+      this.id = this.$stateParams.id;
       this.networkService.getProduct(this.productId)
         .then(data => {
           that.product = data;
@@ -27,7 +27,7 @@ export const ProductsEditComponent = {
     cancel () {
       this.product = angular.copy(this.backup.product);
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developerId,
+        id: this.id,
       }, {reload: true});
     }
 
@@ -36,14 +36,14 @@ export const ProductsEditComponent = {
       let request = {
         productIds: [product.productId],
         product: product,
-        newDeveloperId: product.developerId,
+        id: product.id,
       };
       this.errorMessages = [];
       this.networkService.updateProduct(request)
         .then(response => {
           if (!response.status || response.status === 200 || angular.isObject(response.status)) {
             this.$state.go('organizations.developers.developer', {
-              developerId: that.developerId,
+              id: that.id,
             }, {reload: true});
           } else {
             if (response.data.errorMessages) {
@@ -67,13 +67,13 @@ export const ProductsEditComponent = {
 
     takeAction (action, data) {
       switch (action) {
-      case 'cancel':
-        this.cancel();
-        break;
-      case 'edit':
-        this.save(data);
-        break;
-                //no default
+        case 'cancel':
+          this.cancel();
+          break;
+        case 'edit':
+          this.save(data);
+          break;
+          //no default
       }
     }
 

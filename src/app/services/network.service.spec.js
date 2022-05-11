@@ -1496,7 +1496,7 @@
 
       it('should splitDeveloper', () => {
         $httpBackend.expectPOST(/^\/rest\/developers\/1\/split$/).respond(200, { data: 'response' });
-        networkService.splitDeveloper({ oldDeveloper: { developerId: 1 } }).then((response) => {
+        networkService.splitDeveloper({ oldDeveloper: { id: 1 } }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -1568,7 +1568,7 @@
 
       it('should updateDeveloper', () => {
         $httpBackend.expectPUT(/^\/rest\/developers\/id$/).respond(200, { data: 'response' });
-        networkService.updateDeveloper({ developerId: 'id' }).then((response) => {
+        networkService.updateDeveloper({ id: 'id' }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

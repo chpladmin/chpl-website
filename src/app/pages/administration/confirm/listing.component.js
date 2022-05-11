@@ -66,8 +66,8 @@ const ConfirmListingComponent = {
       if (changes.listing) {
         this.uploaded = angular.copy(changes.listing.currentValue);
         this.pending = angular.copy(changes.listing.currentValue);
-        if (this.pending.developer && !this.pending.developer.developerId) {
-          this.pending.developer.developerId = '';
+        if (this.pending.developer && !this.pending.developer.id) {
+          this.pending.developer.id = '';
         }
         this.errorMessages = this.uploaded.errorMessages;
         this.warningMessages = this.uploaded.warningMessages;
@@ -161,8 +161,8 @@ const ConfirmListingComponent = {
     loadDeveloper() {
       const that = this;
       this.staged = { ...this.uploaded.developer };
-      if (this.pending.developer && this.pending.developer.developerId) {
-        this.networkService.getDeveloper(this.pending.developer.developerId)
+      if (this.pending.developer && this.pending.developer.id) {
+        this.networkService.getDeveloper(this.pending.developer.id)
           .then((result) => {
             that.pending.developer = result;
             that.staged = { ...result };
@@ -172,8 +172,8 @@ const ConfirmListingComponent = {
 
     loadProducts() {
       const that = this;
-      if (this.pending.developer && this.pending.developer.developerId) {
-        this.networkService.getProductsByDeveloper(this.pending.developer.developerId)
+      if (this.pending.developer && this.pending.developer.id) {
+        this.networkService.getProductsByDeveloper(this.pending.developer.id)
           .then((result) => {
             that.products = result.products;
           });

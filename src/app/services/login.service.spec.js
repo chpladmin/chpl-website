@@ -252,7 +252,7 @@
           auth.saveToken(buildToken(user));
           $localStorage.currentUser = user;
           $localStorage.currentUser.organizations = [{id: 222}, {id: 333}];
-          expect(auth.canManageDeveloper({developerId: 333})).toBe(true);
+          expect(auth.canManageDeveloper({id: 333})).toBe(true);
         });
 
         it('should not allow user to manage developer', () => {
@@ -261,7 +261,7 @@
           auth.saveToken(buildToken(user));
           $localStorage.currentUser = user;
           $localStorage.currentUser.organizations = [{id: 222}, {id: 333}];
-          expect(auth.canManageDeveloper({developerId: 444})).toBe(false);
+          expect(auth.canManageDeveloper({id: 444})).toBe(false);
         });
       });
     });

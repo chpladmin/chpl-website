@@ -291,8 +291,8 @@ export default class NetworkService {
     return this.apiGET('/statistics/criterion_product');
   }
 
-  getDeveloper(developerId) {
-    return this.apiGET(`/developers/${developerId}`);
+  getDeveloper(id) {
+    return this.apiGET(`/developers/${id}`);
   }
 
   getDeveloperActivity(activityRange) {
@@ -300,8 +300,8 @@ export default class NetworkService {
     return this.getActivity(call, activityRange);
   }
 
-  getDeveloperHierarchy(developerId) {
-    return this.apiGET(`/developers/${developerId}/hierarchy`);
+  getDeveloperHierarchy(id) {
+    return this.apiGET(`/developers/${id}/hierarchy`);
   }
 
   getDevelopers(showDeleted) {
@@ -586,8 +586,8 @@ export default class NetworkService {
     return this.apiGET(`/atls/${atlId}/users`);
   }
 
-  getUsersAtDeveloper(developerId) {
-    return this.apiGET(`/developers/${developerId}/users`);
+  getUsersAtDeveloper(id) {
+    return this.apiGET(`/developers/${id}/users`);
   }
 
   getVersion(versionId) {
@@ -667,8 +667,8 @@ export default class NetworkService {
     return this.apiDELETE(`/atls/${atlId}/users/${userId}`);
   }
 
-  removeUserFromDeveloper(userId, developerId) {
-    return this.apiDELETE(`/developers/${developerId}/users/${userId}`);
+  removeUserFromDeveloper(userId, id) {
+    return this.apiDELETE(`/developers/${id}/users/${userId}`);
   }
 
   requestApiKey(apiKeyRequest) {
@@ -692,7 +692,7 @@ export default class NetworkService {
   }
 
   splitDeveloper(developerSplitObject) {
-    return this.apiPOST(`/developers/${developerSplitObject.oldDeveloper.developerId}/split`, developerSplitObject);
+    return this.apiPOST(`/developers/${developerSplitObject.oldDeveloper.id}/split`, developerSplitObject);
   }
 
   splitProduct(productObject) {
@@ -728,7 +728,7 @@ export default class NetworkService {
   }
 
   updateDeveloper(developer) {
-    return this.apiPUT(`/developers/${developer.developerId}`, developer);
+    return this.apiPUT(`/developers/${developer.id}`, developer);
   }
 
   updateFuzzyType(fuzzyType) {

@@ -25,16 +25,16 @@
     }
 
     function loadDev() {
-      if (vm.cp.developer && vm.cp.developer.developerId) {
-        networkService.getDeveloper(vm.cp.developer.developerId)
+      if (vm.cp.developer && vm.cp.developer.id) {
+        networkService.getDeveloper(vm.cp.developer.id)
           .then((result) => {
             vm.developer = result;
           });
       }
     }
 
-    function selectInspectingDeveloper(developerId) {
-      vm.cp.developer.developerId = developerId;
+    function selectInspectingDeveloper(id) {
+      vm.cp.developer.id = id;
       vm.loadDev();
     }
 
@@ -194,7 +194,7 @@
     function isDisabled() {
       switch (vm.stage) {
         case 'dev':
-          return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId) || !isSystemDevContactInfoValid();
+          return (vm.developerChoice === 'choose' && !vm.cp.developer.id) || !isSystemDevContactInfoValid();
         case 'prd':
           return (vm.productChoice === 'choose' && !vm.cp.product.productId);
         case 'ver':

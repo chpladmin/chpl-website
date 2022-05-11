@@ -29,8 +29,8 @@ export const InspectDeveloperComponent = {
     }
 
     selectInspectingDeveloper () {
-      this.listing.developer.developerId = this.developerSelect.developerId;
-      this.onSelect({developerId: this.developerSelect.developerId});
+      this.listing.developer.id = this.developerSelect.id;
+      this.onSelect({id: this.developerSelect.id});
     }
 
     saveInspectingDeveloper () {
@@ -38,7 +38,7 @@ export const InspectDeveloperComponent = {
         address: this.listing.developer.address,
         contact: this.listing.developer.contact,
         developerCode: this.developer.developerCode,
-        developerId: this.listing.developer.developerId,
+        id: this.listing.developer.id,
         name: this.listing.developer.name,
         selfDeveloper: this.listing.developer.selfDeveloper,
         status: this.developer.status,
@@ -51,7 +51,7 @@ export const InspectDeveloperComponent = {
       let that = this;
       this.networkService.updateDeveloper(developer)
         .then(() => {
-          that.onSelect({developerId: developer.developerId});
+          that.onSelect({id: developer.id});
         });
     }
   },

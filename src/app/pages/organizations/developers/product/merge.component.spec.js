@@ -6,11 +6,11 @@
 
     mock = {
       developer: {
-        developerId: 22,
+        id: 22,
         products: [{productId: 32}, {productId: 39}, {productId: 44}],
       },
       stateParams: {
-        developerId: 22,
+        id: 22,
         productId: 32,
       },
     };
@@ -77,7 +77,7 @@
         scope.$digest();
         expect($state.go).toHaveBeenCalledWith(
           'organizations.developers.developer',
-          { developerId: 22 },
+          { id: 22 },
           { reload: true },
         );
       });
@@ -90,7 +90,7 @@
         expect(networkService.updateProduct).toHaveBeenCalledWith({
           product: product,
           productIds: [39, 32],
-          newDeveloperId: 22,
+          id: 22,
         });
       });
     });

@@ -53,7 +53,7 @@ export const ProductsSplitComponent = {
 
     cancel () {
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developer.developerId,
+        id: this.developer.id,
       }, {
         reload: true,
       });
@@ -85,7 +85,7 @@ export const ProductsSplitComponent = {
             body: 'Your action has been completed',
           });
           that.$state.go('organizations.developers.developer', {
-            developerId: that.developer.developerId,
+            id: that.developer.id,
           }, {
             reload: true,
           });
