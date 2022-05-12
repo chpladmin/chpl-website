@@ -5,25 +5,21 @@ import ComparePage from './compare.po';
 let hooks;
 let page;
 
-beforeEach(async () => {
-  page = new ComparePage();
-  hooks = new Hooks();
-  await hooks.open('#/compare/9261&9956');
-});
-
-describe('on compare page after clicking show all-', () => {
-  it('should display all of the 78 certification criterias', () => {
-    page.checkShowAllCheckbox();
-    page.certificationCriteriaLink.scrollIntoView();
-    page.certificationCriteriaLink.click();
-    expect(page.allCCCQM.length).toBe(78);
+describe('the compare page', () => {
+  beforeEach(async () => {
+    page = new ComparePage();
+    hooks = new Hooks();
+    await hooks.open('#/compare/9261&9956');
   });
 
   describe('when viewing all criteria', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       page.checkShowAllCheckbox();
-      page.certificationCriteriaLink.scrollIntoView();
       page.certificationCriteriaLink.click();
+    });
+
+    it('should display all of the 78 certification criterias', () => {
+      expect(page.allCCCQM.length).toBe(78);
     });
 
     it('should correctly display the criteria number/title', () => {
@@ -35,10 +31,14 @@ describe('on compare page after clicking show all-', () => {
     });
   });
 
-  it('should display all CQMs', () => {
-    page.checkShowAllCheckbox();
-    page.clinicalQualityMeasuresLink.scrollIntoView();
-    page.clinicalQualityMeasuresLink.click();
-    expect(page.allCCCQM.length).toBe(102);
+  describe('when viewing all CQMs', () => {
+    beforeEach(() => {
+      page.checkShowAllCheckbox();
+      page.clinicalQualityMeasuresLink.click();
+    });
+
+    it('should display all CQMs', () => {
+      expect(page.allCCCQM.length).toBe(102);
+    });
   });
 });
