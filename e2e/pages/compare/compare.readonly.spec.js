@@ -12,6 +12,14 @@ describe('the compare page', () => {
     await hooks.open('#/compare/9261&9956');
   });
 
+  describe('when looking at specific data', () => {
+    it('should know what the decertification date is', () => {
+      browser.waitUntil(() => page.isListingLoaded('15.02.02.3007.A056.01.00.0.180214') && page.isListingLoaded('15.04.04.2916.smar.07.01.1.190328'));
+      expect(page.getDecertificationDate('15.02.02.3007.A056.01.00.0.180214')).toBe('Jul 19, 2021');
+      expect(page.getDecertificationDate('15.04.04.2916.smar.07.01.1.190328')).toBe('N/A');
+    });
+  });
+
   describe('when viewing all criteria', () => {
     beforeEach(() => {
       page.checkShowAllCheckbox();

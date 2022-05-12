@@ -7,6 +7,7 @@ class ComparePage {
       allCCCQM: '.compare-rowCert.ng-binding',
       toggleCriteriaButton: '#toggle-certification-criteria',
       criteriaHeader: (number) => `th*=${number}`,
+      chplProductNumber: (number) => `td*=${number}`,
     };
   }
 
@@ -39,6 +40,26 @@ class ComparePage {
 
   getCellWithCriteriaNumber(criteriaNumber) {
     return $(this.elements.criteriaHeader(criteriaNumber));
+  }
+
+  isListingLoaded(chplProductNumber) {
+    return $(this.elements.chplProductNumber(chplProductNumber)).isDisplayed();
+  }
+
+  findIndex(chplProductNumber) {
+    return $(this.elements.chplProductNumber(chplProductNumber))
+      .parentElement()
+      .$$('td')
+      .findIndex((ele) => ele.getText() === chplProductNumber);
+  }
+
+  getDecertificationDate(chplProductNumber) {
+    return $('table')
+      .$('tbody')
+      .$$('tr')
+      .find((row) => row.getText().includes('Inactive/Decertified Date'))
+      .$$('td')[this.findIndex(chplProductNumber)]
+      .getText();
   }
 }
 
