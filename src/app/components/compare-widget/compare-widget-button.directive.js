@@ -1,16 +1,21 @@
-(() => {
+(function () {
+  'use strict';
+
+  angular.module('chpl.components')
+    .directive('aiCompareWidgetButton', aiCompareWidgetButton);
+
   /** @ngInject */
-  function aiCompareWidgetButton() {
+  function aiCompareWidgetButton () {
     return {
       require: '^aiCompareWidget',
       restrict: 'E',
       scope: {
-        listingId: '@',
+        productId: '@',
         productName: '@',
         chplProductNumber: '@',
       },
       templateUrl: 'chpl.components/compare-widget/compare-widget-button.html',
-      link(scope, el, attrs, widgetController) {
+      link: function (scope, el, attrs, widgetController) {
         scope.toggleProduct = function (id, name, number) {
           widgetController.toggleProduct(id, name, number);
           scope.$emit('ShowCompareWidget');
@@ -21,7 +26,4 @@
       },
     };
   }
-
-  angular.module('chpl.components')
-    .directive('aiCompareWidgetButton', aiCompareWidgetButton);
 })();
