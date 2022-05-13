@@ -100,7 +100,7 @@
         ret = DateUtil.getDisplayDateFormat(ret);
       }
       if (col.isDeveloperLink) {
-        const link = `<a ui-sref="organizations.developers.developer({id: ${cp.id}})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: '${vm.analyticsCategory}' }">${ret}</a>`;
+        const link = `<a ui-sref="organizations.developers.developer({id: ${cp.developerId}})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: '${vm.analyticsCategory}' }">${ret}</a>`;
         ret = link;
       }
       if (col.isLink) {
