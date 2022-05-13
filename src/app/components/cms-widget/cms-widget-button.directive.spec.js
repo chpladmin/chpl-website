@@ -22,7 +22,7 @@
           this.toggleProduct = mock.toggleProduct;
         };
 
-        el = angular.element('<ai-cms-widget><ai-cms-widget-button listing-id="3" product-name="test" chpl-product-number="prodNum"></ai-cms-widget-button></ai-cms-widget>');
+        el = angular.element('<ai-cms-widget><ai-cms-widget-button product-id="3" product-name="test" chpl-product-number="prodNum"></ai-cms-widget-button></ai-cms-widget>');
 
         $compile(el)($rootScope.$new());
         $rootScope.$digest();
