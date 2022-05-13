@@ -98,7 +98,7 @@
         ctrl.merge(version);
         expect(networkService.updateVersion).toHaveBeenCalledWith({
           version,
-          ids: [77, 55],
+          versionIds: [77, 55],
           newProductId: 32,
         });
       });

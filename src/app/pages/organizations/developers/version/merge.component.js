@@ -43,10 +43,10 @@ const VersionsMergeComponent = {
     merge(version) {
       const versionToSave = {
         version,
-        ids: this.selectedVersions.map((d) => d.id),
+        versionIds: this.selectedVersions.map((d) => d.id),
         newProductId: this.product.id,
       };
-      versionToSave.ids.push(this.version.id);
+      versionToSave.versionIds.push(this.version.id);
       const that = this;
       this.networkService.updateVersion(versionToSave)
         .then(() => {

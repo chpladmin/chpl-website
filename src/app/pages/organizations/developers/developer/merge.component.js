@@ -57,9 +57,9 @@ const DevelopersMergeComponent = {
     merge(developer) {
       const mergeDeveloperObject = {
         developer,
-        ids: this.selectedDevelopers.map((d) => d.id),
+        developerIds: this.selectedDevelopers.map((d) => d.id),
       };
-      mergeDeveloperObject.ids.push(this.developer.id);
+      mergeDeveloperObject.developerIds.push(this.developer.id);
       const that = this;
       this.networkService.mergeDevelopers(mergeDeveloperObject)
         .then((response) => {

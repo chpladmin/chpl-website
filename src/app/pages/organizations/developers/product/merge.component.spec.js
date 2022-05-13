@@ -94,8 +94,8 @@
         ctrl.merge(product);
         expect(networkService.updateProduct).toHaveBeenCalledWith({
           product,
-          ids: [39, 32],
-          id: 22,
+          productIds: [39, 32],
+          newDeveloperId: 22,
         });
       });
     });

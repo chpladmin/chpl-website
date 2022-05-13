@@ -41,10 +41,10 @@ const ProductsMergeComponent = {
     merge(product) {
       const productToSave = {
         product,
-        ids: this.selectedProducts.map((d) => d.id),
-        id: this.developer.id,
+        productIds: this.selectedProducts.map((d) => d.id),
+        newDeveloperId: this.developer.id,
       };
-      productToSave.ids.push(this.product.id);
+      productToSave.productIds.push(this.product.id);
       const that = this;
       this.networkService.updateProduct(productToSave)
         .then(() => {

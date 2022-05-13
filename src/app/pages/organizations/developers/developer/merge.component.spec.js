@@ -105,7 +105,7 @@
         ctrl.merge(developer);
         expect(networkService.mergeDevelopers).toHaveBeenCalledWith({
           developer,
-          ids: [1, 2, 'an id'],
+          developerIds: [1, 2, 'an id'],
         });
       });
     });
