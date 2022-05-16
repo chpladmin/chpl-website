@@ -5,28 +5,37 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
-  ThemeProvider,
+  FormHelperText,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  func, string,
-} from 'prop-types';
+import { func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import * as jsJoda from '@js-joda/core';
+import '@js-joda/timezone';
 
-import theme from '../../themes/theme';
-import { ChplTextField } from '../util';
+import { ChplTextField } from 'components/util';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  content: {
-    margin: '16px 0',
+  datetimeLayout: {
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+    },
   },
   cron: {
     display: 'flex',
-    gap: '8px',
-    flexDirection: 'row',
-    alignItems: 'center',
+    gap: '16px',
+    flexDirection: 'column',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
   },
   cronValue: {
     color: '#156dac',
@@ -34,29 +43,20 @@ const useStyles = makeStyles({
     borderRadius: '64px',
     padding: '8px',
     fontWeight: '800',
-  },
-  time: {
-    display: 'flex',
-    gap: '8px',
-    alignItems: 'flex-start',
+    maxWidth: 'max-content',
   },
   day: {
     display: 'flex',
     flexWrap: 'wrap',
   },
+  helperTextSpacing: {
+    marginLeft: '14px',
+  },
 });
 
 const validationSchema = yup.object({
-  hour: yup.number()
-    .min(0, 'Hour must be positive')
-    .max(23, 'Hour must be less than 24')
-    .integer('Hour must be an integer')
-    .required('Hour is required'),
-  minute: yup.number()
-    .min(0, 'Minute must be positive')
-    .max(59, 'Minute must be less than 60')
-    .integer('Minute must be an integer')
-    .required('Minute is required'),
+  runTime: yup.string()
+    .required('Run time must be entered'),
 });
 
 function ChplCronGen(props) {
@@ -67,13 +67,19 @@ function ChplCronGen(props) {
   let formik;
 
   useEffect(() => {
-    const parts = props.initialValue.split(' ');
-    formik.setFieldValue('minute', parts[1]);
-    formik.setFieldValue('hour', parts[2]);
-    if (parts[5] === '?') {
+    const [, minute, hour, , , day] = props.initialValue.split(' ');
+    const time = jsJoda.ZonedDateTime
+      .of3(jsJoda.LocalDate.now(),
+        jsJoda.LocalTime.parse(`${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`),
+        jsJoda.ZoneId.of('UTC-00:00'))
+      .withZoneSameInstant(jsJoda.ZoneId.of('America/New_York'))
+      .toLocalTime()
+      .toString();
+    formik.setFieldValue('runTime', time);
+    if (day === '?') {
       setDays(() => new Set());
     } else {
-      setDays(() => new Set(parts[5].split(',').filter((p) => p.length === 3)));
+      setDays(() => new Set(day.split(',').filter((p) => p.length === 3)));
     }
     setCron(props.initialValue);
   }, []);
@@ -89,38 +95,39 @@ function ChplCronGen(props) {
   };
 
   const updateCron = () => {
-    let updated;
-    if (days.size === 0 || days.size === 7) {
-      updated = `0 ${formik.values.minute} ${formik.values.hour} 1/1 * ? *`;
-    } else {
-      updated = `0 ${formik.values.minute} ${formik.values.hour} ? * ${[...days].join(',')} *`;
+    try {
+      const utc = jsJoda.LocalDateTime
+        .ofDateAndTime(jsJoda.LocalDate.now(), jsJoda.LocalTime.parse(formik.values.runTime))
+        .atZone(jsJoda.ZoneId.of('America/New_York'))
+        .withZoneSameInstant(jsJoda.ZoneId.of('UTC-00:00'));
+      const daySpecific = !(days.size === 0 || days.size === 7);
+      const updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
+      setCron(updated);
+      props.dispatch(updated);
+    } catch {
+      // noop
     }
-    setCron(updated);
-    props.dispatch(updated);
   };
 
   formik = useFormik({
     initialValues: {
-      hour: 4,
-      minute: 0,
+      runTime: '04:00',
     },
     validationSchema,
-    validateOnChange: true,
-    validateOnMount: true,
   });
 
-  useEffect(() => updateCron(), [days, formik.values.hour, formik.values.minute]);
+  useEffect(() => updateCron(), [days, formik.values.runTime]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.content}>
-        <Card>
-          <CardContent>
-            <div className={classes.cron}>
-              <Typography variant="subtitle2">Cron value:</Typography>
-              <code className={classes.cronValue}>{cron}</code>
-            </div>
-            <Divider />
+    <Card>
+      <CardContent>
+        <div className={classes.cron}>
+          <Typography variant="subtitle2">Cron value:</Typography>
+          <code className={classes.cronValue}>{cron}</code>
+        </div>
+        <Divider />
+        <div className={classes.datetimeLayout}>
+          <div>
             <Typography variant="subtitle2">Every:</Typography>
             <div className={classes.day}>
               <FormControlLabel
@@ -152,35 +159,26 @@ function ChplCronGen(props) {
                 control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
               />
             </div>
+          </div>
+          <div>
             <Typography gutterBottom variant="subtitle2">At:</Typography>
-            <div className={classes.time}>
-              <ChplTextField
-                id="hour"
-                name="hour"
-                label="Hour"
-                required
-                value={formik.values.hour}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.hour && !!formik.errors.hour}
-                helperText={formik.touched.hour && formik.errors.hour}
-              />
-              <ChplTextField
-                id="minute"
-                name="minute"
-                label="Minute"
-                required
-                value={formik.values.minute}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.minute && !!formik.errors.minute}
-                helperText={formik.touched.minute && formik.errors.minute}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </ThemeProvider>
+            <ChplTextField
+              id="run-time"
+              name="runTime"
+              label="Run Time"
+              type="time"
+              required
+              value={formik.values.runTime}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.runTime && !!formik.errors.runTime}
+              helperText={formik.touched.runTime && formik.errors.runTime}
+            />
+            <FormHelperText className={classes.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

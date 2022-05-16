@@ -80,14 +80,6 @@ export default class NetworkService {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
 
-  createScheduleOneTimeTrigger(trigger) {
-    return this.apiPOST('/schedules/triggers/one_time', trigger);
-  }
-
-  createScheduleTrigger(trigger) {
-    return this.apiPOST('/schedules/triggers', trigger);
-  }
-
   createSvap(svap) {
     return this.apiPOST('/svaps', svap);
   }
@@ -106,10 +98,6 @@ export default class NetworkService {
 
   deleteQuarterlySurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/quarterly/${id}`);
-  }
-
-  deleteScheduleTrigger(trigger) {
-    return this.apiDELETE(`/schedules/triggers/${trigger.group}/${trigger.name}`);
   }
 
   deleteSurveillance(surveillanceId, reason) {
@@ -377,18 +365,6 @@ export default class NetworkService {
 
   getNonconformityStatisticsCount() {
     return this.apiGET('/statistics/nonconformity_criteria_count');
-  }
-
-  getScheduledSystemJobs() {
-    return this.apiGET('/schedules/triggers?jobType=system');
-  }
-
-  getScheduleTriggers() {
-    return this.apiGET('/schedules/triggers');
-  }
-
-  getScheduleJobs() {
-    return this.apiGET('/schedules/jobs');
   }
 
   getParticipantAgeStatistics() {
@@ -759,10 +735,6 @@ export default class NetworkService {
     return this.apiPUT(`/data/fuzzy_choices/${fuzzyType.id}`, fuzzyType);
   }
 
-  updateJob(job) {
-    return this.apiPUT('/schedules/jobs', job);
-  }
-
   updateProduct(productObject) {
     return this.apiPUT('/products', productObject);
   }
@@ -777,10 +749,6 @@ export default class NetworkService {
 
   updateRelevantSurveillance(reportId, surveillance) {
     return this.apiPUT(`/surveillance-report/quarterly/${reportId}/surveillance/${surveillance.id}`, surveillance);
-  }
-
-  updateScheduleTrigger(trigger) {
-    return this.apiPUT('/schedules/triggers', trigger);
   }
 
   updateSurveillance(surveillance) {
