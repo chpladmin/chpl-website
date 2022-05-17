@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 11.35.0
+_16 May 2022_
+
+### Features
+* Manage Jobs in React
+
+### User Interface Updates
+* Indicate when ONC-ACBs are Retired on Job schedule pages
+
+---
+
 ## Version 11.34.1
 _5 May 2022_
 
