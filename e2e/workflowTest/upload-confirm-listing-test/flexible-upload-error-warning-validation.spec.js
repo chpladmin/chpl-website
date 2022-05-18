@@ -1,28 +1,25 @@
 import UploadListingComponent from '../../components/upload/upload-listing/upload-listing.po';
-import ConfirmPage from '../../pages/administration/confirm/confirm.po';
+import Confirm from '../../pages/administration/confirm/confirm.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
-import ToastComponent from '../../components/toast/toast.po';
 
 import { suites } from './suites';
 
-let confirmPage;
+let confirm;
 let hooks;
 let loginComponent;
-let toast;
 let uploadListingComponent;
 let actionBar;
 
 if (process.env.ENV !== 'stage') {
   describe('When admin uploads a listing ', () => {
     beforeAll(() => {
-      confirmPage = new ConfirmPage();
+      confirm = new Confirm();
       uploadListingComponent = new UploadListingComponent();
       loginComponent = new LoginComponent();
       actionBar = new ActionBarComponent();
       hooks = new Hooks();
-      toast = new ToastComponent();
       hooks.open('#/administration/upload');
       loginComponent.logIn('admin');
     });
@@ -34,7 +31,7 @@ if (process.env.ENV !== 'stage') {
       describe(description, () => {
         beforeEach(() => {
           hooks.open('#/administration/upload');
-          uploadListingComponent.uploadFileAndWaitForListingsToBeProcessed(file, listingIds, toast, hooks, confirmPage);
+          uploadListingComponent.uploadFileAndWaitForListingsToBeProcessed(file, listingIds, hooks, confirm);
         });
 
         listings.forEach((input) => {
@@ -42,7 +39,7 @@ if (process.env.ENV !== 'stage') {
 
           it(`${listingId} should have expected messages`, () => {
             hooks.open('#/administration/confirm/listings');
-            confirmPage.gotoPendingListingPage(listingId);
+            confirm.gotoPendingListingPage(listingId);
             hooks.waitForSpinnerToDisappear();
             if (expectedErrors.length > 0 || expectedWarnings.length > 0) {
               actionBar.waitForMessages();
