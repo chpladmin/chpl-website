@@ -3,6 +3,7 @@ const config = require('../../../config/mainConfig');
 class ConfirmPage {
   constructor() {
     this.elements = {
+      title: 'h1=View Products in the process of upload',
       inspectNext: '#inspect-next',
       inspectLabel: '#inspect-label',
       inspectConfirm: '#inspect-confirm',
@@ -15,7 +16,13 @@ class ConfirmPage {
       errorMessage: '.bg-danger',
       errorOnInspect: '#action-bar-errors > ul > li',
       warningOnInspect: '#action-bar-warnings > ul > li',
+      useLegacy: '#use-legacy',
+      usingModern: 'span*=Using Modern Workflow',
     };
+  }
+
+  isLoaded() {
+    return $(this.elements.title).isDisplayed();
   }
 
   get inspectNextButton() {
@@ -67,6 +74,9 @@ class ConfirmPage {
   }
 
   gotoConfirmListingPage(inspectListingId) {
+    if ($(this.elements.usingModern).isDisplayed()) {
+      $(this.elements.useLegacy).click();
+    }
     $(`//button[@id="process-pending-listing-${inspectListingId}"]`).click();
     $('p=Step 1 of 4').waitForDisplayed();
     this.inspectNextButton.click();
@@ -78,7 +88,10 @@ class ConfirmPage {
     this.inspectConfirmButton.waitForDisplayed();
   }
 
-  gotoPendingListingPage(pendingListingId) {
+  gotoPendingListingPage(pendingListingId, legacy = false) {
+    if (legacy && $(this.elements.usingModern).isDisplayed()) {
+      $(this.elements.useLegacy).click();
+    }
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).waitForClickable({ timeout: config.longTimeout });
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).click();
   }
@@ -87,7 +100,10 @@ class ConfirmPage {
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).waitForClickable({ timeout: config.longTimeout });
   }
 
-  rejectListingCheckbox(chplId) {
+  rejectListingCheckbox(chplId, legacy = false) {
+    if (legacy && $(this.elements.usingModern).isDisplayed()) {
+      $(this.elements.useLegacy).click();
+    }
     $(`//input[@id="reject-pending-listing-${chplId}"]`).click();
   }
 
@@ -95,7 +111,10 @@ class ConfirmPage {
     return $(`//input[@id="reject-pending-listing-${chplId}"]`);
   }
 
-  rejectListing(chplId) {
+  rejectListing(chplId, legacy = false) {
+    if (legacy && $(this.elements.usingModern).isDisplayed()) {
+      $(this.elements.useLegacy).click();
+    }
     $(`//input[@id="reject-pending-listing-${chplId}"]`).click();
     if (this.rejectButton.isClickable()) {
       this.rejectButton.waitAndClick();
