@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => ({
   buttonCardFocused: {
     boxShadow: '0px 0px 16px 4px #337ab750',
     fontWeight: '600',
+    backgroundColor: '#ffffff',
   },
   buttonContent: {
     display: 'flex',
