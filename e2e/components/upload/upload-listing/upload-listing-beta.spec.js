@@ -1,45 +1,36 @@
-import UploadListingComponent from './upload-listing.po';
 import LoginComponent from '../../login/login.po';
 import Hooks from '../../../utilities/hooks';
-import ToastComponent from '../../toast/toast.po';
+
+import UploadListingComponent from './upload-listing.po';
+import inputs from './upload-listing-beta-dp';
 
 let hooks;
 let loginComponent;
-let toast;
-let uploadListingComponent;
-
-const inputs = require('./upload-listing-beta-dp');
+let upload;
 
 beforeEach(async () => {
-  uploadListingComponent = new UploadListingComponent();
+  upload = new UploadListingComponent();
   loginComponent = new LoginComponent();
   hooks = new Hooks();
-  toast = new ToastComponent();
   await hooks.open('#/administration/upload');
 });
 
-describe('When ONC-ACB uploads - ', () => {
-  if (process.env.ENV !== 'stage') {
-    beforeEach(() => {
-      loginComponent.logIn('acb');
-    });
+describe('when uploading listings', () => {
+  beforeEach(() => {
+    loginComponent.logIn('acb');
+  });
 
-    afterEach(() => {
-      hooks.waitForSpinnerToDisappear();
-      toast.clearAllToast();
-      loginComponent.logOut();
-    });
+  afterEach(() => {
+    hooks.waitForSpinnerToDisappear();
+    loginComponent.logOut();
+  });
 
-    inputs.forEach((input) => {
-      const { testName } = input;
-      const { path } = input;
-      const { message } = input;
+  inputs.forEach((input) => {
+    const { message, path, testName } = input;
 
-      it(`${testName} - shows ${message} status of upload`, () => {
-        uploadListingComponent.uploadListingBeta(path);
-        browser.waitUntil(() => toast.toastTitle.isDisplayed());
-        expect(toast.toastTitle.getText()).toBe(message);
-      });
+    it(`shows ${message} status of upload: ${testName}`, () => {
+      upload.uploadListing(path);
+      expect(upload.uploadMessage(path.split('/').pop())).toHaveTextContaining(message);
     });
-  }
+  });
 });

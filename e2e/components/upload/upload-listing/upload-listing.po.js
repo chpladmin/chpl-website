@@ -1,62 +1,54 @@
-const uploadElements = {
-  root: 'chpl-upload-listings',
-  title: '.panel-title',
-  chooseUploadListing: '//*[@id="ngf-label-upload-button-listing"]/input[@id="ngf-upload-button-listing"]',
-  uploadButton: '.btn.btn-ai-success',
-  listingUploadText: '//chpl-upload-listings/div/div[2]/div',
-  chooseUploadListingBeta: '//input[@id="upload-listings"]',
-  uploadBetaButton: '.MuiButton-containedPrimary',
-};
-
 const path = require('path');
 
 class UploadListingComponent {
-  constructor () { }
-
-  get chooseUploadListingButton () {
-    return $(uploadElements.chooseUploadListing);
+  constructor() {
+    this.elements = {
+      title: '.panel-title',
+      chooseUploadListing: '#upload-listings',
+      uploadButton: '.MuiButton-containedPrimary',
+      useLegacy: '#use-legacy',
+      usingModern: 'span=Using Modern Upload',
+      uploadDone: (filename) => `div#notistack-snackbar*=${filename}`,
+    };
   }
 
-  get uploadButton () {
-    return $(uploadElements.root).$(uploadElements.uploadButton);
+  uploadMessage(filename) {
+    return $(this.elements.uploadDone(filename));
   }
 
-  get listingUploadText () {
-    return $(uploadElements.listingUploadText);
+  get title() {
+    return $(this.elements.title);
   }
 
-  get title () {
-    return $(uploadElements.root).$(uploadElements.title);
+  get chooseUploadListingButton() {
+    return $(this.elements.chooseUploadListing);
   }
 
-  get chooseUploadListingBetaButton () {
-    return $(uploadElements.chooseUploadListingBeta);
+  get uploadButton() {
+    return $(this.elements.uploadButton);
   }
 
-  get uploadBetaButton () {
-    return $(uploadElements.uploadBetaButton);
-  }
-
-  uploadListingBeta (uploadfilePath) {
-    const filePath = path.join(__dirname, uploadfilePath);
-    this.chooseUploadListingBetaButton.addValue(browser.uploadFile(filePath));
-    this.uploadBetaButton.click();
-  }
-
-  uploadListing (uploadfilePath) {
+  uploadListing(uploadfilePath, legacy = false) {
+    if (legacy && $(this.elements.usingModern).isDisplayed()) {
+      $(this.elements.useLegacy).click();
+    }
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadListingButton.addValue(browser.uploadFile(filePath));
-    this.uploadButton.waitAndClick();
-    browser.waitUntil( () => this.listingUploadText.isDisplayed());
+    this.uploadButton.click();
+    const toast = this.uploadMessage(uploadfilePath.split('/').pop());
+    browser.waitUntil(() => toast.isDisplayed());
   }
 
-  uploadFileAndWaitForListingsToBeProcessed (filename, listingIds, toast, hooks, confirmPage) {
-    this.uploadListingBeta(filename);
-    browser.waitUntil(() => toast.toastTitle.isDisplayed());
-    toast.clearAllToast();
+  uploadFileAndWaitForListingsToBeProcessed(filename, listingIds, hooks, confirm) {
+    this.uploadListing(filename);
+    this.uploadMessage(filename.split('/').pop())
+      .parentElement()
+      .$('button*=Dismiss')
+      .click();
     hooks.open('#/administration/confirm/listings');
+    browser.waitUntil(() => confirm.isLoaded());
     listingIds.forEach((listingId) => {
-      confirmPage.waitForPendingListingToBecomeClickable(listingId);
+      confirm.waitForPendingListingToBecomeClickable(listingId);
     });
   }
 }
