@@ -1,20 +1,23 @@
 import React from 'react';
-import { bool, func } from 'prop-types';
+import { func } from 'prop-types';
 
 import ChplConfirmListings from './confirm-listings';
 
 import ApiWrapper from 'api/api-wrapper';
+import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 
 function ChplConfirmListingsWrapper(props) {
-  const { beta, onProcess } = props;
+  const { onProcess } = props;
+
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplConfirmListings
-          beta={beta}
-          onProcess={onProcess}
-        />
+        <FlagWrapper>
+          <ChplConfirmListings
+            onProcess={onProcess}
+          />
+        </FlagWrapper>
       </ApiWrapper>
     </UserWrapper>
   );
@@ -23,10 +26,5 @@ function ChplConfirmListingsWrapper(props) {
 export default ChplConfirmListingsWrapper;
 
 ChplConfirmListingsWrapper.propTypes = {
-  beta: bool,
   onProcess: func.isRequired,
-};
-
-ChplConfirmListingsWrapper.defaultProps = {
-  beta: false,
 };

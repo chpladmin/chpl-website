@@ -1,20 +1,18 @@
-// This test is using AQA1 upload listing
-
-import UploadPage from '../../pages/administration/upload/upload.po';
-import ConfirmPage from '../../pages/administration/confirm/confirm.po';
+import Upload from '../../components/upload/upload-listing/upload-listing.po';
+import Confirm from '../../pages/administration/confirm/confirm.po';
 import ListingEditComponent from '../../components/listing/edit/listing-edit.po';
 import LoginComponent from '../../components/login/login.po';
 import Hooks from '../../utilities/hooks';
 
-let confirmPage;
+let confirm;
 let hooks;
 let listingEditComponent;
 let loginComponent;
-let uploadPage;
+let upload;
 
 beforeAll(() => {
-  uploadPage = new UploadPage();
-  confirmPage = new ConfirmPage();
+  upload = new Upload();
+  confirm = new Confirm();
   listingEditComponent = new ListingEditComponent();
   loginComponent = new LoginComponent();
   hooks = new Hooks();
@@ -25,13 +23,17 @@ beforeAll(() => {
 describe('an ACB user', () => {
   beforeEach(() => {
     hooks.open('#/administration/upload');
-    uploadPage.uploadListing('../../../resources/listings/2015_v19_AQA1.csv');
-    uploadPage.waitForSuccessfulUpload('AQA1');
+    upload.uploadListing('../../../resources/listings/2015_v19_AQA1.csv');
+    upload.waitForSuccessfulUpload('AQA1');
     hooks.open('#/administration/confirm/listings');
   });
 
-  it.skip('should be able to add test procedure, test data, test tools, test functionality to uploaded listing (170.315 (b)(3) cures criteria)', () => {
-    confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
+  afterEach(() => {
+    browser.refresh();
+  });
+
+  xit('should be able to add test procedure, test data, test tools, test functionality to uploaded listing (170.315 (b)(3) cures criteria)', () => {
+    confirm.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
     listingEditComponent.openEditCriteria('170.315 (b)(3)', true);
     listingEditComponent.addTestFunctionality('(b)(3)(ii)(B)(4)');
     listingEditComponent.addTestProcedures('ONC Test Method - Surescripts (Alternative)', '1');
@@ -45,8 +47,8 @@ describe('an ACB user', () => {
     expect(listingEditComponent.getTestToolDetail('170.315 (b)(3)', true).getText()).toContain('Inferno');
   });
 
-  it.skip('should be able to remove uploaded test procedure, test tools (170.315 (b)(3) cures criteria)', () => {
-    confirmPage.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
+  xit('should be able to remove uploaded test procedure, test tools (170.315 (b)(3) cures criteria)', () => {
+    confirm.gotoConfirmListingPage('15.04.04.1722.AQA1.03.01.1.200620');
     listingEditComponent.openEditCriteria('170.315 (b)(3)', true);
     // Remove test tool
     listingEditComponent.removeTestProcToolData('Remove item HL7v2 Immunization Test Suite');
@@ -56,9 +58,5 @@ describe('an ACB user', () => {
     listingEditComponent.viewDetailsCriteria('170.315 (b)(3)', true);
     expect(listingEditComponent.getTestProcedureDetail('170.315 (b)(3)', true).getText()).not.toContain('ONC Test Method');
     expect(listingEditComponent.getTestToolDetail('170.315 (b)(3)', true).getText()).not.toContain('HL7v2 Immunization Test Suite');
-  });
-
-  afterEach(() => {
-    browser.refresh();
   });
 });

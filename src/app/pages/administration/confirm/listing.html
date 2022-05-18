@@ -21,11 +21,12 @@
     ></chpl-confirm-progress-bridge>
   <div ng-switch="$ctrl.stage" ng-form="$ctrl.form">
     <div ng-switch-when="developer">
-      <chpl-confirm-developer-bridge
+      <chpl-confirm-developer-wrapper-bridge
+        listing="$ctrl.pending"
         developer="$ctrl.staged"
         developers="$ctrl.developers"
         dispatch="::$ctrl.handleDeveloperDispatch"
-        ></chpl-confirm-developer-bridge>
+        ></chpl-confirm-developer-wrapper-bridge>
     </div>
     <div ng-switch-when="product">
       <chpl-confirm-product-bridge
