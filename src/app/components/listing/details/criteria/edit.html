@@ -181,7 +181,10 @@
             </div>
           </td>
           <td ng-if="$ctrl.cert.conformanceMethods && $ctrl.cert.conformanceMethods.length > 0 && !$ctrl.canEdit()">
-            <div ng-repeat="m in $ctrl.cert.conformanceMethods">Name: {{ m.conformanceMethod.name }}; Version: {{ m.conformanceMethodVersion }}</div>
+            <div ng-repeat="m in $ctrl.cert.conformanceMethods" ng-class="{ 'removed' : m.conformanceMethod.removed }">
+              <span ng-if="m.conformanceMethod.removed">Removed | </span>
+              Name: {{ m.conformanceMethod.name }}<span ng-if="m.conformanceMethod.name !== 'Attestation'">; Version: {{ m.conformanceMethodVersion }}</span>
+            </div>
           </td>
           <td ng-if="(!$ctrl.cert.conformanceMethods || $ctrl.cert.conformanceMethods.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
