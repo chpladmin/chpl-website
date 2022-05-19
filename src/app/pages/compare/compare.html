@@ -57,6 +57,10 @@
             <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ $ctrl.DateUtil.getCertificationDay(listing) }}</td>
           </tr>
           <tr>
+            <th scope="row">Inactive/Decertified Date</th>
+            <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ $ctrl.DateUtil.getDisplayDateFormat(listing.decertificationDate) }}</td>
+          </tr>
+          <tr>
             <th scope="row">CHPL Product Number</th>
             <td ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">{{ listing.chplProductNumber }}</td>
           </tr>
