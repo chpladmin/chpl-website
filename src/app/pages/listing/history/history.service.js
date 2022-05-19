@@ -222,10 +222,10 @@ const interpretCertificationStatusChanges = (listing) => listing.certificationEv
     return e;
   });
 
-const interpretPIHistory = (listing, DateUtil, piIsOn) => listing.promotingInteroperabilityUserHistory
+const interpretPIHistory = (listing, DateUtil) => listing.promotingInteroperabilityUserHistory
   .sort((a, b) => (a.userCountDate < b.userCountDate ? -1 : 1))
   .map((item, idx, arr) => {
-    const title = piIsOn ? 'Promoting Interoperability' : 'Meaningful Use';
+    const title = 'Promoting Interoperability';
     item.activityDate = DateUtil.localDateToTimestamp(item.userCountDate);
     if (idx > 0) {
       item.change = [`Estimated number of ${title} Users changed from ${arr[idx - 1].userCount} to ${item.userCount} on ${DateUtil.getDisplayDateFormat(item.userCountDate)}`];

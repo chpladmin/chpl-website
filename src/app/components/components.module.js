@@ -27,7 +27,6 @@ import {
 } from './surveillance/complaints';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
-  ChplUploadMeaningfulUse,
   ChplUploadPromotingInteroperability,
   ChplUploadSurveillance,
   ChplUploadWrapper,
@@ -85,7 +84,6 @@ angular
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
-  .component('chplUploadMeaningfulUseBridge', reactToAngularComponent(ChplUploadMeaningfulUse))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadSurveillanceBridge', reactToAngularComponent(ChplUploadSurveillance))
   .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
