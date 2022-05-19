@@ -259,8 +259,7 @@
         </div>
 
         <div class="manage-list__container">
-          <div class="data-label" feature-flag="promoting-interoperability">Estimated Number of Promoting Interoperability Users</div>
-          <div class="data-label" feature-flag="promoting-interoperability" feature-flag-hide>Estimated Number of Meaningful Use Users</div>
+          <div class="data-label">Estimated Number of Promoting Interoperability Users</div>
           <div class="data-label">Effective Date</div>
           <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.promotingInteroperabilityUserHistory | orderBy:'-userCountDate' track by $index">
             {{ item.userCount }}
@@ -273,8 +272,7 @@
             <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('promotingInteroperabilityUserHistory', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
           </div>
           <div class="manage-list__item--start" ng-if="$ctrl.addingItem['promotingInteroperabilityUserHistory']">
-            <label for="promoting-interoperability-user-history-add-new-value" class="sr-only" feature-flag="promoting-interoperability"><span ng-if="$first">Current </span>Promoting Interoperability Use User Count</label>
-            <label for="promoting-interoperability-user-history-add-new-value" class="sr-only" feature-flag="promoting-interoperability" feature-flag-hide><span ng-if="$first">Current </span>Meaningful Use User Count</label>
+            <label for="promoting-interoperability-user-history-add-new-value" class="sr-only"><span ng-if="$first">Current </span>Promoting Interoperability Use User Count</label>
             <input type="number" ng-model="$ctrl.newItem['promotingInteroperabilityUserHistory'].userCount"
                    id="promoting-interoperability-user-history-add-new-value" name="promotingInteroperabilityUserHistoryAddNewValue"
                    class="input-sm form-control" required></input>
