@@ -29,12 +29,7 @@
               Certification Date: {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}
               |
               Last modified Date: {{ $ctrl.listing.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
-              <span feature-flag="promoting-interoperability">
-                <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])" promoting-interoperability-is-on="true"></chpl-listing-history-bridge>
-              </span>
-              <span feature-flag="promoting-interoperability" feature-flag-hide>
-                <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])" promoting-interoperability-is-on="false"></chpl-listing-history-bridge>
-              </span>
+              <chpl-listing-history-bridge listing="$ctrl.listing" can-see-history="$ctrl.hasAnyRole(['ROLE_ADMIN','ROLE_ONC', 'ROLE_ACB'])"></chpl-listing-history-bridge>
             </p>
             <div ng-if="$ctrl.canEdit()">
               <button class="btn btn-default" ui-sref=".view.edit"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</button>
