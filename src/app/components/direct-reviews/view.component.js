@@ -30,11 +30,11 @@ const DirectReviewsComponent = {
             ncSummary += ` non-conformit${total !== 1 ? 'ies' : 'y'} found`;
             const startDate = dr.nonConformities
               .filter((nc) => nc.capApprovalDate)
-              .sort((a, b) => a.capApprovalDate - b.capApprovalDate)[0]?.capApprovalDate;
+              .sort((a, b) => (a.capApprovalDate < b.capApprovalDate ? -1 : 1))[0]?.capApprovalDate;
             const endDates = dr.nonConformities
               .filter((nc) => nc.capApprovalDate)
               .filter((nc) => nc.capEndDate)
-              .sort((a, b) => b.capEndDate - a.capEndDate);
+              .sort((a, b) => (a.capEndDate > b.capEndDate ? -1 : 1));
             const endDate = open === 0 && endDates[0]?.capEndDate;
             return {
               ...dr,
