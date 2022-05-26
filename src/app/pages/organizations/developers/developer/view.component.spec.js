@@ -131,12 +131,11 @@
 
         describe('of direct reviews', () => {
           it('should set status on success', () => {
-            networkService.getDirectReviews.and.returnValue($q.when([1, 2]));
+            networkService.getDirectReviews.and.returnValue($q.when([{ id: 1, nonConformities: [] }, { id: 2, nonConformities: [] }]));
             ctrl.drStatus = 'unknown';
             ctrl.$onInit();
             scope.$digest();
             expect(ctrl.drStatus).toBe('success');
-            expect(ctrl.directReviews).toEqual([1, 2]);
           });
 
           it('should set status on success', () => {

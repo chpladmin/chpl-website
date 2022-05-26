@@ -30,6 +30,7 @@ describe('the Scheduled Jobs page', () => {
         'All Broken Surveillance Rules Report',
         'Cures Statistics Email',
         'Developer Access Report',
+        'Developer Attestations Check-in Report Email',
         'Developer Attestations Report Email',
         'Inherited Certification Status Errors Report',
         'Listing Validation Email Report',

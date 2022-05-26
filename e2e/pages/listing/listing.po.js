@@ -60,6 +60,7 @@ class ListingPage {
   listingHistoryModalRows() {
     return $(this.elements.listingHistoryTitle)
       .parentElement()
+      .$('div.MuiDialogContent-root.MuiDialogContent-dividers')
       .$('div')
       .$('table')
       .$('tbody')

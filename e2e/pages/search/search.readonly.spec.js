@@ -125,7 +125,7 @@ describe('the search page', () => {
   });
 
   describe('when searching listings by ONC-ACB ID', () => {
-    const acbId = '4117-17-0022';
+    const acbId = '170009R00';
     beforeEach(() => {
       page.searchForListing(acbId);
       hooks.waitForSpinnerToDisappear();
@@ -136,7 +136,7 @@ describe('the search page', () => {
       page.clearFilters.click();
     });
 
-    it('should only the listing that has that ACB ID', () => {
+    it('should only show the listing that has that ACB ID', () => {
       const count = page.listingTableFirstPageRowCount();
       expect(count).toBe(1);
     });
