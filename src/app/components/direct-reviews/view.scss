@@ -36,37 +36,3 @@
 .direct-review__header-toggle {
     padding-left: 8px;
 }
-
-.direct-review__basic-information {
-    border-left: 3px solid var(--grey);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    margin: 8px;
-}
-
-.direct-review__start {
-    grid-column-start: 1;
-    grid-row-start: 1;
-    margin: 8px;
-}
-
-.direct-review__end {
-    grid-column-start: 2;
-    grid-row-start: 1;
-    margin: 8px;
-}
-
-.direct-review__circumstances {
-    grid-column-start: 1;
-    grid-column-end: span 2;
-    grid-row-start: 2;
-    margin: 8px;
-}
-
-.direct-review__non-conformities {
-    grid-column-start: 1;
-    grid-column-end: span 2;
-    grid-row-start: 3;
-    margin: 8px;
-}
