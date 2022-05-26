@@ -9,39 +9,50 @@
       <div class="direct-review__header-nc-summary">{{ dr.ncSummary }}</div>
       <div class="direct-review__header-toggle"><i class="fa fa-lg" ng-class="dr.open ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
     </div>
-    <div class="direct-review__basic-information panel-body" ng-if="dr.open">
-      <div class="direct-review__start">
-        <div class="data-label">
-          Direct Review Began <button class="tooltip-button btn btn-link" uib-tooltip="The date direct review was initiated" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date direct review was initiated</span><i class="fa fa-info-circle"></i></button>
-        </div>
-        <div class="direct-review__data-element">
-          {{ $ctrl.DateUtil.getDisplayDateFormat(dr.startDate, 'Has not started') }}
-        </div>
+    <div class="panel-body" ng-if="dr.open">
+      <div ng-if="!dr.nonConformities || dr.nonConformities.length === 0">
+        Has not been determined
       </div>
-      <div class="direct-review__end">
-        <div class="data-label">
-          Direct Review Ended <button class="tooltip-button btn btn-link" uib-tooltip="The date direct review was completed" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date direct review was completed</span><i class="fa fa-info-circle"></i></button>
-        </div>
-        <div class="direct-review__data-element">
-          {{ $ctrl.DateUtil.getDisplayDateFormat(dr.endDate, 'Has not ended') }}
-        </div>
+      <div ng-if="dr.nonConformities && dr.nonConformities.length > 0">
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th scope="col">
+                Non-Conformity Type <button class="tooltip-button btn btn-link" uib-tooltip="Type of non-conformity found during review" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Type of non-conformity found during review</span><i class="fa fa-info-circle"></i></button>
+              </th>
+              <th scope="col">
+                Developer Associated Listings <button class="tooltip-button btn btn-link" uib-tooltip="A listing of other certified products associated with the non-conformity, as applicable" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">A listing of other certified products associated with the non-conformity, as applicable</span><i class="fa fa-info-circle"></i></button>
+              </th>
+              <th scope="col">
+                Corrective Action Plan Approval Date <button class="tooltip-button btn btn-link" uib-tooltip="The date that ONC approved the corrective action plan proposed by the developer" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date that ONC approved the corrective action plan proposed by the developer</span><i class="fa fa-info-circle"></i></button>
+              </th>
+              <th scope="col">
+                Date Corrective Action Must Be Completed <button class="tooltip-button btn btn-link" uib-tooltip="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable</span><i class="fa fa-info-circle"></i></button>
+              </th>
+              <th scope="col">
+                Date Corrective Action Was Completed <button class="tooltip-button btn btn-link" uib-tooltip="The date the corrective action was completed" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The date the corrective action was completed</span><i class="fa fa-info-circle"></i></button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="nc in dr.nonConformities">
+              <td>{{ nc.nonConformityType ? nc.nonConformityType : 'Has not been determined' }}</td>
+              <td>
+                <span ng-if="!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0">None</span>
+                <ul ng-if="nc.developerAssociatedListings && nc.developerAssociatedListings.length > 0">
+                  <li ng-repeat="dal in nc.developerAssociatedListings">
+                    <a ui-sref="listing({id: dal.id, panel: 'directReviews'})">{{ dal.chplProductNumber }}</a>
+                  </li>
+                </ul>
+              </td>
+              <td>{{ nc.friendlyCapApprovalDate }}</td>
+              <td>{{ nc.friendlyCapMustCompleteDate }}</td>
+              <td>{{ nc.friendlyCapEndDate }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="direct-review__circumstances">
-        <div class="data-label">
-          Circumstance <span ng-if="dr.circumstances.length !== 1">s</span><button class="tooltip-button btn btn-link" uib-tooltip="Circumstance{{ dr.circumstances.length !== 1 ? 's' : '' }} for ONC to conduct direct review" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Circumstance<span ng-if="dr.circumstances.length !== 1">s</span> for ONC to conduct direct review</span><i class="fa fa-info-circle"></i></button>
-        </div>
-        <div class="direct-review__data-element" ng-if="dr.circumstances && dr.circumstances.length > 0">
-          <ul>
-            <li ng-repeat="c in dr.circumstances">{{ c }}</li>
-          </ul>
-        </div>
-        <div class="direct-review__data-element" ng-if="!dr.circumstances || dr.circumstances.length === 0">
-          Have not been determined
-        </div>
-      </div>
-      <div class="direct-review__non-conformities">
-        <chpl-direct-reviews-non-conformities non-conformities="dr.nonConformities"></chpl-direct-reviews-non-conformities>
-      </div>
+
     </div>
   </div>
 </div>
