@@ -21,7 +21,6 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
 import { arrayOf, func, string } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
-import { useSnackbar } from 'notistack';
 
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
@@ -31,7 +30,6 @@ import fillCustomDemographicsFields from './types/demographics-fill-fields';
 import {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
-  usePutChangeRequest,
 } from 'api/change-requests';
 import {
   ChplFilterChips,
@@ -157,7 +155,6 @@ function ChplChangeRequestsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { disallowedFilters, preFilter } = props;
   const csvExporter = new ExportToCsv(csvOptions);
-  const { enqueueSnackbar } = useSnackbar();
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
@@ -170,7 +167,6 @@ function ChplChangeRequestsView(props) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { data, isLoading, isSuccess } = useFetchChangeRequests();
   const crstQuery = useFetchChangeRequestStatusTypes();
-  const { mutate } = usePutChangeRequest();
   const { filters, searchTerm } = useFilterContext();
   const classes = useStyles();
 
@@ -231,31 +227,7 @@ function ChplChangeRequestsView(props) {
     { property: 'actions', text: 'Actions', invisible: true },
   ];
 
-  const save = (request) => {
-    mutate(request, {
-      onSuccess: () => {
-        setMode('view');
-        setChangeRequest(undefined);
-      },
-      onError: (error) => {
-        if (error.response.data.error?.startsWith('Email could not be sent to')) {
-          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
-            variant: 'info',
-          });
-          setMode('view');
-          setChangeRequest(undefined);
-        } else {
-          const message = error.response.data?.error
-                || error.response.data?.errorMessages.join(' ');
-          enqueueSnackbar(message, {
-            variant: 'error',
-          });
-        }
-      },
-    });
-  };
-
-  const handleDispatch = (action, payload) => {
+  const handleDispatch = (action) => {
     switch (action) {
       case 'close':
         setMode('view');
@@ -269,9 +241,6 @@ function ChplChangeRequestsView(props) {
         } else {
           setMode('edit');
         }
-        break;
-      case 'save':
-        save(payload);
         break;
       // no default
     }

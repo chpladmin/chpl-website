@@ -10,11 +10,13 @@ import {
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
 
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 
+import { usePutChangeRequest } from 'api/change-requests';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
@@ -95,6 +97,7 @@ function ChplChangeRequestEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
   const {
     changeRequest,
     changeRequestStatusTypes,
@@ -102,6 +105,7 @@ function ChplChangeRequestEdit(props) {
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [details, setDetails] = useState(props.changeRequest.details);
   const [isConfirming, setIsConfirming] = useState(false);
+  const { mutate } = usePutChangeRequest();
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -199,6 +203,29 @@ function ChplChangeRequestEdit(props) {
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
 
+  const save = (request) => {
+    mutate(request, {
+      onSuccess: () => {
+        props.dispatch('close');
+      },
+      onError: (error) => {
+        if (error.response.data.error?.startsWith('Email could not be sent to')) {
+          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
+            variant: 'info',
+          });
+          props.dispatch('close');
+        } else {
+          const message = error.response.data?.error
+                || error.response.data?.errorMessages.join(' ');
+          enqueueSnackbar(message, {
+            variant: 'error',
+          });
+          formik.resetForm();
+        }
+      },
+    });
+  };
+
   formik = useFormik({
     initialValues: {
       comment: '',
@@ -213,7 +240,7 @@ function ChplChangeRequestEdit(props) {
           changeRequestStatusType: formik.values.changeRequestStatusType,
         },
       };
-      props.dispatch('save', updated);
+      save(updated);
     },
     validationSchema,
   });
