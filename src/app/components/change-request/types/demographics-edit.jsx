@@ -64,9 +64,7 @@ function ChplChangeRequestDemographicsEdit(props) {
 
   const handleChange = (...args) => {
     formik.handleChange(...args);
-    if (formik.isValid) {
-      formik.submitForm();
-    }
+    props.dispatch('update', formik.values);
   };
 
   formik = useFormik({
@@ -83,9 +81,6 @@ function ChplChangeRequestDemographicsEdit(props) {
       zipcode: changeRequest.details.address.zipcode || '',
       selfDeveloper: !!changeRequest.details.selfDeveloper,
       website: changeRequest.details.website,
-    },
-    onSubmit: () => {
-      props.dispatch('update', formik.values);
     },
     validationSchema,
   });
