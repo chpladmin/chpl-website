@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 11.35.1
+_31 May 2022_
+
+### User Interface Updates
+* Display "Decertification Date" on Compare page
+* Display only specific Direct Review information
+* Remove incorrect use of "Meaningful Use Users" in favor of "Promoting Interoperability users"
+
+### Flagged Features
+* Enable display of "uploaded Developer" information in upload/confirm workflow
+
+---
+
 ## Version 11.35.0
 _16 May 2022_
 
