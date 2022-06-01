@@ -22,6 +22,7 @@ const useStyles = makeStyles({
 
 function ChplAttestationCreate(props) {
   const $state = getAngularService('$state');
+  const DateUtil = getAngularService('DateUtil');
   const { developer } = props;
   const { data, isLoading } = useFetchAttestationData();
   const crData = useFetchChangeRequestTypes();
@@ -105,6 +106,16 @@ function ChplAttestationCreate(props) {
         <Typography gutterBottom variant="h1">
           Submit Attestations
         </Typography>
+        { period
+          && (
+            <Typography gutterBottom>
+              { DateUtil.getDisplayDateFormat(period.periodStart) }
+              {' '}
+              -
+              {' '}
+              { DateUtil.getDisplayDateFormat(period.periodEnd) }
+            </Typography>
+          )}
       </Container>
       <ChplAttestationWizard
         attestationResponses={attestationResponses}
