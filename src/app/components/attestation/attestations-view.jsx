@@ -251,6 +251,8 @@ function ChplAttestationsView(props) {
             >
               <ChplAttestationView
                 attestations={activeAttestations}
+                canCreateException={canCreateException}
+                developer={developer}
               />
             </DialogContent>
           </Dialog>
