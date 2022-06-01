@@ -10,6 +10,7 @@ const isLocalDate = (dateToTest) => {
     return false;
   }
 };
+
 const isLocalDateTime = (dateTimeToTest) => {
   try {
     jsJoda.LocalDateTime.parse(dateTimeToTest);
