@@ -26,7 +26,7 @@ import ChplAttestationView from './attestation-view';
 
 import { useFetchAttestations, usePostAttestationException } from 'api/developer';
 import { ChplDialogTitle } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -38,7 +38,6 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationsView(props) {
-  const DateUtil = getAngularService('DateUtil');
   const { hasAnyRole, hasAuthorityOn } = useContext(UserContext);
   const [activeAttestations, setActiveAttestations] = useState({});
   const [attestationsOpen, setAttestationsOpen] = useState(false);
@@ -85,7 +84,7 @@ function ChplAttestationsView(props) {
       onSuccess: ({ data: { exceptionEnd, developer: { name } } }) => {
         setIsCreatingException(false);
         setIsSubmitting(false);
-        const message = `You have re-opened the submission feature for ${name} until ${DateUtil.getDisplayDateFormat(exceptionEnd)}.`;
+        const message = `You have re-opened the submission feature for ${name} until ${getDisplayDateFormat(exceptionEnd)}.`;
         enqueueSnackbar(message, {
           variant: 'success',
         });
@@ -138,11 +137,11 @@ function ChplAttestationsView(props) {
                           { attestations.map((item) => (
                             <TableRow key={item.id}>
                               <TableCell>
-                                { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                                { getDisplayDateFormat(item.attestationPeriod.periodStart) }
                                 {' '}
                                 to
                                 {' '}
-                                { DateUtil.getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                                { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
                               </TableCell>
                               <TableCell>
                                 Attestations submitted

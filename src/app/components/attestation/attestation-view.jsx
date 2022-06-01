@@ -15,11 +15,10 @@ import { useSnackbar } from 'notistack';
 
 import { usePostAttestationException } from 'api/developer';
 import interpretLink from 'components/attestation/attestation-util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplAttestationView(props) {
-  const DateUtil = getAngularService('DateUtil');
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
   const [attestations, setAttestations] = useState({});
@@ -58,7 +57,7 @@ function ChplAttestationView(props) {
       onSuccess: ({ data: { exceptionEnd, developer: { name } } }) => {
         setIsCreatingException(false);
         setIsSubmitting(false);
-        const message = `You have re-opened the submission feature for ${name} until ${DateUtil.getDisplayDateFormat(exceptionEnd)}.`;
+        const message = `You have re-opened the submission feature for ${name} until ${getDisplayDateFormat(exceptionEnd)}.`;
         enqueueSnackbar(message, {
           variant: 'success',
         });
@@ -77,11 +76,11 @@ function ChplAttestationView(props) {
     <>
       <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
       <Typography gutterBottom>
-        { attestations.period && DateUtil.getDisplayDateFormat(attestations.period.periodStart) }
+        { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
         {' '}
         -
         {' '}
-        { attestations.period && DateUtil.getDisplayDateFormat(attestations.period.periodEnd) }
+        { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
       </Typography>
       { !isCreatingException
         && (

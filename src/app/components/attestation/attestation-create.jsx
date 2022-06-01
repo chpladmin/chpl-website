@@ -12,6 +12,7 @@ import interpretLink from './attestation-util';
 import { useFetchAttestationData } from 'api/attestations';
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -22,7 +23,6 @@ const useStyles = makeStyles({
 
 function ChplAttestationCreate(props) {
   const $state = getAngularService('$state');
-  const DateUtil = getAngularService('DateUtil');
   const { developer } = props;
   const { data, isLoading } = useFetchAttestationData();
   const crData = useFetchChangeRequestTypes();
@@ -109,11 +109,11 @@ function ChplAttestationCreate(props) {
         { period
           && (
             <Typography gutterBottom>
-              { DateUtil.getDisplayDateFormat(period.periodStart) }
+              { getDisplayDateFormat(period.periodStart) }
               {' '}
               -
               {' '}
-              { DateUtil.getDisplayDateFormat(period.periodEnd) }
+              { getDisplayDateFormat(period.periodEnd) }
             </Typography>
           )}
       </Container>
