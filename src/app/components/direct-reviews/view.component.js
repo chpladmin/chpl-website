@@ -41,6 +41,7 @@ const DirectReviewsComponent = {
               startDate,
               endDate,
               ncSummary,
+              isClosed: !!endDate,
               nonConformities: dr.nonConformities
                 .map((nc) => ({
                   ...nc,
