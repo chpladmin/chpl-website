@@ -12,8 +12,12 @@ import * as angularReactHelper from 'services/angular-react-helper';
 const $stateMock = {
   go: jest.fn(),
 };
+const DateUtilMock = {
+  getDisplayDateFormat: jest.fn(),
+};
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$state').mockReturnValue($stateMock);
+when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(DateUtilMock);
 
 const developerMock = {
 };
