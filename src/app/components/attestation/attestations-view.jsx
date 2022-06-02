@@ -19,12 +19,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
+import AddIcon from '@material-ui/icons/Add';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { useSnackbar } from 'notistack';
 
+import ChplAttestationCreateException from './attestation-create-exception';
 import ChplAttestationView from './attestation-view';
 
-import { useFetchAttestations, usePostAttestationException } from 'api/developer';
+import { useFetchAttestations } from 'api/developer';
 import { ChplDialogTitle } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
@@ -43,11 +44,8 @@ function ChplAttestationsView(props) {
   const [attestationsOpen, setAttestationsOpen] = useState(false);
   const [attestations, setAttestations] = useState([]);
   const [developer, setDeveloper] = useState({});
-  const { mutate } = usePostAttestationException();
-  const { enqueueSnackbar } = useSnackbar();
   const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false, developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
   const [isCreatingException, setIsCreatingException] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -56,10 +54,6 @@ function ChplAttestationsView(props) {
       setDeveloper(props.developer);
     }
   }, [props?.developer]);
-
-  const cancelCreatingException = () => {
-    setIsCreatingException(false);
-  };
 
   const createAttestationChangeRequest = () => {
     props.dispatch('createAttestation');
@@ -70,33 +64,21 @@ function ChplAttestationsView(props) {
 
   const closeAttestations = () => setAttestationsOpen(false);
 
+  const handleDispatch = (action) => {
+    switch (action) {
+      case 'cancel':
+        setIsCreatingException(false);
+        break;
+      case 'saved':
+        setIsCreatingException(false);
+        break;
+        // no default
+    }
+  };
+
   const viewAttestations = (selected) => {
     setActiveAttestations(developerAttestations.find((att) => att.id === selected.id));
     setAttestationsOpen(true);
-  };
-
-  const createAttestationException = () => {
-    setIsSubmitting(true);
-    const payload = {
-      developer,
-    };
-    mutate(payload, {
-      onSuccess: ({ data: { exceptionEnd, developer: { name } } }) => {
-        setIsCreatingException(false);
-        setIsSubmitting(false);
-        const message = `You have re-opened the submission feature for ${name} until ${getDisplayDateFormat(exceptionEnd)}.`;
-        enqueueSnackbar(message, {
-          variant: 'success',
-        });
-      },
-      onError: () => {
-        const message = 'Something went wrong. Please try again or contact ONC for support';
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
-        setIsSubmitting(false);
-      },
-    });
   };
 
   return (
@@ -159,6 +141,28 @@ function ChplAttestationsView(props) {
                                 )}
                             </TableRow>
                           ))}
+                          { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+                            && (
+                              <TableRow key="oldone">
+                                <TableCell>
+                                  fill in dates here
+                                </TableCell>
+                                <TableCell>
+                                  No Attestations submitted
+                                </TableCell>
+                                <TableCell>
+                                  <IconButton
+                                    color="primary"
+                                    id="create-attestation-exception-button"
+                                    variant="contained"
+                                    onClick={() => setIsCreatingException(true)}
+                                    disabled={!canCreateException}
+                                  >
+                                    <AddIcon color="primary" />
+                                  </IconButton>
+                                </TableCell>
+                              </TableRow>
+                            )}
                         </TableBody>
                       </Table>
                     </TableContainer>
@@ -166,16 +170,13 @@ function ChplAttestationsView(props) {
               </>
             )}
           { isCreatingException
-            && (
-              <>
-                <Typography>
-                  This action will re-open the Attestations submission feature for
-                  {' '}
-                  { developer.name }
-                  . Please confirm you want to continue.
-                </Typography>
-              </>
-            )}
+        && (
+          <ChplAttestationCreateException
+            attestations={attestations}
+            developer={developer}
+            dispatch={handleDispatch}
+          />
+        )}
         </CardContent>
         { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId })
           && (
@@ -189,44 +190,6 @@ function ChplAttestationsView(props) {
               >
                 Submit Attestations
               </Button>
-            </CardActions>
-          )}
-        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
-          && (
-            <CardActions>
-              { !isCreatingException
-                && (
-                  <Button
-                    color="primary"
-                    id="create-attestation-exception-button"
-                    variant="contained"
-                    onClick={() => setIsCreatingException(true)}
-                    disabled={!canCreateException}
-                  >
-                    Re-Open Submission
-                  </Button>
-                )}
-              { isCreatingException
-                && (
-                  <>
-                    <Button
-                      color="primary"
-                      id="create-attestation-exception-button"
-                      variant="contained"
-                      disabled={isSubmitting}
-                      onClick={createAttestationException}
-                    >
-                      Confirm
-                    </Button>
-                    <Button
-                      color="primary"
-                      id="cancel-attestation-exception-button"
-                      onClick={cancelCreatingException}
-                    >
-                      Cancel
-                    </Button>
-                  </>
-                )}
             </CardActions>
           )}
       </Card>
