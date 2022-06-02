@@ -16,10 +16,10 @@ const VersionsEditComponent = {
 
     $onInit() {
       const that = this;
-      this.id = this.$stateParams.versionId;
-      this.productId = this.$stateParams.productId;
       this.id = this.$stateParams.id;
-      this.networkService.getVersion(this.id)
+      this.productId = this.$stateParams.productId;
+      this.versionId = this.$stateParams.versionId;
+      this.networkService.getVersion(this.versionId)
         .then((data) => {
           that.version = data;
           that.backup.version = angular.copy(data);
@@ -40,7 +40,7 @@ const VersionsEditComponent = {
     save(version) {
       const that = this;
       const request = {
-        ids: [version.id],
+        versionIds: [version.id],
         version,
         newProductId: version.productId,
       };
