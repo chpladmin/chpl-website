@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.35.2
+_1 June 2022_
+
+### User Interface Updates
+* Remove indicators of Direct Reviews' open/closed status
+
+---
+
 ## Version 11.35.1
 _31 May 2022_
 
