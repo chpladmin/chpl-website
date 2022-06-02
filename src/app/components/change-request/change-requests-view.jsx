@@ -21,17 +21,15 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
 import { arrayOf, func, string } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
-import { useSnackbar } from 'notistack';
 
 import ChplChangeRequestEdit from './change-request-edit';
 import ChplChangeRequestView from './change-request-view';
 import fillCustomAttestationFields from './types/attestation-fill-fields';
-import fillCustomWebsiteFields from './types/website-fill-fields';
+import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
 import {
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
-  usePutChangeRequest,
 } from 'api/change-requests';
 import {
   ChplFilterChips,
@@ -42,8 +40,8 @@ import {
 import {
   ChplAvatar,
   ChplPagination,
-  ChplSortableHeaders,
 } from 'components/util';
+import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext, UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
@@ -145,24 +143,11 @@ const getCustomFields = (item) => {
   switch (item.changeRequestType.name) {
     case 'Developer Attestation Change Request':
       return fillCustomAttestationFields(item.details);
-    case 'Website Change Request':
-      return fillCustomWebsiteFields(item);
+    case 'Developer Demographics Change Request':
+      return fillCustomDemographicsFields(item);
     default:
       return fillWithBlanks();
   }
-};
-
-const sortComparator = (property) => {
-  let sortOrder = 1;
-  let key = property;
-  if (key[0] === '-') {
-    sortOrder = -1;
-    key = key.substr(1);
-  }
-  return (a, b) => {
-    const result = (a[key] < b[key]) ? -1 : 1;
-    return result * sortOrder;
-  };
 };
 
 function ChplChangeRequestsView(props) {
@@ -170,19 +155,18 @@ function ChplChangeRequestsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { disallowedFilters, preFilter } = props;
   const csvExporter = new ExportToCsv(csvOptions);
-  const { enqueueSnackbar } = useSnackbar();
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
-  const [comparator, setComparator] = useState('currentStatusChangeDate');
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('currentStatusChangeDate');
   const [mode, setMode] = useState('view');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { data, isLoading, isSuccess } = useFetchChangeRequests();
   const crstQuery = useFetchChangeRequestStatusTypes();
-  const { mutate } = usePutChangeRequest();
   const { filters, searchTerm } = useFilterContext();
   const classes = useStyles();
 
@@ -220,54 +204,30 @@ function ChplChangeRequestsView(props) {
       .filter((item) => preFilter(item))
       .filter((item) => searchTermShouldShow(item, searchTerm))
       .filter((item) => filtersShouldShow(item, filters))
-      .sort(sortComparator(comparator));
+      .sort(sortComparator(orderBy, order === 'desc'));
     setChangeRequests(crs);
     if (changeRequest?.id) {
       setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
     }
-  }, [data, isLoading, isSuccess, DateUtil, comparator, filters, searchTerm, preFilter]);
+  }, [data, isLoading, isSuccess, DateUtil, orderBy, order, filters, searchTerm, preFilter]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
     { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
     { property: 'currentStatusName', text: 'Request Status', sortable: true },
-    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
-    { property: 'actions', text: 'Actions', invisible: true, sortable: false },
+    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
+    { property: 'actions', text: 'Actions', invisible: true },
   ] : [
     { property: 'developerName', text: 'Developer', sortable: true },
     { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
-    { property: 'receivedDate', text: 'Creation Date', sortable: true },
+    { property: 'receivedDate', text: 'Creation Date', sortable: true, reverseDefault: true },
     { property: 'currentStatusName', text: 'Request Status', sortable: true },
-    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true },
+    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
     { property: 'associatedAcbs', text: 'Associated ONC-ACBs' },
-    { property: 'actions', text: 'Actions', invisible: true, sortable: false },
+    { property: 'actions', text: 'Actions', invisible: true },
   ];
 
-  const save = (request) => {
-    mutate(request, {
-      onSuccess: () => {
-        setMode('view');
-        setChangeRequest(undefined);
-      },
-      onError: (error) => {
-        if (error.response.data.error?.startsWith('Email could not be sent to')) {
-          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
-            variant: 'info',
-          });
-          setMode('view');
-          setChangeRequest(undefined);
-        } else {
-          const message = error.response.data?.error
-                || error.response.data?.errorMessages.join(' ');
-          enqueueSnackbar(message, {
-            variant: 'error',
-          });
-        }
-      },
-    });
-  };
-
-  const handleDispatch = (action, payload) => {
+  const handleDispatch = (action) => {
     switch (action) {
       case 'close':
         setMode('view');
@@ -282,15 +242,13 @@ function ChplChangeRequestsView(props) {
           setMode('edit');
         }
         break;
-      case 'save':
-        save(payload);
-        break;
       // no default
     }
   };
 
   const handleTableSort = (event, property, orderDirection) => {
-    setComparator(orderDirection + property);
+    setOrderBy(property);
+    setOrder(orderDirection);
   };
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, changeRequests.length - page * rowsPerPage);
@@ -380,8 +338,9 @@ function ChplChangeRequestsView(props) {
                           <ChplSortableHeaders
                             headers={headers}
                             onTableSort={handleTableSort}
-                            orderBy="currentStatusChangeDate"
-                            order="asc"
+                            orderBy={orderBy}
+                            order={order}
+                            stickyHeader
                           />
                           <TableBody>
                             {changeRequests

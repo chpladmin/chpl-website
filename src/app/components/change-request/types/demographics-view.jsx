@@ -4,7 +4,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   container: {
@@ -23,14 +23,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplChangeRequestDetailsView(props) {
+function ChplChangeRequestDemographicsView(props) {
   const { changeRequest } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
       <div className={classes.detailsContainer}>
-        <Typography variant="subtitle1">Current details</Typography>
+        <Typography variant="subtitle1">Current demographics</Typography>
         <Typography>
           Self-Developer:
           {' '}
@@ -92,6 +92,11 @@ function ChplChangeRequestDetailsView(props) {
             { changeRequest.developer.address.country }
           </Typography>
         </div>
+        <Typography>
+          Website:
+          {' '}
+          { changeRequest.developer.website }
+        </Typography>
       </div>
       <div className={classes.detailsContainer}>
         <Typography variant="subtitle1">Submitted details</Typography>
@@ -156,13 +161,18 @@ function ChplChangeRequestDetailsView(props) {
             { changeRequest.details.address.country }
           </Typography>
         </div>
+        <Typography>
+          Website:
+          {' '}
+          { changeRequest.details.website }
+        </Typography>
       </div>
     </div>
   );
 }
 
-export default ChplChangeRequestDetailsView;
+export default ChplChangeRequestDemographicsView;
 
-ChplChangeRequestDetailsView.propTypes = {
+ChplChangeRequestDemographicsView.propTypes = {
   changeRequest: changeRequestProp.isRequired,
 };
