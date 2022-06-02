@@ -23,7 +23,7 @@ const staticFilters = [{
   key: 'currentStatusChangeDate',
   display: 'Last Updated',
   values: [
-    { value: 'Before', default: new Date().toISOString().slice(0, 16) },
+    { value: 'Before' },
     { value: 'After', default: '2022-01-01T00:00' },
   ],
   meets: (item, values) => {
@@ -39,7 +39,7 @@ const staticFilters = [{
   key: 'submittedDate',
   display: 'Creation Date',
   values: [
-    { value: 'Before', default: new Date().toISOString().slice(0, 16) },
+    { value: 'Before' },
     { value: 'After', default: '2022-01-01T00:00' },
   ],
   meets: (item, values) => {

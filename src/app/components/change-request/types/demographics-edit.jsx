@@ -10,9 +10,9 @@ import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from '../../util';
-import { changeRequest as changeRequestProp } from '../../../shared/prop-types';
-import { UserContext } from '../../../shared/contexts';
+import { ChplTextField } from 'components/util';
+import { UserContext } from 'shared/contexts';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   container: {
@@ -51,9 +51,12 @@ const validationSchema = yup.object({
     .required('State is required'),
   zipcode: yup.string()
     .required('Zip is required'),
+  website: yup.string()
+    .url('Website is not in a valid format')
+    .required('Website is required'),
 });
 
-function ChplChangeRequestDetailsEdit(props) {
+function ChplChangeRequestDemographicsEdit(props) {
   const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
   const classes = useStyles();
@@ -61,9 +64,7 @@ function ChplChangeRequestDetailsEdit(props) {
 
   const handleChange = (...args) => {
     formik.handleChange(...args);
-    if (formik.isValid) {
-      formik.submitForm();
-    }
+    props.dispatch('update', formik.values);
   };
 
   formik = useFormik({
@@ -79,13 +80,9 @@ function ChplChangeRequestDetailsEdit(props) {
       state: changeRequest.details.address.state || '',
       zipcode: changeRequest.details.address.zipcode || '',
       selfDeveloper: !!changeRequest.details.selfDeveloper,
-    },
-    onSubmit: () => {
-      props.dispatch('update', formik.values);
+      website: changeRequest.details.website,
     },
     validationSchema,
-    validateOnChange: true,
-    validateOnMount: true,
   });
 
   return (
@@ -153,6 +150,11 @@ function ChplChangeRequestDetailsEdit(props) {
             { changeRequest.developer.address.country }
           </Typography>
         </div>
+        <Typography>
+          Website:
+          {' '}
+          { changeRequest.developer.website }
+        </Typography>
       </div>
       <Divider />
       <div className={classes.detailsContainer}>
@@ -294,14 +296,27 @@ function ChplChangeRequestDetailsEdit(props) {
             helperText={formik.touched.country && formik.errors.country}
           />
         </div>
+        <Typography gutterBottom variant="subtitle1">Submitted website</Typography>
+        <ChplTextField
+          id="website"
+          name="website"
+          label="Website"
+          required
+          disabled={!hasAnyRole(['ROLE_DEVELOPER'])}
+          value={formik.values.website}
+          onChange={handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.website && !!formik.errors.website}
+          helperText={formik.touched.website && formik.errors.website}
+        />
       </div>
     </div>
   );
 }
 
-export default ChplChangeRequestDetailsEdit;
+export default ChplChangeRequestDemographicsEdit;
 
-ChplChangeRequestDetailsEdit.propTypes = {
+ChplChangeRequestDemographicsEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
 };
