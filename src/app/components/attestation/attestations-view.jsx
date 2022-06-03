@@ -62,6 +62,8 @@ function ChplAttestationsView(props) {
   const canSeeAttestationData = () => hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])
         || (hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId }));
 
+  const canSeeUnsubmittedAttestationData = () => hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB']);
+
   const closeAttestations = () => setAttestationsOpen(false);
 
   const handleDispatch = (action) => {
@@ -99,7 +101,7 @@ function ChplAttestationsView(props) {
                   <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
                   .
                 </Typography>
-                { attestations.length > 0
+                { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
                   && (
                     <TableContainer component={Paper}>
                       <Table>
@@ -116,7 +118,9 @@ function ChplAttestationsView(props) {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          { attestations.map((item) => (
+                          { attestations
+                            .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
+                            .map((item) => (
                             <TableRow key={item.id}>
                               <TableCell>
                                 { getDisplayDateFormat(item.attestationPeriod.periodStart) }
@@ -141,11 +145,11 @@ function ChplAttestationsView(props) {
                                 )}
                             </TableRow>
                           ))}
-                          { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+                          { canSeeUnsubmittedAttestationData()
                             && (
                               <TableRow key="oldone">
                                 <TableCell>
-                                  fill in dates here
+                                  fill in dates here (delete this section when developer.attestations has "not submitted yet" values)
                                 </TableCell>
                                 <TableCell>
                                   No Attestations submitted
