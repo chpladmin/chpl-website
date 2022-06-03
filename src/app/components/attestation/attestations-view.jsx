@@ -50,7 +50,7 @@ function ChplAttestationsView(props) {
 
   useEffect(() => {
     if (props?.developer) {
-      setAttestations(props.developer.attestations);
+      setAttestations(props.developer.attestations.sort((a, b) => (b.attestationPeriod.periodStart < a.attestationPeriod.periodStart ? -1 : 1)));
       setDeveloper(props.developer);
     }
   }, [props?.developer]);
