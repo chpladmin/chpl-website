@@ -133,40 +133,31 @@ function ChplAttestationsView(props) {
                                   { item.statusText }
                                 </TableCell>
                                 { canSeeAttestationData()
-                                && (
-                                  <TableCell>
-                                    <IconButton
-                                      onClick={() => viewAttestations(item)}
-                                      aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
-                                    >
-                                      <VisibilityIcon color="primary" />
-                                    </IconButton>
-                                  </TableCell>
-                                )}
+                                  && (
+                                    <TableCell>
+                                      { item.status === 'ATTESTATIONS_SUBMITTED'
+                                        ? (
+                                          <IconButton
+                                            onClick={() => viewAttestations(item)}
+                                            aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
+                                          >
+                                            <VisibilityIcon color="primary" />
+                                          </IconButton>
+                                        ) : (
+                                          <IconButton
+                                            color="primary"
+                                            id="create-attestation-exception-button"
+                                            variant="contained"
+                                            onClick={() => setIsCreatingException(true)}
+                                            disabled={!canCreateException}
+                                          >
+                                            <AddIcon color="primary" />
+                                          </IconButton>
+                                        )}
+                                    </TableCell>
+                                  )}
                               </TableRow>
                             ))}
-                          { canSeeUnsubmittedAttestationData()
-                            && (
-                              <TableRow key="oldone">
-                                <TableCell>
-                                  fill in dates here (delete this section when developer.attestations has "not submitted yet" values)
-                                </TableCell>
-                                <TableCell>
-                                  No Attestations submitted
-                                </TableCell>
-                                <TableCell>
-                                  <IconButton
-                                    color="primary"
-                                    id="create-attestation-exception-button"
-                                    variant="contained"
-                                    onClick={() => setIsCreatingException(true)}
-                                    disabled={!canCreateException}
-                                  >
-                                    <AddIcon color="primary" />
-                                  </IconButton>
-                                </TableCell>
-                              </TableRow>
-                            )}
                         </TableBody>
                       </Table>
                     </TableContainer>
