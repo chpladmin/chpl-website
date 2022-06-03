@@ -121,18 +121,18 @@ function ChplAttestationsView(props) {
                           { attestations
                             .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
                             .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell>
-                                { getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                                {' '}
-                                to
-                                {' '}
-                                { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                              </TableCell>
-                              <TableCell>
-                                Attestations submitted
-                              </TableCell>
-                              { canSeeAttestationData()
+                              <TableRow key={item.id}>
+                                <TableCell>
+                                  { getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                                  {' '}
+                                  to
+                                  {' '}
+                                  { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                                </TableCell>
+                                <TableCell>
+                                  { item.statusText }
+                                </TableCell>
+                                { canSeeAttestationData()
                                 && (
                                   <TableCell>
                                     <IconButton
@@ -143,8 +143,8 @@ function ChplAttestationsView(props) {
                                     </IconButton>
                                   </TableCell>
                                 )}
-                            </TableRow>
-                          ))}
+                              </TableRow>
+                            ))}
                           { canSeeUnsubmittedAttestationData()
                             && (
                               <TableRow key="oldone">
