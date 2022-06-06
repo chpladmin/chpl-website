@@ -3,7 +3,7 @@ import {
   Button,
   Typography,
 } from '@material-ui/core';
-import { func, object } from 'prop-types';
+import { func, shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { usePostAttestationException } from 'api/developer';
@@ -82,5 +82,8 @@ export default ChplAttestationCreateException;
 ChplAttestationCreateException.propTypes = {
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
-  period: object.isRequired, // eslint-disable-line react/forbid-prop-types
+  period: shape({
+    periodStart: string,
+    periodEnd: string,
+  }).isRequired,
 };
