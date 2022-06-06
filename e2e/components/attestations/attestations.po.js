@@ -17,7 +17,7 @@ class AttestationsComponent {
       .getText();
   }
 
-  initiateException(identifier) {
+  initiateUnattestedException(identifier) {
     $(this.elements.attestationsTable)
       .$$('tr')
       .find((row) => row.getText().includes(identifier))
@@ -26,15 +26,27 @@ class AttestationsComponent {
       .click();
   }
 
-  get exceptionText() {
+  initiateAttestedException() {
+    $(this.elements.createExceptionButton)
+      .click();
+  }
+
+  get unattestedExceptionText() {
     return $(this.elements.createExceptionButton)
       .parentElement()
       .$('p')
       .getText();
   }
 
+  get attestedExceptionText() {
+    return $(this.elements.createExceptionButton)
+      .parentElement()
+      .$$('p')[1]
+      .getText();
+  }
+
   isCreatingException() {
-    return $(this.elements.createExceptionButton).isDisplayed();
+    return $(this.elements.cancelExceptionButton).isDisplayed();
   }
 
   cancelException() {

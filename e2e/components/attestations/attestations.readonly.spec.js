@@ -37,10 +37,10 @@ describe('the Attestations component', () => {
       expect(component.getAttestationSummary(periodStart)).toBe('No Attestations submitted');
     });
 
-    it('should allow cancellation of creating an exception for the first period', () => {
+    it('should allow cancellation of creating an exception for an unattested period', () => {
       const periodStart = 'Jun 30, 2020';
-      component.initiateException(periodStart);
-      expect(component.exceptionText).toBe('This action will re-open the Attestations submission feature for Viztek, LLC for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
+      component.initiateUnattestedException(periodStart);
+      expect(component.unattestedExceptionText).toBe('This action will re-open the Attestations submission feature for Viztek, LLC for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
       expect(component.isCreatingException()).toBe(true);
       component.cancelException();
       expect(component.isCreatingException()).toBe(false);
@@ -72,6 +72,16 @@ describe('the Attestations component', () => {
       responses.forEach((item) => {
         expect(component.getAttestationResponse(item.key)).toBe(item.value);
       });
+    });
+
+    it('should allow cancellation of creating an exception for an attested period', () => {
+      const periodStart = 'Jun 30, 2020';
+      component.viewAttestations(periodStart);
+      component.initiateAttestedException();
+      expect(component.attestedExceptionText).toBe('This action will re-open the Attestations submission feature for MDToolbox for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
+      expect(component.isCreatingException()).toBe(true);
+      component.cancelException();
+      expect(component.isCreatingException()).toBe(false);
     });
   });
 });
