@@ -26,11 +26,6 @@ class AttestationsComponent {
       .click();
   }
 
-  initiateAttestedException() {
-    $(this.elements.createExceptionButton)
-      .click();
-  }
-
   get unattestedExceptionText() {
     return $(this.elements.createExceptionButton)
       .parentElement()
@@ -51,6 +46,10 @@ class AttestationsComponent {
 
   cancelException() {
     $(this.elements.cancelExceptionButton).click();
+  }
+
+  createException() {
+    $(this.elements.createExceptionButton).click();
   }
 
   viewAttestations(identifier) {

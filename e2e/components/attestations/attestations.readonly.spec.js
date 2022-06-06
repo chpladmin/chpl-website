@@ -77,7 +77,7 @@ describe('the Attestations component', () => {
     it('should allow cancellation of creating an exception for an attested period', () => {
       const periodStart = 'Jun 30, 2020';
       component.viewAttestations(periodStart);
-      component.initiateAttestedException();
+      component.createException();
       expect(component.attestedExceptionText).toBe('This action will re-open the Attestations submission feature for MDToolbox for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
       expect(component.isCreatingException()).toBe(true);
       component.cancelException();
