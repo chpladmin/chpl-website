@@ -104,7 +104,9 @@ function ChplAttestationsView(props) {
                 { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
                   && (
                     <TableContainer component={Paper}>
-                      <Table>
+                      <Table
+                        aria-label="Developer Attestations information"
+                      >
                         <TableHead>
                           <TableRow>
                             <TableCell>Attestation Period</TableCell>
@@ -138,6 +140,8 @@ function ChplAttestationsView(props) {
                                       { item.status === 'ATTESTATIONS_SUBMITTED'
                                         ? (
                                           <IconButton
+                                            color="primary"
+                                            variant="contained"
                                             onClick={() => viewAttestations(item)}
                                             aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
                                           >
@@ -146,9 +150,9 @@ function ChplAttestationsView(props) {
                                         ) : (
                                           <IconButton
                                             color="primary"
-                                            id="create-attestation-exception-button"
                                             variant="contained"
                                             onClick={() => setExceptionPeriod(item.attestationPeriod)}
+                                            aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
                                             disabled={!canCreateException}
                                           >
                                             <AddIcon color="primary" />

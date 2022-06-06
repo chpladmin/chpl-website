@@ -82,7 +82,9 @@ function ChplAttestationView(props) {
             { attestations.responses
               && (
                 <TableContainer component={Paper}>
-                  <Table>
+                  <Table
+                    aria-label="Developer Attestations details"
+                  >
                     <TableHead>
                       <TableRow>
                         <TableCell>Attestation</TableCell>
