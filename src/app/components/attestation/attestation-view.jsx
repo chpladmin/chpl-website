@@ -65,15 +65,18 @@ function ChplAttestationView(props) {
       { !exceptionPeriod
         && (
           <>
-            <Button
-              color="primary"
-              id="create-attestation-exception-button"
-              variant="contained"
-              onClick={() => setExceptionPeriod(attestations.period)}
-              disabled={!canCreateException}
-            >
-              Re-Open Submission
-            </Button>
+            {attestations.datePublished
+             && (
+               <Button
+                 color="primary"
+                 id="create-attestation-exception-button"
+                 variant="contained"
+                 onClick={() => setExceptionPeriod(attestations.period)}
+                 disabled={!canCreateException}
+               >
+                 Re-Open Submission
+               </Button>
+             )}
             <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
             <Typography gutterBottom>{attestations.statusText}</Typography>
             { attestations.responses
