@@ -51,6 +51,10 @@ function ChplAttestationCreateException(props) {
         This action will re-open the Attestations submission feature for
         {' '}
         { developer.name }
+        {' for '}
+        { getDisplayDateFormat(period.periodStart) }
+        {' to '}
+        { getDisplayDateFormat(period.periodEnd) }
         . Please confirm you want to continue.
       </Typography>
       <Button
