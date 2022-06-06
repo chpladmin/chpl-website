@@ -45,7 +45,7 @@ function ChplAttestationsView(props) {
   const [attestations, setAttestations] = useState([]);
   const [developer, setDeveloper] = useState({});
   const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false, developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
-  const [isCreatingException, setIsCreatingException] = useState(false);
+  const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
@@ -69,10 +69,10 @@ function ChplAttestationsView(props) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        setIsCreatingException(false);
+        setExceptionPeriod(undefined);
         break;
       case 'saved':
-        setIsCreatingException(false);
+        setExceptionPeriod(undefined);
         break;
         // no default
     }
@@ -88,7 +88,7 @@ function ChplAttestationsView(props) {
       <Card>
         <CardHeader title="Attestations" />
         <CardContent className={classes.content}>
-          { !isCreatingException
+          { !exceptionPeriod
             && (
               <>
                 <Typography variant="body1">
@@ -148,7 +148,7 @@ function ChplAttestationsView(props) {
                                             color="primary"
                                             id="create-attestation-exception-button"
                                             variant="contained"
-                                            onClick={() => setIsCreatingException(true)}
+                                            onClick={() => setExceptionPeriod(item.attestationPeriod)}
                                             disabled={!canCreateException}
                                           >
                                             <AddIcon color="primary" />
@@ -164,12 +164,12 @@ function ChplAttestationsView(props) {
                   )}
               </>
             )}
-          { isCreatingException
+          { exceptionPeriod
         && (
           <ChplAttestationCreateException
-            attestations={attestations}
             developer={developer}
             dispatch={handleDispatch}
+            period={exceptionPeriod}
           />
         )}
         </CardContent>

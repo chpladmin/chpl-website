@@ -22,7 +22,7 @@ function ChplAttestationView(props) {
   const [attestations, setAttestations] = useState({});
   const [canCreateException, setCanCreateException] = useState(false);
   const [developer, setDeveloper] = useState({});
-  const [isCreatingException, setIsCreatingException] = useState(false);
+  const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
 
   useEffect(() => {
     setAttestations({
@@ -43,10 +43,10 @@ function ChplAttestationView(props) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        setIsCreatingException(false);
+        setExceptionPeriod(undefined);
         break;
       case 'saved':
-        setIsCreatingException(false);
+        setExceptionPeriod(undefined);
         break;
         // no default
     }
@@ -62,14 +62,14 @@ function ChplAttestationView(props) {
         {' '}
         { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
       </Typography>
-      { !isCreatingException
+      { !exceptionPeriod
         && (
           <>
             <Button
               color="primary"
               id="create-attestation-exception-button"
               variant="contained"
-              onClick={() => setIsCreatingException(true)}
+              onClick={() => setExceptionPeriod(attestations.period)}
               disabled={!canCreateException}
             >
               Re-Open Submission
@@ -109,12 +109,12 @@ function ChplAttestationView(props) {
               )}
           </>
         )}
-      { isCreatingException
+      { exceptionPeriod
         && (
           <ChplAttestationCreateException
-            attestations={attestations}
             developer={developer}
             dispatch={handleDispatch}
+            period={exceptionPeriod}
           />
         )}
     </>

@@ -13,7 +13,7 @@ import { developer as developerPropType } from 'shared/prop-types';
 function ChplAttestationCreateException(props) {
   const { mutate } = usePostAttestationException();
   const { enqueueSnackbar } = useSnackbar();
-  const { attestations, developer, dispatch } = props;
+  const { developer, dispatch, period } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const cancelCreatingException = () => {
@@ -24,7 +24,7 @@ function ChplAttestationCreateException(props) {
     setIsSubmitting(true);
     const payload = {
       developer,
-      period: attestations.period,
+      period,
     };
     mutate(payload, {
       onSuccess: ({ data: { exceptionEnd, developer: { name } } }) => {
@@ -76,7 +76,7 @@ function ChplAttestationCreateException(props) {
 export default ChplAttestationCreateException;
 
 ChplAttestationCreateException.propTypes = {
-  attestations: object.isRequired, // eslint-disable-line react/forbid-prop-types
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
+  period: object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
