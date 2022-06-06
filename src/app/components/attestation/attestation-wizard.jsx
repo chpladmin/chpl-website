@@ -144,6 +144,7 @@ function ChplAttestationWizard(props) {
     const payload = {
       details: {
         attestationResponses,
+        period,
         signature,
       },
     };
