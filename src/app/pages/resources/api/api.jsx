@@ -7,10 +7,10 @@ import {
 } from '@material-ui/core';
 import SwaggerUI from 'swagger-ui-react';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplLink } from '../../../components/util';
-import { ChplApiKeyRegistration } from '../../../components/api-key';
+import { ChplLink } from 'components/util';
+import { ChplApiKeyRegistration } from 'components/api-key';
+import { getAngularService } from 'services/angular-react-helper';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   pageHeader: {
