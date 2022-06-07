@@ -28,22 +28,32 @@ describe('the Attestations component', () => {
   describe('for Viztek, LLC', () => {
     beforeEach(() => {
       page.selectDeveloper('Viztek, LLC');
-      login.logIn('onc');
-      hooks.waitForSpinnerToDisappear();
     });
 
-    it('should show no attestations submitted for the first period', () => {
+    it('should not show any attestations data', () => {
       const periodStart = 'Jun 30, 2020';
-      expect(component.getAttestationSummary(periodStart)).toBe('No Attestations submitted');
+      expect(component.getAttestationSummary(periodStart)).toBeUndefined();
     });
 
-    it('should allow cancellation of creating an exception for an unattested period', () => {
-      const periodStart = 'Jun 30, 2020';
-      component.initiateUnattestedException(periodStart);
-      expect(component.unattestedExceptionText).toBe('This action will re-open the Attestations submission feature for Viztek, LLC for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
-      expect(component.isCreatingException()).toBe(true);
-      component.cancelException();
-      expect(component.isCreatingException()).toBe(false);
+    describe('while logged in as ROLE_ONC', () => {
+      beforeEach(() => {
+        login.logIn('onc');
+        hooks.waitForSpinnerToDisappear();
+      });
+
+      it('should show no attestations submitted for the first period', () => {
+        const periodStart = 'Jun 30, 2020';
+        expect(component.getAttestationSummary(periodStart)).toBe('No Attestations submitted');
+      });
+
+      it('should allow cancellation of creating an exception for an unattested period', () => {
+        const periodStart = 'Jun 30, 2020';
+        component.initiateUnattestedException(periodStart);
+        expect(component.unattestedExceptionText).toBe('This action will re-open the Attestations submission feature for Viztek, LLC for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
+        expect(component.isCreatingException()).toBe(true);
+        component.cancelException();
+        expect(component.isCreatingException()).toBe(false);
+      });
     });
   });
 

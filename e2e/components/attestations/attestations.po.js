@@ -10,6 +10,9 @@ class AttestationsComponent {
   }
 
   getAttestationSummary(identifier) {
+    if (!$(this.elements.attestationsTable).isDisplayed()) {
+      return undefined;
+    }
     return $(this.elements.attestationsTable)
       .$$('tr')
       .find((row) => row.getText().includes(identifier))
