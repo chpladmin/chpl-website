@@ -30,7 +30,7 @@ describe('the Attestations component', () => {
   });
 
   describe('for Plexus Information Systems, Inc.', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       page.selectDeveloper('Plexus');
       login.logIn('onc');
       hooks.waitForSpinnerToDisappear();
@@ -48,7 +48,7 @@ describe('the Attestations component', () => {
   });
 
   describe('for Ocuco Limited', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       page.selectDeveloper('Ocuco Limited');
       login.logIn('onc');
       hooks.waitForSpinnerToDisappear();
@@ -63,6 +63,32 @@ describe('the Attestations component', () => {
       browser.waitUntil(() => snack.snackCount === initialSnacks + 1);
       expect(component.isCreatingException()).toBe(false);
       expect(snack.matchesText('You have re-opened the submission feature for Ocuco Limited until')).toBe(true);
+    });
+  });
+
+  describe('for Net Health', () => {
+    beforeEach(() => {
+      page.selectDeveloper('2815');
+    });
+
+    it('should allow submission of attestations', () => {
+      login.logIn('onc');
+      hooks.waitForSpinnerToDisappear();
+      const periodStart = 'Jun 30, 2020';
+      const initialSnacks = snack.snackCount;
+      component.viewAttestations(periodStart);
+      component.createException();
+      component.createException();
+      browser.waitUntil(() => snack.snackCount === initialSnacks + 1);
+      login.logOut();
+      login.logIn('developer');
+      hooks.waitForSpinnerToDisappear();
+      component.initiateAttestationSubmission();
+      component.nextStep();
+      component.selectOptions();
+      component.nextStep();
+      component.sign('AQA Developers');
+      component.submit();
     });
   });
 });

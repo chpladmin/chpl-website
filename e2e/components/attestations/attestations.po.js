@@ -7,6 +7,10 @@ class AttestationsComponent {
       attestationsDetails: 'table[aria-label="Developer Attestations details"',
       closeDetailsButton: '#close-dialog',
       submitAttestations: '#create-attestation-change-request-button',
+      nextButton: '#inspect-next',
+      noncompliant: 'label=Noncompliant',
+      signature: '#signature',
+      submit: '#sign-electronically',
     };
   }
 
@@ -84,6 +88,26 @@ class AttestationsComponent {
 
   canSubmitAttestations() {
     return $(this.elements.submitAttestations).isEnabled();
+  }
+
+  initiateAttestationSubmission() {
+    $(this.elements.submitAttestations).click();
+  }
+
+  nextStep() {
+    $(this.elements.nextButton).click();
+  }
+
+  selectOptions() {
+    $$(this.elements.noncompliant).forEach((item) => item.click());
+  }
+
+  sign(signature) {
+    $(this.elements.signature).addValue(signature);
+  }
+
+  submit() {
+    $(this.elements.submit).click();
   }
 }
 
