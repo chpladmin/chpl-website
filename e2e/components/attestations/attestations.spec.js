@@ -18,8 +18,6 @@ describe('the Attestations component', () => {
     login = new LoginComponent();
     page = new DevelopersPage();
     snack = new SnackComponent();
-    //await hooks.open('#/organizations/developers/1179');
-    //await hooks.open('#/organizations/developers/1088');
     await hooks.open('#/organizations/developers');
   });
 
@@ -33,10 +31,9 @@ describe('the Attestations component', () => {
 
   describe('for Plexus Information Systems, Inc.', () => {
     beforeEach(async () => {
-      //page.selectDeveloper('Plexus Information Systems, Inc.');
+      page.selectDeveloper('Plexus');
       login.logIn('onc');
       hooks.waitForSpinnerToDisappear();
-      await hooks.open('#/organizations/developers/1179');
     });
 
     it('should allow creation of an exception for an unattested period', () => {
@@ -52,10 +49,9 @@ describe('the Attestations component', () => {
 
   describe('for Ocuco Limited', () => {
     beforeEach(async () => {
-      //page.selectDeveloper('Ocuco Limited');
+      page.selectDeveloper('Ocuco Limited');
       login.logIn('onc');
       hooks.waitForSpinnerToDisappear();
-      await hooks.open('#/organizations/developers/1088');
     });
 
     it('should allow creation of an exception for an attested period', () => {
