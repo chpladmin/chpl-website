@@ -6,6 +6,7 @@ class AttestationsComponent {
       createExceptionButton: '#create-attestation-exception-button',
       attestationsDetails: 'table[aria-label="Developer Attestations details"',
       closeDetailsButton: '#close-dialog',
+      submitAttestations: '#create-attestation-change-request-button',
     };
   }
 
@@ -79,6 +80,10 @@ class AttestationsComponent {
 
   closeAttestations() {
     $(this.elements.closeDetailsButton).click();
+  }
+
+  canSubmitAttestations() {
+    return $(this.elements.submitAttestations).isEnabled();
   }
 }
 

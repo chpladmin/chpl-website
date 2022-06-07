@@ -57,6 +57,33 @@ describe('the Attestations component', () => {
     });
   });
 
+  describe('for Health Metrics System, Inc', () => {
+    beforeEach(() => {
+      page.selectDeveloper('3007');
+    });
+
+    it('should not show any attestations data', () => {
+      const periodStart = 'Jun 30, 2020';
+      expect(component.getAttestationSummary(periodStart)).toBeUndefined();
+    });
+
+    describe('while logged in as ROLE_DEVELOPER', () => {
+      beforeEach(() => {
+        login.logIn('developer');
+        hooks.waitForSpinnerToDisappear();
+      });
+
+      it('should show no attestations submitted for the first period', () => {
+        const periodStart = 'Jun 30, 2020';
+        expect(component.getAttestationSummary(periodStart)).toBeUndefined();
+      });
+
+      it('should have a disabled "submit attestations" button', () => {
+        expect(component.canSubmitAttestations()).toBe(false);
+      });
+    });
+  });
+
   describe('for MDToolbox', () => {
     beforeEach(() => {
       page.selectDeveloper('MDToolbox');
