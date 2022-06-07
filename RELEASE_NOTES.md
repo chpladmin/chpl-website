@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.35.3
+_6 June 2022_
+
+### Flagged Features
+* Combine Developer CRs into a single type
+
+---
+
 ## Version 11.35.2
 _1 June 2022_
 
