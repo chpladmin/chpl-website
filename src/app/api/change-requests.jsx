@@ -3,6 +3,18 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useAxios } from './axios';
 import options from './options';
 
+const useFetchChangeRequest = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['change-requests', id], async () => {
+    if (id) {
+      const response = await axios.get(`change-requests/${id}`);
+      return response.data;
+    }
+    return {};
+  }, {
+    keepPreviousData: true,
+  });
+};
 const useFetchChangeRequests = () => {
   const axios = useAxios();
   return useQuery(['change-requests'], async () => {
@@ -80,6 +92,7 @@ const usePutChangeRequest = () => {
 };
 
 export {
+  useFetchChangeRequest,
   useFetchChangeRequests,
   useFetchChangeRequestStatusTypes,
   useFetchChangeRequestTypes,

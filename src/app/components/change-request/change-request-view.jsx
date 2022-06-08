@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Divider,
   Typography,
   makeStyles,
@@ -17,6 +18,7 @@ import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
 
+import { useFetchChangeRequest } from 'api/change-requests';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplAvatar } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -116,11 +118,22 @@ const getChangeRequestDetails = (cr) => {
 
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
-  const [isConfirming, setIsConfirming] = useState(false);
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
-  const { changeRequest } = props;
+  const { changeRequest: { id } } = props;
+  const [changeRequest, setChangeRequest] = useState(undefined);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
   const classes = useStyles();
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setChangeRequest({
+      ...data,
+    });
+  }, [data, isLoading, isSuccess]);
 
   const canEdit = () => {
     if (hasAnyRole(['ROLE_DEVELOPER'])) {
@@ -162,6 +175,10 @@ function ChplChangeRequestView(props) {
     }
     setIsConfirming(false);
   };
+
+  if (!changeRequest) {
+    return <CircularProgress />;
+  }
 
   return (
     <>

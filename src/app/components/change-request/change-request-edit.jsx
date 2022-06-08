@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Divider,
   MenuItem,
   Typography,
@@ -17,6 +18,7 @@ import ChplChangeRequestAttestationEdit from './types/attestation-edit';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 
 import {
+  useFetchChangeRequest,
   useFetchChangeRequestStatusTypes,
   usePutChangeRequest,
 } from 'api/change-requests';
@@ -101,19 +103,32 @@ function ChplChangeRequestEdit(props) {
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const {
-    changeRequest,
-  } = props;
+  const { changeRequest: { id } } = props;
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [details, setDetails] = useState(props.changeRequest.details);
+  const [changeRequest, setChangeRequest] = useState(undefined);
   const [isConfirming, setIsConfirming] = useState(false);
+  const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
   let formik;
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setChangeRequest({
+      ...data,
+    });
+    if (data.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
+      setConfirmationMessage('All associated ONC-ACBs must be consulted regarding this change. Will you ensure this happens?');
+      setIsConfirming(true);
+    }
+  }, [data, isLoading, isSuccess, hasAnyRole]);
 
   useEffect(() => {
     if (crstQuery.isLoading || !crstQuery.isSuccess) {
@@ -134,40 +149,33 @@ function ChplChangeRequestEdit(props) {
     }
   }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
 
-  useEffect(() => {
-    if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
-      setConfirmationMessage('All associated ONC-ACBs must be consulted regarding this change. Will you ensure this happens?');
-      setIsConfirming(true);
-    }
-  }, [changeRequest?.certificationBodies, hasAnyRole]);
-
-  const handleUpdate = (data) => {
+  const handleUpdate = (payload) => {
     switch (changeRequest.changeRequestType.name) {
       case 'Developer Attestation Change Request':
         setDetails({
           ...details,
-          attestation: data.attestation,
+          attestation: payload.attestation,
         });
         break;
       case 'Developer Demographics Change Request':
         setDetails({
           ...details,
           address: {
-            line1: data.line1,
-            line2: data.line2,
-            city: data.city,
-            state: data.state,
-            zipcode: data.zipcode,
-            country: data.country,
+            line1: payload.line1,
+            line2: payload.line2,
+            city: payload.city,
+            state: payload.state,
+            zipcode: payload.zipcode,
+            country: payload.country,
           },
           contact: {
-            fullName: data.fullName,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-            title: data.title,
+            fullName: payload.fullName,
+            email: payload.email,
+            phoneNumber: payload.phoneNumber,
+            title: payload.title,
           },
-          selfDeveloper: data.selfDeveloper,
-          website: data.website,
+          selfDeveloper: payload.selfDeveloper,
+          website: payload.website,
         });
         break;
         // no default
@@ -190,7 +198,7 @@ function ChplChangeRequestEdit(props) {
     setIsConfirming(false);
   };
 
-  const handleDispatch = (action, data) => {
+  const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
         props.dispatch('close');
@@ -200,7 +208,7 @@ function ChplChangeRequestEdit(props) {
         formik.submitForm();
         break;
       case 'update':
-        handleUpdate(data);
+        handleUpdate(payload);
         break;
       case 'save':
         if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
@@ -260,6 +268,10 @@ function ChplChangeRequestEdit(props) {
     },
     validationSchema,
   });
+
+  if (!changeRequest) {
+    return <CircularProgress />;
+  }
 
   return (
     <>
