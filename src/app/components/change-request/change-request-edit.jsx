@@ -8,7 +8,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
@@ -16,12 +16,15 @@ import * as yup from 'yup';
 import ChplChangeRequestAttestationEdit from './types/attestation-edit';
 import ChplChangeRequestDemographicsEdit from './types/demographics-edit';
 
-import { usePutChangeRequest } from 'api/change-requests';
+import {
+  useFetchChangeRequestStatusTypes,
+  usePutChangeRequest,
+} from 'api/change-requests';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { FlagContext, UserContext } from 'shared/contexts';
-import { changeRequest as changeRequestProp, changeRequestStatusType } from 'shared/prop-types';
+import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -100,11 +103,12 @@ function ChplChangeRequestEdit(props) {
   const { enqueueSnackbar } = useSnackbar();
   const {
     changeRequest,
-    changeRequestStatusTypes,
   } = props;
+  const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [details, setDetails] = useState(props.changeRequest.details);
   const [isConfirming, setIsConfirming] = useState(false);
+  const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
@@ -112,18 +116,30 @@ function ChplChangeRequestEdit(props) {
   let formik;
 
   useEffect(() => {
+    if (crstQuery.isLoading || !crstQuery.isSuccess) {
+      return;
+    }
+    const types = crstQuery.data.data
+      .filter((type) => {
+        if (hasAnyRole(['ROLE_DEVELOPER'])) {
+          return type.name === 'Pending ONC-ACB Action' || type.name === 'Cancelled by Requester';
+        }
+        return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
+      })
+      .sort((a, b) => (a.name < b.name ? -1 : 1));
+    setChangeRequestStatusTypes(types);
+
+    if (hasAnyRole(['ROLE_DEVELOPER'])) {
+      formik.setFieldValue('changeRequestStatusType', types.find((type) => type.name === 'Pending ONC-ACB Action'));
+    }
+  }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
+
+  useEffect(() => {
     if (changeRequest.certificationBodies.length > 1 && hasAnyRole(['ROLE_ACB'])) {
       setConfirmationMessage('All associated ONC-ACBs must be consulted regarding this change. Will you ensure this happens?');
       setIsConfirming(true);
     }
   }, [changeRequest?.certificationBodies, hasAnyRole]);
-
-  const getInitialStatusState = () => {
-    if (hasAnyRole(['ROLE_DEVELOPER'])) {
-      return changeRequestStatusTypes.find((type) => type.name === 'Pending ONC-ACB Action');
-    }
-    return '';
-  };
 
   const handleUpdate = (data) => {
     switch (changeRequest.changeRequestType.name) {
@@ -229,7 +245,7 @@ function ChplChangeRequestEdit(props) {
   formik = useFormik({
     initialValues: {
       comment: '',
-      changeRequestStatusType: getInitialStatusState(),
+      changeRequestStatusType: '',
     },
     onSubmit: () => {
       const updated = {
@@ -368,6 +384,5 @@ export default ChplChangeRequestEdit;
 
 ChplChangeRequestEdit.propTypes = {
   changeRequest: changeRequestProp.isRequired,
-  changeRequestStatusTypes: arrayOf(changeRequestStatusType).isRequired,
   dispatch: func.isRequired,
 };

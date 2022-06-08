@@ -27,10 +27,7 @@ import ChplChangeRequestView from './change-request-view';
 import fillCustomAttestationFields from './types/attestation-fill-fields';
 import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
-import {
-  useFetchChangeRequests,
-  useFetchChangeRequestStatusTypes,
-} from 'api/change-requests';
+import { useFetchChangeRequests } from 'api/change-requests';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -159,31 +156,14 @@ function ChplChangeRequestsView(props) {
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
-  const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('currentStatusChangeDate');
   const [mode, setMode] = useState('view');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { data, isLoading, isSuccess } = useFetchChangeRequests();
-  const crstQuery = useFetchChangeRequestStatusTypes();
   const { filters, searchTerm } = useFilterContext();
   const classes = useStyles();
-
-  useEffect(() => {
-    if (crstQuery.isLoading || !crstQuery.isSuccess) {
-      return;
-    }
-    const types = crstQuery.data.data
-      .filter((type) => {
-        if (hasAnyRole(['ROLE_DEVELOPER'])) {
-          return type.name === 'Pending ONC-ACB Action' || type.name === 'Cancelled by Requester';
-        }
-        return type.name !== 'Pending ONC-ACB Action' && type.name !== 'Cancelled by Requester';
-      })
-      .sort((a, b) => (a.name < b.name ? -1 : 1));
-    setChangeRequestStatusTypes(types);
-  }, [crstQuery.data, crstQuery.isLoading, crstQuery.isSuccess, hasAnyRole]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -271,7 +251,6 @@ function ChplChangeRequestsView(props) {
             && (
               <ChplChangeRequestEdit
                 changeRequest={changeRequest}
-                changeRequestStatusTypes={changeRequestStatusTypes}
                 dispatch={handleDispatch}
               />
             )}
