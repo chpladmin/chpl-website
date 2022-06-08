@@ -15,12 +15,26 @@ const useFetchChangeRequest = ({ id }) => {
     keepPreviousData: true,
   });
 };
-const useFetchChangeRequests = () => {
+const useFetchChangeRequestsLegacy = () => {
   const axios = useAxios();
   return useQuery(['change-requests'], async () => {
     const response = await axios.get('change-requests');
     return response.data;
   });
+};
+
+const useFetchChangeRequests = ({
+  orderBy,
+  pageNumber,
+  pageSize,
+  sortDescending,
+  query,
+}) => {
+  const axios = useAxios();
+  return useQuery(['change-requests/search', orderBy, pageNumber, pageSize, sortDescending, query], async () => {
+    const response = await axios.get(`change-requests/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    return response.data;
+  }, { keepPreviousData: true });
 };
 
 const useFetchChangeRequestStatusTypes = () => {
@@ -94,6 +108,7 @@ const usePutChangeRequest = () => {
 export {
   useFetchChangeRequest,
   useFetchChangeRequests,
+  useFetchChangeRequestsLegacy,
   useFetchChangeRequestStatusTypes,
   useFetchChangeRequestTypes,
   usePostChangeRequest,

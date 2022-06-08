@@ -27,7 +27,7 @@ import ChplChangeRequestView from './change-request-view';
 import fillCustomAttestationFields from './types/attestation-fill-fields';
 import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
-import { useFetchChangeRequests } from 'api/change-requests';
+import { useFetchChangeRequests, useFetchChangeRequestsLegacy } from 'api/change-requests';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -156,20 +156,40 @@ function ChplChangeRequestsView(props) {
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
-  const [order, setOrder] = useState('desc');
+  const [order, setOrder] = useState('desc'); // sortdescending?
   const [orderBy, setOrderBy] = useState('currentStatusChangeDate');
   const [mode, setMode] = useState('view');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { data, isLoading, isSuccess } = useFetchChangeRequests();
-  const { filters, searchTerm } = useFilterContext();
+  const [page, setPage] = React.useState(0); // pageNumber
+  const [rowsPerPage, setRowsPerPage] = useState(10); // pageSize
+  const legacyFetch = useFetchChangeRequestsLegacy();
+  const { filters, queryString, searchTerm } = useFilterContext();
+  const { isLoading, isSuccess, data } = useFetchChangeRequests({
+    orderBy,
+    pageNumber: page,
+    pageSize: rowsPerPage,
+    sortDescending: order === 'desc',
+    query: queryString(),
+  });
   const classes = useStyles();
 
+  /*
   useEffect(() => {
-    if (isLoading || !isSuccess) {
+    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
+      setPageNumber(0);
+    }
+  }, [data?.recordCount, pageNumber, data?.results?.length]);
+  */
+
+  useEffect(() => {
+    if (isLoading || !isSuccess || !data) { return; }
+    console.log(data);
+  }, [data?.results, isLoading]);
+
+  useEffect(() => {
+    if (legacyFetch.isLoading || !legacyFetch.isSuccess) {
       return;
     }
-    const crs = data
+    const crs = legacyFetch.data
       .map((item) => ({
         ...item,
         ...getCustomFields(item),
@@ -189,7 +209,7 @@ function ChplChangeRequestsView(props) {
     if (changeRequest?.id) {
       setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
     }
-  }, [data, isLoading, isSuccess, DateUtil, orderBy, order, filters, searchTerm, preFilter]);
+  }, [legacyFetch.data, legacyFetch.isLoading, legacyFetch.isSuccess, DateUtil, orderBy, order, filters, searchTerm, preFilter]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
@@ -269,19 +289,19 @@ function ChplChangeRequestsView(props) {
                 <div>
                   <ChplFilterChips />
                 </div>
-                { isLoading
+                { legacyFetch.isLoading
                   && (
                     <div className={classes.noResultsContainer}>
                       <CircularProgress />
                     </div>
                   )}
-                { (!isLoading && (!isSuccess || changeRequests.length === 0))
+                { (!legacyFetch.isLoading && (!legacyFetch.isSuccess || changeRequests.length === 0))
                   && (
                     <div className={classes.noResultsContainer}>
                       No results found
                     </div>
                   )}
-                { !isLoading && isSuccess && changeRequests.length > 0
+                { !legacyFetch.isLoading && legacyFetch.isSuccess && changeRequests.length > 0
                   && (
                     <>
                       <div className={classes.tableResultsHeaderContainer}>
