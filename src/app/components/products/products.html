@@ -32,12 +32,12 @@
           <div class="products__product-header-item products__product-header-item--end"><i class="fa fa-lg" ng-class="product.isOpen ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
         </div>
         <div ng-if="product.isOpen" class="panel-body">
-          <div id="chpl-product-{{ product.productId }}">
+          <div id="chpl-product-{{ product.id }}">
             <div class="product__product-info">
               <div class="product__product-info-item-version">
-                <label for="active-version-{{ product.productId }}">Version</label>
+                <label for="active-version-{{ product.id }}">Version</label>
                 <select ng-model="product.activeVersion"
-                        id="active-version-{{ product.productId }}" name="product.activeVersion" class="input-sm form-control"
+                        id="active-version-{{ product.id }}" name="product.activeVersion" class="input-sm form-control"
                         ng-options="v as v.version for v in product.availableVersions">
                 </select>
               </div>

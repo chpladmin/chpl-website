@@ -464,8 +464,9 @@
     }
 
     function setFilterInfo(refineModel) {
-      let i; let
-        obj;
+      let i;
+      let obj;
+
       vm.refineModel = angular.copy(refineModel);
       vm.filterItems = {
         pageSize: '50',

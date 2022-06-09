@@ -52,7 +52,7 @@
       if (hasAnyRole(['ROLE_DEVELOPER'])) {
         const currentUser = getCurrentUser();
         return currentUser.organizations
-          .filter((d) => d.id === developer.developerId)
+          .filter((d) => d.id === developer.id)
           .length > 0;
       }
       return false;

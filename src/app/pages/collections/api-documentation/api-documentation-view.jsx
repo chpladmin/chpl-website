@@ -406,7 +406,7 @@ function ChplApiDocumentationCollectionView(props) {
                          text={item.developer.name}
                          analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
                          external={false}
-                         router={{ sref: 'organizations.developers.developer', options: { developerId: item.developer.id } }}
+                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
                        />
                      </TableCell>
                      <TableCell>{item.product.name}</TableCell>

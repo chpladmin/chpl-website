@@ -44,8 +44,12 @@ export const CompareComponent = {
     }
 
     fillInBlanks() {
-      let cert; let i; let k; let listing; let
-        needToAddBlank;
+      let cert;
+      let i;
+      let k;
+      let listing;
+      let needToAddBlank;
+
       for (i = 0; i < this.listingList.length; i++) {
         listing = this.listingList[i];
         for (cert in this.allCerts) {
