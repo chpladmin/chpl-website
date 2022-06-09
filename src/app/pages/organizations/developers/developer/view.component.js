@@ -57,6 +57,7 @@ const DeveloperViewComponent = {
       if (changes.developer) {
         this.developer = angular.copy(changes.developer.currentValue);
         this.backup.developer = angular.copy(this.developer);
+        this.bonusQuery = `&developerId=${this.developer.id}`;
       }
       if (changes.directReviews) {
         this.directReviews = angular.copy(changes.directReviews.currentValue);

@@ -13,6 +13,7 @@ function ChplChangeRequestsWrapper(props) {
   const {
     disallowedFilters,
     preFilter,
+    bonusQuery,
   } = props;
 
   return (
@@ -22,6 +23,7 @@ function ChplChangeRequestsWrapper(props) {
           <ChplChangeRequests
             disallowedFilters={disallowedFilters}
             preFilter={preFilter}
+            bonusQuery={bonusQuery}
           />
         </FlagWrapper>
       </ApiWrapper>
@@ -34,9 +36,11 @@ export default ChplChangeRequestsWrapper;
 ChplChangeRequestsWrapper.propTypes = {
   disallowedFilters: arrayOf(string),
   preFilter: func,
+  bonusQuery: string,
 };
 
 ChplChangeRequestsWrapper.defaultProps = {
   disallowedFilters: [],
   preFilter: () => true,
+  bonusQuery: '',
 };

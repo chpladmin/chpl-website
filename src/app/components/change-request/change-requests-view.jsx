@@ -148,7 +148,7 @@ const getCustomFields = (item) => {
 
 function ChplChangeRequestsView(props) {
   const DateUtil = getAngularService('DateUtil');
-  const { disallowedFilters, preFilter } = props;
+  const { disallowedFilters, preFilter, bonusQuery } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
@@ -164,7 +164,7 @@ function ChplChangeRequestsView(props) {
     pageNumber: page,
     pageSize: rowsPerPage,
     sortDescending: order === 'desc',
-    query: queryString(),
+    query: `${queryString()}${bonusQuery}`,
   });
   const classes = useStyles();
 
@@ -414,4 +414,5 @@ export default ChplChangeRequestsView;
 ChplChangeRequestsView.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
   preFilter: func.isRequired,
+  bonusQuery: string.isRequired,
 };
