@@ -8,12 +8,34 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { arrayOf, func } from 'prop-types';
+import { arrayOf, func, number } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
-import { changeRequest as changeRequestProp } from 'shared/prop-types';
+import fillCustomAttestationFields from './types/attestation-fill-fields';
+import fillCustomDemographicsFields from './types/demographics-fill-fields';
+
+import { useFetchChangeRequestsLegacy } from 'api/change-requests';
+import { getAngularService } from 'services/angular-react-helper';
 
 const CUSTOM_FIELD_COUNT = 7;
+const fillWithBlanks = (def = '') => Array(CUSTOM_FIELD_COUNT)
+  .fill(def)
+  .reduce((obj, v, idx) => ({
+    ...obj,
+    [`field${idx + 1}`]: v,
+  }), {});
+
+const getCustomFields = (item) => {
+  switch (item.changeRequestType.name) {
+    case 'Developer Attestation Change Request':
+      return fillCustomAttestationFields(item.details);
+    case 'Developer Demographics Change Request':
+      return fillCustomDemographicsFields(item);
+    default:
+      return fillWithBlanks();
+  }
+};
+
 const csvOptions = {
   showLabels: true,
   headers: [
@@ -39,12 +61,35 @@ const useStyles = makeStyles({
 });
 
 function ChplChangeRequestsDownload(props) {
+  const DateUtil = getAngularService('DateUtil');
   const {
     dispatch,
-    changeRequests,
+    changeRequestsIds,
   } = props;
   const csvExporter = new ExportToCsv(csvOptions);
+  const [changeRequests, setChangeRequests] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchChangeRequestsLegacy();
   const classes = useStyles();
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    const crs = data
+      .map((item) => ({
+        ...item,
+        ...getCustomFields(item),
+        developerName: item.developer.name,
+        changeRequestTypeName: item.changeRequestType.name,
+        currentStatusName: item.currentStatus.changeRequestStatusType.name,
+        currentStatusChangeDate: item.currentStatus.statusChangeDate,
+        friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
+        friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
+        relevantAcbs: item.certificationBodies.sort((a, b) => (a.name < b.name ? -1 : 1)).map((acb) => acb.name).join(';'),
+      }))
+      .filter((item) => changeRequestsIds.includes(item.id));
+    setChangeRequests(crs);
+  }, [data, isLoading, isSuccess, DateUtil, changeRequestsIds]);
 
   const download = () => {
     csvExporter.generateCsv(changeRequests);
@@ -60,6 +105,7 @@ function ChplChangeRequestsDownload(props) {
             color="primary"
             onClick={() => dispatch('closeDownload')}
             className={classes.closeIcon}
+            disabled={changeRequests.length === 0}
           >
             <CloseIcon />
           </IconButton>
@@ -80,5 +126,5 @@ export default ChplChangeRequestsDownload;
 
 ChplChangeRequestsDownload.propTypes = {
   dispatch: func.isRequired,
-  changeRequests: arrayOf(changeRequestProp).isRequired,
+  changeRequestsIds: arrayOf(number).isRequired,
 };

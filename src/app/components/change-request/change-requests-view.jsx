@@ -23,8 +23,6 @@ import { arrayOf, func, string } from 'prop-types';
 
 import ChplChangeRequest from './change-request';
 import ChplChangeRequestsDownload from './change-requests-download';
-import fillCustomAttestationFields from './types/attestation-fill-fields';
-import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
 import { useFetchChangeRequests, useFetchChangeRequestsLegacy } from 'api/change-requests';
 import {
@@ -38,7 +36,7 @@ import {
   ChplPagination,
 } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
@@ -109,27 +107,7 @@ const filtersShouldShow = (item, filters) => filters
   .reduce((acc, filter) => filter
     .meets(item, filter.values) && acc, true);
 
-const CUSTOM_FIELD_COUNT = 7;
-const fillWithBlanks = (def = '') => Array(CUSTOM_FIELD_COUNT)
-  .fill(def)
-  .reduce((obj, v, idx) => ({
-    ...obj,
-    [`field${idx + 1}`]: v,
-  }), {});
-
-const getCustomFields = (item) => {
-  switch (item.changeRequestType.name) {
-    case 'Developer Attestation Change Request':
-      return fillCustomAttestationFields(item.details);
-    case 'Developer Demographics Change Request':
-      return fillCustomDemographicsFields(item);
-    default:
-      return fillWithBlanks();
-  }
-};
-
 function ChplChangeRequestsView(props) {
-  const DateUtil = getAngularService('DateUtil');
   const { disallowedFilters, preFilter, bonusQuery } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
@@ -170,14 +148,10 @@ function ChplChangeRequestsView(props) {
     const crs = legacyFetch.data
       .map((item) => ({
         ...item,
-        ...getCustomFields(item),
         developerName: item.developer.name,
         changeRequestTypeName: item.changeRequestType.name,
         currentStatusName: item.currentStatus.changeRequestStatusType.name,
         currentStatusChangeDate: item.currentStatus.statusChangeDate,
-        friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
-        friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
-        relevantAcbs: item.certificationBodies.sort((a, b) => (a.name < b.name ? -1 : 1)).map((acb) => acb.name).join(';'),
       }))
       .filter((item) => preFilter(item))
       .filter((item) => searchTermShouldShow(item, searchTerm))
@@ -187,7 +161,7 @@ function ChplChangeRequestsView(props) {
     if (changeRequest?.id) {
       setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
     }
-  }, [legacyFetch.data, legacyFetch.isLoading, legacyFetch.isSuccess, DateUtil, orderBy, order, filters, searchTerm, preFilter]);
+  }, [legacyFetch.data, legacyFetch.isLoading, legacyFetch.isSuccess, orderBy, order, filters, searchTerm, preFilter]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
@@ -245,7 +219,7 @@ function ChplChangeRequestsView(props) {
                 && (
                   <ChplChangeRequestsDownload
                     dispatch={handleDispatch}
-                    changeRequests={changeRequests}
+                    changeRequestsIds={changeRequests.map((cr) => cr.id)}
                   />
                 )}
                 <div className={classes.searchContainer} component={Paper}>
@@ -336,7 +310,7 @@ function ChplChangeRequestsView(props) {
                                    )}
                                   <TableCell>{item.changeRequestTypeName}</TableCell>
                                   { !hasAnyRole(['ROLE_DEVELOPER'])
-                                   && <TableCell>{DateUtil.getDisplayDateFormat(item.submittedDate)}</TableCell>}
+                                   && <TableCell>{getDisplayDateFormat(item.submittedDate)}</TableCell>}
                                   <TableCell>{item.currentStatusName}</TableCell>
                                   <TableCell>
                                     <Moment
