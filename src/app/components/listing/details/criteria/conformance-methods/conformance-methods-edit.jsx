@@ -137,10 +137,19 @@ function ChplConformanceMethodsEdit(props) {
               <TableBody>
                 { conformanceMethods.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
-                    <TableCell>
-                      <Typography variant="body2"><ChplEllipsis text={item.conformanceMethod.name} maxLength={100} wordBoundaries /></Typography>
+                    <TableCell className={item.conformanceMethod.removed ? 'removed' : ''}>
+                      <Typography variant="body2">
+                        { item.conformanceMethod.removed
+                          && (
+                            <>
+                              Removed |
+                              {' '}
+                            </>
+                          )}
+                        <ChplEllipsis text={item.conformanceMethod.name} maxLength={100} wordBoundaries />
+                      </Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={item.conformanceMethod.removed ? 'removed' : ''}>
                       <Typography variant="body2">{ item.conformanceMethodVersion }</Typography>
                     </TableCell>
                     <TableCell align="right">
@@ -195,7 +204,9 @@ function ChplConformanceMethodsEdit(props) {
                 helperText={formik.touched.cm && formik.errors.cm}
               >
                 { options.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                  <MenuItem value={item} key={item.id}>
+                    {`${item.removed ? 'Removed | ' : ''} ${item.name}`}
+                  </MenuItem>
                 ))}
               </ChplTextField>
               <ChplTextField
