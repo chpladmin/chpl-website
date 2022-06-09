@@ -35,8 +35,8 @@ function ChplDevelopers() {
     setDevelopers(data.sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [data, isLoading]);
 
-  const goToDeveloper = (_, { developerId }) => {
-    $state.go('.developer', { developerId });
+  const goToDeveloper = (_, { id }) => {
+    $state.go('.developer', { id });
   };
 
   return (
@@ -79,7 +79,7 @@ function ChplDevelopers() {
                     </TableHead>
                     <TableBody>
                       {developers.map((developer) => (
-                        <TableRow key={developer.developerId}>
+                        <TableRow key={developer.id}>
                           <TableCell>{developer.developerCode}</TableCell>
                           <TableCell>{developer.name}</TableCell>
                           <TableCell>{developer.status.status}</TableCell>

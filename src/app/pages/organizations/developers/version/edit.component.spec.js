@@ -1,15 +1,20 @@
 (() => {
-  'use strict';
-
   describe('the Versions Edit component', () => {
-    var $compile, $log, $q, $rootScope, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let $rootScope;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {
+    const mock = {
       product: {
         name: 'a product',
       },
       stateParams: {
-        developerId: 22,
+        id: 22,
         productId: 42,
         versionId: 32,
       },
@@ -19,14 +24,14 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.organizations', $provide => {
+      angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('$stateParams', () => mock.stateParams);
         $provide.factory('chplVersionEditDirective', () => ({}));
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getProduct = jasmine.createSpy('getProduct');
-          $delegate.getVersion = jasmine.createSpy('getVersion');
-          return $delegate;
-        });
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getProduct: jasmine.createSpy('getProduct'),
+          getVersion: jasmine.createSpy('getVersion'),
+        }));
       });
       inject((_$compile_, _$log_, _$q_, _$rootScope_, _networkService_) => {
         $compile = _$compile_;
@@ -50,7 +55,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });

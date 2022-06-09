@@ -63,7 +63,7 @@ function ChplAttestationCreate(props) {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'close':
-        $state.go('organizations.developers.developer', { developerId: developer.developerId });
+        $state.go('organizations.developers.developer', { id: developer.id });
         break;
       case 'stage':
         setStage(payload);

@@ -60,7 +60,7 @@ function ChplAttestationsView(props) {
   };
 
   const canSeeAttestationData = () => hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])
-        || (hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId }));
+        || (hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.id }));
 
   const canSeeUnsubmittedAttestationData = () => hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB']);
 
@@ -177,7 +177,7 @@ function ChplAttestationsView(props) {
           />
         )}
         </CardContent>
-        { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.developerId })
+        { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.id })
           && (
             <CardActions>
               <Button

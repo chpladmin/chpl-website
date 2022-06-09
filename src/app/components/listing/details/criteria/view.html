@@ -99,7 +99,10 @@
               Conformance Method <button class="btn btn-link btn-xs pull-right" uib-tooltip="The method used to evaluate compliance with the certification criterion. For the Test Procedure method, this also includes the version used during testing of the certification criterion functionality." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The method used to evaluate compliance with the certification criterion. For the Test Procedure method, this also includes the version used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.conformanceMethods && $ctrl.cert.conformanceMethods.length > 0">
-              <div ng-repeat="m in $ctrl.cert.conformanceMethods">Name: {{ m.conformanceMethod.name }}<span ng-if="m.conformanceMethod.name !== 'Attestation'">; Version: {{ m.conformanceMethodVersion }}</span></div>
+              <div ng-repeat="m in $ctrl.cert.conformanceMethods" ng-class="{ 'removed' : m.conformanceMethod.removed }">
+                <span ng-if="m.conformanceMethod.removed">Removed | </span>
+                Name: {{ m.conformanceMethod.name }}<span ng-if="m.conformanceMethod.name !== 'Attestation'">; Version: {{ m.conformanceMethodVersion }}</span>
+              </div>
             </td>
             <td ng-if="!$ctrl.cert.conformanceMethods || $ctrl.cert.conformanceMethods.length === 0">None</td>
           </tr>

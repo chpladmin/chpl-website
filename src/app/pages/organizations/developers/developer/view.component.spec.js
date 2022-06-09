@@ -17,7 +17,7 @@
         { name: 'an acb' },
       ],
       developer: {
-        developerId: 636,
+        id: 636,
         developerCode: '1635',
         name: 'Hyland Software,  Inc.',
         website: 'https://www.onbase.com/',
@@ -38,7 +38,7 @@
         status: { id: 1, status: 'Active' },
       },
       stateParams: {
-        developerId: 22,
+        id: 22,
       },
       users: [{ id: 1 }],
     };

@@ -3,9 +3,9 @@ import {
 } from 'prop-types';
 
 const version = shape({
+  id: oneOfType([number, string]),
   lastModifiedDate: oneOfType([number, string]),
   version: string,
-  versionId: oneOfType([number, string]),
 });
 
 export default version;

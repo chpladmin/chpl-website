@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6" ng-if="!$ctrl.listing.developer.developerId" id="developer-new">
+    <div class="col-sm-6" ng-if="!$ctrl.listing.developer.id" id="developer-new">
       <h3>System developer information</h3>
       <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
       <div class="panel panel-ai">
@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6" ng-if="$ctrl.listing.developer.developerId" id="developer-system">
+    <div class="col-sm-6" ng-if="$ctrl.listing.developer.id" id="developer-system">
       <h3>System developer information</h3>
       <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
       <div class="panel panel-ai">
@@ -61,7 +61,7 @@
     </div>
     <div class="col-sm-6" id="developer-uploaded">
       <h3>Uploaded developer information</h3>
-      <p>This is the developer information from your Upload File.<span ng-if="$ctrl.listing.developer.developerId"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
+      <p>This is the developer information from your Upload File.<span ng-if="$ctrl.listing.developer.id"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
       <div class="panel panel-ai">
         <div class="panel-heading">
           {{ $ctrl.listing.developer.name }}
@@ -78,7 +78,7 @@
           <strong>Contact information</strong><br />
           <chpl-contact contact="$ctrl.listing.developer.contact"></chpl-contact>
         </div>
-        <div class="panel-footer" ng-if="$ctrl.listing.developer.developerId">
+        <div class="panel-footer" ng-if="$ctrl.listing.developer.id">
           <button class="btn btn-default btn-block" ng-click="$ctrl.saveInspectingDeveloper()">Save as Developer Information</button>
         </div>
       </div>
