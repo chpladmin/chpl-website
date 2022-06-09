@@ -8,13 +8,18 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { arrayOf, func, number } from 'prop-types';
+import {
+  arrayOf,
+  func,
+  number,
+  string,
+} from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
 import fillCustomAttestationFields from './types/attestation-fill-fields';
 import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
-import { useFetchChangeRequestsLegacy } from 'api/change-requests';
+import { useFetchChangeRequests, useFetchChangeRequestsLegacy } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
 
 const CUSTOM_FIELD_COUNT = 7;
@@ -65,17 +70,26 @@ function ChplChangeRequestsDownload(props) {
   const {
     dispatch,
     changeRequestsIds,
+    query,
   } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const [changeRequests, setChangeRequests] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchChangeRequestsLegacy();
+  const [pageNumber, setPageNumber] = useState(0);
+  const { data: legacyData, isLoading: legacyIsLoading, isSuccess: legacyIsSuccess } = useFetchChangeRequestsLegacy();
+  const { isLoading, isSuccess, data } = useFetchChangeRequests({
+    // orderBy: 'currentStatusChangeDate',
+    pageNumber,
+    pageSize: 250,
+    // sortDescending: true,
+    query,
+  });
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading || !isSuccess) {
+    if (legacyIsLoading || !legacyIsSuccess) {
       return;
     }
-    const crs = data
+    const crs = legacyData
       .map((item) => ({
         ...item,
         ...getCustomFields(item),
@@ -89,7 +103,19 @@ function ChplChangeRequestsDownload(props) {
       }))
       .filter((item) => changeRequestsIds.includes(item.id));
     setChangeRequests(crs);
-  }, [data, isLoading, isSuccess, DateUtil, changeRequestsIds]);
+  }, [legacyData, legacyIsLoading, legacyIsSuccess, DateUtil, changeRequestsIds]);
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    console.log(data);
+    /*
+     * on data load, setChangeRequestIds((ids) => ids.concat(data.results.map((item) => item.id)))
+     * if items < total & another page load is needed
+     * setPageNumber((page) => page + 1);
+     */
+  }, [data, isLoading, isSuccess]);
 
   const download = () => {
     csvExporter.generateCsv(changeRequests);
@@ -127,4 +153,5 @@ export default ChplChangeRequestsDownload;
 ChplChangeRequestsDownload.propTypes = {
   dispatch: func.isRequired,
   changeRequestsIds: arrayOf(number).isRequired,
+  query: string.isRequired,
 };

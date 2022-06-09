@@ -220,6 +220,7 @@ function ChplChangeRequestsView(props) {
                   <ChplChangeRequestsDownload
                     dispatch={handleDispatch}
                     changeRequestsIds={changeRequests.map((cr) => cr.id)}
+                    query={`${queryString()}${bonusQuery}`}
                   />
                 )}
                 <div className={classes.searchContainer} component={Paper}>
