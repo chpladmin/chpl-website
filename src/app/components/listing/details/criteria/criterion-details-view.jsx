@@ -251,10 +251,10 @@ function ChplCriterionDetailsView(props) {
                     && (
                       <ul className={classes.unindentedData}>
                         { criterion.conformanceMethods.map((cm, index) => (
-                          <li key={cm.id || cm.key || index}>
+                          <li key={cm.id || cm.key || index} className={cm.conformanceMethod.removed ? 'removed' : ''}>
                             Name:
                             {' '}
-                            { cm.conformanceMethod.name }
+                            {`${cm.conformanceMethod.removed ? 'Removed | ' : ''} ${cm.conformanceMethod.name}`}
                             { cm.conformanceMethod.name !== 'Attestation'
                               && (
                                 <>
