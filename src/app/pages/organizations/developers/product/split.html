@@ -52,7 +52,7 @@
             {{ version.version }}
           </div>
           <div class="flex-item text-right narrowest">
-            <button class="btn btn-default" id="products-version-move-new-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
+            <button class="btn btn-default" id="products-version-move-new-{{ version.id }}" ng-click="$ctrl.toggleMove(version, true)"><i class="fa fa-long-arrow-right"></i><span class="sr-only"> Move to new</span></button>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@
             {{ version.version }}
           </div>
           <div class="flex-item text-right narrowest">
-            <button class="btn btn-default" id="products-version-move-old-{{ version.versionId }}" ng-click="$ctrl.toggleMove(version, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>
+            <button class="btn btn-default" id="products-version-move-old-{{ version.id }}" ng-click="$ctrl.toggleMove(version, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>
           </div>
         </div>
       </div>

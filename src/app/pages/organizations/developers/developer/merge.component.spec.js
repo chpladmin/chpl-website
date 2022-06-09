@@ -1,10 +1,16 @@
 (() => {
-  'use strict';
-
   describe('the Developer Merge component', () => {
-    var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope, toaster;
+    let $compile;
+    let $log;
+    let $q;
+    let $state;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
+    let toaster;
 
-    mock = {
+    const mock = {
       developer: {},
       developers: [],
       goodResponse: {
@@ -20,12 +26,12 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.organizations', $provide => {
+      angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('chplDeveloperBridgeDirective', () => ({}));
-        $provide.decorator('networkService', $delegate => {
-          $delegate.mergeDevelopers = jasmine.createSpy('mergeDeveloper');
-          return $delegate;
-        });
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          mergeDevelopers: jasmine.createSpy('mergeDeveloper'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_, _toaster_) => {
@@ -52,7 +58,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -72,16 +78,16 @@
     describe('when a developer merge is saved', () => {
       let developer;
       beforeEach(() => {
-        developer = {developerId: 'an id'};
+        developer = { id: 'an id' };
         ctrl.developer = developer;
-        ctrl.selectedDevelopers = [{developerId: 1}, {developerId: 2}];
+        ctrl.selectedDevelopers = [{ id: 1 }, { id: 2 }];
       });
 
       it('should navigate back to the developers page on a good response', () => {
         spyOn($state, 'go');
         ctrl.merge(developer);
         scope.$digest();
-        expect($state.go).toHaveBeenCalledWith('organizations.developers', {}, {reload: true});
+        expect($state.go).toHaveBeenCalledWith('organizations.developers', {}, { reload: true });
       });
 
       it('should pop a notice on success', () => {
@@ -98,7 +104,7 @@
       it('should pass the the merging developer data to the network service', () => {
         ctrl.merge(developer);
         expect(networkService.mergeDevelopers).toHaveBeenCalledWith({
-          developer: developer,
+          developer,
           developerIds: [1, 2, 'an id'],
         });
       });

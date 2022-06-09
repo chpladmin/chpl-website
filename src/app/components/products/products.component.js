@@ -30,7 +30,7 @@ const ProductsComponent = {
     onCancel: '&?',
     onEdit: '&?',
     products: '<',
-    productId: '@',
+    id: '@',
     versionId: '@',
     searchOptions: '<',
   },
@@ -112,9 +112,9 @@ const ProductsComponent = {
           })
           .sort((a, b) => (a.value < b.value ? -1 : 1));
       }
-      if (this.products && this.productId) {
+      if (this.products && this.id) {
         this.activeProduct = this.products
-          .filter((p) => p.productId === parseInt(this.productId, 10))[0];
+          .filter((p) => p.id === parseInt(this.id, 10))[0];
       }
       if (this.products && this.statusItems) {
         this.backupStatusItems = angular.copy(this.statusItems);
@@ -179,14 +179,14 @@ const ProductsComponent = {
 
     editProduct(product) {
       this.$state.go('organizations.developers.developer.product.edit', {
-        productId: product.productId,
+        productId: product.id,
       });
     }
 
     editVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.edit', {
-        productId: product.productId,
-        versionId: product.activeVersion.versionId,
+        productId: product.id,
+        versionId: product.activeVersion.id,
       });
     }
 
@@ -218,14 +218,14 @@ const ProductsComponent = {
 
     mergeProduct(product) {
       this.$state.go('organizations.developers.developer.product.merge', {
-        productId: product.productId,
+        productId: product.id,
       });
     }
 
     mergeVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.merge', {
-        productId: product.productId,
-        versionId: product.activeVersion.versionId,
+        productId: product.id,
+        versionId: product.activeVersion.id,
       });
     }
 
@@ -235,14 +235,14 @@ const ProductsComponent = {
 
     splitProduct(product) {
       this.$state.go('organizations.developers.developer.product.split', {
-        productId: product.productId,
+        productId: product.id,
       });
     }
 
     splitVersion(product) {
       this.$state.go('organizations.developers.developer.product.version.split', {
-        productId: product.productId,
-        versionId: product.activeVersion.versionId,
+        productId: product.id,
+        versionId: product.activeVersion.id,
       });
     }
 

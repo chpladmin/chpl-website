@@ -67,10 +67,10 @@ function ChplListingHistory(props) {
   };
 
   const interpretedDevelopers = new Set();
-  const evaluateDeveloperActivity = (developerId, end = Date.now()) => {
-    if (!interpretedDevelopers.has(developerId)) {
-      networkService.getSingleDeveloperActivityMetadata(developerId, { end }).then((metadata) => {
-        interpretedDevelopers.add(developerId);
+  const evaluateDeveloperActivity = (id, end = Date.now()) => {
+    if (!interpretedDevelopers.has(id)) {
+      networkService.getSingleDeveloperActivityMetadata(id, { end }).then((metadata) => {
+        interpretedDevelopers.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
           const { interpreted, merged, split } = interpretDeveloper(response);
           if (interpreted.change.length > 0) {
@@ -89,10 +89,10 @@ function ChplListingHistory(props) {
   };
 
   const interpretedProducts = new Set();
-  const evaluateProductActivity = (productId, end = Date.now()) => {
-    if (!interpretedProducts.has(productId)) {
-      networkService.getSingleProductActivityMetadata(productId, { end }).then((metadata) => {
-        interpretedProducts.add(productId);
+  const evaluateProductActivity = (id, end = Date.now()) => {
+    if (!interpretedProducts.has(id)) {
+      networkService.getSingleProductActivityMetadata(id, { end }).then((metadata) => {
+        interpretedProducts.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
           const { interpreted, merged, split } = interpretProduct(response);
           if (interpreted.change.length > 0) {
@@ -111,10 +111,10 @@ function ChplListingHistory(props) {
   };
 
   const interpretedVersions = new Set();
-  const evaluateVersionActivity = (versionId, end = Date.now()) => {
-    if (!interpretedVersions.has(versionId)) {
-      networkService.getSingleVersionActivityMetadata(versionId, { end }).then((metadata) => {
-        interpretedVersions.add(versionId);
+  const evaluateVersionActivity = (id, end = Date.now()) => {
+    if (!interpretedVersions.has(id)) {
+      networkService.getSingleVersionActivityMetadata(id, { end }).then((metadata) => {
+        interpretedVersions.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
           const { interpreted, merged, split } = interpretVersion(response);
           if (interpreted.change.length > 0) {
@@ -139,9 +139,9 @@ function ChplListingHistory(props) {
       ...interpretPIHistory(listing, DateUtil),
     ]);
     evaluateListingActivity();
-    evaluateDeveloperActivity(listing.developer.developerId);
-    evaluateProductActivity(listing.product.productId);
-    evaluateVersionActivity(listing.version.versionId);
+    evaluateDeveloperActivity(listing.developer.id);
+    evaluateProductActivity(listing.product.id);
+    evaluateVersionActivity(listing.version.id);
   }, [listing]);
 
   const goToApi = () => {
@@ -153,7 +153,7 @@ function ChplListingHistory(props) {
   const goToHistory = () => {
     setOpen(false);
     $state.go('reports.listings', {
-      productId: listing.id,
+      listingId: listing.id,
     });
   };
 

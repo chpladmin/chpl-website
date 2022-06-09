@@ -1,10 +1,16 @@
 (() => {
-  'use strict';
-
   describe('the Developer Split component', () => {
-    var $compile, $log, $q, $state, ctrl, el, mock, networkService, scope, toaster;
+    let $compile;
+    let $log;
+    let $q;
+    let $state;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
+    let toaster;
 
-    mock = {
+    const mock = {
       developer: {
         products: [],
       },
@@ -21,13 +27,13 @@
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.organizations', $provide => {
+      angular.mock.module('chpl.organizations', ($provide) => {
         $provide.factory('chplDeveloperBridgeDirective', () => ({}));
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getAcbs = jasmine.createSpy('getAcbs');
-          $delegate.splitDeveloper = jasmine.createSpy('splitDeveloper');
-          return $delegate;
-        });
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getAcbs: jasmine.createSpy('getAcbs'),
+          splitDeveloper: jasmine.createSpy('splitDeveloper'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _$state_, _networkService_, _toaster_) => {
@@ -57,7 +63,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -76,21 +82,21 @@
 
     describe('when moving a product to a new developer', () => {
       it('should remove the product from the old list and add to new', () => {
-        ctrl.products = [{productId: 1}, {productId: 2}];
+        ctrl.products = [{ id: 1 }, { id: 2 }];
         ctrl.movingProducts = [];
-        ctrl.toggleMove({productId: 1}, true);
-        expect(ctrl.products).toEqual([{productId: 2}]);
-        expect(ctrl.movingProducts).toEqual([{productId: 1}]);
+        ctrl.toggleMove({ id: 1 }, true);
+        expect(ctrl.products).toEqual([{ id: 2 }]);
+        expect(ctrl.movingProducts).toEqual([{ id: 1 }]);
       });
     });
 
     describe('when moving a product back to the old developer', () => {
       it('should remove the product from the new list and add to old', () => {
         ctrl.products = [];
-        ctrl.movingProducts = [{productId: 1}, {productId: 2}];
-        ctrl.toggleMove({productId: 1});
-        expect(ctrl.products).toEqual([{productId: 1}]);
-        expect(ctrl.movingProducts).toEqual([{productId: 2}]);
+        ctrl.movingProducts = [{ id: 1 }, { id: 2 }];
+        ctrl.toggleMove({ id: 1 });
+        expect(ctrl.products).toEqual([{ id: 1 }]);
+        expect(ctrl.movingProducts).toEqual([{ id: 2 }]);
       });
     });
 
@@ -106,12 +112,12 @@
         };
         ctrl.split();
         scope.$digest();
-        expect($state.go).toHaveBeenCalledWith('organizations.developers', {}, {reload: true});
+        expect($state.go).toHaveBeenCalledWith('organizations.developers', {}, { reload: true });
       });
 
       it('should pop a notice on success', () => {
         spyOn(toaster, 'pop');
-        ctrl.developer = {developerId: 'an id'};
+        ctrl.developer = { developerId: 'an id' };
         networkService.splitDeveloper.and.returnValue($q.when(mock.goodResponse));
         ctrl.splitDeveloper = {
           newDeveloper: {},
@@ -130,7 +136,7 @@
 
       it('should report errors if response has errors', () => {
         spyOn($state, 'go');
-        networkService.splitDeveloper.and.returnValue($q.when({status: 401, data: {errorMessages: ['This is an error', 'This is another error']}}));
+        networkService.splitDeveloper.and.returnValue($q.when({ status: 401, data: { errorMessages: ['This is an error', 'This is another error'] } }));
         ctrl.splitDeveloper = {
           newDeveloper: {},
           oldDeveloper: {},

@@ -1,70 +1,68 @@
 (function () {
-  'use strict';
-
   angular.module('chpl.collections')
     .factory('collectionsService', collectionsService);
 
   /** @ngInject */
-  function collectionsService ($log, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
-    var service = {
-      getAnalyticsCategory: getAnalyticsCategory,
-      translate: translate,
+  function collectionsService($log, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
+    const service = {
+      getAnalyticsCategory,
+      translate,
     };
     return service;
 
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
 
-    function getAnalyticsCategory (key) {
+    function getAnalyticsCategory(key) {
       switch (key) {
-      case 'bannedDevelopers':
-        return 'Banned Developer';
-      case 'correctiveAction':
-        return 'Products: Corrective Action Status';
-      case 'decertifiedProducts':
-        return 'Decertified Products';
-      case 'inactiveCertificates':
-        return 'Inactive Certificates';
-      case 'sed':
-        return 'SED Information for 2015 Edition Products';
+        case 'bannedDevelopers':
+          return 'Banned Developer';
+        case 'correctiveAction':
+          return 'Products: Corrective Action Status';
+        case 'decertifiedProducts':
+          return 'Decertified Products';
+        case 'inactiveCertificates':
+          return 'Inactive Certificates';
+        case 'sed':
+          return 'SED Information for 2015 Edition Products';
         // no default
       }
     }
 
-    function translate (key, data) {
+    function translate(key, data) {
       switch (key) {
-      case 'bannedDevelopers':
-        return bannedDevelopers(data);
-      case 'correctiveAction':
-        return correctiveActions(data.results);
-      case 'decertifiedProducts':
-        return decertifiedProducts(data.results);
-      case 'inactiveCertificates':
-        return inactiveCertificates(data.results);
-      case 'sed':
-        return sed(data.results, data.certificationCriteria);
+        case 'bannedDevelopers':
+          return bannedDevelopers(data);
+        case 'correctiveAction':
+          return correctiveActions(data.results);
+        case 'decertifiedProducts':
+          return decertifiedProducts(data.results);
+        case 'inactiveCertificates':
+          return inactiveCertificates(data.results);
+        case 'sed':
+          return sed(data.results, data.certificationCriteria);
         // no default
       }
     }
 
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
     // translation functions
-    ////////////////////////////////////////////////////////////////////
+    /// /////////////////////////////////////////////////////////////////
 
     /*
      * All developers found are included, but need to be transformed
      */
-    function bannedDevelopers (array) {
-      var ret = [];
-      var dev;
-      for (var i = 0; i < array.length; i ++) {
+    function bannedDevelopers(array) {
+      const ret = [];
+      let dev;
+      for (let i = 0; i < array.length; i++) {
         dev = {
           acb: [],
           decertificationDate: array[i].decertificationDate,
           developer: array[i].developerName,
-          developerId: array[i].developerId,
+          id: array[i].id,
           mainSearch: array[i].developerName,
         };
-        for (var j = 0; j < array[i].acbNames.length; j++) {
+        for (let j = 0; j < array[i].acbNames.length; j++) {
           dev.acb.push(array[i].acbNames[j]);
         }
         ret.push(dev);
@@ -79,15 +77,15 @@
      *  - Open Direct Review NC Count > 0
      *  - Closed Direct Review NC Count > 0
      */
-    function correctiveActions (array) {
+    function correctiveActions(array) {
       return array
-        .filter(l => l.openSurveillanceNonConformityCount > 0
+        .filter((l) => l.openSurveillanceNonConformityCount > 0
                     || l.closedSurveillanceNonConformityCount > 0
                     || l.openDirectReviewNonConformityCount > 0
                     || l.closedDirectReviewNonConformityCount > 0)
-        .map(l => {
+        .map((l) => {
           l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
-          l.edition = l.edition + (l.curesUpdate ? ' Cures Update' : '');
+          l.edition += (l.curesUpdate ? ' Cures Update' : '');
           l.nonconformities = angular.toJson({
             openNonConformityCount: l.openSurveillanceNonConformityCount + l.openDirectReviewNonConformityCount,
             closedNonConformityCount: l.closedSurveillanceNonConformityCount + l.closedDirectReviewNonConformityCount,
@@ -104,20 +102,19 @@
      *   - Withdrawn by ONC-ACB
      *   - Terminated by ONC
      */
-    function decertifiedProducts (array ) {
-      var ret = [];
-      var cp;
-      var statuses = [
+    function decertifiedProducts(array) {
+      const ret = [];
+      let cp;
+      const statuses = [
         'Withdrawn by Developer Under Surveillance/Review',
         'Withdrawn by ONC-ACB',
         'Terminated by ONC',
       ];
-      for (var i = 0; i < array.length; i ++) {
+      for (let i = 0; i < array.length; i++) {
         cp = array[i];
         if (cp.edition !== '2011' && statuses.indexOf(cp.certificationStatus) > -1) {
-
           cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-          cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
+          cp.edition += (cp.curesUpdate ? ' Cures Update' : '');
 
           ret.push(cp);
         }
@@ -129,12 +126,12 @@
      * Listings are part of this collection if:
      * - Certification status = Withdrawn by Developer
      */
-    function inactiveCertificates (array ) {
+    function inactiveCertificates(array) {
       return array
-        .filter(cp => cp.certificationStatus === 'Withdrawn by Developer')
-        .map(cp => {
+        .filter((cp) => cp.certificationStatus === 'Withdrawn by Developer')
+        .map((cp) => {
           cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-          cp.edition = cp.edition + (cp.curesUpdate ? ' Cures Update' : '');
+          cp.edition += (cp.curesUpdate ? ' Cures Update' : '');
           return cp;
         });
     }
@@ -143,16 +140,16 @@
      * Listings are part of this collection if:
      *   they have 170.315 (g)(3)
      */
-    function sed (array, certificationCriteria) {
-      let applicableCriteria = certificationCriteria
-        .filter(cc => (cc.number === '170.315 (g)(3)' && cc.title === 'Safety-Enhanced Design'))
-        .map(cc => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
-      let ret = array.filter(listing => applicableCriteria.some(id => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
-        .map(listing => {
+    function sed(array, certificationCriteria) {
+      const applicableCriteria = certificationCriteria
+        .filter((cc) => (cc.number === '170.315 (g)(3)' && cc.title === 'Safety-Enhanced Design'))
+        .map((cc) => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
+      const ret = array.filter((listing) => applicableCriteria.some((id) => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
+        .map((listing) => {
           listing.mainSearch = [listing.developer, listing.product, listing.version, listing.chplProductNumber].join('|');
           return listing;
         });
       return ret;
     }
   }
-})();
+}());

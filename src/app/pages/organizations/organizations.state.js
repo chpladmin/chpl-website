@@ -14,16 +14,16 @@ const states = [
     data: { title: 'CHPL Developers' },
   }, {
     name: 'organizations.developers.developer',
-    url: '/{developerId}',
+    url: '/{id}',
     component: 'chplDeveloperView',
     resolve: {
       developer: (networkService, $location, $transition$) => {
         'ngInject';
 
-        if (!$transition$.params().developerId) {
+        if (!$transition$.params().id) {
           $location.path('/organizations/developers');
         }
-        return networkService.getDeveloperHierarchy($transition$.params().developerId);
+        return networkService.getDeveloperHierarchy($transition$.params().id);
       },
     },
     data: { title: 'CHPL Developers' },

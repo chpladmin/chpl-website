@@ -46,7 +46,7 @@ const DeveloperViewComponent = {
       if (this.$stateParams.versionId) {
         this.versionId = this.$stateParams.versionId;
       }
-      this.networkService.getDirectReviews(this.developer.developerId)
+      this.networkService.getDirectReviews(this.developer.id)
         .then((results) => {
           that.drStatus = 'success';
           that.directReviews = results;
@@ -87,7 +87,7 @@ const DeveloperViewComponent = {
     cancel() {
       this.developer = angular.copy(this.backup.developer);
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developer.developerId,
+        id: this.developer.id,
         action: undefined,
         productId: undefined,
         versionId: undefined,
@@ -103,8 +103,8 @@ const DeveloperViewComponent = {
       this.networkService.getAcbs(true).then((response) => {
         that.allowedAcbs = response.acbs;
       });
-      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.$stateParams.developerId) {
-        this.networkService.getUsersAtDeveloper(this.$stateParams.developerId).then((response) => { that.users = response.users; });
+      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.$stateParams.id) {
+        this.networkService.getUsersAtDeveloper(this.$stateParams.id).then((response) => { that.users = response.users; });
       }
     }
 
@@ -187,15 +187,15 @@ const DeveloperViewComponent = {
           break;
         case 'delete':
           this.action = undefined;
-          this.networkService.removeUserFromDeveloper(data, this.$stateParams.developerId)
-            .then(() => that.networkService.getUsersAtDeveloper(that.$stateParams.developerId).then((response) => { that.users = response.users; }));
+          this.networkService.removeUserFromDeveloper(data, this.$stateParams.id)
+            .then(() => that.networkService.getUsersAtDeveloper(that.$stateParams.id).then((response) => { that.users = response.users; }));
           break;
         case 'invite':
           this.action = undefined;
           this.networkService.inviteUser({
             role: data.role,
             emailAddress: data.email,
-            permissionObjectId: this.$stateParams.developerId,
+            permissionObjectId: this.$stateParams.id,
           }).then(() => that.toaster.pop({
             type: 'success',
             title: 'Email sent',
@@ -208,7 +208,7 @@ const DeveloperViewComponent = {
           break;
         case 'refresh':
           this.action = undefined;
-          this.networkService.getUsersAtDeveloper(this.$stateParams.developerId)
+          this.networkService.getUsersAtDeveloper(this.$stateParams.id)
             .then((response) => { that.users = response.users; });
           break;
         case 'impersonate':

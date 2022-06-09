@@ -41,10 +41,10 @@ const states = [{
   },
 }, {
   name: 'reports.listings',
-  url: '/listings/{productId}?',
+  url: '/listings/{listingId}?',
   component: 'chplReportsListings',
   params: {
-    productId: { squash: true, value: null },
+    listingId: { squash: true, value: null },
   },
   resolve: {
     productId: ($transition$) => {

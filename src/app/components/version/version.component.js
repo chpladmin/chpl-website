@@ -1,4 +1,4 @@
-export const VersionComponent = {
+const VersionComponent = {
   templateUrl: 'chpl.components/version/version.html',
   bindings: {
     version: '<',
@@ -15,14 +15,15 @@ export const VersionComponent = {
     takeAction: '&',
   },
   controller: class VersionComponent {
-    constructor ($filter, $log, authService) {
+    constructor($filter, $log, authService) {
       'ngInject';
+
       this.$filter = $filter;
       this.$log = $log;
       this.hasAnyRole = authService.hasAnyRole;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.version) {
         this.version = angular.copy(changes.version.currentValue);
       }
@@ -53,76 +54,78 @@ export const VersionComponent = {
     }
 
     /*
-         * Allowed actions
-         */
-    can (action) {
+     * Allowed actions
+     */
+    can(action) {
       switch (action) {
-      case 'edit':
-        return this.canEdit // allowed by containing component
-                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
-      case 'merge':
-        return this.canMerge // allowed by containing component
-                    && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
-      case 'split':
-        return this.canSplit // allowed by containing component
-                    && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-                        || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"o
-      default:
-        return false;
+        case 'edit':
+          return this.canEdit // allowed by containing component
+            && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+                || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
+        case 'merge':
+          return this.canMerge // allowed by containing component
+            && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
+        case 'split':
+          return this.canSplit // allowed by containing component
+            && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+                || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"o
+        default:
+          return false;
       }
     }
 
     /*
-         * Initiate changes
-         */
-    edit () {
+     * Initiate changes
+     */
+    edit() {
       this.takeAction({
         action: 'edit',
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 
-    merge () {
+    merge() {
       this.takeAction({
         action: 'merge',
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 
-    split () {
+    split() {
       this.takeAction({
         action: 'split',
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 
-    view () {
+    view() {
       this.takeAction({
-        versionId: this.version.versionId,
+        id: this.version.id,
       });
     }
 
     /*
-         * Resolve changes
-         */
-    save () {
-      this.onEdit({version: this.version});
+     * Resolve changes
+     */
+    save() {
+      this.onEdit({ version: this.version });
     }
 
-    cancel () {
+    cancel() {
       this.onCancel();
     }
 
     /*
-         * Form validation
-         */
-    isValid () {
+     * Form validation
+     */
+    isValid() {
       return this.form.$valid // basic form validation
-                && !this.isInvalid; // validation from outside
+        && !this.isInvalid; // validation from outside
     }
   },
 };
 
 angular.module('chpl.components')
   .component('chplVersion', VersionComponent);
+
+export default VersionComponent;

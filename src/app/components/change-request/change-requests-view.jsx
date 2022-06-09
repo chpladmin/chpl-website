@@ -335,7 +335,7 @@ function ChplChangeRequestsView(props) {
                                            />
                                          </div>
                                          <div className={classes.developerName}>
-                                           <a href={`#/organizations/developers/${item.developer.developerId}`}>
+                                           <a href={`#/organizations/developers/${item.developer.id}`}>
                                              {item.developerName}
                                            </a>
                                          </div>

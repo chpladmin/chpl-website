@@ -291,8 +291,8 @@ export default class NetworkService {
     return this.apiGET('/statistics/criterion_product');
   }
 
-  getDeveloper(developerId) {
-    return this.apiGET(`/developers/${developerId}`);
+  getDeveloper(id) {
+    return this.apiGET(`/developers/${id}`);
   }
 
   getDeveloperActivity(activityRange) {
@@ -300,8 +300,8 @@ export default class NetworkService {
     return this.getActivity(call, activityRange);
   }
 
-  getDeveloperHierarchy(developerId) {
-    return this.apiGET(`/developers/${developerId}/hierarchy`);
+  getDeveloperHierarchy(id) {
+    return this.apiGET(`/developers/${id}/hierarchy`);
   }
 
   getDevelopers(showDeleted) {
@@ -407,8 +407,8 @@ export default class NetworkService {
     return this.apiGET('/data/practice_types');
   }
 
-  getProduct(productId) {
-    return this.apiGET(`/products/${productId}`);
+  getProduct(id) {
+    return this.apiGET(`/products/${id}`);
   }
 
   getProductActivity(activityRange) {
@@ -440,8 +440,8 @@ export default class NetworkService {
     return this.apiGET('/surveillance-report/quarterly');
   }
 
-  getRelatedListings(productId) {
-    return this.apiGET(`/products/${productId}/listings`);
+  getRelatedListings(id) {
+    return this.apiGET(`/products/${id}/listings`);
   }
 
   getRelevantComplaints(report) {
@@ -460,8 +460,8 @@ export default class NetworkService {
     return this.apiGET('/statistics/sed_participant_count');
   }
 
-  getSimpleProduct(productId) {
-    return this.apiGET(`/products/${productId}`);
+  getSimpleProduct(id) {
+    return this.apiGET(`/products/${id}`);
   }
 
   getSingleDeveloperActivityMetadata(id, options) {
@@ -586,12 +586,12 @@ export default class NetworkService {
     return this.apiGET(`/atls/${atlId}/users`);
   }
 
-  getUsersAtDeveloper(developerId) {
-    return this.apiGET(`/developers/${developerId}/users`);
+  getUsersAtDeveloper(id) {
+    return this.apiGET(`/developers/${id}/users`);
   }
 
-  getVersion(versionId) {
-    return this.apiGET(`/versions/${versionId}`);
+  getVersion(id) {
+    return this.apiGET(`/versions/${id}`);
   }
 
   getVersionActivity(activityRange) {
@@ -667,8 +667,8 @@ export default class NetworkService {
     return this.apiDELETE(`/atls/${atlId}/users/${userId}`);
   }
 
-  removeUserFromDeveloper(userId, developerId) {
-    return this.apiDELETE(`/developers/${developerId}/users/${userId}`);
+  removeUserFromDeveloper(userId, id) {
+    return this.apiDELETE(`/developers/${id}/users/${userId}`);
   }
 
   requestApiKey(apiKeyRequest) {
@@ -692,15 +692,15 @@ export default class NetworkService {
   }
 
   splitDeveloper(developerSplitObject) {
-    return this.apiPOST(`/developers/${developerSplitObject.oldDeveloper.developerId}/split`, developerSplitObject);
+    return this.apiPOST(`/developers/${developerSplitObject.oldDeveloper.id}/split`, developerSplitObject);
   }
 
   splitProduct(productObject) {
-    return this.apiPOST(`/products/${productObject.oldProduct.productId}/split`, productObject);
+    return this.apiPOST(`/products/${productObject.oldProduct.id}/split`, productObject);
   }
 
   splitVersion(versionObject) {
-    return this.apiPOST(`/versions/${versionObject.oldVersion.versionId}/split`, versionObject);
+    return this.apiPOST(`/versions/${versionObject.oldVersion.id}/split`, versionObject);
   }
 
   submitChangeRequest(request) {
@@ -728,7 +728,7 @@ export default class NetworkService {
   }
 
   updateDeveloper(developer) {
-    return this.apiPUT(`/developers/${developer.developerId}`, developer);
+    return this.apiPUT(`/developers/${developer.id}`, developer);
   }
 
   updateFuzzyType(fuzzyType) {

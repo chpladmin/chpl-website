@@ -10,15 +10,15 @@
   </div>
   <div class="modal-body">
     <div ng-if="vm.stage === 'dev'">
-      <ai-inspect-developer developer="vm.developer" developers="vm.developers" listing="vm.cp" on-select="vm.selectInspectingDeveloper(developerId)" set-choice="vm.setDeveloperChoice(choice)"></ai-inspect-developer>
+      <ai-inspect-developer developer="vm.developer" developers="vm.developers" listing="vm.cp" on-select="vm.selectInspectingDeveloper(id)" set-choice="vm.setDeveloperChoice(choice)"></ai-inspect-developer>
     </div>
 
     <div ng-if="vm.stage === 'prd'">
-      <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(productId)" set-choice="vm.setProductChoice(choice)"></ai-inspect-product>
+      <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(id)" set-choice="vm.setProductChoice(choice)"></ai-inspect-product>
     </div>
 
     <div ng-if="vm.stage === 'ver'">
-      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(versionId)" set-choice="vm.setVersionChoice(choice)"></ai-inspect-version>
+      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(id)" set-choice="vm.setVersionChoice(choice)"></ai-inspect-version>
     </div>
 
     <div ng-if="vm.stage === 'cp'">

@@ -27,7 +27,7 @@
         status: { id: 1, status: 'Active' },
       },
       version: {
-        versionId: 636, version: 'v1.', lastModifiedDate: null,
+        id: 636, version: 'v1.', lastModifiedDate: null,
       },
     };
 
@@ -59,7 +59,7 @@
         scope.onEdit = jasmine.createSpy('onEdit');
         scope.takeAction = jasmine.createSpy('takeAction');
 
-        el = angular.element('<chpl-version version="version" developer="developer" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" can-view="canView" is-editing="isEditing" is-invalid="isInvalid" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(version)" take-action="takeAction(action, versionId)"></chpl-version>');
+        el = angular.element('<chpl-version version="version" developer="developer" can-edit="canEdit" can-merge="canMerge" can-split="canSplit" can-view="canView" is-editing="isEditing" is-invalid="isInvalid" is-splitting="isSplitting" on-cancel="onCancel()" on-edit="onEdit(version)" take-action="takeAction(action, id)"></chpl-version>');
 
         $compile(el)(scope);
         scope.$digest();
