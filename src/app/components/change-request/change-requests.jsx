@@ -26,6 +26,10 @@ const staticFilters = [{
     { value: 'Before' },
     { value: 'After', default: '2022-01-01T00:00' },
   ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'currentStatusChangeDateStart' : 'currentStatusChangeDateEnd'}=${v.selected}`)
+    .join('&'),
   meets: (item, values) => {
     const canMeet = values
       .filter((value) => value.selected)
@@ -42,6 +46,10 @@ const staticFilters = [{
     { value: 'Before' },
     { value: 'After', default: '2022-01-01T00:00' },
   ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'submittedDateStart' : 'submittedDateEnd'}=${v.selected}`)
+    .join('&'),
   meets: (item, values) => {
     const canMeet = values
       .filter((value) => value.selected)
