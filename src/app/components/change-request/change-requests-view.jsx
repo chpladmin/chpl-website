@@ -128,13 +128,11 @@ function ChplChangeRequestsView(props) {
   });
   const classes = useStyles();
 
-  /*
   useEffect(() => {
-    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
-      setPageNumber(0);
+    if (data?.recordCount > 0 && page > 0 && data?.results?.length === 0) {
+      setPage(0);
     }
-  }, [data?.recordCount, pageNumber, data?.results?.length]);
-  */
+  }, [data?.recordCount, page, data?.results?.length]);
 
   useEffect(() => {
     if (isLoading || !isSuccess || !data) { return; }
