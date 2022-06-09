@@ -22,8 +22,7 @@ import Moment from 'react-moment';
 import { arrayOf, func, string } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
-import ChplChangeRequestEdit from './change-request-edit';
-import ChplChangeRequestView from './change-request-view';
+import ChplChangeRequest from './change-request';
 import fillCustomAttestationFields from './types/attestation-fill-fields';
 import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
@@ -40,7 +39,7 @@ import {
 } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const CUSTOM_FIELD_COUNT = 7;
@@ -148,17 +147,14 @@ const getCustomFields = (item) => {
 };
 
 function ChplChangeRequestsView(props) {
-  const $state = getAngularService('$state');
   const DateUtil = getAngularService('DateUtil');
   const { disallowedFilters, preFilter } = props;
   const csvExporter = new ExportToCsv(csvOptions);
-  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
   const [order, setOrder] = useState('desc'); // sortdescending?
   const [orderBy, setOrderBy] = useState('currentStatusChangeDate');
-  const [mode, setMode] = useState('view');
   const [page, setPage] = React.useState(0); // pageNumber
   const [rowsPerPage, setRowsPerPage] = useState(10); // pageSize
   const legacyFetch = useFetchChangeRequestsLegacy();
@@ -183,7 +179,7 @@ function ChplChangeRequestsView(props) {
   useEffect(() => {
     if (isLoading || !isSuccess || !data) { return; }
     console.log(data);
-  }, [data?.results, isLoading]);
+  }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
     if (legacyFetch.isLoading || !legacyFetch.isSuccess) {
@@ -230,17 +226,7 @@ function ChplChangeRequestsView(props) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'close':
-        setMode('view');
         setChangeRequest(undefined);
-        break;
-      case 'edit':
-        if (hasAnyRole(['ROLE_DEVELOPER'])
-            && changeRequest.changeRequestType.name === 'Developer Attestation Change Request'
-            && isOn('attestations-edit')) {
-          $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
-        } else {
-          setMode('edit');
-        }
         break;
       // no default
     }
@@ -260,16 +246,9 @@ function ChplChangeRequestsView(props) {
       <Card>
         <CardHeader title="Change Requests" />
         <CardContent>
-          { changeRequest && mode === 'view'
+          { changeRequest
             && (
-              <ChplChangeRequestView
-                changeRequest={changeRequest}
-                dispatch={handleDispatch}
-              />
-            )}
-          { changeRequest && mode === 'edit'
-            && (
-              <ChplChangeRequestEdit
+              <ChplChangeRequest
                 changeRequest={changeRequest}
                 dispatch={handleDispatch}
               />
