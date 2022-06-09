@@ -20,9 +20,9 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
 import { arrayOf, func, string } from 'prop-types';
-import { ExportToCsv } from 'export-to-csv';
 
 import ChplChangeRequest from './change-request';
+import ChplChangeRequestsDownload from './change-requests-download';
 import fillCustomAttestationFields from './types/attestation-fill-fields';
 import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
@@ -41,25 +41,6 @@ import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-he
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
-
-const CUSTOM_FIELD_COUNT = 7;
-const csvOptions = {
-  showLabels: true,
-  headers: [
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Request Type', objectKey: 'changeRequestTypeName' },
-    { headerName: 'Creation Date', objectKey: 'friendlyReceivedDate' },
-    { headerName: 'Request Status', objectKey: 'currentStatusName' },
-    { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate' },
-    { headerName: 'Relevant ONC-ACBs', objectKey: 'relevantAcbs' },
-    ...Array(CUSTOM_FIELD_COUNT)
-      .fill('Custom Field')
-      .map((val, idx) => ({
-        headerName: `${val} ${idx + 1}`,
-        objectKey: `field${idx + 1}`,
-      })),
-  ],
-};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -128,6 +109,7 @@ const filtersShouldShow = (item, filters) => filters
   .reduce((acc, filter) => filter
     .meets(item, filter.values) && acc, true);
 
+const CUSTOM_FIELD_COUNT = 7;
 const fillWithBlanks = (def = '') => Array(CUSTOM_FIELD_COUNT)
   .fill(def)
   .reduce((obj, v, idx) => ({
@@ -149,10 +131,10 @@ const getCustomFields = (item) => {
 function ChplChangeRequestsView(props) {
   const DateUtil = getAngularService('DateUtil');
   const { disallowedFilters, preFilter, bonusQuery } = props;
-  const csvExporter = new ExportToCsv(csvOptions);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [order, setOrder] = useState('desc'); // sortdescending?
   const [orderBy, setOrderBy] = useState('currentStatusChangeDate');
   const [page, setPage] = React.useState(0); // pageNumber
@@ -228,6 +210,9 @@ function ChplChangeRequestsView(props) {
       case 'close':
         setChangeRequest(undefined);
         break;
+      case 'closeDownload':
+        setIsDownloading(false);
+        break;
       // no default
     }
   };
@@ -256,6 +241,13 @@ function ChplChangeRequestsView(props) {
           { !changeRequest
             && (
               <>
+                { isDownloading
+                && (
+                  <ChplChangeRequestsDownload
+                    dispatch={handleDispatch}
+                    changeRequests={changeRequests}
+                  />
+                )}
                 <div className={classes.searchContainer} component={Paper}>
                   { !disallowedFilters.includes('searchTerm')
                     && (
@@ -296,7 +288,7 @@ function ChplChangeRequestsView(props) {
                             variant="contained"
                             fullWidth
                             id="download-change-requests"
-                            onClick={() => csvExporter.generateCsv(changeRequests)}
+                            onClick={() => setIsDownloading(true)}
                           >
                             Download
                             {' '}
