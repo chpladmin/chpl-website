@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -32,7 +32,6 @@ const headers = [
 ];
 
 function ChplChangeRequestHistory(props) {
-  const DateUtil = getAngularService('DateUtil');
   const [items, setItems] = useState([]);
   const classes = useStyles();
 
@@ -76,7 +75,7 @@ function ChplChangeRequestHistory(props) {
               .map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.actingOrganization}</TableCell>
-                  <TableCell>{DateUtil.timestampToString(item.statusChangeDate)}</TableCell>
+                  <TableCell>{getDisplayDateFormat(item.statusChangeDate)}</TableCell>
                   <TableCell>{item.changeRequestStatusType.name}</TableCell>
                   <TableCell>{item.comment}</TableCell>
                 </TableRow>
