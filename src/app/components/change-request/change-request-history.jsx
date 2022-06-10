@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 const headers = [
   { text: 'Acting Organization' },
   { text: 'Date of Status Change' },
-  { text: 'Status', key: 'statusChangeDate' },
+  { text: 'Status' },
   { text: 'Comments' },
 ];
 
