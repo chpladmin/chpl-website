@@ -136,7 +136,17 @@ function ChplChangeRequestsView(props) {
 
   useEffect(() => {
     if (isLoading || !isSuccess || !data) { return; }
-    console.log(data);
+    const crs = data.results.map((item) => ({
+      ...item,
+      developerName: item.developer.name,
+      changeRequestTypeName: item.changeRequestType.name,
+      currentStatusName: item.currentStatus.name,
+      currentStatusChangeDate: item.currentStatus.statusChangeDate,
+    }));
+    setChangeRequests(crs);
+    if (changeRequest?.id) {
+      setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
+    }
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
@@ -170,7 +180,7 @@ function ChplChangeRequestsView(props) {
   ] : [
     { property: 'developerName', text: 'Developer', sortable: true },
     { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
-    { property: 'receivedDate', text: 'Creation Date', sortable: true, reverseDefault: true },
+    { property: 'receivedDate', text: 'Creation Date', sortable: true, reverseDefault: true }, // submittedDate?
     { property: 'currentStatusName', text: 'Request Status', sortable: true },
     { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
     { property: 'associatedAcbs', text: 'Associated ONC-ACBs' },
