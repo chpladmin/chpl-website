@@ -22,6 +22,7 @@ import fillCustomDemographicsFields from './types/demographics-fill-fields';
 import { useFetchChangeRequests, useFetchChangeRequestsLegacy } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
 
+const PAGE_SIZE = 250;
 const CUSTOM_FIELD_COUNT = 7;
 const fillWithBlanks = (def = '') => Array(CUSTOM_FIELD_COUNT)
   .fill(def)
@@ -69,17 +70,18 @@ function ChplChangeRequestsDownload(props) {
   const DateUtil = getAngularService('DateUtil');
   const {
     dispatch,
-    changeRequestsIds,
+    changeRequestsIds, // remove after API exists
     query,
   } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const [changeRequests, setChangeRequests] = useState([]);
+  // const [changeRequestsIds, setChangeRequestsIds] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const { data: legacyData, isLoading: legacyIsLoading, isSuccess: legacyIsSuccess } = useFetchChangeRequestsLegacy();
   const { isLoading, isSuccess, data } = useFetchChangeRequests({
     // orderBy: 'currentStatusChangeDate',
     pageNumber,
-    pageSize: 250,
+    pageSize: PAGE_SIZE,
     // sortDescending: true,
     query,
   });
@@ -109,12 +111,10 @@ function ChplChangeRequestsDownload(props) {
     if (isLoading || !isSuccess) {
       return;
     }
-    console.log(data);
-    /*
-     * on data load, setChangeRequestIds((ids) => ids.concat(data.results.map((item) => item.id)))
-     * if items < total & another page load is needed
-     * setPageNumber((page) => page + 1);
-     */
+    setChangeRequestsIds((ids) => ids.concat(data.results.map((item) => item.id)));
+    if ((data.pageNumber + 1) * PAGE_SIZE < data.recordCount) {
+      setPageNumber((page) => page + 1);
+    }
   }, [data, isLoading, isSuccess]);
 
   const download = () => {
@@ -152,6 +152,6 @@ export default ChplChangeRequestsDownload;
 
 ChplChangeRequestsDownload.propTypes = {
   dispatch: func.isRequired,
-  changeRequestsIds: arrayOf(number).isRequired,
+  changeRequestsIds: arrayOf(number).isRequired, // remove after API exists
   query: string.isRequired,
 };
