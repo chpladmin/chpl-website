@@ -25,10 +25,10 @@ const useStyles = makeStyles({
 });
 
 const headers = [
-  { text: 'Acting Organization', property: 'actingOrganization' },
-  { text: 'Date of Status Change', property: 'statusChangeDate' },
-  { text: 'Status', property: 'changeRequestStatusTypeName' },
-  { text: 'Comments', property: 'comment' },
+  { text: 'Acting Organization' },
+  { text: 'Date of Status Change' },
+  { text: 'Status', key: 'statusChangeDate' },
+  { text: 'Comments' },
 ];
 
 function ChplChangeRequestHistory(props) {
@@ -66,7 +66,6 @@ function ChplChangeRequestHistory(props) {
         <Table stickyHeader>
           <ChplSortableHeaders
             headers={headers}
-            onTableSort={() => {}}
             orderBy="statusChangeDate"
             order="desc"
           />

@@ -58,7 +58,7 @@ function ChplSortableHeaders(props) {
       <TableRow>
         { headers.map((cell, index) => (
           <TableCell
-            key={cell.property}
+            key={cell.property || cell.text}
             align="left"
             sortDirection={orderBy === cell.property ? order : false}
             className={(index === 0 && props.stickyHeader) ? classes.stickyColumn : undefined}
