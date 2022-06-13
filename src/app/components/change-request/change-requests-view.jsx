@@ -106,25 +106,25 @@ function ChplChangeRequestsView(props) {
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [order, setOrder] = useState('desc'); // sortdescending?
+  const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('current_status_change_date_time');
-  const [page, setPage] = React.useState(0); // pageNumber
-  const [rowsPerPage, setRowsPerPage] = useState(10); // pageSize
+  const [pageNumber, setPageNumber] = React.useState(0);
+  const [pageSize, setPageSize] = useState(10);
   const { queryString } = useFilterContext();
   const { data, isLoading, isSuccess } = useFetchChangeRequests({
     orderBy,
-    pageNumber: page,
-    pageSize: rowsPerPage,
+    pageNumber,
+    pageSize,
     sortDescending: order === 'desc',
     query: `${queryString()}${bonusQuery}`,
   });
   const classes = useStyles();
 
   useEffect(() => {
-    if (data?.recordCount > 0 && page > 0 && data?.results?.length === 0) {
-      setPage(0);
+    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
+      setPageNumber(0);
     }
-  }, [data?.recordCount, page, data?.results?.length]);
+  }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
     if (isLoading || !isSuccess || !data) { return; }
@@ -170,8 +170,8 @@ function ChplChangeRequestsView(props) {
     setOrder(orderDirection);
   };
 
-  const pageStart = (page * rowsPerPage) + 1;
-  const pageEnd = Math.min((page + 1) * rowsPerPage, data?.recordCount);
+  const pageStart = (pageNumber * pageSize) + 1;
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
   if (changeRequest) {
     return (
@@ -270,7 +270,6 @@ function ChplChangeRequestsView(props) {
                   />
                   <TableBody>
                     {changeRequests
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((item) => (
                         <TableRow key={item.id}>
                           { !hasAnyRole(['ROLE_DEVELOPER'])
@@ -336,11 +335,11 @@ function ChplChangeRequestsView(props) {
               </TableContainer>
               <ChplPagination
                 count={data.recordCount}
-                page={page}
-                rowsPerPage={rowsPerPage}
+                page={pageNumber}
+                rowsPerPage={pageSize}
                 rowsPerPageOptions={[10, 50, 100, 250]}
-                setPage={setPage}
-                setRowsPerPage={setRowsPerPage}
+                setPage={setPageNumber}
+                setRowsPerPage={setPageSize}
               />
             </>
           )}
