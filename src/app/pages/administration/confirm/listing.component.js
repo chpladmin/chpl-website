@@ -66,8 +66,8 @@ const ConfirmListingComponent = {
       if (changes.listing) {
         this.uploaded = angular.copy(changes.listing.currentValue);
         this.pending = angular.copy(changes.listing.currentValue);
-        if (this.pending.developer && !this.pending.developer.developerId) {
-          this.pending.developer.developerId = '';
+        if (this.pending.developer && !this.pending.developer.id) {
+          this.pending.developer.id = '';
         }
         this.errorMessages = this.uploaded.errorMessages;
         this.warningMessages = this.uploaded.warningMessages;
@@ -161,8 +161,8 @@ const ConfirmListingComponent = {
     loadDeveloper() {
       const that = this;
       this.staged = { ...this.uploaded.developer };
-      if (this.pending.developer && this.pending.developer.developerId) {
-        this.networkService.getDeveloper(this.pending.developer.developerId)
+      if (this.pending.developer && this.pending.developer.id) {
+        this.networkService.getDeveloper(this.pending.developer.id)
           .then((result) => {
             that.pending.developer = result;
             that.staged = { ...result };
@@ -172,16 +172,16 @@ const ConfirmListingComponent = {
 
     loadProducts() {
       const that = this;
-      if (this.pending.developer && this.pending.developer.developerId) {
-        this.networkService.getProductsByDeveloper(this.pending.developer.developerId)
+      if (this.pending.developer && this.pending.developer.id) {
+        this.networkService.getProductsByDeveloper(this.pending.developer.id)
           .then((result) => {
             that.products = result.products;
           });
       } else {
         that.products = [];
       }
-      if (this.pending.product && this.pending.product.productId) {
-        this.networkService.getSimpleProduct(this.pending.product.productId)
+      if (this.pending.product && this.pending.product.id) {
+        this.networkService.getSimpleProduct(this.pending.product.id)
           .then((result) => {
             that.stage = 'product';
             that.staged = result;
@@ -197,16 +197,16 @@ const ConfirmListingComponent = {
 
     loadVersions() {
       const that = this;
-      if (this.pending.product && this.pending.product.productId) {
-        this.networkService.getVersionsByProduct(this.pending.product.productId)
+      if (this.pending.product && this.pending.product.id) {
+        this.networkService.getVersionsByProduct(this.pending.product.id)
           .then((result) => {
             that.versions = result;
           });
       } else {
         that.versions = [];
       }
-      if (this.pending.version && this.pending.version.versionId) {
-        this.networkService.getVersion(this.pending.version.versionId)
+      if (this.pending.version && this.pending.version.id) {
+        this.networkService.getVersion(this.pending.version.id)
           .then((result) => {
             that.stage = 'version';
             that.staged = result;
@@ -364,8 +364,8 @@ const ConfirmListingComponent = {
 
     loadFamily() {
       const that = this;
-      if (this.pending.product && this.pending.product.productId) {
-        this.networkService.getRelatedListings(this.pending.product.productId)
+      if (this.pending.product && this.pending.product.id) {
+        this.networkService.getRelatedListings(this.pending.product.id)
           .then((family) => { that.resources.relatedListings = family.filter((item) => item.edition === '2015'); });
       }
     }

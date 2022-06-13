@@ -1,7 +1,7 @@
 const ReportsListingsComponent = {
   templateUrl: 'chpl.reports/listings/listings.html',
   bindings: {
-    productId: '<',
+    listingId: '<',
   },
   controller: class ReportsListingsComponent {
     constructor($filter, $log, $state, $uibModal, DateUtil, ReportService, authService, networkService, utilService) {
@@ -60,8 +60,8 @@ const ReportsListingsComponent = {
     }
 
     $onChanges(changes) {
-      if (changes.productId && changes.productId.currentValue) {
-        this.productId = angular.copy(changes.productId.currentValue);
+      if (changes.listingId && changes.listingId.currentValue) {
+        this.listingId = angular.copy(changes.listingId.currentValue);
       }
       this.search();
     }
@@ -72,18 +72,18 @@ const ReportsListingsComponent = {
 
     onApplyFilter(filter) {
       const f = angular.fromJson(filter);
-      if (f.productId) {
-        this.productId = f.productId;
+      if (f.listingId) {
+        this.listingId = f.listingId;
       } else {
-        this.productId = undefined;
+        this.listingId = undefined;
       }
       this.doFilter(f);
     }
 
     onClearFilter() {
       const filterData = {};
-      if (this.productId) {
-        filterData.productId = this.productId;
+      if (this.listingId) {
+        filterData.listingId = this.listingId;
       }
       filterData.dataFilter = '';
       filterData.tableState = this.tableController.tableState();
@@ -124,8 +124,8 @@ const ReportsListingsComponent = {
 
     createFilterDataObject() {
       const filterData = {};
-      if (this.productId) {
-        filterData.productId = this.productId;
+      if (this.listingId) {
+        filterData.listingId = this.listingId;
       }
       filterData.dataFilter = this.filterText;
       filterData.tableState = this.tableController.tableState();
@@ -745,14 +745,12 @@ const ReportsListingsComponent = {
         .filter((currOS) => prev.optionalStandards.filter((prevOS) => currOS.citation === prevOS.citation).length === 0)
         .forEach((addedOS) => {
           ret.push(`<li>Optional Standard "${addedOS.citation}: ${addedOS.description}" was added</li>`);
-        }
-        );
+        });
       prev.optionalStandards
         .filter((prevOS) => curr.optionalStandards.filter((currOS) => prevOS.citation === currOS.citation).length === 0)
         .forEach((removedOS) => {
           ret.push(`<li>Optional Standard "${removedOS.citation}: ${removedOS.description}" was removed</li>`);
-        }
-        );
+        });
       return ret;
     }
 
@@ -1040,9 +1038,9 @@ const ReportsListingsComponent = {
       });
     }
 
-    searchSingleProductId() {
+    searchSingleListingId() {
       const that = this;
-      this.networkService.getSingleListingActivityMetadata(this.productId)
+      this.networkService.getSingleListingActivityMetadata(this.listingId)
         .then((results) => {
           that.results = results
             .map((item) => that.prepare(item, true));
@@ -1050,8 +1048,8 @@ const ReportsListingsComponent = {
     }
 
     search() {
-      if (this.productId) {
-        this.searchSingleProductId();
+      if (this.listingId) {
+        this.searchSingleListingId();
       } else {
         this.searchAllListings();
       }

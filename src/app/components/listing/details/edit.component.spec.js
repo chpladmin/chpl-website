@@ -21,7 +21,7 @@
       classificationType: [],
       ics: { inherits: false },
       practiceType: [],
-      product: { productId: 1 },
+      product: { id: 1 },
       qmsStandards: [
         { id: 1, qmsStandardName: 'name1' },
         { id: null, qmsStandardName: 'nullname' },
@@ -147,10 +147,10 @@
           expect(networkService.getRelatedListings.calls.count()).toBe(callCount);
         });
 
-        it('should not load family if the product has no productId', () => {
+        it('should not load family if the product has no id', () => {
           const callCount = networkService.getRelatedListings.calls.count();
           const cp = angular.copy(mock.listing);
-          cp.product = { productId: undefined };
+          cp.product = { id: undefined };
           scope.listing = cp;
 
           el = angular.element('<chpl-listing-details-edit listing="listing" resources="resources"></chpl-listing-details-edit>');

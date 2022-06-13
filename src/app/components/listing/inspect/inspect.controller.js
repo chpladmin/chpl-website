@@ -25,16 +25,16 @@
     }
 
     function loadDev() {
-      if (vm.cp.developer && vm.cp.developer.developerId) {
-        networkService.getDeveloper(vm.cp.developer.developerId)
+      if (vm.cp.developer && vm.cp.developer.id) {
+        networkService.getDeveloper(vm.cp.developer.id)
           .then((result) => {
             vm.developer = result;
           });
       }
     }
 
-    function selectInspectingDeveloper(developerId) {
-      vm.cp.developer.developerId = developerId;
+    function selectInspectingDeveloper(id) {
+      vm.cp.developer.id = id;
       vm.loadDev();
     }
 
@@ -42,16 +42,16 @@
       vm.developerChoice = choice;
     }
 
-    function selectInspectingProduct(productId) {
-      vm.cp.product.productId = productId;
+    function selectInspectingProduct(id) {
+      vm.cp.product.id = id;
     }
 
     function setProductChoice(choice) {
       vm.productChoice = choice;
     }
 
-    function selectInspectingVersion(versionId) {
-      vm.cp.version.versionId = versionId;
+    function selectInspectingVersion(id) {
+      vm.cp.version.id = id;
     }
 
     function setVersionChoice(choice) {
@@ -139,8 +139,8 @@
     }
 
     function loadFamily() {
-      if (vm.product && vm.product.productId) {
-        networkService.getRelatedListings(vm.product.productId)
+      if (vm.product && vm.product.id) {
+        networkService.getRelatedListings(vm.product.id)
           .then((family) => {
             vm.resources.relatedListings = family.filter((item) => item.edition === '2015');
           });
@@ -194,11 +194,11 @@
     function isDisabled() {
       switch (vm.stage) {
         case 'dev':
-          return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId) || !isSystemDevContactInfoValid();
+          return (vm.developerChoice === 'choose' && !vm.cp.developer.id) || !isSystemDevContactInfoValid();
         case 'prd':
-          return (vm.productChoice === 'choose' && !vm.cp.product.productId);
+          return (vm.productChoice === 'choose' && !vm.cp.product.id);
         case 'ver':
-          return (vm.versionChoice === 'choose' && !vm.cp.version.versionId);
+          return (vm.versionChoice === 'choose' && !vm.cp.version.id);
         default:
           return true;
       }

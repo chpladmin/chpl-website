@@ -104,9 +104,9 @@ const ListingDetailsEditComponent = {
         this.listing.promotingInteroperabilityUserHistory = [];
       }
 
-      if (this.listing.product && this.listing.product.productId && this.listing.certificationEdition.name === '2015' && (!this.relatedListings || this.relatedListings.length === 0)) {
+      if (this.listing.product && this.listing.product.id && this.listing.certificationEdition.name === '2015' && (!this.relatedListings || this.relatedListings.length === 0)) {
         const that = this;
-        this.networkService.getRelatedListings(this.listing.product.productId)
+        this.networkService.getRelatedListings(this.listing.product.id)
           .then((family) => that.relatedListings = family.filter((item) => item.edition === '2015' && item.id !== that.listing.id));
       }
 

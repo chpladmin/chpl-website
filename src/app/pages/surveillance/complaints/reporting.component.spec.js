@@ -1,7 +1,12 @@
 (() => {
   describe('the Complaints Reporting component', () => {
-    let $compile; let $log; let $q; let ctrl; let el; let networkService; let
-      scope;
+    let $compile;
+    let $log;
+    let $q;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
     const complainantTypes = {
       data: [

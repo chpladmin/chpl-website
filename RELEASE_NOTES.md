@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.35.4
+_13 June 2022_
+
+### Flagged Feature
+* Handle displaying removed state for Conformance Methods
+
+---
+
 ## Version 11.35.3
 _6 June 2022_
 

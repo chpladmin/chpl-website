@@ -112,11 +112,11 @@ function ChplConfirmVersion(props) {
   /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    const selected = props.versions.filter((p) => p.versionId === props.version.versionId)[0];
+    const selected = props.versions.filter((p) => p.id === props.version.id)[0];
     if (selected) {
       setSelectedVersion(selected);
     }
-    setIsCreating(!props.version.versionId || props.versions.length === 0);
+    setIsCreating(!props.version.id || props.versions.length === 0);
   }, [props.version, props.versions]); // eslint-disable-line react/destructuring-assignment
 
   let formik;
@@ -237,7 +237,7 @@ function ChplConfirmVersion(props) {
                     onChange={handleSelectOnChange}
                   >
                     { versions.map((item) => (
-                      <MenuItem value={item} key={item.versionId}>
+                      <MenuItem value={item} key={item.id}>
                         { item.version }
                       </MenuItem>
                     ))}

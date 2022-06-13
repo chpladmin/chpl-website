@@ -1,39 +1,43 @@
 (() => {
-  'use strict';
-
   describe('the product inspection component', () => {
-    let $compile, $log, $q, ctrl, el, mock, networkService, scope;
+    let $compile;
+    let $log;
+    let $q;
+    let ctrl;
+    let el;
+    let networkService;
+    let scope;
 
-    mock = {
+    const mock = {
       availableProducts: [
-        { productId: 3 },
+        { id: 3 },
       ],
       foundProduct: {
         product: 'found',
-        productId: 8,
+        id: 8,
       },
       newProduct: {
         product: 'product value',
       },
       systemProduct: {
         product: 'system',
-        productId: 4,
+        id: 4,
         lastModifiedDate: 33939,
       },
       foundDeveloper: {
-        developerId: 2,
+        id: 2,
       },
       newDeveloper: {
       },
     };
 
     beforeEach(() => {
-      angular.mock.module('chpl.components', $provide => {
-        $provide.decorator('networkService', $delegate => {
-          $delegate.getProductsByDeveloper = jasmine.createSpy('getProductsByDeveloper');
-          $delegate.getSimpleProduct = jasmine.createSpy('getSimpleProduct');
-          return $delegate;
-        });
+      angular.mock.module('chpl.components', ($provide) => {
+        $provide.decorator('networkService', ($delegate) => ({
+          ...$delegate,
+          getProductsByDeveloper: jasmine.createSpy('getProductsByDeveloper'),
+          getSimpleProduct: jasmine.createSpy('getSimpleProduct'),
+        }));
       });
 
       inject((_$compile_, _$log_, _$q_, $rootScope, _networkService_) => {
@@ -41,7 +45,7 @@
         $log = _$log_;
         $q = _$q_;
         networkService = _networkService_;
-        networkService.getProductsByDeveloper.and.returnValue($q.when({products: mock.availableProducts}));
+        networkService.getProductsByDeveloper.and.returnValue($q.when({ products: mock.availableProducts }));
         networkService.getSimpleProduct.and.returnValue($q.when(mock.systemProduct));
 
         scope = $rootScope.$new();
@@ -56,7 +60,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -89,12 +93,12 @@
         });
 
         it('should get products based on found developer', () => {
-          expect(networkService.getProductsByDeveloper).toHaveBeenCalledWith(mock.foundDeveloper.developerId);
+          expect(networkService.getProductsByDeveloper).toHaveBeenCalledWith(mock.foundDeveloper.id);
           expect(ctrl.availableProducts).toEqual(mock.availableProducts);
         });
 
         it('should get product data based on found product', () => {
-          expect(networkService.getSimpleProduct).toHaveBeenCalledWith(mock.foundProduct.productId);
+          expect(networkService.getSimpleProduct).toHaveBeenCalledWith(mock.foundProduct.id);
           expect(ctrl.systemProduct).toEqual(mock.systemProduct);
         });
       });
@@ -134,7 +138,7 @@
           scope.developer = mock.foundDeveloper;
           scope.selectSpy = selectSpy;
 
-          el = angular.element('<ai-inspect-product pending-product="pendingProduct" developer="developer" on-select="selectSpy(productId)"></ai-inspect-product>');
+          el = angular.element('<ai-inspect-product pending-product="pendingProduct" developer="developer" on-select="selectSpy(id)"></ai-inspect-product>');
 
           $compile(el)(scope);
           scope.$digest();
@@ -142,7 +146,7 @@
         });
 
         it('should have an onChange function', () => {
-          expect(typeof(ctrl.onSelect)).toEqual('function');
+          expect(typeof (ctrl.onSelect)).toEqual('function');
         });
 
         it('should call the spy', () => {
@@ -151,20 +155,20 @@
         });
 
         it('should set the pendingProduct id', () => {
-          ctrl.productSelect = { productId: 323 };
+          ctrl.productSelect = { id: 323 };
           ctrl.select();
-          expect(ctrl.pendingProduct.productId).toBe(323);
+          expect(ctrl.pendingProduct.id).toBe(323);
         });
 
         it('should call the callback function', () => {
-          ctrl.productSelect = { productId: 33 };
+          ctrl.productSelect = { id: 33 };
           ctrl.select();
           expect(selectSpy).toHaveBeenCalledWith(33);
         });
 
         it('should update the systemProduct', () => {
           const callCount = networkService.getSimpleProduct.calls.count();
-          ctrl.productSelect = { productId: 33 };
+          ctrl.productSelect = { id: 33 };
           ctrl.select();
           scope.$digest();
           expect(networkService.getSimpleProduct.calls.count()).toBe(callCount + 1);

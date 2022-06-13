@@ -28,7 +28,7 @@ const DevelopersEditComponent = {
     cancel() {
       this.developer = angular.copy(this.backup.developer);
       this.$state.go('organizations.developers.developer', {
-        developerId: this.developer.developerId,
+        id: this.developer.id,
         productId: undefined,
       }, { reload: true });
     }

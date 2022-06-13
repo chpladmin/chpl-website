@@ -7,41 +7,42 @@ export const InspectProductComponent = {
     setChoice: '&',
   },
   controller: class InspectProductController {
-    constructor ($log, networkService) {
+    constructor($log, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.networkService = networkService;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.pendingProduct) {
         this.pendingProduct = angular.copy(changes.pendingProduct.currentValue);
       }
       if (changes.developer) {
         this.developer = angular.copy(changes.developer.currentValue);
       }
-      if (this.pendingProduct && this.pendingProduct.productId) {
+      if (this.pendingProduct && this.pendingProduct.id) {
         this.updateProduct();
       }
-      if (this.developer && this.developer.developerId) {
+      if (this.developer && this.developer.id) {
         this.choice = 'choose';
-        this.networkService.getProductsByDeveloper(this.developer.developerId)
-          .then(result => this.availableProducts = result.products);
+        this.networkService.getProductsByDeveloper(this.developer.id)
+          .then((result) => this.availableProducts = result.products);
       } else {
         this.choice = 'create';
       }
-      this.setChoice({choice: this.choice});
+      this.setChoice({ choice: this.choice });
     }
 
-    select () {
-      this.pendingProduct.productId = this.productSelect.productId;
-      this.onSelect({productId: this.productSelect.productId});
+    select() {
+      this.pendingProduct.id = this.productSelect.id;
+      this.onSelect({ id: this.productSelect.id });
       this.updateProduct();
     }
 
-    updateProduct () {
-      this.networkService.getSimpleProduct(this.pendingProduct.productId)
-        .then(result => this.systemProduct = result);
+    updateProduct() {
+      this.networkService.getSimpleProduct(this.pendingProduct.id)
+        .then((result) => this.systemProduct = result);
     }
   },
 };

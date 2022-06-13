@@ -26,7 +26,7 @@ const ProductEditComponent = {
           }))
           .sort((a, b) => (a.name < b.name ? -1 : 0));
         if (that.developers && that.product) {
-          [that.currentOwner] = that.developers.filter((d) => d.developerId === that.product.owner.developerId);
+          [that.currentOwner] = that.developers.filter((d) => d.id === that.product.owner.id);
         }
       });
     }
@@ -110,7 +110,7 @@ const ProductEditComponent = {
 
     removeOwner(owner) {
       this.product.ownerHistory = this.product.ownerHistory
-        .filter((o) => (!(o.developer.developerId === owner.developer.developerId && o.transferDate === owner.transferDate)));
+        .filter((o) => (!(o.developer.id === owner.developer.id && o.transferDate === owner.transferDate)));
       this.generateErrorMessages();
     }
 
