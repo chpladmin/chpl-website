@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   IconButton,
   makeStyles,
 } from '@material-ui/core';
@@ -20,7 +21,7 @@ import fillCustomAttestationFields from './types/attestation-fill-fields';
 import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
 import { useFetchChangeRequests, useFetchChangeRequestsLegacy } from 'api/change-requests';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 
 const PAGE_SIZE = 250;
 const CUSTOM_FIELD_COUNT = 7;
@@ -47,9 +48,9 @@ const csvOptions = {
   headers: [
     { headerName: 'Developer', objectKey: 'developerName' },
     { headerName: 'Request Type', objectKey: 'changeRequestTypeName' },
-    { headerName: 'Creation Date', objectKey: 'friendlyReceivedDate' },
+    { headerName: 'Creation Date', objectKey: 'friendlyReceivedDateTime' },
     { headerName: 'Request Status', objectKey: 'currentStatusName' },
-    { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDate' },
+    { headerName: 'Last Status Change', objectKey: 'friendlyCurrentStatusChangeDateTime' },
     { headerName: 'Relevant ONC-ACBs', objectKey: 'relevantAcbs' },
     ...Array(CUSTOM_FIELD_COUNT)
       .fill('Custom Field')
@@ -67,22 +68,18 @@ const useStyles = makeStyles({
 });
 
 function ChplChangeRequestsDownload(props) {
-  const DateUtil = getAngularService('DateUtil');
   const {
     dispatch,
-    changeRequestsIds, // remove after API exists
     query,
   } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const [changeRequests, setChangeRequests] = useState([]);
-  // const [changeRequestsIds, setChangeRequestsIds] = useState([]);
+  const [changeRequestsIds, setChangeRequestsIds] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const { data: legacyData, isLoading: legacyIsLoading, isSuccess: legacyIsSuccess } = useFetchChangeRequestsLegacy();
   const { isLoading, isSuccess, data } = useFetchChangeRequests({
-    // orderBy: 'currentStatusChangeDate',
     pageNumber,
     pageSize: PAGE_SIZE,
-    // sortDescending: true,
     query,
   });
   const classes = useStyles();
@@ -97,15 +94,14 @@ function ChplChangeRequestsDownload(props) {
         ...getCustomFields(item),
         developerName: item.developer.name,
         changeRequestTypeName: item.changeRequestType.name,
+        friendlyReceivedDateTime: getDisplayDateFormat(item.submittedDate),
         currentStatusName: item.currentStatus.changeRequestStatusType.name,
-        currentStatusChangeDate: item.currentStatus.statusChangeDate,
-        friendlyReceivedDate: DateUtil.timestampToString(item.submittedDate),
-        friendlyCurrentStatusChangeDate: DateUtil.timestampToString(item.currentStatus.statusChangeDate),
+        friendlyCurrentStatusChangeDateTime: getDisplayDateFormat(item.currentStatus.statusChangeDate),
         relevantAcbs: item.certificationBodies.sort((a, b) => (a.name < b.name ? -1 : 1)).map((acb) => acb.name).join(';'),
       }))
       .filter((item) => changeRequestsIds.includes(item.id));
     setChangeRequests(crs);
-  }, [legacyData, legacyIsLoading, legacyIsSuccess, DateUtil, changeRequestsIds]);
+  }, [legacyData, legacyIsLoading, legacyIsSuccess, changeRequestsIds]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -131,18 +127,25 @@ function ChplChangeRequestsDownload(props) {
             color="primary"
             onClick={() => dispatch('closeDownload')}
             className={classes.closeIcon}
-            disabled={changeRequests.length === 0}
           >
             <CloseIcon />
           </IconButton>
 )}
       />
       <CardContent>
-        <Button
-          onClick={download}
-        >
-          Download
-        </Button>
+        { changeRequests.length === 0
+          && (
+            <CircularProgress />
+          )}
+        { changeRequests.length > 0
+          && (
+            <Button
+              onClick={download}
+              disabled={changeRequests.length === 0}
+            >
+              Download
+            </Button>
+          )}
       </CardContent>
     </Card>
   );
@@ -152,6 +155,5 @@ export default ChplChangeRequestsDownload;
 
 ChplChangeRequestsDownload.propTypes = {
   dispatch: func.isRequired,
-  changeRequestsIds: arrayOf(number).isRequired, // remove after API exists
   query: string.isRequired,
 };
