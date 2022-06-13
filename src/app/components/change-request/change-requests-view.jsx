@@ -23,7 +23,7 @@ import { arrayOf, func, string } from 'prop-types';
 import ChplChangeRequest from './change-request';
 import ChplChangeRequestsDownload from './change-requests-download';
 
-import { useFetchChangeRequests, useFetchChangeRequestsLegacy } from 'api/change-requests';
+import { useFetchChangeRequests } from 'api/change-requests';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -100,12 +100,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const searchTermShouldShow = (item, searchTerm) => new RegExp(searchTerm, 'i').test(item.developerName);
-
-const filtersShouldShow = (item, filters) => filters
-  .reduce((acc, filter) => filter
-    .meets(item, filter.values) && acc, true);
-
 function ChplChangeRequestsView(props) {
   const { disallowedFilters, preFilter, bonusQuery } = props;
   const { hasAnyRole } = useContext(UserContext);
@@ -113,10 +107,9 @@ function ChplChangeRequestsView(props) {
   const [changeRequests, setChangeRequests] = useState([]);
   const [isDownloading, setIsDownloading] = useState(false);
   const [order, setOrder] = useState('desc'); // sortdescending?
-  const [orderBy, setOrderBy] = useState('currentStatusChangeDate');
+  const [orderBy, setOrderBy] = useState('current_status_change_date_time');
   const [page, setPage] = React.useState(0); // pageNumber
   const [rowsPerPage, setRowsPerPage] = useState(10); // pageSize
-  const legacyFetch = useFetchChangeRequestsLegacy();
   const { filters, queryString, searchTerm } = useFilterContext();
   const { data, isLoading, isSuccess } = useFetchChangeRequests({
     orderBy,
@@ -137,10 +130,6 @@ function ChplChangeRequestsView(props) {
     if (isLoading || !isSuccess || !data) { return; }
     const crs = data.results.map((item) => ({
       ...item,
-      developerName: item.developer.name,
-      changeRequestTypeName: item.changeRequestType.name,
-      currentStatusName: item.currentStatus.name,
-      currentStatusChangeDate: item.currentStatus.statusChangeDate,
     }));
     setChangeRequests(crs);
     if (changeRequest?.id) {
@@ -148,42 +137,20 @@ function ChplChangeRequestsView(props) {
     }
   }, [data, isLoading, isSuccess]);
 
-  useEffect(() => {
-    if (legacyFetch.isLoading || !legacyFetch.isSuccess) {
-      return;
-    }
-    const crs = legacyFetch.data
-      .map((item) => ({
-        ...item,
-        developerName: item.developer.name,
-        changeRequestTypeName: item.changeRequestType.name,
-        currentStatusName: item.currentStatus.changeRequestStatusType.name,
-        currentStatusChangeDate: item.currentStatus.statusChangeDate,
-      }))
-      .filter((item) => preFilter(item))
-      .filter((item) => searchTermShouldShow(item, searchTerm))
-      .filter((item) => filtersShouldShow(item, filters))
-      .sort(sortComparator(orderBy, order === 'desc'));
-    setChangeRequests(crs);
-    if (changeRequest?.id) {
-      setChangeRequest((inUseCr) => crs.find((cr) => cr.id === inUseCr.id));
-    }
-  }, [legacyFetch.data, legacyFetch.isLoading, legacyFetch.isSuccess, orderBy, order, filters, searchTerm, preFilter]);
-
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_DEVELOPER']) ? [
-    { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
-    { property: 'currentStatusName', text: 'Request Status', sortable: true },
-    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
-    { property: 'actions', text: 'Actions', invisible: true },
+    { property: 'change_request_type', text: 'Request Type', sortable: true },
+    { property: 'change_request_status', text: 'Request Status', sortable: true },
+    { property: 'current_status_change_date_time', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
+    { text: 'Actions', invisible: true },
   ] : [
-    { property: 'developerName', text: 'Developer', sortable: true },
-    { property: 'changeRequestTypeName', text: 'Request Type', sortable: true },
-    { property: 'receivedDate', text: 'Creation Date', sortable: true, reverseDefault: true }, // submittedDate?
-    { property: 'currentStatusName', text: 'Request Status', sortable: true },
-    { property: 'currentStatusChangeDate', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
-    { property: 'associatedAcbs', text: 'Associated ONC-ACBs' },
-    { property: 'actions', text: 'Actions', invisible: true },
+    { property: 'developer', text: 'Developer', sortable: true },
+    { property: 'change_request_type', text: 'Request Type', sortable: true },
+    { property: 'submitted_date_time', text: 'Creation Date', sortable: true, reverseDefault: true },
+    { property: 'change_request_status', text: 'Request Status', sortable: true },
+    { property: 'current_status_change_date_time', text: 'Time Since Last Status Change', sortable: true, reverseDefault: true },
+    { text: 'Associated ONC-ACBs' },
+    { text: 'Actions', invisible: true },
   ];
 
   const handleDispatch = (action) => {
@@ -203,9 +170,8 @@ function ChplChangeRequestsView(props) {
     setOrder(orderDirection);
   };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, changeRequests.length - page * rowsPerPage);
   const pageStart = (page * rowsPerPage) + 1;
-  const pageEnd = Math.min((page + 1) * rowsPerPage, changeRequests.length);
+  const pageEnd = Math.min((page + 1) * rowsPerPage, data?.recordCount);
 
   if (changeRequest) {
     return (
@@ -229,7 +195,6 @@ function ChplChangeRequestsView(props) {
           && (
             <ChplChangeRequestsDownload
               dispatch={handleDispatch}
-              changeRequestsIds={changeRequests.map((cr) => cr.id)}
               query={`${queryString()}${bonusQuery}`}
             />
           )}
@@ -245,140 +210,6 @@ function ChplChangeRequestsView(props) {
         <div>
           <ChplFilterChips />
         </div>
-        { (legacyFetch.isLoading)
-          && (
-            <div className={classes.noResultsContainer}>
-              <CircularProgress />
-            </div>
-          )}
-        { (!legacyFetch.isLoading && (!legacyFetch.isSuccess || changeRequests.length === 0))
-          && (
-            <div className={classes.noResultsContainer}>
-              No results found
-            </div>
-          )}
-        { !legacyFetch.isLoading && legacyFetch.isSuccess && changeRequests.length > 0
-          && (
-            <>
-              <div className={classes.tableResultsHeaderContainer}>
-                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                  <Typography variant="subtitle2">Search Results:</Typography>
-                  <Typography variant="body2">
-                    {`(${pageStart}-${pageEnd} of ${changeRequests.length} Results)`}
-                  </Typography>
-                </div>
-                <ButtonGroup size="small" className={classes.wrap}>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    fullWidth
-                    id="download-change-requests"
-                    onClick={() => setIsDownloading(true)}
-                  >
-                    Download
-                    {' '}
-                    { changeRequests.length }
-                    {' '}
-                    Result
-                    { changeRequests.length !== 1 ? 's' : '' }
-                    <GetAppIcon className={classes.iconSpacing} />
-                  </Button>
-                </ButtonGroup>
-              </div>
-              <TableContainer className={classes.container} component={Paper}>
-                <Table
-                  stickyHeader
-                  aria-label="Change Requests table"
-                >
-                  <ChplSortableHeaders
-                    headers={headers}
-                    onTableSort={handleTableSort}
-                    orderBy={orderBy}
-                    order={order}
-                    stickyHeader
-                  />
-                  <TableBody>
-                    {changeRequests
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((item) => (
-                        <TableRow key={item.id}>
-                          { !hasAnyRole(['ROLE_DEVELOPER'])
-                           && (
-                             <TableCell className={classes.tableFirstColumn}>
-                               <div className={classes.tableDeveloperCell}>
-                                 <div>
-                                   <ChplAvatar
-                                     text={item.developerName}
-                                   />
-                                 </div>
-                                 <div className={classes.developerName}>
-                                   <a href={`#/organizations/developers/${item.developer.id}`}>
-                                     {item.developerName}
-                                   </a>
-                                 </div>
-                               </div>
-                             </TableCell>
-                           )}
-                          <TableCell>{item.changeRequestTypeName}</TableCell>
-                          { !hasAnyRole(['ROLE_DEVELOPER'])
-                           && <TableCell>{getDisplayDateFormat(item.submittedDate)}</TableCell>}
-                          <TableCell>{item.currentStatusName}</TableCell>
-                          <TableCell>
-                            <Moment
-                              withTitle
-                              titleFormat="DD MMM yyyy"
-                              fromNow
-                            >
-                              {item.currentStatusChangeDate}
-                            </Moment>
-                          </TableCell>
-                          { !hasAnyRole(['ROLE_DEVELOPER'])
-                           && (
-                             <TableCell>
-                               { item.certificationBodies.length === 0
-                                 ? (
-                                   <>
-                                     None
-                                   </>
-                                 ) : (
-                                   <>
-                                     { item.certificationBodies.map((acb) => acb.name).join('; ') }
-                                   </>
-                                 )}
-                             </TableCell>
-                           )}
-                          <TableCell align="right">
-                            <Button
-                              onClick={() => setChangeRequest(item)}
-                              variant="contained"
-                              color="primary"
-                            >
-                              View
-                              {' '}
-                              <VisibilityIcon className={classes.iconSpacing} />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    {emptyRows > 0 && false && (
-                      <TableRow style={{ height: 33 * emptyRows }}>
-                        <TableCell colSpan={headers.length} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <ChplPagination
-                count={changeRequests.length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[10, 50, 100, 250]}
-                setPage={setPage}
-                setRowsPerPage={setRowsPerPage}
-              />
-            </>
-          )}
-        New data here:
         { isLoading
           && (
             <div className={classes.noResultsContainer}>
@@ -404,7 +235,7 @@ function ChplChangeRequestsView(props) {
                 <div className={`${classes.resultsContainer} ${classes.wrap}`}>
                   <Typography variant="subtitle2">Search Results:</Typography>
                   <Typography variant="body2">
-                    {`(${pageStart}-${pageEnd} of ${changeRequests.length} Results)`}
+                    {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
                   </Typography>
                 </div>
                 <ButtonGroup size="small" className={classes.wrap}>
@@ -417,10 +248,10 @@ function ChplChangeRequestsView(props) {
                   >
                     Download
                     {' '}
-                    { changeRequests.length }
+                    { data.recordCount }
                     {' '}
-                    Result
-                    { changeRequests.length !== 1 ? 's' : '' }
+                    Results
+                    { data.recordCount !== 1 ? 's' : '' }
                     <GetAppIcon className={classes.iconSpacing} />
                   </Button>
                 </ButtonGroup>
@@ -448,28 +279,28 @@ function ChplChangeRequestsView(props) {
                                <div className={classes.tableDeveloperCell}>
                                  <div>
                                    <ChplAvatar
-                                     text={item.developerName}
+                                     text={item.developer.name}
                                    />
                                  </div>
                                  <div className={classes.developerName}>
                                    <a href={`#/organizations/developers/${item.developer.id}`}>
-                                     {item.developerName}
+                                     {item.developer.name}
                                    </a>
                                  </div>
                                </div>
                              </TableCell>
                            )}
-                          <TableCell>{item.changeRequestTypeName}</TableCell>
+                          <TableCell>{item.changeRequestType.name}</TableCell>
                           { !hasAnyRole(['ROLE_DEVELOPER'])
-                           && <TableCell>{getDisplayDateFormat(item.submittedDate)}</TableCell>}
-                          <TableCell>{item.currentStatusName}</TableCell>
+                           && <TableCell>{getDisplayDateFormat(item.submittedDateTime)}</TableCell>}
+                          <TableCell>{item.currentStatus.name}</TableCell>
                           <TableCell>
                             <Moment
                               withTitle
                               titleFormat="DD MMM yyyy"
                               fromNow
                             >
-                              {item.currentStatusChangeDate}
+                              {item.currentStatus.statusChangeDateTime}
                             </Moment>
                           </TableCell>
                           { !hasAnyRole(['ROLE_DEVELOPER'])
@@ -500,16 +331,11 @@ function ChplChangeRequestsView(props) {
                           </TableCell>
                         </TableRow>
                       ))}
-                    {emptyRows > 0 && false && (
-                      <TableRow style={{ height: 33 * emptyRows }}>
-                        <TableCell colSpan={headers.length} />
-                      </TableRow>
-                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
               <ChplPagination
-                count={changeRequests.length}
+                count={data.recordCount}
                 page={page}
                 rowsPerPage={rowsPerPage}
                 rowsPerPageOptions={[10, 50, 100, 250]}

@@ -24,10 +24,10 @@ const useFetchChangeRequestsLegacy = () => {
 };
 
 const useFetchChangeRequests = ({
-  orderBy,
+  orderBy = 'current_status_change_date_time',
   pageNumber,
   pageSize,
-  sortDescending,
+  sortDescending = false,
   query,
 }) => {
   const axios = useAxios();
