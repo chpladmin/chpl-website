@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  arrayOf, func, string,
-} from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
 
@@ -49,7 +47,7 @@ const staticFilters = [{
 }];
 
 function ChplChangeRequests(props) {
-  const { disallowedFilters, preFilter, bonusQuery } = props;
+  const { disallowedFilters, bonusQuery } = props;
   const { isOn } = useContext(FlagContext);
   const [attestationsEditIsOn, setAttestationsEditIsOn] = useState(false);
   const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
@@ -118,7 +116,6 @@ function ChplChangeRequests(props) {
       <ChplChangeRequestsView
         analytics={analytics}
         disallowedFilters={disallowedFilters}
-        preFilter={preFilter}
         bonusQuery={bonusQuery}
       />
     </FilterProvider>
@@ -129,6 +126,5 @@ export default ChplChangeRequests;
 
 ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
-  preFilter: func.isRequired,
   bonusQuery: string.isRequired,
 };

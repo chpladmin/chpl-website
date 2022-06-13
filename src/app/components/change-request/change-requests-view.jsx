@@ -18,7 +18,7 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 
 import ChplChangeRequest from './change-request';
 import ChplChangeRequestsDownload from './change-requests-download';
@@ -34,7 +34,7 @@ import {
   ChplAvatar,
   ChplPagination,
 } from 'components/util';
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
@@ -101,7 +101,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplChangeRequestsView(props) {
-  const { disallowedFilters, preFilter, bonusQuery } = props;
+  const { disallowedFilters, bonusQuery } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
@@ -110,7 +110,7 @@ function ChplChangeRequestsView(props) {
   const [orderBy, setOrderBy] = useState('current_status_change_date_time');
   const [page, setPage] = React.useState(0); // pageNumber
   const [rowsPerPage, setRowsPerPage] = useState(10); // pageSize
-  const { filters, queryString, searchTerm } = useFilterContext();
+  const { queryString } = useFilterContext();
   const { data, isLoading, isSuccess } = useFetchChangeRequests({
     orderBy,
     pageNumber: page,
@@ -250,7 +250,7 @@ function ChplChangeRequestsView(props) {
                     {' '}
                     { data.recordCount }
                     {' '}
-                    Results
+                    Result
                     { data.recordCount !== 1 ? 's' : '' }
                     <GetAppIcon className={classes.iconSpacing} />
                   </Button>
@@ -353,6 +353,5 @@ export default ChplChangeRequestsView;
 
 ChplChangeRequestsView.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
-  preFilter: func.isRequired,
   bonusQuery: string.isRequired,
 };

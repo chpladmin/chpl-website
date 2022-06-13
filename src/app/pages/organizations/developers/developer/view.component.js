@@ -27,7 +27,6 @@ const DeveloperViewComponent = {
       this.disallowedFilters = ['submittedDate', 'searchTerm'];
       this.closeConfirmation = this.closeConfirmation.bind(this);
       this.handleAttestationDispatch = this.handleAttestationDispatch.bind(this);
-      this.preFilter = this.preFilter.bind(this);
       this.takeAction = this.takeAction.bind(this);
       this.takeUserAction = this.takeUserAction.bind(this);
     }
@@ -107,10 +106,6 @@ const DeveloperViewComponent = {
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER']) && this.$stateParams.id) {
         this.networkService.getUsersAtDeveloper(this.$stateParams.id).then((response) => { that.users = response.users; });
       }
-    }
-
-    preFilter(item) {
-      return item.developerName === this.developer.name;
     }
 
     takeAction(action) {

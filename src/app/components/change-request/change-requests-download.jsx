@@ -9,12 +9,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import {
-  arrayOf,
-  func,
-  number,
-  string,
-} from 'prop-types';
+import { func, string } from 'prop-types';
 import { ExportToCsv } from 'export-to-csv';
 
 import fillCustomAttestationFields from './types/attestation-fill-fields';

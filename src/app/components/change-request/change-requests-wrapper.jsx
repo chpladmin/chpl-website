@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  arrayOf, func, string,
-} from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 
 import ChplChangeRequests from './change-requests';
 
@@ -12,7 +10,6 @@ import { UserWrapper } from 'components/login';
 function ChplChangeRequestsWrapper(props) {
   const {
     disallowedFilters,
-    preFilter,
     bonusQuery,
   } = props;
 
@@ -22,7 +19,6 @@ function ChplChangeRequestsWrapper(props) {
         <FlagWrapper>
           <ChplChangeRequests
             disallowedFilters={disallowedFilters}
-            preFilter={preFilter}
             bonusQuery={bonusQuery}
           />
         </FlagWrapper>
@@ -35,12 +31,10 @@ export default ChplChangeRequestsWrapper;
 
 ChplChangeRequestsWrapper.propTypes = {
   disallowedFilters: arrayOf(string),
-  preFilter: func,
   bonusQuery: string,
 };
 
 ChplChangeRequestsWrapper.defaultProps = {
   disallowedFilters: [],
-  preFilter: () => true,
   bonusQuery: '',
 };
