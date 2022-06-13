@@ -99,10 +99,10 @@ function ChplChangeRequests(props) {
       return;
     }
     setFilters((f) => f
-      .filter((filter) => filter.key !== 'changeRequestTypeName')
+      .filter((filter) => filter.key !== 'changeRequestTypeNames')
       .concat({
         ...defaultFilter,
-        key: 'changeRequestTypeName',
+        key: 'changeRequestTypeNames',
         display: 'Change Request Type',
         values,
       }));
