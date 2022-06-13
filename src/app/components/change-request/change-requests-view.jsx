@@ -118,7 +118,7 @@ function ChplChangeRequestsView(props) {
   const [rowsPerPage, setRowsPerPage] = useState(10); // pageSize
   const legacyFetch = useFetchChangeRequestsLegacy();
   const { filters, queryString, searchTerm } = useFilterContext();
-  const { isLoading, isSuccess, data } = useFetchChangeRequests({
+  const { data, isLoading, isSuccess } = useFetchChangeRequests({
     orderBy,
     pageNumber: page,
     pageSize: rowsPerPage,
@@ -245,7 +245,7 @@ function ChplChangeRequestsView(props) {
         <div>
           <ChplFilterChips />
         </div>
-        { legacyFetch.isLoading
+        { (legacyFetch.isLoading)
           && (
             <div className={classes.noResultsContainer}>
               <CircularProgress />
@@ -258,6 +258,146 @@ function ChplChangeRequestsView(props) {
             </div>
           )}
         { !legacyFetch.isLoading && legacyFetch.isSuccess && changeRequests.length > 0
+          && (
+            <>
+              <div className={classes.tableResultsHeaderContainer}>
+                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                  <Typography variant="subtitle2">Search Results:</Typography>
+                  <Typography variant="body2">
+                    {`(${pageStart}-${pageEnd} of ${changeRequests.length} Results)`}
+                  </Typography>
+                </div>
+                <ButtonGroup size="small" className={classes.wrap}>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    fullWidth
+                    id="download-change-requests"
+                    onClick={() => setIsDownloading(true)}
+                  >
+                    Download
+                    {' '}
+                    { changeRequests.length }
+                    {' '}
+                    Result
+                    { changeRequests.length !== 1 ? 's' : '' }
+                    <GetAppIcon className={classes.iconSpacing} />
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <TableContainer className={classes.container} component={Paper}>
+                <Table
+                  stickyHeader
+                  aria-label="Change Requests table"
+                >
+                  <ChplSortableHeaders
+                    headers={headers}
+                    onTableSort={handleTableSort}
+                    orderBy={orderBy}
+                    order={order}
+                    stickyHeader
+                  />
+                  <TableBody>
+                    {changeRequests
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((item) => (
+                        <TableRow key={item.id}>
+                          { !hasAnyRole(['ROLE_DEVELOPER'])
+                           && (
+                             <TableCell className={classes.tableFirstColumn}>
+                               <div className={classes.tableDeveloperCell}>
+                                 <div>
+                                   <ChplAvatar
+                                     text={item.developerName}
+                                   />
+                                 </div>
+                                 <div className={classes.developerName}>
+                                   <a href={`#/organizations/developers/${item.developer.id}`}>
+                                     {item.developerName}
+                                   </a>
+                                 </div>
+                               </div>
+                             </TableCell>
+                           )}
+                          <TableCell>{item.changeRequestTypeName}</TableCell>
+                          { !hasAnyRole(['ROLE_DEVELOPER'])
+                           && <TableCell>{getDisplayDateFormat(item.submittedDate)}</TableCell>}
+                          <TableCell>{item.currentStatusName}</TableCell>
+                          <TableCell>
+                            <Moment
+                              withTitle
+                              titleFormat="DD MMM yyyy"
+                              fromNow
+                            >
+                              {item.currentStatusChangeDate}
+                            </Moment>
+                          </TableCell>
+                          { !hasAnyRole(['ROLE_DEVELOPER'])
+                           && (
+                             <TableCell>
+                               { item.certificationBodies.length === 0
+                                 ? (
+                                   <>
+                                     None
+                                   </>
+                                 ) : (
+                                   <>
+                                     { item.certificationBodies.map((acb) => acb.name).join('; ') }
+                                   </>
+                                 )}
+                             </TableCell>
+                           )}
+                          <TableCell align="right">
+                            <Button
+                              onClick={() => setChangeRequest(item)}
+                              variant="contained"
+                              color="primary"
+                            >
+                              View
+                              {' '}
+                              <VisibilityIcon className={classes.iconSpacing} />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    {emptyRows > 0 && false && (
+                      <TableRow style={{ height: 33 * emptyRows }}>
+                        <TableCell colSpan={headers.length} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <ChplPagination
+                count={changeRequests.length}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10, 50, 100, 250]}
+                setPage={setPage}
+                setRowsPerPage={setRowsPerPage}
+              />
+            </>
+          )}
+        New data here:
+        { isLoading
+          && (
+            <div className={classes.noResultsContainer}>
+              <CircularProgress />
+            </div>
+          )}
+        { !isLoading && !isSuccess
+          && (
+            <div className={classes.noResultsContainer}>
+              Network error
+            </div>
+          )}
+        { !isLoading && isSuccess && changeRequests.length === 0
+          && (
+            <div className={classes.noResultsContainer}>
+              No results found
+            </div>
+          )}
+        { !isLoading && isSuccess && changeRequests.length > 0
           && (
             <>
               <div className={classes.tableResultsHeaderContainer}>
