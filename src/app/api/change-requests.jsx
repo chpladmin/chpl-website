@@ -31,7 +31,13 @@ const useFetchChangeRequests = ({
   query,
 }) => {
   const axios = useAxios();
-  return useQuery(['change-requests/search', orderBy, pageNumber, pageSize, sortDescending, query], async () => {
+  return useQuery(['change-requests/search', {
+    orderBy,
+    pageNumber,
+    pageSize,
+    sortDescending,
+    query,
+  }], async () => {
     const response = await axios.get(`change-requests/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
@@ -63,6 +69,7 @@ const usePostChangeRequest = () => {
     }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
+      queryClient.invalidateQueries('change-requests/search');
       queryClient.invalidateQueries({
         predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
       });
@@ -70,6 +77,7 @@ const usePostChangeRequest = () => {
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
+        queryClient.invalidateQueries('change-requests/search');
         queryClient.invalidateQueries({
           predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
         });
@@ -89,6 +97,7 @@ const usePutChangeRequest = () => {
     }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
+      queryClient.invalidateQueries('change-requests/search');
       queryClient.invalidateQueries({
         predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
       });
@@ -96,6 +105,7 @@ const usePutChangeRequest = () => {
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
+        queryClient.invalidateQueries('change-requests/search');
         queryClient.invalidateQueries({
           predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
         });
