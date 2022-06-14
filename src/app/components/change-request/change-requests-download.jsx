@@ -7,8 +7,8 @@ import {
   DialogTitle,
   Divider,
   IconButton,
-  makeStyles,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -20,6 +20,7 @@ import fillCustomDemographicsFields from './types/demographics-fill-fields';
 
 import { useFetchChangeRequests, useFetchChangeRequestsLegacy } from 'api/change-requests';
 import { getDisplayDateFormat } from 'services/date-util';
+import { utilStyles } from 'themes';
 
 const PAGE_SIZE = 250;
 const CUSTOM_FIELD_COUNT = 7;
@@ -60,22 +61,20 @@ const csvOptions = {
 };
 
 const useStyles = makeStyles({
+  ...utilStyles,
   closeIcon: {
     marginTop: '8px',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-  progressContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    padding: '32px 0',
   },
   titleContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: '-8px',
+  },
+  progressContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '32px 0',
   },
 });
 
@@ -128,41 +127,41 @@ function ChplChangeRequestsDownload(props) {
   const download = () => {
     csvExporter.generateCsv(changeRequests);
   };
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   return (
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>Open</Button>
-      <Dialog
-        open={open}
-      >
-        <div className={classes.titleContainer}>
-          <DialogTitle><strong>Preparing File</strong></DialogTitle>
-          <IconButton
-            variant="contained"
-            color="primary"
-            onClick={() => dispatch('closeDownload')}
-            className={classes.closeIcon}
-          >
-            <CloseIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <DialogContent>
-          <Typography gutterBottom variant="body1">We're getting your file ready! Please wait a moment, while the file is being created.</Typography>
-          <Typography variant="body2">If you wish to exit, click the x in the upper right of the pop-up.</Typography>
-          <div className={classes.progressContainer}>
-            { changeRequests.length === 0
+    <Dialog
+      open
+    >
+      <div className={classes.titleContainer}>
+        <DialogTitle>
+          <strong>
+            Preparing File
+          </strong>
+        </DialogTitle>
+        <IconButton
+          variant="contained"
+          color="primary"
+          onClick={() => dispatch('closeDownload')}
+          className={classes.closeIcon}
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <Divider />
+      <DialogContent>
+        <Typography gutterBottom variant="body1">
+          We&apos;re getting your file ready! Please wait a moment, while the file is being created.
+        </Typography>
+        <Typography variant="body2">
+          If you wish to exit, click the x in the upper right of the pop-up.
+        </Typography>
+        <div className={classes.progressContainer}>
+          { changeRequests.length === 0
             && (
               <CircularProgress />
             )}
-            { changeRequests.length > 0
+          { changeRequests.length > 0
             && (
-
               <Button
                 fullWidth
                 color="primary"
@@ -174,10 +173,9 @@ function ChplChangeRequestsDownload(props) {
                 <GetAppIcon className={classes.iconSpacing} />
               </Button>
             )}
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
