@@ -37,9 +37,10 @@ import {
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
-import theme from 'themes/theme';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles(() => ({
+  ...utilStyles,
   container: {
     maxHeight: '64vh',
   },
@@ -77,9 +78,6 @@ const useStyles = makeStyles(() => ({
   },
   wrap: {
     flexFlow: 'wrap',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
   },
   tableFirstColumn: {
     position: 'sticky',
