@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -10,9 +10,11 @@ import ChplAttestationWizard from './attestation-wizard';
 import interpretLink from './attestation-util';
 
 import { useFetchAttestationData } from 'api/attestations';
+import { useFetchAttestations } from 'api/developer';
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
+import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -23,16 +25,18 @@ const useStyles = makeStyles({
 
 function ChplAttestationCreate(props) {
   const $state = getAngularService('$state');
+  const { hasAnyRole } = useContext(UserContext);
   const { developer } = props;
-  const { data, isLoading } = useFetchAttestationData();
-  const crData = useFetchChangeRequestTypes();
-  const { mutate } = usePostChangeRequest();
   const { enqueueSnackbar } = useSnackbar();
   const [attestationResponses, setAttestationResponses] = useState([]);
   const [changeRequestType, setChangeRequestType] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
+  const { data, isLoading } = useFetchAttestationData({ period });
+  const { data: { submittablePeriod = {} } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_DEVELOPER']) });
+  const crData = useFetchChangeRequestTypes();
+  const { mutate } = usePostChangeRequest();
   const classes = useStyles();
 
   useEffect(() => {
@@ -50,8 +54,11 @@ function ChplAttestationCreate(props) {
         },
         response: { response: '' },
       })));
-    setPeriod(data.period);
   }, [isLoading, data]);
+
+  useEffect(() => {
+    setPeriod(submittablePeriod);
+  }, [submittablePeriod]);
 
   useEffect(() => {
     if (crData.isLoading) {

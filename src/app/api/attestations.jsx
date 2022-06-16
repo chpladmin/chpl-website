@@ -3,10 +3,10 @@ import { useQuery } from 'react-query';
 import { useAxios } from './axios';
 import options from './options';
 
-const useFetchAttestationData = () => {
+const useFetchAttestationData = ({ period }) => {
   const axios = useAxios();
   return useQuery(['attestations'], async () => {
-    const response = await axios.get('/attestations/form');
+    const response = await axios.get(`/attestations/periods/${period.id}/form`);
     return response.data;
   }, options.daily);
 };
