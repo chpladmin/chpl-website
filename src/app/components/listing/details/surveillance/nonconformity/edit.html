@@ -177,38 +177,6 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-if="$ctrl.workType === 'edit'">
-      <div class="col-sm-12">
-        <h3>Upload supporting document(s)</h3>
-        <div ng-if="$ctrl.uploadMessage.length > 0" ng-class="$ctrl.uploadSuccess ? 'bg-success' : 'bg-danger'">
-          {{ $ctrl.uploadMessage }}
-          <ul ng-if="$ctrl.uploadErrors.length > 0" ng-class="'bg-danger'">
-            <li ng-repeat="error in $ctrl.uploadErrors">{{ error.error }}</li>
-          </ul>
-        </div>
-        <form class="form form-horizontal" name="$ctrl.documentForm">
-          <div class="row">
-            <div ng-class="$ctrl.file ? 'col-sm-3' : 'col-sm-12'">
-              <button type="button" class="btn btn-default" ngf-select ng-model="$ctrl.file" name="file" id="upload-button">Choose file to upload</button>
-            </div>
-            <div class="col-sm-3" ng-if="$ctrl.file">
-              <strong>Filename: </strong>{{ $ctrl.file.name }}
-            </div>
-            <div class="col-sm-3" ng-if="$ctrl.file">
-              <strong>File size: </strong>{{ $ctrl.file.size / 1024 / 1024 | number : 2 }} MB
-            </div>
-            <div class="col-sm-3" ng-if="$ctrl.file">
-              <button type="button" class="btn btn-ai-success" ng-click="$ctrl.upload()" ng-disabled="!$ctrl.file">
-                <i class="fa fa-cloud-upload"></i> Upload
-              </button>
-              <button type="button" class="btn btn-danger" ng-click="$ctrl.file = undefined">
-                <i class="fa fa-trash-o"></i> Remove
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
   </div>
   <div class="modal-footer">
     <div class="text-danger text-left" ng-if="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDay && $ctrl.nonconformity.capEndDay < $ctrl.nonconformity.capStartDay)) && $ctrl.showFormErrors">
