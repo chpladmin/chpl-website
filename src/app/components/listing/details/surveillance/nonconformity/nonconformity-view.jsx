@@ -74,7 +74,7 @@ function ChplNonconformityView(props) {
           <div className={classes.nonconformityAccordionSummaryGrid}>
             <div>
               { nonconformity.criterion && <ChplCriterionTitle criterion={nonconformity.criterion} /> }
-              { !nonconformity.criterion && `${isNonconformityTypeRemoved(requirement.requirementName) ? 'Removed | ' : ''} ${requirement.requirementName}` }
+              { !nonconformity.criterion && `${isNonconformityTypeRemoved(requirement.requirement) ? 'Removed | ' : ''} ${requirement.requirement}` }
             </div>
             <div className={classes.nonconformityAccordionSummaryStatus}>
               { nonconformity.nonconformityStatus }

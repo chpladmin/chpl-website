@@ -6,7 +6,9 @@ import '@testing-library/jest-dom';
 import { within } from '@testing-library/dom';
 import { when } from 'jest-when';
 import userEvent from '@testing-library/user-event';
+
 import * as angularReactHelper from '../../../../../services/angular-react-helper';
+
 import ChplNonconformityView from './nonconformity-view';
 
 const survWith1Nonconformity = {
@@ -79,7 +81,6 @@ const survWith1Nonconformity = {
       lastModifiedDate: 1597786978488,
       nonconformityTypeName: '170.315 (c)(1)',
     }],
-    requirementName: '170.315 (c)(1)',
   }, {
     id: 1523,
     type: {
@@ -87,7 +88,6 @@ const survWith1Nonconformity = {
       name: 'Certified Capability',
     },
     requirement: '170.315 (k)(1)',
-    requirementName: '170.315 (k)(1)',
     result: {
       id: 1,
       name: 'Non-Conformity',
@@ -189,7 +189,6 @@ const survWithRandomized = {
       lastModifiedDate: 1597786978488,
       nonconformityTypeName: '170.315 (c)(1)',
     }],
-    requirementName: '170.315 (c)(1)',
   }],
   authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,

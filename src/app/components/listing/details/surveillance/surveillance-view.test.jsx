@@ -5,7 +5,9 @@ import {
 import '@testing-library/jest-dom';
 import { within } from '@testing-library/dom';
 import { when } from 'jest-when';
+
 import * as angularReactHelper from '../../../../services/angular-react-helper';
+
 import ChplSurveillanceView from './surveillance-view';
 
 const survWith1Nonconformity = {
@@ -78,7 +80,6 @@ const survWith1Nonconformity = {
       lastModifiedDate: 1597786978488,
       nonconformityTypeName: '170.315 (c)(1)',
     }],
-    requirementName: '170.315 (c)(1)',
   }],
   authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
@@ -124,7 +125,6 @@ const survWith0Nonconformity = {
       name: 'No Non-Conformity',
     },
     nonconformities: [],
-    requirementName: '170.315 (c)(1)',
   }],
   authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
