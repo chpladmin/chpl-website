@@ -79,7 +79,6 @@ const survWith1Nonconformity = {
       resolution: 'QRDA I files can now be ran on demand.',
       documents: [],
       lastModifiedDate: 1597786978488,
-      nonconformityTypeName: '170.315 (c)(1)',
     }],
   }, {
     id: 1523,
@@ -112,7 +111,6 @@ const survWith1Nonconformity = {
       resolution: 'QRDA I files can now be ran on demand.',
       documents: [],
       lastModifiedDate: 1597786978488,
-      nonconformityTypeName: '170.315 (c)(1)',
     }],
   }],
   authority: 'ROLE_ACB',
@@ -187,7 +185,6 @@ const survWithRandomized = {
       resolution: 'QRDA I files can now be ran on demand.',
       documents: [],
       lastModifiedDate: 1597786978488,
-      nonconformityTypeName: '170.315 (c)(1)',
     }],
   }],
   authority: 'ROLE_ACB',
