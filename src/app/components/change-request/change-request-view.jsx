@@ -8,6 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
+import { useSnackbar } from 'notistack';
 import Moment from 'react-moment';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -17,6 +18,7 @@ import ChplChangeRequestHistory from './change-request-history';
 import ChplChangeRequestAttestationView from './types/attestation-view';
 import ChplChangeRequestDemographicsView from './types/demographics-view';
 
+import { usePutChangeRequest } from 'api/change-requests';
 import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplAvatar } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -117,6 +119,8 @@ const getChangeRequestDetails = (cr) => {
 function ChplChangeRequestView(props) {
   const DateUtil = getAngularService('DateUtil');
   const [isConfirming, setIsConfirming] = useState(false);
+  const { mutate } = usePutChangeRequest();
+  const { enqueueSnackbar } = useSnackbar();
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const { changeRequest } = props;
@@ -149,6 +153,28 @@ function ChplChangeRequestView(props) {
     setIsConfirming(true);
   };
 
+  const save = (request) => {
+    mutate(request, {
+      onSuccess: () => {
+        props.dispatch('close');
+      },
+      onError: (error) => {
+        if (error.response.data.error?.startsWith('Email could not be sent to')) {
+          enqueueSnackbar(`${error.response.data.error} However, the changes have been applied`, {
+            variant: 'info',
+          });
+          props.dispatch('close');
+        } else {
+          const message = error.response.data?.error
+                || error.response.data?.errorMessages.join(' ');
+          enqueueSnackbar(message, {
+            variant: 'error',
+          });
+        }
+      },
+    });
+  };
+
   const handleConfirmation = (response) => {
     if (response === 'yes') {
       const payload = {
@@ -158,7 +184,7 @@ function ChplChangeRequestView(props) {
           comment: '',
         },
       };
-      props.dispatch('save', payload);
+      save(payload);
     }
     setIsConfirming(false);
   };
