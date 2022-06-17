@@ -8,7 +8,10 @@ const useFetchAttestationData = ({ period }) => {
   return useQuery(['attestations'], async () => {
     const response = await axios.get(`/attestations/periods/${period.id}/form`);
     return response.data;
-  }, options.daily);
+  }, {
+    ...options.daily,
+    enabled: !!period?.id,
+  });
 };
 
 /* eslint-disable import/prefer-default-export */

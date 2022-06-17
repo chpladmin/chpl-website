@@ -40,8 +40,7 @@ function ChplAttestationCreate(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading) {
-      setAttestationResponses([]);
+    if (isLoading || !data?.attestations) {
       return;
     }
     setAttestationResponses(data.attestations
