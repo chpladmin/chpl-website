@@ -44,7 +44,7 @@ function ChplAttestationsView(props) {
   const [attestationsOpen, setAttestationsOpen] = useState(false);
   const [attestations, setAttestations] = useState([]);
   const [developer, setDeveloper] = useState({});
-  const { data: { canSubmitAttestationChangeRequest = false, canCreateException = false, developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
+  const { data: { submittablePeriod = {}, canCreateException = false, developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
   const classes = useStyles();
 
@@ -185,7 +185,7 @@ function ChplAttestationsView(props) {
                 id="create-attestation-change-request-button"
                 variant="contained"
                 onClick={createAttestationChangeRequest}
-                disabled={!canSubmitAttestationChangeRequest}
+                disabled={!submittablePeriod}
               >
                 Submit Attestations
               </Button>

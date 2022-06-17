@@ -21,7 +21,7 @@ const developerMock = {
 const mockApi = {
   isLoading: true,
   data: {
-    canSubmitAttestationChangeRequest: true,
+    submittablePeriod: {id: 1},
   },
   mutate: () => {},
 };
