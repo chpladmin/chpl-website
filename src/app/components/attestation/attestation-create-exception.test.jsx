@@ -26,18 +26,21 @@ jest.mock('notistack', () => ({
 }));
 
 const mockProps = {
-  attestations: {},
   developer: { name: 'fake developer' },
   dispatch: jest.fn(() => 'done'),
+  period: {
+    periodStart: '2010-03-04',
+    periodEnd: '2012-04-05',
+  },
 };
 
 describe('the ChplAttestationCreateException component', () => {
   beforeEach(async () => {
     render(
       <ChplAttestationCreateException
-        attestations={mockProps.attestations}
         developer={mockProps.developer}
         dispatch={mockProps.dispatch}
+        period={mockProps.period}
       />,
     );
   });
@@ -47,6 +50,6 @@ describe('the ChplAttestationCreateException component', () => {
   });
 
   it('should have a description', () => {
-    expect(screen.getByText(/^This action/)).toHaveTextContent(`This action will re-open the Attestations submission feature for ${mockProps.developer.name}. Please confirm you want to continue.`);
+    expect(screen.getByText(/^This action/)).toHaveTextContent(`This action will re-open the Attestations submission feature for ${mockProps.developer.name} for Mar 4, 2010 to Apr 5, 2012. Please confirm you want to continue.`);
   });
 });

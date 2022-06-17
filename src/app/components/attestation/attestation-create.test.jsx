@@ -44,6 +44,11 @@ jest.mock('api/change-requests', () => ({
   usePostChangeRequest: () => mockApi,
 }));
 
+jest.mock('api/developer', () => ({
+  __esModule: true,
+  useFetchAttestations: () => mockApi,
+}));
+
 const mockEnqueue = jest.fn();
 
 jest.mock('notistack', () => ({
