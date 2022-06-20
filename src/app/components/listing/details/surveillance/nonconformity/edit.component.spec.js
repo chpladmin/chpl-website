@@ -3,33 +3,14 @@
     let $compile;
     let $log;
     let $q;
-    let Upload;
     let authService;
     let ctrl;
     let el;
-    let mock;
     let networkService;
     let scope;
 
     beforeEach(() => {
-      mock = {
-        baseData: {
-          url: '/rest/surveillance/1/nonconformity/undefined/document',
-          headers: {
-            Authorization: 'Bearer token',
-            'API-Key': 'api-key',
-          },
-          data: {
-            file: 'file',
-          },
-        },
-      };
-
       angular.mock.module('chpl.components', ($provide) => {
-        $provide.decorator('Upload', ($delegate) => ({
-          ...$delegate,
-          upload: jasmine.createSpy('upload'),
-        }));
         $provide.decorator('authService', ($delegate) => ({
           ...$delegate,
           getApiKey: jasmine.createSpy('getApiKey'),
@@ -41,12 +22,10 @@
         }));
       });
 
-      inject((_$compile_, _$log_, _$q_, $rootScope, _Upload_, _authService_, _networkService_) => {
+      inject((_$compile_, _$log_, _$q_, $rootScope, _authService_, _networkService_) => {
         $compile = _$compile_;
         $log = _$log_;
         $q = _$q_;
-        Upload = _Upload_;
-        Upload.upload.and.returnValue($q.when({}));
         authService = _authService_;
         authService.getApiKey.and.returnValue('api-key');
         authService.getToken.and.returnValue('token');
@@ -99,70 +78,6 @@
         expect(ctrl.cancel).toBeDefined();
         ctrl.cancel();
         expect(scope.dismiss).toHaveBeenCalled();
-      });
-
-      describe('when uploading', () => {
-        it('should not do anything without a file', () => {
-          ctrl.file = undefined;
-          ctrl.upload();
-          expect(Upload.upload).not.toHaveBeenCalled();
-          ctrl.file = 'file';
-          ctrl.upload();
-          expect(Upload.upload).toHaveBeenCalledWith(mock.baseData);
-        });
-
-        describe('in response to the upload', () => {
-          let response;
-          beforeEach(() => {
-            ctrl.file = {
-              name: 'name',
-            };
-            ctrl.accurateAsOfDay = '2018-11-28';
-            ctrl.nonconformity.documents = [];
-            response = {
-              data: {
-                fileName: 'filename',
-                errorMessages: undefined,
-              },
-              config: {
-                data: {
-                  file: {
-                    name: 'filename',
-                  },
-                },
-              },
-            };
-          });
-
-          it('should mark the uploaded document as pending', () => {
-            Upload.upload.and.returnValue($q.when(response));
-            ctrl.upload();
-            scope.$digest();
-            expect(ctrl.nonconformity.documents[0]).toEqual({
-              fileName: 'filename is pending',
-              fileType: undefined,
-            });
-          });
-
-          it('should handle success', () => {
-            Upload.upload.and.returnValue($q.when(response));
-            ctrl.upload();
-            scope.$digest();
-            expect(ctrl.uploadMessage).toBe('File "filename" was uploaded successfully.');
-            expect(ctrl.uploadErrors).toEqual([]);
-            expect(ctrl.uploadSuccess).toBe(true);
-          });
-
-          it('should handle failure', () => {
-            response.data.errorMessages = 1;
-            Upload.upload.and.returnValue($q.reject(response));
-            ctrl.upload();
-            scope.$digest();
-            expect(ctrl.uploadMessage).toBe('File "filename" was not uploaded successfully.');
-            expect(ctrl.uploadErrors).toEqual([1]);
-            expect(ctrl.uploadSuccess).toBe(false);
-          });
-        });
       });
 
       describe('when deleting a document', () => {
