@@ -74,6 +74,8 @@ const SurveillanceNonconformityEditComponent = {
       }
       if (this.nonconformityType.title) {
         this.nonconformity.criterion = this.nonconformityType;
+      } else {
+        this.nonconformity.criterion = undefined;
       }
       this.nonconformity.nonconformityType = this.nonconformityType.number;
       this.close({ $value: this.nonconformity });
