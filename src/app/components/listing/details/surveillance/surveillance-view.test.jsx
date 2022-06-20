@@ -163,6 +163,14 @@ jest.mock('../../../util/criterion-title', () => () => <div>Criteria Title</div>
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(dateUtilMock);
 
+const surveillanceRequirementsMock = {
+  criteriaOptions2014: [],
+  criteriaOptions2015: [],
+  realWorldTestingOptions: [],
+  transparencyOptions: [],
+};
+const nonconformityTypesMock = [];
+
 describe('the ChplSurveillanceView component', () => {
   afterEach(() => {
     cleanup();
@@ -172,6 +180,8 @@ describe('the ChplSurveillanceView component', () => {
     render(
       <ChplSurveillanceView
         surveillance={survWith1Nonconformity}
+        surveillanceRequirements={surveillanceRequirementsMock}
+        nonconformityTypes={nonconformityTypesMock}
       />,
     );
     const table = screen.getByLabelText('Surveillance Table');
@@ -184,6 +194,8 @@ describe('the ChplSurveillanceView component', () => {
     render(
       <ChplSurveillanceView
         surveillance={survWith1Nonconformity}
+        surveillanceRequirements={surveillanceRequirementsMock}
+        nonconformityTypes={nonconformityTypesMock}
       />,
     );
     await waitFor(() => {
@@ -196,6 +208,8 @@ describe('the ChplSurveillanceView component', () => {
       render(
         <ChplSurveillanceView
           surveillance={survWith1Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
       const cell = screen.getByTestId('reqs-surveilled-cell');
@@ -210,6 +224,8 @@ describe('the ChplSurveillanceView component', () => {
       render(
         <ChplSurveillanceView
           surveillance={survWith1Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
       const header = screen.getByTestId('non-conformity-header');
@@ -222,6 +238,8 @@ describe('the ChplSurveillanceView component', () => {
       render(
         <ChplSurveillanceView
           surveillance={survWith1Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
 
@@ -237,6 +255,8 @@ describe('the ChplSurveillanceView component', () => {
       render(
         <ChplSurveillanceView
           surveillance={survWith0Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
       const header = screen.queryByTestId('non-conformity-header');
@@ -249,6 +269,8 @@ describe('the ChplSurveillanceView component', () => {
       render(
         <ChplSurveillanceView
           surveillance={survWith0Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
 
@@ -264,6 +286,8 @@ describe('the ChplSurveillanceView component', () => {
       render(
         <ChplSurveillanceView
           surveillance={survWithNoRequirements}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
       const cell = screen.getByTestId('reqs-surveilled-cell');
