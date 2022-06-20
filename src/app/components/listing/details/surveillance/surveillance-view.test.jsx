@@ -176,35 +176,8 @@ describe('the ChplSurveillanceView component', () => {
     cleanup();
   });
 
-  it('should display the table of attributes', async () => {
-    render(
-      <ChplSurveillanceView
-        surveillance={survWith1Nonconformity}
-        surveillanceRequirements={surveillanceRequirementsMock}
-        nonconformityTypes={nonconformityTypesMock}
-      />,
-    );
-    const table = screen.getByLabelText('Surveillance Table');
-
-    await waitFor(() => {
-      expect(table).toBeVisible();
-    });
-  });
-  it('should use the DateUtil.timestampToString to format dates', async () => {
-    render(
-      <ChplSurveillanceView
-        surveillance={survWith1Nonconformity}
-        surveillanceRequirements={surveillanceRequirementsMock}
-        nonconformityTypes={nonconformityTypesMock}
-      />,
-    );
-    await waitFor(() => {
-      expect(dateUtilMock.getDisplayDateFormat).toHaveBeenCalled();
-    });
-  });
-
-  describe('when the surveillance has a closed non-conformity', () => {
-    it('should display the requirement information and criteria title', async () => {
+  describe('with basic display requirements', () => {
+    beforeEach(() => {
       render(
         <ChplSurveillanceView
           surveillance={survWith1Nonconformity}
@@ -212,6 +185,35 @@ describe('the ChplSurveillanceView component', () => {
           nonconformityTypes={nonconformityTypesMock}
         />,
       );
+    });
+
+    it('should display the table of attributes', async () => {
+      const table = screen.getByLabelText('Surveillance Table');
+
+      await waitFor(() => {
+        expect(table).toBeVisible();
+      });
+    });
+
+    it('should use the DateUtil.timestampToString to format dates', async () => {
+      await waitFor(() => {
+        expect(dateUtilMock.getDisplayDateFormat).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when the surveillance has a closed non-conformity', () => {
+    beforeEach(() => {
+      render(
+        <ChplSurveillanceView
+          surveillance={survWith1Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
+        />,
+      );
+    });
+
+    it('should display the requirement information and criteria title', async () => {
       const cell = screen.getByTestId('reqs-surveilled-cell');
 
       await waitFor(() => {
@@ -221,28 +223,14 @@ describe('the ChplSurveillanceView component', () => {
     });
 
     it('should display the non-conformities header', async () => {
-      render(
-        <ChplSurveillanceView
-          surveillance={survWith1Nonconformity}
-          surveillanceRequirements={surveillanceRequirementsMock}
-          nonconformityTypes={nonconformityTypesMock}
-        />,
-      );
       const header = screen.getByTestId('non-conformity-header');
 
       await waitFor(() => {
         expect(header).toBeVisible();
       });
     });
-    it('should display 1 non-conformity component', async () => {
-      render(
-        <ChplSurveillanceView
-          surveillance={survWith1Nonconformity}
-          surveillanceRequirements={surveillanceRequirementsMock}
-          nonconformityTypes={nonconformityTypesMock}
-        />,
-      );
 
+    it('should display 1 non-conformity component', async () => {
       await waitFor(() => {
         const components = screen.getAllByTestId('non-conformity-component');
         expect(components.length).toEqual(1);
@@ -251,7 +239,7 @@ describe('the ChplSurveillanceView component', () => {
   });
 
   describe('when the surveillance has 0 non-conformities', () => {
-    it('should not display the non-conformities header', async () => {
+    beforeEach(() => {
       render(
         <ChplSurveillanceView
           surveillance={survWith0Nonconformity}
@@ -259,21 +247,17 @@ describe('the ChplSurveillanceView component', () => {
           nonconformityTypes={nonconformityTypesMock}
         />,
       );
+    });
+
+    it('should not display the non-conformities header', async () => {
       const header = screen.queryByTestId('non-conformity-header');
 
       await waitFor(() => {
         expect(header).toBeNull();
       });
     });
-    it('should display 0 non-conformity components', async () => {
-      render(
-        <ChplSurveillanceView
-          surveillance={survWith0Nonconformity}
-          surveillanceRequirements={surveillanceRequirementsMock}
-          nonconformityTypes={nonconformityTypesMock}
-        />,
-      );
 
+    it('should display 0 non-conformity components', async () => {
       await waitFor(() => {
         const components = screen.queryAllByTestId('non-conformity-component');
         expect(components.length).toEqual(0);
@@ -282,7 +266,7 @@ describe('the ChplSurveillanceView component', () => {
   });
 
   describe('when the surveillance has 0 requirements', () => {
-    it('should display "None" for the Requirements Surveilled', async () => {
+    beforeEach(() => {
       render(
         <ChplSurveillanceView
           surveillance={survWithNoRequirements}
@@ -290,6 +274,9 @@ describe('the ChplSurveillanceView component', () => {
           nonconformityTypes={nonconformityTypesMock}
         />,
       );
+    });
+
+    it('should display "None" for the Requirements Surveilled', async () => {
       const cell = screen.getByTestId('reqs-surveilled-cell');
 
       await waitFor(() => {
