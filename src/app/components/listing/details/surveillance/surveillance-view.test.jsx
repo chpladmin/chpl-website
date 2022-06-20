@@ -157,8 +157,8 @@ const dateUtilMock = {
   getDisplayDateFormat: jest.fn(() => 'June 1, 2020'),
 };
 
-jest.mock('./nonconformity/nonconformity-view', () => () => <div data-testid="non-conformity-component" />);
-jest.mock('../../../util/criterion-title', () => () => <div>Criteria Title</div>);
+jest.mock('./nonconformity/nonconformity-view', () => function ncView() { return <div data-testid="non-conformity-component" />; });
+jest.mock('../../../util/criterion-title', () => function criterionTitle() { return <div>Criteria Title</div>; });
 
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(dateUtilMock);
