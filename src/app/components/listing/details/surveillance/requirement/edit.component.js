@@ -133,6 +133,8 @@ export const SurveillanceRequirementEditComponent = {
         } else if (this.requirementCriterionType.number) {
           this.requirement.requirement = this.requirementCriterionType.number;
         }
+      } else {
+        this.requirement.criterion = undefined;
       }
       this.close({ $value: this.requirement });
     }
