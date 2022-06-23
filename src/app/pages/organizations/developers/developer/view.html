@@ -48,7 +48,7 @@
       <div ng-if="$ctrl.can('manageTracking')">
         <chpl-change-requests-wrapper-bridge
           disallowed-filters="$ctrl.disallowedFilters"
-          pre-filter="::$ctrl.preFilter"
+          bonus-query="$ctrl.bonusQuery"
           ></chpl-change-requests-wrapper-bridge>
       </div>
       <div class="panel panel-default">
