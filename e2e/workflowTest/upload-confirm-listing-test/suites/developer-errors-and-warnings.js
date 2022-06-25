@@ -13,6 +13,7 @@ const suite = {
     listingId: '15.02.04.2702.DEV2.12.00.1.200620',
     expectedErrors: [
       'The developer code from the CHPL Product Number 2702 does not match the code of the declared developer 2701.',
+      'The user-entered developer street address line 2 of \'Not A Match\' does not match the system value of \'null\'.',
     ],
     expectedWarnings: [
     ],
