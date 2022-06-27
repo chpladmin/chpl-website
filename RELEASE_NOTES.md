@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 11.36.0
+_27 June 2022_
+
+### Features
+* Filter Change Requests in the API, as opposed to on the front end
+* Change UX for downloading Change Request data
+
+---
+
 ## Version 11.35.4
 _13 June 2022_
 
