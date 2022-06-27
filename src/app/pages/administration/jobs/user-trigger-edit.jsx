@@ -125,7 +125,7 @@ function ChplUserTriggerEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      email: trigger.email || '',
+      email: props.trigger.email || '',
       range: 7,
     },
     onSubmit: () => {
