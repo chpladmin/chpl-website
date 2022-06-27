@@ -64,58 +64,53 @@ function ChplAttestationView(props) {
         {' '}
         { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
       </Typography>
-      { !exceptionPeriod
+      <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
+      <Typography gutterBottom>{attestations.statusText}</Typography>
+      { attestations.responses
         && (
-          <>
-            <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-            <Typography gutterBottom>{attestations.statusText}</Typography>
-            { attestations.responses
-              && (
-                <TableContainer component={Paper}>
-                  <Table
-                    aria-label="Developer Attestations details"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Attestation</TableCell>
-                        <TableCell>Response</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      { attestations.responses
-                        .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
-                        .map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell>
-                              <strong>
-                                { item.attestation.condition.name }
-                                {': '}
-                              </strong>
-                              { interpretLink(item.attestation.description) }
-                            </TableCell>
-                            <TableCell>
-                              { item.response.response }
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              )}
-            { attestations.datePublished && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
-             && (
-               <Button
-                 color="primary"
-                 id="create-attestation-exception-button"
-                 variant="contained"
-                 onClick={() => setExceptionPeriod(attestations.period)}
-                 disabled={!canCreateException}
-                 fullWidth
-               >
-                 Re-Open Submission
-               </Button>
-             )}
-          </>
+          <TableContainer component={Paper}>
+            <Table
+              aria-label="Developer Attestations details"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>Attestation</TableCell>
+                  <TableCell>Response</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { attestations.responses
+                  .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
+                  .map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <strong>
+                          { item.attestation.condition.name }
+                          {': '}
+                        </strong>
+                        { interpretLink(item.attestation.description) }
+                      </TableCell>
+                      <TableCell>
+                        { item.response.response }
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      { attestations.datePublished && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+        && (
+          <Button
+            color="primary"
+            id="create-attestation-exception-button"
+            variant="contained"
+            onClick={() => setExceptionPeriod(attestations.period)}
+            disabled={!canCreateException}
+            fullWidth
+          >
+            Re-Open Submission
+          </Button>
         )}
       { exceptionPeriod
         && (

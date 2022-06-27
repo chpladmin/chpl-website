@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import {
   Button,
+  Dialog,
+  DialogContent,
   Typography,
 } from '@material-ui/core';
 import { func, shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
 import { usePostAttestationException } from 'api/developer';
+import { ChplDialogTitle } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -46,34 +49,49 @@ function ChplAttestationCreateException(props) {
   };
 
   return (
-    <>
-      <Typography>
-        This action will re-open the Attestations submission feature for
-        {' '}
-        { developer.name }
-        {' for '}
-        { getDisplayDateFormat(period.periodStart) }
-        {' to '}
-        { getDisplayDateFormat(period.periodEnd) }
-        . Please confirm you want to continue.
-      </Typography>
-      <Button
-        color="primary"
-        id="create-attestation-exception-button"
-        variant="contained"
-        disabled={isSubmitting}
-        onClick={createAttestationException}
+    <Dialog
+      maxWidth="sm"
+      onClose={cancelCreatingException}
+      aria-labelledby="exception-details"
+      open
+    >
+      <ChplDialogTitle
+        id="exception-details"
+        onClose={cancelCreatingException}
       >
-        Confirm
-      </Button>
-      <Button
-        color="primary"
-        id="cancel-attestation-exception-button"
-        onClick={cancelCreatingException}
+        Re-open Attestations submission feature
+      </ChplDialogTitle>
+      <DialogContent
+        dividers
       >
-        Cancel
-      </Button>
-    </>
+        <Typography>
+          This action will re-open the Attestations submission feature for
+          {' '}
+          { developer.name }
+          {' for '}
+          { getDisplayDateFormat(period.periodStart) }
+          {' to '}
+          { getDisplayDateFormat(period.periodEnd) }
+          . Please confirm you want to continue.
+        </Typography>
+        <Button
+          color="primary"
+          id="create-attestation-exception-button"
+          variant="contained"
+          disabled={isSubmitting}
+          onClick={createAttestationException}
+        >
+          Confirm
+        </Button>
+        <Button
+          color="primary"
+          id="cancel-attestation-exception-button"
+          onClick={cancelCreatingException}
+        >
+          Cancel
+        </Button>
+      </DialogContent>
+    </Dialog>
   );
 }
 

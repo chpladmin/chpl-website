@@ -88,94 +88,91 @@ function ChplAttestationsView(props) {
       <Card>
         <CardHeader title="Attestations" />
         <CardContent className={classes.content}>
-          { !exceptionPeriod
-            && (
-              <>
-                <Typography variant="body1">
-                  Attestations information is displayed here if a health IT developer’s attestation of compliance with the
-                  {' '}
-                  <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Conditions and Maintenance of Certification requirements</a>
-                  {' '}
-                  was submitted. For more information, please visit the
-                  {' '}
-                  <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
-                  .
-                </Typography>
-                { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
-                  && (
-                    <TableContainer component={Paper}>
-                      <Table
-                        aria-label="Developer Attestations information"
-                      >
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Attestation Period</TableCell>
-                            <TableCell>Status</TableCell>
+          <>
+            <Typography variant="body1">
+              Attestations information is displayed here if a health IT developer’s attestation of compliance with the
+              {' '}
+              <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Conditions and Maintenance of Certification requirements</a>
+              {' '}
+              was submitted. For more information, please visit the
+              {' '}
+              <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
+              .
+            </Typography>
+            { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0
+              && (
+                <TableContainer component={Paper}>
+                  <Table
+                    aria-label="Developer Attestations information"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Attestation Period</TableCell>
+                        <TableCell>Status</TableCell>
+                        { canSeeAttestationData()
+                          && (
+                            <TableCell>
+                              <span className="sr-only">View Details</span>
+                            </TableCell>
+                          )}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      { attestations
+                        .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
+                        .map((item) => (
+                          <TableRow key={item.id}>
+                            <TableCell>
+                              { getDisplayDateFormat(item.attestationPeriod.periodStart) }
+                              {' '}
+                              to
+                              {' '}
+                              { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
+                            </TableCell>
+                            <TableCell>
+                              { item.statusText }
+                            </TableCell>
                             { canSeeAttestationData()
                               && (
                                 <TableCell>
-                                  <span className="sr-only">View Details</span>
+                                  { item.status === 'ATTESTATIONS_SUBMITTED'
+                                    ? (
+                                      <IconButton
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={() => viewAttestations(item)}
+                                        aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
+                                      >
+                                        <VisibilityIcon color="primary" />
+                                      </IconButton>
+                                    ) : (
+                                      <IconButton
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={() => setExceptionPeriod(item.attestationPeriod)}
+                                        aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
+                                        disabled={!canCreateException}
+                                      >
+                                        <AddIcon color="primary" />
+                                      </IconButton>
+                                    )}
                                 </TableCell>
                               )}
                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          { attestations
-                            .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
-                            .map((item) => (
-                              <TableRow key={item.id}>
-                                <TableCell>
-                                  { getDisplayDateFormat(item.attestationPeriod.periodStart) }
-                                  {' '}
-                                  to
-                                  {' '}
-                                  { getDisplayDateFormat(item.attestationPeriod.periodEnd) }
-                                </TableCell>
-                                <TableCell>
-                                  { item.statusText }
-                                </TableCell>
-                                { canSeeAttestationData()
-                                  && (
-                                    <TableCell>
-                                      { item.status === 'ATTESTATIONS_SUBMITTED'
-                                        ? (
-                                          <IconButton
-                                            color="primary"
-                                            variant="contained"
-                                            onClick={() => viewAttestations(item)}
-                                            aria-label={`View attestations for period ending ${item.attestationPeriod.periodEnd}`}
-                                          >
-                                            <VisibilityIcon color="primary" />
-                                          </IconButton>
-                                        ) : (
-                                          <IconButton
-                                            color="primary"
-                                            variant="contained"
-                                            onClick={() => setExceptionPeriod(item.attestationPeriod)}
-                                            aria-label={`Create attestations exception for period ending ${item.attestationPeriod.periodEnd}`}
-                                            disabled={!canCreateException}
-                                          >
-                                            <AddIcon color="primary" />
-                                          </IconButton>
-                                        )}
-                                    </TableCell>
-                                  )}
-                              </TableRow>
-                            ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )}
-              </>
-            )}
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+          </>
           { exceptionPeriod
-        && (
-          <ChplAttestationCreateException
-            developer={developer}
-            dispatch={handleDispatch}
-            period={exceptionPeriod}
-          />
-        )}
+            && (
+              <ChplAttestationCreateException
+                developer={developer}
+                dispatch={handleDispatch}
+                period={exceptionPeriod}
+              />
+            )}
         </CardContent>
         { hasAnyRole(['ROLE_DEVELOPER']) && hasAuthorityOn({ id: developer.id })
           && (
