@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  arrayOf, func, string,
-} from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
 
@@ -20,40 +18,36 @@ const analytics = {
 
 const staticFilters = [{
   ...defaultFilter,
-  key: 'currentStatusChangeDate',
+  key: 'currentStatusChangeDateTime',
   display: 'Last Updated',
   values: [
     { value: 'Before' },
     { value: 'After', default: '2022-01-01T00:00' },
   ],
-  meets: (item, values) => {
-    const canMeet = values
-      .filter((value) => value.selected)
-      .reduce((can, value) => can && (value.value === 'Before' ? item.currentStatusChangeDate < (new Date(value.selected)).getTime() : (new Date(value.selected)).getTime() < item.currentStatusChangeDate), true);
-    return canMeet;
-  },
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'currentStatusChangeDateTimeStart' : 'currentStatusChangeDateTimeEnd'}=${v.selected}`)
+    .join('&'),
   getValueDisplay: getDateDisplay,
   getValueEntry: getDateTimeEntry,
 }, {
   ...defaultFilter,
-  key: 'submittedDate',
+  key: 'submittedDateTime',
   display: 'Creation Date',
   values: [
     { value: 'Before' },
     { value: 'After', default: '2022-01-01T00:00' },
   ],
-  meets: (item, values) => {
-    const canMeet = values
-      .filter((value) => value.selected)
-      .reduce((can, value) => can && (value.value === 'Before' ? item.submittedDate < (new Date(value.selected)).getTime() : (new Date(value.selected)).getTime() < item.submittedDate), true);
-    return canMeet;
-  },
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'submittedDateTimeStart' : 'submittedDateTimeEnd'}=${v.selected}`)
+    .join('&'),
   getValueDisplay: getDateDisplay,
   getValueEntry: getDateTimeEntry,
 }];
 
 function ChplChangeRequests(props) {
-  const { disallowedFilters, preFilter } = props;
+  const { disallowedFilters, bonusQuery } = props;
   const { isOn } = useContext(FlagContext);
   const [attestationsEditIsOn, setAttestationsEditIsOn] = useState(false);
   const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
@@ -79,18 +73,12 @@ function ChplChangeRequests(props) {
       { value: 'Rejected' },
     ];
     setFilters((f) => f
-      .filter((filter) => filter.key !== 'currentStatusName')
+      .filter((filter) => filter.key !== 'currentStatusNames')
       .concat({
         ...defaultFilter,
-        key: 'currentStatusName',
+        key: 'currentStatusNames',
         display: 'Change Request Status',
         values,
-        meets: (item, vs) => {
-          const canMeet = vs
-            .filter((value) => value.selected)
-            .map((value) => value.value);
-          return canMeet.length === 0 || canMeet.includes(item.currentStatusName);
-        },
       }));
   }, [attestationsEditIsOn, demographicChangeRequestIsOn]);
 
@@ -111,18 +99,12 @@ function ChplChangeRequests(props) {
       return;
     }
     setFilters((f) => f
-      .filter((filter) => filter.key !== 'changeRequestTypeName')
+      .filter((filter) => filter.key !== 'changeRequestTypeNames')
       .concat({
         ...defaultFilter,
-        key: 'changeRequestTypeName',
+        key: 'changeRequestTypeNames',
         display: 'Change Request Type',
         values,
-        meets: (item, vs) => {
-          const canMeet = vs
-            .filter((value) => value.selected)
-            .map((value) => value.value);
-          return canMeet.length === 0 || canMeet.includes(item.changeRequestTypeName);
-        },
       }));
   }, [crtQuery.data, crtQuery.isLoading, crtQuery.isSuccess]);
 
@@ -134,7 +116,7 @@ function ChplChangeRequests(props) {
       <ChplChangeRequestsView
         analytics={analytics}
         disallowedFilters={disallowedFilters}
-        preFilter={preFilter}
+        bonusQuery={bonusQuery}
       />
     </FilterProvider>
   );
@@ -144,5 +126,5 @@ export default ChplChangeRequests;
 
 ChplChangeRequests.propTypes = {
   disallowedFilters: arrayOf(string).isRequired,
-  preFilter: func.isRequired,
+  bonusQuery: string.isRequired,
 };

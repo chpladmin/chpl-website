@@ -99,7 +99,7 @@ function ChplChangeRequestDemographicsView(props) {
         </Typography>
       </div>
       <div className={classes.detailsContainer}>
-        <Typography variant="subtitle1">Submitted details</Typography>
+        <Typography variant="subtitle1">Submitted demographics</Typography>
         <Typography>
           Self-Developer:
           {' '}
