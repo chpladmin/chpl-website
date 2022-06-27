@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Paper,
@@ -16,9 +16,11 @@ import ChplAttestationCreateException from './attestation-create-exception';
 
 import interpretLink from 'components/attestation/attestation-util';
 import { getDisplayDateFormat } from 'services/date-util';
+import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 function ChplAttestationView(props) {
+  const { hasAnyRole } = useContext(UserContext);
   const [attestations, setAttestations] = useState({});
   const [canCreateException, setCanCreateException] = useState(false);
   const [developer, setDeveloper] = useState({});
@@ -65,7 +67,7 @@ function ChplAttestationView(props) {
       { !exceptionPeriod
         && (
           <>
-            {attestations.datePublished
+            { attestations.datePublished && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
              && (
                <Button
                  color="primary"
