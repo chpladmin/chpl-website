@@ -2,7 +2,7 @@ import IndexWrapper from '../index-wrapper';
 
 import { ChplAnnouncementsWrapper } from './announcement';
 import { ChplApiKeyConfirm } from './api-key';
-import { ChplChangeRequestsWrapper } from './change-request';
+import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import {
   ChplAttestationCreateWrapper,
   ChplAttestationEditWrapper,

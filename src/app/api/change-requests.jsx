@@ -3,12 +3,44 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useAxios } from './axios';
 import options from './options';
 
-const useFetchChangeRequests = () => {
+const useFetchChangeRequest = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['change-requests', id], async () => {
+    if (id) {
+      const response = await axios.get(`change-requests/${id}`);
+      return response.data;
+    }
+    return {};
+  }, {
+    keepPreviousData: true,
+  });
+};
+const useFetchChangeRequestsLegacy = () => {
   const axios = useAxios();
   return useQuery(['change-requests'], async () => {
     const response = await axios.get('change-requests');
     return response.data;
   });
+};
+
+const useFetchChangeRequests = ({
+  orderBy = 'current_status_change_date_time',
+  pageNumber,
+  pageSize,
+  sortDescending = false,
+  query,
+}) => {
+  const axios = useAxios();
+  return useQuery(['change-requests/search', {
+    orderBy,
+    pageNumber,
+    pageSize,
+    sortDescending,
+    query,
+  }], async () => {
+    const response = await axios.get(`change-requests/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    return response.data;
+  }, { keepPreviousData: true });
 };
 
 const useFetchChangeRequestStatusTypes = () => {
@@ -37,6 +69,7 @@ const usePostChangeRequest = () => {
     }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
+      queryClient.invalidateQueries('change-requests/search');
       queryClient.invalidateQueries({
         predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
       });
@@ -44,6 +77,7 @@ const usePostChangeRequest = () => {
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
+        queryClient.invalidateQueries('change-requests/search');
         queryClient.invalidateQueries({
           predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
         });
@@ -63,6 +97,7 @@ const usePutChangeRequest = () => {
     }), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
+      queryClient.invalidateQueries('change-requests/search');
       queryClient.invalidateQueries({
         predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
       });
@@ -70,6 +105,7 @@ const usePutChangeRequest = () => {
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
+        queryClient.invalidateQueries('change-requests/search');
         queryClient.invalidateQueries({
           predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
         });
@@ -80,7 +116,9 @@ const usePutChangeRequest = () => {
 };
 
 export {
+  useFetchChangeRequest,
   useFetchChangeRequests,
+  useFetchChangeRequestsLegacy,
   useFetchChangeRequestStatusTypes,
   useFetchChangeRequestTypes,
   usePostChangeRequest,
