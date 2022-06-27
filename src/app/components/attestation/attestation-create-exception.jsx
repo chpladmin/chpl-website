@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import { func, shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -12,6 +13,12 @@ import { usePostAttestationException } from 'api/developer';
 import { ChplDialogTitle } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
+
+const useStyles = makeStyles({
+  buttonMargin: {
+    marginTop: '8px',
+  },
+});
 
 function ChplAttestationCreateException(props) {
   const { mutate } = usePostAttestationException();
@@ -47,6 +54,7 @@ function ChplAttestationCreateException(props) {
       },
     });
   };
+  const classes = useStyles();
 
   return (
     <Dialog
@@ -64,7 +72,7 @@ function ChplAttestationCreateException(props) {
       <DialogContent
         dividers
       >
-        <Typography>
+        <Typography gutterBottom>
           This action will re-open the Attestations submission feature for
           {' '}
           { developer.name }
@@ -75,20 +83,15 @@ function ChplAttestationCreateException(props) {
           . Please confirm you want to continue.
         </Typography>
         <Button
+          fullWidth
           color="primary"
           id="create-attestation-exception-button"
           variant="contained"
           disabled={isSubmitting}
           onClick={createAttestationException}
+          className={classes.buttonMargin}
         >
           Confirm
-        </Button>
-        <Button
-          color="primary"
-          id="cancel-attestation-exception-button"
-          onClick={cancelCreatingException}
-        >
-          Cancel
         </Button>
       </DialogContent>
     </Dialog>
