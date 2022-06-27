@@ -131,7 +131,8 @@ const SurveillanceRequirementEditComponent = {
       if (this.requirement.type.name === 'Certified Capability') {
         if (this.requirementCriterionType.title) {
           this.requirement.criterion = this.requirementCriterionType;
-        } else if (this.requirementCriterionType.number) {
+        }
+        if (this.requirementCriterionType.number) {
           this.requirement.requirement = this.requirementCriterionType.number;
         }
       } else {
