@@ -67,18 +67,6 @@ function ChplAttestationView(props) {
       { !exceptionPeriod
         && (
           <>
-            { attestations.datePublished && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
-             && (
-               <Button
-                 color="primary"
-                 id="create-attestation-exception-button"
-                 variant="contained"
-                 onClick={() => setExceptionPeriod(attestations.period)}
-                 disabled={!canCreateException}
-               >
-                 Re-Open Submission
-               </Button>
-             )}
             <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
             <Typography gutterBottom>{attestations.statusText}</Typography>
             { attestations.responses
@@ -114,6 +102,19 @@ function ChplAttestationView(props) {
                   </Table>
                 </TableContainer>
               )}
+            { attestations.datePublished && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+             && (
+               <Button
+                 color="primary"
+                 id="create-attestation-exception-button"
+                 variant="contained"
+                 onClick={() => setExceptionPeriod(attestations.period)}
+                 disabled={!canCreateException}
+                 fullWidth
+               >
+                 Re-Open Submission
+               </Button>
+             )}
           </>
         )}
       { exceptionPeriod
