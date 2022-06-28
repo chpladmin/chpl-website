@@ -40,6 +40,8 @@ const suite = {
       'The G2 Measure: Patient Electronic Access: Eligible Professional for RT2 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Patient-Specific Education: Eligible Professional for RT3 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Electronic Prescribing: Eligible Clinician for RT1 may not be referenced since this listing does not have ICS. The measure has been removed.',
+      'The G2 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
+      'The G1 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
     ],
     expectedWarnings: [],
   }, {
