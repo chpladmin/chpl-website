@@ -5,6 +5,7 @@ import {
   shape,
   string,
 } from 'prop-types';
+
 import acb from './acb';
 
 const criterion = shape({

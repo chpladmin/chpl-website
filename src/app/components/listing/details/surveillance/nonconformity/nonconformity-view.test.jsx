@@ -6,7 +6,9 @@ import '@testing-library/jest-dom';
 import { within } from '@testing-library/dom';
 import { when } from 'jest-when';
 import userEvent from '@testing-library/user-event';
+
 import * as angularReactHelper from '../../../../../services/angular-react-helper';
+
 import ChplNonconformityView from './nonconformity-view';
 
 const survWith1Nonconformity = {
@@ -195,7 +197,7 @@ const survWithRandomized = {
 
 const nonconformityTypes = [];
 
-jest.mock('../../../../util/criterion-title', () => () => <div>Criteria Title</div>);
+jest.mock('../../../../util/criterion-title', () => function criterionTitle() { return <div>Criteria Title</div>; });
 
 const dateUtilMock = {
   getDisplayDateFormat: jest.fn(() => 'June 1, 2020'),

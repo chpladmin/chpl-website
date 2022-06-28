@@ -2,6 +2,7 @@
 import {
   arrayOf, number, shape, string,
 } from 'prop-types';
+
 import surveillanceRequirement from './surveillance-requirement';
 import surveillanceType from './surveillance-type';
 
