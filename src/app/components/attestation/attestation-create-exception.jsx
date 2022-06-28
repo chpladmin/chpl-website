@@ -25,6 +25,7 @@ function ChplAttestationCreateException(props) {
   const { enqueueSnackbar } = useSnackbar();
   const { developer, dispatch, period } = props;
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const classes = useStyles();
 
   const cancelCreatingException = () => {
     dispatch('cancel');
@@ -54,7 +55,6 @@ function ChplAttestationCreateException(props) {
       },
     });
   };
-  const classes = useStyles();
 
   return (
     <Dialog
@@ -84,8 +84,8 @@ function ChplAttestationCreateException(props) {
         </Typography>
         <Button
           color="primary"
-          id="create-attestation-exception-button"
           variant="contained"
+          id="create-attestation-exception-button"
           disabled={isSubmitting}
           onClick={createAttestationException}
           className={classes.buttonMargin}
