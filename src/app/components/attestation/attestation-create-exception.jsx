@@ -83,7 +83,6 @@ function ChplAttestationCreateException(props) {
           . Please confirm you want to continue.
         </Typography>
         <Button
-          fullWidth
           color="primary"
           id="create-attestation-exception-button"
           variant="contained"
@@ -92,6 +91,15 @@ function ChplAttestationCreateException(props) {
           className={classes.buttonMargin}
         >
           Confirm
+        </Button>
+        <Button
+          color="default"
+          variant="contained"
+          id="cancel-attestation-exception-button"
+          onClick={cancelCreatingException}
+          className={classes.buttonMargin}
+        >
+          Cancel
         </Button>
       </DialogContent>
     </Dialog>
