@@ -7,7 +7,6 @@ import surveillanceType from './surveillance-type';
 
 const surveillance = shape({
   id: number,
-  authority: string,
   startDate: number,
   endDate: number,
   friendlyId: string,

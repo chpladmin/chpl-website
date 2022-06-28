@@ -25,15 +25,6 @@ const SurveillanceEditComponent = {
       this.data = angular.copy(this.resolve.surveillanceTypes);
 
       this.showFormErrors = false;
-      if (this.hasAnyRole(['ROLE_ACB'])) {
-        this.authority = 'ROLE_ACB';
-      }
-      if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-        this.authority = 'ROLE_ONC';
-      }
-      if (this.workType === 'initiate') {
-        this.surveillance.authority = this.authority;
-      }
       this.disableValidation = this.surveillance.errorMessages && this.surveillance.errorMessages.length > 0;
       if (this.surveillance.type) {
         this.surveillance.type = this.utilService.findModel(this.surveillance.type, this.data.surveillanceTypes.data, 'name');

@@ -115,7 +115,6 @@ const survWith1Nonconformity = {
       nonconformityTypeName: '170.315 (c)(1)',
     }],
   }],
-  authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
 };
 
@@ -191,7 +190,6 @@ const survWithRandomized = {
     }],
     requirementName: '170.315 (c)(1)',
   }],
-  authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
 };
 

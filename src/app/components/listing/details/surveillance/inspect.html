@@ -32,12 +32,11 @@
       <div class="col-sm-12">
         <button class="btn btn-ai-success pull-right"
                 ng-click="$ctrl.editSurveillance()"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
-        <strong>CHPL Product Number:</strong>{{ $ctrl.surveillance.certifiedProduct.chplProductNumber }}<br />
-        <strong>Start Date:</strong>{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.surveillance.startDay) }}<br />
-        <strong>End Date:</strong>{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.surveillance.endDay) }}<br />
-        <strong>Surveillance Type:</strong>{{ $ctrl.surveillance.type.name }}<br />
-        <strong>Number of sites surveilled:</strong>{{ $ctrl.surveillance.randomizedSitesUsed ? $ctrl.surveillance.randomizedSitesUsed : 'N/A' }}<br />
-        <strong>Surveillance initiated by:</strong>{{ $ctrl.surveillance.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}<br />
+        <strong>CHPL Product Number:</strong> {{ $ctrl.surveillance.certifiedProduct.chplProductNumber }}<br />
+        <strong>Start Date:</strong> {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.surveillance.startDay) }}<br />
+        <strong>End Date:</strong> {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.surveillance.endDay) }}<br />
+        <strong>Surveillance Type:</strong> {{ $ctrl.surveillance.type.name }}<br />
+        <strong>Number of sites surveilled:</strong> {{ $ctrl.surveillance.randomizedSitesUsed ? $ctrl.surveillance.randomizedSitesUsed : 'N/A' }}<br />
         <table class="table table-condensed">
           <thead>
             <tr>
