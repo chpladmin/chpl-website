@@ -24,7 +24,7 @@ const suites = [
   measuresErrorsAndWarnings,
   noErrors,
   optionalStandardsErrorsAndWarnings,
-  conformanceMethodsErrorsAndWarnings,
+  // conformanceMethodsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
   sedErrorsAndWarnings,
   svapErrorsAndWarnings,
