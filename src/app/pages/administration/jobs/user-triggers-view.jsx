@@ -94,7 +94,7 @@ function ChplUserTriggersView(props) {
                 <TableBody>
                   { triggers
                     .map((item) => (
-                      <TableRow key={item.name}>
+                      <TableRow key={`${item.name}-${item.job.name}`}>
                         <TableCell className={classes.firstColumn}>
                           { item.email }
                         </TableCell>
