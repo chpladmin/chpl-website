@@ -4,7 +4,7 @@ import { useAxios } from './axios';
 
 const useFetchAttestations = ({ developer, isAuthenticated }) => {
   const axios = useAxios();
-  return useQuery([`developers/${developer.id}/attestations`], async () => {
+  return useQuery(['developers/attestations', developer.id], async () => {
     const response = await axios.get(`/developers/${developer.id}/attestations`);
     return response.data;
   }, {
@@ -26,9 +26,7 @@ const usePostAttestationException = () => {
   return useMutation(async (data) => axios.post(`developers/${data.developer.id}/attestations/${data.period.id}/exception`)
     .then((response) => response), {
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        predicate: (query) => /developers\/.*attestations/.test(query.queryKey[0]),
-      });
+      queryClient.invalidateQueries('developers/attestations');
     },
   });
 };
