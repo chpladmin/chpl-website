@@ -1,16 +1,17 @@
 class AttestationsComponent {
   constructor() {
     this.elements = {
+      attestationsDetails: 'table[aria-label="Developer Attestations details"',
       attestationsTable: 'table[aria-label="Developer Attestations information"',
       cancelExceptionButton: '#cancel-attestation-exception-button',
-      createExceptionButton: '#create-attestation-exception-button',
-      attestationsDetails: 'table[aria-label="Developer Attestations details"',
       closeDetailsButton: '#close-dialog',
-      submitAttestations: '#create-attestation-change-request-button',
+      createExceptionButton: '#create-attestation-exception-button',
+      exceptionModalHeader: '#exception-details',
       nextButton: '#inspect-next',
       noncompliant: 'label=Noncompliant',
       signature: '#signature',
       submit: '#sign-electronically',
+      submitAttestations: '#create-attestation-change-request-button',
     };
   }
 
@@ -34,17 +35,11 @@ class AttestationsComponent {
       .click();
   }
 
-  get unattestedExceptionText() {
-    return $(this.elements.createExceptionButton)
+  get exceptionText() {
+    return $(this.elements.exceptionModalHeader)
       .parentElement()
+      .$$('div')[1]
       .$('p')
-      .getText();
-  }
-
-  get attestedExceptionText() {
-    return $(this.elements.createExceptionButton)
-      .parentElement()
-      .$$('p')[1]
       .getText();
   }
 

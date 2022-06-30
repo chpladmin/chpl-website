@@ -49,7 +49,7 @@ describe('the Attestations component', () => {
       it('should allow cancellation of creating an exception for an unattested period', () => {
         const periodStart = 'Jun 30, 2020';
         component.initiateUnattestedException(periodStart);
-        expect(component.unattestedExceptionText).toBe('This action will re-open the Attestations submission feature for Viztek, LLC for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
+        expect(component.exceptionText).toBe('This action will re-open the Attestations submission feature for Viztek, LLC for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
         expect(component.isCreatingException()).toBe(true);
         component.cancelException();
         expect(component.isCreatingException()).toBe(false);
@@ -115,7 +115,7 @@ describe('the Attestations component', () => {
       const periodStart = 'Jun 30, 2020';
       component.viewAttestations(periodStart);
       component.createException();
-      expect(component.attestedExceptionText).toBe('This action will re-open the Attestations submission feature for MDToolbox for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
+      expect(component.exceptionText).toBe('This action will re-open the Attestations submission feature for MDToolbox for Jun 30, 2020 to Mar 31, 2022. Please confirm you want to continue.');
       expect(component.isCreatingException()).toBe(true);
       component.cancelException();
       expect(component.isCreatingException()).toBe(false);
