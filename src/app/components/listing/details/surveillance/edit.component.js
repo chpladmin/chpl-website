@@ -183,6 +183,10 @@ const SurveillanceEditComponent = {
       });
     }
 
+    misorderedStartEndDays() {
+      return this.surveillance.startDay > this.surveillance.endDay;
+    }
+
     missingEndDay() {
       let noNcs = true;
       let allClosed = true;
