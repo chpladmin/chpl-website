@@ -1,6 +1,6 @@
 const suite = {
   description: 'with issues in the column headings',
-  file: '../../../resources/upload-listing-beta/2015_BogusColumns.csv',
+  file: '../../../resources/listings/2015_BogusColumns.csv',
   listings: [{
     listingId: '15.02.04.2701.COLS.12.00.1.200620',
     expectedErrors: [

@@ -1,6 +1,6 @@
 const suite = {
   description: 'with issues related to conformance methods',
-  file: '../../../resources/upload-listing-beta/2015_ConformanceMethods.csv',
+  file: '../../../resources/listings/2015_ConformanceMethods.csv',
   listings: [{
     listingId: '15.02.04.2701.CM01.12.00.1.200620',
     expectedErrors: [

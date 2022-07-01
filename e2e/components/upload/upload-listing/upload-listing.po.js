@@ -6,8 +6,6 @@ class UploadListingComponent {
       title: '.panel-title',
       chooseUploadListing: '#upload-listings',
       uploadButton: '.MuiButton-containedPrimary',
-      useLegacy: '#use-legacy',
-      usingModern: 'span=Using Modern Upload',
       uploadDone: (filename) => `div#notistack-snackbar*=${filename}`,
     };
   }
@@ -28,10 +26,7 @@ class UploadListingComponent {
     return $(this.elements.uploadButton);
   }
 
-  uploadListing(uploadfilePath, legacy = false) {
-    if (legacy && $(this.elements.usingModern).isDisplayed()) {
-      $(this.elements.useLegacy).click();
-    }
+  uploadListing(uploadfilePath) {
     const filePath = path.join(__dirname, uploadfilePath);
     this.chooseUploadListingButton.addValue(browser.uploadFile(filePath));
     this.uploadButton.click();

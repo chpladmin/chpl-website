@@ -1,6 +1,6 @@
 const suite = {
   description: 'with issues with CQMs',
-  file: '../../../resources/upload-listing-beta/2015_CQMs.csv',
+  file: '../../../resources/listings/2015_CQMs.csv',
   listings: [{
     listingId: '15.02.04.2701.CQM1.12.00.1.200620',
     expectedErrors: [

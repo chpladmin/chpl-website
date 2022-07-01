@@ -1,6 +1,6 @@
 const suite = {
   description: 'with invalid or missing data',
-  file: '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv',
+  file: '../../../resources/listings/2015_InvalidAndMissingData.csv',
   listings: [{
     listingId: '13A!.AA.04.8990.FMT.0A@.AA.A.20230729',
     expectedErrors: [

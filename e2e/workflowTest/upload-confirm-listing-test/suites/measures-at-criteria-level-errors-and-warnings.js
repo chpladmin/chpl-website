@@ -1,6 +1,6 @@
 const suite = {
   description: 'with issues related to measures specified at the criteria level',
-  file: '../../../resources/upload-listing-beta/2015_MeasuresAtCriteriaLevel.csv',
+  file: '../../../resources/listings/2015_MeasuresAtCriteriaLevel.csv',
   listings: [{
     listingId: '15.04.04.1722.MEA1.V1.00.1.210607',
     expectedErrors: [
