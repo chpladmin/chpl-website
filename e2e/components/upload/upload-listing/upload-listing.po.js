@@ -3,7 +3,8 @@ const path = require('path');
 class UploadListingComponent {
   constructor() {
     this.elements = {
-      title: '.panel-title',
+      root: 'chpl-upload-wrapper-bridge',
+      title: '.MuiCardHeader-title',
       chooseUploadListing: '#upload-listings',
       uploadButton: '.MuiButton-containedPrimary',
       uploadDone: (filename) => `div#notistack-snackbar*=${filename}`,
@@ -11,19 +12,19 @@ class UploadListingComponent {
   }
 
   uploadMessage(filename) {
-    return $(this.elements.uploadDone(filename));
+    return $(this.elements.root).$(this.elements.uploadDone(filename));
   }
 
   get title() {
-    return $(this.elements.title);
+    return $(this.elements.root).$(this.elements.title);
   }
 
   get chooseUploadListingButton() {
-    return $(this.elements.chooseUploadListing);
+    return $(this.elements.root).$(this.elements.chooseUploadListing);
   }
 
   get uploadButton() {
-    return $(this.elements.uploadButton);
+    return $(this.elements.root).$(this.elements.uploadButton);
   }
 
   uploadListing(uploadfilePath) {
