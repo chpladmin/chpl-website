@@ -24,7 +24,7 @@ const suite = {
     ],
     expectedWarnings: [
       'G2 Measure \'EC\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
-      'G2 Measure \'?\' was not found associated with 170.315 (e)(1) and has been removed from the listing.,',
+      'G2 Measure \'?\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
       'G1 Measure \'?\' was not found associated with ? and has been removed from the listing.',
       'Measure \'EC\' was not found associated with ? and has been removed from the listing.',
       'Measure \'?\' was not found associated with ? and has been removed from the listing.',
