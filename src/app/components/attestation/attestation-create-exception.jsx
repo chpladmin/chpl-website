@@ -2,21 +2,37 @@ import React, { useState } from 'react';
 import {
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
-  Typography,
+  DialogContentText,
+  Divider,
+  Slide,
   makeStyles,
 } from '@material-ui/core';
 import { func, shape, string } from 'prop-types';
 import { useSnackbar } from 'notistack';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { usePostAttestationException } from 'api/developer';
 import { ChplDialogTitle } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { developer as developerPropType } from 'shared/prop-types';
+import { utilStyles } from 'themes';
+
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const useStyles = makeStyles({
-  buttonMargin: {
-    marginTop: '8px',
+  ...utilStyles,
+  dialogTitle: {
+    fontWeight: 800,
+    fontSize: '1.5em',
+  },
+  dialogContent: {
+    color: '#000000',
+  },
+  dialogActions: {
+    justifyContent: 'flex-start',
   },
 });
 
@@ -62,6 +78,7 @@ function ChplAttestationCreateException(props) {
       onClose={cancelCreatingException}
       aria-labelledby="exception-details"
       open
+      TransitionComponent={Transition}
     >
       <ChplDialogTitle
         id="exception-details"
@@ -69,10 +86,9 @@ function ChplAttestationCreateException(props) {
       >
         Re-open Attestations submission feature
       </ChplDialogTitle>
-      <DialogContent
-        dividers
-      >
-        <Typography gutterBottom>
+      <Divider />
+      <DialogContent>
+        <DialogContentText className={classes.dialogContent}>
           This action will re-open the Attestations submission feature for
           {' '}
           { developer.name }
@@ -81,7 +97,10 @@ function ChplAttestationCreateException(props) {
           {' to '}
           { getDisplayDateFormat(period.periodEnd) }
           . Please confirm you want to continue.
-        </Typography>
+        </DialogContentText>
+      </DialogContent>
+      <Divider />
+      <DialogActions className={classes.dialogActions}>
         <Button
           color="primary"
           variant="contained"
@@ -91,6 +110,8 @@ function ChplAttestationCreateException(props) {
           className={classes.buttonMargin}
         >
           Confirm
+          {' '}
+          <CheckIcon className={classes.iconSpacing} />
         </Button>
         <Button
           color="default"
@@ -100,8 +121,10 @@ function ChplAttestationCreateException(props) {
           className={classes.buttonMargin}
         >
           Cancel
+          {' '}
+          <CloseIcon className={classes.iconSpacing} />
         </Button>
-      </DialogContent>
+      </DialogActions>
     </Dialog>
   );
 }
