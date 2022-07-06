@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 11.36.1
+_6 July 2022_
+
+### Bug Fixes
+* Allow editing of schedule for Questionable Activity report
+* Remove erroneous "management" link for ONC Users
+
+---
+
 ## Version 11.36.0
 _27 June 2022_
 
