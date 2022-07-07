@@ -1,15 +1,13 @@
 const ReportsListingsComponent = {
   templateUrl: 'chpl.reports/listings/listings.html',
-  bindings: {
-    listingId: '<',
-  },
   controller: class ReportsListingsComponent {
-    constructor($filter, $log, $state, $uibModal, DateUtil, ReportService, authService, networkService, utilService) {
+    constructor($filter, $log, $state, $stateParams, $uibModal, DateUtil, ReportService, authService, networkService, utilService) {
       'ngInject';
 
       this.$filter = $filter;
       this.$log = $log;
       this.$state = $state;
+      this.$stateParams = $stateParams;
       this.$uibModal = $uibModal;
       this.DateUtil = DateUtil;
       this.ReportService = ReportService;
@@ -57,11 +55,8 @@ const ReportsListingsComponent = {
               return ret;
             });
         });
-    }
-
-    $onChanges(changes) {
-      if (changes.listingId && changes.listingId.currentValue) {
-        this.listingId = angular.copy(changes.listingId.currentValue);
+      if (this.$stateParams.listingId) {
+        this.listingId = this.$stateParams.listingId;
       }
       this.search();
     }

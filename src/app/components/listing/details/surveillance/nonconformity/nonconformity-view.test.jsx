@@ -79,9 +79,7 @@ const survWith1Nonconformity = {
       resolution: 'QRDA I files can now be ran on demand.',
       documents: [],
       lastModifiedDate: 1597786978488,
-      nonconformityTypeName: '170.315 (c)(1)',
     }],
-    requirementName: '170.315 (c)(1)',
   }, {
     id: 1523,
     type: {
@@ -89,7 +87,6 @@ const survWith1Nonconformity = {
       name: 'Certified Capability',
     },
     requirement: '170.315 (k)(1)',
-    requirementName: '170.315 (k)(1)',
     result: {
       id: 1,
       name: 'Non-Conformity',
@@ -114,7 +111,6 @@ const survWith1Nonconformity = {
       resolution: 'QRDA I files can now be ran on demand.',
       documents: [],
       lastModifiedDate: 1597786978488,
-      nonconformityTypeName: '170.315 (c)(1)',
     }],
   }],
   lastModifiedDate: 1597786978488,
@@ -188,9 +184,7 @@ const survWithRandomized = {
       resolution: 'QRDA I files can now be ran on demand.',
       documents: [],
       lastModifiedDate: 1597786978488,
-      nonconformityTypeName: '170.315 (c)(1)',
     }],
-    requirementName: '170.315 (c)(1)',
   }],
   lastModifiedDate: 1597786978488,
 };

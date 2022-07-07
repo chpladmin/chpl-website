@@ -5,7 +5,9 @@ import {
 import '@testing-library/jest-dom';
 import { within } from '@testing-library/dom';
 import { when } from 'jest-when';
+
 import * as angularReactHelper from '../../../../services/angular-react-helper';
+
 import ChplSurveillanceView from './surveillance-view';
 
 const survWith1Nonconformity = {
@@ -76,9 +78,7 @@ const survWith1Nonconformity = {
       resolution: 'QRDA I files can now be ran on demand.',
       documents: [],
       lastModifiedDate: 1597786978488,
-      nonconformityTypeName: '170.315 (c)(1)',
     }],
-    requirementName: '170.315 (c)(1)',
   }],
   lastModifiedDate: 1597786978488,
 };
@@ -123,7 +123,6 @@ const survWith0Nonconformity = {
       name: 'No Non-Conformity',
     },
     nonconformities: [],
-    requirementName: '170.315 (c)(1)',
   }],
   lastModifiedDate: 1597786978488,
 };
@@ -155,47 +154,63 @@ const dateUtilMock = {
   getDisplayDateFormat: jest.fn(() => 'June 1, 2020'),
 };
 
-jest.mock('./nonconformity/nonconformity-view', () => () => <div data-testid="non-conformity-component" />);
-jest.mock('../../../util/criterion-title', () => () => <div>Criteria Title</div>);
+jest.mock('./nonconformity/nonconformity-view', () => function ncView() { return <div data-testid="non-conformity-component" />; });
+jest.mock('../../../util/criterion-title', () => function criterionTitle() { return <div>Criteria Title</div>; });
 
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(dateUtilMock);
+
+const surveillanceRequirementsMock = {
+  criteriaOptions2014: [],
+  criteriaOptions2015: [],
+  realWorldTestingOptions: [],
+  transparencyOptions: [],
+};
+const nonconformityTypesMock = [];
 
 describe('the ChplSurveillanceView component', () => {
   afterEach(() => {
     cleanup();
   });
 
-  it('should display the table of attributes', async () => {
-    render(
-      <ChplSurveillanceView
-        surveillance={survWith1Nonconformity}
-      />,
-    );
-    const table = screen.getByLabelText('Surveillance Table');
-
-    await waitFor(() => {
-      expect(table).toBeVisible();
+  describe('with basic display requirements', () => {
+    beforeEach(() => {
+      render(
+        <ChplSurveillanceView
+          surveillance={survWith1Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
+        />,
+      );
     });
-  });
-  it('should use the DateUtil.timestampToString to format dates', async () => {
-    render(
-      <ChplSurveillanceView
-        surveillance={survWith1Nonconformity}
-      />,
-    );
-    await waitFor(() => {
-      expect(dateUtilMock.getDisplayDateFormat).toHaveBeenCalled();
+
+    it('should display the table of attributes', async () => {
+      const table = screen.getByLabelText('Surveillance Table');
+
+      await waitFor(() => {
+        expect(table).toBeVisible();
+      });
+    });
+
+    it('should use the DateUtil.timestampToString to format dates', async () => {
+      await waitFor(() => {
+        expect(dateUtilMock.getDisplayDateFormat).toHaveBeenCalled();
+      });
     });
   });
 
   describe('when the surveillance has a closed non-conformity', () => {
-    it('should display the requirement information and criteria title', async () => {
+    beforeEach(() => {
       render(
         <ChplSurveillanceView
           surveillance={survWith1Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
+    });
+
+    it('should display the requirement information and criteria title', async () => {
       const cell = screen.getByTestId('reqs-surveilled-cell');
 
       await waitFor(() => {
@@ -205,24 +220,14 @@ describe('the ChplSurveillanceView component', () => {
     });
 
     it('should display the non-conformities header', async () => {
-      render(
-        <ChplSurveillanceView
-          surveillance={survWith1Nonconformity}
-        />,
-      );
       const header = screen.getByTestId('non-conformity-header');
 
       await waitFor(() => {
         expect(header).toBeVisible();
       });
     });
-    it('should display 1 non-conformity component', async () => {
-      render(
-        <ChplSurveillanceView
-          surveillance={survWith1Nonconformity}
-        />,
-      );
 
+    it('should display 1 non-conformity component', async () => {
       await waitFor(() => {
         const components = screen.getAllByTestId('non-conformity-component');
         expect(components.length).toEqual(1);
@@ -231,25 +236,25 @@ describe('the ChplSurveillanceView component', () => {
   });
 
   describe('when the surveillance has 0 non-conformities', () => {
-    it('should not display the non-conformities header', async () => {
+    beforeEach(() => {
       render(
         <ChplSurveillanceView
           surveillance={survWith0Nonconformity}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
+    });
+
+    it('should not display the non-conformities header', async () => {
       const header = screen.queryByTestId('non-conformity-header');
 
       await waitFor(() => {
         expect(header).toBeNull();
       });
     });
-    it('should display 0 non-conformity components', async () => {
-      render(
-        <ChplSurveillanceView
-          surveillance={survWith0Nonconformity}
-        />,
-      );
 
+    it('should display 0 non-conformity components', async () => {
       await waitFor(() => {
         const components = screen.queryAllByTestId('non-conformity-component');
         expect(components.length).toEqual(0);
@@ -258,12 +263,17 @@ describe('the ChplSurveillanceView component', () => {
   });
 
   describe('when the surveillance has 0 requirements', () => {
-    it('should display "None" for the Requirements Surveilled', async () => {
+    beforeEach(() => {
       render(
         <ChplSurveillanceView
           surveillance={survWithNoRequirements}
+          surveillanceRequirements={surveillanceRequirementsMock}
+          nonconformityTypes={nonconformityTypesMock}
         />,
       );
+    });
+
+    it('should display "None" for the Requirements Surveilled', async () => {
       const cell = screen.getByTestId('reqs-surveilled-cell');
 
       await waitFor(() => {

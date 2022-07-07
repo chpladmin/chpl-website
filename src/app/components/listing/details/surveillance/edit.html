@@ -114,6 +114,7 @@
     <div class="text-danger text-left" ng-if="($ctrl.editForm.$invalid ||
                                               !$ctrl.surveillance.requirements ||
                                               $ctrl.surveillance.requirements.length === 0 ||
+                                              $ctrl.misorderedStartEndDays() ||
                                               $ctrl.missingEndDay())
                                               && $ctrl.showFormErrors">
       The following error(s) must be fixed:
@@ -125,10 +126,11 @@
         <li ng-if="$ctrl.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
         <li ng-if="$ctrl.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
         <li ng-if="!$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
+        <li ng-if="$ctrl.misorderedStartEndDays()">Start Date must be before or on End Date</li>
         <li ng-if="$ctrl.missingEndDay()">End Date is required when there are no open Nonconformities</li>
       </ul>
     </div>
-    <button ng-disabled="($ctrl.editForm.$invalid || !$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0 || $ctrl.missingEndDay()) && $ctrl.showFormErrors && !$ctrl.disableValidation"
+    <button ng-disabled="($ctrl.editForm.$invalid || !$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0 || $ctrl.misorderedStartEndDays() || $ctrl.missingEndDay()) && $ctrl.showFormErrors && !$ctrl.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="$ctrl.showFormErrors = true"
             ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
