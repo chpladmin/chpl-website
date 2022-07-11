@@ -1,4 +1,4 @@
-export const SurveillanceRequirementEditComponent = {
+const SurveillanceRequirementEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/requirement/edit.html',
   bindings: {
     resolve: '<',
@@ -8,6 +8,7 @@ export const SurveillanceRequirementEditComponent = {
   controller: class SurveillanceRequirementEditController {
     constructor($log, $uibModal, authService, utilService) {
       'ngInject';
+
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.hasAnyRole = authService.hasAnyRole;
@@ -32,17 +33,17 @@ export const SurveillanceRequirementEditComponent = {
       }
       if (this.requirement.criterion) {
         this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-          .find(t => t.number === this.requirement.criterion.number && t.title === this.requirement.criterion.title);
+          .find((t) => t.number === this.requirement.criterion.number && t.title === this.requirement.criterion.title);
       } else {
         this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-          .find(t => t.number === this.requirement.requirement);
+          .find((t) => t.number === this.requirement.requirement);
       }
     }
 
     addNonconformity() {
-      let data = angular.copy(this.data);
+      const data = angular.copy(this.data);
       if (this.hasAnyRole(['ROLE_ACB'])) {
-        data.nonconformityTypes.data = data.nonconformityTypes.data.filter(option => !option.removed);
+        data.nonconformityTypes.data = data.nonconformityTypes.data.filter((option) => !option.removed);
       }
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceNonconformityEdit',
@@ -51,7 +52,7 @@ export const SurveillanceRequirementEditComponent = {
         keyboard: false,
         resolve: {
           disableValidation: () => false,
-          nonconformity: () => { return {}; },
+          nonconformity: () => ({}),
           randomized: () => this.randomized,
           randomizedSitesUsed: () => this.randomizedSitesUsed,
           requirementId: () => this.requirement.id,
@@ -61,12 +62,12 @@ export const SurveillanceRequirementEditComponent = {
         },
         size: 'lg',
       });
-      this.modalInstance.result.then(response => {
+      this.modalInstance.result.then((response) => {
         if (!this.requirement.nonconformities) {
           this.requirement.nonconformities = [];
         }
         this.requirement.nonconformities.push(response);
-      }, result => {
+      }, (result) => {
         this.$log.info(result);
       });
     }
@@ -76,7 +77,7 @@ export const SurveillanceRequirementEditComponent = {
     }
 
     deleteNonconformity(noncon) {
-      for (var i = 0; i < this.requirement.nonconformities.length; i++) {
+      for (let i = 0; i < this.requirement.nonconformities.length; i += 1) {
         if (angular.equals(this.requirement.nonconformities[i], noncon)) {
           this.requirement.nonconformities.splice(i, 1);
         }
@@ -102,9 +103,9 @@ export const SurveillanceRequirementEditComponent = {
         },
         size: 'lg',
       });
-      this.modalInstance.result.then(response => {
-        var found = false;
-        for (var i = 0; i < this.requirement.nonconformities.length; i++) {
+      this.modalInstance.result.then((response) => {
+        let found = false;
+        for (let i = 0; i < this.requirement.nonconformities.length; i += 1) {
           if (this.requirement.nonconformities[i].guiId === response.guiId) {
             this.requirement.nonconformities[i] = response;
             found = true;
@@ -113,14 +114,14 @@ export const SurveillanceRequirementEditComponent = {
         if (!found) {
           this.requirement.nonconformities.push(response);
         }
-      }, result => {
+      }, (result) => {
         this.$log.info(result);
       });
     }
 
     isNonconformityRequired() {
-      return (this.requirement.result && this.requirement.result.name === 'Non-Conformity') &&
-        (!this.requirement.nonconformities || this.requirement.nonconformities.length === 0);
+      return (this.requirement.result && this.requirement.result.name === 'Non-Conformity')
+        && (!this.requirement.nonconformities || this.requirement.nonconformities.length === 0);
     }
 
     save() {
@@ -130,9 +131,12 @@ export const SurveillanceRequirementEditComponent = {
       if (this.requirement.type.name === 'Certified Capability') {
         if (this.requirementCriterionType.title) {
           this.requirement.criterion = this.requirementCriterionType;
-        } else if (this.requirementCriterionType.number) {
+        }
+        if (this.requirementCriterionType.number) {
           this.requirement.requirement = this.requirementCriterionType.number;
         }
+      } else {
+        this.requirement.criterion = undefined;
       }
       this.close({ $value: this.requirement });
     }
@@ -150,3 +154,5 @@ export const SurveillanceRequirementEditComponent = {
 angular
   .module('chpl.components')
   .component('aiSurveillanceRequirementEdit', SurveillanceRequirementEditComponent);
+
+export default SurveillanceRequirementEditComponent;

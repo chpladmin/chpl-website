@@ -6,12 +6,11 @@ const SurveillanceNonconformityEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceNonconformityEditController {
-    constructor($log, API, Upload, authService, networkService, utilService) {
+    constructor($log, API, authService, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
       this.API = API;
-      this.Upload = Upload;
       this.networkService = networkService;
       this.utilService = utilService;
       this.sortNonconformityTypes = utilService.sortNonconformityTypes;
@@ -75,46 +74,11 @@ const SurveillanceNonconformityEditComponent = {
       }
       if (this.nonconformityType.title) {
         this.nonconformity.criterion = this.nonconformityType;
+      } else {
+        this.nonconformity.criterion = undefined;
       }
       this.nonconformity.nonconformityType = this.nonconformityType.number;
       this.close({ $value: this.nonconformity });
-    }
-
-    upload() {
-      if (this.file) {
-        this.item.data = {
-          file: this.file,
-        };
-        const that = this;
-        this.uploadErrors = [];
-        this.Upload.upload(this.item).then((response) => {
-          that.nonconformity.documents.push({
-            fileName: `${response.config.data.file.name} is pending`,
-            fileType: response.config.data.file.type,
-          });
-          that.uploadMessage = `File "${response.config.data.file.name}" was uploaded successfully.`;
-          that.uploadSuccess = true;
-          that.file = undefined;
-        }, (error) => {
-          if (error.data.fileName) {
-            that.uploadMessage = `File "${error.data.fileName}" was not uploaded successfully.`;
-          } else if (error.config.data.file.name) {
-            that.uploadMessage = `File "${error.config.data.file.name}" was not uploaded successfully.`;
-          } else {
-            that.uploadMessage = 'File was not uploaded successfully.';
-          }
-          if (error.data.error) {
-            that.uploadErrors.push(error.data);
-          } else if (error.data.errorMessages) {
-            that.uploadErrors.push(error.data.errorMessages);
-          }
-          that.uploadSuccess = false;
-          that.file = undefined;
-        }, (event) => {
-          that.progressPercentage = parseInt(100.0 * (event.loaded / event.total), 10);
-          that.$log.info(`progress: ${that.progressPercentage}% ${event.config.data.file.name}`);
-        });
-      }
     }
   },
 };
