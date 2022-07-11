@@ -15,12 +15,15 @@ import {
 import { arrayOf, func } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-import theme from '../../../themes/theme';
-import { ChplEllipsis, ChplSortableHeaders } from '../../util';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { complaint as complaintPropType } from '../../../shared/prop-types';
+import ChplComplaintsDownload from './complaints-download';
 
-const useStyles = makeStyles(() => ({
+import { ChplEllipsis, ChplSortableHeaders } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { complaint as complaintPropType } from 'shared/prop-types';
+import { theme, utilStyles } from 'themes';
+
+const useStyles = makeStyles({
+  ...utilStyles,
   container: {
     maxHeight: '64vh',
   },
@@ -31,16 +34,13 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#853544',
     },
   },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   statusIndicatorOpen: {
     color: '#66926d',
   },
   statusIndicatorClosed: {
     color: 'rgba(0, 0, 0, 0.87)',
   },
-}));
+});
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const headers = [
@@ -110,6 +110,7 @@ function ChplComplaints(props) {
 
   return (
     <ThemeProvider theme={theme}>
+      <ChplComplaintsDownload />
       <TableContainer className={classes.container} component={Paper}>
         <Table
           stickyHeader

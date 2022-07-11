@@ -112,10 +112,10 @@
         </button>
       </div>
     </div>
-    <chpl-complaints-bridge
+    <chpl-complaints-wrapper-bridge
       ng-if="$ctrl.complaints"
       complaints="$ctrl.displayedComplaints"
-      dispatch="::$ctrl.handleDispatch"></chpl-complaints-bridge>
+      dispatch="::$ctrl.handleDispatch"></chpl-complaints-wrapper-bridge>
   </div>
   <chpl-complaint-view-bridge
     ng-if="$ctrl.isViewing"

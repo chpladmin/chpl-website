@@ -23,7 +23,7 @@ import {
   ChplComplaintAdd,
   ChplComplaintEdit,
   ChplComplaintView,
-  ChplComplaints,
+  ChplComplaintsWrapper,
 } from './surveillance/complaints';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
@@ -69,7 +69,7 @@ angular
   .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
   .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
-  .component('chplComplaintsBridge', reactToAngularComponent(ChplComplaints))
+  .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
   .component('chplConfirmDeveloperWrapperBridge', reactToAngularComponent(ChplConfirmDeveloperWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
