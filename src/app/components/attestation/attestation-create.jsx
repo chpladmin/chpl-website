@@ -114,12 +114,16 @@ function ChplAttestationCreate(props) {
         </Typography>
         { period
           && (
-            <Typography gutterBottom>
+            <Typography gutterBottom variant="body1">
+              <strong>Attestation Period:</strong>
+              {' '}
+              [
               { getDisplayDateFormat(period.periodStart) }
               {' '}
               -
               {' '}
               { getDisplayDateFormat(period.periodEnd) }
+              ]
             </Typography>
           )}
       </Container>
