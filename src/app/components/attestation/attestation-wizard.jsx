@@ -221,13 +221,11 @@ function ChplAttestationWizard(props) {
                   <Typography gutterBottom variant="body1">
                     <strong>Attestation Period:</strong>
                     {' '}
-                    [
                     {DateUtil.getDisplayDateFormat(period.periodStart)}
                     {' '}
                     -
                     {' '}
                     {DateUtil.getDisplayDateFormat(period.periodEnd)}
-                    ]
                   </Typography>
                   <Typography gutterBottom variant="body1">
                     As a health IT developer of certified health IT that had an active certification under the ONC Health IT Certification Program at any time during the Attestation Period, please indicate your compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement for the portion of the Attestation Period you had an active certification.
