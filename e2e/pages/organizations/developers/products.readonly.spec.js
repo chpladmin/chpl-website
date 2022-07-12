@@ -118,8 +118,8 @@ describe('the Product part of the Developers page', () => {
         page.selectAllCertificationStatus();
       });
 
-      describe('when on the "MEDITECH Expanse 2.2 Oncology" product', () => {
-        const productName = 'MEDITECH Expanse 2.2 Oncology';
+      describe('when on the "MEDITECH Expanse (6.16) Core HCIS" product', () => {
+        const productName = 'MEDITECH Expanse (6.16) Core HCIS';
 
         beforeEach(() => {
           product = page.getProduct(productName);
