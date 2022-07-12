@@ -2,6 +2,7 @@
 import {
   arrayOf, number, shape, string,
 } from 'prop-types';
+
 import criterion from './criterion';
 import surveillanceRequirementType from './surveillance-requirement-type';
 import surveillanceResultType from './surveillance-result-type';
@@ -11,7 +12,6 @@ const surveillanceRequirement = shape({
   id: number,
   criterion,
   requirement: string,
-  requirementName: string,
   nonconformities: arrayOf(surveillanceNonconformity),
   result: surveillanceResultType,
   type: surveillanceRequirementType,

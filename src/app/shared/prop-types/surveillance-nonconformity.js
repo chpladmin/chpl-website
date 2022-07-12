@@ -2,6 +2,7 @@
 import {
   arrayOf, number, shape, string,
 } from 'prop-types';
+
 import criterion from './criterion';
 import surveillanceNonconformityStatus from './surveillance-nonconformity-status';
 import surveillanceNonconformityDocument from './surveillance-nonconformity-document';
@@ -18,7 +19,6 @@ const surveillanceNonconformity = shape({
   documents: arrayOf(surveillanceNonconformityDocument),
   findings: string,
   nonconformityType: string,
-  nonconformityTypeName: string,
   resolution: string,
   sitesPassed: number,
   status: surveillanceNonconformityStatus,

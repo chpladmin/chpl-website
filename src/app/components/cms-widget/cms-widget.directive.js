@@ -29,6 +29,7 @@ import 'jspdf-autotable';
     vm.compare = compare;
     vm.create = create;
     vm.isInList = isInList;
+    vm.isOn = featureFlags.isOn;
     vm.generatePdf = generatePdf;
     vm.removeProduct = removeProduct;
     vm.search = search;
@@ -430,28 +431,53 @@ import 'jspdf-autotable';
           {'key': '|,170.314 (d)(8),170.315 (d)(8)', 'description': '(8) #170.314(d)(8) or #170.315(d)(8)'},
         ];
       } else if (year === '2015') {
-        return [
-          {'key': null, 'description': 'Demographics'},
-          {'key': '170.315 (a)(5)', 'description': '#170.315(a)(5)'},
-          {'key': null, 'description': 'Implantable Device List'},
-          {'key': '170.315 (a)(14)', 'description': '#170.315(a)(14)'},
-          {'key': null, 'description': 'Clinical Decision Support'},
-          {'key': '170.315 (a)(9)', 'description': '#170.315(a)(9)'},
-          {'key': null, 'description': 'Computerized Provider Order Entry'},
-          {'key': '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', 'description': '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
-          {'key': null, 'description': 'Clinical Quality Measures-Record and Export'},
-          {'key': '170.315 (c)(1)', 'description': '#170.315(c)(1)'},
-          {'key': null, 'description': 'Transitions of Care'},
-          {'key': '170.315 (b)(1)', 'description': '#170.315(b)(1) or #170.315(b)(1) (Cures Update)'},
-          {'key': null, 'description': 'Application Access-Patient Selection'},
-          {'key': '170.315 (g)(7)', 'description': '#170.315(g)(7)'},
-          {'key': null, 'description': 'Application Access-Data Category Request'},
-          {'key': '|,170.315 (g)(8),170.315 (g)(10)', 'description': '#170.315(g)(8) or #170.315(g)(10)'},
-          {'key': null, 'description': 'Application Access-All Data Request'},
-          {'key': '170.315 (g)(9)', 'description': '#170.315(g)(9) or #170.315(g)(9) (Cures Update)'},
-          {'key': null, 'description': 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
-          {'key': '|,170.315 (h)(1),170.315 (h)(2)', 'description': '#170.315(h)(1) or #170.315(h)(2)'},
-        ];
+        if (vm.isOn('erd-phase-2')) {
+          return [
+            {'key': null, 'description': 'Demographics'},
+            {'key': '170.315 (a)(5)', 'description': '#170.315(a)(5)'},
+            {'key': null, 'description': 'Implantable Device List'},
+            {'key': '170.315 (a)(14)', 'description': '#170.315(a)(14)'},
+            {'key': null, 'description': 'Clinical Decision Support'},
+            {'key': '170.315 (a)(9)', 'description': '#170.315(a)(9)'},
+            {'key': null, 'description': 'Computerized Provider Order Entry'},
+            {'key': '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', 'description': '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
+            {'key': null, 'description': 'Clinical Quality Measures-Record and Export'},
+            {'key': '170.315 (c)(1)', 'description': '#170.315(c)(1)'},
+            {'key': null, 'description': 'Transitions of Care'},
+            {'key': '170.315 (b)(1)', 'description': '#170.315(b)(1) (Cures Update)'},
+            {'key': null, 'description': 'Application Access-Patient Selection'},
+            {'key': '170.315 (g)(7)', 'description': '#170.315(g)(7)'},
+            {'key': null, 'description': 'Application Access-Data Category Request'},
+            {'key': '170.315 (g)(10)', 'description': '#170.315(g)(10)'},
+            {'key': null, 'description': 'Application Access-All Data Request'},
+            {'key': '170.315 (g)(9)', 'description': '#170.315(g)(9) (Cures Update)'},
+            {'key': null, 'description': 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
+            {'key': '|,170.315 (h)(1),170.315 (h)(2)', 'description': '#170.315(h)(1) or #170.315(h)(2)'},
+          ];
+        } else {
+          return [
+            {'key': null, 'description': 'Demographics'},
+            {'key': '170.315 (a)(5)', 'description': '#170.315(a)(5)'},
+            {'key': null, 'description': 'Implantable Device List'},
+            {'key': '170.315 (a)(14)', 'description': '#170.315(a)(14)'},
+            {'key': null, 'description': 'Clinical Decision Support'},
+            {'key': '170.315 (a)(9)', 'description': '#170.315(a)(9)'},
+            {'key': null, 'description': 'Computerized Provider Order Entry'},
+            {'key': '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', 'description': '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
+            {'key': null, 'description': 'Clinical Quality Measures-Record and Export'},
+            {'key': '170.315 (c)(1)', 'description': '#170.315(c)(1)'},
+            {'key': null, 'description': 'Transitions of Care'},
+            {'key': '170.315 (b)(1)', 'description': '#170.315(b)(1) or #170.315(b)(1) (Cures Update)'},
+            {'key': null, 'description': 'Application Access-Patient Selection'},
+            {'key': '170.315 (g)(7)', 'description': '#170.315(g)(7)'},
+            {'key': null, 'description': 'Application Access-Data Category Request'},
+            {'key': '|,170.315 (g)(8),170.315 (g)(10)', 'description': '#170.315(g)(8) or #170.315(g)(10)'},
+            {'key': null, 'description': 'Application Access-All Data Request'},
+            {'key': '170.315 (g)(9)', 'description': '#170.315(g)(9) or #170.315(g)(9) (Cures Update)'},
+            {'key': null, 'description': 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
+            {'key': '|,170.315 (h)(1),170.315 (h)(2)', 'description': '#170.315(h)(1) or #170.315(h)(2)'},
+          ];
+        }
       } else if (year === '2014') {
         return [
           {'key': null, 'description': 'CPOE at-'},
