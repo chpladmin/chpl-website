@@ -1,136 +1,78 @@
-import DownloadPage from './download.po';
+import LoginComponent from '../../../components/login/login.po';
 import Hooks from '../../../utilities/hooks';
-import config from '../../../config/mainConfig';
 
-const path = require('path');
-const fs = require('fs');
-const inputs = require('./download-dp');
+import DownloadPage from './download.po';
 
 let hooks;
+let login;
 let page;
 
 describe('the Download page', () => {
   beforeEach(async () => {
     page = new DownloadPage();
+    login = new LoginComponent();
     hooks = new Hooks();
     await hooks.open('#/resources/download');
   });
 
   describe('2015/2014/2011 Edition products section', () => {
     it('should have correct information about 2015 edition products file', () => {
-      const productFile2015 = 'The 2015 Edition Products file is updated nightly.';
-      expect(page.downloadPage.getText()).toContain(productFile2015);
+      const expectedText = 'The 2015 Edition Products file is updated nightly.';
+      expect(page.content.getText()).toContain(expectedText);
     });
 
     it('should have correct information about 2014 and 2011 edition products file', () => {
-      const productFile2014And2011 = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
-      expect(page.downloadPage.getText()).toContain(productFile2014And2011);
+      const expectedText = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
+      expect(page.content.getText()).toContain(expectedText);
     });
   });
 
   describe('2015/2014 Edition summary section', () => {
     it('should have correct information about 2015 edition summary file', () => {
-      const summaryFile2015 = 'The 2015 Edition Summary file is updated nightly.';
-      expect(page.downloadPage.getText()).toContain(summaryFile2015);
+      const expectedText = 'The 2015 Edition Summary file is updated nightly.';
+      expect(page.content.getText()).toContain(expectedText);
     });
 
     it('should have correct information about 2014 edition summary file', () => {
-      const summaryFile2014 = 'The 2014 Edition Summary file is updated quarterly.';
-      expect(page.downloadPage.getText()).toContain(summaryFile2014);
+      const expectedText = 'The 2014 Edition Summary file is updated quarterly.';
+      expect(page.content.getText()).toContain(expectedText);
     });
   });
 
   describe('compliance activities section', () => {
     it('should have correct information about Surveillance Activity', () => {
-      const surveillanceActivity = 'Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.';
-      expect(page.downloadPage.getText()).toContain(surveillanceActivity);
+      const expectedText = 'Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.';
+      expect(page.content.getText()).toContain(expectedText);
     });
 
     it('should have correct information about Surveillance Non-Conformities', () => {
-      const surveillanceNonConformity = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.';
-      expect(page.downloadPage.getText()).toContain(surveillanceNonConformity);
+      const expectedText = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.';
+      expect(page.content.getText()).toContain(expectedText);
     });
 
     it('should have correct information about Direct Review Activity', () => {
-      const directReview = 'Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.';
-      expect(page.downloadPage.getText()).toContain(directReview);
+      const expectedText = 'Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.';
+      expect(page.content.getText()).toContain(expectedText);
     });
   });
 
-  inputs.forEach((input) => {
-    const {
-      file,
-      definitionFileName,
-      dataFileName,
-      definitionFileSize,
-      fileExtension,
-      dataFileSize,
-      generationFrequencyInDays,
-      definitionFileLines,
-      dataLines,
-    } = input;
-
-    xdescribe(`when downloading the ${file} definition file`, () => {
-      it(`should download file successfully with file size more than ${definitionFileSize} KB`, () => {
-        if (!(file.includes('2014 edition products (xml)') || file.includes('2011 edition products (xml)'))) {
-          page.downloadDefinitionFile(file);
-          browser.pause(config.timeout);
-          const filePath = path.join(global.downloadDir, definitionFileName);
-          expect(fs.existsSync(filePath)).toBe(true);
-          const stat = fs.statSync(filePath);
-          expect(stat.size / 1000).toBeGreaterThan(definitionFileSize);
-        }
-      });
-
-      if (fileExtension.includes('csv')) {
-        it(`should have at least ${definitionFileLines} rows in the file`, () => {
-          page.downloadDefinitionFile(file);
-          browser.pause(config.timeout);
-          const filePath = path.join(global.downloadDir, definitionFileName);
-          const fileContents = fs.readFileSync(filePath, 'utf-8');
-          const actualLines = fileContents.split('\n').length;
-          expect(actualLines).toBeGreaterThanOrEqual(definitionFileLines);
-        });
-      }
+  describe('when logged in as ROLE_ONC', () => {
+    beforeEach(() => {
+      login.logIn('onc');
     });
 
-    xdescribe(`when downloading the ${file} data file`, () => {
-      it(`should download file successfully with file size more than ${dataFileSize} KB`, () => {
-        page.downloadDataFile(file);
-        browser.pause(config.timeout);
-        const dirCont = fs.readdirSync(global.downloadDir);
-        const fileName = dirCont.filter((f) => f.match(new RegExp(`${dataFileName}.*.(${fileExtension})`))).toString();
-        const filePath = path.join(global.downloadDir, fileName);
-        expect(fs.existsSync(filePath)).toBe(true);
-        const stat = fs.statSync(filePath);
-        if (process.env.ENV !== 'stage' && dataFileName === 'direct-reviews') {
-          expect(stat.size / 1000).toBeGreaterThan(dataFileSize);
-        }
-      });
+    afterEach(() => {
+      login.logOut();
+    });
 
-      it(`should not be older than ${generationFrequencyInDays} days`, () => {
-        page.downloadDataFile(file);
-        browser.pause(config.timeout);
-        const dirCont = fs.readdirSync(global.downloadDir);
-        const fileName = dirCont.filter((f) => f.match(new RegExp(`${dataFileName}.*.(${fileExtension})`))).toString();
-        const actualDate = new Date(fileName.slice((fileName.length - 19), -11).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
-        const currentDate = new Date();
-        const diffDays = (currentDate.getTime() - actualDate.getTime()) / (1000 * 3600 * 24);
-        expect(parseInt(diffDays, 10)).toBeLessThanOrEqual(generationFrequencyInDays);
-      });
+    it('should have correct information about SVAP', () => {
+      const expectedText = 'Standards Version Advancement Process (SVAP) Summary: Entire collection of all SVAP values that have been associated with a criterion for a certified product. Available as a CSV file; updated nightly.';
+      expect(page.content.getText()).toContain(expectedText);
+    });
 
-      if (fileExtension.includes('csv')) {
-        it(`should have at least ${dataLines} rows in the file`, () => {
-          page.downloadDataFile(file);
-          browser.pause(config.timeout);
-          const dirCont = fs.readdirSync(global.downloadDir);
-          const fileName = dirCont.filter((f) => f.match(new RegExp(`${dataFileName}.*.(${fileExtension})`))).toString();
-          const filePath = path.join(global.downloadDir, fileName);
-          const fileContents = fs.readFileSync(filePath, 'utf-8');
-          const actualLines = fileContents.split('\n').length;
-          expect(actualLines).toBeGreaterThanOrEqual(dataLines);
-        });
-      }
+    it('should have correct information about the basic surveillance file', () => {
+      const expectedText = 'Surveillance (Basic): Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.';
+      expect(page.content.getText()).toContain(expectedText);
     });
   });
 });
