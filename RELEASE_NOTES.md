@@ -1,5 +1,29 @@
 # Release Notes
 
+## Version 11.37.0
+_11 July 2022_
+
+### Features
+* Remove ability to upload Surveillance Supporting Documentation
+
+### Flagged Features
+* Stop showing removed criteria as available for CMS ID generation
+
+### Bug Fixes
+* Restore ability to see history of a single Listing
+* Disable ability to have Surveillance end before it starts
+
+---
+
+## Version 11.36.1
+_6 July 2022_
+
+### Bug Fixes
+* Allow editing of schedule for Questionable Activity report
+* Remove erroneous "management" link for ONC Users
+
+---
+
 ## Version 11.36.0
 _27 June 2022_
 
