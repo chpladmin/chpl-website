@@ -56,7 +56,9 @@ function ChplAttestationCreate(props) {
   }, [isLoading, data]);
 
   useEffect(() => {
-    setPeriod(submittablePeriod);
+    if (submittablePeriod) {
+      setPeriod(submittablePeriod);
+    }
   }, [submittablePeriod]);
 
   useEffect(() => {

@@ -88,7 +88,7 @@ function ChplAttestationWizard(props) {
   const [attestationResponses, setAttestationResponses] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signature, setSignature] = useState('');
-  const [period, setPeriod] = useState(0);
+  const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
   const { user } = useContext(UserContext);
   const classes = useStyles();
