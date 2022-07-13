@@ -133,6 +133,7 @@ const SurveillanceComplaintsComponent = {
 
     refreshComplaints() {
       const that = this;
+      this.complaint = {};
       this.getComplaintsPromise().then((response) => {
         that.complaints = response.results
           .map((complaint) => {

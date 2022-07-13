@@ -3,13 +3,22 @@ import {
   ButtonGroup,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
+import {
+  arrayOf, bool, func, string,
+} from 'prop-types';
 
+import ChplComplaint from './complaint';
 import ChplComplaintAdd from './complaint-add';
 import ChplComplaintsDownload from './complaints-download';
 import ChplComplaintsView from './complaints-view';
 
-import { complaint as complaintPropType } from 'shared/prop-types';
+import {
+  complaint as complaintPropType,
+  complaintCriterion as criterionPropType,
+  complainantType,
+  listing as listingPropType,
+  acb,
+} from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles(() => ({
@@ -24,8 +33,21 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplComplaints(props) {
-  const { complaints, dispatch } = props;
+  const {
+    complaints,
+    dispatch,
+    isViewing,
+    isEditing,
+  } = props;
   const classes = useStyles();
+
+  if (isViewing || isEditing) {
+    return (
+      <ChplComplaint
+        {...props}
+      />
+    );
+  }
 
   return (
     <>
@@ -48,6 +70,14 @@ function ChplComplaints(props) {
 export default ChplComplaints;
 
 ChplComplaints.propTypes = {
+  complaint: complaintPropType.isRequired,
   complaints: arrayOf(complaintPropType).isRequired,
+  certificationBodies: arrayOf(acb).isRequired,
+  complainantTypes: arrayOf(complainantType).isRequired,
+  criteria: arrayOf(criterionPropType).isRequired,
+  listings: arrayOf(listingPropType).isRequired,
+  errors: arrayOf(string).isRequired,
   dispatch: func.isRequired,
+  isViewing: bool.isRequired,
+  isEditing: bool.isRequired,
 };

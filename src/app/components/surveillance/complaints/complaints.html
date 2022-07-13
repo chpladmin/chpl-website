@@ -97,21 +97,16 @@
         </chpl-filter>
       </chpl-filters-body>
     </chpl-filters>
-    <chpl-complaints-wrapper-bridge
-      complaints="$ctrl.displayedComplaints"
-      dispatch="::$ctrl.handleDispatch"></chpl-complaints-wrapper-bridge>
   </div>
-  <chpl-complaint-view-bridge
-    ng-if="$ctrl.isViewing"
-    complaint="$ctrl.complaint"
-    dispatch="::$ctrl.handleDispatch"></chpl-complaint-view-bridge>
-  <chpl-complaint-edit-bridge
-    ng-if="$ctrl.isEditing"
+  <chpl-complaints-wrapper-bridge
+    complaints="$ctrl.displayedComplaints"
     complaint="$ctrl.complaint"
     certification-bodies="$ctrl.certificationBodies"
     complainant-types="$ctrl.complainantTypes"
     criteria="$ctrl.criteria"
     listings="$ctrl.listings"
     errors="$ctrl.errorMessages"
-    dispatch="::$ctrl.handleDispatch"></chpl-complaint-edit-bridge>
+    is-viewing="$ctrl.isViewing"
+    is-editing="$ctrl.isEditing"
+    dispatch="::$ctrl.handleDispatch"></chpl-complaints-wrapper-bridge>
 </div>

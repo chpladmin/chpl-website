@@ -147,8 +147,8 @@ function ChplComplaintEdit(props) {
           certifiedProductId: response.id,
           chplProductNumber: response.chplProductNumber,
         }));
-        setSurveillances((surveillances) => [
-          ...surveillances,
+        setSurveillances((original) => [
+          ...original,
           ...newSurveillances,
         ].sort((a, b) => {
           if (a.chplProductNumber < b.chplProductNumber) { return -1; }
@@ -644,10 +644,6 @@ ChplComplaintEdit.propTypes = {
   complainantTypes: arrayOf(complainantType).isRequired,
   criteria: arrayOf(criterionPropType).isRequired,
   listings: arrayOf(listingPropType).isRequired,
-  errors: arrayOf(string),
+  errors: arrayOf(string).isRequired,
   dispatch: func.isRequired,
-};
-
-ChplComplaintEdit.defaultProps = {
-  errors: [],
 };
