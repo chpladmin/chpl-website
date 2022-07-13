@@ -10,9 +10,9 @@ const suite = {
     ],
     expectedWarnings: [
       'The G1 measure Electronic Prescribing: Eligible Clinician for RT1 has an invalid associated criterion notacriterionatall. The criterion has been removed from the measure.',
-      'G2 Measure \'KEE\' was not found associated with ? and has been removed from the listing.',
+      'G2 Measure \'KEE\' was not found and has been removed from the listing.',
       'G2 Measure \'KEE\' was not found associated with 170.315 (g)(10) and has been removed from the listing.',
-      'G1 Measure \'EC\' was not found associated with ? and has been removed from the listing.',
+      'G1 Measure \'EC\' was not found and has been removed from the listing.',
       'G1 Measure \'EC\' was not found associated with 170.315 (a)(1) and has been removed from the listing.',
       'Duplicate G5 Measure: Electronic Prescribing: Eligible Clinician for RT1 was found with the same relevant criteria. The duplicates have been removed.',
     ],
@@ -24,11 +24,11 @@ const suite = {
     ],
     expectedWarnings: [
       'G2 Measure \'EC\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
-      'G2 Measure \'?\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
-      'G1 Measure \'?\' was not found associated with ? and has been removed from the listing.',
-      'Measure \'EC\' was not found associated with ? and has been removed from the listing.',
-      'Measure \'?\' was not found associated with ? and has been removed from the listing.',
-      'Measure \'?\' was not found associated with 170.315 (e)(1), 170.315 (g)(8), 170.315 (g)(9) and has been removed from the listing.',
+      'G2 Measure \'\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
+      'G1 Measure \'\' was not found and has been removed from the listing.',
+      'Measure \'EC\' was not found and has been removed from the listing.',
+      'Measure \'\' was not found and has been removed from the listing.',
+      'Measure \'\' was not found associated with 170.315 (e)(1), 170.315 (g)(8), 170.315 (g)(9) and has been removed from the listing.',
     ],
   }, {
     listingId: '15.04.04.1722.MEA6.V1.00.1.210607',
