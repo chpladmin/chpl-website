@@ -20,7 +20,6 @@ import {
 import { ChplCriteria } from './listing/details/criteria';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import {
-  ChplComplaintAdd,
   ChplComplaintEdit,
   ChplComplaintView,
   ChplComplaintsWrapper,
@@ -66,7 +65,6 @@ angular
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplAnnouncementsWrapperBridge', reactToAngularComponent(ChplAnnouncementsWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
-  .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
   .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
   .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
