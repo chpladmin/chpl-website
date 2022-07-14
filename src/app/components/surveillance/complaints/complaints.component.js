@@ -6,7 +6,7 @@ const SurveillanceComplaintsComponent = {
     quarterlyReport: '<',
   },
   controller: class SurveillanceComplaintsComponent {
-    constructor($log, $scope, authService, featureFlags, networkService, utilService) {
+    constructor($log, $scope, authService, networkService, utilService) {
       'ngInject';
 
       this.$log = $log;
@@ -14,9 +14,7 @@ const SurveillanceComplaintsComponent = {
       this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
-      this.isOn = featureFlags.isOn;
       this.clearFilterHs = [];
-      this.filename = `Complaints_${new Date().getTime()}.csv`;
       this.restoreStateHs = [];
       this.complaintListType = 'ALL';
       this.filterItems = {
@@ -132,28 +130,14 @@ const SurveillanceComplaintsComponent = {
           .map((complaint) => {
             const updated = {
               ...complaint,
+              acbName: complaint.certificationBody.name,
+              complaintStatusTypeName: complaint.closedDate ? 'Closed' : 'Open',
+              complainantTypeName: complaint.complainantType.name,
+              filterText: `${complaint.oncComplaintId}|${complaint.acbComplaintId}|${complaint.listings.map((l) => l.chplProductNumber).join('|')}|${complaint.criteria.map((c) => c.certificationCriterion.number).join('|')}`,
             };
-            if (complaint.receivedDate) {
-              updated.csvReceivedDate = complaint.receivedDate;
-            } else {
-              updated.csvReceivedDate = null;
-            }
-            if (complaint.closedDate) {
-              updated.csvClosedDate = complaint.closedDate;
-            } else {
-              updated.csvClosedDate = null;
-            }
-            updated.acbName = complaint.certificationBody.name;
-            updated.complaintStatusTypeName = complaint.closedDate ? 'Closed' : 'Open';
-            updated.complainantTypeName = complaint.complainantType.name;
-            updated.filterText = `${complaint.oncComplaintId}|${complaint.acbComplaintId}|${complaint.listings.map((l) => l.chplProductNumber).join('|')}|${complaint.criteria.map((c) => c.certificationCriterion.number).join('|')}`;
             that.addFilterItems(updated);
-            if (complaint.criteria) {
-              updated.csvCriteria = complaint.criteria.map((c) => c.certificationCriterion.number + (that.utilService.isCures(c.certificationCriterion) ? ' (Cures Update)' : '')).join(',');
-            }
             return updated;
           });
-        that.expandCsvRows();
         that.finalizeFilterItems();
       });
     }
@@ -168,26 +152,6 @@ const SurveillanceComplaintsComponent = {
       if (!this.filterItems.complainantTypeItems.find((item) => item.value === complaint.complainantTypeName)) {
         this.filterItems.complainantTypeItems.push({ value: complaint.complainantTypeName, selected: true });
       }
-    }
-
-    expandCsvRows() {
-      this.csvComplaints = this.complaints.flatMap((complaint) => {
-        if (complaint.listings.length === 0) {
-          return [complaint];
-        }
-        const complaints = complaint.listings.map((l) => ({
-          ...complaint,
-          csvListing: l.chplProductNumber,
-          developerName: l.developerName,
-          productName: l.productName,
-          versionName: l.versionName,
-          csvSurveillances: complaint.surveillances
-            .filter((s) => s.surveillance.chplProductNumber === l.chplProductNumber)
-            .map((s) => s.surveillance.friendlyId)
-            .join(','),
-        }));
-        return complaints;
-      });
     }
 
     finalizeFilterItems() {
