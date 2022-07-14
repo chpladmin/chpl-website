@@ -28,7 +28,37 @@ const useFetchComplaintsDownload = ({ isAuthenticated, isDownloading }) => {
   });
 };
 
+const usePostComplaint = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('complaints', data)
+    .then((response) => response)
+    .catch((error) => {
+      throw error;
+    }), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('complaints');
+    },
+  });
+};
+
+const usePutComplaint = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`complaints/${data.id}`, data)
+    .then((response) => response)
+    .catch((error) => {
+      throw error;
+    }), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('complaints');
+    },
+  });
+};
+
 export {
   useDeleteComplaint,
   useFetchComplaintsDownload,
+  usePostComplaint,
+  usePutComplaint,
 };

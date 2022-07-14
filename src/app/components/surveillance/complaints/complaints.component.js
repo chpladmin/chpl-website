@@ -71,21 +71,18 @@ const SurveillanceComplaintsComponent = {
           this.complaint = {};
           this.$scope.$digest();
           break;
-        case 'delete':
-          this.clearErrorMessages();
-          this.complaint = {};
-          this.isViewing = false;
-          this.isEditing = false;
-          this.refreshComplaints();
-          break;
         case 'edit':
           this.clearErrorMessages();
           this.isViewing = false;
           this.isEditing = true;
           this.$scope.$digest();
           break;
-        case 'save':
-          this.saveComplaint(payload);
+        case 'refresh':
+          this.clearErrorMessages();
+          this.complaint = {};
+          this.isViewing = false;
+          this.isEditing = false;
+          this.refreshComplaints();
           break;
         case 'view':
           this.isViewing = true;
@@ -93,32 +90,6 @@ const SurveillanceComplaintsComponent = {
           this.$scope.$digest();
           break;
           // no default
-      }
-    }
-
-    saveComplaint(complaint) {
-      const that = this;
-      this.clearErrorMessages();
-      const toSave = {
-        ...complaint,
-      };
-      const handleResponse = () => {
-        that.refreshComplaints();
-        that.isEditing = false;
-      };
-      const handleError = (error) => {
-        if (error.status === 400) {
-          that.errorMessages = error.data.errorMessages;
-        }
-      };
-      if (complaint.id) {
-        this.networkService.updateComplaint(toSave)
-          .then(handleResponse)
-          .catch(handleError);
-      } else {
-        this.networkService.createComplaint(complaint)
-          .then(handleResponse)
-          .catch(handleError);
       }
     }
 

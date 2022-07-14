@@ -18,7 +18,7 @@ import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useDeleteComplaint } from 'api/complaints';
+import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
 import { ChplTextField } from 'components/util';
 import { ChplActionBar } from 'components/action-bar';
 import { getAngularService } from 'services/angular-react-helper';
@@ -89,6 +89,8 @@ const validationSchema = yup.object({
 
 function ChplComplaintEdit(props) {
   /* eslint-disable react/destructuring-assignment */
+  const { mutate: post } = usePostComplaint();
+  const { mutate: put } = usePutComplaint();
   const { mutate: remove } = useDeleteComplaint();
   const { enqueueSnackbar } = useSnackbar();
   const [complaint, setComplaint] = useState(() => {
@@ -237,7 +239,7 @@ function ChplComplaintEdit(props) {
   const deleteComplaint = (payload) => {
     remove(payload, {
       onSuccess: () => {
-        handleAction('delete', payload);
+        handleAction('refresh');
       },
       onError: (error) => {
         const message = error.response.data?.error
@@ -281,7 +283,8 @@ function ChplComplaintEdit(props) {
   };
 
   const save = () => {
-    const updatedComplaint = {
+    const mutate = complaint.id ? put : post;
+    mutate({
       ...complaint,
       certificationBody: formik.values.certificationBody,
       receivedDate: formik.values.receivedDate,
@@ -296,8 +299,18 @@ function ChplComplaintEdit(props) {
       developerContacted: formik.values.developerContacted,
       oncAtlContacted: formik.values.oncAtlContacted,
       flagForOncReview: formik.values.flagForOncReview,
-    };
-    handleAction('save', updatedComplaint);
+    }, {
+      onSuccess: () => {
+        handleAction('refresh');
+      },
+      onError: (error) => {
+        const message = error.response.data?.error
+              || error.response.data?.errorMessages.join(' ');
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
   };
 
   formik = useFormik({
