@@ -54,17 +54,6 @@ const SurveillanceComplaintsComponent = {
       this.refreshComplaints();
     }
 
-    deleteComplaint(complaint) {
-      const that = this;
-      this.clearErrorMessages();
-      this.networkService.deleteComplaint(complaint.id).then(() => {
-        that.complaint = {};
-        that.isViewing = false;
-        that.isEditing = false;
-        that.refreshComplaints();
-      });
-    }
-
     handleDispatch(action, payload) {
       switch (action) {
         case 'add':
@@ -85,7 +74,11 @@ const SurveillanceComplaintsComponent = {
           this.$scope.$digest();
           break;
         case 'delete':
-          this.deleteComplaint(payload);
+          this.clearErrorMessages();
+          this.complaint = {};
+          this.isViewing = false;
+          this.isEditing = false;
+          this.refreshComplaints();
           break;
         case 'edit':
           this.clearErrorMessages();

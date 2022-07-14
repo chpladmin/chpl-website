@@ -1,7 +1,21 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 import options from './options';
+
+const useDeleteComplaint = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`complaints/${data.id}`)
+    .then((response) => response)
+    .catch((error) => {
+      throw error;
+    }), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('complaints');
+    },
+  });
+};
 
 const useFetchComplaintsDownload = ({ isAuthenticated, isDownloading }) => {
   const axios = useAxios();
@@ -14,8 +28,7 @@ const useFetchComplaintsDownload = ({ isAuthenticated, isDownloading }) => {
   });
 };
 
-/* eslint-disable import/prefer-default-export */
-// remove eslint disable line when new api methods are added
 export {
+  useDeleteComplaint,
   useFetchComplaintsDownload,
 };

@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
-import {
   Card,
   CardContent,
   CardHeader,
@@ -14,25 +9,27 @@ import {
   MenuItem,
   Select,
   Switch,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useSnackbar } from 'notistack';
+import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplTextField } from '../../util';
-import { ChplActionBar } from '../../action-bar';
+import { useDeleteComplaint } from 'api/complaints';
+import { ChplTextField } from 'components/util';
+import { ChplActionBar } from 'components/action-bar';
+import { getAngularService } from 'services/angular-react-helper';
 import {
   complaintCriterion as criterionPropType,
   complaint as complaintPropType,
   complainantType,
   listing as listingPropType,
   acb,
-} from '../../../shared/prop-types';
+} from 'shared/prop-types';
+import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -92,6 +89,8 @@ const validationSchema = yup.object({
 
 function ChplComplaintEdit(props) {
   /* eslint-disable react/destructuring-assignment */
+  const { mutate: remove } = useDeleteComplaint();
+  const { enqueueSnackbar } = useSnackbar();
   const [complaint, setComplaint] = useState(() => {
     const c = {
       ...props.complaint,
@@ -235,6 +234,21 @@ function ChplComplaintEdit(props) {
     setSurveillanceToAdd('');
   };
 
+  const deleteComplaint = (payload) => {
+    remove(payload, {
+      onSuccess: () => {
+        handleAction('delete', payload);
+      },
+      onError: (error) => {
+        const message = error.response.data?.error
+              || error.response.data?.errorMessages.join(' ');
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
+  };
+
   const removeAssociatedSurveillance = (surveillance) => {
     const updated = {
       ...complaint,
@@ -253,7 +267,7 @@ function ChplComplaintEdit(props) {
         }
         break;
       case 'delete':
-        handleAction('delete', complaint);
+        deleteComplaint(complaint);
         break;
       case 'save':
         formik.submitForm();
@@ -311,7 +325,7 @@ function ChplComplaintEdit(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Card>
         <CardHeader
           title={complaint.id ? 'Edit Complaint' : 'Create Complaint'}
@@ -632,7 +646,7 @@ function ChplComplaintEdit(props) {
         dispatch={handleDispatch}
         canDelete={!!complaint.id}
       />
-    </ThemeProvider>
+    </>
   );
 }
 
