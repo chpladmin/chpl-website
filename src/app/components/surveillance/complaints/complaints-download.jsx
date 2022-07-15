@@ -14,12 +14,17 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
-function ChplComplaintsDownload(props) {
+function ChplComplaintsDownload() {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const [isDownloading, setIsDownloading] = useState(false);
-  const { data, error, isLoading, isSuccess } = useFetchComplaintsDownload({
-    isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB']),
+  const {
+    data,
+    error,
+    isLoading,
+    isSuccess,
+  } = useFetchComplaintsDownload({
+    isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF']),
     isDownloading,
   });
   const classes = useStyles();
@@ -37,13 +42,13 @@ function ChplComplaintsDownload(props) {
         variant: 'error',
       });
     }
-  }, [data, isLoading, isSuccess]);
+  }, [data, error, isLoading, isSuccess]);
 
   const downloadFile = () => {
     setIsDownloading(true);
   };
 
-  if (!hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])) {
+  if (!hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
     return null;
   }
 
