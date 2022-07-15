@@ -14,10 +14,7 @@ import ChplComplaintsView from './complaints-view';
 
 import {
   complaint as complaintPropType,
-  complaintCriterion as criterionPropType,
-  complainantType,
   listing as listingPropType,
-  acb,
 } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
@@ -72,9 +69,6 @@ export default ChplComplaints;
 ChplComplaints.propTypes = {
   complaint: complaintPropType.isRequired,
   complaints: arrayOf(complaintPropType).isRequired,
-  certificationBodies: arrayOf(acb).isRequired,
-  complainantTypes: arrayOf(complainantType).isRequired,
-  criteria: arrayOf(criterionPropType).isRequired,
   listings: arrayOf(listingPropType).isRequired,
   errors: arrayOf(string).isRequired,
   dispatch: func.isRequired,

@@ -629,25 +629,9 @@
         $httpBackend.flush();
       });
 
-      it('should getComplainantTypes', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/complainant-types$/).respond(200, { data: 'response' });
-        networkService.getComplainantTypes().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getCmsIds', () => {
         $httpBackend.expectGET(/^\/rest\/certification_ids\/search\?ids=ids$/).respond(200, { data: 'response' });
         networkService.getCmsIds('ids').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getCriteria', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/certification-criteria$/).respond(200, { data: 'response' });
-        networkService.getCriteria().then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

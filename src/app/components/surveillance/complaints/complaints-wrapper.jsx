@@ -9,10 +9,7 @@ import ApiWrapper from 'api/api-wrapper';
 import { UserWrapper } from 'components/login';
 import {
   complaint as complaintPropType,
-  complaintCriterion as criterionPropType,
-  complainantType,
   listing as listingPropType,
-  acb,
 } from 'shared/prop-types';
 
 function ChplComplaintsWrapper(props) {
@@ -34,9 +31,6 @@ export default ChplComplaintsWrapper;
 ChplComplaintsWrapper.propTypes = {
   complaint: complaintPropType,
   complaints: arrayOf(complaintPropType),
-  certificationBodies: arrayOf(acb),
-  complainantTypes: arrayOf(complainantType),
-  criteria: arrayOf(criterionPropType),
   listings: arrayOf(listingPropType),
   errors: arrayOf(string),
   dispatch: func,
@@ -47,9 +41,6 @@ ChplComplaintsWrapper.propTypes = {
 ChplComplaintsWrapper.defaultProps = {
   complaint: undefined,
   complaints: [],
-  certificationBodies: [],
-  complainantTypes: [],
-  criteria: [],
   listings: [],
   errors: [],
   dispatch: () => {},

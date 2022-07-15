@@ -28,17 +28,8 @@ const SurveillanceComplaintsComponent = {
 
     $onInit() {
       const that = this;
-      this.networkService.getComplainantTypes().then((response) => {
-        that.complainantTypes = response.data;
-      });
-      this.networkService.getAcbs(true).then((response) => { // get all acbs that the user has edit capability of
-        that.certificationBodies = response.acbs;
-      });
       this.networkService.getCollection('complaintListings').then((response) => {
         that.listings = response.results;
-      });
-      this.networkService.getCriteria().then((response) => {
-        that.criteria = response.criteria;
       });
     }
 
