@@ -14,6 +14,34 @@ import { object } from 'prop-types';
 import interpretLink from 'components/attestation/attestation-util';
 import { getAngularService } from 'services/angular-react-helper';
 
+const getRows = (section) => section.formItems.map((item) => (
+  <TableRow key={section.id}>
+    <TableCell>
+      <strong>
+        { section.name }
+        {': '}
+      </strong>
+      { interpretLink(item.question.question) }
+    </TableCell>
+    <TableCell>
+      { item.question.responseCardinalityType.description === 'Single'
+        && (
+          <>
+            { item.submittedResponses[0].response }
+          </>
+        )}
+      { item.question.responseCardinalityType.description === 'Multiple'
+        && (
+          <ul>
+            { item.submittedResponses.map((response) => (
+              <li key={response.id}>{ response }</li>
+            ))}
+          </ul>
+        )}
+    </TableCell>
+  </TableRow>
+));
+
 function ChplAttestationView(props) {
   const DateUtil = getAngularService('DateUtil');
   const [attestations, setAttestations] = useState({});
@@ -22,7 +50,7 @@ function ChplAttestationView(props) {
     setAttestations({
       ...props.attestations,
       period: props.attestations.period || props.attestations.attestationPeriod,
-      responses: props.attestations.responses || props.attestations.attestationResponses,
+      sections: props.attestations.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder),
     });
   }, [props.attestations]); // eslint-disable-line react/destructuring-assignment
 
@@ -38,7 +66,7 @@ function ChplAttestationView(props) {
       </Typography>
       <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
       <Typography gutterBottom>{attestations.statusText}</Typography>
-      { attestations.responses
+      { attestations.sections
         && (
           <TableContainer component={Paper}>
             <Table>
@@ -49,22 +77,7 @@ function ChplAttestationView(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { attestations.responses
-                  .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
-                  .map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>
-                        <strong>
-                          { item.attestation.condition.name }
-                          {': '}
-                        </strong>
-                        { interpretLink(item.attestation.description) }
-                      </TableCell>
-                      <TableCell>
-                        { item.response.response }
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                { attestations.sections.flatMap((section) => getRows(section)) }
               </TableBody>
             </Table>
           </TableContainer>
