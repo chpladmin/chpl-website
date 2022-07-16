@@ -179,6 +179,7 @@ function ChplChangeRequest(props) {
   const classes = useStyles();
 
   let formik;
+  let save;
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -312,12 +313,6 @@ function ChplChangeRequest(props) {
       case 'cancel':
         props.dispatch('close');
         break;
-        /*
-      case 'delete':
-        formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
-        formik.submitForm();
-        break;
-        */
       case 'edit':
         editCr();
         break;
@@ -344,7 +339,7 @@ function ChplChangeRequest(props) {
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
 
-  const save = (request) => {
+  save = (request) => {
     mutate(request, {
       onSuccess: () => {
         props.dispatch('close');
