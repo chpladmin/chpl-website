@@ -12,6 +12,7 @@ import {
 } from 'prop-types';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 
 import ChplActionBarConfirmation from './action-bar-confirmation';
@@ -63,10 +64,12 @@ function ChplActionBar(props) {
   const {
     canCancel,
     canClose,
-    canDelete,
     canConfirm,
+    canDelete,
+    canEdit,
     canReject,
     canSave,
+    canWithdraw,
   } = props;
   const [acknowledged, setAcknowledged] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -116,6 +119,12 @@ function ChplActionBar(props) {
     setIsConfirming(true);
     setPendingAction('reject');
     setPendingMessage('Are you sure you want to reject this?');
+  };
+
+  const confirmWithdraw = () => {
+    setIsConfirming(true);
+    setPendingAction('withdraw');
+    setPendingMessage('Are you sure you want to withdraw this submission?');
   };
 
   const handleConfirmation = (response) => {
@@ -207,6 +216,21 @@ function ChplActionBar(props) {
                   />
                 </Button>
               )}
+            { canEdit
+              && (
+                <Button
+                  id="action-bar-edit"
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => act('edit')}
+                  className={classes.actionBarButton}
+                >
+                  Edit
+                  <EditOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
             { canSave && !canConfirm
               && (
                 <Button
@@ -251,6 +275,20 @@ function ChplActionBar(props) {
                   />
                 </Button>
               )}
+            { canWithdraw
+              && (
+                <Button
+                  id="action-bar-withdraw"
+                  variant="contained"
+                  className={`${classes.actionBarButton} ${classes.deleteButton}`}
+                  onClick={() => confirmWithdraw()}
+                >
+                  Withdraw
+                  <DeleteOutlinedIcon
+                    className={classes.iconSpacing}
+                  />
+                </Button>
+              )}
           </ButtonGroup>
         </div>
       </div>
@@ -272,8 +310,10 @@ ChplActionBar.propTypes = {
   canClose: bool,
   canConfirm: bool,
   canDelete: bool,
+  canEdit: bool,
   canReject: bool,
   canSave: bool,
+  canWithdraw: bool,
   isDisabled: bool,
   showAcknowledgement: bool,
 };
@@ -285,8 +325,10 @@ ChplActionBar.defaultProps = {
   canClose: false,
   canConfirm: false,
   canDelete: false,
+  canEdit: false,
   canReject: false,
   canSave: true,
+  canWithdraw: false,
   isDisabled: false,
   showAcknowledgement: false,
 };
