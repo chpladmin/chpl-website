@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
+  Checkbox,
   Container,
   Divider,
   FormControl,
   FormControlLabel,
+  FormGroup,
   FormLabel,
   Radio,
   RadioGroup,
@@ -37,6 +39,12 @@ function ChplAttestationWizardSection2(props) {
     setSections(props.sections);
   }, [props.sections]); // eslint-disable-line react/destructuring-assignment
 
+  const handleSubResponse = (section, item, answer, value) => {
+    console.log({
+      section, item, answer, value,
+    });
+  };
+
   const handleResponse = (section, item, value) => {
     const updated = sections.map((s) => {
       const updatedSection = {
@@ -60,14 +68,8 @@ function ChplAttestationWizardSection2(props) {
     setSections(updated);
   };
 
-  const getQuestion = (section, idx) => section.formItems.map((item) => (
-    <div key={`${section.id}-${item.id}`}>
-      <Typography variant="subtitle1">
-        { idx + 1 }
-        :
-        {' '}
-        { section.name }
-      </Typography>
+  const getQuestion = (section, item) => (
+    <>
       <FormControl key={item.id} component="fieldset">
         <FormLabel className={classes.nonCaps}>{interpretLink(item.question.question)}</FormLabel>
         <RadioGroup
@@ -76,7 +78,7 @@ function ChplAttestationWizardSection2(props) {
           value={(item.submittedResponses && item.submittedResponses[0]?.response) || ''}
           onChange={(event) => handleResponse(section, item, event.currentTarget.value)}
         >
-          {item.question.allowedResponses
+          { item.question.allowedResponses
             .sort((a, b) => (a.response < b.response ? -1 : 1))
             .map((response) => (
               <FormControlLabel
@@ -89,12 +91,41 @@ function ChplAttestationWizardSection2(props) {
             ))}
         </RadioGroup>
       </FormControl>
+      { item.childFormItems.map((child) => (
+        <FormControl key={`${item.id}-${child.id}`} component="fieldset">
+          <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
+          <FormGroup>
+            { child.question.allowedResponses.map((ans) => (
+              <FormControlLabel
+                key={`${child.id}-${ans.id}`}
+                value={ans.response}
+                control={<Checkbox />}
+                label={ans.response}
+                className={classes.nonCaps}
+                onChange={(event) => handleSubResponse(section, item, ans, event.currentTarget.value)}
+              />
+            ))}
+          </FormGroup>
+        </FormControl>
+      ))}
+    </>
+  );
+
+  const getSection = (section, idx) => (
+    <div key={section.id}>
+      <Typography variant="subtitle1">
+        { idx + 1 }
+        :
+        {' '}
+        { section.name }
+      </Typography>
+      { section.formItems.map((item) => getQuestion(section, item)) }
       { idx !== section.length - 1
         && (
           <Divider />
         )}
     </div>
-  ));
+  );
 
   return (
     <Container maxWidth="md">
@@ -110,7 +141,7 @@ function ChplAttestationWizardSection2(props) {
             Select only one response for each statement.
           </Typography>
           <Divider />
-          { sections.flatMap((section, idx) => getQuestion(section, idx)) }
+          { sections.flatMap((section, idx) => getSection(section, idx)) }
         </CardContent>
       </Card>
     </Container>
