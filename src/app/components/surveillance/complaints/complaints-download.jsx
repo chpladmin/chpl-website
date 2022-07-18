@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import {
   Button,
   makeStyles,
@@ -6,8 +6,7 @@ import {
 import { useSnackbar } from 'notistack';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
-import { useFetchComplaintsDownload } from 'api/complaints';
-import { UserContext } from 'shared/contexts';
+import { usePostReportRequest } from 'api/complaints';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -15,42 +14,25 @@ const useStyles = makeStyles({
 });
 
 function ChplComplaintsDownload() {
-  const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [isDownloading, setIsDownloading] = useState(false);
-  const {
-    data,
-    error,
-    isLoading,
-    isSuccess,
-  } = useFetchComplaintsDownload({
-    isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF']),
-    isDownloading,
-  });
+  const { mutate } = usePostReportRequest();
   const classes = useStyles();
 
-  useEffect(() => {
-    if (data && isSuccess && !isLoading) {
-      enqueueSnackbar(`Your request has been submitted and you'll get an email at ${data.job.jobDataMap.email} when it's done`, {
-        variant: 'success',
-      });
-    }
-    if (error && !isLoading && !isSuccess) {
-      setIsDownloading(false);
-      const message = error.response.data.error;
-      enqueueSnackbar(message, {
-        variant: 'error',
-      });
-    }
-  }, [data, error, isLoading, isSuccess]);
-
   const downloadFile = () => {
-    setIsDownloading(true);
+    mutate({}, {
+      onSuccess: (response) => {
+        enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.email} when it's done`, {
+          variant: 'success',
+        });
+      },
+      onError: (error) => {
+        const message = error.response.data.error;
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
   };
-
-  if (!hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
-    return null;
-  }
 
   return (
     <Button
@@ -58,7 +40,6 @@ function ChplComplaintsDownload() {
       color="primary"
       variant="contained"
       id="download-results"
-      disabled={isDownloading}
     >
       Download all complaints
       {' '}

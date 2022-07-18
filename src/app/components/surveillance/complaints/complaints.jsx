@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   ButtonGroup,
   makeStyles,
@@ -12,10 +12,8 @@ import ChplComplaintAdd from './complaint-add';
 import ChplComplaintsDownload from './complaints-download';
 import ChplComplaintsView from './complaints-view';
 
-import {
-  complaint as complaintPropType,
-  listing as listingPropType,
-} from 'shared/prop-types';
+import { UserContext } from 'shared/contexts';
+import { complaint as complaintPropType, listing as listingPropType } from 'shared/prop-types';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles(() => ({
@@ -36,6 +34,7 @@ function ChplComplaints(props) {
     isViewing,
     isEditing,
   } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   if (isViewing || isEditing) {
@@ -53,7 +52,10 @@ function ChplComplaints(props) {
           <ChplComplaintAdd
             dispatch={dispatch}
           />
-          <ChplComplaintsDownload />
+          { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
+            && (
+              <ChplComplaintsDownload />
+            )}
         </ButtonGroup>
       </div>
       <ChplComplaintsView
