@@ -27,7 +27,7 @@ const states = [
   }, {
     name: 'resources.download',
     url: '/download',
-    component: 'chplResourcesDownloadBridge',
+    component: 'chplResourcesDownloadWrapperBridge',
     data: { title: 'Download the CHPL' },
   }, {
     name: 'resources.overview',
