@@ -20,7 +20,7 @@ import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
 const getRows = (section) => section.formItems.map((item) => (
-  <TableRow key={section.id}>
+  <TableRow key={`${section.id}-${item.id}`}>
     <TableCell>
       <strong>
         { section.name }

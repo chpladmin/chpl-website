@@ -14,6 +14,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {
+  array,
   func,
   object,
 } from 'prop-types';
@@ -32,11 +33,12 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationWizardSection2(props) {
-  const [form, setForm] = useState([]);
+  const { dispatch } = props;
+  const [sections, setSections] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setForm(props.form);
+    setSections(props.sections);
     /*
       .sort((a, b) => a.sortOrder - b.sortOrder)
       .map((attestation) => ({
@@ -48,10 +50,10 @@ function ChplAttestationWizardSection2(props) {
         response: { response: '' },
       })));
       */
-  }, [props.form]); // eslint-disable-line react/destructuring-assignment
+  }, [props.sections]); // eslint-disable-line react/destructuring-assignment
 
   const handleResponse = (attestation, value) => {
-    const updated = { ...form };/* attestationResponses.map((att) => {
+    const updated = [...sections];/* attestationResponses.map((att) => {
       const updatedAttestation = {
         ...att,
       };
@@ -60,9 +62,43 @@ function ChplAttestationWizardSection2(props) {
       }
       return updatedAttestation;
     }); */
-    setForm(updated);
-    props.dispatch(form);
+    dispatch(updated);
   };
+
+  const getQuestion = (section, idx) => section.formItems.map((question) => (
+    <div key={`${section.id}-${question.id}`}>
+      <Typography variant="subtitle1">
+        { idx + 1 }
+        :
+        {' '}
+        { section.name }
+      </Typography>
+      <FormControl key={question.id} component="fieldset">
+        <FormLabel className={classes.nonCaps}>{interpretLink(question.question.question)}</FormLabel>
+        <RadioGroup
+          className={classes.radioGroup}
+          name={`response-${question.id}`}
+          value={question.submittedResponses}
+          onChange={(event) => handleResponse(question, event.currentTarget.value)}
+        >
+          {question.question.allowedResponses
+            .map((response) => (
+              <FormControlLabel
+                key={response.id}
+                value={response.response}
+                control={<Radio />}
+                label={response.response}
+                className={classes.nonCaps}
+              />
+            ))}
+        </RadioGroup>
+      </FormControl>
+      { idx !== section.length - 1
+        && (
+          <Divider />
+        )}
+    </div>
+  ));
 
   return (
     <Container maxWidth="md">
@@ -78,41 +114,7 @@ function ChplAttestationWizardSection2(props) {
             Select only one response for each statement.
           </Typography>
           <Divider />
-          { /* attestationResponses
-           .map((attestation, idx) => (
-             <div key={attestation.attestation.id}>
-               <Typography variant="subtitle1">
-                 { idx + 1 }
-                 :
-                 {' '}
-                 { attestation.attestation.condition.name }
-               </Typography>
-               <FormControl key={attestation.attestation.id} component="fieldset">
-                 <FormLabel className={classes.nonCaps}>{attestation.attestation.display}</FormLabel>
-                 <RadioGroup
-                   className={classes.radioGroup}
-                   name={`response-${attestation.attestation.id}`}
-                   value={attestation.response.response}
-                   onChange={(event) => handleResponse(attestation, event.currentTarget.value)}
-                 >
-                   {attestation.attestation.validResponses
-                    .map((response) => (
-                      <FormControlLabel
-                        key={response.id}
-                        value={response.response}
-                        control={<Radio />}
-                        label={response.response}
-                        className={classes.nonCaps}
-                      />
-                    ))}
-                 </RadioGroup>
-               </FormControl>
-               { idx !== attestationResponses.length - 1
-                 && (
-                   <Divider />
-                 )}
-             </div>
-           )) */}
+          { sections.flatMap((section, idx) => getQuestion(section, idx)) }
         </CardContent>
       </Card>
     </Container>
@@ -122,6 +124,6 @@ function ChplAttestationWizardSection2(props) {
 export default ChplAttestationWizardSection2;
 
 ChplAttestationWizardSection2.propTypes = {
-  form: object.isRequired, // eslint-disable-line react/forbid-prop-types
+  sections: array.isRequired, // eslint-disable-line react/forbid-prop-types
   dispatch: func.isRequired,
 };

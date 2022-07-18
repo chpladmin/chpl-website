@@ -5,7 +5,7 @@ import options from './options';
 
 const useFetchAttestationForm = ({ period }) => {
   const axios = useAxios();
-  return useQuery(['attestations'], async () => {
+  return useQuery(['attestations/form', period.id], async () => {
     const response = await axios.get(`/attestations/periods/${period.id}/form`);
     return response.data;
   }, {

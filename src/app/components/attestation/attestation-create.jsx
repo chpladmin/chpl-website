@@ -39,7 +39,7 @@ function ChplAttestationCreate(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading || !data?.attestations) {
+    if (isLoading || !data?.form) {
       return;
     }
     setForm(data.form);

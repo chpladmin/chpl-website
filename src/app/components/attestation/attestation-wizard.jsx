@@ -20,12 +20,16 @@ import { developer as developerPropType } from 'shared/prop-types';
 function ChplAttestationWizard(props) {
   const { developer, dispatch } = props;
   const [form, setForm] = useState({});
+  const [sections, setSections] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
     setForm(props.form);
+    if (props.form?.sectionHeadings) {
+      setSections(props.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder));
+    }
   }, [props.form]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
@@ -51,7 +55,7 @@ function ChplAttestationWizard(props) {
   };
 
   const handleFormDispatch = (payload) => {
-    setForm(payload);
+    console.log({ payload });
   };
 
   const handleProgressDispatch = (action) => dispatch('stage', (stage + (action === 'next' ? 1 : -1)));
@@ -82,7 +86,7 @@ function ChplAttestationWizard(props) {
       { stage === 1
         && (
           <ChplAttestationWizardSection2
-            form={form}
+            sections={sections}
             dispatch={handleFormDispatch}
           />
         )}
