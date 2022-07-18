@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -7,17 +7,18 @@ import {
   CardActions,
   Divider,
   MenuItem,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplTextField } from '../../../components/util';
+import { ChplTextField } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
   pageHeader: {
     padding: '32px',
   },
@@ -37,12 +38,6 @@ const useStyles = makeStyles({
       gridTemplateColumns: '7fr 5fr',
     },
   },
-  fullWidth: {
-    gridColumnEnd: 'span 2',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   listSpacing: {
     '& li': {
       marginBottom: '.35em',
@@ -51,25 +46,29 @@ const useStyles = makeStyles({
   },
 });
 
+const allOptions = [
+  '2015 edition products (xml)',
+  '2014 edition products (xml)',
+  '2011 edition products (xml)',
+  '2015 edition summary (csv)',
+  '2014 edition summary (csv)',
+  'SVAP Summary (csv)',
+  'Surveillance Activity',
+  'Surveillance (Basic)',
+  'Surveillance Non-Conformities',
+  'Direct Review Activity',
+];
+
 function ChplResourcesDownload() {
   const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const {
     getApiKey,
     getToken,
-    hasAnyRole,
   } = getAngularService('authService');
+  const { hasAnyRole } = useContext(UserContext);
   const [files, setFiles] = useState({});
-  const [downloadOptions, setDownloadOptions] = useState([
-    '2015 edition products (xml)',
-    '2014 edition products (xml)',
-    '2011 edition products (xml)',
-    '2015 edition summary (csv)',
-    '2014 edition summary (csv)',
-    'Surveillance Activity',
-    'Surveillance Non-Conformities',
-    'Direct Review Activity',
-  ]);
+  const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('2015 edition products (xml)');
   const classes = useStyles();
 
@@ -87,16 +86,16 @@ function ChplResourcesDownload() {
       'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'SVAP Summary' },
     };
     setFiles(data);
-    setDownloadOptions((options) => {
-      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-        options.splice(6, 0, 'Surveillance (Basic)');
+    setDownloadOptions(() => allOptions.filter((option) => {
+      if (option === 'Surveillance (Basic)' && !hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+        return false;
       }
-      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
-        options.splice(5, 0, 'SVAP Summary (csv)');
+      if (option === 'SVAP Summary (csv)' && !hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
+        return false;
       }
-      return options;
-    });
-  }, [API, downloadOptions, getApiKey, getToken, hasAnyRole]);
+      return true;
+    }));
+  }, [API, getApiKey, getToken, hasAnyRole]);
 
   const downloadFile = (type) => {
     if (selectedOption) {
@@ -106,7 +105,7 @@ function ChplResourcesDownload() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <div className={classes.pageHeader}>
         <Typography
           variant="h1"
@@ -251,7 +250,7 @@ function ChplResourcesDownload() {
           </Card>
         </div>
       </div>
-    </ThemeProvider>
+    </>
   );
 }
 
