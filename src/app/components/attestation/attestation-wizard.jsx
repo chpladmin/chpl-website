@@ -52,6 +52,7 @@ function ChplAttestationWizard(props) {
   }, [props.period]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
+    setSections(submission);
     setStage(props.stage);
   }, [props.stage]); // eslint-disable-line react/destructuring-assignment
 
