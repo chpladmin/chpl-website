@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Card,
   CardContent,
   Container,
@@ -16,12 +15,9 @@ import {
 import {
   array,
   func,
-  object,
 } from 'prop-types';
 
 import interpretLink from './attestation-util';
-
-import { ChplTextField } from 'components/util';
 
 const useStyles = makeStyles({
   nonCaps: {
@@ -39,49 +35,49 @@ function ChplAttestationWizardSection2(props) {
 
   useEffect(() => {
     setSections(props.sections);
-    /*
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-      .map((attestation) => ({
-        attestation: {
-          ...attestation,
-          display: interpretLink(attestation.description),
-          validResponses: attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
-        },
-        response: { response: '' },
-      })));
-      */
   }, [props.sections]); // eslint-disable-line react/destructuring-assignment
 
-  const handleResponse = (attestation, value) => {
-    const updated = [...sections];/* attestationResponses.map((att) => {
-      const updatedAttestation = {
-        ...att,
+  const handleResponse = (section, item, value) => {
+    const updated = sections.map((s) => {
+      const updatedSection = {
+        ...s,
       };
-      if (attestation.attestation.id === att.attestation.id) {
-        updatedAttestation.response = att.attestation.validResponses.find((response) => response.response === value);
+      if (section.id === s.id) {
+        const updatedItems = section.formItems.map((i) => {
+          const updatedItem = {
+            ...i,
+          };
+          if (item.id === i.id) {
+            updatedItem.submittedResponses = [item.question.allowedResponses.find((resp) => resp.response === value)];
+          }
+          return updatedItem;
+        });
+        updatedSection.formItems = updatedItems;
       }
-      return updatedAttestation;
-    }); */
+      return updatedSection;
+    });
     dispatch(updated);
+    setSections(updated);
   };
 
-  const getQuestion = (section, idx) => section.formItems.map((question) => (
-    <div key={`${section.id}-${question.id}`}>
+  const getQuestion = (section, idx) => section.formItems.map((item) => (
+    <div key={`${section.id}-${item.id}`}>
       <Typography variant="subtitle1">
         { idx + 1 }
         :
         {' '}
         { section.name }
       </Typography>
-      <FormControl key={question.id} component="fieldset">
-        <FormLabel className={classes.nonCaps}>{interpretLink(question.question.question)}</FormLabel>
+      <FormControl key={item.id} component="fieldset">
+        <FormLabel className={classes.nonCaps}>{interpretLink(item.question.question)}</FormLabel>
         <RadioGroup
           className={classes.radioGroup}
-          name={`response-${question.id}`}
-          value={question.submittedResponses}
-          onChange={(event) => handleResponse(question, event.currentTarget.value)}
+          name={`response-${item.id}`}
+          value={(item.submittedResponses && item.submittedResponses[0]?.response) || ''}
+          onChange={(event) => handleResponse(section, item, event.currentTarget.value)}
         >
-          {question.question.allowedResponses
+          {item.question.allowedResponses
+            .sort((a, b) => (a.response < b.response ? -1 : 1))
             .map((response) => (
               <FormControlLabel
                 key={response.id}

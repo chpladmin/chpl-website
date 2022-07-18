@@ -17,10 +17,20 @@ import ChplAttestationWizardSection4 from './attestation-wizard-section-4';
 import { ChplActionBar } from 'components/action-bar';
 import { developer as developerPropType } from 'shared/prop-types';
 
+const completedFormItems = (section) => section
+  .formItems
+  .reduce((completed, item) => completed && (!item.required || item.submittedResponses.length > 0),
+    section.formItems.length > 0);
+
+const isFormFilledOut = (submission) => submission
+  .reduce((completed, section) => completed && completedFormItems(section),
+    true);
+
 function ChplAttestationWizard(props) {
   const { developer, dispatch } = props;
   const [form, setForm] = useState({});
   const [sections, setSections] = useState([]);
+  const [submission, setSubmission] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
@@ -29,6 +39,7 @@ function ChplAttestationWizard(props) {
     setForm(props.form);
     if (props.form?.sectionHeadings) {
       setSections(props.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder));
+      setSubmission(props.form.sectionHeadings);
     }
   }, [props.form]); // eslint-disable-line react/destructuring-assignment
 
@@ -44,9 +55,7 @@ function ChplAttestationWizard(props) {
     setStage(props.stage);
   }, [props.stage]); // eslint-disable-line react/destructuring-assignment
 
-  const isFormFilledOut = () => true; // attestationResponses.reduce((filledOut, attestation) => filledOut && !!attestation.response.id, true);
-
-  const canNext = () => stage === 0 || (stage === 1 && isFormFilledOut());
+  const canNext = () => stage === 0 || (stage === 1 && isFormFilledOut(submission));
 
   const canPrevious = () => stage > 0 && stage < 3;
 
@@ -55,7 +64,7 @@ function ChplAttestationWizard(props) {
   };
 
   const handleFormDispatch = (payload) => {
-    console.log({ payload });
+    setSubmission(payload);
   };
 
   const handleProgressDispatch = (action) => dispatch('stage', (stage + (action === 'next' ? 1 : -1)));
@@ -63,7 +72,10 @@ function ChplAttestationWizard(props) {
   const handleSignatureDispatch = (signature) => {
     const payload = {
       details: {
-        form,
+        form: {
+          ...form,
+          sectionHeadings: submission,
+        },
         period,
         signature,
       },
