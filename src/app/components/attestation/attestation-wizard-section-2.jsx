@@ -80,10 +80,9 @@ function ChplAttestationWizardSection2(props) {
               const updatedChildItem = {
                 ...c,
               };
-              updatedChildItem.submittedResponses = checked ?
-                [...updatedChildItem.submittedResponses, answer]
-                :
-                updatedChildItem.submittedResponses.filter((r) => r.id !== answer.id);
+              updatedChildItem.submittedResponses = checked
+                ? [...updatedChildItem.submittedResponses, answer]
+                : updatedChildItem.submittedResponses.filter((r) => r.id !== answer.id);
               return updatedChildItem;
             });
             updatedItem.childFormItems = updatedChildItems;
@@ -125,16 +124,18 @@ function ChplAttestationWizardSection2(props) {
         <FormControl key={`${item.id}-sub-questions`} component="fieldset">
           <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
           <FormGroup>
-            { child.question.allowedResponses.map((ans) => (
-              <FormControlLabel
-                key={`${item.id}-${child.id}-${ans.id}`}
-                value={ans.response}
-                control={<Checkbox />}
-                label={ans.response}
-                className={classes.nonCaps}
-                onChange={(event) => handleSubResponse(section, item, ans, event.currentTarget.checked)}
-              />
-            ))}
+            { child.question.allowedResponses
+              .sort((a, b) => (a.response < b.response ? -1 : 1))
+              .map((answer) => (
+                <FormControlLabel
+                  key={`${item.id}-${child.id}-${answer.id}`}
+                  value={answer.response}
+                  control={<Checkbox />}
+                  label={answer.response}
+                  className={classes.nonCaps}
+                  onChange={(event) => handleSubResponse(section, item, answer, event.currentTarget.checked)}
+                />
+              ))}
           </FormGroup>
         </FormControl>
       ))}

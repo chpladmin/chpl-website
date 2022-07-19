@@ -29,18 +29,15 @@ const getRows = (section) => section.formItems.map((item) => (
       { interpretLink(item.question.question) }
     </TableCell>
     <TableCell>
-      { item.question.responseCardinalityType.description === 'Single'
-        && (
-          <>
-            { item.submittedResponses[0].response }
-          </>
-        )}
-      { item.question.responseCardinalityType.description === 'Multiple'
+      { item.submittedResponses[0].response }
+      { item.childFormItems[0].submittedResponses.length > 0
         && (
           <ul>
-            { item.submittedResponses.map((response) => (
-              <li key={response.id}>{ response }</li>
-            ))}
+            { item.childFormItems[0].submittedResponses
+              .sort((a, b) => (a.response < b.response ? -1 : 1))
+              .map((response) => (
+                <li key={response.id}>{ response.response }</li>
+              ))}
           </ul>
         )}
     </TableCell>
