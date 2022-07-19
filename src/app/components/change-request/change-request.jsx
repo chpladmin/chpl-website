@@ -268,7 +268,7 @@ function ChplChangeRequest(props) {
           comment: '',
         },
       };
-      props.dispatch('save', payload);
+      save(payload);
     } else {
       formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
       formik.submitForm();
