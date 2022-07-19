@@ -39,12 +39,6 @@ function ChplAttestationWizardSection2(props) {
     setSections(props.sections);
   }, [props.sections]); // eslint-disable-line react/destructuring-assignment
 
-  const handleSubResponse = (section, item, answer, value) => {
-    console.log({
-      section, item, answer, value,
-    });
-  };
-
   const handleResponse = (section, item, value) => {
     const updated = sections.map((s) => {
       const updatedSection = {
@@ -57,6 +51,42 @@ function ChplAttestationWizardSection2(props) {
           };
           if (item.id === i.id) {
             updatedItem.submittedResponses = [item.question.allowedResponses.find((resp) => resp.response === value)];
+          }
+          return updatedItem;
+        });
+        updatedSection.formItems = updatedItems;
+      }
+      return updatedSection;
+    });
+    dispatch(updated);
+    setSections(updated);
+  };
+
+  const handleSubResponse = (section, item, answer, checked) => {
+    console.log({
+      section, item, answer, checked,
+    });
+    const updated = sections.map((s) => {
+      const updatedSection = {
+        ...s,
+      };
+      if (section.id === s.id) {
+        const updatedItems = section.formItems.map((i) => {
+          const updatedItem = {
+            ...i,
+          };
+          if (item.id === i.id) {
+            const updatedChildItems = updatedItem.childFormItems.map((c) => {
+              const updatedChildItem = {
+                ...c,
+              };
+              updatedChildItem.submittedResponses = checked ?
+                [...updatedChildItem.submittedResponses, answer]
+                :
+                updatedChildItem.submittedResponses.filter((r) => r.id !== answer.id);
+              return updatedChildItem;
+            });
+            updatedItem.childFormItems = updatedChildItems;
           }
           return updatedItem;
         });
@@ -92,17 +122,17 @@ function ChplAttestationWizardSection2(props) {
         </RadioGroup>
       </FormControl>
       { item.childFormItems.map((child) => (
-        <FormControl key={`${item.id}-${child.id}`} component="fieldset">
+        <FormControl key={`${item.id}-sub-questions`} component="fieldset">
           <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
           <FormGroup>
             { child.question.allowedResponses.map((ans) => (
               <FormControlLabel
-                key={`${child.id}-${ans.id}`}
+                key={`${item.id}-${child.id}-${ans.id}`}
                 value={ans.response}
                 control={<Checkbox />}
                 label={ans.response}
                 className={classes.nonCaps}
-                onChange={(event) => handleSubResponse(section, item, ans, event.currentTarget.value)}
+                onChange={(event) => handleSubResponse(section, item, ans, event.currentTarget.checked)}
               />
             ))}
           </FormGroup>
