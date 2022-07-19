@@ -63,9 +63,6 @@ function ChplAttestationWizardSection2(props) {
   };
 
   const handleSubResponse = (section, item, answer, checked) => {
-    console.log({
-      section, item, answer, checked,
-    });
     const updated = sections.map((s) => {
       const updatedSection = {
         ...s,
@@ -121,23 +118,31 @@ function ChplAttestationWizardSection2(props) {
         </RadioGroup>
       </FormControl>
       { item.childFormItems.map((child) => (
-        <FormControl key={`${item.id}-sub-questions`} component="fieldset">
-          <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
-          <FormGroup>
-            { child.question.allowedResponses
-              .sort((a, b) => (a.response < b.response ? -1 : 1))
-              .map((answer) => (
-                <FormControlLabel
-                  key={`${item.id}-${child.id}-${answer.id}`}
-                  value={answer.response}
-                  control={<Checkbox />}
-                  label={answer.response}
-                  className={classes.nonCaps}
-                  onChange={(event) => handleSubResponse(section, item, answer, event.currentTarget.checked)}
-                />
-              ))}
-          </FormGroup>
-        </FormControl>
+        <>
+          { item.submittedResponses.some((resp) => resp.id === child.parentResponse.id)
+            && (
+              <FormControl key={`${item.id}-sub-questions`} component="fieldset">
+                <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
+                <FormGroup>
+                  { child.question.allowedResponses
+                    .sort((a, b) => (a.response < b.response ? -1 : 1))
+                    .map((answer) => (
+                      <FormControlLabel
+                        key={`${item.id}-${child.id}-${answer.id}`}
+                        control={(
+                          <Checkbox
+                            checked={child.submittedResponses.some((resp) => resp.id === answer.id)}
+                            onChange={(event) => handleSubResponse(section, item, answer, event.currentTarget.checked)}
+                          />
+                        )}
+                        label={answer.response}
+                        className={classes.nonCaps}
+                      />
+                    ))}
+                </FormGroup>
+              </FormControl>
+            )}
+        </>
       ))}
     </>
   );
