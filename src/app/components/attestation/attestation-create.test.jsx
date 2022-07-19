@@ -8,12 +8,18 @@ import '@testing-library/jest-dom';
 import ChplAttestationCreate from './attestation-create';
 
 import * as angularReactHelper from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
 
 const $stateMock = {
   go: jest.fn(),
 };
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$state').mockReturnValue($stateMock);
+
+const userContextMock = {
+  hasAnyRole: () => true,
+  hasAuthorityOn: () => true,
+};
 
 const developerMock = {
 };
@@ -30,6 +36,12 @@ jest.mock('./attestation-progress', () => ({
 
 const mockApi = {
   isLoading: true,
+  data: {
+    submittablePeriod: {
+      periodStart: '2021-03-12',
+      periodEnd: '2021-04-23',
+    },
+  },
   mutate: () => {},
 };
 
@@ -44,6 +56,11 @@ jest.mock('api/change-requests', () => ({
   usePostChangeRequest: () => mockApi,
 }));
 
+jest.mock('api/developer', () => ({
+  __esModule: true,
+  useFetchAttestations: () => mockApi,
+}));
+
 const mockEnqueue = jest.fn();
 
 jest.mock('notistack', () => ({
@@ -56,9 +73,11 @@ jest.mock('notistack', () => ({
 describe('the ChplAttestationCreate component', () => {
   beforeEach(async () => {
     render(
-      <ChplAttestationCreate
-        developer={developerMock}
-      />,
+      <UserContext.Provider value={userContextMock}>
+        <ChplAttestationCreate
+          developer={developerMock}
+        />
+      </UserContext.Provider>,
     );
   });
 
