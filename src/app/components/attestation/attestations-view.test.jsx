@@ -2,20 +2,12 @@ import React from 'react';
 import {
   cleanup, render, screen, waitFor,
 } from '@testing-library/react';
-import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
 import ChplAttestationsView from './attestations-view';
 
-import * as angularReactHelper from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-
-const DateUtilMock = {
-  getDisplayDateFormat: jest.fn(),
-};
-angularReactHelper.getAngularService = jest.fn();
-when(angularReactHelper.getAngularService).calledWith('DateUtil').mockReturnValue(DateUtilMock);
 
 const hocMock = {
   dispatch: jest.fn(),
@@ -29,7 +21,7 @@ const developerMock = {
 const mockApi = {
   isLoading: true,
   data: {
-    canSubmitAttestationChangeRequest: true,
+    submittablePeriod: { id: 1 },
   },
   mutate: () => {},
 };

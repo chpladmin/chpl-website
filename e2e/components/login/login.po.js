@@ -12,6 +12,10 @@ class LoginComponent {
     };
   }
 
+  isLoggedIn() {
+    return !(/Administrator Login/i.test(this.getLoggedInUserName()));
+  }
+
   getLoggedInUserName() {
     return $(this.elements.loginToggle).getText();
   }
@@ -39,12 +43,13 @@ class LoginComponent {
     un.addValue(credentials[user].email || credentials[user].username);
     pw.addValue(credentials[user].password);
     btn.click();
-    browser.waitUntil(() => !(/Administrator Login/i.test(this.getLoggedInUserName())));
+    browser.waitUntil(() => this.isLoggedIn());
     browser.keys('Escape');
     browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
   }
 
   logOut() {
+    if (!this.isLoggedIn()) { return; }
     if (!($(this.elements.component).isDisplayed())) {
       this.toggleLoginComponent();
     }
