@@ -20,7 +20,7 @@ const suite = {
     listingId: '15.04.04.1722.MEA5.V1.00.1.210607',
     expectedErrors: [
       'The G1 measure Provide Patients Electronic Access to Their Health Information (formerly Patient Electronic Access): Eligible Clinician for RT2 must have at least one associated criterion.',
-      'Invalid G1/G2 Measure Type: \'\' was not found.',
+      'G1/G2 Measure Type is missing.',
     ],
     expectedWarnings: [
       'G2 Measure \'EC\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
