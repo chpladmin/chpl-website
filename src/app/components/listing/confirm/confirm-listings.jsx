@@ -336,7 +336,7 @@ function ChplConfirmListings(props) {
                         <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
                         <TableCell>
                           { listing.displayStatus }
-                          { !useLegacy && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
+                          { !useLegacy && listing.status !== 'UPLOAD_FAILURE' && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
                             && (
                               <div>
                                 <Button
