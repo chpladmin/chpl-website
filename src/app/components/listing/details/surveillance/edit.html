@@ -17,12 +17,6 @@
       <div class="col-sm-3"><strong>Surveillance ID:</strong></div>
       <div class="col-sm-9">{{ $ctrl.surveillance.friendlyId }}</div>
     </div>
-    <div class="row" ng-if="$ctrl.workType !== 'initiate' || $ctrl.surveillance.authority">
-      <div class="col-sm-3"><strong>Surveillance initiated by:</strong></div>
-      <div class="col-sm-9">
-        <span>{{ $ctrl.surveillance.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}</span>
-      </div>
-    </div>
     <div class="form-group">
       <label for="start-day" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
@@ -121,8 +115,7 @@
                                               !$ctrl.surveillance.requirements ||
                                               $ctrl.surveillance.requirements.length === 0 ||
                                               $ctrl.misorderedStartEndDays() ||
-                                              $ctrl.missingEndDay() ||
-                                              ($ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])))
+                                              $ctrl.missingEndDay())
                                               && $ctrl.showFormErrors">
       The following error(s) must be fixed:
       <ul>
@@ -130,20 +123,18 @@
         <li ng-if="$ctrl.editForm.startDay.$error.parse">Start Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.endDay.$error.parse">End Date is an improper format (MM/dd/yyyy)</li>
         <li ng-if="$ctrl.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
-        <li ng-if="$ctrl.editForm.authority.$error.required">Initiated by is required</li>
         <li ng-if="$ctrl.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
         <li ng-if="$ctrl.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
         <li ng-if="!$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
-        <li ng-if="$ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])">User must have authority for ONC-Admin to edit surveillance created by ONC-Admin</li>
         <li ng-if="$ctrl.misorderedStartEndDays()">Start Date must be before or on End Date</li>
         <li ng-if="$ctrl.missingEndDay()">End Date is required when there are no open Nonconformities</li>
       </ul>
     </div>
-    <button ng-disabled="($ctrl.editForm.$invalid || !$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0 || $ctrl.misorderedStartEndDays() || $ctrl.missingEndDay() || ($ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))) && $ctrl.showFormErrors && !$ctrl.disableValidation"
+    <button ng-disabled="($ctrl.editForm.$invalid || !$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0 || $ctrl.misorderedStartEndDays() || $ctrl.missingEndDay()) && $ctrl.showFormErrors && !$ctrl.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="$ctrl.showFormErrors = true"
             ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
-    <button ng-disabled="($ctrl.surveillance.authority === 'ROLE_ONC' && !$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) || !$ctrl.reason"
+    <button ng-disabled="!$ctrl.reason"
             class="btn btn-danger pull-left" ng-if="$ctrl.workType === 'edit'"
             confirm="Are you sure you wish to delete this surveillance?"
             confirm-ok="Yes"

@@ -102,49 +102,6 @@
         expect(removed).toBeTrue();
       });
 
-      describe('during activation', () => {
-        it('should provide authorities', () => {
-          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ONC', false)); // user is ONC
-          // base line
-          expect(ctrl.authority).toBeUndefined();
-          expect(ctrl.surveillance.type).toBeDefined();
-
-          const newSurv = angular.copy(Mock.surveillances[0]);
-          newSurv.endDay = angular.copy(newSurv.startDay);
-          newSurv.startDay = undefined;
-          newSurv.type = undefined;
-          authService.hasAnyRole.and.returnValue(true);
-          scope.resolve = {
-            surveillance: newSurv,
-            surveillanceTypes: Mock.surveillanceData,
-            workType: 'edit',
-          };
-          el = angular.element('<ai-surveillance-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></ai-surveillance-edit>');
-          $compile(el)(scope);
-          scope.$digest();
-          ctrl = el.isolateScope().$ctrl;
-          expect(ctrl.authority).toEqual('ROLE_ONC');
-          expect(ctrl.surveillance.type).toBeUndefined();
-        });
-
-        describe('on initiation', () => {
-          it('should set authority', () => {
-            authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
-            scope.resolve = {
-              surveillance: {},
-              surveillanceTypes: Mock.surveillanceData,
-              workType: 'initiate',
-            };
-            el = angular.element('<ai-surveillance-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></ai-surveillance-edit>');
-            $compile(el)(scope);
-            scope.$digest();
-            ctrl = el.isolateScope().$ctrl;
-            expect(ctrl.authority).toBe('ROLE_ACB');
-            expect(ctrl.surveillance.authority).toBe('ROLE_ACB');
-          });
-        });
-      });
-
       describe('when adding a new requirement', () => {
         let modalOptions;
         beforeEach(() => {
