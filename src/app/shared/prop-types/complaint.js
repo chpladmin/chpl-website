@@ -5,6 +5,7 @@ import {
   shape,
   string,
 } from 'prop-types';
+
 import acb from './acb';
 
 const criterion = shape({
@@ -56,7 +57,6 @@ const surveillance = shape({
       name: string,
     }),
     surveillanceTypeId: number,
-    userPermissionId: number,
   }),
   surveillanceId: number,
 });

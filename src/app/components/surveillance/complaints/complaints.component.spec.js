@@ -38,7 +38,6 @@
               nonconformities: [],
             },
           ],
-          authority: 'ROLE_ACB',
           errorMessages: [],
           warningMessages: [],
           lastModifiedDate: 1517959724664,

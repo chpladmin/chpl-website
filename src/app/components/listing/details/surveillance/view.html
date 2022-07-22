@@ -47,12 +47,6 @@
             </th>
             <td><span ng-repeat="res in $ctrl.surveillanceResults(surv) | orderBy:$ctrl.sortResults track by $index" ng-bind-html="res"></span></td>
           </tr>
-          <tr>
-            <th scope="row">
-              <a href uib-tooltip="Indicates whether surveillance was initiated by ONC-ACB or through ONC direct review." tooltip-trigger="'mouseenter focus click'">Surveillance initiated by</a>
-            </th>
-            <td>{{ surv.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}</td>
-          </tr>
         </tbody>
       </table>
       <div ng-repeat="req in surv.requirements | orderBy:$ctrl.sortRequirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
