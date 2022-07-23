@@ -97,8 +97,6 @@ function ChplComplaintsView(props) {
     props.dispatch(action, complaint);
   };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, complaints.length - page * rowsPerPage);
-
   if (!complaints || complaints.length === 0) {
     return (
       <>No results found</>
@@ -151,11 +149,6 @@ function ChplComplaintsView(props) {
                   </TableCell>
                 </TableRow>
               ))}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={headers.length} />
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </TableContainer>
