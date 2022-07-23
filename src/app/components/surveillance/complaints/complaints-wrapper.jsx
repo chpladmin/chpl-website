@@ -34,6 +34,7 @@ ChplComplaintsWrapper.propTypes = {
   listings: arrayOf(listingPropType),
   errors: arrayOf(string),
   dispatch: func,
+  displayAdd: bool,
   isViewing: bool,
   isEditing: bool,
 };
@@ -44,6 +45,7 @@ ChplComplaintsWrapper.defaultProps = {
   listings: [],
   errors: [],
   dispatch: () => {},
+  displayAdd: false,
   isViewing: false,
   isEditing: false,
 };

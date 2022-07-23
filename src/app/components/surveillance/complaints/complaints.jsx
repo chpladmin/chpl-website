@@ -31,6 +31,7 @@ function ChplComplaints(props) {
   const {
     complaints,
     dispatch,
+    displayAdd,
     isViewing,
     isEditing,
   } = props;
@@ -49,9 +50,12 @@ function ChplComplaints(props) {
     <>
       <div className={classes.tableResultsHeaderContainer}>
         <ButtonGroup size="small" className={classes.wrap}>
-          <ChplComplaintAdd
-            dispatch={dispatch}
-          />
+          { displayAdd
+            && (
+              <ChplComplaintAdd
+                dispatch={dispatch}
+              />
+            )}
           { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
             && (
               <ChplComplaintsDownload />
@@ -74,6 +78,7 @@ ChplComplaints.propTypes = {
   listings: arrayOf(listingPropType).isRequired,
   errors: arrayOf(string).isRequired,
   dispatch: func.isRequired,
+  displayAdd: bool.isRequired,
   isViewing: bool.isRequired,
   isEditing: bool.isRequired,
 };
