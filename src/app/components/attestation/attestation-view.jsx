@@ -30,7 +30,7 @@ const getRows = (section) => section.formItems.map((item) => (
     </TableCell>
     <TableCell>
       { item.submittedResponses[0].response }
-      { item.childFormItems[0].submittedResponses.length > 0
+      { item.childFormItems[0]?.submittedResponses.length > 0
         && (
           <ul>
             { item.childFormItems[0].submittedResponses
