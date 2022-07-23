@@ -29,7 +29,7 @@ const getRows = (section) => section.formItems.map((item) => (
       { interpretLink(item.question.question) }
     </TableCell>
     <TableCell>
-      { item.submittedResponses[0].response }
+      { item.submittedResponses[0]?.response }
       { item.childFormItems[0]?.submittedResponses.length > 0
         && (
           <ul>
