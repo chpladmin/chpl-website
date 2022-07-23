@@ -117,33 +117,35 @@ function ChplAttestationWizardSection2(props) {
             ))}
         </RadioGroup>
       </FormControl>
-      { item.childFormItems.map((child) => (
-        <>
-          { item.submittedResponses.some((resp) => resp.id === child.parentResponse.id)
-            && (
-              <FormControl key={`${item.id}-sub-questions`} component="fieldset">
-                <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
-                <FormGroup>
-                  { child.question.allowedResponses
-                    .sort((a, b) => (a.response < b.response ? -1 : 1))
-                    .map((answer) => (
-                      <FormControlLabel
-                        key={`${item.id}-${child.id}-${answer.id}`}
-                        control={(
-                          <Checkbox
-                            checked={child.submittedResponses.some((resp) => resp.id === answer.id)}
-                            onChange={(event) => handleSubResponse(section, item, answer, event.currentTarget.checked)}
-                          />
-                        )}
-                        label={answer.response}
-                        className={classes.nonCaps}
-                      />
-                    ))}
-                </FormGroup>
-              </FormControl>
-            )}
-        </>
-      ))}
+      { item.childFormItems
+        .map((child) => item.submittedResponses
+          .some((resp) => resp.id === child.parentResponse.id)
+             && (
+               <Card>
+                 <CardContent>
+                   <FormControl key={`${item.id}-sub-questions`} component="fieldset">
+                     <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
+                     <FormGroup>
+                       { child.question.allowedResponses
+                         .sort((a, b) => (a.response < b.response ? -1 : 1))
+                         .map((answer) => (
+                           <FormControlLabel
+                             key={`${item.id}-${child.id}-${answer.id}`}
+                             control={(
+                               <Checkbox
+                                 checked={child.submittedResponses.some((resp) => resp.id === answer.id)}
+                                 onChange={(event) => handleSubResponse(section, item, answer, event.currentTarget.checked)}
+                               />
+                             )}
+                             label={answer.response}
+                             className={classes.nonCaps}
+                           />
+                         ))}
+                     </FormGroup>
+                   </FormControl>
+                 </CardContent>
+               </Card>
+             ))}
     </>
   );
 
