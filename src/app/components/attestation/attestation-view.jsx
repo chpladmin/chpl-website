@@ -109,14 +109,13 @@ function ChplAttestationView(props) {
             </Table>
           </TableContainer>
         )}
-      { attestations.datePublished && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+      { canCreateException && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
         && (
           <Button
             color="primary"
             id="create-attestation-exception-button"
             variant="contained"
             onClick={() => setExceptionPeriod(attestations.period)}
-            disabled={!canCreateException}
             fullWidth
           >
             Re-Open Submission
