@@ -16,7 +16,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import GetAppIcon from '@material-ui/icons/GetApp';
 import Moment from 'react-moment';
 import { arrayOf, string } from 'prop-types';
 
@@ -103,12 +102,11 @@ function ChplChangeRequestsView(props) {
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
-  const [isDownloading, setIsDownloading] = useState(false);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('current_status_change_date_time');
   const [pageNumber, setPageNumber] = React.useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const { queryString } = useFilterContext();
+  const { queryParams, queryString } = useFilterContext();
   const { data, isLoading, isSuccess } = useFetchChangeRequests({
     orderBy,
     pageNumber,
@@ -156,9 +154,6 @@ function ChplChangeRequestsView(props) {
       case 'close':
         setChangeRequest(undefined);
         break;
-      case 'closeDownload':
-        setIsDownloading(false);
-        break;
       // no default
     }
   };
@@ -189,13 +184,6 @@ function ChplChangeRequestsView(props) {
     <Card>
       <CardHeader title="Change Requests" />
       <CardContent>
-        { isDownloading
-          && (
-            <ChplChangeRequestsDownload
-              dispatch={handleDispatch}
-              query={`${queryString()}${bonusQuery}`}
-            />
-          )}
         <div className={classes.searchContainer} component={Paper}>
           { !disallowedFilters.includes('searchTerm')
             && (
@@ -237,21 +225,11 @@ function ChplChangeRequestsView(props) {
                   </Typography>
                 </div>
                 <ButtonGroup size="small" className={classes.wrap}>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    fullWidth
-                    id="download-change-requests"
-                    onClick={() => setIsDownloading(true)}
-                  >
-                    Download
-                    {' '}
-                    { data.recordCount }
-                    {' '}
-                    Result
-                    { data.recordCount !== 1 ? 's' : '' }
-                    <GetAppIcon className={classes.iconSpacing} />
-                  </Button>
+                  <ChplChangeRequestsDownload
+                    bonusQuery={bonusQuery}
+                    queryParams={queryParams()}
+                    recordCount={data.recordCount}
+                  />
                 </ButtonGroup>
               </div>
               <TableContainer className={classes.container} component={Paper}>
