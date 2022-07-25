@@ -35,9 +35,7 @@ function ChplChangeRequestsDownload(props) {
   }, [bonusQuery, queryParams]);
 
   const download = () => {
-    mutate({
-      query,
-    }, {
+    mutate(query, {
       onSuccess: (response) => {
         enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`, {
           variant: 'success',
