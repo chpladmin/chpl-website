@@ -191,6 +191,7 @@ function ChplChangeRequest(props) {
   const classes = useStyles();
 
   let formik;
+  let save;
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -275,6 +276,7 @@ function ChplChangeRequest(props) {
   };
 
   const handleWithdrawal = (response) => {
+    setIsWithdrawing(false);
     if (response === 'yes') {
       const payload = {
         ...changeRequest,
@@ -283,10 +285,10 @@ function ChplChangeRequest(props) {
           comment: '',
         },
       };
-      props.dispatch('save', payload);
+      save(payload);
     }
-    setIsWithdrawing(false);
   };
+
   const handleUpdate = (payload) => {
     switch (changeRequest.changeRequestType.name) {
       case 'Developer Attestation Change Request':
@@ -349,7 +351,7 @@ function ChplChangeRequest(props) {
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
 
-  const save = (request) => {
+  save = (request) => {
     mutate(request, {
       onSuccess: () => {
         props.dispatch('close');

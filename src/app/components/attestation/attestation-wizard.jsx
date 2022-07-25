@@ -29,7 +29,6 @@ import ChplAttestationProgress from './attestation-progress';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
@@ -83,12 +82,11 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationWizard(props) {
-  const DateUtil = getAngularService('DateUtil');
   const { developer } = props;
   const [attestationResponses, setAttestationResponses] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signature, setSignature] = useState('');
-  const [period, setPeriod] = useState(0);
+  const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
   const { user } = useContext(UserContext);
   const classes = useStyles();
@@ -144,6 +142,7 @@ function ChplAttestationWizard(props) {
     const payload = {
       details: {
         attestationResponses,
+        period,
         signature,
       },
     };
@@ -217,17 +216,6 @@ function ChplAttestationWizard(props) {
               </Typography>
               <Card>
                 <CardContent>
-                  <Typography gutterBottom variant="body1">
-                    <strong>Attestation Period:</strong>
-                    {' '}
-                    [
-                    {DateUtil.getDisplayDateFormat(period.periodStart)}
-                    {' '}
-                    -
-                    {' '}
-                    {DateUtil.getDisplayDateFormat(period.periodEnd)}
-                    ]
-                  </Typography>
                   <Typography gutterBottom variant="body1">
                     As a health IT developer of certified health IT that had an active certification under the ONC Health IT Certification Program at any time during the Attestation Period, please indicate your compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement for the portion of the Attestation Period you had an active certification.
                   </Typography>

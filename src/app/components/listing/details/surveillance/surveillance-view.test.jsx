@@ -80,7 +80,6 @@ const survWith1Nonconformity = {
       lastModifiedDate: 1597786978488,
     }],
   }],
-  authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
 };
 
@@ -125,7 +124,6 @@ const survWith0Nonconformity = {
     },
     nonconformities: [],
   }],
-  authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
 };
 
@@ -149,7 +147,6 @@ const survWithNoRequirements = {
   },
   randomizedSitesUsed: null,
   requirements: [],
-  authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
 };
 

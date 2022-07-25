@@ -70,17 +70,13 @@ const usePostChangeRequest = () => {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
       queryClient.invalidateQueries('change-requests/search');
-      queryClient.invalidateQueries({
-        predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
-      });
+      queryClient.invalidateQueries('developers/attestations');
     },
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
         queryClient.invalidateQueries('change-requests/search');
-        queryClient.invalidateQueries({
-          predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
-        });
+        queryClient.invalidateQueries('developers/attestations');
       }
       return error;
     },
@@ -98,17 +94,13 @@ const usePutChangeRequest = () => {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
       queryClient.invalidateQueries('change-requests/search');
-      queryClient.invalidateQueries({
-        predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
-      });
+      queryClient.invalidateQueries('developers/attestations');
     },
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
         queryClient.invalidateQueries('change-requests/search');
-        queryClient.invalidateQueries({
-          predicate: (query) => /developer\/.*attestations/.test(query.queryKey[0]),
-        });
+        queryClient.invalidateQueries('developers/attestations');
       }
       return error;
     },

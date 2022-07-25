@@ -14,6 +14,7 @@ import interpretLink from './attestation-util';
 
 import { usePutChangeRequest } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -99,6 +100,15 @@ function ChplAttestationEdit(props) {
       <Container className={classes.pageHeader} maxWidth="md">
         <Typography gutterBottom variant="h1">
           Edit Attestations
+        </Typography>
+        <Typography gutterBottom variant="body1">
+          <strong>Attestation Period:</strong>
+          {' '}
+          { getDisplayDateFormat(period.periodStart) }
+          {' '}
+          -
+          {' '}
+          { getDisplayDateFormat(period.periodEnd) }
         </Typography>
       </Container>
       <ChplAttestationWizard

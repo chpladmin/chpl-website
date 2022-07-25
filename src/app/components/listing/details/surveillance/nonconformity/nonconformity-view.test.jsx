@@ -113,7 +113,6 @@ const survWith1Nonconformity = {
       lastModifiedDate: 1597786978488,
     }],
   }],
-  authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
 };
 
@@ -187,13 +186,12 @@ const survWithRandomized = {
       lastModifiedDate: 1597786978488,
     }],
   }],
-  authority: 'ROLE_ACB',
   lastModifiedDate: 1597786978488,
 };
 
 const nonconformityTypes = [];
 
-jest.mock('../../../../util/criterion-title', () => () => <div>Criteria Title</div>);
+jest.mock('../../../../util/criterion-title', () => function criterionTitle() { return <div>Criteria Title</div>; });
 
 const dateUtilMock = {
   getDisplayDateFormat: jest.fn(() => 'June 1, 2020'),

@@ -1,10 +1,10 @@
+import { reactToAngularComponent } from '../../services/angular-react-helper';
+
 import ChplNotFound from './not-found';
 import ChplResourcesApi from './api';
-import ChplResourcesDownload from './download';
+import ChplResourcesDownloadWrapper from './download/download-wrapper';
 import ChplResourcesOverview from './overview';
 import ChplStyleGuide from './style-guide';
-
-import { reactToAngularComponent } from '../../services/angular-react-helper';
 
 angular
   .module('chpl.resources', [
@@ -15,6 +15,6 @@ angular
   ])
   .component('chplNotFoundBridge', reactToAngularComponent(ChplNotFound))
   .component('chplResourcesApiBridge', reactToAngularComponent(ChplResourcesApi))
-  .component('chplResourcesDownloadBridge', reactToAngularComponent(ChplResourcesDownload))
+  .component('chplResourcesDownloadWrapperBridge', reactToAngularComponent(ChplResourcesDownloadWrapper))
   .component('chplResourcesOverviewBridge', reactToAngularComponent(ChplResourcesOverview))
   .component('chplStyleGuideBridge', reactToAngularComponent(ChplStyleGuide));
