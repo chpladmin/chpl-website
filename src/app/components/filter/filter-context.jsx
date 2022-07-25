@@ -222,10 +222,10 @@ function FilterProvider(props) {
     .filter((f) => f.values.length > 0)
     .flatMap((f) => f.getQuery(f).split('&'))
     .reduce((params, f) => {
-      const parts = f.split('=');
+      const [key, value] = f.split('=');
       return {
         ...params,
-        [parts[0]]: parts[1],
+        [key]: value,
       };
     }, {});
 
