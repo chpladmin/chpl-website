@@ -22,16 +22,13 @@ function ChplChangeRequestsDownload(props) {
   const classes = useStyles();
 
   useEffect(() => {
+    const updated = {
+      ...queryParams,
+    };
     if (bonusQuery) {
-      setQuery({
-        ...queryParams,
-        developerId: parseInt(bonusQuery.split('=')[1], 10),
-      });
-    } else {
-      setQuery({
-        ...queryParams,
-      });
+      updated.developerId = parseInt(bonusQuery.split('=')[1], 10);
     }
+    setQuery(updated);
   }, [bonusQuery, queryParams]);
 
   const download = () => {
