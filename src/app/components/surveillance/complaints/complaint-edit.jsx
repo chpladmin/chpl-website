@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: '2fr 2fr',
     },
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+      gridTemplateColumns: '3fr 4fr 4fr 2fr',
     },
   },
   dataEntry: {
@@ -127,7 +127,9 @@ function ChplComplaintEdit(props) {
   useEffect(() => {
     if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
     setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === complaint?.complainantType?.id) || '');
+    if (complaint.complainantType) {
+      formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === complaint?.complainantType?.id) || '');
+    }
   }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, complaint]);
 
   useEffect(() => {
@@ -316,7 +318,7 @@ function ChplComplaintEdit(props) {
       closedDate: complaint.closedDate || '',
       acbComplaintId: complaint.acbComplaintId || '',
       oncComplaintId: complaint.oncComplaintId || '',
-      complainantType: '',
+      complainantType: complaint.complainantType || '',
       complainantTypeOther: complaint.complainantTypeOther || '',
       summary: complaint.summary || '',
       actions: complaint.actions || '',
