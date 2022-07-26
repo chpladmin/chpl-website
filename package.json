@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "11.37.0",
+  "version": "11.38.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -63,7 +63,7 @@
     "formik": "^2.2.6",
     "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.5.14",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "ng-csv": "^0.3.6",
     "ng-file-upload": "^12.2.13",
     "ng-idle": "^1.3.2",
