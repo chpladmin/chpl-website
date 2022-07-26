@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 11.38.0
+_25 July 2022_
+
+### Features
+* Enable re-opening of any previously submitted Attestations
+
+### User Interface Updates
+* Display relevant Attestation Period during create/edit
+
+### Bug Fixes
+* Respect user state wrt files on Resources -> Download page
+
+---
+
 ## Version 11.37.0
 _11 July 2022_
 
