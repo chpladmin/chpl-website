@@ -127,10 +127,8 @@ function ChplComplaintEdit(props) {
   useEffect(() => {
     if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
     setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    if (complaint.complainantType) {
-      formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === complaint?.complainantType?.id) || '');
-    }
-  }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, complaint]);
+    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === props.complaint?.complainantType?.id) || '');
+  }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, props.complaint]);
 
   useEffect(() => {
     if (criteriaIsLoading || !criteriaIsSuccess) { return; }
