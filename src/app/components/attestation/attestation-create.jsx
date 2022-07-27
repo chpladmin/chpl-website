@@ -9,8 +9,8 @@ import { useSnackbar } from 'notistack';
 import ChplAttestationWizard from './attestation-wizard';
 
 import { useFetchAttestationForm } from 'api/attestations';
-import { useFetchAttestations } from 'api/developer';
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
+import { useFetchAttestations } from 'api/developer';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
