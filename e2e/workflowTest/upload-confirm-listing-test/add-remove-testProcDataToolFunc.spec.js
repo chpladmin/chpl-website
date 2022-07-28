@@ -1,7 +1,7 @@
 import Upload from '../../components/upload/upload-listing/upload-listing.po';
 import Confirm from '../../pages/administration/confirm/confirm.po';
 import ListingEditComponent from '../../components/listing/edit/listing-edit.po';
-import LoginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.sync.po';
 import Hooks from '../../utilities/hooks';
 
 let confirm;

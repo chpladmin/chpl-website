@@ -1,6 +1,6 @@
 import DevelopersPage from '../../pages/organizations/developers/developers.po';
 import Hooks from '../../utilities/hooks';
-import LoginComponent from '../login/login.po';
+import LoginComponent from '../login/login.sync.po';
 
 import AttestationsComponent from './attestations.po';
 

@@ -1,5 +1,5 @@
 import UploadApiDocumentationComponent from './upload-api-documentation.po';
-import LoginComponent from '../../login/login.po';
+import LoginComponent from '../../login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks;

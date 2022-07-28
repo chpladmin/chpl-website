@@ -1,4 +1,4 @@
-import LoginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.sync.po';
 import Hooks from '../../utilities/hooks';
 import PaginationComponent from '../../components/pagination/pagination.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';

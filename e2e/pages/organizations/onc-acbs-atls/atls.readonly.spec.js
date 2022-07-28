@@ -1,7 +1,7 @@
 import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
-import LoginComponent from '../../../components/login/login.po';
+import LoginComponent from '../../../components/login/login.sync.po';
 import UsersComponent from '../../../components/users/users.po';
 import ToastComponent from '../../../components/toast/toast.po';
 

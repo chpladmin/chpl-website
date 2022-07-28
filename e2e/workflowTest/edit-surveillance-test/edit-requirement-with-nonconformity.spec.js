@@ -1,6 +1,6 @@
 import UploadSurveillanceComponent from '../../components/upload/upload-surveillance/upload-surveillance.po';
 import ConfirmPage from '../../pages/surveillance/confirm/confirm.po';
-import LoginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.sync.po';
 import Hooks from '../../utilities/hooks';
 import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
 import ToastComponent from '../../components/toast/toast.po';

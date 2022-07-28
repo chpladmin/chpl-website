@@ -1,6 +1,6 @@
 import UploadListingComponent from '../../../components/upload/upload-listing/upload-listing.po';
 import UploadAPIDocumentationComponent from '../../../components/upload/upload-api-documentation/upload-api-documentation.po';
-import LoginComponent from '../../../components/login/login.po';
+import LoginComponent from '../../../components/login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
 
 let hooks;
