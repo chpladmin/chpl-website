@@ -20,7 +20,7 @@ class ComplaintsComponent {
       complainantContacted: '#complainant-contacted',
       developerContacted: '#developer-contacted',
       oncAtlContacted: '#onc-atl-contacted',
-      informedOnc: '#flag-for-onc-review'
+      informedOnc: '#flag-for-onc-review',
     };
   }
 
@@ -28,66 +28,66 @@ class ComplaintsComponent {
     return $(this.elements.editButton);
   }
 
-  complaintsBody () {
-    return $('.MuiCardContent-root').getText();
+  async complaintsBody() {
+    return (await $('.MuiCardContent-root')).getText();
   }
 
   get viewButton() {
     return $('//span[text()="View"]');
   }
 
-  selectSurveillance(surveillance) {
-    $(this.elements.surveillance).click();
-    $(`//li[contains(text(),"${surveillance}")]`).click();
+  async selectSurveillance(surveillance) {
+    await (await $(this.elements.surveillance)).click();
+    await (await $(`//li[contains(text(),"${surveillance}")]`)).click();
   }
 
-  selectListing(listings) {
-    $(this.elements.listings).click();
-    $(this.elements.listings).addValue(listings);
-    $(`//li[contains(text(),"${listings}")]`).click();
+  async selectListing(listings) {
+    await (await $(this.elements.listings)).click();
+    await (await $(this.elements.listings)).addValue(listings);
+    await (await $(`//li[contains(text(),"${listings}")]`)).click();
   }
 
-  set(fields) {
-    $(this.elements.certificationBody).click();
-    $(`//li[text()="${fields.body}"]`).click();
-    $(this.elements.receivedDate).addValue(fields.receivedDate);
-    $(this.elements.acbComplaintId).addValue(fields.acbId);
-    $(this.elements.summary).addValue(fields.summary);
-    $(this.elements.complainantType).scrollIntoView();
-    $(this.elements.complainantType).click();
-    $(`//li[text()="${fields.type}"]`).click();
+  async set(fields) {
+    await (await $(this.elements.certificationBody)).click();
+    await (await $(`//li[text()="${fields.body}"]`)).click();
+    await (await $(this.elements.receivedDate)).addValue(fields.receivedDate);
+    await (await $(this.elements.acbComplaintId)).addValue(fields.acbId);
+    await (await $(this.elements.summary)).addValue(fields.summary);
+    await (await $(this.elements.complainantType)).scrollIntoView();
+    await (await $(this.elements.complainantType)).click();
+    await (await $(`//li[text()="${fields.type}"]`)).click();
   }
 
-  setOptionalFields(fields) {
-    $(this.elements.oncId).addValue(fields.oncId);
-    $(this.elements.actions).addValue(fields.actions);
-    $(this.elements.criterion).click();
-    $(`//li[text()="${fields.criterion}"]`).click();
-    $(this.elements.listings).click();
-    $(this.elements.listings).addValue(fields.listings);
-    $(`//li[contains(text(),"${fields.listings}")]`).click();
-    $(this.elements.surveillance).click();
-    $(`//li[contains(text(),"${fields.surveillance}")]`).click();
-    $(this.elements.complainantContacted).click();
-    $(this.elements.developerContacted).click();
-    $(this.elements.oncAtlContacted).click();
-    $(this.elements.informedOnc).click();
+  async setOptionalFields(fields) {
+    await (await $(this.elements.oncId)).addValue(fields.oncId);
+    await (await $(this.elements.actions)).addValue(fields.actions);
+    await (await $(this.elements.criterion)).click();
+    await (await $(`//li[text()="${fields.criterion}"]`)).click();
+    await (await $(this.elements.listings)).click();
+    await (await $(this.elements.listings)).addValue(fields.listings);
+    await (await $(`//li[contains(text(),"${fields.listings}")]`)).click();
+    await (await $(this.elements.surveillance)).click();
+    await (await $(`//li[contains(text(),"${fields.surveillance}")]`)).click();
+    await (await $(this.elements.complainantContacted)).click();
+    await (await $(this.elements.developerContacted)).click();
+    await (await $(this.elements.oncAtlContacted)).click();
+    await (await $(this.elements.informedOnc)).click();
   }
 
-  saveComplaint() {
-    return $(this.elements.saveComplaint).click();
+  async saveComplaint() {
+    return (await $(this.elements.saveComplaint)).click();
   }
 
   get closedDate() {
     return $(this.elements.closedDate);
   }
 
-  setActions(actions) {
-    return $(this.elements.actions).addValue(actions);
+  async setActions(actions) {
+    return (await $(this.elements.actions)).addValue(actions);
   }
 
-  fieldError(fieldName) {
-    return $(`#${fieldName}-helper-text`).getText();
+  async fieldError(fieldName) {
+    return (await $(`#${fieldName}-helper-text`)).getText();
   }
 
   get downloadResultsButton() {
@@ -98,47 +98,46 @@ class ComplaintsComponent {
     return $(this.elements.newComplaint);
   }
 
-  addNewComplaint() {
-    return $(this.elements.newComplaint).click();
+  async addNewComplaint() {
+    return (await $(this.elements.newComplaint)).click();
   }
 
   get filter() {
     return $(this.elements.filter);
   }
 
-  editComplaint(id) {
-    this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').click();
+  async editComplaint(id) {
+    await this.viewComplaint(id);
+    await (await $('//*[text()="Edit"]/parent::button')).click();
   }
 
-  viewComplaint(id) {
-    this.filter.clearValue();
-    this.filter.addValue(id); 
-    browser.waitUntil(() => $('chpl-surveillance-complaints').$('table').$('tbody').$$('tr').length-1 === 1);
-    $('//span[text()="View"]/parent::button').click();
+  async viewComplaint(id) {
+    await this.filter.clearValue();
+    await this.filter.addValue(id);
+    await browser.waitUntil(async () => (await (await (await (await $('chpl-surveillance-complaints')).$('table')).$('tbody')).$$('tr')).length - 1 === 1);
+    await (await $('//span[text()="View"]/parent::button')).click();
   }
 
-  waitForUpdatedTableRowCount () {
-    let start;
-    start = $('table').$('tbody').$$('tr').length;
-    browser.waitUntil( () => $('table').$('tbody').$$('tr').length != start);
+  async waitForUpdatedTableRowCount() {
+    const start = (await (await (await $('table')).$('tbody')).$$('tr')).length;
+    await browser.waitUntil(async () => (await (await (await $('table')).$('tbody')).$$('tr')).length !== start);
   }
 
-  advancedSearch () {
-    $('//button[text()="Advanced Search"]').click();
+  async advancedSearch() {
+    await (await $('//button[text()="Advanced Search"]')).click();
   }
 
-  searchFilter (value) {
-    $('#data-filter').clearValue();
-    $('#data-filter').addValue(value);
+  async searchFilter(value) {
+    await (await $('#data-filter')).clearValue();
+    await (await $('#data-filter')).addValue(value);
   }
 
-  advanceFilterOptions (value){
-    $(`#filter-list-${value}`).click();
+  async advanceFilterOptions(value) {
+    await (await $(`#filter-list-${value}`)).click();
   }
 
-  chooseAdvanceSearchOption (option) {
-    $(`//button[text()="${option}"]`).click();
+  async chooseAdvanceSearchOption(option) {
+    await (await $(`//button[text()="${option}"]`)).click();
   }
 }
 
