@@ -37,8 +37,8 @@ describe('ROLE_ONC user', () => {
     page.announcementText.setValue(text);
     page.announcementEndDateTime.setValue(endDateValue);
     page.isPublicToggle.click();
-    action.save();   
-    browser.waitUntil( () => page.announcementDisplay.isDisplayed());
+    action.save();
+    browser.waitUntil(() => page.announcementDisplay.isDisplayed());
     page.announcementDisplay.click();
     expect(page.announcementDisplay.getText()).toContain(text);
   });

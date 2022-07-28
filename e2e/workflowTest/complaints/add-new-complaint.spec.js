@@ -55,7 +55,7 @@ describe('As a ROLE_ACB user', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
-    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
+    browser.waitUntil(() => hooks.getTableRows().length - 1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 
@@ -71,9 +71,9 @@ describe('As a ROLE_ACB user', () => {
     const optionalFields = {
       oncId: `Test - ${timestamp}`,
       actions: `Test - ${timestamp}`,
-      criterion: `170.315 (a)(4): Drug-Drug, Drug-Allergy Interaction Checks for CPOE`,
+      criterion: '170.315 (a)(4): Drug-Drug, Drug-Allergy Interaction Checks for CPOE',
       listings: '15.04.04.2838.PARA.17.00.1.171228',
-      surveillance: '15.04.04.2838.PARA.17.00.1.171228: SURV01'
+      surveillance: '15.04.04.2838.PARA.17.00.1.171228: SURV01',
     };
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
@@ -83,7 +83,7 @@ describe('As a ROLE_ACB user', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
-    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
+    browser.waitUntil(() => hooks.getTableRows().length - 1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 
@@ -99,9 +99,9 @@ describe('As a ROLE_ACB user', () => {
     const optionalFields = {
       oncId: `Test - ${timestamp}`,
       actions: `Test - ${timestamp}`,
-      criterion: `170.315 (b)(9): Care Plan`,
+      criterion: '170.315 (b)(9): Care Plan',
       listings: '15.04.04.3010.Onco.28.01.1.181214',
-      surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01'
+      surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01',
     };
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
@@ -113,7 +113,7 @@ describe('As a ROLE_ACB user', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
-    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
+    browser.waitUntil(() => hooks.getTableRows().length - 1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 
@@ -129,9 +129,9 @@ describe('As a ROLE_ACB user', () => {
     const optionalFields = {
       oncId: `Test - ${timestamp}`,
       actions: `Test - ${timestamp}`,
-      criterion: `170.315 (b)(9): Care Plan`,
+      criterion: '170.315 (b)(9): Care Plan',
       listings: '15.04.04.2838.PARA.17.00.1.171228',
-      surveillance: '15.04.04.2838.PARA.17.00.1.171228: SURV01'
+      surveillance: '15.04.04.2838.PARA.17.00.1.171228: SURV01',
     };
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
@@ -144,7 +144,7 @@ describe('As a ROLE_ACB user', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
-    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
+    browser.waitUntil(() => hooks.getTableRows().length - 1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 });
@@ -155,7 +155,7 @@ describe('As a ROLE_ADMIN user', () => {
   });
 
   afterEach(() => {
-    if(action.errors.length > 0){
+    if (action.errors.length > 0) {
       action.closeMessages();
     }
     login.logOut();
@@ -177,7 +177,7 @@ describe('As a ROLE_ADMIN user', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
-    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
+    browser.waitUntil(() => hooks.getTableRows().length - 1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
   });
 
@@ -193,9 +193,9 @@ describe('As a ROLE_ADMIN user', () => {
     const optionalFields = {
       oncId: `Test - ${timestamp}`,
       actions: `Test - ${timestamp}`,
-      criterion: `170.315 (b)(9): Care Plan`,
+      criterion: '170.315 (b)(9): Care Plan',
       listings: '15.04.04.3010.Onco.28.01.1.181214',
-      surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01'
+      surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01',
     };
     complaintsComponent.addNewComplaint();
     hooks.waitForSpinnerToDisappear();
@@ -218,5 +218,4 @@ describe('As a ROLE_ONC user', () => {
   it('should not see add new complaint button', () => {
     expect(complaintsComponent.newComplaintButton.isDisplayed()).toBe(false);
   });
-
 });

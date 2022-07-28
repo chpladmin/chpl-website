@@ -1,9 +1,10 @@
-import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.sync.po';
 import UsersComponent from '../../../components/users/users.po';
 import ToastComponent from '../../../components/toast/toast.po';
+
+import OrganizationPage from './organization.po';
 
 let address;
 let hooks;
@@ -71,7 +72,7 @@ describe('the ONC-ATL Management page', () => {
 
     it('should not display the option to edit ATL details for ICSA Labs', () => {
       const atl = 'ICSA Labs';
-      const atlId = '5'
+      const atlId = '5';
       page.openOrganizationDetails(atl);
       browser.waitUntil(() => page.generalInformation('ATL', atlId).isDisplayed());
       expect(page.organizationEditButton.isDisplayed()).toBe(false);
@@ -79,7 +80,7 @@ describe('the ONC-ATL Management page', () => {
 
     it('should not display registered users under ICSA Labs', () => {
       const atl = 'ICSA Labs';
-      const atlId = '5'
+      const atlId = '5';
       page.openOrganizationDetails(atl);
       browser.waitUntil(() => page.generalInformation('ATL', atlId).isDisplayed());
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);

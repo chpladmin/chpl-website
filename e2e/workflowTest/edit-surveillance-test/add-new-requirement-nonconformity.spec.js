@@ -5,13 +5,15 @@ import Hooks from '../../utilities/hooks';
 import SurveillanceEditComponent from '../../components/surveillance/edit/surveillance-edit.po';
 import ToastComponent from '../../components/toast/toast.po';
 
-let confirmPage, edit, hooks, loginComponent, toast, upload;
+let confirmPage; let edit; let hooks; let loginComponent; let toast; let
+  upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
 const listingId1 = '15.04.04.2496.ARIA.16.03.1.200623';
 const inputs = require('../../components/surveillance/edit/requirement-dp');
+
 const error = 'At least one Non-Conformity must be documented';
-const FIRST_ROW=1;
-const STATUS_COL_IDX=2;
+const FIRST_ROW = 1;
+const STATUS_COL_IDX = 2;
 
 beforeEach(async () => {
   loginComponent = new LoginComponent();
@@ -24,7 +26,7 @@ beforeEach(async () => {
   loginComponent.logIn('drummond');
 });
 
-afterEach(() =>{
+afterEach(() => {
   while (edit.cancel.isClickable()) {
     edit.cancel.click();
     confirmPage.yesConfirmation.click();
@@ -33,36 +35,36 @@ afterEach(() =>{
 });
 
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
-  beforeEach(() =>{
+  beforeEach(() => {
     upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
-    browser.waitUntil( () => toast.toastTitle.isDisplayed());
+    browser.waitUntil(() => toast.toastTitle.isDisplayed());
     toast.clearAllToast();
     hooks.open('#/surveillance/confirm');
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil( () => confirmPage.table.isDisplayed());
+    browser.waitUntil(() => confirmPage.table.isDisplayed());
     confirmPage.inspectButton(listingId);
     hooks.waitForSpinnerToDisappear();
   });
 
-  inputs.forEach(input => {
-    let testName = input.testName;
+  inputs.forEach((input) => {
+    const { testName } = input;
 
     it(`should be able to ${testName} without non-conformity`, () => {
-      var countBefore = edit.requirementTableRows().length;
+      const countBefore = edit.requirementTableRows().length;
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'No Non-Conformity');
       do {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
-      var countAfter = edit.requirementTableRows().length;
+      const countAfter = edit.requirementTableRows().length;
       expect(countAfter).toBe(countBefore + 1);
     });
 
     it(`should be able to ${testName} with non-conformity to reactive surveillance activity`, () => {
-      let nonConformitydetails = {
+      const nonConformitydetails = {
         type: '170.314 (a)(1): Computerized provider order entry',
         determinationDate: '01/01/2020',
-        nonConformityCloseDate : '01/01/2021',
+        nonConformityCloseDate: '01/01/2021',
         summary: 'test summary',
         findings: 'test findings',
         approvalDate: '01/01/2020',
@@ -71,19 +73,19 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
         explanation: 'Test explanation',
         resolution: 'Test resolution',
       };
-      var countBefore = edit.requirementTableRows().length;
+      const countBefore = edit.requirementTableRows().length;
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'Non-Conformity');
-      edit.addnonConformity(nonConformitydetails , 'Reactive');
+      edit.addnonConformity(nonConformitydetails, 'Reactive');
       expect(edit.sites.isEnabled()).toBeFalse;
       expect(edit.totalSites.isEnabled()).toBeFalse;
       edit.saveButton.click();
       expect(edit.nonConformityTableRows().length).toEqual(1);
-      expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Closed');
+      expect(hooks.getCellValue(FIRST_ROW, STATUS_COL_IDX)).toBe('Closed');
       do {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
-      var countAfter = edit.requirementTableRows().length;
+      const countAfter = edit.requirementTableRows().length;
       expect(countAfter).toEqual(countBefore + 1);
     });
 
@@ -99,22 +101,22 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
 });
 
 describe('when inspecting uploaded surveillance activity, ACB user', () => {
-  beforeEach(() =>{
+  beforeEach(() => {
     upload.uploadSurveillance('../../../resources/surveillance/SAQA3.csv');
-    browser.waitUntil( () => toast.toastTitle.isDisplayed());
+    browser.waitUntil(() => toast.toastTitle.isDisplayed());
     toast.clearAllToast();
     hooks.open('#/surveillance/confirm');
     hooks.waitForSpinnerToDisappear();
-    browser.waitUntil( () => confirmPage.table.isDisplayed());
+    browser.waitUntil(() => confirmPage.table.isDisplayed());
     confirmPage.inspectButton(listingId1);
     hooks.waitForSpinnerToDisappear();
   });
 
-  inputs.forEach(input => {
-    let testName = input.testName;
+  inputs.forEach((input) => {
+    const { testName } = input;
 
     it(`should be able to ${testName} with non-conformity to randomized surveillance activity`, () => {
-      let nonConformitydetails = {
+      const nonConformitydetails = {
         type: 'Annual Real World Testing Plan',
         determinationDate: '01/01/2020',
         summary: 'Test summary',
@@ -127,17 +129,17 @@ describe('when inspecting uploaded surveillance activity, ACB user', () => {
         explanation: 'Test explanation',
         resolution: 'Test resolution',
       };
-      var countBefore = edit.requirementTableRows().length;
+      const countBefore = edit.requirementTableRows().length;
       edit.editSurveillance();
       edit.addRequirement(input.type, input.capability, 'Non-Conformity');
-      edit.addnonConformity(nonConformitydetails , 'Randomized');
+      edit.addnonConformity(nonConformitydetails, 'Randomized');
       edit.saveButton.click();
       expect(edit.nonConformityTableRows().length).toEqual(1);
-      expect(hooks.getCellValue(FIRST_ROW,STATUS_COL_IDX)).toBe('Open');
+      expect(hooks.getCellValue(FIRST_ROW, STATUS_COL_IDX)).toBe('Open');
       do {
         edit.saveButton.click();
       } while (!confirmPage.confirmButton.isClickable());
-      var countAfter = edit.requirementTableRows().length;
+      const countAfter = edit.requirementTableRows().length;
       expect(countAfter).toEqual(countBefore + 1);
     });
   });

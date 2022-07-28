@@ -65,7 +65,7 @@ describe('As a ROLE_ACB user - when editing complaint', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
-    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
+    browser.waitUntil(() => hooks.getTableRows().length - 1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, STATUS_IDX)).toBe('OPEN');
     complaintsComponent.editComplaint(fields.acbId);
     complaintsComponent.closedDate.addValue('08/23/2021');
@@ -74,7 +74,7 @@ describe('As a ROLE_ACB user - when editing complaint', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.addValue(fields.acbId);
-    browser.waitUntil(() => hooks.getTableRows().length-1 === 1);
+    browser.waitUntil(() => hooks.getTableRows().length - 1 === 1);
     expect(hooks.getCellValue(FIRST_ROW, STATUS_IDX)).toBe('CLOSED');
   });
 });

@@ -1,7 +1,8 @@
-import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.sync.po';
+
+import OrganizationPage from './organization.po';
 
 let address;
 let hooks;

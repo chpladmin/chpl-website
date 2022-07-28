@@ -2,7 +2,8 @@ import LoginComponent from '../../components/login/login.sync.po';
 import Hooks from '../../utilities/hooks';
 import PaginationComponent from '../../components/pagination/pagination.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
-import ActionBarComponent from '../../components/action-bar/action-bar.po'
+import ActionBarComponent from '../../components/action-bar/action-bar.po';
+
 let hooks;
 let login;
 let pagination;
@@ -45,7 +46,7 @@ describe('As a ROLE_ACB user', () => {
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.editComplaint(fields.acbId);
     action.delete();
-    browser.keys('Enter');  //Not able to click on Yes on this window pop up
+    browser.keys('Enter');  // Not able to click on Yes on this window pop up
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
     complaintsComponent.filter.setValue(fields.acbId);

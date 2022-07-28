@@ -10,12 +10,14 @@ let page;
 const inputs = require('./dataProviders/attribute-value-options-dp');
 
 inputs.forEach((input) => {
-  const { criteriaName ,
-  testProcedureOptions ,
-  id ,
-  criteriaOld ,
-  cures ,
-  testToolsOptions } = input;
+  const {
+    criteriaName,
+    testProcedureOptions,
+    id,
+    criteriaOld,
+    cures,
+    testToolsOptions,
+  } = input;
 
   describe('As an ONC user, On the 2015 Listing editing page', () => {
     beforeEach(async () => {

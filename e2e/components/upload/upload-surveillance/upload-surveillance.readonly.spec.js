@@ -1,6 +1,7 @@
-import UploadSurveillanceComponent from './upload-surveillance.po';
 import LoginComponent from '../../login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
+
+import UploadSurveillanceComponent from './upload-surveillance.po';
 
 let hooks;
 let loginComponent;
