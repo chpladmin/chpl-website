@@ -112,8 +112,7 @@ class ComplaintsComponent {
   }
 
   async viewComplaint(id) {
-    await this.filter.clearValue();
-    await this.filter.addValue(id);
+    await (this.searchFilter(id));
     await browser.waitUntil(async () => (await (await (await (await $('chpl-surveillance-complaints')).$('table')).$('tbody')).$$('tr')).length - 1 === 1);
     await (await $('//span[text()="View"]/parent::button')).click();
   }
@@ -128,8 +127,8 @@ class ComplaintsComponent {
   }
 
   async searchFilter(value) {
-    await (await $('#data-filter')).clearValue();
-    await (await $('#data-filter')).addValue(value);
+    await (await $(this.elements.filter)).clearValue();
+    await (await $(this.elements.filter)).addValue(value);
   }
 
   async advanceFilterOptions(value) {

@@ -3,6 +3,7 @@ class ReportingPage {
     this.elements = {
       acbHeader: '.panel.panel-default',
       secondaryPageTitle: 'h2',
+      expandAcb: ((acb) => `//*[@id="onc-acb-${acb}"]`),
     };
   }
 
@@ -19,7 +20,7 @@ class ReportingPage {
   }
 
   async expandAcb(acb) {
-    await $(`//*[@id="onc-acb-${acb}"]`).click();
+    await (await $(this.elements.expandAcb(acb))).click();
   }
 
   async editQuarterlyReport(acb, year, quarter) {

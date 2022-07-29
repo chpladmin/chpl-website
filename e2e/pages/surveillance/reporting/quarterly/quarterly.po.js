@@ -26,11 +26,11 @@ class QuarterlyPage {
     };
   }
 
-  set(fields) {
-    $(this.elements.surveillanceActivity).setValue(fields.surveillanceActivity);
-    $(this.elements.reactiveSurveillance).setValue(fields.reactiveSurveillance);
-    $(this.elements.prioritizedElement).setValue(fields.prioritizedElement);
-    $(this.elements.disclosureSummary).setValue(fields.disclosureSummary);
+  async set(fields) {
+    await (await $(this.elements.surveillanceActivity)).setValue(fields.surveillanceActivity);
+    await (await $(this.elements.reactiveSurveillance)).setValue(fields.reactiveSurveillance);
+    await (await $(this.elements.prioritizedElement)).setValue(fields.prioritizedElement);
+    await (await $(this.elements.disclosureSummary)).setValue(fields.disclosureSummary);
   }
 
   get surveillanceActivity() {
@@ -57,12 +57,12 @@ class QuarterlyPage {
     return $(this.elements.complaintsHeader);
   }
 
-  get surveillanceTableRows() {
-    return $(this.elements.surveillanceRoot).$('table').$('tbody').$$('tr').length;
+  async getSurveillanceTableRows() {
+    return (await (await (await (await $(this.elements.surveillanceRoot)).$('table')).$('tbody')).$$('tr')).length;
   }
 
-  get complaintsTableRows() {
-    return $(this.elements.complaintsRoot).$('table').$('tbody').$$('tr').length;
+  async getComplaintsTableRows() {
+    return (await (await (await (await $(this.elements.complaintsRoot)).$('table')).$('tbody')).$$('tr')).length;
   }
 
   get download() {
@@ -117,39 +117,39 @@ class QuarterlyPage {
     return $(this.elements.verificationCap);
   }
 
-  saveSurveillanceData() {
-    $(this.elements.surveillanceData).click();
+  async saveSurveillanceData() {
+    await (await $(this.elements.surveillanceData)).click();
   }
 
   get surveillanceData() {
     return $(this.elements.surveillanceData);
   }
 
-  getListingId(row, col) {
-    return $('chpl-surveillance-report-relevant-listings').$(`//tbody/tr[${row}]/td[${col}]`).getText();
+  async getListingId(row, col) {
+    return (await (await $('chpl-surveillance-report-relevant-listings')).$(`//tbody/tr[${row}]/td[${col}]`)).getText();
   }
 
-  editSurveillanceData() {
-    $('//*[starts-with(@id,"edit-surveillance-data-")]').waitAndClick();
+  async editSurveillanceData() {
+    await (await $('//*[starts-with(@id,"edit-surveillance-data-")]')).click();
   }
 
-  viewSurveillanceData(listingId) {
-    $(`//button[@id="view-listing-data-${listingId}"]`).click();
+  async viewSurveillanceData(listingId) {
+    await (await $(`//button[@id="view-listing-data-${listingId}"]`)).click();
   }
 
-  setSurvData(fields) {
-    $(this.elements.outcome).selectByAttribute('value', fields.outcome);
-    $(this.elements.processType).selectByAttribute('value', fields.processType);
-    $(this.elements.grounds).setValue(fields.grounds);
-    $(this.elements.nonCoformityCause).setValue(fields.nonCoformityCause);
-    $(this.elements.nonConformityNature).setValue(fields.nonConformityNature);
-    $(this.elements.stepsSurveil).setValue(fields.stepsSurveil);
-    $(this.elements.stepsEngage).setValue(fields.stepsEngage);
-    $(this.elements.cost).setValue(fields.cost);
-    $(this.elements.limitationsEvaluation).setValue(fields.limitationsEvaluation);
-    $(this.elements.nondisclosureEvaluation).setValue(fields.nondisclosureEvaluation);
-    $(this.elements.directionDeveloperResolution).setValue(fields.directionDeveloperResolution);
-    $(this.elements.verificationCap).setValue(fields.verificationCap);
+  async setSurvData(fields) {
+    await $(this.elements.outcome).selectByAttribute('value', fields.outcome);
+    await $(this.elements.processType).selectByAttribute('value', fields.processType);
+    await $(this.elements.grounds).setValue(fields.grounds);
+    await $(this.elements.nonCoformityCause).setValue(fields.nonCoformityCause);
+    await $(this.elements.nonConformityNature).setValue(fields.nonConformityNature);
+    await $(this.elements.stepsSurveil).setValue(fields.stepsSurveil);
+    await $(this.elements.stepsEngage).setValue(fields.stepsEngage);
+    await $(this.elements.cost).setValue(fields.cost);
+    await $(this.elements.limitationsEvaluation).setValue(fields.limitationsEvaluation);
+    await $(this.elements.nondisclosureEvaluation).setValue(fields.nondisclosureEvaluation);
+    await $(this.elements.directionDeveloperResolution).setValue(fields.directionDeveloperResolution);
+    await $(this.elements.verificationCap).setValue(fields.verificationCap);
   }
 }
 
