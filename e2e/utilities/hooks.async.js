@@ -16,9 +16,27 @@ async function getTableRows() {
   await (await (await $('table')).$('tbody')).$$('tr');
 }
 
+async function waitForSpinnerToAppear () {
+  await browser.waitUntil(async () => {
+    const spinner = await $('#loading-bar-spinner');
+    const isDisplayed = await spinner.isDisplayed();
+    return isDisplayed;
+  });
+}
+
+async function waitForSpinnerToDisappear () {
+  await browser.waitUntil(async () => {
+    const spinner = await $('#loading-bar-spinner');
+    const isDisplayed = await spinner.isDisplayed();
+    return !isDisplayed;
+  });
+}
+
 export {
   open,
   getCellValue,
   getTableHeaders,
   getTableRows,
+  waitForSpinnerToAppear,
+  waitForSpinnerToDisappear,
 };
