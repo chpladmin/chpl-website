@@ -46,10 +46,10 @@ describe('managing complaints', () => {
     });
 
     it('should be able to add new complaint with only required fields', async () => {
-      const timestamp = (new Date()).getTime();
+      const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',
-        receivedDate: '06/23/2021',
+        receivedDate: ['23', 'Jun', 'Tab', '2021'],
         acbId: `Test - ${timestamp}`,
         type: 'Developer',
         summary: `Test Summary - ${timestamp}`,
@@ -66,10 +66,10 @@ describe('managing complaints', () => {
     });
 
     it('should be able to add new complaint with open surveillance for a 2015 listing', async () => {
-      const timestamp = (new Date()).getTime();
+      const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',
-        receivedDate: '06/23/2021',
+        receivedDate: ['23', 'Jun', 'Tab', '2021'],
         acbId: `Test - ${timestamp}`,
         type: 'Developer',
         summary: `Test Summary - ${timestamp}`,
@@ -94,10 +94,10 @@ describe('managing complaints', () => {
     });
 
     it('should be able to add new complaint for a 2015 listing with multiple surveillance activities', async () => {
-      const timestamp = (new Date()).getTime();
+      const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',
-        receivedDate: '06/23/2021',
+        receivedDate: ['23', 'Jun', 'Tab', '2021'],
         acbId: `Test - ${timestamp}`,
         type: 'Government Entity',
         summary: `Test Summary - ${timestamp}`,
@@ -124,10 +124,10 @@ describe('managing complaints', () => {
     });
 
     it('should be able to add new complaint for multiple listings and surveillance activities', async () => {
-      const timestamp = (new Date()).getTime();
+      const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',
-        receivedDate: '06/23/2021',
+        receivedDate: ['23', 'Jun', 'Tab', '2021'],
         acbId: `Test - ${timestamp}`,
         type: 'Provider',
         summary: `Test Summary - ${timestamp}`,
@@ -168,10 +168,10 @@ describe('managing complaints', () => {
     });
 
     it('should be able to add new complaint for any ONC-ACB, including retired ONC-ACBs', async () => {
-      const timestamp = (new Date()).getTime();
+      const timestamp = Date.now();
       const fields = {
         body: 'Surescripts LLC (Retired)',
-        receivedDate: '06/23/2021',
+        receivedDate: ['23', 'Jun', 'Tab', '2021'],
         acbId: `Test - ${timestamp}`,
         type: 'Patient',
         summary: `Test Summary - ${timestamp}`,
@@ -188,10 +188,10 @@ describe('managing complaints', () => {
     });
 
     it('should not be able to add new complaint where listing and complaint have a mismatched ONC-ACB', async () => {
-      const timestamp = (new Date()).getTime();
+      const timestamp = Date.now();
       const fields = {
         body: 'Surescripts LLC (Retired)',
-        receivedDate: '06/23/2021',
+        receivedDate: ['23', 'Jun', 'Tab', '2021'],
         acbId: `Test - ${timestamp}`,
         type: 'Patient',
         summary: `Test Summary - ${timestamp}`,
