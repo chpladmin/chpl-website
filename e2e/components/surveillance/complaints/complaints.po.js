@@ -24,7 +24,7 @@ class ComplaintsComponent {
       advancedSearch: '//button[text()="Advanced Search"]',
       advanceFilterOption: (value) => `#filter-list-${value}`,
       chooseAdvanceSearchOption: (option) => `//button[text()="${option}"]`,
-      noResultsFound: '//*[text()="No results found"]',
+      complaintsTable: '[aria-label="Complaints table"]',
     };
   }
 
@@ -117,13 +117,13 @@ class ComplaintsComponent {
 
   async viewComplaint(id) {
     await (this.searchFilter(id));
-    await browser.waitUntil(async () => (await (await (await (await $('chpl-surveillance-complaints')).$('table')).$('tbody')).$$('tr')).length - 1 === 1);
+    await browser.waitUntil(async () => (await (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr')).length === 1);
     await (await $('//span[text()="View"]/parent::button')).click();
   }
 
   async waitForUpdatedTableRowCount() {
     const start = (await (await (await $('table')).$('tbody')).$$('tr')).length;
-    await browser.waitUntil(async () => (await (await (await $('table')).$('tbody')).$$('tr')).length !== start);
+    await browser.waitUntil(async () => (await (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr')).length !== start);
   }
 
   async advancedSearch() {
@@ -143,8 +143,8 @@ class ComplaintsComponent {
     await (await $(this.elements.chooseAdvanceSearchOption(option))).click();
   }
 
-  async hasNoResults() {
-    await (await $(this.elements.noResultsFound)).isDisplayed();
+  async hasResults() {
+    return await (await $(this.elements.complaintsTable)).isExisting();
   }
 }
 

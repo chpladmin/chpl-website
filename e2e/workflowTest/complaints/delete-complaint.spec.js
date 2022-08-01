@@ -29,10 +29,10 @@ describe('As a ROLE_ACB user', () => {
   });
 
   it('should be able to delete complaint', async () => {
-    const timestamp = (new Date()).getTime();
+    const timestamp = Date.now();
     const fields = {
       body: 'Drummond Group',
-      receivedDate: '06/23/2021',
+      receivedDate: ['23', 'Jun', 'Tab', '2021'],
       acbId: `Test - ${timestamp}`,
       type: 'Developer',
       summary: `Test Summary - ${timestamp}`,
@@ -41,7 +41,6 @@ describe('As a ROLE_ACB user', () => {
     await waitForSpinnerToDisappear();
     await complaintsComponent.set(fields);
     await complaintsComponent.saveComplaint();
-    await waitForSpinnerToAppear();
     await waitForSpinnerToDisappear();
     await complaintsComponent.editComplaint(fields.acbId);
     await action.delete();
@@ -49,6 +48,6 @@ describe('As a ROLE_ACB user', () => {
     await waitForSpinnerToAppear();
     await waitForSpinnerToDisappear();
     await (await complaintsComponent.filter).setValue(fields.acbId);
-    await expect(await complaintsComponent.hasNoResults()).toBe(true);
+    await expect(await complaintsComponent.hasResults()).toBe(false);
   });
 });

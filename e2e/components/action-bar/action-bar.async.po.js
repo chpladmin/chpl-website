@@ -11,15 +11,15 @@ class ActionBarComponent {
   }
 
   async save() {
-    await $(this.elements.save).click();
+    await (await $(this.elements.save)).click();
   }
 
   async delete() {
-    await $(this.elements.delete).click();
+    await (await $(this.elements.delete)).click();
   }
 
   async closeMessages() {
-    await $(this.elements.closeMessages).click();
+    await (await $(this.elements.closeMessages)).click();
   }
 
   get errors() {
@@ -31,7 +31,7 @@ class ActionBarComponent {
   }
 
   async waitForMessages() {
-    await $(this.elements.messages).waitForDisplayed();
+    await (await $(this.elements.messages)).waitForDisplayed();
   }
 }
 
