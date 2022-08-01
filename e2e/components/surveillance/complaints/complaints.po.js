@@ -21,6 +21,10 @@ class ComplaintsComponent {
       developerContacted: '#developer-contacted',
       oncAtlContacted: '#onc-atl-contacted',
       informedOnc: '#flag-for-onc-review',
+      advancedSearch: '//button[text()="Advanced Search"]',
+      advanceFilterOption: (value) => `#filter-list-${value}`,
+      chooseAdvanceSearchOption: (option) => `//button[text()="${option}"]`,
+      noResultsFound: '//*[text()="No results found"]',
     };
   }
 
@@ -123,7 +127,7 @@ class ComplaintsComponent {
   }
 
   async advancedSearch() {
-    await (await $('//button[text()="Advanced Search"]')).click();
+    await (await $(this.elements.advancedSearch)).click();
   }
 
   async searchFilter(value) {
@@ -132,11 +136,15 @@ class ComplaintsComponent {
   }
 
   async advanceFilterOptions(value) {
-    await (await $(`#filter-list-${value}`)).click();
+    await (await $(this.elements.advanceFilterOptions(value))).click();
   }
 
   async chooseAdvanceSearchOption(option) {
-    await (await $(`//button[text()="${option}"]`)).click();
+    await (await $(this.elements.chooseAdvanceSearchOption(option))).click();
+  }
+
+  async hasNoResults() {
+    await (await $(this.elements.noResultsFound)).isDisplayed();
   }
 }
 

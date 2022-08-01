@@ -1,35 +1,34 @@
-import LoginComponent from '../../components/login/login.sync.po';
-import Hooks from '../../utilities/hooks';
-import PaginationComponent from '../../components/pagination/pagination.po';
+import LoginComponent from '../../components/login/login.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
-import ActionBarComponent from '../../components/action-bar/action-bar.po';
+import ActionBarComponent from '../../components/action-bar/action-bar.async.po';
+import {
+  open,
+  waitForSpinnerToAppear,
+  waitForSpinnerToDisappear,
+} from '../../utilities/hooks.async';
 
-let hooks;
 let login;
-let pagination;
 let complaintsComponent;
 let action;
 
 beforeEach(async () => {
   login = new LoginComponent();
-  hooks = new Hooks();
-  pagination = new PaginationComponent();
   complaintsComponent = new ComplaintsComponent();
   action = new ActionBarComponent();
-  hooks.open('#/surveillance/complaints');
-  await hooks.waitForSpinnerToDisappear();
+  await open('#/surveillance/complaints');
+  await waitForSpinnerToDisappear();
 });
 
 describe('As a ROLE_ACB user', () => {
-  beforeEach(() => {
-    login.logIn('drummond');
+  beforeEach(async () => {
+    await login.logIn('drummond');
   });
 
-  afterEach(() => {
-    login.logOut();
+  afterEach(async () => {
+    await login.logOut();
   });
 
-  it('should be able to delete complaint', () => {
+  it('should be able to delete complaint', async () => {
     const timestamp = (new Date()).getTime();
     const fields = {
       body: 'Drummond Group',
@@ -38,18 +37,18 @@ describe('As a ROLE_ACB user', () => {
       type: 'Developer',
       summary: `Test Summary - ${timestamp}`,
     };
-    complaintsComponent.addNewComplaint();
-    hooks.waitForSpinnerToDisappear();
-    complaintsComponent.set(fields);
-    complaintsComponent.saveComplaint();
-    hooks.waitForSpinnerToAppear();
-    hooks.waitForSpinnerToDisappear();
-    complaintsComponent.editComplaint(fields.acbId);
-    action.delete();
-    browser.keys('Enter');  // Not able to click on Yes on this window pop up
-    hooks.waitForSpinnerToAppear();
-    hooks.waitForSpinnerToDisappear();
-    complaintsComponent.filter.setValue(fields.acbId);
-    expect(pagination.pagination.isExisting()).toBe(false);
+    await complaintsComponent.addNewComplaint();
+    await waitForSpinnerToDisappear();
+    await complaintsComponent.set(fields);
+    await complaintsComponent.saveComplaint();
+    await waitForSpinnerToAppear();
+    await waitForSpinnerToDisappear();
+    await complaintsComponent.editComplaint(fields.acbId);
+    await action.delete();
+    await browser.keys('Enter');  // Not able to click on Yes on this window pop up
+    await waitForSpinnerToAppear();
+    await waitForSpinnerToDisappear();
+    await (await complaintsComponent.filter).setValue(fields.acbId);
+    await expect(await complaintsComponent.hasNoResults()).toBe(true);
   });
 });
