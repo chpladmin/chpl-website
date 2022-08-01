@@ -105,7 +105,7 @@ function ChplAttestationWizardSection2(props) {
           onChange={(event) => handleResponse(section, item, event.currentTarget.value)}
         >
           { item.question.allowedResponses
-            .sort((a, b) => (a.response < b.response ? -1 : 1))
+            .sort((a, b) => (a.sortOrder < b.sortOrder ? -1 : 1))
             .map((response) => (
               <FormControlLabel
                 key={response.id}
@@ -127,7 +127,7 @@ function ChplAttestationWizardSection2(props) {
                      <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
                      <FormGroup>
                        { child.question.allowedResponses
-                         .sort((a, b) => (a.response < b.response ? -1 : 1))
+                         .sort((a, b) => (a.sortOrder < b.sortOrder ? -1 : 1))
                          .map((answer) => (
                            <FormControlLabel
                              key={`${item.id}-${child.id}-${answer.id}`}
