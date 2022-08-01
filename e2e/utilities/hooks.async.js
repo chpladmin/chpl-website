@@ -8,6 +8,10 @@ async function getCellValue(row, col) {
   return (await $(`//tbody/tr[${row}]/td[${col}]`)).getText();
 }
 
+async function getErrors() {
+  return (await $('#action-bar-errors')).getText();
+}
+
 async function getTableHeaders() {
   await (await (await $('table')).$('thead')).$$('th');
 }
@@ -16,7 +20,7 @@ async function getTableRows() {
   await (await (await $('table')).$('tbody')).$$('tr');
 }
 
-async function waitForSpinnerToAppear () {
+async function waitForSpinnerToAppear() {
   await browser.waitUntil(async () => {
     const spinner = await $('#loading-bar-spinner');
     const isDisplayed = await spinner.isDisplayed();
@@ -24,7 +28,7 @@ async function waitForSpinnerToAppear () {
   });
 }
 
-async function waitForSpinnerToDisappear () {
+async function waitForSpinnerToDisappear() {
   await browser.waitUntil(async () => {
     const spinner = await $('#loading-bar-spinner');
     const isDisplayed = await spinner.isDisplayed();
@@ -35,6 +39,7 @@ async function waitForSpinnerToDisappear () {
 export {
   open,
   getCellValue,
+  getErrors,
   getTableHeaders,
   getTableRows,
   waitForSpinnerToAppear,
