@@ -3,6 +3,7 @@ import React from 'react';
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
 import ApiWrapper from 'api/api-wrapper';
+import FlagWrapper from 'api/flag-wrapper';
 import {
   FilterProvider, defaultFilter, getDateDisplay, getDateEntry,
 } from 'components/filter';
@@ -54,14 +55,16 @@ function ChplApiDocumentationCollectionPage() {
   return (
     <UserWrapper>
       <ApiWrapper>
-        <FilterProvider
-          analytics={analytics}
-          filters={filters}
-        >
-          <ChplApiDocumentationCollectionView
+        <FlagWrapper>
+          <FilterProvider
             analytics={analytics}
-          />
-        </FilterProvider>
+            filters={filters}
+          >
+            <ChplApiDocumentationCollectionView
+              analytics={analytics}
+            />
+          </FilterProvider>
+        </FlagWrapper>
       </ApiWrapper>
     </UserWrapper>
   );
