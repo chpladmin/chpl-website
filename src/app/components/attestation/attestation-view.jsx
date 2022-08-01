@@ -19,30 +19,32 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const getRows = (section) => section.formItems.map((item) => (
-  <TableRow key={`${section.id}-${item.id}`}>
-    <TableCell>
-      <strong>
-        { section.name }
-        {': '}
-      </strong>
-      { interpretLink(item.question.question) }
-    </TableCell>
-    <TableCell>
-      { item.submittedResponses[0]?.response }
-      { item.childFormItems[0]?.submittedResponses.length > 0
-        && (
-          <ul>
-            { item.childFormItems[0].submittedResponses
-              .sort((a, b) => (a.response < b.response ? -1 : 1))
-              .map((response) => (
-                <li key={response.id}>{ response.response }</li>
-              ))}
-          </ul>
-        )}
-    </TableCell>
-  </TableRow>
-));
+const getRows = (section) => section.formItems
+  .sort((a, b) => a.sortOrder - b.sortOrder)
+  .map((item) => (
+    <TableRow key={`${section.id}-${item.id}`}>
+      <TableCell>
+        <strong>
+          { section.name }
+          {': '}
+        </strong>
+        { interpretLink(item.question.question) }
+      </TableCell>
+      <TableCell>
+        { item.submittedResponses[0]?.response }
+        { item.childFormItems[0]?.submittedResponses.length > 0
+              && (
+                <ul>
+                  { item.childFormItems[0].submittedResponses
+                    .sort((a, b) => a.sortOrder - b.sortOrder)
+                    .map((response) => (
+                      <li key={response.id}>{ response.response }</li>
+                    ))}
+                </ul>
+              )}
+      </TableCell>
+    </TableRow>
+  ));
 
 function ChplAttestationView(props) {
   const { hasAnyRole } = useContext(UserContext);
@@ -104,7 +106,7 @@ function ChplAttestationView(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { attestations.sections.flatMap((section) => getRows(section)) }
+                { attestations.sections.map((section) => getRows(section)) }
               </TableBody>
             </Table>
           </TableContainer>
