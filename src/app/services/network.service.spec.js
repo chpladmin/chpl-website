@@ -661,14 +661,6 @@
         $httpBackend.flush();
       });
 
-      it('should getCmsDownload', () => {
-        $httpBackend.expectGET(/^\/rest\/certification_ids$/).respond(200, { data: 'response' });
-        networkService.getCmsDownload().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getCollection', () => {
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,mandatoryDisclosures,serviceBaseUrlList$/).respond(200, { data: 'response' });
         networkService.getCollection('apiDocumentation').then((response) => {

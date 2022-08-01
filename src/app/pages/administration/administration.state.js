@@ -121,7 +121,7 @@ const states = {
     }, {
       name: 'administration.cms',
       url: '/cms',
-      component: 'chplCms',
+      component: 'chplCmsWrapperBridge',
       data: {
         title: 'CHPL Administration - CMS',
         roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'],

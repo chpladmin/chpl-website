@@ -241,10 +241,6 @@ export default class NetworkService {
     return this.apiGET('/data/change-request-types');
   }
 
-  getCmsDownload() {
-    return this.apiGET('/certification_ids');
-  }
-
   getCmsId(key, includeCriteria) {
     return this.apiGET(`/certification_ids/${key}?includeCriteria=${includeCriteria ? 'true' : 'false'}`);
   }
