@@ -1,6 +1,7 @@
 class ComplaintsComponent {
   constructor() {
     this.elements = {
+      complaintsBody: 'chpl-complaints-wrapper-bridge',
       certificationBody: '#certification-body',
       receivedDate: '#received-date',
       acbComplaintId: '#acb-complaint-id',
@@ -11,6 +12,7 @@ class ComplaintsComponent {
       filter: '#data-filter',
       downloadResultsButton: '#download-results',
       newComplaint: '//*[text()="Add New Complaint"]',
+      viewButton: '//span[text()="View"]',
       editButton: '//*[text()="Edit"]/parent::button',
       actions: '#actions',
       oncId: '#onc-complaint-id',
@@ -22,6 +24,7 @@ class ComplaintsComponent {
       oncAtlContacted: '#onc-atl-contacted',
       informedOnc: '#flag-for-onc-review',
       advancedSearch: '//button[text()="Advanced Search"]',
+      fieldError: (fieldName) => `#${fieldName}-helper-text`,
       advanceFilterOption: (value) => `#filter-list-${value}`,
       chooseAdvanceSearchOption: (option) => `//button[text()="${option}"]`,
       complaintsTable: '[aria-label="Complaints table"]',
@@ -33,11 +36,11 @@ class ComplaintsComponent {
   }
 
   async complaintsBody() {
-    return (await $('.MuiCardContent-root')).getText();
+    return (await $(this.elements.complaintsBody)).getText();
   }
 
   get viewButton() {
-    return $('//span[text()="View"]');
+    return $(this.elements.viewButton);
   }
 
   async selectSurveillance(surveillance) {
@@ -91,7 +94,7 @@ class ComplaintsComponent {
   }
 
   async fieldError(fieldName) {
-    return (await $(`#${fieldName}-helper-text`)).getText();
+    return (await $(this.elements.fieldError(fieldName))).getText();
   }
 
   get downloadResultsButton() {
@@ -103,7 +106,8 @@ class ComplaintsComponent {
   }
 
   async addNewComplaint() {
-    return (await $(this.elements.newComplaint)).click();
+    await $(this.elements.newComplaint).click();
+    await browser.waitUntil(async () => (await this.complaintsBody()).includes('Create Complaint'));
   }
 
   get filter() {
@@ -113,6 +117,7 @@ class ComplaintsComponent {
   async editComplaint(id) {
     await this.viewComplaint(id);
     await (await $('//*[text()="Edit"]/parent::button')).click();
+    await browser.waitUntil(async () => (await this.complaintsBody()).includes('Edit Complaint'));
   }
 
   async viewComplaint(id) {
@@ -144,7 +149,7 @@ class ComplaintsComponent {
   }
 
   async hasResults() {
-    return await (await $(this.elements.complaintsTable)).isExisting();
+    return (await $(this.elements.complaintsTable)).isExisting();
   }
 }
 
