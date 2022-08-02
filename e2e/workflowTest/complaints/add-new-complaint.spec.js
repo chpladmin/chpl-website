@@ -4,10 +4,7 @@ import ActionBarComponent from '../../components/action-bar/action-bar.async.po'
 import {
   getCellValue,
   getErrors,
-  getTableRows,
   open,
-  waitForSpinnerToAppear,
-  waitForSpinnerToDisappear,
 } from '../../utilities/hooks.async';
 
 let login;
@@ -20,14 +17,15 @@ beforeEach(async () => {
   login = new LoginComponent();
   complaintsComponent = new ComplaintsComponent();
   action = new ActionBarComponent();
-  await open('#/surveillance/complaints');
-  await waitForSpinnerToDisappear();
+  await open('#/resources/overview');
 });
 
 describe('managing complaints', () => {
   describe('as a ROLE_ACB user', () => {
     beforeEach(async () => {
       await login.logIn('drummond');
+      await open('#/surveillance/complaints');
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
     });
 
     afterEach(async () => {
@@ -36,7 +34,6 @@ describe('managing complaints', () => {
 
     it('should not be able to add new complaint without required fields', async () => {
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.saveComplaint();
       await expect(await complaintsComponent.fieldError('certification-body')).toBe('ONC-ACB is required');
       await expect(await complaintsComponent.fieldError('received-date')).toBe('Received Date is required');
@@ -55,13 +52,11 @@ describe('managing complaints', () => {
         summary: `Test Summary - ${timestamp}`,
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToAppear();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
-      await browser.waitUntil(async () => (await getTableRows()).length - 1 === 1);
+      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
     });
 
@@ -82,14 +77,12 @@ describe('managing complaints', () => {
         surveillance: '15.04.04.2838.PARA.17.00.1.171228: SURV01',
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.setOptionalFields(optionalFields);
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToAppear();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
-      await browser.waitUntil(async () => (await getTableRows()).length - 1 === 1);
+      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
     });
 
@@ -110,16 +103,14 @@ describe('managing complaints', () => {
         surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01',
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.setOptionalFields(optionalFields);
       await complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV02');
       await complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV03');
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToAppear();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
-      await browser.waitUntil(async () => (await getTableRows()).length - 1 === 1);
+      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
     });
 
@@ -140,17 +131,15 @@ describe('managing complaints', () => {
         surveillance: '15.04.04.2838.PARA.17.00.1.171228: SURV01',
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.setOptionalFields(optionalFields);
       await complaintsComponent.selectListing('15.04.04.3010.Onco.28.01.1.181214');
       await complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV02');
       await complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV03');
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToAppear();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
-      await browser.waitUntil(async () => (await getTableRows()).length - 1 === 1);
+      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
     });
   });
@@ -158,6 +147,8 @@ describe('managing complaints', () => {
   describe('as a ROLE_ADMIN user', () => {
     beforeEach(async () => {
       await login.logIn('admin');
+      await open('#/surveillance/complaints');
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
     });
 
     afterEach(async () => {
@@ -177,13 +168,11 @@ describe('managing complaints', () => {
         summary: `Test Summary - ${timestamp}`,
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToAppear();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
-      await browser.waitUntil(async () => (await getTableRows()).length - 1 === 1);
+      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
     });
 
@@ -204,7 +193,6 @@ describe('managing complaints', () => {
         surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01',
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.setOptionalFields(optionalFields);
       await complaintsComponent.saveComplaint();
@@ -215,6 +203,8 @@ describe('managing complaints', () => {
   describe('as a ROLE_ONC user', () => {
     beforeEach(async () => {
       await login.logIn('onc');
+      await open('#/surveillance/complaints');
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
     });
 
     afterEach(async () => {

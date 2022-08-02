@@ -1,6 +1,9 @@
 import LoginComponent from '../../login/login.po';
 import {
-  open, getTableRows, getTableHeaders, getCellValue,
+  open,
+  getTableRows,
+  getTableHeaders,
+  getCellValue,
 } from '../../../utilities/hooks.async';
 
 import ComplaintsComponent from './complaints.po';
