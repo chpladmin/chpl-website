@@ -3,8 +3,6 @@ import ComplaintsComponent from '../../components/surveillance/complaints/compla
 import {
   getCellValue,
   open,
-  waitForSpinnerToAppear,
-  waitForSpinnerToDisappear,
 } from '../../utilities/hooks.async';
 
 let login;
@@ -15,14 +13,15 @@ const FIRST_ROW = 1;
 beforeEach(async () => {
   login = new LoginComponent();
   complaintsComponent = new ComplaintsComponent();
-  await open('#/surveillance/complaints');
-  await waitForSpinnerToDisappear();
+  await open('#/resources/overview');
 });
 
 describe('when editing complaints', () => {
   describe('as a ROLE_ACB user', () => {
     beforeEach(async () => {
       await login.logIn('drummond');
+      await open('#/surveillance/complaints');
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
     });
 
     afterEach(async () => {
@@ -39,10 +38,9 @@ describe('when editing complaints', () => {
         summary: `Test Summary - ${timestamp}`,
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await complaintsComponent.editComplaint(fields.acbId);
       await (await complaintsComponent.closedDate).addValue(['23', 'Jan', 'Tab', '2021']);
       await complaintsComponent.saveComplaint();
@@ -62,18 +60,20 @@ describe('when editing complaints', () => {
         summary: `Test Summary - ${timestamp}`,
       };
       await complaintsComponent.addNewComplaint();
-      await waitForSpinnerToDisappear();
       await complaintsComponent.set(fields);
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await complaintsComponent.searchFilter(fields.acbId);
+      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
+      await expect(await getCellValue(FIRST_ROW, STATUS_IDX)).toBe('OPEN');
       await complaintsComponent.editComplaint(fields.acbId);
       await (await complaintsComponent.closedDate).addValue(['23', 'Aug', 'Tab', '2021']);
       await complaintsComponent.setActions(`Actions - ${timestamp}`);
       await complaintsComponent.saveComplaint();
-      await waitForSpinnerToAppear();
-      await waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await complaintsComponent.searchFilter(fields.acbId);
+      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
+      await (browser.waitUntil(async () => (await getCellValue(FIRST_ROW, STATUS_IDX)).includes('CLOSED')));
       await expect(await getCellValue(FIRST_ROW, STATUS_IDX)).toBe('CLOSED');
     });
   });

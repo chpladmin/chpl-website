@@ -151,6 +151,10 @@ class ComplaintsComponent {
   async hasResults() {
     return (await $(this.elements.complaintsTable)).isExisting();
   }
+
+  async getResults() {
+    return (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr');
+  }
 }
 
 export default ComplaintsComponent;
