@@ -4,6 +4,7 @@ class ActionBarComponent {
       cancel: '#action-bar-cancel',
       save: '#action-bar-save',
       errorMessages: '.action-bar__error-messages',
+      no: '//*[text()="No"]',
       yes: '//*[text()="Yes"]',
       delete: '#action-bar-delete',
     };
@@ -22,19 +23,23 @@ class ActionBarComponent {
   }
 
   async cancel() {
-    await $(this.elements.cancel).click();
+    await (await $(this.elements.cancel)).click();
   }
 
   async save() {
-    await $(this.elements.save).click();
+    await (await $(this.elements.save)).click();
   }
 
   async yes() {
-    await $(this.elements.yes).click();
+    await (await $(this.elements.yes)).click();
+  }
+
+  async no() {
+    await (await $(this.elements.no)).click();
   }
 
   async delete() {
-    await $(this.elements.delete).click();
+    await (await $(this.elements.delete)).click();
   }
 }
 
