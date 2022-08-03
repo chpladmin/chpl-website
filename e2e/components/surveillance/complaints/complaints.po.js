@@ -25,7 +25,7 @@ class ComplaintsComponent {
       informedOnc: '#flag-for-onc-review',
       advancedSearch: '//button[text()="Advanced Search"]',
       fieldError: (fieldName) => `#${fieldName}-helper-text`,
-      advanceFilterOption: (value) => `#filter-list-${value}`,
+      advanceFilterOptions: (value) => `#filter-list-${value}`,
       chooseAdvanceSearchOption: (option) => `//button[text()="${option}"]`,
       complaintsTable: '[aria-label="Complaints table"]',
     };
@@ -154,6 +154,18 @@ class ComplaintsComponent {
 
   async getResults() {
     return (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr');
+  }
+
+  async getHeaders() {
+    return (await (await $(this.elements.complaintsTable)).$('thead')).$$('th');
+  }
+
+  async getTableComplaints() {
+    return (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr');
+  }
+
+  async getComplaintCell(complaint, idx) {
+    return (await complaint.$$('td'))[idx];
   }
 }
 
