@@ -73,14 +73,14 @@ function ChplResourcesApi() {
           >
             A sample Java application using the CHPL API can be found at
             {' '}
-            <ChplLink href="https://github.com/chpladmin/sample-application" text="Sample Application" analytics={{ event: 'Go to Sample Application Page', catgory: 'CHPL API' }} />
+            <ChplLink href="https://github.com/chpladmin/sample-application" text="Sample Application" analytics={{ event: 'Go to Sample Application Page', category: 'CHPL API' }} />
           </Typography>
           <Typography
             gutterBottom
           >
             Release notes for the CHPL API can be found in the
             {' '}
-            <ChplLink href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md" text="release notes on GitHub" analytics={{ event: 'Go to Release Notes on GitHub', catgory: 'CHPL API' }} />
+            <ChplLink href="https://github.com/chpladmin/chpl-api/blob/master/RELEASE_NOTES.md" text="release notes on GitHub" analytics={{ event: 'Go to Release Notes on GitHub', category: 'CHPL API' }} />
           </Typography>
         </div>
         <div>

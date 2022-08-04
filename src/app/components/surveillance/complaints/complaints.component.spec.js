@@ -8,18 +8,6 @@
     let networkService;
     let scope;
 
-    const complainantTypes = {
-      data: [
-        { id: 1, name: 'developer' },
-        { id: 2, name: 'provider' },
-      ],
-    };
-
-    const certBodies = [
-      { id: 1, name: 'Drummond' },
-      { id: 2, name: 'SLI' },
-    ];
-
     const allCps = [
       { id: 296, chplProductNumber: 'CHP-022218', acb: 'UL LLC' },
       { id: 4708, chplProductNumber: 'CHP-022844', acb: 'Drummond Group' },
@@ -101,50 +89,15 @@
       ],
     };
 
-    const editions = [
-      { id: 3, name: '2015', description: null },
-      { id: 2, name: '2014', description: null },
-      { id: 1, name: '2011', description: null },
-    ];
-
-    const criteria = {
-      criteria: [
-        {
-          id: 14, number: '170.315 (a)(14)', title: 'Implantable Device List', certificationEditionId: 3, certificationEdition: '2015', description: null,
-        },
-        {
-          id: 39, number: '170.315 (d)(11)', title: 'Accounting of Disclosures', certificationEditionId: 3, certificationEdition: '2015', description: null,
-        },
-        {
-          id: 104, number: '170.314 (e)(2)', title: 'Ambulatory setting only -clinical summary', certificationEditionId: 2, certificationEdition: '2014', description: null,
-        },
-        {
-          id: 153, number: '170.304 (i)', title: 'Exchange clinical information and patient summary record', certificationEditionId: 1, certificationEdition: '2011', description: null,
-        },
-        {
-          id: 96, number: '170.314 (d)(3)', title: 'Audit report(s)', certificationEditionId: 2, certificationEdition: '2014', description: null,
-        },
-      ],
-    };
-
     beforeEach(() => {
       angular.mock.module('chpl.components', ($provide) => {
-        $provide.factory('chplComplaintsBridgeDirective', () => ({}));
-        $provide.factory('chplComplaintEditBridgeDirective', () => ({}));
-        $provide.factory('chplComplaintViewBridgeDirective', () => ({}));
+        $provide.factory('chplComplaintsWrapperBridgeDirective', () => ({}));
         $provide.factory('chplSavedFilterDirective', () => ({}));
         $provide.factory('chplFiltersDirective', () => ({}));
         $provide.factory('chplFilterDirective', () => ({}));
         $provide.decorator('networkService', ($delegate) => ({
           ...$delegate,
-          getComplainantTypes: jasmine.createSpy('getComplainantTypes'),
-          getAcbs: jasmine.createSpy('getAcbs'),
-          deleteComplaint: jasmine.createSpy('deleteComplaint'),
-          updateComplaint: jasmine.createSpy('updateComplaint'),
-          createComplaint: jasmine.createSpy('createComplaint'),
           getCollection: jasmine.createSpy('getCollection'),
-          getEditions: jasmine.createSpy('getEditions'),
-          getCriteria: jasmine.createSpy('getCriteria'),
           getListingBasic: jasmine.createSpy('getListingBasic'),
           getComplaints: jasmine.createSpy('getComplaints'),
         }));
@@ -155,15 +108,7 @@
         $q = _$q_;
         networkService = _networkService_;
 
-        networkService.getComplainantTypes.and.returnValue($q.when(complainantTypes));
-        networkService.getAcbs.and.returnValue($q.when(certBodies));
-        networkService.getEditions.and.returnValue($q.when(editions));
-        networkService.getCriteria.and.returnValue($q.when(criteria));
-        networkService.deleteComplaint.and.returnValue($q.when({ status: 200 }));
-        networkService.updateComplaint.and.returnValue($q.when(allComplaints[0]));
-        networkService.createComplaint.and.returnValue($q.when(allComplaints[0]));
         networkService.getCollection.and.returnValue($q.when({ results: angular.copy(allCps) }));
-        networkService.createComplaint.and.returnValue($q.when(allComplaints[0]));
         networkService.getListingBasic.and.returnValue($q.when(listingWithSurveillance));
         networkService.getComplaints.and.returnValue($q.when(allComplaints));
 
@@ -197,46 +142,9 @@
       });
 
       describe('on init', () => {
-        it('should have fetched all complainant types', () => {
-          expect(networkService.getComplainantTypes).toHaveBeenCalled();
-          expect(ctrl.complainantTypes.length).toBe(2);
-        });
-
         it('should have fetched all listings', () => {
           expect(networkService.getCollection).toHaveBeenCalled();
           expect(ctrl.listings.length).toBe(3);
-        });
-
-        it('should have fetched all criteria', () => {
-          expect(networkService.getCriteria).toHaveBeenCalled();
-          expect(ctrl.criteria.length).toBe(5);
-        });
-      });
-
-      it('should delete a complaint', () => {
-        const complaint = { id: 1 };
-        ctrl.deleteComplaint(complaint);
-        expect(networkService.deleteComplaint).toHaveBeenCalled();
-        scope.$digest();
-        expect(ctrl.complaint).toEqual({});
-        expect(ctrl.isEditing).toBe(false);
-      });
-
-      it('should save/update a complaint', () => {
-        const complaint = { id: 1, formattedReceivedDate: new Date('2019-06-04') };
-        ctrl.isEditing = true;
-        ctrl.saveComplaint(complaint);
-        expect(networkService.updateComplaint).toHaveBeenCalledWith({
-          ...complaint,
-        });
-      });
-
-      it('should save/create a complaint', () => {
-        const complaint = { formattedReceivedDate: new Date('2019-06-04') };
-        ctrl.isEditing = true;
-        ctrl.saveComplaint(complaint);
-        expect(networkService.createComplaint).toHaveBeenCalledWith({
-          ...complaint,
         });
       });
 

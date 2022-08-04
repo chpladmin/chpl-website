@@ -6,8 +6,9 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import * as angularReactHelper from '../../services/angular-react-helper';
 import ChplLink from './chpl-link';
+
+import * as angularReactHelper from 'services/angular-react-helper';
 
 const $analyticsMock = {
   eventTrack: jest.fn(),
@@ -27,7 +28,6 @@ describe('the ChplLink component', () => {
         href={href}
       />,
     );
-
     await waitFor(() => {
       expect(screen.getByText(href)).toBeInTheDocument();
       expect(screen.getByText(href).closest('a')).toHaveAttribute('href', href);
@@ -43,7 +43,6 @@ describe('the ChplLink component', () => {
         href={href}
       />,
     );
-
     await waitFor(() => {
       expect(screen.getByText(href)).toBeInTheDocument();
       expect(screen.getByText(href).closest('a')).toHaveAttribute('href', href);
@@ -57,7 +56,6 @@ describe('the ChplLink component', () => {
         href={href}
       />,
     );
-
     await waitFor(() => {
       expect(screen.getByText(href)).toBeInTheDocument();
       expect(screen.getByText(href).closest('a')).toHaveAttribute('href', `http://${href}`);
@@ -73,7 +71,6 @@ describe('the ChplLink component', () => {
         text={text}
       />,
     );
-
     await waitFor(() => {
       expect(screen.getByText(text)).toBeInTheDocument();
       expect(screen.getByText(text).closest('a')).toHaveAttribute('href', href);
@@ -91,13 +88,52 @@ describe('the ChplLink component', () => {
         analytics={analytics}
       />,
     );
-
     userEvent.click(screen.getByText(href));
-
     await waitFor(() => {
       expect($analyticsMock.eventTrack).toHaveBeenCalledWith(
         'event',
-        { category: null, label: null },
+      );
+    });
+  });
+
+  it('tracks category analytics', async () => {
+    const href = 'http://www.example.com';
+    const analytics = {
+      event: 'event',
+      category: 'category',
+    };
+    render(
+      <ChplLink
+        href={href}
+        analytics={analytics}
+      />,
+    );
+    userEvent.click(screen.getByText(href));
+    await waitFor(() => {
+      expect($analyticsMock.eventTrack).toHaveBeenCalledWith(
+        'event',
+        { category: 'category' },
+      );
+    });
+  });
+
+  it('tracks label analytics', async () => {
+    const href = 'http://www.example.com';
+    const analytics = {
+      event: 'event',
+      label: 'label',
+    };
+    render(
+      <ChplLink
+        href={href}
+        analytics={analytics}
+      />,
+    );
+    userEvent.click(screen.getByText(href));
+    await waitFor(() => {
+      expect($analyticsMock.eventTrack).toHaveBeenCalledWith(
+        'event',
+        { label: 'label' },
       );
     });
   });
@@ -115,9 +151,7 @@ describe('the ChplLink component', () => {
         analytics={analytics}
       />,
     );
-
     userEvent.click(screen.getByText(href));
-
     await waitFor(() => {
       expect($analyticsMock.eventTrack).toHaveBeenCalledWith(
         'event',
