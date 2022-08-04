@@ -1,45 +1,46 @@
 import LoginComponent from '../../../components/login/login.po';
-import {
-  open, waitForSpinnerToDisappear,
-} from '../../../utilities/hooks.async';
+import { open } from '../../../utilities/hooks.async';
 
 import ReportingPage from './reporting.async.po';
 
-let loginComponent;
+let login;
 let page;
 
 beforeEach(async () => {
-  loginComponent = new LoginComponent();
+  login = new LoginComponent();
   page = new ReportingPage();
-  await open('#/surveillance/reporting');
+  await open('#/resources/overview');
 });
 
 describe('when ACB user is on surveillance reporting page', () => {
   beforeEach(async () => {
-    await loginComponent.logIn('drummond');
+    await login.logIn('drummond');
+    await open('#/surveillance/reporting');
+    await (await page.acbHeader).isDisplayed();
   });
 
   afterEach(async () => {
-    await loginComponent.logOut();
+    await login.logOut();
   });
 
   it('should only see their own reporting', async () => {
-    await browser.waitUntil(async () => await (page.getAcbReportingCount()) > 0);
-    await expect(await (page.getAcbReportingCount())).toBe(1);
+    await browser.waitUntil(async () => (await page.getAcbReportingCount()) > 0);
+    await expect(await page.getAcbReportingCount()).toBe(1);
   });
 });
 
 describe('when ONC user is on surveillance reporting page', () => {
   beforeEach(async () => {
-    await loginComponent.logIn('onc');
+    await login.logIn('onc');
+    await open('#/surveillance/reporting');
+    await (await page.acbHeader).isDisplayed();
   });
 
   afterEach(async () => {
-    await loginComponent.logOut();
+    await login.logOut();
   });
 
   it('should see all ACB\'s reporting', async () => {
-    await waitForSpinnerToDisappear();
-    await expect(await (page.getAcbReportingCount())).toBeGreaterThanOrEqual(3);
+    await expect(await page.getAcbReportingCount()).toBeGreaterThanOrEqual(3);
   });
 });

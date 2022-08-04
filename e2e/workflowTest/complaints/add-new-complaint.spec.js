@@ -1,17 +1,12 @@
 import LoginComponent from '../../components/login/login.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.async.po';
-import {
-  getCellValue,
-  getErrors,
-  open,
-} from '../../utilities/hooks.async';
+import { open } from '../../utilities/hooks.async';
 
 let login;
 let action;
 let complaintsComponent;
-const ACB_ID_IDX = 4;
-const FIRST_ROW = 1;
+const ACB_ID_IDX = 3;
 
 beforeEach(async () => {
   login = new LoginComponent();
@@ -57,7 +52,8 @@ describe('managing complaints', () => {
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
-      await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
+      const complaint = (await complaintsComponent.getTableComplaints())[0];
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
     });
 
     it('should be able to add new complaint with open surveillance for a 2015 listing', async () => {
@@ -83,7 +79,8 @@ describe('managing complaints', () => {
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
-      await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
+      const complaint = (await complaintsComponent.getTableComplaints())[0];
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
     });
 
     it('should be able to add new complaint for a 2015 listing with multiple surveillance activities', async () => {
@@ -111,7 +108,8 @@ describe('managing complaints', () => {
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
-      await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
+      const complaint = (await complaintsComponent.getTableComplaints())[0];
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
     });
 
     it('should be able to add new complaint for multiple listings and surveillance activities', async () => {
@@ -140,7 +138,8 @@ describe('managing complaints', () => {
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
-      await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
+      const complaint = (await complaintsComponent.getTableComplaints())[0];
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
     });
   });
 
@@ -148,6 +147,8 @@ describe('managing complaints', () => {
     beforeEach(async () => {
       await login.logIn('admin');
       await open('#/surveillance/complaints');
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
+      await browser.refresh();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
     });
 
@@ -173,7 +174,8 @@ describe('managing complaints', () => {
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await (await complaintsComponent.filter).addValue(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
-      await expect(await getCellValue(FIRST_ROW, ACB_ID_IDX)).toBe(fields.acbId);
+      const complaint = (await complaintsComponent.getTableComplaints())[0];
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
     });
 
     it('should not be able to add new complaint where listing and complaint have a mismatched ONC-ACB', async () => {
@@ -196,7 +198,7 @@ describe('managing complaints', () => {
       await complaintsComponent.set(fields);
       await complaintsComponent.setOptionalFields(optionalFields);
       await complaintsComponent.saveComplaint();
-      await expect(await getErrors()).toContain('Certified product 15.04.04.3010.Onco.28.01.1.181214 does not have the same ONC-ACB as the complaint.');
+      await expect(await (await action.errors).getText()).toContain('Certified product 15.04.04.3010.Onco.28.01.1.181214 does not have the same ONC-ACB as the complaint.');
     });
   });
 

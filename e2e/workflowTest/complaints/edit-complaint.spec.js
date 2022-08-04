@@ -1,14 +1,9 @@
 import LoginComponent from '../../components/login/login.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
-import {
-  getCellValue,
-  open,
-} from '../../utilities/hooks.async';
+import { open } from '../../utilities/hooks.async';
 
 let login;
 let complaintsComponent;
-const STATUS_IDX = 2;
-const FIRST_ROW = 1;
 
 beforeEach(async () => {
   login = new LoginComponent();
@@ -51,6 +46,7 @@ describe('when editing complaints', () => {
     });
 
     it('should be able to close complaint by adding closed date and actions', async () => {
+      const STATUS_IDX = 1;
       const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',
@@ -65,7 +61,8 @@ describe('when editing complaints', () => {
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
-      await expect(await getCellValue(FIRST_ROW, STATUS_IDX)).toBe('OPEN');
+      let complaint = (await complaintsComponent.getTableComplaints())[0];
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, STATUS_IDX)).getText()).toBe('OPEN');
       await complaintsComponent.editComplaint(fields.acbId);
       await (await complaintsComponent.closedDate).addValue(['23', 'Aug', 'Tab', '2021']);
       await complaintsComponent.setActions(`Actions - ${timestamp}`);
@@ -73,8 +70,9 @@ describe('when editing complaints', () => {
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
-      await (browser.waitUntil(async () => (await getCellValue(FIRST_ROW, STATUS_IDX)).includes('CLOSED')));
-      await expect(await getCellValue(FIRST_ROW, STATUS_IDX)).toBe('CLOSED');
+      await (browser.waitUntil(async () => await (await complaintsComponent.getComplaintCell((await complaintsComponent.getTableComplaints())[0], STATUS_IDX)).getText() === 'CLOSED'));
+      [complaint] = (await complaintsComponent.getTableComplaints());
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, STATUS_IDX)).getText()).toBe('CLOSED');
     });
   });
 });

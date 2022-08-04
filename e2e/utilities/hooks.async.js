@@ -4,11 +4,6 @@ async function open(path) {
   await browser.url(path);
 }
 
-async function getErrors() {
-  return (await $('#action-bar-errors')).getText();
-}
-
 export {
-  open,
-  getErrors,
+  open, // eslint-disable-line import/prefer-default-export
 };
