@@ -175,8 +175,11 @@ function ChplAttestationWizardSection2(props) {
           <Typography gutterBottom variant="body1">
             As a health IT developer of certified health IT that had an active certification under the ONC Health IT Certification Program at any time during the Attestation Period, please indicate your compliance, noncompliance, or the inapplicability of each Condition and Maintenance of Certification requirement for the portion of the Attestation Period you had an active certification.
           </Typography>
-          <Typography variant="body1">
+          <Typography gutterBottom variant="body1">
             Select only one response for each statement.
+          </Typography>
+          <Typography variant="body1">
+            If &quot;Noncompliant&quot; is selected, you may, but are not required to, indicate the status of a Corrective Action Plan (CAP) under the Certification Program.
           </Typography>
           <Divider />
           { sections.sort((a, b) => a.sortOrder - b.sortOrder).map((section, idx) => getSection(section, idx)) }
