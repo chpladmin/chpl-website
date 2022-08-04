@@ -28,6 +28,7 @@ describe('the Scheduled Jobs page', () => {
     it('should have specific jobs', () => {
       const expected = [
         'All Broken Surveillance Rules Report',
+        'Complaints Report Email',
         'Cures Statistics Email',
         'Developer Access Report',
         'Developer Attestations Check-in Report Email',
