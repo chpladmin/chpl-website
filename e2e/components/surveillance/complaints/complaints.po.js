@@ -29,7 +29,7 @@ class ComplaintsComponent {
   }
 
   complaintsBody () {
-    return $('.MuiCardContent-root').getText();
+    return $('chpl-complaints-wrapper-bridge').getText();
   }
 
   get viewButton() {

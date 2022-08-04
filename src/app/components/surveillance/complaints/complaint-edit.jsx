@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
-import {
   Card,
   CardContent,
   CardHeader,
@@ -14,25 +9,23 @@ import {
   MenuItem,
   Select,
   Switch,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useSnackbar } from 'notistack';
+import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplTextField } from '../../util';
-import { ChplActionBar } from '../../action-bar';
-import {
-  complaintCriterion as criterionPropType,
-  complaint as complaintPropType,
-  complainantType,
-  listing as listingPropType,
-  acb,
-} from '../../../shared/prop-types';
+import { useFetchAcbs } from 'api/acbs';
+import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
+import { useFetchComplainantTypes, useFetchCriteria } from 'api/data';
+import { ChplTextField } from 'components/util';
+import { ChplActionBar } from 'components/action-bar';
+import { getAngularService } from 'services/angular-react-helper';
+import { complaint as complaintPropType, listing as listingPropType } from 'shared/prop-types';
+import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -44,7 +37,7 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: '2fr 2fr',
     },
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1.5fr 2fr 2fr 1fr',
+      gridTemplateColumns: '3fr 4fr 4fr 2fr',
     },
   },
   dataEntry: {
@@ -91,7 +84,13 @@ const validationSchema = yup.object({
 });
 
 function ChplComplaintEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
+  const { mutate: post } = usePostComplaint();
+  const { mutate: put } = usePutComplaint();
+  const { mutate: remove } = useDeleteComplaint();
+  const { data: certificationBodiesData, isLoading: certificationBodiesIsLoading, isSuccess: certificationBodiesIsSuccess } = useFetchAcbs(true);
+  const { data: complainantTypesData, isLoading: complainantTypesIsLoading, isSuccess: complainantTypesIsSuccess } = useFetchComplainantTypes();
+  const { data: criteriaData, isLoading: criteriaIsLoading, isSuccess: criteriaIsSuccess } = useFetchCriteria();
+  const { enqueueSnackbar } = useSnackbar();
   const [complaint, setComplaint] = useState(() => {
     const c = {
       ...props.complaint,
@@ -101,22 +100,13 @@ function ChplComplaintEdit(props) {
     if (!c.surveillances) { c.surveillances = []; }
     return c;
   });
-  const [certificationBodies] = useState(
-    props.certificationBodies
-      .sort((a, b) => (a.name < b.name ? -1 : 1)),
-  );
-  const [complainantTypes] = useState(
-    props.complainantTypes
-      .sort((a, b) => (a.name < b.name ? -1 : 1)),
-  );
-  const [criteria] = useState(
-    props.criteria
-      .sort(getAngularService('utilService').sortCertActual),
-  );
+  const [certificationBodies, setCertificationBodies] = useState([]);
+  const [complainantTypes, setComplainantTypes] = useState([]);
+  const [criteria, setCriteria] = useState([]);
   const [criterionEdition, setCriterionEdition] = useState('2015');
   const [criterionToAdd, setCriterionToAdd] = useState('');
   const [listings] = useState(
-    props.listings
+    props.listings // eslint-disable-line react/destructuring-assignment
       .filter((listing) => (!complaint.certificationBody || listing.acb === complaint.certificationBody.name))
       .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))),
   );
@@ -127,14 +117,23 @@ function ChplComplaintEdit(props) {
   const [errors, setErrors] = useState([]);
   const networkService = getAngularService('networkService');
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
+  let formik;
 
-  let initialComplainantType;
-  complainantTypes.forEach((type) => {
-    if (type.id === complaint.complainantType?.id) {
-      initialComplainantType = type;
-    }
-  });
+  useEffect(() => {
+    if (certificationBodiesIsLoading || !certificationBodiesIsSuccess) { return; }
+    setCertificationBodies(certificationBodiesData.acbs.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [certificationBodiesData, certificationBodiesIsLoading, certificationBodiesIsSuccess]);
+
+  useEffect(() => {
+    if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
+    setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
+    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === props.complaint?.complainantType?.id) || '');
+  }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, props.complaint]);
+
+  useEffect(() => {
+    if (criteriaIsLoading || !criteriaIsSuccess) { return; }
+    setCriteria(criteriaData.criteria.sort(getAngularService('utilService').sortCertActual));
+  }, [criteriaData, criteriaIsLoading, criteriaIsSuccess]);
 
   useEffect(() => {
     setSurveillances([]);
@@ -147,8 +146,8 @@ function ChplComplaintEdit(props) {
           certifiedProductId: response.id,
           chplProductNumber: response.chplProductNumber,
         }));
-        setSurveillances((surveillances) => [
-          ...surveillances,
+        setSurveillances((original) => [
+          ...original,
           ...newSurveillances,
         ].sort((a, b) => {
           if (a.chplProductNumber < b.chplProductNumber) { return -1; }
@@ -164,8 +163,6 @@ function ChplComplaintEdit(props) {
       .map((s) => (s))
       .sort((a, b) => (a < b ? -1 : 1)));
   }, [props.errors]); // eslint-disable-line react/destructuring-assignment
-
-  let formik;
 
   const handleAction = (action, payload) => {
     props.dispatch(action, payload);
@@ -235,6 +232,21 @@ function ChplComplaintEdit(props) {
     setSurveillanceToAdd('');
   };
 
+  const deleteComplaint = (payload) => {
+    remove(payload, {
+      onSuccess: () => {
+        handleAction('refresh');
+      },
+      onError: (error) => {
+        const message = error.response.data?.error
+              || error.response.data?.errorMessages.join(' ');
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
+  };
+
   const removeAssociatedSurveillance = (surveillance) => {
     const updated = {
       ...complaint,
@@ -253,7 +265,7 @@ function ChplComplaintEdit(props) {
         }
         break;
       case 'delete':
-        handleAction('delete', complaint);
+        deleteComplaint(complaint);
         break;
       case 'save':
         formik.submitForm();
@@ -267,7 +279,8 @@ function ChplComplaintEdit(props) {
   };
 
   const save = () => {
-    const updatedComplaint = {
+    const mutate = complaint.id ? put : post;
+    mutate({
       ...complaint,
       certificationBody: formik.values.certificationBody,
       receivedDate: formik.values.receivedDate,
@@ -282,8 +295,18 @@ function ChplComplaintEdit(props) {
       developerContacted: formik.values.developerContacted,
       oncAtlContacted: formik.values.oncAtlContacted,
       flagForOncReview: formik.values.flagForOncReview,
-    };
-    handleAction('save', updatedComplaint);
+    }, {
+      onSuccess: () => {
+        handleAction('refresh');
+      },
+      onError: (error) => {
+        const message = error.response.data?.error
+              || error.response.data?.errorMessages.join(' ');
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
   };
 
   formik = useFormik({
@@ -293,7 +316,7 @@ function ChplComplaintEdit(props) {
       closedDate: complaint.closedDate || '',
       acbComplaintId: complaint.acbComplaintId || '',
       oncComplaintId: complaint.oncComplaintId || '',
-      complainantType: initialComplainantType || '',
+      complainantType: complaint.complainantType || '',
       complainantTypeOther: complaint.complainantTypeOther || '',
       summary: complaint.summary || '',
       actions: complaint.actions || '',
@@ -311,7 +334,7 @@ function ChplComplaintEdit(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Card>
         <CardHeader
           title={complaint.id ? 'Edit Complaint' : 'Create Complaint'}
@@ -407,7 +430,7 @@ function ChplComplaintEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-              { formik.values.complainantType.name === 'Other - [Please Describe]'
+              { formik.values.complainantType?.name === 'Other - [Please Describe]'
                 && (
                   <ChplTextField
                     id="complainant-type-other"
@@ -632,7 +655,7 @@ function ChplComplaintEdit(props) {
         dispatch={handleDispatch}
         canDelete={!!complaint.id}
       />
-    </ThemeProvider>
+    </>
   );
 }
 
@@ -640,14 +663,7 @@ export default ChplComplaintEdit;
 
 ChplComplaintEdit.propTypes = {
   complaint: complaintPropType.isRequired,
-  certificationBodies: arrayOf(acb).isRequired,
-  complainantTypes: arrayOf(complainantType).isRequired,
-  criteria: arrayOf(criterionPropType).isRequired,
   listings: arrayOf(listingPropType).isRequired,
-  errors: arrayOf(string),
+  errors: arrayOf(string).isRequired,
   dispatch: func.isRequired,
-};
-
-ChplComplaintEdit.defaultProps = {
-  errors: [],
 };
