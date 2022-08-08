@@ -19,12 +19,7 @@ import {
 } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
-import {
-  ChplComplaintAdd,
-  ChplComplaintEdit,
-  ChplComplaintView,
-  ChplComplaints,
-} from './surveillance/complaints';
+import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
   ChplUploadPromotingInteroperability,
@@ -66,10 +61,7 @@ angular
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplAnnouncementsWrapperBridge', reactToAngularComponent(ChplAnnouncementsWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
-  .component('chplComplaintAddBridge', reactToAngularComponent(ChplComplaintAdd))
-  .component('chplComplaintEditBridge', reactToAngularComponent(ChplComplaintEdit))
-  .component('chplComplaintViewBridge', reactToAngularComponent(ChplComplaintView))
-  .component('chplComplaintsBridge', reactToAngularComponent(ChplComplaints))
+  .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
   .component('chplConfirmDeveloperWrapperBridge', reactToAngularComponent(ChplConfirmDeveloperWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))

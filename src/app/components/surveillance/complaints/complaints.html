@@ -97,37 +97,14 @@
         </chpl-filter>
       </chpl-filters-body>
     </chpl-filters>
-    <div class="flex-container">
-      <div class="flex-item text-right">
-        <chpl-complaint-add-bridge
-          ng-if="$ctrl.displayAdd"
-          dispatch="::$ctrl.handleDispatch"></chpl-complaint-add-bridge>
-        <button class="btn btn-primary" id="download-results"
-                ng-if="$ctrl.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])"
-                ng-csv="$ctrl.csvComplaints" filename="{{ $ctrl.filename }}" add-bom="true"
-                ng-disabled="!$ctrl.csvComplaints"
-                csv-header="['complaint_id', 'ONC-ACB', 'Complainant Type Name', 'complainant_type_other', 'onc_complaint_id', 'acb_complaint_id', 'received_date', 'summary', 'actions', 'complainant_contacted', 'developer_contacted', 'onc_atl_contacted', 'informed_onc_per_170.523(s)', 'closed_date', 'developer_name', 'product_name', 'version', 'associated_listings', 'associated_surveillance', 'associated_criteria']"
-                csv-column-order="['id', 'acbName', 'complainantTypeName', 'complainantTypeOther', 'oncComplaintId', 'acbComplaintId', 'csvReceivedDate', 'summary', 'actions', 'complainantContacted', 'developerContacted', 'oncAtlContacted', 'flagForOncReview', 'csvClosedDate', 'developerName', 'productName', 'versionName', 'csvListing', 'csvSurveillances', 'csvCriteria']">
-          <i class="fa fa-cloud-download"></i> Download all complaints
-        </button>
-      </div>
-    </div>
-    <chpl-complaints-bridge
-      ng-if="$ctrl.complaints"
-      complaints="$ctrl.displayedComplaints"
-      dispatch="::$ctrl.handleDispatch"></chpl-complaints-bridge>
   </div>
-  <chpl-complaint-view-bridge
-    ng-if="$ctrl.isViewing"
+  <chpl-complaints-wrapper-bridge
+    complaints="$ctrl.displayedComplaints"
     complaint="$ctrl.complaint"
-    dispatch="::$ctrl.handleDispatch"></chpl-complaint-view-bridge>
-  <chpl-complaint-edit-bridge
-    ng-if="$ctrl.isEditing"
-    complaint="$ctrl.complaint"
-    certification-bodies="$ctrl.certificationBodies"
-    complainant-types="$ctrl.complainantTypes"
-    criteria="$ctrl.criteria"
     listings="$ctrl.listings"
     errors="$ctrl.errorMessages"
-    dispatch="::$ctrl.handleDispatch"></chpl-complaint-edit-bridge>
+    display-add="$ctrl.displayAdd"
+    is-viewing="$ctrl.isViewing"
+    is-editing="$ctrl.isEditing"
+    dispatch="::$ctrl.handleDispatch"></chpl-complaints-wrapper-bridge>
 </div>

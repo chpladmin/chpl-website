@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -33,11 +33,24 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { FlagContext } from 'shared/contexts';
 
-const csvOptions = {
+const csvOptions = (erdPhase2IsOn) => ({
   filename: 'api-documentation',
   showLabels: true,
-  headers: [
+  headers: erdPhase2IsOn ? [
+    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
+    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
+    { headerName: 'Developer', objectKey: 'developerName' },
+    { headerName: 'Product', objectKey: 'productName' },
+    { headerName: 'Version', objectKey: 'versionName' },
+    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
+    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
+    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
+    { headerName: 'API Documentation - 170.315 (g)(10)', objectKey: 'apiDocumentation182' },
+    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
+    { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
+  ] : [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
     { headerName: 'Certification Edition', objectKey: 'fullEdition' },
     { headerName: 'Developer', objectKey: 'developerName' },
@@ -52,7 +65,7 @@ const csvOptions = {
     { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
     { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
   ],
-};
+});
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -132,17 +145,23 @@ const useStyles = makeStyles({
   },
 });
 
-const criteriaLookup = {
-  56: { display: '170.315 (g)(7)', sort: 0 },
-  57: { display: '170.315 (g)(8)', sort: 1 },
-  58: { display: '170.315 (g)(9)', sort: 2 },
-  181: { display: '170.315 (g)(9) (Cures Update)', sort: 3 },
-  182: { display: '170.315 (g)(10)', sort: 4 },
-};
+const criteriaLookup = (erdPhase2IsOn) => (erdPhase2IsOn
+  ? {
+    56: { display: '170.315 (g)(7)', sort: 0 },
+    181: { display: '170.315 (g)(9) (Cures Update)', sort: 1 },
+    182: { display: '170.315 (g)(10)', sort: 2 },
+  } : {
+    56: { display: '170.315 (g)(7)', sort: 0 },
+    57: { display: '170.315 (g)(8)', sort: 1 },
+    58: { display: '170.315 (g)(9)', sort: 2 },
+    181: { display: '170.315 (g)(9) (Cures Update)', sort: 3 },
+    182: { display: '170.315 (g)(10)', sort: 4 },
+  });
 
-const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
+const parseApiDocumentation = ({ apiDocumentation }, analytics, erdPhase2IsOn) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
   const items = Object.entries(apiDocumentation
+    .filter((item) => !erdPhase2IsOn || (item.criterion.id !== 57 && item.criterion.id !== 58))
     .map((item) => ({
       id: item.criterion.id,
       url: item.value,
@@ -154,8 +173,8 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
     .map(([url, ids]) => ({
       url,
       criteria: ids
-        .sort((a, b) => criteriaLookup[a].sort - criteriaLookup[b].sort)
-        .map((id) => criteriaLookup[id].display)
+        .sort((a, b) => criteriaLookup(erdPhase2IsOn)[a].sort - criteriaLookup(erdPhase2IsOn)[b].sort)
+        .map((id) => criteriaLookup(erdPhase2IsOn)[id].display)
         .join(', '),
     }));
   return (
@@ -184,12 +203,11 @@ function ChplApiDocumentationCollectionView(props) {
   const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
-  const {
-    analytics,
-  } = props;
-  const csvExporter = new ExportToCsv(csvOptions);
+  const { analytics } = props;
+  const { isOn } = useContext(FlagContext);
   const [documentationDate, setDocumentationDate] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
+  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
@@ -199,6 +217,7 @@ function ChplApiDocumentationCollectionView(props) {
 
   const filterContext = useFilterContext();
   const { isLoading, data } = useFetchApiDocumentationCollection({
+    erdPhase2IsOn,
     orderBy,
     pageNumber,
     pageSize,
@@ -208,14 +227,18 @@ function ChplApiDocumentationCollectionView(props) {
   const { data: documentation } = useFetchApiDocumentationData();
 
   useEffect(() => {
+    setErdPhase2IsOn(isOn('erd-phase-2'));
+  }, [isOn]);
+
+  useEffect(() => {
     if (isLoading || !data.results) { return; }
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      apiDocumentation: parseApiDocumentation(listing, analytics),
+      apiDocumentation: parseApiDocumentation(listing, analytics, erdPhase2IsOn),
       apiDocumentation56: getApiDocumentationForCsv(listing, 56),
-      apiDocumentation57: getApiDocumentationForCsv(listing, 57),
-      apiDocumentation58: getApiDocumentationForCsv(listing, 58),
+      apiDocumentation57: erdPhase2IsOn ? '' : getApiDocumentationForCsv(listing, 57),
+      apiDocumentation58: erdPhase2IsOn ? '' : getApiDocumentationForCsv(listing, 58),
       apiDocumentation181: getApiDocumentationForCsv(listing, 181),
       apiDocumentation182: getApiDocumentationForCsv(listing, 182),
       serviceBaseUrlList: parseServiceBaseUrlList(listing),
@@ -224,7 +247,7 @@ function ChplApiDocumentationCollectionView(props) {
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
-  }, [isLoading, data?.results, analytics]);
+  }, [isLoading, data?.results, analytics, erdPhase2IsOn]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -256,6 +279,7 @@ function ChplApiDocumentationCollectionView(props) {
 
   const downloadApiDocumentation = () => {
     $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
+    const csvExporter = new ExportToCsv(csvOptions(erdPhase2IsOn));
     csvExporter.generateCsv(listings);
   };
 
@@ -283,8 +307,13 @@ function ChplApiDocumentationCollectionView(props) {
           </Typography>
           <ul>
             <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-            <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
-            <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
+            { !erdPhase2IsOn
+              && (
+                <>
+                  <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
+                  <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
+                </>
+              )}
             <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
             <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
           </ul>

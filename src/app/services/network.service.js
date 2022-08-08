@@ -279,14 +279,6 @@ export default class NetworkService {
     return this.apiGET('/complaints');
   }
 
-  getComplainantTypes() {
-    return this.apiGET('/data/complainant-types');
-  }
-
-  getCriteria() {
-    return this.apiGET('/data/certification-criteria');
-  }
-
   getCriterionProductStatistics() {
     return this.apiGET('/statistics/criterion_product');
   }
