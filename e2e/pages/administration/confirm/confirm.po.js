@@ -6,18 +6,15 @@ class ConfirmPage {
       title: 'h1=View Products in the process of upload',
       inspectNext: '#inspect-next',
       inspectLabel: '#inspect-label',
-      inspectConfirm: '#inspect-confirm',
-      yesConfirmation: '//button[text()="Yes"]',
+      confirmButton: '#action-bar-confirm',
+      yesConfirmation: '#action-confirmation-yes',
       rejectButton: '#reject-selected-pending-listings',
       warningCheckbox: '#acknowledge-warnings',
-      confirmButton: '#inspect-confirm',
-      rejectButtonOnInspectListing: '#inspect-reject',
+      rejectButtonOnInspectListing: '#action-bar-reject',
       actionBarMessages: '#action-bar-messages',
       errorMessage: '.bg-danger',
       errorOnInspect: '#action-bar-errors > ul > li',
       warningOnInspect: '#action-bar-warnings > ul > li',
-      useLegacy: '#use-legacy',
-      usingModern: 'span*=Using Modern Workflow',
     };
   }
 
@@ -31,10 +28,6 @@ class ConfirmPage {
 
   get inspectLabel() {
     return $(this.elements.inspectLabel);
-  }
-
-  get inspectConfirmButton() {
-    return $(this.elements.inspectConfirm);
   }
 
   get yesConfirmation() {
@@ -74,24 +67,18 @@ class ConfirmPage {
   }
 
   gotoConfirmListingPage(inspectListingId) {
-    if ($(this.elements.usingModern).isDisplayed()) {
-      $(this.elements.useLegacy).click();
-    }
     $(`//button[@id="process-pending-listing-${inspectListingId}"]`).click();
-    $('p=Step 1 of 4').waitForDisplayed();
+    $('h2=Developer').waitForDisplayed();
     this.inspectNextButton.click();
-    $('p=Step 2 of 4').waitForDisplayed();
+    $('h2=Product').waitForDisplayed();
     this.inspectNextButton.click();
-    $('p=Step 3 of 4').waitForDisplayed();
+    $('h2=Version').waitForDisplayed();
     this.inspectNextButton.click();
-    $('p=Step 4 of 4').waitForDisplayed();
-    this.inspectConfirmButton.waitForDisplayed();
+    $('h2=Listing').waitForDisplayed();
+    this.confirmButton.waitForDisplayed();
   }
 
-  gotoPendingListingPage(pendingListingId, legacy = false) {
-    if (legacy && $(this.elements.usingModern).isDisplayed()) {
-      $(this.elements.useLegacy).click();
-    }
+  gotoPendingListingPage(pendingListingId) {
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).waitForClickable({ timeout: config.longTimeout });
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).click();
   }
@@ -100,10 +87,7 @@ class ConfirmPage {
     $(`//button[@id="process-pending-listing-${pendingListingId}"]`).waitForClickable({ timeout: config.longTimeout });
   }
 
-  rejectListingCheckbox(chplId, legacy = false) {
-    if (legacy && $(this.elements.usingModern).isDisplayed()) {
-      $(this.elements.useLegacy).click();
-    }
+  rejectListingCheckbox(chplId) {
     $(`//input[@id="reject-pending-listing-${chplId}"]`).click();
   }
 
@@ -111,10 +95,7 @@ class ConfirmPage {
     return $(`//input[@id="reject-pending-listing-${chplId}"]`);
   }
 
-  rejectListing(chplId, legacy = false) {
-    if (legacy && $(this.elements.usingModern).isDisplayed()) {
-      $(this.elements.useLegacy).click();
-    }
+  rejectListing(chplId) {
     $(`//input[@id="reject-pending-listing-${chplId}"]`).click();
     if (this.rejectButton.isClickable()) {
       this.rejectButton.waitAndClick();
