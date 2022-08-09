@@ -1,7 +1,5 @@
 import { Visualizer } from '@uirouter/visualizer';
 
-import { states as administrationStates } from './pages/administration/administration.state';
-
 (() => {
   /** @ngInject */
   function runBlock($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, Title, authService, featureFlags, networkService) {
@@ -9,31 +7,11 @@ import { states as administrationStates } from './pages/administration/administr
       // get flag state from API
       featureFlags.set($http.get('/rest/feature-flags'))
         .then(() => {
-          let needsReload = false;
-          const needsRedirect = false;
-
-          // load states dependent on features
-          if (featureFlags.isOn('enhanced-upload')) {
-            administrationStates['enhanced-upload'].forEach((state) => {
-              if ($uiRouter.stateRegistry.get(state.name)) {
-                $uiRouter.stateRegistry.deregister(state.name);
-              }
-              $uiRouter.stateRegistry.register(state);
-              needsReload = needsReload || $state.$current.name === state.name;
-            });
-          }
-
           // Display ui-router state changes
           if (featureFlags.isOn('states')) {
             $uiRouter.plugin(Visualizer);
           }
-
           $rootScope.$broadcast('flags loaded');
-          if (needsRedirect) {
-            $state.go('search');
-          } else if (needsReload) {
-            $state.go($state.$current.name, $stateParams, { reload: true });
-          }
         });
     };
 
