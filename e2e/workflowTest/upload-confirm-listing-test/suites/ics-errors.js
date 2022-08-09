@@ -1,6 +1,6 @@
 const suite = {
   description: 'with invalid ICS data',
-  file: '../../../resources/upload-listing-beta/2015_ICS.csv',
+  file: '../../../resources/listings/2015_ICS.csv',
   listings: [{
     listingId: '15.02.04.2701.ICS1.12.00.0.200620',
     expectedErrors: [
