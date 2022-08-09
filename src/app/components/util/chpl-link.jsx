@@ -52,10 +52,18 @@ function ChplLink(props) {
       e.preventDefault();
       clicked = true;
       if (analytics.event) {
-        $analytics.eventTrack(analytics.event, {
-          category: analytics.category || null,
-          label: analytics.label || null,
-        });
+        const params = {};
+        if (analytics.category) {
+          params.category = analytics.category;
+        }
+        if (analytics.label) {
+          params.label = analytics.label;
+        }
+        if (analytics.category || analytics.label) {
+          $analytics.eventTrack(analytics.event, params);
+        } else {
+          $analytics.eventTrack(analytics.event);
+        }
       }
       if (router.sref) {
         $state.go(router.sref, router.options);
