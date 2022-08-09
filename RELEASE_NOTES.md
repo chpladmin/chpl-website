@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 11.39.0
+_8 August 2022_
+
+### Features
+* Notify user their Complaints download file will be delivered via email
+
+### Flagged Features
+* Remove appropriate criteria from API Info Page
+
+### Bug Fixes
+* Correctly categorize links from CHPL API page in Google Analytics
+* Avoid sending "null" Google Analytic labels on links
+
+---
+
 ## Version 11.38.0
 _25 July 2022_
 
