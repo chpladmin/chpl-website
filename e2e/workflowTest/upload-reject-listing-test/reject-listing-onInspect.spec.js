@@ -16,14 +16,12 @@ beforeEach(() => {
   hooks = new Hooks();
   hooks.open('#/administration/upload');
   loginComponent.logIn('acb');
-  upload.uploadListing('../../../resources/listings/2015_v19_AQA3.csv', true);
-  hooks.open('#/administration/confirm/listings');
-  browser.waitUntil(() => confirm.isLoaded());
+  upload.uploadFileAndWaitForListingsToBeProcessed('../../../resources/listings/2015_v19_AQA3.csv', [listingId], hooks, confirm);
 });
 
 describe('when user rejects a listing while inspecting uploaded listing', () => {
   it('should allow listing to get rejected', () => {
-    confirm.gotoPendingListingPage(listingId, true);
+    confirm.gotoPendingListingPage(listingId);
     hooks.waitForSpinnerToDisappear();
     confirm.rejectButtonOnInspectListing.click();
     confirm.yesConfirmation.click();

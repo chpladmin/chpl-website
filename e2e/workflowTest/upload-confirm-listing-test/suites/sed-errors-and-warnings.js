@@ -1,6 +1,6 @@
 const suite = {
   description: 'with issues related to SED',
-  file: '../../../resources/upload-listing-beta/2015_SED.csv',
+  file: '../../../resources/listings/2015_SED.csv',
   listings: [{
     listingId: '15.07.04.2701.SED1.R2.00.1.200511',
     expectedErrors: [
