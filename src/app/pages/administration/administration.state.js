@@ -88,6 +88,11 @@ const states = [
     url: '/{id}/confirm',
     component: 'chplConfirmListing',
     resolve: {
+      developers: (networkService) => {
+        'ngInject';
+
+        return networkService.getDevelopers().then((response) => response.developers);
+      },
       listing: (networkService, $transition$) => {
         'ngInject';
 
