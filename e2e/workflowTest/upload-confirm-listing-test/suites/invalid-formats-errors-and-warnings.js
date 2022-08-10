@@ -1,6 +1,6 @@
 const suite = {
   description: 'with invalid or missing data',
-  file: '../../../resources/upload-listing-beta/2015_InvalidAndMissingData.csv',
+  file: '../../../resources/listings/2015_InvalidAndMissingData.csv',
   listings: [{
     listingId: '13A!.AA.04.8990.FMT.0A@.AA.A.20230729',
     expectedErrors: [
@@ -31,12 +31,6 @@ const suite = {
       'The ICS value is \'true\' which means this listing has inherited properties. It is required that at least one parent from which the listing inherits be provided.',
       'The \'Accessibility Certified\' value is \'true\' but 0 Accessibility Standard(s) were found.',
       'Test tools are required for certification criteria 170.315 (g)(10).',
-      'Test procedures are required for certification criteria 170.315 (g)(4).',
-      'Test procedures are required for certification criteria 170.315 (g)(10).',
-      'Test procedures are required for certification criteria 170.315 (d)(9).',
-      'Test procedures are required for certification criteria 170.315 (d)(2).',
-      'Test procedures are required for certification criteria 170.315 (d)(10).',
-      'Test procedures are required for certification criteria 170.315 (d)(1).',
       'Service Base URL List is required for certification 170.315 (g)(10).',
       'QMS Standard(s) are required.',
       'Privacy and Security Framework is required for certification 170.315 (g)(10).',
@@ -62,9 +56,7 @@ const suite = {
       'Certification 170.315 (b)(10) contains Privacy and Security Framework value \'Approach 3 and 4\' which must match one of \'Approach 1\', \'Approach 2\', \'Approach 1;Approach 2\'.',
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\'.',
       'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\'.',
-      'Certification 170.315 (a)(1) contains duplicate Test Procedure: \'ONC Test Method\'.',
       '170.315 (g)(3) is required but was not found.',
-      'Test procedures are required for certification criteria 170.315 (b)(10).',
     ],
     expectedWarnings: [
       'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
@@ -72,7 +64,6 @@ const suite = {
       'Criteria 170.315 (a)(1) contains an invalid test functionality \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
       'Certification 170.315 (d)(13) has a Use Case but no Attestation Answer.',
       'Test data \'test data\' is invalid for the criterion 170.315 (b)(1) (Cures Update) and has been removed from the listing.',
-      'Certification 170.315 (b)(10) contains an invalid test procedure name: \'blah\' and it has been removed from the listing.',
       'CHPL certification ID was not found.',
     ],
   }],

@@ -23,8 +23,7 @@ beforeAll(() => {
 describe('an ACB user', () => {
   beforeEach(() => {
     hooks.open('#/administration/upload');
-    upload.uploadListing('../../../resources/listings/2015_v19_AQA1.csv');
-    upload.waitForSuccessfulUpload('AQA1');
+    upload.uploadFileAndWaitForListingsToBeProcessed('../../../resources/listings/2015_v19_AQA1.csv', ['15.04.04.1722.AQA1.03.01.1.200620'], hooks, confirm);
     hooks.open('#/administration/confirm/listings');
   });
 
