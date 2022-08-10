@@ -247,7 +247,7 @@ function ChplConfirmListings(props) {
                             variant="contained"
                             onClick={() => handleProcess(listing)}
                             endIcon={<PlayArrowIcon />}
-                            disabled={listing.status === 'UPLOAD_SUCCESS'}
+                            disabled={listing.status !== 'UPLOAD_SUCCESS'}
                           >
                             Process Listing
                           </Button>
