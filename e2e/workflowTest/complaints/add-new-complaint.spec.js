@@ -148,8 +148,6 @@ describe('managing complaints', () => {
       await login.logIn('admin');
       await open('#/surveillance/complaints');
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-      await browser.refresh();
-      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
     });
 
     afterEach(async () => {
