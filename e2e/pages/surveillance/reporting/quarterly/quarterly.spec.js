@@ -35,43 +35,6 @@ describe('the quarterly surveillance reporting page', () => {
     await loginComponent.logOut();
   });
 
-  describe('when working with future reports', () => {
-    const acb = 'Drummond Group';
-    const year = 2023;
-    const quarter = 'Q4';
-    const timestamp = Date.now();
-
-    it('can cancel initiating a quarterly report and navigate back to reporting screen', async () => {
-      await (await reportingPage.initiateQuarterlyReport(acb, year, quarter)).click();
-      await action.no();
-      await browser.waitUntil(async () => (await reportingPage.acbHeader).isDisplayed());
-      await expect(await (await reportingPage.secondaryPageTitle).getText()).toBe('Available reports');
-    });
-
-    it('can initiate and delete quarterly reports', async () => {
-      const fields = {
-        surveillanceActivity: `Surveillance Activity Created ${timestamp}`,
-        reactiveSurveillance: `Reactive Surveillance Create ${timestamp}`,
-        prioritizedElement: `Prioritized Element Created ${timestamp}`,
-        disclosureSummary: `Disclosure Summary Created ${timestamp}`,
-      };
-      await (await (await reportingPage.initiateQuarterlyReport(acb, year, quarter))).click();
-      await action.yes();
-      await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
-      await quarterlyPage.set(fields);
-      await action.save();
-      await (await reportingPage.acbHeader).isDisplayed();
-      await browser.waitUntil(async () => (await (await reportingPage.secondaryPageTitle).getText()).includes('Available reports'));
-      await expect(await (await reportingPage.editQuarterlyReport(acb, year, quarter)).isExisting()).toBe(true);
-      await (await reportingPage.editQuarterlyReport(acb, year, quarter)).click();
-      await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
-      await action.delete();
-      await action.yes();
-      await browser.waitUntil(async () => (await reportingPage.acbHeader).isDisplayed());
-      await expect(await (await reportingPage.editQuarterlyReport(acb, year, quarter)).isExisting()).toBe(false);
-    });
-  });
-
   describe('when working with old reports', () => {
     const acb = 'Drummond Group';
     const year = 2021;
@@ -150,6 +113,43 @@ describe('the quarterly surveillance reporting page', () => {
       await (await quarterlyPage.complaintsHeader).click();
       await complaints.viewComplaint('SC - 000135');
       await expect(await (await complaints.editButton).isDisplayed()).toBe(true);
+    });
+  });
+
+  describe('when working with future reports', () => {
+    const acb = 'Drummond Group';
+    const year = 2023;
+    const quarter = 'Q4';
+    const timestamp = Date.now();
+
+    it('can cancel initiating a quarterly report and navigate back to reporting screen', async () => {
+      await (await reportingPage.initiateQuarterlyReport(acb, year, quarter)).click();
+      await action.no();
+      await browser.waitUntil(async () => (await reportingPage.acbHeader).isDisplayed());
+      await expect(await (await reportingPage.secondaryPageTitle).getText()).toBe('Available reports');
+    });
+
+    it('can initiate and delete quarterly reports', async () => {
+      const fields = {
+        surveillanceActivity: `Surveillance Activity Created ${timestamp}`,
+        reactiveSurveillance: `Reactive Surveillance Create ${timestamp}`,
+        prioritizedElement: `Prioritized Element Created ${timestamp}`,
+        disclosureSummary: `Disclosure Summary Created ${timestamp}`,
+      };
+      await (await (await reportingPage.initiateQuarterlyReport(acb, year, quarter))).click();
+      await action.yes();
+      await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
+      await quarterlyPage.set(fields);
+      await action.save();
+      await (await reportingPage.acbHeader).isDisplayed();
+      await browser.waitUntil(async () => (await (await reportingPage.secondaryPageTitle).getText()).includes('Available reports'));
+      await expect(await (await reportingPage.editQuarterlyReport(acb, year, quarter)).isExisting()).toBe(true);
+      await (await reportingPage.editQuarterlyReport(acb, year, quarter)).click();
+      await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
+      await action.delete();
+      await action.yes();
+      await browser.waitUntil(async () => (await reportingPage.acbHeader).isDisplayed());
+      await expect(await (await reportingPage.editQuarterlyReport(acb, year, quarter)).isExisting()).toBe(false);
     });
   });
 });
