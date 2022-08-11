@@ -101,7 +101,7 @@
     "babel-plugin-angularjs-annotate": "^0.9.0",
     "browser-sync": "~2.9.11",
     "browser-sync-spa": "~1.0.3",
-    "chromedriver": "^102.0.0",
+    "chromedriver": "^103.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.6.1",
     "css-loader": "^0.28.11",
