@@ -1,10 +1,12 @@
-import ConfirmPage from './confirm.po';
 import UploadSurveillanceComponent from '../../../components/upload/upload-surveillance/upload-surveillance.po';
-import LoginComponent from '../../../components/login/login.po';
+import LoginComponent from '../../../components/login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../../components/toast/toast.po';
 
-let confirmPage, hooks, loginComponent, toast, upload;
+import ConfirmPage from './confirm.po';
+
+let confirmPage; let hooks; let loginComponent; let toast; let
+  upload;
 const rejectListingId1 = '15.04.04.2988.Heal.PC.01.1.181101';
 const rejectListingId2 = '15.04.04.1039.Acum.08.00.1.171231';
 
@@ -29,7 +31,7 @@ describe('when ACB user is on confirm surveillance page', () => {
   describe('and uploading a surveillance activity', () => {
     beforeEach(() => {
       upload.uploadSurveillance('../../../resources/surveillance/SAQA1.csv');
-      browser.waitUntil( () => toast.toastTitle.isDisplayed());
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
     });
 
@@ -46,7 +48,7 @@ describe('when ACB user is on confirm surveillance page', () => {
   describe('and uploading multiple surveillance activities', () => {
     beforeEach(() => {
       upload.uploadSurveillance('../../../resources/surveillance/SAQA2.csv');
-      browser.waitUntil( () => toast.toastTitle.isDisplayed());
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
     });
 

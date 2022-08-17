@@ -1,13 +1,15 @@
 class QuarterlyPage {
   constructor() {
     this.elements = {
+      header: 'chpl-surveillance-reporting h2',
+      breadcrumbs: '.breadcrumb li',
       surveillanceActivity: '#surveillance-activities',
       reactiveSurveillance: '#reactive-surveillance-summary',
       prioritizedElement: '#prioritized-element',
       disclosureSummary: '#disclosure-requirements-summary',
       relevantListingsHeader: '#relevant-listings-header',
       surveillanceRoot: 'chpl-surveillance-report-relevant-listings',
-      complaintsRoot: 'chpl-complaints-bridge',
+      complaintsRoot: 'chpl-complaints-wrapper-bridge',
       complaintsHeader: '#complaints-header',
       download: '#surveillance-report-download',
       outcome: '#surveillance-outcome',
@@ -23,14 +25,23 @@ class QuarterlyPage {
       directionDeveloperResolution: '#direction-developer-resolution',
       verificationCap: '#completed-cap-verification',
       surveillanceData: '#save-surveillance-data',
+      progressBar: '.progress-bar',
+      editSurveillanceData: '//*[starts-with(@id,"edit-surveillance-data-")]',
+      viewSurveillanceData: (listingId) => `//button[@id="view-listing-data-${listingId}"]`,
     };
   }
 
-  set(fields) {
-    $(this.elements.surveillanceActivity).setValue(fields.surveillanceActivity);
-    $(this.elements.reactiveSurveillance).setValue(fields.reactiveSurveillance);
-    $(this.elements.prioritizedElement).setValue(fields.prioritizedElement);
-    $(this.elements.disclosureSummary).setValue(fields.disclosureSummary);
+  async waitForQuarterToBeFullyLoaded(title) {
+    browser.waitUntil(async () => (await (await $$(this.elements.breadcrumbs)).getText()).includes(title));
+    browser.waitUntil(async () => (await this.getSurveillanceTableRows()) >= 1);
+    browser.waitUntil(async () => (await this.getComplaintsTableRows()) >= 1);
+  }
+
+  async set(fields) {
+    await (await $(this.elements.surveillanceActivity)).setValue(fields.surveillanceActivity);
+    await (await $(this.elements.reactiveSurveillance)).setValue(fields.reactiveSurveillance);
+    await (await $(this.elements.prioritizedElement)).setValue(fields.prioritizedElement);
+    await (await $(this.elements.disclosureSummary)).setValue(fields.disclosureSummary);
   }
 
   get surveillanceActivity() {
@@ -57,12 +68,12 @@ class QuarterlyPage {
     return $(this.elements.complaintsHeader);
   }
 
-  get surveillanceTableRows() {
-    return $(this.elements.surveillanceRoot).$('table').$('tbody').$$('tr').length;
+  async getSurveillanceTableRows() {
+    return (await (await (await (await $(this.elements.surveillanceRoot)).$('table')).$('tbody')).$$('tr')).length;
   }
 
-  get complaintsTableRows() {
-    return $(this.elements.complaintsRoot).$('table').$('tbody').$$('tr').length;
+  async getComplaintsTableRows() {
+    return (await (await (await (await $(this.elements.complaintsRoot)).$('table')).$('tbody')).$$('tr')).length;
   }
 
   get download() {
@@ -117,39 +128,43 @@ class QuarterlyPage {
     return $(this.elements.verificationCap);
   }
 
-  saveSurveillanceData() {
-    $(this.elements.surveillanceData).click();
+  async saveSurveillanceData() {
+    await (await $(this.elements.surveillanceData)).click();
   }
 
   get surveillanceData() {
     return $(this.elements.surveillanceData);
   }
 
-  getListingId(row, col) {
-    return $('chpl-surveillance-report-relevant-listings').$(`//tbody/tr[${row}]/td[${col}]`).getText();
+  get progressBar() {
+    return $(this.elements.progressBar);
   }
 
-  editSurveillanceData() {
-    $('//*[starts-with(@id,"edit-surveillance-data-")]').waitAndClick();
+  async getListingId(row, col) {
+    return (await (await $(this.elements.surveillanceRoot)).$(`//tbody/tr[${row}]/td[${col}]`)).getText();
   }
 
-  viewSurveillanceData(listingId) {
-    $(`//button[@id="view-listing-data-${listingId}"]`).click();
+  async editSurveillanceData() {
+    await (await $(this.elements.editSurveillanceData)).click();
   }
 
-  setSurvData(fields) {
-    $(this.elements.outcome).selectByAttribute('value', fields.outcome);
-    $(this.elements.processType).selectByAttribute('value', fields.processType);
-    $(this.elements.grounds).setValue(fields.grounds);
-    $(this.elements.nonCoformityCause).setValue(fields.nonCoformityCause);
-    $(this.elements.nonConformityNature).setValue(fields.nonConformityNature);
-    $(this.elements.stepsSurveil).setValue(fields.stepsSurveil);
-    $(this.elements.stepsEngage).setValue(fields.stepsEngage);
-    $(this.elements.cost).setValue(fields.cost);
-    $(this.elements.limitationsEvaluation).setValue(fields.limitationsEvaluation);
-    $(this.elements.nondisclosureEvaluation).setValue(fields.nondisclosureEvaluation);
-    $(this.elements.directionDeveloperResolution).setValue(fields.directionDeveloperResolution);
-    $(this.elements.verificationCap).setValue(fields.verificationCap);
+  async viewSurveillanceData(listingId) {
+    await (await $(this.elements.viewSurveillanceData(listingId))).click();
+  }
+
+  async setSurvData(fields) {
+    await (await $(this.elements.outcome)).selectByAttribute('value', fields.outcome);
+    await (await $(this.elements.processType)).selectByAttribute('value', fields.processType);
+    await (await $(this.elements.grounds)).setValue(fields.grounds);
+    await (await $(this.elements.nonCoformityCause)).setValue(fields.nonCoformityCause);
+    await (await $(this.elements.nonConformityNature)).setValue(fields.nonConformityNature);
+    await (await $(this.elements.stepsSurveil)).setValue(fields.stepsSurveil);
+    await (await $(this.elements.stepsEngage)).setValue(fields.stepsEngage);
+    await (await $(this.elements.cost)).setValue(fields.cost);
+    await (await $(this.elements.limitationsEvaluation)).setValue(fields.limitationsEvaluation);
+    await (await $(this.elements.nondisclosureEvaluation)).setValue(fields.nondisclosureEvaluation);
+    await (await $(this.elements.directionDeveloperResolution)).setValue(fields.directionDeveloperResolution);
+    await (await $(this.elements.verificationCap)).setValue(fields.verificationCap);
   }
 }
 

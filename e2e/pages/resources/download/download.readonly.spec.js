@@ -58,11 +58,11 @@ describe('the Download page', () => {
 
   describe('when logged in as ROLE_ONC', () => {
     beforeEach(() => {
-      login.logIn('onc');
+      browser.call(() => login.logIn('onc'));
     });
 
     afterEach(() => {
-      login.logOut();
+      browser.call(() => login.logOut());
     });
 
     it('should have correct information about SVAP', () => {
