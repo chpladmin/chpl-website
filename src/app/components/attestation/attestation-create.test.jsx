@@ -47,7 +47,7 @@ const mockApi = {
 
 jest.mock('api/attestations', () => ({
   __esModule: true,
-  useFetchAttestationData: () => mockApi,
+  useFetchAttestationForm: () => mockApi,
 }));
 
 jest.mock('api/change-requests', () => ({
