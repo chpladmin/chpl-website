@@ -1,6 +1,6 @@
 import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
-import LoginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.sync.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.po';
 import ToastComponent from '../../components/toast/toast.po';
 import ListingEditComponent from '../../components/listing/edit/listing-edit.po';

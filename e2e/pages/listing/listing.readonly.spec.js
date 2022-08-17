@@ -1,7 +1,7 @@
 import Hooks from '../../utilities/hooks';
 import CmsWidgetComponent from '../../components/cms-widget/cms-widget.po';
 import CompareWidgetComponent from '../../components/compare-widget/compare-widget.po';
-import LoginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.sync.po';
 
 import ListingPage from './listing.po';
 

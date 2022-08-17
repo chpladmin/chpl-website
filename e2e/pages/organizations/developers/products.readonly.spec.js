@@ -1,7 +1,7 @@
 import ActionBarComponent from '../../../components/action-bar/action-bar-legacy.po';
 import ActionConfirmationComponent from '../../../components/action-confirmation/action-confirmation.po';
 import ContactComponent from '../../../components/contact/contact.po';
-import LoginComponent from '../../../components/login/login.po';
+import LoginComponent from '../../../components/login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
 
 import DevelopersPage from './developers.po';
