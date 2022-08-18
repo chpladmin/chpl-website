@@ -19,7 +19,7 @@ import {
   func,
 } from 'prop-types';
 
-import interpretLink from './attestation-util';
+import { interpretEmphatic, interpretLink } from './attestation-util';
 
 const useStyles = makeStyles({
   nonCaps: {
@@ -123,8 +123,8 @@ function ChplAttestationWizardSection2(props) {
              && (
                <Card>
                  <CardContent>
-                   <FormControl key={`${item.id}-sub-questions`} component="fieldset">
-                     <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
+                   <FormControl component="fieldset">
+                     <FormLabel className={classes.nonCaps}>{ interpretEmphatic(child.question.question) }</FormLabel>
                      <FormGroup>
                        { child.question.allowedResponses
                          .sort((a, b) => a.sortOrder - b.sortOrder)
