@@ -12,52 +12,51 @@ class LoginComponent {
     };
   }
 
-  isLoggedIn() {
-    return !(/Administrator Login/i.test(this.getLoggedInUserName()));
+  async isLoggedIn() {
+    return !(/Administrator Login/i.test(await this.getLoggedInUserName()));
   }
 
-  getLoggedInUserName() {
-    return $(this.elements.loginToggle).getText();
+  async getLoggedInUserName() {
+    return (await $(this.elements.loginToggle)).getText();
   }
 
-  toggleLoginComponent() {
-    $(this.elements.loginToggle).click();
+  async toggleLoginComponent() {
+    await (await $(this.elements.loginToggle)).click();
   }
 
-  logIn(user) {
+  async logIn(user) {
     let un;
     let pw;
     let btn;
-    if (!($(this.elements.component).isDisplayed())) {
-      if ($(this.elements.userName).isDisplayed()) {
-        un = $(this.elements.userName);
-        pw = $(this.elements.password);
-        btn = $(this.elements.login);
+    if (!(await (await $(this.elements.component)).isDisplayed())) {
+      if (await (await $(this.elements.userName)).isDisplayed()) {
+        un = await $(this.elements.userName);
+        pw = await $(this.elements.password);
+        btn = await $(this.elements.login);
       } else {
-        this.toggleLoginComponent();
-        un = $(this.elements.component).$(this.elements.userName);
-        pw = $(this.elements.component).$(this.elements.password);
-        btn = $(this.elements.component).$(this.elements.login);
+        await this.toggleLoginComponent();
+        un = await (await $(this.elements.component)).$(this.elements.userName);
+        pw = await (await $(this.elements.component)).$(this.elements.password);
+        btn = await (await $(this.elements.component)).$(this.elements.login);
       }
     }
-    un.addValue(credentials[user].email || credentials[user].username);
-    pw.addValue(credentials[user].password);
-    btn.click();
-    browser.waitUntil(() => this.isLoggedIn());
-    browser.keys('Escape');
-    browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
+    await un.addValue(credentials[user].email || credentials[user].username);
+    await pw.addValue(credentials[user].password);
+    await btn.click();
+    await browser.waitUntil(async () => this.isLoggedIn());
+    await browser.keys('Escape');
+    await browser.waitUntil(async () => !((await $(this.elements.component).isDisplayed())));
   }
 
-  logOut() {
-    if (!this.isLoggedIn()) { return; }
-    if (!($(this.elements.component).isDisplayed())) {
-      this.toggleLoginComponent();
+  async logOut() {
+    if (!(await this.isLoggedIn())) { return; }
+    if (!(await (await $(this.elements.component)).isDisplayed())) {
+      await this.toggleLoginComponent();
     }
-    const btn = $(this.elements.component).$(this.elements.logout);
-    btn.click();
-    $(this.elements.login).waitForDisplayed();
-    browser.keys('Escape');
-    browser.waitUntil(() => !($(this.elements.component).isDisplayed()));
+    await (await (await $(this.elements.component)).$(this.elements.logout)).click();
+    await (await $(this.elements.login)).waitForDisplayed();
+    await browser.keys('Escape');
+    await browser.waitUntil(async () => !((await (await $(this.elements.component)).isDisplayed())));
   }
 }
 

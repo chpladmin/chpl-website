@@ -1,9 +1,10 @@
-import OrganizationPage from './organization.po';
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
-import LoginComponent from '../../../components/login/login.po';
+import LoginComponent from '../../../components/login/login.sync.po';
 import ToastComponent from '../../../components/toast/toast.po';
 import UsersComponent from '../../../components/users/users.po';
+
+import OrganizationPage from './organization.po';
 
 let address;
 let hooks;
@@ -51,7 +52,7 @@ describe('the ONC-ATL Management page', () => {
       page.organizationName.setValue(atl);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      browser.waitUntil (() => toast.toastTitle.isDisplayed())
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
       login.logOut();
     });
@@ -67,7 +68,7 @@ describe('the ONC-ATL Management page', () => {
       address.set(atlAddress);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToDisappear();
-      browser.waitUntil (() => toast.toastTitle.isDisplayed())
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
       expect(page.generalInformation(organizationType, atlId).getText()).toContain(newAtlName);
       expect(page.generalInformation(organizationType, atlId).getText()).toContain(websiteUrl);

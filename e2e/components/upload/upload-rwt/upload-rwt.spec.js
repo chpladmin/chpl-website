@@ -1,6 +1,7 @@
-import UploadRwtComponent from './upload-rwt.po';
-import LoginComponent from '../../login/login.po';
+import LoginComponent from '../../login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
+
+import UploadRwtComponent from './upload-rwt.po';
 
 let hooks;
 let loginComponent;
