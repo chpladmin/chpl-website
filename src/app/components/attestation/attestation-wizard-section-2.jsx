@@ -92,9 +92,9 @@ function ChplAttestationWizardSection2(props) {
   };
 
   const getQuestion = (section, item) => (
-    <>
-      <FormControl key={item.id} component="fieldset">
-        <FormLabel className={classes.nonCaps}>{interpretLink(item.question.question)}</FormLabel>
+    <div key={item.id}>
+      <FormControl component="fieldset">
+        <FormLabel className={classes.nonCaps}>{ interpretLink(item.question.question) }</FormLabel>
         <RadioGroup
           className={classes.radioGroup}
           name={`response-${item.id}`}
@@ -118,7 +118,7 @@ function ChplAttestationWizardSection2(props) {
         .map((child) => item.submittedResponses
           .some((resp) => resp.id === child.parentResponse.id)
              && (
-               <Card>
+               <Card key={`${item.id}-sub-questions`}>
                  <CardContent>
                    <FormControl component="fieldset">
                      <FormLabel className={classes.nonCaps}>{ interpretEmphatic(child.question.question) }</FormLabel>
@@ -143,7 +143,7 @@ function ChplAttestationWizardSection2(props) {
                  </CardContent>
                </Card>
              ))}
-    </>
+    </div>
   );
 
   const getSection = (section, idx) => (
