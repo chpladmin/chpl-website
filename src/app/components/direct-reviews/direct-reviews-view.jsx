@@ -113,6 +113,20 @@ function ChplDirectReviewsView(props) {
 
   return (
     <div className="direct-reviews">
+      { fetched
+        && (
+          <>
+            Current as of:
+            {' '}
+            <Moment
+              withTitle
+              titleFormat="DD MMM yyyy, h:mm a"
+              fromNow
+            >
+              {fetched}
+            </Moment>
+          </>
+        )}
       { directReviews.length === 0
         && (
           <>
