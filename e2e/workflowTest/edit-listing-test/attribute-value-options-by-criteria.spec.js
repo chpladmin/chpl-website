@@ -1,7 +1,7 @@
 import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
 import CriteriaComponent from '../../components/listing/details/criteria/criteria.po';
-import LoginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.sync.po';
 
 let criteria;
 let hooks;
@@ -10,12 +10,14 @@ let page;
 const inputs = require('./dataProviders/attribute-value-options-dp');
 
 inputs.forEach((input) => {
-  const { criteriaName ,
-  testProcedureOptions ,
-  id ,
-  criteriaOld ,
-  cures ,
-  testToolsOptions } = input;
+  const {
+    criteriaName,
+    conformanceMethodOptions,
+    id,
+    criteriaOld,
+    cures,
+    testToolsOptions,
+  } = input;
 
   describe('As an ONC user, On the 2015 Listing editing page', () => {
     beforeEach(async () => {
@@ -37,20 +39,21 @@ inputs.forEach((input) => {
         login.logOut();
       });
 
-      it(`can see correct options for test tools and test procedures for ${criteriaName}`, () => {
+      it(`can see correct options for Test Tools and Conformance Methods for ${criteriaName}`, () => {
         const expectedTt = testToolsOptions;
-        const expectedTp = testProcedureOptions;
+        const expectedCm = conformanceMethodOptions;
+
         if (criteria.uiUpgradeFlag()) {
           criteria.expandCriteria(id);
           criteria.editCriteria(id);
           criteria.attestToggle.click();
-          criteria.addItem('test-procedures');
-          criteria.testProcedure.scrollIntoView({ block: 'center', inline: 'center' });
-          criteria.testProcedure.click();
-          const actualTp = new Set(criteria.testProcedureDropdownOptions.map((item) => item.getText()));
-          expect(actualTp.size).toBe(expectedTp.length);
-          expectedTp.forEach((exp) => {
-            expect(actualTp.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
+          criteria.addItem('conformance-methods');
+          criteria.conformanceMethod.scrollIntoView({ block: 'center', inline: 'center' });
+          criteria.conformanceMethod.click();
+          const actualCm = new Set(criteria.conformanceMethodDropdownOptions.map((item) => item.getText()));
+          expect(actualCm.size).toBe(expectedCm.length);
+          expectedCm.forEach((exp) => {
+            expect(actualCm.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
           });
           browser.keys('Escape');
           criteria.closeItem('test-procedures');
@@ -62,6 +65,7 @@ inputs.forEach((input) => {
             expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
           });
         } else {
+          criteria.editCriteriaOldButton(criteriaOld).scrollIntoView({ block: 'center', inline: 'center' });
           criteria.openUnattestedCriteriaOld(criteriaOld, cures);
           criteria.attestCriteriaOld(criteriaOld);
           const actualTt = new Set(criteria.testToolsDropdownOptionsOld.map((item) => item.getText()));
@@ -69,10 +73,10 @@ inputs.forEach((input) => {
           expectedTt.forEach((exp) => {
             expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
           });
-          const actualTp = new Set(criteria.testProcedureDropdownOptionsOld.map((item) => item.getText()));
-          expect(actualTp.size - 2).toBe(expectedTp.length);
-          expectedTp.forEach((exp) => {
-            expect(actualTp.has(exp)).toBe(true, `did not find expected option of test procedure: "${exp}"`);
+          const actualCm = new Set(criteria.conformanceMethodDropdownOptionsOld.map((item) => item.getText()));
+          expect(actualCm.size - 2).toBe(expectedCm.length);
+          expectedCm.forEach((exp) => {
+            expect(actualCm.has(exp)).toBe(true, `did not find expected option of Conformance Method: "${exp}"`);
           });
         }
       });
