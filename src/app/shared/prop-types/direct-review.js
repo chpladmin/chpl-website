@@ -1,4 +1,6 @@
-import { arrayOf, number, shape, string } from 'prop-types';
+import {
+  arrayOf, number, shape, string,
+} from 'prop-types';
 
 const developerAssociatedListing = shape({
   id: number,
@@ -6,7 +8,7 @@ const developerAssociatedListing = shape({
 });
 
 const nonConformity = shape({
-  developerAssociatedListings:arrayOf(developerAssociatedListing),
+  developerAssociatedListings: arrayOf(developerAssociatedListing),
   nonConformityType: string,
   nonConformityStatus: string,
   capApprovalDate: string,

@@ -1,25 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardContent,
-  CardHeader,
-  CircularProgress,
   IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 import Moment from 'react-moment';
-import { arrayOf, number, object, string } from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -48,8 +36,8 @@ function ChplDirectReviewsView(props) {
   useEffect(() => {
     setDirectReviews(props.directReviews.map((dr) => {
       const open = dr.nonConformities
-            .filter((nc) => nc.nonConformityStatus === 'Open')
-            .length;
+        .filter((nc) => nc.nonConformityStatus === 'Open')
+        .length;
       const total = dr.nonConformities.length;
       let { ncSummary } = dr;
       if (open > 0) {
@@ -61,12 +49,12 @@ function ChplDirectReviewsView(props) {
       }
       ncSummary += ` non-conformit${total !== 1 ? 'ies' : 'y'} found`;
       const startDate = dr.nonConformities
-            .filter((nc) => nc.capApprovalDate)
-            .sort((a, b) => (a.capApprovalDate < b.capApprovalDate ? -1 : 1))[0]?.capApprovalDate;
+        .filter((nc) => nc.capApprovalDate)
+        .sort((a, b) => (a.capApprovalDate < b.capApprovalDate ? -1 : 1))[0]?.capApprovalDate;
       const endDates = dr.nonConformities
-            .filter((nc) => nc.capApprovalDate)
-            .filter((nc) => nc.capEndDate)
-            .sort((a, b) => (a.capEndDate > b.capEndDate ? -1 : 1));
+        .filter((nc) => nc.capApprovalDate)
+        .filter((nc) => nc.capEndDate)
+        .sort((a, b) => (a.capEndDate > b.capEndDate ? -1 : 1));
       const endDate = open === 0 && endDates[0]?.capEndDate;
       return {
         ...dr,
@@ -96,20 +84,20 @@ function ChplDirectReviewsView(props) {
           }),
       };
     }).sort(sortDirectReviews));
-  }, [props.directReviews]);
+  }, [props.directReviews]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setFetched(props.fetched);
-  }, [props.fetched]);
+  }, [props.fetched]); // eslint-disable-line react/destructuring-assignment
 
   const toggleOpen = (clicked) => {
     setDirectReviews(directReviews
-                     .filter((dr) => dr.created != clicked.created)
-                     .concat({
-                       ...clicked,
-                       open: !clicked.open,
-                     })
-                     .sort(sortDirectReviews))
+      .filter((dr) => dr.created !== clicked.created)
+      .concat({
+        ...clicked,
+        open: !clicked.open,
+      })
+      .sort(sortDirectReviews));
   };
 
   return (
@@ -137,10 +125,14 @@ function ChplDirectReviewsView(props) {
           )}
         { directReviews.map((dr) => (
           <div className="direct-review panel-ai" key={dr.created}>
-            <div className={'direct-review__header panel-heading ' + (dr.isClosed ? 'direct-review__header--closed' : 'direct-review__header--open')} role="button" onClick={() => toggleOpen(dr)}>
-              <div className="direct-review__header-title">{ dr.isClosed ? 'Closed' : 'Open' } Direct Review</div>
+            <div className={`direct-review__header panel-heading ${dr.isClosed ? 'direct-review__header--closed' : 'direct-review__header--open'}`} role="button" onClick={() => toggleOpen(dr)}>
+              <div className="direct-review__header-title">
+                { dr.isClosed ? 'Closed' : 'Open' }
+                {' '}
+                Direct Review
+              </div>
               <div className="direct-review__header-nc-summary">{ dr.ncSummary }</div>
-              <div className="direct-review__header-toggle"><i className={'fa fa-lg ' + (dr.open ? 'fa-caret-down' : 'fa-caret-left')}></i></div>
+              <div className="direct-review__header-toggle"><i className={`fa fa-lg ${dr.open ? 'fa-caret-down' : 'fa-caret-left'}`} /></div>
             </div>
             { dr.open
               && (
@@ -245,4 +237,4 @@ ChplDirectReviewsView.propTypes = {
 ChplDirectReviewsView.defaultProps = {
   directReviews: [],
   fetched: undefined,
-}
+};
