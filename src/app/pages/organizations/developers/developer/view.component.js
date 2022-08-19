@@ -48,7 +48,8 @@ const DeveloperViewComponent = {
       this.networkService.getDirectReviews(this.developer.id)
         .then((results) => {
           that.drStatus = 'success';
-          that.directReviews = results;
+          that.directReviews = results.directReviews;
+          that.fetched = results.fetched;
         }, () => { that.drStatus = 'error'; });
     }
 

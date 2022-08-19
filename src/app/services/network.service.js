@@ -300,7 +300,7 @@ export default class NetworkService {
   }
 
   getDirectReviews(id) {
-    return this.apiGET(`/developers/${id}/direct-reviews`, { forceReload: true });
+    return this.apiGET(`/developers/${id}/direct-reviews/v2`, { forceReload: true });
   }
 
   getEditions() {
