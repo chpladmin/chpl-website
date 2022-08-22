@@ -10,7 +10,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import Moment from 'react-moment';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -168,7 +168,7 @@ function ChplChangeRequest(props) {
   const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { changeRequest: { id } } = props;
+  const { changeRequest: { id }, showBreadcrumbs } = props;
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -396,21 +396,24 @@ function ChplChangeRequest(props) {
             pendingMessage={confirmationMessage}
           />
         )}
-      <Breadcrumbs aria-label="Change Requests navigation">
-        <Link color="inherit" onClick={() => props.dispatch('close')}>
-          Change Requests
-        </Link>
-        { isEditing
-          && (
-            <Link color="inherit" onClick={() => setIsEditing(false)}>
-              View Change Request
+      { showBreadcrumbs
+        && (
+          <Breadcrumbs aria-label="Change Requests navigation">
+            <Link color="inherit" onClick={() => props.dispatch('close')}>
+              Change Requests
             </Link>
-          )}
-        <Typography color="textPrimary">
-          { isEditing ? 'Edit ' : 'View ' }
-          Change Request
-        </Typography>
-      </Breadcrumbs>
+            { isEditing
+              && (
+                <Link color="inherit" onClick={() => setIsEditing(false)}>
+                  View Change Request
+                </Link>
+              )}
+            <Typography color="textPrimary">
+              { isEditing ? 'Edit ' : 'View ' }
+              Change Request
+            </Typography>
+          </Breadcrumbs>
+        )}
       <Card className={classes.productCard}>
         <CardContent className={classes.cardContentContainer}>
           <div className={classes.cardHeaderContainer}>
@@ -593,4 +596,9 @@ export default ChplChangeRequest;
 ChplChangeRequest.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
+  showBreadcrumbs: bool,
+};
+
+ChplChangeRequest.defaultProps = {
+  showBreadcrumbs: true,
 };

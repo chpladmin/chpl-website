@@ -169,6 +169,8 @@ function ChplChangeRequestsView(props) {
     setOrder(orderDirection);
   };
 
+  const showBreadcrumbs = () => !bonusQuery;
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
@@ -180,6 +182,7 @@ function ChplChangeRequestsView(props) {
           <ChplChangeRequest
             changeRequest={changeRequest}
             dispatch={handleDispatch}
+            showBreadcrumbs={showBreadcrumbs()}
           />
         </CardContent>
       </Card>
@@ -197,11 +200,14 @@ function ChplChangeRequestsView(props) {
               query={`${queryString()}${bonusQuery}`}
             />
           )}
-        <Breadcrumbs aria-label="Change Requests navigation">
-          <Typography color="textPrimary">
-            Change Requests
-          </Typography>
-        </Breadcrumbs>
+        { showBreadcrumbs()
+          && (
+            <Breadcrumbs aria-label="Change Requests navigation">
+              <Typography color="textPrimary">
+                Change Requests
+              </Typography>
+            </Breadcrumbs>
+          )}
         <div className={classes.searchContainer} component={Paper}>
           { !disallowedFilters.includes('searchTerm')
             && (
