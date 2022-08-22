@@ -6,8 +6,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import Moment from 'react-moment';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -30,7 +29,6 @@ const sortDirectReviews = (a, b) => {
 
 function ChplDirectReviewsView(props) {
   const [directReviews, setDirectReviews] = useState([]);
-  const [fetched, setFetched] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
@@ -86,10 +84,6 @@ function ChplDirectReviewsView(props) {
     }).sort(sortDirectReviews));
   }, [props.directReviews]); // eslint-disable-line react/destructuring-assignment
 
-  useEffect(() => {
-    setFetched(props.fetched);
-  }, [props.fetched]); // eslint-disable-line react/destructuring-assignment
-
   const toggleOpen = (clicked) => {
     setDirectReviews(directReviews
       .filter((dr) => dr.created !== clicked.created)
@@ -100,30 +94,9 @@ function ChplDirectReviewsView(props) {
       .sort(sortDirectReviews));
   };
 
-  const showCurrentAsOf = () => {
-    if (!fetched) { return false; }
-    const diff = (new Date(fetched)).getTime() - Date.now();
-    const OFFSET = 1000 * 60 * 30; // 30 minutes in milliseconds
-    return diff > OFFSET;
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <div className="direct-reviews">
-        { showCurrentAsOf()
-          && (
-            <Typography>
-              Current as of:
-              {' '}
-              <Moment
-                withTitle
-                titleFormat="DD MMM yyyy, h:mm a"
-                fromNow
-              >
-                {fetched}
-              </Moment>
-            </Typography>
-          )}
         { directReviews.length === 0
           && (
             <Typography>
@@ -238,10 +211,8 @@ export default ChplDirectReviewsView;
 
 ChplDirectReviewsView.propTypes = {
   directReviews: arrayOf(directReviewType),
-  fetched: string,
 };
 
 ChplDirectReviewsView.defaultProps = {
   directReviews: [],
-  fetched: undefined,
 };
