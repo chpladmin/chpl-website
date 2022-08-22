@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Breadcrumbs,
   Card,
   CardContent,
   CircularProgress,
   Divider,
+  Link,
   MenuItem,
   Typography,
   makeStyles,
@@ -394,6 +396,21 @@ function ChplChangeRequest(props) {
             pendingMessage={confirmationMessage}
           />
         )}
+      <Breadcrumbs aria-label="Change Requests navigation">
+        <Link color="inherit" onClick={() => props.dispatch('close')}>
+          Change Requests
+        </Link>
+        { isEditing
+          && (
+            <Link color="inherit" onClick={() => setIsEditing(false)}>
+              View Change Request
+            </Link>
+          )}
+        <Typography color="textPrimary">
+          { isEditing ? 'Edit ' : 'View ' }
+          Change Request
+        </Typography>
+      </Breadcrumbs>
       <Card className={classes.productCard}>
         <CardContent className={classes.cardContentContainer}>
           <div className={classes.cardHeaderContainer}>

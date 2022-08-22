@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Breadcrumbs,
   Button,
   ButtonGroup,
   Card,
@@ -196,6 +197,11 @@ function ChplChangeRequestsView(props) {
               query={`${queryString()}${bonusQuery}`}
             />
           )}
+        <Breadcrumbs aria-label="Change Requests navigation">
+          <Typography color="textPrimary">
+            Change Requests
+          </Typography>
+        </Breadcrumbs>
         <div className={classes.searchContainer} component={Paper}>
           { !disallowedFilters.includes('searchTerm')
             && (
