@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -11,9 +10,6 @@ import {
 } from '@material-ui/core';
 import { func } from 'prop-types';
 import Moment from 'react-moment';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
@@ -96,18 +92,11 @@ const useStyles = makeStyles({
     gap: '8px',
     paddingBottom: '16px',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr .5fr',
+      gridTemplateColumns: '2fr 1fr',
     },
   },
   cardHeader: {
     fontWeight: '600',
-  },
-  deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    '&:hover': {
-      backgroundColor: '#853544',
-    },
   },
   fullWidth: {
     gridColumnStart: '1',
@@ -184,7 +173,6 @@ function ChplChangeRequest(props) {
   const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isWithdrawing, setIsWithdrawing] = useState(false);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
@@ -255,10 +243,6 @@ function ChplChangeRequest(props) {
     }
   };
 
-  const withdrawCr = () => {
-    setIsWithdrawing(true);
-  };
-
   const handleConfirmation = (response) => {
     switch (response) {
       case 'yes':
@@ -275,9 +259,8 @@ function ChplChangeRequest(props) {
     setIsConfirming(false);
   };
 
-  const handleWithdrawal = (response) => {
-    setIsWithdrawing(false);
-    if (response === 'yes') {
+  const handleWithdrawal = () => {
+    if (canWithdraw()) {
       const payload = {
         ...changeRequest,
         currentStatus: {
@@ -286,6 +269,9 @@ function ChplChangeRequest(props) {
         },
       };
       save(payload);
+    } else {
+      formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
+      formik.submitForm();
     }
   };
 
@@ -327,9 +313,8 @@ function ChplChangeRequest(props) {
       case 'cancel':
         props.dispatch('close');
         break;
-      case 'delete':
-        formik.values.changeRequestStatusType = changeRequestStatusTypes.find((type) => type.name === 'Cancelled by Requester');
-        formik.submitForm();
+      case 'edit':
+        editCr();
         break;
       case 'update':
         handleUpdate(payload);
@@ -341,6 +326,9 @@ function ChplChangeRequest(props) {
         } else {
           formik.submitForm();
         }
+        break;
+      case 'withdraw':
+        handleWithdrawal();
         break;
         // no default
     }
@@ -406,13 +394,6 @@ function ChplChangeRequest(props) {
             pendingMessage={confirmationMessage}
           />
         )}
-      { isWithdrawing
-        && (
-          <ChplActionBarConfirmation
-            dispatch={handleWithdrawal}
-            pendingMessage="Are you sure you want to withdraw this submission?"
-          />
-        )}
       <Card className={classes.productCard}>
         <CardContent className={classes.cardContentContainer}>
           <div className={classes.cardHeaderContainer}>
@@ -469,154 +450,123 @@ function ChplChangeRequest(props) {
             </div>
           </div>
           <Divider />
-          <div className={classes.cardContentChangeRequest}>
-            <div>
-              { isEditing ? getChangeRequestEditDetails(changeRequest, handleDispatch) : getChangeRequestViewDetails(changeRequest) }
-            </div>
-            <div className={classes.actionsContainer}>
-              { !isEditing
-                && (
-                  <>
-                    {canEdit()
-                     && (
-                       <Button
-                         fullWidth
-                         color="secondary"
-                         variant="contained"
-                         onClick={editCr}
-                       >
-                         Edit Change Request
-                         <EditOutlinedIcon className={classes.iconSpacing} />
-                       </Button>
-                     )}
-                    {canWithdraw()
-                     && (
-                       <Button
-                         fullWidth
-                         variant="contained"
-                         className={classes.deleteButton}
-                         onClick={withdrawCr}
-                       >
-                         Withdraw Change Request
-                         <DeleteOutlinedIcon className={classes.iconSpacing} />
-                       </Button>
-                     )}
-                    <Button
-                      fullWidth
-                      color="default"
-                      variant="contained"
-                      onClick={() => props.dispatch('close')}
-                    >
-                      Close
-                      <CloseOutlinedIcon className={classes.iconSpacing} />
-                    </Button>
-                  </>
-                )}
-              { isEditing
-                && (
-                  <>
-                    <div className={classes.actionSubContainer}>
-                      <Typography variant="subtitle1">Change Request change data</Typography>
+          { !isEditing
+            && (
+              <div>
+                { getChangeRequestViewDetails(changeRequest) }
+              </div>
+            )}
+          { isEditing
+            && (
+              <div className={classes.cardContentChangeRequest}>
+                <div>
+                  { getChangeRequestEditDetails(changeRequest, handleDispatch) }
+                </div>
+                <div className={classes.actionsContainer}>
+                  <div className={classes.actionSubContainer}>
+                    <Typography variant="subtitle1">Change Request change data</Typography>
+                    <Typography variant="subtitle2">
+                      { changeRequest.certificationBodies.length > 1
+                        && (
+                          <>
+                            This Change Request requires ONC-ACB coordination
+                          </>
+                        )}
+                    </Typography>
+                    <div>
+                      <Typography variant="subtitle2">Current status</Typography>
+                      <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
+                    </div>
+                    <div>
                       <Typography variant="subtitle2">
-                        { changeRequest.certificationBodies.length > 1
+                        Associated ONC-ACB
+                        { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
+                      </Typography>
+                      { changeRequest.certificationBodies.length > 0
+                        ? (
+                          <ul>
+                            {changeRequest.certificationBodies.map((acb) => (
+                              <li key={acb.name}>{acb.name}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <Typography>
+                            None
+                          </Typography>
+                        )}
+                    </div>
+                    {hasAnyRole(['ROLE_DEVELOPER'])
+                      ? (
+                        <Typography className={classes.fullWidth}>
+                          {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
                           && (
                             <>
-                              This Change Request requires ONC-ACB coordination
+                              Status will be set to &quot;Pending ONC-ACB Action&quot;
                             </>
                           )}
-                      </Typography>
-                      <div>
-                        <Typography variant="subtitle2">Current status</Typography>
-                        <Typography>{changeRequest.currentStatus.changeRequestStatusType.name}</Typography>
-                      </div>
-                      <div>
-                        <Typography variant="subtitle2">
-                          Associated ONC-ACB
-                          { changeRequest.certificationBodies.length !== 1 ? 's' : ''}
-                        </Typography>
-                        { changeRequest.certificationBodies.length > 0
-                          ? (
-                            <ul>
-                              {changeRequest.certificationBodies.map((acb) => (
-                                <li key={acb.name}>{acb.name}</li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <Typography>
-                              None
-                            </Typography>
+                          {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
+                          && (
+                            <>
+                              No status change will occur
+                            </>
                           )}
-                      </div>
-                      {hasAnyRole(['ROLE_DEVELOPER'])
-                        ? (
-                          <Typography className={classes.fullWidth}>
-                            {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending Developer Action'
-                            && (
-                              <>
-                                Status will be set to &quot;Pending ONC-ACB Action&quot;
-                              </>
-                            )}
-                            {changeRequest.currentStatus.changeRequestStatusType.name === 'Pending ONC-ACB Action'
-                            && (
-                              <>
-                                No status change will occur
-                              </>
-                            )}
-                          </Typography>
-                        ) : (
-                          <ChplTextField
-                            select
-                            id="change-request-status-type"
-                            name="changeRequestStatusType"
-                            label="Select new Status"
-                            className={classes.fullWidth}
-                            required
-                            value={formik.values.changeRequestStatusType}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
-                            helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
-                          >
-                            { changeRequestStatusTypes
-                              .filter((item) => isOn('attestations-edit')
-                                     || changeRequest.changeRequestType.name !== 'Developer Attestation Change Request'
-                                     || item.name !== 'Pending Developer Action')
-                              .map((item) => (
-                                <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
-                              ))}
-                          </ChplTextField>
-                        )}
-                      <ChplTextField
-                        id="comment"
-                        name="comment"
-                        label="Reason for change"
-                        margin="none"
-                        className={classes.fullWidth}
-                        required={isReasonRequired()}
-                        disabled={isReasonDisabled()}
-                        multiline
-                        value={formik.values.comment}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.comment && !!formik.errors.comment}
-                        helperText={formik.touched.comment && formik.errors.comment}
-                        rows={4}
-                      />
-                    </div>
-                    <ChplActionBar
-                      dispatch={handleDispatch}
-                      isDisabled={!formik.isValid || formik.isSubmitting}
-                      canDelete={hasAnyRole(['ROLE_DEVELOPER'])}
+                        </Typography>
+                      ) : (
+                        <ChplTextField
+                          select
+                          id="change-request-status-type"
+                          name="changeRequestStatusType"
+                          label="Select new Status"
+                          className={classes.fullWidth}
+                          required
+                          value={formik.values.changeRequestStatusType}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.changeRequestStatusType && !!formik.errors.changeRequestStatusType}
+                          helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
+                        >
+                          { changeRequestStatusTypes
+                            .filter((item) => isOn('attestations-edit')
+                                   || changeRequest.changeRequestType.name !== 'Developer Attestation Change Request'
+                                   || item.name !== 'Pending Developer Action')
+                            .map((item) => (
+                              <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                            ))}
+                        </ChplTextField>
+                      )}
+                    <ChplTextField
+                      id="comment"
+                      name="comment"
+                      label="Reason for change"
+                      margin="none"
+                      className={classes.fullWidth}
+                      required={isReasonRequired()}
+                      disabled={isReasonDisabled()}
+                      multiline
+                      value={formik.values.comment}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.comment && !!formik.errors.comment}
+                      helperText={formik.touched.comment && formik.errors.comment}
+                      rows={4}
                     />
-                  </>
-                )}
-            </div>
-          </div>
+                  </div>
+                </div>
+              </div>
+            )}
           <ChplChangeRequestHistory
             changeRequest={changeRequest}
           />
         </CardContent>
       </Card>
+      <ChplActionBar
+        dispatch={handleDispatch}
+        canEdit={!isEditing && canEdit()}
+        canWithdraw={(!isEditing && canWithdraw()) || (isEditing && hasAnyRole(['ROLE_DEVELOPER']))}
+        canClose={!isEditing}
+        canCancel={isEditing}
+        canSave={isEditing}
+      />
     </>
   );
 }
