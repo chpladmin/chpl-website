@@ -1,6 +1,7 @@
 class ComplaintsComponent {
   constructor() {
     this.elements = {
+      complaintsBody: 'chpl-complaints-wrapper-bridge',
       certificationBody: '#certification-body',
       receivedDate: '#received-date',
       acbComplaintId: '#acb-complaint-id',
@@ -11,6 +12,7 @@ class ComplaintsComponent {
       filter: '#data-filter',
       downloadResultsButton: '#download-results',
       newComplaint: '//*[text()="Add New Complaint"]',
+      viewButton: '//span[text()="View"]',
       editButton: '//*[text()="Edit"]/parent::button',
       actions: '#actions',
       oncId: '#onc-complaint-id',
@@ -20,7 +22,12 @@ class ComplaintsComponent {
       complainantContacted: '#complainant-contacted',
       developerContacted: '#developer-contacted',
       oncAtlContacted: '#onc-atl-contacted',
-      informedOnc: '#flag-for-onc-review'
+      informedOnc: '#flag-for-onc-review',
+      advancedSearch: '//button[text()="Advanced Search"]',
+      fieldError: (fieldName) => `#${fieldName}-helper-text`,
+      advanceFilterOptions: (value) => `#filter-list-${value}`,
+      chooseAdvanceSearchOption: (option) => `//button[text()="${option}"]`,
+      complaintsTable: '[aria-label="Complaints table"]',
     };
   }
 
@@ -28,66 +35,66 @@ class ComplaintsComponent {
     return $(this.elements.editButton);
   }
 
-  complaintsBody () {
-    return $('chpl-complaints-wrapper-bridge').getText();
+  async complaintsBody() {
+    return (await $(this.elements.complaintsBody)).getText();
   }
 
   get viewButton() {
-    return $('//span[text()="View"]');
+    return $(this.elements.viewButton);
   }
 
-  selectSurveillance(surveillance) {
-    $(this.elements.surveillance).click();
-    $(`//li[contains(text(),"${surveillance}")]`).click();
+  async selectSurveillance(surveillance) {
+    await (await $(this.elements.surveillance)).click();
+    await (await $(`//li[contains(text(),"${surveillance}")]`)).click();
   }
 
-  selectListing(listings) {
-    $(this.elements.listings).click();
-    $(this.elements.listings).addValue(listings);
-    $(`//li[contains(text(),"${listings}")]`).click();
+  async selectListing(listings) {
+    await (await $(this.elements.listings)).click();
+    await (await $(this.elements.listings)).addValue(listings);
+    await (await $(`//li[contains(text(),"${listings}")]`)).click();
   }
 
-  set(fields) {
-    $(this.elements.certificationBody).click();
-    $(`//li[text()="${fields.body}"]`).click();
-    $(this.elements.receivedDate).addValue(fields.receivedDate);
-    $(this.elements.acbComplaintId).addValue(fields.acbId);
-    $(this.elements.summary).addValue(fields.summary);
-    $(this.elements.complainantType).scrollIntoView();
-    $(this.elements.complainantType).click();
-    $(`//li[text()="${fields.type}"]`).click();
+  async set(fields) {
+    await (await $(this.elements.certificationBody)).click();
+    await (await $(`//li[text()="${fields.body}"]`)).click();
+    await (await $(this.elements.receivedDate)).addValue(fields.receivedDate);
+    await (await $(this.elements.acbComplaintId)).addValue(fields.acbId);
+    await (await $(this.elements.summary)).addValue(fields.summary);
+    await (await $(this.elements.complainantType)).scrollIntoView();
+    await (await $(this.elements.complainantType)).click();
+    await (await $(`//li[text()="${fields.type}"]`)).click();
   }
 
-  setOptionalFields(fields) {
-    $(this.elements.oncId).addValue(fields.oncId);
-    $(this.elements.actions).addValue(fields.actions);
-    $(this.elements.criterion).click();
-    $(`//li[text()="${fields.criterion}"]`).click();
-    $(this.elements.listings).click();
-    $(this.elements.listings).addValue(fields.listings);
-    $(`//li[contains(text(),"${fields.listings}")]`).click();
-    $(this.elements.surveillance).click();
-    $(`//li[contains(text(),"${fields.surveillance}")]`).click();
-    $(this.elements.complainantContacted).click();
-    $(this.elements.developerContacted).click();
-    $(this.elements.oncAtlContacted).click();
-    $(this.elements.informedOnc).click();
+  async setOptionalFields(fields) {
+    await (await $(this.elements.oncId)).addValue(fields.oncId);
+    await (await $(this.elements.actions)).addValue(fields.actions);
+    await (await $(this.elements.criterion)).click();
+    await (await $(`//li[text()="${fields.criterion}"]`)).click();
+    await (await $(this.elements.listings)).click();
+    await (await $(this.elements.listings)).addValue(fields.listings);
+    await (await $(`//li[contains(text(),"${fields.listings}")]`)).click();
+    await (await $(this.elements.surveillance)).click();
+    await (await $(`//li[contains(text(),"${fields.surveillance}")]`)).click();
+    await (await $(this.elements.complainantContacted)).click();
+    await (await $(this.elements.developerContacted)).click();
+    await (await $(this.elements.oncAtlContacted)).click();
+    await (await $(this.elements.informedOnc)).click();
   }
 
-  saveComplaint() {
-    return $(this.elements.saveComplaint).click();
+  async saveComplaint() {
+    return (await $(this.elements.saveComplaint)).click();
   }
 
   get closedDate() {
     return $(this.elements.closedDate);
   }
 
-  setActions(actions) {
-    return $(this.elements.actions).addValue(actions);
+  async setActions(actions) {
+    return (await $(this.elements.actions)).addValue(actions);
   }
 
-  fieldError(fieldName) {
-    return $(`#${fieldName}-helper-text`).getText();
+  async fieldError(fieldName) {
+    return (await $(this.elements.fieldError(fieldName))).getText();
   }
 
   get downloadResultsButton() {
@@ -98,47 +105,67 @@ class ComplaintsComponent {
     return $(this.elements.newComplaint);
   }
 
-  addNewComplaint() {
-    return $(this.elements.newComplaint).click();
+  async addNewComplaint() {
+    await $(this.elements.newComplaint).click();
+    await browser.waitUntil(async () => (await this.complaintsBody()).includes('Create Complaint'));
   }
 
   get filter() {
     return $(this.elements.filter);
   }
 
-  editComplaint(id) {
-    this.viewComplaint(id);
-    $('//*[text()="Edit"]/parent::button').click();
+  async editComplaint(id) {
+    await this.viewComplaint(id);
+    await (await $('//*[text()="Edit"]/parent::button')).click();
+    await browser.waitUntil(async () => (await this.complaintsBody()).includes('Edit Complaint'));
   }
 
-  viewComplaint(id) {
-    this.filter.clearValue();
-    this.filter.addValue(id); 
-    browser.waitUntil(() => $('chpl-surveillance-complaints').$('table').$('tbody').$$('tr').length-1 === 1);
-    $('//span[text()="View"]/parent::button').click();
+  async viewComplaint(id) {
+    await (this.searchFilter(id));
+    await browser.waitUntil(async () => (await (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr')).length === 1);
+    await (await $('//span[text()="View"]/parent::button')).click();
   }
 
-  waitForUpdatedTableRowCount () {
-    let start;
-    start = $('table').$('tbody').$$('tr').length;
-    browser.waitUntil( () => $('table').$('tbody').$$('tr').length != start);
+  async waitForUpdatedTableRowCount() {
+    const start = (await (await (await $('table')).$('tbody')).$$('tr')).length;
+    await browser.waitUntil(async () => (await (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr')).length !== start);
   }
 
-  advancedSearch () {
-    $('//button[text()="Advanced Search"]').click();
+  async advancedSearch() {
+    await (await $(this.elements.advancedSearch)).click();
   }
 
-  searchFilter (value) {
-    $('#data-filter').clearValue();
-    $('#data-filter').addValue(value);
+  async searchFilter(value) {
+    await (await $(this.elements.filter)).clearValue();
+    await (await $(this.elements.filter)).addValue(value);
   }
 
-  advanceFilterOptions (value){
-    $(`#filter-list-${value}`).click();
+  async advanceFilterOptions(value) {
+    await (await $(this.elements.advanceFilterOptions(value))).click();
   }
 
-  chooseAdvanceSearchOption (option) {
-    $(`//button[text()="${option}"]`).click();
+  async chooseAdvanceSearchOption(option) {
+    await (await $(this.elements.chooseAdvanceSearchOption(option))).click();
+  }
+
+  async hasResults() {
+    return (await $(this.elements.complaintsTable)).isExisting();
+  }
+
+  async getResults() {
+    return (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr');
+  }
+
+  async getHeaders() {
+    return (await (await $(this.elements.complaintsTable)).$('thead')).$$('th');
+  }
+
+  async getTableComplaints() {
+    return (await (await $(this.elements.complaintsTable)).$('tbody')).$$('tr');
+  }
+
+  async getComplaintCell(complaint, idx) {
+    return (await complaint.$$('td'))[idx];
   }
 }
 

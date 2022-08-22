@@ -1,7 +1,7 @@
 import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
 import CriteriaComponent from '../../components/listing/details/criteria/criteria.po';
-import LoginComponent from '../../components/login/login.po';
+import LoginComponent from '../../components/login/login.sync.po';
 
 let criteria;
 let hooks;
@@ -10,12 +10,14 @@ let page;
 const inputs = require('./dataProviders/attribute-value-options-dp');
 
 inputs.forEach((input) => {
-  const { criteriaName ,
-  testProcedureOptions ,
-  id ,
-  criteriaOld ,
-  cures ,
-  testToolsOptions } = input;
+  const {
+    criteriaName,
+    testProcedureOptions,
+    id,
+    criteriaOld,
+    cures,
+    testToolsOptions,
+  } = input;
 
   describe('As an ONC user, On the 2015 Listing editing page', () => {
     beforeEach(async () => {

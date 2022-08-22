@@ -1,5 +1,5 @@
 import UploadListingComponent from '../../../components/upload/upload-listing/upload-listing.po';
-import LoginComponent from '../../../components/login/login.po';
+import LoginComponent from '../../../components/login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
 import ToastComponent from '../../../components/toast/toast.po';
 
@@ -31,13 +31,13 @@ describe('when user is on confirm listing page', () => {
 
   describe('and uploading a listing', () => {
     beforeEach(() => {
-      upload.uploadListing('../../../resources/listings/2015_v19_AQA3.csv', true);
+      upload.uploadFileAndWaitForListingsToBeProcessed('../../../resources/listings/2015_v19_AQA3.csv', [rejectListingId1], hooks, confirm);
     });
 
     it('should allow user to reject a file', () => {
       hooks.open('#/administration/confirm/listings');
       browser.waitUntil(() => confirm.isLoaded());
-      confirm.rejectListing(rejectListingId1, true);
+      confirm.rejectListing(rejectListingId1);
       browser.waitUntil(() => !confirm.findListingToReject(rejectListingId1).isDisplayed());
       expect(confirm.findListingToReject(rejectListingId1).isDisplayed()).toBe(false);
     });
@@ -45,15 +45,15 @@ describe('when user is on confirm listing page', () => {
 
   describe('and uploading multiple listing', () => {
     beforeEach(() => {
-      upload.uploadListing('../../../resources/listings/2015_v19_AQA3.csv', true);
-      upload.uploadListing('../../../resources/listings/2015_v19_AQA4.csv', true);
+      upload.uploadListing('../../../resources/listings/2015_v19_AQA3.csv');
+      upload.uploadFileAndWaitForListingsToBeProcessed('../../../resources/listings/2015_v19_AQA4.csv', [rejectListingId1, rejectListingId2], hooks, confirm);
     });
 
     it('should allow user to mass reject multiple listings', () => {
       hooks.open('#/administration/confirm/listings');
       browser.waitUntil(() => confirm.isLoaded());
-      confirm.rejectListingCheckbox(rejectListingId1, true);
-      confirm.rejectListingCheckbox(rejectListingId2, true);
+      confirm.rejectListingCheckbox(rejectListingId1);
+      confirm.rejectListingCheckbox(rejectListingId2);
       confirm.rejectButton.waitAndClick();
       browser.waitUntil(() => !confirm.findListingToReject(rejectListingId1).isDisplayed());
       browser.waitUntil(() => !confirm.findListingToReject(rejectListingId1).isDisplayed());

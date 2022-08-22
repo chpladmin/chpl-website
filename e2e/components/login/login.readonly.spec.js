@@ -16,31 +16,31 @@ describe('the login component', () => {
   });
 
   describe('when logging in', () => {
-    afterEach(() => {
-      toast.clearAllToast();
-      component.logOut();
+    afterEach(async () => {
+      await toast.clearAllToast();
+      await component.logOut();
     });
 
-    it('should be able to log in as drummond ACB', () => {
-      component.logIn('drummond');
-      expect(/AQA Drummond/i.test(component.getLoggedInUserName())).toBe(true);
+    it('should be able to log in as drummond ACB', async () => {
+      await component.logIn('drummond');
+      await expect(/AQA Drummond/i.test(await component.getLoggedInUserName())).toBe(true);
     });
 
-    it('should be able to log in as ONC', () => {
-      component.logIn('onc');
-      expect(/AQA ONC/i.test(component.getLoggedInUserName())).toBe(true);
+    it('should be able to log in as ONC', async () => {
+      await component.logIn('onc');
+      await expect(/AQA ONC/i.test(await component.getLoggedInUserName())).toBe(true);
     });
 
-    it('should be able to log in as ADMIN', () => {
-      component.logIn('admin');
-      expect(/AQA Admin/i.test(component.getLoggedInUserName())).toBe(true);
+    it('should be able to log in as ADMIN', async () => {
+      await component.logIn('admin');
+      await expect(/AQA Admin/i.test(await component.getLoggedInUserName())).toBe(true);
     });
   });
 
-  it('should be able to log out', () => {
-    component.logIn('onc');
-    expect(component.getLoggedInUserName()).toBe('AQA ONC');
-    component.logOut();
-    expect(/Administrator Login/i.test(component.getLoggedInUserName())).toBe(true);
+  it('should be able to log out', async () => {
+    await component.logIn('onc');
+    await expect(await component.getLoggedInUserName()).toBe('AQA ONC');
+    await component.logOut();
+    await expect(/Administrator Login/i.test(await component.getLoggedInUserName())).toBe(true);
   });
 });

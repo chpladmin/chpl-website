@@ -1,6 +1,6 @@
 const suite = {
   description: 'with developer issues',
-  file: '../../../resources/upload-listing-beta/2015_Developer.csv',
+  file: '../../../resources/listings/2015_Developer.csv',
   listings: [{
     listingId: '15.02.04.1234.DEV1.12.00.1.200620',
     expectedErrors: [
@@ -15,6 +15,7 @@ const suite = {
       'The developer code from the CHPL Product Number 2702 does not match the code of the declared developer 2701.',
     ],
     expectedWarnings: [
+      'The user-entered developer street address line 2 of \'Not A Match\' does not match the system value of \'null\'.',
     ],
   }, {
     listingId: '15.02.04.XXXX.DEV3.12.00.1.200620',

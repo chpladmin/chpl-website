@@ -7,11 +7,10 @@ import {
 import { useSnackbar } from 'notistack';
 
 import ChplAttestationWizard from './attestation-wizard';
-import interpretLink from './attestation-util';
 
-import { useFetchAttestationData } from 'api/attestations';
-import { useFetchAttestations } from 'api/developer';
+import { useFetchAttestationForm } from 'api/attestations';
 import { useFetchChangeRequestTypes, usePostChangeRequest } from 'api/change-requests';
+import { useFetchAttestations } from 'api/developer';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
@@ -28,31 +27,22 @@ function ChplAttestationCreate(props) {
   const { hasAnyRole } = useContext(UserContext);
   const { developer } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const [attestationResponses, setAttestationResponses] = useState([]);
   const [changeRequestType, setChangeRequestType] = useState({});
+  const [form, setForm] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
-  const { data, isLoading } = useFetchAttestationData({ period });
+  const { data, isLoading } = useFetchAttestationForm({ period });
   const { data: { submittablePeriod = {} } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_DEVELOPER']) });
   const crData = useFetchChangeRequestTypes();
   const { mutate } = usePostChangeRequest();
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading || !data?.attestations) {
+    if (isLoading || !data?.form) {
       return;
     }
-    setAttestationResponses(data.attestations
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-      .map((attestation) => ({
-        attestation: {
-          ...attestation,
-          display: interpretLink(attestation.description),
-          validResponses: attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
-        },
-        response: { response: '' },
-      })));
+    setForm(data.form);
   }, [isLoading, data]);
 
   useEffect(() => {
@@ -128,7 +118,7 @@ function ChplAttestationCreate(props) {
           )}
       </Container>
       <ChplAttestationWizard
-        attestationResponses={attestationResponses}
+        form={form}
         isSubmitting={isSubmitting}
         developer={developer}
         dispatch={handleDispatch}
