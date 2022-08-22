@@ -1,8 +1,11 @@
-import DirectReviewsComponent from './direct-reviews.po';
 import DevelopersPage from '../../pages/organizations/developers/developers.po';
 import Hooks from '../../utilities/hooks';
 
-let component, hooks, page;
+import DirectReviewsComponent from './direct-reviews.po';
+
+let component;
+let hooks;
+let page;
 
 beforeEach(async () => {
   page = new DevelopersPage();
@@ -18,8 +21,11 @@ describe('the Direct Reviews component', () => {
     });
 
     it('should indicate the absence of DRs', () => {
-      let directReviews = component.getDirectReviews();
-      expect(directReviews.getText()).toBe('No Direct Reviews have been conducted');
+      expect(component.getDirectReviews().getText()).toContain('No Direct Reviews have been conducted');
+    });
+
+    it('should indicate the "freshness" of the data', () => {
+      expect(component.getDirectReviews().getText()).toContain('Current as of');
     });
   });
 });

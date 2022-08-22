@@ -1,13 +1,13 @@
 class DirectReviewsComponent {
-  constructor () {
+  constructor() {
     this.elements = {
       root: 'chpl-direct-reviews-view-bridge',
       directReviews: '.direct-review',
     };
   }
 
-  getDirectReviews () {
-    let drs = $(this.elements.root).$$(this.elements.directReviews);
+  getDirectReviews() {
+    const drs = $(this.elements.root).$$(this.elements.directReviews);
     if (drs && drs.length > 0) {
       return drs;
     }
