@@ -23,9 +23,5 @@ describe('the Direct Reviews component', () => {
     it('should indicate the absence of DRs', () => {
       expect(component.getDirectReviews().getText()).toContain('No Direct Reviews have been conducted');
     });
-
-    it('should indicate the "freshness" of the data', () => {
-      expect(component.getDirectReviews().getText()).toContain('Current as of');
-    });
   });
 });

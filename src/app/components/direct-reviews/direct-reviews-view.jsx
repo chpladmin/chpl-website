@@ -100,10 +100,17 @@ function ChplDirectReviewsView(props) {
       .sort(sortDirectReviews));
   };
 
+  const showCurrentAsOf = () => {
+    if (!fetched) { return false; }
+    const diff = (new Date(fetched)).getTime() - Date.now();
+    const OFFSET = 1000 * 60 * 30; // 30 minutes in milliseconds
+    return diff > OFFSET;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="direct-reviews">
-        { fetched
+        { showCurrentAsOf()
           && (
             <Typography>
               Current as of:
