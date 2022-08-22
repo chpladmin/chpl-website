@@ -41,9 +41,10 @@ describe('On the 2015 Listing page', () => {
         criteria.accept.click();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
       } else {
+        criteria.editCriteriaOldButton('170.315 (d)(3)').scrollIntoView({ block: 'center', inline: 'center' });
         criteria.openAttestedCriteriaOld('170.315 (d)(3)', true);
         criteria.attestCriteriaOld('170.315 (d)(3)');
-        criteria.saveCertifiedProductOld.waitAndClick();
+        criteria.saveCertifiedProductOld.click();
       }
       page.reason.addValue('test');
       action.save();
@@ -61,18 +62,18 @@ describe('On the 2015 Listing page', () => {
         criteria.editCriteria('180');
         criteria.attestToggle.click();
         hooks.waitForSpinnerToDisappear();
-        criteria.addTestProcedures('ONC Test Method', '1.1');
+        criteria.addConformanceMethods('ONC Test Procedure', '1.1');
         criteria.addTestTools('Not Applicable', '1.1');
         criteria.addTestTools('Edge Testing Tool', '2.1');
         criteria.accept.click();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
       } else {
+        criteria.editCriteriaOldButton('170.315 (g)(6)').scrollIntoView({ block: 'center', inline: 'center' });
         criteria.openUnattestedCriteriaOld('170.315 (g)(6)', true);
-
         criteria.attestCriteriaOld('170.315 (g)(6)');
-        criteria.addTestProceduresOld('ONC Test Method', '1.1');
+        criteria.addConformanceMethodsOld('ONC Test Procedure', '1.1');
         criteria.addTestToolsOld('Edge Testing Tool', '1.1');
-        criteria.saveCertifiedProductOld.waitAndClick();
+        criteria.saveCertifiedProductOld.click();
       }
       action.save();
       hooks.waitForSpinnerToDisappear();

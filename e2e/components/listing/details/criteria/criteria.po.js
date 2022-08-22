@@ -163,7 +163,7 @@ class CriteriaComponent {
 
   addConformanceMethodsOld(name, version) {
     $(elementsOld.conformanceMethodName).selectByVisibleText(name);
-    $('//*[starts-with(@id,"testProcedures-additional-input")]').addValue(version);
+    $('//*[starts-with(@id,"conformanceMethods-additional-input")]').addValue(version);
   }
 
   addTestToolsOld(name, version) {
