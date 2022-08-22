@@ -742,7 +742,7 @@
       });
 
       it('should getDirectReviews', () => {
-        $httpBackend.expectGET(/^\/rest\/developers\/id\/direct-reviews\/v2$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/developers\/id\/direct-reviews$/).respond(200, { data: 'response' });
         networkService.getDirectReviews('id').then((response) => {
           expect(response.data).toEqual('response');
         });
