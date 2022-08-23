@@ -6,8 +6,8 @@ class DirectReviewsComponent {
     };
   }
 
-  getDirectReviews() {
-    const drs = $(this.elements.root).$$(this.elements.directReviews);
+  async getDirectReviews() {
+    const drs = await (await $(this.elements.root)).$$(this.elements.directReviews);
     if (drs && drs.length > 0) {
       return drs;
     }
