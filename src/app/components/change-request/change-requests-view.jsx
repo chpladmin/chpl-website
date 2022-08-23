@@ -42,6 +42,9 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles(() => ({
   ...utilStyles,
+  breadcrumbs: {
+    textTransform: 'none',
+  },
   container: {
     maxHeight: '64vh',
   },
@@ -203,9 +206,13 @@ function ChplChangeRequestsView(props) {
         { showBreadcrumbs()
           && (
             <Breadcrumbs aria-label="Change Requests navigation">
-              <Typography color="textPrimary">
+              <Button
+                variant="text"
+                className={classes.breadcrumbs}
+                disabled
+              >
                 Change Requests
-              </Typography>
+              </Button>
             </Breadcrumbs>
           )}
         <div className={classes.searchContainer} component={Paper}>

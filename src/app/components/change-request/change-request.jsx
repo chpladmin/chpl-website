@@ -6,7 +6,6 @@ import {
   CardContent,
   CircularProgress,
   Divider,
-  Link,
   MenuItem,
   Typography,
   makeStyles,
@@ -38,6 +37,9 @@ import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
+  breadcrumbs: {
+    textTransform: 'none',
+  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -400,19 +402,31 @@ function ChplChangeRequest(props) {
       { showBreadcrumbs
         && (
           <Breadcrumbs aria-label="Change Requests navigation">
-            <Button variant="text" color="inherit" onClick={() => props.dispatch('close')}>
+            <Button
+              variant="text"
+              className={classes.breadcrumbs}
+              onClick={() => props.dispatch('close')}
+            >
               Change Requests
             </Button>
             { isEditing
               && (
-                <Button variant="text" color="inherit" onClick={() => setIsEditing(false)}>
+                <Button
+                  variant="text"
+                  className={classes.breadcrumbs}
+                  onClick={() => setIsEditing(false)}
+                >
                   View Change Request
                 </Button>
               )}
-            <Typography color="textPrimary">
+            <Button
+              variant="text"
+              className={classes.breadcrumbs}
+              disabled
+            >
               { isEditing ? 'Edit ' : 'View ' }
               Change Request
-            </Typography>
+            </Button>
           </Breadcrumbs>
         )}
       <Card className={classes.productCard}>
