@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Breadcrumbs,
+  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -399,14 +400,14 @@ function ChplChangeRequest(props) {
       { showBreadcrumbs
         && (
           <Breadcrumbs aria-label="Change Requests navigation">
-            <Link color="inherit" onClick={() => props.dispatch('close')}>
+            <Button variant="text" color="inherit" onClick={() => props.dispatch('close')}>
               Change Requests
-            </Link>
+            </Button>
             { isEditing
               && (
-                <Link color="inherit" onClick={() => setIsEditing(false)}>
+                <Button variant="text" color="inherit" onClick={() => setIsEditing(false)}>
                   View Change Request
-                </Link>
+                </Button>
               )}
             <Typography color="textPrimary">
               { isEditing ? 'Edit ' : 'View ' }
