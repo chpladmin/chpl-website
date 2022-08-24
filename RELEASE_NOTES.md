@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 11.40.0
+_22 August 2022_
+
+### Features
+* Allow submission of Attestations with optional responses
+
+### User Interface Updates
+* Handle Change Request actions with Action Bar
+
+---
+
 ## Version 11.39.0
 _8 August 2022_
 
