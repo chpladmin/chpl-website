@@ -1,4 +1,4 @@
-import LoginComponent from '../login/login.po';
+import LoginComponent from '../login/login.sync.po';
 import Hooks from '../../utilities/hooks';
 import ActionBarComponent from '../action-bar/action-bar.po';
 

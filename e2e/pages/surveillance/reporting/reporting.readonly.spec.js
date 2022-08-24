@@ -1,6 +1,7 @@
-import ReportingPage from './reporting.po';
-import LoginComponent from '../../../components/login/login.po';
+import LoginComponent from '../../../components/login/login.sync.po';
 import Hooks from '../../../utilities/hooks';
+
+import ReportingPage from './reporting.po';
 
 let hooks; let loginComponent; let page;
 

@@ -1,54 +1,51 @@
 import LoginComponent from '../../components/login/login.po';
-import Hooks from '../../utilities/hooks';
-import PaginationComponent from '../../components/pagination/pagination.po';
 import ComplaintsComponent from '../../components/surveillance/complaints/complaints.po';
-import ActionBarComponent from '../../components/action-bar/action-bar.po'
-let hooks;
+import ActionBarComponent from '../../components/action-bar/action-bar.async.po';
+import { open } from '../../utilities/hooks.async';
+
 let login;
-let pagination;
 let complaintsComponent;
 let action;
 
-beforeEach(async () => {
-  login = new LoginComponent();
-  hooks = new Hooks();
-  pagination = new PaginationComponent();
-  complaintsComponent = new ComplaintsComponent();
-  action = new ActionBarComponent();
-  hooks.open('#/surveillance/complaints');
-  await hooks.waitForSpinnerToDisappear();
-});
-
-describe('As a ROLE_ACB user', () => {
-  beforeEach(() => {
-    login.logIn('drummond');
+describe('when deleting complaints', () => {
+  beforeEach(async () => {
+    login = new LoginComponent();
+    complaintsComponent = new ComplaintsComponent();
+    action = new ActionBarComponent();
+    await open('#/resources/overview');
   });
 
-  afterEach(() => {
-    login.logOut();
-  });
+  describe('as a ROLE_ACB user', () => {
+    beforeEach(async () => {
+      await login.logIn('drummond');
+      await open('#/surveillance/complaints');
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
+    });
 
-  it('should be able to delete complaint', () => {
-    const timestamp = (new Date()).getTime();
-    const fields = {
-      body: 'Drummond Group',
-      receivedDate: '06/23/2021',
-      acbId: `Test - ${timestamp}`,
-      type: 'Developer',
-      summary: `Test Summary - ${timestamp}`,
-    };
-    complaintsComponent.addNewComplaint();
-    hooks.waitForSpinnerToDisappear();
-    complaintsComponent.set(fields);
-    complaintsComponent.saveComplaint();
-    hooks.waitForSpinnerToAppear();
-    hooks.waitForSpinnerToDisappear();
-    complaintsComponent.editComplaint(fields.acbId);
-    action.delete();
-    browser.keys('Enter');  //Not able to click on Yes on this window pop up
-    hooks.waitForSpinnerToAppear();
-    hooks.waitForSpinnerToDisappear();
-    complaintsComponent.filter.setValue(fields.acbId);
-    expect(pagination.pagination.isExisting()).toBe(false);
+    afterEach(async () => {
+      await login.logOut();
+    });
+
+    it('should be able to delete complaints', async () => {
+      const timestamp = Date.now();
+      const fields = {
+        body: 'Drummond Group',
+        receivedDate: ['23', 'Jun', 'Tab', '2021'],
+        acbId: `Test - ${timestamp}`,
+        type: 'Developer',
+        summary: `Test Summary - ${timestamp}`,
+      };
+      await complaintsComponent.addNewComplaint();
+      await complaintsComponent.set(fields);
+      await complaintsComponent.saveComplaint();
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
+      await complaintsComponent.editComplaint(fields.acbId);
+      await action.delete();
+      await browser.keys('Enter');
+      await (browser.waitUntil(async () => complaintsComponent.hasResults()));
+      await (await complaintsComponent.filter).setValue(fields.acbId);
+      await (browser.waitUntil(async () => !(await complaintsComponent.hasResults())));
+      await expect(await complaintsComponent.hasResults()).toBe(false);
+    });
   });
 });

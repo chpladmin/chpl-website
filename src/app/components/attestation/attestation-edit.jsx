@@ -10,7 +10,6 @@ import {
 } from 'prop-types';
 
 import ChplAttestationWizard from './attestation-wizard';
-import interpretLink from './attestation-util';
 
 import { usePutChangeRequest } from 'api/change-requests';
 import { getAngularService } from 'services/angular-react-helper';
@@ -27,7 +26,7 @@ function ChplAttestationEdit(props) {
   const { changeRequest } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = usePutChangeRequest();
-  const [attestationResponses, setAttestationResponses] = useState([]);
+  const [form, setForm] = useState({});
   const [developer, setDeveloper] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
@@ -35,19 +34,11 @@ function ChplAttestationEdit(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (!changeRequest?.details?.attestationResponses) {
-      setAttestationResponses([]);
+    if (!changeRequest?.details?.form) {
+      setForm({});
       return;
     }
-    setAttestationResponses(changeRequest.details.attestationResponses
-      .map((attestationResponse) => ({
-        ...attestationResponse,
-        attestation: {
-          ...attestationResponse.attestation,
-          display: interpretLink(attestationResponse.attestation.description),
-          validResponses: attestationResponse.attestation.validResponses.sort((a, b) => a.sortOrder - b.sortOrder),
-        },
-      })));
+    setForm(changeRequest.details.form);
     setDeveloper(changeRequest.developer);
     setPeriod(changeRequest.details.attestationPeriod);
   }, [changeRequest]);
@@ -112,7 +103,7 @@ function ChplAttestationEdit(props) {
         </Typography>
       </Container>
       <ChplAttestationWizard
-        attestationResponses={attestationResponses}
+        form={form}
         isSubmitting={isSubmitting}
         developer={developer}
         dispatch={handleDispatch}

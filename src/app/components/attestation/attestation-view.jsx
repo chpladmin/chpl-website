@@ -19,6 +19,33 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
+const getRows = (section) => section.formItems
+  .sort((a, b) => a.sortOrder - b.sortOrder)
+  .map((item) => (
+    <TableRow key={`${section.id}-${item.id}`}>
+      <TableCell>
+        <strong>
+          { section.name }
+          {': '}
+        </strong>
+        { interpretLink(item.question.question) }
+      </TableCell>
+      <TableCell>
+        { item.submittedResponses[0]?.response }
+        { item.childFormItems[0]?.submittedResponses.length > 0
+              && (
+                <ul>
+                  { item.childFormItems[0].submittedResponses
+                    .sort((a, b) => a.sortOrder - b.sortOrder)
+                    .map((response) => (
+                      <li key={response.id}>{ response.response }</li>
+                    ))}
+                </ul>
+              )}
+      </TableCell>
+    </TableRow>
+  ));
+
 function ChplAttestationView(props) {
   const { hasAnyRole } = useContext(UserContext);
   const [attestations, setAttestations] = useState({});
@@ -30,7 +57,7 @@ function ChplAttestationView(props) {
     setAttestations({
       ...props.attestations,
       period: props.attestations.period || props.attestations.attestationPeriod,
-      responses: props.attestations.responses || props.attestations.attestationResponses,
+      sections: props.attestations.form.sectionHeadings.sort((a, b) => a.sortOrder - b.sortOrder),
     });
   }, [props.attestations]); // eslint-disable-line react/destructuring-assignment
 
@@ -66,7 +93,7 @@ function ChplAttestationView(props) {
       </Typography>
       <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
       <Typography gutterBottom>{attestations.statusText}</Typography>
-      { attestations.responses
+      { attestations.sections
         && (
           <TableContainer component={Paper}>
             <Table
@@ -79,34 +106,18 @@ function ChplAttestationView(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { attestations.responses
-                  .sort((a, b) => a.attestation.sortOrder - b.attestation.sortOrder)
-                  .map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>
-                        <strong>
-                          { item.attestation.condition.name }
-                          {': '}
-                        </strong>
-                        { interpretLink(item.attestation.description) }
-                      </TableCell>
-                      <TableCell>
-                        { item.response.response }
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                { attestations.sections.map((section) => getRows(section)) }
               </TableBody>
             </Table>
           </TableContainer>
         )}
-      { attestations.datePublished && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+      { canCreateException && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
         && (
           <Button
             color="primary"
             id="create-attestation-exception-button"
             variant="contained"
             onClick={() => setExceptionPeriod(attestations.period)}
-            disabled={!canCreateException}
             fullWidth
           >
             Re-Open Submission
