@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Breadcrumbs,
   Button,
   ButtonGroup,
   Card,
@@ -37,10 +36,10 @@ import {
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
-import { UserContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   ...utilStyles,
   breadcrumbs: {
     textTransform: 'none',
@@ -100,10 +99,28 @@ const useStyles = makeStyles(() => ({
   noResultsContainer: {
     padding: '16px 32px',
   },
-}));
+});
+
+const resetBreadcrumbs = (append, drop, classes) => {
+  drop('edit.disabled');
+  drop('view.disabled');
+  drop('view');
+  drop('viewall');
+  append(
+    <Button
+      key="viewall.disabled"
+      variant="text"
+      className={classes.breadcrumbs}
+      disabled
+    >
+      Change Requests
+    </Button>,
+  );
+};
 
 function ChplChangeRequestsView(props) {
   const { disallowedFilters, bonusQuery } = props;
+  const { append, drop } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
@@ -121,6 +138,12 @@ function ChplChangeRequestsView(props) {
     query: `${queryString()}${bonusQuery}`,
   });
   const classes = useStyles();
+
+  useEffect(() => {
+    if (!bonusQuery) {
+      resetBreadcrumbs(append, drop, classes);
+    }
+  }, [bonusQuery]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -159,6 +182,7 @@ function ChplChangeRequestsView(props) {
     switch (action) {
       case 'close':
         setChangeRequest(undefined);
+        resetBreadcrumbs(append, drop, classes);
         break;
       case 'closeDownload':
         setIsDownloading(false);
@@ -202,18 +226,6 @@ function ChplChangeRequestsView(props) {
               dispatch={handleDispatch}
               query={`${queryString()}${bonusQuery}`}
             />
-          )}
-        { showBreadcrumbs()
-          && (
-            <Breadcrumbs aria-label="Change Requests navigation">
-              <Button
-                variant="text"
-                className={classes.breadcrumbs}
-                disabled
-              >
-                Change Requests
-              </Button>
-            </Breadcrumbs>
           )}
         <div className={classes.searchContainer} component={Paper}>
           { !disallowedFilters.includes('searchTerm')
