@@ -67,11 +67,11 @@
         </div>
       </div>
     </div>
-    <chpl-action-bar can-act="$ctrl.canActionBar(action)"
-              error-messages="$ctrl.errors"
-              is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
-              take-action="$ctrl.takeActionBarAction(action)"
-              options="$ctrl.options">
-    </chpl-action-bar>
+    <chpl-action-bar-bridge
+      errors="$ctrl.errors"
+      can-delete="$ctrl.svap.svapId"
+      is-disabled="$ctrl.form.$invalid && $ctrl.showFormErrors"
+      dispatch="::$ctrl.takeActionBarAction">
+    </chpl-action-bar-bridge>
   </div>
 </div>
