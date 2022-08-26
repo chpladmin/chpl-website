@@ -209,6 +209,26 @@ function FilterProvider(props) {
     }
   };
 
+  const queryParams = () => filters
+    .concat({
+      ...defaultFilter,
+      key: 'searchTerm',
+      values: [{ value: searchTerm, selected: searchTerm }],
+    })
+    .map((f) => ({
+      ...f,
+      values: f.values.filter((v) => v.selected),
+    }))
+    .filter((f) => f.values.length > 0)
+    .flatMap((f) => f.getQuery(f).split('&'))
+    .reduce((params, f) => {
+      const [key, value] = f.split('=');
+      return {
+        ...params,
+        [key]: value,
+      };
+    }, {});
+
   const queryString = () => filters
     .concat({
       ...defaultFilter,
@@ -225,7 +245,7 @@ function FilterProvider(props) {
     .join('&');
 
   const filterData = {
-    analytics, dispatch, filters, queryString, searchTerm, setSearchTerm,
+    analytics, dispatch, filters, queryParams, queryString, searchTerm, setSearchTerm,
   };
 
   /* eslint-disable react/jsx-props-no-spreading */

@@ -15,13 +15,6 @@ const useFetchChangeRequest = ({ id }) => {
     keepPreviousData: true,
   });
 };
-const useFetchChangeRequestsLegacy = () => {
-  const axios = useAxios();
-  return useQuery(['change-requests'], async () => {
-    const response = await axios.get('change-requests');
-    return response.data;
-  });
-};
 
 const useFetchChangeRequests = ({
   orderBy = 'current_status_change_date_time',
@@ -62,11 +55,7 @@ const useFetchChangeRequestTypes = () => {
 const usePostChangeRequest = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('change-requests', data)
-    .then((response) => response)
-    .catch((error) => {
-      throw error;
-    }), {
+  return useMutation(async (data) => axios.post('change-requests', data), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
       queryClient.invalidateQueries('change-requests/search');
@@ -83,14 +72,15 @@ const usePostChangeRequest = () => {
   });
 };
 
+const usePostReportRequest = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('change-requests/report-request', data));
+};
+
 const usePutChangeRequest = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.put('change-requests', data)
-    .then((response) => response)
-    .catch((error) => {
-      throw error;
-    }), {
+  return useMutation(async (data) => axios.put('change-requests', data), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
       queryClient.invalidateQueries('change-requests/search');
@@ -110,9 +100,9 @@ const usePutChangeRequest = () => {
 export {
   useFetchChangeRequest,
   useFetchChangeRequests,
-  useFetchChangeRequestsLegacy,
   useFetchChangeRequestStatusTypes,
   useFetchChangeRequestTypes,
   usePostChangeRequest,
+  usePostReportRequest,
   usePutChangeRequest,
 };
