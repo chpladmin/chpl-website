@@ -25,16 +25,6 @@ const useFetchPendingListings = () => {
   });
 };
 
-const useFetchPendingListingsLegacy = () => {
-  const axios = useAxios();
-  return useQuery(['certified_products/pending/metadata'], async () => {
-    const response = await axios.get('certified_products/pending/metadata');
-    return response.data;
-  }, {
-    refetchInterval: (data) => (data?.filter((l) => l.processing).length > 0) && 1000,
-  });
-};
-
 const useFetchUploadedDeveloper = ({ id }) => {
   const axios = useAxios();
   return useQuery(['listings/pending/submitted', id], async () => {
@@ -59,22 +49,9 @@ const useRejectPendingListing = () => {
   });
 };
 
-const useRejectPendingListingLegacy = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (id) => axios.delete(`/certified_products/pending/${id}`)
-    .then((response) => response), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('certified_products/pending/metadata');
-    },
-  });
-};
-
 export {
   useFetchPendingListing,
   useFetchPendingListings,
-  useFetchPendingListingsLegacy,
   useFetchUploadedDeveloper,
   useRejectPendingListing,
-  useRejectPendingListingLegacy,
 };

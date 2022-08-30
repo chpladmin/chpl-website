@@ -1,18 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
   CardContent,
   CardHeader,
-  FormControlLabel,
-  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   deleteButton: {
@@ -42,22 +39,9 @@ function ChplUploadListings() {
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
   const { enqueueSnackbar } = useSnackbar();
-  const { isOn } = useContext(FlagContext);
   const [file, setFile] = useState(undefined);
   const [ele, setEle] = useState(undefined);
-  const [enhancedUploadIsOn, setEnhancedUploadIsOn] = useState(false);
-  const [legacyUploadIsOn, setLegacyUploadIsOn] = useState(false);
-  const [useLegacy, setUseLegacy] = useState(false);
   const classes = useStyles();
-
-  useEffect(() => {
-    setEnhancedUploadIsOn(isOn('enhanced-upload'));
-    setLegacyUploadIsOn(isOn('legacy-upload'));
-  }, [isOn]);
-
-  useEffect(() => {
-    setUseLegacy(!enhancedUploadIsOn);
-  }, [enhancedUploadIsOn]);
 
   const clearFile = () => {
     setFile(undefined);
@@ -71,7 +55,7 @@ function ChplUploadListings() {
 
   const uploadFile = () => {
     const item = {
-      url: useLegacy ? `${API}/certified_products/upload` : `${API}/listings/upload`,
+      url: `${API}/listings/upload`,
       headers: {
         Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
@@ -88,12 +72,7 @@ function ChplUploadListings() {
             variant: 'warning',
           });
         } else {
-          let message;
-          if (useLegacy) {
-            message = `Success: File "${response.config.data.file.name}" was uploaded successfully. ${response.data.pendingCertifiedProducts.length} pending product${response.data.pendingCertifiedProducts.length > 1 ? 's are' : ' is'} ready for confirmation.`;
-          } else {
-            message = `Success: File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
-          }
+          const message = `Success: File "${response.config.data.file.name}" was uploaded successfully. ${response.data.successfulListingUploads.length} pending product${response.data.successfulListingUploads.length > 1 ? 's are' : ' is'} processing.`;
           enqueueSnackbar(message, {
             variant: 'success',
           });
@@ -128,21 +107,6 @@ function ChplUploadListings() {
     <Card>
       <CardHeader title="Upload Certified Products" />
       <CardContent>
-        { enhancedUploadIsOn && legacyUploadIsOn
-          && (
-            <FormControlLabel
-              control={(
-                <Switch
-                  id="use-legacy"
-                  name="useLegacy"
-                  color="primary"
-                  checked={!useLegacy}
-                  onChange={() => setUseLegacy(!useLegacy)}
-                />
-              )}
-              label={useLegacy ? 'Using Legacy Upload' : 'Using Modern Upload'}
-            />
-          )}
         <div className={classes.gridStyle}>
           <Typography variant="body1" className={classes.firstRow}>
             CSV files only

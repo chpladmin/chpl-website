@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { func } from 'prop-types';
 import {
   Button,
   Checkbox,
   Chip,
-  FormControlLabel,
-  Switch,
   Paper,
   Table,
   TableBody,
@@ -22,14 +20,11 @@ import FeedbackIcon from '@material-ui/icons/Feedback';
 import {
   useFetchPendingListing,
   useFetchPendingListings,
-  useFetchPendingListingsLegacy,
   useRejectPendingListing,
-  useRejectPendingListingLegacy,
 } from 'api/pending-listings';
 import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
 import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -74,7 +69,10 @@ const useStyles = makeStyles({
   },
 });
 
-const getBasicStatus = (listing, classes) => {
+const getStatus = (listing, classes) => {
+  if (listing.status === 'UPLOAD_PROCESSING') {
+    return <CircularProgress />;
+  }
   if (listing.status === 'UPLOAD_FAILURE') {
     return (
       <Chip
@@ -92,50 +90,18 @@ const getBasicStatus = (listing, classes) => {
   );
 };
 
-const getStatus = (listing, classes) => {
-  if (listing.status === 'UPLOAD_PROCESSING') {
-    return <CircularProgress />;
-  }
-  return getBasicStatus(listing, classes);
-};
-
-const getLegacyStatus = (listing, classes) => {
-  if (listing.status === 'UPLOAD_PROCESSING') {
-    return <CircularProgress />;
-  }
-  return getBasicStatus(listing, classes);
-};
-
-const canProcess = (listing, useLegacy) => ((!useLegacy && listing.status === 'UPLOAD_SUCCESS') || (useLegacy && !listing.processing));
-
 function ChplConfirmListings(props) {
   const DateUtil = getAngularService('DateUtil');
   const toaster = getAngularService('toaster');
-  const { isOn } = useContext(FlagContext);
-  const [enhancedUploadIsOn, setEnhancedUploadIsOn] = useState(false);
   const [errors, setErrors] = useState([]);
   const [idsToReject, setIdsToReject] = useState([]);
-  const [legacyUploadIsOn, setLegacyUploadIsOn] = useState(false);
   const [listingIdToLoad, setListingIdToLoad] = useState(undefined);
   const [listings, setListings] = useState([]);
-  const [legacyListings, setLegacyListings] = useState([]);
-  const [useLegacy, setUseLegacy] = useState(false);
   const [warnings, setWarnings] = useState([]);
-  const { data: legacyData } = useFetchPendingListingsLegacy();
   const { data: modernData } = useFetchPendingListings();
   const { data: processingListing } = useFetchPendingListing({ id: listingIdToLoad });
   const { mutate: rejectListing } = useRejectPendingListing();
-  const { mutate: rejectListingLegacy } = useRejectPendingListingLegacy();
   const classes = useStyles();
-
-  useEffect(() => {
-    setEnhancedUploadIsOn(isOn('enhanced-upload'));
-    setLegacyUploadIsOn(isOn('legacy-upload'));
-  }, [isOn]);
-
-  useEffect(() => {
-    setUseLegacy(!enhancedUploadIsOn);
-  }, [enhancedUploadIsOn]);
 
   useEffect(() => {
     if (!processingListing?.id || listings.length === 0) { return; }
@@ -173,21 +139,8 @@ function ChplConfirmListings(props) {
     }
   }, [modernData, classes]);
 
-  useEffect(() => {
-    if (!legacyData) { return; }
-    setLegacyListings(legacyData
-      .map((listing) => ({
-        ...listing,
-        displayStatus: getLegacyStatus(listing, classes),
-        developer: listing.developer.name,
-        product: listing.product.name,
-        version: listing.version.version,
-      }))
-      .sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
-  }, [legacyData, classes]);
-
   const handleProcess = (listing) => {
-    props.onProcess(listing.id, !useLegacy);
+    props.onProcess(listing.id);
   };
 
   const handleRejectActual = (reject) => {
@@ -213,11 +166,7 @@ function ChplConfirmListings(props) {
   };
 
   const handleReject = () => {
-    if (!useLegacy) {
-      handleRejectActual(rejectListing);
-    } else {
-      handleRejectActual(rejectListingLegacy);
-    }
+    handleRejectActual(rejectListing);
   };
 
   const handleRejectCheckbox = ($event, listing) => {
@@ -245,18 +194,7 @@ function ChplConfirmListings(props) {
     setListings(listings.map((listing) => listing).sort(listingSortComparator(orderDirection + property)));
   };
 
-  const getActiveListings = () => (useLegacy && legacyListings) || (!useLegacy && listings) || [];
-
-  const headers = useLegacy ? [
-    { text: 'Action', invisible: true },
-    { text: 'CHPL Product Number' },
-    { text: 'Developer' },
-    { text: 'Product' },
-    { text: 'Version' },
-    { text: 'Certification Date' },
-    { text: 'Status' },
-    { text: 'Reject Listing', invisible: true },
-  ] : [
+  const headers = [
     { text: 'Action', invisible: true },
     { text: 'CHPL Product Number', property: 'chplProductNumber', sortable: true },
     { text: 'Developer', property: 'developer', sortable: true },
@@ -269,26 +207,11 @@ function ChplConfirmListings(props) {
 
   return (
     <>
-      { enhancedUploadIsOn && legacyUploadIsOn
-        && (
-          <FormControlLabel
-            control={(
-              <Switch
-                id="use-legacy"
-                name="useLegacy"
-                color="primary"
-                checked={!useLegacy}
-                onChange={() => setUseLegacy(!useLegacy)}
-              />
-            )}
-            label={useLegacy ? `Using Legacy Workflow (${listings.length} pending using Modern Workflow)` : `Using Modern Workflow (${legacyListings.length} pending using Legacy Workflow)`}
-          />
-        )}
-      { getActiveListings().length === 0
+      { listings.length === 0
         && (
           <div>No products currently in queue</div>
         )}
-      { getActiveListings().length > 0
+      { listings.length > 0
         && (
           <>
             <div className={classes.rejectFooter}>
@@ -314,7 +237,7 @@ function ChplConfirmListings(props) {
                   onTableSort={handleTableSort}
                 />
                 <TableBody>
-                  { getActiveListings()
+                  { listings
                     .map((listing) => (
                       <TableRow key={listing.id}>
                         <TableCell className={classes.stickyColumn}>
@@ -324,7 +247,7 @@ function ChplConfirmListings(props) {
                             variant="contained"
                             onClick={() => handleProcess(listing)}
                             endIcon={<PlayArrowIcon />}
-                            disabled={!canProcess(listing, useLegacy)}
+                            disabled={listing.status !== 'UPLOAD_SUCCESS'}
                           >
                             Process Listing
                           </Button>
@@ -336,7 +259,7 @@ function ChplConfirmListings(props) {
                         <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
                         <TableCell>
                           { listing.displayStatus }
-                          { !useLegacy && listing.status !== 'UPLOAD_FAILURE' && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
+                          { listing.status !== 'UPLOAD_FAILURE' && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
                             && (
                               <div>
                                 <Button
