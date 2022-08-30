@@ -12,6 +12,7 @@ const getMessage = (before, after, root, key) => {
 };
 
 const compareObject = (before, after, root = 'root') => {
+  if (before === null || after === null) { return []; }
   const keys = Object.keys(before);
   const diffs = keys.map((key) => {
     switch (typeof before[key]) {
