@@ -99,6 +99,7 @@ function ChplAttestationWizard(props) {
       { stage === 1
         && (
           <ChplAttestationWizardSection2
+            instructions={form.instructions}
             sections={sections}
             dispatch={handleFormDispatch}
           />
