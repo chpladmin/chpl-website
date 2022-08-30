@@ -34,6 +34,7 @@ const SurveillanceNonconformityEditComponent = {
       this.workType = this.resolve.workType;
       this.item.url = `${this.API}/surveillance/${this.surveillanceId}/nonconformity/${this.nonconformity.id}/document`;
 
+      /*
       if (this.nonconformity.criterion) {
         this.nonconformityType = this.data.nonconformityTypes.data
           .find((t) => t.number === this.nonconformity.criterion.number && t.title === this.nonconformity.criterion.title);
@@ -41,6 +42,7 @@ const SurveillanceNonconformityEditComponent = {
         this.nonconformityType = this.data.nonconformityTypes.data
           .find((t) => t.number === this.nonconformity.nonconformityType);
       }
+      */
     }
 
     cancel() {
@@ -72,12 +74,14 @@ const SurveillanceNonconformityEditComponent = {
       } else {
         this.nonconformity.nonconformityStatus = 'Open';
       }
+      /*
       if (this.nonconformityType.title) {
         this.nonconformity.criterion = this.nonconformityType;
       } else {
         this.nonconformity.criterion = undefined;
       }
       this.nonconformity.nonconformityType = this.nonconformityType.number;
+      */
       this.close({ $value: this.nonconformity });
     }
   },
