@@ -14,7 +14,7 @@ import { bool, object } from 'prop-types';
 
 import ChplAttestationCreateException from './attestation-create-exception';
 
-import interpretLink from 'components/attestation/attestation-util';
+import { interpretLink } from 'components/attestation/attestation-util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
