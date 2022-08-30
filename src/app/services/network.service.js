@@ -511,7 +511,7 @@ export default class NetworkService {
       .then((response) => {
         data.surveillanceRequirements = response;
       });
-    this.apiGET('/data/nonconformity-types')
+    this.apiGET('/data/nonconformity-types/v2')
       .then((response) => {
         data.nonconformityTypes = response;
       });
