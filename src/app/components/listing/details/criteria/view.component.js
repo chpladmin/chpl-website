@@ -13,14 +13,13 @@ const CertificationCriteriaViewComponent = {
     viewAll: '<',
   },
   controller: class CertificationCriteriaViewController {
-    constructor($analytics, $log, $uibModal, authService, featureFlags, utilService) {
+    constructor($analytics, $log, $uibModal, authService, utilService) {
       'ngInject';
 
       this.$analytics = $analytics;
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.hasAnyRole = authService.hasAnyRole;
-      this.isOn = featureFlags.isOn;
       this.utilService = utilService;
     }
 

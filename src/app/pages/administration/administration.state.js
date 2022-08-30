@@ -1,40 +1,3 @@
-const getResources = ($q, networkService) => {
-  const promises = [
-    networkService.getSearchOptions()
-      .then((response) => ({
-        bodies: response.acbs,
-        classifications: response.productClassifications,
-        editions: response.editions,
-        practices: response.practiceTypes,
-        statuses: response.certificationStatuses,
-      })),
-    networkService.getAtls(false)
-      .then((response) => ({ testingLabs: response.atls })),
-    networkService.getMeasures()
-      .then((response) => ({ measures: response })),
-    networkService.getMeasureTypes()
-      .then((response) => ({ measureTypes: response })),
-    networkService.getQmsStandards()
-      .then((response) => ({ qmsStandards: response })),
-    networkService.getAccessibilityStandards()
-      .then((response) => ({ accessibilityStandards: response })),
-    networkService.getUcdProcesses()
-      .then((response) => ({ ucdProcesses: response })),
-    networkService.getTestProcedures()
-      .then((response) => ({ testProcedures: response })),
-    networkService.getTestData()
-      .then((response) => ({ testData: response })),
-    networkService.getTestStandards()
-      .then((response) => ({ testStandards: response })),
-    networkService.getTestFunctionality()
-      .then((response) => ({ testFunctionalities: response })),
-    networkService.getTargetedUsers()
-      .then((response) => ({ targetedUsers: response })),
-  ];
-  return $q.all(promises)
-    .then((response) => response);
-};
-
 /** @ngInject */
 function returnTo($transition$) {
   if ($transition$.redirectedFrom() != null) {
@@ -50,189 +13,172 @@ function returnTo($transition$) {
   return $state.target('search');
 }
 
-const states = {
-  'enhanced-upload': [
-    {
-      name: 'administration.confirm.listings.listing',
-      url: '/{id}/confirm',
-      component: 'chplConfirmListing',
-      resolve: {
-        listing: (networkService, $transition$) => {
-          'ngInject';
-
-          return networkService.getPendingListingByIdBeta($transition$.params().id);
-        },
+const states = [
+  {
+    name: 'authorizePasswordReset',
+    url: '/admin/authorizePasswordReset?token',
+    redirectTo: (trans) => ({
+      state: 'administration',
+      params: {
+        token: trans.params().token,
       },
-      data: {
-        title: 'CHPL Administration - Confirm Listing',
-        roles: ['ROLE_ADMIN', 'ROLE_ACB'],
+    }),
+  }, {
+    name: 'administration',
+    url: '/administration?token',
+    component: 'chplAdministration',
+    data: { title: 'CHPL Administration' },
+  }, {
+    name: 'administration.announcements',
+    url: '/announcements',
+    component: 'chplAnnouncementsWrapperBridge',
+    data: {
+      title: 'CHPL Administration - Announcements',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
+  }, {
+    name: 'administration.api-keys',
+    url: '/api-keys',
+    component: 'chplApiKeys',
+    resolve: {
+      apiKeys: (authService, networkService) => {
+        'ngInject';
+
+        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+          return networkService.getApiUsers();
+        }
+        return [];
       },
     },
-  ],
-  base: [
-    {
-      name: 'authorizePasswordReset',
-      url: '/admin/authorizePasswordReset?token',
-      redirectTo: (trans) => ({
-        state: 'administration',
-        params: {
-          token: trans.params().token,
-        },
-      }),
-    }, {
-      name: 'administration',
-      url: '/administration?token',
-      component: 'chplAdministration',
-      data: { title: 'CHPL Administration' },
-    }, {
-      name: 'administration.announcements',
-      url: '/announcements',
-      component: 'chplAnnouncementsWrapperBridge',
-      data: {
-        title: 'CHPL Administration - Announcements',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC'],
-      },
-    }, {
-      name: 'administration.api-keys',
-      url: '/api-keys',
-      component: 'chplApiKeys',
-      resolve: {
-        apiKeys: (authService, networkService) => {
-          'ngInject';
-
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-            return networkService.getApiUsers();
-          }
-          return [];
-        },
-      },
-      data: {
-        title: 'CHPL Administration - API Keys',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
-      },
-    }, {
-      name: 'administration.change-requests',
-      url: '/change-requests',
-      component: 'chplChangeRequestsWrapperBridge',
-      data: {
-        title: 'CHPL Administration - Change Requests',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
-      },
-    }, {
-      name: 'administration.cms',
-      url: '/cms',
-      component: 'chplCmsWrapperBridge',
-      data: {
-        title: 'CHPL Administration - CMS',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'],
-      },
-    }, {
-      name: 'administration.confirm',
-      abstract: true,
-      url: '/confirm',
-      template: '<ui-view/>',
-    }, {
-      name: 'administration.confirm.listings',
-      url: '/listings',
-      component: 'chplConfirmListings',
-      resolve: {
-        developers: (networkService) => {
-          'ngInject';
-
-          return networkService.getDevelopers().then((response) => response.developers);
-        },
-        resources: ($q, networkService) => {
-          'ngInject';
-
-          return getResources($q, networkService);
-        },
-      },
-      data: {
-        title: 'CHPL Administration - Confirm Listings',
-        roles: ['ROLE_ADMIN', 'ROLE_ACB'],
-      },
-    }, {
-      name: 'administration.confirm.listings.listing',
-      url: '/{id}/confirm',
-      template: '<div><i class="fa fa-spinner fa-spin"></i/>processing</div>',
-      data: { title: 'CHPL Administration - Confirm Listing' },
-    }, {
-      name: 'administration.fuzzy-matching',
-      url: '/fuzzy-matching',
-      component: 'chplFuzzyMatching',
-      resolve: {
-        fuzzyTypes: (authService, networkService) => {
-          'ngInject';
-
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-            return networkService.getFuzzyTypes();
-          }
-          return [];
-        },
-      },
-      data: {
-        title: 'CHPL Administration - Fuzzy Matching',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC'],
-      },
-    }, {
-      name: 'administration.jobs',
-      url: '/jobs',
-      component: 'chplJobsWrapperBridge',
-      data: {
-        title: 'CHPL Administration - Jobs - Scheduled',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
-      },
-    }, {
-      name: 'administration.jobs.scheduled',
-      url: '/scheduled',
-      redirectTo: () => ({
-        state: 'administration.jobs',
-      }),
-    }, {
-      name: 'administration.upload',
-      url: '/upload',
-      component: 'chplUpload',
-      data: {
-        title: 'CHPL Administration - Upload',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
-      },
-    }, {
-      name: 'administration.svaps',
-      url: '/svaps',
-      component: 'chplSvapsPage',
-      resolve: {
-        svaps: (authService, networkService) => {
-          'ngInject';
-
-          if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-            return networkService.getSvaps();
-          }
-          return [];
-        },
-        availableCriteria: (networkService) => {
-          'ngInject';
-
-          return networkService.getCertificationCriteriaForSvap();
-        },
-      },
-      data: {
-        title: 'CHPL Administration - SVAPs',
-        roles: ['ROLE_ADMIN', 'ROLE_ONC'],
-      },
-    }, {
-      name: 'login',
-      url: '/login',
-      component: 'chplLoginPageBridge',
-      resolve: { returnTo },
-      data: { title: 'CHPL Login' },
+    data: {
+      title: 'CHPL Administration - API Keys',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
-  ],
-};
+  }, {
+    name: 'administration.change-requests',
+    url: '/change-requests',
+    component: 'chplChangeRequestsWrapperBridge',
+    data: {
+      title: 'CHPL Administration - Change Requests',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
+  }, {
+    name: 'administration.cms',
+    url: '/cms',
+    component: 'chplCmsWrapperBridge',
+    data: {
+      title: 'CHPL Administration - CMS',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'],
+    },
+  }, {
+    name: 'administration.confirm',
+    abstract: true,
+    url: '/confirm',
+    template: '<ui-view/>',
+  }, {
+    name: 'administration.confirm.listings',
+    url: '/listings',
+    component: 'chplConfirmListings',
+    data: {
+      title: 'CHPL Administration - Confirm Listings',
+      roles: ['ROLE_ADMIN', 'ROLE_ACB'],
+    },
+  }, {
+    name: 'administration.confirm.listings.listing',
+    url: '/{id}/confirm',
+    component: 'chplConfirmListing',
+    resolve: {
+      developers: (networkService) => {
+        'ngInject';
+
+        return networkService.getDevelopers().then((response) => response.developers);
+      },
+      listing: (networkService, $transition$) => {
+        'ngInject';
+
+        return networkService.getPendingListingById($transition$.params().id);
+      },
+    },
+    data: {
+      title: 'CHPL Administration - Confirm Listing',
+      roles: ['ROLE_ADMIN', 'ROLE_ACB'],
+    },
+  }, {
+    name: 'administration.fuzzy-matching',
+    url: '/fuzzy-matching',
+    component: 'chplFuzzyMatching',
+    resolve: {
+      fuzzyTypes: (authService, networkService) => {
+        'ngInject';
+
+        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+          return networkService.getFuzzyTypes();
+        }
+        return [];
+      },
+    },
+    data: {
+      title: 'CHPL Administration - Fuzzy Matching',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
+  }, {
+    name: 'administration.jobs',
+    url: '/jobs',
+    component: 'chplJobsWrapperBridge',
+    data: {
+      title: 'CHPL Administration - Jobs - Scheduled',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
+    },
+  }, {
+    name: 'administration.jobs.scheduled',
+    url: '/scheduled',
+    redirectTo: () => ({
+      state: 'administration.jobs',
+    }),
+  }, {
+    name: 'administration.upload',
+    url: '/upload',
+    component: 'chplUpload',
+    data: {
+      title: 'CHPL Administration - Upload',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
+  }, {
+    name: 'administration.svaps',
+    url: '/svaps',
+    component: 'chplSvapsPage',
+    resolve: {
+      svaps: (authService, networkService) => {
+        'ngInject';
+
+        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+          return networkService.getSvaps();
+        }
+        return [];
+      },
+      availableCriteria: (networkService) => {
+        'ngInject';
+
+        return networkService.getCertificationCriteriaForSvap();
+      },
+    },
+    data: {
+      title: 'CHPL Administration - SVAPs',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
+  }, {
+    name: 'login',
+    url: '/login',
+    component: 'chplLoginPageBridge',
+    resolve: { returnTo },
+    data: { title: 'CHPL Login' },
+  },
+];
 
 function administrationStatesConfig($stateProvider) {
   'ngInject';
 
-  states.base.forEach((state) => {
+  states.forEach((state) => {
     $stateProvider.state(state);
   });
 }

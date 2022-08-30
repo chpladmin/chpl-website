@@ -80,30 +80,6 @@
         });
         $httpBackend.flush();
       });
-
-      it('should return a promise with the data if a POST doesn\'t return an object', () => {
-        $httpBackend.expectPOST(/certified_products\/pending\/1\/beta\/confirm/).respond(200, 'response');
-        networkService.confirmPendingCp({ pendingListing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
-          response.then((reject) => {
-            expect(reject).toEqual('response');
-          });
-        }, () => {
-          // noop
-        });
-        $httpBackend.flush();
-      });
-
-      it('should return a promise with the data if a POST responds with a failure', () => {
-        $httpBackend.expectPOST(/certified_products\/pending\/1\/beta\/confirm/).respond(500, 'response');
-        networkService.confirmPendingCp({ pendingListing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
-          response.then((reject) => {
-            expect(reject).toEqual('response');
-          });
-        }, () => {
-          // noop
-        });
-        $httpBackend.flush();
-      });
     });
 
     describe('with respect to caching', () => {
@@ -169,14 +145,6 @@
       it('should confirmListing', () => {
         $httpBackend.expectPOST(/^\/rest\/listings\/pending\/1$/).respond(200, { data: 'response' });
         networkService.confirmListing({ listing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should confirmPendingCp', () => {
-        $httpBackend.expectPOST(/^\/rest\/certified_products\/pending\/1\/beta\/confirm$/).respond(200, { data: 'response' });
-        networkService.confirmPendingCp({ pendingListing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -901,16 +869,8 @@
         $httpBackend.flush();
       });
 
-      it('should getPendingListings', () => {
-        $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/metadata$/).respond(200, { data: 'response' });
-        networkService.getPendingListings().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getPendingListingById', () => {
-        $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/id$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/listings\/pending\/id$/).respond(200, { data: 'response' });
         networkService.getPendingListingById('id').then((response) => {
           expect(response.data).toEqual('response');
         });
