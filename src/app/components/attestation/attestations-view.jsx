@@ -44,7 +44,7 @@ function ChplAttestationsView(props) {
   const [attestationsOpen, setAttestationsOpen] = useState(false);
   const [attestations, setAttestations] = useState([]);
   const [developer, setDeveloper] = useState({});
-    const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
+  const { data: { submittablePeriod = {}, canCreateException = false, attestations: developerAttestations = [] } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_DEVELOPER']) });
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
   const classes = useStyles();
 
@@ -96,7 +96,7 @@ function ChplAttestationsView(props) {
               {' '}
               was submitted. For more information, please visit the
               {' '}
-              <a href="https://www.healthit.gov/sites/default/files/page/2022-02/Attestations_Fact-Sheet.pdf">Attestations Fact Sheet</a>
+              <a href="https://www.healthit.gov/sites/default/files/2022-08/Attestations-Condition-Resource-Guide.pdf">Attestations Resource Guide</a>
               .
             </Typography>
             { attestations.filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData()).length > 0

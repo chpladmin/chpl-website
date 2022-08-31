@@ -36,10 +36,6 @@ export default class NetworkService {
     return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
   }
 
-  confirmPendingCp(request) {
-    return this.apiPOST(`/certified_products/pending/${request.pendingListing.id}/beta/confirm`, request);
-  }
-
   confirmPendingSurveillance(surveillance) {
     return this.apiPOST('/surveillance/pending/confirm', surveillance);
   }
@@ -383,15 +379,7 @@ export default class NetworkService {
     return this.apiGET('/statistics/participant_professional_experience_count');
   }
 
-  getPendingListings() {
-    return this.apiGET('/certified_products/pending/metadata');
-  }
-
   getPendingListingById(id) {
-    return this.apiGET(`/certified_products/pending/${id}`);
-  }
-
-  getPendingListingByIdBeta(id) {
     return this.apiGET(`/listings/pending/${id}`);
   }
 

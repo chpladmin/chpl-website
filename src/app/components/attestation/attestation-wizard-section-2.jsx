@@ -14,12 +14,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  array,
-  func,
-} from 'prop-types';
+import { array, func, string } from 'prop-types';
 
-import interpretLink from './attestation-util';
+import { interpretEmphatic, interpretLink } from './attestation-util';
 
 const useStyles = makeStyles({
   nonCaps: {
@@ -31,7 +28,7 @@ const useStyles = makeStyles({
 });
 
 function ChplAttestationWizardSection2(props) {
-  const { dispatch } = props;
+  const { dispatch, instructions } = props;
   const [sections, setSections] = useState([]);
   const classes = useStyles();
 
@@ -95,9 +92,9 @@ function ChplAttestationWizardSection2(props) {
   };
 
   const getQuestion = (section, item) => (
-    <>
-      <FormControl key={item.id} component="fieldset">
-        <FormLabel className={classes.nonCaps}>{interpretLink(item.question.question)}</FormLabel>
+    <div key={item.id}>
+      <FormControl component="fieldset">
+        <FormLabel className={classes.nonCaps}>{ interpretLink(item.question.question) }</FormLabel>
         <RadioGroup
           className={classes.radioGroup}
           name={`response-${item.id}`}
@@ -121,10 +118,10 @@ function ChplAttestationWizardSection2(props) {
         .map((child) => item.submittedResponses
           .some((resp) => resp.id === child.parentResponse.id)
              && (
-               <Card>
+               <Card key={`${item.id}-sub-questions`}>
                  <CardContent>
-                   <FormControl key={`${item.id}-sub-questions`} component="fieldset">
-                     <FormLabel className={classes.nonCaps}>{ child.question.question }</FormLabel>
+                   <FormControl component="fieldset">
+                     <FormLabel className={classes.nonCaps}>{ interpretEmphatic(child.question.question) }</FormLabel>
                      <FormGroup>
                        { child.question.allowedResponses
                          .sort((a, b) => a.sortOrder - b.sortOrder)
@@ -146,7 +143,7 @@ function ChplAttestationWizardSection2(props) {
                  </CardContent>
                </Card>
              ))}
-    </>
+    </div>
   );
 
   const getSection = (section, idx) => (
@@ -178,9 +175,12 @@ function ChplAttestationWizardSection2(props) {
           <Typography gutterBottom variant="body1">
             Select only one response for each statement.
           </Typography>
-          <Typography variant="body1">
-            If &quot;Noncompliant&quot; is selected, you may, but are not required to, indicate the status of a Corrective Action Plan (CAP) under the Certification Program.
-          </Typography>
+          { instructions
+            && (
+              <Typography variant="body1">
+                { instructions }
+              </Typography>
+            )}
           <Divider />
           { sections.sort((a, b) => a.sortOrder - b.sortOrder).map((section, idx) => getSection(section, idx)) }
         </CardContent>
@@ -193,5 +193,10 @@ export default ChplAttestationWizardSection2;
 
 ChplAttestationWizardSection2.propTypes = {
   sections: array.isRequired, // eslint-disable-line react/forbid-prop-types
+  instructions: string,
   dispatch: func.isRequired,
+};
+
+ChplAttestationWizardSection2.defaultProps = {
+  instructions: '',
 };

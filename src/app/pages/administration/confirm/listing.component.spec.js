@@ -20,7 +20,6 @@
       angular.mock.module('chpl.administration', 'chpl.mock', ($provide) => {
         $provide.decorator('networkService', ($delegate) => ({
           ...$delegate,
-          confirmPendingCp: jasmine.createSpy('confirmPendingCp'),
           getAccessibilityStandards: jasmine.createSpy('getAccessibilityStandards'),
           getAtls: jasmine.createSpy('getAtls'),
           getDeveloper: jasmine.createSpy('getDeveloper'),
@@ -34,7 +33,6 @@
           getTestProcedures: jasmine.createSpy('getTestProcedures'),
           getTestStandards: jasmine.createSpy('getTestStandards'),
           getUcdProcesses: jasmine.createSpy('getUcdProcesses'),
-          rejectPendingCp: jasmine.createSpy('rejectPendingCp'),
         }));
       });
 
@@ -44,7 +42,6 @@
         $q = _$q_;
         Mock = _Mock_;
         networkService = _networkService_;
-        networkService.confirmPendingCp.and.returnValue($q.when({}));
         networkService.getAccessibilityStandards.and.returnValue($q.when({}));
         networkService.getAtls.and.returnValue($q.when({}));
         networkService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
@@ -58,7 +55,6 @@
         networkService.getTestProcedures.and.returnValue($q.when({}));
         networkService.getTestStandards.and.returnValue($q.when({}));
         networkService.getUcdProcesses.and.returnValue($q.when({}));
-        networkService.rejectPendingCp.and.returnValue($q.when({}));
 
         scope = $rootScope.$new();
         scope.listing = mock.listing;
