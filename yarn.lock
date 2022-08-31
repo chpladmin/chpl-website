@@ -6190,7 +6190,7 @@ __metadata:
     browser-sync-spa: ~1.0.3
     chromedriver: ^104.0.0
     clean-webpack-plugin: ^0.1.19
-    concurrently: ^3.6.1
+    concurrently: ^7.3.0
     css-loader: ^0.28.11
     cytoscape: 2.6
     del: ~2.0.2
@@ -6729,13 +6729,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:2.6.0":
-  version: 2.6.0
-  resolution: "commander@npm:2.6.0"
-  checksum: a7d2bae5dd857a761c816617a7856352db2b8c339f314389b173f75b49010c2e8a0ec57a4d0c05d4d6eceeac5c6eca7486a4de548e592e14c869a13de5ca1b04
-  languageName: node
-  linkType: hard
-
 "commander@npm:^2.2.0, commander@npm:^2.20.0":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
@@ -6854,23 +6847,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "concurrently@npm:3.6.1"
+"concurrently@npm:^7.3.0":
+  version: 7.3.0
+  resolution: "concurrently@npm:7.3.0"
   dependencies:
-    chalk: ^2.4.1
-    commander: 2.6.0
-    date-fns: ^1.23.0
-    lodash: ^4.5.1
-    read-pkg: ^3.0.0
-    rx: 2.3.24
+    chalk: ^4.1.0
+    date-fns: ^2.16.1
+    lodash: ^4.17.21
+    rxjs: ^7.0.0
+    shell-quote: ^1.7.3
     spawn-command: ^0.0.2-1
-    supports-color: ^3.2.3
-    tree-kill: ^1.1.0
+    supports-color: ^8.1.0
+    tree-kill: ^1.2.2
+    yargs: ^17.3.1
   bin:
-    concurrent: ./src/main.js
-    concurrently: ./src/main.js
-  checksum: 2bbe488a21818330d9a71678c94f0c80bf9bcb1fe5e3bd9b117fcd95276b312a99f10071362d36a5483892e29a9bc309579ef520fb690c8c72002c174f468057
+    concurrently: dist/bin/concurrently.js
+  checksum: 5de845e4947c550a6ff74ecc80e1897109abe339fe8a7fa117e7b8978362566ac4ee070e4475bdaa6fc453f780fadb9089739a02606e27e04affaa7dd8905d2d
   languageName: node
   linkType: hard
 
@@ -7618,10 +7610,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^1.23.0":
-  version: 1.30.1
-  resolution: "date-fns@npm:1.30.1"
-  checksum: 86b1f3269cbb1f3ee5ac9959775ea6600436f4ee2b78430cd427b41a0c9fabf740b1a5d401c085f3003539a6f4755c7c56c19fbd70ce11f6f673f6bc8075b710
+"date-fns@npm:^2.16.1":
+  version: 2.29.2
+  resolution: "date-fns@npm:2.29.2"
+  checksum: 08bebcceb0a5dbadae4c55e6592b9d5c07dbd7833433c7e9a1d4a424300db32589b8b48e5979b32863c9b00a48d9bab6663e580c2a4f9f203d46cbf9113b5664
   languageName: node
   linkType: hard
 
@@ -14859,7 +14851,7 @@ export-to-csv@andlar/export-to-csv:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.0.0, lodash@npm:^4.1.0, lodash@npm:^4.11.1, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.3, lodash@npm:^4.17.4, lodash@npm:^4.2.0, lodash@npm:^4.5.1, lodash@npm:^4.7.0, lodash@npm:~4.17.10":
+"lodash@npm:^4.0.0, lodash@npm:^4.1.0, lodash@npm:^4.11.1, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.3, lodash@npm:^4.17.4, lodash@npm:^4.2.0, lodash@npm:^4.7.0, lodash@npm:~4.17.10":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -20009,13 +20001,6 @@ resolve@1.1.x:
   languageName: node
   linkType: hard
 
-"rx@npm:2.3.24":
-  version: 2.3.24
-  resolution: "rx@npm:2.3.24"
-  checksum: cb854e0e49f2d58027c3d1a75dd6a3f76c9fd8f9f899fa018f8becef5b9339b26b58a34fd502d1dcbe2250fb2bdbd94e92f04a9618615a8bfd2d7a3422a55c60
-  languageName: node
-  linkType: hard
-
 "rxjs@npm:^5.5.6":
   version: 5.5.12
   resolution: "rxjs@npm:5.5.12"
@@ -20031,6 +20016,15 @@ resolve@1.1.x:
   dependencies:
     tslib: ^1.9.0
   checksum: bc334edef1bb8bbf56590b0b25734ba0deaf8825b703256a93714308ea36dff8a11d25533671adf8e104e5e8f256aa6fdfe39b2e248cdbd7a5f90c260acbbd1b
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^7.0.0":
+  version: 7.5.6
+  resolution: "rxjs@npm:7.5.6"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: fc05f01364a74dac57490fb3e07ea63b422af04017fae1db641a009073f902ef69f285c5daac31359620dc8d9aee7d81e42b370ca2a8573d1feae0b04329383b
   languageName: node
   linkType: hard
 
@@ -20404,6 +20398,13 @@ resolve@1.1.x:
   version: 3.0.0
   resolution: "shebang-regex@npm:3.0.0"
   checksum: 1a2bcae50de99034fcd92ad4212d8e01eedf52c7ec7830eedcf886622804fe36884278f2be8be0ea5fde3fd1c23911643a4e0f726c8685b61871c8908af01222
+  languageName: node
+  linkType: hard
+
+"shell-quote@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "shell-quote@npm:1.7.3"
+  checksum: aca58e73a3a5d933d02e0bdddedc53ee14f7c2ec264f97ac915b9d4482d077a38e422aa664631d60a672cd3cdb4054eb2e6c0303f54882453dacb6483e482d34
   languageName: node
   linkType: hard
 
@@ -21608,7 +21609,7 @@ resolve@1.1.x:
   languageName: node
   linkType: hard
 
-"supports-color@npm:8.1.1":
+"supports-color@npm:8.1.1, supports-color@npm:^8.1.0":
   version: 8.1.1
   resolution: "supports-color@npm:8.1.1"
   dependencies:
@@ -22242,7 +22243,7 @@ resolve@1.1.x:
   languageName: node
   linkType: hard
 
-"tree-kill@npm:^1.1.0":
+"tree-kill@npm:^1.2.2":
   version: 1.2.2
   resolution: "tree-kill@npm:1.2.2"
   bin:
@@ -22319,7 +22320,7 @@ resolve@1.1.x:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.1, tslib@npm:^2.0.3":
+"tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
@@ -23900,6 +23901,13 @@ resolve@1.1.x:
   languageName: node
   linkType: hard
 
+"yargs-parser@npm:^21.0.0":
+  version: 21.1.1
+  resolution: "yargs-parser@npm:21.1.1"
+  checksum: ed2d96a616a9e3e1cc7d204c62ecc61f7aaab633dcbfab2c6df50f7f87b393993fe6640d017759fe112d0cb1e0119f2b4150a87305cc873fd90831c6a58ccf1c
+  languageName: node
+  linkType: hard
+
 "yargs-parser@npm:^4.2.0":
   version: 4.2.1
   resolution: "yargs-parser@npm:4.2.1"
@@ -24030,6 +24038,21 @@ resolve@1.1.x:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: 451aac46f82da776f436018feed0244bc0e7b4355f7e397bcb53d34c691b177c0d71db3dda9653760e1bc240254d8b763a252ff918ef9e235a8d202e2909c4eb
+  languageName: node
+  linkType: hard
+
+"yargs@npm:^17.3.1":
+  version: 17.5.1
+  resolution: "yargs@npm:17.5.1"
+  dependencies:
+    cliui: ^7.0.2
+    escalade: ^3.1.1
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.3
+    y18n: ^5.0.5
+    yargs-parser: ^21.0.0
+  checksum: 00d58a2c052937fa044834313f07910fd0a115dec5ee35919e857eeee3736b21a4eafa8264535800ba8bac312991ce785ecb8a51f4d2cc8c4676d865af1cfbde
   languageName: node
   linkType: hard
 
