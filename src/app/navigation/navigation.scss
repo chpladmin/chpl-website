@@ -1,18 +1,21 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
 
+.ui-upgrade {
+    background: #c6d5e5 !important;
+    color: #012a68 !important;
+}
+
 .navbar {
     transition: all .4s ease;
 }
 
 .navbar-inverse .navbar-nav>li>a {
     font-family: "Oswald", sans-serif;
-    color: #ffdd3c;
+    color: white;
 }
 
 .navbar-inverse {
-    background-image: url("../../assets/images/CHPL_Header.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: #012a68;
     box-shadow: none;
     min-height: 140px;
 }
@@ -162,7 +165,7 @@
     .dropdown-menu {
         padding: 10px;
         border: 3px solid #0070c9;
-        
+
         p {
             margin-left: 2px;
             margin-right: 2px;

@@ -1,5 +1,5 @@
 <header>
-  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" chpl-add-class-on-scroll offset="50" scroll-class="navbar-scrolled" ng-if="vm.navShown">
+  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" chpl-add-class-on-scroll offset="50" scroll-class="navbar-scrolled" ng-if="vm.navShown">
     <chpl-non-prod-indicator-bridge></chpl-non-prod-indicator-bridge>
     <div class="container-fluid">
       <div class="navbar-header">
@@ -9,26 +9,29 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href ng-click="vm.clear()"><img src="../../assets/images/CHPL_Logo_03.png" alt="Certified Health IT Product List" class="img-responsive"></img></a>
+        <a class="navbar-brand" href ng-click="vm.clear()">
+          <img src="../../assets/images/CHPL-White-Logo.png" alt="Certified Health IT Product List" class="img-responsive" feature-flag="ui-upgrade" feature-flag-hide></img>
+          <img src="../../assets/images/CHPL-Blue-Logo.png" alt="Certified Health IT Product List" class="img-responsive" feature-flag="ui-upgrade"></img>
+        </a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav navbar-right nav-main">
-          <li><a ui-sref="search">Search CHPL <i class="fa fa-search"></i></a></li>
+          <li><a ui-sref="search" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}">Search CHPL <i class="fa fa-search"></i></a></li>
           <li class="dropdown" uib-dropdown is-open="vm.widgetExpanded" auto-close="disabled">
-            <a href class="dropdown-toggle" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID Creator <span class="fa" ng-class="vm.widgetExpanded ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
+            <a href class="dropdown-toggle" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID Creator <span class="fa" ng-class="vm.widgetExpanded ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
             <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="widget-toggle" id="widget-dropdown">
               <ai-cms-widget-display widget="vm.widget"></ai-cms-widget-display>
             </div>
           </li>
           <li class="dropdown" uib-dropdown is-open="vm.compareWidgetExpanded" auto-close="disabled">
-            <a href class="dropdown-toggle" id="compare-widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.compareWidgetExpanded">Compare Products <span class="fa" ng-class="vm.compareWidgetExpanded ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
+            <a href class="dropdown-toggle" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" id="compare-widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.compareWidgetExpanded">Compare Products <span class="fa" ng-class="vm.compareWidgetExpanded ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
             <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="compare-widget-toggle" id="compare-widget-dropdown">
               <ai-compare-widget-display widget="vm.compareWidget"></ai-compare-widget-display>
             </div>
           </li>
           <li class="dropdown" uib-dropdown is-open="vm.resourcesIsOpen">
-            <a href class="dropdown-toggle" id="resource-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.resourcesIsOpen">CHPL Resources <span class="fa" ng-class="vm.resourcesIsOpen ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
+            <a href class="dropdown-toggle" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" id="resource-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.resourcesIsOpen">CHPL Resources <span class="fa" ng-class="vm.resourcesIsOpen ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="resource-toggle" id="resource-dropdown-menu">
               <li><a ui-sref="resources.overview" analytics-on="click" analytics-event="Go to Overview Page" analytics-properties="{ category: 'Navigation' }">Overview</a></li>
               <li><a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide <i class="fa fa-download text-right"></i></a></li>
@@ -40,7 +43,7 @@
             </ul>
           </li>
           <li class="dropdown" uib-dropdown is-open="vm.collectionsIsOpen">
-            <a href class="dropdown-toggle" id="shortcut-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.collectionsIsOpen">Shortcuts <span class="fa" ng-class="vm.collectionsIsOpen ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
+            <a href class="dropdown-toggle" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" id="shortcut-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.collectionsIsOpen">Shortcuts <span class="fa" ng-class="vm.collectionsIsOpen ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="shortcut-toggle" id="shortcut-dropdown-menu">
               <li><a ui-sref="collections.api-documentation" analytics-on="click" analytics-event="Go to API Info for 2015 Ed. Products Page" analytics-properties="{ category: 'Navigation' }">API Info for 2015 Ed. Products</a></li>
               <li><a ui-sref="collections.developers" analytics-on="click" analytics-event="Go to Banned Developers Page" analytics-properties="{ category: 'Navigation' }">Banned Developers</a></li>
