@@ -12,8 +12,7 @@ export const SvapsComponent = {
       this.toaster = toaster;
       this.sortCerts = utilService.sortCert;
       this.isCures = utilService.isCures;
-
-      this.options = { maxMessageCharacters: 100 };
+      this.takeActionBarAction = this.takeActionBarAction.bind(this);
     }
 
     $onChanges (changes) {
@@ -29,15 +28,6 @@ export const SvapsComponent = {
       this.svap = { criteria: [] };
       this.errors = [];
       this.isEditing = true;
-    }
-
-    canActionBar (action) {
-      if (action === 'delete') {
-        //If the current svap has an id, we can delete since it is an existing svap
-        return this.svap.svapId;
-      } else {
-        return true;
-      }
     }
 
     cancel () {
