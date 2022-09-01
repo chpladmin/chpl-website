@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -8,7 +9,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import Moment from 'react-moment';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -30,11 +31,14 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { BreadcrumbContext, FlagContext, UserContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
+  breadcrumbs: {
+    textTransform: 'none',
+  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -164,9 +168,10 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
 function ChplChangeRequest(props) {
   const $state = getAngularService('$state');
   const { isOn } = useContext(FlagContext);
+  const { append, drop } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
-  const { changeRequest: { id } } = props;
+  const { changeRequest: { id }, showBreadcrumbs } = props;
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -180,6 +185,59 @@ function ChplChangeRequest(props) {
 
   let formik;
   let save;
+
+  useEffect(() => {
+    if (showBreadcrumbs) {
+      drop('viewall.disabled');
+      drop('viewall');
+      append(
+        <Button
+          key="viewall"
+          variant="text"
+          className={classes.breadcrumbs}
+          onClick={() => props.dispatch('close')}
+        >
+          Change Requests
+        </Button>,
+      );
+      if (isEditing) {
+        drop('view.disabled');
+        append(
+          <Button
+            key="view"
+            variant="text"
+            className={classes.breadcrumbs}
+            onClick={() => setIsEditing(false)}
+          >
+            View Change Request
+          </Button>,
+        );
+        append(
+          <Button
+            key="edit.disabled"
+            variant="text"
+            className={classes.breadcrumbs}
+            disabled
+          >
+            Edit Change Request
+          </Button>,
+        );
+      } else {
+        drop('edit.disabled');
+        drop('view');
+        append(
+          <Button
+            key="view.disabled"
+            variant="text"
+            className={classes.breadcrumbs}
+            disabled
+          >
+            View Change Request
+          </Button>,
+        );
+      }
+    }
+  }, [showBreadcrumbs, isEditing]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -576,4 +634,9 @@ export default ChplChangeRequest;
 ChplChangeRequest.propTypes = {
   changeRequest: changeRequestProp.isRequired,
   dispatch: func.isRequired,
+  showBreadcrumbs: bool,
+};
+
+ChplChangeRequest.defaultProps = {
+  showBreadcrumbs: true,
 };
