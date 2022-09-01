@@ -58,12 +58,12 @@
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
-    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])"><button class="btn btn-link" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
+    <div class="text-center toggle-navigation-open" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])"><button class="btn btn-link" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" ng-click="vm.toggleNavClosed()">Hide navigation <i class="fa fa-caret-up"></i></button></div>
   </nav>
   <nav class="navbar navbar-default navbar-admin" ng-class="vm.navShown ? 'navbar-static-top' : 'navbar-fixed-top'">
-    <div class="text-center toggle-navigation-closed" ng-if="!vm.navShown">
+    <div class="text-center toggle-navigation-closed" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" ng-if="!vm.navShown">
       <chpl-non-prod-indicator-bridge></chpl-non-prod-indicator-bridge>
-      <button class="btn btn-link" ng-click="vm.toggleNavOpen()">Show navigation <i class="fa fa-caret-left"></i></button>
+      <button class="btn btn-link" ng-class="{'ui-upgrade' : vm.isOn('ui-upgrade')}" ng-click="vm.toggleNavOpen()">Show navigation <i class="fa fa-caret-left"></i></button>
     </div>
     <div class="container-fluid">
       <div class="navbar-header">
