@@ -36,15 +36,15 @@ import {
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   ...utilStyles,
   container: {
     maxHeight: '64vh',
   },
   searchContainer: {
-    backgroundColor: '#c6d5e5',
+    backgroundColor: palette.grey,
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -95,7 +95,7 @@ const useStyles = makeStyles(() => ({
   noResultsContainer: {
     padding: '16px 32px',
   },
-}));
+});
 
 function ChplChangeRequestsView(props) {
   const { disallowedFilters, bonusQuery } = props;

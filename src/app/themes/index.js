@@ -1,4 +1,5 @@
+import palette from './palette';
 import theme from './theme';
 import utilStyles from './util';
 
-export { theme, utilStyles };
+export { palette, theme, utilStyles };

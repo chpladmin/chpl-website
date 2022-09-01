@@ -1,22 +1,23 @@
 import React from 'react';
 import {
-    AppBar,
-    Toolbar,
-    Button,
-    InputBase,
-    ButtonGroup,
-    makeStyles,
-    ThemeProvider,
+  AppBar,
+  Toolbar,
+  Button,
+  InputBase,
+  ButtonGroup,
+  makeStyles,
+  ThemeProvider,
 }
-    from '@material-ui/core';
+from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import RestoreIcon from '@material-ui/icons/Restore';
 import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined';
-import theme from '../../../themes/theme';
+
 import SgAdvancedSearch from './sg-advanced-search';
 
+import { palette, theme}  from 'themes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
     ActionBarTop: {
         backgroundColor: '#000000',
         background:
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
         boxShadow:'0px 4px 8px rgb(149 157 165 / 10%)',
     },
     searchContainer: {
-        backgroundColor: '#C6D5E5',
+        backgroundColor: palette.grey,
         padding: '16px',
         display: 'grid',
         gap:'16px',
@@ -61,7 +62,7 @@ const useStyles = makeStyles(() => ({
     iconSpacing: {
         marginLeft: '4px',
     },
-}));
+});
 
 const SgSearchBar = () => {
     const classes = useStyles();

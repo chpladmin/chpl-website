@@ -13,11 +13,11 @@ import {
     Typography,
     makeStyles,
 } from '@material-ui/core';
-
 import SearchIcon from '@material-ui/icons/Search';
 
-const useStyles = makeStyles({
+import { palette } from 'themes';
 
+const useStyles = makeStyles({
     advancedSearchContainer: {
         background: '#E7F0F8',
         display: 'grid',
@@ -63,7 +63,7 @@ const useStyles = makeStyles({
         backgroundColor: '#ffffff',
         padding: '4px',
         borderRadius: '4px',
-        border: '1px solid #C6D5E5',
+        border: `1px solid ${palette.grey}`,
         width: '100%',
         alignItems: 'center',
         display: 'grid',
