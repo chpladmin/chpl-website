@@ -3,6 +3,9 @@ module.exports = {
   coverageDirectory: 'test_reports/unit/coverage/jsx',
   coverageReporters: ['html', 'lcov', 'text-summary'], // 'json'
   moduleDirectories: ['src/app', 'node_modules'],
-  reporters: ['default', ['jest-junit', { outputDirectory: './test_reports/unit/jsx'}]],
+  reporters: [
+    ['jest-junit', { outputDirectory: './test_reports/unit/jsx'}],
+    ['jest-silent-reporter', { useDots: true }],
+  ],
   testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
 };
