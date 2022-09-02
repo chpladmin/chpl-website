@@ -2,7 +2,7 @@
 
 .ui-upgrade {
     background: var(--grey) !important;
-    color: #012a68 !important;
+    color: #001439 !important;
 }
 
 .navbar {
@@ -10,14 +10,18 @@
 }
 
 .navbar-inverse .navbar-nav>li>a {
-    font-family: "Oswald", sans-serif;
+    font-family: "Lato", sans-serif;
     color: white;
+    text-decoration: none;
+    @media (max-width: 920px) {
+        font-size: 1rem;
+    }
 }
 
 .navbar-inverse {
-    background: #012a68;
+    background: #001439;
     box-shadow: none;
-    min-height: 140px;
+    min-height: 10rem;
 }
 
 .navbar-inverse .navbar-nav>.active>a,
@@ -27,12 +31,14 @@
     background: #0070c9;
     background-image: none;
 }
-
+.navbar-brand {
+    padding: 0;
+}
 .navbar-brand img {
     transition: all .4s ease;
 
     @media (min-width: 767px) {
-        margin: 10px 40px;
+        padding: 1rem 0 0 1rem;
     }
 }
 
@@ -44,13 +50,13 @@
 .navbar-scrolled {
     @media (min-width: 767px) {
         min-height: 0 !important;
-
+       }
         .navbar-brand img {
-            max-height: 40px;
+            max-height: 90%;
             margin: 0 !important;
+            padding-top: 12px;
         }
     }
-}
 
 .navbar-admin {
     background: #fff;
@@ -88,7 +94,7 @@
 
     .navbar-nav > li > a {
         line-height: 20px;
-        padding-top: 10px;
+        padding-top: 0px;
         padding-bottom: 10px;
     }
 }
@@ -101,10 +107,13 @@
     }
 
     .navbar-fixed-top .nav-main {
-        position: absolute;
-        bottom: 0;
-        right: 15px;
-    }
+        padding-top: 1rem;
+        }
+    
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form .nav-main {
+    top: 4rem;
 }
 
 .navigation-shown {
@@ -133,22 +142,27 @@
     left: 0;
     right: 0;
     bottom: 0;
+    top:20;
     z-index: -1;
+    text-align: right;
 
     .btn-link {
         color: #fff;
+        font-size: 1rem;
     }
 }
 
 .toggle-navigation-closed {
     position: relative;
     top: 0;
-    background-color: #012a68;
+    background-color: #001439;
+    text-align: right;
 
     .btn-link,
     .btn-link:focus,
     .btn-link:hover {
         color: #fff;
+        font-size: 1rem;
     }
 }
 
@@ -223,4 +237,14 @@ footer {
 
 .announcement.badge {
     white-space: inherit;
+}
+
+.navbar-static-top {
+    margin-top: -4rem;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: underline;
 }
