@@ -18,12 +18,11 @@ const compareObject = (before, after, lookup, root = 'root') => {
         return before[key] !== after[key] ? getMessage(before, after, root, key, lookup) : '';
       case 'object':
         if (before[key] !== null) {
-          const messages = compareObject(before[key], after[key], lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
+          const messages = compareObject(before[key], after[key], lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
           return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
-        } else {
-          console.debug(`compareObject: ${root}.${key}: ${before[key]} => ${after[key]}`);
-          return undefined;
         }
+        console.debug(`compareObject: ${root}.${key}: ${before[key]} => ${after[key]}`);
+        return undefined;
       default:
         return `${typeof before[key]} - ${getMessage(before, after, root, key, lookup)}`;
     }
@@ -31,4 +30,4 @@ const compareObject = (before, after, lookup, root = 'root') => {
   return diffs;
 };
 
-export { compareObject };
+export { compareObject }; // eslint-disable-line import/prefer-default-export

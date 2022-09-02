@@ -3,33 +3,13 @@ import { compareObject } from 'pages/reports/reports.v2.service';
 const lookup = {
   'attestations.id': {
     message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
-  }
-};
-
-const getMessage = (before, after, root, key) => {
-  if (lookup[`${root}.${key}`]) {
-    return lookup[`${root}.${key}`].message(before, after);
-  }
-  return `${root}.${key}: ${before[key]} => ${after[key]}`;
-};
-
-const compareObject = (before, after, root = 'root') => {
-  if (before === null || after === null) { return []; }
-  const keys = Object.keys(before);
-  const diffs = keys.map((key) => {
-    switch (typeof before[key]) {
-      case 'string':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'number':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'object':
-        const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
-        return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
-      default:
-        return `${typeof before[key]} - ${getMessage(before, after, root, key)}`;
-    }
-  });
-  return diffs.filter((msg) => !!msg);
+  },
+  'attestations.status': {
+    message: (before, after) => `Attestations submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+  },
+  'attestations.statusText': {
+    message: () => undefined,
+  },
 };
 
 const parseAttestationData = (before, after) => {
