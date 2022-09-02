@@ -1,3 +1,5 @@
+import { compareObject } from 'pages/reports/reports.v2.service';
+
 const lookup = {
   'attestations.id': {
     message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
@@ -34,10 +36,17 @@ const parseAttestationData = (before, after) => {
   if (!before || !after || (before.length === 0 && after.length === 0)) {
     return [];
   }
-  if (before.length < after.length) {
+  if (before.length === 0 && after.length === 1) {
     return [`<li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li>`];
   }
-  return compareObject(before[0], after[0], 'attestations').map((msg) => `<li>${msg}</li>`);
+  if (before.length === after.length) {
+    const sortedBefore = before.sort((a, b) => a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1);
+    const sortedAfter = after.sort((a, b) => a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1);
+    return sortedBefore
+      .map((val, idx) => compareObject(val, sortedAfter[idx], lookup, 'attestations'))
+      .filter((msgs) => msgs.length > 0)
+      .map((msg) => `<li>${msg}</li>`);
+  }
 };
 
 export const ReportsDevelopersComponent = {
