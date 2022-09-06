@@ -68,8 +68,17 @@ const lookup = {
   'root.address.addressId': {
     message: () => undefined,
   },
+  'root.address.lastModifiedDate': {
+    message: () => undefined,
+  },
   'root.address.line1': {
     message: (before, after) => comparePrimitive(before.line1, after.line1, 'Street Line 1'),
+  },
+  'root.address.streetLineOne': {
+    message: (before, after) => comparePrimitive(before.streetLineOne, after.streetLineOne, 'Street Line 1'),
+  },
+  'root.address.streetLineTwo': {
+    message: (before, after) => comparePrimitive(before.streetLineTwo, after.streetLineTwo, 'Street Line 2'),
   },
   'root.address.line2': {
     message: (before, after) => comparePrimitive(before.line2, after.line2, 'Street Line 2'),
@@ -95,8 +104,17 @@ const lookup = {
   'root.contact.friendlyName': {
     message: (before, after) => comparePrimitive(before.friendlyName, after.friendlyName, 'Friendly Name'),
   },
+  'root.contact.firstName': {
+    message: (before, after) => comparePrimitive(before.firstName, after.firstName, 'First Name'),
+  },
   'root.contact.fullName': {
     message: (before, after) => comparePrimitive(before.fullName, after.fullName, 'Full Name'),
+  },
+  'root.contact.lastName': {
+    message: (before, after) => comparePrimitive(before.lastName, after.lastName, 'Last Name'),
+  },
+  'root.contact.id': {
+    message: () => undefined,
   },
   'root.contact.email': {
     message: (before, after) => comparePrimitive(before.email, after.email, 'Email'),
