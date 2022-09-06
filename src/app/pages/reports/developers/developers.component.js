@@ -21,6 +21,37 @@ const parseAttestationData = (before, after) => {
   return undefined;
 };
 
+
+const compareTransparencyAttestation = (before, after) => {
+  if (!before.transparencyAttestation && after.transparencyAttestation) {
+    // Transparency attestation was added
+    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation added: ${after.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
+  }
+  if (before.transparencyAttestation && !after.transparencyAttestation) {
+    // Transparency attestation was removed - not sure this is possible
+    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation removed. Was: ${before.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
+  }
+  if (before.transparencyAttestation && after.transparencyAttestation && before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
+    // Transparency attestation was changed
+    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation changed: ${after.transparencyAttestation.transparencyAttestation}. Was: ${before.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
+  }
+  return undefined;
+};
+
+const compareTransparencyAttestations = (before, after) => {
+  const changes = [];
+  // This will get all the changes, since these arrays should alweays have the same number of elements based
+  // on the acbs
+  before.forEach((beforeTA) => {
+    const afterTA = after.find((ta) => ta.acbId === beforeTA.acbId);
+    const change = compareTransparencyAttestation(beforeTA, afterTA);
+    if (change) {
+      changes.push(change);
+    }
+  });
+  return changes;
+};
+
 const lookup = {
   'attestations.id': {
     message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
@@ -61,6 +92,9 @@ const lookup = {
   'root.contact': {
     message: () => 'Contact changes:',
   },
+  'root.contact.friendlyName': {
+    message: (before, after) => comparePrimitive(before.friendlyName, after.friendlyName, 'Friendly Name'),
+  },
   'root.contact.fullName': {
     message: (before, after) => comparePrimitive(before.fullName, after.fullName, 'Full Name'),
   },
@@ -82,6 +116,9 @@ const lookup = {
   'root.lastModifiedDate': {
     message: () => undefined,
   },
+  'root.lastModifiedUser': {
+    message: () => undefined,
+  },
   'root.name': {
     message: (before, after) => comparePrimitive(before.name, after.name, 'Name'),
   },
@@ -91,39 +128,12 @@ const lookup = {
   'root.statusEvents': {
     message: (before, after) => `root.statusEvents: ${before} => ${after}`,
   },
+  'root.transparencyAttestationMappings': {
+    message: compareTransparencyAttestations,
+  },
   'root.website': {
     message: (before, after) => comparePrimitive(before.website, after.website, 'Website'),
   },
-};
-
-const compareTransparencyAttestation = (before, after) => {
-  if (!before.transparencyAttestation && after.transparencyAttestation) {
-    // Transparency attestation was added
-    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation added: ${after.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
-  }
-  if (before.transparencyAttestation && !after.transparencyAttestation) {
-    // Transparency attestation was removed - not sure this is possible
-    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation removed. Was: ${before.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
-  }
-  if (before.transparencyAttestation && after.transparencyAttestation && before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
-    // Transparency attestation was changed
-    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation changed: ${after.transparencyAttestation.transparencyAttestation}. Was: ${before.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
-  }
-  return undefined;
-};
-
-const compareTransparencyAttestations = (before, after) => {
-  const changes = [];
-  // This will get all the changes, since these arrays should alweays have the same number of elements based
-  // on the acbs
-  before.forEach((beforeTA) => {
-    const afterTA = after.find((ta) => ta.acbId === beforeTA.acbId);
-    const change = compareTransparencyAttestation(beforeTA, afterTA);
-    if (change) {
-      changes.push(change);
-    }
-  });
-  return changes;
 };
 
 const isTransparencyAttestationObjectFormat = (attestationMappings) => attestationMappings.reduce((acc, curr) => acc || (typeof curr.transparencyAttestation === 'object' && curr.transparencyAttestation !== null), false);
