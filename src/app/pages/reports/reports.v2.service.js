@@ -6,28 +6,66 @@ const getMessage = (before, after, root, key, lookup) => {
   return undefined;
 };
 
+const findType = (before, after) => {
+  if (typeof before === 'boolean' || typeof after === 'boolean') {
+    return 'primitive';
+  }
+  if (!before && after) {
+    return 'added';
+  }
+  if (before && !after) {
+    return 'deleted';
+  }
+  if (!before && !after) {
+    return 'no-change';
+  }
+  if (typeof before !== 'object') {
+    return 'primitive';
+  }
+  if (Array.isArray(before)) {
+    return 'array';
+  }
+  return 'object';
+};
+
 const compareObject = (before, after, lookup, root = 'root') => {
   const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
   const diffs = keys.map((key) => {
-    switch (typeof before[key]) {
-      case 'boolean':
+    switch (findType(before[key], after[key])) {
+      case 'primitive':
         return before[key] !== after[key] ? getMessage(before, after, root, key, lookup) : '';
-      case 'string':
-        return before[key] !== after[key] ? getMessage(before, after, root, key, lookup) : '';
-      case 'number':
-        return before[key] !== after[key] ? getMessage(before, after, root, key, lookup) : '';
-      case 'object':
-        if (before[key] !== null) {
-          const messages = compareObject(before[key], after[key], lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
-          return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
-        }
-        console.debug(`compareObject: ${root}.${key}: ${before[key]} => ${after[key]}`);
+      case 'added':
+        console.debug(`compareObject.added: ${root}.${key}: ${before[key]} => ${after[key]}`);
         return undefined;
-      default:
-        return `${typeof before[key]} - ${getMessage(before, after, root, key, lookup)}`;
+      case 'deleted':
+        console.debug(`compareObject.deleted: ${root}.${key}: ${before[key]} => ${after[key]}`);
+        return undefined;
+      case 'no-change':
+        // console.debug(`compareObject.no-change: ${root}.${key}: ${before[key]} => ${after[key]}`);
+        return undefined;
+      case 'array':
+        // console.debug(`compareObject.array: ${root}.${key}: ${before[key]} => ${after[key]}`);
+        return getMessage(before[key], after[key], root, key, lookup);
+      case 'object':
+        const messages = compareObject(before[key], after[key], lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
+        return messages.length > 0 ? (lookup[`${root}.${key}`].message() + `<ul>${messages.join('')}</ul>`) : '';
+        // no default
     }
   }).filter((msg) => !!msg);
   return diffs;
 };
 
-export { compareObject }; // eslint-disable-line import/prefer-default-export
+const comparePrimitive = (before, after, title) => {
+  if (!before && after) {
+    return `${title} added: ${after}`;
+  }
+  if (before && !after) {
+    return `${title} removed: ${before}`;
+  }
+  return `${title} changed from ${before} to ${after}`;
+};
+
+export {
+  compareObject,
+  comparePrimitive,
+};

@@ -1,4 +1,25 @@
-import { compareObject } from 'pages/reports/reports.v2.service';
+import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+
+const parseAttestationData = (before, after) => {
+  if (!before || !after || (before.length === 0 && after.length === 0)) {
+    return [];
+  }
+  if (before.length === 0 && after.length === 1) {
+    return [`Attestation changes<ul><li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li></ul>`];
+  }
+  if (before.length === after.length) {
+    const sortedBefore = before.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
+    const sortedAfter = after.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
+    const changes = sortedBefore
+          .map((val, idx) => compareObject(val, sortedAfter[idx], lookup, 'attestations'))
+          .filter((msgs) => msgs.length > 0)
+          .map((msg) => `<li>${msg}</li>`);
+    if (changes && changes.length > 0) {
+      return `Attestation changes<ul>${changes.join('')}</ul>`;
+    }
+  }
+  return [];
+};
 
 const lookup = {
   'attestations.id': {
@@ -10,24 +31,60 @@ const lookup = {
   'attestations.statusText': {
     message: () => undefined,
   },
-};
-
-const parseAttestationData = (before, after) => {
-  if (!before || !after || (before.length === 0 && after.length === 0)) {
-    return [];
-  }
-  if (before.length === 0 && after.length === 1) {
-    return [`<li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li>`];
-  }
-  if (before.length === after.length) {
-    const sortedBefore = before.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
-    const sortedAfter = after.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
-    return sortedBefore
-      .map((val, idx) => compareObject(val, sortedAfter[idx], lookup, 'attestations'))
-      .filter((msgs) => msgs.length > 0)
-      .map((msg) => `<li>${msg}</li>`);
-  }
-  return [];
+  'root.address': {
+    message: () => 'Address changes:',
+  },
+  'root.address.addressId': {
+    message: () => undefined,
+  },
+  'root.address.line1': {
+    message: (before, after) => comparePrimitive(before.line1, after.line1, 'Street Line 1'),
+  },
+  'root.address.line2': {
+    message: (before, after) => comparePrimitive(before.line2, after.line2, 'Street Line 2'),
+  },
+  'root.address.city': {
+    message: (before, after) => comparePrimitive(before.city, after.city, 'City'),
+  },
+  'root.address.state': {
+    message: (before, after) => comparePrimitive(before.state, after.state, 'State'),
+  },
+  'root.address.zipcode': {
+    message: (before, after) => comparePrimitive(before.zipcode, after.zipcode, 'Zipcode'),
+  },
+  'root.address.country': {
+    message: (before, after) => comparePrimitive(before.country, after.country, 'Country'),
+  },
+  'root.attestations': {
+    message: parseAttestationData,
+  },
+  'root.contact': {
+    message: () => 'Contact changes:',
+  },
+  'root.contact.fullName': {
+    message: (before, after) => comparePrimitive(before.fullName, after.fullName, 'Full Name'),
+  },
+  'root.contact.email': {
+    message: (before, after) => comparePrimitive(before.email, after.email, 'Email'),
+  },
+  'root.contact.phoneNumber': {
+    message: (before, after) => comparePrimitive(before.phoneNumber, after.phoneNumber, 'Phone Number'),
+  },
+  'root.contact.title': {
+    message: (before, after) => comparePrimitive(before.title, after.title, 'Title'),
+  },
+  'root.lastModifiedDate': {
+    message: () => undefined,
+  },
+  'root.name': {
+    message: (before, after) => comparePrimitive(before.name, after.name, 'Name'),
+  },
+  'root.statusEvents': {
+    message: (before, after) => `root.statusEvents: ${before} => ${after}`,
+  },
+  'root.website': {
+    message: (before, after) => comparePrimitive(before.website, after.website, 'Website'),
+  },
 };
 
 const compareTransparencyAttestation = (before, after) => {
@@ -166,6 +223,8 @@ const ReportsDevelopersComponent = {
         if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
           activity.action = `Updated developer "${item.newData.name}"`;
           activity.details = [];
+          activity.recursedDetails = compareObject(item.originalData, item.newData, lookup);
+          console.log(activity.recursedDetails);
           for (j = 0; j < simpleFields.length; j += 1) {
             change = this.ReportService.compareItem(item.originalData, item.newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
             if (change) {
@@ -207,8 +266,8 @@ const ReportsDevelopersComponent = {
           }
 
           const attestationChanges = parseAttestationData(item.originalData.attestations, item.newData.attestations);
-          if (attestationChanges && attestationChanges.length > 0) {
-            activity.details.push(`Attestation changes<ul>${attestationChanges.join('')}</ul>`);
+          if (attestationChanges) {
+            activity.details.push(attestationChanges);
           }
 
           let foundEvents = false;
@@ -274,6 +333,7 @@ const ReportsDevelopersComponent = {
         }
         meta.action = activity.action;
         meta.details = activity.details;
+        meta.recursedDetails = activity.recursedDetails;
         meta.csvDetails = activity.details.join('\n');
       });
     }
