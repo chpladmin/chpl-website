@@ -2,7 +2,7 @@ import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.servic
 
 const parseAttestationData = (before, after) => {
   if (!before || !after || (before.length === 0 && after.length === 0)) {
-    return [];
+    return undefined;
   }
   if (before.length === 0 && after.length === 1) {
     return [`Attestation changes<ul><li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li></ul>`];
@@ -18,7 +18,7 @@ const parseAttestationData = (before, after) => {
       return `Attestation changes<ul>${changes.join('')}</ul>`;
     }
   }
-  return [];
+  return undefined;
 };
 
 const lookup = {
@@ -73,11 +73,20 @@ const lookup = {
   'root.contact.title': {
     message: (before, after) => comparePrimitive(before.title, after.title, 'Title'),
   },
+  'root.deleted': {
+    message: (before, after) => comparePrimitive(before.deleted, after.deleted, 'Deleted'),
+  },
+  'root.developerCode': {
+    message: (before, after) => comparePrimitive(before.developerCode, after.developerCode, 'Developer Code'),
+  },
   'root.lastModifiedDate': {
     message: () => undefined,
   },
   'root.name': {
     message: (before, after) => comparePrimitive(before.name, after.name, 'Name'),
+  },
+  'root.selfDeveloper': {
+    message: (before, after) => comparePrimitive(before.selfDeveloper, after.selfDeveloper, 'Self-developer'),
   },
   'root.statusEvents': {
     message: (before, after) => `root.statusEvents: ${before} => ${after}`,

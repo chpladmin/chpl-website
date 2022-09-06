@@ -10,17 +10,17 @@ const findType = (before, after) => {
   if (typeof before === 'boolean' || typeof after === 'boolean') {
     return 'primitive';
   }
-  if (!before && after) {
-    return 'added';
+  if (before && after && typeof before !== 'object') {
+    return 'primitive';
+  }
+  if (!before && after && typeof after !== 'object') {
+    return 'primitive';
   }
   if (before && !after) {
     return 'deleted';
   }
   if (!before && !after) {
     return 'no-change';
-  }
-  if (typeof before !== 'object') {
-    return 'primitive';
   }
   if (Array.isArray(before)) {
     return 'array';
