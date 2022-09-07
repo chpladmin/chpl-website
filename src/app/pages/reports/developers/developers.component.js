@@ -1,11 +1,12 @@
 import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import { getDisplayDateFormat } from 'services/date-util';
 
 const parseAttestationData = (before, after) => {
   if (!before || !after || (before.length === 0 && after.length === 0)) {
     return undefined;
   }
   if (before.length === 0 && after.length === 1) {
-    return [`Attestation changes<ul><li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li></ul>`];
+    return `Attestation changes<ul><li>Attestations submitted for Attestation Period ending on ${after[0].attestationPeriod.periodEnd}</li></ul>`;
   }
   if (before.length === after.length) {
     const sortedBefore = before.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
@@ -49,15 +50,48 @@ const compareTransparencyAttestations = (before, after) => {
       changes.push(change);
     }
   });
-  return changes;
+  if (changes && changes.length > 0) {
+    return `Transparency Attestation changes<ul>${changes.join('')}</ul>`;
+  }
+  return undefined;
+};
+
+const compareStatusEvents = (initialBefore, initialAfter) => {
+  const changes = [];
+  let b = 0;
+  let a = 0;
+  const before = initialBefore.sort((x, y) => x.statusDate - y.statusDate);
+  const after = initialAfter.sort((x, y) => x.statusDate - y.statusDate);
+  while (b < before.length || a < after.length) {
+    if (before[b]?.statusDate === after[a]?.statusDate) {
+      const diffs = compareObject(before[b], after[a], lookup)
+            .filter((msgs) => msgs.length > 0)
+            .map((msg) => `<li>${msg}</li>`);
+      if (diffs && diffs.length > 0) {
+        changes.push(...diffs)
+      }
+      b = b + 1;
+      a = a + 1;
+    } else if ((before[b]?.statusDate < after[a]?.statusDate) || (before[b] && !after[a])) {
+      changes.push(`<li>Status ${before[b].status.statusName} on ${getDisplayDateFormat(before[b].statusDate)} was removed${before[b].reason ? (' with reason ' + before[b].reason) : ''}</>`);
+      b = b + 1;
+    } else if ((before[b]?.statusDate > after[a]?.statusDate) || (!before[b] && after[a])) {
+      changes.push(`<li>Status ${after[a].status.statusName} on ${getDisplayDateFormat(after[a].statusDate)} was added${after[a].reason ? (' with reason ' + after[a].reason) : ''}</li>`);
+      a = a + 1;
+    }
+  }
+  if (changes && changes.length > 0) {
+    return `Status Event history changes<ul>${changes.join('')}</ul>`;
+  }
+  return undefined;
 };
 
 const lookup = {
   'attestations.id': {
-    message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+    message: (before, after) => `[keepthiese?]Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
   },
   'attestations.status': {
-    message: (before, after) => `Attestations submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+    message: (before, after) => `[keepthese?]Attestations submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
   },
   'attestations.statusText': {
     message: () => undefined,
@@ -68,11 +102,32 @@ const lookup = {
   'root.address.addressId': {
     message: () => undefined,
   },
+  'root.address.city': {
+    message: (before, after) => comparePrimitive(before.city, after.city, 'City'),
+  },
+  'root.address.country': {
+    message: (before, after) => comparePrimitive(before.country, after.country, 'Country'),
+  },
+  'root.address.creationDate': {
+    message: () => undefined,
+  },
+  'root.address.id': {
+    message: () => undefined,
+  },
   'root.address.lastModifiedDate': {
+    message: () => undefined,
+  },
+  'root.address.lastModifiedUser': {
     message: () => undefined,
   },
   'root.address.line1': {
     message: (before, after) => comparePrimitive(before.line1, after.line1, 'Street Line 1'),
+  },
+  'root.address.line2': {
+    message: (before, after) => comparePrimitive(before.line2, after.line2, 'Street Line 2'),
+  },
+  'root.address.state': {
+    message: (before, after) => comparePrimitive(before.state, after.state, 'State'),
   },
   'root.address.streetLineOne': {
     message: (before, after) => comparePrimitive(before.streetLineOne, after.streetLineOne, 'Street Line 1'),
@@ -80,20 +135,8 @@ const lookup = {
   'root.address.streetLineTwo': {
     message: (before, after) => comparePrimitive(before.streetLineTwo, after.streetLineTwo, 'Street Line 2'),
   },
-  'root.address.line2': {
-    message: (before, after) => comparePrimitive(before.line2, after.line2, 'Street Line 2'),
-  },
-  'root.address.city': {
-    message: (before, after) => comparePrimitive(before.city, after.city, 'City'),
-  },
-  'root.address.state': {
-    message: (before, after) => comparePrimitive(before.state, after.state, 'State'),
-  },
   'root.address.zipcode': {
     message: (before, after) => comparePrimitive(before.zipcode, after.zipcode, 'Zipcode'),
-  },
-  'root.address.country': {
-    message: (before, after) => comparePrimitive(before.country, after.country, 'Country'),
   },
   'root.attestations': {
     message: parseAttestationData,
@@ -101,23 +144,23 @@ const lookup = {
   'root.contact': {
     message: () => 'Contact changes:',
   },
-  'root.contact.friendlyName': {
-    message: (before, after) => comparePrimitive(before.friendlyName, after.friendlyName, 'Friendly Name'),
+  'root.contact.email': {
+    message: (before, after) => comparePrimitive(before.email, after.email, 'Email'),
   },
   'root.contact.firstName': {
     message: (before, after) => comparePrimitive(before.firstName, after.firstName, 'First Name'),
   },
+  'root.contact.friendlyName': {
+    message: (before, after) => comparePrimitive(before.friendlyName, after.friendlyName, 'Friendly Name'),
+  },
   'root.contact.fullName': {
     message: (before, after) => comparePrimitive(before.fullName, after.fullName, 'Full Name'),
-  },
-  'root.contact.lastName': {
-    message: (before, after) => comparePrimitive(before.lastName, after.lastName, 'Last Name'),
   },
   'root.contact.id': {
     message: () => undefined,
   },
-  'root.contact.email': {
-    message: (before, after) => comparePrimitive(before.email, after.email, 'Email'),
+  'root.contact.lastName': {
+    message: (before, after) => comparePrimitive(before.lastName, after.lastName, 'Last Name'),
   },
   'root.contact.phoneNumber': {
     message: (before, after) => comparePrimitive(before.phoneNumber, after.phoneNumber, 'Phone Number'),
@@ -143,8 +186,29 @@ const lookup = {
   'root.selfDeveloper': {
     message: (before, after) => comparePrimitive(before.selfDeveloper, after.selfDeveloper, 'Self-developer'),
   },
+  'root.status': {
+    message: () => 'Current status changes:',
+  },
+  'root.status.id': {
+    message: () => undefined,
+  },
+  'root.status.status': {
+    message: () => 'Current status:',
+  },
+  'root.status.status.id': {
+    message: () => undefined,
+  },
+  'root.status.status.statusName': {
+    message: (before, after) => comparePrimitive(before.statusName, after.statusName, 'Status'),
+  },
+  'root.status.statusDate': {
+    message: (before, after) => comparePrimitive(getDisplayDateFormat(before.statusDate), getDisplayDateFormat(after.statusDate), 'Effective Date'),
+  },
+  'root.status.reason': {
+    message: (before, after) => comparePrimitive(before.reason, after.reason, 'Reason'),
+  },
   'root.statusEvents': {
-    message: (before, after) => `root.statusEvents: ${before} => ${after}`,
+    message: compareStatusEvents,
   },
   'root.transparencyAttestationMappings': {
     message: compareTransparencyAttestations,

@@ -16,8 +16,8 @@ const findType = (before, after) => {
   if (!before && after && typeof after !== 'object') {
     return 'primitive';
   }
-  if (before && !after) {
-    return 'deleted';
+  if (before && !after && typeof before !== 'object') {
+    return 'primitive';
   }
   if (!before && !after) {
     return 'no-change';
@@ -34,12 +34,6 @@ const compareObject = (before, after, lookup, root = 'root') => {
     switch (findType(before[key], after[key])) {
       case 'primitive':
         return before[key] !== after[key] ? getMessage(before, after, root, key, lookup) : '';
-      case 'added':
-        console.debug(`compareObject.added: ${root}.${key}: ${before[key]} => ${after[key]}`);
-        return undefined;
-      case 'deleted':
-        console.debug(`compareObject.deleted: ${root}.${key}: ${before[key]} => ${after[key]}`);
-        return undefined;
       case 'no-change':
         // console.debug(`compareObject.no-change: ${root}.${key}: ${before[key]} => ${after[key]}`);
         return undefined;
@@ -48,7 +42,7 @@ const compareObject = (before, after, lookup, root = 'root') => {
         return getMessage(before[key], after[key], root, key, lookup);
       case 'object':
         const messages = compareObject(before[key], after[key], lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
-        return messages.length > 0 ? (lookup[`${root}.${key}`].message() + `<ul>${messages.join('')}</ul>`) : '';
+        return messages.length > 0 ? (getMessage(before, after, root, key, lookup) + `<ul>${messages.join('')}</ul>`) : '';
         // no default
     }
   }).filter((msg) => !!msg);
