@@ -34,8 +34,8 @@ const suite = {
     ],
     expectedWarnings: [
       'Test data \'BAD test method\' is invalid for the criterion 170.315 (b)(2) (Cures Update) and has been removed from the listing.',
-      'G2 Measure \'NOTAMEASURE\' was not found associated with 170.315 (g)(10) and has been removed from the listing.',
-      'G1 Measure \'JUNK\' was not found associated with 170.315 (g)(10) and has been removed from the listing.',
+      'G2 Measure \'NOTAMEASURE\' was not found associated with 170.315 (g)(10) (Cures Update) and has been removed from the listing.',
+      'G1 Measure \'JUNK\' was not found associated with 170.315 (g)(10) (Cures Update) and has been removed from the listineg.',
       'G1 Measure \'EP Stage 3\' was not found associated with 170.315 (e)(3) and has been removed from the listing.',
       'G2 Measure \'EP Stage 3\' was not found associated with 170.315 (e)(3) and has been removed from the listing.',
     ],

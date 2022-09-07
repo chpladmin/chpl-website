@@ -8,8 +8,8 @@ import SurveillanceEditComponent from '../../components/surveillance/edit/survei
 let confirmPage; let edit; let hooks; let loginComponent; let toast; let
   upload;
 const listingId = '15.04.04.2988.Heal.PC.01.1.181101';
-const error1 = 'The requirement \'170.315 (g)(10)\' is not valid for requirement type \'Certified Capability\'. Valid values are any criterion this product has attested to.';
-const error2 = 'Nonconformity type \'170.315 (g)(10)\' must match either a criterion the surveilled product has attested to or one of the following: \'170.523 (k)(1)\', \'170.523 (k)(2)\', \'170.523 (l)\', or \'Other Non-Conformity\'.';
+const error1 = 'The requirement \'170.315 (g)(10) (Cures Update)\' is not valid for requirement type \'Certified Capability\'. Valid values are any criterion this product has attested to.';
+const error2 = 'Nonconformity type \'170.315 (g)(10) (Cures Update)\' must match either a criterion the surveilled product has attested to or one of the following: \'170.523 (k)(1)\', \'170.523 (k)(2)\', \'170.523 (l)\', or \'Other Non-Conformity\'.';
 
 beforeEach(async () => {
   loginComponent = new LoginComponent();
@@ -53,7 +53,7 @@ describe('when confirming surveillance, ACB', () => {
     confirmPage.inspectButton(listingId);
     hooks.waitForSpinnerToDisappear();
     edit.editSurveillance();
-    edit.addRequirement('Certified Capability', '170.315 (g)(10): Standardized API for Patient and Population Services', 'No Non-Conformity');
+    edit.addRequirement('Certified Capability', '170.315 (g)(10) (Cures Update): Standardized API for Patient and Population Services', 'No Non-Conformity');
     do {
       edit.saveButton.click();
     } while (!confirmPage.confirmButton.isClickable());
@@ -65,7 +65,7 @@ describe('when confirming surveillance, ACB', () => {
 
   it('should not be able to confirm when the surveillance has a non-conformity type the listing does not attest to', () => {
     const nonConformitydetails = {
-      type: '170.315 (g)(10): Standardized API for Patient and Population Services',
+      type: '170.315 (g)(10) (Cures Update): Standardized API for Patient and Population Services',
       determinationDate: '01/01/2020',
       summary: 'test summary',
       findings: 'test findings',

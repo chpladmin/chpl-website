@@ -175,12 +175,12 @@ module.exports = [
     testToolsOptions: ['HL7v2 Syndromic Surveillance Test Suite', 'HL7 v2 Syndromic Surveillance Reporting Validation Tool', 'Not Applicable'],
   },
   {
-    criteriaName: '170.315 (g)(10)',
+    criteriaName: '170.315 (g)(10) (Cures Update)',
     id: '182',
-    criteriaOld: '170.315 (g)(10)',
+    criteriaOld: '170.315 (g)(10) (Cures Update)',
     cures: false,
     conformanceMethodOptions: ['ONC Test Procedure'],
-    testToolsOptions: ['Inferno', 'Not Applicable', 'Drummond G10\+ FHIR API powered by Touchstone'],
+    testToolsOptions: ['Inferno', 'Not Applicable', 'Drummond G10+ FHIR API powered by Touchstone'],
   },
   {
     criteriaName: '170.315 (f)(7)',
