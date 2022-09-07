@@ -614,20 +614,6 @@
         expect(util.isCures(criterion)).toBe(true);
       });
 
-      it('should know if it counts as cures based on number', () => {
-        let criterion = {
-          number: '170.315 (b)(10)(Cures Update)',
-          title: 'a cures criteria',
-        };
-        expect(util.isCures(criterion)).toBe(true);
-        criterion.number = '170.315 (d)(12)(Cures Update)';
-        expect(util.isCures(criterion)).toBe(true);
-        criterion.number = '170.315 (d)(13)(Cures Update)';
-        expect(util.isCures(criterion)).toBe(true);
-        criterion.number = '170.315 (g)(10)(Cures Update)';
-        expect(util.isCures(criterion)).toBe(true);
-      });
-
       it('should know if it doesn\'t count as cures', () => {
         let criterion = {
           number: '170.315 (d)(2)',
