@@ -103,10 +103,10 @@ const lookup = {
     message: () => undefined,
   },
   'root.address.city': {
-    message: (before, after) => comparePrimitive(before.city, after.city, 'City'),
+    message: (before, after) => comparePrimitive(before, after, 'city', 'City'),
   },
   'root.address.country': {
-    message: (before, after) => comparePrimitive(before.country, after.country, 'Country'),
+    message: (before, after) => comparePrimitive(before, after, 'country', 'Country'),
   },
   'root.address.creationDate': {
     message: () => undefined,
@@ -121,22 +121,22 @@ const lookup = {
     message: () => undefined,
   },
   'root.address.line1': {
-    message: (before, after) => comparePrimitive(before.line1, after.line1, 'Street Line 1'),
+    message: (before, after) => comparePrimitive(before, after, 'line1', 'Street Line 1'),
   },
   'root.address.line2': {
-    message: (before, after) => comparePrimitive(before.line2, after.line2, 'Street Line 2'),
+    message: (before, after) => comparePrimitive(before, after, 'line2', 'Street Line 2'),
   },
   'root.address.state': {
-    message: (before, after) => comparePrimitive(before.state, after.state, 'State'),
+    message: (before, after) => comparePrimitive(before, after, 'state', 'State'),
   },
   'root.address.streetLineOne': {
-    message: (before, after) => comparePrimitive(before.streetLineOne, after.streetLineOne, 'Street Line 1'),
+    message: (before, after) => comparePrimitive(before, after, 'streetLineOne', 'Street Line 1'),
   },
   'root.address.streetLineTwo': {
-    message: (before, after) => comparePrimitive(before.streetLineTwo, after.streetLineTwo, 'Street Line 2'),
+    message: (before, after) => comparePrimitive(before, after, 'streetLineTwo', 'Street Line 2'),
   },
   'root.address.zipcode': {
-    message: (before, after) => comparePrimitive(before.zipcode, after.zipcode, 'Zipcode'),
+    message: (before, after) => comparePrimitive(before, after, 'zipcode', 'Zipcode'),
   },
   'root.attestations': {
     message: parseAttestationData,
@@ -145,34 +145,34 @@ const lookup = {
     message: () => 'Contact changes:',
   },
   'root.contact.email': {
-    message: (before, after) => comparePrimitive(before.email, after.email, 'Email'),
+    message: (before, after) => comparePrimitive(before, after, 'email', 'Email'),
   },
   'root.contact.firstName': {
-    message: (before, after) => comparePrimitive(before.firstName, after.firstName, 'First Name'),
+    message: (before, after) => comparePrimitive(before, after, 'firstName', 'First Name'),
   },
   'root.contact.friendlyName': {
-    message: (before, after) => comparePrimitive(before.friendlyName, after.friendlyName, 'Friendly Name'),
+    message: (before, after) => comparePrimitive(before, after, 'friendlyName', 'Friendly Name'),
   },
   'root.contact.fullName': {
-    message: (before, after) => comparePrimitive(before.fullName, after.fullName, 'Full Name'),
+    message: (before, after) => comparePrimitive(before, after, 'fullName', 'Full Name'),
   },
   'root.contact.id': {
     message: () => undefined,
   },
   'root.contact.lastName': {
-    message: (before, after) => comparePrimitive(before.lastName, after.lastName, 'Last Name'),
+    message: (before, after) => comparePrimitive(before, after, 'lastName', 'Last Name'),
   },
   'root.contact.phoneNumber': {
-    message: (before, after) => comparePrimitive(before.phoneNumber, after.phoneNumber, 'Phone Number'),
+    message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number'),
   },
   'root.contact.title': {
-    message: (before, after) => comparePrimitive(before.title, after.title, 'Title'),
+    message: (before, after) => comparePrimitive(before, after, 'title', 'Title'),
   },
   'root.deleted': {
-    message: (before, after) => comparePrimitive(before.deleted, after.deleted, 'Deleted'),
+    message: (before, after) => comparePrimitive(before, after, 'deleted', 'Deleted'),
   },
   'root.developerCode': {
-    message: (before, after) => comparePrimitive(before.developerCode, after.developerCode, 'Developer Code'),
+    message: (before, after) => comparePrimitive(before, after, 'developerCode', 'Developer Code'),
   },
   'root.lastModifiedDate': {
     message: () => undefined,
@@ -181,10 +181,10 @@ const lookup = {
     message: () => undefined,
   },
   'root.name': {
-    message: (before, after) => comparePrimitive(before.name, after.name, 'Name'),
+    message: (before, after) => comparePrimitive(before, after, 'name', 'Name'),
   },
   'root.selfDeveloper': {
-    message: (before, after) => comparePrimitive(before.selfDeveloper, after.selfDeveloper, 'Self-developer'),
+    message: (before, after) => comparePrimitive(before, after, 'selfDeveloper', 'Self-developer'),
   },
   'root.status': {
     message: () => 'Current status changes:',
@@ -199,13 +199,13 @@ const lookup = {
     message: () => undefined,
   },
   'root.status.status.statusName': {
-    message: (before, after) => comparePrimitive(before.statusName, after.statusName, 'Status'),
+    message: (before, after) => comparePrimitive(before, after, 'statusName', 'Status'),
   },
   'root.status.statusDate': {
-    message: (before, after) => comparePrimitive(getDisplayDateFormat(before.statusDate), getDisplayDateFormat(after.statusDate), 'Effective Date'),
+    message: (before, after) => comparePrimitive(before, after, 'statusDate', 'Effective Date', getDisplayDateFormat),
   },
   'root.status.reason': {
-    message: (before, after) => comparePrimitive(before.reason, after.reason, 'Reason'),
+    message: (before, after) => comparePrimitive(before, after, 'reason', 'Reason'),
   },
   'root.statusEvents': {
     message: compareStatusEvents,
@@ -214,7 +214,7 @@ const lookup = {
     message: compareTransparencyAttestations,
   },
   'root.website': {
-    message: (before, after) => comparePrimitive(before.website, after.website, 'Website'),
+    message: (before, after) => comparePrimitive(before, after, 'website', 'Website'),
   },
 };
 
@@ -325,7 +325,10 @@ const ReportsDevelopersComponent = {
           activity.action = `Updated developer "${item.newData.name}"`;
           activity.details = [];
           activity.recursedDetails = compareObject(item.originalData, item.newData, lookup);
-          console.log(activity.recursedDetails);
+          //console.log(activity.recursedDetails);
+          if (activity.recursedDetails && activity.recursedDetails.length === 0) {
+            console.log({item});
+          }
           for (j = 0; j < simpleFields.length; j += 1) {
             change = this.ReportService.compareItem(item.originalData, item.newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
             if (change) {

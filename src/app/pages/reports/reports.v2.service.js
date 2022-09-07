@@ -2,7 +2,7 @@ const getMessage = (before, after, root, key, lookup) => {
   if (lookup[`${root}.${key}`]) {
     return lookup[`${root}.${key}`].message(before, after);
   }
-  console.debug(`getMessage: ${root}.${key}: ${before[key]} => ${after[key]}`);
+  console.debug(`getMessage: ${root}.${key}: ${before ? before[key] : undefined} => ${after ? after[key] : undefined}`);
   return undefined;
 };
 
@@ -31,17 +31,19 @@ const findType = (before, after) => {
 const compareObject = (before, after, lookup, root = 'root') => {
   const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
   const diffs = keys.map((key) => {
-    switch (findType(before[key], after[key])) {
+    const b = before ? before[key] : undefined;
+    const a = after ? after[key] : undefined;
+    switch (findType(b, a)) {
       case 'primitive':
-        return before[key] !== after[key] ? getMessage(before, after, root, key, lookup) : '';
+        return b !== a ? getMessage(before, after, root, key, lookup) : '';
       case 'no-change':
         // console.debug(`compareObject.no-change: ${root}.${key}: ${before[key]} => ${after[key]}`);
         return undefined;
       case 'array':
         // console.debug(`compareObject.array: ${root}.${key}: ${before[key]} => ${after[key]}`);
-        return getMessage(before[key], after[key], root, key, lookup);
+        return getMessage(b, a, root, key, lookup);
       case 'object':
-        const messages = compareObject(before[key], after[key], lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
+        const messages = compareObject(b, a, lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
         return messages.length > 0 ? (getMessage(before, after, root, key, lookup) + `<ul>${messages.join('')}</ul>`) : '';
         // no default
     }
@@ -49,14 +51,14 @@ const compareObject = (before, after, lookup, root = 'root') => {
   return diffs;
 };
 
-const comparePrimitive = (before, after, title) => {
-  if (!before && after) {
-    return `${title} added: ${after}`;
+const comparePrimitive = (before, after, key, title, transform = (val) => val) => {
+  if ((!before || !before[key]) && after && after[key]) {
+    return `${title} added: ${transform(after[key])}`;
   }
-  if (before && !after) {
-    return `${title} removed: ${before}`;
+  if (before && before[key] && (!after || !after[key])) {
+    return `${title} removed: ${transform(before[key])}`;
   }
-  return `${title} changed from ${before} to ${after}`;
+  return `${title} changed from ${transform(before[key])} to ${transform(after[key])}`;
 };
 
 export {
