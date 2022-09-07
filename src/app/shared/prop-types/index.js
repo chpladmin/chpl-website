@@ -17,6 +17,7 @@ import {
 import contact from './contact';
 import criterion from './criterion';
 import developer from './developer';
+import directReview from './direct-review';
 import formik from './formik';
 import { job, scheduledSystemTrigger, trigger } from './jobs';
 import product from './product';
@@ -54,6 +55,7 @@ export {
   contact,
   criterion,
   developer,
+  directReview,
   formik,
   job,
   listing,
