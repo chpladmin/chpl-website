@@ -105,13 +105,16 @@ const compareStatusEvents = (initialBefore, initialAfter) => {
 
 const lookup = {
   'attestations.id': {
-    message: (before, after) => `[keepthiese?]Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+    message: (before, after) => `[keepthese?]Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
   },
   'attestations.status': {
     message: (before, after) => `[keepthese?]Attestations submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
   },
   'attestations.statusText': {
     message: () => undefined,
+  },
+  'root.acbName': {
+    message: (before, after) => comparePrimitive(before, after, 'acbName', 'ONC-ACB'),
   },
   'root.address': {
     message: () => 'Address changes:',
@@ -163,6 +166,9 @@ const lookup = {
   },
   'root.contact': {
     message: () => 'Contact changes:',
+  },
+  'root.contact.contactId': {
+    message: () => undefined,
   },
   'root.contact.email': {
     message: (before, after) => comparePrimitive(before, after, 'email', 'Email'),
@@ -234,6 +240,12 @@ const lookup = {
     message: compareStatusEvents,
   },
   'root.transparencyAttestation': {
+    message: (before, after) => comparePrimitive(before, after, 'transparencyAttestation', 'Transparency Attestation'),
+  },
+  'root.transparencyAttestation.removed': {
+    message: () => undefined,
+  },
+  'root.transparencyAttestation.transparencyAttestation': {
     message: (before, after) => comparePrimitive(before, after, 'transparencyAttestation', 'Transparency Attestation'),
   },
   'root.transparencyAttestationMappings': {
@@ -351,10 +363,6 @@ const ReportsDevelopersComponent = {
           activity.action = `Updated developer "${item.newData.name}"`;
           activity.details = [];
           activity.recursedDetails = compareObject(item.originalData, item.newData, lookup);
-          //console.log(activity.recursedDetails);
-          if (activity.recursedDetails && activity.recursedDetails.length === 0) {
-            console.log({item});
-          }
           for (j = 0; j < simpleFields.length; j += 1) {
             change = this.ReportService.compareItem(item.originalData, item.newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
             if (change) {
