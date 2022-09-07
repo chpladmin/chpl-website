@@ -1,25 +1,25 @@
-import DirectReviewsComponent from './direct-reviews.po';
-import DevelopersPage from '../../pages/organizations/developers/developers.po';
-import Hooks from '../../utilities/hooks';
+import DevelopersPage from '../../pages/organizations/developers/developers.async.po';
+import { open } from '../../utilities/hooks.async';
 
-let component, hooks, page;
+import DirectReviewsComponent from './direct-reviews.po';
+
+let component;
+let page;
 
 beforeEach(async () => {
   page = new DevelopersPage();
   component = new DirectReviewsComponent();
-  hooks = new Hooks();
-  await hooks.open('#/organizations/developers');
+  await open('#/organizations/developers');
 });
 
 describe('the Direct Reviews component', () => {
   describe('for Radysans, Inc', () => {
-    beforeEach(() => {
-      page.selectDeveloper('Radysans, Inc');
+    beforeEach(async () => {
+      await page.selectDeveloper('Radysans, Inc');
     });
 
-    it('should indicate the absence of DRs', () => {
-      let directReviews = component.getDirectReviews();
-      expect(directReviews.getText()).toBe('No Direct Reviews have been conducted');
+    it('should indicate the absence of DRs', async () => {
+      await expect(await (await component.getDirectReviews()).getText()).toContain('No Direct Reviews have been conducted');
     });
   });
 });
