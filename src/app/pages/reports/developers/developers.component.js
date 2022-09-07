@@ -1,7 +1,7 @@
 import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
-const parseAttestationData = (before, after) => {
+const compareAttestationData = (before, after) => {
   if (!before || !after || (before.length === 0 && after.length === 0)) {
     return undefined;
   }
@@ -18,57 +18,6 @@ const parseAttestationData = (before, after) => {
     if (changes && changes.length > 0) {
       return `Attestation changes<ul>${changes.join('')}</ul>`;
     }
-  }
-  return undefined;
-};
-
-
-const compareTransparencyAttestation = (before, after) => {
-  if (!before.transparencyAttestation && after.transparencyAttestation) {
-    // Transparency attestation was added
-    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation added: ${after.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
-  }
-  if (before.transparencyAttestation && !after.transparencyAttestation) {
-    // Transparency attestation was removed - not sure this is possible
-    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation removed. Was: ${before.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
-  }
-  if (before.transparencyAttestation && after.transparencyAttestation && before.transparencyAttestation.transparencyAttestation !== after.transparencyAttestation.transparencyAttestation) {
-    // Transparency attestation was changed
-    return `<li>Transparency Attestation "${after.acbName}" changes<ul><li>Transparency Attestation changed: ${after.transparencyAttestation.transparencyAttestation}. Was: ${before.transparencyAttestation.transparencyAttestation}.</li></ul></li>`;
-  }
-  return undefined;
-};
-
-const compareTransparencyAttestations = (before, after) => {
-  const changes = [];
-  // This will get all the changes, since these arrays should alweays have the same number of elements based
-  // on the acbs
-  before.forEach((beforeTA) => {
-    const afterTA = after.find((ta) => ta.acbId === beforeTA.acbId);
-    const change = compareTransparencyAttestation(beforeTA, afterTA);
-    if (change) {
-      changes.push(change);
-    }
-  });
-  if (changes && changes.length > 0) {
-    return `Transparency Attestation changes<ul>${changes.join('')}</ul>`;
-  }
-  return undefined;
-};
-
-const compareTransparencyAttestationsV2 = (before, after) => {
-  const changes = [];
-  before.forEach((beforeTA) => {
-    const afterTA = after.find((ta) => ta.acbId === beforeTA.acbId);
-    const diffs = compareObject(beforeTA, afterTA, lookup)
-          .filter((msgs) => msgs.length > 0)
-          .map((msg) => `<li>${msg}</li>`);
-    if (diffs && diffs.length > 0) {
-      changes.push(...diffs)
-    }
-  });
-  if (changes && changes.length > 0) {
-    return `Transparency Attestation changes<ul>${changes.join('')}</ul>`;
   }
   return undefined;
 };
@@ -103,12 +52,29 @@ const compareStatusEvents = (initialBefore, initialAfter) => {
   return undefined;
 };
 
+const compareTransparencyAttestations = (before, after) => {
+  const changes = [];
+  before.forEach((beforeTA) => {
+    const afterTA = after.find((ta) => ta.acbId === beforeTA.acbId);
+    const diffs = compareObject(beforeTA, afterTA, lookup)
+          .filter((msgs) => msgs.length > 0)
+          .map((msg) => `<li>${msg}</li>`);
+    if (diffs && diffs.length > 0) {
+      changes.push(...diffs)
+    }
+  });
+  if (changes && changes.length > 0) {
+    return `Transparency Attestation changes<ul>${changes.join('')}</ul>`;
+  }
+  return undefined;
+};
+
 const lookup = {
   'attestations.id': {
-    message: (before, after) => `[keepthese?]Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+    message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
   },
   'attestations.status': {
-    message: (before, after) => `[keepthese?]Attestations submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+    message: (before, after) => `Attestations submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
   },
   'attestations.statusText': {
     message: () => undefined,
@@ -162,7 +128,7 @@ const lookup = {
     message: (before, after) => comparePrimitive(before, after, 'zipcode', 'Zipcode'),
   },
   'root.attestations': {
-    message: parseAttestationData,
+    message: compareAttestationData,
   },
   'root.contact': {
     message: () => 'Contact changes:',
@@ -249,14 +215,12 @@ const lookup = {
     message: (before, after) => comparePrimitive(before, after, 'transparencyAttestation', 'Transparency Attestation'),
   },
   'root.transparencyAttestationMappings': {
-    message: compareTransparencyAttestationsV2,
+    message: compareTransparencyAttestations,
   },
   'root.website': {
     message: (before, after) => comparePrimitive(before, after, 'website', 'Website'),
   },
 };
-
-const isTransparencyAttestationObjectFormat = (attestationMappings) => attestationMappings.reduce((acc, curr) => acc || (typeof curr.transparencyAttestation === 'object' && curr.transparencyAttestation !== null), false);
 
 const ReportsDevelopersComponent = {
   templateUrl: 'chpl.reports/developers/developers.html',
@@ -340,123 +304,13 @@ const ReportsDevelopersComponent = {
 
     parse(meta) {
       return this.networkService.getActivityById(meta.id).then((item) => {
-        const simpleFields = [
-          { key: 'deleted', display: 'Deleted' },
-          { key: 'developerCode', display: 'Developer Code' },
-          { key: 'name', display: 'Name' },
-          { key: 'website', display: 'Website' },
-          { key: 'selfDeveloper', display: 'Self-developer' },
-        ];
-        const nestedKeys = [
-          { key: 'status', subkey: 'statusName', display: 'Developer Status' },
-        ];
-
-        let change;
-        let j;
-
         const activity = {
           action: '',
           details: [],
         };
-
         if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
           activity.action = `Updated developer "${item.newData.name}"`;
-          activity.details = [];
-          activity.recursedDetails = compareObject(item.originalData, item.newData, lookup);
-          for (j = 0; j < simpleFields.length; j += 1) {
-            change = this.ReportService.compareItem(item.originalData, item.newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
-            if (change) {
-              activity.details.push(change);
-            }
-          }
-
-          for (j = 0; j < nestedKeys.length; j += 1) {
-            change = this.ReportService.nestedCompare(item.originalData, item.newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-            if (change) {
-              activity.details.push(change);
-            }
-          }
-
-          const addressChanges = this.ReportService.compareAddress(item.originalData.address, item.newData.address);
-          if (addressChanges && addressChanges.length > 0) {
-            activity.details.push(`Address changes<ul>${addressChanges.join('')}</ul>`);
-          }
-          const contactChanges = this.ReportService.compareContact(item.originalData.contact, item.newData.contact);
-          if (contactChanges && contactChanges.length > 0) {
-            activity.details.push(`Contact changes<ul>${contactChanges.join('')}</ul>`);
-          }
-
-          // post OCD-3824 where Transparency Attestation is gone
-          if (item.newData.transparencyAttestationMappings) {
-            // Old format where transp attest is just string vs. new format where it is an object
-            if (isTransparencyAttestationObjectFormat(item.newData.transparencyAttestationMappings)) {
-              const taChanges = compareTransparencyAttestations(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings);
-              if (taChanges && taChanges.length > 0) {
-                activity.details.push(taChanges.join(''));
-              }
-            } else {
-              const transKeys = [{ key: 'transparencyAttestation', display: 'Transparency Attestation' }];
-              const trans = this.ReportService.compareArray(item.originalData.transparencyAttestationMappings, item.newData.transparencyAttestationMappings, transKeys, 'acbName', true);
-              for (j = 0; j < trans.length; j += 1) {
-                activity.details.push(`Transparency Attestation "${trans[j].name}" changes<ul>${trans[j].changes.join('')}</ul>`);
-              }
-            }
-          }
-
-          const attestationChanges = parseAttestationData(item.originalData.attestations, item.newData.attestations);
-          if (attestationChanges) {
-            activity.details.push(attestationChanges);
-          }
-
-          let foundEvents = false;
-          const statusEvents = this.utilService.arrayCompare(item.originalData.statusEvents, item.newData.statusEvents);
-          let sortedEvents; let
-            translatedEvents;
-          translatedEvents = '<table class="table table-condensed"><thead><tr>';
-          if (statusEvents.added.length > 0) {
-            foundEvents = true;
-            translatedEvents += `<th>Added Status Event${statusEvents.added.length > 1 ? 's' : ''}</th>`;
-          }
-          if (statusEvents.edited.length > 0) {
-            foundEvents = true;
-            translatedEvents += `<th>Edited Status Event${statusEvents.edited.length > 1 ? 's' : ''}</th>`;
-          }
-          if (statusEvents.removed.length > 0) {
-            foundEvents = true;
-            translatedEvents += `<th>Removed Status Event${statusEvents.removed.length > 1 ? 's' : ''}</th>`;
-          }
-          translatedEvents += '</tr></thead><tbody><tr>';
-          if (statusEvents.added.length > 0) {
-            translatedEvents += '<td><ul>';
-
-            sortedEvents = this.$filter('orderBy')(statusEvents.added, 'statusDate', true);
-            for (j = 0; j < sortedEvents.length; j += 1) {
-              translatedEvents += `<li><strong>${sortedEvents[j].status.statusName || sortedEvents[j].status.status}</strong> (${this.$filter('date')(sortedEvents[j].statusDate, 'mediumDate', 'UTC')})</li>`;
-            }
-            translatedEvents += '</ul></td>';
-          }
-          if (statusEvents.edited.length > 0) {
-            translatedEvents += '<td><ul>';
-
-            sortedEvents = this.$filter('orderBy')(statusEvents.edited, 'before.statusDate', true);
-            for (j = 0; j < sortedEvents.length; j += 1) {
-              translatedEvents += `<li><strong>${sortedEvents[j].status.statusName || sortedEvents[j].status.status}</strong> (${this.$filter('date')(sortedEvents[j].before.statusDate, 'mediumDate', 'UTC')}) became: <strong>${sortedEvents[j].status.statusName || sortedEvents[j].status.status}</strong> (${this.$filter('date')(sortedEvents[j].after.statusDate, 'mediumDate', 'UTC')})</li>`;
-            }
-            translatedEvents += '</ul></td>';
-          }
-          if (statusEvents.removed.length > 0) {
-            translatedEvents += '<td><ul>';
-
-            sortedEvents = this.$filter('orderBy')(statusEvents.removed, 'statusDate', true);
-            for (j = 0; j < sortedEvents.length; j += 1) {
-              translatedEvents += `<li><strong>${sortedEvents[j].status.statusName || sortedEvents[j].status.status}</strong> (${this.$filter('date')(sortedEvents[j].statusDate, 'mediumDate', 'UTC')})</li>`;
-            }
-            translatedEvents += '</ul></td>';
-          }
-          translatedEvents += '</tr></tbody><table>';
-          if (foundEvents) {
-            activity.details.push(translatedEvents);
-          }
+          activity.details = compareObject(item.originalData, item.newData, lookup);
         } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
           activity.action = `Developers ${item.originalData.map((d) => d.name).join(' and ')} merged to form ${item.newData.name}`;
           activity.details = [];
@@ -467,11 +321,9 @@ const ReportsDevelopersComponent = {
           this.ReportService.interpretNonUpdate(activity, item, 'developer');
           activity.action = activity.action[0];
           activity.details = [];
-          activity.csvAction = activity.action.replace(',', '","');
         }
         meta.action = activity.action;
         meta.details = activity.details;
-        meta.recursedDetails = activity.recursedDetails;
         meta.csvDetails = activity.details.join('\n');
       });
     }

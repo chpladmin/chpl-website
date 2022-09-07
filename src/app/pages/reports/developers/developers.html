@@ -94,10 +94,6 @@
               <div ng-if="activity.action && activity.showDetails">
                 {{ activity.action }}
                 <ul>
-                  <li ng-repeat="str in activity.recursedDetails | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
-                </ul>
-                <hr />
-                <ul>
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </div>

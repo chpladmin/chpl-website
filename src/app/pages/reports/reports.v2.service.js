@@ -37,10 +37,8 @@ const compareObject = (before, after, lookup, root = 'root') => {
       case 'primitive':
         return b !== a ? getMessage(before, after, root, key, lookup) : '';
       case 'no-change':
-        // console.debug(`compareObject.no-change: ${root}.${key}: ${before[key]} => ${after[key]}`);
         return undefined;
       case 'array':
-        // console.debug(`compareObject.array: ${root}.${key}: ${before[key]} => ${after[key]}`);
         return getMessage(b, a, root, key, lookup);
       case 'object':
         const messages = compareObject(b, a, lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
