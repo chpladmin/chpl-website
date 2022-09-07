@@ -56,6 +56,23 @@ const compareTransparencyAttestations = (before, after) => {
   return undefined;
 };
 
+const compareTransparencyAttestationsV2 = (before, after) => {
+  const changes = [];
+  before.forEach((beforeTA) => {
+    const afterTA = after.find((ta) => ta.acbId === beforeTA.acbId);
+    const diffs = compareObject(beforeTA, afterTA, lookup)
+          .filter((msgs) => msgs.length > 0)
+          .map((msg) => `<li>${msg}</li>`);
+    if (diffs && diffs.length > 0) {
+      changes.push(...diffs)
+    }
+  });
+  if (changes && changes.length > 0) {
+    return `Transparency Attestation changes<ul>${changes.join('')}</ul>`;
+  }
+  return undefined;
+};
+
 const compareStatusEvents = (initialBefore, initialAfter) => {
   const changes = [];
   let b = 0;
@@ -109,6 +126,9 @@ const lookup = {
     message: (before, after) => comparePrimitive(before, after, 'country', 'Country'),
   },
   'root.address.creationDate': {
+    message: () => undefined,
+  },
+  'root.address.deleted': {
     message: () => undefined,
   },
   'root.address.id': {
@@ -174,6 +194,9 @@ const lookup = {
   'root.developerCode': {
     message: (before, after) => comparePrimitive(before, after, 'developerCode', 'Developer Code'),
   },
+  'root.id': {
+    message: () => undefined,
+  },
   'root.lastModifiedDate': {
     message: () => undefined,
   },
@@ -210,8 +233,11 @@ const lookup = {
   'root.statusEvents': {
     message: compareStatusEvents,
   },
+  'root.transparencyAttestation': {
+    message: (before, after) => comparePrimitive(before, after, 'transparencyAttestation', 'Transparency Attestation'),
+  },
   'root.transparencyAttestationMappings': {
-    message: compareTransparencyAttestations,
+    message: compareTransparencyAttestationsV2,
   },
   'root.website': {
     message: (before, after) => comparePrimitive(before, after, 'website', 'Website'),
