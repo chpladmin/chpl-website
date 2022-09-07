@@ -1,6 +1,8 @@
 import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
+let lookup;
+
 const compareAttestationData = (before, after) => {
   if (!before || !after || (before.length === 0 && after.length === 0)) {
     return undefined;
@@ -12,9 +14,9 @@ const compareAttestationData = (before, after) => {
     const sortedBefore = before.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
     const sortedAfter = after.sort((a, b) => (a.attestationPeriod.periodStart < b.attestationPeriod.periodStart ? -1 : 1));
     const changes = sortedBefore
-          .map((val, idx) => compareObject(val, sortedAfter[idx], lookup, 'attestations'))
-          .filter((msgs) => msgs.length > 0)
-          .map((msg) => `<li>${msg}</li>`);
+      .map((val, idx) => compareObject(val, sortedAfter[idx], lookup, 'attestations'))
+      .filter((msgs) => msgs.length > 0)
+      .map((msg) => `<li>${msg}</li>`);
     if (changes && changes.length > 0) {
       return `Attestation changes<ul>${changes.join('')}</ul>`;
     }
@@ -31,19 +33,19 @@ const compareStatusEvents = (initialBefore, initialAfter) => {
   while (b < before.length || a < after.length) {
     if (before[b]?.statusDate === after[a]?.statusDate) {
       const diffs = compareObject(before[b], after[a], lookup)
-            .filter((msgs) => msgs.length > 0)
-            .map((msg) => `<li>${msg}</li>`);
+        .filter((msgs) => msgs.length > 0)
+        .map((msg) => `<li>${msg}</li>`);
       if (diffs && diffs.length > 0) {
-        changes.push(...diffs)
+        changes.push(...diffs);
       }
-      b = b + 1;
-      a = a + 1;
+      b += 1;
+      a += 1;
     } else if ((before[b]?.statusDate < after[a]?.statusDate) || (before[b] && !after[a])) {
-      changes.push(`<li>Status ${before[b].status.statusName} on ${getDisplayDateFormat(before[b].statusDate)} was removed${before[b].reason ? (' with reason ' + before[b].reason) : ''}</>`);
-      b = b + 1;
+      changes.push(`<li>Status ${before[b].status.statusName} on ${getDisplayDateFormat(before[b].statusDate)} was removed${before[b].reason ? (` with reason ${before[b].reason}`) : ''}</>`);
+      b += 1;
     } else if ((before[b]?.statusDate > after[a]?.statusDate) || (!before[b] && after[a])) {
-      changes.push(`<li>Status ${after[a].status.statusName} on ${getDisplayDateFormat(after[a].statusDate)} was added${after[a].reason ? (' with reason ' + after[a].reason) : ''}</li>`);
-      a = a + 1;
+      changes.push(`<li>Status ${after[a].status.statusName} on ${getDisplayDateFormat(after[a].statusDate)} was added${after[a].reason ? (` with reason ${after[a].reason}`) : ''}</li>`);
+      a += 1;
     }
   }
   if (changes && changes.length > 0) {
@@ -57,10 +59,10 @@ const compareTransparencyAttestations = (before, after) => {
   before.forEach((beforeTA) => {
     const afterTA = after.find((ta) => ta.acbId === beforeTA.acbId);
     const diffs = compareObject(beforeTA, afterTA, lookup)
-          .filter((msgs) => msgs.length > 0)
-          .map((msg) => `<li>${msg}</li>`);
+      .filter((msgs) => msgs.length > 0)
+      .map((msg) => `<li>${msg}</li>`);
     if (diffs && diffs.length > 0) {
-      changes.push(...diffs)
+      changes.push(...diffs);
     }
   });
   if (changes && changes.length > 0) {
@@ -69,7 +71,7 @@ const compareTransparencyAttestations = (before, after) => {
   return undefined;
 };
 
-const lookup = {
+lookup = {
   'attestations.id': {
     message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
   },
@@ -329,14 +331,13 @@ const ReportsDevelopersComponent = {
     }
 
     prepare(item) {
-      item.filterText = `${item.developerName}|${item.developerCode}|${item.responsibleUser.fullName}`;
-      if (item.categories.length > 1 || item.categories[0] !== 'DEVELOPER') {
-        this.$log.info(item.categories);
-      }
-      item.categoriesFilter = `|${item.categories.join('|')}|`;
-      item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-      item.fullName = item.responsibleUser.fullName;
-      return item;
+      return {
+        ...item,
+        filterText: `${item.developerName}|${item.developerCode}|${item.responsibleUser.fullName}`,
+        categoriesFilter: `|${item.categories.join('|')}|`,
+        friendlyActivityDate: new Date(item.date).toISOString().substring(0, 10),
+        fullName: item.responsibleUser.fullName,
+      };
     }
 
     canDownload() {

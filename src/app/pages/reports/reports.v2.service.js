@@ -36,14 +36,13 @@ const compareObject = (before, after, lookup, root = 'root') => {
     switch (findType(b, a)) {
       case 'primitive':
         return b !== a ? getMessage(before, after, root, key, lookup) : '';
-      case 'no-change':
-        return undefined;
       case 'array':
         return getMessage(b, a, root, key, lookup);
       case 'object':
         const messages = compareObject(b, a, lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
-        return messages.length > 0 ? (getMessage(before, after, root, key, lookup) + `<ul>${messages.join('')}</ul>`) : '';
-        // no default
+        return messages.length > 0 ? (`${getMessage(before, after, root, key, lookup)}<ul>${messages.join('')}</ul>`) : '';
+      default:
+        return undefined;
     }
   }).filter((msg) => !!msg);
   return diffs;
