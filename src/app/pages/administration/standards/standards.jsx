@@ -46,7 +46,7 @@ const resetBreadcrumbs = (append, dropAll, classes) => {
 
 function ChplStandards() {
   const { append, dropAll } = useContext(BreadcrumbContext);
-  const [active, setActive] = useState('');
+  const [active, setActive] = useState('svaps');
   const classes = useStyles();
 
   useEffect(() => {

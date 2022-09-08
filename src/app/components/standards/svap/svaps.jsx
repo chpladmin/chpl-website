@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  CircularProgress,
   IconButton,
   Paper,
   Table,
@@ -19,10 +20,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/Event';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
+import {
+  useFetchSvaps,
+} from 'api/standards';
+import ChplSvapsView from './svaps-view';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
-
-import ChplSvapsView from './svaps-view';
 
 const headers = [
   { property: 'citation', text: 'Regulatory Text Citation', sortable: true },
@@ -72,6 +75,7 @@ const resetBreadcrumbs = (append, drop, classes, dispatch) => {
 function ChplSvaps(props) {
   const { dispatch } = props;
   const { append, drop } = useContext(BreadcrumbContext);
+  const { data, isLoading, isSuccess } = useFetchSvaps();
   const [activeSvap, setActiveSvap] = useState(undefined);
   const [svaps, setSvaps] = useState([]);
   const classes = useStyles();
@@ -79,6 +83,11 @@ function ChplSvaps(props) {
   useEffect(() => {
     resetBreadcrumbs(append, drop, classes, dispatch);
   }, []);
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) { return; }
+    setSvaps(data);
+  }, [data, isLoading, isSuccess]);
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -92,6 +101,14 @@ function ChplSvaps(props) {
         // no default
     }
   };
+
+  if (isLoading || !isSuccess || svaps.length === 0) {
+    return (
+      <>
+        <CircularProgress/>
+      </>
+    );
+  }
 
   if (activeSvap) {
     return (

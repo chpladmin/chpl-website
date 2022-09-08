@@ -22,11 +22,11 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 
 const headers = [
-  { property: 'citation', text: 'Regulatory Text Citation', sortable: true },
-  { property: 'standard', text: 'Approved Standard Version', sortable: true },
-  { property: 'criteria', text: 'Applicable Criteria' },
+  { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
+  { property: 'approvedStandardVersion', text: 'Approved Standard Version', sortable: true },
+  { text: 'Applicable Criteria' },
   { property: 'replaced', text: 'Replaced', sortable: true },
-  { property: 'actions', text: 'Action', invisible: true },
+  { text: 'Action', invisible: true },
 ];
 
 const useStyles = makeStyles({
@@ -42,15 +42,16 @@ function ChplSvapsView(props) {
   const { dispatch } = props;
   const [svaps, setSvaps] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('citation');
+  const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
   const classes = useStyles();
 
   useEffect(() => {
     setSvaps(props.svaps
       .map((item) => ({
         ...item,
+        criteriaDisplay: item.criteria.map((c) => c.number).join(', '),
       }))
-      .sort(sortComparator('criteria')));
+      .sort(sortComparator('regulatoryTextCitation')));
   }, []);
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -58,7 +59,7 @@ function ChplSvapsView(props) {
     const updated = svaps.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setJobTypes(updated);
+    setSvaps(updated);
   };
 
   return (
@@ -76,12 +77,15 @@ function ChplSvapsView(props) {
         <TableBody>
           { svaps
             .map((item) => (
-              <TableRow key={`${item.citation}-${item.standard}`}>
+              <TableRow key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}>
                 <TableCell className={classes.firstColumn}>
-                  { item.citation }
+                  { item.regulatoryTextCitation }
                 </TableCell>
                 <TableCell>
-                  { item.standard }
+                  { item.approvedStandardVersion }
+                </TableCell>
+                <TableCell>
+                  { item.criteriaDisplay }
                 </TableCell>
                 <TableCell>
                   { item.replaced ? 'Yes' : 'No' }
