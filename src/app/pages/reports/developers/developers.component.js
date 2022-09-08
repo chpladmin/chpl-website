@@ -73,7 +73,12 @@ const compareTransparencyAttestations = (before, after) => {
 
 lookup = {
   'attestations.id': {
-    message: (before, after) => `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
+    message: (before, after) => {
+      if (before.status === after.status) {
+        return `Attestations re-submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`;
+      }
+      return undefined;
+    },
   },
   'attestations.status': {
     message: (before, after) => `Attestations submitted for Attestation Period ending on ${after.attestationPeriod.periodEnd}`,
