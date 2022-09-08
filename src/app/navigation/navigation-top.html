@@ -86,6 +86,7 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.announcements"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.announcements')"></i> Announcements</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.change-requests"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.change-requests')"></i> Change Requests</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.svaps"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.svaps')"></i> SVAP Maintenance</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.standards"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.standards')"></i> Standards &amp; Processes Maintenance</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN'])"><a ui-sref="style-guide"><i class="fa fa-caret-right" ng-if="vm.isActive('sys-admin.style-guide')"></i>Style Guide</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN'])"><a href="rest/ff4j-console/home">FF4j</a></li>
             </ul>

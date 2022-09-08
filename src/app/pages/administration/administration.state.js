@@ -136,12 +136,12 @@ const states = [
       state: 'administration.jobs',
     }),
   }, {
-    name: 'administration.upload',
-    url: '/upload',
-    component: 'chplUpload',
+    name: 'administration.standards',
+    url: '/standards',
+    component: 'chplStandardsWrapperBridge',
     data: {
-      title: 'CHPL Administration - Upload',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      title: 'CHPL Administration - Standards &amp; Processes',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
     },
   }, {
     name: 'administration.svaps',
@@ -165,6 +165,14 @@ const states = [
     data: {
       title: 'CHPL Administration - SVAPs',
       roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
+  }, {
+    name: 'administration.upload',
+    url: '/upload',
+    component: 'chplUpload',
+    data: {
+      title: 'CHPL Administration - Upload',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'login',

@@ -18,9 +18,14 @@ function BreadcrumbWrapper(props) {
     setBreadcrumbs((crumbs) => crumbs.filter((crumb) => crumb.key !== key));
   };
 
+  const dropAll = (key) => {
+    setBreadcrumbs([]);
+  };
+
   const breadcrumbState = {
     append,
     drop,
+    dropAll,
   };
 
   return (
