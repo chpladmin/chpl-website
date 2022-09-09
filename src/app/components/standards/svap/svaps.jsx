@@ -20,10 +20,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/Event';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
+import ChplSvapEdit from './svap-edit';
+import ChplSvapsView from './svaps-view';
+
 import {
+  useFetchCriteriaForSvaps,
   useFetchSvaps,
 } from 'api/standards';
-import ChplSvapsView from './svaps-view';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
 
@@ -76,7 +79,9 @@ function ChplSvaps(props) {
   const { dispatch } = props;
   const { append, drop } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchSvaps();
+  const criterionOptionsQuery = useFetchCriteriaForSvaps();
   const [activeSvap, setActiveSvap] = useState(undefined);
+  const [criterionOptions, setCriterionOptions] = useState([]);
   const [svaps, setSvaps] = useState([]);
   const classes = useStyles();
 
@@ -89,14 +94,29 @@ function ChplSvaps(props) {
     setSvaps(data);
   }, [data, isLoading, isSuccess]);
 
-  const handleDispatch = (action, payload) => {
+  useEffect(() => {
+    if (criterionOptionsQuery.isLoading || !criterionOptionsQuery.isSuccess) { return; }
+    setCriterionOptions(criterionOptionsQuery.data);
+  }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
+
+  const handleDispatch = ({action, payload}) => {
     switch (action) {
       case 'cancel':
         setActiveSvap(undefined);
         break;
         // no default
+      case 'delete':
+        console.log('delete', payload)
+        setActiveSvap(undefined);
+        break;
+        // no default
       case 'edit':
         setActiveSvap(payload);
+        break;
+        // no default
+      case 'save':
+        console.log('save', payload)
+        setActiveSvap(undefined);
         break;
         // no default
     }
@@ -112,14 +132,11 @@ function ChplSvaps(props) {
 
   if (activeSvap) {
     return (
-      <>
-        <Button
-          onClick={() => handleDispatch('cancel')}
-        >
-          Cancel
-        </Button>
-        active svap
-      </>
+      <ChplSvapEdit
+        svap={activeSvap}
+        dispatch={handleDispatch}
+        criterionOptions={criterionOptions}
+      />
     );
   }
 

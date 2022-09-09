@@ -20,6 +20,7 @@ import EventIcon from '@material-ui/icons/Event';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
+import { isCures, sortCriteria } from 'services/criteria.service';
 
 const headers = [
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
@@ -49,7 +50,10 @@ function ChplSvapsView(props) {
     setSvaps(props.svaps
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria.map((c) => c.number).join(', '),
+        criteriaDisplay: item.criteria
+          .sort(sortCriteria)
+          .map((c) => c.number + (isCures(c) ? ' (Cures Update)' : ''))
+          .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
   }, []);
@@ -63,45 +67,52 @@ function ChplSvapsView(props) {
   };
 
   return (
-    <TableContainer className={classes.container} component={Paper}>
-      <Table
-        aria-label="SVAP table"
+    <>
+      <Button
+        onClick={() => dispatch({action: 'edit', payload: {}})}
       >
-        <ChplSortableHeaders
-          headers={headers}
-          onTableSort={handleTableSort}
-          orderBy={orderBy}
-          order={order}
-          stickyHeader
-        />
-        <TableBody>
-          { svaps
-            .map((item) => (
-              <TableRow key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}>
-                <TableCell className={classes.firstColumn}>
-                  { item.regulatoryTextCitation }
-                </TableCell>
-                <TableCell>
-                  { item.approvedStandardVersion }
-                </TableCell>
-                <TableCell>
-                  { item.criteriaDisplay }
-                </TableCell>
-                <TableCell>
-                  { item.replaced ? 'Yes' : 'No' }
-                </TableCell>
-                <TableCell align="right">
-                  <Button
-                    onClick={() => dispatch('edit', item)}
-                  >
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        Add
+      </Button>
+      <TableContainer className={classes.container} component={Paper}>
+        <Table
+          aria-label="SVAP table"
+        >
+          <ChplSortableHeaders
+            headers={headers}
+            onTableSort={handleTableSort}
+            orderBy={orderBy}
+            order={order}
+            stickyHeader
+          />
+          <TableBody>
+            { svaps
+              .map((item) => (
+                <TableRow key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}>
+                  <TableCell className={classes.firstColumn}>
+                    { item.regulatoryTextCitation }
+                  </TableCell>
+                  <TableCell>
+                    { item.approvedStandardVersion }
+                  </TableCell>
+                  <TableCell>
+                    { item.criteriaDisplay }
+                  </TableCell>
+                  <TableCell>
+                    { item.replaced ? 'Yes' : 'No' }
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button
+                      onClick={() => dispatch({action: 'edit', payload: item})}
+                    >
+                      Edit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 
