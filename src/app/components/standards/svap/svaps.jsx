@@ -15,17 +15,21 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
 import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/Event';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import { useSnackbar } from 'notistack';
+import { func } from 'prop-types';
 
 import ChplSvapEdit from './svap-edit';
 import ChplSvapsView from './svaps-view';
 
 import {
+  useDeleteSvap,
   useFetchCriteriaForSvaps,
   useFetchSvaps,
+  usePostSvap,
+  usePutSvap,
 } from 'api/standards';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
@@ -79,9 +83,14 @@ function ChplSvaps(props) {
   const { dispatch } = props;
   const { append, drop } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchSvaps();
+  const deleteSvap = useDeleteSvap();
+  const postSvap = usePostSvap();
+  const putSvap = usePutSvap();
   const criterionOptionsQuery = useFetchCriteriaForSvaps();
+  const { enqueueSnackbar } = useSnackbar();
   const [activeSvap, setActiveSvap] = useState(undefined);
   const [criterionOptions, setCriterionOptions] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [svaps, setSvaps] = useState([]);
   const classes = useStyles();
 
@@ -104,19 +113,51 @@ function ChplSvaps(props) {
       case 'cancel':
         setActiveSvap(undefined);
         break;
-        // no default
       case 'delete':
-        console.log('delete', payload)
-        setActiveSvap(undefined);
+        setErrors([]);
+        deleteSvap.mutate(payload, {
+          onSuccess: () => {
+            enqueueSnackbar('SVAP Deleted', {
+              variant: 'success',
+            });
+            setActiveSvap(undefined);
+          },
+          onError: (error) => {
+            setErrors(error.response.data.errorMessages);
+          },
+        });
         break;
-        // no default
       case 'edit':
         setActiveSvap(payload);
+        setErrors([]);
         break;
-        // no default
       case 'save':
-        console.log('save', payload)
-        setActiveSvap(undefined);
+        setErrors([]);
+        if (payload.svapId) {
+          putSvap.mutate(payload, {
+            onSuccess: () => {
+              enqueueSnackbar('SVAP Updated', {
+                variant: 'success',
+              });
+              setActiveSvap(undefined);
+            },
+            onError: (error) => {
+              setErrors(error.response.data.errorMessages);
+            },
+          });
+        } else {
+          postSvap.mutate(payload, {
+            onSuccess: () => {
+              enqueueSnackbar('SVAP Created', {
+                variant: 'success',
+              });
+              setActiveSvap(undefined);
+            },
+            onError: (error) => {
+              setErrors(error.response.data?.errorMessages);
+            },
+          });
+        }
         break;
         // no default
     }
@@ -136,6 +177,7 @@ function ChplSvaps(props) {
         svap={activeSvap}
         dispatch={handleDispatch}
         criterionOptions={criterionOptions}
+        errors={errors}
       />
     );
   }

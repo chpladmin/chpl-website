@@ -10,9 +10,9 @@ function ChplStandardsWrapper() {
   return (
     <UserWrapper>
       <ApiWrapper>
-          <BreadcrumbWrapper>
-            <ChplStandards />
-          </BreadcrumbWrapper>
+        <BreadcrumbWrapper>
+          <ChplStandards />
+        </BreadcrumbWrapper>
       </ApiWrapper>
     </UserWrapper>
   );

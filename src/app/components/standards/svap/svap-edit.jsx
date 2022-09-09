@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { arrayOf, func, object } from 'prop-types';
+import { arrayOf, func, object, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -57,6 +57,7 @@ const validationSchema = yup.object({
 function ChplSvapEdit(props) {
   const { criterionOptions, dispatch } = props;
   const [criteria, setCriteria] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
   const classes = useStyles();
@@ -69,10 +70,22 @@ function ChplSvapEdit(props) {
     })) || []);
   }, [props.svap]); // eslint-disable-line react/destructuring-assignment
 
+  useEffect(() => {
+    setErrors(props.errors.sort((a, b) => a < b ? -1 : 1));
+  }, [props.errors]);
+
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));
     setSelectedCriterion('');
   };
+
+  const buildPayload = () => ({
+    ...svap,
+    regulatoryTextCitation: formik.values.regulatoryTextCitation,
+    approvedStandardVersion: formik.values.approvedStandardVersion,
+    criteria,
+    replaced: formik.values.replaced,
+  });
 
   const getDisplay = (criterion) => criterion.number + (isCures(criterion) ? ' (Cures Update)' : '');
 
@@ -82,7 +95,7 @@ function ChplSvapEdit(props) {
         dispatch({ action: 'cancel' });
         break;
       case 'delete':
-        dispatch({ action: 'delete', payload: svap });
+        dispatch({ action: 'delete', payload: buildPayload() });
         break;
       case 'save':
         formik.submitForm();
@@ -104,14 +117,7 @@ function ChplSvapEdit(props) {
       replaced: props.svap?.replaced || false,
     },
     onSubmit: () => {
-      const payload = {
-        ...svap,
-        regulatoryTextCitation: formik.values.regulatoryTextCitation,
-        approvedStandardVersion: formik.values.approvedStandardVersion,
-        criteria,
-        replaced: formik.values.replaced,
-      };
-      props.dispatch({ action: 'save', payload });
+      props.dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });
@@ -186,7 +192,8 @@ function ChplSvapEdit(props) {
       />
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete={!!svap.svapId}
+        canDelete={false && !!svap.svapId}
+        errors={errors}
       />
     </>
   );
@@ -198,4 +205,5 @@ ChplSvapEdit.propTypes = {
   criterionOptions: arrayOf(object).isRequired,
   dispatch: func.isRequired,
   svap: object.isRequired,
+  errors: arrayOf(string).isRequired,
 };

@@ -56,7 +56,7 @@ function ChplSvapsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
-  }, []);
+  }, [props.svaps]);
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
