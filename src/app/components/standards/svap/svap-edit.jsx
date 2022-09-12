@@ -1,51 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
   Chip,
   FormControlLabel,
-  IconButton,
   MenuItem,
   Switch,
-  Typography,
-  makeStyles,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { arrayOf, func, object, string } from 'prop-types';
+import {
+  arrayOf, func, object, string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
-import { job as jobType } from 'shared/prop-types';
-import theme from 'themes/theme';
-
-const useStyles = makeStyles({
-  container: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '1fr 2fr',
-    },
-  },
-  divSpacing: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '8px',
-    alignItems: 'center',
-  },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-  subHeaderColor: {
-    color: '#000000',
-  },
-});
 
 const validationSchema = yup.object({
   regulatoryTextCitation: yup.string()
@@ -60,7 +28,6 @@ function ChplSvapEdit(props) {
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -71,8 +38,8 @@ function ChplSvapEdit(props) {
   }, [props.svap]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => a < b ? -1 : 1));
-  }, [props.errors]);
+    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
+  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));

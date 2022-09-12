@@ -5,13 +5,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
-import * as jsJoda from '@js-joda/core';
-import '@js-joda/timezone';
 
 import ChplSvaps from 'components/standards/svap/svaps';
-
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { BreadcrumbContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({

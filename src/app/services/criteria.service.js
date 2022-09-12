@@ -1,4 +1,3 @@
-
 const criteriaSortOrder = [
   '170.315 (a)(1)',
   '170.315 (a)(2)',
@@ -194,9 +193,7 @@ const criteriaSortOrder = [
   '170.306 (i)',
 ];
 
-const isCures = (criterion) => {
-  return criterion.title.indexOf('Cures Update') > -1;
-}
+const isCures = (criterion) => criterion.title.indexOf('Cures Update') > -1;
 
 const sortCriteria = (a, b) => {
   const aValue = a.number + (isCures(a) ? ' (Cures Update)' : '');

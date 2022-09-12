@@ -1,11 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -15,9 +10,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, object } from 'prop-types';
-import EditIcon from '@material-ui/icons/Edit';
-import EventIcon from '@material-ui/icons/Event';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
@@ -56,7 +48,7 @@ function ChplSvapsView(props) {
           .join(', '),
       }))
       .sort(sortComparator('regulatoryTextCitation')));
-  }, [props.svaps]);
+  }, [props.svaps]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -69,7 +61,7 @@ function ChplSvapsView(props) {
   return (
     <>
       <Button
-        onClick={() => dispatch({action: 'edit', payload: {}})}
+        onClick={() => dispatch({ action: 'edit', payload: {} })}
       >
         Add
       </Button>
@@ -102,7 +94,7 @@ function ChplSvapsView(props) {
                   </TableCell>
                   <TableCell align="right">
                     <Button
-                      onClick={() => dispatch({action: 'edit', payload: item})}
+                      onClick={() => dispatch({ action: 'edit', payload: item })}
                     >
                       Edit
                     </Button>

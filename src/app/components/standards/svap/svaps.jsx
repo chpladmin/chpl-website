@@ -4,20 +4,9 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
   CircularProgress,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   makeStyles,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import EventIcon from '@material-ui/icons/Event';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { useSnackbar } from 'notistack';
 import { func } from 'prop-types';
 
@@ -31,16 +20,7 @@ import {
   usePostSvap,
   usePutSvap,
 } from 'api/standards';
-import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
-
-const headers = [
-  { property: 'citation', text: 'Regulatory Text Citation', sortable: true },
-  { property: 'standard', text: 'Approved Standard Version', sortable: true },
-  { property: 'criteria', text: 'Applicable Criteria' },
-  { property: 'replaced', text: 'Replaced', sortable: true },
-  { property: 'actions', text: 'Action', invisible: true },
-];
+import { BreadcrumbContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   container: {
@@ -108,7 +88,7 @@ function ChplSvaps(props) {
     setCriterionOptions(criterionOptionsQuery.data);
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
 
-  const handleDispatch = ({action, payload}) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
         setActiveSvap(undefined);
@@ -166,7 +146,7 @@ function ChplSvaps(props) {
   if (isLoading || !isSuccess || svaps.length === 0) {
     return (
       <>
-        <CircularProgress/>
+        <CircularProgress />
       </>
     );
   }
