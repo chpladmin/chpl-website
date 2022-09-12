@@ -144,29 +144,6 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ONC'],
     },
   }, {
-    name: 'administration.svaps',
-    url: '/svaps',
-    component: 'chplSvapsPage',
-    resolve: {
-      svaps: (authService, networkService) => {
-        'ngInject';
-
-        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-          return networkService.getSvaps();
-        }
-        return [];
-      },
-      availableCriteria: (networkService) => {
-        'ngInject';
-
-        return networkService.getCertificationCriteriaForSvap();
-      },
-    },
-    data: {
-      title: 'CHPL Administration - SVAPs',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
-    },
-  }, {
     name: 'administration.upload',
     url: '/upload',
     component: 'chplUpload',
