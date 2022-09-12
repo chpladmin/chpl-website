@@ -106,6 +106,8 @@ function ChplSvapEdit(props) {
 
   const isDisabled = (criterion) => criteria.filter((c) => c.id === criterion.id).length > 0;
 
+  const isValid = () => formik.isValid && criteria.length > 0;
+
   const remove = (item) => {
     setCriteria((prev) => prev.filter((ele) => ele.id !== item.id));
   };
@@ -154,6 +156,7 @@ function ChplSvapEdit(props) {
         label="Select a criterion to associate"
         value={selectedCriterion}
         onChange={(event) => add(event.target.value)}
+        helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
       >
         { criterionOptions
           .sort(sortCriteria)
@@ -192,8 +195,9 @@ function ChplSvapEdit(props) {
       />
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete={false && !!svap.svapId}
+        canDelete={!!svap.svapId}
         errors={errors}
+        isDisabled={!isValid()}
       />
     </>
   );
