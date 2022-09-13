@@ -1,24 +1,24 @@
 import React from 'react';
 
-import ChplStandards from './standards';
+import ChplSystemMaintenance from './system-maintenance';
 
 import ApiWrapper from 'api/api-wrapper';
 import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
 import { UserWrapper } from 'components/login';
 
-function ChplStandardsWrapper() {
+function ChplSystemMaintenanceWrapper() {
   return (
     <UserWrapper>
       <ApiWrapper>
         <BreadcrumbWrapper>
-          <ChplStandards />
+          <ChplSystemMaintenance />
         </BreadcrumbWrapper>
       </ApiWrapper>
     </UserWrapper>
   );
 }
 
-export default ChplStandardsWrapper;
+export default ChplSystemMaintenanceWrapper;
 
-ChplStandardsWrapper.propTypes = {
+ChplSystemMaintenanceWrapper.propTypes = {
 };
