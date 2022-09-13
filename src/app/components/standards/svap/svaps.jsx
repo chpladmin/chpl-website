@@ -154,14 +154,6 @@ function ChplSvaps() {
     }
   };
 
-  if (isLoading || !isSuccess || svaps.length === 0) {
-    return (
-      <>
-        <CircularProgress />
-      </>
-    );
-  }
-
   if (activeSvap) {
     return (
       <ChplSvapEdit
@@ -170,6 +162,12 @@ function ChplSvaps() {
         criterionOptions={criterionOptions}
         errors={errors}
       />
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <CircularProgress />
     );
   }
 
