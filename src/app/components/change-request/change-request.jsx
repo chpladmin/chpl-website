@@ -168,7 +168,7 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
 function ChplChangeRequest(props) {
   const $state = getAngularService('$state');
   const { isOn } = useContext(FlagContext);
-  const { append, drop } = useContext(BreadcrumbContext);
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { changeRequest: { id }, showBreadcrumbs } = props;
@@ -188,56 +188,50 @@ function ChplChangeRequest(props) {
 
   useEffect(() => {
     if (showBreadcrumbs) {
-      drop('viewall.disabled');
-      drop('viewall');
       append(
         <Button
-          key="viewall"
+          key="view"
           variant="text"
           className={classes.breadcrumbs}
-          onClick={() => props.dispatch('close')}
+          onClick={() => setIsEditing(false)}
         >
-          Change Requests
+          View Change Request
         </Button>,
       );
-      if (isEditing) {
-        drop('view.disabled');
-        append(
-          <Button
-            key="view"
-            variant="text"
-            className={classes.breadcrumbs}
-            onClick={() => setIsEditing(false)}
-          >
-            View Change Request
-          </Button>,
-        );
-        append(
-          <Button
-            key="edit.disabled"
-            variant="text"
-            className={classes.breadcrumbs}
-            disabled
-          >
-            Edit Change Request
-          </Button>,
-        );
-      } else {
-        drop('edit.disabled');
-        drop('view');
-        append(
-          <Button
-            key="view.disabled"
-            variant="text"
-            className={classes.breadcrumbs}
-            disabled
-          >
-            View Change Request
-          </Button>,
-        );
-      }
+      append(
+        <Button
+          key="edit.disabled"
+          variant="text"
+          className={classes.breadcrumbs}
+          disabled
+        >
+          Edit Change Request
+        </Button>,
+      );
+      append(
+        <Button
+          key="view.disabled"
+          variant="text"
+          className={classes.breadcrumbs}
+          disabled
+        >
+          View Change Request
+        </Button>,
+      );
     }
-  }, [showBreadcrumbs, isEditing]);
+  }, [showBreadcrumbs]);
+
+  useEffect(() => {
+    if (isEditing) {
+      display('view');
+      display('edit.disabled');
+      hide('view.disabled');
+    } else {
+      display('view.disabled');
+      hide('edit.disabled');
+      hide('view');
+    }
+  }, [isEditing]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
