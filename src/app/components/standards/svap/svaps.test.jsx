@@ -64,7 +64,7 @@ jest.mock('notistack', () => ({
   }),
 }));
 
-describe('the ChplSvaps component', () => {
+xdescribe('the ChplSvaps component', () => {
   afterEach(() => {
     cleanup();
   });
