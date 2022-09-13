@@ -90,6 +90,18 @@ function ChplAnnouncementsView(props) {
         { !announcement
           && (
             <>
+              <div className={classes.tableResultsHeaderContainer}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  id="add-new-announcement"
+                  onClick={() => handleBreadcrumbs({ action: 'add' })}
+                >
+                  Add Announcement
+                  {' '}
+                  <AddIcon className={classes.iconSpacing} />
+                </Button>
+              </div>
               { (announcements.length === 0)
                 && (
                   <Typography className={classes.noResultsContainer}>
