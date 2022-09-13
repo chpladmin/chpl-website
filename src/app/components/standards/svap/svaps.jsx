@@ -175,6 +175,10 @@ function ChplSvaps() {
     <Card>
       <CardHeader title="SVAP Maintenance" />
       <CardContent>
+        { (deleteSvap.isLoading || postSvap.isLoading || putSvap.isLoading)
+          && (
+            <CircularProgress />
+          )}
         <ChplSvapsView
           svaps={svaps}
           dispatch={handleDispatch}
