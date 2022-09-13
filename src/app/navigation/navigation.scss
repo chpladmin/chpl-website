@@ -1,8 +1,19 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
 
-.ui-upgrade {
-    background: var(--grey) !important;
-    color: #001439 !important;
+.default-visible {
+    display: block !important;
+
+    &.toggle-visible {
+        display: none !important;
+    }
+}
+
+.default-hidden {
+    display: none !important;
+
+    &.toggle-visible {
+        display: block !important;
+    }
 }
 
 .navbar {
