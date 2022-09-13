@@ -8,7 +8,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import { func } from 'prop-types';
 
 import ChplSvapEdit from './svap-edit';
 import ChplSvapsView from './svaps-view';
@@ -37,31 +36,8 @@ const useStyles = makeStyles({
   },
 });
 
-const resetBreadcrumbs = (append, drop, classes, dispatch) => {
-  drop('standards.disabled');
-  append(
-    <Button
-      key="standards"
-      variant="text"
-      className={classes.breadcrumbs}
-      onClick={() => dispatch('reset')}
-    >
-      Standards &amp; Processes
-    </Button>,
-    <Button
-      key="svaps.viewall.disabled"
-      variant="text"
-      className={classes.breadcrumbs}
-      disabled
-    >
-      SVAP Maintenance
-    </Button>,
-  );
-};
-
-function ChplSvaps(props) {
-  const { dispatch } = props;
-  const { append, drop } = useContext(BreadcrumbContext);
+function ChplSvaps() {
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchSvaps();
   const deleteSvap = useDeleteSvap();
   const postSvap = usePostSvap();
@@ -73,9 +49,32 @@ function ChplSvaps(props) {
   const [errors, setErrors] = useState([]);
   const [svaps, setSvaps] = useState([]);
   const classes = useStyles();
+  let handleDispatch;
 
   useEffect(() => {
-    resetBreadcrumbs(append, drop, classes, dispatch);
+    append(
+      <Button
+        key="svaps.viewall.disabled"
+        depth={1}
+        variant="text"
+        className={classes.breadcrumbs}
+        disabled
+      >
+        SVAP Maintenance
+      </Button>,
+    );
+    append(
+      <Button
+        key="svaps.viewall"
+        depth={1}
+        variant="text"
+        className={classes.breadcrumbs}
+        onClick={() => handleDispatch({ action: 'cancel' })}
+      >
+        SVAP Maintenance
+      </Button>,
+    );
+    display('svaps.viewall.disabled');
   }, []);
 
   useEffect(() => {
@@ -88,10 +87,14 @@ function ChplSvaps(props) {
     setCriterionOptions(criterionOptionsQuery.data);
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
 
-  const handleDispatch = ({ action, payload }) => {
+  handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
         setActiveSvap(undefined);
+        display('svaps.viewall.disabled');
+        hide('svaps.viewall');
+        hide('svaps.add.disabled');
+        hide('svaps.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
@@ -101,6 +104,8 @@ function ChplSvaps(props) {
               variant: 'success',
             });
             setActiveSvap(undefined);
+            display('svaps.viewall.disabled');
+            hide('svaps.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -110,6 +115,8 @@ function ChplSvaps(props) {
       case 'edit':
         setActiveSvap(payload);
         setErrors([]);
+        display('svaps.viewall');
+        hide('svaps.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
@@ -120,6 +127,8 @@ function ChplSvaps(props) {
                 variant: 'success',
               });
               setActiveSvap(undefined);
+              display('svaps.viewall.disabled');
+              hide('svaps.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
@@ -132,6 +141,8 @@ function ChplSvaps(props) {
                 variant: 'success',
               });
               setActiveSvap(undefined);
+              display('svaps.viewall.disabled');
+              hide('svaps.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
@@ -178,5 +189,4 @@ function ChplSvaps(props) {
 export default ChplSvaps;
 
 ChplSvaps.propTypes = {
-  dispatch: func.isRequired,
 };

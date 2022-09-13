@@ -26,43 +26,64 @@ const useStyles = makeStyles({
   },
 });
 
-const resetBreadcrumbs = (append, dropAll, classes) => {
-  dropAll();
-  append(
-    <Button
-      key="standards.disabled"
-      variant="text"
-      className={classes.breadcrumbs}
-      disabled
-    >
-      Standards &amp; Processes
-    </Button>,
-  );
-};
-
 function ChplStandards() {
-  const { append, dropAll } = useContext(BreadcrumbContext);
-  const [active, setActive] = useState('svaps');
+  const { append, display, hide } = useContext(BreadcrumbContext);
+  const [active, setActive] = useState('');
   const classes = useStyles();
+  let navigate;
 
   useEffect(() => {
-    resetBreadcrumbs(append, dropAll, classes);
+    append(
+      <Button
+        key="standards.disabled"
+        depth={0}
+        variant="text"
+        className={classes.breadcrumbs}
+        disabled
+      >
+        Standards &amp; Processes
+      </Button>,
+    );
+    append(
+      <Button
+        key="standards"
+        depth={0}
+        variant="text"
+        className={classes.breadcrumbs}
+        onClick={() => navigate()}
+      >
+        Standards &amp; Processes
+      </Button>,
+    );
+    display('standards.disabled');
   }, []);
 
-  const handleDispatch = () => {
-    setActive('');
+  navigate = (target) => {
+    if (target) {
+      setActive(target);
+      display('standards');
+      hide('standards.disabled');
+    } else {
+      setActive('');
+      display('standards.disabled');
+      hide('standards');
+      hide('svaps.viewall.disabled');
+      hide('svaps.viewall');
+      hide('svaps.add.disabled');
+      hide('svaps.edit.disabled');
+    }
   };
 
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Typography className={classes.fullWidthGridRow} variant="h1">Management of Standards &amp; Processes</Typography>
       <div>
-        <Button onClick={() => setActive('svaps')}>SVAP Maintenance</Button>
+        <Button onClick={() => navigate('svaps')}>SVAP Maintenance</Button>
       </div>
       <div>
         { active === 'svaps'
           && (
-            <ChplSvaps dispatch={handleDispatch} />
+            <ChplSvaps />
           )}
       </div>
     </Container>

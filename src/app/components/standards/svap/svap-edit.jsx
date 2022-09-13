@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
+  Button,
   Chip,
   FormControlLabel,
   MenuItem,
   Switch,
+  makeStyles,
 } from '@material-ui/core';
 import {
   arrayOf, func, object, string,
@@ -14,6 +16,7 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
+import { BreadcrumbContext } from 'shared/contexts';
 
 const validationSchema = yup.object({
   regulatoryTextCitation: yup.string()
@@ -22,19 +25,53 @@ const validationSchema = yup.object({
     .required('Field is required'),
 });
 
+const useStyles = makeStyles({
+  breadcrumbs: {
+    textTransform: 'none',
+  },
+});
+
 function ChplSvapEdit(props) {
   const { criterionOptions, dispatch } = props;
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const [svap, setSvap] = useState({});
+  const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    append(
+      <Button
+        key="svaps.add.disabled"
+        depth={2}
+        variant="text"
+        className={classes.breadcrumbs}
+        disabled
+      >
+        Add
+      </Button>,
+    );
+    append(
+      <Button
+        key="svaps.edit.disabled"
+        depth={2}
+        variant="text"
+        className={classes.breadcrumbs}
+        disabled
+      >
+        Edit
+      </Button>,
+    );
+  }, []);
 
   useEffect(() => {
     setSvap(props.svap);
     setCriteria(props.svap.criteria?.map((c) => ({
       ...c,
     })) || []);
+    display(props.svap.svapId ? 'svaps.edit.disabled' : 'svaps.add.disabled');
   }, [props.svap]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
@@ -60,12 +97,18 @@ function ChplSvapEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
+        hide('svaps.add.disabled');
+        hide('svaps.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
+        hide('svaps.add.disabled');
+        hide('svaps.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
+        hide('svaps.add.disabled');
+        hide('svaps.edit.disabled');
         break;
         // no default
     }
