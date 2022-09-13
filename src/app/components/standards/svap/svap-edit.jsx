@@ -26,6 +26,16 @@ const validationSchema = yup.object({
 });
 
 const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  chips: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '8px',
+  },
   breadcrumbs: {
     textTransform: 'none',
   },
@@ -135,7 +145,7 @@ function ChplSvapEdit(props) {
   });
 
   return (
-    <>
+    <div className={classes.container}>
       <ChplTextField
         id="regulatory-text-citation"
         name="regulatoryTextCitation"
@@ -180,17 +190,19 @@ function ChplSvapEdit(props) {
             </MenuItem>
           ))}
       </ChplTextField>
-      { criteria
-        .sort(sortCriteria)
-        .map((item) => (
-          <Chip
-            key={item.id}
-            label={getDisplay(item)}
-            onDelete={() => remove(item)}
-            color="primary"
-            variant="outlined"
-          />
-        ))}
+      <div className={classes.chips}>
+        { criteria
+          .sort(sortCriteria)
+          .map((item) => (
+            <Chip
+              key={item.id}
+              label={getDisplay(item)}
+              onDelete={() => remove(item)}
+              color="primary"
+              variant="outlined"
+            />
+          ))}
+      </div>
       <FormControlLabel
         control={(
           <Switch
@@ -209,7 +221,7 @@ function ChplSvapEdit(props) {
         errors={errors}
         isDisabled={!isValid()}
       />
-    </>
+    </div>
   );
 }
 
