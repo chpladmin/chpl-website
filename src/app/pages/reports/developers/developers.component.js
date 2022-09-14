@@ -41,10 +41,10 @@ const compareStatusEvents = (initialBefore, initialAfter) => {
       b += 1;
       a += 1;
     } else if ((before[b]?.statusDate < after[a]?.statusDate) || (before[b] && !after[a])) {
-      changes.push(`<li>Status ${before[b].status.statusName} on ${getDisplayDateFormat(before[b].statusDate)} was removed${before[b].reason ? (` with reason ${before[b].reason}`) : ''}</>`);
+      changes.push(`<li>Status ${before[b].status.statusName || before[b].status.status} on ${getDisplayDateFormat(before[b].statusDate)} was removed${before[b].reason ? (` with reason ${before[b].reason}`) : ''}</>`);
       b += 1;
     } else if ((before[b]?.statusDate > after[a]?.statusDate) || (!before[b] && after[a])) {
-      changes.push(`<li>Status ${after[a].status.statusName} on ${getDisplayDateFormat(after[a].statusDate)} was added${after[a].reason ? (` with reason ${after[a].reason}`) : ''}</li>`);
+      changes.push(`<li>Status ${after[a].status.statusName || after[a].status.status} on ${getDisplayDateFormat(after[a].statusDate)} was added${after[a].reason ? (` with reason ${after[a].reason}`) : ''}</li>`);
       a += 1;
     }
   }
@@ -195,7 +195,12 @@ lookup = {
     message: () => undefined,
   },
   'root.status.status': {
-    message: () => 'Current status:',
+    message: (before, after) => {
+      if (typeof before.status === 'string') {
+        return comparePrimitive(before, after, 'status', 'Status');
+      }
+      return 'Current status:';
+    },
   },
   'root.status.status.id': {
     message: () => undefined,
