@@ -21,7 +21,7 @@ function ChplBannedDevelopersCollectionPage() {
     key: 'decertificationDate',
     display: 'Decertification Date',
     values: [
-      { value: 'Before', default: new Date().toISOString().slice(0, 10) },
+      { value: 'Before', default: '' },
       { value: 'After', default: '2015-06-01' },
     ],
     getQuery: (value) => value.values
