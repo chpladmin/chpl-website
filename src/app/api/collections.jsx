@@ -29,6 +29,22 @@ const useFetchApiDocumentationData = () => {
   }, options.daily);
 };
 
+const useFetchBannedDevelopersCollection = ({
+  orderBy,
+  pageNumber,
+  pageSize,
+  sortDescending,
+  query,
+}) => {
+  const axios = useAxios();
+  return useQuery(['developers/search', {
+    orderBy, pageNumber, pageSize, sortDescending, query,
+  }], async () => {
+    const response = await axios.get(`/developers/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    return response.data;
+  }, { keepPreviousData: true });
+};
+
 const useFetchRealWorldTestingCollection = ({
   orderBy,
   pageNumber,
@@ -46,5 +62,6 @@ const useFetchRealWorldTestingCollection = ({
 export {
   useFetchApiDocumentationCollection,
   useFetchApiDocumentationData,
+  useFetchBannedDevelopersCollection,
   useFetchRealWorldTestingCollection,
 };
