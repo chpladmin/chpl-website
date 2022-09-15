@@ -22,7 +22,7 @@ function ChplBannedDevelopersCollectionPage() {
     display: 'Decertification Date',
     values: [
       { value: 'Before', default: '' },
-      { value: 'After', default: '2015-06-01' },
+      { value: 'After', default: '' },
     ],
     getQuery: (value) => value.values
       .sort((a, b) => (a.value < b.value ? -1 : 1))
