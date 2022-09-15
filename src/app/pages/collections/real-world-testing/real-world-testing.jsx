@@ -3,7 +3,12 @@ import React from 'react';
 import ChplRealWorldTestingCollectionView from './real-world-testing-view';
 
 import ApiWrapper from 'api/api-wrapper';
-import { FilterProvider, defaultFilter } from 'components/filter';
+import {
+  FilterProvider,
+  defaultFilter,
+  getDateDisplay,
+  getDateEntry,
+} from 'components/filter';
 import { UserWrapper } from 'components/login';
 
 function ChplRealWorldTestingCollectionPage() {
@@ -19,6 +24,20 @@ function ChplRealWorldTestingCollectionPage() {
       { value: '2015', default: true },
       { value: '2015 Cures Update', default: true },
     ],
+  }, {
+    ...defaultFilter,
+    key: 'certificationDate',
+    display: 'Certification Date',
+    values: [
+      { value: 'Before', default: '' },
+      { value: 'After', default: '' },
+    ],
+    getQuery: (value) => value.values
+      .sort((a, b) => (a.value < b.value ? -1 : 1))
+      .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${v.selected}`)
+      .join('&'),
+    getValueDisplay: getDateDisplay,
+    getValueEntry: getDateEntry,
   }, {
     ...defaultFilter,
     key: 'certificationStatuses',

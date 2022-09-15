@@ -1,6 +1,6 @@
-import { ChplApiDocumentationCollectionPage } from './api-documentation';
+import ChplApiDocumentationCollectionPage from './api-documentation/api-documentation';
 import ChplBannedDevelopersCollectionPage from './banned-developers/banned-developers';
-import { ChplRealWorldTestingCollectionPage } from './real-world-testing';
+import ChplRealWorldTestingCollectionPage from './real-world-testing/real-world-testing';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
