@@ -214,7 +214,9 @@ function ChplBannedDevelopersCollectionView(props) {
         </div>
       </div>
       <div className={classes.searchContainer} component={Paper}>
-        <ChplFilterSearchTerm />
+        <ChplFilterSearchTerm
+          placeholder="Search by Developer Name or Code..."
+        />
         <ChplFilterPanel />
       </div>
       <div>
