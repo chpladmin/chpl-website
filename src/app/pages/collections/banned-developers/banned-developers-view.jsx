@@ -13,8 +13,6 @@ import {
 } from '@material-ui/core';
 import Moment from 'react-moment';
 import { shape, string } from 'prop-types';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import { ExportToCsv } from 'export-to-csv';
 
 import { theme, utilStyles } from 'themes';
 import {
@@ -245,23 +243,6 @@ function ChplBannedDevelopersCollectionView(props) {
                {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
              </Typography>
            </div>
-           <ButtonGroup size="small" className={classes.wrap}>
-             <Button
-               color="secondary"
-               variant="contained"
-               fullWidth
-               id="download-filtered-developers"
-               disabled
-             >
-               Download
-               {' '}
-               { developers.length }
-               {' '}
-               Result
-               { developers.length !== 1 ? 's' : '' }
-               <GetAppIcon className={classes.iconSpacing} />
-             </Button>
-           </ButtonGroup>
          </div>
          <TableContainer className={classes.tableContainer} component={Paper}>
            <Table
