@@ -40,6 +40,7 @@ describe('the ChplAttestationWizard component', () => {
         attestationResponses={[]}
         developer={developerMock}
         dispatch={dispatchMock}
+        form={{}}
         period={periodMock}
       />,
     );
