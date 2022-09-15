@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -11,7 +9,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import Moment from 'react-moment';
 import { shape, string } from 'prop-types';
 
 import { theme, utilStyles } from 'themes';
@@ -30,7 +27,6 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -102,46 +98,8 @@ const useStyles = makeStyles({
   },
 });
 
-const parseBannedDevelopers = ({ apiDocumentation }, analytics, erdPhase2IsOn) => {
-  if (apiDocumentation.length === 0) { return 'N/A'; }
-  const items = Object.entries(apiDocumentation
-    .filter((item) => !erdPhase2IsOn || (item.criterion.id !== 57 && item.criterion.id !== 58))
-    .map((item) => ({
-      id: item.criterion.id,
-      url: item.value,
-    }))
-    .reduce((map, { id, url }) => ({
-      ...map,
-      [url]: (map[url] || []).concat(id),
-    }), {}))
-    .map(([url, ids]) => ({
-      url,
-      criteria: ids
-        .sort((a, b) => criteriaLookup(erdPhase2IsOn)[a].sort - criteriaLookup(erdPhase2IsOn)[b].sort)
-        .map((id) => criteriaLookup(erdPhase2IsOn)[id].display)
-        .join(', '),
-    }));
-  return (
-    <dl>
-      {items.map(({ url, criteria }) => (
-        <React.Fragment key={url}>
-          <dt>{ criteria }</dt>
-          <dd>
-            <ChplLink
-              key={url}
-              href={url}
-              analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
-            />
-          </dd>
-        </React.Fragment>
-      ))}
-    </dl>
-  );
-};
-
 function ChplBannedDevelopersCollectionView(props) {
   const $analytics = getAngularService('$analytics');
-  const authService = getAngularService('authService');
   const { analytics } = props;
   const [developers, setDevelopers] = useState([]);
   const [orderBy, setOrderBy] = useState('developer');
@@ -205,11 +163,21 @@ function ChplBannedDevelopersCollectionView(props) {
             This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program - including new products as well as upgraded versions of current products. ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence. A developer may be precluded from certifying products for two reasons:
           </Typography>
           <ol>
-            <li><strong>Developer Failure to Take Appropriate Corrective Action</strong> A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.</li>
-            <li><strong>Product Withdrawn While Under Surveillance</strong> A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.</li>
+            <li>
+              <strong>Developer Failure to Take Appropriate Corrective Action</strong>
+              {' '}
+              A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.
+            </li>
+            <li>
+              <strong>Product Withdrawn While Under Surveillance</strong>
+              {' '}
+              A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.
+            </li>
           </ol>
           <Typography variant="body1">
-            Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product’s details page to confirm its certification status by <a href="https://chpl.healthit.gov/#/search">searching for the product</a>
+            Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product’s details page to confirm its certification status by
+            {' '}
+            <a href="https://chpl.healthit.gov/#/search">searching for the product</a>
           </Typography>
         </div>
       </div>
