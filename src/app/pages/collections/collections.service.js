@@ -14,8 +14,6 @@
 
     function getAnalyticsCategory(key) {
       switch (key) {
-        case 'bannedDevelopers':
-          return 'Banned Developer';
         case 'correctiveAction':
           return 'Products: Corrective Action Status';
         case 'decertifiedProducts':
@@ -30,8 +28,6 @@
 
     function translate(key, data) {
       switch (key) {
-        case 'bannedDevelopers':
-          return bannedDevelopers(data);
         case 'correctiveAction':
           return correctiveActions(data.results);
         case 'decertifiedProducts':
@@ -47,28 +43,6 @@
     /// /////////////////////////////////////////////////////////////////
     // translation functions
     /// /////////////////////////////////////////////////////////////////
-
-    /*
-     * All developers found are included, but need to be transformed
-     */
-    function bannedDevelopers(array) {
-      const ret = [];
-      let dev;
-      for (let i = 0; i < array.length; i++) {
-        dev = {
-          acb: [],
-          decertificationDate: array[i].decertificationDate,
-          developer: array[i].developerName,
-          id: array[i].id,
-          mainSearch: array[i].developerName,
-        };
-        for (let j = 0; j < array[i].acbNames.length; j++) {
-          dev.acb.push(array[i].acbNames[j]);
-        }
-        ret.push(dev);
-      }
-      return ret;
-    }
 
     /*
      * Listings are part of this collection if they have at least one of:
