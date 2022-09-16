@@ -1,11 +1,13 @@
-import DevelopersPage from './developers.po';
 import Hooks from '../../../utilities/hooks';
 
-let hooks; let page;
+import BannedDevelopersPage from './banned-developers.po';
+
+let hooks;
+let page;
 
 describe('the Developers Under Certification Ban collection page', () => {
   beforeEach(async () => {
-    page = new DevelopersPage();
+    page = new BannedDevelopersPage();
     hooks = new Hooks();
     hooks.open('#/collections/developers');
     await hooks.waitForSpinnerToDisappear();
@@ -18,8 +20,8 @@ describe('the Developers Under Certification Ban collection page', () => {
   });
 
   it('should have table headers in a defined order', () => {
-    const expectedHeaders = ['Developer', 'Developer', 'Date', 'ONC-ACB'];
-    const actualHeaders = page.getListingTableHeaders();
+    const expectedHeaders = ['Developer\nsorted ascending', 'Decertification Date', 'ONC-ACB'];
+    const actualHeaders = page.getTableHeaders();
     expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     actualHeaders.forEach((header, idx) => {
       expect(header.getText()).toBe(expectedHeaders[idx]);
@@ -27,47 +29,54 @@ describe('the Developers Under Certification Ban collection page', () => {
   });
 
   describe('when filtering', () => {
-    let countBefore;
-    let countAfter;
-    beforeEach(() => {
-      countBefore = page.listingTotalCount();
-    });
+    describe('using predefined filters', () => {
+      let countBefore;
+      let countAfter;
+      beforeEach(() => {
+        countBefore = page.getListingTotalCount();
+      });
 
-    afterEach(() => {
-      page.clearFilters.click();
-    });
+      afterEach(() => {
+        page.resetFilters();
+      });
 
-    describe('using acb filter to de-select drummond group', () => {
-      it('should filter listing results', () => {
-        page.selectFilter('acb', 'Drummond_Group');
-        page.waitForUpdatedListingResultsCount();
-        countAfter = page.listingTotalCount();
-        expect(countAfter).toBeLessThan(countBefore);
+      describe('when removing "Drummond"', () => {
+        it('should filter listing results', () => {
+          page.removeFilter('ONC-ACB', 'Drummond Group');
+          expect(page.hasNoResults()).toBe(true);
+        });
+      });
+
+      xdescribe('using date filter', () => {
+        it('should filter listing results', () => {
+          page.dateFilter.click();
+          page.fromDate.setValue('09/01/2017')
+          page.toDate.setValue('10/01/2019');
+          page.waitForUpdatedListingResultsCount();
+          countAfter = page.getListingTotalCount();
+          expect(countAfter).toBeLessThan(countBefore);
+        });
       });
     });
 
-    describe('using date filter', () => {
-      it('should filter listing results', () => {
-        page.dateFilter.click();
-        page.fromDate.setValue('09/01/2017')
-        page.toDate.setValue('10/01/2019');
-        page.waitForUpdatedListingResultsCount();
-        countAfter = page.listingTotalCount();
-        expect(countAfter).toBeLessThan(countBefore);
+    describe('by text', () => {
+      afterEach(() => {
+        page.clearSearchTerm();
       });
-    });
-  });
 
-  describe('when searching listing by developer', () => {
-    const DEVELOPER_COL_IDX = 1;
-    const developerName = 'Rabbit';
-    it('should only show listings that match the developer', () => {
-      page.searchForListing(developerName);
-      page.waitForUpdatedListingResultsCount();
-      const count = page.listingTotalCount();
-      for (let i = 1; i <= count; i += 1) {
-        expect(page.getColumnText(i, DEVELOPER_COL_IDX)).toContain(developerName);
-      }
+      it('should search by developer name', () => {
+        const searchTerm = 'Rabbit';
+        page.searchForText(searchTerm);
+        expect(page.hasNoResults()).toBe(true);
+      });
+
+      it('should search by developer code', () => {
+        const searchTerm = '2943';
+        const developerName = 'SocialCare by Health Symmetric, Inc.';
+        const columnIndex = 0;
+        page.searchForText(searchTerm);
+        expect(page.getTableCellText(page.results[0], columnIndex)).toContain(developerName);
+      });
     });
   });
 });

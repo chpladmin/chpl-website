@@ -31,6 +31,13 @@ class CollectionPage {
       .getText();
   }
 
+  hasNoResults() {
+    return $(elements.searchResultsHeader)
+      .parentElement()
+      .$('p')
+      .getText() === 'No results found';
+  }
+
   getListingTotalCount() {
     const data = $(elements.searchResultsHeader)
       .parentElement()
@@ -74,7 +81,11 @@ class CollectionPage {
       .parentElement()
       .$('svg')
       .click();
-    browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
+    try {
+      browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   selectFilter(category, value) {
