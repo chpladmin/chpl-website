@@ -1,4 +1,4 @@
-import CollectionPage from '../collection.po';
+import CollectionPage from '../collection.async.po';
 
 class BannedDevelopersPage extends CollectionPage {
   constructor() {
@@ -9,8 +9,8 @@ class BannedDevelopersPage extends CollectionPage {
     };
   }
 
-  get bodyText() {
-    return $(this.elements.header).parentElement().nextElement();
+  async getBodyText() {
+    return (await $(this.elements.header).parentElement()).nextElement();
   }
 }
 
