@@ -5,12 +5,17 @@ class BannedDevelopersPage extends CollectionPage {
     super();
     this.elements = {
       header: 'h1=Developers Under Certification Ban',
-      downloadRealWorldTesting: '#download-real-world-testing',
     };
   }
 
   async getBodyText() {
-    return (await $(this.elements.header).parentElement()).nextElement();
+    return (await
+            (await
+             (await
+              $(this.elements.header)
+             ).parentElement()
+            ).nextElement()
+           ).getText();
   }
 }
 
