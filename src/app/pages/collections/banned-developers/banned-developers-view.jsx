@@ -93,9 +93,6 @@ const useStyles = makeStyles({
   wrap: {
     flexFlow: 'wrap',
   },
-  noResultsContainer: {
-    padding: '16px 32px',
-  },
 });
 
 function ChplBannedDevelopersCollectionView(props) {
@@ -194,72 +191,80 @@ function ChplBannedDevelopersCollectionView(props) {
         && (
           <>Loading</>
         )}
-      { !isLoading && developers.length === 0
+      { !isLoading
         && (
-          <Typography className={classes.noResultsContainer}>
-            No results found
-          </Typography>
+          <>
+            <div className={classes.tableResultsHeaderContainer}>
+              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                <Typography variant="subtitle2">Search Results:</Typography>
+                { developers.length === 0
+                  && (
+                    <Typography>
+                      No results found
+                    </Typography>
+                  )}
+                { developers.length > 0
+                  && (
+                    <Typography variant="body2">
+                      {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                    </Typography>
+                  )}
+              </div>
+            </div>
+            { developers.length > 0
+              && (
+                <>
+                  <TableContainer className={classes.tableContainer} component={Paper}>
+                    <Table
+                      stickyHeader
+                      aria-label="Developers Under Certification Ban table"
+                    >
+                      <ChplSortableHeaders
+                        headers={headers}
+                        onTableSort={handleTableSort}
+                        orderBy={orderBy}
+                        order={sortDescending ? 'desc' : 'asc'}
+                        stickyHeader
+                      />
+                      <TableBody>
+                        { developers
+                          .map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell className={classes.stickyColumn}>
+                                <strong>
+                                  <ChplLink
+                                    href={`#/organizations/developer/${item.id}`}
+                                    text={item.name}
+                                    analytics={{ event: 'Go to Developer Details Page', category: analytics.category, label: item.name }}
+                                    external={false}
+                                    router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
+                                  />
+                                </strong>
+                              </TableCell>
+                              <TableCell>
+                                { item.decertificationDate }
+                              </TableCell>
+                              <TableCell>
+                                { item.oncAcbDisplay }
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <ChplPagination
+                    count={data.recordCount}
+                    page={pageNumber}
+                    rowsPerPage={pageSize}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    setPage={setPageNumber}
+                    setRowsPerPage={setPageSize}
+                    analytics={analytics}
+                  />
+                </>
+              )}
+          </>
         )}
-      { !isLoading && developers.length > 0
-       && (
-       <>
-         <div className={classes.tableResultsHeaderContainer}>
-           <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-             <Typography variant="subtitle2">Search Results:</Typography>
-             <Typography variant="body2">
-               {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-             </Typography>
-           </div>
-         </div>
-         <TableContainer className={classes.tableContainer} component={Paper}>
-           <Table
-             stickyHeader
-             aria-label="Developers Under Certification Ban table"
-           >
-             <ChplSortableHeaders
-               headers={headers}
-               onTableSort={handleTableSort}
-               orderBy={orderBy}
-               order={sortDescending ? 'desc' : 'asc'}
-               stickyHeader
-             />
-             <TableBody>
-               { developers
-                 .map((item) => (
-                   <TableRow key={item.id}>
-                     <TableCell className={classes.stickyColumn}>
-                       <strong>
-                         <ChplLink
-                           href={`#/organizations/developer/${item.id}`}
-                           text={item.name}
-                           analytics={{ event: 'Go to Developer Details Page', category: analytics.category, label: item.name }}
-                           external={false}
-                           router={{ sref: 'organizations.developers.developer', options: { id: item.id } }}
-                         />
-                       </strong>
-                     </TableCell>
-                     <TableCell>
-                       { item.decertificationDate }
-                     </TableCell>
-                     <TableCell>
-                       { item.oncAcbDisplay }
-                     </TableCell>
-                   </TableRow>
-                 ))}
-             </TableBody>
-           </Table>
-         </TableContainer>
-         <ChplPagination
-           count={data.recordCount}
-           page={pageNumber}
-           rowsPerPage={pageSize}
-           rowsPerPageOptions={[25, 50, 100]}
-           setPage={setPageNumber}
-           setRowsPerPage={setPageSize}
-           analytics={analytics}
-         />
-       </>
-       )}
     </>
   );
 }
