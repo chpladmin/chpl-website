@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
-  Container,
   Button,
   Typography,
   makeStyles,
@@ -98,7 +97,7 @@ function ChplSystemMaintenance() {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.container}>
+    <div className={classes.container}>
       <Typography
         className={classes.fullWidthGridRow}
         variant="h1"
@@ -150,7 +149,7 @@ function ChplSystemMaintenance() {
             <ChplSvaps />
           )}
       </div>
-    </Container>
+    </div>
   );
 }
 
