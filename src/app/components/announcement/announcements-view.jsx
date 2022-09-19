@@ -37,9 +37,6 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  cardSpacing: {
-    marginTop: '32px',
-  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -54,6 +51,8 @@ const useStyles = makeStyles({
   },
   tableResultsHeaderContainer: {
     paddingBottom: '16px',
+    display:'flex',
+    justifyContent: 'flex-end',
   },
   breadcrumbs: {
     textTransform: 'none',
@@ -156,7 +155,7 @@ function ChplAnnouncementsView(props) {
   };
 
   return (
-    <Card className={classes.cardSpacing}>
+    <Card>
       <CardHeader title="Announcements" />
       <CardContent>
         { announcement
