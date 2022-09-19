@@ -5,7 +5,7 @@ import {
   Typography, 
   makeStyles,
 } from '@material-ui/core';
-import { node } from 'prop-types';
+import { node, string } from 'prop-types';
 
 import { BreadcrumbContext } from 'shared/contexts';
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 function BreadcrumbWrapper(props) {
-  const { children } = props;
+  const { children, title } = props;
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [displayed, setDisplayed] = useState([]);
   const [visible, setVisible] = useState(new Set());
@@ -63,7 +63,7 @@ function BreadcrumbWrapper(props) {
       <BreadcrumbContext.Provider value={breadcrumbState}>
         { children }
       </BreadcrumbContext.Provider>
-  </Container>
+    </Container>
   );
 }
 
@@ -71,8 +71,10 @@ export default BreadcrumbWrapper;
 
 BreadcrumbWrapper.propTypes = {
   children: node,
+  title: string,
 };
 
 BreadcrumbWrapper.defaultProps = {
   children: undefined,
+  title: undefined,
 };
