@@ -98,12 +98,6 @@ function ChplSystemMaintenance() {
 
   return (
     <div className={classes.container}>
-      <Typography
-        className={classes.fullWidthGridRow}
-        variant="h1"
-      >
-        System Maintenance
-      </Typography>
       <div className={classes.navigation}>
       <Card>
         <Button
