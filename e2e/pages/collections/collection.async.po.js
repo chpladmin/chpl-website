@@ -6,8 +6,8 @@ const elements = {
 //  downloadFilteredListings: '#download-filtered-listings',
   filterPanelToggle: '#filter-panel-toggle',
   resetAllFiltersButton: 'button=Reset All Filters',
-//  filterSearchTermInput: '#filter-search-term-input',
-//  filterSearchTermGo: '#filter-search-term-go',
+  filterSearchTermInput: '#filter-search-term-input',
+  filterSearchTermGo: '#filter-search-term-go',
   filterChipsSection: '#filter-chips',
 };
 
@@ -125,16 +125,22 @@ class CollectionPage {
 //  }
 //
 //
-//  async getResults() {
-//    return (await $(elements.table)
-//      .$('tbody'))
-//      .$$('tr');
-//  }
-//
-//  async getTableCellText(row, col) {
-//    return (await row.$$('td'))[col]
-//      .getText();
-//  }
+  async getResults() {
+    return (await
+            (await
+             $(elements.table)
+            ).$('tbody')
+           ).$$('tr');
+  }
+
+  async getCellInRow(row, col) {
+    console.log({row, col});
+    return (await
+            (await
+             row.$$('td')
+            )[col]
+           ).getText();
+  }
 //
 //  async hasNoResults() {
 //    return (await (await (await $(elements.searchResultsHeader)
@@ -152,9 +158,9 @@ class CollectionPage {
 //    return parseInt(data[0].split('-')[1], 10);
 //  }
 //
-//  async clearSearchTerm() {
-//    await this.searchForText('');
-//  }
+  async clearSearchTerm() {
+    await this.searchForText('');
+  }
 //
 //
 //  async selectFilter(category, value) {
@@ -170,16 +176,20 @@ class CollectionPage {
 //    }
 //  }
 //
-//  async searchForText(text) {
-//    const initialListingCount = await this.getListingTotalCount();
-//    await $(elements.filterSearchTermInput).setValue(text);
-//    await $(elements.filterSearchTermGo).click();
-//    try {
-//      await browser.waitUntil(async () => (await this.getListingTotalCount()) !== initialListingCount);
-//    } catch (err) {
-//      console.log(err);
-//    }
-//  }
+  async searchForText(text) {
+    const initialResultCount = await this.getTotalResultCount();
+    await (
+      await $(elements.filterSearchTermInput)
+    ).setValue(text);
+    await (
+      await $(elements.filterSearchTermGo)
+    ).click();
+    try {
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
+    } catch (err) {
+      console.log('searchForText' + err);
+    }
+  }
 }
 
 export default CollectionPage;
