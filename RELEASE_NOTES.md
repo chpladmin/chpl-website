@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 11.42.0
+_19 September 2022_
+
+### Features
+* Display changes to Attestations in Developer Reports
+* Provide updated UX for CMS file download
+
+### User Interface Updates
+* Show errors in Complaint management in message drawer
+
+---
+
 ## Version 11.41.0
 _6 September 2022_
 

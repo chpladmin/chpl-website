@@ -1,3 +1,4 @@
+import { compareObject } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const lookup = {
@@ -28,38 +29,6 @@ const lookup = {
   'root.lastModifiedUser': {
     message: () => undefined,
   },
-};
-
-const getMessage = (before, after, root, key) => {
-  if (lookup[`${root}.${key}`]) {
-    return lookup[`${root}.${key}`].message(before, after);
-  }
-  console.debug(`${root}.${key}: ${before[key]} => ${after[key]}`);
-  return undefined;
-};
-
-const compareObject = (before, after, root = 'root') => {
-  const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
-  const diffs = keys.map((key) => {
-    switch (typeof before[key]) {
-      case 'string':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'number':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'boolean':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'object':
-        if (before[key] !== null) {
-          const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
-          return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
-        } else {
-          return undefined;
-        }
-      default:
-        return `${typeof before[key]} - ${getMessage(before, after, root, key)}`;
-    }
-  });
-  return diffs.filter((msg) => !!msg);
 };
 
 export const ReportsAnnouncementsComponent = {
@@ -163,7 +132,7 @@ export const ReportsAnnouncementsComponent = {
           action = 'Announcement was created.';
         } else if (item.originalData && item.newData) {
           action = 'Announcement was updated.';
-          action += '<ul>' + compareObject(item.originalData, item.newData).map((msg) => `<li>${msg}</li>`).join('') + '</ul>';
+          action += '<ul>' + compareObject(item.originalData, item.newData, lookup).map((msg) => `<li>${msg}</li>`).join('') + '</ul>';
         }
 
         meta.action = action;
