@@ -1,4 +1,4 @@
-import CollectionPage from '../collection.async.po';
+import CollectionPage from '../collection.po';
 
 class RealWorldTestingPage extends CollectionPage {
   constructor() {

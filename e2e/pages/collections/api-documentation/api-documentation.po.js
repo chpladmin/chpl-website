@@ -1,4 +1,4 @@
-import CollectionPage from '../collection.async.po';
+import CollectionPage from '../collection.po';
 
 class ApiDocumentationPage extends CollectionPage {
   constructor() {
