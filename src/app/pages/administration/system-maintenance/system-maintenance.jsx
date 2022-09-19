@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
+  Card,
   Container,
+  Button,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -10,12 +11,14 @@ import ChplAnnouncements from 'components/announcement/announcements';
 import ChplSvaps from 'components/standards/svap/svaps';
 import { BreadcrumbContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const useStyles = makeStyles({
   ...utilStyles,
   container: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'start',
     gap: '16px',
     [theme.breakpoints.up('lg')]: {
       display: 'grid',
@@ -25,11 +28,19 @@ const useStyles = makeStyles({
   navigation: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
-  },
+   },
   breadcrumbs: {
     textTransform: 'none',
   },
+  menuItems: {
+    justifyContent:'left',
+    padding: '8px',
+    justifyContent: 'space-between'
+  },
+    "&:active": {
+      color: "blue",
+      backgroundColor: "green"
+    }
 });
 
 function ChplSystemMaintenance() {
@@ -92,18 +103,29 @@ function ChplSystemMaintenance() {
         System Maintenance
       </Typography>
       <div className={classes.navigation}>
+      <Card>
         <Button
           onClick={() => navigate('announcements')}
-          disabled={active === 'announcements'}
+          fullWidth
+          variant='text'
+          color='primary'
+          endIcon={<ArrowForwardIcon/>}
+          className={classes.menuItems}
         >
           Announcements
         </Button>
         <Button
           onClick={() => navigate('svaps')}
-          disabled={active === 'svaps'}
+          focusRipple={active === 'svaps'}
+          fullWidth
+          variant='text'
+          color='primary'
+          endIcon={<ArrowForwardIcon/>}
+          className={classes.menuItems}
         >
           SVAP Maintenance
         </Button>
+        </Card>
       </div>
       <div>
         { active === ''
