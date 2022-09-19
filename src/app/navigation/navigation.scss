@@ -185,6 +185,11 @@
 
         li a {
             font-weight: bold;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            text-decoration: underline;
         }
 
         &#compare-widget-dropdown {
