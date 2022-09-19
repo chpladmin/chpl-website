@@ -9,6 +9,7 @@ class RealWorldTestingPage extends CollectionPage {
     };
   }
 
+  /* eslint-disable indent */
   async getBodyText() {
     return (await
             (await
@@ -18,9 +19,10 @@ class RealWorldTestingPage extends CollectionPage {
             ).nextElement()
            ).getText();
   }
+  /* eslint-enable indent */
 
   async getDownloadRealWorldTesting() {
-    return $(this.elements.downloadApiDocumentation);
+    return $(this.elements.downloadRealWorldTesting);
   }
 }
 
