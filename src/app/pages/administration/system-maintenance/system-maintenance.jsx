@@ -18,11 +18,12 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'start',
+    alignItems: 'stretch',
     gap: '16px',
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
+      alignItems: 'start',
     },
   },
   navigation: {
@@ -35,11 +36,10 @@ const useStyles = makeStyles({
   menuItems: {
     justifyContent:'left',
     padding: '8px',
-    justifyContent: 'space-between'
-  },
-    "&:active": {
-      color: "blue",
-      backgroundColor: "green"
+    justifyContent: 'space-between',
+    "&:focus": {
+      color: "#000",
+      backgroundColor: "#f9f9f9"
     }
 });
 
