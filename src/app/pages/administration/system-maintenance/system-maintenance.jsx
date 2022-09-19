@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
+  CardContent,
   Container,
   Button,
   Typography,
@@ -132,9 +133,13 @@ function ChplSystemMaintenance() {
       <div>
         { active === ''
           && (
-            <Typography>
-              Insert text here giving ONC some instructions / overview
-            </Typography>
+            <Card>
+            <CardContent>  
+              <Typography>
+                Select a section on the left to view more details.
+              </Typography>
+            </CardContent>
+          </Card>
           )}
         { active === 'announcements'
           && (
