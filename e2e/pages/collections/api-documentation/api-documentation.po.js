@@ -1,4 +1,4 @@
-import CollectionPage from '../collection.po';
+import CollectionPage from '../collection.async.po';
 
 class ApiDocumentationPage extends CollectionPage {
   constructor() {
@@ -9,11 +9,17 @@ class ApiDocumentationPage extends CollectionPage {
     };
   }
 
-  get bodyText() {
-    return $(this.elements.header).parentElement().nextElement();
+  async getBodyText() {
+    return (await
+            (await
+             (await
+              $(this.elements.header)
+             ).parentElement()
+            ).nextElement()
+           ).getText();
   }
 
-  get downloadApiDocumentation() {
+  async getDownloadApiDocumentation() {
     return $(this.elements.downloadApiDocumentation);
   }
 }

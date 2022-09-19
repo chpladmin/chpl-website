@@ -110,21 +110,35 @@ class CollectionPage {
       console.log('setDateFilter' + err);
     }
   }
-//
-//  async selectFilter(category, value) {
-//    const initialListingCount = await this.getListingTotalCount();
-//    await $(elements.filterPanelToggle).click();
-//    await $(`#filter-panel-primary-items-${category}`).click();
-//    await $(`#filter-panel-secondary-items-${value}`).click();
-//    await browser.keys('Escape');
-//    try {
-//      await browser.waitUntil(async () => (await this.getListingTotalCount()) !== initialListingCount);
-//    } catch (err) {
-//      console.log(err);
-//    }
-//  }
-//
-//
+
+  async setListFilter(category, value) {
+    const initialResultCount = await this.getTotalResultCount();
+    await
+    (await
+     (await
+      $(elements.filterPanelToggle)
+     ).click()
+    );
+    await
+    (await
+     (await
+      $(`#filter-panel-primary-items-${category}`)
+     ).click()
+    );
+    await
+    (await
+     (await
+      $(`#filter-panel-secondary-items-${value}`)
+     ).click()
+    );
+    await browser.keys('Escape');
+    try {
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
+    } catch (err) {
+      console.log('setListFilter' + err);
+    }
+  }
+
   async getResults() {
     return (await
             (await
@@ -133,49 +147,17 @@ class CollectionPage {
            ).$$('tr');
   }
 
-  async getCellInRow(row, col) {
-    console.log({row, col});
-    return (await
-            (await
-             row.$$('td')
-            )[col]
-           ).getText();
+  async getCellInRow(rowIdx, colIdx) {
+    const row = (await this.getResults())[rowIdx];
+    const cell = (await row.$$('td'))[colIdx];
+    console.log({row, cell});
+    return await cell.getText();
   }
-//
-//  async hasNoResults() {
-//    return (await (await (await $(elements.searchResultsHeader)
-//      .parentElement())
-//      .$('p'))
-//      .getText()) === 'No results found';
-//  }
-//
-//  async getListingPageCount() {
-//    const data = (await (await (await $(elements.searchResultsHeader)
-//      .parentElement())
-//      .$('p'))
-//      .getText())
-//      .split(' ');
-//    return parseInt(data[0].split('-')[1], 10);
-//  }
-//
+
   async clearSearchTerm() {
     await this.searchForText('');
   }
-//
-//
-//  async selectFilter(category, value) {
-//    const initialListingCount = await this.getListingTotalCount();
-//    await $(elements.filterPanelToggle).click();
-//    await $(`#filter-panel-primary-items-${category}`).click();
-//    await $(`#filter-panel-secondary-items-${value}`).click();
-//    await browser.keys('Escape');
-//    try {
-//      await browser.waitUntil(async () => (await this.getListingTotalCount()) !== initialListingCount);
-//    } catch (err) {
-//      console.log(err);
-//    }
-//  }
-//
+
   async searchForText(text) {
     const initialResultCount = await this.getTotalResultCount();
     await (
