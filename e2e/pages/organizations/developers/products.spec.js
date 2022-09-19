@@ -230,7 +230,7 @@ describe('the Product part of the Developers page', () => {
           product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
           page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
-          expect(page.getVersionCount(product).getText()).toBe('1 Version');
+          expect(page.getVersionCount(product).getText()).toBe('2 Versions');
 
           // assert new product is correct
           product = page.getProduct(newName);
