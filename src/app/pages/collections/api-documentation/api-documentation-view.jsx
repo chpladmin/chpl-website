@@ -315,7 +315,7 @@ function ChplApiDocumentationCollectionView(props) {
                 </>
               )}
             <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
-            <li>&sect;170.315 (g)(10) (Cures Update): Standardized API for Patient and Population Services</li>
+            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services (Cures Update)</li>
           </ul>
           <Typography variant="body1" gutterBottom>
             The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
