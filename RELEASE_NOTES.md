@@ -1,5 +1,34 @@
 # Release Notes
 
+## Version 11.42.0
+_19 September 2022_
+
+### Features
+* Display changes to Attestations in Developer Reports
+* Provide updated UX for CMS file download
+
+### User Interface Updates
+* Show errors in Complaint management in message drawer
+
+---
+
+## Version 11.41.0
+_6 September 2022_
+
+### Features
+* Use new endpoint to request Change Request report generation
+
+### User Interface Updates
+* Change link to Attestations information
+* Add Breadcrumb navigation to Change Requests management
+* Display attestation instructions only when necessary
+* Place "emphasis" on specific Attestation instruction text
+
+### Bug Fixes
+* Display messages on SVAP Administration
+
+---
+
 ## Version 11.40.0
 _22 August 2022_
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { bool, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
@@ -30,7 +30,6 @@ import ChplTestToolsEdit from './test-tools';
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext } from 'shared/contexts';
 import {
   certificationResult,
   resources as resourceDefinition,
@@ -61,7 +60,6 @@ function ChplCriterionDetailsEdit(props) {
   const [resources] = useState(props.resources);
   const classes = useStyles();
   const { hasAnyRole } = getAngularService('authService');
-  const { conformanceMethodIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   const formik = useFormik({
@@ -331,7 +329,7 @@ function ChplCriterionDetailsEdit(props) {
                     </div>
                   </>
                 )}
-              { criterion.conformanceMethods && conformanceMethodIsOn
+              { criterion.conformanceMethods
                 && (
                   <>
                     <div>
@@ -352,7 +350,7 @@ function ChplCriterionDetailsEdit(props) {
                     </div>
                   </>
                 )}
-              { ((conformanceMethodIsOn && (!criterion.conformanceMethods || criterion.testProcedures?.length > 0)) || (!conformanceMethodIsOn && criterion.testProcedures))
+              { (!criterion.conformanceMethods || criterion.testProcedures?.length > 0)
                 && (
                   <>
                     <div>

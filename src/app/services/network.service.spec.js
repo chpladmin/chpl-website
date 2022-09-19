@@ -80,30 +80,6 @@
         });
         $httpBackend.flush();
       });
-
-      it('should return a promise with the data if a POST doesn\'t return an object', () => {
-        $httpBackend.expectPOST(/certified_products\/pending\/1\/beta\/confirm/).respond(200, 'response');
-        networkService.confirmPendingCp({ pendingListing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
-          response.then((reject) => {
-            expect(reject).toEqual('response');
-          });
-        }, () => {
-          // noop
-        });
-        $httpBackend.flush();
-      });
-
-      it('should return a promise with the data if a POST responds with a failure', () => {
-        $httpBackend.expectPOST(/certified_products\/pending\/1\/beta\/confirm/).respond(500, 'response');
-        networkService.confirmPendingCp({ pendingListing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
-          response.then((reject) => {
-            expect(reject).toEqual('response');
-          });
-        }, () => {
-          // noop
-        });
-        $httpBackend.flush();
-      });
     });
 
     describe('with respect to caching', () => {
@@ -169,14 +145,6 @@
       it('should confirmListing', () => {
         $httpBackend.expectPOST(/^\/rest\/listings\/pending\/1$/).respond(200, { data: 'response' });
         networkService.confirmListing({ listing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should confirmPendingCp', () => {
-        $httpBackend.expectPOST(/^\/rest\/certified_products\/pending\/1\/beta\/confirm$/).respond(200, { data: 'response' });
-        networkService.confirmPendingCp({ pendingListing: { id: 1 }, warningAcknowledgement: false }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -262,14 +230,6 @@
         $httpBackend.flush();
       });
 
-      it('should createSvap', () => {
-        $httpBackend.expectPOST(/^\/rest\/svaps$/).respond(200, { data: 'response' });
-        networkService.createSvap({ svapId: 1 }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should deleteAnnualSurveillanceReport', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance-report\/annual\/id$/).respond(200);
         networkService.deleteAnnualSurveillanceReport('id').then((response) => {
@@ -313,14 +273,6 @@
       it('should deleteSurveillanceDocument', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance\/1\/document\/3$/).respond(200);
         networkService.deleteSurveillanceDocument(1, 3).then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
-      it('should deleteSvap', () => {
-        $httpBackend.expectDELETE(/^\/rest\/svaps$/).respond(200);
-        networkService.deleteSvap({ svapId: 1 }).then((response) => {
           expect(response.status).toEqual(200);
         });
         $httpBackend.flush();
@@ -544,14 +496,6 @@
         $httpBackend.flush();
       });
 
-      it('should getCertificationCriteriaForSvap', () => {
-        $httpBackend.expectGET(/^\/rest\/svaps\/criteria$/).respond(200, { data: 'response' });
-        networkService.getCertificationCriteriaForSvap().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getCertificationStatuses', () => {
         $httpBackend.expectGET(/^\/rest\/data\/certification_statuses$/).respond(200, { data: 'response' });
         networkService.getCertificationStatuses().then((response) => {
@@ -640,14 +584,6 @@
       it('should getCriterionProductStatistics', () => {
         $httpBackend.expectGET(/^\/rest\/statistics\/criterion_product$/).respond(200, { data: 'response' });
         networkService.getCriterionProductStatistics().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getCmsDownload', () => {
-        $httpBackend.expectGET(/^\/rest\/certification_ids$/).respond(200, { data: 'response' });
-        networkService.getCmsDownload().then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -909,16 +845,8 @@
         $httpBackend.flush();
       });
 
-      it('should getPendingListings', () => {
-        $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/metadata$/).respond(200, { data: 'response' });
-        networkService.getPendingListings().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getPendingListingById', () => {
-        $httpBackend.expectGET(/^\/rest\/certified_products\/pending\/id$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/listings\/pending\/id$/).respond(200, { data: 'response' });
         networkService.getPendingListingById('id').then((response) => {
           expect(response.data).toEqual('response');
         });
@@ -1161,14 +1089,6 @@
       it('should getSurveillanceProcessTypes', () => {
         $httpBackend.expectGET(/^\/rest\/data\/surveillance-process-types$/).respond(200, { data: 'response' });
         networkService.getSurveillanceProcessTypes().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getSvaps', () => {
-        $httpBackend.expectGET(/^\/rest\/svaps$/).respond(200, { data: 'response' });
-        networkService.getSvaps().then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -1601,14 +1521,6 @@
       it('should updateSurveillance', () => {
         $httpBackend.expectPUT(/^\/rest\/surveillance\/id$/).respond(200, { data: 'response' });
         networkService.updateSurveillance({ id: 'id' }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should updateSvap', () => {
-        $httpBackend.expectPUT(/^\/rest\/svaps$/).respond(200, { data: 'response' });
-        networkService.updateSvap({ svapId: 'id' }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

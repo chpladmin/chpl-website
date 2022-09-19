@@ -1,21 +1,21 @@
 import React from 'react';
 
-import ChplAnnouncements from './announcements';
+import ChplCms from './cms';
 
 import ApiWrapper from 'api/api-wrapper';
 import { UserWrapper } from 'components/login';
 
-function ChplAnnouncementsWrapper() {
+function ChplCmsWrapper() {
   return (
     <UserWrapper>
       <ApiWrapper>
-        <ChplAnnouncements />
+        <ChplCms />
       </ApiWrapper>
     </UserWrapper>
   );
 }
 
-export default ChplAnnouncementsWrapper;
+export default ChplCmsWrapper;
 
-ChplAnnouncementsWrapper.propTypes = {
+ChplCmsWrapper.propTypes = {
 };

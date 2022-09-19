@@ -1,7 +1,9 @@
 /* global MINUTES_BETWEEN_KEEPALIVE MINUTES_UNTIL_IDLE MINUTES_UNTIL_LOGOUT */
 import 'ng-file-upload';
-import ChplLoginPage from './login';
+import ChplCmsWrapper from './cms/cms-wrapper';
 import ChplJobsWrapper from './jobs/jobs-wrapper';
+import ChplLoginPage from './login';
+import ChplSystemMaintenanceWrapper from './system-maintenance/system-maintenance-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -32,5 +34,7 @@ angular
     IdleProvider.timeout(60 * MINUTES_UNTIL_LOGOUT);
     KeepaliveProvider.interval(60 * MINUTES_BETWEEN_KEEPALIVE);
   })
+  .component('chplCmsWrapperBridge', reactToAngularComponent(ChplCmsWrapper))
   .component('chplJobsWrapperBridge', reactToAngularComponent(ChplJobsWrapper))
-  .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage));
+  .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage))
+  .component('chplSystemMaintenanceWrapperBridge', reactToAngularComponent(ChplSystemMaintenanceWrapper));

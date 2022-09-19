@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { arrayOf } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 import {
@@ -21,7 +21,6 @@ import {
   certificationResult,
   qmsStandard,
 } from 'shared/prop-types';
-import { FlagContext } from 'shared/contexts';
 
 const useStyles = makeStyles(() => ({
   infoIcon: {
@@ -38,7 +37,6 @@ function ChplCriterionDetailsView(props) {
   const [qmsStandards] = useState(props.qmsStandards);
   const [accessibilityStandards] = useState(props.accessibilityStandards);
   const classes = useStyles();
-  const { conformanceMethodIsOn } = useContext(FlagContext);
   /* eslint-enable react/destructuring-assignment */
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -233,7 +231,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.conformanceMethods && conformanceMethodIsOn
+          { criterion.success && criterion.conformanceMethods
             && (
               <TableRow key="conformanceMethods">
                 <TableCell component="th" scope="row">
@@ -271,7 +269,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && ((conformanceMethodIsOn && !criterion.conformanceMethods) || (!conformanceMethodIsOn && criterion.testProcedures))
+          { criterion.success && !criterion.conformanceMethods
             && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">

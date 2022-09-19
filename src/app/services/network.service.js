@@ -36,10 +36,6 @@ export default class NetworkService {
     return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
   }
 
-  confirmPendingCp(request) {
-    return this.apiPOST(`/certified_products/pending/${request.pendingListing.id}/beta/confirm`, request);
-  }
-
   confirmPendingSurveillance(surveillance) {
     return this.apiPOST('/surveillance/pending/confirm', surveillance);
   }
@@ -80,10 +76,6 @@ export default class NetworkService {
     return this.apiPOST('/surveillance-report/quarterly', report);
   }
 
-  createSvap(svap) {
-    return this.apiPOST('/svaps', svap);
-  }
-
   deleteAnnualSurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/annual/${id}`);
   }
@@ -108,10 +100,6 @@ export default class NetworkService {
 
   deleteSurveillanceDocument(survId, docId) {
     return this.apiDELETE(`/surveillance/${survId}/document/${docId}`);
-  }
-
-  deleteSvap(svap) {
-    return this.apiDELETE('/svaps', svap);
   }
 
   deleteUser(userId) {
@@ -216,10 +204,6 @@ export default class NetworkService {
     return this.apiGET('/data/certification_bodies');
   }
 
-  getCertificationCriteriaForSvap() {
-    return this.apiGET('/svaps/criteria');
-  }
-
   getCertificationStatuses() {
     return this.apiGET('/data/certification_statuses');
   }
@@ -239,10 +223,6 @@ export default class NetworkService {
 
   getChangeRequestTypes() {
     return this.apiGET('/data/change-request-types');
-  }
-
-  getCmsDownload() {
-    return this.apiGET('/certification_ids');
   }
 
   getCmsId(key, includeCriteria) {
@@ -383,15 +363,7 @@ export default class NetworkService {
     return this.apiGET('/statistics/participant_professional_experience_count');
   }
 
-  getPendingListings() {
-    return this.apiGET('/certified_products/pending/metadata');
-  }
-
   getPendingListingById(id) {
-    return this.apiGET(`/certified_products/pending/${id}`);
-  }
-
-  getPendingListingByIdBeta(id) {
     return this.apiGET(`/listings/pending/${id}`);
   }
 
@@ -524,10 +496,6 @@ export default class NetworkService {
 
   getSurveillanceProcessTypes() {
     return this.apiGET('/data/surveillance-process-types');
-  }
-
-  getSvaps() {
-    return this.apiGET('/svaps');
   }
 
   getTargetedUsers() {
@@ -745,10 +713,6 @@ export default class NetworkService {
 
   updateSurveillance(surveillance) {
     return this.apiPUT(`/surveillance/${surveillance.id}`, surveillance);
-  }
-
-  updateSvap(svap) {
-    return this.apiPUT('/svaps', svap);
   }
 
   updateUser(user) {

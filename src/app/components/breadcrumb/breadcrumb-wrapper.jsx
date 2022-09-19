@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Breadcrumbs,
 } from '@material-ui/core';
@@ -9,24 +9,41 @@ import { BreadcrumbContext } from 'shared/contexts';
 function BreadcrumbWrapper(props) {
   const { children } = props;
   const [breadcrumbs, setBreadcrumbs] = useState([]);
+  const [displayed, setDisplayed] = useState([]);
+  const [visible, setVisible] = useState(new Set());
+
+  useEffect(() => {
+    setDisplayed(breadcrumbs
+      .filter((crumb) => visible.has(crumb.key))
+      .sort((a, b) => a.props.depth - b.props.depth));
+  }, [breadcrumbs, visible]);
 
   const append = (crumb) => {
-    setBreadcrumbs((crumbs) => crumbs.concat(crumb));
+    setBreadcrumbs((crumbs) => crumbs.filter((c) => c.key !== crumb.key).concat(crumb));
   };
 
-  const drop = (key) => {
-    setBreadcrumbs((crumbs) => crumbs.filter((crumb) => crumb.key !== key));
+  const display = (key) => {
+    setVisible((prev) => (new Set(prev)).add(key));
+  };
+
+  const hide = (key) => {
+    setVisible((prev) => {
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
   };
 
   const breadcrumbState = {
     append,
-    drop,
+    display,
+    hide,
   };
 
   return (
     <>
       <Breadcrumbs>
-        { breadcrumbs }
+        { displayed }
       </Breadcrumbs>
       <BreadcrumbContext.Provider value={breadcrumbState}>
         { children }
