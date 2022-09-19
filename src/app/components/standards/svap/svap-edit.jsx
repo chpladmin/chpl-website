@@ -35,6 +35,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     gap: '8px',
+    flexWrap:'wrap',
   },
   breadcrumbs: {
     textTransform: 'none',

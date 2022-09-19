@@ -39,8 +39,10 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     "&:focus": {
       color: "#000",
-      backgroundColor: "#f9f9f9"
+      backgroundColor: "#f9f9f9",
+      fontWeight: '600',
     }
+  },
 });
 
 function ChplSystemMaintenance() {
