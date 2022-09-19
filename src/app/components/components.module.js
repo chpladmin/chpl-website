@@ -2,13 +2,14 @@ import IndexWrapper from '../index-wrapper';
 
 import { ChplAnnouncementsWrapper } from './announcement';
 import { ChplApiKeyConfirm } from './api-key';
-import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import {
   ChplAttestationCreateWrapper,
   ChplAttestationEditWrapper,
   ChplAttestationsViewWrapper,
 } from './attestation';
+import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import { ChplDeveloper } from './developer';
+import ChplDirectReviewsView from './direct-reviews/direct-reviews-view';
 import { ChplFuzzyType } from './fuzzy-type';
 import {
   ChplConfirmDeveloperWrapper,
@@ -69,6 +70,7 @@ angular
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
+  .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsView))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
