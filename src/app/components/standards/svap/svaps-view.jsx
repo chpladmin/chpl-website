@@ -37,6 +37,9 @@ const useStyles = makeStyles({
     display:'flex',
     justifyContent: 'flex-end',
   },
+  iconSpacing: {
+    marginLeft: '4px',
+  },
 });
 
 function ChplSvapsView(props) {
@@ -73,7 +76,7 @@ function ChplSvapsView(props) {
         onClick={() => dispatch({ action: 'edit', payload: {} })}
         variant="contained"
         color="primary"
-        endIcon={<AddIcon/>}
+        endIcon={<AddIcon className={classes.iconSpacing}/>}
       >
         Add
       </Button>
@@ -110,7 +113,7 @@ function ChplSvapsView(props) {
                       onClick={() => dispatch({ action: 'edit', payload: item })}
                       variant="contained"
                       color="secondary"
-                      endIcon={<EditOutlinedIcon />}
+                      endIcon={<EditOutlinedIcon className={classes.iconSpacing}/>}
                     >
                       Edit
                     </Button>
