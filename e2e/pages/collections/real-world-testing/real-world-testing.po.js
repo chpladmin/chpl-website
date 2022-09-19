@@ -1,4 +1,4 @@
-import CollectionPage from '../collection.po';
+import CollectionPage from '../collection.async.po';
 
 class RealWorldTestingPage extends CollectionPage {
   constructor() {
@@ -9,12 +9,18 @@ class RealWorldTestingPage extends CollectionPage {
     };
   }
 
-  get bodyText() {
-    return $(this.elements.header).parentElement().nextElement();
+  async getBodyText() {
+    return (await
+            (await
+             (await
+              $(this.elements.header)
+             ).parentElement()
+            ).nextElement()
+           ).getText();
   }
 
-  get downloadRealWorldTesting() {
-    return $(this.elements.downloadRealWorldTesting);
+  async getDownloadRealWorldTesting() {
+    return $(this.elements.downloadApiDocumentation);
   }
 }
 

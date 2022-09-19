@@ -3,7 +3,6 @@ const elements = {
   loading: 'body*=Loading',
   table: 'table',
   searchResultsHeader: 'h6=Search Results:',
-//  downloadFilteredListings: '#download-filtered-listings',
   filterPanelToggle: '#filter-panel-toggle',
   resetAllFiltersButton: 'button=Reset All Filters',
   filterSearchTermInput: '#filter-search-term-input',
@@ -79,7 +78,7 @@ class CollectionPage {
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
     } catch (err) {
-      console.log('removeFilter' + err);
+      console.log(`removeFilter: ${err}`);
     }
   }
 
@@ -107,7 +106,7 @@ class CollectionPage {
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
     } catch (err) {
-      console.log('setDateFilter' + err);
+      console.log(`setDateFilter: ${err}`);
     }
   }
 
@@ -135,7 +134,7 @@ class CollectionPage {
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
     } catch (err) {
-      console.log('setListFilter' + err);
+      console.log(`setListFilter: ${err}`);
     }
   }
 
@@ -150,8 +149,7 @@ class CollectionPage {
   async getCellInRow(rowIdx, colIdx) {
     const row = (await this.getResults())[rowIdx];
     const cell = (await row.$$('td'))[colIdx];
-    console.log({row, cell});
-    return await cell.getText();
+    return cell.getText();
   }
 
   async clearSearchTerm() {
@@ -169,7 +167,7 @@ class CollectionPage {
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
     } catch (err) {
-      console.log('searchForText' + err);
+      console.log(`searchForText: ${err}`);
     }
   }
 }
