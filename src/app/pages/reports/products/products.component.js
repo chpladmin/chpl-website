@@ -1,42 +1,16 @@
+import { compareObject } from 'pages/reports/reports.v2.service';
+
 const lookup = {
   'owner.name': {
     message: (before, after) => `Developer changed from ${before.name} to ${after.name}`,
   },
 };
 
-const getMessage = (before, after, root, key) => {
-  if (lookup[`${root}.${key}`]) {
-    return lookup[`${root}.${key}`].message(before, after);
-  }
-  return '';
-};
-
-const compareObject = (before, after, root = 'root') => {
-  if (!before || !after) { return []; }
-  const keys = Object.keys(before);
-  const diffs = keys.map((key) => {
-    switch (typeof before[key]) {
-      case 'boolean':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'string':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'number':
-        return before[key] !== after[key] ? getMessage(before, after, root, key) : '';
-      case 'object':
-        const messages = compareObject(before[key], after[key], `${root}.${key}`).map((msg) => `<li>${msg}</li>`)
-        return messages.length > 0 ? `object - ${root}.${key}: <ul>${messages.join('')}</ul>` : '';
-      default:
-        return `${typeof before[key]} - ${getMessage(before, after, root, key)}`;
-    }
-  });
-  return diffs.filter((msg) => !!msg);
-};
-
 const parseOwnerData = (before, after) => {
   if (!before || !after) {
     return [];
   }
-  return compareObject(before, after, 'owner').map((msg) => `<li>${msg}</li>`);
+  return compareObject(before, after, lookup, 'owner').map((msg) => `<li>${msg}</li>`);
 };
 
 
