@@ -23,6 +23,7 @@ import { ChplSortableHeaders } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { BreadcrumbContext } from 'shared/contexts';
 import { announcement as announcementPropType } from 'shared/prop-types';
+import { theme, utilStyles } from 'themes';
 
 const headers = [
   { property: 'title', text: 'Title' },
@@ -34,14 +35,17 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
+  ...utilStyles,
   container: {
     maxHeight: '64vh',
   },
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
+  actionContainer: {
+    display: 'grid',
+    gap: '16px',
+    gridTemplateColumns: '1fr',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr 1fr',
+    },
   },
   noResultsContainer: {
     padding: '16px 32px',
@@ -144,16 +148,34 @@ function ChplAnnouncementsView(props) {
     }
   };
 
+  const getTitle = () => {
+    if (!announcement) {
+      return (
+        <>Announcements</>
+      );
+    }
+    if (announcement.id) {
+      return (
+        <>Edit Announcement</>
+      );
+    }
+    return (
+      <>Add Announcement</>
+    );
+  };
+
   return (
     <Card>
-      <CardHeader title="Announcements" />
+      <CardHeader title={getTitle()} />
       <CardContent>
         { announcement
           && (
-            <ChplAnnouncementEdit
-              announcement={announcement}
-              dispatch={handleActionBarDispatch}
-            />
+            <div className={classes.actionContainer}>
+              <ChplAnnouncementEdit
+                announcement={announcement}
+                dispatch={handleActionBarDispatch}
+              />
+            </div>
           )}
         { !announcement
           && (
