@@ -63,20 +63,24 @@ function BreadcrumbWrapper(props) {
   };
 
   return (
-    <Container maxWidth="lg">
+    <>
       <div className={classes.breadcrumbContainer}>
-        <Breadcrumbs className={classes.breadcrumbs}>
-          { displayed }
-        </Breadcrumbs>
-        { title
-          && (
-            <Typography gutterBottom variant="h1">{title}</Typography>
-          )}
+        <Container maxWidth="lg">
+          <Breadcrumbs className={classes.breadcrumbs}>
+            { displayed }
+          </Breadcrumbs>
+          { title
+            && (
+              <Typography gutterBottom variant="h1">{title}</Typography>
+            )}
+        </Container>
       </div>
-      <BreadcrumbContext.Provider value={breadcrumbState}>
-        { children }
-      </BreadcrumbContext.Provider>
-    </Container>
+      <Container maxWidth="lg">
+        <BreadcrumbContext.Provider value={breadcrumbState}>
+          { children }
+        </BreadcrumbContext.Provider>
+      </Container>
+    </>
   );
 }
 
