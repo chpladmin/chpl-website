@@ -97,6 +97,7 @@ function ChplSystemMaintenance() {
           <Button
             onClick={() => navigate('announcements')}
             disabled={active === 'announcements'}
+            id="system-maintenance-navigation-announcements"
             fullWidth
             variant="text"
             color="primary"
@@ -108,6 +109,7 @@ function ChplSystemMaintenance() {
           <Button
             onClick={() => navigate('svaps')}
             disabled={active === 'svaps'}
+            id="system-maintenance-navigation-svaps"
             fullWidth
             variant="text"
             color="primary"
