@@ -26,14 +26,14 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   title: yup.string()
-    .required('Title is required'),
+    .required('Field is required'),
   startDateTime: yup.date()
-    .required('Start Date is required'),
+    .required('Field is required'),
   endDateTime: yup.date()
     .test('mustBeAfter',
       'End Date must be after Start Date',
       (value, context) => (value >= context.parent.startDateTime))
-    .required('End Date is required'),
+    .required('Field is required'),
 });
 
 function ChplAnnouncementEdit(props) {
