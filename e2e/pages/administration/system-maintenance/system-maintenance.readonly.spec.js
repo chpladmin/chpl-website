@@ -16,7 +16,7 @@ describe('the system maintenance page', () => {
   describe('when logged in as ONC', () => {
     beforeEach(async () => {
       await login.logIn('onc');
-      await page.open(open);
+      await page.open();
     });
 
     afterEach(async () => {

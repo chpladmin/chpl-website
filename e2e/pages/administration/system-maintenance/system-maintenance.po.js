@@ -1,3 +1,5 @@
+import { open as openPage } from '../../../utilities/hooks.async';
+
 class SystemMaintenancePage {
   constructor() {
     this.elements = {
@@ -6,8 +8,8 @@ class SystemMaintenancePage {
     };
   }
 
-  async open(open) {
-    await open('#/administration/system-maintenance');
+  async open() {
+    await openPage('#/administration/system-maintenance');
     await (browser.waitUntil(async () => (await $(this.elements.title)).isDisplayed()));
   }
 
