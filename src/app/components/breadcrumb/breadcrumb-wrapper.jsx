@@ -13,6 +13,7 @@ const useStyles = makeStyles({
   breadcrumbContainer: {
     backgroundColor: '#ffffff',
     padding: '8px',
+    marginBottom: '16px',
   },
   breadcrumbs: {
     '& ol': {
