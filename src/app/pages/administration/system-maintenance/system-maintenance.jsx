@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   menuItems: {
     padding: '8px',
     justifyContent: 'space-between',
-    '&:focus': {
+    '&.Mui-disabled': {
       color: '#000',
       backgroundColor: '#f9f9f9',
       fontWeight: 600,
