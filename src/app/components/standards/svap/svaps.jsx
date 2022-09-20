@@ -137,12 +137,17 @@ function ChplSvaps() {
 
   if (activeSvap) {
     return (
-      <ChplSvapEdit
-        svap={activeSvap}
-        dispatch={handleDispatch}
-        criterionOptions={criterionOptions}
-        errors={errors}
-      />
+      <Card>
+        <CardHeader title={`${activeSvap.svapId ? 'Edit' : 'Add'} SVAP`} />
+        <CardContent>
+          <ChplSvapEdit
+            svap={activeSvap}
+            dispatch={handleDispatch}
+            criterionOptions={criterionOptions}
+            errors={errors}
+          />
+        </CardContent>
+      </Card>
     );
   }
 
