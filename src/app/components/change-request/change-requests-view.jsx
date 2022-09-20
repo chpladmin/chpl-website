@@ -40,9 +40,6 @@ import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  breadcrumbs: {
-    textTransform: 'none',
-  },
   container: {
     maxHeight: '64vh',
   },
@@ -128,7 +125,6 @@ function ChplChangeRequestsView(props) {
       <Button
         key="viewall.disabled"
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         Change Requests
@@ -138,7 +134,6 @@ function ChplChangeRequestsView(props) {
       <Button
         key="viewall"
         variant="text"
-        className={classes.breadcrumbs}
         onClick={() => handleDispatch('close')}
       >
         Change Requests

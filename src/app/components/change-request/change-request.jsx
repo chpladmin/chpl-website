@@ -36,9 +36,6 @@ import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  breadcrumbs: {
-    textTransform: 'none',
-  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -192,7 +189,6 @@ function ChplChangeRequest(props) {
         <Button
           key="view"
           variant="text"
-          className={classes.breadcrumbs}
           onClick={() => setIsEditing(false)}
         >
           View Change Request
@@ -202,7 +198,6 @@ function ChplChangeRequest(props) {
         <Button
           key="edit.disabled"
           variant="text"
-          className={classes.breadcrumbs}
           disabled
         >
           Edit Change Request
@@ -212,7 +207,6 @@ function ChplChangeRequest(props) {
         <Button
           key="view.disabled"
           variant="text"
-          className={classes.breadcrumbs}
           disabled
         >
           View Change Request

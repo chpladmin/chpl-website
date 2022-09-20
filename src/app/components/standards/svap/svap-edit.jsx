@@ -35,10 +35,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     gap: '8px',
-    flexWrap:'wrap',
-  },
-  breadcrumbs: {
-    textTransform: 'none',
+    flexWrap: 'wrap',
   },
 });
 
@@ -58,7 +55,6 @@ function ChplSvapEdit(props) {
         key="svaps.add.disabled"
         depth={2}
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         Add
@@ -69,7 +65,6 @@ function ChplSvapEdit(props) {
         key="svaps.edit.disabled"
         depth={2}
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         Edit

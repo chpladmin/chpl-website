@@ -6,12 +6,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import ChplAnnouncements from 'components/announcement/announcements';
 import ChplSvaps from 'components/standards/svap/svaps';
 import { BreadcrumbContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -29,19 +29,15 @@ const useStyles = makeStyles({
   navigation: {
     display: 'flex',
     flexDirection: 'column',
-   },
-  breadcrumbs: {
-    textTransform: 'none',
   },
   menuItems: {
-    justifyContent:'left',
     padding: '8px',
     justifyContent: 'space-between',
-    "&:focus": {
-      color: "#000",
-      backgroundColor: "#f9f9f9",
-      fontWeight: '600',
-    }
+    '&:focus': {
+      color: '#000',
+      backgroundColor: '#f9f9f9',
+      fontWeight: 600,
+    },
   },
 });
 
@@ -57,7 +53,6 @@ function ChplSystemMaintenance() {
         key="system-maintenance.disabled"
         depth={0}
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         System Maintenance
@@ -68,7 +63,6 @@ function ChplSystemMaintenance() {
         key="system-maintenance"
         depth={0}
         variant="text"
-        className={classes.breadcrumbs}
         onClick={() => navigate()}
       >
         System Maintenance
@@ -99,40 +93,41 @@ function ChplSystemMaintenance() {
   return (
     <div className={classes.container}>
       <div className={classes.navigation}>
-      <Card>
-        <Button
-          onClick={() => navigate('announcements')}
-          fullWidth
-          variant='text'
-          color='primary'
-          endIcon={<ArrowForwardIcon/>}
-          className={classes.menuItems}
-        >
-          Announcements
-        </Button>
-        <Button
-          onClick={() => navigate('svaps')}
-          focusRipple={active === 'svaps'}
-          fullWidth
-          variant='text'
-          color='primary'
-          endIcon={<ArrowForwardIcon/>}
-          className={classes.menuItems}
-        >
-          SVAP Maintenance
-        </Button>
+        <Card>
+          <Button
+            onClick={() => navigate('announcements')}
+            disabled={active === 'announcements'}
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            Announcements
+          </Button>
+          <Button
+            onClick={() => navigate('svaps')}
+            disabled={active === 'svaps'}
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            SVAP Maintenance
+          </Button>
         </Card>
       </div>
       <div>
         { active === ''
           && (
             <Card>
-            <CardContent>  
-              <Typography>
-                Select a section on the left to view more details.
-              </Typography>
-            </CardContent>
-          </Card>
+              <CardContent>
+                <Typography>
+                  Note for PO: need text here, or a decision made as to what our default page should be when loading the &ldquo;System Maintenance&rdquo; page
+                </Typography>
+              </CardContent>
+            </Card>
           )}
         { active === 'announcements'
           && (

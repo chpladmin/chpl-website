@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Breadcrumbs,
   Container,
-  Typography, 
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { node, string } from 'prop-types';
@@ -14,7 +14,19 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     padding: '8px',
   },
+  breadcrumbs: {
+    '& ol': {
+      '& li': {
+        '& button': {
+          '& span': {
+            textTransform: 'none',
+          },
+        },
+      },
+    },
+  },
 });
+
 function BreadcrumbWrapper(props) {
   const { children, title } = props;
   const [breadcrumbs, setBreadcrumbs] = useState([]);
@@ -51,15 +63,14 @@ function BreadcrumbWrapper(props) {
   };
 
   return (
-    <Container maxWidth='lg' className={classes.breadcrumbContainer}>
-      <Breadcrumbs >
+    <Container maxWidth="lg" className={classes.breadcrumbContainer}>
+      <Breadcrumbs className={classes.breadcrumbs}>
         { displayed }
       </Breadcrumbs>
-        { title
-          && (
-            <Typography gutterBottom variant="h1">{title}</Typography>
-          )
-        }
+      { title
+        && (
+          <Typography gutterBottom variant="h1">{title}</Typography>
+        )}
       <BreadcrumbContext.Provider value={breadcrumbState}>
         { children }
       </BreadcrumbContext.Provider>

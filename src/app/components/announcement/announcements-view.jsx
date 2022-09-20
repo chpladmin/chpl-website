@@ -37,9 +37,6 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   firstColumn: {
     position: 'sticky',
     left: 0,
@@ -51,11 +48,8 @@ const useStyles = makeStyles({
   },
   tableResultsHeaderContainer: {
     paddingBottom: '16px',
-    display:'flex',
+    display: 'flex',
     justifyContent: 'flex-end',
-  },
-  breadcrumbs: {
-    textTransform: 'none',
   },
 });
 
@@ -73,7 +67,6 @@ function ChplAnnouncementsView(props) {
         key="announcements.viewall.disabled"
         depth={1}
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         Announcements
@@ -84,7 +77,6 @@ function ChplAnnouncementsView(props) {
         key="announcements.viewall"
         depth={1}
         variant="text"
-        className={classes.breadcrumbs}
         onClick={() => handleBreadcrumbs({ action: 'close' })}
       >
         Announcements
@@ -95,7 +87,6 @@ function ChplAnnouncementsView(props) {
         key="announcements.add.disabled"
         depth={2}
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         Add
@@ -106,7 +97,6 @@ function ChplAnnouncementsView(props) {
         key="announcements.edit.disabled"
         depth={2}
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         Edit
@@ -174,7 +164,7 @@ function ChplAnnouncementsView(props) {
                   variant="contained"
                   id="add-new-announcement"
                   onClick={() => handleBreadcrumbs({ action: 'add' })}
-                  endIcon={<AddIcon className={classes.iconSpacing}/>}
+                  endIcon={<AddIcon />}
                 >
                   Add
                 </Button>
@@ -218,7 +208,7 @@ function ChplAnnouncementsView(props) {
                                   onClick={() => handleBreadcrumbs({ action: 'edit', payload: item })}
                                   variant="contained"
                                   color="secondary"
-                                  endIcon={<EditOutlinedIcon className={classes.iconSpacing}/>}
+                                  endIcon={<EditOutlinedIcon />}
                                 >
                                   Edit
                                 </Button>

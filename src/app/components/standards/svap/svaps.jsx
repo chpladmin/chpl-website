@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-  makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
@@ -21,21 +20,6 @@ import {
 } from 'api/standards';
 import { BreadcrumbContext } from 'shared/contexts';
 
-const useStyles = makeStyles({
-  container: {
-    maxHeight: '64vh',
-  },
-  firstColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#fff',
-  },
-  breadcrumbs: {
-    textTransform: 'none',
-  },
-});
-
 function ChplSvaps() {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { data, isLoading, isSuccess } = useFetchSvaps();
@@ -48,7 +32,6 @@ function ChplSvaps() {
   const [criterionOptions, setCriterionOptions] = useState([]);
   const [errors, setErrors] = useState([]);
   const [svaps, setSvaps] = useState([]);
-  const classes = useStyles();
   let handleDispatch;
 
   useEffect(() => {
@@ -57,7 +40,6 @@ function ChplSvaps() {
         key="svaps.viewall.disabled"
         depth={1}
         variant="text"
-        className={classes.breadcrumbs}
         disabled
       >
         SVAP Maintenance
@@ -68,7 +50,6 @@ function ChplSvaps() {
         key="svaps.viewall"
         depth={1}
         variant="text"
-        className={classes.breadcrumbs}
         onClick={() => handleDispatch({ action: 'cancel' })}
       >
         SVAP Maintenance
