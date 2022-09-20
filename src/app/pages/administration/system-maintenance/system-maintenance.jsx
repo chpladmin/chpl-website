@@ -63,7 +63,7 @@ function ChplSystemMaintenance() {
         key="system-maintenance"
         depth={0}
         variant="text"
-        onClick={() => navigate()}
+        onClick={() => navigate('')}
       >
         System Maintenance
       </Button>,
