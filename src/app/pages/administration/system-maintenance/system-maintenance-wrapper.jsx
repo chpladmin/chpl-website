@@ -10,7 +10,7 @@ function ChplSystemMaintenanceWrapper() {
   return (
     <UserWrapper>
       <ApiWrapper>
-        <BreadcrumbWrapper>
+        <BreadcrumbWrapper title="System Maintenance">
           <ChplSystemMaintenance />
         </BreadcrumbWrapper>
       </ApiWrapper>

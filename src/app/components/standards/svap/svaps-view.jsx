@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -10,6 +11,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, object } from 'prop-types';
+
+import AddIcon from '@material-ui/icons/Add';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
@@ -28,6 +32,13 @@ const useStyles = makeStyles({
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
     backgroundColor: '#fff',
+  },
+  addContainer:{
+    display:'flex',
+    justifyContent: 'flex-end',
+  },
+  iconSpacing: {
+    marginLeft: '4px',
   },
 });
 
@@ -60,11 +71,16 @@ function ChplSvapsView(props) {
 
   return (
     <>
+      <Box className={classes.addContainer}>
       <Button
         onClick={() => dispatch({ action: 'edit', payload: {} })}
+        variant="contained"
+        color="primary"
+        endIcon={<AddIcon className={classes.iconSpacing}/>}
       >
         Add
       </Button>
+      </Box>
       <TableContainer className={classes.container} component={Paper}>
         <Table
           aria-label="SVAP table"
@@ -95,6 +111,9 @@ function ChplSvapsView(props) {
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
+                      variant="contained"
+                      color="secondary"
+                      endIcon={<EditOutlinedIcon className={classes.iconSpacing}/>}
                     >
                       Edit
                     </Button>

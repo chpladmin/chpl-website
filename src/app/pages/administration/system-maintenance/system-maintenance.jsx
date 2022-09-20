@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Card,
+  CardContent,
   Button,
-  Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -10,25 +11,37 @@ import ChplAnnouncements from 'components/announcement/announcements';
 import ChplSvaps from 'components/standards/svap/svaps';
 import { BreadcrumbContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const useStyles = makeStyles({
   ...utilStyles,
   container: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'stretch',
     gap: '16px',
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
+      alignItems: 'start',
     },
   },
   navigation: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
-  },
+   },
   breadcrumbs: {
     textTransform: 'none',
+  },
+  menuItems: {
+    justifyContent:'left',
+    padding: '8px',
+    justifyContent: 'space-between',
+    "&:focus": {
+      color: "#000",
+      backgroundColor: "#f9f9f9",
+      fontWeight: '600',
+    }
   },
 });
 
@@ -84,33 +97,42 @@ function ChplSystemMaintenance() {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.container}>
-      <Typography
-        className={classes.fullWidthGridRow}
-        variant="h1"
-      >
-        System Maintenance
-      </Typography>
+    <div className={classes.container}>
       <div className={classes.navigation}>
+      <Card>
         <Button
           onClick={() => navigate('announcements')}
-          disabled={active === 'announcements'}
+          fullWidth
+          variant='text'
+          color='primary'
+          endIcon={<ArrowForwardIcon/>}
+          className={classes.menuItems}
         >
           Announcements
         </Button>
         <Button
           onClick={() => navigate('svaps')}
-          disabled={active === 'svaps'}
+          focusRipple={active === 'svaps'}
+          fullWidth
+          variant='text'
+          color='primary'
+          endIcon={<ArrowForwardIcon/>}
+          className={classes.menuItems}
         >
           SVAP Maintenance
         </Button>
+        </Card>
       </div>
       <div>
         { active === ''
           && (
-            <Typography>
-              Insert text here giving ONC some instructions / overview
-            </Typography>
+            <Card>
+            <CardContent>  
+              <Typography>
+                Select a section on the left to view more details.
+              </Typography>
+            </CardContent>
+          </Card>
           )}
         { active === 'announcements'
           && (
@@ -121,7 +143,7 @@ function ChplSystemMaintenance() {
             <ChplSvaps />
           )}
       </div>
-    </Container>
+    </div>
   );
 }
 

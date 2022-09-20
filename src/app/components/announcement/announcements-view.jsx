@@ -37,9 +37,6 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  cardSpacing: {
-    marginTop: '32px',
-  },
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -54,6 +51,8 @@ const useStyles = makeStyles({
   },
   tableResultsHeaderContainer: {
     paddingBottom: '16px',
+    display:'flex',
+    justifyContent: 'flex-end',
   },
   breadcrumbs: {
     textTransform: 'none',
@@ -156,7 +155,7 @@ function ChplAnnouncementsView(props) {
   };
 
   return (
-    <Card className={classes.cardSpacing}>
+    <Card>
       <CardHeader title="Announcements" />
       <CardContent>
         { announcement
@@ -175,10 +174,9 @@ function ChplAnnouncementsView(props) {
                   variant="contained"
                   id="add-new-announcement"
                   onClick={() => handleBreadcrumbs({ action: 'add' })}
+                  endIcon={<AddIcon className={classes.iconSpacing}/>}
                 >
-                  Add Announcement
-                  {' '}
-                  <AddIcon className={classes.iconSpacing} />
+                  Add
                 </Button>
               </div>
               { (announcements.length === 0)
@@ -220,10 +218,9 @@ function ChplAnnouncementsView(props) {
                                   onClick={() => handleBreadcrumbs({ action: 'edit', payload: item })}
                                   variant="contained"
                                   color="secondary"
+                                  endIcon={<EditOutlinedIcon className={classes.iconSpacing}/>}
                                 >
                                   Edit
-                                  {' '}
-                                  <EditOutlinedIcon className={classes.iconSpacing} />
                                 </Button>
                               </TableCell>
                             </TableRow>
