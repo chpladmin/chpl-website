@@ -69,6 +69,7 @@ function ChplSvapsView(props) {
       <div className={classes.tableResultsHeaderContainer}>
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
+          id="add-new-svap"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
@@ -106,6 +107,7 @@ function ChplSvapsView(props) {
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
+                      id={`edit-svap-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
