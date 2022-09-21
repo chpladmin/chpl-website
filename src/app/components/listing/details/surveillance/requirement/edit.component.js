@@ -140,14 +140,6 @@ const SurveillanceRequirementEditComponent = {
       }
       this.close({ $value: this.requirement });
     }
-
-    isNonconformityTypeRemoved(type) {
-      const nonconformityType = this.data.nonconformityTypes.data.find((ncType) => ncType.number === type);
-      if (nonconformityType) {
-        return nonconformityType.removed;
-      }
-      return false;
-    }
   },
 };
 
