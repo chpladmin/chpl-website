@@ -293,15 +293,18 @@
     }
 
     function sortNonconformityTypes(type) {
-      if (type.number === 'Other Non-Conformity') {
-        return Number.MAX_VALUE;
+      if (type.number) {
+        return sortCert(type);
       }
-      return sortCert(type);
+      return sortCert({
+        ...type,
+        number: type.title,
+      });
     }
 
     function sortRequirements(req) {
       if (angular.isObject(req)) {
-        req = req.requirement;
+        req = req.requirementName;
       }
       if (req.indexOf('(') < 0) {
         return Number.MAX_VALUE;
@@ -640,6 +643,8 @@
         '170.523 (l)',
         'Annual Real World Testing Plan',
         'Annual Real World Testing Results',
+        'Semiannual Attestations Submission',
+        'Other Non-Conformity',
       ];
     }
 
