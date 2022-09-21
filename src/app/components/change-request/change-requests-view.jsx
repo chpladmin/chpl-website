@@ -207,22 +207,20 @@ function ChplChangeRequestsView(props) {
 
   if (changeRequest) {
     return (
-      <Card>
-        <CardHeader title="Change Requests" />
-        <CardContent>
-          <ChplChangeRequest
-            changeRequest={changeRequest}
-            dispatch={handleDispatch}
-            showBreadcrumbs={showBreadcrumbs()}
-          />
-        </CardContent>
-      </Card>
+      <ChplChangeRequest
+        changeRequest={changeRequest}
+        dispatch={handleDispatch}
+        showBreadcrumbs={showBreadcrumbs()}
+      />
     );
   }
 
   return (
     <Card>
-      <CardHeader title="Change Requests" />
+      { bonusQuery
+        && (
+          <CardHeader title="Change Requests" />
+        )}
       <CardContent>
         <div className={classes.searchContainer} component={Paper}>
           { !disallowedFilters.includes('searchTerm')

@@ -18,7 +18,10 @@ function ChplChangeRequestsWrapper(props) {
     <UserWrapper>
       <ApiWrapper>
         <FlagWrapper>
-          <BreadcrumbWrapper>
+          <BreadcrumbWrapper
+            disabled={!!bonusQuery}
+            title="Change Requests"
+          >
             <ChplChangeRequests
               disallowedFilters={disallowedFilters}
               bonusQuery={bonusQuery}
