@@ -126,8 +126,15 @@ function ChplSystemMaintenance() {
             <Card>
               <CardContent>
                 <Typography>
-                  Note for PO: need text here, or a decision made as to what our default page should be when loading the &ldquo;System Maintenance&rdquo; page
+                  System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.
                 </Typography>
+                <ul>
+                  <li>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</li>
+                  <li>SVAP Maintenance - Add and update SVAP values for use by ONC-ACBs on each listing</li>
+                  <li>UCD Process Management  - [TBD]</li>
+                  <li>Accessibility Standards Maintenance - [TBD]</li>
+                  <li>QMS Standards Maintenance - [TBD]</li>
+                </ul>
               </CardContent>
             </Card>
           )}
