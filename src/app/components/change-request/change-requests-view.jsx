@@ -254,30 +254,36 @@ function ChplChangeRequestsView(props) {
               { isSuccess
                 && (
                   <>
-                    { changeRequests.length === 0
-                      && (
-                        <div className={classes.noResultsContainer}>
-                          No results found
-                        </div>
-                      )}
+                    <div className={classes.tableResultsHeaderContainer}>
+                      <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                        <Typography variant="subtitle2">Search Results:</Typography>
+                        { changeRequests.length === 0
+                          && (
+                            <>
+                              No results found
+                            </>
+                          )}
+                        { changeRequests.length > 0
+                          && (
+                            <Typography variant="body2">
+                              {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                            </Typography>
+                          )}
+                      </div>
+                      { changeRequests.length > 0
+                        && (
+                          <ButtonGroup size="small" className={classes.wrap}>
+                            <ChplChangeRequestsDownload
+                              bonusQuery={bonusQuery}
+                              queryParams={queryParams()}
+                              recordCount={data.recordCount}
+                            />
+                          </ButtonGroup>
+                        )}
+                    </div>
                     { changeRequests.length > 0
                       && (
                         <>
-                          <div className={classes.tableResultsHeaderContainer}>
-                            <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                              <Typography variant="subtitle2">Search Results:</Typography>
-                              <Typography variant="body2">
-                                {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-                              </Typography>
-                            </div>
-                            <ButtonGroup size="small" className={classes.wrap}>
-                              <ChplChangeRequestsDownload
-                                bonusQuery={bonusQuery}
-                                queryParams={queryParams()}
-                                recordCount={data.recordCount}
-                              />
-                            </ButtonGroup>
-                          </div>
                           <TableContainer className={classes.container} component={Paper}>
                             <Table
                               stickyHeader
