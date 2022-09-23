@@ -233,7 +233,7 @@ function ChplBannedDevelopersCollectionView(props) {
                               <TableCell className={classes.stickyColumn}>
                                 <strong>
                                   <ChplLink
-                                    href={`#/organizations/developer/${item.id}`}
+                                    href={`#/organizations/developers/${item.id}`}
                                     text={item.name}
                                     analytics={{ event: 'Go to Developer Details Page', category: analytics.category, label: item.name }}
                                     external={false}
