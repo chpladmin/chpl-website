@@ -470,7 +470,7 @@ function ChplChangeRequest(props) {
             </div>
             <div>
               <Typography gutterBottom variant="subtitle2">Creation Date:</Typography>
-              <Typography variant="body1">{getDisplayDateFormat(changeRequest.submittedDate)}</Typography>
+              <Typography variant="body1">{getDisplayDateFormat(changeRequest.submittedDateTime)}</Typography>
             </div>
             <div>
               <Typography gutterBottom variant="subtitle2">Request Status:</Typography>
@@ -484,7 +484,7 @@ function ChplChangeRequest(props) {
                   titleFormat="DD MMM yyyy"
                   fromNow
                 >
-                  {changeRequest.currentStatus.statusChangeDate}
+                  {changeRequest.currentStatus.statusChangeDateTime}
                 </Moment>
               </Typography>
             </div>
