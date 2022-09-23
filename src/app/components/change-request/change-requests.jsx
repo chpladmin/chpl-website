@@ -21,8 +21,8 @@ const staticFilters = [{
   key: 'currentStatusChangeDateTime',
   display: 'Last Updated',
   values: [
-    { value: 'Before' },
-    { value: 'After', default: '2022-01-01T00:00' },
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
   ],
   getQuery: (value) => value.values
     .sort((a, b) => (a.value < b.value ? -1 : 1))
@@ -35,8 +35,8 @@ const staticFilters = [{
   key: 'submittedDateTime',
   display: 'Creation Date',
   values: [
-    { value: 'Before' },
-    { value: 'After', default: '2022-01-01T00:00' },
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
   ],
   getQuery: (value) => value.values
     .sort((a, b) => (a.value < b.value ? -1 : 1))
