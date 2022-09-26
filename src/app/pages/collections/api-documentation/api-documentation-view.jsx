@@ -16,7 +16,6 @@ import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
-import theme from 'themes/theme';
 import {
   useFetchApiDocumentationCollection,
   useFetchApiDocumentationData,
@@ -34,6 +33,7 @@ import {
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext } from 'shared/contexts';
+import { palette, theme } from 'themes';
 
 const csvOptions = (erdPhase2IsOn) => ({
   filename: 'api-documentation',
@@ -93,7 +93,7 @@ const useStyles = makeStyles({
     gridTemplateRows: '3fr 1fr',
   },
   searchContainer: {
-    backgroundColor: '#c6d5e5',
+    backgroundColor: palette.grey,
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',
