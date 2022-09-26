@@ -41,7 +41,7 @@ const states = [
   }, {
     name: 'collections.real-world-testing',
     url: '/real-world-testing',
-    component: 'chplRealWorldTestingCollectionPageBridge',
+    component: 'chplRealWorldTestingCollectionWrapperBridge',
     data: { title: 'Real World Testing' },
   }, {
     name: 'collections.sed',
