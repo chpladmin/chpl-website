@@ -15,6 +15,7 @@ import {
   arrayOf,
   bool,
   func,
+  number,
   oneOfType,
   shape,
   string,
@@ -27,7 +28,7 @@ const FilterContext = createContext();
 
 const getDefaultValueEntry = ({ filter, handleFilterToggle }) => filter.values
   .map((value) => {
-    const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
+    const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
     return (
       <ListItem
         key={value.value}
@@ -259,7 +260,7 @@ FilterProvider.propTypes = {
     display: string.isRequired,
     required: bool,
     values: arrayOf(shape({
-      value: string.isRequired,
+      value: oneOfType([number, string]).isRequired,
       default: oneOfType([bool, string]),
       display: string,
     })).isRequired,
