@@ -75,6 +75,7 @@ function ChplApiDocumentationCollectionPage() {
         ...defaultFilter,
         key: 'certificationCriteriaIds',
         display: 'Certification Criteria',
+        operatorKey: 'certificationCriteriaOperator',
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess, erdPhase2IsOn]);

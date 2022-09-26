@@ -92,7 +92,7 @@ const getDateTimeEntry = ({ filter, handleFilterUpdate }) => generateDateEntry({
 const getDateEntry = ({ filter, handleFilterUpdate }) => generateDateEntry({ filter, handleFilterUpdate, type: 'date' });
 
 const defaultFilter = {
-  getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}`,
+  getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}${filter.operatorKey ? `&${filter.operatorKey}=${filter.operator}` : ''}`,
   getFilterDisplay: (filter) => filter.display,
   getValueDisplay: (value) => value.display,
   getValueEntry: getDefaultValueEntry,
@@ -101,6 +101,7 @@ const defaultFilter = {
 const clearFilter = (filter, category, setFilters) => {
   setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
     ...filter,
+    operator: filter.operatorKey ? 'or' : undefined,
     values: filter.values.map((v) => ({
       ...v,
       selected: false,
@@ -111,6 +112,7 @@ const clearFilter = (filter, category, setFilters) => {
 const resetFilter = (filter, category, setFilters) => {
   setFilters((filters) => filters.filter((f) => f.key !== category.key).concat({
     ...filter,
+    operator: filter.operatorKey ? 'or' : undefined,
     values: filter.values.map((v) => ({
       ...v,
       selected: v.default,
@@ -133,6 +135,16 @@ const toggleFilter = (filters, category, value, setFilters) => {
   if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
     setFilters(updatedFilters);
   }
+};
+
+const toggleFilterOperator = (filters, category, setFilters) => {
+  const filter = filters.find((f) => f.key === category.key);
+  const updatedFilter = {
+    ...filter,
+    operator: filter.operator === 'or' ? 'and' : 'or',
+  };
+  const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+  setFilters(updatedFilters);
 };
 
 const updateFilter = (filters, category, value, setFilters) => {
@@ -164,6 +176,7 @@ function FilterProvider(props) {
     setFilters(props.filters.map((filter) => ({
       ...filter,
       required: !!filter.required,
+      operator: filter.operatorKey ? 'or' : undefined,
       values: filter.values.map((value) => ({
         ...value,
         selected: value.default,
@@ -193,6 +206,7 @@ function FilterProvider(props) {
         }
         setFilters(filters.map((f) => ({
           ...f,
+          operator: f.operatorKey ? 'or' : undefined,
           values: f.values.map((v) => ({
             ...v,
             selected: v.default,
@@ -201,6 +215,9 @@ function FilterProvider(props) {
         break;
       case 'toggle':
         toggleFilter(filters, category, value, setFilters);
+        break;
+      case 'toggleOperator':
+        toggleFilterOperator(filters, category, setFilters);
         break;
       case 'update':
         updateFilter(filters, category, value, setFilters);
@@ -259,6 +276,8 @@ FilterProvider.propTypes = {
     key: string.isRequired,
     display: string.isRequired,
     required: bool,
+    operatorKey: string,
+    operator: string,
     values: arrayOf(shape({
       value: oneOfType([number, string]).isRequired,
       default: oneOfType([bool, string]),
