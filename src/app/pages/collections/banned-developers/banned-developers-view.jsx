@@ -18,8 +18,8 @@ import {
 import {
   ChplLink,
   ChplPagination,
-  ChplSortableHeaders,
 } from 'components/util';
+import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -131,7 +131,7 @@ function ChplBannedDevelopersCollectionView(props) {
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'decertificationDate', text: 'Decertification Date', sortable: true, reverse: true },
+    { property: 'decertification_date', text: 'Decertification Date', sortable: true, reverseDefault: true },
     { text: 'ONC-ACB' },
   ];
 
