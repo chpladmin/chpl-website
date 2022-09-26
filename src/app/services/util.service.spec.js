@@ -157,7 +157,7 @@
           type: { id: 1, name: 'Certified Capability' },
         };
         var criteria2014_2 = {
-          requirement: '170.314 (g)(10)',
+          requirement: '170.314 (g)(10)(Cures Update)',
           type: { id: 1, name: 'Certified Capability' },
         };
         var criteria2015_d_1 = {
@@ -173,7 +173,7 @@
           type: { id: 1, name: 'Certified Capability' },
         };
         var criteria2015_g_10 = {
-          requirement: '170.315 (g)(10)',
+          requirement: '170.315 (g)(10)(Cures Update)',
           type: { id: 1, name: 'Certified Capability' },
         };
         var transparency_requirement = {
@@ -200,7 +200,7 @@
         var criteria2015_d_1 = { number: '170.315 (d)(1)' };
         var criteria2015_e_1 = { number: '170.315 (e)(1)' };
         var criteria2015_g_4 = { number: '170.315 (g)(4)' };
-        var criteria2015_g_10 = { number: '170.315 (g)(10)' };
+        var criteria2015_g_10 = { number: '170.315 (g)(10)(Cures Update)' };
         var transparency_k_2 = { number: '170.523 (k)(2)' };
         var other = { number: 'Other Non-Conformity' };
         expect(util.sortNonconformityTypes(criteria2014_a_4)).toBeLessThan(util.sortNonconformityTypes(criteria2014_a_10));
@@ -611,20 +611,6 @@
           number: '170.315 (d)(2)',
           title: 'A Cures Criteria (Cures Update)',
         };
-        expect(util.isCures(criterion)).toBe(true);
-      });
-
-      it('should know if it counts as cures based on number', () => {
-        let criterion = {
-          number: '170.315 (b)(10)',
-          title: 'a cures criteria',
-        };
-        expect(util.isCures(criterion)).toBe(true);
-        criterion.number = '170.315 (d)(12)';
-        expect(util.isCures(criterion)).toBe(true);
-        criterion.number = '170.315 (d)(13)';
-        expect(util.isCures(criterion)).toBe(true);
-        criterion.number = '170.315 (g)(10)';
         expect(util.isCures(criterion)).toBe(true);
       });
 
