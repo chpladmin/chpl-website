@@ -173,11 +173,7 @@
     }
 
     function isCures(criterion) {
-      return criterion.title.indexOf('Cures Update') > -1
-        || criterion.number === '170.315 (b)(10)'
-        || criterion.number === '170.315 (d)(12)'
-        || criterion.number === '170.315 (d)(13)'
-        || criterion.number === '170.315 (g)(10)';
+      return criterion.title.indexOf('Cures Update') > -1;
     }
 
     function makeCsv(data) {
@@ -587,7 +583,7 @@
         '170.315 (b)(8)',
         '170.315 (b)(9)(Cures Update)',
         '170.315 (b)(9)',
-        '170.315 (b)(10)',
+        '170.315 (b)(10)(Cures Update)',
         '170.315 (c)(1)',
         '170.315 (c)(2)',
         '170.315 (c)(3)(Cures Update)',
@@ -607,8 +603,8 @@
         '170.315 (d)(10)(Cures Update)',
         '170.315 (d)(10)',
         '170.315 (d)(11)',
-        '170.315 (d)(12)',
-        '170.315 (d)(13)',
+        '170.315 (d)(12)(Cures Update)',
+        '170.315 (d)(13)(Cures Update)',
         '170.315 (e)(1)(Cures Update)',
         '170.315 (e)(1)',
         '170.315 (e)(2)',
@@ -632,7 +628,7 @@
         '170.315 (g)(8)',
         '170.315 (g)(9)(Cures Update)',
         '170.315 (g)(9)',
-        '170.315 (g)(10)',
+        '170.315 (g)(10)(Cures Update)',
         '170.315 (h)(1)',
         '170.315 (h)(2)',
         '170.523 (k)(1)',
