@@ -124,11 +124,12 @@ function ChplRealWorldTestingCollectionView(props) {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
+  const [recordCount, setRecordCount] = useState(0);
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { isLoading, data } = useFetchRealWorldTestingCollection({
+  const { data, isError, isLoading } = useFetchRealWorldTestingCollection({
     orderBy,
     pageNumber,
     pageSize,
@@ -143,7 +144,11 @@ function ChplRealWorldTestingCollectionView(props) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    if (isLoading || !data.results) { return; }
+    if (isLoading) { return; }
+    if (isError || !data.results) {
+      setListings([]);
+      return;
+    }
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
@@ -153,7 +158,8 @@ function ChplRealWorldTestingCollectionView(props) {
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
-  }, [data?.results, isLoading]);
+    setRecordCount(data.recordCount);
+  }, [data?.results, data?.recordCount, isError, isLoading]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
@@ -182,7 +188,7 @@ function ChplRealWorldTestingCollectionView(props) {
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
-  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
@@ -251,7 +257,7 @@ function ChplRealWorldTestingCollectionView(props) {
                 { listings.length > 0
                   && (
                     <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                     </Typography>
                   )}
               </div>
@@ -345,7 +351,7 @@ function ChplRealWorldTestingCollectionView(props) {
                     </Table>
                   </TableContainer>
                   <ChplPagination
-                    count={data.recordCount}
+                    count={recordCount}
                     page={pageNumber}
                     rowsPerPage={pageSize}
                     rowsPerPageOptions={[25, 50, 100]}

@@ -209,11 +209,12 @@ function ChplApiDocumentationCollectionView(props) {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
+  const [recordCount, setRecordCount] = useState(0);
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { isLoading, data } = useFetchApiDocumentationCollection({
+  const { data, isError, isLoading } = useFetchApiDocumentationCollection({
     erdPhase2IsOn,
     orderBy,
     pageNumber,
@@ -228,7 +229,11 @@ function ChplApiDocumentationCollectionView(props) {
   }, [isOn]);
 
   useEffect(() => {
-    if (isLoading || !data.results) { return; }
+    if (isLoading) { return; }
+    if (isError || !data.results) {
+      setListings([]);
+      return;
+    }
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
@@ -244,7 +249,8 @@ function ChplApiDocumentationCollectionView(props) {
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
-  }, [isLoading, data?.results, analytics, erdPhase2IsOn]);
+    setRecordCount(data.recordCount);
+  }, [data?.results, data?.recordCount, isError, isLoading, analytics, erdPhase2IsOn]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -290,7 +296,7 @@ function ChplApiDocumentationCollectionView(props) {
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
-  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
@@ -375,7 +381,7 @@ function ChplApiDocumentationCollectionView(props) {
                 { listings.length > 0
                   && (
                     <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                     </Typography>
                   )}
               </div>
@@ -483,7 +489,7 @@ function ChplApiDocumentationCollectionView(props) {
                     </Table>
                   </TableContainer>
                   <ChplPagination
-                    count={data.recordCount}
+                    count={recordCount}
                     page={pageNumber}
                     rowsPerPage={pageSize}
                     rowsPerPageOptions={[25, 50, 100]}

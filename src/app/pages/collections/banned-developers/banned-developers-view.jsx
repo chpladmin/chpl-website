@@ -102,11 +102,12 @@ function ChplBannedDevelopersCollectionView(props) {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
+  const [recordCount, setRecordCount] = useState(0);
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { isLoading, data } = useFetchBannedDevelopersCollection({
+  const { data, isError, isLoading } = useFetchBannedDevelopersCollection({
     orderBy,
     pageNumber,
     pageSize,
@@ -115,12 +116,18 @@ function ChplBannedDevelopersCollectionView(props) {
   });
 
   useEffect(() => {
+    if (isLoading) { return; }
+    if (isError || !data.results) {
+      setDevelopers([]);
+      return;
+    }
     if (isLoading || !data.results) { return; }
     setDevelopers(data.results.map((developer) => ({
       ...developer,
       oncAcbDisplay: developer.associatedAcbs.map((acb) => acb.name).join(', '),
     })));
-  }, [isLoading, data?.results]);
+    setRecordCount(data.recordCount);
+  }, [data?.results, data?.recordCount, isError, isLoading]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -145,7 +152,7 @@ function ChplBannedDevelopersCollectionView(props) {
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
-  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
@@ -206,7 +213,7 @@ function ChplBannedDevelopersCollectionView(props) {
                 { developers.length > 0
                   && (
                     <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                     </Typography>
                   )}
               </div>
@@ -253,7 +260,7 @@ function ChplBannedDevelopersCollectionView(props) {
                     </Table>
                   </TableContainer>
                   <ChplPagination
-                    count={data.recordCount}
+                    count={recordCount}
                     page={pageNumber}
                     rowsPerPage={pageSize}
                     rowsPerPageOptions={[25, 50, 100]}
