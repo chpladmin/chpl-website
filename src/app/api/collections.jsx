@@ -4,7 +4,6 @@ import { useAxios } from './axios';
 import options from './options';
 
 const useFetchApiDocumentationCollection = ({
-  erdPhase2IsOn,
   orderBy,
   pageNumber,
   pageSize,
@@ -13,10 +12,9 @@ const useFetchApiDocumentationCollection = ({
 }) => {
   const axios = useAxios();
   return useQuery(['search/v2', 'apiDocumentationCollection', {
-    erdPhase2IsOn, orderBy, pageNumber, pageSize, sortDescending, query,
+    orderBy, pageNumber, pageSize, sortDescending, query,
   }], async () => {
-    const criteriaIds = erdPhase2IsOn ? '56,181,182' : '56,57,58,181,182';
-    const response = await axios.get(`/search/v2?${query}&certificationCriteriaIds=${criteriaIds}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    const response = await axios.get(`/search/v2?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };

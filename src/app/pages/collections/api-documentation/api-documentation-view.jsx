@@ -217,7 +217,6 @@ function ChplApiDocumentationCollectionView(props) {
 
   const filterContext = useFilterContext();
   const { isLoading, data } = useFetchApiDocumentationCollection({
-    erdPhase2IsOn,
     orderBy,
     pageNumber,
     pageSize,

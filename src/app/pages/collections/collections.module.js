@@ -1,4 +1,4 @@
-import { ChplApiDocumentationCollectionPage } from './api-documentation';
+import ChplApiDocumentationCollectionWrapper from './api-documentation/api-documentation-wrapper';
 import { ChplRealWorldTestingCollectionPage } from './real-world-testing';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
@@ -12,5 +12,5 @@ export default angular
     'chpl.constants',
     'ui.bootstrap',
   ])
-  .component('chplApiDocumentationCollectionPageBridge', reactToAngularComponent(ChplApiDocumentationCollectionPage))
+  .component('chplApiDocumentationCollectionWrapperBridge', reactToAngularComponent(ChplApiDocumentationCollectionWrapper))
   .component('chplRealWorldTestingCollectionPageBridge', reactToAngularComponent(ChplRealWorldTestingCollectionPage));
