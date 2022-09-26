@@ -176,7 +176,8 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics, erdPhase2IsOn) =
         .sort((a, b) => criteriaLookup(erdPhase2IsOn)[a].sort - criteriaLookup(erdPhase2IsOn)[b].sort)
         .map((id) => criteriaLookup(erdPhase2IsOn)[id].display)
         .join(', '),
-    }));
+    }))
+    .sort((a, b) => (a.criteria < b.criteria ? -1 : 1));
   return (
     <dl>
       {items.map(({ url, criteria }) => (
