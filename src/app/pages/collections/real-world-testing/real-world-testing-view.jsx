@@ -15,7 +15,6 @@ import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
-import theme from 'themes/theme';
 import {
   useFetchRealWorldTestingCollection,
 } from 'api/collections';
@@ -31,6 +30,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { palette, theme } from 'themes';
 
 const csvOptions = {
   filename: 'real-world-testing',
@@ -65,7 +65,7 @@ const useStyles = makeStyles({
     backgroundColor: '#f9f9f9',
   },
   searchContainer: {
-    backgroundColor: '#c6d5e5',
+    backgroundColor: palette.grey,
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',
