@@ -65,7 +65,7 @@ inputs.forEach((input) => {
             expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
           });
         } else {
-          criteria.editCriteriaOldButton(criteriaOld).scrollIntoView({ block: 'center', inline: 'center' });
+          criteria.editCriteriaOldButton(criteriaOld, cures).scrollIntoView({ block: 'center', inline: 'center' });
           criteria.openUnattestedCriteriaOld(criteriaOld, cures);
           criteria.attestCriteriaOld(criteriaOld);
           const actualTt = new Set(criteria.testToolsDropdownOptionsOld.map((item) => item.getText()));
