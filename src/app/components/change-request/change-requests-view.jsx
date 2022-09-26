@@ -36,7 +36,7 @@ import {
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     maxHeight: '64vh',
   },
   searchContainer: {
-    backgroundColor: '#c6d5e5',
+    backgroundColor: palette.grey,
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',

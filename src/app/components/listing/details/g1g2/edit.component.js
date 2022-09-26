@@ -18,9 +18,8 @@ export const G1G2EditComponent = {
       if (changes.measures && changes.measures.currentValue) {
         this.measures = changes.measures.currentValue
           .map(m => {
-            m.displayCriteria = [... new Set(m.associatedCriteria
+            m.displayCriteria = [... new Set(m.associatedCriteria.map(c => c.number))]
               .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
-              .map(c => this.wrapCriterionDisplayInSpan(c)))]
               .join('; ');
             return m;
           })
@@ -33,9 +32,8 @@ export const G1G2EditComponent = {
             if (m.removed) {
               m.displayName = 'Removed | ' + m.displayName;
             }
-            m.displayCriteria = [... new Set(m.allowedCriteria
-              .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b))
-              .map(c => this.wrapCriterionDisplayInSpan(c)))];
+            m.displayCriteria = [... new Set(m.allowedCriteria.map(c => c.number))]
+              .sort((a, b) => this.util.sortCert(a) - this.util.sortCert(b));
             return m;
           })
           .sort((a, b) => this.measureSort(a, b));
@@ -134,14 +132,6 @@ export const G1G2EditComponent = {
     updateAllowedMeasures() {
       this.allowedMeasures = this.allMeasures.filter(m => m.abbreviation === this.ManageList.newItem['measures'].selectedAbbreviation);
       this.clearCriteria();
-    }
-
-    wrapCriterionDisplayInSpan(criterion) {
-      if (criterion.removed) {
-        return `<span class="removed"> Removed | ${criterion.number}</span>`;
-      } else {
-        return criterion.number;
-      }
     }
   },
 };

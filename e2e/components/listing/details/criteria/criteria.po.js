@@ -135,8 +135,12 @@ class CriteriaComponent {
     $(`//*[@data-value="${value}"]`).click();
   }
 
-  editCriteriaOldButton(criteriaOld) {
-    return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button');
+  editCriteriaOldButton(criteriaOld, cures) {
+    if (cures) {
+      return $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button');
+    } else {
+      return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button');
+    }
   }
 
   openAttestedCriteriaOld(criteriaOld, cures) {
