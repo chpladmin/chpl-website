@@ -23,8 +23,8 @@ import {
 import {
   ChplLink,
   ChplPagination,
-  ChplSortableHeaders,
 } from 'components/util';
+import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -140,9 +140,6 @@ const useStyles = makeStyles({
   wrap: {
     flexFlow: 'wrap',
   },
-  noResultsContainer: {
-    padding: '16px 32px',
-  },
 });
 
 const criteriaLookup = (erdPhase2IsOn) => (erdPhase2IsOn
@@ -212,11 +209,12 @@ function ChplApiDocumentationCollectionView(props) {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
+  const [recordCount, setRecordCount] = useState(0);
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { isLoading, data } = useFetchApiDocumentationCollection({
+  const { data, isError, isLoading } = useFetchApiDocumentationCollection({
     erdPhase2IsOn,
     orderBy,
     pageNumber,
@@ -231,7 +229,11 @@ function ChplApiDocumentationCollectionView(props) {
   }, [isOn]);
 
   useEffect(() => {
-    if (isLoading || !data.results) { return; }
+    if (isLoading) { return; }
+    if (isError || !data.results) {
+      setListings([]);
+      return;
+    }
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
@@ -247,7 +249,8 @@ function ChplApiDocumentationCollectionView(props) {
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
-  }, [isLoading, data?.results, analytics, erdPhase2IsOn]);
+    setRecordCount(data.recordCount);
+  }, [data?.results, data?.recordCount, isError, isLoading, analytics, erdPhase2IsOn]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -293,7 +296,7 @@ function ChplApiDocumentationCollectionView(props) {
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
-  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
@@ -363,130 +366,141 @@ function ChplApiDocumentationCollectionView(props) {
         && (
           <>Loading</>
         )}
-      { !isLoading && listings.length === 0
+      { !isLoading
         && (
-          <Typography className={classes.noResultsContainer}>
-            No results found
-          </Typography>
+          <>
+            <div className={classes.tableResultsHeaderContainer}>
+              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                <Typography variant="subtitle2">Search Results:</Typography>
+                { listings.length === 0
+                  && (
+                    <Typography>
+                      No results found
+                    </Typography>
+                  )}
+                { listings.length > 0
+                  && (
+                    <Typography variant="body2">
+                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                    </Typography>
+                  )}
+              </div>
+              { listings.length > 0
+                && (
+                  <ButtonGroup size="small" className={classes.wrap}>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      fullWidth
+                      id="download-filtered-listings"
+                      onClick={downloadApiDocumentation}
+                    >
+                      Download
+                      {' '}
+                      { listings.length }
+                      {' '}
+                      Result
+                      { listings.length !== 1 ? 's' : '' }
+                      <GetAppIcon className={classes.iconSpacing} />
+                    </Button>
+                  </ButtonGroup>
+                )}
+            </div>
+            { listings.length > 0
+              && (
+                <>
+                  <TableContainer className={classes.tableContainer} component={Paper}>
+                    <Table
+                      stickyHeader
+                      aria-label="API Documentation Collections table"
+                    >
+                      <ChplSortableHeaders
+                        headers={headers}
+                        onTableSort={handleTableSort}
+                        orderBy={orderBy}
+                        order={sortDescending ? 'desc' : 'asc'}
+                        stickyHeader
+                      />
+                      <TableBody>
+                        { listings
+                          .map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell className={classes.stickyColumn}>
+                                <strong>
+                                  <ChplLink
+                                    href={`#/listing/${item.id}`}
+                                    text={item.chplProductNumber}
+                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    external={false}
+                                    router={{ sref: 'listing', options: { id: item.id } }}
+                                  />
+                                </strong>
+                              </TableCell>
+                              <TableCell>
+                                {item.edition.name}
+                                {' '}
+                                {item.curesUpdate ? 'Cures Update' : '' }
+                              </TableCell>
+                              <TableCell>
+                                <ChplLink
+                                  href={`#/organizations/developers/${item.developer.id}`}
+                                  text={item.developer.name}
+                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  external={false}
+                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                />
+                              </TableCell>
+                              <TableCell>{item.product.name}</TableCell>
+                              <TableCell>{item.version.name}</TableCell>
+                              <TableCell>{item.certificationStatus.name}</TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.apiDocumentation }
+                              </TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.serviceBaseUrlList
+                                  ? (
+                                    <dl>
+                                      <dt>170.315 (g)(10)</dt>
+                                      <dd>
+                                        <ChplLink
+                                          href={item.serviceBaseUrlList}
+                                          analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
+                                        />
+                                      </dd>
+                                    </dl>
+                                  ) : (
+                                    <>N/A</>
+                                  )}
+                              </TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.mandatoryDisclosures
+                                  ? (
+                                    <ChplLink
+                                      href={item.mandatoryDisclosures}
+                                      analytics={{ event: 'Go to Mandatory Disclosures Website', category: analytics.category, label: item.mandatoryDisclosures }}
+                                    />
+                                  ) : (
+                                    <>N/A</>
+                                  )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <ChplPagination
+                    count={recordCount}
+                    page={pageNumber}
+                    rowsPerPage={pageSize}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    setPage={setPageNumber}
+                    setRowsPerPage={setPageSize}
+                    analytics={analytics}
+                  />
+                </>
+              )}
+          </>
         )}
-      { !isLoading && listings.length > 0
-       && (
-       <>
-         <div className={classes.tableResultsHeaderContainer}>
-           <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-             <Typography variant="subtitle2">Search Results:</Typography>
-             <Typography variant="body2">
-               {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-             </Typography>
-           </div>
-           <ButtonGroup size="small" className={classes.wrap}>
-             <Button
-               color="secondary"
-               variant="contained"
-               fullWidth
-               id="download-filtered-listings"
-               onClick={downloadApiDocumentation}
-             >
-               Download
-               {' '}
-               { listings.length }
-               {' '}
-               Result
-               { listings.length !== 1 ? 's' : '' }
-               <GetAppIcon className={classes.iconSpacing} />
-             </Button>
-           </ButtonGroup>
-         </div>
-         <TableContainer className={classes.tableContainer} component={Paper}>
-           <Table
-             stickyHeader
-             aria-label="API Documentation Collections table"
-           >
-             <ChplSortableHeaders
-               headers={headers}
-               onTableSort={handleTableSort}
-               orderBy={orderBy}
-               order={sortDescending ? 'desc' : 'asc'}
-               stickyHeader
-             />
-             <TableBody>
-               { listings
-                 .map((item) => (
-                   <TableRow key={item.id}>
-                     <TableCell className={classes.stickyColumn}>
-                       <strong>
-                         <ChplLink
-                           href={`#/listing/${item.id}`}
-                           text={item.chplProductNumber}
-                           analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
-                           external={false}
-                           router={{ sref: 'listing', options: { id: item.id } }}
-                         />
-                       </strong>
-                     </TableCell>
-                     <TableCell>
-                       {item.edition.name}
-                       {' '}
-                       {item.curesUpdate ? 'Cures Update' : '' }
-                     </TableCell>
-                     <TableCell>
-                       <ChplLink
-                         href={`#/organizations/developers/${item.developer.id}`}
-                         text={item.developer.name}
-                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
-                         external={false}
-                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                       />
-                     </TableCell>
-                     <TableCell>{item.product.name}</TableCell>
-                     <TableCell>{item.version.name}</TableCell>
-                     <TableCell>{item.certificationStatus.name}</TableCell>
-                     <TableCell className={classes.linkWrap}>
-                       { item.apiDocumentation }
-                     </TableCell>
-                     <TableCell className={classes.linkWrap}>
-                       { item.serviceBaseUrlList
-                         ? (
-                           <dl>
-                             <dt>170.315 (g)(10) (Cures Update)</dt>
-                             <dd>
-                               <ChplLink
-                                 href={item.serviceBaseUrlList}
-                                 analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
-                               />
-                             </dd>
-                           </dl>
-                         ) : (
-                           <>N/A</>
-                         )}
-                     </TableCell>
-                     <TableCell className={classes.linkWrap}>
-                       { item.mandatoryDisclosures
-                         ? (
-                           <ChplLink
-                             href={item.mandatoryDisclosures}
-                             analytics={{ event: 'Go to Mandatory Disclosures Website', category: analytics.category, label: item.mandatoryDisclosures }}
-                           />
-                         ) : (
-                           <>N/A</>
-                         )}
-                     </TableCell>
-                   </TableRow>
-                 ))}
-             </TableBody>
-           </Table>
-         </TableContainer>
-         <ChplPagination
-           count={data.recordCount}
-           page={pageNumber}
-           rowsPerPage={pageSize}
-           rowsPerPageOptions={[25, 50, 100]}
-           setPage={setPageNumber}
-           setRowsPerPage={setPageSize}
-           analytics={analytics}
-         />
-       </>
-       )}
     </>
   );
 }

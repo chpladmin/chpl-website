@@ -18,6 +18,7 @@ when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnVa
 
 const mockValue = {
   setSearchTerm: jest.fn(() => {}),
+  searchTerm: '',
 };
 
 jest.mock('./filter-context', () => ({
