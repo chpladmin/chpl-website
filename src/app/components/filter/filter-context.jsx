@@ -73,18 +73,22 @@ const getDateDisplay = (value) => (
 
 const generateDateEntry = ({ filter, handleFilterUpdate, type }) => filter.values
   .sort((a, b) => (a.value > b.value ? -1 : 1))
-  .map((value) => (
-    <React.Fragment key={value.value}>
-      <div>
-        {filter.getValueDisplay(value)}
-      </div>
-      <ChplTextField
-        type={type}
-        value={value.selected}
-        onChange={(event) => handleFilterUpdate(event, filter, value)}
-      />
-    </React.Fragment>
-  ));
+  .map((value) => {
+    const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
+    return (
+      <React.Fragment key={value.value}>
+        <div>
+          {filter.getValueDisplay(value)}
+        </div>
+        <ChplTextField
+          id={labelId}
+          type={type}
+          value={value.selected}
+          onChange={(event) => handleFilterUpdate(event, filter, value)}
+        />
+      </React.Fragment>
+    );
+  });
 
 const getDateTimeEntry = ({ filter, handleFilterUpdate }) => generateDateEntry({ filter, handleFilterUpdate, type: 'datetime-local' });
 
