@@ -16,6 +16,26 @@ const $analyticsMock = {
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
 
+const mockApi = {
+  isLoading: true,
+  data: { },
+};
+
+jest.mock('api/acbs', () => ({
+  __esModule: true,
+  useFetchAcbs: () => mockApi,
+}));
+
+jest.mock('api/announcements', () => ({
+  __esModule: true,
+  useFetchAnnouncements: () => mockApi,
+}));
+
+jest.mock('api/atls', () => ({
+  __esModule: true,
+  useFetchAtls: () => mockApi,
+}));
+
 describe('the ChplResourcesOverview page', () => {
   afterEach(() => {
     cleanup();

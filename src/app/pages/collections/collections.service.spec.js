@@ -21,17 +21,6 @@
       }
     });
 
-    describe('when focused on bannedDevelopers', () => {
-      it('should filter on bannedDevelopers', () => {
-        expect(service.translate('bannedDevelopers', Mock.decertifiedDevelopers).length).toBe(2);
-      });
-
-      it('should generate a mainSearch', () => {
-        var results = service.translate('bannedDevelopers', Mock.decertifiedDevelopers);
-        expect(results[0].mainSearch).toEqual('Cerner Corporation');
-      });
-    });
-
     describe('when focused on correctiveAction', () => {
       var results;
       beforeEach(() => {

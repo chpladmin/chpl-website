@@ -590,16 +590,6 @@
       });
 
       it('should getCollection', () => {
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,mandatoryDisclosures,serviceBaseUrlList$/).respond(200, { data: 'response' });
-        networkService.getCollection('apiDocumentation').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/collections\/decertified-developers$/).respond(200, { data: 'response' });
-        networkService.getCollection('bannedDevelopers').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,acb,chplProductNumber,developer,product$/).respond(200, { data: 'response' });
         networkService.getCollection('complaintListings').then((response) => {
           expect(response.data).toEqual('response');

@@ -1,11 +1,10 @@
 import CollectionPage from '../collection.po';
 
-class ApiDocumentationPage extends CollectionPage {
+class BannedDevelopersPage extends CollectionPage {
   constructor() {
     super();
     this.elements = {
-      header: 'h1=API Information for 2015 Edition Products',
-      downloadApiDocumentation: '#download-api-documentation',
+      header: 'h1=Developers Under Certification Ban',
     };
   }
 
@@ -18,10 +17,6 @@ class ApiDocumentationPage extends CollectionPage {
             ).nextElement()
            ).getText();
   }
-
-  async getDownloadApiDocumentation() {
-    return $(this.elements.downloadApiDocumentation);
-  }
 }
 
-export default ApiDocumentationPage;
+export default BannedDevelopersPage;

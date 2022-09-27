@@ -9,11 +9,19 @@ class RealWorldTestingPage extends CollectionPage {
     };
   }
 
-  get bodyText() {
-    return $(this.elements.header).parentElement().nextElement();
+  /* eslint-disable indent */
+  async getBodyText() {
+    return (await
+            (await
+             (await
+              $(this.elements.header)
+             ).parentElement()
+            ).nextElement()
+           ).getText();
   }
+  /* eslint-enable indent */
 
-  get downloadRealWorldTesting() {
+  async getDownloadRealWorldTesting() {
     return $(this.elements.downloadRealWorldTesting);
   }
 }
