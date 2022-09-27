@@ -126,7 +126,7 @@
                           <button class="btn btn-default" ng-class="{'loaded-tab': $ctrl.isLoaded(listing)}"
                                   ng-click="$ctrl.load(listing)">{{ listing.chplProductNumber }} <i class="fa fa-info-circle"></i></button>
                         </td>
-                        <td><a ui-sref="organizations.developers.developer({id: '{{ listing.id }}'})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: 'Surveillance Management' }">{{ listing.developer }}</a></td>
+                        <td><a ui-sref="organizations.developers.developer({id: '{{ listing.developerId }}'})" analytics-on="click" analytics-event="Go to Developer Page" analytics-properties="{ category: 'Surveillance Management' }">{{ listing.developer }}</a></td>
                         <td>{{ listing.product }}</td>
                         <td>{{ listing.version }}</td>
                         <td>{{ listing.acb }}</td>

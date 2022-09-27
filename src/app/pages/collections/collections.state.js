@@ -20,9 +20,7 @@ const states = [
   }, {
     name: 'collections.developers',
     url: '/developers',
-    controller: 'BannedDevelopersController',
-    controllerAs: 'vm',
-    template: require('./developers/developers.html'),
+    component: 'chplBannedDevelopersCollectionPageBridge',
     data: { title: 'Banned Developers' },
   }, {
     name: 'collections.inactive',

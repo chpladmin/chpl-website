@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ChplApiDocumentationCollectionView from './api-documentation-view';
+import ChplBannedDevelopersCollectionView from './banned-developers-view';
 
 import ApiWrapper from 'api/api-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
@@ -12,44 +12,21 @@ import {
 } from 'components/filter';
 import { UserWrapper } from 'components/login';
 
-function ChplApiDocumentationCollectionPage() {
+function ChplBannedDevelopersCollectionPage() {
   const analytics = {
-    category: 'API Information for 2015 Edition Products',
+    category: 'Banned Developers',
   };
   const filters = [{
     ...defaultFilter,
-    key: 'derivedCertificationEditions',
-    display: 'Certification Edition',
-    required: true,
-    values: [
-      { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
-    ],
-  }, {
-    ...defaultFilter,
-    key: 'certificationStatuses',
-    display: 'Certification Status',
-    values: [
-      { value: 'Active', default: true },
-      { value: 'Suspended by ONC', default: true },
-      { value: 'Suspended by ONC-ACB', default: true },
-      { value: 'Terminated by ONC' },
-      { value: 'Withdrawn by Developer Under Surveillance/Review' },
-      { value: 'Withdrawn by ONC-ACB' },
-      { value: 'Withdrawn by Developer' },
-      { value: 'Retired' },
-    ],
-  }, {
-    ...defaultFilter,
-    key: 'certificationDate',
-    display: 'Certification Date',
+    key: 'decertificationDate',
+    display: 'Decertification Date',
     values: [
       { value: 'Before', default: '' },
       { value: 'After', default: '' },
     ],
     getQuery: (value) => value.values
       .sort((a, b) => (a.value < b.value ? -1 : 1))
-      .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${v.selected}`)
+      .map((v) => `${v.value === 'After' ? 'decertificationDateStart' : 'decertificationDateEnd'}=${v.selected}`)
       .join('&'),
     getValueDisplay: getDateDisplay,
     getValueEntry: getDateEntry,
@@ -76,7 +53,7 @@ function ChplApiDocumentationCollectionPage() {
             analytics={analytics}
             filters={filters}
           >
-            <ChplApiDocumentationCollectionView
+            <ChplBannedDevelopersCollectionView
               analytics={analytics}
             />
           </FilterProvider>
@@ -86,7 +63,7 @@ function ChplApiDocumentationCollectionPage() {
   );
 }
 
-export default ChplApiDocumentationCollectionPage;
+export default ChplBannedDevelopersCollectionPage;
 
-ChplApiDocumentationCollectionPage.propTypes = {
+ChplBannedDevelopersCollectionPage.propTypes = {
 };
