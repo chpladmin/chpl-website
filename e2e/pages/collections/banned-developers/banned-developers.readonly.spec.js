@@ -18,7 +18,7 @@ describe('the Developers Under Certification Ban collection page', () => {
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['Developer\nsorted ascending', 'Decertification Date', 'ONC-ACB'];
+    const expectedHeaders = ['Developer', 'Decertification Date', 'ONC-ACB'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     for (const [idx, header] of actualHeaders.entries()) {
