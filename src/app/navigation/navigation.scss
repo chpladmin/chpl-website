@@ -1,18 +1,37 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
 
+.default-visible {
+    display: block !important;
+
+    &.toggle-visible {
+        display: none !important;
+    }
+}
+
+.default-hidden {
+    display: none !important;
+
+    &.toggle-visible {
+        display: block !important;
+    }
+}
+
 .navbar {
     transition: all .4s ease;
 }
 
 .navbar-inverse .navbar-nav>li>a {
-    font-family: "Oswald", sans-serif;
-    color: #ffdd3c;
+    font-family: "Lato", sans-serif;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover {
+    text-decoration: underline;
 }
 
 .navbar-inverse {
-    background-image: url("../../assets/images/CHPL_Header.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: #001439;
     box-shadow: none;
     min-height: 140px;
 }
@@ -27,10 +46,6 @@
 
 .navbar-brand img {
     transition: all .4s ease;
-
-    @media (min-width: 767px) {
-        margin: 10px 40px;
-    }
 }
 
 .navbar-inverse .navbar-nav>.active>a,
@@ -43,7 +58,7 @@
         min-height: 0 !important;
 
         .navbar-brand img {
-            max-height: 40px;
+            max-height: 90%;
             margin: 0 !important;
         }
     }
@@ -85,7 +100,7 @@
 
     .navbar-nav > li > a {
         line-height: 20px;
-        padding-top: 10px;
+        padding-top: 0;
         padding-bottom: 10px;
     }
 }
@@ -140,7 +155,7 @@
 .toggle-navigation-closed {
     position: relative;
     top: 0;
-    background-color: #012a68;
+    background-color: #001439;
 
     .btn-link,
     .btn-link:focus,
@@ -162,7 +177,7 @@
     .dropdown-menu {
         padding: 10px;
         border: 3px solid #0070c9;
-        
+
         p {
             margin-left: 2px;
             margin-right: 2px;
@@ -170,6 +185,11 @@
 
         li a {
             font-weight: bold;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            text-decoration: underline;
         }
 
         &#compare-widget-dropdown {

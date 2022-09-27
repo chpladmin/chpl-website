@@ -1,7 +1,7 @@
 // Old elements added intentionally so it would be easy to clean up later
 const elementsOld = {
   saveCertifiedProduct: 'button=Save Certification Criteria',
-  testProcedureName: '//*[@id="testProcedures "]',
+  conformanceMethodName: '//*[@id="conformanceMethods "]',
   testToolsName: '//*[@id="testTools "]',
 };
 
@@ -11,7 +11,7 @@ class CriteriaComponent {
       removedCriteria: '#removed-header',
       attestToggle: '#success',
       accept: '//span[text()="Accept"]',
-      testProcedureName: 'div#name',
+      conformanceMethodName: 'div#cm',
       version: '#version',
       testToolsName: 'div#tt',
       privacySecurityName: '#privacy-security-framework',
@@ -22,20 +22,20 @@ class CriteriaComponent {
     return $(this.elements.removedCriteria);
   }
 
-  editCriteria(id) {
-    $(`button#criterion-id-${id}-edit`).$('span').click();
+  editCriteria(criteriaOld) {
+    $(`button#criterion-id-${criteriaOld}-edit`).$('span').click();
   }
 
-  get testProcedure() {
-    return $(this.elements.testProcedureName);
+  get conformanceMethod() {
+    return $(this.elements.conformanceMethodName);
   }
 
   get testTools() {
     return $(this.elements.testToolsName);
   }
 
-  get testProcedureOld() {
-    return $(elementsOld.testProcedureName);
+  get conformanceMethodsOld() {
+    return $(elementsOld.conformanceMethodName);
   }
 
   get testToolsOld() {
@@ -111,13 +111,13 @@ class CriteriaComponent {
     $(`//*[@data-value="${value}"]`).click();
   }
 
-  addTestProcedures(name, version) {
-    this.addItem('test-procedures');
-    $(this.elements.testProcedureName).scrollIntoView({ block: 'center', inline: 'center' });
-    $(this.elements.testProcedureName).click();
+  addConformanceMethods(name, version) {
+    this.addItem('conformance-methods');
+    $(this.elements.conformanceMethodName).scrollIntoView({ block: 'center', inline: 'center' });
+    $(this.elements.conformanceMethodName).click();
     $('#menu-name').$(`li*=${name}`).click();
     $(this.elements.version).addValue(version);
-    this.checkItem('test-procedures');
+    this.checkItem('conformance-methods');
   }
 
   addTestTools(name, version) {
@@ -135,21 +135,29 @@ class CriteriaComponent {
     $(`//*[@data-value="${value}"]`).click();
   }
 
-  openAttestedCriteriaOld(editCriteriaId, cures) {
+  editCriteriaOldButton(criteriaOld, cures) {
     if (cures) {
-      // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].click();
+      return $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button');
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].click();
+      return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button');
     }
   }
 
-  openUnattestedCriteriaOld(editCriteriaId, cures) {
+  openAttestedCriteriaOld(criteriaOld, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$('button').click();
+      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$$('button')[1].click();
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$('button').click();
+      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$$('button')[1].click();
+    }
+  }
+
+  openUnattestedCriteriaOld(criteriaOld, cures) {
+    if (cures) {
+      // click on Edit for on the criteria
+      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button').click();
+    } else {
+      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button').click();
     }
   }
 
@@ -157,9 +165,9 @@ class CriteriaComponent {
     $(`//*[@id="data${criteria}"]`).click();
   }
 
-  addTestProceduresOld(name, version) {
-    $(elementsOld.testProcedureName).selectByVisibleText(name);
-    $('//*[starts-with(@id,"testProcedures-additional-input")]').addValue(version);
+  addConformanceMethodsOld(name, version) {
+    $(elementsOld.conformanceMethodName).selectByVisibleText(name);
+    $('//*[starts-with(@id,"conformanceMethods-additional-input")]').addValue(version);
   }
 
   addTestToolsOld(name, version) {
@@ -167,7 +175,7 @@ class CriteriaComponent {
     $('//*[starts-with(@id,"testTools-additional-input")]').addValue(version);
   }
 
-  get testProcedureDropdownOptions() {
+  get conformanceMethodDropdownOptions() {
     return $('#menu-name').$$('li');
   }
 
@@ -175,8 +183,8 @@ class CriteriaComponent {
     return $('#menu-tt').$$('li');
   }
 
-  get testProcedureDropdownOptionsOld() {
-    return this.testProcedureOld.$$('option');
+  get conformanceMethodDropdownOptionsOld() {
+    return this.conformanceMethodsOld.$$('option');
   }
 
   get testToolsDropdownOptionsOld() {

@@ -13,7 +13,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useSnackbar } from 'notistack';
 import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -90,7 +89,6 @@ function ChplComplaintEdit(props) {
   const { data: certificationBodiesData, isLoading: certificationBodiesIsLoading, isSuccess: certificationBodiesIsSuccess } = useFetchAcbs(true);
   const { data: complainantTypesData, isLoading: complainantTypesIsLoading, isSuccess: complainantTypesIsSuccess } = useFetchComplainantTypes();
   const { data: criteriaData, isLoading: criteriaIsLoading, isSuccess: criteriaIsSuccess } = useFetchCriteria();
-  const { enqueueSnackbar } = useSnackbar();
   const [complaint, setComplaint] = useState(() => {
     const c = {
       ...props.complaint,
@@ -238,11 +236,11 @@ function ChplComplaintEdit(props) {
         handleAction('refresh');
       },
       onError: (error) => {
-        const message = error.response.data?.error
-              || error.response.data?.errorMessages.join(' ');
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
+        if (error.response.data?.error) {
+          setErrors([error.response.data.error]);
+        } else {
+          setErrors(error.response.data?.errorMessages);
+        }
       },
     });
   };
@@ -300,11 +298,11 @@ function ChplComplaintEdit(props) {
         handleAction('refresh');
       },
       onError: (error) => {
-        const message = error.response.data?.error
-              || error.response.data?.errorMessages.join(' ');
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
+        if (error.response.data?.error) {
+          setErrors([error.response.data.error]);
+        } else {
+          setErrors(error.response.data?.errorMessages);
+        }
       },
     });
   };

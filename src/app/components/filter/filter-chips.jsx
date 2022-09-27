@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Typography,
   Chip,
+  FormControlLabel,
+  Switch,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 
@@ -62,6 +64,13 @@ function ChplFilterChips() {
     filterContext.dispatch('toggle', f, v);
   };
 
+  const toggleOperator = (f) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Operator', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.operator === 'and' ? 'All' : 'Any'}` });
+    }
+    filterContext.dispatch('toggleOperator', f);
+  };
+
   return (
     <span className={classes.filterContainer} id="filter-chips">
       <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied</Typography>
@@ -75,6 +84,20 @@ function ChplFilterChips() {
               {f.getFilterDisplay(f)}
             </strong>
           </Typography>
+          { f.operatorKey
+            && (
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id={`${f.key}-operatorKey`}
+                    color="primary"
+                    checked={f.operator === 'and'}
+                    onChange={() => toggleOperator(f)}
+                  />
+                )}
+                label={f.operator === 'and' ? 'All' : 'Any'}
+              />
+            )}
           {f.values
             .map((v) => (
               <Chip

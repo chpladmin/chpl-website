@@ -1,5 +1,5 @@
-import { ChplApiDocumentationCollectionPage } from './api-documentation';
-import { ChplRealWorldTestingCollectionPage } from './real-world-testing';
+import ChplApiDocumentationCollectionWrapper from './api-documentation/api-documentation-wrapper';
+import ChplRealWorldTestingCollectionWrapper from './real-world-testing/real-world-testing-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -12,5 +12,5 @@ export default angular
     'chpl.constants',
     'ui.bootstrap',
   ])
-  .component('chplApiDocumentationCollectionPageBridge', reactToAngularComponent(ChplApiDocumentationCollectionPage))
-  .component('chplRealWorldTestingCollectionPageBridge', reactToAngularComponent(ChplRealWorldTestingCollectionPage));
+  .component('chplApiDocumentationCollectionWrapperBridge', reactToAngularComponent(ChplApiDocumentationCollectionWrapper))
+  .component('chplRealWorldTestingCollectionWrapperBridge', reactToAngularComponent(ChplRealWorldTestingCollectionWrapper));
