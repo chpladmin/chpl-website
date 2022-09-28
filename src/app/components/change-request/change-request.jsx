@@ -31,7 +31,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplAvatar, ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
-import { BreadcrumbContext, FlagContext, UserContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { changeRequest as changeRequestProp } from 'shared/prop-types';
 import theme from 'themes/theme';
 
@@ -164,7 +164,6 @@ const getChangeRequestEditDetails = (cr, handleDispatch) => {
 
 function ChplChangeRequest(props) {
   const $state = getAngularService('$state');
-  const { isOn } = useContext(FlagContext);
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -273,7 +272,6 @@ function ChplChangeRequest(props) {
   };
 
   const canWithdraw = () => hasAnyRole(['ROLE_DEVELOPER'])
-        && isOn('attestations-edit')
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Rejected'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Accepted'
         && changeRequest.currentStatus.changeRequestStatusType.name !== 'Cancelled by Requester'
@@ -281,8 +279,7 @@ function ChplChangeRequest(props) {
 
   const editCr = () => {
     if (hasAnyRole(['ROLE_DEVELOPER'])
-        && changeRequest.changeRequestType.name === 'Developer Attestation Change Request'
-        && isOn('attestations-edit')) {
+        && changeRequest.changeRequestType.name === 'Developer Attestation Change Request') {
       $state.go('organizations.developers.developer.attestation.edit', { changeRequest });
     } else {
       setIsEditing(true);
@@ -572,8 +569,7 @@ function ChplChangeRequest(props) {
                           helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
                         >
                           { changeRequestStatusTypes
-                            .filter((item) => isOn('attestations-edit')
-                                   || changeRequest.changeRequestType.name !== 'Developer Attestation Change Request'
+                            .filter((item) => changeRequest.changeRequestType.name !== 'Developer Attestation Change Request'
                                    || item.name !== 'Pending Developer Action')
                             .map((item) => (
                               <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
