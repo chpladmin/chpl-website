@@ -29,15 +29,14 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr 1fr',
     },
   },
-  filters:{
-    height: '100%',
-    borderRight: '1px solid #599bde',
+  filterPanelPrimary:{
     padding: '16px',
-    zIndex: 15,
+    position: 'sticky',
+    top: 0,
   },
-  subfilters:{
-    zIndex:10,
+  filterPanelSecondary:{
     background: 'white',
+    borderLeft: '1px solid #599bde',
     padding: '16px',
     boxShadow:'inset rgb(149 157 165 / 30%) 10px 0px 20px 0px'
   },
@@ -46,7 +45,7 @@ const useStyles = makeStyles({
   },
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(48%, 1fr))',
     justifyItems: 'start',
     alignItems: 'start',
     gap: '16px',
@@ -75,7 +74,7 @@ const useStyles = makeStyles({
     marginRight:'-16px',
     marginLeft:'-16px',
     boxShadow: 'rgb(149 157 165 / 30%) 10px 0px 20px 0px',
-
+    marginBottom: '8px',
   },
   searchInput: {
     flexGrow: 1,
@@ -199,7 +198,7 @@ function ChplFilterPanel() {
       >
         <div className={classes.filterPanelContainer}>
           <div>
-            <div className={classes.filters}>
+            <div className={classes.filterPanelPrimary}>
               <List
                 dense
                 subheader={(
@@ -247,7 +246,7 @@ function ChplFilterPanel() {
               </List>
             </div>
           </div>
-          <div className={classes.subfilters}>
+          <div className={classes.filterPanelSecondary}>
             { activeCategory?.values.length > 0 && (
               <List
                 dense
@@ -258,7 +257,6 @@ function ChplFilterPanel() {
                     className={classes.clearResetContainer}
                     disableGutters
                     >
-                    <div>
                       <ButtonGroup
                         variant="text"
                         color="primary"
@@ -277,7 +275,6 @@ function ChplFilterPanel() {
                           Reset
                         </Button>
                       </ButtonGroup>
-                    </div>
                   </ListSubheader>
                 )}
               >
