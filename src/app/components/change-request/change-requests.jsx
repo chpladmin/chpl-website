@@ -49,18 +49,16 @@ const staticFilters = [{
 function ChplChangeRequests(props) {
   const { disallowedFilters, bonusQuery } = props;
   const { isOn } = useContext(FlagContext);
-  const [attestationsEditIsOn, setAttestationsEditIsOn] = useState(false);
   const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
 
   useEffect(() => {
-    setAttestationsEditIsOn(isOn('attestations-edit'));
     setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
   }, [isOn]);
 
   useEffect(() => {
-    const values = (attestationsEditIsOn || demographicChangeRequestIsOn) ? [
+    const values = (demographicChangeRequestIsOn) ? [
       { value: 'Accepted' },
       { value: 'Cancelled by Requester' },
       { value: 'Pending Developer Action', default: true },
@@ -80,7 +78,7 @@ function ChplChangeRequests(props) {
         display: 'Change Request Status',
         values,
       }));
-  }, [attestationsEditIsOn, demographicChangeRequestIsOn]);
+  }, [demographicChangeRequestIsOn]);
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
