@@ -581,8 +581,6 @@ function ChplChangeRequest(props) {
                           helperText={formik.touched.changeRequestStatusType && formik.errors.changeRequestStatusType}
                         >
                           { changeRequestStatusTypes
-                            .filter((item) => changeRequest.changeRequestType.name !== 'Developer Attestation Change Request'
-                                   || item.name !== 'Pending Developer Action')
                             .map((item) => (
                               <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                             ))}
