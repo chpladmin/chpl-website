@@ -28,10 +28,10 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr 1fr',
     },
   },
-  filterPanelPrimary:{
+  filterPanelPrimary: {
     padding: '16px',
   },
-  filterPanelSecondary:{
+  filterPanelSecondary: {
     borderLeft: '1px solid #599bde',
     padding: '16px',
   },
@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     justifyItems: 'start',
     alignItems: 'start',
     gap: '16px',
-    padding:'0 8px',
+    padding: '0 8px',
     marginTop: '16px',
     [theme.breakpoints.up('xl')]: {
       gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
@@ -216,7 +216,7 @@ function ChplFilterPanel() {
                     </div>
                   </ListSubheader>
                 )}
-              > 
+              >
                 <div className={classes.filterSubHeaderContainer}>
                   <div className={classes.filterContainer}>
                     { filters.map((f) => (
@@ -248,25 +248,25 @@ function ChplFilterPanel() {
                     id="filter-panel-secondary-subheader"
                     className={classes.clearResetContainer}
                     disableGutters
+                  >
+                    <ButtonGroup
+                      variant="text"
+                      color="primary"
+                      size="medium"
+                      aria-label="apply to filter dropdown"
                     >
-                      <ButtonGroup
-                        variant="text"
-                        color="primary"
-                        size="medium"
-                        aria-label="apply to filter dropdown"
+                      <Button
+                        onClick={() => handleAction('clearFilter')}
+                        disabled={activeCategory.required}
                       >
-                        <Button
-                          onClick={() => handleAction('clearFilter')}
-                          disabled={activeCategory.required}
-                        >
-                          Clear
-                        </Button>
-                        <Button
-                          onClick={() => handleAction('resetFilter')}
-                        >
-                          Reset
-                        </Button>
-                      </ButtonGroup>
+                        Clear
+                      </Button>
+                      <Button
+                        onClick={() => handleAction('resetFilter')}
+                      >
+                        Reset
+                      </Button>
+                    </ButtonGroup>
                   </ListSubheader>
                 )}
               >
