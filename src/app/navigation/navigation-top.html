@@ -86,9 +86,8 @@
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'])"><a ui-sref="administration.jobs"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.jobs')"></i> Scheduled Jobs</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a ui-sref="administration.cms"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.cms')"></i> CMS</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.api-keys"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.api-keys')"></i> API Keys</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.announcements"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.announcements')"></i> Announcements</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a ui-sref="administration.change-requests"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.change-requests')"></i> Change Requests</a></li>
-              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.svaps"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.svaps')"></i> SVAP Maintenance</a></li>
+              <li ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a ui-sref="administration.system-maintenance"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.system-maintenance')"></i> System Maintenance</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN'])"><a ui-sref="style-guide"><i class="fa fa-caret-right" ng-if="vm.isActive('sys-admin.style-guide')"></i>Style Guide</a></li>
               <li ng-if="vm.hasAnyRole(['ROLE_ADMIN'])"><a href="rest/ff4j-console/home">FF4j</a></li>
             </ul>

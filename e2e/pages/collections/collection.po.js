@@ -1,62 +1,85 @@
-/* eslint-disable class-methods-use-this */
-const elements = {
-  loading: 'body*=Loading',
-  table: 'table',
-  searchResultsHeader: 'h6=Search Results:',
-  filterPanelToggle: '#filter-panel-toggle',
-  resetAllFiltersButton: 'button=Reset All Filters',
-  filterSearchTermInput: '#filter-search-term-input',
-  filterSearchTermGo: '#filter-search-term-go',
-  filterChipsSection: '#filter-chips',
-};
-
 class CollectionPage {
-  async isLoading() {
-    return (await
-            $(elements.loading)
-           ).isDisplayed();
+  constructor() {
+    this.elements = {
+      loading: 'body*=Loading',
+      header: 'h1',
+      table: 'table',
+      searchResultsHeader: 'h6=Search Results:',
+      filterPanelToggle: '#filter-panel-toggle',
+      resetAllFiltersButton: 'button=Reset All Filters',
+      filterSearchTermInput: '#filter-search-term-input',
+      filterSearchTermGo: '#filter-search-term-go',
+      filterChipsSection: '#filter-chips',
+    };
   }
 
+  /* eslint-disable indent */
+  async getBodyText() {
+    return (await
+            (await
+             (await
+              $(this.elements.header)
+             ).parentElement()
+            ).nextElement()
+           ).getText();
+  }
+  /* eslint-enable indent */
+
+  /* eslint-disable indent */
+  async isLoading() {
+    return (await
+            $(this.elements.loading)
+           ).isDisplayed();
+  }
+  /* eslint-enable indent */
+
+  /* eslint-disable indent */
   async getTableHeaders() {
     return (await
             (await
-             $(elements.table)
+             $(this.elements.table)
             ).$('thead')
            ).$$('th');
   }
+  /* eslint-enable indent */
 
   async hasNoResults() {
     const results = await this.getTotalResultCount();
     return results === 0;
   }
 
+  /* eslint-disable indent */
   async getTotalResultCount() {
     const results = (await
                      (await
                       (await
                        (await
-                        $(elements.searchResultsHeader)
+                        $(this.elements.searchResultsHeader)
                        ).parentElement()
                       ).$('p')
                      ).getText()
                     );
     return results === 'No results found' ? 0 : parseInt(results.split(' ')[2], 10);
   }
+  /* eslint-enable indent */
 
+  /* eslint-disable indent */
   async resetFilters() {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
-     $(elements.filterPanelToggle)
+     $(this.elements.filterPanelToggle)
     ).click();
     await
     (await
-     $(elements.resetAllFiltersButton)
+     $(this.elements.resetAllFiltersButton)
     ).click();
     await browser.keys('Escape');
     await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
   }
+  /* eslint-enable indent */
 
+  /* eslint-disable indent */
   async removeFilter(category, value) {
     const initialResultCount = await this.getTotalResultCount();
     await
@@ -67,7 +90,7 @@ class CollectionPage {
         (await
          (await
           (await
-           $(elements.filterChipsSection)
+           $(this.elements.filterChipsSection)
           ).$(`p=${category}`)
          ).parentElement()
         ).$(`span=${value}`)
@@ -81,13 +104,15 @@ class CollectionPage {
       console.log(`removeFilter: ${err}`);
     }
   }
+  /* eslint-enable indent */
 
+  /* eslint-disable indent */
   async setDateFilter(category, isBefore, value) {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
      (await
-      $(elements.filterPanelToggle)
+      $(this.elements.filterPanelToggle)
      ).click()
     );
     await
@@ -109,13 +134,15 @@ class CollectionPage {
       console.log(`setDateFilter: ${err}`);
     }
   }
+  /* eslint-enable indent */
 
+  /* eslint-disable indent */
   async setListFilter(category, value) {
     const initialResultCount = await this.getTotalResultCount();
     await
     (await
      (await
-      $(elements.filterPanelToggle)
+      $(this.elements.filterPanelToggle)
      ).click()
     );
     await
@@ -137,14 +164,17 @@ class CollectionPage {
       console.log(`setListFilter: ${err}`);
     }
   }
+  /* eslint-enable indent */
 
+  /* eslint-disable indent */
   async getResults() {
     return (await
             (await
-             $(elements.table)
+             $(this.elements.table)
             ).$('tbody')
            ).$$('tr');
   }
+  /* eslint-enable indent */
 
   async getCellInRow(rowIdx, colIdx) {
     const row = (await this.getResults())[rowIdx];
@@ -156,13 +186,14 @@ class CollectionPage {
     await this.searchForText('');
   }
 
+  /* eslint-disable indent */
   async searchForText(text) {
     const initialResultCount = await this.getTotalResultCount();
     await (
-      await $(elements.filterSearchTermInput)
+      await $(this.elements.filterSearchTermInput)
     ).setValue(text);
     await (
-      await $(elements.filterSearchTermGo)
+      await $(this.elements.filterSearchTermGo)
     ).click();
     try {
       await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
@@ -170,6 +201,7 @@ class CollectionPage {
       console.log(`searchForText: ${err}`);
     }
   }
+  /* eslint-enable indent */
 }
 
 export default CollectionPage;
