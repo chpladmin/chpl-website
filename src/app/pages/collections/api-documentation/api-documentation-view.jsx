@@ -312,12 +312,13 @@ function ChplApiDocumentationCollectionView(props) {
             <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
             { !erdPhase2IsOn
               && (
-                <>
-                  <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
-                  <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-                </>
+                <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
               )}
             <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
+            { !erdPhase2IsOn
+              && (
+                <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
+              )}
             <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services (Cures Update)</li>
           </ul>
           <Typography variant="body1" gutterBottom>
