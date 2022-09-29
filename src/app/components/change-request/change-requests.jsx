@@ -21,8 +21,8 @@ const staticFilters = [{
   key: 'currentStatusChangeDateTime',
   display: 'Last Updated',
   values: [
-    { value: 'Before' },
-    { value: 'After', default: '2022-01-01T00:00' },
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
   ],
   getQuery: (value) => value.values
     .sort((a, b) => (a.value < b.value ? -1 : 1))
@@ -35,8 +35,8 @@ const staticFilters = [{
   key: 'submittedDateTime',
   display: 'Creation Date',
   values: [
-    { value: 'Before' },
-    { value: 'After', default: '2022-01-01T00:00' },
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
   ],
   getQuery: (value) => value.values
     .sort((a, b) => (a.value < b.value ? -1 : 1))
@@ -49,18 +49,16 @@ const staticFilters = [{
 function ChplChangeRequests(props) {
   const { disallowedFilters, bonusQuery } = props;
   const { isOn } = useContext(FlagContext);
-  const [attestationsEditIsOn, setAttestationsEditIsOn] = useState(false);
   const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
 
   useEffect(() => {
-    setAttestationsEditIsOn(isOn('attestations-edit'));
     setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
   }, [isOn]);
 
   useEffect(() => {
-    const values = (attestationsEditIsOn || demographicChangeRequestIsOn) ? [
+    const values = (demographicChangeRequestIsOn) ? [
       { value: 'Accepted' },
       { value: 'Cancelled by Requester' },
       { value: 'Pending Developer Action', default: true },
@@ -80,7 +78,7 @@ function ChplChangeRequests(props) {
         display: 'Change Request Status',
         values,
       }));
-  }, [attestationsEditIsOn, demographicChangeRequestIsOn]);
+  }, [demographicChangeRequestIsOn]);
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));

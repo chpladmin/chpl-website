@@ -54,7 +54,7 @@ function ChplChangeRequestHistory(props) {
           // no default
       }
       return updated;
-    }).sort((a, b) => b.statusChangeDate - a.statusChangeDate));
+    }).sort((a, b) => (a.statusChangeDateTime < b.statusChangeDateTime ? 1 : -1)));
   }, [props.changeRequest.developer.name, props.changeRequest.statuses]); // eslint-disable-line react/destructuring-assignment
 
   return (
@@ -66,7 +66,7 @@ function ChplChangeRequestHistory(props) {
         <Table stickyHeader>
           <ChplSortableHeaders
             headers={headers}
-            orderBy="statusChangeDate"
+            orderBy="statusChangeDateTime"
             order="desc"
           />
           <TableBody>
@@ -74,7 +74,7 @@ function ChplChangeRequestHistory(props) {
               .map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.actingOrganization}</TableCell>
-                  <TableCell>{getDisplayDateFormat(item.statusChangeDate)}</TableCell>
+                  <TableCell>{getDisplayDateFormat(item.statusChangeDateTime)}</TableCell>
                   <TableCell>{item.changeRequestStatusType.name}</TableCell>
                   <TableCell>{item.comment}</TableCell>
                 </TableRow>

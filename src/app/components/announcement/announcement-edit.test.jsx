@@ -49,7 +49,7 @@ describe('the ChplAnnouncementEdit component', () => {
         userEvent.click(screen.getByRole('button', { name: /Save/i }));
 
         await waitFor(() => {
-          expect(screen.queryByText('Title is required')).toBeInTheDocument();
+          expect(screen.queryByText('Field is required')).toBeInTheDocument();
         });
       });
 
