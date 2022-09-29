@@ -107,6 +107,23 @@ class CollectionPage {
   /* eslint-enable indent */
 
   /* eslint-disable indent */
+  async toggleOperator(category) {
+    const initialResultCount = await this.getTotalResultCount();
+    await
+    (await
+     (await
+      $(`#${category}-operator-toggle`)
+     ).click()
+    );
+    try {
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
+    } catch (err) {
+      console.log(`toggleOperator: ${err}`);
+    }
+  }
+  /* eslint-enable indent */
+
+  /* eslint-disable indent */
   async setDateFilter(category, isBefore, value) {
     const initialResultCount = await this.getTotalResultCount();
     await
