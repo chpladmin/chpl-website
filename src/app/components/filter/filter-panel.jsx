@@ -23,21 +23,32 @@ const useStyles = makeStyles({
     background: '#fafdff',
     display: 'grid',
     gridTemplateColumns: '1fr',
-    padding: '16px',
     rowGap: '16px',
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
     },
+  },
+  filterPanelPrimary:{
+    padding: '16px',
+  },
+  filterPanelSecondary:{
+    borderLeft: '1px solid #599bde',
+    padding: '16px',
   },
   filterBold: {
     fontWeight: '600',
   },
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: 'auto',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
     justifyItems: 'start',
     alignItems: 'start',
-    gap: '8px',
+    gap: '16px',
+    padding:'0 8px',
+    marginTop: '16px',
+    [theme.breakpoints.up('xl')]: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+    },
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -50,14 +61,13 @@ const useStyles = makeStyles({
     alignItems: 'center',
     maxHeight: '40vh',
     overflowY: 'auto',
-    borderLeft: '1px solid #599bde',
-    paddingLeft: '16px',
   },
   filterSubHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
-    justifyItems: 'start',
-    gap: '8px',
+  },
+  clearResetContainer: {
+    marginBottom: '8px',
+    marginTop: '-8px',
   },
   searchInput: {
     flexGrow: 1,
@@ -174,12 +184,13 @@ function ChplFilterPanel() {
             marginTop: '20px',
             border: `1px solid ${palette.grey}`,
             boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
+            backgroundColor: '#fafdff',
           },
         }}
       >
         <div className={classes.filterPanelContainer}>
           <div>
-            <div>
+            <div className={classes.filterPanelPrimary}>
               <List
                 dense
                 subheader={(
@@ -205,7 +216,7 @@ function ChplFilterPanel() {
                     </div>
                   </ListSubheader>
                 )}
-              >
+              > 
                 <div className={classes.filterSubHeaderContainer}>
                   <div className={classes.filterContainer}>
                     { filters.map((f) => (
@@ -227,17 +238,17 @@ function ChplFilterPanel() {
               </List>
             </div>
           </div>
-          <div>
+          <div className={classes.filterPanelSecondary}>
             { activeCategory?.values.length > 0 && (
               <List
                 dense
                 subheader={(
                   <ListSubheader
-                    disableSticky
                     component="div"
                     id="filter-panel-secondary-subheader"
-                  >
-                    <div className={classes.filterSubHeaderContainer}>
+                    className={classes.clearResetContainer}
+                    disableGutters
+                    >
                       <ButtonGroup
                         variant="text"
                         color="primary"
@@ -256,7 +267,6 @@ function ChplFilterPanel() {
                           Reset
                         </Button>
                       </ButtonGroup>
-                    </div>
                   </ListSubheader>
                 )}
               >

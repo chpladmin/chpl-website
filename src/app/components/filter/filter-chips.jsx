@@ -22,13 +22,11 @@ const useStyles = makeStyles(() => ({
     boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0 8px',
     flexWrap: 'wrap',
     flexFlow: 'column',
+    alignItems: 'center',
     [theme.breakpoints.up('md')]: {
       flexFlow: 'row',
       flexWrap: 'wrap',
     },
-  },
-  filterApplied: {
-    paddingTop: '4px',
   },
   filterSelectedContainer: {
     display: 'flex',
@@ -73,7 +71,7 @@ function ChplFilterChips() {
 
   return (
     <span className={classes.filterContainer} id="filter-chips">
-      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied</Typography>
+      <Typography variant="subtitle1">Filters Applied</Typography>
       { filters.map((f) => (
         <span
           className={classes.filterSelectedContainer}
