@@ -1,8 +1,5 @@
 import React from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
   FormControlLabel,
   FormHelperText,
   Switch,
@@ -16,17 +13,8 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { jsJoda } from 'services/date-util';
 import { announcement as announcementPropType } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  actionContainer: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: '1fr 1fr',
-    },
-  },
   fullWidth: {
     gridColumnStart: '1',
     gridColumnEnd: '-1',
@@ -38,14 +26,14 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   title: yup.string()
-    .required('Title is required'),
+    .required('Field is required'),
   startDateTime: yup.date()
-    .required('Start Date is required'),
+    .required('Field is required'),
   endDateTime: yup.date()
     .test('mustBeAfter',
       'End Date must be after Start Date',
       (value, context) => (value >= context.parent.startDateTime))
-    .required('End Date is required'),
+    .required('Field is required'),
 });
 
 function ChplAnnouncementEdit(props) {
@@ -93,81 +81,72 @@ function ChplAnnouncementEdit(props) {
 
   return (
     <>
-      <Card>
-        <CardHeader
-          className={classes.cardHeader}
-          titleTypographyProps={{ variant: 'h6' }}
-          title={`${announcement.id ? 'Edit' : 'Create'} Announcement`}
+      <ChplTextField
+        id="title"
+        name="title"
+        label="Title"
+        className={classes.fullWidth}
+        required
+        value={formik.values.title}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.title && !!formik.errors.title}
+        helperText={formik.touched.title && formik.errors.title}
+      />
+      <ChplTextField
+        id="text"
+        name="text"
+        label="Text"
+        className={classes.fullWidth}
+        value={formik.values.text}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.text && !!formik.errors.text}
+        helperText={formik.touched.text && formik.errors.text}
+      />
+      <div>
+        <ChplTextField
+          id="start-date-time"
+          name="startDateTime"
+          label="Start Date"
+          type="datetime-local"
+          required
+          value={formik.values.startDateTime}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.startDateTime && !!formik.errors.startDateTime}
+          helperText={formik.touched.startDateTime && formik.errors.startDateTime}
         />
-        <CardContent className={classes.actionContainer}>
-          <ChplTextField
-            id="title"
-            name="title"
-            label="Title"
-            className={classes.fullWidth}
-            required
-            value={formik.values.title}
+        <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+      </div>
+      <div>
+        <ChplTextField
+          id="end-date-time"
+          name="endDateTime"
+          label="End Date"
+          type="datetime-local"
+          required
+          value={formik.values.endDateTime}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.endDateTime && !!formik.errors.endDateTime}
+          helperText={formik.touched.endDateTime && formik.errors.endDateTime}
+        />
+        <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
+      </div>
+      <FormControlLabel
+        control={(
+          <Switch
+            id="is-public"
+            name="isPublic"
+            color="primary"
+            checked={formik.values.isPublic}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.title && !!formik.errors.title}
-            helperText={formik.touched.title && formik.errors.title}
-          />
-          <ChplTextField
-            id="text"
-            name="text"
-            label="Text"
             className={classes.fullWidth}
-            value={formik.values.text}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.text && !!formik.errors.text}
-            helperText={formik.touched.text && formik.errors.text}
           />
-          <div>
-            <ChplTextField
-              id="start-date-time"
-              name="startDateTime"
-              label="Start Date"
-              type="datetime-local"
-              required
-              value={formik.values.startDateTime}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.startDateTime && !!formik.errors.startDateTime}
-              helperText={formik.touched.startDateTime && formik.errors.startDateTime}
-            />
-            <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
-          </div>
-          <div>
-            <ChplTextField
-              id="end-date-time"
-              name="endDateTime"
-              label="End Date"
-              type="datetime-local"
-              required
-              value={formik.values.endDateTime}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.endDateTime && !!formik.errors.endDateTime}
-              helperText={formik.touched.endDateTime && formik.errors.endDateTime}
-            />
-            <FormHelperText className={classes.helperTextSpacing} id="EST-helper-text">All times should be entered as Eastern Time (ET)</FormHelperText>
-          </div>
-          <FormControlLabel
-            control={(
-              <Switch
-                id="is-public"
-                name="isPublic"
-                color="primary"
-                checked={formik.values.isPublic}
-                onChange={formik.handleChange}
-                className={classes.fullWidth}
-              />
-            )}
-            label={formik.values.isPublic ? 'Public announcement' : 'For logged in users only'}
-          />
-        </CardContent>
-      </Card>
+        )}
+        label={formik.values.isPublic ? 'Public announcement' : 'For logged in users only'}
+      />
       <ChplActionBar
         dispatch={handleDispatch}
         isDisabled={!formik.isValid || formik.isSubmitting}

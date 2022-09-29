@@ -29,14 +29,6 @@ const states = [
     component: 'chplAdministration',
     data: { title: 'CHPL Administration' },
   }, {
-    name: 'administration.announcements',
-    url: '/announcements',
-    component: 'chplAnnouncementsWrapperBridge',
-    data: {
-      title: 'CHPL Administration - Announcements',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
-    },
-  }, {
     name: 'administration.api-keys',
     url: '/api-keys',
     component: 'chplApiKeys',
@@ -136,35 +128,20 @@ const states = [
       state: 'administration.jobs',
     }),
   }, {
+    name: 'administration.system-maintenance',
+    url: '/system-maintenance',
+    component: 'chplSystemMaintenanceWrapperBridge',
+    data: {
+      title: 'CHPL Administration - System Maintenance',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
+  }, {
     name: 'administration.upload',
     url: '/upload',
     component: 'chplUpload',
     data: {
       title: 'CHPL Administration - Upload',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
-    },
-  }, {
-    name: 'administration.svaps',
-    url: '/svaps',
-    component: 'chplSvapsPage',
-    resolve: {
-      svaps: (authService, networkService) => {
-        'ngInject';
-
-        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-          return networkService.getSvaps();
-        }
-        return [];
-      },
-      availableCriteria: (networkService) => {
-        'ngInject';
-
-        return networkService.getCertificationCriteriaForSvap();
-      },
-    },
-    data: {
-      title: 'CHPL Administration - SVAPs',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
     },
   }, {
     name: 'login',

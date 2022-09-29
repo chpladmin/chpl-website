@@ -40,9 +40,6 @@ import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  breadcrumbs: {
-    textTransform: 'none',
-  },
   container: {
     maxHeight: '64vh',
   },
@@ -100,26 +97,9 @@ const useStyles = makeStyles({
   },
 });
 
-const resetBreadcrumbs = (append, drop, classes) => {
-  drop('edit.disabled');
-  drop('view.disabled');
-  drop('view');
-  drop('viewall');
-  append(
-    <Button
-      key="viewall.disabled"
-      variant="text"
-      className={classes.breadcrumbs}
-      disabled
-    >
-      Change Requests
-    </Button>,
-  );
-};
-
 function ChplChangeRequestsView(props) {
   const { disallowedFilters, bonusQuery } = props;
-  const { append, drop } = useContext(BreadcrumbContext);
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
@@ -138,12 +118,29 @@ function ChplChangeRequestsView(props) {
     query: `${queryString()}${bonusQuery}`,
   });
   const classes = useStyles();
+  let handleDispatch;
 
   useEffect(() => {
-    if (!bonusQuery) {
-      resetBreadcrumbs(append, drop, classes);
-    }
-  }, [bonusQuery]);
+    append(
+      <Button
+        key="viewall.disabled"
+        variant="text"
+        disabled
+      >
+        Change Requests
+      </Button>,
+    );
+    append(
+      <Button
+        key="viewall"
+        variant="text"
+        onClick={() => handleDispatch('close')}
+      >
+        Change Requests
+      </Button>,
+    );
+    display('viewall.disabled');
+  }, []);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -178,11 +175,15 @@ function ChplChangeRequestsView(props) {
     { text: 'Actions', invisible: true },
   ];
 
-  const handleDispatch = (action) => {
+  handleDispatch = (action) => {
     switch (action) {
       case 'close':
         setChangeRequest(undefined);
-        resetBreadcrumbs(append, drop, classes);
+        display('viewall.disabled');
+        hide('viewall');
+        hide('edit.disabled');
+        hide('view');
+        hide('view.disabled');
         break;
       // no default
     }
@@ -195,27 +196,31 @@ function ChplChangeRequestsView(props) {
 
   const showBreadcrumbs = () => !bonusQuery;
 
+  const viewChangeRequest = (cr) => {
+    setChangeRequest(cr);
+    display('viewall');
+    hide('viewall.disabled');
+  };
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
   if (changeRequest) {
     return (
-      <Card>
-        <CardHeader title="Change Requests" />
-        <CardContent>
-          <ChplChangeRequest
-            changeRequest={changeRequest}
-            dispatch={handleDispatch}
-            showBreadcrumbs={showBreadcrumbs()}
-          />
-        </CardContent>
-      </Card>
+      <ChplChangeRequest
+        changeRequest={changeRequest}
+        dispatch={handleDispatch}
+        showBreadcrumbs={showBreadcrumbs()}
+      />
     );
   }
 
   return (
     <Card>
-      <CardHeader title="Change Requests" />
+      { bonusQuery
+        && (
+          <CardHeader title="Change Requests" />
+        )}
       <CardContent>
         <div className={classes.searchContainer} component={Paper}>
           { !disallowedFilters.includes('searchTerm')
@@ -347,7 +352,7 @@ function ChplChangeRequestsView(props) {
                                        )}
                                       <TableCell align="right">
                                         <Button
-                                          onClick={() => setChangeRequest(item)}
+                                          onClick={() => viewChangeRequest(item)}
                                           variant="contained"
                                           color="primary"
                                         >

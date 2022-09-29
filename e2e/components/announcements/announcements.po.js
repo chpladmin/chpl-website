@@ -1,4 +1,4 @@
-class AnnouncementsPage {
+class AnnouncementsComponent {
   constructor() {
     this.elements = {
       addAnnouncementButton: '#add-new-announcement',
@@ -7,7 +7,7 @@ class AnnouncementsPage {
       announcementStartDateTime: '#start-date-time',
       announcementEndDateTime: '#end-date-time',
       isPublicToggle: '#is-public',
-      announcementDisplay: '.MuiCardContent-root',
+      announcementsTable: 'table[aria-label="Announcements table"]',
     };
   }
 
@@ -35,9 +35,19 @@ class AnnouncementsPage {
     return $(this.elements.isPublicToggle);
   }
 
-  get announcementDisplay() {
-    return $(this.elements.announcementDisplay);
+  get announcementsTable() {
+    return $(this.elements.announcementsTable);
   }
+
+  /* eslint-disable indent */
+  async getAnnouncements() {
+    return (await
+            (await
+             this.announcementsTable
+            ).$('tbody')
+           ).$$('tr');
+  }
+  /* eslint-enable indent */
 }
 
-export default AnnouncementsPage;
+export default AnnouncementsComponent;
