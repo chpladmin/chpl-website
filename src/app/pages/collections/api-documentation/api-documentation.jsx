@@ -9,6 +9,7 @@ import {
   getDateDisplay,
   getDateEntry,
 } from 'components/filter';
+import { sortCriteria } from 'services/criteria.service';
 import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [{
@@ -77,10 +78,10 @@ function ChplApiDocumentationCollectionPage() {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
       return;
     }
-    // .sort((a, b) => (a.name < b.name ? -1 : 1)) pull in sort from OCD-4038
     const values = ccQuery.data.criteria
       .filter((cc) => cc.certificationEditionId === 3)
       .map((cc) => ({
+        ...cc,
         value: cc.id,
         display: `${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
         default: erdPhase2IsOn ? [56, 181, 182].includes(cc.id) : [56, 57, 58, 181, 182].includes(cc.id),
@@ -92,6 +93,7 @@ function ChplApiDocumentationCollectionPage() {
         key: 'certificationCriteriaIds',
         display: 'Certification Criteria',
         operatorKey: 'certificationCriteriaOperator',
+        sortValues: (filter, a, b) => sortCriteria(a, b),
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess, erdPhase2IsOn]);
