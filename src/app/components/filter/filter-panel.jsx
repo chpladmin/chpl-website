@@ -100,7 +100,7 @@ function ChplFilterPanel() {
       .sort((a, b) => (a.getFilterDisplay(a) < b.getFilterDisplay(b) ? -1 : 1))
       .map((f) => ({
         ...f,
-        values: f.values.sort((a, b) => (f.getValueDisplay(a) < f.getValueDisplay(b) ? -1 : 1)),
+        values: f.values.sort((a, b) => f.sortValues(f, a, b)),
       })));
   }, [filterContext.filters]);
 

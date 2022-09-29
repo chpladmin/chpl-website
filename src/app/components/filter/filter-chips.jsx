@@ -50,7 +50,7 @@ function ChplFilterChips() {
         ...filter,
         values: filter.values
           .filter((v) => v.selected)
-          .sort((a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1)),
+          .sort((a, b) => filter.sortValues(filter, a, b)),
       }))
       .filter((filter) => filter.values.length > 0));
   }, [filterContext.filters]);

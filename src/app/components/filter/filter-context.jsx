@@ -100,6 +100,7 @@ const defaultFilter = {
   getFilterDisplay: (filter) => filter.display,
   getValueDisplay: (value) => value.display,
   getValueEntry: getDefaultValueEntry,
+  sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
 };
 
 const clearFilter = (filter, category, setFilters) => {
