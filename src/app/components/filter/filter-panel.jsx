@@ -24,32 +24,31 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr',
     rowGap: '16px',
-    maxHeight: '64vh',
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
     },
   },
   filterPanelPrimary:{
     padding: '16px',
-    position: 'sticky',
-    top: 0,
   },
   filterPanelSecondary:{
-    background: 'white',
     borderLeft: '1px solid #599bde',
     padding: '16px',
-    boxShadow:'inset rgb(149 157 165 / 30%) 10px 0px 20px 0px'
   },
   filterBold: {
     fontWeight: '600',
   },
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(48%, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
     justifyItems: 'start',
     alignItems: 'start',
     gap: '16px',
     padding:'0 8px',
+    marginTop: '16px',
+    [theme.breakpoints.up('xl')]: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+    },
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -60,21 +59,15 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
-    paddingLeft: '16px',
+    maxHeight: '40vh',
+    overflowY: 'auto',
   },
   filterSubHeaderContainer: {
     display: 'grid',
   },
   clearResetContainer: {
-    backgroundColor: 'white',
-    zIndex: 50,
-    paddingTop:'8px',
-    paddingLeft:'16px',
-    marginTop:'-16px',
-    marginRight:'-16px',
-    marginLeft:'-16px',
-    boxShadow: 'rgb(149 157 165 / 30%) 10px 0px 20px 0px',
     marginBottom: '8px',
+    marginTop: '-8px',
   },
   searchInput: {
     flexGrow: 1,
@@ -186,7 +179,6 @@ function ChplFilterPanel() {
         PaperProps={{
           style: {
             width: '95%',
-            maxHeight: '400px',
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
             marginTop: '20px',

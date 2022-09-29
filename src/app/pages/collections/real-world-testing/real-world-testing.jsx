@@ -3,7 +3,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import ChplRealWorldTestingCollectionView from './real-world-testing-view';
 
 import { useFetchCriteria } from 'api/data';
-import { FilterProvider, defaultFilter } from 'components/filter';
+import {
+  FilterProvider,
+  defaultFilter,
+  getDateDisplay,
+  getDateEntry,
+} from 'components/filter';
 import { FlagContext } from 'shared/contexts';
 
 const criteriaKeysPreERDPhase2 = [
@@ -83,6 +88,20 @@ const staticFilters = [{
   ],
 }, {
   ...defaultFilter,
+  key: 'certificationDate',
+  display: 'Certification Date',
+  values: [
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
+  ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'certificationDateStart' : 'certificationDateEnd'}=${v.selected}`)
+    .join('&'),
+  getValueDisplay: getDateDisplay,
+  getValueEntry: getDateEntry,
+}, {
+  ...defaultFilter,
   key: 'certificationStatuses',
   display: 'Certification Status',
   values: [
@@ -94,6 +113,19 @@ const staticFilters = [{
     { value: 'Withdrawn by ONC-ACB' },
     { value: 'Withdrawn by Developer' },
     { value: 'Retired' },
+  ],
+}, {
+  ...defaultFilter,
+  key: 'certificationBodies',
+  display: 'ONC-ACB',
+  values: [
+    { value: 'CCHIT', display: 'CCHIT (Retired)' },
+    { value: 'Drummond Group', default: true },
+    { value: 'ICSA Labs', default: true },
+    { value: 'Leidos', default: true },
+    { value: 'SLI Compliance', default: true },
+    { value: 'Surescripts LLC', display: 'Surescripts LLC (Retired)' },
+    { value: 'UL LLC', display: 'UL LLC (Retired)' },
   ],
 }];
 
