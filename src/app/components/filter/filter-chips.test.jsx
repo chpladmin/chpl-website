@@ -15,6 +15,7 @@ const defaultFilter = { // this should be imported, but I don't know why it can'
   getFilterDisplay: (filter) => filter.display,
   getValueDisplay: (value) => value.display,
   getValueEntry: () => {},
+  sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
 };
 
 const $analyticsMock = {
