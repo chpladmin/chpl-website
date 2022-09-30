@@ -121,8 +121,10 @@ function ChplFilterChips() {
             && (
               <Button
                 onClick={() => toggleShowAll(f)}
+                color="primary"
+                variant="text"
               >
-                { f.showAll ? 'Show Fewer' : 'Show More' }
+                { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
               </Button>
             )}
         </span>
