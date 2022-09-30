@@ -152,6 +152,16 @@ const toggleFilterOperator = (filters, category, setFilters) => {
   setFilters(updatedFilters);
 };
 
+const toggleShowAll = (filters, category, setFilters) => {
+  const filter = filters.find((f) => f.key === category.key);
+  const updatedFilter = {
+    ...filter,
+    showAll: !filter.showAll,
+  };
+  const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+  setFilters(updatedFilters);
+};
+
 const updateFilter = (filters, category, value, setFilters) => {
   const filter = filters.find((f) => f.key === category.key);
   const item = filter.values.find((v) => v.value === value.value);
@@ -223,6 +233,9 @@ function FilterProvider(props) {
         break;
       case 'toggleOperator':
         toggleFilterOperator(filters, category, setFilters);
+        break;
+      case 'toggleShowAll':
+        toggleShowAll(filters, category, setFilters);
         break;
       case 'update':
         updateFilter(filters, category, value, setFilters);

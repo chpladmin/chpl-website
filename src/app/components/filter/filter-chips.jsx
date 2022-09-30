@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Chip,
   FormControlLabel,
   Switch,
@@ -42,6 +43,7 @@ function ChplFilterChips() {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
   const classes = useStyles();
+  const DISPLAY_MAX = 7;
 
   useEffect(() => {
     setFilters(filterContext.filters
@@ -67,6 +69,13 @@ function ChplFilterChips() {
       $analytics.eventTrack('Toggle Operator', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.operator === 'and' ? 'All' : 'Any'}` });
     }
     filterContext.dispatch('toggleOperator', f);
+  };
+
+  const toggleShowAll = (f) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Show All', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.showAll ? 'All' : 'Some'}` });
+    }
+    filterContext.dispatch('toggleShowAll', f);
   };
 
   return (
@@ -97,6 +106,7 @@ function ChplFilterChips() {
               />
             )}
           {f.values
+            .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
             .map((v) => (
               <Chip
                 key={v.value}
@@ -107,6 +117,14 @@ function ChplFilterChips() {
                 disabled={f.required && f.values.length === 1}
               />
             ))}
+          { f.values.length > DISPLAY_MAX
+            && (
+              <Button
+                onClick={() => toggleShowAll(f)}
+              >
+                { f.showAll ? 'Show Fewer' : 'Show More' }
+              </Button>
+            )}
         </span>
       ))}
     </span>
