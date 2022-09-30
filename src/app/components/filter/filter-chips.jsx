@@ -87,7 +87,7 @@ function ChplFilterChips() {
               <FormControlLabel
                 control={(
                   <Switch
-                    id={`${f.key}-operator-toggle`}
+                    id={`${f.key}-operator-chips-toggle`}
                     color="primary"
                     checked={f.operator === 'and'}
                     onChange={() => toggleOperator(f)}

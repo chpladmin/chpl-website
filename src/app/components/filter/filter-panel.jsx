@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  FormControlLabel,
   List,
   ListSubheader,
   Popover,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -151,6 +153,13 @@ function ChplFilterPanel() {
     });
   };
 
+  const toggleOperator = (f) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Operator', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.operator === 'and' ? 'All' : 'Any'}` });
+    }
+    filterContext.dispatch('toggleOperator', f);
+  };
+
   return (
     <>
       <Button
@@ -267,6 +276,20 @@ function ChplFilterPanel() {
                         Reset
                       </Button>
                     </ButtonGroup>
+                    { activeCategory.operatorKey
+                      && (
+                        <FormControlLabel
+                          control={(
+                            <Switch
+                              id={`${activeCategory.key}-operator-panel-toggle`}
+                              color="primary"
+                              checked={activeCategory.operator === 'and'}
+                              onChange={() => toggleOperator(activeCategory)}
+                            />
+                          )}
+                          label={activeCategory.operator === 'and' ? 'All' : 'Any'}
+                        />
+                      )}
                   </ListSubheader>
                 )}
               >
