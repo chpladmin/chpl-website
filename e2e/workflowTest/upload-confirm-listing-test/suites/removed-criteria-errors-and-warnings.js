@@ -7,7 +7,6 @@ const suite = {
       'The criterion 170.315 (a)(6) has been removed and may not be added to the listing.',
     ],
     expectedWarnings: [
-      '',
     ],
   }],
 };
