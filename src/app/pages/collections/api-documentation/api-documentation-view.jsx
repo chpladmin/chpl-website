@@ -17,8 +17,8 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import {
-  useFetchApiDocumentationCollection,
   useFetchApiDocumentationData,
+  useFetchCollection,
 } from 'api/collections';
 import {
   ChplLink,
@@ -215,7 +215,7 @@ function ChplApiDocumentationCollectionView(props) {
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchApiDocumentationCollection({
+  const { data, isError, isLoading } = useFetchCollection({
     orderBy,
     pageNumber,
     pageSize,
