@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplRealWorldTestingCollectionView from './real-world-testing-view';
 
@@ -10,73 +10,6 @@ import {
   getDateEntry,
 } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
-import { FlagContext } from 'shared/contexts';
-
-const criteriaKeysPreERDPhase2 = [
-  16,
-  165,
-  17,
-  166,
-  18,
-  167,
-  21,
-  22,
-  168,
-  23,
-  169,
-  24,
-  170,
-  171,
-  25,
-  26,
-  27,
-  172,
-  40,
-  178,
-  43,
-  44,
-  45,
-  46,
-  47,
-  179,
-  48,
-  49,
-  56,
-  57,
-  58,
-  181,
-  182,
-  59,
-  60,
-];
-
-const criteriaKeys = [
-  165,
-  166,
-  167,
-  21,
-  168,
-  169,
-  170,
-  171,
-  25,
-  26,
-  172,
-  178,
-  43,
-  44,
-  45,
-  46,
-  179,
-  48,
-  49,
-  56,
-  57,
-  181,
-  182,
-  59,
-  60,
-];
 
 const staticFilters = [{
   ...defaultFilter,
@@ -142,14 +75,8 @@ const staticFilters = [{
 }];
 
 function ChplRealWorldTestingCollectionPage() {
-  const { isOn } = useContext(FlagContext);
-  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const ccQuery = useFetchCriteria();
-
-  useEffect(() => {
-    setErdPhase2IsOn(isOn('erd-phase-2'));
-  }, [isOn]);
 
   useEffect(() => {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
@@ -161,7 +88,6 @@ function ChplRealWorldTestingCollectionPage() {
         ...cc,
         value: cc.id,
         display: `${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
-        default: erdPhase2IsOn ? criteriaKeys.includes(cc.id) : criteriaKeysPreERDPhase2.includes(cc.id),
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
@@ -173,7 +99,7 @@ function ChplRealWorldTestingCollectionPage() {
         sortValues: (filter, a, b) => sortCriteria(a, b),
         values,
       }));
-  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess, erdPhase2IsOn]);
+  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   const analytics = {
     category: 'Real World Testing',
