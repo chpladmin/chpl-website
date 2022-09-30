@@ -112,7 +112,7 @@ class CollectionPage {
     await
     (await
      (await
-      $(`#${category}-operator-toggle`)
+      $(`#${category}-operator-chips-toggle`)
      ).click()
     );
     try {

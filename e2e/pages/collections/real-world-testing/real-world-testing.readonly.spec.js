@@ -49,8 +49,8 @@ describe('the Real World Testing collection page', () => {
         await expect(countAfter).toBeLessThan(countBefore);
       });
 
-      it('should toggle the criteria operator', async () => {
-        await page.toggleOperator('certificationCriteriaIds');
+      it('should filter on rwt plans URLs', async () => {
+        await page.removeFilter('Real World Testing', 'Has RWT Plans URL');
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);
       });
