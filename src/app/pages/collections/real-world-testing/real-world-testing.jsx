@@ -128,6 +128,17 @@ const staticFilters = [{
     { value: 'Surescripts LLC', display: 'Surescripts LLC (Retired)' },
     { value: 'UL LLC', display: 'UL LLC (Retired)' },
   ],
+}, {
+  ...defaultFilter,
+  key: 'rwtOptions',
+  display: 'Real World Testing',
+  operatorKey: 'rwtOperator',
+  values: [
+    { value: 'has_plans_url', display: 'Has RWT Plans URL', default: true },
+    { value: 'has_results_url', display: 'Has RWT Results URL', default: true },
+    { value: 'no_plans_url', display: 'Missing RWT Plans URL' },
+    { value: 'no_results_url', display: 'Missing RWT Results URL' },
+  ],
 }];
 
 function ChplRealWorldTestingCollectionPage() {
