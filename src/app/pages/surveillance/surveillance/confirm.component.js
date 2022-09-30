@@ -4,10 +4,11 @@ export const ConfirmSurveillanceComponent = {
     onChange: '&',
   },
   controller: class ConfirmSurveillanceComponent {
-    constructor ($log, $uibModal, authService, networkService) {
+    constructor ($log, $uibModal, DateUtil, authService, networkService) {
       'ngInject';
       this.$log = $log;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
       this.massReject = {};
