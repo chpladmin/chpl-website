@@ -4,16 +4,13 @@ class ApiDocumentationPage extends CollectionPage {
   constructor() {
     super();
     this.elements = {
+      ...this.elements,
       header: 'h1=API Information for 2015 Edition Products',
       downloadApiDocumentation: '#download-api-documentation',
     };
   }
 
-  get bodyText() {
-    return $(this.elements.header).parentElement().nextElement();
-  }
-
-  get downloadApiDocumentation() {
+  async getDownloadApiDocumentation() {
     return $(this.elements.downloadApiDocumentation);
   }
 }

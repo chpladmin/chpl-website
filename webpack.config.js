@@ -242,7 +242,7 @@ module.exports = (env) => {
       port: 3000,
       proxy: {
         '/rest': {
-          target: env.useDev ? 'https://chpl.ahrqdev.org/rest' : 'http://localhost:8181/chpl-service',
+          target: env.useDev ? 'https://chpl-dev.healthit.gov/rest' : 'http://localhost:8181/chpl-service',
           changeOrigin: env.useDev,
           pathRewrite: { '^/rest': '' },
         },

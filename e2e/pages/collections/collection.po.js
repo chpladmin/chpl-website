@@ -1,105 +1,207 @@
-/* eslint-disable class-methods-use-this */
-const elements = {
-  table: 'table',
-  loading: 'body*=Loading',
-  searchResultsHeader: 'h6=Search Results:',
-  downloadFilteredListings: '#download-filtered-listings',
-  filterPanelToggle: '#filter-panel-toggle',
-  resetAllFiltersButton: 'button=Reset All Filters',
-  filterSearchTermInput: '#filter-search-term-input',
-  filterSearchTermGo: '#filter-search-term-go',
-  filterChipsSection: '#filter-chips',
-};
-
 class CollectionPage {
-  getTableHeaders() {
-    return $(elements.table).$('thead').$$('th');
+  constructor() {
+    this.elements = {
+      loading: 'body*=Loading',
+      header: 'h1',
+      table: 'table',
+      searchResultsHeader: 'h6=Search Results:',
+      filterPanelToggle: '#filter-panel-toggle',
+      resetAllFiltersButton: 'button=Reset All Filters',
+      filterSearchTermInput: '#filter-search-term-input',
+      filterSearchTermGo: '#filter-search-term-go',
+      filterChipsSection: '#filter-chips',
+    };
   }
 
-  get isLoading() {
-    return $(elements.loading).isDisplayed();
+  /* eslint-disable indent */
+  async getBodyText() {
+    return (await
+            (await
+             (await
+              $(this.elements.header)
+             ).parentElement()
+            ).nextElement()
+           ).getText();
+  }
+  /* eslint-enable indent */
+
+  /* eslint-disable indent */
+  async isLoading() {
+    return (await
+            $(this.elements.loading)
+           ).isDisplayed();
+  }
+  /* eslint-enable indent */
+
+  /* eslint-disable indent */
+  async getTableHeaders() {
+    return (await
+            (await
+             $(this.elements.table)
+            ).$('thead')
+           ).$$('th');
+  }
+  /* eslint-enable indent */
+
+  async hasNoResults() {
+    const results = await this.getTotalResultCount();
+    return results === 0;
   }
 
-  get results() {
-    return $(elements.table)
-      .$('tbody')
-      .$$('tr');
+  /* eslint-disable indent */
+  async getTotalResultCount() {
+    const results = (await
+                     (await
+                      (await
+                       (await
+                        $(this.elements.searchResultsHeader)
+                       ).parentElement()
+                      ).$('p')
+                     ).getText()
+                    );
+    return results === 'No results found' ? 0 : parseInt(results.split(' ')[2], 10);
   }
+  /* eslint-enable indent */
 
-  getTableCellText(row, col) {
-    return row.$$('td')[col]
-      .getText();
+  /* eslint-disable indent */
+  async resetFilters() {
+    const initialResultCount = await this.getTotalResultCount();
+    await
+    (await
+     $(this.elements.filterPanelToggle)
+    ).click();
+    await
+    (await
+     $(this.elements.resetAllFiltersButton)
+    ).click();
+    await browser.keys('Escape');
+    await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
   }
+  /* eslint-enable indent */
 
-  getListingTotalCount() {
-    const data = $(elements.searchResultsHeader)
-      .parentElement()
-      .$('p')
-      .getText()
-      .split(' ');
-    return parseInt(data[2], 10);
-  }
-
-  getListingPageCount() {
-    const data = $(elements.searchResultsHeader)
-      .parentElement()
-      .$('p')
-      .getText()
-      .split(' ');
-    return parseInt(data[0].split('-')[1], 10);
-  }
-
-  get downloadFilteredListings() {
-    return $(elements.downloadFilteredListings);
-  }
-
-  clearSearchTerm() {
-    this.searchForText('');
-  }
-
-  resetFilters() {
-    const initialListingCount = this.getListingTotalCount();
-    $(elements.filterPanelToggle).click();
-    $(elements.resetAllFiltersButton).click();
-    browser.keys('Escape');
-    browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
-  }
-
-  removeFilter(category, value) {
-    const initialListingCount = this.getListingTotalCount();
-    $(elements.filterChipsSection)
-      .$(`p=${category}`)
-      .parentElement()
-      .$(`span=${value}`)
-      .parentElement()
-      .$('svg')
-      .click();
-    browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
-  }
-
-  selectFilter(category, value) {
-    const initialListingCount = this.getListingTotalCount();
-    $(elements.filterPanelToggle).click();
-    $(`#filter-panel-primary-items-${category}`).click();
-    $(`#filter-panel-secondary-items-${value}`).click();
-    browser.keys('Escape');
+  /* eslint-disable indent */
+  async removeFilter(category, value) {
+    const initialResultCount = await this.getTotalResultCount();
+    await
+    (await
+     (await
+      (await
+       (await
+        (await
+         (await
+          (await
+           $(this.elements.filterChipsSection)
+          ).$(`p=${category}`)
+         ).parentElement()
+        ).$(`span=${value}`)
+       ).parentElement()
+      ).$('svg')
+     ).click()
+    );
     try {
-      browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
     } catch (err) {
-      console.log(err);
+      console.log(`removeFilter: ${err}`);
     }
   }
+  /* eslint-enable indent */
 
-  searchForText(text) {
-    const initialListingCount = this.getListingTotalCount();
-    $(elements.filterSearchTermInput).setValue(text);
-    $(elements.filterSearchTermGo).click();
+  /* eslint-disable indent */
+  async setDateFilter(category, isBefore, value) {
+    const initialResultCount = await this.getTotalResultCount();
+    await
+    (await
+     (await
+      $(this.elements.filterPanelToggle)
+     ).click()
+    );
+    await
+    (await
+     (await
+      $(`#filter-panel-primary-items-${category}`)
+     ).click()
+    );
+    await
+    (await
+     (await
+      $(`#filter-panel-secondary-items-${isBefore ? 'Before' : 'After'}`)
+     ).addValue(value)
+    );
+    await browser.keys('Escape');
     try {
-      browser.waitUntil(() => this.getListingTotalCount() !== initialListingCount);
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
     } catch (err) {
-      console.log(err);
+      console.log(`setDateFilter: ${err}`);
     }
   }
+  /* eslint-enable indent */
+
+  /* eslint-disable indent */
+  async setListFilter(category, value) {
+    const initialResultCount = await this.getTotalResultCount();
+    await
+    (await
+     (await
+      $(this.elements.filterPanelToggle)
+     ).click()
+    );
+    await
+    (await
+     (await
+      $(`#filter-panel-primary-items-${category}`)
+     ).click()
+    );
+    await
+    (await
+     (await
+      $(`#filter-panel-secondary-items-${value}`)
+     ).click()
+    );
+    await browser.keys('Escape');
+    try {
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
+    } catch (err) {
+      console.log(`setListFilter: ${err}`);
+    }
+  }
+  /* eslint-enable indent */
+
+  /* eslint-disable indent */
+  async getResults() {
+    return (await
+            (await
+             $(this.elements.table)
+            ).$('tbody')
+           ).$$('tr');
+  }
+  /* eslint-enable indent */
+
+  async getCellInRow(rowIdx, colIdx) {
+    const row = (await this.getResults())[rowIdx];
+    const cell = (await row.$$('td'))[colIdx];
+    return cell.getText();
+  }
+
+  async clearSearchTerm() {
+    await this.searchForText('');
+  }
+
+  /* eslint-disable indent */
+  async searchForText(text) {
+    const initialResultCount = await this.getTotalResultCount();
+    await (
+      await $(this.elements.filterSearchTermInput)
+    ).setValue(text);
+    await (
+      await $(this.elements.filterSearchTermGo)
+    ).click();
+    try {
+      await browser.waitUntil(async () => (await this.getTotalResultCount()) !== initialResultCount);
+    } catch (err) {
+      console.log(`searchForText: ${err}`);
+    }
+  }
+  /* eslint-enable indent */
 }
 
 export default CollectionPage;

@@ -5,7 +5,10 @@ import ChplApiDocumentationCollectionView from './api-documentation-view';
 import ApiWrapper from 'api/api-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
 import {
-  FilterProvider, defaultFilter, getDateDisplay, getDateEntry,
+  FilterProvider,
+  defaultFilter,
+  getDateDisplay,
+  getDateEntry,
 } from 'components/filter';
 import { UserWrapper } from 'components/login';
 
@@ -41,8 +44,8 @@ function ChplApiDocumentationCollectionPage() {
     key: 'certificationDate',
     display: 'Certification Date',
     values: [
-      { value: 'Before', default: new Date().toISOString().slice(0, 10) },
-      { value: 'After', default: '2020-06-01' },
+      { value: 'Before', default: '' },
+      { value: 'After', default: '' },
     ],
     getQuery: (value) => value.values
       .sort((a, b) => (a.value < b.value ? -1 : 1))
@@ -50,6 +53,19 @@ function ChplApiDocumentationCollectionPage() {
       .join('&'),
     getValueDisplay: getDateDisplay,
     getValueEntry: getDateEntry,
+  }, {
+    ...defaultFilter,
+    key: 'certificationBodies',
+    display: 'ONC-ACB',
+    values: [
+      { value: 'CCHIT', display: 'CCHIT (Retired)' },
+      { value: 'Drummond Group', default: true },
+      { value: 'ICSA Labs', default: true },
+      { value: 'Leidos', default: true },
+      { value: 'SLI Compliance', default: true },
+      { value: 'Surescripts LLC', display: 'Surescripts LLC (Retired)' },
+      { value: 'UL LLC', display: 'UL LLC (Retired)' },
+    ],
   }];
 
   return (

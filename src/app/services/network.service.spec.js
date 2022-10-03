@@ -230,14 +230,6 @@
         $httpBackend.flush();
       });
 
-      it('should createSvap', () => {
-        $httpBackend.expectPOST(/^\/rest\/svaps$/).respond(200, { data: 'response' });
-        networkService.createSvap({ svapId: 1 }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should deleteAnnualSurveillanceReport', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance-report\/annual\/id$/).respond(200);
         networkService.deleteAnnualSurveillanceReport('id').then((response) => {
@@ -281,14 +273,6 @@
       it('should deleteSurveillanceDocument', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance\/1\/document\/3$/).respond(200);
         networkService.deleteSurveillanceDocument(1, 3).then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
-      it('should deleteSvap', () => {
-        $httpBackend.expectDELETE(/^\/rest\/svaps$/).respond(200);
-        networkService.deleteSvap({ svapId: 1 }).then((response) => {
           expect(response.status).toEqual(200);
         });
         $httpBackend.flush();
@@ -512,14 +496,6 @@
         $httpBackend.flush();
       });
 
-      it('should getCertificationCriteriaForSvap', () => {
-        $httpBackend.expectGET(/^\/rest\/svaps\/criteria$/).respond(200, { data: 'response' });
-        networkService.getCertificationCriteriaForSvap().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getCertificationStatuses', () => {
         $httpBackend.expectGET(/^\/rest\/data\/certification_statuses$/).respond(200, { data: 'response' });
         networkService.getCertificationStatuses().then((response) => {
@@ -614,16 +590,6 @@
       });
 
       it('should getCollection', () => {
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,mandatoryDisclosures,serviceBaseUrlList$/).respond(200, { data: 'response' });
-        networkService.getCollection('apiDocumentation').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/collections\/decertified-developers$/).respond(200, { data: 'response' });
-        networkService.getCollection('bannedDevelopers').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,acb,chplProductNumber,developer,product$/).respond(200, { data: 'response' });
         networkService.getCollection('complaintListings').then((response) => {
           expect(response.data).toEqual('response');
@@ -1118,14 +1084,6 @@
         $httpBackend.flush();
       });
 
-      it('should getSvaps', () => {
-        $httpBackend.expectGET(/^\/rest\/svaps$/).respond(200, { data: 'response' });
-        networkService.getSvaps().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getTargetedUsers', () => {
         $httpBackend.expectGET(/^\/rest\/data\/targeted_users$/).respond(200, { data: 'response' });
         networkService.getTargetedUsers().then((response) => {
@@ -1553,14 +1511,6 @@
       it('should updateSurveillance', () => {
         $httpBackend.expectPUT(/^\/rest\/surveillance\/id$/).respond(200, { data: 'response' });
         networkService.updateSurveillance({ id: 'id' }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should updateSvap', () => {
-        $httpBackend.expectPUT(/^\/rest\/svaps$/).respond(200, { data: 'response' });
-        networkService.updateSvap({ svapId: 'id' }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

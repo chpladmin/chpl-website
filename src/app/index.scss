@@ -234,14 +234,14 @@ h6 {
 }
 
 .panel-ai {
-    border-color: #c6d5e5;
+    border-color: var(--grey);
 
     .panel-heading {
         color: #1c1c1c;
         background: #edf6ff;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-        border-color: #c6d5e5;
+        border-color: var(--grey);
 
         a {
             color: #1c1c1c;
@@ -259,11 +259,11 @@ h6 {
     }
 
     .panel-heading + .panel-collapse > .panel-body {
-        border-top-color: #c6d5e5;
+        border-top-color: var(--grey);
     }
 
     .panel-footer + .panel-collapse > .panel-body {
-        border-bottom-color: #c6d5e5;
+        border-bottom-color: var(--grey);
     }
 }
 
@@ -828,7 +828,7 @@ p {
 .panel-default {
     margin: 15px;
     background-color: #fff;
-    border: 1px solid #c6d5e5;
+    border: 1px solid var(--grey);
     border-radius: 5px;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, .05);
 }

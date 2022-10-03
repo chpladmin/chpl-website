@@ -16,7 +16,6 @@ import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
-import theme from 'themes/theme';
 import {
   useFetchApiDocumentationCollection,
   useFetchApiDocumentationData,
@@ -24,8 +23,8 @@ import {
 import {
   ChplLink,
   ChplPagination,
-  ChplSortableHeaders,
 } from 'components/util';
+import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -34,6 +33,7 @@ import {
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { FlagContext } from 'shared/contexts';
+import { palette, theme } from 'themes';
 
 const csvOptions = (erdPhase2IsOn) => ({
   filename: 'api-documentation',
@@ -47,7 +47,7 @@ const csvOptions = (erdPhase2IsOn) => ({
     { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
     { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
     { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10)', objectKey: 'apiDocumentation182' },
+    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
     { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
     { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
   ] : [
@@ -61,7 +61,7 @@ const csvOptions = (erdPhase2IsOn) => ({
     { headerName: 'API Documentation - 170.315 (g)(8)', objectKey: 'apiDocumentation57' },
     { headerName: 'API Documentation - 170.315 (g)(9)', objectKey: 'apiDocumentation58' },
     { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10)', objectKey: 'apiDocumentation182' },
+    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
     { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
     { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
   ],
@@ -93,7 +93,7 @@ const useStyles = makeStyles({
     gridTemplateRows: '3fr 1fr',
   },
   searchContainer: {
-    backgroundColor: '#c6d5e5',
+    backgroundColor: palette.grey,
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -140,22 +140,19 @@ const useStyles = makeStyles({
   wrap: {
     flexFlow: 'wrap',
   },
-  noResultsContainer: {
-    padding: '16px 32px',
-  },
 });
 
 const criteriaLookup = (erdPhase2IsOn) => (erdPhase2IsOn
   ? {
     56: { display: '170.315 (g)(7)', sort: 0 },
     181: { display: '170.315 (g)(9) (Cures Update)', sort: 1 },
-    182: { display: '170.315 (g)(10)', sort: 2 },
+    182: { display: '170.315 (g)(10) (Cures Update)', sort: 2 },
   } : {
     56: { display: '170.315 (g)(7)', sort: 0 },
     57: { display: '170.315 (g)(8)', sort: 1 },
     58: { display: '170.315 (g)(9)', sort: 2 },
     181: { display: '170.315 (g)(9) (Cures Update)', sort: 3 },
-    182: { display: '170.315 (g)(10)', sort: 4 },
+    182: { display: '170.315 (g)(10) (Cures Update)', sort: 4 },
   });
 
 const parseApiDocumentation = ({ apiDocumentation }, analytics, erdPhase2IsOn) => {
@@ -212,11 +209,12 @@ function ChplApiDocumentationCollectionView(props) {
   const [orderBy, setOrderBy] = useState('developer');
   const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(25);
+  const [recordCount, setRecordCount] = useState(0);
   const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { isLoading, data } = useFetchApiDocumentationCollection({
+  const { data, isError, isLoading } = useFetchApiDocumentationCollection({
     erdPhase2IsOn,
     orderBy,
     pageNumber,
@@ -231,7 +229,11 @@ function ChplApiDocumentationCollectionView(props) {
   }, [isOn]);
 
   useEffect(() => {
-    if (isLoading || !data.results) { return; }
+    if (isLoading) { return; }
+    if (isError || !data.results) {
+      setListings([]);
+      return;
+    }
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
@@ -247,7 +249,8 @@ function ChplApiDocumentationCollectionView(props) {
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
-  }, [isLoading, data?.results, analytics, erdPhase2IsOn]);
+    setRecordCount(data.recordCount);
+  }, [data?.results, data?.recordCount, isError, isLoading, analytics, erdPhase2IsOn]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -293,7 +296,7 @@ function ChplApiDocumentationCollectionView(props) {
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
-  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
@@ -315,7 +318,7 @@ function ChplApiDocumentationCollectionView(props) {
                 </>
               )}
             <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
-            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
+            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services (Cures Update)</li>
           </ul>
           <Typography variant="body1" gutterBottom>
             The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
@@ -363,130 +366,141 @@ function ChplApiDocumentationCollectionView(props) {
         && (
           <>Loading</>
         )}
-      { !isLoading && listings.length === 0
+      { !isLoading
         && (
-          <Typography className={classes.noResultsContainer}>
-            No results found
-          </Typography>
+          <>
+            <div className={classes.tableResultsHeaderContainer}>
+              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                <Typography variant="subtitle2">Search Results:</Typography>
+                { listings.length === 0
+                  && (
+                    <Typography>
+                      No results found
+                    </Typography>
+                  )}
+                { listings.length > 0
+                  && (
+                    <Typography variant="body2">
+                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                    </Typography>
+                  )}
+              </div>
+              { listings.length > 0
+                && (
+                  <ButtonGroup size="small" className={classes.wrap}>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      fullWidth
+                      id="download-filtered-listings"
+                      onClick={downloadApiDocumentation}
+                    >
+                      Download
+                      {' '}
+                      { listings.length }
+                      {' '}
+                      Result
+                      { listings.length !== 1 ? 's' : '' }
+                      <GetAppIcon className={classes.iconSpacing} />
+                    </Button>
+                  </ButtonGroup>
+                )}
+            </div>
+            { listings.length > 0
+              && (
+                <>
+                  <TableContainer className={classes.tableContainer} component={Paper}>
+                    <Table
+                      stickyHeader
+                      aria-label="API Documentation Collections table"
+                    >
+                      <ChplSortableHeaders
+                        headers={headers}
+                        onTableSort={handleTableSort}
+                        orderBy={orderBy}
+                        order={sortDescending ? 'desc' : 'asc'}
+                        stickyHeader
+                      />
+                      <TableBody>
+                        { listings
+                          .map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell className={classes.stickyColumn}>
+                                <strong>
+                                  <ChplLink
+                                    href={`#/listing/${item.id}`}
+                                    text={item.chplProductNumber}
+                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                    external={false}
+                                    router={{ sref: 'listing', options: { id: item.id } }}
+                                  />
+                                </strong>
+                              </TableCell>
+                              <TableCell>
+                                {item.edition.name}
+                                {' '}
+                                {item.curesUpdate ? 'Cures Update' : '' }
+                              </TableCell>
+                              <TableCell>
+                                <ChplLink
+                                  href={`#/organizations/developers/${item.developer.id}`}
+                                  text={item.developer.name}
+                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  external={false}
+                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                />
+                              </TableCell>
+                              <TableCell>{item.product.name}</TableCell>
+                              <TableCell>{item.version.name}</TableCell>
+                              <TableCell>{item.certificationStatus.name}</TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.apiDocumentation }
+                              </TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.serviceBaseUrlList
+                                  ? (
+                                    <dl>
+                                      <dt>170.315 (g)(10)</dt>
+                                      <dd>
+                                        <ChplLink
+                                          href={item.serviceBaseUrlList}
+                                          analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
+                                        />
+                                      </dd>
+                                    </dl>
+                                  ) : (
+                                    <>N/A</>
+                                  )}
+                              </TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.mandatoryDisclosures
+                                  ? (
+                                    <ChplLink
+                                      href={item.mandatoryDisclosures}
+                                      analytics={{ event: 'Go to Mandatory Disclosures Website', category: analytics.category, label: item.mandatoryDisclosures }}
+                                    />
+                                  ) : (
+                                    <>N/A</>
+                                  )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <ChplPagination
+                    count={recordCount}
+                    page={pageNumber}
+                    rowsPerPage={pageSize}
+                    rowsPerPageOptions={[25, 50, 100]}
+                    setPage={setPageNumber}
+                    setRowsPerPage={setPageSize}
+                    analytics={analytics}
+                  />
+                </>
+              )}
+          </>
         )}
-      { !isLoading && listings.length > 0
-       && (
-       <>
-         <div className={classes.tableResultsHeaderContainer}>
-           <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-             <Typography variant="subtitle2">Search Results:</Typography>
-             <Typography variant="body2">
-               {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-             </Typography>
-           </div>
-           <ButtonGroup size="small" className={classes.wrap}>
-             <Button
-               color="secondary"
-               variant="contained"
-               fullWidth
-               id="download-filtered-listings"
-               onClick={downloadApiDocumentation}
-             >
-               Download
-               {' '}
-               { listings.length }
-               {' '}
-               Result
-               { listings.length !== 1 ? 's' : '' }
-               <GetAppIcon className={classes.iconSpacing} />
-             </Button>
-           </ButtonGroup>
-         </div>
-         <TableContainer className={classes.tableContainer} component={Paper}>
-           <Table
-             stickyHeader
-             aria-label="API Documentation Collections table"
-           >
-             <ChplSortableHeaders
-               headers={headers}
-               onTableSort={handleTableSort}
-               orderBy={orderBy}
-               order={sortDescending ? 'desc' : 'asc'}
-               stickyHeader
-             />
-             <TableBody>
-               { listings
-                 .map((item) => (
-                   <TableRow key={item.id}>
-                     <TableCell className={classes.stickyColumn}>
-                       <strong>
-                         <ChplLink
-                           href={`#/listing/${item.id}`}
-                           text={item.chplProductNumber}
-                           analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
-                           external={false}
-                           router={{ sref: 'listing', options: { id: item.id } }}
-                         />
-                       </strong>
-                     </TableCell>
-                     <TableCell>
-                       {item.edition.name}
-                       {' '}
-                       {item.curesUpdate ? 'Cures Update' : '' }
-                     </TableCell>
-                     <TableCell>
-                       <ChplLink
-                         href={`#/organizations/developers/${item.developer.id}`}
-                         text={item.developer.name}
-                         analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
-                         external={false}
-                         router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                       />
-                     </TableCell>
-                     <TableCell>{item.product.name}</TableCell>
-                     <TableCell>{item.version.name}</TableCell>
-                     <TableCell>{item.certificationStatus.name}</TableCell>
-                     <TableCell className={classes.linkWrap}>
-                       { item.apiDocumentation }
-                     </TableCell>
-                     <TableCell className={classes.linkWrap}>
-                       { item.serviceBaseUrlList
-                         ? (
-                           <dl>
-                             <dt>170.315 (g)(10)</dt>
-                             <dd>
-                               <ChplLink
-                                 href={item.serviceBaseUrlList}
-                                 analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
-                               />
-                             </dd>
-                           </dl>
-                         ) : (
-                           <>N/A</>
-                         )}
-                     </TableCell>
-                     <TableCell className={classes.linkWrap}>
-                       { item.mandatoryDisclosures
-                         ? (
-                           <ChplLink
-                             href={item.mandatoryDisclosures}
-                             analytics={{ event: 'Go to Mandatory Disclosures Website', category: analytics.category, label: item.mandatoryDisclosures }}
-                           />
-                         ) : (
-                           <>N/A</>
-                         )}
-                     </TableCell>
-                   </TableRow>
-                 ))}
-             </TableBody>
-           </Table>
-         </TableContainer>
-         <ChplPagination
-           count={data.recordCount}
-           page={pageNumber}
-           rowsPerPage={pageSize}
-           rowsPerPageOptions={[25, 50, 100]}
-           setPage={setPageNumber}
-           setRowsPerPage={setPageSize}
-           analytics={analytics}
-         />
-       </>
-       )}
     </>
   );
 }
