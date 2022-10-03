@@ -72,14 +72,6 @@
         expect(scope.dismiss).toHaveBeenCalled();
       });
 
-      it('should be able to determine if Non-confirmity Type is removed', () => {
-        ctrl.data = Mock.surveillanceData;
-        let removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(1)');
-        expect(removed).toBeFalse();
-        removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(2)');
-        expect(removed).toBeTrue();
-      });
-
       describe('when adding a Nonconformity', () => {
         var modalOptions;
         beforeEach(() => {
