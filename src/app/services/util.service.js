@@ -300,7 +300,7 @@
 
     function sortRequirements(req) {
       if (angular.isObject(req)) {
-        req = req.requirementName;
+        req = req.requirement;
       }
       if (req.indexOf('(') < 0) {
         return Number.MAX_VALUE;
