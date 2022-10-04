@@ -1,10 +1,17 @@
 import { sortRequirements } from 'services/surveillance.service';
 
+const getDisplay = (req) => {
+  if (req.requirementDetailTypeOther) {
+    return req.requirementDetailTypeOther;
+  }
+  return `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`;
+};
+
 const updateRequirements = (reqs) => reqs
       .sort(sortRequirements)
       .map((req) => ({
         ...req,
-        display: `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`,
+        display: getDisplay(req),
       }));
 
 const SurveillanceEditComponent = {
@@ -177,6 +184,8 @@ const SurveillanceEditComponent = {
             ...this.surveillance.requirements,
             response,
           ]);
+        } else {
+          this.surveillance.requirements = updateRequirements(this.surveillance.requirements);
         }
       }, (result) => {
         this.$log.info(result);

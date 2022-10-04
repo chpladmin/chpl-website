@@ -1,5 +1,12 @@
 import { sortRequirements } from 'services/surveillance.service';
 
+const getDisplay = (req) => {
+  if (req.requirementDetailTypeOther) {
+    return req.requirementDetailTypeOther;
+  }
+  return `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`;
+};
+
 const SurveillanceInspectComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/inspect.html',
   bindings: {
@@ -26,7 +33,7 @@ const SurveillanceInspectComponent = {
           .sort(sortRequirements)
           .map((req) => ({
             ...req,
-            display: `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`,
+            display: getDisplay(req),
           })),
       };
       this.errorMessages = [];

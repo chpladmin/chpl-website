@@ -28,10 +28,15 @@ const SurveillanceRequirementEditComponent = {
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
       if (this.requirement.requirementDetailType) {
-        this.requirementType = this.utilService.findModel(this.requirement.requirementDetailType.surveillanceRequirementType, this.data.surveillanceRequirementTypes.data, 'name');
+        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name = this.requirement.requirementDetailType.surveillanceRequirementType.name);
+        //this.requirementType = this.utilService.findModel(this.requirement.requirementDetailType.surveillanceRequirementType, this.data.surveillanceRequirementTypes.data, 'name');
         this.updateRequirementOptions();
         this.requirementDetailType = this.requirementOptions.find((option) => option.id === this.requirement.requirementDetailType.id);
       }
+      if (this.requirement.requirementDetailTypeOther) {
+        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name = 'Other Requirement');
+        this.requirementDetailOther = this.requirement.requirementDetailTypeOther;
+      };
       if (this.requirement.result) {
         this.requirement.result = this.utilService.findModel(this.requirement.result, this.data.surveillanceResultTypes.data, 'name');
       }
@@ -132,15 +137,12 @@ const SurveillanceRequirementEditComponent = {
       if (this.requirement.result.name === 'No Non-Conformity') {
         this.requirement.nonconformities = [];
       }
-      if (this.requirement.type.name === 'Certified Capability') {
-        if (this.requirementCriterionType.title) {
-          this.requirement.criterion = this.requirementCriterionType;
-        }
-        if (this.requirementCriterionType.number) {
-          this.requirement.requirement = this.requirementCriterionType.number;
-        }
+      if (this.requirementType.name !== 'Other Requirement') {
+        this.requirement.requirementDetailType = this.requirementDetailType;
+        this.requirement.requirementDetailTypeOther = undefined;
       } else {
-        this.requirement.criterion = undefined;
+        this.requirement.requirementDetailType = undefined;
+        this.requirement.requirementDetailTypeOther = this.requirementDetailOther;
       }
       this.close({ $value: this.requirement });
     }
@@ -148,10 +150,8 @@ const SurveillanceRequirementEditComponent = {
     updateRequirementOptions() {
       if (!this.requirementType) { return; }
       this.requirementOptions = this.data.surveillanceRequirements.data
-        .filter((req) => req.surveillanceRequirementType.id === this.requirementType.id);
-      this.requirementOptions = this.requirementOptions
-        .sort(sortRequirementDetailTypes);
-      this.requirementOptions = this.requirementOptions
+        .filter((req) => req.surveillanceRequirementType.id === this.requirementType.id)
+        .sort(sortRequirementDetailTypes)
         .map((req) => ({
           ...req,
           display: `${req.removed ? 'Removed | ' : ''}${req.number ? (req.number + ': ') : ''}${req.title}`,

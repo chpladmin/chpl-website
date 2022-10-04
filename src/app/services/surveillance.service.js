@@ -10,8 +10,15 @@ const sortRequirementDetailTypes = (a, b) => {
   return a.title < b.title ? -1 : 1;
 };
 
-const sortRequirements = (a, b) => sortRequirementDetailTypes(a.requirementDetailType, b.requirementDetailType);
-
+const sortRequirements = (a, b) => {
+  if (a.requirementDetailTypeOther && b.requirementDetailTypeOther) {
+    return a.requirementDetailTypeOther < b.requirementDetailTypeOther ? -1 : 1;
+  }
+  if (a.requirementDetailTypeOther || b.requirementDetailTypeOther) {
+    return a.requirementDetailTypeOther ? 1 : -1;
+  }
+  return sortRequirementDetailTypes(a.requirementDetailType, b.requirementDetailType);
+};
 
 export {
   sortRequirementDetailTypes,
