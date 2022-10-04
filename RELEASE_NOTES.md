@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 11.42.1
+_3 October 2022_
+
+### User Interface Updates
+* Remove default date filters from Change Requests management
+* Standardize "Certification Date" filters on new style Collections pages
+* Stop displaying "removed" status of Criteria connected to G1/G2 measures
+* Enable filtering by ONC-ACB on new-style Shortcut pages
+* Display Banned Developers collection in updated UI/UX
+* Consolidate System Management functions in Administration menu
+* Display certain criteria as "Cures Update" as appropriate
+* Use new logo and header background
+
+### Bug Fixes
+* Make Developer link on Surveillance Management page go to the right place
+* Allow creating Announcements when none already exist
+
+---
+
 ## Version 11.42.0
 _19 September 2022_
 
