@@ -1,4 +1,4 @@
-import { sortRequirements } from 'services/surveillance.service';
+import { sortRequirementDetailTypes } from 'services/surveillance.service';
 
 const SurveillanceRequirementEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/requirement/edit.html',
@@ -30,7 +30,7 @@ const SurveillanceRequirementEditComponent = {
       if (this.requirement.requirementDetailType) {
         this.requirementType = this.utilService.findModel(this.requirement.requirementDetailType.surveillanceRequirementType, this.data.surveillanceRequirementTypes.data, 'name');
         this.updateRequirementOptions();
-        this.requirementDetailType = this.utilService.findModel(this.requirement.requirementDetailType, this.data.surveillanceRequirementTypes.data);
+        this.requirementDetailType = this.requirementOptions.find((option) => option.id === this.requirement.requirementDetailType.id);
       }
       if (this.requirement.result) {
         this.requirement.result = this.utilService.findModel(this.requirement.result, this.data.surveillanceResultTypes.data, 'name');
@@ -148,11 +148,13 @@ const SurveillanceRequirementEditComponent = {
     updateRequirementOptions() {
       if (!this.requirementType) { return; }
       this.requirementOptions = this.data.surveillanceRequirements.data
-        .filter((req) => req.surveillanceRequirementType.id === this.requirementType.id)
-        .sort(sortRequirements)
+        .filter((req) => req.surveillanceRequirementType.id === this.requirementType.id);
+      this.requirementOptions = this.requirementOptions
+        .sort(sortRequirementDetailTypes);
+      this.requirementOptions = this.requirementOptions
         .map((req) => ({
           ...req,
-          display: `${req.number ? (req.number + ': ') : ''}${req.title}`, // add "removed"
+          display: `${req.removed ? 'Removed | ' : ''}${req.number ? (req.number + ': ') : ''}${req.title}`,
         }));
     }
   },

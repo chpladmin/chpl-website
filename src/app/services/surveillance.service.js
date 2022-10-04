@@ -1,15 +1,19 @@
 import { sortCriteria } from './criteria.service';
 
-const sortRequirements = (a, b) => {
-  if (a.requirementDetailType.surveillanceRequirementType.name !== b.requirementDetailType.surveillanceRequirementType.name) {
-    return a.requirementDetailType.surveillanceRequirementType.name < b.requirementDetailType.surveillanceRequirementType.name ? -1 : 1;
+const sortRequirementDetailTypes = (a, b) => {
+  if (a.surveillanceRequirementType.name !== b.surveillanceRequirementType.name) {
+    return a.surveillanceRequirementType.name < b.surveillanceRequirementType.name ? -1 : 1;
   }
-  if (a.requirementDetailType.surveillanceRequirementType.name === 'Certified Capability') {
+  if (a.surveillanceRequirementType.name === 'Certified Capability') {
     return sortCriteria(a, b);
   }
-  return a.requirementDetailType.title < b.requirementDetailType.title ? -1 : 1;
+  return a.title < b.title ? -1 : 1;
 };
 
+const sortRequirements = (a, b) => sortRequirementDetailTypes(a.requirementDetailType, b.requirementDetailType);
+
+
 export {
+  sortRequirementDetailTypes,
   sortRequirements,
 };
