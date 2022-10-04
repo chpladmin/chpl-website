@@ -8,14 +8,12 @@ const SurveillanceRequirementEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceRequirementEditController {
-    constructor($log, $uibModal, authService, utilService) {
+    constructor($log, $uibModal, authService) {
       'ngInject';
 
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.hasAnyRole = authService.hasAnyRole;
-      this.utilService = utilService;
-      this.sortCriteria = utilService.sortCert;
     }
 
     $onInit() {
@@ -28,25 +26,17 @@ const SurveillanceRequirementEditComponent = {
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
       if (this.requirement.requirementDetailType) {
-        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name = this.requirement.requirementDetailType.surveillanceRequirementType.name);
-        //this.requirementType = this.utilService.findModel(this.requirement.requirementDetailType.surveillanceRequirementType, this.data.surveillanceRequirementTypes.data, 'name');
+        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name === this.requirement.requirementDetailType.surveillanceRequirementType.name);
         this.updateRequirementOptions();
         this.requirementDetailType = this.requirementOptions.find((option) => option.id === this.requirement.requirementDetailType.id);
       }
       if (this.requirement.requirementDetailTypeOther) {
-        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name = 'Other Requirement');
+        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name === 'Other Requirement');
         this.requirementDetailOther = this.requirement.requirementDetailTypeOther;
       };
       if (this.requirement.result) {
-        this.requirement.result = this.utilService.findModel(this.requirement.result, this.data.surveillanceResultTypes.data, 'name');
+        this.requirement.result = this.data.surveillanceResultTypes.data.find((type) => type.name === this.requirement.result.name);
       }
-      //if (this.requirement.criterion) {
-      //this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-        //.find((t) => t.number === this.requirement.criterion.number && t.title === this.requirement.criterion.title);
-    //} else {
-      //this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-        //.find((t) => t.number === this.requirement.requirement);
-    //}
     }
 
     addNonconformity() {
