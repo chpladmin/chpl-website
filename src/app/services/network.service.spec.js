@@ -1055,8 +1055,8 @@
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_types$/).respond(200, { data: 'surveillance_types' });
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_requirement_types$/).respond(200, { data: 'surveillance_requirement_types' });
         $httpBackend.expectGET(/^\/rest\/data\/surveillance_result_types$/).respond(200, { data: 'surveillance_result_types' });
-        $httpBackend.expectGET(/^\/rest\/data\/surveillance-requirements-detail-types$/).respond(200, { data: 'surveillance-requirements-detail-types' });
         $httpBackend.expectGET(/^\/rest\/data\/nonconformity-types\/v2$/).respond(200, { data: 'nonconformity_types' });
+        $httpBackend.expectGET(/^\/rest\/data\/surveillance-requirement-detail-types$/).respond(200, { data: 'surveillance-requirements-detail-types' });
         const response = networkService.getSurveillanceLookups();
         $httpBackend.flush();
         expect(response).toEqual({

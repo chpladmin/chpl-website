@@ -1,3 +1,5 @@
+import { sortRequirements } from 'services/surveillance.service';
+
 const SurveillanceRequirementEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/requirement/edit.html',
   bindings: {
@@ -25,9 +27,11 @@ const SurveillanceRequirementEditComponent = {
       this.showFormErrors = false;
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
-      //if (this.requirement.type) {
-      //this.requirement.type = this.utilService.findModel(this.requirement.type, this.data.surveillanceRequirementTypes.data, 'name');
-    //}
+      if (this.requirement.requirementDetailType) {
+        this.requirementType = this.utilService.findModel(this.requirement.requirementDetailType.surveillanceRequirementType, this.data.surveillanceRequirementTypes.data, 'name');
+        this.updateRequirementOptions();
+        this.requirementDetailType = this.utilService.findModel(this.requirement.requirementDetailType, this.data.surveillanceRequirementTypes.data);
+      }
       if (this.requirement.result) {
         this.requirement.result = this.utilService.findModel(this.requirement.result, this.data.surveillanceResultTypes.data, 'name');
       }
@@ -139,6 +143,17 @@ const SurveillanceRequirementEditComponent = {
         this.requirement.criterion = undefined;
       }
       this.close({ $value: this.requirement });
+    }
+
+    updateRequirementOptions() {
+      if (!this.requirementType) { return; }
+      this.requirementOptions = this.data.surveillanceRequirements.data
+        .filter((req) => req.surveillanceRequirementType.id === this.requirementType.id)
+        .sort(sortRequirements)
+        .map((req) => ({
+          ...req,
+          display: `${req.number ? (req.number + ': ') : ''}${req.title}`, // add "removed"
+        }));
     }
   },
 };
