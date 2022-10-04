@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { arrayOf, string } from 'prop-types';
 
 import ChplChangeRequestsView from './change-requests-view';
@@ -10,7 +10,6 @@ import {
   getDateDisplay,
   getDateTimeEntry,
 } from 'components/filter';
-import { FlagContext } from 'shared/contexts';
 
 const analytics = {
   category: 'Change Requests',
@@ -32,6 +31,17 @@ const staticFilters = [{
   getValueEntry: getDateTimeEntry,
 }, {
   ...defaultFilter,
+  key: 'currentStatusNames',
+  display: 'Change Request Status',
+  values: [
+    { value: 'Accepted' },
+    { value: 'Cancelled by Requester' },
+    { value: 'Pending Developer Action', default: true },
+    { value: 'Pending ONC-ACB Action', default: true },
+    { value: 'Rejected' },
+  ],
+}, {
+  ...defaultFilter,
   key: 'submittedDateTime',
   display: 'Creation Date',
   values: [
@@ -48,37 +58,8 @@ const staticFilters = [{
 
 function ChplChangeRequests(props) {
   const { disallowedFilters, bonusQuery } = props;
-  const { isOn } = useContext(FlagContext);
-  const [demographicChangeRequestIsOn, setDemographicChangeRequestIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const crtQuery = useFetchChangeRequestTypes();
-
-  useEffect(() => {
-    setDemographicChangeRequestIsOn(isOn('demographic-change-request'));
-  }, [isOn]);
-
-  useEffect(() => {
-    const values = (demographicChangeRequestIsOn) ? [
-      { value: 'Accepted' },
-      { value: 'Cancelled by Requester' },
-      { value: 'Pending Developer Action', default: true },
-      { value: 'Pending ONC-ACB Action', default: true },
-      { value: 'Rejected' },
-    ] : [
-      { value: 'Accepted' },
-      { value: 'Cancelled by Requester' },
-      { value: 'Pending ONC-ACB Action', default: true },
-      { value: 'Rejected' },
-    ];
-    setFilters((f) => f
-      .filter((filter) => filter.key !== 'currentStatusNames')
-      .concat({
-        ...defaultFilter,
-        key: 'currentStatusNames',
-        display: 'Change Request Status',
-        values,
-      }));
-  }, [demographicChangeRequestIsOn]);
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
