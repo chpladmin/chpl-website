@@ -475,13 +475,17 @@ export default class NetworkService {
       .then((response) => {
         data.surveillanceResultTypes = response;
       });
-    this.apiGET('/data/surveillance-requirements')
-      .then((response) => {
-        data.surveillanceRequirements = response;
-      });
+    //this.apiGET('/data/surveillance-requirements')
+      //.then((response) => {
+    //data.surveillanceRequirements = response;
+  //});
     this.apiGET('/data/nonconformity-types/v2')
       .then((response) => {
         data.nonconformityTypes = response;
+      });
+    this.apiGET('/data/surveillance-requirement-detail-types')
+      .then((response) => {
+        data.surveillanceRequirements = response;
       });
     return data;
   }

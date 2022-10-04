@@ -1,3 +1,5 @@
+import { sortRequirements } from 'services/surveillance.service';
+
 const SurveillanceInspectComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/inspect.html',
   bindings: {
@@ -15,11 +17,18 @@ const SurveillanceInspectComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.utilService = utilService;
-      this.sortRequirements = utilService.sortRequirements;
     }
 
     $onInit() {
-      this.surveillance = angular.copy(this.resolve.surveillance);
+      this.surveillance = {
+        ...this.resolve.surveillance,
+        requirements: this.resolve.surveillance.requirements
+          .sort(sortRequirements)
+          .map((req) => ({
+            ...req,
+            display: `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`,
+          })),
+      };
       this.errorMessages = [];
       this.surveillanceTypes = this.networkService.getSurveillanceLookups();
     }
@@ -50,9 +59,9 @@ const SurveillanceInspectComponent = {
     }
 
     editSurveillance() {
-      this.fixRequirementOptions();
+      //this.fixRequirementOptions();
       if (this.hasAnyRole(['ROLE_ACB'])) {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
+        //this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
         this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter((option) => !option.removed);
       }
       this.editModalInstance = this.$uibModal.open({
@@ -110,6 +119,7 @@ const SurveillanceInspectComponent = {
 
     /// /////////////////////////////////////////////////////////////////
 
+    /*
     fixRequirementOptions() {
       if (this.surveillance.certifiedProduct.edition === '2015') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
@@ -119,6 +129,7 @@ const SurveillanceInspectComponent = {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = [];
       }
     }
+    */
   },
 };
 

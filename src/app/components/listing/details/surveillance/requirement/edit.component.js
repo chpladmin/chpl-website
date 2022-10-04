@@ -25,19 +25,19 @@ const SurveillanceRequirementEditComponent = {
       this.showFormErrors = false;
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
-      if (this.requirement.type) {
-        this.requirement.type = this.utilService.findModel(this.requirement.type, this.data.surveillanceRequirementTypes.data, 'name');
-      }
+      //if (this.requirement.type) {
+      //this.requirement.type = this.utilService.findModel(this.requirement.type, this.data.surveillanceRequirementTypes.data, 'name');
+    //}
       if (this.requirement.result) {
         this.requirement.result = this.utilService.findModel(this.requirement.result, this.data.surveillanceResultTypes.data, 'name');
       }
-      if (this.requirement.criterion) {
-        this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-          .find((t) => t.number === this.requirement.criterion.number && t.title === this.requirement.criterion.title);
-      } else {
-        this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-          .find((t) => t.number === this.requirement.requirement);
-      }
+      //if (this.requirement.criterion) {
+      //this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
+        //.find((t) => t.number === this.requirement.criterion.number && t.title === this.requirement.criterion.title);
+    //} else {
+      //this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
+        //.find((t) => t.number === this.requirement.requirement);
+    //}
     }
 
     addNonconformity() {

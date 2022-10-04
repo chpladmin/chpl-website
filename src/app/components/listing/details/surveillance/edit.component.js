@@ -1,3 +1,14 @@
+import { sortRequirements } from 'services/surveillance.service';
+
+const updateRequirements = (reqs) => {
+  return reqs
+    .sort(sortRequirements)
+    .map((req) => ({
+      ...req,
+      display: `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`,
+    }));
+};
+
 const SurveillanceEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/edit.html',
   bindings: {
@@ -16,11 +27,13 @@ const SurveillanceEditComponent = {
       this.networkService = networkService;
       this.toaster = toaster;
       this.utilService = utilService;
-      this.sortRequirements = utilService.sortRequirements;
     }
 
     $onInit() {
-      this.surveillance = angular.copy(this.resolve.surveillance);
+      this.surveillance = {
+        ...this.resolve.surveillance,
+        requirements: updateRequirements(this.resolve.surveillance.requirements),
+      };
       this.workType = this.resolve.workType;
       this.data = angular.copy(this.resolve.surveillanceTypes);
 
@@ -56,7 +69,10 @@ const SurveillanceEditComponent = {
         if (!this.surveillance.requirements) {
           this.surveillance.requirements = [];
         }
-        this.surveillance.requirements.push(response);
+        this.surveillance.requirements = updateRequirements([
+          ...this.surveillance.requirements,
+          response,
+        ]);
       }, (result) => {
         this.$log.info(result);
       });
@@ -153,7 +169,10 @@ const SurveillanceEditComponent = {
           }
         }
         if (!found) {
-          this.surveillance.requirements.push(response);
+          this.surveillance.requirements = updateRequirements([
+            ...this.surveillance.requirements,
+            response,
+          ]);
         }
       }, (result) => {
         this.$log.info(result);
@@ -231,18 +250,6 @@ const SurveillanceEditComponent = {
             }
           });
       }
-    }
-
-    isRequirementRemoved(name) {
-      let requirement = this.data.surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === name);
-      if (requirement) {
-        return requirement.removed;
-      }
-      requirement = this.data.surveillanceRequirements.transparencyOptions.find((req) => req.item === name);
-      if (requirement) {
-        return requirement.removed;
-      }
-      return false;
     }
   },
 };

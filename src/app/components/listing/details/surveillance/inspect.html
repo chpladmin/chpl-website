@@ -47,9 +47,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="req in $ctrl.surveillance.requirements | orderBy:$ctrl.sortRequirements">
-              <td>{{ req.type.name }}</td>
-              <td ng-class="{'removed' : req.criterion.removed}">{{ req.criterion ? ((req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</td>
+            <tr ng-repeat="req in $ctrl.surveillance.requirements">
+              <td>{{ req.requirementDetailType.surveillanceRequirementType.name }}</td>
+              <td ng-class="{'removed' : req.requirementDetailType.removed}">{{ req.display }}</td>
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>
