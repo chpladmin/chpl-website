@@ -320,12 +320,14 @@ function ChplDeveloperEdit(props) {
       selfDeveloper: formik.values.selfDeveloper,
       statusEvents,
       contact: {
+        ...developer.contact,
         fullName: formik.values.fullName,
         title: formik.values.title,
         email: formik.values.email,
         phoneNumber: formik.values.phoneNumber,
       },
       address: {
+        ...developer.address,
         line1: formik.values.line1,
         line2: formik.values.line2,
         city: formik.values.city,
