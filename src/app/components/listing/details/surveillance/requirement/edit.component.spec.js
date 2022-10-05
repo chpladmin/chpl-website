@@ -1,12 +1,11 @@
 (() => {
-  'use strict';
-
   describe('the surveillance requirement edit component', () => {
-    var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, scope;
+    let $compile; let $log; let $uibModal; let Mock; let actualOptions; let authService; let ctrl; let el; let
+      scope;
 
     beforeEach(() => {
-      angular.mock.module('chpl.mock', 'chpl.components', $provide => {
-        $provide.decorator('authService', $delegate => {
+      angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
+        $provide.decorator('authService', ($delegate) => {
           $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
           return $delegate;
         });
@@ -19,7 +18,7 @@
         authService = _authService_;
         authService.hasAnyRole.and.returnValue(false);
         $uibModal = _$uibModal_;
-        spyOn($uibModal, 'open').and.callFake(options => {
+        spyOn($uibModal, 'open').and.callFake((options) => {
           actualOptions = options;
           return Mock.fakeModal;
         });
@@ -51,7 +50,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -73,7 +72,7 @@
       });
 
       describe('when adding a Nonconformity', () => {
-        var modalOptions;
+        let modalOptions;
         beforeEach(() => {
           modalOptions = {
             component: 'aiSurveillanceNonconformityEdit',
@@ -132,14 +131,14 @@
         });
 
         it('should log a dismissed modal', () => {
-          var logCount = $log.info.logs.length;
+          const logCount = $log.info.logs.length;
           ctrl.addNonconformity();
           ctrl.modalInstance.dismiss('dismissed');
           expect($log.info.logs.length).toBe(logCount + 1);
         });
 
         it('should filter out removed criteria when user is ROLE_ACB', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
               data: [{ removed: false }, { removed: false }, { removed: true }],
@@ -150,7 +149,7 @@
         });
 
         it('should not change base data', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
               data: [{ removed: false }, { removed: false }, { removed: true }],
@@ -161,7 +160,7 @@
         });
 
         it('should not filter out removed criteria when user is ROLE_ACB', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ONC', false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
               data: [{ removed: false }, { removed: false }, { removed: true }],
@@ -173,7 +172,8 @@
       });
 
       describe('when editing a Nonconformity', () => {
-        var modalOptions, noncon;
+        let modalOptions; let
+          noncon;
         beforeEach(() => {
           noncon = { id: 1, name: '1' };
           modalOptions = {
@@ -215,7 +215,7 @@
         });
 
         it('should generate a guiId if one doesn\'t exist', () => {
-          var empty = {};
+          const empty = {};
           expect(empty.guiId).toBeUndefined();
           ctrl.editNonconformity(empty);
           expect(empty.guiId).toBeDefined();
@@ -236,7 +236,7 @@
         });
 
         it('should log a dismissed modal', () => {
-          var logCount = $log.info.logs.length;
+          const logCount = $log.info.logs.length;
           ctrl.editNonconformity(noncon);
           ctrl.modalInstance.dismiss('dismissed');
           expect($log.info.logs.length).toBe(logCount + 1);

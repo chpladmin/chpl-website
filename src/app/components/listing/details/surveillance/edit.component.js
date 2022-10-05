@@ -4,15 +4,15 @@ const getDisplay = (req) => {
   if (req.requirementDetailTypeOther) {
     return req.requirementDetailTypeOther;
   }
-  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (req.requirementDetailType.number + ': ') : ''}${req.requirementDetailType.title}`;
+  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (`${req.requirementDetailType.number}: `) : ''}${req.requirementDetailType.title}`;
 };
 
 const updateRequirements = (reqs) => reqs
-      .sort(sortRequirements)
-      .map((req) => ({
-        ...req,
-        display: getDisplay(req),
-      }));
+  .sort(sortRequirements)
+  .map((req) => ({
+    ...req,
+    display: getDisplay(req),
+  }));
 
 const SurveillanceEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/edit.html',
@@ -44,8 +44,7 @@ const SurveillanceEditComponent = {
         ...this.resolve.surveillanceTypes,
         surveillanceRequirements: {
           data: this.resolve.surveillanceTypes.surveillanceRequirements.data
-            .filter((req) =>
-                    req.surveillanceRequirementType.name !== 'Certified Capability'
+            .filter((req) => req.surveillanceRequirementType.name !== 'Certified Capability'
                     || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
                     || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct?.certificationEdition.name),
         },

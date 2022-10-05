@@ -33,7 +33,7 @@ const SurveillanceRequirementEditComponent = {
       if (this.requirement.requirementDetailTypeOther) {
         this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name === 'Other Requirement');
         this.requirementDetailOther = this.requirement.requirementDetailTypeOther;
-      };
+      }
       if (this.requirement.result) {
         this.requirement.result = this.data.surveillanceResultTypes.data.find((type) => type.name === this.requirement.result.name);
       }
@@ -144,7 +144,7 @@ const SurveillanceRequirementEditComponent = {
         .sort(sortRequirementDetailTypes)
         .map((req) => ({
           ...req,
-          display: `${req.removed ? 'Removed | ' : ''}${req.number ? (req.number + ': ') : ''}${req.title}`,
+          display: `${req.removed ? 'Removed | ' : ''}${req.number ? (`${req.number}: `) : ''}${req.title}`,
         }));
     }
   },

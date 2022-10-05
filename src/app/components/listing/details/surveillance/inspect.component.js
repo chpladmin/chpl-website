@@ -4,7 +4,7 @@ const getDisplay = (req) => {
   if (req.requirementDetailTypeOther) {
     return req.requirementDetailTypeOther;
   }
-  return `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`;
+  return `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (`${req.requirementDetailType.number}:`) : ''} ${req.requirementDetailType.title}`;
 };
 
 const SurveillanceInspectComponent = {
@@ -66,9 +66,9 @@ const SurveillanceInspectComponent = {
     }
 
     editSurveillance() {
-      //this.fixRequirementOptions();
+      // this.fixRequirementOptions();
       if (this.hasAnyRole(['ROLE_ACB'])) {
-        //this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
+        // this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
         this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter((option) => !option.removed);
       }
       this.editModalInstance = this.$uibModal.open({
