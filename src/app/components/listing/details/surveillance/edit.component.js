@@ -45,7 +45,7 @@ const SurveillanceEditComponent = {
           data: this.resolve.surveillanceTypes.surveillanceRequirements.data
             .filter((req) => req.surveillanceRequirementType.name !== 'Certified Capability'
                     || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
-                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct?.certificationEdition.name),
+                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.certificationEdition?.name),
         },
       };
 
