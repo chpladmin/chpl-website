@@ -37,14 +37,17 @@ const SurveillanceEditComponent = {
     $onInit() {
       this.surveillance = {
         ...this.resolve.surveillance,
-        requirements: updateRequirements(this.resolve.surveillance.requirements),
+        requirements: this.resolve.surveillance.requirements ? updateRequirements(this.resolve.surveillance.requirements) : [],
       };
       this.workType = this.resolve.workType;
       this.data = {
         ...this.resolve.surveillanceTypes,
         surveillanceRequirements: {
           data: this.resolve.surveillanceTypes.surveillanceRequirements.data
-            .filter((req) => req.surveillanceRequirementType.name !== 'Certified Capability' || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition),
+            .filter((req) =>
+                    req.surveillanceRequirementType.name !== 'Certified Capability'
+                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
+                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct?.certificationEdition.name),
         },
       };
 

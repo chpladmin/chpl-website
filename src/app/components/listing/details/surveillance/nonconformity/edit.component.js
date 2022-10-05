@@ -33,8 +33,8 @@ const SurveillanceNonconformityEditComponent = {
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
       this.item.url = `${this.API}/surveillance/${this.surveillanceId}/nonconformity/${this.nonconformity.id}/document`;
-      this.nonconformityType = this.data.nonconformityTypes.data
-        .find((t) => t.title === this.nonconformity.type.title);
+      this.nonconformityType = this.nonconformity.type?.title ? this.data.nonconformityTypes.data
+        .find((t) => t.title === this.nonconformity.type.title) : undefined;
     }
 
     cancel() {
