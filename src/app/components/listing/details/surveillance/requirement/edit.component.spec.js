@@ -1,14 +1,21 @@
 (() => {
   describe('the surveillance requirement edit component', () => {
-    let $compile; let $log; let $uibModal; let Mock; let actualOptions; let authService; let ctrl; let el; let
-      scope;
+    let $compile;
+    let $log;
+    let $uibModal;
+    let Mock;
+    let actualOptions;
+    let authService;
+    let ctrl;
+    let el;
+    let scope;
 
     beforeEach(() => {
       angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
-        $provide.decorator('authService', ($delegate) => {
-          $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-          return $delegate;
-        });
+        $provide.decorator('authService', ($delegate) => ({
+          ...$delegate,
+          hasAnyRole: jasmine.createSpy('hasAnyRole'),
+        }));
       });
 
       inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _authService_) => {
@@ -172,8 +179,8 @@
       });
 
       describe('when editing a Nonconformity', () => {
-        let modalOptions; let
-          noncon;
+        let modalOptions;
+        let noncon;
         beforeEach(() => {
           noncon = { id: 1, name: '1' };
           modalOptions = {

@@ -22,7 +22,7 @@ const SurveillanceEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceEditController {
-    constructor($log, $uibModal, authService, networkService, toaster, utilService) {
+    constructor($log, $uibModal, authService, networkService, toaster) {
       'ngInject';
 
       this.$log = $log;
@@ -31,7 +31,6 @@ const SurveillanceEditComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
-      this.utilService = utilService;
     }
 
     $onInit() {
@@ -53,7 +52,7 @@ const SurveillanceEditComponent = {
       this.showFormErrors = false;
       this.disableValidation = this.surveillance.errorMessages && this.surveillance.errorMessages.length > 0;
       if (this.surveillance.type) {
-        this.surveillance.type = this.utilService.findModel(this.surveillance.type, this.data.surveillanceTypes.data, 'name');
+        this.surveillance.type = this.data.surveillanceTypes.data.find((type) => type.name === this.surveillance.type.name);
       }
     }
 

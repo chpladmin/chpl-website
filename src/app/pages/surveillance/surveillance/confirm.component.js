@@ -1,4 +1,4 @@
-export const ConfirmSurveillanceComponent = {
+const ConfirmSurveillanceComponent = {
   templateUrl: 'chpl.surveillance/surveillance/confirm.html',
   bindings: {
     onChange: '&',
@@ -50,7 +50,7 @@ export const ConfirmSurveillanceComponent = {
       });
       this.modalInstance.result.then((result) => {
         if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
-          for (let i = 0; i < that.uploadingSurveillances.length; i++) {
+          for (let i = 0; i < that.uploadingSurveillances.length; i += 1) {
             if (surv.id === that.uploadingSurveillances[i].id) {
               that.uploadingSurveillances.splice(i, 1);
               that.pendingSurveillances = that.uploadingSurveillances.length;
@@ -79,7 +79,7 @@ export const ConfirmSurveillanceComponent = {
         }, (error) => {
           that.onChange();
           if (error.data.errors && error.data.errors.length > 0) {
-            that.uploadingSurveillanceMessages = error.data.errors.map((error) => `Surveillance with ID: "${error.objectId}" has already been resolved by "${error.contact.fullName}"`);
+            that.uploadingSurveillanceMessages = error.data.errors.map((e) => `Surveillance with ID: "${e.objectId}" has already been resolved by "${e.contact.fullName}"`);
           }
         });
     }
@@ -112,3 +112,5 @@ export const ConfirmSurveillanceComponent = {
 
 angular.module('chpl.surveillance')
   .component('chplConfirmSurveillance', ConfirmSurveillanceComponent);
+
+export default ConfirmSurveillanceComponent;

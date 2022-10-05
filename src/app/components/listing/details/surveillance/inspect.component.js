@@ -15,7 +15,7 @@ const SurveillanceInspectComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceInspectController {
-    constructor($log, $uibModal, DateUtil, authService, networkService, utilService) {
+    constructor($log, $uibModal, DateUtil, authService, networkService) {
       'ngInject';
 
       this.$log = $log;
@@ -23,7 +23,6 @@ const SurveillanceInspectComponent = {
       this.DateUtil = DateUtil;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
-      this.utilService = utilService;
     }
 
     $onInit() {
@@ -66,9 +65,7 @@ const SurveillanceInspectComponent = {
     }
 
     editSurveillance() {
-      // this.fixRequirementOptions();
       if (this.hasAnyRole(['ROLE_ACB'])) {
-        // this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
         this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter((option) => !option.removed);
       }
       this.editModalInstance = this.$uibModal.open({
@@ -123,20 +120,6 @@ const SurveillanceInspectComponent = {
           }
         });
     }
-
-    /// /////////////////////////////////////////////////////////////////
-
-    /*
-    fixRequirementOptions() {
-      if (this.surveillance.certifiedProduct.edition === '2015') {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
-      } else if (this.surveillance.certifiedProduct.edition === '2014') {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
-      } else {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = [];
-      }
-    }
-    */
   },
 };
 
