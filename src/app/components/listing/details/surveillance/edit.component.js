@@ -4,7 +4,7 @@ const getDisplay = (req) => {
   if (req.requirementDetailTypeOther) {
     return req.requirementDetailTypeOther;
   }
-  return `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (req.requirementDetailType.number + ':') : ''} ${req.requirementDetailType.title}`;
+  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (req.requirementDetailType.number + ': ') : ''}${req.requirementDetailType.title}`;
 };
 
 const updateRequirements = (reqs) => reqs
