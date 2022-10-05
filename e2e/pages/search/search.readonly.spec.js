@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const config = require('../../config/mainConfig');
 
-const developerName = 'Allscripts';
+const developerName = 'athenahealth, Inc.';
 const productName = 'TouchWork';
 const version = '19';
 const totalListing = 500;
