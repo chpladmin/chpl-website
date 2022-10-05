@@ -32,6 +32,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { useLocalStorage as useStorage } from 'services/storage.service';
 import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
@@ -197,6 +198,7 @@ const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation
 const parseServiceBaseUrlList = ({ serviceBaseUrlList }) => serviceBaseUrlList?.value || '';
 
 function ChplApiDocumentationCollectionView(props) {
+  const storageKey = 'storageKey-apiDocumentationView';
   const $analytics = getAngularService('$analytics');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
@@ -206,11 +208,11 @@ function ChplApiDocumentationCollectionView(props) {
   const [downloadLink, setDownloadLink] = useState('');
   const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [listings, setListings] = useState([]);
-  const [orderBy, setOrderBy] = useState('developer');
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(25);
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
+  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();

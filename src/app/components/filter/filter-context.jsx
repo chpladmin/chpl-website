@@ -22,6 +22,7 @@ import {
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
+import { useSessionStorage as useStorage } from 'services/storage.service';
 
 const FilterContext = createContext();
 
@@ -158,10 +159,11 @@ const updateFilter = (filters, category, value, setFilters) => {
 function FilterProvider(props) {
   const $analytics = getAngularService('$analytics');
   const {
-    analytics,
+    analytics, storageKey
   } = props;
+  //const [filters, setFilters] = useStorage(`${storageKey}-filters`, []);
   const [filters, setFilters] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
 
   useEffect(() => {
     setFilters(props.filters.map((filter) => ({
@@ -274,10 +276,12 @@ FilterProvider.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }),
+  storageKey: string,
 };
 
 FilterProvider.defaultProps = {
   analytics: false,
+  storageKey: 'default',
 };
 
 function useFilterContext() {
