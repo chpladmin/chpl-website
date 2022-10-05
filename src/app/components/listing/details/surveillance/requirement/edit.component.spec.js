@@ -273,31 +273,6 @@
           expect(ctrl.isNonconformityRequired()).toBe(false);
         });
       });
-
-      describe('when saving the requirement', () => {
-        it('should close the modal with the active requirement', () => {
-          var activeReq = {
-            id: 'something',
-            result: { name: 'someting' },
-            type: { name: 'something' },
-          };
-          ctrl.requirement = activeReq;
-          ctrl.save();
-          expect(scope.close).toHaveBeenCalledWith(activeReq);
-        });
-
-        it('should remove any requirements if there was no NC found', () => {
-          var activeReq = {
-            id: 'something',
-            result: { name: 'No Non-Conformity' },
-            type: { name: 'No Non-Conformity' },
-            nonconformities: [1, 2, 3],
-          };
-          ctrl.requirement = activeReq;
-          ctrl.save();
-          expect(activeReq.nonconformities).toEqual([]);
-        });
-      });
     });
   });
 })();
