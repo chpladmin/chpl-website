@@ -46,7 +46,7 @@ describe('the compare page', () => {
     });
 
     it('should display all CQMs', () => {
-      expect(page.allCCCQM.length).toBe(102);
+      expect(page.allCCCQM.length).toBe(108);
     });
   });
 });
