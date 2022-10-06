@@ -75,6 +75,7 @@ function ChplApiDocumentationCollectionPage() {
           <FilterProvider
             analytics={analytics}
             filters={filters}
+            storageKey="storageKey-apiDocumentationPage"
           >
             <ChplApiDocumentationCollectionView
               analytics={analytics}

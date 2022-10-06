@@ -32,7 +32,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
-import { useLocalStorage as useStorage } from 'services/storage.service';
+import { useSessionStorage as useStorage } from 'services/storage.service';
 import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 

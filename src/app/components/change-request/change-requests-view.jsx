@@ -105,7 +105,7 @@ function ChplChangeRequestsView(props) {
   const [changeRequests, setChangeRequests] = useState([]);
   const [order, setOrder] = useState('desc');
   const [orderBy, setOrderBy] = useState('current_status_change_date_time');
-  const [pageNumber, setPageNumber] = React.useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const { queryParams, queryString } = useFilterContext();
   const {
