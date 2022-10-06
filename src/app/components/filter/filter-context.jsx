@@ -162,14 +162,20 @@ function FilterProvider(props) {
     analytics, storageKey,
   } = props;
   const [filters, setFilters] = useState([]);
-  const [searchTerm, setSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
   const [values, setValues] = useStorage(`${storageKey}-values`, {});
+
+  useEffect(() => {
+    if (!storageKey) { return; }
+    setSearchTerm(storedSearchTerm);
+  }, []);
 
   useEffect(() => {
     setFilters(props.filters.map((filter) => ({
       ...filter,
       required: !!filter.required,
-      values: values[filter.key] ? values[filter.key] : filter.values.map((value) => ({
+      values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((value) => ({
         ...value,
         selected: value.default,
         default: value.default,
@@ -184,6 +190,11 @@ function FilterProvider(props) {
       [filter.key]: filter.values,
     }), {}));
   }, [filters]);
+
+  useEffect(() => {
+    setStoredSearchTerm(searchTerm);
+  }, [searchTerm]);
+
   const dispatch = (action, category, value) => {
     switch (action) {
       case 'clearFilter':
@@ -287,7 +298,7 @@ FilterProvider.propTypes = {
 
 FilterProvider.defaultProps = {
   analytics: false,
-  storageKey: 'default',
+  storageKey: '',
 };
 
 function useFilterContext() {
