@@ -159,17 +159,17 @@ const updateFilter = (filters, category, value, setFilters) => {
 function FilterProvider(props) {
   const $analytics = getAngularService('$analytics');
   const {
-    analytics, storageKey
+    analytics, storageKey,
   } = props;
-  //const [filters, setFilters] = useStorage(`${storageKey}-filters`, []);
   const [filters, setFilters] = useState([]);
   const [searchTerm, setSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
+  const [values, setValues] = useStorage(`${storageKey}-values`, {});
 
   useEffect(() => {
     setFilters(props.filters.map((filter) => ({
       ...filter,
       required: !!filter.required,
-      values: filter.values.map((value) => ({
+      values: values[filter.key] ? values[filter.key] : filter.values.map((value) => ({
         ...value,
         selected: value.default,
         default: value.default,
@@ -178,6 +178,12 @@ function FilterProvider(props) {
     })));
   }, [props.filters]); // eslint-disable-line react/destructuring-assignment
 
+  useEffect(() => {
+    setValues(filters.reduce((v, filter) => ({
+      ...v,
+      [filter.key]: filter.values,
+    }), {}));
+  }, [filters]);
   const dispatch = (action, category, value) => {
     switch (action) {
       case 'clearFilter':
