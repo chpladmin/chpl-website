@@ -8,8 +8,8 @@ const fs = require('fs');
 const config = require('../../config/mainConfig');
 
 const developerName = 'athenahealth, Inc.';
-const productName = 'TouchWork';
-const version = '19';
+const productName = 'athenaClinicals';
+const version = '20';
 const totalListing = 500;
 const PRODUCT_COL_IDX = 3;
 const DEVELOPER_COL_IDX = 2;
