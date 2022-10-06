@@ -461,7 +461,7 @@ function ChplApiDocumentationCollectionView(props) {
                                 { item.serviceBaseUrlList
                                   ? (
                                     <dl>
-                                      <dt>170.315 (g)(10)</dt>
+                                      <dt>170.315 (g)(10) (Cures Update)</dt>
                                       <dd>
                                         <ChplLink
                                           href={item.serviceBaseUrlList}
