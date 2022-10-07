@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  FormControlLabel,
   List,
   ListSubheader,
   Popover,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -23,21 +25,32 @@ const useStyles = makeStyles({
     background: '#fafdff',
     display: 'grid',
     gridTemplateColumns: '1fr',
-    padding: '16px',
     rowGap: '16px',
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
     },
+  },
+  filterPanelPrimary: {
+    padding: '16px',
+  },
+  filterPanelSecondary: {
+    borderLeft: '1px solid #599bde',
+    padding: '16px',
   },
   filterBold: {
     fontWeight: '600',
   },
   filterContainer: {
     display: 'grid',
-    gridTemplateColumns: 'auto',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(225px, 1fr))',
     justifyItems: 'start',
     alignItems: 'start',
-    gap: '8px',
+    gap: '16px',
+    padding: '0 8px',
+    marginTop: '16px',
+    [theme.breakpoints.up('xl')]: {
+      gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+    },
   },
   filterHeaderContainer: {
     display: 'grid',
@@ -48,14 +61,15 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
-    borderLeft: '1px solid #599bde',
-    paddingLeft: '16px',
+    maxHeight: '40vh',
+    overflowY: 'auto',
   },
   filterSubHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr',
-    justifyItems: 'start',
-    gap: '8px',
+  },
+  clearResetContainer: {
+    marginBottom: '8px',
+    marginTop: '-8px',
   },
   searchInput: {
     flexGrow: 1,
@@ -88,7 +102,7 @@ function ChplFilterPanel() {
       .sort((a, b) => (a.getFilterDisplay(a) < b.getFilterDisplay(b) ? -1 : 1))
       .map((f) => ({
         ...f,
-        values: f.values.sort((a, b) => (f.getValueDisplay(a) < f.getValueDisplay(b) ? -1 : 1)),
+        values: f.values.sort((a, b) => f.sortValues(f, a, b)),
       })));
   }, [filterContext.filters]);
 
@@ -139,6 +153,13 @@ function ChplFilterPanel() {
     });
   };
 
+  const toggleOperator = (f) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Operator', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.operator === 'and' ? 'All' : 'Any'}` });
+    }
+    filterContext.dispatch('toggleOperator', f);
+  };
+
   return (
     <>
       <Button
@@ -172,12 +193,13 @@ function ChplFilterPanel() {
             marginTop: '20px',
             border: `1px solid ${palette.grey}`,
             boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
+            backgroundColor: '#fafdff',
           },
         }}
       >
         <div className={classes.filterPanelContainer}>
           <div>
-            <div>
+            <div className={classes.filterPanelPrimary}>
               <List
                 dense
                 subheader={(
@@ -225,36 +247,49 @@ function ChplFilterPanel() {
               </List>
             </div>
           </div>
-          <div>
+          <div className={classes.filterPanelSecondary}>
             { activeCategory?.values.length > 0 && (
               <List
                 dense
                 subheader={(
                   <ListSubheader
-                    disableSticky
                     component="div"
                     id="filter-panel-secondary-subheader"
+                    className={classes.clearResetContainer}
+                    disableGutters
                   >
-                    <div className={classes.filterSubHeaderContainer}>
-                      <ButtonGroup
-                        variant="text"
-                        color="primary"
-                        size="medium"
-                        aria-label="apply to filter dropdown"
+                    <ButtonGroup
+                      variant="text"
+                      color="primary"
+                      size="medium"
+                      aria-label="apply to filter dropdown"
+                    >
+                      <Button
+                        onClick={() => handleAction('clearFilter')}
+                        disabled={activeCategory.required}
                       >
-                        <Button
-                          onClick={() => handleAction('clearFilter')}
-                          disabled={activeCategory.required}
-                        >
-                          Clear
-                        </Button>
-                        <Button
-                          onClick={() => handleAction('resetFilter')}
-                        >
-                          Reset
-                        </Button>
-                      </ButtonGroup>
-                    </div>
+                        Clear
+                      </Button>
+                      <Button
+                        onClick={() => handleAction('resetFilter')}
+                      >
+                        Reset
+                      </Button>
+                    </ButtonGroup>
+                    { activeCategory.operatorKey
+                      && (
+                        <FormControlLabel
+                          control={(
+                            <Switch
+                              id={`${activeCategory.key}-operator-panel-toggle`}
+                              color="primary"
+                              checked={activeCategory.operator === 'and'}
+                              onChange={() => toggleOperator(activeCategory)}
+                            />
+                          )}
+                          label={activeCategory.operator === 'and' ? 'All' : 'Any'}
+                        />
+                      )}
                   </ListSubheader>
                 )}
               >

@@ -30,7 +30,7 @@ describe('the 2015 listing page', () => {
     });
 
     it('should display all cqms', () => {
-      expect(cqm.cqmCount()).toBe(102);
+      expect(cqm.cqmCount()).toBe(108);
     });
   });
 });
@@ -54,7 +54,7 @@ describe('the 2014 listing page', () => {
     });
 
     it('should display all cqms', () => {
-      expect(cqm.cqmCount()).toBe(102);
+      expect(cqm.cqmCount()).toBe(108);
     });
   });
 });
