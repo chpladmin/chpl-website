@@ -210,10 +210,10 @@ function FilterProvider(props) {
   }, [props.filters]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setValues(filters.reduce((v, filter) => ({
+    setValues((previous) => filters.reduce((v, filter) => ({
       ...v,
       [filter.key]: filter.values,
-    }), {}));
+    }), previous));
   }, [filters]);
 
   useEffect(() => {
