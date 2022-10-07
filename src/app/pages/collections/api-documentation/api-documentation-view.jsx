@@ -17,8 +17,8 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import {
-  useFetchApiDocumentationCollection,
   useFetchApiDocumentationData,
+  useFetchCollection,
 } from 'api/collections';
 import {
   ChplLink,
@@ -174,7 +174,8 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics, erdPhase2IsOn) =
         .sort((a, b) => criteriaLookup(erdPhase2IsOn)[a].sort - criteriaLookup(erdPhase2IsOn)[b].sort)
         .map((id) => criteriaLookup(erdPhase2IsOn)[id].display)
         .join(', '),
-    }));
+    }))
+    .sort((a, b) => (a.criteria < b.criteria ? -1 : 1));
   return (
     <dl>
       {items.map(({ url, criteria }) => (
@@ -216,8 +217,7 @@ function ChplApiDocumentationCollectionView(props) {
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchApiDocumentationCollection({
-    erdPhase2IsOn,
+  const { data, isError, isLoading } = useFetchCollection({
     orderBy,
     pageNumber,
     pageSize,
@@ -314,12 +314,13 @@ function ChplApiDocumentationCollectionView(props) {
             <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
             { !erdPhase2IsOn
               && (
-                <>
-                  <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
-                  <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-                </>
+                <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
               )}
             <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
+            { !erdPhase2IsOn
+              && (
+                <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
+              )}
             <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services (Cures Update)</li>
           </ul>
           <Typography variant="body1" gutterBottom>
@@ -462,7 +463,7 @@ function ChplApiDocumentationCollectionView(props) {
                                 { item.serviceBaseUrlList
                                   ? (
                                     <dl>
-                                      <dt>170.315 (g)(10)</dt>
+                                      <dt>170.315 (g)(10) (Cures Update)</dt>
                                       <dd>
                                         <ChplLink
                                           href={item.serviceBaseUrlList}

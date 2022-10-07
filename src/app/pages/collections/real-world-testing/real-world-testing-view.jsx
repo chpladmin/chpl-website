@@ -16,7 +16,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import {
-  useFetchRealWorldTestingCollection,
+  useFetchCollection,
 } from 'api/collections';
 import {
   ChplLink,
@@ -131,7 +131,7 @@ function ChplRealWorldTestingCollectionView(props) {
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchRealWorldTestingCollection({
+  const { data, isError, isLoading } = useFetchCollection({
     orderBy,
     pageNumber,
     pageSize,

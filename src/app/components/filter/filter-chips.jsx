@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Typography,
+  Button,
   Chip,
+  FormControlLabel,
+  Switch,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 
@@ -20,13 +23,11 @@ const useStyles = makeStyles(() => ({
     boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0 8px',
     flexWrap: 'wrap',
     flexFlow: 'column',
+    alignItems: 'center',
     [theme.breakpoints.up('md')]: {
       flexFlow: 'row',
       flexWrap: 'wrap',
     },
-  },
-  filterApplied: {
-    paddingTop: '4px',
   },
   filterSelectedContainer: {
     display: 'flex',
@@ -42,6 +43,7 @@ function ChplFilterChips() {
   const [filters, setFilters] = useState([]);
   const filterContext = useFilterContext();
   const classes = useStyles();
+  const DISPLAY_MAX = 7;
 
   useEffect(() => {
     setFilters(filterContext.filters
@@ -50,7 +52,7 @@ function ChplFilterChips() {
         ...filter,
         values: filter.values
           .filter((v) => v.selected)
-          .sort((a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1)),
+          .sort((a, b) => filter.sortValues(filter, a, b)),
       }))
       .filter((filter) => filter.values.length > 0));
   }, [filterContext.filters]);
@@ -62,9 +64,23 @@ function ChplFilterChips() {
     filterContext.dispatch('toggle', f, v);
   };
 
+  const toggleOperator = (f) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Operator', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.operator === 'and' ? 'All' : 'Any'}` });
+    }
+    filterContext.dispatch('toggleOperator', f);
+  };
+
+  const toggleShowAll = (f) => {
+    if (filterContext.analytics) {
+      $analytics.eventTrack('Toggle Show All', { category: filterContext.analytics.category, label: `${f.getFilterDisplay(f)}: ${f.showAll ? 'All' : 'Some'}` });
+    }
+    filterContext.dispatch('toggleShowAll', f);
+  };
+
   return (
     <span className={classes.filterContainer} id="filter-chips">
-      <Typography className={classes.filterApplied} variant="subtitle1">Filters Applied</Typography>
+      <Typography variant="subtitle1">Filters Applied</Typography>
       { filters.map((f) => (
         <span
           className={classes.filterSelectedContainer}
@@ -75,7 +91,22 @@ function ChplFilterChips() {
               {f.getFilterDisplay(f)}
             </strong>
           </Typography>
+          { f.operatorKey
+            && (
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id={`${f.key}-operator-chips-toggle`}
+                    color="primary"
+                    checked={f.operator === 'and'}
+                    onChange={() => toggleOperator(f)}
+                  />
+                )}
+                label={f.operator === 'and' ? 'All' : 'Any'}
+              />
+            )}
           {f.values
+            .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
             .map((v) => (
               <Chip
                 key={v.value}
@@ -86,6 +117,16 @@ function ChplFilterChips() {
                 disabled={f.required && f.values.length === 1}
               />
             ))}
+          { f.values.length > DISPLAY_MAX
+            && (
+              <Button
+                onClick={() => toggleShowAll(f)}
+                color="primary"
+                variant="text"
+              >
+                { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
+              </Button>
+            )}
         </span>
       ))}
     </span>
