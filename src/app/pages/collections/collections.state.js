@@ -8,7 +8,7 @@ const states = [
   }, {
     name: 'collections.api-documentation',
     url: '/api-documentation',
-    component: 'chplApiDocumentationCollectionPageBridge',
+    component: 'chplApiDocumentationCollectionWrapperBridge',
     data: { title: 'API Information for 2015 Edition Products' },
   }, {
     name: 'collections.corrective-action',
@@ -39,7 +39,7 @@ const states = [
   }, {
     name: 'collections.real-world-testing',
     url: '/real-world-testing',
-    component: 'chplRealWorldTestingCollectionPageBridge',
+    component: 'chplRealWorldTestingCollectionWrapperBridge',
     data: { title: 'Real World Testing' },
   }, {
     name: 'collections.sed',
