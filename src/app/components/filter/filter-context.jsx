@@ -186,6 +186,7 @@ function FilterProvider(props) {
     analytics, storageKey,
   } = props;
   const [filters, setFilters] = useState([]);
+  const [operators, setOperators] = useStorage(`${storageKey}-operators`, {});
   const [searchTerm, setSearchTerm] = useState('');
   const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
   const [values, setValues] = useStorage(`${storageKey}-values`, {});
@@ -199,7 +200,7 @@ function FilterProvider(props) {
     setFilters(props.filters.map((filter) => ({
       ...filter,
       required: !!filter.required,
-      operator: filter.operatorKey ? 'or' : undefined,
+      operator: filter.operatorKey ? (storageKey && operators[filter.operatorKey] ? operators[filter.operatorKey] : 'or') : undefined,
       values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((value) => ({
         ...value,
         selected: value.default,
@@ -210,10 +211,17 @@ function FilterProvider(props) {
   }, [props.filters]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setValues((previous) => filters.reduce((v, filter) => ({
-      ...v,
-      [filter.key]: filter.values,
-    }), previous));
+    setOperators((previous) => filters
+      .filter((filter) => filter.operatorKey)
+      .reduce((o, filter) => ({
+        ...o,
+        [filter.operatorKey]: filter.operator,
+      }), previous));
+    setValues((previous) => filters
+      .reduce((v, filter) => ({
+        ...v,
+        [filter.key]: filter.values,
+      }), previous));
   }, [filters]);
 
   useEffect(() => {
