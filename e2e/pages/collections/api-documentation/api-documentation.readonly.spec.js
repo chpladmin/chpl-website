@@ -53,6 +53,18 @@ describe('the Api Documentation collection page', () => {
         await expect(countAfter).toBeLessThan(countBefore);
       });
 
+      it('should filter on criteria', async () => {
+        await page.removeFilter('Certification Criteria', '170.315 (g)(7)');
+        countAfter = await page.getTotalResultCount();
+        await expect(countAfter).toBeLessThan(countBefore);
+      });
+
+      it('should toggle the criteria operator', async () => {
+        await page.toggleOperator('certificationCriteriaIds');
+        countAfter = await page.getTotalResultCount();
+        await expect(countAfter).toBeLessThan(countBefore);
+      });
+
       it('should filter on status', async () => {
         await page.setListFilter('certificationStatuses', 'Withdrawn_by_Developer');
         countAfter = await page.getTotalResultCount();

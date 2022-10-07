@@ -36,7 +36,7 @@ jest.mock('components/filter', () => ({
 
 jest.mock('api/collections', () => ({
   __esModule: true,
-  useFetchRealWorldTestingCollection: () => mockApi,
+  useFetchCollection: () => mockApi,
 }));
 
 describe('the ChplRealWorldTestingCollectionView component', () => {

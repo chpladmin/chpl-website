@@ -1,6 +1,6 @@
-import ChplApiDocumentationCollectionPage from './api-documentation/api-documentation';
+import ChplApiDocumentationCollectionWrapper from './api-documentation/api-documentation-wrapper';
+import ChplRealWorldTestingCollectionWrapper from './real-world-testing/real-world-testing-wrapper';
 import ChplBannedDevelopersCollectionPage from './banned-developers/banned-developers';
-import ChplRealWorldTestingCollectionPage from './real-world-testing/real-world-testing';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -13,6 +13,6 @@ export default angular
     'chpl.constants',
     'ui.bootstrap',
   ])
-  .component('chplApiDocumentationCollectionPageBridge', reactToAngularComponent(ChplApiDocumentationCollectionPage))
+  .component('chplApiDocumentationCollectionWrapperBridge', reactToAngularComponent(ChplApiDocumentationCollectionWrapper))
   .component('chplBannedDevelopersCollectionPageBridge', reactToAngularComponent(ChplBannedDevelopersCollectionPage))
-  .component('chplRealWorldTestingCollectionPageBridge', reactToAngularComponent(ChplRealWorldTestingCollectionPage));
+  .component('chplRealWorldTestingCollectionWrapperBridge', reactToAngularComponent(ChplRealWorldTestingCollectionWrapper));
