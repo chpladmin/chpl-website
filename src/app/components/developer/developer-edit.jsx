@@ -26,7 +26,12 @@ import AddIcon from '@material-ui/icons/Add';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import { arrayOf, bool, func } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  func,
+  string,
+} from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -254,6 +259,7 @@ function ChplDeveloperEdit(props) {
   } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
+  const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const [options, setOptions] = useState({});
@@ -268,6 +274,10 @@ function ChplDeveloperEdit(props) {
   useEffect(() => {
     setIsInvalid(props.isInvalid);
   }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setErrorMessages(props.errorMessages);
+  }, [props.errorMessages]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setOptions(generateOptions(developer, props.mergingDevelopers));
@@ -598,7 +608,7 @@ function ChplDeveloperEdit(props) {
         <ChplActionBar
           dispatch={handleDispatch}
           isDisabled={isActionDisabled()}
-          errors={errors}
+          errors={errorMessages.concat(errors)}
           warnings={warnings}
         />
       </Container>
@@ -611,6 +621,7 @@ export default ChplDeveloperEdit;
 ChplDeveloperEdit.propTypes = {
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,
+  errorMessages: arrayOf(string).isRequired,
   isInvalid: bool.isRequired,
   isSplitting: bool.isRequired,
   mergingDevelopers: arrayOf(developerPropType).isRequired,

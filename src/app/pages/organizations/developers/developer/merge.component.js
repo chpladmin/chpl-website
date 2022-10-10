@@ -60,6 +60,7 @@ const DevelopersMergeComponent = {
         developerIds: this.selectedDevelopers.map((d) => d.id),
       };
       mergeDeveloperObject.developerIds.push(this.developer.id);
+      this.errorMessages = [];
       const that = this;
       this.networkService.mergeDevelopers(mergeDeveloperObject)
         .then((response) => {
@@ -74,11 +75,7 @@ const DevelopersMergeComponent = {
             });
           }
         }, (error) => {
-          that.toaster.pop({
-            type: 'error',
-            title: 'Merge error',
-            body: error.data.error,
-          });
+          that.errorMessages = error.data.errorMessages;
         });
     }
 
