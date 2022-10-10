@@ -3,6 +3,8 @@ import {
   Card,
   CardContent,
   Button,
+  List,
+  ListItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -10,6 +12,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import ChplAnnouncements from 'components/announcement/announcements';
 import ChplSvaps from 'components/standards/svap/svaps';
+import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
 import { BreadcrumbContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -80,6 +83,10 @@ function ChplSystemMaintenance() {
     hide('svaps.viewall');
     hide('svaps.add.disabled');
     hide('svaps.edit.disabled');
+    hide('ucdProcesses.viewall.disabled');
+    hide('ucdProcesses.viewall');
+    hide('ucdProcesses.add.disabled');
+    hide('ucdProcesses.edit.disabled');
     setActive(target);
     if (target) {
       display('system-maintenance');
@@ -118,6 +125,18 @@ function ChplSystemMaintenance() {
           >
             SVAP Maintenance
           </Button>
+          <Button
+            onClick={() => navigate('ucdProcesses')}
+            disabled={active === 'ucdProcesses'}
+            id="system-maintenance-navigation-ucd-processes"
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            UCD Process Management
+          </Button>
         </Card>
       </div>
       <div>
@@ -128,13 +147,13 @@ function ChplSystemMaintenance() {
                 <Typography>
                   System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.
                 </Typography>
-                <ul>
-                  <li>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</li>
-                  <li>SVAP Maintenance - Add and update SVAP values for use by ONC-ACBs on each listing</li>
-                  <li>UCD Process Management  - [future] Add and update the UCD process(es) available to be applied to certification criteria</li>
-                  <li>Accessibility Standards Maintenance - [future] Add and update the Accessibility Standards available to be applied to listings</li>
-                  <li>QMS Standards Maintenance - [future] Add and update the QMS Standards available to be applied to listings</li>
-                </ul>
+                <List>
+                  <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
+                  <ListItem>SVAP Maintenance - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
+                  <ListItem>UCD Process Management Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
+                  <ListItem>Accessibility Standards Maintenance - [future] Add and update the Accessibility Standards available to be applied to listings</ListItem>
+                  <ListItem>QMS Standards Maintenance - [future] Add and update the QMS Standards available to be applied to listings</ListItem>
+                </List>
               </CardContent>
             </Card>
           )}
@@ -145,6 +164,10 @@ function ChplSystemMaintenance() {
         { active === 'svaps'
           && (
             <ChplSvaps />
+          )}
+        { active === 'ucdProcesses'
+          && (
+            <ChplUcdProcesses />
           )}
       </div>
     </div>

@@ -48,10 +48,61 @@ const usePutSvap = () => {
   });
 };
 
+const useDeleteUcdProcess = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`ucd-processes/${data.ucdProcessId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ucdProcesses']);
+    },
+  });
+};
+
+const useFetchCriteriaForUcdProcesses = () => {
+  const axios = useAxios();
+  return useQuery(['ucd-processes/criteria'], async () => {
+    const response = await axios.get('ucd-processes/criteria');
+    return response.data;
+  });
+};
+
+const useFetchUcdProcesses = () => {
+  const axios = useAxios();
+  return useQuery(['ucdProcesses'], async () => {
+    const response = await axios.get('ucd-processes');
+    return response.data;
+  });
+};
+
+const usePostUcdProcess = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('ucd-processes', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ucdProcesses']);
+    },
+  });
+};
+
+const usePutUcdProcess = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('ucd-processes', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ucdProcesses']);
+    },
+  });
+};
+
 export {
   useDeleteSvap,
   useFetchCriteriaForSvaps,
   useFetchSvaps,
   usePostSvap,
   usePutSvap,
+  useDeleteUcdProcess,
+  useFetchCriteriaForUcdProcesses,
+  useFetchUcdProcesses,
+  usePostUcdProcess,
+  usePutUcdProcess,
 };
