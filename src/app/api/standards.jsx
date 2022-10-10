@@ -53,7 +53,7 @@ const useDeleteUcdProcess = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`ucd-processes/${data.ucdProcessId}`), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ucdProcesses']);
+      queryClient.invalidateQueries(['ucd-processes']);
     },
   });
 };
@@ -68,7 +68,7 @@ const useFetchCriteriaForUcdProcesses = () => {
 
 const useFetchUcdProcesses = () => {
   const axios = useAxios();
-  return useQuery(['ucdProcesses'], async () => {
+  return useQuery(['ucd-processes'], async () => {
     const response = await axios.get('ucd-processes');
     return response.data;
   });
@@ -79,7 +79,7 @@ const usePostUcdProcess = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('ucd-processes', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ucdProcesses']);
+      queryClient.invalidateQueries(['ucd-processes']);
     },
   });
 };
@@ -89,7 +89,7 @@ const usePutUcdProcess = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put('ucd-processes', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['ucdProcesses']);
+      queryClient.invalidateQueries(['ucd-processes']);
     },
   });
 };
