@@ -1,3 +1,21 @@
+import { sortRequirements } from 'services/surveillance.service';
+
+const getDisplay = (req) => {
+  if (req.requirementDetailOther) {
+    return req.requirementDetailOther;
+  }
+  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (`${req.requirementDetailType.number}: `) : ''}${req.requirementDetailType.title}`;
+};
+
+const updateRequirements = (reqs) => reqs
+  .sort(sortRequirements)
+  .map((req) => ({
+    ...req,
+    display: getDisplay(req),
+  }));
+
+const sortSurveillances = (a, b) => (a.friendlyId < b.friendlyId ? -1 : 1);
+
 const SurveillanceComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/view.html',
   bindings: {
@@ -5,7 +23,7 @@ const SurveillanceComponent = {
     certifiedProduct: '<',
   },
   controller: class SurveillanceController {
-    constructor($filter, $log, $uibModal, API, DateUtil, authService, networkService, utilService) {
+    constructor($filter, $log, $uibModal, API, DateUtil, authService, networkService) {
       'ngInject';
 
       this.$filter = $filter;
@@ -15,22 +33,16 @@ const SurveillanceComponent = {
       this.DateUtil = DateUtil;
       this.authService = authService;
       this.networkService = networkService;
-      this.utilService = utilService;
     }
 
     $onInit() {
       this.API_KEY = this.authService.getApiKey();
-      this.sortRequirements = this.utilService.sortRequirements;
       this.surveillanceTypes = this.networkService.getSurveillanceLookups();
-      this.sortResults = (result) => {
-        const req = result.substring(result.indexOf(' for ') + 5);
-        return this.sortRequirements(req);
-      };
     }
 
     $onChanges(changes) {
       if (changes.certifiedProduct) {
-        this.certifiedProduct = angular.copy(changes.certifiedProduct.currentValue);
+        this.interpretListing(changes.certifiedProduct.currentValue);
       }
       if (changes.allowEditing) {
         this.allowEditing = angular.copy(changes.allowEditing.currentValue);
@@ -38,7 +50,6 @@ const SurveillanceComponent = {
     }
 
     editSurveillance(surveillance) {
-      this.fixRequirementOptions();
       this.uibModalInstance = this.$uibModal.open({
         component: 'aiSurveillanceEdit',
         animation: false,
@@ -54,7 +65,7 @@ const SurveillanceComponent = {
       this.uibModalInstance.result.then(() => {
         this.networkService.getListing(this.certifiedProduct.id, true)
           .then((result) => {
-            this.certifiedProduct = result;
+            this.interpretListing(result);
           });
       }, (result) => {
         if (result !== 'cancelled') {
@@ -100,7 +111,6 @@ const SurveillanceComponent = {
     }
 
     initiateSurveillance() {
-      this.fixRequirementOptions();
       this.uibModalInstance = this.$uibModal.open({
         component: 'aiSurveillanceEdit',
         animation: false,
@@ -116,7 +126,7 @@ const SurveillanceComponent = {
       this.uibModalInstance.result.then(() => {
         this.networkService.getListing(this.certifiedProduct.id, true)
           .then((result) => {
-            this.certifiedProduct = result;
+            this.interpretListing(result);
           });
       }, (result) => {
         if (result !== 'cancelled') {
@@ -125,23 +135,25 @@ const SurveillanceComponent = {
       });
     }
 
+    interpretListing(listing) {
+      this.certifiedProduct = {
+        ...listing,
+        surveillance: listing.surveillance
+          .map((surv) => ({
+            ...surv,
+            requirements: surv.requirements ? updateRequirements(surv.requirements) : [],
+            display: this.surveillanceResults(surv),
+          }))
+          .sort(sortSurveillances),
+      };
+    }
+
     surveillanceResults(surv) {
       const results = [];
       for (let i = 0; i < surv.requirements.length; i += 1) {
         for (let j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
           let result = `${surv.requirements[i].nonconformities[j].nonconformityStatus} Non-Conformity Found for `;
-          if (surv.requirements[i].criterion) {
-            result += `<span class="${surv.requirements[i].criterion.removed ? 'removed' : ''}">`;
-            result += surv.requirements[i].criterion.removed ? 'Removed | ' : '';
-            result += `${surv.requirements[i].criterion.number}: ${surv.requirements[i].criterion.title}</span>`;
-          } else {
-            if (this.isNonconformityTypeRemoved(surv.requirements[i].requirement)) {
-              result += '<span class="removed">';
-              result += `Removed | ${surv.requirements[i].requirement}</span>`;
-            } else {
-              result += surv.requirements[i].requirement;
-            }
-          }
+          result += getDisplay(surv.requirements[i]);
           result += '<br />';
           results.push(result);
         }
@@ -150,34 +162,6 @@ const SurveillanceComponent = {
         results.push('No Non-Conformities Found');
       }
       return results;
-    }
-
-    fixRequirementOptions() {
-      if (this.certifiedProduct.certificationEdition.name === '2015') {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
-      } else if (this.certifiedProduct.certificationEdition.name === '2014') {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
-      }
-    }
-
-    isRequirementRemoved(name) {
-      let requirement = this.surveillanceTypes.surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === name);
-      if (requirement) {
-        return requirement.removed;
-      }
-      requirement = this.surveillanceTypes.surveillanceRequirements.transparencyOptions.find((req) => req.item === name);
-      if (requirement) {
-        return requirement.removed;
-      }
-      return false;
-    }
-
-    isNonconformityTypeRemoved(type) {
-      const nonconformityType = this.surveillanceTypes.nonconformityTypes.data.find((ncType) => ncType.number === type);
-      if (nonconformityType) {
-        return nonconformityType.removed;
-      }
-      return false;
     }
   },
 };

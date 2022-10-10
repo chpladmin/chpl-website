@@ -2,7 +2,7 @@
   <div ng-if="!$ctrl.certifiedProduct.surveillance || $ctrl.certifiedProduct.surveillance.length === 0">
     No surveillance activity has been conducted for this listing
   </div>
-  <div ng-repeat="surv in $ctrl.certifiedProduct.surveillance | orderBy: 'friendlyId'">
+  <div ng-repeat="surv in $ctrl.certifiedProduct.surveillance">
     <div class="pull-right">
       <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ $ctrl.DateUtil.getDisplayDateFormat(surv.startDay) }}</span></a>
       <button class="btn btn-sm btn-ai-success" ng-click="$ctrl.editSurveillance(surv)" ng-if="$ctrl.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
@@ -34,10 +34,8 @@
           <tr>
             <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="'mouseenter focus click'">Certification Criteria and Program Requirements Surveilled</a></th>
             <td>
-              <span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">
-                {{ req.type.name }}:
-                <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title }}</span>
-                <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
+              <span ng-repeat="req in surv.requirements">
+                <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
               </span>
             </td>
           </tr>
@@ -45,22 +43,20 @@
             <th scope="row">
               <a href uib-tooltip="Whether or not a non-conformity was found for the conducted surveillance." tooltip-trigger="'mouseenter focus click'">Surveillance Result</a>
             </th>
-            <td><span ng-repeat="res in $ctrl.surveillanceResults(surv) | orderBy:$ctrl.sortResults track by $index" ng-bind-html="res"></span></td>
+            <td><span ng-repeat="res in surv.display track by $index" ng-bind-html="res"></span></td>
           </tr>
         </tbody>
       </table>
-      <div ng-repeat="req in surv.requirements | orderBy:$ctrl.sortRequirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
+      <div ng-repeat="req in surv.requirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
         <div ng-repeat="noncon in req.nonconformities">
-          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.criterion ? (req.criterion.number + ': ' + req.criterion.title) : req.requirement }}</span></a>
+          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.display }}</span></a>
           <p>Non-Conformity related to
-            <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
-            <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
+            <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
             Details
           </p>
           <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to
-              <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
-              <span ng-if="!req.criterion" ng-class="{'removed' : $ctrl.isRequirementRemoved(req.requirement)}">{{ ($ctrl.isRequirementRemoved(req.requirement) ? 'Removed | ' : '') + req.requirement }}</span><br />
+              <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
               Dates
             </p>
             <table class="table table-condensed">
@@ -95,8 +91,7 @@
               </tbody>
             </table>
             <p>Non-Conformity related to
-              <span ng-if="req.criterion" ng-class="{'removed' : req.criterion.removed}">{{ (req.criterion.removed ? 'Removed | ' : '') + req.criterion.number + ': ' + req.criterion.title}}</span>
-              <span ng-if="!req.criterion">{{ req.requirement }} </span>
+              <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
               Description
             </p>
             <table class="table table-condensed">

@@ -1,8 +1,8 @@
 import { sortRequirements } from 'services/surveillance.service';
 
 const getDisplay = (req) => {
-  if (req.requirementDetailTypeOther) {
-    return req.requirementDetailTypeOther;
+  if (req.requirementDetailOther) {
+    return req.requirementDetailOther;
   }
   return `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (`${req.requirementDetailType.number}:`) : ''} ${req.requirementDetailType.title}`;
 };

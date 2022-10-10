@@ -30,9 +30,9 @@ const SurveillanceRequirementEditComponent = {
         this.updateRequirementOptions();
         this.requirementDetailType = this.requirementOptions.find((option) => option.id === this.requirement.requirementDetailType.id);
       }
-      if (this.requirement.requirementDetailTypeOther) {
+      if (this.requirement.requirementDetailOther) {
         this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name === 'Other Requirement');
-        this.requirementDetailOther = this.requirement.requirementDetailTypeOther;
+        this.requirementDetailOther = this.requirement.requirementDetailOther;
       }
       if (this.requirement.result) {
         this.requirement.result = this.data.surveillanceResultTypes.data.find((type) => type.name === this.requirement.result.name);
@@ -129,10 +129,10 @@ const SurveillanceRequirementEditComponent = {
       }
       if (this.requirementType.name !== 'Other Requirement') {
         this.requirement.requirementDetailType = this.requirementDetailType;
-        this.requirement.requirementDetailTypeOther = undefined;
+        this.requirement.requirementDetailOther = undefined;
       } else {
         this.requirement.requirementDetailType = undefined;
-        this.requirement.requirementDetailTypeOther = this.requirementDetailOther;
+        this.requirement.requirementDetailOther = this.requirementDetailOther;
       }
       this.close({ $value: this.requirement });
     }

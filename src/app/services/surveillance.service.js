@@ -11,11 +11,11 @@ const sortRequirementDetailTypes = (a, b) => {
 };
 
 const sortRequirements = (a, b) => {
-  if (a.requirementDetailTypeOther && b.requirementDetailTypeOther) {
-    return a.requirementDetailTypeOther < b.requirementDetailTypeOther ? -1 : 1;
+  if (a.requirementDetailOther && b.requirementDetailOther) {
+    return a.requirementDetailOther < b.requirementDetailOther ? -1 : 1;
   }
-  if (a.requirementDetailTypeOther || b.requirementDetailTypeOther) {
-    return a.requirementDetailTypeOther ? 1 : -1;
+  if (a.requirementDetailOther || b.requirementDetailOther) {
+    return a.requirementDetailOther ? 1 : -1;
   }
   return sortRequirementDetailTypes(a.requirementDetailType, b.requirementDetailType);
 };
