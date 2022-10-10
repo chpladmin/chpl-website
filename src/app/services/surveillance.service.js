@@ -20,7 +20,26 @@ const sortRequirements = (a, b) => {
   return sortRequirementDetailTypes(a.requirementDetailType, b.requirementDetailType);
 };
 
+const sortSurveillances = (a, b) => (a.friendlyId < b.friendlyId ? -1 : 1);
+
+const getRequirementDisplay = (req) => {
+  if (req.requirementDetailOther) {
+    return req.requirementDetailOther;
+  }
+  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (`${req.requirementDetailType.number}: `) : ''}${req.requirementDetailType.title}`;
+};
+
+const interpretRequirements = (reqs) => reqs
+  .sort(sortRequirements)
+  .map((req) => ({
+    ...req,
+    display: getRequirementDisplay(req),
+  }));
+
 export {
+  getRequirementDisplay,
+  interpretRequirements,
   sortRequirementDetailTypes,
   sortRequirements,
+  sortSurveillances,
 };

@@ -1,18 +1,4 @@
-import { sortRequirements } from 'services/surveillance.service';
-
-const getDisplay = (req) => {
-  if (req.requirementDetailOther) {
-    return req.requirementDetailOther;
-  }
-  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (`${req.requirementDetailType.number}: `) : ''}${req.requirementDetailType.title}`;
-};
-
-const updateRequirements = (reqs) => reqs
-  .sort(sortRequirements)
-  .map((req) => ({
-    ...req,
-    display: getDisplay(req),
-  }));
+import { interpretRequirements } from 'services/surveillance.service';
 
 const SurveillanceEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/edit.html',
@@ -36,7 +22,7 @@ const SurveillanceEditComponent = {
     $onInit() {
       this.surveillance = {
         ...this.resolve.surveillance,
-        requirements: this.resolve.surveillance.requirements ? updateRequirements(this.resolve.surveillance.requirements) : [],
+        requirements: this.resolve.surveillance.requirements ? interpretRequirements(this.resolve.surveillance.requirements) : [],
       };
       this.workType = this.resolve.workType;
       this.data = {
@@ -81,7 +67,7 @@ const SurveillanceEditComponent = {
         if (!this.surveillance.requirements) {
           this.surveillance.requirements = [];
         }
-        this.surveillance.requirements = updateRequirements([
+        this.surveillance.requirements = interpretRequirements([
           ...this.surveillance.requirements,
           response,
         ]);
@@ -181,12 +167,12 @@ const SurveillanceEditComponent = {
           }
         }
         if (!found) {
-          this.surveillance.requirements = updateRequirements([
+          this.surveillance.requirements = interpretRequirements([
             ...this.surveillance.requirements,
             response,
           ]);
         } else {
-          this.surveillance.requirements = updateRequirements(this.surveillance.requirements);
+          this.surveillance.requirements = interpretRequirements(this.surveillance.requirements);
         }
       }, (result) => {
         this.$log.info(result);

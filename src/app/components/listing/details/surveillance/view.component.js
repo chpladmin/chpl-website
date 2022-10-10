@@ -1,20 +1,24 @@
-import { sortRequirements } from 'services/surveillance.service';
+import {
+  getRequirementDisplay,
+  interpretRequirements,
+  sortSurveillances,
+} from 'services/surveillance.service';
 
-const getDisplay = (req) => {
-  if (req.requirementDetailOther) {
-    return req.requirementDetailOther;
+const surveillanceResults = (surv) => {
+  const results = [];
+  for (let i = 0; i < surv.requirements.length; i += 1) {
+    for (let j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
+      let result = `${surv.requirements[i].nonconformities[j].nonconformityStatus} Non-Conformity Found for `;
+      result += getRequirementDisplay(surv.requirements[i]);
+      result += '<br />';
+      results.push(result);
+    }
   }
-  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (`${req.requirementDetailType.number}: `) : ''}${req.requirementDetailType.title}`;
+  if (results.length === 0) {
+    results.push('No Non-Conformities Found');
+  }
+  return results;
 };
-
-const updateRequirements = (reqs) => reqs
-  .sort(sortRequirements)
-  .map((req) => ({
-    ...req,
-    display: getDisplay(req),
-  }));
-
-const sortSurveillances = (a, b) => (a.friendlyId < b.friendlyId ? -1 : 1);
 
 const SurveillanceComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/view.html',
@@ -141,27 +145,11 @@ const SurveillanceComponent = {
         surveillance: listing.surveillance
           .map((surv) => ({
             ...surv,
-            requirements: surv.requirements ? updateRequirements(surv.requirements) : [],
-            display: this.surveillanceResults(surv),
+            requirements: surv.requirements ? interpretRequirements(surv.requirements) : [],
+            display: surveillanceResults(surv),
           }))
           .sort(sortSurveillances),
       };
-    }
-
-    surveillanceResults(surv) {
-      const results = [];
-      for (let i = 0; i < surv.requirements.length; i += 1) {
-        for (let j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
-          let result = `${surv.requirements[i].nonconformities[j].nonconformityStatus} Non-Conformity Found for `;
-          result += getDisplay(surv.requirements[i]);
-          result += '<br />';
-          results.push(result);
-        }
-      }
-      if (results.length === 0) {
-        results.push('No Non-Conformities Found');
-      }
-      return results;
     }
   },
 };

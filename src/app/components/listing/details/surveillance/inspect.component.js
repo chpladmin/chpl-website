@@ -1,11 +1,4 @@
-import { sortRequirements } from 'services/surveillance.service';
-
-const getDisplay = (req) => {
-  if (req.requirementDetailOther) {
-    return req.requirementDetailOther;
-  }
-  return `${req.requirementDetailType.removed ? 'Removed | ' : ''} ${req.requirementDetailType.number ? (`${req.requirementDetailType.number}:`) : ''} ${req.requirementDetailType.title}`;
-};
+import { interpretRequirements } from 'services/surveillance.service';
 
 const SurveillanceInspectComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/inspect.html',
@@ -28,12 +21,7 @@ const SurveillanceInspectComponent = {
     $onInit() {
       this.surveillance = {
         ...this.resolve.surveillance,
-        requirements: this.resolve.surveillance.requirements
-          .sort(sortRequirements)
-          .map((req) => ({
-            ...req,
-            display: getDisplay(req),
-          })),
+        requirements: interpretRequirements(this.resolve.surveillance.requirements),
       };
       this.errorMessages = [];
       this.surveillanceTypes = this.networkService.getSurveillanceLookups();
