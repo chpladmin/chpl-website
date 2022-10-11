@@ -51,18 +51,10 @@ const usePutSvap = () => {
 const useDeleteUcdProcess = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.delete(`ucd-processes/${data.ucdProcessId}`), {
+  return useMutation(async (data) => axios.delete(`ucd-processes/${data.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(['ucd-processes']);
     },
-  });
-};
-
-const useFetchCriteriaForUcdProcesses = () => {
-  const axios = useAxios();
-  return useQuery(['ucd-processes/criteria'], async () => {
-    const response = await axios.get('ucd-processes/criteria');
-    return response.data;
   });
 };
 
@@ -101,7 +93,6 @@ export {
   usePostSvap,
   usePutSvap,
   useDeleteUcdProcess,
-  useFetchCriteriaForUcdProcesses,
   useFetchUcdProcesses,
   usePostUcdProcess,
   usePutUcdProcess,

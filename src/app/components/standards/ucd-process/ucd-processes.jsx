@@ -13,7 +13,6 @@ import ChplUcdProcessesView from './ucd-processes-view';
 
 import {
   useDeleteUcdProcess,
-  useFetchCriteriaForUcdProcesses,
   useFetchUcdProcesses,
   usePostUcdProcess,
   usePutUcdProcess,
@@ -26,10 +25,8 @@ function ChplUcdProcesses() {
   const deleteUcdProcess = useDeleteUcdProcess();
   const postUcdProcess = usePostUcdProcess();
   const putUcdProcess = usePutUcdProcess();
-  const criterionOptionsQuery = useFetchCriteriaForUcdProcesses();
   const { enqueueSnackbar } = useSnackbar();
   const [activeUcdProcess, setActiveUcdProcess] = useState(undefined);
-  const [criterionOptions, setCriterionOptions] = useState([]);
   const [errors, setErrors] = useState([]);
   const [ucdProcesses, setUcdProcesses] = useState([]);
   let handleDispatch;
@@ -63,11 +60,6 @@ function ChplUcdProcesses() {
     setUcdProcesses(data);
   }, [data, isLoading, isSuccess]);
 
-  useEffect(() => {
-    if (criterionOptionsQuery.isLoading || !criterionOptionsQuery.isSuccess) { return; }
-    setCriterionOptions(criterionOptionsQuery.data);
-  }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
-
   handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
@@ -81,7 +73,7 @@ function ChplUcdProcesses() {
         setErrors([]);
         deleteUcdProcess.mutate(payload, {
           onSuccess: () => {
-            enqueueSnackbar('UCD ProcessDeleted', {
+            enqueueSnackbar('UCD Process Deleted', {
               variant: 'success',
             });
             setActiveUcdProcess(undefined);
@@ -143,7 +135,6 @@ function ChplUcdProcesses() {
           <ChplUcdProcessEdit
             ucdProcess={activeUcdProcess}
             dispatch={handleDispatch}
-            criterionOptions={criterionOptions}
             errors={errors}
           />
         </CardContent>

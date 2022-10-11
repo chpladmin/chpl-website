@@ -14,12 +14,9 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { isCures, sortCriteria } from 'services/criteria.service';
 
 const headers = [
   { property: 'name', text: 'Name', sortable: true },
-  { text: 'Applicable Criteria' },
-  { property: 'replaced', text: 'Replaced', sortable: true },
   { text: 'Action', invisible: true },
 ];
 
@@ -47,12 +44,8 @@ function ChplUcdProcessesView(props) {
     setUcdProcesses(props.ucdProcesses
       .map((item) => ({
         ...item,
-        criteriaDisplay: item.criteria
-          .sort(sortCriteria)
-          .map((c) => c.number + (isCures(c) ? ' (Cures Update)' : ''))
-          .join(', '),
       }))
-      .sort(sortComparator('regulatoryTextCitation')));
+      .sort(sortComparator('name')));
   }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -93,12 +86,6 @@ function ChplUcdProcessesView(props) {
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
                     { item.name }
-                  </TableCell>
-                  <TableCell>
-                    { item.criteriaDisplay }
-                  </TableCell>
-                  <TableCell>
-                    { item.replaced ? 'Yes' : 'No' }
                   </TableCell>
                   <TableCell align="right">
                     <Button
