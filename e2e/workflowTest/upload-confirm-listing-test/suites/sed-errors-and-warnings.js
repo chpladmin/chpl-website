@@ -41,6 +41,15 @@ const suite = {
     ],
     expectedWarnings: [
     ],
+  },
+  {
+    listingId: '15.07.04.2701.SED3.R2.00.1.200511',
+    expectedErrors: [
+    ],
+    expectedWarnings: [
+      'UCD Process \'junk ucd proc\' referenced by criteria 170.315 (a)(1) was not found and was or will be removed.',
+      'The UCD Process value was changed from NISTIR7741 to NISTIR 7741.'
+    ],
   }],
 };
 
