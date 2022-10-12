@@ -1,32 +1,32 @@
 import { sortCriteria } from './criteria.service';
 
-const sortRequirementDetailTypes = (a, b) => {
-  if (a.surveillanceRequirementType.name !== b.surveillanceRequirementType.name) {
-    return a.surveillanceRequirementType.name < b.surveillanceRequirementType.name ? -1 : 1;
+const sortRequirementTypes = (a, b) => {
+  if (a.requirementGroupType.name !== b.requirementGroupType.name) {
+    return a.requirementGroupType.name < b.requirementGroupType.name ? -1 : 1;
   }
-  if (a.surveillanceRequirementType.name === 'Certified Capability') {
+  if (a.requirementGroupType.name === 'Certified Capability') {
     return sortCriteria(a, b);
   }
   return a.title < b.title ? -1 : 1;
 };
 
 const sortRequirements = (a, b) => {
-  if (a.requirementDetailOther && b.requirementDetailOther) {
-    return a.requirementDetailOther < b.requirementDetailOther ? -1 : 1;
+  if (a.requirementTypeOther && b.requirementTypeOther) {
+    return a.requirementTypeOther < b.requirementTypeOther ? -1 : 1;
   }
-  if (a.requirementDetailOther || b.requirementDetailOther) {
-    return a.requirementDetailOther ? 1 : -1;
+  if (a.requirementTypeOther || b.requirementTypeOther) {
+    return a.requirementTypeOther ? 1 : -1;
   }
-  return sortRequirementDetailTypes(a.requirementDetailType, b.requirementDetailType);
+  return sortRequirementTypes(a.requirementType, b.requirementType);
 };
 
 const sortSurveillances = (a, b) => (a.friendlyId < b.friendlyId ? -1 : 1);
 
 const getRequirementDisplay = (req) => {
-  if (req.requirementDetailOther) {
-    return req.requirementDetailOther;
+  if (req.requirementTypeOther) {
+    return req.requirementTypeOther;
   }
-  return `${req.requirementDetailType.removed ? 'Removed | ' : ''}${req.requirementDetailType.number ? (`${req.requirementDetailType.number}: `) : ''}${req.requirementDetailType.title}`;
+  return `${req.requirementType.removed ? 'Removed | ' : ''}${req.requirementType.number ? (`${req.requirementType.number}: `) : ''}${req.requirementType.title}`;
 };
 
 const interpretRequirements = (reqs) => reqs
@@ -39,7 +39,7 @@ const interpretRequirements = (reqs) => reqs
 export {
   getRequirementDisplay,
   interpretRequirements,
-  sortRequirementDetailTypes,
+  sortRequirementTypes,
   sortRequirements,
   sortSurveillances,
 };

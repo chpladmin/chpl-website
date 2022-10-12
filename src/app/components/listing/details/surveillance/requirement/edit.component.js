@@ -1,4 +1,4 @@
-import { sortRequirementDetailTypes } from 'services/surveillance.service';
+import { sortRequirementTypes } from 'services/surveillance.service';
 
 const SurveillanceRequirementEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/requirement/edit.html',
@@ -25,14 +25,14 @@ const SurveillanceRequirementEditComponent = {
       this.showFormErrors = false;
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
-      if (this.requirement.requirementDetailType) {
-        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name === this.requirement.requirementDetailType.surveillanceRequirementType.name);
+      if (this.requirement.requirementType) {
+        this.requirementGroupType = this.data.requirementGroupTypes.data.find((req) => req.name === this.requirement.requirementType.requirementGroupType.name);
         this.updateRequirementOptions();
-        this.requirementDetailType = this.requirementOptions.find((option) => option.id === this.requirement.requirementDetailType.id);
+        this.requirementType = this.requirementOptions.find((option) => option.id === this.requirement.requirementType.id);
       }
-      if (this.requirement.requirementDetailOther) {
-        this.requirementType = this.data.surveillanceRequirementTypes.data.find((req) => req.name === 'Other Requirement');
-        this.requirementDetailOther = this.requirement.requirementDetailOther;
+      if (this.requirement.requirementTypeOther) {
+        this.requirementGroupType = this.data.requirementGroupTypes.data.find((req) => req.name === 'Other Requirement');
+        this.requirementTypeOther = this.requirement.requirementTypeOther;
       }
       if (this.requirement.result) {
         this.requirement.result = this.data.surveillanceResultTypes.data.find((type) => type.name === this.requirement.result.name);
@@ -127,21 +127,21 @@ const SurveillanceRequirementEditComponent = {
       if (this.requirement.result.name === 'No Non-Conformity') {
         this.requirement.nonconformities = [];
       }
-      if (this.requirementType.name !== 'Other Requirement') {
-        this.requirement.requirementDetailType = this.requirementDetailType;
-        this.requirement.requirementDetailOther = undefined;
+      if (this.requirementGroupType.name !== 'Other Requirement') {
+        this.requirement.requirementType = this.requirementType;
+        this.requirement.requirementTypeOther = undefined;
       } else {
-        this.requirement.requirementDetailType = undefined;
-        this.requirement.requirementDetailOther = this.requirementDetailOther;
+        this.requirement.requirementType = undefined;
+        this.requirement.requirementTypeOther = this.requirementTypeOther;
       }
       this.close({ $value: this.requirement });
     }
 
     updateRequirementOptions() {
-      if (!this.requirementType) { return; }
+      if (!this.requirementGroupType) { return; }
       this.requirementOptions = this.data.surveillanceRequirements.data
-        .filter((req) => req.surveillanceRequirementType.id === this.requirementType.id)
-        .sort(sortRequirementDetailTypes)
+        .filter((req) => req.requirementGroupType.id === this.requirementGroupType.id)
+        .sort(sortRequirementTypes)
         .map((req) => ({
           ...req,
           display: `${req.removed ? 'Removed | ' : ''}${req.number ? (`${req.number}: `) : ''}${req.title}`,

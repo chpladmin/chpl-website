@@ -467,9 +467,9 @@ export default class NetworkService {
       .then((response) => {
         data.surveillanceTypes = response;
       });
-    this.apiGET('/data/surveillance_requirement_types')
+    this.apiGET('/data/requirement-group-types')
       .then((response) => {
-        data.surveillanceRequirementTypes = response;
+        data.requirementGroupTypes = response;
       });
     this.apiGET('/data/surveillance_result_types')
       .then((response) => {
@@ -479,7 +479,7 @@ export default class NetworkService {
       .then((response) => {
         data.nonconformityTypes = response;
       });
-    this.apiGET('/data/surveillance-requirement-detail-types')
+    this.apiGET('/data/requirement-types')
       .then((response) => {
         data.surveillanceRequirements = response;
       });

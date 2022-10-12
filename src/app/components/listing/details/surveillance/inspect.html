@@ -48,8 +48,8 @@
           </thead>
           <tbody>
             <tr ng-repeat="req in $ctrl.surveillance.requirements">
-              <td>{{ req.requirementDetailOther ? 'Other Requirement' : req.requirementDetailType.surveillanceRequirementType.name }}</td>
-              <td ng-class="{'removed' : req.requirementDetailType.removed}">{{ req.display }}</td>
+              <td>{{ req.requirementTypeOther ? 'Other Requirement' : req.requirementType.requirementGroupType.name }}</td>
+              <td ng-class="{'removed' : req.requirementType.removed}">{{ req.display }}</td>
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>
