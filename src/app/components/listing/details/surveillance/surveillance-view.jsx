@@ -1,9 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import {
-  arrayOf, bool, shape, string,
-} from 'prop-types';
-import { ThemeProvider, makeStyles } from '@material-ui/core/styles';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import React from 'react';
 import {
   Paper,
   Table,
@@ -12,20 +7,23 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  ThemeProvider,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
-
-import { ChplCriterionTitle, ChplTooltip } from '../../../util';
-import { getAngularService } from '../../../../services/angular-react-helper';
-import {
-  surveillance as surveillancePropType,
-  criterion as criterionPropType,
-} from '../../../../shared/prop-types';
-import theme from '../../../../themes/theme';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 import ChplSurveillanceNonconformity from './nonconformity';
 
-const useStyles = makeStyles(() => ({
+import { ChplTooltip } from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
+import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
+import {
+  surveillance as surveillancePropType,
+} from 'shared/prop-types';
+import theme from 'themes/theme';
+
+const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
@@ -37,41 +35,21 @@ const useStyles = makeStyles(() => ({
     paddingLeft: '8px',
     paddingRight: '8px',
   },
-}));
+});
 
-const getSurveillanceResults = (surv) => surv.requirements.flatMap((req) => req.nonconformities.map((nc) => ({
-  id: req.id,
-  statusName: nc.nonconformityStatus,
-  criterion: req.criterion,
-  requirement: req.requirement,
-})));
+const getSurveillanceResultsSummary = (surv) => surv.requirements
+  .flatMap((req) => req.nonconformities
+    .map((nc) => ({
+      ...req,
+      id: `${req.id}-${nc.id}`,
+      statusName: nc.nonconformityStatus,
+      display: getRequirementDisplay(req),
+      removed: req.requirementType.removed,
+    })));
 
 function ChplSurveillanceView(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const DateUtil = getAngularService('DateUtil');
-  const [surveillance] = useState(props.surveillance);
-  const [surveillanceRequirements] = useState(props.surveillanceRequirements);
-  const [nonconformityTypes] = useState(props.nonconformityTypes);
-  const [surveillanceResults, setSurveillanceResults] = useState([]);
-
+  const { surveillance } = props;
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
-  useEffect(() => {
-    setSurveillanceResults(getSurveillanceResults(surveillance));
-  }, [surveillance]);
-
-  const isRequirementRemoved = (requirement) => {
-    let foundReq = surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === requirement);
-    if (foundReq) {
-      return foundReq.removed;
-    }
-    foundReq = surveillanceRequirements.transparencyOptions.find((req) => req.item === requirement);
-    if (foundReq) {
-      return foundReq.removed;
-    }
-    return false;
-  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,7 +73,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.startDay) }</TableCell>
+              <TableCell>{ getDisplayDateFormat(surveillance.startDay) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -106,7 +84,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell>{ DateUtil.getDisplayDateFormat(surveillance.endDay) }</TableCell>
+              <TableCell>{ getDisplayDateFormat(surveillance.endDay) }</TableCell>
             </TableRow>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -132,19 +110,17 @@ function ChplSurveillanceView(props) {
                 { surveillance.requirements?.length > 0
                   && (
                     <ul className={classes.unindentedData}>
-                      { surveillance.requirements.map((req) => (
-                        <li key={req.id}>
-                          { `${req.type.name}` }
-                          :
-                          { req.criterion && <ChplCriterionTitle criterion={req.criterion} useRemovedClass /> }
-                          { !req.criterion
-                            && (
-                              <span className={(isRequirementRemoved(req.requirement) ? 'removed' : '')}>
-                                { `${(isRequirementRemoved(req.requirement) ? ' Removed | ' : ' ')} ${req.requirement}` }
-                              </span>
-                            )}
-                        </li>
-                      ))}
+                      { surveillance.requirements
+                        .sort(sortRequirements)
+                        .map((req) => (
+                          <li key={req.id}>
+                            { `${req.requirementType.requirementGroupType.name}` }
+                            {': '}
+                            <span className={(req.requirementType.removed ? 'removed' : '')}>
+                              { getRequirementDisplay(req) }
+                            </span>
+                          </li>
+                        ))}
                     </ul>
                   )}
                 { surveillance.requirements?.length === 0 && 'None' }
@@ -160,43 +136,44 @@ function ChplSurveillanceView(props) {
                 </ChplTooltip>
               </TableCell>
               <TableCell test_dataid="">
-                { surveillanceResults.length > 0
+                { getSurveillanceResultsSummary(surveillance).length > 0
                   && (
                     <ul className={classes.unindentedData}>
-                      { surveillanceResults.map((result) => (
+                      { getSurveillanceResultsSummary(surveillance).map((result) => (
                         <li key={result.id}>
                           { `${result.statusName} Non-Conformity Found for` }
-                          { result.criterion && <ChplCriterionTitle criterion={result.criterion} useRemovedClass /> }
-                          { !result.criterion
-                            && (
-                              <span className={(isRequirementRemoved(result.requirement) ? 'removed' : '')}>
-                                { `${(isRequirementRemoved(result.requirement) ? ' Removed | ' : ' ')} ${result.requirement}` }
-                              </span>
-                            )}
+                          <span className={result.removed ? 'removed' : ''}>
+                            { result.display }
+                          </span>
                         </li>
                       ))}
                     </ul>
                   )}
-                { surveillanceResults.length === 0 && 'No Non-Conformities Found' }
+                { getSurveillanceResultsSummary(surveillance).length === 0 && 'No Non-Conformities Found' }
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-      { getSurveillanceResults(surveillance).length > 0
+      { getSurveillanceResultsSummary(surveillance).length > 0
         && (
-        <div className={classes.nonconformityContainer}>
-          <Typography variant="subtitle1" data-testid="non-conformity-header">
-            Non-Conformities
-          </Typography>
-          <div data-testid="non-conformity-component-container">
-            { surveillance.requirements.map((requirement) => (
-              requirement.nonconformities.map((nonconformity) => (
-                <ChplSurveillanceNonconformity key={requirement.id} surveillance={surveillance} requirement={requirement} nonconformity={nonconformity} nonconformityTypes={nonconformityTypes} data-testid="non-conformity-component" />
-              ))
-            ))}
+          <div className={classes.nonconformityContainer}>
+            <Typography variant="subtitle1" data-testid="non-conformity-header">
+              Non-Conformities
+            </Typography>
+            <div data-testid="non-conformity-component-container">
+              { surveillance.requirements.map((requirement) => (
+                requirement.nonconformities.map((nonconformity) => (
+                  <ChplSurveillanceNonconformity
+                    key={requirement.id}
+                    surveillance={surveillance}
+                    nonconformity={nonconformity}
+                    data-testid="non-conformity-component"
+                  />
+                ))
+              ))}
+            </div>
           </div>
-        </div>
         )}
     </ThemeProvider>
   );
@@ -206,17 +183,4 @@ export default ChplSurveillanceView;
 
 ChplSurveillanceView.propTypes = {
   surveillance: surveillancePropType.isRequired,
-  surveillanceRequirements: shape({
-    criteriaOptions2014: arrayOf(criterionPropType),
-    criteriaOptions2015: arrayOf(criterionPropType),
-    realWorldTestingOptions: arrayOf(shape({
-      item: string,
-      removed: bool,
-    })),
-    transparencyOptions: arrayOf(shape({
-      item: string,
-      removed: bool,
-    })),
-  }).isRequired,
-  nonconformityTypes: arrayOf(criterionPropType).isRequired,
 };
