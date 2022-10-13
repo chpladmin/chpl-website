@@ -10,6 +10,7 @@ class CollectionPage {
       filterSearchTermInput: '#filter-search-term-input',
       filterSearchTermGo: '#filter-search-term-go',
       filterChipsSection: '#filter-chips',
+      clearSearchTermButton: 'button[aria-label="Clear search"]',
     };
   }
 
@@ -206,6 +207,9 @@ class CollectionPage {
   /* eslint-disable indent */
   async searchForText(text) {
     const initialResultCount = await this.getTotalResultCount();
+    await (
+      await $(this.elements.clearSearchTermButton)
+    ).click();
     await (
       await $(this.elements.filterSearchTermInput)
     ).setValue(text);
