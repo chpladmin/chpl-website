@@ -515,7 +515,7 @@ export default class NetworkService {
   }
 
   getUcdProcesses() {
-    return this.apiGET('/data/ucd_processes');
+    return this.apiGET('/ucd-processes');
   }
 
   getUploadingSurveillances() {
