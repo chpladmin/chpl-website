@@ -40,9 +40,10 @@
   }
 
   /** @ngInject */
-  function SedController ($filter, $log, $scope, $timeout, $uibModal, utilService) {
+  function SedController ($filter, $log, $scope, $timeout, $uibModal, DateUtil, utilService) {
     var vm = this;
 
+    vm.DateUtil = DateUtil;
     vm.addTask = addTask;
     vm.editDetails = editDetails;
     vm.getCsv = getCsv;
@@ -101,7 +102,7 @@
       vm.modalInstance.result.then(function (result) {
         vm.listing.sedReportFileLocation = result.listing.sedReportFileLocation;
         vm.listing.sedIntendedUserDescription = result.listing.sedIntendedUserDescription;
-        vm.listing.sedTestingEndDate = result.listing.sedTestingEndDate;
+        vm.listing.sedTestingEndDay = result.listing.sedTestingEndDay;
         vm.listing.sed.ucdProcesses = result.ucdProcesses;
         vm.ucdProcesses = result.ucdProcesses;
         vm.onChange({listing: vm.listing});

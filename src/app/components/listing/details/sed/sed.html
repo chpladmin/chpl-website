@@ -13,10 +13,9 @@
       <h4>Description of Intended Users</h4>
       <p>{{ vm.listing.sedIntendedUserDescription ? vm.listing.sedIntendedUserDescription : 'N/A' }}</p>
     </span>
-    <span ng-if="vm.listing.sedTestingEndDate">
+    <span ng-if="vm.listing.sedTestingEndDay">
       <h4>Date SED Testing was Completed</h4>
-      <p ng-if="vm.listing.sedTestingEndDate">{{ vm.listing.sedTestingEndDate | date : 'mediumDate' : 'UTC' }}</p>
-      <p ng-if="!vm.listing.sedTestingEndDate">N/A</p>
+      <p>{{ vm.DateUtil.getDisplayDateFormat(vm.listing.sedTestingEndDay) }}</p>
     </span>
     <span>
       <h4>SED Tested Certification Criteria & Associated UCD Processes</h4>

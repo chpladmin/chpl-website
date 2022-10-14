@@ -483,11 +483,11 @@
         var newListing = {
           sedReportFileLocation: 'new',
           sedIntendedUserDescription: 'desc',
-          sedTestingEndDate: 'a date',
+          sedTestingEndDay: 'a date',
         };
         expect(vm.listing.sedReportFileLocation).not.toEqual(newListing.sedReportFileLocation);
         expect(vm.listing.sedIntendedUserDescription).not.toEqual(newListing.sedIntendedUserDescription);
-        expect(vm.listing.sedTestingEndDate).not.toEqual(newListing.sedTestingEndDate);
+        expect(vm.listing.sedTestingEndDay).not.toEqual(newListing.sedTestingEndDay);
 
         vm.editDetails();
         vm.modalInstance.close({
@@ -496,7 +496,7 @@
 
         expect(vm.listing.sedReportFileLocation).toEqual(newListing.sedReportFileLocation);
         expect(vm.listing.sedIntendedUserDescription).toEqual(newListing.sedIntendedUserDescription);
-        expect(vm.listing.sedTestingEndDate).toEqual(newListing.sedTestingEndDate);
+        expect(vm.listing.sedTestingEndDay).toEqual(newListing.sedTestingEndDay);
       });
 
       it('should replace ucd processes with the new ones', () => {
