@@ -454,6 +454,7 @@
           animation: false,
           backdrop: 'static',
           keyboard: false,
+          size: 'lg',
           resolve: {
             criteria: jasmine.any(Function),
             listing: jasmine.any(Function),

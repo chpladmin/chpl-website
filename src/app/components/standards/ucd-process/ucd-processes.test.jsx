@@ -16,14 +16,9 @@ import { BreadcrumbContext } from 'shared/contexts';
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const mock = {
   ucdProcesses: [
-    { id: 1, name: 'citation 1', criteria: [{ id: 1, number: 'number 1', title: '1 title criterion' }] },
-    { id: 2, name: 'a citation 2', criteria: [{ id: 2, number: 'number 2', title: '2 title criterion' }] },
-    { id: 1, name: 'last citation 3', criteria: [{ id: 3, number: 'number 3', title: '3 title criterion' }] },
-  ],
-  certificationCriteria: [
-    { id: 1, number: '1', title: '1 title criterion' },
-    { id: 2, number: '2', title: '2 title criterion' },
-    { id: 3, number: '3', title: '3 title criterion' },
+    { id: 1, name: 'citation 1' },
+    { id: 2, name: 'a citation 2' },
+    { id: 1, name: 'last citation 3' },
   ],
   breadcrumbContext: {
     append: () => {},
@@ -42,10 +37,6 @@ jest.mock('api/standards', () => ({
   __esModule: true,
   useDeleteUcdProcess: () => ({
     ...mockApi,
-  }),
-  useFetchCriteriaForUcdProcesses: () => ({
-    ...mockApi,
-    data: mock.certificationCriteria,
   }),
   useFetchUcdProcesses: () => ({
     ...mockApi,
@@ -95,6 +86,7 @@ describe('the ChplUcdProcesses component', () => {
   describe('when creating a UCD Process', () => {
     it('should not allow saving without required elements', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add/i }));
+      userEvent.click(screen.getByRole('button', { name: /Save/i }));
 
       await waitFor(() => {
         expect(screen.getByRole('button', { name: /Save/i })).toBeDisabled();
@@ -104,7 +96,6 @@ describe('the ChplUcdProcesses component', () => {
     it('should call the API with valid data on save', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add/i }));
       userEvent.type(screen.getByLabelText(/Name/), 'A new citation');
-      userEvent.type(screen.getByLabelText(/Select a criterion to associate/), '{arrowdown}{arrowdown}{enter}');
       userEvent.click(screen.getByRole('button', { name: /Save/i }));
 
       await waitFor(() => {
