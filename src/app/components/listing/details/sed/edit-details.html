@@ -8,6 +8,11 @@
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="edit-label">Edit SED Details</h4>
   </div>
+  <chpl-sed-details-edit-wrapper-bridge
+    criteria="vm.criteria"
+    listing="vm.listing"
+    ucd-processes="vm.ucdProcesses"
+    ></chpl-sed-details-edit-wrapper-bridge>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
       <label class="control-label col-sm-4" for="cp-sed-report-file-loc">Full Usability Report</label>

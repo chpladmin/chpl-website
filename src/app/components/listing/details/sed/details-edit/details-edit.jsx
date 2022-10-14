@@ -6,150 +6,55 @@ import {
   CardHeader,
   CircularProgress,
 } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
+import { arrayOf, func, object } from 'prop-types';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
-import ChplSvapEdit from './svap-edit';
-import ChplSvapsView from './svaps-view';
+import ChplUcdProcessEdit from './process-edit';
+import ChplUcdProcessesView from './processes-view';
 
-import {
-  useDeleteSvap,
-  useFetchCriteriaForSvaps,
-  useFetchSvaps,
-  usePostSvap,
-  usePutSvap,
-} from 'api/standards';
-import { BreadcrumbContext } from 'shared/contexts';
+import { useFetchUcdProcesses } from 'api/standards';
+import { ChplTextField } from 'components/util';
 
-function ChplSvaps() {
-  const { append, display, hide } = useContext(BreadcrumbContext);
-  const { data, isLoading, isSuccess } = useFetchSvaps();
-  const deleteSvap = useDeleteSvap();
-  const postSvap = usePostSvap();
-  const putSvap = usePutSvap();
-  const criterionOptionsQuery = useFetchCriteriaForSvaps();
-  const { enqueueSnackbar } = useSnackbar();
-  const [activeSvap, setActiveSvap] = useState(undefined);
-  const [criterionOptions, setCriterionOptions] = useState([]);
-  const [errors, setErrors] = useState([]);
-  const [svaps, setSvaps] = useState([]);
+const validationSchema = yup.object({
+  sedReportFileLocation: yup.string()
+    .url('Improper format (http://www.example.com)')
+    .max(250, 'Field is too long'),
+  sedIntendedUserDescription: yup.string(),
+  sedTestingEndDay: yup.date(),
+});
+
+function ChplSedDetailsEdit(props) {
+  const { criteria, listing, ucdProcesses } = props;
+  const { data, isLoading, isSuccess } = useFetchUcdProcesses();
+  const [activeUcdProcess, setActiveUcdProcess] = useState(undefined);
+  const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
   let handleDispatch;
-
-  useEffect(() => {
-    append(
-      <Button
-        key="svaps.viewall.disabled"
-        depth={1}
-        variant="text"
-        disabled
-      >
-        SVAP Maintenance
-      </Button>,
-    );
-    append(
-      <Button
-        key="svaps.viewall"
-        depth={1}
-        variant="text"
-        onClick={() => handleDispatch({ action: 'cancel' })}
-      >
-        SVAP Maintenance
-      </Button>,
-    );
-    display('svaps.viewall.disabled');
-  }, []);
+  let formik;
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setSvaps(data);
+    setUcdProcessOptions(data);
   }, [data, isLoading, isSuccess]);
-
-  useEffect(() => {
-    if (criterionOptionsQuery.isLoading || !criterionOptionsQuery.isSuccess) { return; }
-    setCriterionOptions(criterionOptionsQuery.data);
-  }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
 
   handleDispatch = ({ action, payload }) => {
     switch (action) {
-      case 'cancel':
-        setActiveSvap(undefined);
-        display('svaps.viewall.disabled');
-        hide('svaps.viewall');
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
-        break;
-      case 'delete':
-        setErrors([]);
-        deleteSvap.mutate(payload, {
-          onSuccess: () => {
-            enqueueSnackbar('SVAP Deleted', {
-              variant: 'success',
-            });
-            setActiveSvap(undefined);
-            display('svaps.viewall.disabled');
-            hide('svaps.viewall');
-          },
-          onError: (error) => {
-            setErrors(error.response.data.errorMessages);
-          },
-        });
-        break;
-      case 'edit':
-        setActiveSvap(payload);
-        setErrors([]);
-        display('svaps.viewall');
-        hide('svaps.viewall.disabled');
-        break;
-      case 'save':
-        setErrors([]);
-        if (payload.svapId) {
-          putSvap.mutate(payload, {
-            onSuccess: () => {
-              enqueueSnackbar('SVAP Updated', {
-                variant: 'success',
-              });
-              setActiveSvap(undefined);
-              display('svaps.viewall.disabled');
-              hide('svaps.viewall');
-            },
-            onError: (error) => {
-              setErrors(error.response.data.errorMessages);
-            },
-          });
-        } else {
-          postSvap.mutate(payload, {
-            onSuccess: () => {
-              enqueueSnackbar('SVAP Created', {
-                variant: 'success',
-              });
-              setActiveSvap(undefined);
-              display('svaps.viewall.disabled');
-              hide('svaps.viewall');
-            },
-            onError: (error) => {
-              setErrors(error.response.data?.errorMessages);
-            },
-          });
-        }
-        break;
-        // no default
+      default:
+        console.log({action, payload});
     }
   };
 
-  if (activeSvap) {
-    return (
-      <Card>
-        <CardHeader title={`${activeSvap.svapId ? 'Edit' : 'Add'} SVAP`} />
-        <CardContent>
-          <ChplSvapEdit
-            svap={activeSvap}
-            dispatch={handleDispatch}
-            criterionOptions={criterionOptions}
-            errors={errors}
-          />
-        </CardContent>
-      </Card>
-    );
-  }
+  formik = useFormik({
+    initialValues: {
+      sedReportFileLocation: props.listing.sedReportFileLocation || '',
+      sedIntendedUserDescription: props.listing.sedIntendedUserDescription || '',
+      sedTestingEndDay: props.listing.sedTestingEndDay || '',
+    },
+    onSubmit: () => {
+      props.dispatch({ action: 'save', payload: buildPayload() });
+    },
+    validationSchema,
+  });
 
   if (isLoading) {
     return (
@@ -158,23 +63,60 @@ function ChplSvaps() {
   }
 
   return (
-    <Card>
-      <CardHeader title="SVAP Maintenance" />
-      <CardContent>
-        { (deleteSvap.isLoading || postSvap.isLoading || putSvap.isLoading)
-          && (
-            <CircularProgress />
-          )}
-        <ChplSvapsView
-          svaps={svaps}
-          dispatch={handleDispatch}
+    <>
+      <ChplTextField
+        id="sed-report-file-location"
+        name="sedReportFileLocation"
+        label="Full Usability Report"
+        value={formik.values.sedReportFileLocation}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.sedReportFileLocation && !!formik.errors.sedReportFileLocation}
+        helperText={formik.touched.sedReportFileLocation && formik.errors.sedReportFileLocation}
+      />
+      <ChplTextField
+        id="sed-intended-user-description"
+        name="sedIntendedUserDescription"
+        label="SED Intended User Description"
+        value={formik.values.sedIntendedUserDescription}
+        multiline
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.sedIntendedUserDescription && !!formik.errors.sedIntendedUserDescription}
+        helperText={formik.touched.sedIntendedUserDescription && formik.errors.sedIntendedUserDescription}
+      />
+        <ChplTextField
+          id="sed-testing-end-day"
+          name="sedTestingEndDay"
+          label="SED Testing Completion Date"
+          type="date"
+          value={formik.values.sedTestingEndDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
+          helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
         />
-      </CardContent>
-    </Card>
+      { activeUcdProcess ?
+        (
+          <ChplUcdProcessEdit
+            ucdProcess={activeUcdProcess}
+            dispatch={handleDispatch}
+            ucdProcessOptions={ucdProcessOptions}
+          />
+        ) : (
+          <ChplUcdProcessesView
+            ucdProcesses={ucdProcesses}
+            dispatch={handleDispatch}
+          />
+        )}
+    </>
   );
 }
 
-export default ChplSvaps;
+export default ChplSedDetailsEdit;
 
-ChplSvaps.propTypes = {
+ChplSedDetailsEdit.propTypes = {
+  criteria: arrayOf(object).isRequired,
+  listing: object.isRequired,
+  ucdProcesses: arrayOf(object).isRequired,
 };

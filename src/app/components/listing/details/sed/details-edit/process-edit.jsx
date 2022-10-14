@@ -8,7 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import {
-  arrayOf, func, object, string,
+  arrayOf, func, object,
 } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -16,7 +16,6 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
-import { BreadcrumbContext } from 'shared/contexts';
 
 const validationSchema = yup.object({
   regulatoryTextCitation: yup.string()
@@ -39,50 +38,22 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapEdit(props) {
+function ChplUcdProcessEdit(props) {
   const { criterionOptions, dispatch } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
-  const [svap, setSvap] = useState({});
+  const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    append(
-      <Button
-        key="svaps.add.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Add
-      </Button>,
-    );
-    append(
-      <Button
-        key="svaps.edit.disabled"
-        depth={2}
-        variant="text"
-        disabled
-      >
-        Edit
-      </Button>,
-    );
-  }, []);
-
-  useEffect(() => {
-    setSvap(props.svap);
-    setCriteria(props.svap.criteria?.map((c) => ({
+    setUcdProcess(props.ucdProcess);
+    setCriteria(props.ucdProcess.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(props.svap.svapId ? 'svaps.edit.disabled' : 'svaps.add.disabled');
-  }, [props.svap]); // eslint-disable-line react/destructuring-assignment
-
-  useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
+  }, [props.ucdProcess]); // eslint-disable-line react/destructuring-assignment
 
   const add = (criterion) => {
     setCriteria((prev) => prev.concat(criterion));
@@ -90,11 +61,10 @@ function ChplSvapEdit(props) {
   };
 
   const buildPayload = () => ({
-    ...svap,
-    regulatoryTextCitation: formik.values.regulatoryTextCitation,
-    approvedStandardVersion: formik.values.approvedStandardVersion,
+    ...ucdProcess,
+    name: formik.values.name,
+    details: formik.values.details,
     criteria,
-    replaced: formik.values.replaced,
   });
 
   const getDisplay = (criterion) => criterion.number + (isCures(criterion) ? ' (Cures Update)' : '');
@@ -103,18 +73,12 @@ function ChplSvapEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('svaps.add.disabled');
-        hide('svaps.edit.disabled');
         break;
         // no default
     }
@@ -130,9 +94,8 @@ function ChplSvapEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      regulatoryTextCitation: props.svap?.regulatoryTextCitation || '',
-      approvedStandardVersion: props.svap?.approvedStandardVersion || '',
-      replaced: props.svap?.replaced || false,
+      name: props.ucdProcess?.name || '',
+      details: props.ucdProcess?.details || '',
     },
     onSubmit: () => {
       props.dispatch({ action: 'save', payload: buildPayload() });
@@ -143,27 +106,27 @@ function ChplSvapEdit(props) {
   return (
     <div className={classes.container}>
       <ChplTextField
-        id="regulatory-text-citation"
-        name="regulatoryTextCitation"
-        label="Regulatory Text Citation"
-        value={formik.values.regulatoryTextCitation}
+        id="name"
+        name="name"
+        label="UCD Process - make a selct"
+        value={formik.values.name}
         required
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.regulatoryTextCitation && !!formik.errors.regulatoryTextCitation}
-        helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
+        error={formik.touched.name && !!formik.errors.name}
+        helperText={formik.touched.name && formik.errors.name}
       />
       <ChplTextField
-        id="approved-standard-version"
-        name="approvedStandardVersion"
-        label="Approved Standard Version"
-        value={formik.values.approvedStandardVersion}
+        id="details"
+        name="details"
+        label="UCD Process Details"
+        value={formik.values.details}
         multiline
         required
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.approvedStandardVersion && !!formik.errors.approvedStandardVersion}
-        helperText={formik.touched.approvedStandardVersion && formik.errors.approvedStandardVersion}
+        error={formik.touched.details && !!formik.errors.details}
+        helperText={formik.touched.details && formik.errors.details}
       />
       <ChplTextField
         select
@@ -199,33 +162,19 @@ function ChplSvapEdit(props) {
             />
           ))}
       </div>
-      <FormControlLabel
-        control={(
-          <Switch
-            id="replaced"
-            name="replaced"
-            color="primary"
-            checked={formik.values.replaced}
-            onChange={formik.handleChange}
-          />
-        )}
-        label="Replaced"
-      />
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete={!!svap.svapId}
-        errors={errors}
+        canDelete
         isDisabled={!isValid()}
       />
     </div>
   );
 }
 
-export default ChplSvapEdit;
+export default ChplUcdProcessEdit;
 
-ChplSvapEdit.propTypes = {
-  criterionOptions: arrayOf(object).isRequired,
+ChplUcdProcessEdit.propTypes = {
   dispatch: func.isRequired,
-  svap: object.isRequired,
-  errors: arrayOf(string).isRequired,
+  ucdProcess: object.isRequired,
+  ucdProcessesOptions: arrayOf(object).isRequired,
 };

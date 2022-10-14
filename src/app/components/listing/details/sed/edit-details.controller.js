@@ -5,7 +5,7 @@
     .controller('EditSedDetailsController', EditSedDetailsController);
 
   /** @ngInject */
-  function EditSedDetailsController ($log, $uibModalInstance, criteria, listing, resources, ucdProcesses, utilService) {
+  function EditSedDetailsController ($log, $uibModalInstance, criteria, listing, ucdProcesses, utilService) {
     var vm = this;
 
     vm.cancel = cancel;
@@ -20,10 +20,7 @@
     function activate () {
       vm.criteria = criteria;
       vm.listing = angular.copy(listing);
-      vm.resources = resources;
       vm.ucdProcesses = angular.copy(ucdProcesses);
-      vm.resources.ucdProcesses.data = vm.resources.ucdProcesses.data
-        .concat(ucdProcesses.filter(function (process) { return !process.id; }));
       if (vm.listing.sedTestingEndDate) {
         vm.sedDate = new Date(vm.listing.sedTestingEndDate);
       }
