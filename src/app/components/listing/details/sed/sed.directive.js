@@ -90,6 +90,7 @@
         animation: false,
         backdrop: 'static',
         keyboard: false,
+        size: 'lg',
         resolve: {
           criteria: function () { return vm.sedCriteria; },
           listing: function () { return vm.listing; },

@@ -18,9 +18,7 @@ import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
 
 const validationSchema = yup.object({
-  regulatoryTextCitation: yup.string()
-    .required('Field is required'),
-  approvedStandardVersion: yup.string()
+  ucdProcess: yup.object()
     .required('Field is required'),
 });
 
@@ -39,17 +37,14 @@ const useStyles = makeStyles({
 });
 
 function ChplUcdProcessEdit(props) {
-  const { criterionOptions, dispatch } = props;
-  const { append, display, hide } = useContext(BreadcrumbContext);
+  const { criteriaOptions, dispatch, ucdProcessOptions } = props;
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
-  const [ucdProcess, setUcdProcess] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setUcdProcess(props.ucdProcess);
     setCriteria(props.ucdProcess.criteria?.map((c) => ({
       ...c,
     })) || []);
@@ -61,8 +56,7 @@ function ChplUcdProcessEdit(props) {
   };
 
   const buildPayload = () => ({
-    ...ucdProcess,
-    name: formik.values.name,
+    ...formik.values.ucdProcess,
     details: formik.values.details,
     criteria,
   });
@@ -86,7 +80,7 @@ function ChplUcdProcessEdit(props) {
 
   const isDisabled = (criterion) => criteria.filter((c) => c.id === criterion.id).length > 0;
 
-  const isValid = () => formik.isValid && criteria.length > 0;
+  const isValid = () => true || formik.isValid && criteria.length > 0;
 
   const remove = (item) => {
     setCriteria((prev) => prev.filter((ele) => ele.id !== item.id));
@@ -94,7 +88,7 @@ function ChplUcdProcessEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: props.ucdProcess?.name || '',
+      ucdProcess: props.ucdProcessOptions.find((process) => process.id === props.ucdProcess.id) || '',
       details: props.ucdProcess?.details || '',
     },
     onSubmit: () => {
@@ -106,23 +100,33 @@ function ChplUcdProcessEdit(props) {
   return (
     <div className={classes.container}>
       <ChplTextField
-        id="name"
-        name="name"
-        label="UCD Process - make a selct"
-        value={formik.values.name}
+        select
+        id="ucd-process"
+        name="ucdProcess"
+        label="UCD Process"
         required
+        value={formik.values.ucdProcess}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.touched.name && !!formik.errors.name}
         helperText={formik.touched.name && formik.errors.name}
-      />
+      >
+        { ucdProcessOptions
+          .map((item) => (
+            <MenuItem
+              value={item}
+              key={item.id}
+            >
+              {item.name}
+            </MenuItem>
+          ))}
+      </ChplTextField>
       <ChplTextField
         id="details"
         name="details"
         label="UCD Process Details"
         value={formik.values.details}
         multiline
-        required
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.touched.details && !!formik.errors.details}
@@ -137,7 +141,7 @@ function ChplUcdProcessEdit(props) {
         onChange={(event) => add(event.target.value)}
         helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
       >
-        { criterionOptions
+        { criteriaOptions
           .sort(sortCriteria)
           .map((item) => (
             <MenuItem
@@ -164,7 +168,7 @@ function ChplUcdProcessEdit(props) {
       </div>
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete
+        canDelete={!!props.ucdProcess.id}
         isDisabled={!isValid()}
       />
     </div>
@@ -174,7 +178,8 @@ function ChplUcdProcessEdit(props) {
 export default ChplUcdProcessEdit;
 
 ChplUcdProcessEdit.propTypes = {
+  criteriaOptions: arrayOf(object).isRequired,
   dispatch: func.isRequired,
   ucdProcess: object.isRequired,
-  ucdProcessesOptions: arrayOf(object).isRequired,
+  ucdProcessOptions: arrayOf(object).isRequired,
 };

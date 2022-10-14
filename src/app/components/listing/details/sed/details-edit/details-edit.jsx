@@ -25,12 +25,19 @@ const validationSchema = yup.object({
 });
 
 function ChplSedDetailsEdit(props) {
-  const { criteria, listing, ucdProcesses } = props;
+  const { criteria, listing } = props;
   const { data, isLoading, isSuccess } = useFetchUcdProcesses();
   const [activeUcdProcess, setActiveUcdProcess] = useState(undefined);
+  const [ucdProcesses, setUcdProcesses] = useState([]);
   const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
   let handleDispatch;
   let formik;
+
+  useEffect(() => {
+    if (props.ucdProcesses?.length > 0) {
+      setUcdProcesses(props.ucdProcesses);
+    };
+  }, [props.ucdProcesses]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -39,6 +46,22 @@ function ChplSedDetailsEdit(props) {
 
   handleDispatch = ({ action, payload }) => {
     switch (action) {
+      case 'cancel':
+        setActiveUcdProcess(undefined);
+        break;
+      case 'delete':
+        setUcdProcesses((previous) => previous.filter((prev) => prev.id !== payload.id));
+        setActiveUcdProcess(undefined);
+        break;
+      case 'edit':
+        setActiveUcdProcess(payload);
+        break;
+      case 'save':
+        setActiveUcdProcess(undefined);
+        setUcdProcesses((previous) => previous
+                        .filter((prev) => prev.id !== payload.id)
+                        .concat(payload));
+        break;
       default:
         console.log({action, payload});
     }
@@ -59,6 +82,17 @@ function ChplSedDetailsEdit(props) {
   if (isLoading) {
     return (
       <CircularProgress />
+    );
+  }
+
+  if (activeUcdProcess) {
+    return (
+      <ChplUcdProcessEdit
+        criteriaOptions={criteria}
+        dispatch={handleDispatch}
+        ucdProcess={activeUcdProcess}
+        ucdProcessOptions={ucdProcessOptions}
+      />
     );
   }
 
@@ -85,30 +119,21 @@ function ChplSedDetailsEdit(props) {
         error={formik.touched.sedIntendedUserDescription && !!formik.errors.sedIntendedUserDescription}
         helperText={formik.touched.sedIntendedUserDescription && formik.errors.sedIntendedUserDescription}
       />
-        <ChplTextField
-          id="sed-testing-end-day"
-          name="sedTestingEndDay"
-          label="SED Testing Completion Date"
-          type="date"
-          value={formik.values.sedTestingEndDay}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
-          helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
-        />
-      { activeUcdProcess ?
-        (
-          <ChplUcdProcessEdit
-            ucdProcess={activeUcdProcess}
-            dispatch={handleDispatch}
-            ucdProcessOptions={ucdProcessOptions}
-          />
-        ) : (
-          <ChplUcdProcessesView
-            ucdProcesses={ucdProcesses}
-            dispatch={handleDispatch}
-          />
-        )}
+      <ChplTextField
+        id="sed-testing-end-day"
+        name="sedTestingEndDay"
+        label="SED Testing Completion Date"
+        type="date"
+        value={formik.values.sedTestingEndDay}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
+        helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
+      />
+      <ChplUcdProcessesView
+        ucdProcesses={ucdProcesses}
+        dispatch={handleDispatch}
+      />
     </>
   );
 }
