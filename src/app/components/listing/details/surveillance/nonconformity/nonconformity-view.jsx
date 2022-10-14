@@ -49,7 +49,6 @@ function ChplNonconformityView(props) {
     <Accordion className={classes.nonconformityAccordion}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon color="primary" fontSize="large" />}
-        data-testid="nonconformity-accordion-header"
       >
         <div className={classes.nonconformityAccordionSummaryGrid}>
           <div>
@@ -144,7 +143,7 @@ function ChplNonconformityView(props) {
                     />
                   </ChplTooltip>
                 </TableCell>
-                <TableCell data-testid="nonconformity-type">
+                <TableCell>
                   <span className={nonconformity.type.removed ? 'removed' : ''}>
                     { nonconformity.type.removed ? 'Removed | ' : ''}
                     { nonconformity.type.number
@@ -160,7 +159,7 @@ function ChplNonconformityView(props) {
               </TableRow>
               { surveillance.type?.name === 'Randomized'
                 && (
-                  <TableRow data-testid="pass-rate-row">
+                  <TableRow>
                     <TableCell component="th" scope="row">
                       Pass Rate
                       <ChplTooltip title="Pass rates only apply to non-conformities found as a result of random surveillance. The numerator for the pass rate is the number of sites for each criterion that passed randomized surveillance for the Health IT module being evaluated. The denominator is the total number of sites for which randomized surveillance was conducted on the Health IT module.">

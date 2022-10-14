@@ -106,7 +106,7 @@ function ChplSurveillanceView(props) {
                   />
                 </ChplTooltip>
               </TableCell>
-              <TableCell data-testid="reqs-surveilled-cell">
+              <TableCell>
                 { surveillance.requirements?.length > 0
                   && (
                     <ul className={classes.unindentedData}>
@@ -158,17 +158,16 @@ function ChplSurveillanceView(props) {
       { getSurveillanceResultsSummary(surveillance).length > 0
         && (
           <div className={classes.nonconformityContainer}>
-            <Typography variant="subtitle1" data-testid="non-conformity-header">
+            <Typography variant="subtitle1">
               Non-Conformities
             </Typography>
-            <div data-testid="non-conformity-component-container">
+            <div>
               { surveillance.requirements.map((requirement) => (
                 requirement.nonconformities.map((nonconformity) => (
                   <ChplSurveillanceNonconformity
                     key={requirement.id}
                     surveillance={surveillance}
                     nonconformity={nonconformity}
-                    data-testid="non-conformity-component"
                   />
                 ))
               ))}
