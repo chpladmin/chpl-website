@@ -1,10 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Chip,
-  FormControlLabel,
   MenuItem,
-  Switch,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -39,7 +36,6 @@ const useStyles = makeStyles({
 function ChplUcdProcessEdit(props) {
   const { criteriaOptions, dispatch, ucdProcessOptions } = props;
   const [criteria, setCriteria] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const classes = useStyles();
   let formik;

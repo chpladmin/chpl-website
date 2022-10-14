@@ -1,9 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
   CircularProgress,
 } from '@material-ui/core';
 import { arrayOf, func, object } from 'prop-types';
@@ -31,14 +27,13 @@ function ChplSedDetailsEdit(props) {
   const [activeUcdProcess, setActiveUcdProcess] = useState(undefined);
   const [ucdProcesses, setUcdProcesses] = useState([]);
   const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
-  let handleDispatch;
   let formik;
 
   useEffect(() => {
     if (props.ucdProcesses?.length > 0) {
       setUcdProcesses(props.ucdProcesses);
-    };
-  }, [props.ucdProcesses]);
+    }
+  }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -67,7 +62,7 @@ function ChplSedDetailsEdit(props) {
     }
   };
 
-  handleDispatch = ({ action, payload }) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel ucd process':
         setActiveUcdProcess(undefined);
@@ -82,8 +77,8 @@ function ChplSedDetailsEdit(props) {
       case 'save ucd process':
         setActiveUcdProcess(undefined);
         setUcdProcesses((previous) => previous
-                        .filter((prev) => prev.id !== payload.id)
-                        .concat(payload));
+          .filter((prev) => prev.id !== payload.id)
+          .concat(payload));
         break;
       // no default
     }
