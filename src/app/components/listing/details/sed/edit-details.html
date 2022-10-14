@@ -8,99 +8,12 @@
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="edit-label">Edit SED Details</h4>
   </div>
-  <chpl-sed-details-edit-wrapper-bridge
-    criteria="vm.criteria"
-    listing="vm.listing"
-    ucd-processes="vm.ucdProcesses"
-    ></chpl-sed-details-edit-wrapper-bridge>
-  <div class="modal-body form-horizontal" ng-form="vm.editForm">
-    <div class="form-group">
-      <label class="control-label col-sm-4" for="cp-sed-report-file-loc">Full Usability Report</label>
-      <div class="col-sm-8">
-        <input class="input-sm form-control" type="url" ng-model="vm.listing.sedReportFileLocation" id="cp-sed-report-file-loc" name="cpSedReportFileLoc" ng-maxlength="250">
-        <div class="text-danger" ng-if="vm.editForm.cpSedReportFileLoc.$touched && vm.editForm.cpSedReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
-        <div class="text-danger" ng-if="vm.editForm.cpSedReportFileLoc.$touched && vm.editForm.cpSedReportFileLoc.$error.maxlength">Field is too long</div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-4" for="cp-sed-intended-user-description">SED Intended User Description</label>
-      <div class="col-sm-8">
-        <input class="input-sm form-control" type="text" ng-model="vm.listing.sedIntendedUserDescription" id="cp-sed-intended-user-description" name="cpSedIntendedUserDescription">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-4" for="cp-sed-testing-end">SED Testing Completion Date</label>
-      <div class="col-sm-8">
-        <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.sedDate" is-open="vm.listing.sedTestingEndDatePicker" close-text="Close" id="cp-sed-testing-end" name="cpSedTestingEnd" ng-model-options="{ timezone: 'UTC' }">
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.listing.sedTestingEndDatePicker = true"><i class="fa fa-calendar"></i></button>
-          </span>
-        </div>
-        <div class="text-danger" ng-if="vm.editForm.cpSedTestingEnd.$touched && vm.editForm.cpSedTestingEnd.$error.date">Improper format (mm/dd/yyyy)</div>
-      </div>
-    </div>
-    <div ng-repeat="process in vm.ucdProcesses track by $index">
-      <div class="form-group">
-        <label class="control-label col-sm-4" for="process-name-{{ $index }}">UCD Process {{ $index + 1 }} Name</label>
-        <div class="col-sm-8">
-          <div class="input-group">
-            <select class="form-control input-sm" ng-model="process.name" id="process-name-{{ $index }}" name="processName{{ $index }}" ng-required="vm.listing.certificationEdition.name === '2015'"
-                    ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy: 'name'"
-                    ng-change="process.id = ''">
-            </select>
-            <span class="input-group-btn">
-              <button class="btn btn-danger btn-sm" ng-click="vm.ucdProcesses.splice($index, 1)"><i class="fa fa-trash"></i><span class="sr-only">Remove UCD Process {{ $index + 1 }}</span></button>
-            </span>
-          </div>
-          <div class="text-danger" ng-if="vm.editForm['processName' + $index].$touched && vm.editForm['processName' + $index].$error.required">Field is required</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-4" for="process-details-{{ $index }}">UCD Process {{ $index + 1 }} Details</label>
-        <div class="col-sm-8">
-          <input class="input-sm form-control" type="text" ng-model="process.details" id="process-details-{{ $index }}" name="processDetails{{ $index }}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-sm-4" for="process-criteria-{{ $index }}">UCD Process {{ $index + 1 }} Applicable Criteria</label>
-        <div class="col-sm-8">
-          <button id="clear-selection-criteria" class="btn btn-small btn-link pull-right" ng-click="process.criteria=[];" ng-if="process.criteria && process.criteria.length !== 0">Clear Selection(s)<span class="sr-only">of Criteria</span></button>
-          <select ng-options="((criteria.removed ? 'Removed | ' : '') + criteria.number + ': ' + criteria.title) for criteria in vm.criteria | orderBy: vm.sortCert track by criteria.id" ng-model="process.criteria"
-                  multiple data-ng-attr-size="{{ vm.criteria.length }}" id="process-criteria-{{ $index }}" name="processCriteria{{ $index }}"
-                  class="form-control input-sm" required></select>
-          <div class="text-danger" ng-if="vm.editForm['processCriteria' + $index].$touched && vm.editForm['processCriteria' + $index].$error.required">Field is required</div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-12">
-        <button class="btn btn-ai-success btn-sm pull-right" ng-click="vm.ucdProcesses.push({})"><i class="fa fa-plus"></i>Add new Applicable UCD Process</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-4" for="new-ucd-process">Add new UCD Process to available options</label>
-      <div class="col-sm-8">
-        <div class="input-group">
-          <input class="input-sm form-control" type="text" ng-model="vm.newUcdProcess" id="new-ucd-process" name="newUcdProcess" ng-maxlength="200">
-          <span class="input-group-btn">
-            <button class="btn btn-ai-success btn-sm" ng-click="vm.extendSelect(vm.resources.ucdProcesses.data, vm.newUcdProcess); vm.newUcdProcess = ''"
-                    ng-disabled="vm.editForm.newUcdProcess.$error.maxlength || vm.newUcdProcess.length < 1 || !vm.newUcdProcess"><i class="fa fa-plus"></i><span class="sr-only">Add new UCD Process to Available Options</span></button>
-          </span>
-          <div class="text-danger" ng-if="vm.editForm.newUcdProcess.$error.maxlength">Field is too long</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-warning pull-left"
-            confirm="Are you sure you wish to cancel? Your changes will not be saved."
-            confirm-ok="Yes"
-            confirm-cancel="No"
-            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()">Cancel</button>
-    <button ng-disabled="vm.editForm.$invalid"
-            class="btn btn-ai-success pull-right"
-            ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save SED Details</span></button>
+  <div class="modal-body">
+    <chpl-sed-details-edit-wrapper-bridge
+      criteria="vm.criteria"
+      dispatch="::vm.handleDispatch"
+      listing="vm.listing"
+      ucd-processes="vm.ucdProcesses"
+      ></chpl-sed-details-edit-wrapper-bridge>
   </div>
 </div>

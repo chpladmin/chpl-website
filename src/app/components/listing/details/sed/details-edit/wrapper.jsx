@@ -20,6 +20,7 @@ export default ChplWrapper;
 
 ChplWrapper.propTypes = {
   criteria: arrayOf(object).isRequired,
+  dispatch: func.isRequired,
   listing: object.isRequired,
   ucdProcesses: arrayOf(object).isRequired,
 };

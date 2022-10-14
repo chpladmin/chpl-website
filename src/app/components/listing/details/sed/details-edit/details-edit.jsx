@@ -14,6 +14,7 @@ import ChplUcdProcessEdit from './process-edit';
 import ChplUcdProcessesView from './processes-view';
 
 import { useFetchUcdProcesses } from 'api/standards';
+import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 
 const validationSchema = yup.object({
@@ -25,7 +26,7 @@ const validationSchema = yup.object({
 });
 
 function ChplSedDetailsEdit(props) {
-  const { criteria, listing } = props;
+  const { criteria, dispatch, listing } = props;
   const { data, isLoading, isSuccess } = useFetchUcdProcesses();
   const [activeUcdProcess, setActiveUcdProcess] = useState(undefined);
   const [ucdProcesses, setUcdProcesses] = useState([]);
@@ -44,9 +45,31 @@ function ChplSedDetailsEdit(props) {
     setUcdProcessOptions(data);
   }, [data, isLoading, isSuccess]);
 
-  handleDispatch = ({ action, payload }) => {
+  const buildPayload = () => ({
+    listing: {
+      ...listing,
+      sedReportFileLocation: formik.values.sedReportFileLocation,
+      sedIntendedUserDescription: formik.values.sedIntendedUserDescription,
+      sedTestingEndDay: formik.values.sedTestingEndDay,
+    },
+    ucdProcesses,
+  });
+
+  const handleActionBarDispatch = (action) => {
     switch (action) {
       case 'cancel':
+        dispatch({ action: 'cancel' });
+        break;
+      case 'save':
+        formik.submitForm();
+        break;
+      // no default
+    }
+  };
+
+  handleDispatch = ({ action, payload }) => {
+    switch (action) {
+      case 'cancel ucd process':
         setActiveUcdProcess(undefined);
         break;
       case 'delete':
@@ -56,16 +79,17 @@ function ChplSedDetailsEdit(props) {
       case 'edit':
         setActiveUcdProcess(payload);
         break;
-      case 'save':
+      case 'save ucd process':
         setActiveUcdProcess(undefined);
         setUcdProcesses((previous) => previous
                         .filter((prev) => prev.id !== payload.id)
                         .concat(payload));
         break;
-      default:
-        console.log({action, payload});
+      // no default
     }
   };
+
+  const isValid = () => formik.isValid && ucdProcesses.length > 0;
 
   formik = useFormik({
     initialValues: {
@@ -74,7 +98,7 @@ function ChplSedDetailsEdit(props) {
       sedTestingEndDay: props.listing.sedTestingEndDay || '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });
@@ -134,6 +158,10 @@ function ChplSedDetailsEdit(props) {
         ucdProcesses={ucdProcesses}
         dispatch={handleDispatch}
       />
+      <ChplActionBar
+        dispatch={handleActionBarDispatch}
+        isDisabled={!isValid()}
+      />
     </>
   );
 }
@@ -142,6 +170,7 @@ export default ChplSedDetailsEdit;
 
 ChplSedDetailsEdit.propTypes = {
   criteria: arrayOf(object).isRequired,
+  dispatch: func.isRequired,
   listing: object.isRequired,
   ucdProcesses: arrayOf(object).isRequired,
 };

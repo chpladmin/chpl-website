@@ -66,7 +66,7 @@ function ChplUcdProcessEdit(props) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        dispatch({ action: 'cancel' });
+        dispatch({ action: 'cancel ucd processes' });
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
@@ -74,13 +74,13 @@ function ChplUcdProcessEdit(props) {
       case 'save':
         formik.submitForm();
         break;
-        // no default
+      // no default
     }
   };
 
   const isDisabled = (criterion) => criteria.filter((c) => c.id === criterion.id).length > 0;
 
-  const isValid = () => true || formik.isValid && criteria.length > 0;
+  const isValid = () => formik.isValid && criteria.length > 0;
 
   const remove = (item) => {
     setCriteria((prev) => prev.filter((ele) => ele.id !== item.id));
@@ -92,7 +92,7 @@ function ChplUcdProcessEdit(props) {
       details: props.ucdProcess?.details || '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      props.dispatch({ action: 'save ucd process', payload: buildPayload() });
     },
     validationSchema,
   });

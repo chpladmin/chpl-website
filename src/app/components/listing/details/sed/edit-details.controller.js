@@ -5,13 +5,11 @@
     .controller('EditSedDetailsController', EditSedDetailsController);
 
   /** @ngInject */
-  function EditSedDetailsController ($log, $uibModalInstance, criteria, listing, ucdProcesses, utilService) {
+  function EditSedDetailsController ($uibModalInstance, criteria, listing, ucdProcesses) {
     var vm = this;
 
     vm.cancel = cancel;
-    vm.extendSelect = utilService.extendSelect;
-    vm.save = save;
-    vm.sortCert = utilService.sortCert;
+    vm.handleDispatch = handleDispatch.bind(this);
 
     activate();
 
@@ -21,33 +19,25 @@
       vm.criteria = criteria;
       vm.listing = angular.copy(listing);
       vm.ucdProcesses = angular.copy(ucdProcesses);
-      if (vm.listing.sedTestingEndDate) {
-        vm.sedDate = new Date(vm.listing.sedTestingEndDate);
-      }
     }
 
-    function cancel () {
+    function cancel() {
       $uibModalInstance.dismiss('cancelled');
     }
 
-    function save () {
-      if (vm.sedDate) {
-        switch (typeof(vm.sedDate)) {
-        case 'string':
-          vm.listing.sedTestingEndDate = new Date(vm.sedDate).getTime();
+    function handleDispatch ({action, payload}) {
+      switch (action) {
+        case 'cancel':
+          vm.cancel();
           break;
-        case 'object':
-          vm.listing.sedTestingEndDate = vm.sedDate.getTime();
+        case 'save':
+          $uibModalInstance.close({
+            listing: payload.listing,
+            ucdProcesses: payload.ucdProcesses,
+          });
           break;
-                    //no default
-        }
-      } else {
-        vm.listing.sedTestingEndDate = undefined;
+          // no default
       }
-      $uibModalInstance.close({
-        listing: vm.listing,
-        ucdProcesses: vm.ucdProcesses,
-      });
     }
   }
 })();
