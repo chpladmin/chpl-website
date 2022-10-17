@@ -64,7 +64,7 @@ function ChplSedDetailsEdit(props) {
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
-      case 'cancel ucd process':
+      case 'cancel':
         setActiveUcdProcess(undefined);
         break;
       case 'delete':
@@ -74,7 +74,7 @@ function ChplSedDetailsEdit(props) {
       case 'edit':
         setActiveUcdProcess(payload);
         break;
-      case 'save ucd process':
+      case 'save':
         setActiveUcdProcess(undefined);
         setUcdProcesses((previous) => previous
           .filter((prev) => prev.id !== payload.id)

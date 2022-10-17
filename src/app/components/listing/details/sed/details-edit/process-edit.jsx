@@ -62,7 +62,7 @@ function ChplUcdProcessEdit(props) {
   const handleDispatch = (action) => {
     switch (action) {
       case 'cancel':
-        dispatch({ action: 'cancel ucd processes' });
+        dispatch({ action: 'cancel' });
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
@@ -88,7 +88,7 @@ function ChplUcdProcessEdit(props) {
       details: props.ucdProcess?.details || '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save ucd process', payload: buildPayload() });
+      props.dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });
