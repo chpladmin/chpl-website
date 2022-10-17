@@ -9,12 +9,13 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, object } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
+import { svap as svapPropType } from 'shared/prop-types';
 
 const headers = [
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
@@ -128,5 +129,5 @@ export default ChplSvapsView;
 
 ChplSvapsView.propTypes = {
   dispatch: func.isRequired,
-  svaps: arrayOf(object).isRequired,
+  svaps: arrayOf(svapPropType).isRequired,
 };
