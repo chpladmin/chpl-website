@@ -150,7 +150,7 @@ function ChplSystemMaintenance() {
                 <List>
                   <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
                   <ListItem>SVAP Maintenance - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
-                  <ListItem>UCD Process Management Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
+                  <ListItem>UCD Process Management - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                   <ListItem>Accessibility Standards Maintenance - [future] Add and update the Accessibility Standards available to be applied to listings</ListItem>
                   <ListItem>QMS Standards Maintenance - [future] Add and update the QMS Standards available to be applied to listings</ListItem>
                 </List>
