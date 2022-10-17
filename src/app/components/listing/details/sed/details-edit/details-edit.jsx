@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
+  makeStyles
 } from '@material-ui/core';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
@@ -22,6 +23,13 @@ const validationSchema = yup.object({
   sedTestingEndDay: yup.date(),
 });
 
+const useStyles = makeStyles({
+  sedContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+});
 function ChplSedDetailsEdit(props) {
   const { criteria, dispatch, listing } = props;
   const { data, isLoading, isSuccess } = useFetchUcdProcesses();
@@ -29,6 +37,7 @@ function ChplSedDetailsEdit(props) {
   const [ucdProcesses, setUcdProcesses] = useState([]);
   const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
   let formik;
+  const classes = useStyles();
 
   useEffect(() => {
     if (props.ucdProcesses?.length > 0) {
@@ -117,7 +126,7 @@ function ChplSedDetailsEdit(props) {
   }
 
   return (
-    <>
+    <div className={classes.sedContainer}>
       <ChplTextField
         id="sed-report-file-location"
         name="sedReportFileLocation"
@@ -158,7 +167,7 @@ function ChplSedDetailsEdit(props) {
         dispatch={handleActionBarDispatch}
         isDisabled={!isValid()}
       />
-    </>
+    </div>
   );
 }
 
