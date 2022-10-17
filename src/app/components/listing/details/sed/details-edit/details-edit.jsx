@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   CircularProgress,
+  makeStyles,
 } from '@material-ui/core';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -10,9 +14,16 @@ import ChplUcdProcessEdit from './process-edit';
 import ChplUcdProcessesView from './processes-view';
 
 import { useFetchUcdProcesses } from 'api/standards';
-import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { criterion, listing as listingPropType, ucdProcess as ucdProcessPropType } from 'shared/prop-types';
+import { criterion, listing as listingPropType, ucdProcessType as ucdProcessPropType } from 'shared/prop-types';
+
+const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+});
 
 const validationSchema = yup.object({
   sedReportFileLocation: yup.string()
@@ -28,6 +39,7 @@ function ChplSedDetailsEdit(props) {
   const [activeUcdProcess, setActiveUcdProcess] = useState(undefined);
   const [ucdProcesses, setUcdProcesses] = useState([]);
   const [ucdProcessOptions, setUcdProcessOptions] = useState([]);
+  const classes = useStyles();
   let formik;
 
   useEffect(() => {
@@ -50,18 +62,6 @@ function ChplSedDetailsEdit(props) {
     },
     ucdProcesses,
   });
-
-  const handleActionBarDispatch = (action) => {
-    switch (action) {
-      case 'cancel':
-        dispatch({ action: 'cancel' });
-        break;
-      case 'save':
-        formik.submitForm();
-        break;
-      // no default
-    }
-  };
 
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
@@ -117,7 +117,7 @@ function ChplSedDetailsEdit(props) {
   }
 
   return (
-    <>
+    <div className={classes.container}>
       <ChplTextField
         id="sed-report-file-location"
         name="sedReportFileLocation"
@@ -154,11 +154,27 @@ function ChplSedDetailsEdit(props) {
         ucdProcesses={ucdProcesses}
         dispatch={handleDispatch}
       />
-      <ChplActionBar
-        dispatch={handleActionBarDispatch}
-        isDisabled={!isValid()}
-      />
-    </>
+      <div>
+        <Button
+          color="default"
+          variant="contained"
+          onClick={() => dispatch({ action: 'cancel' })}
+        >
+          <CloseOutlinedIcon />
+          {' '}
+          Cancel
+        </Button>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => formik.submitForm()}
+          disabled={!isValid()}
+        >
+          Accept
+          <CheckOutlinedIcon />
+        </Button>
+      </div>
+    </div>
   );
 }
 

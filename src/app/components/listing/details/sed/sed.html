@@ -1,44 +1,54 @@
 <div>
   <p ng-if="!vm.sedCriteria || vm.sedCriteria.length === 0">No Certification Criteria were tested for SED.</p>
   <span ng-if="vm.sedCriteria && vm.sedCriteria.length > 0">
-    <span ng-if="vm.editMode">
-      <button class="btn btn-ai pull-right" ng-click="vm.editDetails()">Edit SED Details</button>
+    <span ng-if="!vm.isEditing">
+      <span ng-if="vm.editMode">
+        <button class="btn btn-ai pull-right" ng-click="vm.editDetails()">Edit SED Details</button>
+      </span>
+      <span ng-if="vm.listing.sedReportFileLocation !== null">
+        <h4>Full Usability Report</h4>
+        <a ai-a="" ng-if="vm.listing.sedReportFileLocation" href="{{ vm.listing.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.listing.sedReportFileLocation }">{{ vm.listing.sedReportFileLocation }}</a>
+        <p ng-if="!vm.listing.sedReportFileLocation">No report on file</p>
+      </span>
+      <span ng-if="vm.listing.sedIntendedUserDescription">
+        <h4>Description of Intended Users</h4>
+        <p>{{ vm.listing.sedIntendedUserDescription ? vm.listing.sedIntendedUserDescription : 'N/A' }}</p>
+      </span>
+      <span ng-if="vm.listing.sedTestingEndDay">
+        <h4>Date SED Testing was Completed</h4>
+        <p>{{ vm.DateUtil.getDisplayDateFormat(vm.listing.sedTestingEndDay) }}</p>
+      </span>
+      <span>
+        <h4>SED Tested Certification Criteria & Associated UCD Processes</h4>
+        <table class="table table-condensed nowrap" ng-if="vm.ucdProcesses && vm.ucdProcesses.length > 0" id="sed-ucd-processes-table">
+          <thead>
+            <tr>
+              <th scope="col">Certification Criteria</th>
+              <th scope="col">UCD Process</th>
+              <th scope="col">UCD Process Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
+              <td>
+                <ul>
+                  <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in process.criteria | orderBy:vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: <span chpl-highlight-cures ng-model="crit.title"></span> <button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
+                </ul>
+              </td>
+              <td>{{ process.name ? process.name : 'None' }}</td>
+              <td>{{ process.details ? process.details : 'N/A'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </span>
     </span>
-    <span ng-if="vm.listing.sedReportFileLocation !== null">
-      <h4>Full Usability Report</h4>
-      <a ai-a="" ng-if="vm.listing.sedReportFileLocation" href="{{ vm.listing.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.listing.sedReportFileLocation }">{{ vm.listing.sedReportFileLocation }}</a>
-      <p ng-if="!vm.listing.sedReportFileLocation">No report on file</p>
-    </span>
-    <span ng-if="vm.listing.sedIntendedUserDescription">
-      <h4>Description of Intended Users</h4>
-      <p>{{ vm.listing.sedIntendedUserDescription ? vm.listing.sedIntendedUserDescription : 'N/A' }}</p>
-    </span>
-    <span ng-if="vm.listing.sedTestingEndDay">
-      <h4>Date SED Testing was Completed</h4>
-      <p>{{ vm.DateUtil.getDisplayDateFormat(vm.listing.sedTestingEndDay) }}</p>
-    </span>
-    <span>
-      <h4>SED Tested Certification Criteria & Associated UCD Processes</h4>
-      <table class="table table-condensed nowrap" ng-if="vm.ucdProcesses && vm.ucdProcesses.length > 0" id="sed-ucd-processes-table">
-        <thead>
-          <tr>
-            <th scope="col">Certification Criteria</th>
-            <th scope="col">UCD Process</th>
-            <th scope="col">UCD Process Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
-            <td>
-              <ul>
-                <li ng-class="{ 'removed' : crit.removed }" ng-repeat="crit in process.criteria | orderBy:vm.sortCert"><span ng-if="crit.removed">Removed | </span>{{ crit.number }}: <span chpl-highlight-cures ng-model="crit.title"></span> <button ng-if="crit.removed" class="btn btn-link btn-xs" uib-tooltip="This certification criterion has been removed from the Program." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">This certification criterion has been removed from the Program.</span><i class="fa fa-info-circle fa-lg"></i></button></li>
-              </ul>
-            </td>
-            <td>{{ process.name ? process.name : 'None' }}</td>
-            <td>{{ process.details ? process.details : 'N/A'}}</td>
-          </tr>
-        </tbody>
-      </table>
+    <span ng-if="vm.isEditing">
+      <chpl-sed-details-edit-wrapper-bridge
+        criteria="vm.sedCriteria"
+        dispatch="::vm.handleDispatch"
+        listing="vm.listing"
+        ucd-processes="vm.ucdProcesses"
+        ></chpl-sed-details-edit-wrapper-bridge>
     </span>
     <span ng-if="vm.listing.certificationEdition.name === '2015'">
       <button class="btn btn-ai pull-right" ng-if="vm.editMode" ng-click="vm.addTask()"><i class="fa fa-plus"></i> Add SED Task</button>

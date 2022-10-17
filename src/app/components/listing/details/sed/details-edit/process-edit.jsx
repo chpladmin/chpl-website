@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Chip,
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
-import { criterion as criterionPropType, ucdProcess as ucdProcessPropType, ucdProcessType } from 'shared/prop-types';
+import { criterion as criterionPropType, ucdProcessType as ucdProcessPropType, ucdProcessType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   ucdProcess: yup.object()
@@ -163,11 +165,36 @@ function ChplUcdProcessEdit(props) {
             />
           ))}
       </div>
-      <ChplActionBar
-        dispatch={handleDispatch}
-        canDelete={canDelete}
-        isDisabled={!isValid()}
-      />
+      <div>
+        <Button
+          color="default"
+          variant="contained"
+          onClick={() => handleDispatch('cancel')}
+        >
+          <CloseOutlinedIcon />
+          {' '}
+          Cancel
+        </Button>
+        { canDelete
+          && (
+            <Button
+              variant="contained"
+              onClick={() => handleDispatch('delete')}
+            >
+              Delete
+              <CheckOutlinedIcon />
+            </Button>
+          )}
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => handleDispatch('save')}
+          disabled={!isValid()}
+        >
+          Accept
+          <CheckOutlinedIcon />
+        </Button>
+      </div>
     </div>
   );
 }
