@@ -3,15 +3,14 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf, func, object, string,
-} from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { BreadcrumbContext } from 'shared/contexts';
+import { ucdProcessType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   name: yup.string()
@@ -102,7 +101,7 @@ function ChplUcdProcessEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      name: props.ucdProcess?.name || '',
+      name: props.ucdProcess?.name || '', // eslint-disable-line react/destructuring-assignment
     },
     onSubmit: () => {
       props.dispatch({ action: 'save', payload: buildPayload() });
@@ -137,6 +136,6 @@ export default ChplUcdProcessEdit;
 
 ChplUcdProcessEdit.propTypes = {
   dispatch: func.isRequired,
-  ucdProcess: object.isRequired,
+  ucdProcess: ucdProcessType.isRequired,
   errors: arrayOf(string).isRequired,
 };

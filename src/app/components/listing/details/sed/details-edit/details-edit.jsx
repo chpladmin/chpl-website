@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
 } from '@material-ui/core';
-import { arrayOf, func, object } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -12,6 +12,7 @@ import ChplUcdProcessesView from './processes-view';
 import { useFetchUcdProcesses } from 'api/standards';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { criterion, listing as listingPropType, ucdProcess as ucdProcessPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   sedReportFileLocation: yup.string()
@@ -88,9 +89,9 @@ function ChplSedDetailsEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      sedReportFileLocation: props.listing.sedReportFileLocation || '',
-      sedIntendedUserDescription: props.listing.sedIntendedUserDescription || '',
-      sedTestingEndDay: props.listing.sedTestingEndDay || '',
+      sedReportFileLocation: listing.sedReportFileLocation || '',
+      sedIntendedUserDescription: listing.sedIntendedUserDescription || '',
+      sedTestingEndDay: listing.sedTestingEndDay || '',
     },
     onSubmit: () => {
       dispatch({ action: 'save', payload: buildPayload() });
@@ -164,8 +165,8 @@ function ChplSedDetailsEdit(props) {
 export default ChplSedDetailsEdit;
 
 ChplSedDetailsEdit.propTypes = {
-  criteria: arrayOf(object).isRequired,
+  criteria: arrayOf(criterion).isRequired,
   dispatch: func.isRequired,
-  listing: object.isRequired,
-  ucdProcesses: arrayOf(object).isRequired,
+  listing: listingPropType.isRequired,
+  ucdProcesses: arrayOf(ucdProcessPropType).isRequired,
 };

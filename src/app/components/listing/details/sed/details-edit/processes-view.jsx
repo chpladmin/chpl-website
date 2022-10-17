@@ -9,12 +9,13 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func, object } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
+import { ucdProcess as ucdProcessPropType } from 'shared/prop-types';
 
 const headers = [
   { property: 'name', text: 'UCD Process', sortable: true },
@@ -124,5 +125,5 @@ export default ChplUcdProcessesView;
 
 ChplUcdProcessesView.propTypes = {
   dispatch: func.isRequired,
-  ucdProcesses: arrayOf(object).isRequired,
+  ucdProcesses: arrayOf(ucdProcessPropType).isRequired,
 };

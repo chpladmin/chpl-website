@@ -1,10 +1,11 @@
 import React from 'react';
-import { arrayOf, func, object } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 
 import ChplSedDetailsEdit from './details-edit';
 
 import ApiWrapper from 'api/api-wrapper';
 import { UserWrapper } from 'components/login';
+import { criterion, listing, ucdProcess } from 'shared/prop-types';
 
 function ChplWrapper(props) {
   return (
@@ -19,8 +20,15 @@ function ChplWrapper(props) {
 export default ChplWrapper;
 
 ChplWrapper.propTypes = {
-  criteria: arrayOf(object).isRequired,
-  dispatch: func.isRequired,
-  listing: object.isRequired,
-  ucdProcesses: arrayOf(object).isRequired,
+  criteria: arrayOf(criterion),
+  dispatch: func,
+  listing,
+  ucdProcesses: arrayOf(ucdProcess),
+};
+
+ChplWrapper.defaultProps = {
+  criteria: [],
+  dispatch: () => {},
+  listing: {},
+  ucdProcesses: [],
 };

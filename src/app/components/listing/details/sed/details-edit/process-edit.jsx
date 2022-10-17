@@ -4,15 +4,14 @@ import {
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf, func, object,
-} from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
+import { criterion as criterionPropType, ucdProcess as ucdProcessPropType, ucdProcessType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   ucdProcess: yup.object()
@@ -35,15 +34,17 @@ const useStyles = makeStyles({
 
 function ChplUcdProcessEdit(props) {
   const { criteriaOptions, dispatch, ucdProcessOptions } = props;
+  const [canDelete, setCanDelete] = useState(false);
   const [criteria, setCriteria] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    setCriteria(props.ucdProcess.criteria?.map((c) => ({
-      ...c,
+    setCriteria(props.ucdProcess.criteria?.map((criterion) => ({
+      ...criterion,
     })) || []);
+    setCanDelete(!!props.ucdProcess.id);
   }, [props.ucdProcess]); // eslint-disable-line react/destructuring-assignment
 
   const add = (criterion) => {
@@ -84,8 +85,8 @@ function ChplUcdProcessEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      ucdProcess: props.ucdProcessOptions.find((process) => process.id === props.ucdProcess.id) || '',
-      details: props.ucdProcess?.details || '',
+      ucdProcess: ucdProcessOptions.find((process) => process.id === props.ucdProcess.id) || '',
+      details: props.ucdProcess?.details || '', // eslint-disable-line react/destructuring-assignment
     },
     onSubmit: () => {
       props.dispatch({ action: 'save', payload: buildPayload() });
@@ -164,7 +165,7 @@ function ChplUcdProcessEdit(props) {
       </div>
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete={!!props.ucdProcess.id}
+        canDelete={canDelete}
         isDisabled={!isValid()}
       />
     </div>
@@ -174,8 +175,8 @@ function ChplUcdProcessEdit(props) {
 export default ChplUcdProcessEdit;
 
 ChplUcdProcessEdit.propTypes = {
-  criteriaOptions: arrayOf(object).isRequired,
+  criteriaOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
-  ucdProcess: object.isRequired,
-  ucdProcessOptions: arrayOf(object).isRequired,
+  ucdProcess: ucdProcessPropType.isRequired,
+  ucdProcessOptions: arrayOf(ucdProcessType).isRequired,
 };
