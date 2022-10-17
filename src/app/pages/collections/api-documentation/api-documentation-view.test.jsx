@@ -39,8 +39,8 @@ jest.mock('components/filter', () => ({
 
 jest.mock('api/collections', () => ({
   __esModule: true,
-  useFetchApiDocumentationCollection: () => mockApi,
   useFetchApiDocumentationData: () => mockApi,
+  useFetchCollection: () => mockApi,
 }));
 
 describe('the ChplApiDocumentationCollectionView component', () => {
