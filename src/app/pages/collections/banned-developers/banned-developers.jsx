@@ -52,6 +52,7 @@ function ChplBannedDevelopersCollectionPage() {
           <FilterProvider
             analytics={analytics}
             filters={filters}
+            storageKey="storageKey-bannedDevelopersPage"
           >
             <ChplBannedDevelopersCollectionView
               analytics={analytics}

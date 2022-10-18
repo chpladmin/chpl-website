@@ -35,6 +35,7 @@ import {
 } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getDisplayDateFormat } from 'services/date-util';
+import { useSessionStorage as useStorage } from 'services/storage.service';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -98,15 +99,16 @@ const useStyles = makeStyles({
 });
 
 function ChplChangeRequestsView(props) {
+  const storageKey = 'storageKey-changeRequestsView';
   const { disallowedFilters, bonusQuery } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequests, setChangeRequests] = useState([]);
-  const [order, setOrder] = useState('desc');
-  const [orderBy, setOrderBy] = useState('current_status_change_date_time');
-  const [pageNumber, setPageNumber] = React.useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [order, setOrder] = useStorage(`${storageKey}-order`, 'desc');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'current_status_change_date_time');
+  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
   const { queryParams, queryString } = useFilterContext();
   const {
     data, error, isError, isLoading, isSuccess,
