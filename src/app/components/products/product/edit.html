@@ -69,7 +69,7 @@
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.transferDate.$touched) && $ctrl.form.transferDate.$error.required">Field is required</div>
         </div>
         <div class="product__history-of-product-item product__history-of-product-item--adding product__history-of-product-item--end" ng-if="$ctrl.addingOwner">
-          <button class="btn btn-link btn-sm" ng-disabled="!$ctrl.newOwner && $ctrl.showFormErrors" ng-click="$ctrl.saveNewOwner()" ng-mouseover="$ctrl.showFormErrors = true; $ctrl.generateErrorMessages()"><i class="fa fa-save"></i></button>
+          <button class="btn btn-link btn-sm" ng-disabled="(!$ctrl.newOwner || !$ctrl.newTransferDate) && $ctrl.showFormErrors" ng-click="$ctrl.saveNewOwner()" ng-mouseover="$ctrl.showFormErrors = true; $ctrl.generateErrorMessages()"><i class="fa fa-save"></i></button>
           <button class="btn btn-link btn-sm" ng-click="$ctrl.doneAddingOwner()"><i class="fa fa-times"></i></button>
         </div>
         <div class="product__history-of-product-add-new" ng-if="!$ctrl.addingOwner">
