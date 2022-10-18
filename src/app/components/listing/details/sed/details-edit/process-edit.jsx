@@ -111,6 +111,7 @@ function ChplUcdProcessEdit(props) {
         helperText={formik.touched.name && formik.errors.name}
       >
         { ucdProcessOptions
+          .sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((item) => (
             <MenuItem
               value={item}
