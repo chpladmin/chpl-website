@@ -109,6 +109,7 @@ function ChplRealWorldTestingCollectionPage() {
     <FilterProvider
       analytics={analytics}
       filters={filters}
+      storageKey="storageKey-realWorldTestingPage"
     >
       <ChplRealWorldTestingCollectionView
         analytics={analytics}
