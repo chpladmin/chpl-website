@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  ButtonGroup,
+  Card,
+  CardActions,
+  CardContent,
   CircularProgress,
   makeStyles,
 } from '@material-ui/core';
@@ -22,6 +26,9 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
+  },
+  cardActionSpacing : {
+    padding: '16px',
   },
 });
 
@@ -117,7 +124,8 @@ function ChplSedDetailsEdit(props) {
   }
 
   return (
-    <div className={classes.container}>
+    <Card>
+    <CardContent className={classes.container}>
       <ChplTextField
         id="sed-report-file-location"
         name="sedReportFileLocation"
@@ -154,27 +162,29 @@ function ChplSedDetailsEdit(props) {
         ucdProcesses={ucdProcesses}
         dispatch={handleDispatch}
       />
-      <div>
+      </CardContent>
+      <CardActions className={classes.cardActionSpacing}>
+        <ButtonGroup>
         <Button
-          color="default"
+          color="secondary"
           variant="contained"
           onClick={() => dispatch({ action: 'cancel' })}
-        >
-          <CloseOutlinedIcon />
-          {' '}
+          endIcon={<CloseOutlinedIcon />}
+          >
           Cancel
         </Button>
         <Button
           color="primary"
           variant="contained"
+          endIcon={<CheckOutlinedIcon />}
           onClick={() => formik.submitForm()}
           disabled={!isValid()}
-        >
+          >
           Accept
-          <CheckOutlinedIcon />
         </Button>
-      </div>
-    </div>
+        </ButtonGroup>
+      </CardActions>
+    </Card>
   );
 }
 
