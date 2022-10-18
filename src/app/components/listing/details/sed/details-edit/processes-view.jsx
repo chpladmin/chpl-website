@@ -71,7 +71,7 @@ function ChplUcdProcessesView(props) {
           onClick={() => dispatch({ action: 'edit', payload: {} })}
           id="add-new-ucd-process"
           variant="contained"
-          color="primary"
+          color="secondary"
           endIcon={<AddIcon />}
         >
           Add
