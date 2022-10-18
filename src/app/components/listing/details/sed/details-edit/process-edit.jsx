@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  Card,
+  CardActions,
+  CardContent,
   Chip,
   MenuItem,
   makeStyles,
+  ButtonGroup,
 } from '@material-ui/core';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -31,6 +37,16 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '8px',
     flexWrap: 'wrap',
+  },
+  cardActionSpacing : {
+    padding: '16px',
+  },
+  deleteButton: {
+    backgroundColor: '#c44f65 !important',
+    color: '#ffffff!important',
+    '&:hover': {
+      backgroundColor: '#853544!important',
+    },
   },
 });
 
@@ -97,7 +113,8 @@ function ChplUcdProcessEdit(props) {
   });
 
   return (
-    <div className={classes.container}>
+    <Card>
+    <CardContent className={classes.container}>
       <ChplTextField
         select
         id="ucd-process"
@@ -166,37 +183,39 @@ function ChplUcdProcessEdit(props) {
             />
           ))}
       </div>
-      <div>
-        <Button
-          color="default"
-          variant="contained"
-          onClick={() => handleDispatch('cancel')}
-        >
-          <CloseOutlinedIcon />
-          {' '}
-          Cancel
-        </Button>
+      </CardContent>
+      <CardActions className={classes.cardActionSpacing}>
+        <ButtonGroup>
+          <Button
+            color="secondary"
+            variant="contained"
+            endIcon={<CloseOutlinedIcon />}
+            onClick={() => handleDispatch('cancel')}
+          >
+            Cancel
+          </Button>
         { canDelete
           && (
             <Button
-              variant="contained"
+              className={classes.deleteButton}
+              endIcon={<DeleteOutlinedIcon />}
               onClick={() => handleDispatch('delete')}
             >
               Delete
-              <CheckOutlinedIcon />
             </Button>
           )}
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => handleDispatch('save')}
-          disabled={!isValid()}
-        >
-          Accept
-          <CheckOutlinedIcon />
-        </Button>
-      </div>
-    </div>
+            <Button
+              color="primary"
+              variant="contained"
+              endIcon={<CheckOutlinedIcon />}
+              onClick={() => handleDispatch('save')}
+              disabled={!isValid()}
+            >
+              Accept
+            </Button>
+          </ButtonGroup>
+        </CardActions>
+    </Card>
   );
 }
 
