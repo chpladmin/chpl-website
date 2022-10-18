@@ -30,6 +30,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
 const csvOptions = {
@@ -115,17 +116,18 @@ const useStyles = makeStyles({
 });
 
 function ChplRealWorldTestingCollectionView(props) {
+  const storageKey = 'storageKey-realWorldTestingView';
   const $analytics = getAngularService('$analytics');
   const {
     analytics,
   } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
-  const [orderBy, setOrderBy] = useState('developer');
-  const [pageNumber, setPageNumber] = useState(0);
-  const [pageSize, setPageSize] = useState(25);
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
+  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
+  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
-  const [sortDescending, setSortDescending] = useState(false);
   const classes = useStyles();
 
   const filterContext = useFilterContext();

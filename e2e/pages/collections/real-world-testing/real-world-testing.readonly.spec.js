@@ -68,7 +68,7 @@ describe('the Real World Testing collection page', () => {
       });
 
       it('should show only listings that match the CHPL ID', async () => {
-        const searchTerm = '15.04.04';
+        const searchTerm = '3125.Powe';
         const columnIndex = 0;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
