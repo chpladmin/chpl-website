@@ -15,7 +15,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
-import { ucdProcess as ucdProcessPropType } from 'shared/prop-types';
+import { ucdProcessType as ucdProcessPropType } from 'shared/prop-types';
 
 const headers = [
   { property: 'name', text: 'UCD Process', sortable: true },

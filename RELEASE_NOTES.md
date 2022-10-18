@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 11.43.0
+_17 October 2022_
+
+### Features
+* Allow users to search by RWT qualities on RWT page
+* Enable filtering by Certification Criteria on RWT collection page
+* Allow filtering by Certification Criteria on API Info page
+
+---
+
 ## Version 11.42.1
 _3 October 2022_
 

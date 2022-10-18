@@ -5,7 +5,7 @@ import ChplSedDetailsEdit from './details-edit';
 
 import ApiWrapper from 'api/api-wrapper';
 import { UserWrapper } from 'components/login';
-import { criterion, listing, ucdProcess } from 'shared/prop-types';
+import { criterion, listing, ucdProcessType } from 'shared/prop-types';
 
 function ChplWrapper(props) {
   return (
@@ -21,14 +21,13 @@ export default ChplWrapper;
 
 ChplWrapper.propTypes = {
   criteria: arrayOf(criterion),
-  dispatch: func,
+  dispatch: func.isRequired,
   listing,
-  ucdProcesses: arrayOf(ucdProcess),
+  ucdProcesses: arrayOf(ucdProcessType),
 };
 
 ChplWrapper.defaultProps = {
   criteria: [],
-  dispatch: () => {},
   listing: {},
   ucdProcesses: [],
 };

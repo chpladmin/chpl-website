@@ -23,6 +23,7 @@ import {
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
+import { useSessionStorage as useStorage } from 'services/storage.service';
 
 const FilterContext = createContext();
 
@@ -182,17 +183,25 @@ const updateFilter = (filters, category, value, setFilters) => {
 function FilterProvider(props) {
   const $analytics = getAngularService('$analytics');
   const {
-    analytics,
+    analytics, storageKey,
   } = props;
   const [filters, setFilters] = useState([]);
+  const [operators, setOperators] = useStorage(`${storageKey}-operators`, {});
   const [searchTerm, setSearchTerm] = useState('');
+  const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
+  const [values, setValues] = useStorage(`${storageKey}-values`, {});
+
+  useEffect(() => {
+    if (!storageKey) { return; }
+    setSearchTerm(storedSearchTerm);
+  }, []);
 
   useEffect(() => {
     setFilters(props.filters.map((filter) => ({
       ...filter,
       required: !!filter.required,
-      operator: filter.operatorKey ? 'or' : undefined,
-      values: filter.values.map((value) => ({
+      operator: filter.operatorKey ? (storageKey && operators[filter.operatorKey] ? operators[filter.operatorKey] : 'or') : undefined,
+      values: (storageKey && values[filter.key]) ? values[filter.key] : filter.values.map((value) => ({
         ...value,
         selected: value.default,
         default: value.default,
@@ -200,6 +209,24 @@ function FilterProvider(props) {
       })),
     })));
   }, [props.filters]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setOperators((previous) => filters
+      .filter((filter) => filter.operatorKey)
+      .reduce((o, filter) => ({
+        ...o,
+        [filter.operatorKey]: filter.operator,
+      }), previous));
+    setValues((previous) => filters
+      .reduce((v, filter) => ({
+        ...v,
+        [filter.key]: filter.values,
+      }), previous));
+  }, [filters]);
+
+  useEffect(() => {
+    setStoredSearchTerm(searchTerm);
+  }, [searchTerm]);
 
   const dispatch = (action, category, value) => {
     switch (action) {
@@ -308,10 +335,12 @@ FilterProvider.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }),
+  storageKey: string,
 };
 
 FilterProvider.defaultProps = {
   analytics: false,
+  storageKey: '',
 };
 
 function useFilterContext() {
