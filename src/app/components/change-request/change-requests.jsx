@@ -91,6 +91,7 @@ function ChplChangeRequests(props) {
     <FilterProvider
       analytics={analytics}
       filters={filters}
+      storageKey="storageKey-changeRequestsComponent"
     >
       <ChplChangeRequestsView
         analytics={analytics}
