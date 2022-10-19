@@ -1,34 +1,32 @@
 import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
-let lookup;
-
 const compareOwnerHistory = (before, after) => {
-  var ownerHistoryActionDetails = 'Owner history changed. Was:<ul>';
+  let ownerHistoryActionDetails = 'Owner history changed. Was:<ul>';
   let j;
   if (before.length === 0 && after.length === 0) { return undefined; }
   if (before.length === 0) {
     ownerHistoryActionDetails += '<li>No previous history</li>';
   } else {
-    for (j = 0; j < before.length; j++) {
-      ownerHistoryActionDetails += '<li><strong>' + before[j].developer.name + '</strong> on ' + getDisplayDateFormat(before[j].transferDate) + '</li>';
-      ownerHistoryActionDetails += '<li><strong>' + before[j].developer.name + '</strong> on ' + getDisplayDateFormat(before[j].transferDay) + '</li>';
+    for (j = 0; j < before.length; j += 1) {
+      ownerHistoryActionDetails += `<li><strong>${before[j].developer.name}</strong> on ${getDisplayDateFormat(before[j].transferDate)}</li>`;
+      ownerHistoryActionDetails += `<li><strong>${before[j].developer.name}</strong> on ${getDisplayDateFormat(before[j].transferDay)}</li>`;
     }
   }
   ownerHistoryActionDetails += '</ul>Now:<ul>';
   if (after.length === 0) {
     ownerHistoryActionDetails += '<li>No new history</li>';
   } else {
-    for (j = 0; j < after.length; j++) {
-      ownerHistoryActionDetails += '<li><strong>' + after[j].developer.name + '</strong> on ' + getDisplayDateFormat(after[j].transferDate) + '</li>';
-      ownerHistoryActionDetails += '<li><strong>' + after[j].developer.name + '</strong> on ' + getDisplayDateFormat(after[j].transferDay) + '</li>';
+    for (j = 0; j < after.length; j += 1) {
+      ownerHistoryActionDetails += `<li><strong>${after[j].developer.name}</strong> on ${getDisplayDateFormat(after[j].transferDate)}</li>`;
+      ownerHistoryActionDetails += `<li><strong>${after[j].developer.name}</strong> on ${getDisplayDateFormat(after[j].transferDay)}</li>`;
     }
   }
   ownerHistoryActionDetails += '</ul>';
   return ownerHistoryActionDetails;
 };
 
-lookup = {
+const lookup = {
   shortCircuit: ['root.owner.address', 'root.owner.contact'],
   'root.contact': {
     message: () => 'Contact changes',
@@ -119,8 +117,9 @@ lookup = {
 const ReportsProductsComponent = {
   templateUrl: 'chpl.reports/products/products.html',
   controller: class ReportsProductsComponent {
-    constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+    constructor($filter, $log, $scope, ReportService, networkService, utilService) {
       'ngInject';
+
       this.$filter = $filter;
       this.$log = $log;
       this.$scope = $scope;
@@ -132,7 +131,7 @@ const ReportsProductsComponent = {
       this.displayed = [];
       this.clearFilterHs = [];
       this.restoreStateHs = [];
-      this.filename = 'Reports_' + new Date().getTime() + '.csv';
+      this.filename = `Reports_${new Date().getTime()}.csv`;
       this.filterText = '';
       this.tableController = {};
       this.loadProgress = {
@@ -143,60 +142,60 @@ const ReportsProductsComponent = {
       this.pageSize = 50;
     }
 
-    $onInit () {
+    $onInit() {
       this.search();
     }
 
-    $onDestroy () {
+    $onDestroy() {
       this.isDestroyed = true;
     }
 
-    onApplyFilter (filterObj) {
-      let f = angular.fromJson(filterObj);
+    onApplyFilter(filterObj) {
+      const f = angular.fromJson(filterObj);
       this.doFilter(f);
     }
 
-    onClearFilter () {
-      let filterData = {};
+    onClearFilter() {
+      const filterData = {};
       filterData.dataFilter = '';
       filterData.tableState = this.tableController.tableState();
-      this.clearFilterHs.forEach(handler => handler());
+      this.clearFilterHs.forEach((handler) => handler());
       this.doFilter(filterData);
     }
 
-    doFilter (filter) {
-      let that = this;
+    doFilter(filter) {
+      const that = this;
       this.filterText = filter.dataFilter;
       if (filter.tableState.search.predicateObject.date) {
         this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
       } else {
         this.tableController.search({}, 'date');
       }
-      this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+      this.restoreStateHs.forEach((handler) => handler(that.tableController.tableState()));
       this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
     }
 
-    registerClearFilter (handler) {
+    registerClearFilter(handler) {
       this.clearFilterHs.push(handler);
     }
 
-    registerRestoreState (handler) {
+    registerRestoreState(handler) {
       this.restoreStateHs.push(handler);
     }
 
-    createFilterDataObject () {
-      let filterData = {};
+    createFilterDataObject() {
+      const filterData = {};
       filterData.dataFilter = this.filterText;
       filterData.tableState = this.tableController.tableState();
       return filterData;
     }
 
-    tableStateListener (tableController) {
+    tableStateListener(tableController) {
       this.tableController = tableController;
     }
 
-    parse (meta) {
-      return this.networkService.getActivityById(meta.id).then(item => {
+    parse(meta) {
+      return this.networkService.getActivityById(meta.id).then((item) => {
         const activity = {
           action: '',
           details: [],
@@ -205,13 +204,13 @@ const ReportsProductsComponent = {
           id: item.id,
         };
         if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
-          activity.action = 'Updated product "' + item.newData.name + '"';
+          activity.action = `Updated product "${item.newData.name}"`;
           activity.details = compareObject(item.originalData, item.newData, lookup);
         } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
-          activity.action = 'Products ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
+          activity.action = `Products ${item.originalData.map((d) => d.name).join(' and ')} merged to form ${item.newData.name}`;
           activity.details = [];
         } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // split
-          activity.action = 'Products ' + item.originalData.name + ' split to become Products ' + item.newData[0].name + ' and ' + item.newData[1].name;
+          activity.action = `Products ${item.originalData.name} split to become Products ${item.newData[0].name} and ${item.newData[1].name}`;
           activity.details = [];
         } else {
           this.ReportService.interpretNonUpdate(activity, item, 'product');
@@ -224,48 +223,48 @@ const ReportsProductsComponent = {
       });
     }
 
-    prepare (item) {
+    prepare(item) {
       return {
         ...item,
-        filterText: item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName,
+        filterText: `${item.developerName}|${item.productName}|${item.responsibleUser.fullName}`,
         friendlyActivityDate: new Date(item.date).toISOString().substring(0, 10),
         fullName: item.responsibleUser.fullName,
       };
     }
 
-    canDownload () {
+    canDownload() {
       return this.displayed
-        .filter(item => !item.action).length <= 1000;
+        .filter((item) => !item.action).length <= 1000;
     }
 
-    prepareDownload () {
-      let total = this.displayed
-        .filter(item => !item.action).length;
+    prepareDownload() {
+      const total = this.displayed
+        .filter((item) => !item.action).length;
       let progress = 0;
       this.displayed
-        .filter(item => !item.action)
-        .forEach(item => {
+        .filter((item) => !item.action)
+        .forEach((item) => {
           this.parse(item).then(() => {
             progress += 1;
             this.downloadProgress.complete = Math.floor(100 * ((progress + 1) / total));
           });
         });
-      //todo, eventually: use the $q.all function as demonstrated in product history eye
+      // todo, eventually: use the $q.all function as demonstrated in product history eye
     }
 
-    showLoadingBar () {
-      let tableState = this.tableController.tableState && this.tableController.tableState();
+    showLoadingBar() {
+      const tableState = this.tableController.tableState && this.tableController.tableState();
       return this.ReportService.showLoadingBar(tableState, this.results, this.loadProgress);
     }
 
-    search () {
-      let that = this;
+    search() {
+      const that = this;
       this.networkService.getActivityMetadata('products')
-        .then(results => {
+        .then((results) => {
           that.results = results.activities
-            .map(item => that.prepare(item));
+            .map((item) => that.prepare(item));
           that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
-          let filter = {};
+          const filter = {};
           filter.dataFilter = '';
           filter.tableState = this.tableController.tableState();
           filter.tableState.search = {
@@ -281,11 +280,11 @@ const ReportsProductsComponent = {
         });
     }
 
-    addPageToData (page) {
-      let that = this;
+    addPageToData(page) {
+      const that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('products', {pageNum: page, ignoreLoadingBar: true}).then(results => {
-        results.activities.forEach(item => {
+      this.networkService.getActivityMetadata('products', { pageNum: page, ignoreLoadingBar: true }).then((results) => {
+        results.activities.forEach((item) => {
           that.results.push(that.prepare(item));
         });
         that.loadProgress.complete += 1;
