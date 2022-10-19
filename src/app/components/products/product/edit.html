@@ -59,8 +59,8 @@
         <div class="product__history-of-product-item product__history-of-product-item--adding" ng-if="$ctrl.addingOwner">
           <div class="data-label sr-only"><label for="transfer-date">Transfer Date <span class="text-danger">*</span></label></div>
           <div class="input-group">
-            <input class="form-control" type="text" uib-datepicker-popup="yyyy-MM-dd" ng-model="$ctrl.newTransferDay" is-open="$ctrl.transferDayPicker" close-text="Close" required
-                   id="transfer-date" name="transferDay"><div uib-datepicker-popup-wrap ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false">
+            <input class="form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.newTransferDay" is-open="$ctrl.transferDayPicker" close-text="Close" required
+                   id="transfer-date" name="transferDay" ng-model-options="{ timezone: 'UTC' }"><div uib-datepicker-popup-wrap ng-model="date" ng-change="dateSelection(date)" template-url="uib/template/datepickerPopup/popup.html" class="ng-pristine ng-untouched ng-valid ng-scope ng-not-empty" aria-invalid="false">
             </div>
             <span class="input-group-btn">
               <button type="button" class="btn btn-link btn-sm" ng-click="$ctrl.transferDayPicker = true"><i class="fa fa-calendar"></i></button>

@@ -126,7 +126,7 @@ const ProductEditComponent = {
       this.product.ownerHistory = this.product.ownerHistory
         .concat({
           developer: this.newOwner,
-          transferDay: this.newTransferDay,
+          transferDay: this.newTransferDay.toISOString().split('T')[0],
         })
         .sort((a, b) => {
           if (a.transferDay && b.transferDay) {
