@@ -135,6 +135,7 @@ export const ReportsProductsComponent = {
             } else {
               for (j = 0; j < item.originalData.ownerHistory.length; j++) {
                 ownerHistoryActionDetails += '<li><strong>' + item.originalData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                ownerHistoryActionDetails += '<li><strong>' + item.originalData.ownerHistory[j].developer.name + '</strong> on ' + item.originalData.ownerHistory[j].transferDay + '</li>';
               }
             }
             ownerHistoryActionDetails += '</ul>Now:<ul>';
@@ -143,6 +144,7 @@ export const ReportsProductsComponent = {
             } else {
               for (j = 0; j < item.newData.ownerHistory.length; j++) {
                 ownerHistoryActionDetails += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                ownerHistoryActionDetails += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + item.newData.ownerHistory[j].transferDay + '</li>';
               }
             }
             ownerHistoryActionDetails += '</ul>';

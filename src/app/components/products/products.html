@@ -100,9 +100,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="owner in product.ownerHistory | orderBy : '-transferDate'">
+                    <tr ng-repeat="owner in product.ownerHistory | orderBy : '-transferDay'">
                       <td>{{ owner.developer.name }}</td>
-                      <td>{{ owner.transferDate | date : 'mediumDate' : 'UTC' }}</td>
+                      <td>{{ $ctrl.DateUtil.getDisplayDateFormat(owner.transferDay) }}</td>
                     </tr>
                   </tbody>
                 </table>
