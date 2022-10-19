@@ -47,7 +47,7 @@ const ProductEditComponent = {
           }))
           .sort((a, b) => {
             if (a.transferDay && b.transferDay) {
-              return a.transferDay < b.transferDay ? -1 : 1;
+              return a.transferDay < b.transferDay ? 1 : -1;
             }
             return a.transferDay ? 1 : -1;
           });
@@ -130,7 +130,7 @@ const ProductEditComponent = {
         })
         .sort((a, b) => {
           if (a.transferDay && b.transferDay) {
-            return a.transferDay < b.transferDay ? -1 : 1;
+            return a.transferDay < b.transferDay ? 1 : -1;
           }
           return a.transferDay ? 1 : -1;
         });
@@ -165,7 +165,7 @@ const ProductEditComponent = {
         })
         .sort((a, b) => {
           if (a.transferDay && b.transferDay) {
-            return a.transferDay < b.transferDay ? -1 : 1;
+            return a.transferDay < b.transferDay ? 1 : -1;
           }
           return a.transferDay ? 1 : -1;
         });
