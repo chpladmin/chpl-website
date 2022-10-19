@@ -2,28 +2,17 @@ import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.servic
 import { getDisplayDateFormat } from 'services/date-util';
 
 const compareOwnerHistory = (before, after) => {
-  let ownerHistoryActionDetails = 'Owner history changed. Was:<ul>';
-  let j;
   if (before.length === 0 && after.length === 0) { return undefined; }
-  if (before.length === 0) {
-    ownerHistoryActionDetails += '<li>No previous history</li>';
-  } else {
-    for (j = 0; j < before.length; j += 1) {
-      ownerHistoryActionDetails += `<li><strong>${before[j].developer.name}</strong> on ${getDisplayDateFormat(before[j].transferDate)}</li>`;
-      ownerHistoryActionDetails += `<li><strong>${before[j].developer.name}</strong> on ${getDisplayDateFormat(before[j].transferDay)}</li>`;
-    }
-  }
-  ownerHistoryActionDetails += '</ul>Now:<ul>';
-  if (after.length === 0) {
-    ownerHistoryActionDetails += '<li>No new history</li>';
-  } else {
-    for (j = 0; j < after.length; j += 1) {
-      ownerHistoryActionDetails += `<li><strong>${after[j].developer.name}</strong> on ${getDisplayDateFormat(after[j].transferDate)}</li>`;
-      ownerHistoryActionDetails += `<li><strong>${after[j].developer.name}</strong> on ${getDisplayDateFormat(after[j].transferDay)}</li>`;
-    }
-  }
-  ownerHistoryActionDetails += '</ul>';
-  return ownerHistoryActionDetails;
+  let changes = 'Owner history changed. Was:<ul>';
+  changes += (before.length === 0) ? '<li>No previous history</li>' : before
+    .map((item) => `<li><strong>${item.developer.name}</strong> on ${getDisplayDateFormat(item.transferDay ? item.transferDay : item.transferDate)}</li>`)
+    .join('');
+  changes += '</ul>Now:<ul>';
+  changes += (after.length === 0) ? '<li>No current history</li>' : after
+    .map((item) => `<li><strong>${item.developer.name}</strong> on ${getDisplayDateFormat(item.transferDay ? item.transferDay : item.transferDate)}</li>`)
+    .join('');
+  changes += '</ul>';
+  return changes;
 };
 
 const lookup = {
