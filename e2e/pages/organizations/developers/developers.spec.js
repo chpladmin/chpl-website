@@ -39,6 +39,11 @@ describe('the Developers page', () => {
   });
 
   afterEach(() => {
+    try {
+      actionBar.closeMessages();
+    } catch (error) {
+      console.log('action bar not open', error);
+    }
     if (toast.toastContainer.isDisplayed()) {
       toast.clearAllToast();
     }
@@ -111,7 +116,8 @@ describe('the Developers page', () => {
         page.setContact(developerContact);
         page.moveDeveloperToSplit(3138);
         actionBar.save();
-        expect(page.errors.getText()).toEqual('Developer split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
+        actionBar.waitForMessages();
+        expect(actionBar.errors.map((err) => err.getText()).join(';')).toContain('Developer split involves multiple ONC-ACBs, which requires additional approval. Please contact ONC.');
       });
     });
   });
