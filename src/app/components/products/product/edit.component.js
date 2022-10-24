@@ -6,6 +6,7 @@ const ProductEditComponent = {
     mergingProducts: '<',
     showFormErrors: '<',
     takeAction: '&',
+    errorMessages: '<',
   },
   controller: class ProductEditComponent {
     constructor($log, DateUtil, networkService) {
@@ -63,6 +64,10 @@ const ProductEditComponent = {
       if (changes.showFormErrors) {
         this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
       }
+      if (changes.errorMessages) {
+        this.externalErrorMessages = angular.copy(changes.errorMessages.currentValue);
+        this.generateErrorMessages();
+      }
       if (this.product && this.mergingProducts) {
         this.generateMergeOptions();
       }
@@ -101,7 +106,8 @@ const ProductEditComponent = {
           }
         });
       }
-      this.errorMessages = messages;
+      this.errorMessages = [...new Set(messages)];
+      this.displayedErrorMessages = this.externalErrorMessages ? this.externalErrorMessages.concat(this.errorMessages) : this.errorMessages;
     }
 
     isValid() {
