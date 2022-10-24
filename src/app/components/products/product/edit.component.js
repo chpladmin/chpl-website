@@ -103,6 +103,9 @@ const ProductEditComponent = {
             if (arr[idx].developer.name === arr[idx - 1].developer.name) {
               messages.push(`Product cannot transfer from Developer "${arr[idx].developer.name}" to the same Developer`);
             }
+            if (arr[idx].transferDay === arr[idx - 1].transferDay) {
+              messages.push(`Product cannot transfer twice on the same day: "${this.DateUtil.getDisplayDateFormat(arr[idx].transferDay)}"`);
+            }
           }
         });
       }
