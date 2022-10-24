@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplDecertifiedProductsCollectionView from './decertified-products-view';
 
@@ -10,7 +10,6 @@ import {
   getDateEntry,
 } from 'components/filter';
 import { sortCriteria } from 'services/criteria.service';
-import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [{
   ...defaultFilter,
@@ -106,7 +105,7 @@ function ChplDecertifiedProductsCollectionPage() {
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   const analytics = {
-    category: 'Decertified Products', // check on this
+    category: 'Decertified Products',
   };
 
   return (
