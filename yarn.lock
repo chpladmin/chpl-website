@@ -3151,10 +3151,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uirouter/angularjs@npm:1.0.29":
+  version: 1.0.29
+  resolution: "@uirouter/angularjs@npm:1.0.29"
+  dependencies:
+    "@uirouter/core": 6.0.7
+  peerDependencies:
+    angular: ">=1.2.0"
+  checksum: 5bc4c280fbaca6115ed0a4f32b3d8af1442513bef201f72cd075e47952f3d8235e7eb25451588f42d863e84de3f133d20d451a79682566d3d0e84ee305c97c6e
+  languageName: node
+  linkType: hard
+
 "@uirouter/core@npm:6.0.7":
   version: 6.0.7
   resolution: "@uirouter/core@npm:6.0.7"
   checksum: adf87e1a599ab7e06d51473ce3d7a787b87594142bdf992f9f95989d14f434eaa8c56621edfea96d4ccdb84abed205ef4b9a0a375345f3402edb4aa44c460a09
+  languageName: node
+  linkType: hard
+
+"@uirouter/react-hybrid@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@uirouter/react-hybrid@npm:1.0.5"
+  dependencies:
+    "@uirouter/angularjs": 1.0.29
+    "@uirouter/core": 6.0.7
+    "@uirouter/react": 1.0.7
+  peerDependencies:
+    angular: ^1.5.0
+    react: ">=15.0.0"
+  checksum: 29081286d009c6c05cbf3721d141654d6666dde070452dfbf403fdb18c2ec88057183d6a2895e30b10fc7837c00354885368e986298dff8be0304a8e622274c6
+  languageName: node
+  linkType: hard
+
+"@uirouter/react@npm:1.0.7":
+  version: 1.0.7
+  resolution: "@uirouter/react@npm:1.0.7"
+  dependencies:
+    "@uirouter/core": 6.0.7
+    classnames: ^2.3.1
+    prop-types: ^15.6.1
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 5241d326e2501489d3f9dc5b7d3e9b9eb4416b0629c47cd578b5c5404befe2f3c587a4ee07310dbc5cbad509b6acdec38ec2baeed5e9f88578603c92d6b2ebcd
   languageName: node
   linkType: hard
 
@@ -3960,17 +3998,6 @@ __metadata:
   version: 2.5.6
   resolution: "angular-ui-bootstrap@npm:2.5.6"
   checksum: 327ca9b654c7366139b272f237bdf227b312231186034abe3daee3a45c69e20f6af615a4e0d036e5dd9d3ccdc494e57639eaaaceb3d842a0a106edb3f06e609d
-  languageName: node
-  linkType: hard
-
-"angular-ui-router@npm:^1.0.20":
-  version: 1.0.29
-  resolution: "angular-ui-router@npm:1.0.29"
-  dependencies:
-    "@uirouter/core": 6.0.7
-  peerDependencies:
-    angular: ">=1.2.0"
-  checksum: 49dc87e38e2b0744e3605c0614ae18ca42d05280081406488af3c390e43751a3712a6b927214b237f832ff43d69e45aab0aeac158fb2ba869f804660f2725e25
   languageName: node
   linkType: hard
 
@@ -6152,6 +6179,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.11.9
     "@testing-library/react": ^11.2.5
     "@testing-library/user-event": ^13.0.10
+    "@uirouter/react-hybrid": ^1.0.5
     "@uirouter/visualizer": ^6.0.2
     "@wdio/allure-reporter": ^7.10.1
     "@wdio/cli": ^7.11.1
@@ -6175,7 +6203,6 @@ __metadata:
     angular-sanitize: ^1.7.2
     angular-smart-table: ^2.1.11
     angular-ui-bootstrap: 2.5.6
-    angular-ui-router: ^1.0.20
     angular-zxcvbn: ^3.2.2
     angularjs-toaster: ^2.2.0
     angulartics: ^1.6.0
@@ -18491,7 +18518,7 @@ export-to-csv@andlar/export-to-csv:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.6.1, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
