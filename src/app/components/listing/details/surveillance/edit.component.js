@@ -8,13 +8,11 @@ const SurveillanceEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceEditController {
-    constructor($log, $uibModal, authService, networkService, toaster) {
+    constructor($log, $uibModal, networkService, toaster) {
       'ngInject';
 
       this.$log = $log;
       this.$uibModal = $uibModal;
-      this.authService = authService;
-      this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
     }
@@ -44,9 +42,6 @@ const SurveillanceEditComponent = {
 
     addRequirement() {
       const data = angular.copy(this.data);
-      if (this.hasAnyRole(['ROLE_ACB'])) {
-        data.surveillanceRequirements.criteriaOptions = data.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
-      }
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
         animation: false,
