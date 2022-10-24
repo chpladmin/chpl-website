@@ -16,10 +16,7 @@ import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
-import {
-  useFetchDecertifiedProductsData,
-  useFetchCollection,
-} from 'api/collections';
+import { useFetchCollection } from 'api/collections';
 import {
   ChplLink,
   ChplPagination,
@@ -32,41 +29,33 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const csvOptions = (erdPhase2IsOn) => ({
-  filename: 'decertified-products',
+const csvOptions = {
+  filename: 'real-world-testing',
   showLabels: true,
-  headers: erdPhase2IsOn ? [
+  headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
     { headerName: 'Certification Edition', objectKey: 'fullEdition' },
     { headerName: 'Developer', objectKey: 'developerName' },
     { headerName: 'Product', objectKey: 'productName' },
     { headerName: 'Version', objectKey: 'versionName' },
     { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
-    { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
-  ] : [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-    { headerName: 'API Documentation - 170.315 (g)(8)', objectKey: 'apiDocumentation57' },
-    { headerName: 'API Documentation - 170.315 (g)(9)', objectKey: 'apiDocumentation58' },
-    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
-    { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
+    { headerName: 'Decertification Date', objectKey: 'decertificationDate' },
   ],
-});
+};
+
+const headers = [
+  { property: 'chpl_id', text: 'CHPL ID', sortable: true },
+  { text: 'Certification Edition' },
+  { property: 'developer', text: 'Developer', sortable: true },
+  { property: 'product', text: 'Product', sortable: true },
+  { property: 'version', text: 'Version', sortable: true },
+  { text: 'Certification Status' },
+  { text: 'Decertification Date' },
+];
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -81,13 +70,9 @@ const useStyles = makeStyles({
   },
   pageBody: {
     display: 'grid',
-    gridTemplateColumns: ' 1fr',
     gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '2fr 1fr',
-    },
   },
   pageContent: {
     display: 'grid',
@@ -143,71 +128,12 @@ const useStyles = makeStyles({
   },
 });
 
-const criteriaLookup = (erdPhase2IsOn) => (erdPhase2IsOn
-  ? {
-    56: { display: '170.315 (g)(7)', sort: 0 },
-    181: { display: '170.315 (g)(9) (Cures Update)', sort: 1 },
-    182: { display: '170.315 (g)(10) (Cures Update)', sort: 2 },
-  } : {
-    56: { display: '170.315 (g)(7)', sort: 0 },
-    57: { display: '170.315 (g)(8)', sort: 1 },
-    58: { display: '170.315 (g)(9)', sort: 2 },
-    181: { display: '170.315 (g)(9) (Cures Update)', sort: 3 },
-    182: { display: '170.315 (g)(10) (Cures Update)', sort: 4 },
-  });
-
-const parseDecertifiedProducts = ({ apiDocumentation }, analytics, erdPhase2IsOn) => {
-  if (apiDocumentation.length === 0) { return 'N/A'; }
-  const items = Object.entries(apiDocumentation
-    .filter((item) => !erdPhase2IsOn || (item.criterion.id !== 57 && item.criterion.id !== 58))
-    .map((item) => ({
-      id: item.criterion.id,
-      url: item.value,
-    }))
-    .reduce((map, { id, url }) => ({
-      ...map,
-      [url]: (map[url] || []).concat(id),
-    }), {}))
-    .map(([url, ids]) => ({
-      url,
-      criteria: ids
-        .sort((a, b) => criteriaLookup(erdPhase2IsOn)[a].sort - criteriaLookup(erdPhase2IsOn)[b].sort)
-        .map((id) => criteriaLookup(erdPhase2IsOn)[id].display)
-        .join(', '),
-    }))
-    .sort((a, b) => (a.criteria < b.criteria ? -1 : 1));
-  return (
-    <dl>
-      {items.map(({ url, criteria }) => (
-        <React.Fragment key={url}>
-          <dt>{ criteria }</dt>
-          <dd>
-            <ChplLink
-              key={url}
-              href={url}
-              analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
-            />
-          </dd>
-        </React.Fragment>
-      ))}
-    </dl>
-  );
-};
-
-const getDecertifiedProductsForCsv = ({ apiDocumentation }, id) => apiDocumentation?.find((item) => item.criterion.id === id)?.value || '';
-
-const parseServiceBaseUrlList = ({ serviceBaseUrlList }) => serviceBaseUrlList?.value || '';
-
 function ChplDecertifiedProductsCollectionView(props) {
   const storageKey = 'storageKey-decertifiedProductsView';
   const $analytics = getAngularService('$analytics');
-  const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
-  const { isOn } = useContext(FlagContext);
-  const [documentationDate, setDocumentationDate] = useState('');
-  const [downloadLink, setDownloadLink] = useState('');
-  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
+  const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -224,11 +150,6 @@ function ChplDecertifiedProductsCollectionView(props) {
     sortDescending,
     query: filterContext.queryString(),
   });
-  const { data: documentation } = useFetchDecertifiedProductsData();
-
-  useEffect(() => {
-    setErdPhase2IsOn(isOn('erd-phase-2'));
-  }, [isOn]);
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -239,20 +160,13 @@ function ChplDecertifiedProductsCollectionView(props) {
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      apiDocumentation: parseDecertifiedProducts(listing, analytics, erdPhase2IsOn),
-      apiDocumentation56: getDecertifiedProductsForCsv(listing, 56),
-      apiDocumentation57: erdPhase2IsOn ? '' : getDecertifiedProductsForCsv(listing, 57),
-      apiDocumentation58: erdPhase2IsOn ? '' : getDecertifiedProductsForCsv(listing, 58),
-      apiDocumentation181: getDecertifiedProductsForCsv(listing, 181),
-      apiDocumentation182: getDecertifiedProductsForCsv(listing, 182),
-      serviceBaseUrlList: parseServiceBaseUrlList(listing),
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics, erdPhase2IsOn]);
+  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -260,31 +174,8 @@ function ChplDecertifiedProductsCollectionView(props) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  useEffect(() => {
-    setDownloadLink(`${API}/files/api_documentation?api_key=${authService.getApiKey()}`);
-  }, [API, authService]);
-
-  useEffect(() => {
-    if (!documentation?.associatedDate) { return; }
-    setDocumentationDate(documentation.associatedDate);
-  }, [documentation?.associatedDate]);
-
-  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = [
-    { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-    { text: 'Certification Edition' },
-    { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'product', text: 'Product', sortable: true },
-    { property: 'version', text: 'Version', sortable: true },
-    { text: 'Certification Status' },
-    { text: 'API Documentation' },
-    { text: 'Service Base URL List' },
-    { text: 'Mandatory Disclosures URL' },
-  ];
-
   const downloadDecertifiedProducts = () => {
     $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    const csvExporter = new ExportToCsv(csvOptions(erdPhase2IsOn));
     csvExporter.generateCsv(listings);
   };
 
@@ -306,13 +197,13 @@ function ChplDecertifiedProductsCollectionView(props) {
         <Typography variant="h1">Decertified Products</Typography>
       </div>
       <div className={classes.pageBody}>
-        <div>
-          <Typography variant="body1" gutterBottom>
-      This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a>. For more information on how an inactive certificate may affect your attestation to the CMS EHR Incentive Programs, please consult the <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>. For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.
-          <Typography variant="body1">
-      Note: This list excludes 2011 and 2014 edition products. The 2011 and 2014 editions have been retired from the certification program. Also, note the last updated date refers to the last date the estimated number of Promoting Interoperability users was updated for a product.
-          </Typography>
-        </div>
+        <Typography variant="body1" gutterBottom>
+          This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a>. For more information on how an inactive certificate may affect your attestation to the CMS EHR Incentive Programs, please consult the <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>. For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.
+        </Typography>
+        <Typography variant="body1">
+          Note: This list excludes 2011 and 2014 edition products. The 2011 and 2014 editions have been retired from the certification program.
+        </Typography>
+      </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
         <ChplFilterPanel />
@@ -411,36 +302,7 @@ function ChplDecertifiedProductsCollectionView(props) {
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                { item.apiDocumentation }
-                              </TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                { item.serviceBaseUrlList
-                                  ? (
-                                    <dl>
-                                      <dt>170.315 (g)(10) (Cures Update)</dt>
-                                      <dd>
-                                        <ChplLink
-                                          href={item.serviceBaseUrlList}
-                                          analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
-                                        />
-                                      </dd>
-                                    </dl>
-                                  ) : (
-                                    <>N/A</>
-                                  )}
-                              </TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                { item.mandatoryDisclosures
-                                  ? (
-                                    <ChplLink
-                                      href={item.mandatoryDisclosures}
-                                      analytics={{ event: 'Go to Mandatory Disclosures Website', category: analytics.category, label: item.mandatoryDisclosures }}
-                                    />
-                                  ) : (
-                                    <>N/A</>
-                                  )}
-                              </TableCell>
+                              <TableCell>{getDisplayDateFormat(item.decertificationDate)}</TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
@@ -455,10 +317,6 @@ function ChplDecertifiedProductsCollectionView(props) {
                     setRowsPerPage={setPageSize}
                     analytics={analytics}
                   />
-                          <Typography variant="body1">
-Estimated Number of Promoting Interoperability users is determined from attestations from the CMS Medicare EHR Incentive Program. This is not a complete representation of all Promoting Interoperability users because it excludes those who participated in the CMS Medicaid EHR Incentive Program.
-          </Typography>
-
                 </>
               )}
           </>

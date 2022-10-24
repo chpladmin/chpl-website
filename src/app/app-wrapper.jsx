@@ -1,24 +1,19 @@
 import React from 'react';
 
-import ChplDecertifiedProductsCollectionPage from './decertified-products';
-
 import ApiWrapper from 'api/api-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 
-function ChplDecertifiedProductsCollectionWrapper() {
+function AppWrapper({ children }) {
   return (
     <UserWrapper>
       <ApiWrapper>
         <FlagWrapper>
-          <ChplDecertifiedProductsCollectionPage />
+          {children}
         </FlagWrapper>
       </ApiWrapper>
     </UserWrapper>
   );
 }
 
-export default ChplDecertifiedProductsCollectionWrapper;
-
-ChplDecertifiedProductsCollectionWrapper.propTypes = {
-};
+export default AppWrapper;

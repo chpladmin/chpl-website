@@ -26,12 +26,12 @@ const staticFilters = [{
   key: 'certificationStatuses',
   display: 'Certification Status',
   values: [
-    { value: 'Active', default: true },
-    { value: 'Suspended by ONC', default: true },
-    { value: 'Suspended by ONC-ACB', default: true },
-    { value: 'Terminated by ONC' },
-    { value: 'Withdrawn by Developer Under Surveillance/Review' },
-    { value: 'Withdrawn by ONC-ACB' },
+    { value: 'Active' },
+    { value: 'Suspended by ONC' },
+    { value: 'Suspended by ONC-ACB' },
+    { value: 'Terminated by ONC', default: true },
+    { value: 'Withdrawn by Developer Under Surveillance/Review', default: true },
+    { value: 'Withdrawn by ONC-ACB', default: true },
     { value: 'Withdrawn by Developer' },
     { value: 'Retired' },
   ],
@@ -62,17 +62,25 @@ const staticFilters = [{
     { value: 'Surescripts LLC', display: 'Surescripts LLC (Retired)' },
     { value: 'UL LLC', display: 'UL LLC (Retired)' },
   ],
+}, {
+  ...defaultFilter,
+  key: 'decertificationDate',
+  display: 'Decertification Date',
+  values: [
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
+  ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'decertificationDateStart' : 'decertificationDateEnd'}=${v.selected}`)
+    .join('&'),
+  getValueDisplay: getDateDisplay,
+  getValueEntry: getDateEntry,
 }];
 
 function ChplDecertifiedProductsCollectionPage() {
-  const { isOn } = useContext(FlagContext);
-  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const ccQuery = useFetchCriteria();
-
-  useEffect(() => {
-    setErdPhase2IsOn(isOn('erd-phase-2'));
-  }, [isOn]);
 
   useEffect(() => {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
@@ -84,7 +92,6 @@ function ChplDecertifiedProductsCollectionPage() {
         ...cc,
         value: cc.id,
         display: `${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
-        default: erdPhase2IsOn ? [56, 181, 182].includes(cc.id) : [56, 57, 58, 181, 182].includes(cc.id),
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
@@ -96,7 +103,7 @@ function ChplDecertifiedProductsCollectionPage() {
         sortValues: (filter, a, b) => sortCriteria(a, b),
         values,
       }));
-  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess, erdPhase2IsOn]);
+  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   const analytics = {
     category: 'Decertified Products', // check on this
