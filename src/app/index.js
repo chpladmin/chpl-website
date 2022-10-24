@@ -3,7 +3,7 @@ import 'angular-loading-bar/build/loading-bar.min.css';
 import './index.scss';
 import '../assets/favicons/favicons';
 import 'swagger-ui-react/swagger-ui.css';
-import { UI_ROUTER_REACT_HYBRID } from '@uirouter/react-hybrid';
+
 import angular from 'angular';
 import 'angular-breadcrumb';
 import /* angularConfirm from */ 'angular-confirm';
@@ -25,6 +25,7 @@ import /* toaster from */ 'angularjs-toaster';
 import /* uiBoostrap from */ 'angular-ui-bootstrap';
 import /* ngFileSaver from */ 'angular-file-saver';
 import /* ngStorage from */ 'ngstorage';
+import 'angular-ui-router';
 
 // import app modules
 import administration from './pages/administration/index';
@@ -71,7 +72,6 @@ const dependencies = [
   'toaster',
   'ui.bootstrap',
   'ui.router',
-  UI_ROUTER_REACT_HYBRID,
   administration.name,
   compare.name,
   listing.name,
