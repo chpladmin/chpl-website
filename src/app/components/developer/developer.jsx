@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { arrayOf, bool, func } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  func,
+  string,
+} from 'prop-types';
 
 import ChplDeveloperEdit from './developer-edit';
 import ChplDeveloperView from './developer-view';
@@ -16,6 +21,7 @@ function ChplDeveloper(props) {
     demographicChangeRequestIsOn,
     developer,
     dispatch,
+    errorMessages,
     isEditing,
     isMerging,
     isSplitting,
@@ -45,6 +51,7 @@ function ChplDeveloper(props) {
               isInvalid={isInvalid}
               isSplitting={isSplitting}
               mergingDevelopers={mergingDevelopers}
+              errorMessages={errorMessages}
             />
           )}
         { !isEditing && !isMerging
@@ -72,6 +79,7 @@ ChplDeveloper.propTypes = {
   demographicChangeRequestIsOn: bool,
   developer: developerPropType.isRequired,
   dispatch: func,
+  errorMessages: arrayOf(string),
   isEditing: bool,
   isInvalid: bool,
   isMerging: bool,
@@ -85,6 +93,7 @@ ChplDeveloper.defaultProps = {
   canSplit: false,
   demographicChangeRequestIsOn: false,
   dispatch: () => {},
+  errorMessages: [],
   isEditing: false,
   isInvalid: false,
   isMerging: false,
