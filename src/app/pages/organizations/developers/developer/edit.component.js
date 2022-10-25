@@ -54,6 +54,7 @@ const DevelopersEditComponent = {
       if (this.hasAnyRole(['ROLE_DEVELOPER'])) {
         this.saveRequest(developer);
       } else {
+        this.errorMessages = [];
         const that = this;
         this.developer = developer;
         this.networkService.updateDeveloper(this.developer).then((response) => {
@@ -79,17 +80,19 @@ const DevelopersEditComponent = {
         }, (error) => {
           let body;
           if (error.data.errorMessages) {
-            body = error.data.errorMessages.join(', ');
+            that.errorMessages = error.data.errorMessages;
           } else if (error.data.error) {
             body = error.data.error;
           } else {
             body = 'An unexpected error has occurred.';
           }
-          that.toaster.pop({
-            type: 'error',
-            title: 'Error',
-            body,
-          });
+          if (body) {
+            that.toaster.pop({
+              type: 'error',
+              title: 'Error',
+              body,
+            });
+          }
         });
       }
     }
