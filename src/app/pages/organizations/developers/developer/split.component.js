@@ -73,7 +73,7 @@ const DevelopersSplitComponent = {
           } else if (response.data.errorMessages) {
             that.errorMessages = response.data.errorMessages;
           } else if (response.data.error) {
-            that.errorMessages.push(response.data.error);
+            that.errorMessages = [response.data.error];
           } else {
             that.errorMessages = ['An error has occurred.'];
           }
@@ -81,7 +81,7 @@ const DevelopersSplitComponent = {
           if (error.data.errorMessages) {
             that.errorMessages = error.data.errorMessages;
           } else if (error.data.error) {
-            that.errorMessages.push(error.data.error);
+            that.errorMessages = [error.data.error];
           } else {
             that.errorMessages = ['An error has occurred.'];
           }
