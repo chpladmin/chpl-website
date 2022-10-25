@@ -8,7 +8,7 @@ class DevelopersPage extends ReportsPage {
       ...this.elements,
       subTitle: 'h3=Developer',
     };
-    this.expectedMinimumCount = 3300;
+    this.expectedMinimumCount = 3100;
   }
 
   async open() {
