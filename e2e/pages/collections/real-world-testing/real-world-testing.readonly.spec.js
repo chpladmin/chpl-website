@@ -1,5 +1,3 @@
-import { open } from '../../../utilities/hooks.async';
-
 import RealWorldTestingPage from './real-world-testing.po';
 
 const path = require('path');
@@ -12,8 +10,7 @@ let page;
 describe('the Real World Testing collection page', () => {
   beforeEach(async () => {
     page = new RealWorldTestingPage();
-    await open('#/collections/real-world-testing');
-    await (browser.waitUntil(async () => !(await page.isLoading())));
+    await page.open();
   });
 
   it('should have body text', async () => {

@@ -1,5 +1,3 @@
-import { open } from '../../../utilities/hooks.async';
-
 import ApiDocumentationPage from './api-documentation.po';
 
 const path = require('path');
@@ -12,8 +10,7 @@ let page;
 describe('the Api Documentation collection page', () => {
   beforeEach(async () => {
     page = new ApiDocumentationPage();
-    await open('#/collections/api-documentation');
-    await (browser.waitUntil(async () => !(await page.isLoading())));
+    await page.open();
   });
 
   it('should have body text', async () => {
