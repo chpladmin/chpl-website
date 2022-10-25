@@ -20,7 +20,6 @@ const elements = {
   developerStatus: '#developer-status-0',
   splitDeveloper: '#developer-component-split',
   developerName: '#name',
-  errors: 'div.text-danger',
   mergeDeveloper: '#developer-component-merge',
   editWebsite: '#website',
   contact: {
@@ -259,10 +258,6 @@ class DevelopersPage {
 
   get developerName() {
     return $(this.elements.developerName);
-  }
-
-  get errors() {
-    return $(this.elements.errors).$('ul');
   }
 
   get mergeDeveloper() {
