@@ -35,12 +35,9 @@ const states = [{
 }, {
   name: 'surveillance.complaints',
   url: '/complaints',
-  component: 'chplComplaintsReporting',
+  component: 'chplComplaintsWrapperBridge',
   data: {
     title: 'CHPL Surveillance - Complaints Reporting',
-  },
-  ncyBreadcrumb: {
-    label: 'Complaints Reporting',
   },
 }, {
   name: 'surveillance.manage',

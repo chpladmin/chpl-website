@@ -114,6 +114,15 @@ function ChplComplaintsView(props) {
   useEffect(() => {
     append(
       <Button
+        key="surveillance.disabled"
+        variant="text"
+        disabled
+      >
+        Surveillance
+      </Button>,
+    );
+    append(
+      <Button
         key="viewall.disabled"
         variant="text"
         disabled
@@ -130,6 +139,7 @@ function ChplComplaintsView(props) {
         Complaints
       </Button>,
     );
+    display('surveillance.disabled');
     display('viewall.disabled');
   }, []);
 

@@ -18,7 +18,7 @@ function ChplComplaintsWrapper(props) {
       <ApiWrapper>
         <BreadcrumbWrapper
           disabled={!!bonusQuery}
-          title="Complaints"
+          title="Complaints Reporting"
         >
           <ChplComplaints
             disallowedFilters={disallowedFilters}
