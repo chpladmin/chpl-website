@@ -16,7 +16,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf, bool, string } from 'prop-types';
 
 import ChplComplaint from './complaint';
 import ChplComplaintAdd from './complaint-add';
@@ -87,13 +87,12 @@ const useStyles = makeStyles({
   },
 });
 
-
 function ChplComplaintsView(props) {
   const storageKey = 'storageKey-complaintsView';
-  const { disallowedFilters, bonusQuery } = props;
+  const { canAdd, bonusQuery, disallowedFilters } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
-  const [complaint, setComplaint] = useState(undefined);
+  const [activeComplaint, setActiveComplaint] = useState(undefined);
   const [complaints, setComplaints] = useState([]);
   const [order, setOrder] = useStorage(`${storageKey}-order`, 'desc');
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'received_date');
@@ -111,7 +110,6 @@ function ChplComplaintsView(props) {
   });
   const classes = useStyles();
   let handleDispatch;
-
 
   useEffect(() => {
     append(
@@ -147,11 +145,12 @@ function ChplComplaintsView(props) {
       ...item,
     }));
     setComplaints(cs);
-    if (complaint?.id) {
-      setComplaint((inUseC) => cs.find((c) => c.id === inUseC.id));
+    if (activeComplaint?.id) {
+      setActiveComplaint((inUseC) => cs.find((c) => c.id === inUseC.id));
     }
   }, [data, isLoading, isSuccess]);
 
+  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_ACB']) ? [
     { property: 'complaint_status_type_name', text: 'Status', sortable: true },
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
@@ -172,7 +171,7 @@ function ChplComplaintsView(props) {
   handleDispatch = (action) => {
     switch (action) {
       case 'close':
-        setComplaint(undefined);
+        setActiveComplaint(undefined);
         display('viewall.disabled');
         hide('viewall');
         hide('edit.disabled');
@@ -191,15 +190,15 @@ function ChplComplaintsView(props) {
   const showBreadcrumbs = () => !bonusQuery;
 
   const viewComplaint = (c) => {
-    setComplaint(c);
+    setActiveComplaint(c);
     display('viewall');
     hide('viewall.disabled');
   };
 
-  if (complaint) {
+  if (activeComplaint) {
     return (
       <ChplComplaint
-        complaint={complaint}
+        complaint={activeComplaint}
         dispatch={handleDispatch}
         showBreadcrumbs={showBreadcrumbs()}
       />
@@ -270,16 +269,22 @@ function ChplComplaintsView(props) {
                             </Typography>
                           )}
                       </div>
-                      { complaints.length > 0
-                        && (
-                          <ButtonGroup size="small" className={classes.wrap}>
+                      <ButtonGroup size="small" className={classes.wrap}>
+                        { canAdd
+                          && (
+                            <ChplComplaintAdd
+                              dispatch={handleDispatch}
+                            />
+                          )}
+                        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
+                          && (
                             <ChplComplaintsDownload
                               bonusQuery={bonusQuery}
                               queryParams={queryParams()}
                               recordCount={data.recordCount}
                             />
-                          </ButtonGroup>
-                        )}
+                          )}
+                      </ButtonGroup>
                     </div>
                     { complaints.length > 0
                       && (
@@ -298,39 +303,39 @@ function ChplComplaintsView(props) {
                               />
                               <TableBody>
                                 {complaints
-                                 .map((complaint) => (
-                                   <TableRow key={complaint.id}>
-                                     { !hasAnyRole(['ROLE_ACB'])
+                                  .map((complaint) => (
+                                    <TableRow key={complaint.id}>
+                                      { !hasAnyRole(['ROLE_ACB'])
                                        && (
                                          <TableCell>{complaint.acbName}</TableCell>
                                        )}
-                                     <TableCell>
-                                       <Typography
-                                         variant="subtitle1"
-                                         className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
-                                       >
-                                         {complaint.complaintStatusTypeName}
-                                       </Typography>
-                                     </TableCell>
-                                     <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
-                                     <TableCell>{complaint.acbComplaintId}</TableCell>
-                                     <TableCell>
-                                       { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
-                                     </TableCell>
-                                     <TableCell>{complaint.complainantTypeName}</TableCell>
-                                     <TableCell align="right">
-                                       <Button
-                                         onClick={() => viewComplaint(complaint)}
-                                         variant="contained"
-                                         color="primary"
-                                       >
-                                         View
-                                         {' '}
-                                         <VisibilityIcon className={classes.iconSpacing} />
-                                       </Button>
-                                     </TableCell>
-                                   </TableRow>
-                                 ))}
+                                      <TableCell>
+                                        <Typography
+                                          variant="subtitle1"
+                                          className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
+                                        >
+                                          {complaint.complaintStatusTypeName}
+                                        </Typography>
+                                      </TableCell>
+                                      <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
+                                      <TableCell>{complaint.acbComplaintId}</TableCell>
+                                      <TableCell>
+                                        { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
+                                      </TableCell>
+                                      <TableCell>{complaint.complainantTypeName}</TableCell>
+                                      <TableCell align="right">
+                                        <Button
+                                          onClick={() => viewComplaint(complaint)}
+                                          variant="contained"
+                                          color="primary"
+                                        >
+                                          View
+                                          {' '}
+                                          <VisibilityIcon className={classes.iconSpacing} />
+                                        </Button>
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
                               </TableBody>
                             </Table>
                           </TableContainer>
@@ -356,6 +361,11 @@ function ChplComplaintsView(props) {
 export default ChplComplaintsView;
 
 ChplComplaintsView.propTypes = {
-  disallowedFilters: arrayOf(string).isRequired,
+  canAdd: bool,
   bonusQuery: string.isRequired,
+  disallowedFilters: arrayOf(string).isRequired,
+};
+
+ChplComplaintsView.defaultProps = {
+  canAdd: true,
 };
