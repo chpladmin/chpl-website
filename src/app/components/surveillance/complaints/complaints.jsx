@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { arrayOf, string } from 'prop-types';
 
 import ChplComplaintsView from './complaints-view';
@@ -9,6 +9,7 @@ import {
   getDateDisplay,
   getDateTimeEntry,
 } from 'components/filter';
+import { UserContext } from 'shared/contexts';
 
 const analytics = {
   category: 'Complaints',
@@ -111,8 +112,25 @@ const staticFilters = [{
 }];
 
 function ChplComplaints(props) {
-  const { disallowedFilters, bonusQuery } = props;
+  const { disallowedFilters: initialDisallowedFilters, bonusQuery: initialBonusQuery } = props;
+  const { hasAnyRole, user } = useContext(UserContext);
+  const [bonusQuery, setBonusQuery] = useState('');
+  const [disallowedFilters, setDisallowedFilters] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
+
+  useEffect(() => {
+    setBonusQuery(initialBonusQuery);
+  }, [initialBonusQuery]);
+
+  useEffect(() => {
+    setDisallowedFilters(initialDisallowedFilters);
+  }, [initialDisallowedFilters]);
+
+  useEffect(() => {
+    if (!hasAnyRole(['ROLE_ACB'])) { return; }
+    setBonusQuery((bq) => [bq, `certificationBodies=${user.organizations[0].name}`].join('&'));
+    setDisallowedFilters((df) => [...df, 'certificationBodies']);
+  }, [hasAnyRole, user]);
 
   useEffect(() => {
     setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
