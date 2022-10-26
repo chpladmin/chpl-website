@@ -41,12 +41,43 @@ const useStyles = makeStyles({
   container: {
     maxHeight: '64vh',
   },
-  deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    '&:hover': {
-      backgroundColor: '#853544',
+  searchContainer: {
+    backgroundColor: palette.grey,
+    padding: '16px 32px',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '16px',
+    alignItems: 'center',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'flex-end',
     },
+  },
+  tableResultsHeaderContainer: {
+    display: 'grid',
+    gap: '8px',
+    margin: '16px 32px',
+    gridTemplateColumns: '1fr',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'auto auto',
+    },
+  },
+  resultsContainer: {
+    display: 'grid',
+    gap: '8px',
+    justifyContent: 'start',
+    gridTemplateColumns: 'auto auto',
+    alignItems: 'center',
+  },
+  wrap: {
+    flexFlow: 'wrap',
+  },
+  noResultsContainer: {
+    padding: '16px 32px',
   },
   statusIndicatorOpen: {
     color: '#66926d',
