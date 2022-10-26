@@ -21,6 +21,78 @@ const analytics = {
 
 const staticFilters = [{
   ...defaultFilter,
+  key: 'atlContacted',
+  display: 'ONC-ATL Contacted',
+  values: [
+    { value: 'Yes' },
+    { value: 'No' },
+  ],
+}, {
+  ...defaultFilter,
+  key: 'certificationBodies',
+  display: 'ONC-ACB',
+  values: [
+    { value: 'CCHIT', display: 'CCHIT (Retired)' },
+    { value: 'Drummond Group', default: true },
+    { value: 'ICSA Labs', default: true },
+    { value: 'Leidos', default: true },
+    { value: 'SLI Compliance', default: true },
+    { value: 'Surescripts LLC', display: 'Surescripts LLC (Retired)' },
+    { value: 'UL LLC', display: 'UL LLC (Retired)' },
+  ],
+}, {
+  ...defaultFilter,
+  key: 'complainantContacted',
+  display: 'Complainant Contacted',
+  values: [
+    { value: 'Yes' },
+    { value: 'No' },
+  ],
+}, {
+  ...defaultFilter,
+  key: 'complainantType',
+  display: 'Complainant Type',
+  values: [
+    { value: 'Anonymous' },
+    { value: 'Developer' },
+    { value: 'Government Entity' },
+    { value: 'Other - [Please Describe]' },
+    { value: 'Patient' },
+    { value: 'Provider' },
+    { value: 'Third Party Organization' },
+  ],
+}, {
+  ...defaultFilter,
+  key: 'closedDate',
+  display: 'Closed Date',
+  values: [
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
+  ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'closedDateTimeStart' : 'closedDateTimeEnd'}=${v.selected}`)
+    .join('&'),
+  getValueDisplay: getDateDisplay,
+  getValueEntry: getDateTimeEntry,
+}, {
+  ...defaultFilter,
+  key: 'developerContacted',
+  display: 'Developer Contacted',
+  values: [
+    { value: 'Yes' },
+    { value: 'No' },
+  ],
+}, {
+  ...defaultFilter,
+  key: 'informedOnc',
+  display: 'Informed ONC',
+  values: [
+    { value: 'Yes' },
+    { value: 'No' },
+  ],
+}, {
+  ...defaultFilter,
   key: 'receivedDate',
   display: 'Received Date',
   values: [
@@ -33,6 +105,14 @@ const staticFilters = [{
     .join('&'),
   getValueDisplay: getDateDisplay,
   getValueEntry: getDateTimeEntry,
+}, {
+  ...defaultFilter,
+  key: 'status',
+  display: 'Status',
+  values: [
+    { value: 'Closed' },
+    { value: 'Open' },
+  ],
 }];
 
 function ChplComplaints(props) {

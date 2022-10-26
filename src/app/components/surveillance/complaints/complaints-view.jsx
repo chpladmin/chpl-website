@@ -220,7 +220,7 @@ function ChplComplaintsView(props) {
           { !disallowedFilters.includes('searchTerm')
             && (
               <ChplFilterSearchTerm
-                placeholder="Search by something? Is this valid?..."
+                placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
               />
             )}
           <ChplFilterPanel />
