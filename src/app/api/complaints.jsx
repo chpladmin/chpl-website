@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
@@ -10,6 +10,26 @@ const useDeleteComplaint = () => {
       queryClient.invalidateQueries('complaints');
     },
   });
+};
+
+const useFetchComplaints = ({
+  orderBy = 'received_date',
+  pageNumber,
+  pageSize,
+  sortDescending = false,
+  query,
+}) => {
+  const axios = useAxios();
+  return useQuery(['complaints/search', {
+    orderBy,
+    pageNumber,
+    pageSize,
+    sortDescending,
+    query,
+  }], async () => {
+    const response = await axios.get(`complaints/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    return response.data;
+  }, { keepPreviousData: true });
 };
 
 const usePostComplaint = () => {
@@ -39,6 +59,7 @@ const usePutComplaint = () => {
 
 export {
   useDeleteComplaint,
+  useFetchComplaints,
   usePostComplaint,
   usePostReportRequest,
   usePutComplaint,

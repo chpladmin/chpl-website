@@ -1,51 +1,73 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   ButtonGroup,
   makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf, bool, func, string,
-} from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 
-import ChplComplaint from './complaint';
-import ChplComplaintAdd from './complaint-add';
-import ChplComplaintsDownload from './complaints-download';
 import ChplComplaintsView from './complaints-view';
 
-import { UserContext } from 'shared/contexts';
+import {
+  FilterProvider,
+  defaultFilter,
+  getDateDisplay,
+  getDateTimeEntry,
+} from 'components/filter';
 import { complaint as complaintPropType, listing as listingPropType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
 
-const useStyles = makeStyles(() => ({
-  ...utilStyles,
-  tableResultsHeaderContainer: {
-    display: 'flex',
-    justifyContent: 'end',
-  },
-  wrap: {
-    flexFlow: 'wrap',
-  },
-}));
+const analytics = {
+  category: 'Complaints',
+};
+
+const staticFilters = [{
+  ...defaultFilter,
+  key: 'receivedDate',
+  display: 'Received Date',
+  values: [
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
+  ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'receivedDateTimeStart' : 'receivedDateTimeEnd'}=${v.selected}`)
+    .join('&'),
+  getValueDisplay: getDateDisplay,
+  getValueEntry: getDateTimeEntry,
+}];
 
 function ChplComplaints(props) {
-  const {
-    complaints,
-    dispatch,
-    displayAdd,
-    isViewing,
-    isEditing,
-  } = props;
-  const { hasAnyRole } = useContext(UserContext);
-  const classes = useStyles();
+  const { disallowedFilters, bonusQuery } = props;
+  const [filters, setFilters] = useState(staticFilters);
 
-  if (isViewing || isEditing) {
-    return (
-      <ChplComplaint
-        {...props}
+  useEffect(() => {
+    setFilters((f) => f.filter((filter) => !disallowedFilters.includes(filter.key)));
+  }, [disallowedFilters]);
+
+  return (
+    <FilterProvider
+      analytics={analytics}
+      filters={filters}
+      storageKey="storageKey-complaintsComponent"
+    >
+      <ChplComplaintsView
+        analytics={analytics}
+        disallowedFilters={disallowedFilters}
+        bonusQuery={bonusQuery}
       />
-    );
-  }
+    </FilterProvider>
+  );
 
+}
+
+export default ChplComplaints;
+
+ChplComplaints.propTypes = {
+  disallowedFilters: arrayOf(string).isRequired,
+  bonusQuery: string.isRequired,
+};
+
+/*
+    
   return (
     <>
       <div className={classes.tableResultsHeaderContainer}>
@@ -67,18 +89,4 @@ function ChplComplaints(props) {
         dispatch={dispatch}
       />
     </>
-  );
-}
-
-export default ChplComplaints;
-
-ChplComplaints.propTypes = {
-  complaint: complaintPropType.isRequired,
-  complaints: arrayOf(complaintPropType).isRequired,
-  listings: arrayOf(listingPropType).isRequired,
-  errors: arrayOf(string).isRequired,
-  dispatch: func.isRequired,
-  displayAdd: bool.isRequired,
-  isViewing: bool.isRequired,
-  isEditing: bool.isRequired,
-};
+  );*/

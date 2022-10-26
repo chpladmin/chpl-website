@@ -1,23 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
+  ButtonGroup,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TablePagination,
   TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf, func } from 'prop-types';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { arrayOf, string } from 'prop-types';
 
-import { ChplEllipsis, ChplSortableHeaders } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-import { complaint as complaintPropType } from 'shared/prop-types';
-import { utilStyles } from 'themes';
+import ChplComplaint from './complaint';
+import ChplComplaintAdd from './complaint-add';
+import ChplComplaintsDownload from './complaints-download';
+
+import { useFetchComplaints } from 'api/complaints';
+import {
+  ChplFilterChips,
+  ChplFilterPanel,
+  ChplFilterSearchTerm,
+  useFilterContext,
+} from 'components/filter';
+import { ChplEllipsis, ChplPagination } from 'components/util';
+import { ChplSortableHeaders } from 'components/util/sortable-headers';
+import { getDisplayDateFormat } from 'services/date-util';
+import { useSessionStorage as useStorage } from 'services/storage.service';
+import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -39,135 +56,275 @@ const useStyles = makeStyles({
   },
 });
 
-/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const headers = [
-  { property: 'acbName', text: 'ONC-ACB', sortable: true },
-  { property: 'complaintStatusTypeName', text: 'Status', sortable: true },
-  { property: 'receivedDate', text: 'Received Date', sortable: true },
-  { property: 'acbComplaintId', text: 'ONC-ACB Complaint ID', sortable: true },
-  { property: 'oncComplaintId', text: 'ONC Complaint ID', sortable: true },
-  { property: 'complainantTypeName', text: 'Complainant Type', sortable: true },
-  { property: 'actions', text: 'Actions', invisible: true, sortable: false },
-];
-
-const sortComparator = (property) => {
-  let sortOrder = 1;
-  let key = property;
-  if (key[0] === '-') {
-    sortOrder = -1;
-    key = key.substr(1);
-  }
-  return (a, b) => {
-    const result = (a[key] < b[key]) ? -1 : 1;
-    return result * sortOrder;
-  };
-};
 
 function ChplComplaintsView(props) {
-  /* eslint-disable react/destructuring-assignment */
+  const storageKey = 'storageKey-complaintsView';
+  const { disallowedFilters, bonusQuery } = props;
+  const { append, display, hide } = useContext(BreadcrumbContext);
+  const { hasAnyRole } = useContext(UserContext);
+  const [complaint, setComplaint] = useState(undefined);
   const [complaints, setComplaints] = useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(50);
-  const DateUtil = getAngularService('DateUtil');
+  const [order, setOrder] = useStorage(`${storageKey}-order`, 'desc');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'received_date');
+  const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
+  const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
+  const { queryParams, queryString } = useFilterContext();
+  const {
+    data, error, isError, isLoading, isSuccess,
+  } = useFetchComplaints({
+    orderBy,
+    pageNumber,
+    pageSize,
+    sortDescending: order === 'desc',
+    query: `${queryString()}${bonusQuery}`,
+  });
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
+  let handleDispatch;
+
 
   useEffect(() => {
-    setComplaints(props.complaints
-      .map((complaint) => complaint)
-      .sort(sortComparator('-receivedDate')));
-  }, [props.complaints]); // eslint-disable-line react/destructuring-assignment
+    append(
+      <Button
+        key="viewall.disabled"
+        variant="text"
+        disabled
+      >
+        Complaints
+      </Button>,
+    );
+    append(
+      <Button
+        key="viewall"
+        variant="text"
+        onClick={() => handleDispatch('close')}
+      >
+        Complaints
+      </Button>,
+    );
+    display('viewall.disabled');
+  }, []);
+
+  useEffect(() => {
+    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
+      setPageNumber(0);
+    }
+  }, [data?.recordCount, pageNumber, data?.results?.length]);
+
+  useEffect(() => {
+    if (isLoading || !isSuccess || !data) { return; }
+    const cs = data.results.map((item) => ({
+      ...item,
+    }));
+    setComplaints(cs);
+    if (complaint?.id) {
+      setComplaint((inUseC) => cs.find((c) => c.id === inUseC.id));
+    }
+  }, [data, isLoading, isSuccess]);
+
+  const headers = hasAnyRole(['ROLE_ACB']) ? [
+    { property: 'complaint_status_type_name', text: 'Status', sortable: true },
+    { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
+    { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
+    { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
+    { property: 'complainant_type_name', text: 'Complainant Type', sortable: true },
+    { property: 'actions', text: 'Actions', invisible: true },
+  ] : [
+    { property: 'acb_name', text: 'ONC-ACB', sortable: true },
+    { property: 'complaint_status_type_name', text: 'Status', sortable: true },
+    { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
+    { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
+    { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
+    { property: 'complainant_type_name', text: 'Complainant Type', sortable: true },
+    { property: 'actions', text: 'Actions', invisible: true },
+  ];
+
+  handleDispatch = (action) => {
+    switch (action) {
+      case 'close':
+        setComplaint(undefined);
+        display('viewall.disabled');
+        hide('viewall');
+        hide('edit.disabled');
+        hide('view');
+        hide('view.disabled');
+        break;
+      // no default
+    }
+  };
 
   const handleTableSort = (event, property, orderDirection) => {
-    setComplaints(complaints
-      .map((complaint) => complaint)
-      .sort(sortComparator(orderDirection + property)));
+    setOrderBy(property);
+    setOrder(orderDirection);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const showBreadcrumbs = () => !bonusQuery;
+
+  const viewComplaint = (c) => {
+    setComplaint(c);
+    display('viewall');
+    hide('viewall.disabled');
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleAction = (action, complaint) => {
-    props.dispatch(action, complaint);
-  };
-
-  if (!complaints || complaints.length === 0) {
+  if (complaint) {
     return (
-      <>No results found</>
+      <ChplComplaint
+        complaint={complaint}
+        dispatch={handleDispatch}
+        showBreadcrumbs={showBreadcrumbs()}
+      />
     );
   }
 
+  const pageStart = (pageNumber * pageSize) + 1;
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
+
   return (
-    <>
-      <TableContainer className={classes.container} component={Paper}>
-        <Table
-          stickyHeader
-          aria-label="Complaints table"
-        >
-          <ChplSortableHeaders
-            headers={headers}
-            onTableSort={handleTableSort}
-            orderBy="receivedDate"
-            order="desc"
-          />
-          <TableBody>
-            {complaints
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((complaint) => (
-                <TableRow key={complaint.id}>
-                  <TableCell>{complaint.acbName}</TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="subtitle1"
-                      className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
-                    >
-                      {complaint.complaintStatusTypeName}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>{DateUtil.getDisplayDateFormat(complaint.receivedDate)}</TableCell>
-                  <TableCell>{complaint.acbComplaintId}</TableCell>
-                  <TableCell>
-                    { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
-                  </TableCell>
-                  <TableCell>{complaint.complainantTypeName}</TableCell>
-                  <TableCell align="right">
-                    <Button
-                      onClick={() => handleAction('view', complaint)}
-                      variant="contained"
-                      color="primary"
-                    >
-                      View
-                      {' '}
-                      <VisibilityIcon className={classes.iconSpacing} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[50, 100, 200, { value: complaints.length, label: 'All' }]}
-        component="div"
-        count={complaints.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </>
+    <Card>
+      { bonusQuery
+        && (
+          <CardHeader title="Change Requests" />
+        )}
+      <CardContent>
+        <div className={classes.searchContainer} component={Paper}>
+          { !disallowedFilters.includes('searchTerm')
+            && (
+              <ChplFilterSearchTerm
+                placeholder="Search by something? Is this valid?..."
+              />
+            )}
+          <ChplFilterPanel />
+        </div>
+        <div>
+          <ChplFilterChips />
+        </div>
+        { isLoading
+          && (
+            <div className={classes.noResultsContainer}>
+              <CircularProgress />
+            </div>
+          )}
+        { !isLoading
+          && (
+            <>
+              { isError
+                && (
+                  <>
+                    <div className={classes.noResultsContainer}>
+                      No results were found, due to invalid parameters:
+                    </div>
+                    <ul>
+                      {error.response.data.errorMessages?.map((msg) => (
+                        <li key={msg}>{msg}</li>
+                      ))}
+                      { error.response.data.error}
+                    </ul>
+                  </>
+                )}
+              { isSuccess
+                && (
+                  <>
+                    <div className={classes.tableResultsHeaderContainer}>
+                      <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                        <Typography variant="subtitle2">Search Results:</Typography>
+                        { complaints.length === 0
+                          && (
+                            <>
+                              No results found
+                            </>
+                          )}
+                        { complaints.length > 0
+                          && (
+                            <Typography variant="body2">
+                              {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                            </Typography>
+                          )}
+                      </div>
+                      { complaints.length > 0
+                        && (
+                          <ButtonGroup size="small" className={classes.wrap}>
+                            <ChplComplaintsDownload
+                              bonusQuery={bonusQuery}
+                              queryParams={queryParams()}
+                              recordCount={data.recordCount}
+                            />
+                          </ButtonGroup>
+                        )}
+                    </div>
+                    { complaints.length > 0
+                      && (
+                        <>
+                          <TableContainer className={classes.container} component={Paper}>
+                            <Table
+                              stickyHeader
+                              aria-label="Complaints table"
+                            >
+                              <ChplSortableHeaders
+                                headers={headers}
+                                onTableSort={handleTableSort}
+                                orderBy={orderBy}
+                                order={order}
+                                stickyHeader
+                              />
+                              <TableBody>
+                                {complaints
+                                 .map((complaint) => (
+                                   <TableRow key={complaint.id}>
+                                     { !hasAnyRole(['ROLE_ACB'])
+                                       && (
+                                         <TableCell>{complaint.acbName}</TableCell>
+                                       )}
+                                     <TableCell>
+                                       <Typography
+                                         variant="subtitle1"
+                                         className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
+                                       >
+                                         {complaint.complaintStatusTypeName}
+                                       </Typography>
+                                     </TableCell>
+                                     <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
+                                     <TableCell>{complaint.acbComplaintId}</TableCell>
+                                     <TableCell>
+                                       { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
+                                     </TableCell>
+                                     <TableCell>{complaint.complainantTypeName}</TableCell>
+                                     <TableCell align="right">
+                                       <Button
+                                         onClick={() => viewComplaint(complaint)}
+                                         variant="contained"
+                                         color="primary"
+                                       >
+                                         View
+                                         {' '}
+                                         <VisibilityIcon className={classes.iconSpacing} />
+                                       </Button>
+                                     </TableCell>
+                                   </TableRow>
+                                 ))}
+                              </TableBody>
+                            </Table>
+                          </TableContainer>
+                          <ChplPagination
+                            count={data.recordCount}
+                            page={pageNumber}
+                            rowsPerPage={pageSize}
+                            rowsPerPageOptions={[10, 50, 100, 250]}
+                            setPage={setPageNumber}
+                            setRowsPerPage={setPageSize}
+                          />
+                        </>
+                      )}
+                  </>
+                )}
+            </>
+          )}
+      </CardContent>
+    </Card>
   );
 }
 
 export default ChplComplaintsView;
 
 ChplComplaintsView.propTypes = {
-  complaints: arrayOf(complaintPropType).isRequired,
-  dispatch: func.isRequired,
+  disallowedFilters: arrayOf(string).isRequired,
+  bonusQuery: string.isRequired,
 };
