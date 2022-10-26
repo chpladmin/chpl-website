@@ -34,16 +34,18 @@
           <tr>
             <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="'mouseenter focus click'">Certification Criteria and Program Requirements Surveilled</a></th>
             <td>
-              <span ng-repeat="req in surv.requirements">
-                <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
-              </span>
+              <div ng-repeat="req in surv.requirements">
+                <span ng-class="{'removed' : req.requirementType.removed}">{{ req.display }}</span>
+              </divv>
             </td>
           </tr>
           <tr>
             <th scope="row">
               <a href uib-tooltip="Whether or not a non-conformity was found for the conducted surveillance." tooltip-trigger="'mouseenter focus click'">Surveillance Result</a>
             </th>
-            <td><span ng-repeat="res in surv.display track by $index" ng-bind-html="res"></span></td>
+            <td>
+              <div ng-repeat="res in surv.display track by $index" ng-bind-html="res"></div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -51,12 +53,12 @@
         <div ng-repeat="noncon in req.nonconformities">
           <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.display }}</span></a>
           <p>Non-Conformity related to
-            <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
+            <span ng-class="{'removed' : req.requirementType.removed}">{{ req.display }}</span>
             Details
           </p>
           <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to
-              <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
+              <span ng-class="{'removed' : req.requirementType.removed}">{{ req.display }}</span>
               Dates
             </p>
             <table class="table table-condensed">
@@ -91,7 +93,7 @@
               </tbody>
             </table>
             <p>Non-Conformity related to
-              <span ng-class="{'removed' : req.removed}">{{ req.display }}</span>
+              <span ng-class="{'removed' : req.requirementType.removed}">{{ req.display }}</span>
               Description
             </p>
             <table class="table table-condensed">
