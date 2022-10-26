@@ -2,7 +2,7 @@ const suite = {
   description: 'with issues related to conformance methods',
   file: '../../../resources/listings/2015_ConformanceMethods.csv',
   listings: [{
-    listingId: '15.02.04.2701.CM01.12.00.1.200620',
+    listingId: '15.02.04.2701.CM01.12.00.1.220920',
     expectedErrors: [
       'Conformance Method Version is required for certification 170.315 (g)(3) with Conformance Method "ONC Test Procedure".',
       'Conformance Method Version is required for certification 170.315 (g)(5) with Conformance Method "ONC Test Procedure".',
