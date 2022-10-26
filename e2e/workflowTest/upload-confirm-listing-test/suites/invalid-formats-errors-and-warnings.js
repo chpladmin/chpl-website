@@ -25,7 +25,7 @@ const suite = {
       'An unrecognized character was found for ACB Certification ID \'15.04.04.�.AQA22.V1.00.0.200707\'. Please check the input data.',
     ],
   }, {
-    listingId: '15.02.04.2701.REQ1.12.01.1.200620',
+    listingId: '15.02.04.2701.REQ1.12.01.1.220920',
     expectedErrors: [
       'The unique id indicates the product does have additional software but none is specified in the upload file.',
       'The ICS value is \'true\' which means this listing has inherited properties. It is required that at least one parent from which the listing inherits be provided.',
@@ -41,7 +41,7 @@ const suite = {
     expectedWarnings: [
     ],
   }, {
-    listingId: '15.02.04.2701.REQ2.12.00.0.200620',
+    listingId: '15.02.04.2701.REQ2.12.00.0.220920',
     expectedErrors: [
       'There was no version found for test tool Edge Testing Tool and certification 170.315 (g)(6) (Cures Update).',
       'The value for Documentation Url in criteria 170.315 (d)(13) (Cures Update) is not a valid URL.',

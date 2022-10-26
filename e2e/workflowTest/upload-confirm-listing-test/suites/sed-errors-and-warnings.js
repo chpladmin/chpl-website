@@ -2,7 +2,7 @@ const suite = {
   description: 'with issues related to SED',
   file: '../../../resources/listings/2015_SED.csv',
   listings: [{
-    listingId: '15.07.04.2701.SED1.R2.00.1.200511',
+    listingId: '15.07.04.2701.SED1.R2.00.1.220911',
     expectedErrors: [
       '170.315 (g)(3) is required but was not found.',
       'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
@@ -32,7 +32,7 @@ const suite = {
     ],
   },
   {
-    listingId: '15.07.04.2701.SED2.R2.00.1.200511',
+    listingId: '15.07.04.2701.SED2.R2.00.1.220911',
     expectedErrors: [
       '170.315 (g)(3) is required but was not found.',
       'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
