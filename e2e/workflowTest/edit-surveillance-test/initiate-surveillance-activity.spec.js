@@ -111,7 +111,7 @@ describe('On surveillance management page, ROLE_ACB user', () => {
 });
 
 describe('On surveillance management page, ROLE_ADMIN user', () => {
-  const listing = '15.04.04.1590.Axio.02.00.0.191227';
+  const listing = '15.07.04.2503.Vers.09.01.1.200210';
   beforeEach(() => {
     login.logIn('admin');
   });
