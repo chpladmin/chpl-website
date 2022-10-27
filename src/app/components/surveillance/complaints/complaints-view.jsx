@@ -15,11 +15,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { arrayOf, bool, string } from 'prop-types';
 
 import ChplComplaint from './complaint';
-import ChplComplaintAdd from './complaint-add';
 import ChplComplaintsDownload from './complaints-download';
 
 import { useFetchComplaints } from 'api/complaints';
@@ -178,12 +178,18 @@ function ChplComplaintsView(props) {
     { property: 'actions', text: 'Actions', invisible: true },
   ];
 
-  handleDispatch = (action) => {
+  handleDispatch = ({ action, payload }) => {
     switch (action) {
+      case 'add':
+        setActiveComplaint({});
+        display('viewall');
+        hide('viewall.disabled');
+        break;
       case 'close':
         setActiveComplaint(undefined);
         display('viewall.disabled');
         hide('viewall');
+        hide('add.disabled');
         hide('edit.disabled');
         hide('view');
         hide('view.disabled');
@@ -282,9 +288,14 @@ function ChplComplaintsView(props) {
                       <ButtonGroup size="small" className={classes.wrap}>
                         { canAdd
                           && (
-                            <ChplComplaintAdd
-                              dispatch={handleDispatch}
-                            />
+                            <Button
+                              onClick={() => handleDispatch({ action: 'add' })}
+                              color="primary"
+                              variant="outlined"
+                              endIcon={<AddIcon />}
+                            >
+                              Add New Complaint
+                            </Button>
                           )}
                         { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
                           && (
