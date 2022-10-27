@@ -380,11 +380,7 @@ function ChplComplaintsView(props) {
 export default ChplComplaintsView;
 
 ChplComplaintsView.propTypes = {
-  canAdd: bool,
+  canAdd: bool.isRequired,
   bonusQuery: string.isRequired,
   disallowedFilters: arrayOf(string).isRequired,
-};
-
-ChplComplaintsView.defaultProps = {
-  canAdd: true,
 };

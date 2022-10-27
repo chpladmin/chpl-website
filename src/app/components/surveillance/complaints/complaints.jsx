@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf, bool, string } from 'prop-types';
 
 import ChplComplaintsView from './complaints-view';
 
@@ -112,7 +112,7 @@ const staticFilters = [{
 }];
 
 function ChplComplaints(props) {
-  const { disallowedFilters: initialDisallowedFilters, bonusQuery: initialBonusQuery } = props;
+  const { bonusQuery: initialBonusQuery, canAdd, disallowedFilters: initialDisallowedFilters } = props;
   const { hasAnyRole, user } = useContext(UserContext);
   const [bonusQuery, setBonusQuery] = useState('');
   const [disallowedFilters, setDisallowedFilters] = useState([]);
@@ -129,8 +129,8 @@ function ChplComplaints(props) {
   useEffect(() => {
     if (!hasAnyRole(['ROLE_ACB'])) { return; }
     setBonusQuery((bq) => [...new Set(bq.split('&'), `certificationBodies=${user.organizations[0].name}`)]
-                  .sort((a, b) => a < b ? -1 : 1)
-                  .join('&'));
+      .sort((a, b) => (a < b ? -1 : 1))
+      .join('&'));
     setDisallowedFilters((df) => [...new Set(df, 'certificationBodies')]);
   }, [hasAnyRole, user]);
 
@@ -146,8 +146,9 @@ function ChplComplaints(props) {
     >
       <ChplComplaintsView
         analytics={analytics}
-        disallowedFilters={disallowedFilters}
         bonusQuery={bonusQuery}
+        canAdd={canAdd}
+        disallowedFilters={disallowedFilters}
       />
     </FilterProvider>
   );
@@ -156,6 +157,7 @@ function ChplComplaints(props) {
 export default ChplComplaints;
 
 ChplComplaints.propTypes = {
-  disallowedFilters: arrayOf(string).isRequired,
   bonusQuery: string.isRequired,
+  canAdd: bool.isRequired,
+  disallowedFilters: arrayOf(string).isRequired,
 };

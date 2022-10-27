@@ -1,5 +1,5 @@
 import React from 'react';
-import { arrayOf, string } from 'prop-types';
+import { arrayOf, bool, string } from 'prop-types';
 
 import ChplComplaints from './complaints';
 
@@ -9,8 +9,9 @@ import { UserWrapper } from 'components/login';
 
 function ChplComplaintsWrapper(props) {
   const {
-    disallowedFilters,
     bonusQuery,
+    canAdd,
+    disallowedFilters,
   } = props;
 
   return (
@@ -21,8 +22,9 @@ function ChplComplaintsWrapper(props) {
           title="Complaints Reporting"
         >
           <ChplComplaints
-            disallowedFilters={disallowedFilters}
             bonusQuery={bonusQuery}
+            canAdd={canAdd}
+            disallowedFilters={disallowedFilters}
           />
         </BreadcrumbWrapper>
       </ApiWrapper>
@@ -33,11 +35,13 @@ function ChplComplaintsWrapper(props) {
 export default ChplComplaintsWrapper;
 
 ChplComplaintsWrapper.propTypes = {
-  disallowedFilters: arrayOf(string),
   bonusQuery: string,
+  disallowedFilters: arrayOf(string),
+  canAdd: bool,
 };
 
 ChplComplaintsWrapper.defaultProps = {
-  disallowedFilters: [],
   bonusQuery: '',
+  disallowedFilters: [],
+  canAdd: true,
 };
