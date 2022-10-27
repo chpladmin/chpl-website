@@ -5,7 +5,12 @@
     var $compile, $log, $q, authService, ctrl, el, mock, networkService, scope, toaster;
 
     mock = {
-      report: {id: 1},
+      report: {
+        id: 1,
+        acb: { name: 'test', },
+        startDate: 3,
+        endDate: 12,
+      },
       response: {
         job: {
           jobDataMap: {
@@ -21,7 +26,7 @@
     beforeEach(() => {
       angular.mock.module('chpl.services', 'chpl.surveillance', $provide => {
         $provide.factory('chplSurveillanceReportRelevantListingsDirective', () => ({}));
-        $provide.factory('chplSurveillanceComplaintsDirective', () => ({}));
+        $provide.factory('chplComplaintsWrapperBridgeDirective', () => ({}));
         $provide.decorator('authService', $delegate => {
           $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
           return $delegate;
