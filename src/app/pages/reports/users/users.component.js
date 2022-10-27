@@ -32,19 +32,6 @@ export const ReportsUsersComponent = {
       this.isDestroyed = true;
     }
 
-    onApplyFilter (filterObj) {
-      let f = angular.fromJson(filterObj);
-      this.doFilter(f);
-    }
-
-    onClearFilter () {
-      let filterData = {};
-      filterData.dataFilter = '';
-      filterData.tableState = this.tableController.tableState();
-      this.clearFilterHs.forEach(handler => handler());
-      this.doFilter(filterData);
-    }
-
     doFilter (filter) {
       let that = this;
       this.filterText = filter.dataFilter;
@@ -63,13 +50,6 @@ export const ReportsUsersComponent = {
 
     registerRestoreState (handler) {
       this.restoreStateHs.push(handler);
-    }
-
-    createFilterDataObject () {
-      let filterData = {};
-      filterData.dataFilter = this.filterText;
-      filterData.tableState = this.tableController.tableState();
-      return filterData;
     }
 
     tableStateListener (tableController) {

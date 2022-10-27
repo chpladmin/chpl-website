@@ -65,28 +65,6 @@ const ReportsListingsComponent = {
       this.isDestroyed = true;
     }
 
-    onApplyFilter(filter) {
-      const f = angular.fromJson(filter);
-      if (f.listingId) {
-        this.listingId = f.listingId;
-      } else {
-        this.listingId = undefined;
-      }
-      this.doFilter(f);
-    }
-
-    onClearFilter() {
-      const filterData = {};
-      if (this.listingId) {
-        filterData.listingId = this.listingId;
-      }
-      filterData.dataFilter = '';
-      filterData.tableState = this.tableController.tableState();
-      filterData.tableState.search.predicateObject.categoriesFilter = '|LISTING|';
-      this.clearFilterHs.forEach((handler) => handler());
-      this.doFilter(filterData);
-    }
-
     doFilter(filter) {
       const that = this;
       this.filterText = filter.dataFilter;
@@ -115,16 +93,6 @@ const ReportsListingsComponent = {
 
     registerRestoreState(handler) {
       this.restoreStateHs.push(handler);
-    }
-
-    createFilterDataObject() {
-      const filterData = {};
-      if (this.listingId) {
-        filterData.listingId = this.listingId;
-      }
-      filterData.dataFilter = this.filterText;
-      filterData.tableState = this.tableController.tableState();
-      return filterData;
     }
 
     downloadReady() {

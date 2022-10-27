@@ -4,13 +4,12 @@
       <h3>Api Key Management</h3>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <chpl-saved-filter filter-type-name="API Key Management Report"
-                   on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()"
-                   on-clear-filter="$ctrl.onClearFilter()"></chpl-saved-filter>
+  <div class="row form-group">
+    <div class="col-sm-5">
+      <label for="data-filter" class="control-label">Filter</label>
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Activity" class="form-control" type="search">
     </div>
-    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
+    <div class="col-sm-7" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right"
               ng-csv="$ctrl.displayed" filename="API-Key__{{ $ctrl.filename }}" quote-strings="true" add-bom="true"
               csv-header="['Activity', 'Activity Date']"
@@ -23,12 +22,6 @@
           {{ $ctrl.downloadProgress.complete }}% prepared
         </uib-progressbar>
       </div>
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-5">
-      <label for="data-filter" class="control-label">Filter</label>
-      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Activity" class="form-control" type="search">
     </div>
   </div>
   <div class="row">

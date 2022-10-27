@@ -6,9 +6,6 @@
         <label for="data-filter" class="control-label">Filter</label>
         <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria" class="form-control" type="search">
       </chpl-filters-header>
-      <chpl-filters-saved>
-        <chpl-saved-filter filter-type-name="Complaints" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.getFilterData()"></chpl-saved-filter>
-      </chpl-filters-saved>
       <chpl-filters-body>
         <chpl-filter title="ONC-ACB" has-changes="$ctrl.hasChanges['acbName']"
                      ng-if="$ctrl.filterItems.acbItems.length > 0">

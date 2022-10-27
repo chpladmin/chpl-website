@@ -4,22 +4,17 @@
       <h3>User Actions</h3>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <chpl-saved-filter filter-type-name="User Action Report" on-apply-filter="$ctrl.onApplyFilter(filter)" get-filter-data="$ctrl.createFilterDataObject()" on-clear-filter="$ctrl.onClearFilter()"></chpl-saved-filter>
+  <div class="row form-group">
+    <div class="col-sm-5">
+      <label for="data-filter" class="control-label">Filter</label>
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on User's Name or Action" class="form-control" type="search">
     </div>
-    <div class="col-sm-6" ng-if="$ctrl.displayed.length > 0">
+    <div class="col-sm-7" ng-if="$ctrl.displayed.length > 0">
       <button class="btn btn-ai-success pull-right"
               ng-csv="$ctrl.displayed" filename="User_Activity_{{ $ctrl.filename }}" quote-strings="true" add-bom="true"
               csv-header="['User Name', 'Email', 'Activity', 'Activity Date']"
               csv-column-order="['responsibleUserFullName', 'email', 'description', 'friendlyActivityDate']">
         <i class="fa fa-cloud-download"></i> Download</button>
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-5">
-      <label for="data-filter" class="control-label">Filter</label>
-      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on User's Name or Action" class="form-control" type="search">
     </div>
   </div>
   <div class="row">

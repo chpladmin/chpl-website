@@ -1,14 +1,19 @@
 <div st-table="$ctrl.displayed" st-safe-src="$ctrl.results" st-set-filter="customFilter" chpl-table-state-listener="$ctrl.tableStateListener(tableController)" id="atls-report-page">
   <div class="row">
-      <div class="col-sm-12">
-        <h3>ONC-ATLs</h3>
-      </div>
+    <div class="col-sm-12">
+      <h3>ONC-ATLs</h3>
+    </div>
   </div>
   <div class="row">
-    <div class="col-sm-6">
-      <chpl-saved-filter filter-type-name="ONC-ATL Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-saved-filter>
+    <div class="col-sm-5">
+      Filter on Activity Date
+      <chpl-date-range
+        predicate="date"
+        register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
+        register-restore-state="$ctrl.registerRestoreState(restoreState)"
+        ></chpl-date-range>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-7">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.ReportService.downloadReady($ctrl.displayed) && $ctrl.canDownload()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" disabled ng-if="!$ctrl.canDownload()"><i class="fa fa-ban"></i> Too many results to download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.ReportService.downloadReady($ctrl.displayed)"
@@ -23,16 +28,6 @@
           {{ $ctrl.downloadProgress.complete }}% prepared
         </uib-progressbar>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-5">
-      Filter on Activity Date
-      <chpl-date-range
-        predicate="date"
-        register-clear-filter="$ctrl.registerClearFilter(clearFilter)"
-        register-restore-state="$ctrl.registerRestoreState(restoreState)"
-        ></chpl-date-range>
     </div>
   </div>
   <div class="row" ng-if="$ctrl.showLoadingBar()">

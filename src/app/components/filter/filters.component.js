@@ -6,7 +6,6 @@ export const FiltersComponent = {
   transclude: {
     header: '?chplFiltersHeader',
     body: '?chplFiltersBody',
-    saved: '?chplFiltersSaved',
   },
   controller: class FiltersComponent {
     constructor ($log, $transclude) {

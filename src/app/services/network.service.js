@@ -64,10 +64,6 @@ export default class NetworkService {
     return this.apiPOST('/complaints', complaint);
   }
 
-  createFilter(filter) {
-    return this.apiPOST('/filters', filter);
-  }
-
   createInvitedUser(contactDetails) {
     return this.apiPOST('/users/create', contactDetails);
   }
@@ -82,10 +78,6 @@ export default class NetworkService {
 
   deleteComplaint(complaintId) {
     return this.apiDELETE(`/complaints/${complaintId}`);
-  }
-
-  deleteFilter(filterId) {
-    return this.apiDELETE(`/filters/${filterId}`);
   }
 
   deleteQuarterlySurveillanceReport(id) {
@@ -289,14 +281,6 @@ export default class NetworkService {
 
   getEducation() {
     return this.apiGET('/data/education_types');
-  }
-
-  getFilters(filterTypeId) {
-    return this.apiGET(`/filters?filterTypeId=${filterTypeId}`);
-  }
-
-  getFilterTypes() {
-    return this.apiGET('/data/filter_types');
   }
 
   getFuzzyTypes(forceReload) {

@@ -4,11 +4,12 @@
       <h3>Version</h3>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <chpl-saved-filter filter-type-name="Version Report" on-apply-filter="$ctrl.onApplyFilter(filter)" on-clear-filter="$ctrl.onClearFilter()" get-filter-data="$ctrl.createFilterDataObject()"></chpl-saved-filter>
+  <div class="row form-group">
+    <div class="col-sm-5">
+      <label for="activity-end-upload" class="control-label">Filter</label>
+      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Developer, Product, Version, or Responsible User" class="form-control" type="search">
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-7">
       <button class="btn btn-ai-success pull-right" ng-click="$ctrl.prepareDownload()" ng-if="!$ctrl.ReportService.downloadReady($ctrl.displayed) && $ctrl.canDownload()"><i class="fa fa-bolt"></i> Prepare download</button>
       <button class="btn btn-ai-success pull-right" disabled ng-if="!$ctrl.canDownload()"><i class="fa fa-ban"></i> Too many results to download</button>
       <button class="btn btn-ai-success pull-right" ng-if="$ctrl.ReportService.downloadReady($ctrl.displayed)"
@@ -23,12 +24,6 @@
           {{ $ctrl.downloadProgress.complete }}% prepared
         </uib-progressbar>
       </div>
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-5">
-      <label for="activity-end-upload" class="control-label">Filter</label>
-      <input chpl-search="filterText" ng-model="$ctrl.filterText" name="dataFilter" id="data-filter" placeholder="Filter on Developer, Product, Version, or Responsible User" class="form-control" type="search">
     </div>
   </div>
   <div class="row">
