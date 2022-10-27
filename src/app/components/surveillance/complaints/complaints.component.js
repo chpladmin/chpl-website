@@ -14,33 +14,8 @@ const SurveillanceComplaintsComponent = {
       this.authService = authService;
       this.networkService = networkService;
       this.utilService = utilService;
-      this.clearFilterHs = [];
-      this.restoreStateHs = [];
       this.complaintListType = 'ALL';
-      this.filterItems = {
-        acbItems: [],
-        complaintStatusTypeItems: [],
-        complainantTypeItems: [],
-      };
-      this.hasChanges = {};
       this.handleDispatch = this.handleDispatch.bind(this);
-    }
-
-    $onInit() {
-      const that = this;
-      this.networkService.getCollection('complaintListings').then((response) => {
-        that.listings = response.results;
-      });
-    }
-
-    $onChanges(changes) {
-      if (changes.complaintListType && changes.complaintListType.currentValue) {
-        this.complaintListType = changes.complaintListType.currentValue;
-      }
-      if (changes.quarterlyReport && changes.quarterlyReport.currentValue) {
-        this.quarterlyReport = angular.copy(changes.quarterlyReport.currentValue);
-      }
-      this.refreshComplaints();
     }
 
     handleDispatch(action, payload) {
@@ -104,90 +79,11 @@ const SurveillanceComplaintsComponent = {
       });
     }
 
-    addFilterItems(complaint) {
-      if (!this.filterItems.acbItems.find((item) => item.value === complaint.acbName)) {
-        this.filterItems.acbItems.push({ value: complaint.acbName, selected: true });
-      }
-      if (!this.filterItems.complaintStatusTypeItems.find((item) => item.value === complaint.complaintStatusTypeName)) {
-        this.filterItems.complaintStatusTypeItems.push({ value: complaint.complaintStatusTypeName, selected: true });
-      }
-      if (!this.filterItems.complainantTypeItems.find((item) => item.value === complaint.complainantTypeName)) {
-        this.filterItems.complainantTypeItems.push({ value: complaint.complainantTypeName, selected: true });
-      }
-    }
-
-    finalizeFilterItems() {
-      this.filterItems.acbItems = this.filterItems.acbItems.sort((a, b) => (a.value < b.value ? -1 : 1));
-      this.filterItems.complaintStatusTypeItems = this.filterItems.complaintStatusTypeItems.sort((a, b) => (a.value < b.value ? -1 : 1));
-      this.filterItems.complainantTypeItems = this.filterItems.complainantTypeItems.sort((a, b) => (a.value < b.value ? -1 : 1));
-    }
-
     getComplaintsPromise() {
       if (this.complaintListType === 'ALL') {
         return this.networkService.getComplaints();
       }
       return this.networkService.getRelevantComplaints(this.quarterlyReport);
-    }
-
-    clearErrorMessages() {
-      this.errorMessages = [];
-    }
-
-    onApplyFilter(filter) {
-      const f = angular.fromJson(filter);
-      this.doFilter(f);
-    }
-
-    onClearFilter() {
-      const filterData = {};
-      filterData.dataFilter = '';
-      filterData.tableState = this.tableController.tableState();
-      this.clearFilterHs.forEach((handler) => handler());
-      this.doFilter(filterData);
-    }
-
-    doFilter(filter) {
-      const that = this;
-      this.filterText = filter.dataFilter;
-      const filterItems = [
-        'acbName',
-        'complaintStatusTypeName',
-        'receivedDate',
-        'closedDate',
-        'complainantTypeName',
-        'complainantContacted',
-        'developerContacted',
-        'flagForOncReview',
-        'oncAtlContacted',
-      ];
-      filterItems.forEach((predicate) => {
-        if (filter.tableState.search.predicateObject[predicate]) {
-          this.tableController.search(filter.tableState.search.predicateObject[predicate], predicate);
-        } else {
-          this.tableController.search({}, predicate);
-        }
-      });
-      this.restoreStateHs.forEach((handler) => handler(that.tableController.tableState()));
-      this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
-    }
-
-    registerClearFilter(handler) {
-      this.clearFilterHs.push(handler);
-    }
-
-    registerRestoreState(handler) {
-      this.restoreStateHs.push(handler);
-    }
-
-    getFilterData() {
-      const filterData = {};
-      filterData.dataFilter = this.filterText;
-      filterData.tableState = this.tableController.tableState();
-      return filterData;
-    }
-
-    tableStateListener(tableController) {
-      this.tableController = tableController;
     }
   },
 };
