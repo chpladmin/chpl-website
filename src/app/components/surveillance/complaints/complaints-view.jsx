@@ -127,16 +127,16 @@ function ChplComplaintsView(props) {
         variant="text"
         disabled
       >
-        Complaints
+        Complaints Reporting
       </Button>,
     );
     append(
       <Button
         key="viewall"
         variant="text"
-        onClick={() => handleDispatch('close')}
+        onClick={() => handleDispatch({ action: 'close' })}
       >
-        Complaints
+        Complaints Reporting
       </Button>,
     );
     display('surveillance.disabled');
@@ -194,6 +194,11 @@ function ChplComplaintsView(props) {
         hide('view');
         hide('view.disabled');
         break;
+      case 'view':
+        setActiveComplaint(payload);
+        display('viewall');
+        hide('viewall.disabled');
+        break;
       // no default
     }
   };
@@ -204,12 +209,6 @@ function ChplComplaintsView(props) {
   };
 
   const showBreadcrumbs = () => !bonusQuery;
-
-  const viewComplaint = (c) => {
-    setActiveComplaint(c);
-    display('viewall');
-    hide('viewall.disabled');
-  };
 
   if (activeComplaint) {
     return (
@@ -346,13 +345,12 @@ function ChplComplaintsView(props) {
                                       <TableCell>{complaint.complainantTypeName}</TableCell>
                                       <TableCell align="right">
                                         <Button
-                                          onClick={() => viewComplaint(complaint)}
+                                          onClick={() => handleDispatch({ action: 'view', payload: complaint })}
                                           variant="contained"
                                           color="primary"
+                                          endIcon={<VisibilityIcon />}
                                         >
                                           View
-                                          {' '}
-                                          <VisibilityIcon className={classes.iconSpacing} />
                                         </Button>
                                       </TableCell>
                                     </TableRow>

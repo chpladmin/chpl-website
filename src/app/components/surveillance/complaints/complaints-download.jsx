@@ -40,10 +40,9 @@ function ChplComplaintsDownload() {
       color="primary"
       variant="contained"
       id="download-results"
+      endIcon={<GetAppIcon />}
     >
       Download all complaints
-      {' '}
-      <GetAppIcon className={classes.iconSpacing} />
     </Button>
   );
 }
