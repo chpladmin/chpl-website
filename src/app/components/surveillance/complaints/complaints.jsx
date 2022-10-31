@@ -7,7 +7,7 @@ import {
   FilterProvider,
   defaultFilter,
   getDateDisplay,
-  getDateTimeEntry,
+  getDateEntry,
 } from 'components/filter';
 import { UserContext } from 'shared/contexts';
 
@@ -70,7 +70,7 @@ const staticFilters = [{
     .map((v) => `${v.value === 'After' ? 'closedDateTimeStart' : 'closedDateTimeEnd'}=${v.selected}`)
     .join('&'),
   getValueDisplay: getDateDisplay,
-  getValueEntry: getDateTimeEntry,
+  getValueEntry: getDateEntry,
 }, {
   ...defaultFilter,
   key: 'developerContacted',
@@ -100,7 +100,7 @@ const staticFilters = [{
     .map((v) => `${v.value === 'After' ? 'receivedDateTimeStart' : 'receivedDateTimeEnd'}=${v.selected}`)
     .join('&'),
   getValueDisplay: getDateDisplay,
-  getValueEntry: getDateTimeEntry,
+  getValueEntry: getDateEntry,
 }, {
   ...defaultFilter,
   key: 'status',
