@@ -17,6 +17,7 @@
       is-editing="true"
       is-splitting="true"
       is-invalid="$ctrl.products.length === 0 || $ctrl.movingProducts.length === 0"
+      error-messages="$ctrl.errorMessages"
       ></chpl-developer-bridge>
   </div>
 </div>
@@ -47,16 +48,6 @@
           <button class="btn btn-default" id="developers-product-move-old-{{ product.id }}" ng-click="$ctrl.toggleMove(product, false)"><i class="fa fa-long-arrow-left"></i><span class="sr-only"> Move to new</span></button>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-<div class="flex-container">
-  <div class="flex-item">
-    <div class="text-danger" ng-if="$ctrl.errorMessages.length > 0">
-      The following error(s) must be fixed:
-      <ul>
-        <li ng-repeat="error in $ctrl.errorMessages">{{ error }}</li>
-      </ul>
     </div>
   </div>
 </div>
