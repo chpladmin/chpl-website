@@ -76,9 +76,6 @@ const useStyles = makeStyles({
   wrap: {
     flexFlow: 'wrap',
   },
-  noResultsContainer: {
-    padding: '16px 32px',
-  },
   statusIndicatorOpen: {
     color: '#66926d',
   },
@@ -231,12 +228,9 @@ function ChplComplaintsView(props) {
         )}
       <CardContent>
         <div className={classes.searchContainer} component={Paper}>
-          { !disallowedFilters.includes('searchTerm')
-            && (
-              <ChplFilterSearchTerm
-                placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
-              />
-            )}
+          <ChplFilterSearchTerm
+            placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
+          />
           <ChplFilterPanel />
         </div>
         <div>
@@ -244,130 +238,109 @@ function ChplComplaintsView(props) {
         </div>
         { isLoading
           && (
-            <div className={classes.noResultsContainer}>
-              <CircularProgress />
-            </div>
+            <CircularProgress />
           )}
         { !isLoading
           && (
             <>
-              { isError
+              <div className={classes.tableResultsHeaderContainer}>
+                <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                  <Typography variant="subtitle2">Search Results:</Typography>
+                  { complaints.length === 0
+                    && (
+                      <>
+                        No results found
+                      </>
+                    )}
+                  { complaints.length > 0
+                    && (
+                      <Typography variant="body2">
+                        {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
+                      </Typography>
+                    )}
+                </div>
+                <ButtonGroup size="small" className={classes.wrap}>
+                  { canAdd
+                    && (
+                      <Button
+                        onClick={() => handleDispatch({ action: 'add' })}
+                        color="primary"
+                        variant="outlined"
+                        endIcon={<AddIcon />}
+                      >
+                        Add New Complaint
+                      </Button>
+                    )}
+                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF']) && complaints.length > 0
+                    && (
+                      <ChplComplaintsDownload
+                        bonusQuery={bonusQuery}
+                        queryParams={queryParams()}
+                        recordCount={data.recordCount}
+                      />
+                    )}
+                </ButtonGroup>
+              </div>
+              { complaints.length > 0
                 && (
                   <>
-                    <div className={classes.noResultsContainer}>
-                      No results were found, due to invalid parameters:
-                    </div>
-                    <ul>
-                      {error.response.data.errorMessages?.map((msg) => (
-                        <li key={msg}>{msg}</li>
-                      ))}
-                      { error.response.data.error}
-                    </ul>
-                  </>
-                )}
-              { isSuccess
-                && (
-                  <>
-                    <div className={classes.tableResultsHeaderContainer}>
-                      <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                        <Typography variant="subtitle2">Search Results:</Typography>
-                        { complaints.length === 0
-                          && (
-                            <>
-                              No results found
-                            </>
-                          )}
-                        { complaints.length > 0
-                          && (
-                            <Typography variant="body2">
-                              {`(${pageStart}-${pageEnd} of ${data?.recordCount} Results)`}
-                            </Typography>
-                          )}
-                      </div>
-                      <ButtonGroup size="small" className={classes.wrap}>
-                        { canAdd
-                          && (
-                            <Button
-                              onClick={() => handleDispatch({ action: 'add' })}
-                              color="primary"
-                              variant="outlined"
-                              endIcon={<AddIcon />}
-                            >
-                              Add New Complaint
-                            </Button>
-                          )}
-                        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
-                          && (
-                            <ChplComplaintsDownload
-                              bonusQuery={bonusQuery}
-                              queryParams={queryParams()}
-                              recordCount={data.recordCount}
-                            />
-                          )}
-                      </ButtonGroup>
-                    </div>
-                    { complaints.length > 0
-                      && (
-                        <>
-                          <TableContainer className={classes.container} component={Paper}>
-                            <Table
-                              stickyHeader
-                              aria-label="Complaints table"
-                            >
-                              <ChplSortableHeaders
-                                headers={headers}
-                                onTableSort={handleTableSort}
-                                orderBy={orderBy}
-                                order={order}
-                                stickyHeader
-                              />
-                              <TableBody>
-                                {complaints
-                                  .map((complaint) => (
-                                    <TableRow key={complaint.id}>
-                                      { !hasAnyRole(['ROLE_ACB'])
-                                       && (
-                                         <TableCell>{complaint.acbName}</TableCell>
-                                       )}
-                                      <TableCell>
-                                        <Typography
-                                          variant="subtitle1"
-                                          className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
-                                        >
-                                          {complaint.complaintStatusTypeName}
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
-                                      <TableCell>{complaint.acbComplaintId}</TableCell>
-                                      <TableCell>
-                                        { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
-                                      </TableCell>
-                                      <TableCell>{complaint.complainantTypeName}</TableCell>
-                                      <TableCell align="right">
-                                        <Button
-                                          onClick={() => handleDispatch({ action: 'view', payload: complaint })}
-                                          variant="contained"
-                                          color="primary"
-                                          endIcon={<VisibilityIcon />}
-                                        >
-                                          View
-                                        </Button>
-                                      </TableCell>
-                                    </TableRow>
-                                  ))}
-                              </TableBody>
-                            </Table>
-                          </TableContainer>
-                          <ChplPagination
-                            count={data.recordCount}
-                            page={pageNumber}
-                            rowsPerPage={pageSize}
-                            rowsPerPageOptions={[10, 50, 100, 250]}
-                            setPage={setPageNumber}
-                            setRowsPerPage={setPageSize}
-                          />
-                        </>
-                      )}
+                    <TableContainer className={classes.container} component={Paper}>
+                      <Table
+                        stickyHeader
+                        aria-label="Complaints table"
+                      >
+                        <ChplSortableHeaders
+                          headers={headers}
+                          onTableSort={handleTableSort}
+                          orderBy={orderBy}
+                          order={order}
+                          stickyHeader
+                        />
+                        <TableBody>
+                          {complaints
+                           .map((complaint) => (
+                             <TableRow key={complaint.id}>
+                               { !hasAnyRole(['ROLE_ACB'])
+                                 && (
+                                   <TableCell>{complaint.acbName}</TableCell>
+                                 )}
+                               <TableCell>
+                                 <Typography
+                                   variant="subtitle1"
+                                   className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
+                                 >
+                                   {complaint.complaintStatusTypeName}
+                                 </Typography>
+                               </TableCell>
+                               <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
+                               <TableCell>{complaint.acbComplaintId}</TableCell>
+                               <TableCell>
+                                 { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
+                               </TableCell>
+                               <TableCell>{complaint.complainantTypeName}</TableCell>
+                               <TableCell align="right">
+                                 <Button
+                                   onClick={() => handleDispatch({ action: 'view', payload: complaint })}
+                                   variant="contained"
+                                   color="primary"
+                                   endIcon={<VisibilityIcon />}
+                                 >
+                                   View
+                                 </Button>
+                               </TableCell>
+                             </TableRow>
+                           ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <ChplPagination
+                      count={data.recordCount}
+                      page={pageNumber}
+                      rowsPerPage={pageSize}
+                      rowsPerPageOptions={[10, 50, 100, 250]}
+                      setPage={setPageNumber}
+                      setRowsPerPage={setPageSize}
+                    />
                   </>
                 )}
             </>
