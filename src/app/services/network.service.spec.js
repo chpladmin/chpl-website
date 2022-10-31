@@ -1268,14 +1268,6 @@
         $httpBackend.flush();
       });
 
-      it('should registerApi', () => {
-        $httpBackend.expectPOST(/^\/rest\/key$/).respond(200, { data: 'response' });
-        networkService.registerApi('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should rejectPendingCp', () => {
         $httpBackend.expectDELETE(/^\/rest\/certified_products\/pending\/1$/).respond(200);
         networkService.rejectPendingCp(1).then((response) => {

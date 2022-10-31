@@ -583,10 +583,6 @@ export default class NetworkService {
     return this.apiPUT(`/atls/${atl.id}`, atl);
   }
 
-  registerApi(user) {
-    return this.apiPOST('/key', user);
-  }
-
   rejectPendingCp(cpId) {
     return this.apiDELETE(`/certified_products/pending/${cpId}`);
   }
