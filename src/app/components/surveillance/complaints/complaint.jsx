@@ -134,8 +134,6 @@ export default ChplComplaint;
 
 ChplComplaint.propTypes = {
   complaint: complaintPropType.isRequired,
-  //listings: arrayOf(listingPropType).isRequired,
-  //errors: arrayOf(string).isRequired,
   dispatch: func.isRequired,
   showBreadcrumbs: bool,
 };
