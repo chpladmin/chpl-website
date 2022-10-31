@@ -1,29 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Divider,
-  MenuItem,
-  Typography,
-  makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf,
-  bool,
-  func,
-  string,
-} from 'prop-types';
+import { bool, func } from 'prop-types';
 
 import ChplComplaintEdit from './complaint-edit';
 import ChplComplaintView from './complaint-view';
 
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
-import {
-  complaint as complaintPropType,
-  listing as listingPropType,
-} from 'shared/prop-types';
+import { BreadcrumbContext } from 'shared/contexts';
+import { complaint as complaintPropType } from 'shared/prop-types';
 
 function ChplComplaint(props) {
   const { complaint, dispatch, showBreadcrumbs } = props;
@@ -84,11 +69,11 @@ function ChplComplaint(props) {
     }
   }, [isEditing]);
 
-  const handleDispatch = ({action, payload}) => {
+  const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
       case 'close':
-        dispatch({action: 'close'});
+        dispatch({ action: 'close' });
         break;
       case 'create':
         create(payload);
@@ -100,17 +85,17 @@ function ChplComplaint(props) {
         update(payload);
         break;
         // no default
-    };
+    }
   };
 
   const create = (payload) => {
-    console.log({action: 'creating', payload});
-    handleDispatch({action: 'close'});
+    console.log({ action: 'creating', payload });
+    handleDispatch({ action: 'close' });
   };
 
   const update = (payload) => {
-    console.log({update: 'updating', payload});
-    handleDispatch({action: 'close'});
+    console.log({ update: 'updating', payload });
+    handleDispatch({ action: 'close' });
   };
 
   if (!complaint.id || isEditing) {

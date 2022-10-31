@@ -145,10 +145,8 @@ function ChplComplaints(props) {
       storageKey="storageKey-complaintsComponent"
     >
       <ChplComplaintsView
-        analytics={analytics}
         bonusQuery={bonusQuery}
         canAdd={canAdd}
-        disallowedFilters={disallowedFilters}
       />
     </FilterProvider>
   );

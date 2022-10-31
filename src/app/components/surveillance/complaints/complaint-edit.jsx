@@ -13,7 +13,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { arrayOf, func, string } from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -24,7 +24,7 @@ import { useFetchComplainantTypes, useFetchCriteria } from 'api/data';
 import { ChplTextField } from 'components/util';
 import { ChplActionBar } from 'components/action-bar';
 import { getAngularService } from 'services/angular-react-helper';
-import { complaint as complaintPropType, listing as listingPropType } from 'shared/prop-types';
+import { complaint as complaintPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({

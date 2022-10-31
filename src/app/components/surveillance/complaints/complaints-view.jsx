@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { arrayOf, bool, string } from 'prop-types';
+import { bool, string } from 'prop-types';
 
 import ChplComplaint from './complaint';
 import ChplComplaintsDownload from './complaints-download';
@@ -86,7 +86,7 @@ const useStyles = makeStyles({
 
 function ChplComplaintsView(props) {
   const storageKey = 'storageKey-complaintsView';
-  const { canAdd, bonusQuery, disallowedFilters } = props;
+  const { canAdd, bonusQuery } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [activeComplaint, setActiveComplaint] = useState(undefined);
@@ -97,7 +97,7 @@ function ChplComplaintsView(props) {
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
   const { queryParams, queryString } = useFilterContext();
   const {
-    data, error, isError, isLoading, isSuccess,
+    data, isLoading, isSuccess,
   } = useFetchComplaints({
     orderBy,
     pageNumber,
@@ -298,38 +298,38 @@ function ChplComplaintsView(props) {
                         />
                         <TableBody>
                           {complaints
-                           .map((complaint) => (
-                             <TableRow key={complaint.id}>
-                               { !hasAnyRole(['ROLE_ACB'])
-                                 && (
-                                   <TableCell>{complaint.acbName}</TableCell>
-                                 )}
-                               <TableCell>
-                                 <Typography
-                                   variant="subtitle1"
-                                   className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
-                                 >
-                                   {complaint.complaintStatusTypeName}
-                                 </Typography>
-                               </TableCell>
-                               <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
-                               <TableCell>{complaint.acbComplaintId}</TableCell>
-                               <TableCell>
-                                 { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
-                               </TableCell>
-                               <TableCell>{complaint.complainantTypeName}</TableCell>
-                               <TableCell align="right">
-                                 <Button
-                                   onClick={() => handleDispatch({ action: 'view', payload: complaint })}
-                                   variant="contained"
-                                   color="primary"
-                                   endIcon={<VisibilityIcon />}
-                                 >
-                                   View
-                                 </Button>
-                               </TableCell>
-                             </TableRow>
-                           ))}
+                            .map((complaint) => (
+                              <TableRow key={complaint.id}>
+                                { !hasAnyRole(['ROLE_ACB'])
+                                  && (
+                                    <TableCell>{complaint.acbName}</TableCell>
+                                  )}
+                                <TableCell>
+                                  <Typography
+                                    variant="subtitle1"
+                                    className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
+                                  >
+                                    {complaint.complaintStatusTypeName}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
+                                <TableCell>{complaint.acbComplaintId}</TableCell>
+                                <TableCell>
+                                  { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
+                                </TableCell>
+                                <TableCell>{complaint.complainantTypeName}</TableCell>
+                                <TableCell align="right">
+                                  <Button
+                                    onClick={() => handleDispatch({ action: 'view', payload: complaint })}
+                                    variant="contained"
+                                    color="primary"
+                                    endIcon={<VisibilityIcon />}
+                                  >
+                                    View
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
                         </TableBody>
                       </Table>
                     </TableContainer>
@@ -355,5 +355,4 @@ export default ChplComplaintsView;
 ChplComplaintsView.propTypes = {
   canAdd: bool.isRequired,
   bonusQuery: string.isRequired,
-  disallowedFilters: arrayOf(string).isRequired,
 };
