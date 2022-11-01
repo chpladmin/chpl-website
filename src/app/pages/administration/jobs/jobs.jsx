@@ -192,6 +192,7 @@ function ChplJobs() {
                     && (
                       <ChplSystemTriggersView
                         triggers={systemTriggers}
+                        dispatch={handleDispatch}
                       />
                     )}
                 </>

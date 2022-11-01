@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -12,8 +13,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Moment from 'react-moment';
-import { arrayOf } from 'prop-types';
+import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders } from 'components/util';
 import { scheduledSystemTrigger } from 'shared/prop-types';
@@ -23,6 +25,7 @@ const headers = [
   { property: 'description', text: 'Description' },
   { property: 'nextRunDate', text: 'Next Run Date' },
   { property: 'triggerScheduleType', text: 'Trigger Schedule Type' },
+  { property: 'actions', text: 'Actions' },
 ];
 
 const useStyles = makeStyles({
@@ -40,7 +43,24 @@ const useStyles = makeStyles({
   },
 });
 
+const getAction = (item, dispatch) => {
+  if (item.triggerScheduleType === 'ONE_TIME') {
+    return (
+      <IconButton
+        onClick={() => dispatch({ action: 'edit', payload: item })}
+        variant="contained"
+        color="primary"
+        aria-label={`Edit Job ${item.name}`}
+      >
+        <DeleteIcon />
+      </IconButton>
+    );
+  }
+  return null;
+};
+
 function ChplSystemTriggersView(props) {
+  const { dispatch } = props;
   const [triggers, setTriggers] = useState([]);
   const classes = useStyles();
 
@@ -49,8 +69,9 @@ function ChplSystemTriggersView(props) {
       .sort((a, b) => (a.nextRunDate - b.nextRunDate))
       .map((trigger) => ({
         ...trigger,
+        action: getAction(trigger, dispatch),
       })));
-  }, [props.triggers]); // eslint-disable-line react/destructuring-assignment
+  }, [props.triggers, dispatch]); // eslint-disable-line react/destructuring-assignment
 
   return (
     <Card>
@@ -103,6 +124,9 @@ function ChplSystemTriggersView(props) {
                           <TableCell>
                             { item.triggerScheduleType }
                           </TableCell>
+                          <TableCell align="right">
+                            { item.action }
+                          </TableCell>
                         </TableRow>
                       ))}
                   </TableBody>
@@ -119,6 +143,7 @@ export default ChplSystemTriggersView;
 
 ChplSystemTriggersView.propTypes = {
   triggers: arrayOf(scheduledSystemTrigger),
+  dispatch: func.isRequired,
 };
 
 ChplSystemTriggersView.defaultProps = {
