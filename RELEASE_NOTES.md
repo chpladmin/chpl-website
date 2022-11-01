@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 11.44.0
+_31 October 2022_
+
+### Features
+* Keep user filters / sorting after navigation on new Shortcut pages
+
+---
+
 ## Version 11.43.0
 _17 October 2022_
 
