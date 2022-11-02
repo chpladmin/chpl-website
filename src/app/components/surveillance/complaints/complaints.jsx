@@ -38,6 +38,20 @@ const staticFilters = [{
   ],
 }, {
   ...defaultFilter,
+  key: 'closedDate',
+  display: 'Closed Date',
+  values: [
+    { value: 'Before', default: '' },
+    { value: 'After', default: '' },
+  ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'closedDateStart' : 'closedDateEnd'}=${v.selected}`)
+    .join('&'),
+  getValueDisplay: getDateDisplay,
+  getValueEntry: getDateEntry,
+}, {
+  ...defaultFilter,
   key: 'complainantContacted',
   display: 'Complainant Contacted',
   values: [
@@ -59,18 +73,12 @@ const staticFilters = [{
   ],
 }, {
   ...defaultFilter,
-  key: 'closedDate',
-  display: 'Closed Date',
+  key: 'currentStatusNames',
+  display: 'Status',
   values: [
-    { value: 'Before', default: '' },
-    { value: 'After', default: '' },
+    { value: 'Closed' },
+    { value: 'Open' },
   ],
-  getQuery: (value) => value.values
-    .sort((a, b) => (a.value < b.value ? -1 : 1))
-    .map((v) => `${v.value === 'After' ? 'closedDateTimeStart' : 'closedDateTimeEnd'}=${v.selected}`)
-    .join('&'),
-  getValueDisplay: getDateDisplay,
-  getValueEntry: getDateEntry,
 }, {
   ...defaultFilter,
   key: 'developerContacted',
@@ -97,18 +105,10 @@ const staticFilters = [{
   ],
   getQuery: (value) => value.values
     .sort((a, b) => (a.value < b.value ? -1 : 1))
-    .map((v) => `${v.value === 'After' ? 'receivedDateTimeStart' : 'receivedDateTimeEnd'}=${v.selected}`)
+    .map((v) => `${v.value === 'After' ? 'receivedDateStart' : 'receivedDateEnd'}=${v.selected}`)
     .join('&'),
   getValueDisplay: getDateDisplay,
   getValueEntry: getDateEntry,
-}, {
-  ...defaultFilter,
-  key: 'status',
-  display: 'Status',
-  values: [
-    { value: 'Closed' },
-    { value: 'Open' },
-  ],
 }];
 
 function ChplComplaints(props) {
