@@ -33,7 +33,7 @@ import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
 const csvOptions = {
-  filename: 'real-world-testing',
+  filename: 'decertified-products',
   showLabels: true,
   headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
