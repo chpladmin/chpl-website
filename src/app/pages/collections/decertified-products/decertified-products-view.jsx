@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -11,7 +11,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import Moment from 'react-moment';
 import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
@@ -131,7 +130,6 @@ const useStyles = makeStyles({
 function ChplDecertifiedProductsCollectionView(props) {
   const storageKey = 'storageKey-decertifiedProductsView';
   const $analytics = getAngularService('$analytics');
-  const authService = getAngularService('authService');
   const { analytics } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
@@ -198,7 +196,13 @@ function ChplDecertifiedProductsCollectionView(props) {
       </div>
       <div className={classes.pageBody}>
         <Typography variant="body1" gutterBottom>
-          This list includes all health IT products that have had their status changed to a "decertified" status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a>. For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>. For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
+          This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
+          {' '}
+          <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a>
+          . For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the
+          {' '}
+          <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>
+          . For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
         </Typography>
         <Typography variant="body1">
           Note: This list excludes 2011 and 2014 edition products. The 2011 and 2014 editions have been retired from the certification program.
