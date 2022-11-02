@@ -7,7 +7,7 @@ const useDeleteComplaint = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`complaints/${data.id}`), {
     onSuccess: () => {
-      queryClient.invalidateQueries('complaints');
+      queryClient.invalidateQueries('complaints/search');
     },
   });
 };
@@ -37,7 +37,7 @@ const usePostComplaint = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('complaints', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries('complaints');
+      queryClient.invalidateQueries('complaints/search');
     },
   });
 };
@@ -52,7 +52,7 @@ const usePutComplaint = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`complaints/${data.id}`, data), {
     onSuccess: () => {
-      queryClient.invalidateQueries('complaints');
+      queryClient.invalidateQueries('complaints/search');
     },
   });
 };
