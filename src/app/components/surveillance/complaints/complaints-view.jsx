@@ -159,19 +159,19 @@ function ChplComplaintsView(props) {
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = hasAnyRole(['ROLE_ACB']) ? [
-    { property: 'complaint_status_type_name', text: 'Status', sortable: true },
+    { property: 'current_status', text: 'Status', sortable: true },
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
-    { property: 'complainant_type_name', text: 'Complainant Type', sortable: true },
+    { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ] : [
-    { property: 'acb_name', text: 'ONC-ACB', sortable: true },
-    { property: 'complaint_status_type_name', text: 'Status', sortable: true },
+    { property: 'certification_body', text: 'ONC-ACB', sortable: true },
+    { property: 'current_status', text: 'Status', sortable: true },
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
     { property: 'onc_complaint_id', text: 'ONC Complaint ID', sortable: true },
-    { property: 'complainant_type_name', text: 'Complainant Type', sortable: true },
+    { property: 'complainant_type', text: 'Complainant Type', sortable: true },
     { property: 'actions', text: 'Actions', invisible: true },
   ];
 
