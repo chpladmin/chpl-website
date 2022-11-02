@@ -166,7 +166,7 @@ const ProductEditComponent = {
       this.product.ownerHistory = this.product.ownerHistory
         .map((owner) => ({
           ...owner,
-          transferDay: owner.transferDay || this.DateUtil.timestampToString(Date.now(), 'yyyy-MM-d'),
+          transferDay: owner.transferDay || this.DateUtil.timestampToString(Date.now(), 'yyyy-MM-dd'),
         }))
         .concat({
           developer: this.currentOwner,
