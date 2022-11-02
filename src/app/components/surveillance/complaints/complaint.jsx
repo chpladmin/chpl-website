@@ -72,7 +72,10 @@ function ChplComplaint(props) {
   const handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
+        setIsEditing(false);
+        break;
       case 'close':
+      case 'refresh':
         dispatch({ action: 'close' });
         break;
       case 'create':

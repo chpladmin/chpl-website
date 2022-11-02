@@ -85,17 +85,10 @@ const validationSchema = yup.object({
 
 function ChplComplaintEdit(props) {
   const networkService = getAngularService('networkService');
-  const [complaint, setComplaint] = useState(() => {
-    const c = {
-      ...props.complaint, // eslint-disable-line react/destructuring-assignment
-    };
-    if (!c.criteria) { c.criteria = []; }
-    if (!c.listings) { c.listings = []; }
-    if (!c.surveillances) { c.surveillances = []; }
-    return c;
-  });
+  const { complaint: initialComplaint, dispatch } = props;
   const [certificationBodies, setCertificationBodies] = useState([]);
   const [complainantTypes, setComplainantTypes] = useState([]);
+  const [complaint, setComplaint] = useState({});
   const [criteria, setCriteria] = useState([]);
   const [criterionEdition, setCriterionEdition] = useState('2015');
   const [criterionToAdd, setCriterionToAdd] = useState('');
@@ -121,6 +114,16 @@ function ChplComplaintEdit(props) {
   });
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    const c = {
+      ...initialComplaint,
+    };
+    if (!c.criteria) { c.criteria = []; }
+    if (!c.listings) { c.listings = []; }
+    if (!c.surveillances) { c.surveillances = []; }
+    setComplaint(c);
+  }, [initialComplaint]);
 
   useEffect(() => {
     if (certificationBodiesIsLoading || !certificationBodiesIsSuccess) { return; }
@@ -153,7 +156,7 @@ function ChplComplaintEdit(props) {
 
   useEffect(() => {
     setSurveillances([]);
-    complaint.listings.forEach((listing) => {
+    complaint.listings?.forEach((listing) => {
       networkService.getListingBasic(listing.listingId, true).then((response) => {
         const newSurveillances = response.surveillance.map((surv) => ({
           id: surv.id,
@@ -175,7 +178,7 @@ function ChplComplaintEdit(props) {
   }, [complaint.listings]);
 
   const handleAction = (action, payload) => {
-    props.dispatch(action, payload);
+    dispatch({action, payload});
   };
 
   const addAssociatedCriterion = (event) => {
@@ -321,19 +324,19 @@ function ChplComplaintEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      certificationBody: complaint.certificationBody || '',
-      receivedDate: complaint.receivedDate || '',
-      closedDate: complaint.closedDate || '',
-      acbComplaintId: complaint.acbComplaintId || '',
-      oncComplaintId: complaint.oncComplaintId || '',
-      complainantType: complaint.complainantType || '',
-      complainantTypeOther: complaint.complainantTypeOther || '',
-      summary: complaint.summary || '',
-      actions: complaint.actions || '',
-      complainantContacted: !!complaint.complainantContacted,
-      developerContacted: !!complaint.developerContacted,
-      oncAtlContacted: !!complaint.oncAtlContacted,
-      flagForOncReview: !!complaint.flagForOncReview,
+      certificationBody: initialComplaint.certificationBody || '',
+      receivedDate: initialComplaint.receivedDate || '',
+      closedDate: initialComplaint.closedDate || '',
+      acbComplaintId: initialComplaint.acbComplaintId || '',
+      oncComplaintId: initialComplaint.oncComplaintId || '',
+      complainantType: initialComplaint.complainantType || '',
+      complainantTypeOther: initialComplaint.complainantTypeOther || '',
+      summary: initialComplaint.summary || '',
+      actions: initialComplaint.actions || '',
+      complainantContacted: !!initialComplaint.complainantContacted,
+      developerContacted: !!initialComplaint.developerContacted,
+      oncAtlContacted: !!initialComplaint.oncAtlContacted,
+      flagForOncReview: !!initialComplaint.flagForOncReview,
     },
     onSubmit: () => {
       save();
