@@ -4,6 +4,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  CircularProgress,
   FormControlLabel,
   InputAdornment,
   MenuItem,
@@ -324,12 +325,12 @@ function ChplComplaintEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      certificationBody: initialComplaint.certificationBody || '',
+      certificationBody: '',
       receivedDate: initialComplaint.receivedDate || '',
       closedDate: initialComplaint.closedDate || '',
       acbComplaintId: initialComplaint.acbComplaintId || '',
       oncComplaintId: initialComplaint.oncComplaintId || '',
-      complainantType: initialComplaint.complainantType || '',
+      complainantType: '',
       complainantTypeOther: initialComplaint.complainantTypeOther || '',
       summary: initialComplaint.summary || '',
       actions: initialComplaint.actions || '',
@@ -345,6 +346,12 @@ function ChplComplaintEdit(props) {
     validateOnChange: false,
     validateOnMount: true,
   });
+
+  if (certificationBodiesIsLoading || complainantTypesIsLoading) {
+    return (
+      <CircularProgress />
+    );
+  }
 
   return (
     <>
