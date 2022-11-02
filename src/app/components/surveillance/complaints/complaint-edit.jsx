@@ -133,8 +133,8 @@ function ChplComplaintEdit(props) {
   useEffect(() => {
     if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
     setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === props.complaint?.complainantType?.id) || '');
-  }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, props.complaint]);
+    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
+  }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
     if (criteriaIsLoading || !criteriaIsSuccess) { return; }
@@ -178,7 +178,7 @@ function ChplComplaintEdit(props) {
   }, [complaint.listings]);
 
   const handleAction = (action, payload) => {
-    dispatch({action, payload});
+    dispatch({ action, payload });
   };
 
   const addAssociatedCriterion = (event) => {

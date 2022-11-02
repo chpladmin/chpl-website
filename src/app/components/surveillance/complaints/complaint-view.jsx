@@ -14,7 +14,7 @@ import {
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { theme, utilStyles } from 'themes';
+import { theme } from 'themes';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
@@ -49,18 +49,18 @@ function ChplComplaintView(props) {
   useEffect(() => {
     setComplaint({
       ...initialComplaint,
-    criteria: initialComplaint.criteria
-      .map((item) => (item.certificationCriterion))
-      .sort(sortCriteria),
-    listings: initialComplaint.listings
-      .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))),
-    surveillances: initialComplaint.surveillances
-      .map((item) => (item.surveillance))
-      .sort((a, b) => {
-        if (a.chplProductNumber < b.chplProductNumber) { return -1; }
-        if (a.chplProductNumber > b.chplProductNumber) { return 1; }
-        return a.friendlyId < b.friendlyId ? -1 : 1;
-      }),
+      criteria: initialComplaint.criteria
+        .map((item) => (item.certificationCriterion))
+        .sort(sortCriteria),
+      listings: initialComplaint.listings
+        .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))),
+      surveillances: initialComplaint.surveillances
+        .map((item) => (item.surveillance))
+        .sort((a, b) => {
+          if (a.chplProductNumber < b.chplProductNumber) { return -1; }
+          if (a.chplProductNumber > b.chplProductNumber) { return 1; }
+          return a.friendlyId < b.friendlyId ? -1 : 1;
+        }),
     });
   }, [initialComplaint]);
 
@@ -142,38 +142,38 @@ function ChplComplaintView(props) {
               Associated Criteria:
             </Typography>
             {complaint.criteria?.length > 0
-             ? (
-               <ul>
-                 {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
-               </ul>
+              ? (
+                <ul>
+                  {complaint.criteria.map((criterion) => <li key={criterion.id}>{`${criterion.removed ? 'Removed |' : ''} ${criterion.number}: ${criterion.title}`}</li>)}
+                </ul>
              )
-             : (
-               <Typography>
-                 None
-               </Typography>
+              : (
+                <Typography>
+                  None
+                </Typography>
              )}
             <Typography variant="subtitle2">
               Associated Listings:
             </Typography>
             {complaint.listings?.length > 0
-             ? (
-               <ul>
-                 {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
-               </ul>
+              ? (
+                <ul>
+                  {complaint.listings.map((listing) => <li key={listing.id}>{ listing.chplProductNumber }</li>)}
+                </ul>
              )
-             : (
-               <Typography>
-                 None
-               </Typography>
+              : (
+                <Typography>
+                  None
+                </Typography>
              )}
             <Typography variant="subtitle2">
               Associated Surveillance Activities:
             </Typography>
             {complaint.surveillances?.length > 0
-             ? (
-               <ul>
-                 {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
-               </ul>
+              ? (
+                <ul>
+                  {complaint.surveillances.map((surveillance) => <li key={surveillance.id}>{`${surveillance.chplProductNumber}: ${surveillance.friendlyId}`}</li>)}
+                </ul>
              ) : (
                <Typography>
                  None
@@ -213,7 +213,7 @@ function ChplComplaintView(props) {
         <Button
           color="primary"
           variant="outlined"
-          onClick={() => dispatch({action: 'close'})}
+          onClick={() => dispatch({ action: 'close' })}
           endIcon={<ArrowBackIcon />}
         >
           Back to Complaints
@@ -223,7 +223,7 @@ function ChplComplaintView(props) {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => dispatch({action: 'edit'})}
+              onClick={() => dispatch({ action: 'edit' })}
               endIcon={<EditOutlinedIcon />}
             >
               Edit

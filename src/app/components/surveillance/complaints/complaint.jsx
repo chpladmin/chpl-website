@@ -69,7 +69,7 @@ function ChplComplaint(props) {
     }
   }, [isEditing]);
 
-  const handleDispatch = ({ action, payload }) => {
+  const handleDispatch = ({ action }) => {
     switch (action) {
       case 'cancel':
         setIsEditing(false);
@@ -78,27 +78,11 @@ function ChplComplaint(props) {
       case 'refresh':
         dispatch({ action: 'close' });
         break;
-      case 'create':
-        create(payload);
-        break;
       case 'edit':
         setIsEditing(true);
         break;
-      case 'update':
-        update(payload);
-        break;
         // no default
     }
-  };
-
-  const create = (payload) => {
-    console.log({ action: 'creating', payload });
-    handleDispatch({ action: 'close' });
-  };
-
-  const update = (payload) => {
-    console.log({ update: 'updating', payload });
-    handleDispatch({ action: 'close' });
   };
 
   if (!complaint.id || isEditing) {
