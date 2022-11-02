@@ -302,14 +302,14 @@ function ChplComplaintsView(props) {
                               <TableRow key={complaint.id}>
                                 { !hasAnyRole(['ROLE_ACB'])
                                   && (
-                                    <TableCell>{complaint.acbName}</TableCell>
+                                    <TableCell>{complaint.certificationBody.name}</TableCell>
                                   )}
                                 <TableCell>
                                   <Typography
                                     variant="subtitle1"
-                                    className={complaint.complaintStatusTypeName === 'Open' ? classes.statusIndicatorOpen : classes.statusIndicatorClosed}
+                                    className={complaint.closedDate ? classes.statusIndicatorClosed : classes.statusIndicatorOpen}
                                   >
-                                    {complaint.complaintStatusTypeName}
+                                    {complaint.closedDate ? 'Closed' : 'Open'}
                                   </Typography>
                                 </TableCell>
                                 <TableCell>{getDisplayDateFormat(complaint.receivedDate)}</TableCell>
@@ -317,7 +317,7 @@ function ChplComplaintsView(props) {
                                 <TableCell>
                                   { complaint.oncComplaintId && <ChplEllipsis text={complaint.oncComplaintId} maxLength={50} /> }
                                 </TableCell>
-                                <TableCell>{complaint.complainantTypeName}</TableCell>
+                                <TableCell>{complaint.complainantType.name}</TableCell>
                                 <TableCell align="right">
                                   <Button
                                     onClick={() => handleDispatch({ action: 'view', payload: complaint })}

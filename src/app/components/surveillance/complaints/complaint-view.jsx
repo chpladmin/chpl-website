@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -17,6 +17,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { theme, utilStyles } from 'themes';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { UserContext } from 'shared/contexts';
 import { complaint as complaintPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -73,7 +74,7 @@ function ChplComplaintView(props) {
         <Typography variant="h5">
           ONC-ACB:
           {' '}
-          {complaint.certificationBody.name}
+          {complaint.certificationBody?.name}
         </Typography>
         <div className={classes.content}>
           <div className={classes.dataContent}>
