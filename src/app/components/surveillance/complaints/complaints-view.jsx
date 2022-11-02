@@ -16,13 +16,14 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { useSnackbar } from 'notistack';
 import { bool, string } from 'prop-types';
 
 import ChplComplaint from './complaint';
-import ChplComplaintsDownload from './complaints-download';
 
-import { useFetchComplaints } from 'api/complaints';
+import { useFetchComplaints, usePostReportRequest } from 'api/complaints';
 import {
   ChplFilterChips,
   ChplFilterPanel,
@@ -87,6 +88,8 @@ const useStyles = makeStyles({
 function ChplComplaintsView(props) {
   const storageKey = 'storageKey-complaintsView';
   const { canAdd, bonusQuery } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const { mutate } = usePostReportRequest();
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const [activeComplaint, setActiveComplaint] = useState(undefined);
@@ -95,7 +98,7 @@ function ChplComplaintsView(props) {
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'received_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 10);
-  const { queryParams, queryString } = useFilterContext();
+  const { queryString } = useFilterContext();
   const {
     data, isLoading, isSuccess,
   } = useFetchComplaints({
@@ -175,6 +178,22 @@ function ChplComplaintsView(props) {
     { property: 'actions', text: 'Actions', invisible: true },
   ];
 
+  const downloadFile = () => {
+    mutate({}, {
+      onSuccess: (response) => {
+        enqueueSnackbar(`Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.email} when it's done`, {
+          variant: 'success',
+        });
+      },
+      onError: (error) => {
+        const message = error.response.data.error;
+        enqueueSnackbar(message, {
+          variant: 'error',
+        });
+      },
+    });
+  };
+
   handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'add':
@@ -216,6 +235,77 @@ function ChplComplaintsView(props) {
       />
     );
   }
+
+  const getButtons = () => {
+    if (hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF'])) {
+      return (
+        <ButtonGroup className={classes.wrap}>
+          <Button
+            onClick={downloadFile}
+            color="primary"
+            variant="contained"
+            id="download-results"
+            endIcon={<GetAppIcon />}
+          >
+            Download all complaints
+          </Button>
+        </ButtonGroup>
+      );
+    }
+    if (hasAnyRole(['ROLE_ACB'])) {
+      if (canAdd) {
+        return (
+          <ButtonGroup className={classes.wrap}>
+            <Button
+              onClick={() => handleDispatch({ action: 'add' })}
+              color="primary"
+              variant="outlined"
+              endIcon={<AddIcon />}
+            >
+              Add New Complaint
+            </Button>
+          </ButtonGroup>
+        );
+      }
+      return null;
+    }
+    if (canAdd) {
+      return (
+        <ButtonGroup className={classes.wrap}>
+          <Button
+            onClick={() => handleDispatch({ action: 'add' })}
+            color="primary"
+            variant="outlined"
+            endIcon={<AddIcon />}
+          >
+            Add New Complaint
+          </Button>
+          <Button
+            onClick={downloadFile}
+            color="primary"
+            variant="contained"
+            id="download-results"
+            endIcon={<GetAppIcon />}
+          >
+            Download all complaints
+          </Button>
+        </ButtonGroup>
+      );
+    }
+    return (
+      <ButtonGroup className={classes.wrap}>
+        <Button
+          onClick={downloadFile}
+          color="primary"
+          variant="contained"
+          id="download-results"
+          endIcon={<GetAppIcon />}
+        >
+          Download all complaints
+        </Button>
+      </ButtonGroup>
+    );
+  };
 
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
@@ -259,27 +349,7 @@ function ChplComplaintsView(props) {
                       </Typography>
                     )}
                 </div>
-                <ButtonGroup size="small" className={classes.wrap}>
-                  { canAdd
-                    && (
-                      <Button
-                        onClick={() => handleDispatch({ action: 'add' })}
-                        color="primary"
-                        variant="outlined"
-                        endIcon={<AddIcon />}
-                      >
-                        Add New Complaint
-                      </Button>
-                    )}
-                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF']) && complaints.length > 0
-                    && (
-                      <ChplComplaintsDownload
-                        bonusQuery={bonusQuery}
-                        queryParams={queryParams()}
-                        recordCount={data.recordCount}
-                      />
-                    )}
-                </ButtonGroup>
+                { getButtons() }
               </div>
               { complaints.length > 0
                 && (
