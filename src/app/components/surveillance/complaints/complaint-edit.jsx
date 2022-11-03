@@ -325,7 +325,7 @@ function ChplComplaintEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      certificationBody: '',
+      certificationBody: initialComplaint.certificationBody || '',
       receivedDate: initialComplaint.receivedDate || '',
       closedDate: initialComplaint.closedDate || '',
       acbComplaintId: initialComplaint.acbComplaintId || '',
