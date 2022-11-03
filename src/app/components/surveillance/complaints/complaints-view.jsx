@@ -260,6 +260,7 @@ function ChplComplaintsView(props) {
               onClick={() => handleDispatch({ action: 'add' })}
               color="primary"
               variant="outlined"
+              id="add-complaint"
               endIcon={<AddIcon />}
             >
               Add New Complaint
@@ -276,6 +277,7 @@ function ChplComplaintsView(props) {
             onClick={() => handleDispatch({ action: 'add' })}
             color="primary"
             variant="outlined"
+            id="add-complaint"
             endIcon={<AddIcon />}
           >
             Add New Complaint
@@ -393,6 +395,7 @@ function ChplComplaintsView(props) {
                                     onClick={() => handleDispatch({ action: 'view', payload: complaint })}
                                     variant="contained"
                                     color="primary"
+                                    id={`view-complaint-${complaint.id}`}
                                     endIcon={<VisibilityIcon />}
                                   >
                                     View
