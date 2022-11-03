@@ -33,7 +33,7 @@ export const SurveillanceReportQuarterComponent = {
         const fmt = 'yyyy-MM-dd';
         this.bonusQuery = [
           `certificationBodies=${this.report.acb.name}`,
-          `openDuringDateRange=${this.DateUtil.timestampToString(this.report.startDate, fmt)},${this.DateUtil.timestampToString(this.report.endDate, fmt)}`,
+          `openDuringDateRange=${this.report.startDay},${this.report.endDay}`,
         ].sort((a, b) => a < b ? -1 : 1).join('&');
       }
       if (changes.relevantListings) {
