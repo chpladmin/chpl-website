@@ -17,14 +17,6 @@ const analytics = {
 
 const staticFilters = [{
   ...defaultFilter,
-  key: 'atlContacted',
-  display: 'ONC-ATL Contacted',
-  values: [
-    { value: 'Yes' },
-    { value: 'No' },
-  ],
-}, {
-  ...defaultFilter,
   key: 'certificationBodies',
   display: 'ONC-ACB',
   values: [
@@ -60,7 +52,7 @@ const staticFilters = [{
   ],
 }, {
   ...defaultFilter,
-  key: 'complainantType',
+  key: 'complainantTypes',
   display: 'Complainant Type',
   values: [
     { value: 'Anonymous' },
@@ -73,7 +65,7 @@ const staticFilters = [{
   ],
 }, {
   ...defaultFilter,
-  key: 'currentStatusNames',
+  key: 'currentStatuses',
   display: 'Status',
   values: [
     { value: 'Closed' },
@@ -109,6 +101,14 @@ const staticFilters = [{
     .join('&'),
   getValueDisplay: getDateDisplay,
   getValueEntry: getDateEntry,
+}, {
+  ...defaultFilter,
+  key: 'oncAtlContacted',
+  display: 'ONC-ATL Contacted',
+  values: [
+    { value: 'Yes' },
+    { value: 'No' },
+  ],
 }];
 
 function ChplComplaints(props) {
