@@ -59,6 +59,7 @@ function ChplSystemTriggersView(props) {
       payload: {
         name: item.triggerName,
         group: item.triggerGroup,
+        successMessage: 'Job deleted: System job deleted',
       },
     });
     setPendingMessage('Are you sure you want to delete this system job?');
@@ -73,7 +74,6 @@ function ChplSystemTriggersView(props) {
   };
 
   const getAction = (item) => {
-    console.log(item);
     if (item.triggerScheduleType === 'ONE_TIME') {
       return (
         <IconButton

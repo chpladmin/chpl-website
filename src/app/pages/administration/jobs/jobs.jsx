@@ -97,8 +97,7 @@ function ChplJobs() {
         break;
       case 'delete':
         apiAction = deleteTrigger.mutate;
-        // TODO: Determine the diff between a System and User job based on the payload
-        message = 'Job deleted: Recurring job deleted';
+        message = payload.successMessage;
         break;
       case 'edit':
         setJob(payload);
