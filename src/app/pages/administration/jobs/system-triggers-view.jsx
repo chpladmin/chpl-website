@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Moment from 'react-moment';
 import { arrayOf, func } from 'prop-types';
 
+import ChplActionBarConfirmation from 'components/action-bar/action-bar-confirmation';
 import { ChplSortableHeaders } from 'components/util';
 import { scheduledSystemTrigger } from 'shared/prop-types';
 
@@ -43,33 +44,50 @@ const useStyles = makeStyles({
   },
 });
 
-const getAction = (item, dispatch) => {
-  console.log(item);
-  if (item.triggerScheduleType === 'ONE_TIME') {
-    return (
-      <IconButton
-        onClick={() => dispatch({
-          action: 'delete',
-          payload: {
-            name: item.triggerName,
-            group: item.triggerGroup,
-          },
-        })}
-        variant="contained"
-        color="primary"
-        aria-label={`Edit Job ${item.name}`}
-      >
-        <DeleteIcon />
-      </IconButton>
-    );
-  }
-  return null;
-};
-
 function ChplSystemTriggersView(props) {
   const { dispatch } = props;
   const [triggers, setTriggers] = useState([]);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [pendingAction, setPendingAction] = useState({});
+  const [pendingMessage, setPendingMessage] = useState('');
   const classes = useStyles();
+
+  const confirmDelete = (item) => {
+    setIsConfirming(true);
+    setPendingAction({
+      action: 'delete',
+      payload: {
+        name: item.triggerName,
+        group: item.triggerGroup,
+      },
+    });
+    setPendingMessage('Are you sure you want to delete this system job?');
+  };
+
+  const handleConfirmation = (response) => {
+    if (response === 'yes' && pendingAction) {
+      dispatch(pendingAction);
+    }
+    setIsConfirming(false);
+    setPendingAction({});
+  };
+
+  const getAction = (item) => {
+    console.log(item);
+    if (item.triggerScheduleType === 'ONE_TIME') {
+      return (
+        <IconButton
+          onClick={() => confirmDelete(item)}
+          variant="contained"
+          color="primary"
+          aria-label={`Delete Job ${item.name}`}
+        >
+          <DeleteIcon />
+        </IconButton>
+      );
+    }
+    return null;
+  };
 
   useEffect(() => {
     setTriggers(props.triggers
@@ -81,68 +99,77 @@ function ChplSystemTriggersView(props) {
   }, [props.triggers, dispatch]); // eslint-disable-line react/destructuring-assignment
 
   return (
-    <Card>
-      <CardHeader title="Currently Scheduled System Jobs" />
-      <CardContent>
-        <>
-          { (triggers.length === 0)
-            && (
-              <Typography className={classes.noResultsContainer}>
-                No results found
-              </Typography>
-            )}
-          { triggers.length > 0
-            && (
-              <TableContainer className={classes.container} component={Paper}>
-                <Table
-                  aria-label="Scheduled System Jobs table"
-                >
-                  <ChplSortableHeaders
-                    headers={headers}
-                    onTableSort={() => {}}
-                    orderBy="name"
-                    order="asc"
-                    stickyHeader
-                  />
-                  <TableBody>
-                    { triggers
-                      .map((item) => (
-                        <TableRow key={item.nextRunDate}>
-                          <TableCell className={classes.firstColumn}>
-                            { item.name }
-                          </TableCell>
-                          <TableCell>
-                            { item.description }
-                          </TableCell>
-                          <TableCell>
-                            { item.nextRunDate
-                              ? (
-                                <Moment
-                                  fromNow
-                                  withTitle
-                                  titleFormat="DD MMM yyyy, h:mm a"
-                                >
-                                  {item.nextRunDate}
-                                </Moment>
-                              ) : (
-                                <>In Progress</>
-                              )}
-                          </TableCell>
-                          <TableCell>
-                            { item.triggerScheduleType }
-                          </TableCell>
-                          <TableCell align="right">
-                            { item.action }
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-        </>
-      </CardContent>
-    </Card>
+    <div>
+      { isConfirming
+        && (
+        <ChplActionBarConfirmation
+          dispatch={handleConfirmation}
+          pendingMessage={pendingMessage}
+        />
+        )}
+      <Card>
+        <CardHeader title="Currently Scheduled System Jobs" />
+        <CardContent>
+          <>
+            { (triggers.length === 0)
+              && (
+                <Typography className={classes.noResultsContainer}>
+                  No results found
+                </Typography>
+              )}
+            { triggers.length > 0
+              && (
+                <TableContainer className={classes.container} component={Paper}>
+                  <Table
+                    aria-label="Scheduled System Jobs table"
+                  >
+                    <ChplSortableHeaders
+                      headers={headers}
+                      onTableSort={() => {}}
+                      orderBy="name"
+                      order="asc"
+                      stickyHeader
+                    />
+                    <TableBody>
+                      { triggers
+                        .map((item) => (
+                          <TableRow key={item.nextRunDate}>
+                            <TableCell className={classes.firstColumn}>
+                              { item.name }
+                            </TableCell>
+                            <TableCell>
+                              { item.description }
+                            </TableCell>
+                            <TableCell>
+                              { item.nextRunDate
+                                ? (
+                                  <Moment
+                                    fromNow
+                                    withTitle
+                                    titleFormat="DD MMM yyyy, h:mm a"
+                                  >
+                                    {item.nextRunDate}
+                                  </Moment>
+                                ) : (
+                                  <>In Progress</>
+                                )}
+                            </TableCell>
+                            <TableCell>
+                              { item.triggerScheduleType }
+                            </TableCell>
+                            <TableCell align="right">
+                              { item.action }
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+          </>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
