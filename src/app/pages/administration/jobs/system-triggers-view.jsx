@@ -44,10 +44,17 @@ const useStyles = makeStyles({
 });
 
 const getAction = (item, dispatch) => {
+  console.log(item);
   if (item.triggerScheduleType === 'ONE_TIME') {
     return (
       <IconButton
-        onClick={() => dispatch({ action: 'edit', payload: item })}
+        onClick={() => dispatch({
+          action: 'delete',
+          payload: {
+            name: item.triggerName,
+            group: item.triggerGroup,
+          },
+        })}
         variant="contained"
         color="primary"
         aria-label={`Edit Job ${item.name}`}
