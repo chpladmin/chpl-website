@@ -265,7 +265,7 @@ function ChplDecertifiedProductsCollectionView(props) {
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="API Documentation Collections table"
+                      aria-label="Decertified Products Collections table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
