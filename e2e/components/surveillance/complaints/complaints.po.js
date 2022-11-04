@@ -1,6 +1,10 @@
-class ComplaintsComponent {
+import CollectionPage from '../../../pages/collections/collection.po';
+
+class ComplaintsComponent extends CollectionPage {
   constructor() {
+    super();
     this.elements = {
+      ...this.elements,
       complaintsBody: 'chpl-complaints-wrapper-bridge',
       certificationBody: '#certification-body',
       receivedDate: '#received-date',
@@ -28,11 +32,16 @@ class ComplaintsComponent {
       advanceFilterOptions: (value) => `#filter-list-${value}`,
       chooseAdvanceSearchOption: (option) => `//button[text()="${option}"]`,
       complaintsTable: '[aria-label="Complaints table"]',
+      backToComplaintsButton: 'button*=Back to Complaints',
     };
   }
 
   get editButton() {
     return $(this.elements.editButton);
+  }
+
+  get backToComplaintsButton() {
+    return $(this.elements.backToComplaintsButton);
   }
 
   async complaintsBody() {
