@@ -23,6 +23,7 @@ const angularMock = {
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(angularMock.$analytics);
 
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const mock = {
   complaints: [{
     id: 1,
@@ -32,6 +33,12 @@ const mock = {
     acbComplaintId: 'acb id test 1',
     oncComplaintId: 'fake onc id',
     complainantType: { name: 'fake type' },
+    criteria: [
+      { certificationCriterion: { number: 'number 2', title: 'title2', id: 2, removed: false } },
+      { certificationCriterion: { number: 'number 3', title: 'title3', id: 3, removed: true } },
+    ],
+    listings: [],
+    surveillances: [],
   }],
   acbs: [],
 };
@@ -198,6 +205,36 @@ describe('the ChplComplaints component', () => {
           expect(screen.queryByText('Actions/Response is required.')).not.toBeInTheDocument();
         });
       });
+    });
+  });
+
+  describe('when viewing a complaint', () => {
+    beforeEach(async () => {
+      userEvent.click(within(screen
+        .getByRole('cell', { name: 'acb id test 1' })
+        .closest('tr'))
+        .getByRole('button', { name: 'View' }));
+    });
+
+    it('should have "No" for the various complaint booleans', async () => {
+      let item = await screen.findByText(/Complainant Contacted:/i);
+      expect(item.nextSibling).toHaveTextContent('No');
+      item = await screen.findByText(/Developer Contacted:/i);
+      expect(item.nextSibling).toHaveTextContent('No');
+      item = await screen.findByText(/ONC-ATL Contacted:/i);
+      expect(item.nextSibling).toHaveTextContent('No');
+      item = await screen.findByText(/Informed ONC per/i);
+      expect(item.nextSibling).toHaveTextContent('No');
+    });
+
+    it('should have two criteria', async () => {
+      expect(screen.getAllByRole('listitem').length).toBe(2);
+    });
+
+    it('should display the criteria', async () => {
+      const criteria = screen.getAllByRole('listitem');
+      expect(criteria[0]).toHaveTextContent('number 2: title2');
+      expect(criteria[1]).toHaveTextContent('Removed | number 3: title3');
     });
   });
 });
