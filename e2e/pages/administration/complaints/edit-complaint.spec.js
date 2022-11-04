@@ -46,7 +46,7 @@ describe('when editing complaints', () => {
     });
 
     it('should be able to close complaint by adding closed date and actions', async () => {
-      const STATUS_IDX = 1;
+      const STATUS_IDX = 0;
       const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',

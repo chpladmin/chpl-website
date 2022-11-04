@@ -6,7 +6,7 @@ import { open } from '../../../utilities/hooks.async';
 let login;
 let action;
 let complaintsComponent;
-const ACB_ID_IDX = 3;
+const ACB_ID_IDX = 2;
 
 beforeEach(async () => {
   login = new LoginComponent();
@@ -50,7 +50,7 @@ describe('managing complaints', () => {
       await complaintsComponent.set(fields);
       await complaintsComponent.saveComplaint();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-      await (await complaintsComponent.filter).addValue(fields.acbId);
+      await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       const complaint = (await complaintsComponent.getTableComplaints())[0];
       await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
@@ -77,7 +77,7 @@ describe('managing complaints', () => {
       await complaintsComponent.setOptionalFields(optionalFields);
       await complaintsComponent.saveComplaint();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-      await (await complaintsComponent.filter).addValue(fields.acbId);
+      await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       const complaint = (await complaintsComponent.getTableComplaints())[0];
       await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
@@ -106,7 +106,7 @@ describe('managing complaints', () => {
       await complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV03');
       await complaintsComponent.saveComplaint();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-      await (await complaintsComponent.filter).addValue(fields.acbId);
+      await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       const complaint = (await complaintsComponent.getTableComplaints())[0];
       await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
@@ -136,7 +136,7 @@ describe('managing complaints', () => {
       await complaintsComponent.selectSurveillance('15.04.04.3010.Onco.28.01.1.181214: SURV03');
       await complaintsComponent.saveComplaint();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-      await (await complaintsComponent.filter).addValue(fields.acbId);
+      await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       const complaint = (await complaintsComponent.getTableComplaints())[0];
       await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
@@ -170,7 +170,7 @@ describe('managing complaints', () => {
       await complaintsComponent.set(fields);
       await complaintsComponent.saveComplaint();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-      await (await complaintsComponent.filter).addValue(fields.acbId);
+      await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       const complaint = (await complaintsComponent.getTableComplaints())[0];
       await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
