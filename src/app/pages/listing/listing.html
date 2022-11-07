@@ -70,9 +70,9 @@
               <span ng-if="$ctrl.listing.product.ownerHistory && $ctrl.listing.product.ownerHistory.length > 0">
                 <h3>Previous Developer<span ng-if="$ctrl.listing.product.ownerHistory.length > 1">s</span></h3>
                 <ul>
-                  <li ng-repeat="prev in $ctrl.listing.product.ownerHistory | orderBy:'transferDate'">
+                  <li ng-repeat="prev in $ctrl.listing.product.ownerHistory | orderBy:'transferDay'">
                     <strong>{{ prev.developer.name }}</strong><br />
-                    Transfer Date: {{ prev.transferDate | date : 'mediumDate' : 'UTC' }}
+                    Transfer Date: $ctrl.DateUtil.getDisplayDateFormat(prev.transferDay)
                   </li>
                 </ul>
               </span>
