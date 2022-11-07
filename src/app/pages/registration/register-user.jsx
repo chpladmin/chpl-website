@@ -65,6 +65,10 @@ function ChplRegisterUser(props) {
               body: 'Your new permissions have been added',
             });
             $state.go('administration');
+            networkService.getUserById(userId)
+              .then((user) => {
+                authService.saveCurrentUser(user);
+              });
           }, (error) => {
             if (error.status === 401) {
               setMessage('A user may not have more than one role, or your username / password are incorrect');
