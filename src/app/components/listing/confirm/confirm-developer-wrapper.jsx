@@ -3,18 +3,15 @@ import { arrayOf, object, func } from 'prop-types';
 
 import ChplConfirmDeveloper from './confirm-developer';
 
-import ApiWrapper from 'api/api-wrapper';
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 import { developer as developerProp } from 'shared/prop-types';
 
 function ChplConfirmDeveloperWrapper(props) {
   /* eslint-disable react/jsx-props-no-spreading */
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <ChplConfirmDeveloper {...props} />
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <ChplConfirmDeveloper {...props} />
+    </AppWrapper>
   );
   /* eslint-enable react/jsx-props-no-spreading */
 }

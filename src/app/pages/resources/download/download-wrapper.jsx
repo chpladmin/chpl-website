@@ -2,13 +2,13 @@ import React from 'react';
 
 import ChplDownload from './download';
 
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 
 function ChplDownloadWrapper() {
   return (
-    <UserWrapper>
+    <AppWrapper>
       <ChplDownload />
-    </UserWrapper>
+    </AppWrapper>
   );
 }
 
