@@ -173,30 +173,7 @@ describe('managing complaints', () => {
       await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       const complaint = (await complaintsComponent.getTableComplaints())[0];
-      await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);
-    });
-
-    it('should not be able to add new complaint where listing and complaint have a mismatched ONC-ACB', async () => {
-      const timestamp = Date.now();
-      const fields = {
-        body: 'Surescripts LLC (Retired)',
-        receivedDate: ['23', 'Jun', 'Tab', '2021'],
-        acbId: `Test - ${timestamp}`,
-        type: 'Patient',
-        summary: `Test Summary - ${timestamp}`,
-      };
-      const optionalFields = {
-        oncId: `Test - ${timestamp}`,
-        actions: `Test - ${timestamp}`,
-        criterion: '170.315 (b)(9): Care Plan',
-        listings: '15.04.04.3010.Onco.28.01.1.181214',
-        surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01',
-      };
-      await complaintsComponent.addNewComplaint();
-      await complaintsComponent.set(fields);
-      await complaintsComponent.setOptionalFields(optionalFields);
-      await complaintsComponent.saveComplaint();
-      await expect(await (await action.errors).getText()).toContain('Certified product 15.04.04.3010.Onco.28.01.1.181214 does not have the same ONC-ACB as the complaint.');
+      await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX + 1)).getText()).toBe(fields.acbId);
     });
   });
 
