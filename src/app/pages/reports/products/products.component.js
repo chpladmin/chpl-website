@@ -1,24 +1,114 @@
-import { compareObject } from 'pages/reports/reports.v2.service';
+import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import { getDisplayDateFormat } from 'services/date-util';
+
+const compareOwnerHistory = (before, after) => {
+  if (before.length === 0 && after.length === 0) { return undefined; }
+  let changes = 'Owner history changed. Was:<ul>';
+  changes += (before.length === 0) ? '<li>No previous history</li>' : before
+    .map((item) => `<li><strong>${item.developer.name}</strong> on ${getDisplayDateFormat(item.transferDay ? item.transferDay : item.transferDate)}</li>`)
+    .join('');
+  changes += '</ul>Now:<ul>';
+  changes += (after.length === 0) ? '<li>No current history</li>' : after
+    .map((item) => `<li><strong>${item.developer.name}</strong> on ${getDisplayDateFormat(item.transferDay ? item.transferDay : item.transferDate)}</li>`)
+    .join('');
+  changes += '</ul>';
+  return changes;
+};
 
 const lookup = {
-  'owner.name': {
-    message: (before, after) => `Developer changed from ${before.name} to ${after.name}`,
+  shortCircuit: ['root.owner.address', 'root.owner.contact'],
+  'root.contact': {
+    message: () => 'Contact changes',
+  },
+  'root.contact.contactId': {
+    message: () => undefined,
+  },
+  'root.contact.email': {
+    message: (before, after) => comparePrimitive(before, after, 'email', 'Email'),
+  },
+  'root.contact.firstName': {
+    message: (before, after) => comparePrimitive(before, after, 'firstName', 'First Name'),
+  },
+  'root.contact.fullName': {
+    message: (before, after) => comparePrimitive(before, after, 'fullName', 'Full Name'),
+  },
+  'root.contact.friendlyName': {
+    message: (before, after) => comparePrimitive(before, after, 'friendlyName', 'Friendly Name'),
+  },
+  'root.contact.id': {
+    message: () => undefined,
+  },
+  'root.contact.lastName': {
+    message: (before, after) => comparePrimitive(before, after, 'lastName', 'Last Name'),
+  },
+  'root.contact.phoneNumber': {
+    message: (before, after) => comparePrimitive(before, after, 'phoneNumber', 'Phone Number'),
+  },
+  'root.contact.title': {
+    message: (before, after) => comparePrimitive(before, after, 'title', 'Title'),
+  },
+  'root.developerCode': {
+    message: () => undefined,
+  },
+  'root.developerId': {
+    message: () => undefined,
+  },
+  'root.developerName': {
+    message: (before, after) => comparePrimitive(before, after, 'developerName', 'Developer'),
+  },
+  'root.lastModifiedDate': {
+    message: () => undefined,
+  },
+  'root.lastModifiedUser': {
+    message: () => undefined,
+  },
+  'root.name': {
+    message: (before, after) => comparePrimitive(before, after, 'name', 'Product Name'),
+  },
+  'root.owner': {
+    message: () => 'Developer changes',
+  },
+  'root.owner.attestations': {
+    message: () => undefined,
+  },
+  'root.owner.developerCode': {
+    message: () => undefined,
+  },
+  'root.owner.developerId': {
+    message: () => undefined,
+  },
+  'root.owner.id': {
+    message: () => undefined,
+  },
+  'root.owner.lastModifiedDate': {
+    message: () => undefined,
+  },
+  'root.owner.name': {
+    message: (before, after) => comparePrimitive(before, after, 'name', 'Developer'),
+  },
+  'root.owner.statusEvents': {
+    message: () => undefined,
+  },
+  'root.owner.transparencyAttestationMappings': {
+    message: () => undefined,
+  },
+  'root.owner.website': {
+    message: () => undefined,
+  },
+  'root.ownerHistory': {
+    message: compareOwnerHistory,
+  },
+  'root.productVersions': {
+    message: () => undefined,
   },
 };
 
-const parseOwnerData = (before, after) => {
-  if (!before || !after) {
-    return [];
-  }
-  return compareObject(before, after, lookup, 'owner').map((msg) => `<li>${msg}</li>`);
-};
-
-
-export const ReportsProductsComponent = {
+const ReportsProductsComponent = {
   templateUrl: 'chpl.reports/products/products.html',
   controller: class ReportsProductsComponent {
-    constructor ($filter, $log, $scope, ReportService, networkService, utilService) {
+    constructor($filter, $log, $scope, ReportService, networkService, utilService) {
       'ngInject';
+
       this.$filter = $filter;
       this.$log = $log;
       this.$scope = $scope;
@@ -30,7 +120,7 @@ export const ReportsProductsComponent = {
       this.displayed = [];
       this.clearFilterHs = [];
       this.restoreStateHs = [];
-      this.filename = 'Reports_' + new Date().getTime() + '.csv';
+      this.filename = `Reports_${new Date().getTime()}.csv`;
       this.filterText = '';
       this.tableController = {};
       this.loadProgress = {
@@ -41,104 +131,61 @@ export const ReportsProductsComponent = {
       this.pageSize = 50;
     }
 
-    $onInit () {
+    $onInit() {
       this.search();
     }
 
-    $onDestroy () {
+    $onDestroy() {
       this.isDestroyed = true;
     }
 
-    doFilter (filter) {
-      let that = this;
+    doFilter(filter) {
+      const that = this;
+
       this.filterText = filter.dataFilter;
       if (filter.tableState.search.predicateObject.date) {
         this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
       } else {
         this.tableController.search({}, 'date');
       }
-      this.restoreStateHs.forEach(handler => handler(that.tableController.tableState()));
+      this.restoreStateHs.forEach((handler) => handler(that.tableController.tableState()));
       this.tableController.sortBy(filter.tableState.sort.predicate, filter.tableState.sort.reverse);
     }
 
-    registerClearFilter (handler) {
+    registerClearFilter(handler) {
       this.clearFilterHs.push(handler);
     }
 
-    registerRestoreState (handler) {
+    registerRestoreState(handler) {
       this.restoreStateHs.push(handler);
     }
 
-    tableStateListener (tableController) {
+    tableStateListener(tableController) {
       this.tableController = tableController;
     }
 
-    parse (meta) {
-      return this.networkService.getActivityById(meta.id).then(item => {
-        var activity = {
-          id: item.id,
+    parse(meta) {
+      return this.networkService.getActivityById(meta.id).then((item) => {
+        const activity = {
+          action: '',
+          details: [],
+          developer: item.developer ? item.developer.name : '',
           date: item.activityDate,
+          id: item.id,
         };
-        if (item.developer) {
-          activity.developer = item.developer.name;
-        } else {
-          activity.developer = '';
-        }
-
-        var j;
-        var change;
         if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
-          activity.action = 'Updated product "' + item.newData.name + '"';
-          activity.details = [];
-          change = this.ReportService.compareItem(item.originalData, item.newData, 'name', 'Name');
-          if (change) {
-            activity.details.push(change);
-          }
-          change = this.ReportService.compareItem(item.originalData, item.newData, 'developerName', 'Developer');
-          if (change) {
-            activity.details.push(change);
-          }
-
-          const ownerChanges = parseOwnerData(item.originalData.owner, item.newData.owner);
-          if (ownerChanges && ownerChanges.length > 0) {
-            activity.details.push('Developer changes<ul>' + ownerChanges.join('') + '</ul>');
-          }
-
-          var contactChanges = this.ReportService.compareContact(item.originalData.contact, item.newData.contact);
-          if (contactChanges && contactChanges.length > 0) {
-            activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
-          }
-          if (!angular.equals(item.originalData.ownerHistory, item.newData.ownerHistory)) {
-            var ownerHistoryActionDetails = 'Owner history changed. Was:<ul>';
-            if (item.originalData.ownerHistory.length === 0) {
-              ownerHistoryActionDetails += '<li>No previous history</li>';
-            } else {
-              for (j = 0; j < item.originalData.ownerHistory.length; j++) {
-                ownerHistoryActionDetails += '<li><strong>' + item.originalData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
-              }
-            }
-            ownerHistoryActionDetails += '</ul>Now:<ul>';
-            if (item.newData.ownerHistory.length === 0) {
-              ownerHistoryActionDetails += '<li>No new history</li>';
-            } else {
-              for (j = 0; j < item.newData.ownerHistory.length; j++) {
-                ownerHistoryActionDetails += '<li><strong>' + item.newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(item.newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
-              }
-            }
-            ownerHistoryActionDetails += '</ul>';
-            activity.details.push(ownerHistoryActionDetails);
-          }
+          activity.action = `Updated product "${item.newData.name}"`;
+          activity.details = compareObject(item.originalData, item.newData, lookup);
         } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
-          activity.action = 'Products ' + item.originalData.map(d => d.name).join(' and ') + ' merged to form ' + item.newData.name;
+          activity.action = `Products ${item.originalData.map((d) => d.name).join(' and ')} merged to form ${item.newData.name}`;
           activity.details = [];
         } else if (item.originalData && !angular.isArray(item.originalData) && item.newData && angular.isArray(item.newData)) { // split
-          activity.action = 'Products ' + item.originalData.name + ' split to become Products ' + item.newData[0].name + ' and ' + item.newData[1].name;
+          activity.action = `Products ${item.originalData.name} split to become Products ${item.newData[0].name} and ${item.newData[1].name}`;
           activity.details = [];
         } else {
           this.ReportService.interpretNonUpdate(activity, item, 'product');
           activity.action = activity.action[0];
           activity.details = [];
-          activity.csvAction = activity.action.replace(',','","');
         }
         meta.action = activity.action;
         meta.details = activity.details;
@@ -146,46 +193,48 @@ export const ReportsProductsComponent = {
       });
     }
 
-    prepare (item) {
-      item.filterText = item.developerName + '|' + item.productName + '|' + item.responsibleUser.fullName;
-      item.friendlyActivityDate = new Date(item.date).toISOString().substring(0, 10);
-      item.fullName = item.responsibleUser.fullName;
-      return item;
+    prepare(item) {
+      return {
+        ...item,
+        filterText: `${item.developerName}|${item.productName}|${item.responsibleUser.fullName}`,
+        friendlyActivityDate: new Date(item.date).toISOString().substring(0, 10),
+        fullName: item.responsibleUser.fullName,
+      };
     }
 
-    canDownload () {
+    canDownload() {
       return this.displayed
-        .filter(item => !item.action).length <= 1000;
+        .filter((item) => !item.action).length <= 1000;
     }
 
-    prepareDownload () {
-      let total = this.displayed
-        .filter(item => !item.action).length;
+    prepareDownload() {
+      const total = this.displayed
+        .filter((item) => !item.action).length;
       let progress = 0;
       this.displayed
-        .filter(item => !item.action)
-        .forEach(item => {
+        .filter((item) => !item.action)
+        .forEach((item) => {
           this.parse(item).then(() => {
             progress += 1;
             this.downloadProgress.complete = Math.floor(100 * ((progress + 1) / total));
           });
         });
-      //todo, eventually: use the $q.all function as demonstrated in product history eye
+      // todo, eventually: use the $q.all function as demonstrated in product history eye
     }
 
-    showLoadingBar () {
-      let tableState = this.tableController.tableState && this.tableController.tableState();
+    showLoadingBar() {
+      const tableState = this.tableController.tableState && this.tableController.tableState();
       return this.ReportService.showLoadingBar(tableState, this.results, this.loadProgress);
     }
 
-    search () {
-      let that = this;
+    search() {
+      const that = this;
       this.networkService.getActivityMetadata('products')
-        .then(results => {
+        .then((results) => {
           that.results = results.activities
-            .map(item => that.prepare(item));
+            .map((item) => that.prepare(item));
           that.loadProgress.total = (Math.floor(results.resultSetSize / results.pageSize) + (results.resultSetSize % results.pageSize === 0 ? 0 : 1));
-          let filter = {};
+          const filter = {};
           filter.dataFilter = '';
           filter.tableState = this.tableController.tableState();
           filter.tableState.search = {
@@ -201,11 +250,11 @@ export const ReportsProductsComponent = {
         });
     }
 
-    addPageToData (page) {
-      let that = this;
+    addPageToData(page) {
+      const that = this;
       if (this.isDestroyed) { return; }
-      this.networkService.getActivityMetadata('products', {pageNum: page, ignoreLoadingBar: true}).then(results => {
-        results.activities.forEach(item => {
+      this.networkService.getActivityMetadata('products', { pageNum: page, ignoreLoadingBar: true }).then((results) => {
+        results.activities.forEach((item) => {
           that.results.push(that.prepare(item));
         });
         that.loadProgress.complete += 1;
@@ -220,3 +269,5 @@ export const ReportsProductsComponent = {
 
 angular.module('chpl.reports')
   .component('chplReportsProducts', ReportsProductsComponent);
+
+export default ReportsProductsComponent;

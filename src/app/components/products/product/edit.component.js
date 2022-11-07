@@ -6,12 +6,14 @@ const ProductEditComponent = {
     mergingProducts: '<',
     showFormErrors: '<',
     takeAction: '&',
+    errorMessages: '<',
   },
   controller: class ProductEditComponent {
-    constructor($log, networkService) {
+    constructor($log, DateUtil, networkService) {
       'ngInject';
 
       this.$log = $log;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.mergeOptions = {};
     }
@@ -35,20 +37,20 @@ const ProductEditComponent = {
       if (changes.product && changes.product.currentValue) {
         this.product = angular.copy(changes.product.currentValue);
         this.product.ownerHistory = this.product.ownerHistory
-          .filter((o) => o.transferDate)
+          .filter((o) => o.transferDay)
           .concat({
             developer: this.product.owner,
-            transferDate: undefined,
+            transferDay: undefined,
           })
           .map((d) => ({
             ...d,
             displayName: d.name + (d.deleted ? ' - deleted' : ' - active'),
           }))
           .sort((a, b) => {
-            if (a.transferDate && b.transferDate) {
-              return b.transferDate - a.transferDate;
+            if (a.transferDay && b.transferDay) {
+              return a.transferDay < b.transferDay ? 1 : -1;
             }
-            return a.transferDate ? 1 : -1;
+            return a.transferDay ? 1 : -1;
           });
         this.productBackup = angular.copy(this.product);
       }
@@ -62,6 +64,10 @@ const ProductEditComponent = {
       if (changes.showFormErrors) {
         this.showFormErrors = angular.copy(changes.showFormErrors.currentValue);
       }
+      if (changes.errorMessages) {
+        this.externalErrorMessages = angular.copy(changes.errorMessages.currentValue);
+        this.generateErrorMessages();
+      }
       if (this.product && this.mergingProducts) {
         this.generateMergeOptions();
       }
@@ -73,7 +79,7 @@ const ProductEditComponent = {
 
     doneAddingOwner() {
       this.newOwner = undefined;
-      this.newTransferDate = undefined;
+      this.newTransferDay = undefined;
       this.addingOwner = false;
       this.showFormErrors = false;
       this.generateErrorMessages();
@@ -97,10 +103,14 @@ const ProductEditComponent = {
             if (arr[idx].developer.name === arr[idx - 1].developer.name) {
               messages.push(`Product cannot transfer from Developer "${arr[idx].developer.name}" to the same Developer`);
             }
+            if (arr[idx].transferDay === arr[idx - 1].transferDay) {
+              messages.push(`Product cannot transfer twice on the same day: "${this.DateUtil.getDisplayDateFormat(arr[idx].transferDay)}"`);
+            }
           }
         });
       }
-      this.errorMessages = messages;
+      this.errorMessages = [...new Set(messages)];
+      this.displayedErrorMessages = this.externalErrorMessages ? this.externalErrorMessages.concat(this.errorMessages) : this.errorMessages;
     }
 
     isValid() {
@@ -110,29 +120,28 @@ const ProductEditComponent = {
 
     removeOwner(owner) {
       this.product.ownerHistory = this.product.ownerHistory
-        .filter((o) => (!(o.developer.id === owner.developer.id && o.transferDate === owner.transferDate)));
+        .filter((o) => (!(o.developer.id === owner.developer.id && o.transferDay === owner.transferDay)));
       this.generateErrorMessages();
     }
 
     save() {
       const request = angular.copy(this.product);
       request.owner = request.ownerHistory[0].developer;
-      request.ownerHistory = request.ownerHistory.filter((o) => o.transferDate);
+      request.ownerHistory = request.ownerHistory.filter((o) => o.transferDay);
       this.takeAction({ action: 'edit', data: request });
     }
 
     saveNewOwner() {
-      const time = this.newTransferDate ? this.newTransferDate.getTime() : undefined;
       this.product.ownerHistory = this.product.ownerHistory
         .concat({
           developer: this.newOwner,
-          transferDate: time,
+          transferDay: this.newTransferDay.toISOString().split('T')[0],
         })
         .sort((a, b) => {
-          if (a.transferDate && b.transferDate) {
-            return b.transferDate - a.transferDate;
+          if (a.transferDay && b.transferDay) {
+            return a.transferDay < b.transferDay ? 1 : -1;
           }
-          return a.transferDate ? 1 : -1;
+          return a.transferDay ? 1 : -1;
         });
       this.doneAddingOwner();
     }
@@ -157,17 +166,17 @@ const ProductEditComponent = {
       this.product.ownerHistory = this.product.ownerHistory
         .map((owner) => ({
           ...owner,
-          transferDate: owner.transferDate || Date.now(),
+          transferDay: owner.transferDay || this.DateUtil.timestampToString(Date.now(), 'yyyy-MM-dd'),
         }))
         .concat({
           developer: this.currentOwner,
-          transferDate: undefined,
+          transferDay: undefined,
         })
         .sort((a, b) => {
-          if (a.transferDate && b.transferDate) {
-            return b.transferDate - a.transferDate;
+          if (a.transferDay && b.transferDay) {
+            return a.transferDay < b.transferDay ? 1 : -1;
           }
-          return a.transferDate ? 1 : -1;
+          return a.transferDay ? 1 : -1;
         });
       this.doneAddingOwner();
     }
