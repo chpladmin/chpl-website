@@ -3,23 +3,17 @@ import { func } from 'prop-types';
 
 import ChplConfirmListings from './confirm-listings';
 
-import ApiWrapper from 'api/api-wrapper';
-import FlagWrapper from 'api/flag-wrapper';
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 
 function ChplConfirmListingsWrapper(props) {
   const { onProcess } = props;
 
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <FlagWrapper>
-          <ChplConfirmListings
-            onProcess={onProcess}
-          />
-        </FlagWrapper>
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <ChplConfirmListings
+        onProcess={onProcess}
+      />
+    </AppWrapper>
   );
 }
 

@@ -601,11 +601,6 @@
         });
         $httpBackend.flush();
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,promotingInteroperabilityUserCount,promotingInteroperabilityUserDate$/).respond(200, { data: 'response' });
-        networkService.getCollection('decertifiedProducts').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,promotingInteroperabilityUserCount,promotingInteroperabilityUserDate$/).respond(200, { data: 'response' });
         networkService.getCollection('inactiveCertificates').then((response) => {
           expect(response.data).toEqual('response');
         });

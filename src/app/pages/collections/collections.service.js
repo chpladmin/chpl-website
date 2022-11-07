@@ -16,8 +16,6 @@
       switch (key) {
         case 'correctiveAction':
           return 'Products: Corrective Action Status';
-        case 'decertifiedProducts':
-          return 'Decertified Products';
         case 'inactiveCertificates':
           return 'Inactive Certificates';
         case 'sed':
@@ -30,8 +28,6 @@
       switch (key) {
         case 'correctiveAction':
           return correctiveActions(data.results);
-        case 'decertifiedProducts':
-          return decertifiedProducts(data.results);
         case 'inactiveCertificates':
           return inactiveCertificates(data.results);
         case 'sed':
@@ -66,34 +62,6 @@
           });
           return l;
         });
-    }
-
-    /*
-     * Listings are part of this collection if:
-     * - 2014 or 2015 Edition and
-     * - at least one of:
-     *   - Withdrawn by Developer Under Surveillance/Review
-     *   - Withdrawn by ONC-ACB
-     *   - Terminated by ONC
-     */
-    function decertifiedProducts(array) {
-      const ret = [];
-      let cp;
-      const statuses = [
-        'Withdrawn by Developer Under Surveillance/Review',
-        'Withdrawn by ONC-ACB',
-        'Terminated by ONC',
-      ];
-      for (let i = 0; i < array.length; i++) {
-        cp = array[i];
-        if (cp.edition !== '2011' && statuses.indexOf(cp.certificationStatus) > -1) {
-          cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-          cp.edition += (cp.curesUpdate ? ' Cures Update' : '');
-
-          ret.push(cp);
-        }
-      }
-      return ret;
     }
 
     /*

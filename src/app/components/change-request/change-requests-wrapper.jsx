@@ -3,10 +3,8 @@ import { arrayOf, string } from 'prop-types';
 
 import ChplChangeRequests from './change-requests';
 
-import ApiWrapper from 'api/api-wrapper';
+import AppWrapper from 'app-wrapper';
 import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
-import FlagWrapper from 'api/flag-wrapper';
-import { UserWrapper } from 'components/login';
 
 function ChplChangeRequestsWrapper(props) {
   const {
@@ -15,21 +13,17 @@ function ChplChangeRequestsWrapper(props) {
   } = props;
 
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <FlagWrapper>
-          <BreadcrumbWrapper
-            disabled={!!bonusQuery}
-            title="Change Requests"
-          >
-            <ChplChangeRequests
-              disallowedFilters={disallowedFilters}
-              bonusQuery={bonusQuery}
-            />
-          </BreadcrumbWrapper>
-        </FlagWrapper>
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <BreadcrumbWrapper
+        disabled={!!bonusQuery}
+        title="Change Requests"
+      >
+        <ChplChangeRequests
+          disallowedFilters={disallowedFilters}
+          bonusQuery={bonusQuery}
+        />
+      </BreadcrumbWrapper>
+    </AppWrapper>
   );
 }
 
