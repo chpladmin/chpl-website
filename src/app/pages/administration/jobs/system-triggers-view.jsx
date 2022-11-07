@@ -26,7 +26,7 @@ const headers = [
   { property: 'description', text: 'Description' },
   { property: 'nextRunDate', text: 'Next Run Date' },
   { property: 'triggerScheduleType', text: 'Trigger Schedule Type' },
-  { property: 'actions', text: 'Actions' },
+  { property: 'actions', text: 'Actions', invisible: true },
 ];
 
 const useStyles = makeStyles({
@@ -52,6 +52,17 @@ function ChplSystemTriggersView(props) {
   const [pendingMessage, setPendingMessage] = useState('');
   const classes = useStyles();
 
+  let getAction;
+
+  useEffect(() => {
+    setTriggers(props.triggers
+      .sort((a, b) => (a.nextRunDate - b.nextRunDate))
+      .map((trigger) => ({
+        ...trigger,
+        action: getAction(trigger, dispatch),
+      })));
+  }, [props.triggers, dispatch]); // eslint-disable-line react/destructuring-assignment
+
   const confirmDelete = (item) => {
     setIsConfirming(true);
     setPendingAction({
@@ -60,6 +71,7 @@ function ChplSystemTriggersView(props) {
         name: item.triggerName,
         group: item.triggerGroup,
         successMessage: 'Job deleted: System job deleted',
+        ...item,
       },
     });
     setPendingMessage('Are you sure you want to delete this system job?');
@@ -73,7 +85,8 @@ function ChplSystemTriggersView(props) {
     setPendingAction({});
   };
 
-  const getAction = (item) => {
+  // eslint-disable-next-line react/display-name
+  getAction = (item) => {
     if (item.triggerScheduleType === 'ONE_TIME') {
       return (
         <IconButton
@@ -89,17 +102,8 @@ function ChplSystemTriggersView(props) {
     return null;
   };
 
-  useEffect(() => {
-    setTriggers(props.triggers
-      .sort((a, b) => (a.nextRunDate - b.nextRunDate))
-      .map((trigger) => ({
-        ...trigger,
-        action: getAction(trigger, dispatch),
-      })));
-  }, [props.triggers, dispatch]); // eslint-disable-line react/destructuring-assignment
-
   return (
-    <div>
+    <>
       { isConfirming
         && (
         <ChplActionBarConfirmation
@@ -169,7 +173,7 @@ function ChplSystemTriggersView(props) {
           </>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
 
