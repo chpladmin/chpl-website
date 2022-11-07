@@ -2,19 +2,13 @@ import React from 'react';
 
 import ChplUploadListings from './upload-listings';
 
-import ApiWrapper from 'api/api-wrapper';
-import FlagWrapper from 'api/flag-wrapper';
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 
 function ChplUploadWrapper() {
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <FlagWrapper>
-          <ChplUploadListings />
-        </FlagWrapper>
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <ChplUploadListings />
+    </AppWrapper>
   );
 }
 

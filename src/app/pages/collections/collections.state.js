@@ -30,17 +30,10 @@ const states = [
     template: require('./inactive/inactive.html'),
     data: { title: 'Inactive Certificates' },
   }, {
-    name: 'collections.products',
+    name: 'collections.decertified-products',
     url: '/products',
-    controller: 'DecertifiedProductsController',
-    controllerAs: 'vm',
-    template: require('./products/products.html'),
+    component: 'chplDecertifiedProductsCollectionWrapperBridge',
     data: { title: 'Decertified Products' },
-  }, {
-    name: 'collections.real-world-testing',
-    url: '/real-world-testing',
-    component: 'chplRealWorldTestingCollectionWrapperBridge',
-    data: { title: 'Real World Testing' },
   }, {
     name: 'collections.sed',
     url: '/sed',
@@ -48,6 +41,11 @@ const states = [
     controllerAs: 'vm',
     template: require('./sed/sed.html'),
     data: { title: 'SED Information for 2015 Edition Products' },
+  }, {
+    name: 'collections.real-world-testing',
+    url: '/real-world-testing',
+    component: 'chplRealWorldTestingCollectionWrapperBridge',
+    data: { title: 'Real World Testing' },
   },
 ];
 

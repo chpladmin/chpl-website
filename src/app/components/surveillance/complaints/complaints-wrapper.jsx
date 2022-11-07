@@ -3,9 +3,12 @@ import { arrayOf, bool, string } from 'prop-types';
 
 import ChplComplaints from './complaints';
 
-import ApiWrapper from 'api/api-wrapper';
+import AppWrapper from 'app-wrapper';
 import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
-import { UserWrapper } from 'components/login';
+import {
+  complaint as complaintPropType,
+  listing as listingPropType,
+} from 'shared/prop-types';
 
 function ChplComplaintsWrapper(props) {
   const {
@@ -15,20 +18,18 @@ function ChplComplaintsWrapper(props) {
   } = props;
 
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <BreadcrumbWrapper
-          disabled={!!bonusQuery}
-          title="Complaints Reporting"
-        >
-          <ChplComplaints
-            bonusQuery={bonusQuery}
-            canAdd={canAdd}
-            disallowedFilters={disallowedFilters}
-          />
-        </BreadcrumbWrapper>
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <BreadcrumbWrapper
+        disabled={!!bonusQuery}
+        title="Complaints Reporting"
+      >
+        <ChplComplaints
+          bonusQuery={bonusQuery}
+          canAdd={canAdd}
+          disallowedFilters={disallowedFilters}
+        />
+      </BreadcrumbWrapper>
+    </AppWrapper>
   );
 }
 

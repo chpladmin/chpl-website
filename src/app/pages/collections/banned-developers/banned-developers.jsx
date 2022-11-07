@@ -2,15 +2,13 @@ import React from 'react';
 
 import ChplBannedDevelopersCollectionView from './banned-developers-view';
 
-import ApiWrapper from 'api/api-wrapper';
-import FlagWrapper from 'api/flag-wrapper';
+import AppWrapper from 'app-wrapper';
 import {
   FilterProvider,
   defaultFilter,
   getDateDisplay,
   getDateEntry,
 } from 'components/filter';
-import { UserWrapper } from 'components/login';
 
 function ChplBannedDevelopersCollectionPage() {
   const analytics = {
@@ -46,21 +44,17 @@ function ChplBannedDevelopersCollectionPage() {
   }];
 
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <FlagWrapper>
-          <FilterProvider
-            analytics={analytics}
-            filters={filters}
-            storageKey="storageKey-bannedDevelopersPage"
-          >
-            <ChplBannedDevelopersCollectionView
-              analytics={analytics}
-            />
-          </FilterProvider>
-        </FlagWrapper>
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <FilterProvider
+        analytics={analytics}
+        filters={filters}
+        storageKey="storageKey-bannedDevelopersPage"
+      >
+        <ChplBannedDevelopersCollectionView
+          analytics={analytics}
+        />
+      </FilterProvider>
+    </AppWrapper>
   );
 }
 

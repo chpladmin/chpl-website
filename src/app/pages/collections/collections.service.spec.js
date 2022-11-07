@@ -40,17 +40,6 @@
       });
     });
 
-    describe('when focused on decertifiedProducts', () => {
-      it('should filter on decertifiedProducts', () => {
-        expect(service.translate('decertifiedProducts', {results: Mock.allCps}).length).toBe(0);
-      });
-
-      xit('should generate a mainSearch', () => {
-        var results = service.translate('decertifiedProducts', {results: Mock.allCps});
-        expect(results[0].mainSearch).toEqual('Strateq Health Inc.|37 Degrees|V1.07|CHP-028979');
-      });
-    });
-
     describe('when focused on inactiveCertificates', () => {
       it('should filter on inactiveCertificates', () => {
         expect(service.translate('inactiveCertificates', {results: Mock.allCps}).length).toBe(4);
