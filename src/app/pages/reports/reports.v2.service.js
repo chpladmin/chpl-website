@@ -39,6 +39,7 @@ const compareObject = (before, after, lookup, root = 'root') => {
       case 'array':
         return getMessage(b, a, root, key, lookup);
       case 'object':
+        if (lookup.shortCircuit?.includes(`${root}.${key}`)) { return undefined; }
         const messages = compareObject(b, a, lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
         return messages.length > 0 ? (`${getMessage(before, after, root, key, lookup)}<ul>${messages.join('')}</ul>`) : '';
       default:
