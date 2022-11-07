@@ -5,8 +5,7 @@ import {
 
 import ChplComplaints from './complaints';
 
-import ApiWrapper from 'api/api-wrapper';
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 import {
   complaint as complaintPropType,
   listing as listingPropType,
@@ -15,13 +14,11 @@ import {
 function ChplComplaintsWrapper(props) {
   /* eslint-disable react/jsx-props-no-spreading */
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <ChplComplaints
-          {...props}
-        />
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <ChplComplaints
+        {...props}
+      />
+    </AppWrapper>
   );
   /* eslint-enable react/jsx-props-no-spreading */
 }

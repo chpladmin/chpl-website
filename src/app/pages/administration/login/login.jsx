@@ -2,12 +2,11 @@ import React from 'react';
 import { func, shape } from 'prop-types';
 import {
   Container,
-  ThemeProvider,
 } from '@material-ui/core';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplLogin, UserWrapper } from '../../../components/login';
+import AppWrapper from 'app-wrapper';
+import { ChplLogin } from 'components/login';
+import { getAngularService } from 'services/angular-react-helper';
 
 function ChplLoginPage(props) {
   /* eslint-disable react/destructuring-assignment */
@@ -24,15 +23,13 @@ function ChplLoginPage(props) {
   };
 
   return (
-    <UserWrapper>
-      <ThemeProvider theme={theme}>
-        <Container id="login-component">
-          <ChplLogin
-            dispatch={handleLogin}
-          />
-        </Container>
-      </ThemeProvider>
-    </UserWrapper>
+    <AppWrapper>
+      <Container id="login-component">
+        <ChplLogin
+          dispatch={handleLogin}
+        />
+      </Container>
+    </AppWrapper>
   );
 }
 

@@ -3,20 +3,17 @@ import { object } from 'prop-types';
 
 import ChplAttestationEdit from './attestation-edit';
 
-import ApiWrapper from 'api/api-wrapper';
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 
 function ChplAttestationEditWrapper(props) {
   const { changeRequest } = props;
 
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <ChplAttestationEdit
-          changeRequest={changeRequest}
-        />
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <ChplAttestationEdit
+        changeRequest={changeRequest}
+      />
+    </AppWrapper>
   );
 }
 
