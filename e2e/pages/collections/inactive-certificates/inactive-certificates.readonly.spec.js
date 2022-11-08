@@ -10,7 +10,7 @@ describe('the Inactive Certificates collection page', () => {
 
   it('should have body text', async () => {
     await expect(await page.getBodyText()).toContain('This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the CHPL Public User Guide. For more information on how an inactive certificate may affect your attestation to the CMS EHR Incentive Programs, please consult the CMS FAQ. For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.');
-    await expect(await page.getBodyText()).toContain('Note: This list excludes 2011 and 2014 edition certificates. The 2011 and 2014 editions have been retired from the certification program.');
+    await expect(await page.getBodyText()).toContain('Note: This list excludes 2011 and 2014 edition products. The 2011 and 2014 editions have been retired from the certification program.');
   });
 
   it('should have table headers in a defined order', async () => {
