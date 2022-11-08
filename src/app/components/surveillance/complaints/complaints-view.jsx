@@ -161,7 +161,7 @@ function ChplComplaintsView(props) {
   }, [data, isLoading, isSuccess]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = hasAnyRole(['ROLE_ACB']) ? [
+  const headers = (hasAnyRole(['ROLE_ACB']) || bonusQuery) ? [
     { property: 'current_status', text: 'Status', sortable: true },
     { property: 'received_date', text: 'Received Date', sortable: true, reverseDefault: true },
     { property: 'acb_complaint_id', text: 'ONC-ACB Complaint ID', sortable: true },
@@ -316,7 +316,7 @@ function ChplComplaintsView(props) {
     <Card>
       { bonusQuery
         && (
-          <CardHeader title="Change Requests" />
+          <CardHeader title="Complaints" />
         )}
       <CardContent>
         <div className={classes.searchContainer} component={Paper}>
@@ -372,7 +372,7 @@ function ChplComplaintsView(props) {
                           {complaints
                             .map((complaint) => (
                               <TableRow key={complaint.id}>
-                                { !hasAnyRole(['ROLE_ACB'])
+                                { !hasAnyRole(['ROLE_ACB']) && !bonusQuery
                                   && (
                                     <TableCell>{complaint.certificationBody.name}</TableCell>
                                   )}
