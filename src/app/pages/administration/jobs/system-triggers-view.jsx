@@ -71,7 +71,6 @@ function ChplSystemTriggersView(props) {
         name: item.triggerName,
         group: item.triggerGroup,
         successMessage: 'Job deleted: System job deleted',
-        ...item,
       },
     });
     setPendingMessage('Are you sure you want to delete this system job?');
