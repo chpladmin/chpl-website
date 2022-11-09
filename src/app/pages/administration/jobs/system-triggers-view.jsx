@@ -84,10 +84,10 @@ function ChplSystemTriggersView(props) {
     setPendingAction({});
   };
 
-  // eslint-disable-next-line react/display-name
   getAction = (item) => {
+    let action = null;
     if (item.triggerScheduleType === 'ONE_TIME') {
-      return (
+      action = (
         <IconButton
           onClick={() => confirmDelete(item)}
           variant="contained"
@@ -98,7 +98,7 @@ function ChplSystemTriggersView(props) {
         </IconButton>
       );
     }
-    return null;
+    return action;
   };
 
   return (
