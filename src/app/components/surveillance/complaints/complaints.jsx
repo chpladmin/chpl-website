@@ -128,10 +128,13 @@ function ChplComplaints(props) {
 
   useEffect(() => {
     if (!hasAnyRole(['ROLE_ACB'])) { return; }
-    setBonusQuery((bq) => [...new Set(bq.split('&'), `certificationBodies=${user.organizations[0].name}`)]
+    setBonusQuery((bq) => [...(new Set(bq
+      .split('&')
+      .concat(`certificationBodies=${user.organizations[0].name}`)
+      .filter((a) => (a))))]
       .sort((a, b) => (a < b ? -1 : 1))
       .join('&'));
-    setDisallowedFilters((df) => [...new Set(df, 'certificationBodies')]);
+    setDisallowedFilters((df) => [...(new Set(df.concat('certificationBodies')))]);
   }, [hasAnyRole, user]);
 
   useEffect(() => {
