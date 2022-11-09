@@ -45,8 +45,8 @@
         <tbody>
           <tr ng-repeat="surv in $ctrl.uploadingSurveillances | orderBy: 'certifiedProduct.chplProductNumber' track by surv.id">
             <td><a href="#/listing/{{ surv.certifiedProduct.id}}">{{ surv.certifiedProduct.chplProductNumber }}</a></td>
-            <td>{{ surv.startDate | date : 'mediumDate' : 'UTC' }}</td>
-            <td>{{ surv.endDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ $ctrl.DateUtil.getDisplayDateFormat(surv.startDay) }}</td>
+            <td>{{ $ctrl.DateUtil.getDisplayDateFormat(surv.endDay) }}</td>
             <td>{{ surv.type.name }}</td>
             <td>{{ surv.requirements.length }}</td>
             <td>

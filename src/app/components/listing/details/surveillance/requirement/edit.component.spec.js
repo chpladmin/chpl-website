@@ -1,15 +1,21 @@
 (() => {
-  'use strict';
-
   describe('the surveillance requirement edit component', () => {
-    var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, scope;
+    let $compile;
+    let $log;
+    let $uibModal;
+    let Mock;
+    let actualOptions;
+    let authService;
+    let ctrl;
+    let el;
+    let scope;
 
     beforeEach(() => {
-      angular.mock.module('chpl.mock', 'chpl.components', $provide => {
-        $provide.decorator('authService', $delegate => {
-          $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
-          return $delegate;
-        });
+      angular.mock.module('chpl.mock', 'chpl.components', ($provide) => {
+        $provide.decorator('authService', ($delegate) => ({
+          ...$delegate,
+          hasAnyRole: jasmine.createSpy('hasAnyRole'),
+        }));
       });
 
       inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _authService_) => {
@@ -19,7 +25,7 @@
         authService = _authService_;
         authService.hasAnyRole.and.returnValue(false);
         $uibModal = _$uibModal_;
-        spyOn($uibModal, 'open').and.callFake(options => {
+        spyOn($uibModal, 'open').and.callFake((options) => {
           actualOptions = options;
           return Mock.fakeModal;
         });
@@ -51,7 +57,7 @@
     afterEach(() => {
       if ($log.debug.logs.length > 0) {
         /* eslint-disable no-console,angular/log */
-        console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+        console.log(`Debug:\n${$log.debug.logs.map((o) => angular.toJson(o)).join('\n')}`);
         /* eslint-enable no-console,angular/log */
       }
     });
@@ -72,16 +78,8 @@
         expect(scope.dismiss).toHaveBeenCalled();
       });
 
-      it('should be able to determine if Non-confirmity Type is removed', () => {
-        ctrl.data = Mock.surveillanceData;
-        let removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(1)');
-        expect(removed).toBeFalse();
-        removed = ctrl.isNonconformityTypeRemoved('170.523 (k)(2)');
-        expect(removed).toBeTrue();
-      });
-
       describe('when adding a Nonconformity', () => {
-        var modalOptions;
+        let modalOptions;
         beforeEach(() => {
           modalOptions = {
             component: 'aiSurveillanceNonconformityEdit',
@@ -140,14 +138,14 @@
         });
 
         it('should log a dismissed modal', () => {
-          var logCount = $log.info.logs.length;
+          const logCount = $log.info.logs.length;
           ctrl.addNonconformity();
           ctrl.modalInstance.dismiss('dismissed');
           expect($log.info.logs.length).toBe(logCount + 1);
         });
 
         it('should filter out removed criteria when user is ROLE_ACB', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
               data: [{ removed: false }, { removed: false }, { removed: true }],
@@ -158,7 +156,7 @@
         });
 
         it('should not change base data', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ACB'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
               data: [{ removed: false }, { removed: false }, { removed: true }],
@@ -169,7 +167,7 @@
         });
 
         it('should not filter out removed criteria when user is ROLE_ACB', () => {
-          authService.hasAnyRole.and.callFake(params => params.reduce((acc, param) => { return acc || param === 'ROLE_ONC'; }, false)); // user is ACB
+          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ONC', false)); // user is ACB
           ctrl.data = {
             nonconformityTypes: {
               data: [{ removed: false }, { removed: false }, { removed: true }],
@@ -181,7 +179,8 @@
       });
 
       describe('when editing a Nonconformity', () => {
-        var modalOptions, noncon;
+        let modalOptions;
+        let noncon;
         beforeEach(() => {
           noncon = { id: 1, name: '1' };
           modalOptions = {
@@ -223,7 +222,7 @@
         });
 
         it('should generate a guiId if one doesn\'t exist', () => {
-          var empty = {};
+          const empty = {};
           expect(empty.guiId).toBeUndefined();
           ctrl.editNonconformity(empty);
           expect(empty.guiId).toBeDefined();
@@ -244,7 +243,7 @@
         });
 
         it('should log a dismissed modal', () => {
-          var logCount = $log.info.logs.length;
+          const logCount = $log.info.logs.length;
           ctrl.editNonconformity(noncon);
           ctrl.modalInstance.dismiss('dismissed');
           expect($log.info.logs.length).toBe(logCount + 1);
@@ -279,31 +278,6 @@
         it('should not be if the result is not NC', () => {
           ctrl.requirement.result = { name: 'No Non-Conformity' };
           expect(ctrl.isNonconformityRequired()).toBe(false);
-        });
-      });
-
-      describe('when saving the requirement', () => {
-        it('should close the modal with the active requirement', () => {
-          var activeReq = {
-            id: 'something',
-            result: { name: 'someting' },
-            type: { name: 'something' },
-          };
-          ctrl.requirement = activeReq;
-          ctrl.save();
-          expect(scope.close).toHaveBeenCalledWith(activeReq);
-        });
-
-        it('should remove any requirements if there was no NC found', () => {
-          var activeReq = {
-            id: 'something',
-            result: { name: 'No Non-Conformity' },
-            type: { name: 'No Non-Conformity' },
-            nonconformities: [1, 2, 3],
-          };
-          ctrl.requirement = activeReq;
-          ctrl.save();
-          expect(activeReq.nonconformities).toEqual([]);
         });
       });
     });

@@ -33,9 +33,13 @@ import {
   ucdProcess,
   ucdProcessType,
 } from './standards';
-import surveillance from './surveillance';
-import surveillanceNonconformity from './surveillance-nonconformity';
-import surveillanceRequirement from './surveillance-requirement';
+import {
+  surveillance,
+  surveillanceNonconformity,
+  surveillanceNonconformityType,
+  surveillanceRequirement,
+  surveillanceRequirementType,
+} from './surveillance';
 import { testData, selectedTestData } from './test-data';
 import { testFunctionality, selectedTestFunctionality } from './test-functionality';
 import { testProcedure, selectedTestProcedure } from './test-procedure';
@@ -81,7 +85,9 @@ export {
   selectedTestTool,
   surveillance,
   surveillanceNonconformity,
+  surveillanceNonconformityType,
   surveillanceRequirement,
+  surveillanceRequirementType,
   svap,
   testData,
   testFunctionality,
