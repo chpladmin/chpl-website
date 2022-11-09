@@ -1,28 +1,30 @@
-export const ConfirmSurveillanceComponent = {
+const ConfirmSurveillanceComponent = {
   templateUrl: 'chpl.surveillance/surveillance/confirm.html',
   bindings: {
     onChange: '&',
   },
   controller: class ConfirmSurveillanceComponent {
-    constructor ($log, $uibModal, authService, networkService) {
+    constructor($log, $uibModal, DateUtil, authService, networkService) {
       'ngInject';
+
       this.$log = $log;
       this.$uibModal = $uibModal;
+      this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.hasAnyRole = authService.hasAnyRole;
       this.massReject = {};
     }
 
-    $onInit () {
-      let that = this;
-      this.networkService.getUploadingSurveillances().then(surveillances => {
+    $onInit() {
+      const that = this;
+      this.networkService.getUploadingSurveillances().then((surveillances) => {
         that.uploadingSurveillances = surveillances.pendingSurveillance;
       });
     }
 
-    getNumberOfSurveillanceToReject () {
+    getNumberOfSurveillanceToReject() {
       let ret = 0;
-      angular.forEach(this.massRejectSurveillance, value => {
+      angular.forEach(this.massRejectSurveillance, (value) => {
         if (value) {
           ret += 1;
         }
@@ -30,12 +32,12 @@ export const ConfirmSurveillanceComponent = {
       return ret;
     }
 
-    clearPendingSurveillance (survId) {
-      this.uploadingSurveillances = this.uploadingSurveillances.filter(s => s.id !== survId);
+    clearPendingSurveillance(survId) {
+      this.uploadingSurveillances = this.uploadingSurveillances.filter((s) => s.id !== survId);
     }
 
-    inspectSurveillance (surv) {
-      let that = this;
+    inspectSurveillance(surv) {
+      const that = this;
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceInspect',
         animation: false,
@@ -46,52 +48,52 @@ export const ConfirmSurveillanceComponent = {
         },
         size: 'lg',
       });
-      this.modalInstance.result.then(result => {
+      this.modalInstance.result.then((result) => {
         if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
-          for (var i = 0; i < that.uploadingSurveillances.length; i++) {
+          for (let i = 0; i < that.uploadingSurveillances.length; i += 1) {
             if (surv.id === that.uploadingSurveillances[i].id) {
-              that.uploadingSurveillances.splice(i,1);
+              that.uploadingSurveillances.splice(i, 1);
               that.pendingSurveillances = that.uploadingSurveillances.length;
             }
           }
           if (result.status === 'resolved') {
-            that.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
+            that.uploadingSurveillanceMessages = [`Surveillance with ID: "${result.objectId}" has already been resolved by "${result.contact.fullName}"`];
           }
         }
       });
     }
 
-    massRejectPendingSurveillance () {
-      let that = this;
-      var idsToReject = [];
+    massRejectPendingSurveillance() {
+      const that = this;
+      const idsToReject = [];
       angular.forEach(this.massRejectSurveillance, (value, key) => {
         if (value) {
           idsToReject.push(parseInt(key, 10));
           this.clearPendingSurveillance(parseInt(key, 10));
-          delete(this.massRejectSurveillance[key]);
+          delete (this.massRejectSurveillance[key]);
         }
       });
       this.networkService.massRejectPendingSurveillance(idsToReject)
         .then(() => {
           that.onChange();
-        }, error => {
+        }, (error) => {
           that.onChange();
           if (error.data.errors && error.data.errors.length > 0) {
-            that.uploadingSurveillanceMessages = error.data.errors.map(error => 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"');
+            that.uploadingSurveillanceMessages = error.data.errors.map((e) => `Surveillance with ID: "${e.objectId}" has already been resolved by "${e.contact.fullName}"`);
           }
         });
     }
 
-    parseSurveillanceUploadError (surv) {
-      var ret = '';
+    parseSurveillanceUploadError(surv) {
+      let ret = '';
       if (surv.errorMessages && surv.errorMessages.length > 0) {
-        ret += 'Errors:&nbsp;' + surv.errorMessages.length;
+        ret += `Errors:&nbsp;${surv.errorMessages.length}`;
       }
       if (surv.warningMessages && surv.warningMessages.length > 0) {
         if (ret.length > 0) {
           ret += '<br />';
         }
-        ret += 'Warnings:&nbsp;' + surv.warningMessages.length;
+        ret += `Warnings:&nbsp;${surv.warningMessages.length}`;
       }
       if (ret.length === 0) {
         ret = 'OK';
@@ -99,9 +101,9 @@ export const ConfirmSurveillanceComponent = {
       return ret;
     }
 
-    selectAllPendingSurveillance () {
+    selectAllPendingSurveillance() {
       this.massRejectSurveillance = {};
-      this.uploadingSurveillances.forEach(surv => {
+      this.uploadingSurveillances.forEach((surv) => {
         this.massRejectSurveillance[surv.id] = true;
       });
     }
@@ -110,3 +112,5 @@ export const ConfirmSurveillanceComponent = {
 
 angular.module('chpl.surveillance')
   .component('chplConfirmSurveillance', ConfirmSurveillanceComponent);
+
+export default ConfirmSurveillanceComponent;
