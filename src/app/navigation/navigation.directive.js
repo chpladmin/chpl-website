@@ -91,7 +91,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   }
 
   function getDevelopers() {
-    if (vm.hasAnyRole(['ROLE_DEVELOPER'])) {
+    if (vm.hasAnyRole(['ROLE_DEVELOPER']) && authService.getCurrentUser()) {
       return authService.getCurrentUser().organizations
         .map((developer) => developer)
         .sort((a, b) => (a.name < b.name ? -1 : 1));
