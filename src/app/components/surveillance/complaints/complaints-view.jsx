@@ -106,7 +106,7 @@ function ChplComplaintsView(props) {
     pageNumber,
     pageSize,
     sortDescending: order === 'desc',
-    query: `${queryString()}${bonusQuery}`,
+    query: `${queryString()}&${bonusQuery}`,
   });
   const classes = useStyles();
   let handleDispatch;
