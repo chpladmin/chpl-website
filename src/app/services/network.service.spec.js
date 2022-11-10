@@ -262,14 +262,6 @@
         $httpBackend.flush();
       });
 
-      it('should deleteSurveillanceDocument', () => {
-        $httpBackend.expectDELETE(/^\/rest\/surveillance\/1\/document\/3$/).respond(200);
-        networkService.deleteSurveillanceDocument(1, 3).then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
       it('should deleteUser', () => {
         $httpBackend.expectDELETE(/^\/rest\/users\/1$/).respond(200);
         networkService.deleteUser(1).then((response) => {

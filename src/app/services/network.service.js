@@ -94,10 +94,6 @@ export default class NetworkService {
     });
   }
 
-  deleteSurveillanceDocument(survId, docId) {
-    return this.apiDELETE(`/surveillance/${survId}/document/${docId}`);
-  }
-
   deleteUser(userId) {
     return this.apiDELETE(`/users/${userId}`);
   }

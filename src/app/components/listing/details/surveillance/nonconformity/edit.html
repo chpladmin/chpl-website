@@ -141,42 +141,6 @@
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.resolution.$touched) && $ctrl.editForm.resolution.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="row" ng-if="$ctrl.workType === 'edit' && $ctrl.nonconformity.documents.length > 0">
-      <div class="col-sm-12">
-        <h3>Supporting documentation</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">File Name</th>
-              <th scope="col">File Type</th>
-              <th class="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="doc in $ctrl.nonconformity.documents">
-              <td>{{ doc.fileName }}</td>
-              <td>{{ doc.fileType }}</td>
-              <td>
-                <button class="btn btn-danger btn-block pull-left"
-                        ng-if="doc.id"
-                        confirm="Are you sure you wish to remove this documentation?"
-                        confirm-ok="Yes"
-                        confirm-cancel="No"
-                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                        ng-click="$ctrl.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
-                <span ng-if="!doc.id">N/A</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div ng-if="$ctrl.deleteMessage.length > 0" ng-class="$ctrl.deleteSuccess ? 'bg-success' : 'bg-danger'">
-          {{ $ctrl.deleteMessage }}
-          <ul ng-if="$ctrl.deleteErrors.length > 0" ng-class="'bg-danger'">
-            <li ng-repeat="error in $ctrl.deleteErrors">{{ error.error }}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </div>
   <div class="modal-footer">
     <div class="text-danger text-left" ng-if="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDay && $ctrl.nonconformity.capEndDay < $ctrl.nonconformity.capStartDay)) && $ctrl.showFormErrors">
