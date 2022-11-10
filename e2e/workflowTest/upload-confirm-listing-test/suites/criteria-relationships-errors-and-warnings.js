@@ -9,6 +9,7 @@ const suite = {
       'Must use Cures Update version of \'170.315 (d)(10)\' unless ICS, for Listings certified after 2020-06-30.',
       'Must use Cures Update version of \'170.315 (b)(3)\' unless ICS, for Listings certified after 2020-01-01.',
       'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
+      'Certification criterion \'170.315 (c)(3)\' was found but no matching Clinical Quality Measurement was found.',
       'Cannot select both 170.315 (g)(9) and 170.315 (g)(9) (Cures Update).',
       'Cannot select both 170.315 (g)(8) and 170.315 (g)(10) (Cures Update).',
       'Cannot select both 170.315 (g)(6) and 170.315 (g)(6) (Cures Update).',
