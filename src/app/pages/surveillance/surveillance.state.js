@@ -11,28 +11,6 @@ const states = [{
     label: 'Surveillance',
   },
 }, {
-  name: 'surveillance.upload',
-  url: '/upload',
-  component: 'chplUploadSurveillances',
-  data: {
-    title: 'CHPL Surveillance - Upload',
-    roles: ['ROLE_ADMIN', 'ROLE_ACB'],
-  },
-  ncyBreadcrumb: {
-    label: 'Upload',
-  },
-}, {
-  name: 'surveillance.confirm',
-  url: '/confirm',
-  component: 'chplConfirmSurveillance',
-  data: {
-    title: 'CHPL Surveillance - Confirmation',
-    roles: ['ROLE_ADMIN', 'ROLE_ACB'],
-  },
-  ncyBreadcrumb: {
-    label: 'Confirm',
-  },
-}, {
   name: 'surveillance.complaints',
   url: '/complaints',
   component: 'chplComplaintsReporting',
