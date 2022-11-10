@@ -1,3 +1,5 @@
+import { sortNonconformityTypes } from 'services/surveillance.service';
+
 const SurveillanceNonconformityEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/nonconformity/edit.html',
   bindings: {
@@ -6,14 +8,13 @@ const SurveillanceNonconformityEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceNonconformityEditController {
-    constructor($log, API, authService, networkService, utilService) {
+    constructor($log, API, authService, networkService) {
       'ngInject';
 
       this.$log = $log;
       this.API = API;
       this.networkService = networkService;
-      this.utilService = utilService;
-      this.sortNonconformityTypes = utilService.sortNonconformityTypes;
+      this.sortNonconformityTypes = sortNonconformityTypes;
       this.item = {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -23,7 +24,7 @@ const SurveillanceNonconformityEditComponent = {
     }
 
     $onInit() {
-      this.data = angular.copy(this.resolve.surveillanceTypes);
+      this.nonconformityTypes = this.resolve.surveillanceTypes.nonconformityTypes.data.sort(sortNonconformityTypes);
       this.disableValidation = this.resolve.disableValidation;
       this.nonconformity = angular.copy(this.resolve.nonconformity);
       this.randomized = this.resolve.randomized;
@@ -32,7 +33,7 @@ const SurveillanceNonconformityEditComponent = {
       this.showFormErrors = false;
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
-      this.nonconformityType = this.nonconformity.type?.title ? this.data.nonconformityTypes.data
+      this.nonconformityType = this.nonconformity.type?.title ? this.nonconformityTypes
         .find((t) => t.title === this.nonconformity.type.title) : undefined;
     }
 
