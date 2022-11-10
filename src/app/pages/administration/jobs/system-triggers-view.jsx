@@ -91,10 +91,9 @@ function ChplSystemTriggersView(props) {
         <IconButton
           onClick={() => confirmDelete(item)}
           variant="contained"
-          color="primary"
           aria-label={`Delete Job ${item.name}`}
         >
-          <DeleteIcon />
+          <DeleteIcon color="error"/>
         </IconButton>
       );
     }
