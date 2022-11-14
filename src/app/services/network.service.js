@@ -239,7 +239,6 @@ export default class NetworkService {
         return this.apiGET('/collections/certified-products?fields=id,acb,chplProductNumber,developer,product');
       case 'correctiveAction':
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,openDirectReviewNonConformityCount,closedDirectReviewNonConformityCount');
-      case 'decertifiedProducts':
       case 'inactiveCertificates':
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,promotingInteroperabilityUserCount,promotingInteroperabilityUserDate');
       case 'sed':
@@ -467,21 +466,21 @@ export default class NetworkService {
       .then((response) => {
         data.surveillanceTypes = response;
       });
-    this.apiGET('/data/surveillance_requirement_types')
+    this.apiGET('/data/requirement-group-types')
       .then((response) => {
-        data.surveillanceRequirementTypes = response;
+        data.requirementGroupTypes = response;
       });
     this.apiGET('/data/surveillance_result_types')
       .then((response) => {
         data.surveillanceResultTypes = response;
       });
-    this.apiGET('/data/surveillance-requirements')
-      .then((response) => {
-        data.surveillanceRequirements = response;
-      });
-    this.apiGET('/data/nonconformity-types')
+    this.apiGET('/data/nonconformity-types/v2')
       .then((response) => {
         data.nonconformityTypes = response;
+      });
+    this.apiGET('/data/requirement-types')
+      .then((response) => {
+        data.surveillanceRequirements = response;
       });
     return data;
   }

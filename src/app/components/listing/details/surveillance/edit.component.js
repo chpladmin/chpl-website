@@ -1,3 +1,5 @@
+import { interpretRequirements } from 'services/surveillance.service';
+
 const SurveillanceEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/edit.html',
   bindings: {
@@ -6,36 +8,40 @@ const SurveillanceEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceEditController {
-    constructor($log, $uibModal, authService, networkService, toaster, utilService) {
+    constructor($log, $uibModal, networkService, toaster) {
       'ngInject';
 
       this.$log = $log;
       this.$uibModal = $uibModal;
-      this.authService = authService;
-      this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
-      this.utilService = utilService;
-      this.sortRequirements = utilService.sortRequirements;
     }
 
     $onInit() {
-      this.surveillance = angular.copy(this.resolve.surveillance);
+      this.surveillance = {
+        ...this.resolve.surveillance,
+        requirements: this.resolve.surveillance.requirements ? interpretRequirements(this.resolve.surveillance.requirements) : [],
+      };
       this.workType = this.resolve.workType;
-      this.data = angular.copy(this.resolve.surveillanceTypes);
+      this.data = {
+        ...this.resolve.surveillanceTypes,
+        surveillanceRequirements: {
+          data: this.resolve.surveillanceTypes.surveillanceRequirements.data
+            .filter((req) => req.requirementGroupType.name !== 'Certified Capability'
+                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
+                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.certificationEdition?.name),
+        },
+      };
 
       this.showFormErrors = false;
       this.disableValidation = this.surveillance.errorMessages && this.surveillance.errorMessages.length > 0;
       if (this.surveillance.type) {
-        this.surveillance.type = this.utilService.findModel(this.surveillance.type, this.data.surveillanceTypes.data, 'name');
+        this.surveillance.type = this.data.surveillanceTypes.data.find((type) => type.name === this.surveillance.type.name);
       }
     }
 
     addRequirement() {
       const data = angular.copy(this.data);
-      if (this.hasAnyRole(['ROLE_ACB'])) {
-        data.surveillanceRequirements.criteriaOptions = data.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
-      }
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
         animation: false,
@@ -56,7 +62,10 @@ const SurveillanceEditComponent = {
         if (!this.surveillance.requirements) {
           this.surveillance.requirements = [];
         }
-        this.surveillance.requirements.push(response);
+        this.surveillance.requirements = interpretRequirements([
+          ...this.surveillance.requirements,
+          response,
+        ]);
       }, (result) => {
         this.$log.info(result);
       });
@@ -153,7 +162,12 @@ const SurveillanceEditComponent = {
           }
         }
         if (!found) {
-          this.surveillance.requirements.push(response);
+          this.surveillance.requirements = interpretRequirements([
+            ...this.surveillance.requirements,
+            response,
+          ]);
+        } else {
+          this.surveillance.requirements = interpretRequirements(this.surveillance.requirements);
         }
       }, (result) => {
         this.$log.info(result);
@@ -231,18 +245,6 @@ const SurveillanceEditComponent = {
             }
           });
       }
-    }
-
-    isRequirementRemoved(name) {
-      let requirement = this.data.surveillanceRequirements.realWorldTestingOptions.find((req) => req.item === name);
-      if (requirement) {
-        return requirement.removed;
-      }
-      requirement = this.data.surveillanceRequirements.transparencyOptions.find((req) => req.item === name);
-      if (requirement) {
-        return requirement.removed;
-      }
-      return false;
     }
   },
 };
