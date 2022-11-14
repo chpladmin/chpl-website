@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '16px',
   },
-  cardActionSpacing : {
+  cardActionSpacing: {
     padding: '16px',
   },
 });
@@ -128,63 +128,63 @@ function ChplSedDetailsEdit(props) {
 
   return (
     <Card>
-    <CardContent className={classes.container}>
-      <ChplTextField
-        id="sed-report-file-location"
-        name="sedReportFileLocation"
-        label="Full Usability Report"
-        value={formik.values.sedReportFileLocation}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.sedReportFileLocation && !!formik.errors.sedReportFileLocation}
-        helperText={formik.touched.sedReportFileLocation && formik.errors.sedReportFileLocation}
-      />
-      <ChplTextField
-        id="sed-intended-user-description"
-        name="sedIntendedUserDescription"
-        label="SED Intended User Description"
-        value={formik.values.sedIntendedUserDescription}
-        multiline
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.sedIntendedUserDescription && !!formik.errors.sedIntendedUserDescription}
-        helperText={formik.touched.sedIntendedUserDescription && formik.errors.sedIntendedUserDescription}
-      />
-      <ChplTextField
-        id="sed-testing-end-day"
-        name="sedTestingEndDay"
-        label="SED Testing Completion Date"
-        type="date"
-        value={formik.values.sedTestingEndDay}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
-        helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
-      />
-      <ChplUcdProcessesView
-        ucdProcesses={ucdProcesses}
-        dispatch={handleDispatch}
-      />
+      <CardContent className={classes.container}>
+        <ChplTextField
+          id="sed-report-file-location"
+          name="sedReportFileLocation"
+          label="Full Usability Report"
+          value={formik.values.sedReportFileLocation}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.sedReportFileLocation && !!formik.errors.sedReportFileLocation}
+          helperText={formik.touched.sedReportFileLocation && formik.errors.sedReportFileLocation}
+        />
+        <ChplTextField
+          id="sed-intended-user-description"
+          name="sedIntendedUserDescription"
+          label="SED Intended User Description"
+          value={formik.values.sedIntendedUserDescription}
+          multiline
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.sedIntendedUserDescription && !!formik.errors.sedIntendedUserDescription}
+          helperText={formik.touched.sedIntendedUserDescription && formik.errors.sedIntendedUserDescription}
+        />
+        <ChplTextField
+          id="sed-testing-end-day"
+          name="sedTestingEndDay"
+          label="SED Testing Completion Date"
+          type="date"
+          value={formik.values.sedTestingEndDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.sedTestingEndDay && !!formik.errors.sedTestingEndDay}
+          helperText={formik.touched.sedTestingEndDay && formik.errors.sedTestingEndDay}
+        />
+        <ChplUcdProcessesView
+          ucdProcesses={ucdProcesses}
+          dispatch={handleDispatch}
+        />
       </CardContent>
       <CardActions className={classes.cardActionSpacing}>
         <ButtonGroup>
-        <Button
-          color="secondary"
-          variant="contained"
-          onClick={() => dispatch({ action: 'cancel' })}
-          endIcon={<CloseOutlinedIcon />}
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={() => dispatch({ action: 'cancel' })}
+            endIcon={<CloseOutlinedIcon />}
           >
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          endIcon={<CheckOutlinedIcon />}
-          onClick={() => formik.submitForm()}
-          disabled={!isValid()}
+            Cancel
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            endIcon={<CheckOutlinedIcon />}
+            onClick={() => formik.submitForm()}
+            disabled={!isValid()}
           >
-          Accept
-        </Button>
+            Accept
+          </Button>
         </ButtonGroup>
       </CardActions>
     </Card>

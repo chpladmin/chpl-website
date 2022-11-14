@@ -12,7 +12,6 @@ import {
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-
 import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -38,7 +37,7 @@ const useStyles = makeStyles({
     gap: '8px',
     flexWrap: 'wrap',
   },
-  cardActionSpacing : {
+  cardActionSpacing: {
     padding: '16px',
   },
   deleteButton: {
@@ -115,75 +114,75 @@ function ChplUcdProcessEdit(props) {
 
   return (
     <Card>
-    <CardContent className={classes.container}>
-      <ChplTextField
-        select
-        id="ucd-process"
-        name="ucdProcess"
-        label="UCD Process"
-        required
-        value={formik.values.ucdProcess}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.name && !!formik.errors.name}
-        helperText={formik.touched.name && formik.errors.name}
-      >
-        { ucdProcessOptions
-          .sort((a, b) => (a.name < b.name ? -1 : 1))
-          .map((item) => (
-            <MenuItem
-              value={item}
-              key={item.id}
-            >
-              {item.name}
-            </MenuItem>
-          ))}
-      </ChplTextField>
-      <ChplTextField
-        id="details"
-        name="details"
-        label="UCD Process Details"
-        value={formik.values.details}
-        multiline
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.details && !!formik.errors.details}
-        helperText={formik.touched.details && formik.errors.details}
-      />
-      <ChplTextField
-        select
-        id="criteria-select"
-        name="criteriaSelect"
-        label="Select a criterion to associate"
-        value={selectedCriterion}
-        onChange={(event) => add(event.target.value)}
-        helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
-      >
-        { criteriaOptions
-          .sort(sortCriteria)
-          .map((item) => (
-            <MenuItem
-              value={item}
-              key={item.id}
-              disabled={isDisabled(item)}
-            >
-              {`${item.number}: ${item.title}`}
-            </MenuItem>
-          ))}
-      </ChplTextField>
-      <div className={classes.chips}>
-        { criteria
-          .sort(sortCriteria)
-          .map((item) => (
-            <Chip
-              key={item.id}
-              label={getDisplay(item)}
-              onDelete={() => remove(item)}
-              color="primary"
-              variant="outlined"
-            />
-          ))}
-      </div>
+      <CardContent className={classes.container}>
+        <ChplTextField
+          select
+          id="ucd-process"
+          name="ucdProcess"
+          label="UCD Process"
+          required
+          value={formik.values.ucdProcess}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && !!formik.errors.name}
+          helperText={formik.touched.name && formik.errors.name}
+        >
+          { ucdProcessOptions
+            .sort((a, b) => (a.name < b.name ? -1 : 1))
+            .map((item) => (
+              <MenuItem
+                value={item}
+                key={item.id}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+        </ChplTextField>
+        <ChplTextField
+          id="details"
+          name="details"
+          label="UCD Process Details"
+          value={formik.values.details}
+          multiline
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.details && !!formik.errors.details}
+          helperText={formik.touched.details && formik.errors.details}
+        />
+        <ChplTextField
+          select
+          id="criteria-select"
+          name="criteriaSelect"
+          label="Select a criterion to associate"
+          value={selectedCriterion}
+          onChange={(event) => add(event.target.value)}
+          helperText={criteria.length === 0 && 'At least one Criteria must be selected'}
+        >
+          { criteriaOptions
+            .sort(sortCriteria)
+            .map((item) => (
+              <MenuItem
+                value={item}
+                key={item.id}
+                disabled={isDisabled(item)}
+              >
+                {`${item.number}: ${item.title}`}
+              </MenuItem>
+            ))}
+        </ChplTextField>
+        <div className={classes.chips}>
+          { criteria
+            .sort(sortCriteria)
+            .map((item) => (
+              <Chip
+                key={item.id}
+                label={getDisplay(item)}
+                onDelete={() => remove(item)}
+                color="primary"
+                variant="outlined"
+              />
+            ))}
+        </div>
       </CardContent>
       <CardActions className={classes.cardActionSpacing}>
         <ButtonGroup>
@@ -195,7 +194,7 @@ function ChplUcdProcessEdit(props) {
           >
             Cancel
           </Button>
-        { canDelete
+          { canDelete
           && (
             <Button
               className={classes.deleteButton}
@@ -205,17 +204,17 @@ function ChplUcdProcessEdit(props) {
               Delete
             </Button>
           )}
-            <Button
-              color="primary"
-              variant="contained"
-              endIcon={<CheckOutlinedIcon />}
-              onClick={() => handleDispatch('save')}
-              disabled={!isValid()}
-            >
-              Accept
-            </Button>
-          </ButtonGroup>
-        </CardActions>
+          <Button
+            color="primary"
+            variant="contained"
+            endIcon={<CheckOutlinedIcon />}
+            onClick={() => handleDispatch('save')}
+            disabled={!isValid()}
+          >
+            Accept
+          </Button>
+        </ButtonGroup>
+      </CardActions>
     </Card>
   );
 }
