@@ -51,7 +51,10 @@ function ChplSedDetailsEdit(props) {
 
   useEffect(() => {
     if (props.ucdProcesses?.length > 0) {
-      setUcdProcesses(props.ucdProcesses);
+      setUcdProcesses(props.ucdProcesses.map((p) => ({
+        ...p,
+        guid: p.id || Date.now(),
+      })));
     }
   }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
 
@@ -76,7 +79,7 @@ function ChplSedDetailsEdit(props) {
         setActiveUcdProcess(undefined);
         break;
       case 'delete':
-        setUcdProcesses((previous) => previous.filter((prev) => prev.id !== payload.id));
+        setUcdProcesses((previous) => previous.filter((prev) => prev.guid !== payload.guid));
         setActiveUcdProcess(undefined);
         break;
       case 'edit':
@@ -85,7 +88,7 @@ function ChplSedDetailsEdit(props) {
       case 'save':
         setActiveUcdProcess(undefined);
         setUcdProcesses((previous) => previous
-          .filter((prev) => prev.id !== payload.id)
+          .filter((prev) => prev.guid !== payload.guid)
           .concat(payload));
         break;
       // no default

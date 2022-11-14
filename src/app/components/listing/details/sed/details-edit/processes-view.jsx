@@ -91,7 +91,7 @@ function ChplUcdProcessesView(props) {
           <TableBody>
             { ucdProcesses
               .map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.guid}>
                   <TableCell className={classes.firstColumn}>
                     { item.name }
                   </TableCell>
@@ -104,7 +104,7 @@ function ChplUcdProcessesView(props) {
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-ucd-process-${item.id}`}
+                      id={`edit-ucd-process-${item.guid}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}

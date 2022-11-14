@@ -62,7 +62,7 @@ function ChplUcdProcessEdit(props) {
     setCriteria(props.ucdProcess.criteria?.map((criterion) => ({
       ...criterion,
     })) || []);
-    setCanDelete(!!props.ucdProcess.id);
+    setCanDelete(!!props.ucdProcess.guid);
   }, [props.ucdProcess]); // eslint-disable-line react/destructuring-assignment
 
   const add = (criterion) => {
@@ -72,6 +72,7 @@ function ChplUcdProcessEdit(props) {
 
   const buildPayload = () => ({
     ...formik.values.ucdProcess,
+    guid: props.ucdProcess.guid || Date.now(),
     details: formik.values.details,
     criteria,
   });
