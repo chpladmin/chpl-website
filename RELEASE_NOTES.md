@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 11.44.1
+_14 November 2022_
+
+### User Interface Updates
+* Upgrade "Decertified Products" page to new UI/UX
+
+### Bug Fixes
+* Show User's new API Key in confirmation page
+* Eliminate ability to attempt to have multiple current Product owners
+* Display Surveillance start/end dates while inspecting pending Surveillance
+
+---
+
 ## Version 11.44.0
 _31 October 2022_
 

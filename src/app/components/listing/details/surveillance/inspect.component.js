@@ -1,3 +1,5 @@
+import { interpretRequirements } from 'services/surveillance.service';
+
 const SurveillanceInspectComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/inspect.html',
   bindings: {
@@ -6,7 +8,7 @@ const SurveillanceInspectComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceInspectController {
-    constructor($log, $uibModal, DateUtil, authService, networkService, utilService) {
+    constructor($log, $uibModal, DateUtil, authService, networkService) {
       'ngInject';
 
       this.$log = $log;
@@ -14,12 +16,13 @@ const SurveillanceInspectComponent = {
       this.DateUtil = DateUtil;
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
-      this.utilService = utilService;
-      this.sortRequirements = utilService.sortRequirements;
     }
 
     $onInit() {
-      this.surveillance = angular.copy(this.resolve.surveillance);
+      this.surveillance = {
+        ...this.resolve.surveillance,
+        requirements: interpretRequirements(this.resolve.surveillance.requirements),
+      };
       this.errorMessages = [];
       this.surveillanceTypes = this.networkService.getSurveillanceLookups();
     }
@@ -50,9 +53,7 @@ const SurveillanceInspectComponent = {
     }
 
     editSurveillance() {
-      this.fixRequirementOptions();
       if (this.hasAnyRole(['ROLE_ACB'])) {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions.filter((option) => !option.removed);
         this.surveillanceTypes.nonconformityTypes.data = this.surveillanceTypes.nonconformityTypes.data.filter((option) => !option.removed);
       }
       this.editModalInstance = this.$uibModal.open({
@@ -84,7 +85,6 @@ const SurveillanceInspectComponent = {
         keyboard: false,
         resolve: {
           nonconformities: () => noncons,
-          nonconformityTypes: () => this.surveillanceTypes.nonconformityTypes,
         },
         size: 'lg',
       });
@@ -107,18 +107,6 @@ const SurveillanceInspectComponent = {
             this.errorMessages = error.data.errorMessages;
           }
         });
-    }
-
-    /// /////////////////////////////////////////////////////////////////
-
-    fixRequirementOptions() {
-      if (this.surveillance.certifiedProduct.edition === '2015') {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
-      } else if (this.surveillance.certifiedProduct.edition === '2014') {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
-      } else {
-        this.surveillanceTypes.surveillanceRequirements.criteriaOptions = [];
-      }
     }
   },
 };

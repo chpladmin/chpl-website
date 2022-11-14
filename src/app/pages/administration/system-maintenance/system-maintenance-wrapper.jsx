@@ -2,19 +2,16 @@ import React from 'react';
 
 import ChplSystemMaintenance from './system-maintenance';
 
-import ApiWrapper from 'api/api-wrapper';
+import AppWrapper from 'app-wrapper';
 import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
-import { UserWrapper } from 'components/login';
 
 function ChplSystemMaintenanceWrapper() {
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <BreadcrumbWrapper title="System Maintenance">
-          <ChplSystemMaintenance />
-        </BreadcrumbWrapper>
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <BreadcrumbWrapper title="System Maintenance">
+        <ChplSystemMaintenance />
+      </BreadcrumbWrapper>
+    </AppWrapper>
   );
 }
 

@@ -1,3 +1,5 @@
+import { sortRequirementTypes } from 'services/surveillance.service';
+
 const SurveillanceRequirementEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/requirement/edit.html',
   bindings: {
@@ -6,14 +8,12 @@ const SurveillanceRequirementEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceRequirementEditController {
-    constructor($log, $uibModal, authService, utilService) {
+    constructor($log, $uibModal, authService) {
       'ngInject';
 
       this.$log = $log;
       this.$uibModal = $uibModal;
       this.hasAnyRole = authService.hasAnyRole;
-      this.utilService = utilService;
-      this.sortCriteria = utilService.sortCert;
     }
 
     $onInit() {
@@ -25,18 +25,17 @@ const SurveillanceRequirementEditComponent = {
       this.showFormErrors = false;
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
-      if (this.requirement.type) {
-        this.requirement.type = this.utilService.findModel(this.requirement.type, this.data.surveillanceRequirementTypes.data, 'name');
+      if (this.requirement.requirementType) {
+        this.requirementGroupType = this.data.requirementGroupTypes.data.find((req) => req.name === this.requirement.requirementType.requirementGroupType.name);
+        this.updateRequirementOptions();
+        this.requirementType = this.requirementOptions.find((option) => option.id === this.requirement.requirementType.id);
+      }
+      if (this.requirement.requirementTypeOther) {
+        this.requirementGroupType = this.data.requirementGroupTypes.data.find((req) => req.name === 'Other Requirement');
+        this.requirementTypeOther = this.requirement.requirementTypeOther;
       }
       if (this.requirement.result) {
-        this.requirement.result = this.utilService.findModel(this.requirement.result, this.data.surveillanceResultTypes.data, 'name');
-      }
-      if (this.requirement.criterion) {
-        this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-          .find((t) => t.number === this.requirement.criterion.number && t.title === this.requirement.criterion.title);
-      } else {
-        this.requirementCriterionType = this.data.surveillanceRequirements.criteriaOptions
-          .find((t) => t.number === this.requirement.requirement);
+        this.requirement.result = this.data.surveillanceResultTypes.data.find((type) => type.name === this.requirement.result.name);
       }
     }
 
@@ -128,25 +127,25 @@ const SurveillanceRequirementEditComponent = {
       if (this.requirement.result.name === 'No Non-Conformity') {
         this.requirement.nonconformities = [];
       }
-      if (this.requirement.type.name === 'Certified Capability') {
-        if (this.requirementCriterionType.title) {
-          this.requirement.criterion = this.requirementCriterionType;
-        }
-        if (this.requirementCriterionType.number) {
-          this.requirement.requirement = this.requirementCriterionType.number;
-        }
+      if (this.requirementGroupType.name !== 'Other Requirement') {
+        this.requirement.requirementType = this.requirementType;
+        this.requirement.requirementTypeOther = undefined;
       } else {
-        this.requirement.criterion = undefined;
+        this.requirement.requirementType = undefined;
+        this.requirement.requirementTypeOther = this.requirementTypeOther;
       }
       this.close({ $value: this.requirement });
     }
 
-    isNonconformityTypeRemoved(type) {
-      const nonconformityType = this.data.nonconformityTypes.data.find((ncType) => ncType.number === type);
-      if (nonconformityType) {
-        return nonconformityType.removed;
-      }
-      return false;
+    updateRequirementOptions() {
+      if (!this.requirementGroupType) { return; }
+      this.requirementOptions = this.data.surveillanceRequirements.data
+        .filter((req) => req.requirementGroupType.id === this.requirementGroupType.id)
+        .sort(sortRequirementTypes)
+        .map((req) => ({
+          ...req,
+          display: `${req.removed ? 'Removed | ' : ''}${req.number ? (`${req.number}: `) : ''}${req.title}`,
+        }));
     }
   },
 };

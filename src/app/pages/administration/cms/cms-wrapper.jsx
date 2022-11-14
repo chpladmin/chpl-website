@@ -2,16 +2,13 @@ import React from 'react';
 
 import ChplCms from './cms';
 
-import ApiWrapper from 'api/api-wrapper';
-import { UserWrapper } from 'components/login';
+import AppWrapper from 'app-wrapper';
 
 function ChplCmsWrapper() {
   return (
-    <UserWrapper>
-      <ApiWrapper>
-        <ChplCms />
-      </ApiWrapper>
-    </UserWrapper>
+    <AppWrapper>
+      <ChplCms />
+    </AppWrapper>
   );
 }
 

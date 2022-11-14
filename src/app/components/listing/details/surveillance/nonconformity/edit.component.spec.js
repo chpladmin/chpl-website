@@ -113,10 +113,6 @@
       });
 
       describe('when saving the nonconformity', () => {
-        beforeEach(() => {
-          ctrl.nonconformityType = {};
-        });
-
         it('should close it\'s modal with the NC', () => {
           ctrl.nonconformity = { id: 'an NC' };
           ctrl.save();

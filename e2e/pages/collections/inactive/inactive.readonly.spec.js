@@ -68,7 +68,7 @@ describe('the Inactive Certificates collection page', () => {
 
   describe('when searching listing by developer', () => {
     const DEVELOPER_COL_IDX = 2;
-    const developerName = 'Allscripts';
+    const developerName = 'Altera Digital Health Inc.';
     it('should only show listings that match the developer', () => {
       page.searchForListing(developerName);
       page.waitForUpdatedListingResultsCount();

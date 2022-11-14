@@ -29,7 +29,6 @@
       sortCqm: sortCqm,
       sortCqmActual: sortCqmActual,
       sortNonconformityTypes: sortNonconformityTypes,
-      sortRequirements: sortRequirements,
       sortTestFunctionality: sortTestFunctionality,
       statusFont: statusFont,
       ternaryFilter: ternaryFilter,
@@ -289,26 +288,13 @@
     }
 
     function sortNonconformityTypes(type) {
-      if (type.number === 'Other Non-Conformity') {
-        return Number.MAX_VALUE;
+      if (type.number) {
+        return sortCert(type);
       }
-      return sortCert(type);
-    }
-
-    function sortRequirements(req) {
-      if (angular.isObject(req)) {
-        req = req.requirement;
-      }
-      if (req.indexOf('(') < 0) {
-        return Number.MAX_VALUE;
-      }
-      var edition = parseInt(req.substring(4, 7));
-      var letter = parseInt(req.split('(')[1].charCodeAt(0)) - 96;
-      var number = req.length > 11 ? parseInt(req.split(')')[1].substring(1)) : 0;
-      var ret = edition * 10000 +
-        letter * 100 +
-        number;
-      return ret;
+      return sortCert({
+        ...type,
+        number: type.title,
+      });
     }
 
     function sortTestFunctionality(tfA, tfB) {
@@ -635,7 +621,9 @@
         '170.523 (k)(2)',
         '170.523 (l)',
         'Annual Real World Testing Plan',
-        'Annual Real World Testing Results',
+        'Annual Real World Testing Results Reports',
+        'Semiannual Attestations Submission',
+        'Other Non-Conformity',
       ];
     }
 
