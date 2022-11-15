@@ -51,9 +51,9 @@ function ChplSedDetailsEdit(props) {
 
   useEffect(() => {
     if (props.ucdProcesses?.length > 0) {
-      setUcdProcesses(props.ucdProcesses.map((p) => ({
+      setUcdProcesses(props.ucdProcesses.map((p, idx) => ({
         ...p,
-        guid: p.id || Date.now(),
+        guid: p.id || `${Date.now()}-${idx}`,
       })));
     }
   }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
