@@ -194,7 +194,7 @@ function ChplInactiveCertificatesCollectionView(props) {
       <div className={classes.pageHeader}>
         <Typography variant="h1">Inactive Certificates</Typography>
       </div>
-      <div className={classes.pageBody}>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography variant="body1" gutterBottom>
           This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the
           {' '}

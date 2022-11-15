@@ -194,7 +194,7 @@ function ChplDecertifiedProductsCollectionView(props) {
       <div className={classes.pageHeader}>
         <Typography variant="h1">Decertified Products</Typography>
       </div>
-      <div className={classes.pageBody}>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography variant="body1" gutterBottom>
           This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certification withdrawn by an ONC-ACB because the health IT developer requested it to be withdrawn when the product was under ONC-ACB surveillance or ONC direct review. For further descriptions of the certification statuses, please consult the
           {' '}

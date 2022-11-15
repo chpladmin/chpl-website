@@ -197,7 +197,7 @@ function ChplRealWorldTestingCollectionView(props) {
       <div className={classes.pageHeader}>
         <Typography variant="h1">Real World Testing</Typography>
       </div>
-      <div className={classes.pageBody}>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography
           variant="body1"
         >
