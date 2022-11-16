@@ -218,7 +218,7 @@ function ChplSedCollectionView(props) {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">SED Information 2015 Edition Products</Typography>
+        <Typography variant="h1">SED Information for 2015 Edition Products</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
