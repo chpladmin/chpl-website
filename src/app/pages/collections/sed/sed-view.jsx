@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -11,13 +11,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import Moment from 'react-moment';
 import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import InfoIcon from '@material-ui/icons/Info';
 import { ExportToCsv } from 'export-to-csv';
 
 import {
-  useFetchApiDocumentationData,
   useFetchCollection,
 } from 'api/collections';
 import {
@@ -33,40 +32,20 @@ import {
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const csvOptions = (erdPhase2IsOn) => ({
-  filename: 'api-documentation',
+const csvOptions = {
+  filename: 'sed',
   showLabels: true,
-  headers: erdPhase2IsOn ? [
+  headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
     { headerName: 'Certification Edition', objectKey: 'fullEdition' },
     { headerName: 'Developer', objectKey: 'developerName' },
     { headerName: 'Product', objectKey: 'productName' },
     { headerName: 'Version', objectKey: 'versionName' },
     { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
-    { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
-  ] : [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-    { headerName: 'API Documentation - 170.315 (g)(8)', objectKey: 'apiDocumentation57' },
-    { headerName: 'API Documentation - 170.315 (g)(9)', objectKey: 'apiDocumentation58' },
-    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
-    { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
   ],
-});
+};
 
 const useStyles = makeStyles({
   linkWrap: {
@@ -140,71 +119,14 @@ const useStyles = makeStyles({
   },
 });
 
-const criteriaLookup = (erdPhase2IsOn) => (erdPhase2IsOn
-  ? {
-    56: { display: '170.315 (g)(7)', sort: 0 },
-    181: { display: '170.315 (g)(9) (Cures Update)', sort: 1 },
-    182: { display: '170.315 (g)(10) (Cures Update)', sort: 2 },
-  } : {
-    56: { display: '170.315 (g)(7)', sort: 0 },
-    57: { display: '170.315 (g)(8)', sort: 1 },
-    58: { display: '170.315 (g)(9)', sort: 2 },
-    181: { display: '170.315 (g)(9) (Cures Update)', sort: 3 },
-    182: { display: '170.315 (g)(10) (Cures Update)', sort: 4 },
-  });
-
-const parseApiDocumentation = ({ apiDocumentation }, analytics, erdPhase2IsOn) => {
-  if (apiDocumentation.length === 0) { return 'N/A'; }
-  const items = Object.entries(apiDocumentation
-    .filter((item) => !erdPhase2IsOn || (item.criterion.id !== 57 && item.criterion.id !== 58))
-    .map((item) => ({
-      id: item.criterion.id,
-      url: item.value,
-    }))
-    .reduce((map, { id, url }) => ({
-      ...map,
-      [url]: (map[url] || []).concat(id),
-    }), {}))
-    .map(([url, ids]) => ({
-      url,
-      criteria: ids
-        .sort((a, b) => criteriaLookup(erdPhase2IsOn)[a].sort - criteriaLookup(erdPhase2IsOn)[b].sort)
-        .map((id) => criteriaLookup(erdPhase2IsOn)[id].display)
-        .join(', '),
-    }))
-    .sort((a, b) => (a.criteria < b.criteria ? -1 : 1));
-  return (
-    <dl>
-      {items.map(({ url, criteria }) => (
-        <React.Fragment key={url}>
-          <dt>{ criteria }</dt>
-          <dd>
-            <ChplLink
-              key={url}
-              href={url}
-              analytics={{ event: 'Go to API Documentation Website', category: analytics.category, label: url }}
-            />
-          </dd>
-        </React.Fragment>
-      ))}
-    </dl>
-  );
-};
-
-const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation?.find((item) => item.criterion.id === id)?.value || '';
-
-const parseServiceBaseUrlList = ({ serviceBaseUrlList }) => serviceBaseUrlList?.value || '';
-
-function ChplApiDocumentationCollectionView(props) {
-  const storageKey = 'storageKey-apiDocumentationView';
+function ChplSedCollectionView(props) {
+  const storageKey = 'storageKey-sedView';
   const $analytics = getAngularService('$analytics');
+  const $uibModal = getAngularService('$uibModal');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
-  const { isOn } = useContext(FlagContext);
-  const [documentationDate, setDocumentationDate] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
-  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -219,13 +141,8 @@ function ChplApiDocumentationCollectionView(props) {
     pageNumber,
     pageSize,
     sortDescending,
-    query: filterContext.queryString(),
+    query: `certificationCriteriaIds=52&${filterContext.queryString()}`,
   });
-  const { data: documentation } = useFetchApiDocumentationData();
-
-  useEffect(() => {
-    setErdPhase2IsOn(isOn('erd-phase-2'));
-  }, [isOn]);
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -236,20 +153,13 @@ function ChplApiDocumentationCollectionView(props) {
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      apiDocumentation: parseApiDocumentation(listing, analytics, erdPhase2IsOn),
-      apiDocumentation56: getApiDocumentationForCsv(listing, 56),
-      apiDocumentation57: erdPhase2IsOn ? '' : getApiDocumentationForCsv(listing, 57),
-      apiDocumentation58: erdPhase2IsOn ? '' : getApiDocumentationForCsv(listing, 58),
-      apiDocumentation181: getApiDocumentationForCsv(listing, 181),
-      apiDocumentation182: getApiDocumentationForCsv(listing, 182),
-      serviceBaseUrlList: parseServiceBaseUrlList(listing),
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics, erdPhase2IsOn]);
+  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -258,13 +168,8 @@ function ChplApiDocumentationCollectionView(props) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/files/api_documentation?api_key=${authService.getApiKey()}`);
+    setDownloadLink(`${API}/certified_products/sed_details?api_key=${authService.getApiKey()}`);
   }, [API, authService]);
-
-  useEffect(() => {
-    if (!documentation?.associatedDate) { return; }
-    setDocumentationDate(documentation.associatedDate);
-  }, [documentation?.associatedDate]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
@@ -274,14 +179,12 @@ function ChplApiDocumentationCollectionView(props) {
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
     { text: 'Certification Status' },
-    { text: 'API Documentation' },
-    { text: 'Service Base URL List' },
-    { text: 'Mandatory Disclosures URL' },
+    { text: 'Actions', invisible: true },
   ];
 
-  const downloadApiDocumentation = () => {
+  const downloadSed = () => {
     $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    const csvExporter = new ExportToCsv(csvOptions(erdPhase2IsOn));
+    const csvExporter = new ExportToCsv(csvOptions);
     csvExporter.generateCsv(listings);
   };
 
@@ -294,65 +197,50 @@ function ChplApiDocumentationCollectionView(props) {
     }
   };
 
+  const viewDetails = (id) => {
+    $uibModal.open({
+      templateUrl: 'chpl.collections/sed/sed-modal.html',
+      controller: 'ViewSedModalController',
+      controllerAs: 'vm',
+      animation: false,
+      backdrop: 'static',
+      keyboard: false,
+      size: 'lg',
+      resolve: {
+        id() { return id; },
+      },
+    });
+  };
+
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">API Information for 2015 Edition Products</Typography>
+        <Typography variant="h1">SED Information 2015 Edition Products</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
           <Typography variant="body1" gutterBottom>
-            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified to at least one of the following API Criteria:
-          </Typography>
-          <ul>
-            <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-            { !erdPhase2IsOn
-              && (
-                <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
-              )}
-            <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
-            { !erdPhase2IsOn
-              && (
-                <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-              )}
-            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services (Cures Update)</li>
-          </ul>
-          <Typography variant="body1" gutterBottom>
-            The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
+            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED):
           </Typography>
           <Typography variant="body1">
             Please note that by default, only listings that are active or suspended are shown in the search results.
           </Typography>
         </div>
         <div>
-          <h2>API Documentation Dataset</h2>
+          <h2>SED Information Dataset</h2>
           <Typography variant="body1" gutterBottom>
-            The API Documentation Dataset is derived from a manual review by ONC of developer API documentation and details the API syntax and authorization standard used for products certified to the API criteria.
+            Please note the All SED Details file contains information for all certified product listings and is not filtered based on search results.
           </Typography>
           <ChplLink
             href={downloadLink}
-            text="Download API Documentation Dataset"
-            id="download-api-documentation"
-            analytics={{ event: 'Download API Documentation data', category: analytics.category }}
+            text="Download All SED Details"
+            id="download-sed-details"
+            analytics={{ event: 'Download All SED Details', category: analytics.category }}
             external={false}
           />
-          { documentationDate
-            && (
-              <Typography variant="body2">
-                Last updated
-                {' '}
-                <Moment
-                  fromNow
-                  withTitle
-                  titleFormat="DD MMM yyyy"
-                >
-                  {documentationDate}
-                </Moment>
-              </Typography>
-            )}
         </div>
       </div>
       <div className={classes.searchContainer} component={Paper}>
@@ -393,7 +281,7 @@ function ChplApiDocumentationCollectionView(props) {
                       variant="contained"
                       fullWidth
                       id="download-filtered-listings"
-                      onClick={downloadApiDocumentation}
+                      onClick={downloadSed}
                       endIcon={<GetAppIcon />}
                     >
                       Download
@@ -412,7 +300,7 @@ function ChplApiDocumentationCollectionView(props) {
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="API Documentation Collections table"
+                      aria-label="SED Collections table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
@@ -428,11 +316,11 @@ function ChplApiDocumentationCollectionView(props) {
                               <TableCell className={classes.stickyColumn}>
                                 <strong>
                                   <ChplLink
-                                    href={`#/listing/${item.id}`}
+                                    href={`#/listing/${item.id}?panel=sed`}
                                     text={item.chplProductNumber}
                                     analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                                     external={false}
-                                    router={{ sref: 'listing', options: { id: item.id } }}
+                                    router={{ sref: 'listing', options: { id: item.id, panel: 'sed' } }}
                                   />
                                 </strong>
                               </TableCell>
@@ -453,35 +341,16 @@ function ChplApiDocumentationCollectionView(props) {
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                { item.apiDocumentation }
-                              </TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                { item.serviceBaseUrlList
-                                  ? (
-                                    <dl>
-                                      <dt>170.315 (g)(10) (Cures Update)</dt>
-                                      <dd>
-                                        <ChplLink
-                                          href={item.serviceBaseUrlList}
-                                          analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
-                                        />
-                                      </dd>
-                                    </dl>
-                                  ) : (
-                                    <>N/A</>
-                                  )}
-                              </TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                { item.mandatoryDisclosures
-                                  ? (
-                                    <ChplLink
-                                      href={item.mandatoryDisclosures}
-                                      analytics={{ event: 'Go to Mandatory Disclosures Website', category: analytics.category, label: item.mandatoryDisclosures }}
-                                    />
-                                  ) : (
-                                    <>N/A</>
-                                  )}
+                              <TableCell>
+                                <Button
+                                  color="primary"
+                                  variant="contained"
+                                  id={`view-details-${item.id}`}
+                                  onClick={() => viewDetails(item.id)}
+                                  endIcon={<InfoIcon />}
+                                >
+                                  View
+                                </Button>
                               </TableCell>
                             </TableRow>
                           ))}
@@ -505,9 +374,9 @@ function ChplApiDocumentationCollectionView(props) {
   );
 }
 
-export default ChplApiDocumentationCollectionView;
+export default ChplSedCollectionView;
 
-ChplApiDocumentationCollectionView.propTypes = {
+ChplSedCollectionView.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }).isRequired,
