@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -12,9 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import GetAppIcon from '@material-ui/icons/GetApp';
 import InfoIcon from '@material-ui/icons/Info';
-import { ExportToCsv } from 'export-to-csv';
 
 import {
   useFetchCollection,
@@ -33,19 +30,6 @@ import {
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
-
-const csvOptions = {
-  filename: 'sed',
-  showLabels: true,
-  headers: [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-  ],
-};
 
 const useStyles = makeStyles({
   linkWrap: {
@@ -182,12 +166,6 @@ function ChplSedCollectionView(props) {
     { text: 'Actions', invisible: true },
   ];
 
-  const downloadSed = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    const csvExporter = new ExportToCsv(csvOptions);
-    csvExporter.generateCsv(listings);
-  };
-
   const handleTableSort = (event, property) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     if (orderBy === property) {
@@ -273,26 +251,6 @@ function ChplSedCollectionView(props) {
                     </Typography>
                   )}
               </div>
-              { listings.length > 0
-                && (
-                  <ButtonGroup size="small" className={classes.wrap}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      fullWidth
-                      id="download-filtered-listings"
-                      onClick={downloadSed}
-                      endIcon={<GetAppIcon />}
-                    >
-                      Download
-                      {' '}
-                      { listings.length }
-                      {' '}
-                      Result
-                      { listings.length !== 1 ? 's' : '' }
-                    </Button>
-                  </ButtonGroup>
-                )}
             </div>
             { listings.length > 0
               && (
