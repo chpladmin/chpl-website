@@ -40,17 +40,6 @@
       });
     });
 
-    describe('when focused on inactiveCertificates', () => {
-      it('should filter on inactiveCertificates', () => {
-        expect(service.translate('inactiveCertificates', {results: Mock.allCps}).length).toBe(4);
-      });
-
-      it('should generate a mainSearch', () => {
-        var results = service.translate('inactiveCertificates', {results: Mock.allCps});
-        expect(results[0].mainSearch).toEqual('OSEHRA|OSEHRA popHealth for Eligible Hospital|4.0.2|CHP-029007');
-      });
-    });
-
     describe('when focused on sed', () => {
       it('should filter on sed', () => {
         expect(service.translate('sed', {results: Mock.allCps, certificationCriteria: [Mock.searchOptions.certificationCriteria]}).length).toBe(0);

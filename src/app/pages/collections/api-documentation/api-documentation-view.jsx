@@ -305,7 +305,7 @@ function ChplApiDocumentationCollectionView(props) {
       <div className={classes.pageHeader}>
         <Typography variant="h1">API Information for 2015 Edition Products</Typography>
       </div>
-      <div className={classes.pageBody}>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
           <Typography variant="body1" gutterBottom>
             This list includes all 2015 Edition, including Cures Update, health IT products that have been certified to at least one of the following API Criteria:

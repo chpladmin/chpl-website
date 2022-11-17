@@ -15,16 +15,24 @@ import {
   listing,
 } from './complaint';
 import contact from './contact';
+import { conformanceMethod, selectedConformanceMethod } from './conformance-method';
 import criterion from './criterion';
 import developer from './developer';
 import directReview from './direct-review';
 import formik from './formik';
 import { job, scheduledSystemTrigger, trigger } from './jobs';
+import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import product from './product';
 import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
 import routerConfig from './router-config';
+import {
+  svap,
+  selectedSvap,
+  ucdProcess,
+  ucdProcessType,
+} from './standards';
 import {
   surveillance,
   surveillanceNonconformity,
@@ -32,9 +40,6 @@ import {
   surveillanceRequirement,
   surveillanceRequirementType,
 } from './surveillance';
-import { conformanceMethod, selectedConformanceMethod } from './conformance-method';
-import { optionalStandard, selectedOptionalStandard } from './optional-standard';
-import { svap, selectedSvap } from './svap';
 import { testData, selectedTestData } from './test-data';
 import { testFunctionality, selectedTestFunctionality } from './test-functionality';
 import { testProcedure, selectedTestProcedure } from './test-procedure';
@@ -90,6 +95,8 @@ export {
   testStandard,
   testTool,
   trigger,
+  ucdProcess,
+  ucdProcessType,
   user,
   version,
 };

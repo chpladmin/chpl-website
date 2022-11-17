@@ -584,11 +584,6 @@
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,promotingInteroperabilityUserCount,promotingInteroperabilityUserDate$/).respond(200, { data: 'response' });
-        networkService.getCollection('inactiveCertificates').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,acb,certificationStatus,criteriaMet$/).respond(200, { data: 'response' });
         networkService.getCollection('sed').then((response) => {
           expect(response.data).toEqual('response');
@@ -1088,7 +1083,7 @@
       });
 
       it('should getUcdProcesses', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/ucd_processes$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/ucd-processes$/).respond(200, { data: 'response' });
         networkService.getUcdProcesses().then((response) => {
           expect(response.data).toEqual('response');
         });

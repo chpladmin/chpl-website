@@ -86,7 +86,7 @@ const ListingEditPageComponent = {
       this.listingBasic.sed = this.listingDetails.sed;
       this.listingBasic.sedIntendedUserDescription = this.listingDetails.sedIntendedUserDescription;
       this.listingBasic.sedReportFileLocation = this.listingDetails.sedReportFileLocation;
-      this.listingBasic.sedTestingEndDate = this.listingDetails.sedTestingEndDate;
+      this.listingBasic.sedTestingEndDay = this.listingDetails.sedTestingEndDay;
 
       this.listingBasic.accessibilityStandards = this.listingDetails.accessibilityStandards;
       this.listingBasic.otherAcb = this.listingDetails.otherAcb;
@@ -169,7 +169,7 @@ const ListingEditPageComponent = {
       this.listingDetails.sed = listing.sed;
       this.listingDetails.sedIntendedUserDescription = listing.sedIntendedUserDescription;
       this.listingDetails.sedReportFileLocation = listing.sedReportFileLocation;
-      this.listingDetails.sedTestingEndDate = listing.sedTestingEndDate;
+      this.listingDetails.sedTestingEndDay = listing.sedTestingEndDay;
 
       this.listingDetails.accessibilityStandards = angular.copy(listing.accessibilityStandards);
       this.listingDetails.otherAcb = listing.otherAcb;
