@@ -104,7 +104,7 @@
                   <ul>
                     <li ng-repeat="prev in $ctrl.listing.product.ownerHistory | orderBy:'transferDay'">
                       <strong>{{ prev.developer.name }}</strong><br />
-                      Transfer Date: $ctrl.DateUtil.getDisplayDateFormat(prev.transferDay)
+                      Transfer Date: {{ $ctrl.DateUtil.getDisplayDateFormat(prev.transferDay) }}
                     </li>
                   </ul>
                 </div>

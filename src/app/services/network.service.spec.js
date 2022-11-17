@@ -1110,7 +1110,7 @@
       });
 
       it('should getUcdProcesses', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/ucd_processes$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/ucd-processes$/).respond(200, { data: 'response' });
         networkService.getUcdProcesses().then((response) => {
           expect(response.data).toEqual('response');
         });

@@ -15,13 +15,12 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
-import { svap as svapPropType } from 'shared/prop-types';
+import { ucdProcessType as ucdProcessPropType } from 'shared/prop-types';
 
 const headers = [
-  { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
-  { property: 'approvedStandardVersion', text: 'Approved Standard Version', sortable: true },
-  { text: 'Applicable Criteria' },
-  { property: 'replaced', text: 'Replaced', sortable: true },
+  { property: 'name', text: 'UCD Process', sortable: true },
+  { property: 'details', text: 'UCD Process Details' },
+  { text: 'Certification Criteria' },
   { text: 'Action', invisible: true },
 ];
 
@@ -38,15 +37,15 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSvapsView(props) {
+function ChplUcdProcessesView(props) {
   const { dispatch } = props;
-  const [svaps, setSvaps] = useState([]);
+  const [ucdProcesses, setUcdProcesses] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
+  const [orderBy, setOrderBy] = useState('name');
   const classes = useStyles();
 
   useEffect(() => {
-    setSvaps(props.svaps
+    setUcdProcesses(props.ucdProcesses
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -54,15 +53,15 @@ function ChplSvapsView(props) {
           .map((c) => c.number + (isCures(c) ? ' (Cures Update)' : ''))
           .join(', '),
       }))
-      .sort(sortComparator('regulatoryTextCitation')));
-  }, [props.svaps]); // eslint-disable-line react/destructuring-assignment
+      .sort(sortComparator('name')));
+  }, [props.ucdProcesses]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = svaps.sort(sortComparator(property, descending));
+    const updated = ucdProcesses.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setSvaps(updated);
+    setUcdProcesses(updated);
   };
 
   return (
@@ -70,9 +69,9 @@ function ChplSvapsView(props) {
       <div className={classes.tableResultsHeaderContainer}>
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-svap"
+          id="add-new-ucd-process"
           variant="contained"
-          color="primary"
+          color="secondary"
           endIcon={<AddIcon />}
         >
           Add
@@ -80,7 +79,7 @@ function ChplSvapsView(props) {
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="SVAP table"
+          aria-label="UCD Processes table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -90,25 +89,22 @@ function ChplSvapsView(props) {
             stickyHeader
           />
           <TableBody>
-            { svaps
+            { ucdProcesses
               .map((item) => (
-                <TableRow key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}>
+                <TableRow key={item.guid}>
                   <TableCell className={classes.firstColumn}>
-                    { item.regulatoryTextCitation }
+                    { item.name }
                   </TableCell>
                   <TableCell>
-                    { item.approvedStandardVersion }
+                    { item.details }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
                   </TableCell>
-                  <TableCell>
-                    { item.replaced ? 'Yes' : 'No' }
-                  </TableCell>
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-svap-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
+                      id={`edit-ucd-process-${item.guid}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
@@ -125,9 +121,9 @@ function ChplSvapsView(props) {
   );
 }
 
-export default ChplSvapsView;
+export default ChplUcdProcessesView;
 
-ChplSvapsView.propTypes = {
+ChplUcdProcessesView.propTypes = {
   dispatch: func.isRequired,
-  svaps: arrayOf(svapPropType).isRequired,
+  ucdProcesses: arrayOf(ucdProcessPropType).isRequired,
 };

@@ -97,7 +97,7 @@ function ChplJobs() {
         break;
       case 'delete':
         apiAction = deleteTrigger.mutate;
-        message = 'Job deleted: Recurring job deleted';
+        message = payload.successMessage;
         break;
       case 'edit':
         setJob(payload);
@@ -192,6 +192,7 @@ function ChplJobs() {
                     && (
                       <ChplSystemTriggersView
                         triggers={systemTriggers}
+                        dispatch={handleDispatch}
                       />
                     )}
                 </>
