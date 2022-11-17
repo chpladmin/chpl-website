@@ -199,7 +199,7 @@ const ListingEditComponent = {
       this.listing.sed = listing.sed;
       this.listing.sedIntendedUserDescription = listing.sedIntendedUserDescription;
       this.listing.sedReportFileLocation = listing.sedReportFileLocation;
-      this.listing.sedTestingEndDate = listing.sedTestingEndDate;
+      this.listing.sedTestingEndDay = listing.sedTestingEndDay;
     }
 
     // item list

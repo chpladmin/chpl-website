@@ -23,11 +23,9 @@ const states = [
     component: 'chplBannedDevelopersCollectionPageBridge',
     data: { title: 'Banned Developers' },
   }, {
-    name: 'collections.inactive',
+    name: 'collections.inactive-certificates',
     url: '/inactive',
-    controller: 'InactiveCertificatesController',
-    controllerAs: 'vm',
-    template: require('./inactive/inactive.html'),
+    component: 'chplInactiveCertificatesCollectionWrapperBridge',
     data: { title: 'Inactive Certificates' },
   }, {
     name: 'collections.decertified-products',

@@ -19,6 +19,7 @@ import {
 } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
+import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
@@ -73,6 +74,7 @@ angular
   .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
+  .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))

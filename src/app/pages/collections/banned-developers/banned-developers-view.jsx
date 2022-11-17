@@ -163,7 +163,7 @@ function ChplBannedDevelopersCollectionView(props) {
           Developers Under Certification Ban
         </Typography>
       </div>
-      <div className={classes.pageBody}>
+      <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
           <Typography variant="body1" gutterBottom>
             This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program - including new products as well as upgraded versions of current products. ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence. A developer may be precluded from certifying products for two reasons:

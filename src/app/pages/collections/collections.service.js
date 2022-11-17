@@ -16,8 +16,6 @@
       switch (key) {
         case 'correctiveAction':
           return 'Products: Corrective Action Status';
-        case 'inactiveCertificates':
-          return 'Inactive Certificates';
         case 'sed':
           return 'SED Information for 2015 Edition Products';
         // no default
@@ -28,8 +26,6 @@
       switch (key) {
         case 'correctiveAction':
           return correctiveActions(data.results);
-        case 'inactiveCertificates':
-          return inactiveCertificates(data.results);
         case 'sed':
           return sed(data.results, data.certificationCriteria);
         // no default
@@ -61,20 +57,6 @@
             closedNonConformityCount: l.closedSurveillanceNonConformityCount + l.closedDirectReviewNonConformityCount,
           });
           return l;
-        });
-    }
-
-    /*
-     * Listings are part of this collection if:
-     * - Certification status = Withdrawn by Developer
-     */
-    function inactiveCertificates(array) {
-      return array
-        .filter((cp) => cp.certificationStatus === 'Withdrawn by Developer')
-        .map((cp) => {
-          cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-          cp.edition += (cp.curesUpdate ? ' Cures Update' : '');
-          return cp;
         });
     }
 

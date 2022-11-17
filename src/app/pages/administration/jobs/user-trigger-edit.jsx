@@ -105,7 +105,7 @@ function ChplUserTriggerEdit(props) {
         dispatch({ action: 'close' });
         break;
       case 'delete':
-        dispatch({ action: 'delete', payload: trigger });
+        dispatch({ action: 'delete', payload: { ...trigger, successMessage: 'Job deleted: Recurring job deleted' } });
         break;
       case 'save':
         formik.submitForm();
