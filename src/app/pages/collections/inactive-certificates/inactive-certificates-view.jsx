@@ -15,9 +15,7 @@ import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
-import {
-  useFetchCollection,
-} from 'api/collections';
+import { useFetchCollection } from 'api/collections';
 import {
   ChplLink,
   ChplPagination,
@@ -30,11 +28,12 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
 const csvOptions = {
-  filename: 'real-world-testing',
+  filename: 'inactive-certificates',
   showLabels: true,
   headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
@@ -43,10 +42,19 @@ const csvOptions = {
     { headerName: 'Product', objectKey: 'productName' },
     { headerName: 'Version', objectKey: 'versionName' },
     { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl' },
-    { headerName: 'Real World Testing Results URL', objectKey: 'friendlyRwtResultsUrl' },
+    { headerName: 'Decertification Date', objectKey: 'decertificationDate' },
   ],
 };
+
+const headers = [
+  { property: 'chpl_id', text: 'CHPL ID', sortable: true },
+  { text: 'Certification Edition' },
+  { property: 'developer', text: 'Developer', sortable: true },
+  { property: 'product', text: 'Product', sortable: true },
+  { property: 'version', text: 'Version', sortable: true },
+  { text: 'Certification Status' },
+  { text: 'Decertification Date' },
+];
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -64,6 +72,10 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
+  },
+  pageContent: {
+    display: 'grid',
+    gridTemplateRows: '3fr 1fr',
   },
   searchContainer: {
     backgroundColor: palette.grey,
@@ -115,12 +127,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplRealWorldTestingCollectionView(props) {
-  const storageKey = 'storageKey-realWorldTestingView';
+function ChplInactiveCertificatesCollectionView(props) {
+  const storageKey = 'storageKey-inactiveCertificatesView';
   const $analytics = getAngularService('$analytics');
-  const {
-    analytics,
-  } = props;
+  const { analytics } = props;
   const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
@@ -140,12 +150,6 @@ function ChplRealWorldTestingCollectionView(props) {
   });
 
   useEffect(() => {
-    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
-      setPageNumber(0);
-    }
-  }, [data?.recordCount, pageNumber, data?.results?.length]);
-
-  useEffect(() => {
     if (isLoading) { return; }
     if (isError || !data.results) {
       setListings([]);
@@ -154,28 +158,21 @@ function ChplRealWorldTestingCollectionView(props) {
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading]);
+  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
 
-  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = [
-    { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-    { text: 'Certification Edition' },
-    { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'product', text: 'Product', sortable: true },
-    { property: 'version', text: 'Version', sortable: true },
-    { text: 'Certification Status' },
-    { text: 'Real World Testing Plans URL' },
-    { text: 'Real World Testing Results URL' },
-  ];
+  useEffect(() => {
+    if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
+      setPageNumber(0);
+    }
+  }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  const downloadRealWorldTesting = () => {
+  const downloadInactiveCertificates = () => {
     $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
     csvExporter.generateCsv(listings);
   };
@@ -195,42 +192,20 @@ function ChplRealWorldTestingCollectionView(props) {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">Real World Testing</Typography>
+        <Typography variant="h1">Inactive Certificates</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography
-          variant="body1"
-        >
-          This list includes Health IT Module(s) eligible for Real World Testing, which is an annual
+        <Typography variant="body1" gutterBottom>
+          This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the
           {' '}
-          <a href="https://www.healthit.gov/topic/certification-ehrs/conditions-maintenance-certification">Condition and Maintenance of Certification requirement</a>
+          <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a>
+          . For more information on how an inactive certificate may affect your attestation to the CMS EHR Incentive Programs, please consult the
           {' '}
-          for health IT developers participating in the ONC Health IT Certification Program. Certified Health IT Developers with one or more Health IT Module(s) certified to any of the certification criteria outlined in &sect;170.405(a) of
-          {' '}
-          <a href="https://www.healthit.gov/curesrule/">ONC&apos;s Cures Act Final Rule</a>
-          {' '}
-          must successfully test their real world use.
+          <a href="https://www.cms.gov/Regulations-and-Guidance/Legislation/EHRIncentivePrograms/FAQ.html">CMS FAQ</a>
+          . For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.
         </Typography>
-        <Typography
-          variant="body1"
-        >
-          If applicable, Real World Testing plans are required to be made publicly available on the CHPL annually by December 15th. Additionally, Real World Testing results are to be made publicly available on the CHPL by March 15th of the subsequent year.
-        </Typography>
-        <Typography
-          variant="body1"
-        >
-          For more information, please visit the
-          {' '}
-          <a href="https://www.healthit.gov/topic/certification-ehrs/real-world-testing">Real World Testing resources</a>
-          . Real World Testing summary data is also available through
-          {' '}
-          <a href="#/resources/download">Download the CHPL</a>
-          .
-        </Typography>
-        <Typography
-          variant="body1"
-        >
-          Please note that by default, only listings that are active or suspended are shown in the search results.
+        <Typography variant="body1">
+          Note: This list excludes 2011 and 2014 edition products. The 2011 and 2014 editions have been retired from the certification program.
         </Typography>
       </div>
       <div className={classes.searchContainer} component={Paper}>
@@ -252,7 +227,7 @@ function ChplRealWorldTestingCollectionView(props) {
                 <Typography variant="subtitle2">Search Results:</Typography>
                 { listings.length === 0
                   && (
-                    <Typography className={classes.noResultsContainer}>
+                    <Typography>
                       No results found
                     </Typography>
                   )}
@@ -270,8 +245,8 @@ function ChplRealWorldTestingCollectionView(props) {
                       color="secondary"
                       variant="contained"
                       fullWidth
-                      id="download-real-world-testing"
-                      onClick={downloadRealWorldTesting}
+                      id="download-filtered-listings"
+                      onClick={downloadInactiveCertificates}
                     >
                       Download
                       {' '}
@@ -290,7 +265,7 @@ function ChplRealWorldTestingCollectionView(props) {
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="Real World Testing Collections table"
+                      aria-label="Inactive Certificates Collections table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
@@ -300,7 +275,7 @@ function ChplRealWorldTestingCollectionView(props) {
                         stickyHeader
                       />
                       <TableBody>
-                        {listings
+                        { listings
                           .map((item) => (
                             <TableRow key={item.id}>
                               <TableCell className={classes.stickyColumn}>
@@ -314,7 +289,11 @@ function ChplRealWorldTestingCollectionView(props) {
                                   />
                                 </strong>
                               </TableCell>
-                              <TableCell>{item.fullEdition}</TableCell>
+                              <TableCell>
+                                {item.edition.name}
+                                {' '}
+                                {item.curesUpdate ? 'Cures Update' : '' }
+                              </TableCell>
                               <TableCell>
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
@@ -327,26 +306,7 @@ function ChplRealWorldTestingCollectionView(props) {
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                {item.rwtPlansUrl
-                                && (
-                                  <ChplLink
-                                    href={item.rwtPlansUrl}
-                                    analytics={{ event: 'Go to Real World Testing Plans URL', category: analytics.category, label: item.rwtPlansUrl }}
-                                  />
-                                )}
-                              </TableCell>
-                              <TableCell className={classes.linkWrap}>
-                                {item.rwtResultsUrl
-                                  ? (
-                                    <ChplLink
-                                      href={item.rwtResultsUrl}
-                                      analytics={{ event: 'Go to Real World Testing Results URL', category: analytics.category, label: item.rwtResultsUrl }}
-                                    />
-                                  ) : (
-                                    <>N/A</>
-                                  )}
-                              </TableCell>
+                              <TableCell>{getDisplayDateFormat(item.decertificationDate)}</TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
@@ -369,9 +329,9 @@ function ChplRealWorldTestingCollectionView(props) {
   );
 }
 
-export default ChplRealWorldTestingCollectionView;
+export default ChplInactiveCertificatesCollectionView;
 
-ChplRealWorldTestingCollectionView.propTypes = {
+ChplInactiveCertificatesCollectionView.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }).isRequired,
