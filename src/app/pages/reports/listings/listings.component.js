@@ -764,6 +764,7 @@ const ReportsListingsComponent = {
           { key: 'sedReportFileLocation', display: 'SED Report File Location' },
           { key: 'sedTesting', display: 'SED Tested' },
           { key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date' },
+          { key: 'sedTestingEndDay', display: 'SED Testing End Date' },
           { key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL' },
           { key: 'mandatoryDisclosures', display: 'Mandatory Disclosures URL' },
           { key: 'rwtPlansUrl', display: 'Real World Testing Plans URL' },

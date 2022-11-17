@@ -7,9 +7,7 @@ import {
   Switch,
   makeStyles,
 } from '@material-ui/core';
-import {
-  arrayOf, func, object, string,
-} from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -17,6 +15,7 @@ import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
 import { BreadcrumbContext } from 'shared/contexts';
+import { criterion as criterionPropType, svap as svapPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   regulatoryTextCitation: yup.string()
@@ -130,9 +129,9 @@ function ChplSvapEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      regulatoryTextCitation: props.svap?.regulatoryTextCitation || '',
-      approvedStandardVersion: props.svap?.approvedStandardVersion || '',
-      replaced: props.svap?.replaced || false,
+      regulatoryTextCitation: props.svap?.regulatoryTextCitation || '', // eslint-disable-line react/destructuring-assignment
+      approvedStandardVersion: props.svap?.approvedStandardVersion || '', // eslint-disable-line react/destructuring-assignment
+      replaced: props.svap?.replaced || false, // eslint-disable-line react/destructuring-assignment
     },
     onSubmit: () => {
       props.dispatch({ action: 'save', payload: buildPayload() });
@@ -224,8 +223,8 @@ function ChplSvapEdit(props) {
 export default ChplSvapEdit;
 
 ChplSvapEdit.propTypes = {
-  criterionOptions: arrayOf(object).isRequired,
+  criterionOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
-  svap: object.isRequired,
+  svap: svapPropType.isRequired,
   errors: arrayOf(string).isRequired,
 };

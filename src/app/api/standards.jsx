@@ -48,10 +48,52 @@ const usePutSvap = () => {
   });
 };
 
+const useDeleteUcdProcess = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`ucd-processes/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ucd-processes']);
+    },
+  });
+};
+
+const useFetchUcdProcesses = () => {
+  const axios = useAxios();
+  return useQuery(['ucd-processes'], async () => {
+    const response = await axios.get('ucd-processes');
+    return response.data;
+  });
+};
+
+const usePostUcdProcess = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('ucd-processes', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ucd-processes']);
+    },
+  });
+};
+
+const usePutUcdProcess = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('ucd-processes', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ucd-processes']);
+    },
+  });
+};
+
 export {
   useDeleteSvap,
   useFetchCriteriaForSvaps,
   useFetchSvaps,
   usePostSvap,
   usePutSvap,
+  useDeleteUcdProcess,
+  useFetchUcdProcesses,
+  usePostUcdProcess,
+  usePutUcdProcess,
 };
