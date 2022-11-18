@@ -1,7 +1,7 @@
 export const CompareComponent = {
   templateUrl: 'chpl.compare/compare.html',
   controller: class CompareComponent {
-    constructor($analytics, $filter, $log, $scope, $stateParams, DateUtil, networkService, utilService) {
+    constructor($analytics, $filter, $log, $scope, $stateParams, DateUtil, featureFlags, networkService, utilService) {
       'ngInject';
 
       this.$analytics = $analytics;
@@ -12,6 +12,7 @@ export const CompareComponent = {
       this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.certificationStatus = utilService.certificationStatus;
+      this.isOn = featureFlags.isOn;
       this.sortCerts = utilService.sortCert;
       this.sortCqms = utilService.sortCqm;
       this.listings = [];
@@ -25,6 +26,11 @@ export const CompareComponent = {
         this.compareIds = this.$stateParams.compareIds.split('&');
         this.parse();
       }
+    }
+
+    canCertId(listing) {
+      return listing.curesUpdate
+        || (!this.isOn('cannot-generate-15e') && listing.certificationEdition.name === '2015');
     }
 
     parse() {

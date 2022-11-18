@@ -5,7 +5,7 @@ const ListingComponent = {
     resources: '<',
   },
   controller: class ListingComponent {
-    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, networkService, utilService) {
+    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, featureFlags, networkService, utilService) {
       'ngInject';
 
       this.$localStorage = $localStorage;
@@ -15,6 +15,7 @@ const ListingComponent = {
       this.$stateParams = $stateParams;
       this.DateUtil = DateUtil;
       this.authService = authService;
+      this.isOn = featureFlags.isOn;
       this.networkService = networkService;
       this.utilService = utilService;
       this.certificationStatus = utilService.certificationStatus;
@@ -50,6 +51,11 @@ const ListingComponent = {
       if (changes.resources) {
         this.resources = changes.resources.currentValue;
       }
+    }
+
+    canCertId(listing) {
+      return listing.curesUpdate
+        || (!this.isOn('cannot-generate-15e') && listing.certificationEdition.name === '2015');
     }
 
     canEdit() {

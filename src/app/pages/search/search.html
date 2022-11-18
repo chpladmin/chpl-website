@@ -439,7 +439,7 @@
                       <div class="text-center">
                         <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-compare-widget-button>
                       </div>
-                      <div class="text-center" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
+                      <div class="text-center" ng-if="vm.canCertId(cp)">
                         <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-cms-widget-button>
                       </div>
                     </div>
