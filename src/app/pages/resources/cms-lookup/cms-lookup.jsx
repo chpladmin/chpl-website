@@ -30,35 +30,19 @@ const csvOptions = {
   filename: 'cms-id-data',
   showLabels: true,
   headers: [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'Decertification Date', objectKey: 'decertificationDate' },
+  { headerName: 'CMS EHR Certification ID', objectKey: '' },
+  { headerName: 'CMS EHR Certification ID Edition', objectKey: '' },
+  { headerName: 'Product Name', objectKey: '' },
+  { headerName: 'Version', objectKey: '' },
+  { headerName: 'Developer', objectKey: '' },
+  { headerName: 'CHPL Product Number', objectKey: '' },
+  { headerName: 'Product Certification Edition', objectKey: '' },
   ],
 };
 
-const headers = [
-  { text: 'CMS EHR Certification ID' },
-  { text: 'CMS EHR Certification ID Edition' },
-  { text: 'Product Name' },
-  { text: 'Version' },
-  { text: 'Developer' },
-  { text: 'CHPL Product Number' },
-  { text: 'Product Certification Edition' },
-  { text: 'Classification Type' },
-  { text: 'Practice Type' },
-];
+const headers = csvOptions.headers.map((h) => ({text: h.headerName}));
 
 const useStyles = makeStyles({
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-  linkWrap: {
-    overflowWrap: 'anywhere',
-  },
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -68,31 +52,6 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
-  },
-  pageContent: {
-    display: 'grid',
-    gridTemplateRows: '3fr 1fr',
-  },
-  searchContainer: {
-    backgroundColor: palette.grey,
-    padding: '16px 32px',
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '16px',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
-    },
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '275px',
-    },
   },
   tableContainer: {
     overflowWrap: 'normal',
@@ -111,13 +70,6 @@ const useStyles = makeStyles({
       gridTemplateColumns: 'auto auto',
     },
   },
-  resultsContainer: {
-    display: 'grid',
-    gap: '8px',
-    justifyContent: 'start',
-    gridTemplateColumns: 'auto auto',
-    alignItems: 'center',
-  },
   wrap: {
     flexFlow: 'wrap',
   },
@@ -129,9 +81,9 @@ function ChplCmsLookup(props) {
   const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
   const [cmsIds, setCmsIds] = useStorage(storageKey, []);
+  const [cmsId, setCmsId] = useState('');
+  const { data, isError, isLoading } = useFetchListings({ cmsId });
   const classes = useStyles();
-
-  const { data, isError, isLoading } = useFetchListings({ cmsIds });
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -145,7 +97,7 @@ function ChplCmsLookup(props) {
   }, [data?.results, data?.recordCount, isError, isLoading]);
 
   const downloadListingData = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
+    $analytics.eventTrack('Download Results', { category: 'CMS ID Reverse Lookup' });
     csvExporter.generateCsv(listings);
   };
 
@@ -191,7 +143,7 @@ function ChplCmsLookup(props) {
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="CMS Id Listing Data table"
+                      aria-label="CMS ID Listing Data table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
@@ -201,35 +153,25 @@ function ChplCmsLookup(props) {
                         { listings
                           .map((item) => (
                             <TableRow key={item.id}>
-                              <TableCell className={classes.stickyColumn}>
-                                <strong>
-                                  <ChplLink
-                                    href={`#/listing/${item.id}`}
-                                    text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
-                                    external={false}
-                                    router={{ sref: 'listing', options: { id: item.id } }}
-                                  />
-                                </strong>
-                              </TableCell>
-                              <TableCell>
-                                {item.edition.name}
-                                {' '}
-                                {item.curesUpdate ? 'Cures Update' : '' }
-                              </TableCell>
+                              <TableCell>{ item.certificationId }</TableCell>
+                              <TableCell>{ item.certificationIdEdition }</TableCell>
+                              <TableCell>{ item.name }</TableCell>
+                              <TableCell>{ item.version }</TableCell>
+                              <TableCell>{ item.vendor }</TableCell>
                               <TableCell>
                                 <ChplLink
-                                  href={`#/organizations/developers/${item.developer.id}`}
-                                  text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                  href={`#/listing/${item.id}`}
+                                  text={item.chplProductNumber}
+                                  analytics={{ event: 'Go to Listing Details Page', category: 'CMS ID Reverse Lookup', label: item.chplProductNumber }}
                                   external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                  router={{ sref: 'listing', options: { id: item.id } }}
                                 />
                               </TableCell>
-                              <TableCell>{item.product.name}</TableCell>
-                              <TableCell>{item.version.name}</TableCell>
-                              <TableCell>{item.certificationStatus.name}</TableCell>
-                              <TableCell>{getDisplayDateFormat(item.decertificationDate)}</TableCell>
+                              <TableCell>
+                                { item.year }
+                                {' '}
+                                {item.curesUpdate ? 'Cures Update' : ''}
+                              </TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
