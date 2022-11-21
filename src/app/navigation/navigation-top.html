@@ -133,7 +133,7 @@
           <li ng-if="vm.hasAnyRole(['ROLE_DEVELOPER'])" class="dropdown" uib-dropdown is-open="vm.developersIsOpen">
             <button class="btn btn-lg btn-link navbar-btn dropdown-toggle" id="developers-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.developersIsOpen">Developers</button>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="developers-toggle" id="developers-dropdown-menu">
-              <li ng-repeat="developer in vm.developers | orderBy: 'name'">
+              <li ng-repeat="developer in vm.getDevelopers()">
                 <a ui-sref="organizations.developers.developer({id: '{{ developer.id }}'})">{{ developer.name }}</a>
               </li>
             </ul>

@@ -1,39 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import {
-  string,
-} from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Container,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { string } from 'prop-types';
 
-import theme from '../../themes/theme';
 import {
   ChplUserAddPermissions,
   ChplUserCreate,
-} from '../../components/registration';
-import { getAngularService } from '../../services/angular-react-helper';
+} from 'components/registration';
+import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   content: {
     display: 'grid',
     gap: '8px',
     gridTemplateColumns: '1fr',
   },
-}));
+});
 
 function ChplRegisterUser(props) {
-  const [hash] = useState(props.hash); // eslint-disable-line react/destructuring-assignment
+  const { hash } = props;
   const [message, setMessage] = useState('');
   const [state, setState] = useState('signin');
   const $analytics = getAngularService('$analytics');
+  const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
+  const Idle = getAngularService('Idle');
+  const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
   const toaster = getAngularService('toaster');
+  const { setUser } = useContext(UserContext);
   const classes = useStyles();
 
   let handleDispatch;
@@ -65,6 +66,14 @@ function ChplRegisterUser(props) {
               body: 'Your new permissions have been added',
             });
             $state.go('administration');
+            networkService.getUserById(authService.getUserId())
+              .then((user) => {
+                setUser(user);
+                authService.saveCurrentUser(user);
+                Idle.watch();
+                Keepalive.ping();
+                $rootScope.$broadcast('loggedIn');
+              });
           }, (error) => {
             if (error.status === 401) {
               setMessage('A user may not have more than one role, or your username / password are incorrect');
@@ -157,14 +166,12 @@ function ChplRegisterUser(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container className={classes.content}>
-        <Typography variant="h1">
-          User Registration
-        </Typography>
-        { getState() }
-      </Container>
-    </ThemeProvider>
+    <Container className={classes.content}>
+      <Typography variant="h1">
+        User Registration
+      </Typography>
+      { getState() }
+    </Container>
   );
 }
 

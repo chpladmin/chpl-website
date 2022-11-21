@@ -1,16 +1,23 @@
-import CollectionsPage from '../collections.po';
+import { open as openPage } from '../../../utilities/hooks.async';
+import CollectionPage from '../collection.po';
 
-const elements = {
-  sedDetailsDownload: '//*[text()=" Download All SED Details"]',
-};
-
-class SedPage extends CollectionsPage {
+class SedPage extends CollectionPage {
   constructor() {
     super();
+    this.elements = {
+      ...this.elements,
+      header: 'h1=SED Information for 2015 Edition Products',
+      downloadSedDetails: '#download-sed-details',
+    };
   }
 
-  get sedDetailsDownloadButton() {
-    return $(elements.sedDetailsDownload);
+  async open() {
+    await openPage('#/collections/sed');
+    await (browser.waitUntil(async () => !(await this.isLoading())));
+  }
+
+  async getDownloadSedDetails() {
+    return $(this.elements.downloadSedDetails);
   }
 }
 
