@@ -27,13 +27,13 @@ const csvOptions = {
   filename: 'cms-id-data',
   showLabels: true,
   headers: [
-    { headerName: 'CMS EHR Certification ID', objectKey: '' },
-    { headerName: 'CMS EHR Certification ID Edition', objectKey: '' },
-    { headerName: 'Product Name', objectKey: '' },
-    { headerName: 'Version', objectKey: '' },
-    { headerName: 'Developer', objectKey: '' },
-    { headerName: 'CHPL Product Number', objectKey: '' },
-    { headerName: 'Product Certification Edition', objectKey: '' },
+    { headerName: 'CMS EHR Certification ID', objectKey: 'certificationId' },
+    { headerName: 'CMS EHR Certification ID Edition', objectKey: 'certificationIdEdition' },
+    { headerName: 'Product Name', objectKey: 'name' },
+    { headerName: 'Version', objectKey: 'version' },
+    { headerName: 'Developer', objectKey: 'vendor' },
+    { headerName: 'CHPL Product Number', objectKey: 'chplProductNumber' },
+    { headerName: 'Product Certification Edition', objectKey: 'edition' },
   ],
 };
 
@@ -89,6 +89,7 @@ function ChplCmsLookup() {
       ...listing,
       certificationId: query.data.ehrCertificationId,
       certificationIdEdition: query.data.year,
+      edition: `${listing.year}${listing.curesUpdate ? ' Cures Update' : ''}`,
     }))), []));
   }, [cmsIds, finishedLoading]);
 
@@ -98,7 +99,6 @@ function ChplCmsLookup() {
   };
 
   const handleDispatch = ({ action, payload }) => {
-    console.log({ action, payload });
     switch (action) {
       case 'remove':
         setCmsIds((previous) => previous.filter((id) => id !== payload));
@@ -174,11 +174,7 @@ function ChplCmsLookup() {
                             router={{ sref: 'listing', options: { id: item.id } }}
                           />
                         </TableCell>
-                        <TableCell>
-                          { item.year }
-                          {' '}
-                          {item.curesUpdate ? 'Cures Update' : ''}
-                        </TableCell>
+                        <TableCell>{ item.edition }</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
