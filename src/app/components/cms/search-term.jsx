@@ -70,12 +70,12 @@ function ChplSearchTerm(props) {
         <div className={classes.searchBar}>
           <InputBase
             className={classes.searchInput}
-            placeholder="Enter CMS ID"
+            placeholder="Enter a CMS EHR Certification ID"
             value={term}
             onChange={handleTerm}
             onKeyPress={handleKeyPress}
             id="search-term-input"
-            inputProps={{ 'aria-label': 'Enter CMS ID' }}
+            inputProps={{ 'aria-label': 'Enter a CMS EHR Certification ID' }}
             endAdornment={(
               <InputAdornment position="start">
                 <ChplTooltip title="Clear">
