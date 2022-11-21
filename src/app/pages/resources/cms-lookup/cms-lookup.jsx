@@ -15,7 +15,9 @@ import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
-import { useFetchListings } from 'api/cms-lookup';
+import { useFetchListings } from 'api/cms';
+import ChplChips from 'components/cms/chips';
+import ChplSearchTerm from 'components/cms/search-term';
 import {
   ChplLink,
   ChplPagination,
@@ -81,24 +83,36 @@ function ChplCmsLookup(props) {
   const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
   const [cmsIds, setCmsIds] = useStorage(storageKey, []);
-  const [cmsId, setCmsId] = useState('');
-  const { data, isError, isLoading } = useFetchListings({ cmsId });
+  const queries = useFetchListings({ cmsIds });
   const classes = useStyles();
 
+  const finishedLoading = queries.every((query) => query.isSuccess);
+
   useEffect(() => {
-    if (isLoading) { return; }
-    if (isError || !data.results) {
-      setListings([]);
-      return;
-    }
-    setListings(data.results.map((listing) => ({
+    if (queries.some((query) => query.isLoading || query.isError || !query?.data)) { return; }
+    setListings(() => queries.reduce((listings, query) => listings.concat(query.data.products.map((listing) => ({
       ...listing,
-    })));
-  }, [data?.results, data?.recordCount, isError, isLoading]);
+      certificationId: query.data.ehrCertificationId,
+      certificationIdEdition: query.data.year
+    }))), []));
+  }, [cmsIds, finishedLoading]);
 
   const downloadListingData = () => {
     $analytics.eventTrack('Download Results', { category: 'CMS ID Reverse Lookup' });
     csvExporter.generateCsv(listings);
+  };
+
+  const handleDispatch = ({action, payload}) => {
+    console.log({action, payload});
+    switch (action) {
+      case 'remove':
+        setCmsIds((previous) => previous.filter((id) => id !== payload));
+        setListings((previous) => previous.filter((listing) => listing.certificationId !== payload));
+        break;
+      case 'search':
+        setCmsIds((previous) => [...new Set(previous.concat(payload.trim()))]);
+        break;
+    }
   };
 
   return (
@@ -112,73 +126,68 @@ function ChplCmsLookup(props) {
           Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter one or more CMS EHR Certification IDs to display the products which were used to create the associated CMS EHR Certification ID.
         </Typography>
       </div>
-      { isLoading
-        && (
-          <>Loading</>
-        )}
-      { !isLoading
+      <ChplSearchTerm
+        dispatch={handleDispatch}
+      />
+      <ChplChips
+        cmsIds={cmsIds}
+        dispatch={handleDispatch}
+      />
+      { listings.length > 0
         && (
           <>
             <div className={classes.tableResultsHeaderContainer}>
-              { listings.length > 0
-                && (
-                  <ButtonGroup size="small" className={classes.wrap}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      fullWidth
-                      id="download-listing-data"
-                      onClick={downloadListingData}
-                      endIcon={<GetAppIcon />}
-                    >
-                      Download Result
-                      { listings.length !== 1 ? 's' : '' }
-                    </Button>
-                  </ButtonGroup>
-                )}
+              <ButtonGroup size="small" className={classes.wrap}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  fullWidth
+                  id="download-listing-data"
+                  onClick={downloadListingData}
+                  endIcon={<GetAppIcon />}
+                >
+                  Download Result
+                  { listings.length !== 1 ? 's' : '' }
+                </Button>
+              </ButtonGroup>
             </div>
-            { listings.length > 0
-              && (
-                <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="CMS ID Listing Data table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        stickyHeader
-                      />
-                      <TableBody>
-                        { listings
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell>{ item.certificationId }</TableCell>
-                              <TableCell>{ item.certificationIdEdition }</TableCell>
-                              <TableCell>{ item.name }</TableCell>
-                              <TableCell>{ item.version }</TableCell>
-                              <TableCell>{ item.vendor }</TableCell>
-                              <TableCell>
-                                <ChplLink
-                                  href={`#/listing/${item.id}`}
-                                  text={item.chplProductNumber}
-                                  analytics={{ event: 'Go to Listing Details Page', category: 'CMS ID Reverse Lookup', label: item.chplProductNumber }}
-                                  external={false}
-                                  router={{ sref: 'listing', options: { id: item.id } }}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                { item.year }
-                                {' '}
-                                {item.curesUpdate ? 'Cures Update' : ''}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </>
-              )}
+            <TableContainer className={classes.tableContainer} component={Paper}>
+              <Table
+                stickyHeader
+                aria-label="CMS ID Listing Data table"
+              >
+                <ChplSortableHeaders
+                  headers={headers}
+                  stickyHeader
+                />
+                <TableBody>
+                  { listings
+                    .map((item) => (
+                      <TableRow key={`${item.certificationId}-${item.id}`}>
+                        <TableCell>{ item.certificationId }</TableCell>
+                        <TableCell>{ item.certificationIdEdition }</TableCell>
+                        <TableCell>{ item.name }</TableCell>
+                        <TableCell>{ item.version }</TableCell>
+                        <TableCell>{ item.vendor }</TableCell>
+                        <TableCell>
+                          <ChplLink
+                            href={`#/listing/${item.id}`}
+                            text={item.chplProductNumber}
+                            analytics={{ event: 'Go to Listing Details Page', category: 'CMS ID Reverse Lookup', label: item.chplProductNumber }}
+                            external={false}
+                            router={{ sref: 'listing', options: { id: item.id } }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          { item.year }
+                          {' '}
+                          {item.curesUpdate ? 'Cures Update' : ''}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </>
         )}
     </>
