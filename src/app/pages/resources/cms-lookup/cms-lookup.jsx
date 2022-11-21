@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  List,
+  ListItem,
   Paper,
   Table,
   TableBody,
@@ -76,21 +78,26 @@ function ChplCmsLookup() {
   const storageKey = 'storageKey-cmsLookupIds';
   const $analytics = getAngularService('$analytics');
   const csvExporter = new ExportToCsv(csvOptions);
+  const [errors, setErrors] = useState([]);
   const [listings, setListings] = useState([]);
   const [cmsIds, setCmsIds] = useStorage(storageKey, []);
   const queries = useFetchListings({ cmsIds });
   const classes = useStyles();
 
-  const finishedLoading = queries.every((query) => query.isSuccess);
+  const finishedLoading = queries.every((query) => !query.isLoading);
 
   useEffect(() => {
-    if (queries.some((query) => query.isLoading || query.isError || !query?.data)) { return; }
-    setListings(() => queries.reduce((items, query) => items.concat(query.data.products.map((listing) => ({
-      ...listing,
-      certificationId: query.data.ehrCertificationId,
-      certificationIdEdition: query.data.year,
-      edition: `${listing.year}${listing.curesUpdate ? ' Cures Update' : ''}`,
-    }))), []));
+    setListings(() => queries
+      .filter((query) => query.isSuccess && query.data)
+      .reduce((items, query) => items.concat(query.data.products.map((listing) => ({
+        ...listing,
+        certificationId: query.data.ehrCertificationId,
+        certificationIdEdition: query.data.year,
+        edition: `${listing.year}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      }))), []));
+    setErrors(() => queries
+      .filter((query) => query.isError)
+      .reduce((msgs, query) => msgs.concat(`The CMS ID "${query.error.config.url.split('/')[2]}" is invalid, or not found`, []), []));
   }, [cmsIds, finishedLoading]);
 
   const downloadListingData = () => {
@@ -130,6 +137,12 @@ function ChplCmsLookup() {
         cmsIds={cmsIds}
         dispatch={handleDispatch}
       />
+      { errors.length > 0
+        && (
+          <List>
+            {errors.map((msg) => <ListItem key={msg}>{msg}</ListItem>)}
+          </List>
+        )}
       { listings.length > 0
         && (
           <>
