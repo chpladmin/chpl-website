@@ -50,6 +50,10 @@ function ChplLoginToggle() {
     setOpen(false);
   };
 
+  const handleDispatch = () => {
+    handleClose();
+  };
+
   useEffect(() => {
     if (user?.fullName) {
       setTitle(`${impersonating ? 'Impersonating ' : ''}${user.fullName}`);
@@ -87,7 +91,9 @@ function ChplLoginToggle() {
         className={classes.popoverSpacing}
       >
         <div className={classes.loginCard}>
-          <ChplLogin />
+          <ChplLogin
+            dispatch={handleDispatch}
+          />
         </div>
       </Popover>
     </>
