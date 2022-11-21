@@ -3,6 +3,7 @@ import ChplBannedDevelopersCollectionPage from './banned-developers/banned-devel
 import ChplDecertifiedProductsCollectionWrapper from './decertified-products/decertified-products-wrapper';
 import ChplInactiveCertificatesCollectionWrapper from './inactive-certificates/inactive-certificates-wrapper';
 import ChplRealWorldTestingCollectionWrapper from './real-world-testing/real-world-testing-wrapper';
+import ChplSedCollectionWrapper from './sed/sed-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -19,4 +20,5 @@ export default angular
   .component('chplBannedDevelopersCollectionPageBridge', reactToAngularComponent(ChplBannedDevelopersCollectionPage))
   .component('chplDecertifiedProductsCollectionWrapperBridge', reactToAngularComponent(ChplDecertifiedProductsCollectionWrapper))
   .component('chplInactiveCertificatesCollectionWrapperBridge', reactToAngularComponent(ChplInactiveCertificatesCollectionWrapper))
-  .component('chplRealWorldTestingCollectionWrapperBridge', reactToAngularComponent(ChplRealWorldTestingCollectionWrapper));
+  .component('chplRealWorldTestingCollectionWrapperBridge', reactToAngularComponent(ChplRealWorldTestingCollectionWrapper))
+  .component('chplSedCollectionWrapperBridge', reactToAngularComponent(ChplSedCollectionWrapper));

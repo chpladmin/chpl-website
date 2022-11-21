@@ -584,11 +584,6 @@
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,developer,developerId,product,version,chplProductNumber,acb,certificationStatus,criteriaMet$/).respond(200, { data: 'response' });
-        networkService.getCollection('sed').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates$/).respond(200, { data: 'response' });
         networkService.getCollection('surveillanceManagement').then((response) => {
           expect(response.data).toEqual('response');
