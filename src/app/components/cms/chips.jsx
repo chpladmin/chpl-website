@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Button,
   Chip,
-  FormControlLabel,
-  Switch,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, string } from 'prop-types';
 
-import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
@@ -33,11 +28,10 @@ const useStyles = makeStyles(() => ({
 
 function ChplChips(props) {
   const { cmsIds, dispatch } = props;
-  const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
   const removeChip = (cmsId) => {
-    dispatch({ action: 'remove', payload: cmsId});
+    dispatch({ action: 'remove', payload: cmsId });
   };
 
   return (
@@ -52,7 +46,7 @@ function ChplChips(props) {
             color="primary"
             variant="outlined"
           />
-      ))}
+        ))}
     </span>
   );
 }

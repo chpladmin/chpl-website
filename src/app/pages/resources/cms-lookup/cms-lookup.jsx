@@ -11,38 +11,33 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchListings } from 'api/cms';
 import ChplChips from 'components/cms/chips';
 import ChplSearchTerm from 'components/cms/search-term';
-import {
-  ChplLink,
-  ChplPagination,
-} from 'components/util';
+import { ChplLink } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
-import { getDisplayDateFormat } from 'services/date-util';
 import { useLocalStorage as useStorage } from 'services/storage.service';
-import { palette, theme } from 'themes';
+import { theme } from 'themes';
 
 const csvOptions = {
   filename: 'cms-id-data',
   showLabels: true,
   headers: [
-  { headerName: 'CMS EHR Certification ID', objectKey: '' },
-  { headerName: 'CMS EHR Certification ID Edition', objectKey: '' },
-  { headerName: 'Product Name', objectKey: '' },
-  { headerName: 'Version', objectKey: '' },
-  { headerName: 'Developer', objectKey: '' },
-  { headerName: 'CHPL Product Number', objectKey: '' },
-  { headerName: 'Product Certification Edition', objectKey: '' },
+    { headerName: 'CMS EHR Certification ID', objectKey: '' },
+    { headerName: 'CMS EHR Certification ID Edition', objectKey: '' },
+    { headerName: 'Product Name', objectKey: '' },
+    { headerName: 'Version', objectKey: '' },
+    { headerName: 'Developer', objectKey: '' },
+    { headerName: 'CHPL Product Number', objectKey: '' },
+    { headerName: 'Product Certification Edition', objectKey: '' },
   ],
 };
 
-const headers = csvOptions.headers.map((h) => ({text: h.headerName}));
+const headers = csvOptions.headers.map((h) => ({ text: h.headerName }));
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -77,7 +72,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCmsLookup(props) {
+function ChplCmsLookup() {
   const storageKey = 'storageKey-cmsLookupIds';
   const $analytics = getAngularService('$analytics');
   const csvExporter = new ExportToCsv(csvOptions);
@@ -90,10 +85,10 @@ function ChplCmsLookup(props) {
 
   useEffect(() => {
     if (queries.some((query) => query.isLoading || query.isError || !query?.data)) { return; }
-    setListings(() => queries.reduce((listings, query) => listings.concat(query.data.products.map((listing) => ({
+    setListings(() => queries.reduce((items, query) => items.concat(query.data.products.map((listing) => ({
       ...listing,
       certificationId: query.data.ehrCertificationId,
-      certificationIdEdition: query.data.year
+      certificationIdEdition: query.data.year,
     }))), []));
   }, [cmsIds, finishedLoading]);
 
@@ -102,8 +97,8 @@ function ChplCmsLookup(props) {
     csvExporter.generateCsv(listings);
   };
 
-  const handleDispatch = ({action, payload}) => {
-    console.log({action, payload});
+  const handleDispatch = ({ action, payload }) => {
+    console.log({ action, payload });
     switch (action) {
       case 'remove':
         setCmsIds((previous) => previous.filter((id) => id !== payload));
@@ -112,6 +107,7 @@ function ChplCmsLookup(props) {
       case 'search':
         setCmsIds((previous) => [...new Set(previous.concat(payload.trim()))]);
         break;
+        // no default
     }
   };
 

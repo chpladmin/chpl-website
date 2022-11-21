@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   IconButton,
@@ -11,7 +11,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
