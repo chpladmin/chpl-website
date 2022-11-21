@@ -35,9 +35,7 @@ const states = [
   }, {
     name: 'collections.sed',
     url: '/sed',
-    controller: 'SedCollectionController',
-    controllerAs: 'vm',
-    template: require('./sed/sed.html'),
+    component: 'chplSedCollectionWrapperBridge',
     data: { title: 'SED Information for 2015 Edition Products' },
   }, {
     name: 'collections.real-world-testing',

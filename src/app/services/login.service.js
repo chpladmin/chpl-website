@@ -120,6 +120,7 @@
     function logout() {
       delete $localStorage.jwtToken;
       delete $localStorage.currentUser;
+      $rootScope.$broadcast('loggedOut');
     }
 
     function parseJwt(token) {

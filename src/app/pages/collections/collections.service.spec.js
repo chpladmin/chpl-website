@@ -39,16 +39,5 @@
         expect(results[0].nonconformities).toEqual('{"openNonConformityCount":0,"closedNonConformityCount":6}');
       });
     });
-
-    describe('when focused on sed', () => {
-      it('should filter on sed', () => {
-        expect(service.translate('sed', {results: Mock.allCps, certificationCriteria: [Mock.searchOptions.certificationCriteria]}).length).toBe(0);
-      });
-
-      xit('should generate a mainSearch', () => {
-        var results = service.translate('sed', {results: Mock.allCps, certificationCriteria: [Mock.searchOptions.certificationCriteria]});
-        expect(results[0].mainSearch).toEqual('Healthland|Centriq Clinic|12|15.07.07.2751.CE03.01.00.1.170823');
-      });
-    });
   });
 })();
