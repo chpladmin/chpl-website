@@ -69,9 +69,6 @@ const csvOptions = (erdPhase2IsOn) => ({
 });
 
 const useStyles = makeStyles({
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -397,6 +394,7 @@ function ChplApiDocumentationCollectionView(props) {
                       fullWidth
                       id="download-filtered-listings"
                       onClick={downloadApiDocumentation}
+                      endIcon={<GetAppIcon />}
                     >
                       Download
                       {' '}
@@ -404,7 +402,6 @@ function ChplApiDocumentationCollectionView(props) {
                       {' '}
                       Result
                       { listings.length !== 1 ? 's' : '' }
-                      <GetAppIcon className={classes.iconSpacing} />
                     </Button>
                   </ButtonGroup>
                 )}
