@@ -1245,14 +1245,6 @@
         $httpBackend.flush();
       });
 
-      it('should lookupCertificationId', () => {
-        $httpBackend.expectGET(/^\/rest\/certification_ids\/payload$/).respond(200, { data: 'response' });
-        networkService.lookupCertificationId('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should massRejectPendingSurveillance', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance\/pending$/).respond(200);
         networkService.massRejectPendingSurveillance('payload').then((response) => {

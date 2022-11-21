@@ -574,10 +574,6 @@ export default class NetworkService {
     return this.apiPOST('/auth/authenticate', userObj);
   }
 
-  lookupCertificationId(certId) {
-    return this.apiGET(`/certification_ids/${certId}`);
-  }
-
   massRejectPendingSurveillance(ids) {
     return this.apiDELETE('/surveillance/pending', { ids });
   }
