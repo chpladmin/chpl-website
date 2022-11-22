@@ -1,40 +1,42 @@
-import CmsLookupPage from './cms-lookup.po';
 import Hooks from '../../../utilities/hooks';
+
+import CmsLookupPage from './cms-lookup.po';
+import inputs from './cms-lookup-dp';
 
 const path = require('path');
 const fs = require('fs');
-const inputs = require('./cms-lookup-dp');
+
 const config = require('../../../config/mainConfig');
 
-let cmsLookup;
+let page;
 let hooks;
 
 beforeAll(async () => {
-  cmsLookup = new CmsLookupPage();
+  page = new CmsLookupPage();
   hooks = new Hooks();
   await hooks.open('#/resources/cms-lookup');
 });
 
-describe('On cms reverse look up page', () => {
+describe('on the CMS ID reverse look up page', () => {
   inputs.forEach((input) => {
     const { testName } = input;
-    describe(`When searching for a CMS ID which was generated before for ${testName}`, () => {
+    describe(`when searching for an existing CMS ID made up of ${testName}`, () => {
       beforeEach(() => {
-        cmsLookup.clear();
-        cmsLookup.search(input.cmsId);
+        page.clear();
+        page.search(input.cmsId);
       });
 
-      it('should show correct listings for the CMS ID', () => {
-        const listings = cmsLookup.getResults().map((row) => row.$$('td')[5].getText()).join(',');
+      it('should show the listings that made up the ID', () => {
+        const listings = page.getResults().map((row) => row.$$('td')[5].getText()).join(',');
         expect(listings).toBe(input.chplProductNumbers.toString());
       });
 
-      it('should have download results button and download file should contain correct listings Ids', () => {
-        cmsLookup.downloadResultsButton.click();
+      it('should have download results button and download file should contain the Listings', () => {
+        page.downloadResultsButton.click();
         const fileName = `CMS_ID.${input.cmsId}.csv`;
         const filePath = path.join(global.downloadDir, fileName);
         if (!fs.existsSync(filePath)) {
-          cmsLookup.downloadResultsButton.click();
+          page.downloadResultsButton.click();
         }
         browser.waitForFileExists(filePath, config.timeout);
         expect(fs.existsSync(filePath)).toBe(true);
@@ -49,22 +51,20 @@ describe('On cms reverse look up page', () => {
       });
     });
   });
-});
 
-describe('On cms reverse look up page', () => {
-  describe('When searching for invalid CMS ID which doesnt exist', () => {
+  describe('when searching for invalid CMS IDs', () => {
     const invalidCmsId = '000000AAAAAA111';
     beforeEach(() => {
-      cmsLookup.clear();
-      cmsLookup.search(invalidCmsId);
+      page.clear();
+      page.search(invalidCmsId);
     });
 
-    it('should show correct message', () => {
-      expect(cmsLookup.getInvalidText(invalidCmsId).getText()).toBe(`The CMS ID "${invalidCmsId}" is invalid, or not found`);
+    it('should show an error message', () => {
+      expect(page.getInvalidText(invalidCmsId).getText()).toBe(`The CMS ID "${invalidCmsId}" is invalid, or not found`);
     });
 
-    it('should not have download results button', () => {
-      expect(cmsLookup.downloadResultsButton.isExisting()).toBe(false);
+    it('should not have the download results button', () => {
+      expect(page.downloadResultsButton.isExisting()).toBe(false);
     });
   });
 });

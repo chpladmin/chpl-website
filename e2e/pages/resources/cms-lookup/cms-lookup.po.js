@@ -1,11 +1,11 @@
 class CmsLookupPage {
-  constructor () {
+  constructor() {
     this.elements = {
       chips: '#chips',
       resultsTable: 'table[aria-label="CMS ID Listing Data table"',
       searchField: '#search-term-input',
       searchGo: '#search-term-go',
-      downloadResultsButton: `#download-listing-data`,
+      downloadResultsButton: '#download-listing-data',
       invalidText: (cmsId) => `li*=${cmsId}`,
     };
   }
@@ -29,7 +29,7 @@ class CmsLookupPage {
     return $(this.elements.invalidText(cmsId));
   }
 
-  get downloadResultsButton () {
+  get downloadResultsButton() {
     return $(this.elements.downloadResultsButton);
   }
 }
