@@ -77,7 +77,6 @@ const useStyles = makeStyles({
 function ChplCmsLookup() {
   const storageKey = 'storageKey-cmsLookupIds';
   const $analytics = getAngularService('$analytics');
-  const csvExporter = new ExportToCsv(csvOptions);
   const [errors, setErrors] = useState([]);
   const [listings, setListings] = useState([]);
   const [cmsIds, setCmsIds] = useStorage(storageKey, []);
@@ -102,6 +101,10 @@ function ChplCmsLookup() {
 
   const downloadListingData = () => {
     $analytics.eventTrack('Download Results', { category: 'CMS ID Reverse Lookup' });
+    const csvExporter = new ExportToCsv({
+      ...csvOptions,
+      filename: `CMS_ID.${cmsIds.join('.')}`,
+    });
     csvExporter.generateCsv(listings);
   };
 
