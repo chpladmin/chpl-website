@@ -1,6 +1,7 @@
 import { useMutation, useQueries } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
 
 const useFetchListings = ({ cmsIds }) => {
   const axios = useAxios();
@@ -13,6 +14,7 @@ const useFetchListings = ({ cmsIds }) => {
       },
       keepPreviousData: true,
       enabled: cmsIds?.length > 0,
+      ...options.daily,
     })),
   );
 };
