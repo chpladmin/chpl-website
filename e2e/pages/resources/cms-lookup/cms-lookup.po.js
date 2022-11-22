@@ -6,27 +6,31 @@ class CmsLookupPage {
       searchField: '#search-term-input',
       searchGo: '#search-term-go',
       downloadResultsButton: '#download-listing-data',
-      invalidText: (cmsId) => `li*=${cmsId}`,
+      invalidText: async (cmsId) => `li*=${cmsId}`,
     };
   }
 
-  clear() {
-    $(this.elements.chips).$$('svg').forEach((chip) => chip.click());
-    browser.waitUntil(() => !$(this.elements.resultsTable).isDisplayed());
+  async clear() {
+    const chips = await $(this.elements.chips).$$('svg');
+
+    await Promise.all(
+      chips.map(async (chip) => chip.click()),
+    );
+    await browser.waitUntil(async () => !(await $(this.elements.resultsTable).isDisplayed()));
   }
 
-  search(cmsId) {
-    $(this.elements.searchField).setValue(cmsId);
-    $(this.elements.searchGo).click();
-    browser.waitUntil(() => this.getInvalidText(cmsId).isDisplayed() || ($(this.elements.resultsTable).isDisplayed() && this.getResults().length > 0));
+  async search(cmsId) {
+    await (await $(this.elements.searchField)).setValue(cmsId);
+    await (await $(this.elements.searchGo)).click();
+    await browser.waitUntil(async () => (await (await this.getInvalidText(cmsId)).isDisplayed()) || ((await $(this.elements.resultsTable).isDisplayed()) && (await this.getResults()).length > 0));
   }
 
-  getResults() {
-    return $(this.elements.resultsTable).$('tbody').$$('tr');
+  async getResults() {
+    return (await $(this.elements.resultsTable).$('tbody')).$$('tr');
   }
 
-  getInvalidText(cmsId) {
-    return $(this.elements.invalidText(cmsId));
+  async getInvalidText(cmsId) {
+    return $(await this.elements.invalidText(cmsId));
   }
 
   get downloadResultsButton() {
