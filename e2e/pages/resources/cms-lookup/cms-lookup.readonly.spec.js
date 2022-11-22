@@ -8,7 +8,6 @@ const config = require('../../../config/mainConfig');
 
 let cmsLookup;
 let hooks;
-const invalidCmsId = '000000AAAAAA';
 
 beforeAll(async () => {
   cmsLookup = new CmsLookupPage();
@@ -19,22 +18,15 @@ beforeAll(async () => {
 describe('On cms reverse look up page', () => {
   inputs.forEach((input) => {
     const { testName } = input;
-    describe(`When searching for a CMS ID which was generated before for  ${testName}`, () => {
-      beforeAll(() => {
-        cmsLookup.searchField.clearValue();
-        cmsLookup.searchField.addValue(input.cmsId);
-        cmsLookup.searchIdButton.click();
-        hooks.waitForSpinnerToDisappear();
+    describe(`When searching for a CMS ID which was generated before for ${testName}`, () => {
+      beforeEach(() => {
+        cmsLookup.clear();
+        cmsLookup.search(input.cmsId);
       });
 
       it('should show correct listings for the CMS ID', () => {
-        browser.waitUntil(() => $(cmsLookup.lookupResultsTable).isDisplayed());
-        const ls = [];
-        const { length } = cmsLookup.rowsLookupResultsTable;
-        for (let j = 1; j <= length; j += 1) {
-          ls.push(cmsLookup.chplProductNumberFromTable(j).getText());
-        }
-        expect(ls.toString()).toBe(input.chplProductNumbers.toString());
+        const listings = cmsLookup.getResults().map((row) => row.$$('td')[5].getText()).join(',');
+        expect(listings).toBe(input.chplProductNumbers.toString());
       });
 
       it('should have download results button and download file should contain correct listings Ids', () => {
@@ -61,19 +53,14 @@ describe('On cms reverse look up page', () => {
 
 describe('On cms reverse look up page', () => {
   describe('When searching for invalid CMS ID which doesnt exist', () => {
-    beforeAll(() => {
-      cmsLookup.searchField.clearValue();
-      cmsLookup.searchField.addValue(invalidCmsId);
-      cmsLookup.searchIdButton.click();
-      hooks.waitForSpinnerToDisappear();
+    const invalidCmsId = '000000AAAAAA111';
+    beforeEach(() => {
+      cmsLookup.clear();
+      cmsLookup.search(invalidCmsId);
     });
 
     it('should show correct message', () => {
-      expect(cmsLookup.certidLookupErrorText.getText()).toBe(`"${invalidCmsId}" is not a valid CMS EHR Certification ID format.`);
-    });
-
-    it('should not display look up results table', () => {
-      expect(cmsLookup.lookupResultsTable.isExisting()).toBe(false);
+      expect(cmsLookup.getInvalidText(invalidCmsId).getText()).toBe(`The CMS ID "${invalidCmsId}" is invalid, or not found`);
     });
 
     it('should not have download results button', () => {

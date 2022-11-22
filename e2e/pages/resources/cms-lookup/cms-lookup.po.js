@@ -1,41 +1,36 @@
-const elements = {
-  searchId: '#lookupCertificationIdButton',
-  searchField: '#certIdsField',
-  downloadResults: '//*[@id="main-content"]/div[2]/div/div/button',
-  lookupResultsTable: '#lookupCertIdResults',
-  certidLookupError: '.cert-id-lookup-error',
-  lookupResultsTableRows: '//*[@id="lookupCertIdResults"]/tbody/tr',
-};
-
 class CmsLookupPage {
-  constructor () { }
-
-  get searchIdButton () {
-    return $(elements.searchId);
+  constructor () {
+    this.elements = {
+      chips: '#chips',
+      resultsTable: 'table[aria-label="CMS ID Listing Data table"',
+      searchField: '#search-term-input',
+      searchGo: '#search-term-go',
+      downloadResultsButton: `#download-listing-data`,
+      invalidText: (cmsId) => `li*=${cmsId}`,
+    };
   }
 
-  get searchField () {
-    return $(elements.searchField);
+  clear() {
+    $(this.elements.chips).$$('svg').forEach((chip) => chip.click());
+    browser.waitUntil(() => !$(this.elements.resultsTable).isDisplayed());
+  }
+
+  search(cmsId) {
+    $(this.elements.searchField).setValue(cmsId);
+    $(this.elements.searchGo).click();
+    browser.waitUntil(() => this.getInvalidText(cmsId).isDisplayed() || ($(this.elements.resultsTable).isDisplayed() && this.getResults().length > 0));
+  }
+
+  getResults() {
+    return $(this.elements.resultsTable).$('tbody').$$('tr');
+  }
+
+  getInvalidText(cmsId) {
+    return $(this.elements.invalidText(cmsId));
   }
 
   get downloadResultsButton () {
-    return $(elements.downloadResults);
-  }
-
-  get lookupResultsTable () {
-    return $(elements.lookupResultsTable);
-  }
-
-  get certidLookupErrorText () {
-    return $(elements.certidLookupError);
-  }
-
-  get rowsLookupResultsTable () {
-    return $$(elements.lookupResultsTableRows);
-  }
-
-  chplProductNumberFromTable (rowNumber) {
-    return $('//*[@id="lookupCertIdResults"]/tbody/tr[' + rowNumber + ']/td[6]');
+    return $(this.elements.downloadResultsButton);
   }
 }
 
