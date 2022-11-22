@@ -1,5 +1,3 @@
-import Hooks from '../../../utilities/hooks';
-
 import CmsLookupPage from './cms-lookup.po';
 import inputs from './cms-lookup-dp';
 
@@ -9,13 +7,11 @@ const fs = require('fs');
 const config = require('../../../config/mainConfig');
 
 let page;
-let hooks;
 
 describe('on the CMS ID reverse look up page', async () => {
   beforeEach(async () => {
     page = new CmsLookupPage();
-    hooks = new Hooks();
-    await hooks.open('#/resources/cms-lookup');
+    await page.open();
   });
 
   inputs.forEach((input) => {

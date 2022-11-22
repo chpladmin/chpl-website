@@ -1,5 +1,8 @@
+import { open as openPage } from '../../../utilities/hooks.async';
+
 class CmsLookupPage {
   constructor() {
+    this.url = '#/resources/cms-lookup';
     this.elements = {
       chips: '#chips',
       resultsTable: 'table[aria-label="CMS ID Listing Data table"',
@@ -8,6 +11,10 @@ class CmsLookupPage {
       downloadResultsButton: '#download-listing-data',
       invalidText: async (cmsId) => `li*=${cmsId}`,
     };
+  }
+
+  async open() {
+    await openPage(this.url);
   }
 
   async clear() {
