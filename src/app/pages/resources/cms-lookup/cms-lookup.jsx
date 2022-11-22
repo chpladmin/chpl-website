@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   ButtonGroup,
+  Container,
   List,
   ListItem,
+  ListItemIcon,
   Paper,
   Table,
   TableBody,
@@ -14,6 +17,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import WarningIcon from '@material-ui/icons/Warning';
+
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchListings } from 'api/cms';
@@ -42,6 +47,11 @@ const csvOptions = {
 const headers = csvOptions.headers.map((h) => ({ text: h.headerName }));
 
 const useStyles = makeStyles({
+  errorListIcon:{
+    paddingLeft: '20px',
+    paddingRight: '16px',
+    minWidth: 'auto',
+  },
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -59,15 +69,9 @@ const useStyles = makeStyles({
     width: 'auto',
   },
   tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
+    display:'flex',
     margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
+    justifyContent: 'flex-end',
   },
   wrap: {
     flexFlow: 'wrap',
@@ -96,7 +100,7 @@ function ChplCmsLookup() {
       }))), []));
     setErrors(() => queries
       .filter((query) => query.isError)
-      .reduce((msgs, query) => msgs.concat(`The CMS ID "${query.error.config.url.split('/')[2]}" is invalid, or not found`, []), []));
+      .reduce((msgs, query) => msgs.concat(`The CMS ID "${query.error.config.url.split('/')[2]}" is invalid, or not found.`, []), []));
   }, [cmsIds, finishedLoading]);
 
   const downloadListingData = () => {
@@ -123,7 +127,7 @@ function ChplCmsLookup() {
   };
 
   return (
-    <>
+    <Container maxWidth='lg'>
       <div className={classes.pageHeader}>
         <Typography variant="h1">CMS ID Reverse Lookup</Typography>
       </div>
@@ -142,9 +146,17 @@ function ChplCmsLookup() {
       />
       { errors.length > 0
         && (
-          <List>
-            {errors.map((msg) => <ListItem key={msg}>{msg}</ListItem>)}
-          </List>
+          <Box>
+            <List>
+              {errors.map((msg) => 
+              <ListItem key={msg}>
+               <ListItemIcon className={classes.errorListIcon}>
+                <WarningIcon color="error"/>
+               </ListItemIcon>
+               {msg}
+              </ListItem>)}
+            </List>
+          </Box>
         )}
       { listings.length > 0
         && (
@@ -199,7 +211,7 @@ function ChplCmsLookup() {
             </TableContainer>
           </>
         )}
-    </>
+    </Container>
   );
 }
 

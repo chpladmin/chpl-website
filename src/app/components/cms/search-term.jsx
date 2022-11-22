@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   IconButton,
   InputBase,
@@ -21,6 +22,10 @@ const useStyles = makeStyles(() => ({
   searchBar: {
     display: 'grid',
     gridTemplateColumns: '10fr auto',
+  },
+  searchBarComponet:{
+    backgroundColor: "#c6d5e5",
+    gap: "16px",
   },
   searchIcon: {
     display: 'none',
@@ -65,6 +70,7 @@ function ChplSearchTerm(props) {
 
   return (
     <>
+      <Box className={classes.searchBarComponet} display="flex" justifyContent="space-between" alignItems="center" padding="16px 32px">
       <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
       <div className={classes.searchBarContainer}>
         <div className={classes.searchBar}>
@@ -102,6 +108,7 @@ function ChplSearchTerm(props) {
           </Button>
         </div>
       </div>
+      </Box>
     </>
   );
 }
