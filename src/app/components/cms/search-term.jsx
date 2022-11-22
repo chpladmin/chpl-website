@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   IconButton,
   InputBase,
@@ -11,7 +12,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { ChplTooltip } from 'components/util';
-import theme from 'themes/theme';
+import { theme, palette } from 'themes';
 
 const useStyles = makeStyles(() => ({
   goButton: {
@@ -21,6 +22,10 @@ const useStyles = makeStyles(() => ({
   searchBar: {
     display: 'grid',
     gridTemplateColumns: '10fr auto',
+  },
+  searchBarComponent: {
+    backgroundColor: palette.grey,
+    gap: '16px',
   },
   searchIcon: {
     display: 'none',
@@ -33,7 +38,7 @@ const useStyles = makeStyles(() => ({
   },
   searchBarContainer: {
     flexGrow: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
     padding: '8px',
     borderRadius: '8px',
   },
@@ -64,7 +69,7 @@ function ChplSearchTerm(props) {
   };
 
   return (
-    <>
+    <Box className={classes.searchBarComponent} display="flex" justifyContent="space-between" alignItems="center" padding="16px 32px">
       <SearchIcon className={classes.searchIcon} color="primary" fontSize="large" />
       <div className={classes.searchBarContainer}>
         <div className={classes.searchBar}>
@@ -102,7 +107,7 @@ function ChplSearchTerm(props) {
           </Button>
         </div>
       </div>
-    </>
+    </Box>
   );
 }
 

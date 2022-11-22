@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   ButtonGroup,
+  Container,
   List,
   ListItem,
+  ListItemIcon,
   Paper,
   Table,
   TableBody,
@@ -14,6 +17,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import WarningIcon from '@material-ui/icons/Warning';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchListings } from 'api/cms';
@@ -23,7 +27,7 @@ import { ChplLink } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
 import { useLocalStorage as useStorage } from 'services/storage.service';
-import { theme } from 'themes';
+import { palette } from 'themes';
 
 const csvOptions = {
   filename: 'cms-id-data',
@@ -44,7 +48,7 @@ const headers = csvOptions.headers.map((h) => ({ text: h.headerName }));
 const useStyles = makeStyles({
   pageHeader: {
     padding: '32px',
-    backgroundColor: '#ffffff',
+    backgroundColor: palette.white,
   },
   pageBody: {
     display: 'grid',
@@ -59,15 +63,14 @@ const useStyles = makeStyles({
     width: 'auto',
   },
   tableResultsHeaderContainer: {
-    display: 'grid',
-    gap: '8px',
+    display: 'flex',
     margin: '16px 32px',
-    gridTemplateColumns: '1fr',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'auto auto',
-    },
+    justifyContent: 'flex-end',
+  },
+  errorListIcon: {
+    paddingLeft: '20px',
+    paddingRight: '16px',
+    minWidth: 'auto',
   },
   wrap: {
     flexFlow: 'wrap',
@@ -123,7 +126,7 @@ function ChplCmsLookup() {
   };
 
   return (
-    <>
+    <Container maxWidth="lg">
       <div className={classes.pageHeader}>
         <Typography variant="h1">CMS ID Reverse Lookup</Typography>
       </div>
@@ -142,9 +145,19 @@ function ChplCmsLookup() {
       />
       { errors.length > 0
         && (
-          <List>
-            {errors.map((msg) => <ListItem key={msg}>{msg}</ListItem>)}
-          </List>
+          <Box>
+            <List>
+              { errors
+                .map((msg) => (
+                  <ListItem key={msg}>
+                    <ListItemIcon className={classes.errorListIcon}>
+                      <WarningIcon color="error" />
+                    </ListItemIcon>
+                    {msg}
+                  </ListItem>
+                ))}
+            </List>
+          </Box>
         )}
       { listings.length > 0
         && (
@@ -199,7 +212,7 @@ function ChplCmsLookup() {
             </TableContainer>
           </>
         )}
-    </>
+    </Container>
   );
 }
 
