@@ -73,7 +73,7 @@ const validationSchema = yup.object({
   complainantTypeOther: yup.string()
     .test('conditionallyRequired',
       'Complainant Type - Other Description is required',
-      (value, context) => (!!value || context.parent.complainantType?.name !== 'Other - [Please Describe]')),
+      (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
   summary: yup.string()
     .required('Complaint Summary is required'),
   actions: yup.string()
@@ -450,13 +450,14 @@ function ChplComplaintEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-              { formik.values.complainantType?.name === 'Other - [Please Describe]'
+              { formik.values.complainantType?.name === 'Other'
                 && (
                   <ChplTextField
                     id="complainant-type-other"
                     name="complainantTypeOther"
                     label="Complainant Type - Other Description"
                     required
+                    multiline
                     value={formik.values.complainantTypeOther}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}

@@ -109,7 +109,7 @@ function ChplComplaintView(props) {
             <Typography>
               {complaint.complainantType?.name}
             </Typography>
-            {complaint.complainantType?.name === 'Other - [Please Describe]'
+            {complaint.complainantType?.name === 'Other'
              && (
                <>
                  <Typography variant="subtitle2">

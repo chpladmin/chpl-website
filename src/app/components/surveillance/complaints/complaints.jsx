@@ -58,7 +58,7 @@ const staticFilters = [{
     { value: 'Anonymous' },
     { value: 'Developer' },
     { value: 'Government Entity' },
-    { value: 'Other - [Please Describe]' },
+    { value: 'Other' },
     { value: 'Patient' },
     { value: 'Provider' },
     { value: 'Third Party Organization' },
