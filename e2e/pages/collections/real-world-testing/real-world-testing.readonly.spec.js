@@ -22,9 +22,7 @@ describe('the Real World Testing collection page', () => {
     const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer', 'Product', 'Version', 'Certification Status', 'Real World Testing Plans URL', 'Real World Testing Results URL'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
-    for (const [idx, header] of actualHeaders.entries()) {
-      await expect(await header.getText()).toBe(expectedHeaders[idx]);
-    }
+    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
   });
 
   describe('when filtering', () => {

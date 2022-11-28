@@ -1,6 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import {
-  arrayOf, bool, number, shape, string,
+  arrayOf,
+  bool,
+  number,
+  shape,
+  string,
 } from 'prop-types';
+
 import criterion from './criterion';
 
 const svap = shape({
@@ -19,4 +25,20 @@ const selectedSvap = shape({
   svapId: number,
 });
 
-export { svap, selectedSvap };
+const ucdProcessType = shape({
+  id: number,
+  name: string,
+});
+
+const ucdProcess = shape({
+  ...ucdProcessType,
+  details: string,
+  criteria: arrayOf(criterion),
+});
+
+export {
+  svap,
+  selectedSvap,
+  ucdProcess,
+  ucdProcessType,
+};

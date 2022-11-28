@@ -22,9 +22,7 @@ describe('the Api Documentation collection page', () => {
     const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer', 'Product', 'Version', 'Certification Status', 'API Documentation', 'Service Base URL List', 'Mandatory Disclosures URL'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
-    for (const [idx, header] of actualHeaders.entries()) {
-      await expect(await header.getText()).toBe(expectedHeaders[idx]);
-    }
+    await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
   });
 
   it('should have api documentation download button', async () => {

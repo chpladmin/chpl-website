@@ -1,5 +1,26 @@
 # Release Notes
 
+## Version 11.45.0
+_28 November 2022_
+
+### Features
+* Allow admin to cancel a scheduled system job
+* Enable management of UCD Processes
+
+### User Interface Updates
+* Close "login panel" after user logs in
+* Display SED information page in new UI/UX
+* Indicate where measures are removed in Listing history
+* Convert "Inactive Certificates" page to new UI/UX
+* Edit SED Details information in new UI/UX
+
+### Bug Fixes
+* Display Product transfer date correctly on Listing Details pages
+* Show user they're logged out after timing out
+* Update user data on permissions update
+
+---
+
 ## Version 11.44.1
 _14 November 2022_
 

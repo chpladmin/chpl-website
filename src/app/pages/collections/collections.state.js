@@ -23,11 +23,9 @@ const states = [
     component: 'chplBannedDevelopersCollectionPageBridge',
     data: { title: 'Banned Developers' },
   }, {
-    name: 'collections.inactive',
+    name: 'collections.inactive-certificates',
     url: '/inactive',
-    controller: 'InactiveCertificatesController',
-    controllerAs: 'vm',
-    template: require('./inactive/inactive.html'),
+    component: 'chplInactiveCertificatesCollectionWrapperBridge',
     data: { title: 'Inactive Certificates' },
   }, {
     name: 'collections.decertified-products',
@@ -37,9 +35,7 @@ const states = [
   }, {
     name: 'collections.sed',
     url: '/sed',
-    controller: 'SedCollectionController',
-    controllerAs: 'vm',
-    template: require('./sed/sed.html'),
+    component: 'chplSedCollectionWrapperBridge',
     data: { title: 'SED Information for 2015 Edition Products' },
   }, {
     name: 'collections.real-world-testing',

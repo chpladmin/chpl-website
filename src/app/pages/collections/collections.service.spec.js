@@ -39,27 +39,5 @@
         expect(results[0].nonconformities).toEqual('{"openNonConformityCount":0,"closedNonConformityCount":6}');
       });
     });
-
-    describe('when focused on inactiveCertificates', () => {
-      it('should filter on inactiveCertificates', () => {
-        expect(service.translate('inactiveCertificates', {results: Mock.allCps}).length).toBe(4);
-      });
-
-      it('should generate a mainSearch', () => {
-        var results = service.translate('inactiveCertificates', {results: Mock.allCps});
-        expect(results[0].mainSearch).toEqual('OSEHRA|OSEHRA popHealth for Eligible Hospital|4.0.2|CHP-029007');
-      });
-    });
-
-    describe('when focused on sed', () => {
-      it('should filter on sed', () => {
-        expect(service.translate('sed', {results: Mock.allCps, certificationCriteria: [Mock.searchOptions.certificationCriteria]}).length).toBe(0);
-      });
-
-      xit('should generate a mainSearch', () => {
-        var results = service.translate('sed', {results: Mock.allCps, certificationCriteria: [Mock.searchOptions.certificationCriteria]});
-        expect(results[0].mainSearch).toEqual('Healthland|Centriq Clinic|12|15.07.07.2751.CE03.01.00.1.170823');
-      });
-    });
   });
 })();

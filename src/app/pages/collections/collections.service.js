@@ -16,10 +16,6 @@
       switch (key) {
         case 'correctiveAction':
           return 'Products: Corrective Action Status';
-        case 'inactiveCertificates':
-          return 'Inactive Certificates';
-        case 'sed':
-          return 'SED Information for 2015 Edition Products';
         // no default
       }
     }
@@ -28,10 +24,6 @@
       switch (key) {
         case 'correctiveAction':
           return correctiveActions(data.results);
-        case 'inactiveCertificates':
-          return inactiveCertificates(data.results);
-        case 'sed':
-          return sed(data.results, data.certificationCriteria);
         // no default
       }
     }
@@ -62,36 +54,6 @@
           });
           return l;
         });
-    }
-
-    /*
-     * Listings are part of this collection if:
-     * - Certification status = Withdrawn by Developer
-     */
-    function inactiveCertificates(array) {
-      return array
-        .filter((cp) => cp.certificationStatus === 'Withdrawn by Developer')
-        .map((cp) => {
-          cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-          cp.edition += (cp.curesUpdate ? ' Cures Update' : '');
-          return cp;
-        });
-    }
-
-    /*
-     * Listings are part of this collection if:
-     *   they have 170.315 (g)(3)
-     */
-    function sed(array, certificationCriteria) {
-      const applicableCriteria = certificationCriteria
-        .filter((cc) => (cc.number === '170.315 (g)(3)' && cc.title === 'Safety-Enhanced Design'))
-        .map((cc) => SPLIT_PRIMARY + cc.id + SPLIT_PRIMARY);
-      const ret = array.filter((listing) => applicableCriteria.some((id) => (SPLIT_PRIMARY + listing.criteriaMet + SPLIT_PRIMARY).indexOf(id) > -1))
-        .map((listing) => {
-          listing.mainSearch = [listing.developer, listing.product, listing.version, listing.chplProductNumber].join('|');
-          return listing;
-        });
-      return ret;
     }
   }
 }());

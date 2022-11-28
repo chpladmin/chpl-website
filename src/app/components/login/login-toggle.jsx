@@ -6,15 +6,12 @@ import {
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 
-import { UserContext } from '../../shared/contexts';
-import theme from '../../themes/theme';
-
 import ChplLogin from './login';
 
+import { UserContext } from 'shared/contexts';
+import theme from 'themes/theme';
+
 const useStyles = makeStyles(() => ({
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   loginSpacing: {
     margin: '8px',
   },
@@ -30,14 +27,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplLoginToggle() {
-  /* eslint-disable react/destructuring-assignment */
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const {
-    user, impersonating,
-  } = useContext(UserContext);
-  /* eslint-enable react/destructuring-assignment */
+  const { user, impersonating } = useContext(UserContext);
   const classes = useStyles();
 
   const handleClick = (e) => {
@@ -48,6 +41,10 @@ function ChplLoginToggle() {
   const handleClose = () => {
     setAnchor(null);
     setOpen(false);
+  };
+
+  const handleDispatch = () => {
+    handleClose();
   };
 
   useEffect(() => {
@@ -67,9 +64,9 @@ function ChplLoginToggle() {
         aria-describedby="admin-login-form"
         onClick={handleClick}
         className={classes.loginSpacing}
+        endIcon={<PersonIcon />}
       >
         { title }
-        <PersonIcon className={classes.iconSpacing} />
       </Button>
       <Popover
         id="admin-login-form"
@@ -87,7 +84,9 @@ function ChplLoginToggle() {
         className={classes.popoverSpacing}
       >
         <div className={classes.loginCard}>
-          <ChplLogin />
+          <ChplLogin
+            dispatch={handleDispatch}
+          />
         </div>
       </Popover>
     </>

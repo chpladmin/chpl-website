@@ -40,12 +40,14 @@
   }
 
   /** @ngInject */
-  function SedController ($filter, $log, $scope, $timeout, $uibModal, utilService) {
+  function SedController ($filter, $log, $scope, $timeout, $uibModal, DateUtil, utilService) {
     var vm = this;
 
+    vm.DateUtil = DateUtil;
     vm.addTask = addTask;
     vm.editDetails = editDetails;
     vm.getCsv = getCsv;
+    vm.handleDispatch = handleDispatch.bind(this);
     vm.sortCert = utilService.sortCert;
     vm.sortProcesses = sortProcesses;
     vm.sortTasks = sortTasks;
@@ -55,6 +57,7 @@
     ////////////////////////////////////////////////////////////////////
 
     this.$onInit = function () {
+      vm.isEditing = false;
       _analyzeSed();
     };
 
@@ -83,32 +86,30 @@
 
     function editDetails () {
       _analyzeSed();
-      vm.modalInstance = $uibModal.open({
-        templateUrl: 'chpl.components/listing/details/sed/edit-details.html',
-        controller: 'EditSedDetailsController',
-        controllerAs: 'vm',
-        animation: false,
-        backdrop: 'static',
-        keyboard: false,
-        resolve: {
-          criteria: function () { return vm.sedCriteria; },
-          listing: function () { return vm.listing; },
-          resources: function () { return vm.resources; },
-          ucdProcesses: function () { return vm.ucdProcesses; },
-        },
-      });
-      vm.modalInstance.result.then(function (result) {
-        vm.listing.sedReportFileLocation = result.listing.sedReportFileLocation;
-        vm.listing.sedIntendedUserDescription = result.listing.sedIntendedUserDescription;
-        vm.listing.sedTestingEndDate = result.listing.sedTestingEndDate;
-        vm.listing.sed.ucdProcesses = result.ucdProcesses;
-        vm.ucdProcesses = result.ucdProcesses;
-        vm.onChange({listing: vm.listing});
-      });
+      vm.isEditing = true;
     }
 
     function getCsv () {
       utilService.makeCsv(vm.csvData);
+    }
+
+    function handleDispatch ({action, payload}) {
+      switch (action) {
+        case 'cancel':
+          vm.isEditing = false;
+          break;
+        case 'save':
+          vm.listing.sedReportFileLocation = payload.listing.sedReportFileLocation;
+          vm.listing.sedIntendedUserDescription = payload.listing.sedIntendedUserDescription;
+          vm.listing.sedTestingEndDay = payload.listing.sedTestingEndDay;
+          vm.listing.sed.ucdProcesses = payload.ucdProcesses;
+          vm.ucdProcesses = payload.ucdProcesses;
+          vm.isEditing = false;
+          vm.onChange({listing: vm.listing});
+          break;
+          // no default
+      }
+      $scope.$digest();
     }
 
     function sortProcesses (process) {
