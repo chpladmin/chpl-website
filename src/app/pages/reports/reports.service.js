@@ -169,7 +169,7 @@ export class ReportService {
             p.measure.crit < c.measure.crit ? -1 : p.measure.crit > c.measure.crit ? 1 :
             0;
         },
-        write: t => 'Measure "' + t.measure.abbreviation + ': ' + t.measure.requiredTest + '", for ' + t.measureType.name + ' with criteria: ' + t.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
+        write: t => 'Measure "' + (t.measure.removed ? '<span class="removed">Removed | ' : '') + t.measure.abbreviation + ': ' + t.measure.requiredTest + (t.measure.removed ? '</span>' : '') + '", for ' + t.measureType.name + ' with criteria: ' + t.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
         compare: (p, c) => {
           p.crit = p.associatedCriteria.map(cc => cc.id).join('|');
           c.crit = c.associatedCriteria.map(cc => cc.id).join('|');

@@ -1,4 +1,5 @@
 import columnsErrorsAndWarnings from './columns-errors-and-warnings';
+import conformanceMethodsErrorsAndWarnings from './conformance-methods-errors-and-warnings';
 import cqmsErrorsAndWarnings from './cqms-errors-and-warnings';
 import criteriaRelationshipsErrorsAndWarnings from './criteria-relationships-errors-and-warnings';
 import developerErrorsAndWarnings from './developer-errors-and-warnings';
@@ -8,13 +9,14 @@ import measuresAtCriteriaLevelErrorsAndWarnings from './measures-at-criteria-lev
 import measuresErrorsAndWarnings from './measures-errors-and-warnings';
 import noErrors from './no-errors';
 import optionalStandardsErrorsAndWarnings from './optional-standards-errors-and-warnings';
-import conformanceMethodsErrorsAndWarnings from './conformance-methods-errors-and-warnings';
 import removedCriteriaErrorsAndWarnings from './removed-criteria-errors-and-warnings';
 import sedErrorsAndWarnings from './sed-errors-and-warnings';
 import svapErrorsAndWarnings from './svap-errors-and-warnings';
+import testDataErrorsAndWarnings from './test-data-errors-and-warnings';
 
 const suites = [
   columnsErrorsAndWarnings,
+  conformanceMethodsErrorsAndWarnings,
   cqmsErrorsAndWarnings,
   criteriaRelationshipsErrorsAndWarnings,
   developerErrorsAndWarnings,
@@ -24,14 +26,16 @@ const suites = [
   measuresErrorsAndWarnings,
   noErrors,
   optionalStandardsErrorsAndWarnings,
-  conformanceMethodsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
   sedErrorsAndWarnings,
   svapErrorsAndWarnings,
+  testDataErrorsAndWarnings,
 ];
 
 export {
+  suites,
   columnsErrorsAndWarnings,
+  conformanceMethodsErrorsAndWarnings,
   cqmsErrorsAndWarnings,
   criteriaRelationshipsErrorsAndWarnings,
   developerErrorsAndWarnings,
@@ -41,9 +45,8 @@ export {
   measuresErrorsAndWarnings,
   noErrors,
   optionalStandardsErrorsAndWarnings,
-  conformanceMethodsErrorsAndWarnings,
   removedCriteriaErrorsAndWarnings,
   sedErrorsAndWarnings,
   svapErrorsAndWarnings,
-  suites,
+  testDataErrorsAndWarnings,
 };

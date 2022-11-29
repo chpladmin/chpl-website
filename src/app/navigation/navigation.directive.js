@@ -21,8 +21,6 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   this.$onInit = () => {
     $rootScope.bodyClass = 'navigation-shown';
 
-    vm.setDevelopers();
-
     if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
       vm.toggleNavClosed();
     } else {
@@ -56,7 +54,6 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $scope.$on('$destroy', hideCompareWidget);
 
     const loggedIn = $scope.$on('loggedIn', () => {
-      vm.setDevelopers();
       if (vm.navShown) {
         vm.toggleNavClosed();
       }
@@ -64,22 +61,11 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $scope.$on('$destroy', loggedIn);
 
     const loggedOut = $scope.$on('loggedOut', () => {
-      vm.setDevelopers();
       if (!vm.navShown) {
         vm.toggleNavOpen();
       }
     });
     $scope.$on('$destroy', loggedOut);
-
-    const impersonating = $scope.$on('impersonating', () => {
-      vm.setDevelopers();
-    });
-    $scope.$on('$destroy', impersonating);
-
-    const unimpersonating = $scope.$on('unimpersonating', () => {
-      vm.setDevelopers();
-    });
-    $scope.$on('$destroy', unimpersonating);
 
     const flags = $rootScope.$on('flags loaded', () => {
       if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
@@ -104,12 +90,13 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     return $state.$current.name.startsWith(state);
   }
 
-  function setDevelopers() {
-    if (vm.hasAnyRole(['ROLE_DEVELOPER'])) {
-      vm.developers = authService.getCurrentUser().organizations.map((developer) => developer);
-    } else {
-      vm.developers = [];
+  function getDevelopers() {
+    if (vm.hasAnyRole(['ROLE_DEVELOPER']) && authService.getCurrentUser()) {
+      return authService.getCurrentUser().organizations
+        .map((developer) => developer)
+        .sort((a, b) => (a.name < b.name ? -1 : 1));
     }
+    return [];
   }
 
   function showCmsWidget(show) {
@@ -131,12 +118,12 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   }
 
   vm.clear = clear;
+  vm.getDevelopers = getDevelopers;
   vm.getFullname = authService.getFullname;
+  vm.hasAnyRole = authService.hasAnyRole;
   vm.isActive = isActive;
   vm.isOn = featureFlags.isOn;
-  vm.hasAnyRole = authService.hasAnyRole;
   vm.logout = authService.logout;
-  vm.setDevelopers = setDevelopers;
   vm.showCmsWidget = showCmsWidget;
   vm.showCompareWidget = showCompareWidget;
   vm.toggleNavClosed = toggleNavClosed;

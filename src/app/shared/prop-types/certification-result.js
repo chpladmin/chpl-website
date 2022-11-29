@@ -6,9 +6,10 @@ import {
   shape,
   string,
 } from 'prop-types';
+
 import criterion from './criterion';
 import reliedUponSoftware from './relied-upon-software';
-import { selectedSvap, svap } from './svap';
+import { selectedSvap, svap } from './standards';
 import { selectedTestData } from './test-data';
 import { selectedTestFunctionality, testFunctionality } from './test-functionality';
 import { selectedTestProcedure } from './test-procedure';
