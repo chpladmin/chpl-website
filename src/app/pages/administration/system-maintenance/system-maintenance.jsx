@@ -140,7 +140,7 @@ function ChplSystemMaintenance() {
             endIcon={<ArrowForwardIcon />}
             className={classes.menuItems}
           >
-            SVAP Maintenance
+            SVAP
           </Button>
           <Button
             onClick={() => navigate('ucdProcesses')}
@@ -152,7 +152,7 @@ function ChplSystemMaintenance() {
             endIcon={<ArrowForwardIcon />}
             className={classes.menuItems}
           >
-            UCD Process Management
+            UCD Processes
           </Button>
         </Card>
       </div>
@@ -166,10 +166,10 @@ function ChplSystemMaintenance() {
                 </Typography>
                 <List>
                   <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
-                  <ListItem>Accessibility Standards Maintenance - Add and update the Accessibility Standards available to be applied to listings</ListItem>
-                  <ListItem>QMS Standards Maintenance - [future] Add and update the QMS Standards available to be applied to listings</ListItem>
-                  <ListItem>SVAP Maintenance - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
-                  <ListItem>UCD Process Management - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
+                  <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
+                  <ListItem>QMS Standards - [future] Add and update the QMS Standards available to be applied to listings</ListItem>
+                  <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
+                  <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
               </CardContent>
             </Card>

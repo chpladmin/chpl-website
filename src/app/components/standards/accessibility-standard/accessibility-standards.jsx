@@ -39,7 +39,7 @@ function ChplAccessibilityStandards() {
         variant="text"
         disabled
       >
-        Accessibility Standard Maintenance
+        Accessibility Standards
       </Button>,
     );
     append(
@@ -49,7 +49,7 @@ function ChplAccessibilityStandards() {
         variant="text"
         onClick={() => handleDispatch({ action: 'cancel' })}
       >
-        Accessibility Standard Maintenance
+        Accessibility Standards
       </Button>,
     );
     display('accessibilityStandards.viewall.disabled');
@@ -150,7 +150,7 @@ function ChplAccessibilityStandards() {
 
   return (
     <Card>
-      <CardHeader title="Accessibility Standard Maintenance" />
+      <CardHeader title="Accessibility Standards" />
       <CardContent>
         { (deleteAccessibilityStandard.isLoading || postAccessibilityStandard.isLoading || putAccessibilityStandard.isLoading)
           && (

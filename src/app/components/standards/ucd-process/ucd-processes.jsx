@@ -39,7 +39,7 @@ function ChplUcdProcesses() {
         variant="text"
         disabled
       >
-        UCD Process Maintenance
+        UCD Processes
       </Button>,
     );
     append(
@@ -49,7 +49,7 @@ function ChplUcdProcesses() {
         variant="text"
         onClick={() => handleDispatch({ action: 'cancel' })}
       >
-        UCD Process Maintenance
+        UCD Processes
       </Button>,
     );
     display('ucdProcesses.viewall.disabled');
@@ -150,7 +150,7 @@ function ChplUcdProcesses() {
 
   return (
     <Card>
-      <CardHeader title="UCD Process Maintenance" />
+      <CardHeader title="UCD Processes" />
       <CardContent>
         { (deleteUcdProcess.isLoading || postUcdProcess.isLoading || putUcdProcess.isLoading)
           && (

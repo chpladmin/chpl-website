@@ -42,7 +42,7 @@ function ChplSvaps() {
         variant="text"
         disabled
       >
-        SVAP Maintenance
+        SVAP
       </Button>,
     );
     append(
@@ -52,7 +52,7 @@ function ChplSvaps() {
         variant="text"
         onClick={() => handleDispatch({ action: 'cancel' })}
       >
-        SVAP Maintenance
+        SVAP
       </Button>,
     );
     display('svaps.viewall.disabled');
@@ -159,7 +159,7 @@ function ChplSvaps() {
 
   return (
     <Card>
-      <CardHeader title="SVAP Maintenance" />
+      <CardHeader title="SVAP" />
       <CardContent>
         { (deleteSvap.isLoading || postSvap.isLoading || putSvap.isLoading)
           && (
