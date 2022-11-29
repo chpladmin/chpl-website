@@ -133,7 +133,7 @@ function ChplCmsLookup() {
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography variant="h2">Lookup CMS EHR Certification IDs</Typography>
         <Typography variant="body1">
-          Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter a CMS EHR Certification ID to display the products which were used to create the associated CMS EHR Certification ID.
+          Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter a CMS EHR Certification ID to display the products which were used to create the associated CMS EHR Certification ID. Additional IDs may be added individually.
         </Typography>
       </div>
       <ChplSearchTerm
