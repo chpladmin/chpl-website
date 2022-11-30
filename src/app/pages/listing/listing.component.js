@@ -2,10 +2,9 @@ const ListingComponent = {
   templateUrl: 'chpl.listing/listing.html',
   bindings: {
     listing: '<',
-    resources: '<',
   },
   controller: class ListingComponent {
-    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, networkService, utilService) {
+    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, utilService) {
       'ngInject';
 
       this.$localStorage = $localStorage;
@@ -15,11 +14,9 @@ const ListingComponent = {
       this.$stateParams = $stateParams;
       this.DateUtil = DateUtil;
       this.authService = authService;
-      this.networkService = networkService;
       this.utilService = utilService;
       this.certificationStatus = utilService.certificationStatus;
       this.hasAnyRole = authService.hasAnyRole;
-      this.resources = {};
     }
 
     $onInit() {
@@ -46,9 +43,6 @@ const ListingComponent = {
         } else {
           this.$localStorage.previouslyViewed = [`${this.listing.id}`];
         }
-      }
-      if (changes.resources) {
-        this.resources = changes.resources.currentValue;
       }
     }
 
