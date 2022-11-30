@@ -2,11 +2,9 @@
   describe('the surveillance nonconformity edit component', () => {
     let $compile;
     let $log;
-    let $q;
     let authService;
     let ctrl;
     let el;
-    let networkService;
     let scope;
 
     beforeEach(() => {
@@ -16,21 +14,14 @@
           getApiKey: jasmine.createSpy('getApiKey'),
           getToken: jasmine.createSpy('getToken'),
         }));
-        $provide.decorator('networkService', ($delegate) => ({
-          ...$delegate,
-          deleteSurveillanceDocument: jasmine.createSpy('deleteSurveillanceDocument'),
-        }));
       });
 
-      inject((_$compile_, _$log_, _$q_, $rootScope, _authService_, _networkService_) => {
+      inject((_$compile_, _$log_, $rootScope, _authService_) => {
         $compile = _$compile_;
         $log = _$log_;
-        $q = _$q_;
         authService = _authService_;
         authService.getApiKey.and.returnValue('api-key');
         authService.getToken.and.returnValue('token');
-        networkService = _networkService_;
-        networkService.deleteSurveillanceDocument.and.returnValue($q.when({}));
 
         el = angular.element('<ai-surveillance-nonconformity-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
 
@@ -78,38 +69,6 @@
         expect(ctrl.cancel).toBeDefined();
         ctrl.cancel();
         expect(scope.dismiss).toHaveBeenCalled();
-      });
-
-      describe('when deleting a document', () => {
-        beforeEach(() => {
-          ctrl.surveillanceId = 1;
-          ctrl.nonconformity = { id: 2 };
-          ctrl.nonconformity.documents = [
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
-          ];
-        });
-
-        it('should call the common service', () => {
-          ctrl.deleteDoc(3);
-          scope.$digest();
-          expect(networkService.deleteSurveillanceDocument).toHaveBeenCalledWith(1, 3);
-        });
-
-        it('should remove the deleted document from the list', () => {
-          ctrl.deleteDoc(3);
-          scope.$digest();
-          expect(ctrl.nonconformity.documents.length).toBe(2);
-        });
-
-        it('should handle failure', () => {
-          networkService.deleteSurveillanceDocument.and.returnValue($q.reject({ data: {} }));
-          ctrl.deleteDoc(3);
-          scope.$digest();
-          expect(ctrl.deleteMessage).toBe('File was not removed successfully.');
-          expect(ctrl.deleteSuccess).toBe(false);
-        });
       });
 
       describe('when saving the nonconformity', () => {

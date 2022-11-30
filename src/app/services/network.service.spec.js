@@ -150,14 +150,6 @@
         $httpBackend.flush();
       });
 
-      it('should confirmPendingSurveillance', () => {
-        $httpBackend.expectPOST(/^\/rest\/surveillance\/pending\/confirm$/).respond(200, { data: 'response' });
-        networkService.confirmPendingSurveillance('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should confirmUser', () => {
         $httpBackend.expectPOST(/^\/rest\/users\/confirm$/).respond(200, { data: 'response' });
         networkService.confirmUser('payload').then((response) => {
@@ -265,14 +257,6 @@
       it('should deleteSurveillance', () => {
         $httpBackend.expectDELETE(/^\/rest\/surveillance\/1$/).respond(200);
         networkService.deleteSurveillance(1, 'changeReason').then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
-      it('should deleteSurveillanceDocument', () => {
-        $httpBackend.expectDELETE(/^\/rest\/surveillance\/1\/document\/3$/).respond(200);
-        networkService.deleteSurveillanceDocument(1, 3).then((response) => {
           expect(response.status).toEqual(200);
         });
         $httpBackend.flush();
@@ -1117,14 +1101,6 @@
         $httpBackend.flush();
       });
 
-      it('should getUploadingSurveillances', () => {
-        $httpBackend.expectGET(/^\/rest\/surveillance\/pending$/).respond(200, { data: 'response' });
-        networkService.getUploadingSurveillances().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getUploadTemplateVersions', () => {
         $httpBackend.expectGET(/^\/rest\/data\/upload_template_versions$/).respond(200, { data: 'response' });
         networkService.getUploadTemplateVersions().then((response) => {
@@ -1245,14 +1221,6 @@
         $httpBackend.flush();
       });
 
-      it('should massRejectPendingSurveillance', () => {
-        $httpBackend.expectDELETE(/^\/rest\/surveillance\/pending$/).respond(200);
-        networkService.massRejectPendingSurveillance('payload').then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
       it('should mergeDevelopers', () => {
         $httpBackend.expectPOST(/^\/rest\/developers\/merge$/).respond(200, { data: 'response' });
         networkService.mergeDevelopers('payload').then((response) => {
@@ -1288,14 +1256,6 @@
       it('should rejectPendingCp', () => {
         $httpBackend.expectDELETE(/^\/rest\/certified_products\/pending\/1$/).respond(200);
         networkService.rejectPendingCp(1).then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
-      it('should rejectPendingSurveillance', () => {
-        $httpBackend.expectDELETE(/^\/rest\/surveillance\/pending\/1$/).respond(200);
-        networkService.rejectPendingSurveillance(1).then((response) => {
           expect(response.status).toEqual(200);
         });
         $httpBackend.flush();

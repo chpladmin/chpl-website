@@ -41,9 +41,6 @@ const SurveillanceRequirementEditComponent = {
 
     addNonconformity() {
       const data = angular.copy(this.data);
-      if (this.hasAnyRole(['ROLE_ACB'])) {
-        data.nonconformityTypes.data = data.nonconformityTypes.data.filter((option) => !option.removed);
-      }
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceNonconformityEdit',
         animation: false,

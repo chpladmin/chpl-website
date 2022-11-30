@@ -36,10 +36,6 @@ export default class NetworkService {
     return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
   }
 
-  confirmPendingSurveillance(surveillance) {
-    return this.apiPOST('/surveillance/pending/confirm', surveillance);
-  }
-
   confirmUser(userObject) {
     return this.apiPOST('/users/confirm', userObject);
   }
@@ -96,10 +92,6 @@ export default class NetworkService {
     return this.apiDELETE(`/surveillance/${surveillanceId}`, {
       reason,
     });
-  }
-
-  deleteSurveillanceDocument(survId, docId) {
-    return this.apiDELETE(`/surveillance/${survId}/document/${docId}`);
   }
 
   deleteUser(userId) {
@@ -513,10 +505,6 @@ export default class NetworkService {
     return this.apiGET('/ucd-processes');
   }
 
-  getUploadingSurveillances() {
-    return this.apiGET('/surveillance/pending');
-  }
-
   getUploadTemplateVersions() {
     return this.apiGET('/data/upload_template_versions');
   }
@@ -574,10 +562,6 @@ export default class NetworkService {
     return this.apiPOST('/auth/authenticate', userObj);
   }
 
-  massRejectPendingSurveillance(ids) {
-    return this.apiDELETE('/surveillance/pending', { ids });
-  }
-
   mergeDevelopers(mergeDeveloperObject) {
     return this.apiPOST('/developers/merge', mergeDeveloperObject);
   }
@@ -600,10 +584,6 @@ export default class NetworkService {
 
   rejectPendingListing(id) {
     return this.apiDELETE(`/listings/pending/${id}`);
-  }
-
-  rejectPendingSurveillance(survId) {
-    return this.apiDELETE(`/surveillance/pending/${survId}`);
   }
 
   removeUserFromAcb(userId, acbId) {
