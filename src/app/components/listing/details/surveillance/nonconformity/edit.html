@@ -13,7 +13,7 @@
       <label for="nonconformity-type" class="col-sm-3">Non-Conformity Type <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="$ctrl.nonconformityType" id="nonconformity-type" name="nonconformityType"
-                ng-options="type as ((type.removed ? 'Removed | ' : '') + (type.number ? (type.number + ': '): '') + type.title) for type in $ctrl.data.nonconformityTypes.data | orderBy:$ctrl.sortNonconformityTypes" required>
+                ng-options="type as ((type.removed ? 'Removed | ' : '') + (type.number ? (type.number + ': '): '') + type.title) for type in $ctrl.nonconformityTypes" required>
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityType.$touched) && $ctrl.editForm.nonconformityType.$error.required">Field is required</div>
       </div>
@@ -139,42 +139,6 @@
       <div class="col-sm-9">
         <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.nonconformityCloseDay" ng-disabled="!$ctrl.nonconformity.nonconformityCloseDay"></textarea>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.resolution.$touched) && $ctrl.editForm.resolution.$error.required">Field is required</div>
-      </div>
-    </div>
-    <div class="row" ng-if="$ctrl.workType === 'edit' && $ctrl.nonconformity.documents.length > 0">
-      <div class="col-sm-12">
-        <h3>Supporting documentation</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">File Name</th>
-              <th scope="col">File Type</th>
-              <th class="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="doc in $ctrl.nonconformity.documents">
-              <td>{{ doc.fileName }}</td>
-              <td>{{ doc.fileType }}</td>
-              <td>
-                <button class="btn btn-danger btn-block pull-left"
-                        ng-if="doc.id"
-                        confirm="Are you sure you wish to remove this documentation?"
-                        confirm-ok="Yes"
-                        confirm-cancel="No"
-                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                        ng-click="$ctrl.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
-                <span ng-if="!doc.id">N/A</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div ng-if="$ctrl.deleteMessage.length > 0" ng-class="$ctrl.deleteSuccess ? 'bg-success' : 'bg-danger'">
-          {{ $ctrl.deleteMessage }}
-          <ul ng-if="$ctrl.deleteErrors.length > 0" ng-class="'bg-danger'">
-            <li ng-repeat="error in $ctrl.deleteErrors">{{ error.error }}</li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>

@@ -207,9 +207,7 @@ const SurveillanceEditComponent = {
     }
 
     save() {
-      if (this.workType === 'confirm') {
-        this.close({ $value: this.surveillance });
-      } else if (this.workType === 'initiate') {
+      if (this.workType === 'initiate') {
         this.surveillance.certifiedProduct.edition = this.surveillance.certifiedProduct.certificationEdition.name;
         this.networkService.initiateSurveillance(this.surveillance)
           .then((response) => {
