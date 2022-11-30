@@ -144,17 +144,6 @@
           expect($log.info.logs.length).toBe(logCount + 1);
         });
 
-        it('should filter out removed criteria when user is ROLE_ACB', () => {
-          authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
-          ctrl.data = {
-            nonconformityTypes: {
-              data: [{ removed: false }, { removed: false }, { removed: true }],
-            },
-          };
-          ctrl.addNonconformity();
-          expect(actualOptions.resolve.surveillanceTypes().nonconformityTypes.data.length).toBe(2);
-        });
-
         it('should not change base data', () => {
           authService.hasAnyRole.and.callFake((params) => params.reduce((acc, param) => acc || param === 'ROLE_ACB', false)); // user is ACB
           ctrl.data = {

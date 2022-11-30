@@ -1,3 +1,5 @@
+import { sortNonconformityTypes } from 'services/surveillance.service';
+
 const SurveillanceNonconformityEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/nonconformity/edit.html',
   bindings: {
@@ -6,14 +8,13 @@ const SurveillanceNonconformityEditComponent = {
     dismiss: '&',
   },
   controller: class SurveillanceNonconformityEditController {
-    constructor($log, API, authService, networkService, utilService) {
+    constructor($log, API, authService, networkService) {
       'ngInject';
 
       this.$log = $log;
       this.API = API;
       this.networkService = networkService;
-      this.utilService = utilService;
-      this.sortNonconformityTypes = utilService.sortNonconformityTypes;
+      this.sortNonconformityTypes = sortNonconformityTypes;
       this.item = {
         headers: {
           Authorization: `Bearer ${authService.getToken()}`,
@@ -23,7 +24,7 @@ const SurveillanceNonconformityEditComponent = {
     }
 
     $onInit() {
-      this.data = angular.copy(this.resolve.surveillanceTypes);
+      this.nonconformityTypes = this.resolve.surveillanceTypes.nonconformityTypes.data.sort(sortNonconformityTypes);
       this.disableValidation = this.resolve.disableValidation;
       this.nonconformity = angular.copy(this.resolve.nonconformity);
       this.randomized = this.resolve.randomized;
@@ -32,32 +33,12 @@ const SurveillanceNonconformityEditComponent = {
       this.showFormErrors = false;
       this.surveillanceId = this.resolve.surveillanceId;
       this.workType = this.resolve.workType;
-      this.item.url = `${this.API}/surveillance/${this.surveillanceId}/nonconformity/${this.nonconformity.id}/document`;
-      this.nonconformityType = this.nonconformity.type?.title ? this.data.nonconformityTypes.data
+      this.nonconformityType = this.nonconformity.type?.title ? this.nonconformityTypes
         .find((t) => t.title === this.nonconformity.type.title) : undefined;
     }
 
     cancel() {
       this.dismiss();
-    }
-
-    deleteDoc(docId) {
-      const that = this;
-      this.networkService.deleteSurveillanceDocument(this.surveillanceId, docId)
-        .then(() => {
-          for (let i = 0; i < this.nonconformity.documents.length; i += 1) {
-            if (this.nonconformity.documents[i].id === docId) {
-              this.nonconformity.documents.splice(i, 1);
-            }
-          }
-        }, (error) => {
-          if (error.data.error) {
-            that.deleteMessage = error.data.error;
-          } else {
-            that.deleteMessage = 'File was not removed successfully.';
-          }
-          that.deleteSuccess = false;
-        });
     }
 
     save() {

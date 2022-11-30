@@ -1,13 +1,36 @@
 import { sortCriteria } from './criteria.service';
 
-const sortRequirementTypes = (a, b) => {
-  if (a.requirementGroupType.name !== b.requirementGroupType.name) {
-    return a.requirementGroupType.name < b.requirementGroupType.name ? -1 : 1;
+const typeOrder = [
+  '170.523 (k)(1)',
+  '170.523 (k)(2)',
+  '170.523 (l)',
+  '170.523 (m)(1): Adaptations and updates',
+  '170.523 (m)(2): Adaptations and updates',
+  '170.523 (m)(3): Adaptations and updates',
+  '170.523 (m)(4): Adaptations and updates',
+  '170.523 (m)(5): Adaptations and updates',
+  '170.523 (t): Health IT Module voluntary standards and implementation specifications updates notices',
+  'Annual Real World Testing Plan',
+  'Annual Real World Testing Results Reports',
+  'Semiannual Attestations Submission',
+  'Other Non-Conformity',
+];
+
+const sortNonconformityTypes = (a, b) => {
+  if (a.number && b.number) {
+    return sortCriteria(a, b);
   }
+  if (a.number || b.number) {
+    return a.number ? -1 : 1;
+  }
+  return typeOrder.indexOf(a.title) - typeOrder.indexOf(b.title);
+};
+
+const sortRequirementTypes = (a, b) => {
   if (a.requirementGroupType.name === 'Certified Capability') {
     return sortCriteria(a, b);
   }
-  return a.title < b.title ? -1 : 1;
+  return typeOrder.indexOf(a.title) - typeOrder.indexOf(b.title);
 };
 
 const sortRequirements = (a, b) => {
@@ -39,6 +62,7 @@ const interpretRequirements = (reqs) => reqs
 export {
   getRequirementDisplay,
   interpretRequirements,
+  sortNonconformityTypes,
   sortRequirementTypes,
   sortRequirements,
   sortSurveillances,

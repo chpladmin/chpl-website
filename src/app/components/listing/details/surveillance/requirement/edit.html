@@ -24,6 +24,7 @@
       <label for="requirement-type" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="$ctrl.requirementType" id="requirement-type" name="requirement"
+                ng-disabled="!$ctrl.requirementOptions"
                 ng-options="type as type.display for type in $ctrl.requirementOptions" required>
         </select>
         <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.requirement.$touched) && $ctrl.editForm.requirement.$error.required">Field is required</div>
