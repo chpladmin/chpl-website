@@ -227,8 +227,6 @@ describe('the top navigation', () => {
 
       it('should have specific options under surveillance', () => {
         const expected = [
-          'Upload',
-          'Confirm',
           'Manage',
           'Activity Reporting',
           'Complaints Reporting',
