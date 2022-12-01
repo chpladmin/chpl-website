@@ -13,9 +13,7 @@ const states = [
   }, {
     name: 'collections.corrective-action',
     url: '/corrective-action',
-    controller: 'CorrectiveActionController',
-    controllerAs: 'vm',
-    template: require('./corrective-action/corrective-action.html'),
+    component: 'chplCorrectiveActionCollectionWrapperBridge',
     data: { title: 'Products: Corrective Action Status' },
   }, {
     name: 'collections.developers',
