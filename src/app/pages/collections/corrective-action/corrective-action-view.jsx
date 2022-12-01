@@ -167,7 +167,7 @@ function ChplCorrectiveActionCollectionView(props) {
     pageNumber,
     pageSize,
     sortDescending,
-    query: `hasHadComplianceActivity=true&${filterContext.queryString()}`,
+    query: filterContext.queryString(),
   });
 
   useEffect(() => {
@@ -224,123 +224,141 @@ function ChplCorrectiveActionCollectionView(props) {
         <Typography variant="body1">
           Please note that by default, only listings that are active or suspended are shown in the search results.
         </Typography>
+        { !isLoading && !directReviewsAvailable
+          && (
+            <>
+              <Typography variant="body1" gutterBottom>
+                This information is temporarily unavailable. Please check back later.
+              </Typography>
+              <Typography variant="body1">
+                Surveillance and Direct Review information can be downloaded from the
+                {' '}
+                <a href="#/resources/download">Download the CHPL page</a>
+              </Typography>
+            </>
+          )}
       </div>
-      <div className={classes.searchContainer} component={Paper}>
-        <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-      </div>
-      <div>
-        <ChplFilterChips />
-      </div>
-      { isLoading
-        && (
-          <>Loading</>
-        )}
-      { !isLoading
+      { directReviewsAvailable
         && (
           <>
-            <div className={classes.tableResultsHeaderContainer}>
-              <div className={`${classes.resultsContainer} ${classes.wrap}`}>
-                <Typography variant="subtitle2">Search Results:</Typography>
-                { listings.length === 0
-                  && (
-                    <Typography>
-                      No results found
-                    </Typography>
-                  )}
-                { listings.length > 0
-                  && (
-                    <Typography variant="body2">
-                      {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
-                    </Typography>
-                  )}
-              </div>
-              { listings.length > 0
-                && (
-                  <ButtonGroup size="small" className={classes.wrap}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      fullWidth
-                      id="download-filtered-listings"
-                      onClick={downloadListings}
-                    >
-                      Download
-                      {' '}
-                      { listings.length }
-                      {' '}
-                      Result
-                      { listings.length !== 1 ? 's' : '' }
-                      <GetAppIcon className={classes.iconSpacing} />
-                    </Button>
-                  </ButtonGroup>
-                )}
+            <div className={classes.searchContainer} component={Paper}>
+              <ChplFilterSearchTerm />
+              <ChplFilterPanel />
             </div>
-            { listings.length > 0
+            <div>
+              <ChplFilterChips />
+            </div>
+            { isLoading
+              && (
+                <>Loading</>
+              )}
+            { !isLoading
               && (
                 <>
-                  <TableContainer className={classes.tableContainer} component={Paper}>
-                    <Table
-                      stickyHeader
-                      aria-label="Corrective Action Collections table"
-                    >
-                      <ChplSortableHeaders
-                        headers={headers}
-                        onTableSort={handleTableSort}
-                        orderBy={orderBy}
-                        order={sortDescending ? 'desc' : 'asc'}
-                        stickyHeader
-                      />
-                      <TableBody>
-                        { listings
-                          .map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell className={classes.stickyColumn}>
-                                <strong>
-                                  <ChplLink
-                                    href={`#/listing/${item.id}?panel=${item.panel}`}
-                                    text={item.chplProductNumber}
-                                    analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
-                                    external={false}
-                                    router={{ sref: 'listing', options: { id: item.id, panel: item.panel } }}
-                                  />
-                                </strong>
-                              </TableCell>
-                              <TableCell>
-                                {item.edition.name}
-                                {' '}
-                                {item.curesUpdate ? 'Cures Update' : '' }
-                              </TableCell>
-                              <TableCell>
-                                <ChplLink
-                                  href={`#/organizations/developers/${item.developer.id}`}
-                                  text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                />
-                              </TableCell>
-                              <TableCell>{item.product.name}</TableCell>
-                              <TableCell>{item.version.name}</TableCell>
-                              <TableCell>{item.certificationStatus.name}</TableCell>
-                              <TableCell>{item.openSurveillanceNonConformityCount}</TableCell>
-                              <TableCell>{item.closedSurveillanceNonConformityCount}</TableCell>
-                              <TableCell>{item.openDirectReviewNonConformityCount}</TableCell>
-                              <TableCell>{item.closedDirectReviewNonConformityCount}</TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <ChplPagination
-                    count={recordCount}
-                    page={pageNumber}
-                    rowsPerPage={pageSize}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    setPage={setPageNumber}
-                    setRowsPerPage={setPageSize}
-                    analytics={analytics}
-                  />
+                  <div className={classes.tableResultsHeaderContainer}>
+                    <div className={`${classes.resultsContainer} ${classes.wrap}`}>
+                      <Typography variant="subtitle2">Search Results:</Typography>
+                      { listings.length === 0
+                        && (
+                          <Typography>
+                            No results found
+                          </Typography>
+                        )}
+                      { listings.length > 0
+                        && (
+                          <Typography variant="body2">
+                            {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
+                          </Typography>
+                        )}
+                    </div>
+                    { listings.length > 0
+                      && (
+                        <ButtonGroup size="small" className={classes.wrap}>
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            fullWidth
+                            id="download-filtered-listings"
+                            onClick={downloadListings}
+                          >
+                            Download
+                            {' '}
+                            { listings.length }
+                            {' '}
+                            Result
+                            { listings.length !== 1 ? 's' : '' }
+                            <GetAppIcon className={classes.iconSpacing} />
+                          </Button>
+                        </ButtonGroup>
+                      )}
+                  </div>
+                  { listings.length > 0
+                    && (
+                      <>
+                        <TableContainer className={classes.tableContainer} component={Paper}>
+                          <Table
+                            stickyHeader
+                            aria-label="Corrective Action Collections table"
+                          >
+                            <ChplSortableHeaders
+                              headers={headers}
+                              onTableSort={handleTableSort}
+                              orderBy={orderBy}
+                              order={sortDescending ? 'desc' : 'asc'}
+                              stickyHeader
+                            />
+                            <TableBody>
+                              { listings
+                                .map((item) => (
+                                  <TableRow key={item.id}>
+                                    <TableCell className={classes.stickyColumn}>
+                                      <strong>
+                                        <ChplLink
+                                          href={`#/listing/${item.id}?panel=${item.panel}`}
+                                          text={item.chplProductNumber}
+                                          analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
+                                          external={false}
+                                          router={{ sref: 'listing', options: { id: item.id, panel: item.panel } }}
+                                        />
+                                      </strong>
+                                    </TableCell>
+                                    <TableCell>
+                                      {item.edition.name}
+                                      {' '}
+                                      {item.curesUpdate ? 'Cures Update' : '' }
+                                    </TableCell>
+                                    <TableCell>
+                                      <ChplLink
+                                        href={`#/organizations/developers/${item.developer.id}`}
+                                        text={item.developer.name}
+                                        analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
+                                        external={false}
+                                        router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
+                                      />
+                                    </TableCell>
+                                    <TableCell>{item.product.name}</TableCell>
+                                    <TableCell>{item.version.name}</TableCell>
+                                    <TableCell>{item.certificationStatus.name}</TableCell>
+                                    <TableCell>{item.openSurveillanceNonConformityCount}</TableCell>
+                                    <TableCell>{item.closedSurveillanceNonConformityCount}</TableCell>
+                                    <TableCell>{item.openDirectReviewNonConformityCount}</TableCell>
+                                    <TableCell>{item.closedDirectReviewNonConformityCount}</TableCell>
+                                  </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                        <ChplPagination
+                          count={recordCount}
+                          page={pageNumber}
+                          rowsPerPage={pageSize}
+                          rowsPerPageOptions={[25, 50, 100]}
+                          setPage={setPageNumber}
+                          setRowsPerPage={setPageSize}
+                          analytics={analytics}
+                        />
+                      </>
+                    )}
                 </>
               )}
           </>

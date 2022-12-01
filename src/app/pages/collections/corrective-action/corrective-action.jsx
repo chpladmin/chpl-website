@@ -65,14 +65,11 @@ const staticFilters = [{
   ...defaultFilter,
   key: 'nonConformityOptions',
   display: 'Non-conformities',
+  required: true,
   operatorKey: 'nonConformityOptionsOperator',
   values: [
-    { value: 'open_nonconformity', display: 'Open Non-conformity' },
-    { value: 'closed_nonconformity', display: 'Closed Non-conformity' },
-    { value: 'never_nonconformity', display: 'never_nonconformity' },
-    { value: 'not_open_nonconformity', display: 'not_open_nonconformity' },
-    { value: 'not_closed_nonconformity', display: 'not_closed_nonconformity' },
-    { value: 'not_never_nonconformity', display: 'not_never_nonconformity' },
+    { value: 'open_nonconformity', display: 'Open Non-conformity', default: true },
+    { value: 'closed_nonconformity', display: 'Closed Non-conformity', default: true },
   ],
 }];
 
