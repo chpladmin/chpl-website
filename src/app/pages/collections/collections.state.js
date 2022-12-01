@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 const states = [
   {
     name: 'collections',
