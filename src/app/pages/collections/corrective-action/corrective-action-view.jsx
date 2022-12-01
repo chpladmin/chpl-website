@@ -152,6 +152,7 @@ function ChplCorrectiveActionCollectionView(props) {
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
   const csvExporter = new ExportToCsv(csvOptions);
+  const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -175,6 +176,7 @@ function ChplCorrectiveActionCollectionView(props) {
       setListings([]);
       return;
     }
+    setDirectReviewsAvailable(data?.directReviewsAvailable);
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
@@ -185,7 +187,7 @@ function ChplCorrectiveActionCollectionView(props) {
       panel: getPanel(listing),
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, isError, isLoading, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
