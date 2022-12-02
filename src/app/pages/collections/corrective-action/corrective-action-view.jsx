@@ -48,6 +48,7 @@ const csvOptions = {
   ],
 };
 
+/* eslint-disable object-curly-newline */
 const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
   { text: 'Certification Edition' },
@@ -55,11 +56,12 @@ const headers = [
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
   { text: 'Certification Status' },
-  { property: 'openSurveillanceNonConformityCount', text: '# Open Surveillance NCs' },
-  { property: 'closedSurveillanceNonConformityCount', text: '# Closed Surveillance NCs' },
-  { property: 'openDirectReviewNonConformityCount', text: '# Open Direct Review NCs' },
-  { property: 'closedDirectReviewNonConformityCount', text: '# Closed Direct Review NCs' },
+  { property: 'open_surveillance_nc_count', text: '# Open Surveillance NCs', sortable: true, reverseDefault: true },
+  { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs', sortable: true, reverseDefault: true },
+  { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs', sortable: true, reverseDefault: true },
+  { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs', sortable: true, reverseDefault: true },
 ];
+/* eslint-enable object-curly-newline */
 
 const useStyles = makeStyles({
   iconSpacing: {
@@ -154,10 +156,10 @@ function ChplCorrectiveActionCollectionView(props) {
   const csvExporter = new ExportToCsv(csvOptions);
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'open_surveillance_nc_count');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
