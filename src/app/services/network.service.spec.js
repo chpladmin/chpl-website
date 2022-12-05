@@ -198,14 +198,6 @@
         $httpBackend.flush();
       });
 
-      it('should createFilter', () => {
-        $httpBackend.expectPOST(/^\/rest\/filters/).respond(200, { data: 'response' });
-        networkService.createFilter('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should createInvitedUser', () => {
         $httpBackend.expectPOST(/^\/rest\/users\/create$/).respond(200, { data: 'response' });
         networkService.createInvitedUser('payload').then((response) => {
@@ -233,14 +225,6 @@
       it('should deleteComplaint', () => {
         $httpBackend.expectDELETE(/^\/rest\/complaints\/1$/).respond(200);
         networkService.deleteComplaint(1).then((response) => {
-          expect(response.status).toEqual(200);
-        });
-        $httpBackend.flush();
-      });
-
-      it('should deleteFilter', () => {
-        $httpBackend.expectDELETE(/^\/rest\/filters\/1$/).respond(200);
-        networkService.deleteFilter(1).then((response) => {
           expect(response.status).toEqual(200);
         });
         $httpBackend.flush();
@@ -663,22 +647,6 @@
       it('should getEducation', () => {
         $httpBackend.expectGET(/^\/rest\/data\/education_types$/).respond(200, { data: 'response' });
         networkService.getEducation().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getFilters', () => {
-        $httpBackend.expectGET(/^\/rest\/filters\?filterTypeId=1/).respond(200, { data: 'response' });
-        networkService.getFilters(1).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getFilterTypes', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/filter_types$/).respond(200, { data: 'response' });
-        networkService.getFilterTypes().then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -1248,14 +1216,6 @@
       it('should modifyATL', () => {
         $httpBackend.expectPUT(/^\/rest\/atls\/id$/).respond(200, { data: 'response' });
         networkService.modifyATL({ id: 'id' }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should registerApi', () => {
-        $httpBackend.expectPOST(/^\/rest\/key$/).respond(200, { data: 'response' });
-        networkService.registerApi('payload').then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

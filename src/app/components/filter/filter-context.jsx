@@ -10,7 +10,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import Moment from 'react-moment';
 import {
   arrayOf,
   bool,
@@ -23,6 +22,7 @@ import {
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 
 const FilterContext = createContext();
@@ -58,13 +58,9 @@ const getDateDisplay = (value) => (
     {' '}
     { value.selected
       ? (
-        <Moment
-          fromNow
-          withTitle
-          titleFormat="DD MMM yyyy"
-        >
-          {value.selected}
-        </Moment>
+        <>
+          { getDisplayDateFormat(value.selected) }
+        </>
       ) : (
         <>
           No date selected

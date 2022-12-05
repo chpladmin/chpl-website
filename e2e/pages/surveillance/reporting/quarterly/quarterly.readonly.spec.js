@@ -85,7 +85,8 @@ describe('the quarterly surveillance reporting page', () => {
 
     it('can only view complaints', async () => {
       await quarterlyPage.complaintsHeader.click();
-      await complaints.viewComplaint('SC-000031');
+      await complaints.searchForText('SC-000031');
+      await (await complaints.viewButton).click();
       await expect(await (await complaints.editButton).isDisplayed()).toBe(false);
     });
   });

@@ -204,9 +204,6 @@ function ChplChangeRequestsView(props) {
     hide('viewall.disabled');
   };
 
-  const pageStart = (pageNumber * pageSize) + 1;
-  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
-
   if (changeRequest) {
     return (
       <ChplChangeRequest
@@ -216,6 +213,9 @@ function ChplChangeRequestsView(props) {
       />
     );
   }
+
+  const pageStart = (pageNumber * pageSize) + 1;
+  const pageEnd = Math.min((pageNumber + 1) * pageSize, data?.recordCount);
 
   return (
     <Card>

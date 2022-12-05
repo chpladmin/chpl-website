@@ -1,6 +1,10 @@
-class ComplaintsComponent {
+import CollectionPage from '../../../pages/collections/collection.po';
+
+class ComplaintsComponent extends CollectionPage {
   constructor() {
+    super();
     this.elements = {
+      ...this.elements,
       complaintsBody: 'chpl-complaints-wrapper-bridge',
       certificationBody: '#certification-body',
       receivedDate: '#received-date',
@@ -9,7 +13,6 @@ class ComplaintsComponent {
       summary: '#summary',
       saveComplaint: '#action-bar-save',
       closedDate: '#closed-date',
-      filter: '#data-filter',
       downloadResultsButton: '#download-results',
       newComplaint: '//*[text()="Add New Complaint"]',
       viewButton: '//span[text()="View"]',
@@ -28,11 +31,16 @@ class ComplaintsComponent {
       advanceFilterOptions: (value) => `#filter-list-${value}`,
       chooseAdvanceSearchOption: (option) => `//button[text()="${option}"]`,
       complaintsTable: '[aria-label="Complaints table"]',
+      backToComplaintsButton: 'button*=Back to Complaints',
     };
   }
 
   get editButton() {
     return $(this.elements.editButton);
+  }
+
+  get backToComplaintsButton() {
+    return $(this.elements.backToComplaintsButton);
   }
 
   async complaintsBody() {
@@ -110,10 +118,6 @@ class ComplaintsComponent {
     await browser.waitUntil(async () => (await this.complaintsBody()).includes('Create Complaint'));
   }
 
-  get filter() {
-    return $(this.elements.filter);
-  }
-
   async editComplaint(id) {
     await this.viewComplaint(id);
     await (await $('//*[text()="Edit"]/parent::button')).click();
@@ -136,8 +140,7 @@ class ComplaintsComponent {
   }
 
   async searchFilter(value) {
-    await (await $(this.elements.filter)).clearValue();
-    await (await $(this.elements.filter)).addValue(value);
+    await this.searchForText(value);
   }
 
   async advanceFilterOptions(value) {

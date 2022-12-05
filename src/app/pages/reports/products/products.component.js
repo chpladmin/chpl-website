@@ -139,21 +139,9 @@ const ReportsProductsComponent = {
       this.isDestroyed = true;
     }
 
-    onApplyFilter(filterObj) {
-      const f = angular.fromJson(filterObj);
-      this.doFilter(f);
-    }
-
-    onClearFilter() {
-      const filterData = {};
-      filterData.dataFilter = '';
-      filterData.tableState = this.tableController.tableState();
-      this.clearFilterHs.forEach((handler) => handler());
-      this.doFilter(filterData);
-    }
-
     doFilter(filter) {
       const that = this;
+
       this.filterText = filter.dataFilter;
       if (filter.tableState.search.predicateObject.date) {
         this.tableController.search(filter.tableState.search.predicateObject.date, 'date');
@@ -170,13 +158,6 @@ const ReportsProductsComponent = {
 
     registerRestoreState(handler) {
       this.restoreStateHs.push(handler);
-    }
-
-    createFilterDataObject() {
-      const filterData = {};
-      filterData.dataFilter = this.filterText;
-      filterData.tableState = this.tableController.tableState();
-      return filterData;
     }
 
     tableStateListener(tableController) {
