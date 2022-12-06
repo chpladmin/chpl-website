@@ -10,20 +10,13 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import {
-  arrayOf,
-  bool,
-  func,
-  number,
-  oneOfType,
-  shape,
-  string,
-} from 'prop-types';
+import { arrayOf, shape, string } from 'prop-types';
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { filter as filterPropType } from 'shared/prop-types';
 
 const FilterContext = createContext();
 
@@ -313,21 +306,7 @@ function FilterProvider(props) {
 }
 
 FilterProvider.propTypes = {
-  filters: arrayOf(shape({
-    key: string.isRequired,
-    display: string.isRequired,
-    required: bool,
-    operatorKey: string,
-    operator: string,
-    values: arrayOf(shape({
-      value: oneOfType([number, string]).isRequired,
-      default: oneOfType([bool, string]),
-      display: string,
-    })).isRequired,
-    getQuery: func,
-    getValueDisplay: func,
-    getValueEntry: func,
-  })).isRequired,
+  filters: arrayOf(filterPropType).isRequired,
   analytics: shape({
     category: string.isRequired,
   }),

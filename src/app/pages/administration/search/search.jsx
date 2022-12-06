@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import getCriteriaValueEntry from './criteria-value-entry';
 import ChplSearchView from './search-view';
 
 import { useFetchCqms, useFetchCriteria } from 'api/data';
@@ -101,6 +102,7 @@ function ChplSearchPage() {
         display: 'Certification Criteria',
         operatorKey: 'certificationCriteriaOperator',
         sortValues: (filter, a, b) => sortCriteria(a, b),
+        getValueEntry: getCriteriaValueEntry,
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);

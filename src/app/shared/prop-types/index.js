@@ -19,6 +19,7 @@ import { conformanceMethod, selectedConformanceMethod } from './conformance-meth
 import criterion from './criterion';
 import developer from './developer';
 import directReview from './direct-review';
+import filter from './filter';
 import formik from './formik';
 import { job, scheduledSystemTrigger, trigger } from './jobs';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
@@ -65,6 +66,7 @@ export {
   criterion,
   developer,
   directReview,
+  filter,
   formik,
   job,
   listing,
