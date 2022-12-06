@@ -67,8 +67,16 @@ const staticFilters = [{
   ],
 }, {
   ...defaultFilter,
-  key: 'nonConformityOptions',
+  key: 'hasHadComplianceActivity',
   display: 'Compliance',
+  values: [
+    { value: 'true', display: 'Has had Compliance Activity' },
+    { value: 'false', display: 'Has not had Compliance Activity' },
+  ],
+}, {
+  ...defaultFilter,
+  key: 'nonConformityOptions',
+  display: 'Non-conformities',
   operatorKey: 'nonConformityOptionsOperator',
   values: [
     { value: 'open_nonconformity', display: 'Open Non-conformity' },
