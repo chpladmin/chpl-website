@@ -39,7 +39,7 @@ const getDefaultValueEntry = ({ filter, handleFilterToggle }) => filter.values
             inputProps={{ 'aria-labelledby': labelId }}
           />
         </ListItemIcon>
-        <ListItemText id={labelId}>{filter.getValueDisplay(value)}</ListItemText>
+        <ListItemText id={labelId}>{filter.getLongValueDisplay(value)}</ListItemText>
       </ListItem>
     );
   });
@@ -89,6 +89,7 @@ const defaultFilter = {
   getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}${filter.operatorKey ? `&${filter.operatorKey}=${filter.operator}` : ''}`,
   getFilterDisplay: (filter) => filter.display,
   getValueDisplay: (value) => value.display,
+  getLongValueDisplay: (value) => value.longDisplay || value.display,
   getValueEntry: getDefaultValueEntry,
   sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
 };

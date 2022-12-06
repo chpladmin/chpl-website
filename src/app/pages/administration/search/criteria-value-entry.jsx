@@ -74,7 +74,7 @@ function ChplCriteriaValueEntry(props) {
           />
         </ListItemIcon>
         <ListItemText id={labelId}>
-          {filter.getValueDisplay(value)}
+          {filter.getLongValueDisplay(value)}
         </ListItemText>
       </ListItem>
     );

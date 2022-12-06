@@ -93,6 +93,7 @@ function ChplSearchPage() {
         ...cc,
         value: cc.id,
         display: `${cc.certificationEditionId !== 3 ? 'Retired | ' : ''}${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+        longDisplay: `${cc.certificationEditionId !== 3 ? 'Retired | ' : ''}${cc.removed ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
@@ -116,6 +117,7 @@ function ChplSearchPage() {
         ...cqm,
         value: cqm.name,
         display: cqm.name.substring(0, 3) === 'CMS' ? `${cqm.name}` : `Retired | NQF-${cqm.name}`,
+        longDisplay: `${cqm.name.substring(0, 3) === 'CMS' ? `${cqm.name}` : `Retired | NQF-${cqm.name}`}: ${cqm.title}`,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'cqms')
