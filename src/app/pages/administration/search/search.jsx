@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import getCqmValueEntry from './cqm-value-entry';
 import getCriteriaValueEntry from './criteria-value-entry';
 import ChplSearchView from './search-view';
 
@@ -127,6 +128,7 @@ function ChplSearchPage() {
         display: 'Clinical Quality Measures',
         operatorKey: 'cqmsOperator',
         sortValues: (filter, a, b) => sortCqms(a, b),
+        getValueEntry: getCqmValueEntry,
         values,
       }));
   }, [cqmQuery.data, cqmQuery.isLoading, cqmQuery.isSuccess]);
