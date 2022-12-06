@@ -91,7 +91,7 @@ function ChplSearchPage() {
       .map((cc) => ({
         ...cc,
         value: cc.id,
-        display: `${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+        display: `${cc.certificationEditionId !== 3 ? 'Retired | ' : ''}${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
