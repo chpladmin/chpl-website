@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import getAcbValueEntry from './acb-value-entry';
 import getCqmValueEntry from './cqm-value-entry';
 import getCriteriaValueEntry from './criteria-value-entry';
 import ChplSearchView from './search-view';
@@ -56,6 +57,7 @@ const staticFilters = [{
   ...defaultFilter,
   key: 'certificationBodies',
   display: 'ONC-ACB',
+  getValueEntry: getAcbValueEntry,
   values: [
     { value: 'CCHIT', display: 'CCHIT (Retired)' },
     { value: 'Drummond Group', default: true },
