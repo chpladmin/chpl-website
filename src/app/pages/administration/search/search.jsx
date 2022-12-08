@@ -3,10 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ChplSearchView from './search-view';
 
 import { useFetchCqms, useFetchCriteria } from 'api/data';
-import {
-  FilterProvider,
-  defaultFilter,
-} from 'components/filter';
+import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
   certificationCriteriaIds,
