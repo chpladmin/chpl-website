@@ -36,7 +36,7 @@ const staticFilters = [
       { value: 'never_nonconformity', display: 'Never had a Non-conformity' },
       { value: 'not_open_nonconformity', display: 'Has no open Non-conformities' },
       { value: 'not_closed_nonconformity', display: 'Has no closed Non-conformities' },
-      { value: 'not_never_nonconformit', display: 'Has had a Non-conformity' },
+      { value: 'not_never_nonconformity', display: 'Has had a Non-conformity' },
     ],
   }];
 
