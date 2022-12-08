@@ -18,6 +18,7 @@ const getCqmValueEntry = (props) => (
 
 const getCriteriaValueEntry = (props) => (
   <ChplTabbedValueEntry
+    retiredLabel="Removed/Retired"
     isActive={(value, filter) => !filter.getValueDisplay(value).includes('|')}
     {...props}
   />

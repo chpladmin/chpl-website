@@ -9,7 +9,12 @@ import {
   Tab,
   Tabs,
 } from '@material-ui/core';
-import { func, node, number } from 'prop-types';
+import {
+  func,
+  node,
+  number,
+  string,
+} from 'prop-types';
 
 import { filter as filterPropType } from 'shared/prop-types';
 
@@ -46,7 +51,12 @@ function a11yProps(index) {
 }
 
 function ChplTabbedValueEntry(props) {
-  const { filter, handleFilterToggle, isActive } = props;
+  const {
+    filter,
+    handleFilterToggle,
+    isActive,
+    retiredLabel,
+  } = props;
   const [activeTab, setActiveTab] = useState(0);
 
   const handleChange = (event, newTab) => {
@@ -88,7 +98,7 @@ function ChplTabbedValueEntry(props) {
           variant="fullWidth"
         >
           <Tab label="Active" {...a11yProps(0)} />
-          <Tab label="Removed/Retired" {...a11yProps(1)} />
+          <Tab label={retiredLabel} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={activeTab} index={0}>
@@ -111,4 +121,9 @@ ChplTabbedValueEntry.propTypes = {
   filter: filterPropType.isRequired,
   handleFilterToggle: func.isRequired,
   isActive: func.isRequired,
+  retiredLabel: string,
+};
+
+ChplTabbedValueEntry.defaultProps = {
+  retiredLabel: 'Retired',
 };
