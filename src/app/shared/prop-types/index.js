@@ -1,5 +1,4 @@
 import acb from './acb';
-import accessibilityStandard from './accessibility-standard';
 import address from './address';
 import analyticsConfig from './analytics-config';
 import announcement from './announcement';
@@ -28,6 +27,8 @@ import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
 import routerConfig from './router-config';
 import {
+  accessibilityStandard,
+  accessibilityStandardType,
   svap,
   selectedSvap,
   ucdProcess,
@@ -51,6 +52,7 @@ import version from './version';
 export {
   acb,
   accessibilityStandard,
+  accessibilityStandardType,
   address,
   analyticsConfig,
   announcement,

@@ -4,6 +4,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  CircularProgress,
   FormControlLabel,
   InputAdornment,
   MenuItem,
@@ -13,17 +14,18 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { arrayOf, func, string } from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useDeleteComplaint, usePostComplaint, usePutComplaint } from 'api/complaints';
+import { useFetchCollection } from 'api/collections';
 import { useFetchComplainantTypes, useFetchCriteria } from 'api/data';
 import { ChplTextField } from 'components/util';
 import { ChplActionBar } from 'components/action-bar';
 import { getAngularService } from 'services/angular-react-helper';
-import { complaint as complaintPropType, listing as listingPropType } from 'shared/prop-types';
+import { complaint as complaintPropType } from 'shared/prop-types';
 import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
@@ -71,7 +73,7 @@ const validationSchema = yup.object({
   complainantTypeOther: yup.string()
     .test('conditionallyRequired',
       'Complainant Type - Other Description is required',
-      (value, context) => (!!value || context.parent.complainantType?.name !== 'Other - [Please Describe]')),
+      (value, context) => (!!value || context.parent.complainantType?.name !== 'Other')),
   summary: yup.string()
     .required('Complaint Summary is required'),
   actions: yup.string()
@@ -83,39 +85,46 @@ const validationSchema = yup.object({
 });
 
 function ChplComplaintEdit(props) {
+  const networkService = getAngularService('networkService');
+  const { complaint: initialComplaint, dispatch } = props;
+  const [certificationBodies, setCertificationBodies] = useState([]);
+  const [complainantTypes, setComplainantTypes] = useState([]);
+  const [complaint, setComplaint] = useState({});
+  const [criteria, setCriteria] = useState([]);
+  const [criterionEdition, setCriterionEdition] = useState('2015');
+  const [criterionToAdd, setCriterionToAdd] = useState('');
+  const [listings, setListings] = useState([]);
+  const [listingToAdd, setListingToAdd] = useState(null);
+  const [listingValueToAdd, setListingValueToAdd] = useState('');
+  const [query, setQuery] = useState('');
+  const [surveillances, setSurveillances] = useState([]);
+  const [surveillanceToAdd, setSurveillanceToAdd] = useState('');
+  const [errors, setErrors] = useState([]);
   const { mutate: post } = usePostComplaint();
   const { mutate: put } = usePutComplaint();
   const { mutate: remove } = useDeleteComplaint();
   const { data: certificationBodiesData, isLoading: certificationBodiesIsLoading, isSuccess: certificationBodiesIsSuccess } = useFetchAcbs(true);
   const { data: complainantTypesData, isLoading: complainantTypesIsLoading, isSuccess: complainantTypesIsSuccess } = useFetchComplainantTypes();
   const { data: criteriaData, isLoading: criteriaIsLoading, isSuccess: criteriaIsSuccess } = useFetchCriteria();
-  const [complaint, setComplaint] = useState(() => {
+  const { data: listingsData, isLoading: listingsIsLoading, isSuccess: listingsIsSuccess } = useFetchCollection({
+    orderBy: 'chpl_id',
+    pageNumber: 0,
+    pageSize: 25,
+    sortDescending: false,
+    query,
+  });
+  const classes = useStyles();
+  let formik;
+
+  useEffect(() => {
     const c = {
-      ...props.complaint,
+      ...initialComplaint,
     };
     if (!c.criteria) { c.criteria = []; }
     if (!c.listings) { c.listings = []; }
     if (!c.surveillances) { c.surveillances = []; }
-    return c;
-  });
-  const [certificationBodies, setCertificationBodies] = useState([]);
-  const [complainantTypes, setComplainantTypes] = useState([]);
-  const [criteria, setCriteria] = useState([]);
-  const [criterionEdition, setCriterionEdition] = useState('2015');
-  const [criterionToAdd, setCriterionToAdd] = useState('');
-  const [listings] = useState(
-    props.listings // eslint-disable-line react/destructuring-assignment
-      .filter((listing) => (!complaint.certificationBody || listing.acb === complaint.certificationBody.name))
-      .sort(((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1))),
-  );
-  const [listingToAdd, setListingToAdd] = useState(null);
-  const [listingValueToAdd, setListingValueToAdd] = useState('');
-  const [surveillances, setSurveillances] = useState([]);
-  const [surveillanceToAdd, setSurveillanceToAdd] = useState('');
-  const [errors, setErrors] = useState([]);
-  const networkService = getAngularService('networkService');
-  const classes = useStyles();
-  let formik;
+    setComplaint(c);
+  }, [initialComplaint]);
 
   useEffect(() => {
     if (certificationBodiesIsLoading || !certificationBodiesIsSuccess) { return; }
@@ -125,8 +134,8 @@ function ChplComplaintEdit(props) {
   useEffect(() => {
     if (complainantTypesIsLoading || !complainantTypesIsSuccess) { return; }
     setComplainantTypes(complainantTypesData.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === props.complaint?.complainantType?.id) || '');
-  }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, props.complaint]);
+    formik.setFieldValue('complainantType', complainantTypesData.data.find((type) => type.id === initialComplaint?.complainantType?.id) || '');
+  }, [complainantTypesData, complainantTypesIsLoading, complainantTypesIsSuccess, initialComplaint]);
 
   useEffect(() => {
     if (criteriaIsLoading || !criteriaIsSuccess) { return; }
@@ -134,8 +143,21 @@ function ChplComplaintEdit(props) {
   }, [criteriaData, criteriaIsLoading, criteriaIsSuccess]);
 
   useEffect(() => {
+    if (listingsIsLoading || !listingsIsSuccess) { return; }
+    setListings(listingsData.results.map((listing) => ({
+      ...listing,
+    })));
+  }, [listingsData, listingsIsLoading, listingsIsSuccess]);
+
+  useEffect(() => {
+    const acbQuery = formik.values.certificationBody ? `certificationBodies=${formik.values.certificationBody.name}` : undefined;
+    const listingQuery = listingValueToAdd ? `searchTerm=${listingValueToAdd}` : undefined;
+    setQuery([acbQuery, listingQuery].filter((v) => v).join('&'));
+  }, [formik?.values?.certificationBody, listingValueToAdd]);
+
+  useEffect(() => {
     setSurveillances([]);
-    complaint.listings.forEach((listing) => {
+    complaint.listings?.forEach((listing) => {
       networkService.getListingBasic(listing.listingId, true).then((response) => {
         const newSurveillances = response.surveillance.map((surv) => ({
           id: surv.id,
@@ -156,14 +178,8 @@ function ChplComplaintEdit(props) {
     });
   }, [complaint.listings]);
 
-  useEffect(() => {
-    setErrors(props.errors
-      .map((s) => (s))
-      .sort((a, b) => (a < b ? -1 : 1)));
-  }, [props.errors]); // eslint-disable-line react/destructuring-assignment
-
   const handleAction = (action, payload) => {
-    props.dispatch(action, payload);
+    dispatch({ action, payload });
   };
 
   const addAssociatedCriterion = (event) => {
@@ -309,19 +325,19 @@ function ChplComplaintEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      certificationBody: complaint.certificationBody || '',
-      receivedDate: complaint.receivedDate || '',
-      closedDate: complaint.closedDate || '',
-      acbComplaintId: complaint.acbComplaintId || '',
-      oncComplaintId: complaint.oncComplaintId || '',
-      complainantType: complaint.complainantType || '',
-      complainantTypeOther: complaint.complainantTypeOther || '',
-      summary: complaint.summary || '',
-      actions: complaint.actions || '',
-      complainantContacted: !!complaint.complainantContacted,
-      developerContacted: !!complaint.developerContacted,
-      oncAtlContacted: !!complaint.oncAtlContacted,
-      flagForOncReview: !!complaint.flagForOncReview,
+      certificationBody: initialComplaint.certificationBody || '',
+      receivedDate: initialComplaint.receivedDate || '',
+      closedDate: initialComplaint.closedDate || '',
+      acbComplaintId: initialComplaint.acbComplaintId || '',
+      oncComplaintId: initialComplaint.oncComplaintId || '',
+      complainantType: '',
+      complainantTypeOther: initialComplaint.complainantTypeOther || '',
+      summary: initialComplaint.summary || '',
+      actions: initialComplaint.actions || '',
+      complainantContacted: !!initialComplaint.complainantContacted,
+      developerContacted: !!initialComplaint.developerContacted,
+      oncAtlContacted: !!initialComplaint.oncAtlContacted,
+      flagForOncReview: !!initialComplaint.flagForOncReview,
     },
     onSubmit: () => {
       save();
@@ -330,6 +346,12 @@ function ChplComplaintEdit(props) {
     validateOnChange: false,
     validateOnMount: true,
   });
+
+  if (certificationBodiesIsLoading || complainantTypesIsLoading) {
+    return (
+      <CircularProgress />
+    );
+  }
 
   return (
     <>
@@ -428,13 +450,14 @@ function ChplComplaintEdit(props) {
                   <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                 ))}
               </ChplTextField>
-              { formik.values.complainantType?.name === 'Other - [Please Describe]'
+              { formik.values.complainantType?.name === 'Other'
                 && (
                   <ChplTextField
                     id="complainant-type-other"
                     name="complainantTypeOther"
                     label="Complainant Type - Other Description"
                     required
+                    multiline
                     value={formik.values.complainantTypeOther}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -553,7 +576,7 @@ function ChplComplaintEdit(props) {
                 onInputChange={(event, newValue) => {
                   setListingValueToAdd(newValue);
                 }}
-                getOptionLabel={(item) => (`${item.chplProductNumber} (${item.developer} - ${item.product})`)}
+                getOptionLabel={(item) => (`${item.chplProductNumber} (${item.developer.name} - ${item.product.name})`)}
                 renderInput={(params) => <ChplTextField {...params} label="Add Associated Listing" />}
               />
               { /* eslint-enable react/jsx-props-no-spreading */ }
@@ -661,7 +684,5 @@ export default ChplComplaintEdit;
 
 ChplComplaintEdit.propTypes = {
   complaint: complaintPropType.isRequired,
-  listings: arrayOf(listingPropType).isRequired,
-  errors: arrayOf(string).isRequired,
   dispatch: func.isRequired,
 };

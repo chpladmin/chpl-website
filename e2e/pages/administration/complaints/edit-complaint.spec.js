@@ -46,7 +46,7 @@ describe('when editing complaints', () => {
     });
 
     it('should be able to close complaint by adding closed date and actions', async () => {
-      const STATUS_IDX = 1;
+      const STATUS_IDX = 0;
       const timestamp = Date.now();
       const fields = {
         body: 'Drummond Group',
@@ -68,8 +68,8 @@ describe('when editing complaints', () => {
       await complaintsComponent.setActions(`Actions - ${timestamp}`);
       await complaintsComponent.saveComplaint();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
+      await complaintsComponent.clearSearchTerm();
       await complaintsComponent.searchFilter(fields.acbId);
-      await (browser.waitUntil(async () => (await complaintsComponent.getResults()).length === 1));
       await (browser.waitUntil(async () => await (await complaintsComponent.getComplaintCell((await complaintsComponent.getTableComplaints())[0], STATUS_IDX)).getText() === 'CLOSED'));
       [complaint] = (await complaintsComponent.getTableComplaints());
       await expect(await (await complaintsComponent.getComplaintCell(complaint, STATUS_IDX)).getText()).toBe('CLOSED');

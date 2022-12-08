@@ -18,7 +18,6 @@
 
       inject(function ($q) {
         mockCommonService.getApiUsers = function () { return $q.when(mockCommonService.apiUsers); };
-        mockCommonService.registerApi = function () { return $q.when(mockCommonService.registered); };
         mockCommonService.revokeApi = function () { return $q.when({}); };
       });
     });

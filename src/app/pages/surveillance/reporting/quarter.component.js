@@ -19,6 +19,7 @@ export const SurveillanceReportQuarterComponent = {
       this.DateUtil = DateUtil;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.disallowedFilters = ['certificationBodies', 'receivedDate', 'closedDate'];
     }
 
     $onInit () {
@@ -29,6 +30,11 @@ export const SurveillanceReportQuarterComponent = {
       if (changes.report) {
         this.report = angular.copy(changes.report.currentValue);
         this.backup.report = angular.copy(this.report);
+        const fmt = 'yyyy-MM-dd';
+        this.bonusQuery = [
+          `certificationBodies=${this.report.acb.name}`,
+          `openDuringDateRange=${this.report.startDay},${this.report.endDay}`,
+        ].sort((a, b) => a < b ? -1 : 1).join('&');
       }
       if (changes.relevantListings) {
         this.relevantListings = angular.copy(changes.relevantListings.currentValue);
