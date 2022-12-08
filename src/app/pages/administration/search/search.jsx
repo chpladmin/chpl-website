@@ -9,14 +9,12 @@ import {
 } from 'components/filter';
 import {
   certificationBodies,
+  certificationCriteriaIds,
   certificationDate,
   certificationStatuses,
+  cqms,
   derivedCertificationEditions,
 } from 'components/filter/filters';
-import getCqmValueEntry from 'components/filter/filters/cqm-value-entry';
-import getCriteriaValueEntry from 'components/filter/filters/criteria-value-entry';
-import { sortCqms } from 'services/cqms.service';
-import { sortCriteria } from 'services/criteria.service';
 
 const staticFilters = [
   certificationBodies,
@@ -64,12 +62,7 @@ function ChplSearchPage() {
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
       .concat({
-        ...defaultFilter,
-        key: 'certificationCriteriaIds',
-        display: 'Certification Criteria',
-        operatorKey: 'certificationCriteriaOperator',
-        sortValues: (filter, a, b) => sortCriteria(a, b),
-        getValueEntry: getCriteriaValueEntry,
+        ...certificationCriteriaIds,
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
@@ -88,12 +81,7 @@ function ChplSearchPage() {
     setFilters((f) => f
       .filter((filter) => filter.key !== 'cqms')
       .concat({
-        ...defaultFilter,
-        key: 'cqms',
-        display: 'Clinical Quality Measures',
-        operatorKey: 'cqmsOperator',
-        sortValues: (filter, a, b) => sortCqms(a, b),
-        getValueEntry: getCqmValueEntry,
+        ...cqms,
         values,
       }));
   }, [cqmQuery.data, cqmQuery.isLoading, cqmQuery.isSuccess]);

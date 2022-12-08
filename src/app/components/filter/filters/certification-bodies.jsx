@@ -1,4 +1,4 @@
-import getAcbValueEntry from './acb-value-entry';
+import { getAcbValueEntry } from './value-entries';
 
 import { defaultFilter } from 'components/filter';
 
