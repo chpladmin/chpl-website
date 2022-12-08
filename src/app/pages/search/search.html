@@ -23,7 +23,8 @@
             </span>
           </div>
           <div ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
-            <button class="btn btn-default" ng-if="vm.hasTableState" ng-click="vm.reloadResults()"><i class="fa fa-backward"></i> Restore previous search</button>
+            <button class="btn btn-default" ng-if="vm.hasTableState" ng-click="vm.reloadResults()"
+                    analytics-on="click" analytics-event="Restore previous search" analytics-properties="{ category: 'Search' }"><i class="fa fa-backward"></i> Restore previous search</button>
           </div>
         </div>
         <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
@@ -439,7 +440,7 @@
                       <div class="text-center">
                         <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-compare-widget-button>
                       </div>
-                      <div class="text-center" ng-if="cp.edition === '2015' || cp.edition === '2015 Cures Update'">
+                      <div class="text-center" ng-if="vm.canCertId(cp)">
                         <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}" chpl-product-number="{{ cp.chplProductNumber }}"></ai-cms-widget-button>
                       </div>
                     </div>

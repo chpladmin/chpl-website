@@ -546,10 +546,6 @@ export default class NetworkService {
     return this.apiPOST('/auth/authenticate', userObj);
   }
 
-  lookupCertificationId(certId) {
-    return this.apiGET(`/certification_ids/${certId}`);
-  }
-
   mergeDevelopers(mergeDeveloperObject) {
     return this.apiPOST('/developers/merge', mergeDeveloperObject);
   }

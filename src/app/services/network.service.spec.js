@@ -1189,14 +1189,6 @@
         $httpBackend.flush();
       });
 
-      it('should lookupCertificationId', () => {
-        $httpBackend.expectGET(/^\/rest\/certification_ids\/payload$/).respond(200, { data: 'response' });
-        networkService.lookupCertificationId('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should mergeDevelopers', () => {
         $httpBackend.expectPOST(/^\/rest\/developers\/merge$/).respond(200, { data: 'response' });
         networkService.mergeDevelopers('payload').then((response) => {

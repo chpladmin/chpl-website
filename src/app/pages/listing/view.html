@@ -19,7 +19,7 @@
         </div>
         <div>
           <ai-cms-widget-button
-            ng-if="$ctrl.listing.certificationEdition.name === '2015'"
+            ng-if="$ctrl.canCertId($ctrl.listing)"
             product-id="{{ $ctrl.listing.id }}"
             product-name="{{ $ctrl.listing.product.name }}"
             chpl-product-number="{{ $ctrl.listing.chplProductNumber }}"
