@@ -112,7 +112,7 @@ export default class NetworkService {
   }
 
   getAccessibilityStandards() {
-    return this.apiGET('/data/accessibility_standards');
+    return this.apiGET('/accessibility-standards');
   }
 
   getActivityMetadata(key, options) {

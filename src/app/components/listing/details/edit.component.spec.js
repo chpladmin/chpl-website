@@ -30,7 +30,7 @@
     };
     mock.relatedListings = [{ id: 1, edition: '2015' }, { id: 2, edition: '2014' }];
     mock.resources = {
-      accessibilityStandards: { data: [] },
+      accessibilityStandards: [],
       qmsStandards: { data: [] },
       targetedUsers: { data: [] },
       testStandards: { data: [] },

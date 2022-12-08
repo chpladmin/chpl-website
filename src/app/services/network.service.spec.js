@@ -311,7 +311,7 @@
       });
 
       it('should getAccessibilityStandards', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/accessibility_standards$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/accessibility-standards$/).respond(200, { data: 'response' });
         networkService.getAccessibilityStandards().then((response) => {
           expect(response.data).toEqual('response');
         });

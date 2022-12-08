@@ -51,7 +51,7 @@ const ListingDetailsEditComponent = {
       }
       if (changes.resources && changes.resources.currentValue) {
         this.resources = angular.copy(changes.resources.currentValue);
-        this.resources.accessibilityStandards = this.resources.accessibilityStandards.data.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+        this.resources.accessibilityStandards = this.resources.accessibilityStandards.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
         this.resources.qmsStandards = this.resources.qmsStandards.data.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
         this.resources.targetedUsers = this.resources.targetedUsers.data.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
       }

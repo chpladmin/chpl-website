@@ -2,6 +2,44 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
+const useDeleteAccessibilityStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`accessibility-standards/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['accessibility-standards']);
+    },
+  });
+};
+
+const useFetchAccessibilityStandards = () => {
+  const axios = useAxios();
+  return useQuery(['accessibility-standards'], async () => {
+    const response = await axios.get('accessibility-standards');
+    return response.data;
+  });
+};
+
+const usePostAccessibilityStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('accessibility-standards', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['accessibility-standards']);
+    },
+  });
+};
+
+const usePutAccessibilityStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('accessibility-standards', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['accessibility-standards']);
+    },
+  });
+};
+
 const useDeleteSvap = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -87,6 +125,10 @@ const usePutUcdProcess = () => {
 };
 
 export {
+  useDeleteAccessibilityStandard,
+  useFetchAccessibilityStandards,
+  usePostAccessibilityStandard,
+  usePutAccessibilityStandard,
   useDeleteSvap,
   useFetchCriteriaForSvaps,
   useFetchSvaps,
