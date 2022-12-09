@@ -92,6 +92,7 @@ const defaultFilter = {
   getLongValueDisplay: (value) => value.longDisplay || value.display,
   getValueEntry: getDefaultValueEntry,
   sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
+  singular: false,
 };
 
 const clearFilter = (filter, category, setFilters) => {
@@ -155,18 +156,33 @@ const toggleShowAll = (filters, category, setFilters) => {
 
 const updateFilter = (filters, category, value, setFilters) => {
   const filter = filters.find((f) => f.key === category.key);
-  const item = filter.values.find((v) => v.value === value.value);
-  const updatedItem = {
-    ...item,
-    selected: value.selected,
-  };
-  const updatedFilter = {
-    ...filter,
-    values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
-  };
-  const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-  if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
-    setFilters(updatedFilters);
+  if (filter.singular) {
+    const values = filter.values.map((v) => ({
+      ...v,
+      selected: v.value === value.value,
+    }));
+    const updatedFilter = {
+      ...filter,
+      values,
+    };
+    const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+      setFilters(updatedFilters);
+    }
+  } else {
+    const item = filter.values.find((v) => v.value === value.value);
+    const updatedItem = {
+      ...item,
+      selected: value.selected,
+    };
+    const updatedFilter = {
+      ...filter,
+      values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
+    };
+    const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+      setFilters(updatedFilters);
+    }
   }
 };
 

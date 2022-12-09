@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from '@material-ui/core';
 
 import ChplSearchView from './search-view';
 
@@ -13,6 +19,42 @@ import {
   derivedCertificationEditions,
 } from 'components/filter/filters';
 
+const getRadioValueEntry = ({ filter, handleFilterUpdate }) => {
+  let radioValue = filter.values.find((v) => v.selected)?.value || '';
+  const entries = filter.values
+    .map((value) => {
+      const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
+      return (
+        <FormControlLabel
+          value={value.value}
+          control={<Radio />}
+          label={filter.getLongValueDisplay(value)}
+          id={labelId}
+          key={labelId}
+        />
+      );
+    });
+
+  const handleChange = (event) => {
+    const value = filter.values.find((v) => v.value === event.target.value);
+    radioValue = event.target.value;
+    handleFilterUpdate({ target: { value: true } }, filter, value);
+  };
+
+  return (
+    <FormControl component="fieldset">
+      <RadioGroup
+        aria-label={filter.getFilterDisplay(filter)}
+        name="secondaryFilter"
+        value={radioValue}
+        onChange={handleChange}
+      >
+        { entries }
+      </RadioGroup>
+    </FormControl>
+  );
+};
+
 const staticFilters = [
   certificationBodies,
   certificationDate,
@@ -21,6 +63,8 @@ const staticFilters = [
     ...defaultFilter,
     key: 'hasHadComplianceActivity',
     display: 'Compliance',
+    getValueEntry: getRadioValueEntry,
+    singular: true,
     values: [
       { value: 'true', display: 'Has had Compliance Activity' },
       { value: 'false', display: 'Has not had Compliance Activity' },
