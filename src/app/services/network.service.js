@@ -36,10 +36,6 @@ export default class NetworkService {
     return this.apiPOST(`/listings/pending/${request.listing.id}`, request);
   }
 
-  confirmPendingSurveillance(surveillance) {
-    return this.apiPOST('/surveillance/pending/confirm', surveillance);
-  }
-
   confirmUser(userObject) {
     return this.apiPOST('/users/confirm', userObject);
   }
@@ -64,10 +60,6 @@ export default class NetworkService {
     return this.apiPOST('/complaints', complaint);
   }
 
-  createFilter(filter) {
-    return this.apiPOST('/filters', filter);
-  }
-
   createInvitedUser(contactDetails) {
     return this.apiPOST('/users/create', contactDetails);
   }
@@ -84,10 +76,6 @@ export default class NetworkService {
     return this.apiDELETE(`/complaints/${complaintId}`);
   }
 
-  deleteFilter(filterId) {
-    return this.apiDELETE(`/filters/${filterId}`);
-  }
-
   deleteQuarterlySurveillanceReport(id) {
     return this.apiDELETE(`/surveillance-report/quarterly/${id}`);
   }
@@ -96,10 +84,6 @@ export default class NetworkService {
     return this.apiDELETE(`/surveillance/${surveillanceId}`, {
       reason,
     });
-  }
-
-  deleteSurveillanceDocument(survId, docId) {
-    return this.apiDELETE(`/surveillance/${survId}/document/${docId}`);
   }
 
   deleteUser(userId) {
@@ -128,7 +112,7 @@ export default class NetworkService {
   }
 
   getAccessibilityStandards() {
-    return this.apiGET('/data/accessibility_standards');
+    return this.apiGET('/accessibility-standards');
   }
 
   getActivityMetadata(key, options) {
@@ -284,14 +268,6 @@ export default class NetworkService {
 
   getEducation() {
     return this.apiGET('/data/education_types');
-  }
-
-  getFilters(filterTypeId) {
-    return this.apiGET(`/filters?filterTypeId=${filterTypeId}`);
-  }
-
-  getFilterTypes() {
-    return this.apiGET('/data/filter_types');
   }
 
   getFuzzyTypes(forceReload) {
@@ -513,10 +489,6 @@ export default class NetworkService {
     return this.apiGET('/ucd-processes');
   }
 
-  getUploadingSurveillances() {
-    return this.apiGET('/surveillance/pending');
-  }
-
   getUploadTemplateVersions() {
     return this.apiGET('/data/upload_template_versions');
   }
@@ -574,14 +546,6 @@ export default class NetworkService {
     return this.apiPOST('/auth/authenticate', userObj);
   }
 
-  lookupCertificationId(certId) {
-    return this.apiGET(`/certification_ids/${certId}`);
-  }
-
-  massRejectPendingSurveillance(ids) {
-    return this.apiDELETE('/surveillance/pending', { ids });
-  }
-
   mergeDevelopers(mergeDeveloperObject) {
     return this.apiPOST('/developers/merge', mergeDeveloperObject);
   }
@@ -594,20 +558,12 @@ export default class NetworkService {
     return this.apiPUT(`/atls/${atl.id}`, atl);
   }
 
-  registerApi(user) {
-    return this.apiPOST('/key', user);
-  }
-
   rejectPendingCp(cpId) {
     return this.apiDELETE(`/certified_products/pending/${cpId}`);
   }
 
   rejectPendingListing(id) {
     return this.apiDELETE(`/listings/pending/${id}`);
-  }
-
-  rejectPendingSurveillance(survId) {
-    return this.apiDELETE(`/surveillance/pending/${survId}`);
   }
 
   removeUserFromAcb(userId, acbId) {

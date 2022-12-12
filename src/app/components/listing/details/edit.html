@@ -357,18 +357,11 @@
           <div class="manage-list__item--end" ng-repeat-end>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('accessibilityStandards', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
           </div>
-          <div class="manage-list__item--start" ng-if="$ctrl.addingItem['accessibilityStandards'] && !$ctrl.creatingItem['accessibilityStandards']">
+          <div class="manage-list__item--start manage-list--span-2" ng-if="$ctrl.addingItem['accessibilityStandards']">
             <div class="data-element sr-only"><label for="accessibility-standard-add-new">Add new Accessibility Standard</label></div>
             <select class="form-control" ng-model="$ctrl.newItem['accessibilityStandards'].accessibilityStandardName" id="accessibility-standard-add-new" name="accessibilityStandardAddNew" required
                     ng-options="option.name as option.name for option in $ctrl.filterListEditItems('accessibilityStandards', $ctrl.resources.accessibilityStandards)">
             </select>
-          </div>
-          <div class="manage-list__item--start" ng-if="$ctrl.addingItem['accessibilityStandards'] && $ctrl.creatingItem['accessibilityStandards']">
-            <div class="data-element sr-only"><label for="accessibility-standard-add-new">Create new Accessibility Standard</label></div>
-            <input type="text" class="form-control" ng-model="$ctrl.newItem['accessibilityStandards'].accessibilityStandardName" id="accessibility-standard-add-new" name="accessibilityStandardAddNew" required>
-          </div>
-          <div ng-if="$ctrl.addingItem['accessibilityStandards']">
-            <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['accessibilityStandards'] = !$ctrl.creatingItem['accessibilityStandards']"><i class="fa" ng-class="$ctrl.creatingItem['accessibilityStandards'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['accessibilityStandards'] ? 'Create new' : 'Add existing' }} accessibility standard</button>
           </div>
           <div class="manage-list__item--end" ng-if="$ctrl.addingItem['accessibilityStandards']">
             <button class="btn btn-link btn-sm" ng-click="$ctrl.saveNewItem('accessibilityStandards')" ng-mouseover="$ctrl.showFormErrors = true"

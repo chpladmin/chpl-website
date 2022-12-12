@@ -32,19 +32,6 @@ const ReportsApiKeysComponent = {
       this.isDestroyed = true;
     }
 
-    onApplyFilter(filterObj) {
-      const f = angular.fromJson(filterObj);
-      this.doFilter(f);
-    }
-
-    onClearFilter() {
-      const filterData = {};
-      filterData.dataFilter = '';
-      filterData.tableState = this.tableController.tableState();
-      this.clearFilterHs.forEach((handler) => handler());
-      this.doFilter(filterData);
-    }
-
     doFilter(filter) {
       const that = this;
       this.filterText = filter.dataFilter;
@@ -63,13 +50,6 @@ const ReportsApiKeysComponent = {
 
     registerRestoreState(handler) {
       this.restoreStateHs.push(handler);
-    }
-
-    createFilterDataObject() {
-      const filterData = {};
-      filterData.dataFilter = this.filterText;
-      filterData.tableState = this.tableController.tableState();
-      return filterData;
     }
 
     tableStateListener(tableController) {

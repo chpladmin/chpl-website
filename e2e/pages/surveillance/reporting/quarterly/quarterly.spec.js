@@ -111,7 +111,8 @@ describe('the quarterly surveillance reporting page', () => {
       await (await reportingPage.editQuarterlyReport(acb, year, quarter)).click();
       await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
       await (await quarterlyPage.complaintsHeader).click();
-      await complaints.viewComplaint('SC - 000135');
+      await complaints.searchForText('SC - 000135');
+      await (await complaints.viewButton).click();
       await expect(await (await complaints.editButton).isDisplayed()).toBe(true);
     });
   });

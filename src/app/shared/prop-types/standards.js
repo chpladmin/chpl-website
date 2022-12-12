@@ -9,6 +9,17 @@ import {
 
 import criterion from './criterion';
 
+const accessibilityStandard = shape({
+  accessibilityStandardId: number,
+  accessibilityStandardName: string,
+  id: number,
+});
+
+const accessibilityStandardType = shape({
+  id: number,
+  name: string,
+});
+
 const svap = shape({
   approvedStandardVersion: string,
   criteria: arrayOf(criterion),
@@ -37,6 +48,8 @@ const ucdProcess = shape({
 });
 
 export {
+  accessibilityStandard,
+  accessibilityStandardType,
   svap,
   selectedSvap,
   ucdProcess,

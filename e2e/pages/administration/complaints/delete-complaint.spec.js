@@ -43,7 +43,7 @@ describe('when deleting complaints', () => {
       await action.delete();
       await browser.keys('Enter');
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-      await (await complaintsComponent.filter).setValue(fields.acbId);
+      await complaintsComponent.searchFilter(fields.acbId);
       await (browser.waitUntil(async () => !(await complaintsComponent.hasResults())));
       await expect(await complaintsComponent.hasResults()).toBe(false);
     });

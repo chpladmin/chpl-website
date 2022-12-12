@@ -71,11 +71,11 @@
           </div>
         </div>
         <div class="panel-body" ng-show="$ctrl.areComplaintsShown">
-          <chpl-surveillance-complaints
-            complaint-list-type="RELEVANT"
-            display-edit="$ctrl.displayEdit"
-            quarterly-report="$ctrl.report">
-          </chpl-surveillance-complaints>
+          <chpl-complaints-wrapper-bridge
+            disallowed-filters="$ctrl.disallowedFilters"
+            bonus-query="$ctrl.bonusQuery"
+            can-add="false">
+          </chpl-complaints-wrapper-bridge>
         </div>
       </div>
     </div>

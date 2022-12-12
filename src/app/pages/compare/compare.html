@@ -23,7 +23,7 @@
                 product-id="{{ listing.id }}"
                 product-name="{{ listing.product.name }}"
                 chpl-product-number="{{ listing.chplProductNumber }}"
-                ng-if="listing.certificationEdition.name === '2015'"></ai-cms-widget-button>
+                ng-if="$ctrl.canCertId(listing)"></ai-cms-widget-button>
             </th>
           </tr>
         </thead>

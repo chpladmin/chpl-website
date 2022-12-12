@@ -4,7 +4,7 @@ const ListingViewPage = {
     listing: '<',
   },
   controller: class ListingViewPage {
-    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, networkService, utilService) {
+    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, featureFlags, networkService, utilService) {
       'ngInject';
 
       this.$localStorage = $localStorage;
@@ -14,6 +14,7 @@ const ListingViewPage = {
       this.$stateParams = $stateParams;
       this.DateUtil = DateUtil;
       this.authService = authService;
+      this.isOn = featureFlags.isOn;
       this.networkService = networkService;
       this.utilService = utilService;
       this.certificationStatus = utilService.certificationStatus;
@@ -46,6 +47,11 @@ const ListingViewPage = {
           this.$localStorage.previouslyViewed = [`${this.listing.id}`];
         }
       }
+    }
+
+    canCertId(listing) {
+      return listing.curesUpdate
+        || (!this.isOn('cannot-generate-15e') && listing.certificationEdition.name === '2015');
     }
 
     canEdit() {
