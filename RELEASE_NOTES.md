@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 11.46.0
+_12 December 2022_
+
+### Features
+* Manage "Accessibility Standards" in updated UI/UX
+* Manage Complaints in updated UI/UX
+
+### Flagged Feature
+* Only show +CertId widget based on flag state
+
+### User Interface Updates
+* Convert CMS Lookup page to React
+* Finish removing "Supporting Documentation" for Surveillance
+* Remove ability to upload and confirm surveillance
+
+---
+
 ## Version 11.45.0
 _28 November 2022_
 
