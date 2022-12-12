@@ -8,6 +8,7 @@ import {
   ListItemText,
   Tab,
   Tabs,
+  makeStyles,
 } from '@material-ui/core';
 import {
   func,
@@ -18,6 +19,11 @@ import {
 
 import { filter as filterPropType } from 'shared/prop-types';
 
+const useStyles = makeStyles(() => ({
+  appBar: {
+    backgroundColor: '#fafdff',
+  },
+ }));
 function TabPanel(props) {
   const { children, value, index } = props;
 
@@ -62,7 +68,7 @@ function ChplTabbedValueEntry(props) {
   const handleChange = (event, newTab) => {
     setActiveTab(newTab);
   };
-
+  const classes = useStyles();
   const getToggle = (value) => {
     const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
     return (
@@ -90,12 +96,14 @@ function ChplTabbedValueEntry(props) {
 
   return (
     <>
-      <AppBar position="sticky">
+      <AppBar className={classes.appBar} position="sticky">
         <Tabs
           value={activeTab}
           onChange={handleChange}
           aria-label="Filter tabs"
           variant="fullWidth"
+          textColor="primary"
+          indicatorColor='primary'
         >
           <Tab label="Active" {...a11yProps(0)} />
           <Tab label={retiredLabel} {...a11yProps(1)} />

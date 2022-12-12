@@ -294,6 +294,25 @@ const theme = createTheme({
         },
       },
     },
+    MuiTab:{
+      root: {
+        fontSize: '.9em',
+      },
+
+      textColorPrimary:{
+        color: '#156dac',
+        '&$selected': {
+          fontWeight: 'bold',
+          color: '#000',
+        },
+      },
+    },
+    MuiTabs: {
+      indicator: {
+        backgroundColor: '#000000',
+      },
+    },
+
     MuiTable: {
       root: {
         borderRadius: '8px',
