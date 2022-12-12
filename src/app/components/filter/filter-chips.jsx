@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
     gap: '8px',
     backgroundColor: '#fafdff',
     borderBottom: '1px solid #bbb',
-    boxShadow: 'rgba(149, 157, 165, 0.1) 8px 0 8px',
     flexWrap: 'wrap',
     flexFlow: 'column',
     alignItems: 'center',
