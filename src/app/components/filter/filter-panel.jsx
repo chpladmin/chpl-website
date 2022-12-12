@@ -70,6 +70,9 @@ const useStyles = makeStyles({
   clearResetContainer: {
     marginBottom: '8px',
     marginTop: '-8px',
+    display:'flex',
+    flexDirection:'row-reverse',
+    justifyContent:'space-between',
   },
   searchInput: {
     flexGrow: 1,
