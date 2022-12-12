@@ -139,6 +139,9 @@ const theme = createTheme({
       containedSizeLarge: {
         fontSize: '1.125em',
       },
+      outlined: {
+        border: '#000 solid 1px',
+      },
     },
     MuiCard: {
       root: {
