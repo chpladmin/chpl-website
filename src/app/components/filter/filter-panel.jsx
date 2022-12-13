@@ -107,7 +107,7 @@ function ChplFilterPanel() {
   }, [filterContext.filters]);
 
   useEffect(() => {
-    setActiveCategory(filters.find((f) => f.key === activeCategoryKey));
+    setActiveCategory(filters.find((f) => f?.key === activeCategoryKey));
   }, [filters, activeCategoryKey]);
 
   const handleClick = (e) => {
