@@ -17,14 +17,12 @@ const useStyles = makeStyles(() => ({
   filterContainer: {
     display: 'flex',
     padding: '16px 32px',
-    gap: '8px',
     backgroundColor: '#fafdff',
     borderBottom: '1px solid #bbb',
     flexWrap: 'wrap',
     flexFlow: 'column',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      flexFlow: 'row',
+    alignItems: 'flex-start',
+    [theme.breakpoints.up('sm')]: {
       flexWrap: 'wrap',
     },
   },
@@ -34,6 +32,14 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
+  },
+  filterChipsContainer: {
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'flex-start',
+    alignContent: 'flex-start',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
   },
 }));
 
@@ -78,13 +84,18 @@ function ChplFilterChips() {
   };
 
   return (
+    <>
     <span className={classes.filterContainer} id="filter-chips">
-      <Typography variant="subtitle1">Filters Applied</Typography>
+    <div>
+      <Typography variant="subtitle2">Filters Applied:</Typography>
+    </div>
+    <div className={classes.filterChipsContainer}>
       { filters.map((f) => (
         <span
           className={classes.filterSelectedContainer}
           key={f.key}
         >
+          
           <Typography variant="body1">
             <strong>
               {f.getFilterDisplay(f)}
@@ -128,7 +139,9 @@ function ChplFilterChips() {
             )}
         </span>
       ))}
+    </div>
     </span>
+    </>
   );
 }
 

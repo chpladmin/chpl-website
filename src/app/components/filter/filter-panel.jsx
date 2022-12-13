@@ -261,6 +261,7 @@ function ChplFilterPanel() {
                     className={classes.clearResetContainer}
                     disableGutters
                   >
+                    <div>
                     <ButtonGroup
                       variant="text"
                       color="primary"
@@ -293,6 +294,10 @@ function ChplFilterPanel() {
                           label={activeCategory.operator === 'and' ? 'All' : 'Any'}
                         />
                       )}
+                      </div>
+                      <div>
+                     <Typography variant="subtitle1"> Title of the Filter </Typography>
+                     </div>
                   </ListSubheader>
                 )}
               >
