@@ -1,41 +1,47 @@
-const elements = {
-  searchId: '#lookupCertificationIdButton',
-  searchField: '#certIdsField',
-  downloadResults: '//*[@id="main-content"]/div[2]/div/div/button',
-  lookupResultsTable: '#lookupCertIdResults',
-  certidLookupError: '.cert-id-lookup-error',
-  lookupResultsTableRows: '//*[@id="lookupCertIdResults"]/tbody/tr',
-};
+import { open as openPage } from '../../../utilities/hooks.async';
 
 class CmsLookupPage {
-  constructor () { }
-
-  get searchIdButton () {
-    return $(elements.searchId);
+  constructor() {
+    this.url = '#/resources/cms-lookup';
+    this.elements = {
+      chips: '#chips',
+      resultsTable: 'table[aria-label="CMS ID Listing Data table"',
+      searchField: '#search-term-input',
+      searchGo: '#search-term-go',
+      downloadResultsButton: '#download-listing-data',
+      invalidText: async (cmsId) => `li*=${cmsId}`,
+    };
   }
 
-  get searchField () {
-    return $(elements.searchField);
+  async open() {
+    await openPage(this.url);
   }
 
-  get downloadResultsButton () {
-    return $(elements.downloadResults);
+  async clear() {
+    const chips = await $(this.elements.chips).$$('svg');
+
+    await Promise.all(
+      chips.map(async (chip) => chip.click()),
+    );
+    await browser.waitUntil(async () => !(await $(this.elements.resultsTable).isDisplayed()));
   }
 
-  get lookupResultsTable () {
-    return $(elements.lookupResultsTable);
+  async search(cmsId) {
+    await (await $(this.elements.searchField)).setValue(cmsId);
+    await (await $(this.elements.searchGo)).click();
+    await browser.waitUntil(async () => (await (await this.getInvalidText(cmsId)).isDisplayed()) || ((await $(this.elements.resultsTable).isDisplayed()) && (await this.getResults()).length > 0));
   }
 
-  get certidLookupErrorText () {
-    return $(elements.certidLookupError);
+  async getResults() {
+    return (await $(this.elements.resultsTable).$('tbody')).$$('tr');
   }
 
-  get rowsLookupResultsTable () {
-    return $$(elements.lookupResultsTableRows);
+  async getInvalidText(cmsId) {
+    return $(await this.elements.invalidText(cmsId));
   }
 
-  chplProductNumberFromTable (rowNumber) {
-    return $('//*[@id="lookupCertIdResults"]/tbody/tr[' + rowNumber + ']/td[6]');
+  get downloadResultsButton() {
+    return $(this.elements.downloadResultsButton);
   }
 }
 

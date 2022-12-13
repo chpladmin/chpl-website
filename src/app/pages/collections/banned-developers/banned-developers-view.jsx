@@ -144,13 +144,10 @@ function ChplBannedDevelopersCollectionView(props) {
     { text: 'ONC-ACB' },
   ];
 
-  const handleTableSort = (event, property) => {
+  const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
-    if (orderBy === property) {
-      setSortDescending(!sortDescending);
-    } else {
-      setOrderBy(property);
-    }
+    setOrderBy(property);
+    setSortDescending(orderDirection === 'desc');
   };
 
   const pageStart = (pageNumber * pageSize) + 1;

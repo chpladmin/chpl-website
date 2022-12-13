@@ -20,9 +20,7 @@ const states = [
   }, {
     name: 'resources.cms-lookup',
     url: '/cms-lookup',
-    template: require('./cms-lookup/cms-lookup.html'), // eslint-disable-line global-require
-    controller: 'CmsLookupController',
-    controllerAs: 'vm',
+    component: 'chplCmsLookupWrapperBridge',
     data: { title: 'CMS ID Reverse Lookup' },
   }, {
     name: 'resources.download',

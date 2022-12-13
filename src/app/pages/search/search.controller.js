@@ -3,17 +3,19 @@
     .controller('SearchController', SearchController);
 
   /** @ngInject */
-  function SearchController($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, DateUtil, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
+  function SearchController($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, DateUtil, RELOAD_TIMEOUT, SPLIT_PRIMARY, featureFlags, networkService, utilService) {
     const vm = this;
 
     vm.DateUtil = DateUtil;
     vm.browseAll = browseAll;
+    vm.canCertId = canCertId;
     vm.changeItemsPerPage = changeItemsPerPage;
     vm.clear = clear;
     vm.clearPreviouslyCompared = clearPreviouslyCompared;
     vm.clearPreviouslyViewed = clearPreviouslyViewed;
     vm.hasResults = hasResults;
     vm.isCategoryChanged = isCategoryChanged;
+    vm.isOn = featureFlags.isOn;
     vm.loadResults = loadResults;
     vm.refreshResults = refreshResults;
     vm.registerAllowAll = registerAllowAll;
@@ -128,6 +130,11 @@
       vm.triggerClearFilters();
       vm.activeSearch = true;
       setTimestamp();
+    }
+
+    function canCertId(listing) {
+      return listing.edition === '2015 Cures Update'
+        || (!vm.isOn('cannot-generate-15e') && listing.edition === '2015');
     }
 
     function changeItemsPerPage() {

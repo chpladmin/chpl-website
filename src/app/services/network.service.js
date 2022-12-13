@@ -112,7 +112,7 @@ export default class NetworkService {
   }
 
   getAccessibilityStandards() {
-    return this.apiGET('/data/accessibility_standards');
+    return this.apiGET('/accessibility-standards');
   }
 
   getActivityMetadata(key, options) {
@@ -221,8 +221,6 @@ export default class NetworkService {
     switch (type) {
       case 'complaintListings':
         return this.apiGET('/collections/certified-products?fields=id,acb,chplProductNumber,developer,product');
-      case 'correctiveAction':
-        return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,openDirectReviewNonConformityCount,closedDirectReviewNonConformityCount');
       case 'surveillanceManagement':
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
       // no default
@@ -544,10 +542,6 @@ export default class NetworkService {
 
   login(userObj) {
     return this.apiPOST('/auth/authenticate', userObj);
-  }
-
-  lookupCertificationId(certId) {
-    return this.apiGET(`/certification_ids/${certId}`);
   }
 
   mergeDevelopers(mergeDeveloperObject) {

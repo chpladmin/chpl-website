@@ -311,7 +311,7 @@
       });
 
       it('should getAccessibilityStandards', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/accessibility_standards$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/accessibility-standards$/).respond(200, { data: 'response' });
         networkService.getAccessibilityStandards().then((response) => {
           expect(response.data).toEqual('response');
         });
@@ -560,11 +560,6 @@
       it('should getCollection', () => {
         $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,acb,chplProductNumber,developer,product$/).respond(200, { data: 'response' });
         networkService.getCollection('complaintListings').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/collections\/certified-products\?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,openDirectReviewNonConformityCount,closedDirectReviewNonConformityCount$/).respond(200, { data: 'response' });
-        networkService.getCollection('correctiveAction').then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
@@ -1184,14 +1179,6 @@
       it('should login', () => {
         $httpBackend.expectPOST(/^\/rest\/auth\/authenticate$/).respond(200, { data: 'response' });
         networkService.login('payload').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should lookupCertificationId', () => {
-        $httpBackend.expectGET(/^\/rest\/certification_ids\/payload$/).respond(200, { data: 'response' });
-        networkService.lookupCertificationId('payload').then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
