@@ -68,11 +68,10 @@ const useStyles = makeStyles({
     display: 'grid',
   },
   clearResetContainer: {
-    marginBottom: '8px',
-    marginTop: '-8px',
     display:'flex',
-    flexDirection:'row-reverse',
+    flexDirection:'row',
     justifyContent:'space-between',
+    alignItems:'center',
   },
   searchInput: {
     flexGrow: 1,
@@ -88,6 +87,11 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
+  secondaryPanelOptions:{
+    display:'flex',
+    flexDirection: 'row',
+    gap: '8px',
+  }
 });
 
 function ChplFilterPanel() {
@@ -261,43 +265,43 @@ function ChplFilterPanel() {
                     className={classes.clearResetContainer}
                     disableGutters
                   >
-                    <div>
-                    <ButtonGroup
-                      variant="text"
-                      color="primary"
-                      size="medium"
-                      aria-label="apply to filter dropdown"
-                    >
-                      <Button
-                        onClick={() => handleAction('clearFilter')}
-                        disabled={activeCategory.required}
-                      >
-                        Clear
-                      </Button>
-                      <Button
-                        onClick={() => handleAction('resetFilter')}
-                      >
-                        Reset
-                      </Button>
-                    </ButtonGroup>
-                    { activeCategory.operatorKey
-                      && (
-                        <FormControlLabel
-                          control={(
-                            <Switch
-                              id={`${activeCategory.key}-operator-panel-toggle`}
-                              color="primary"
-                              checked={activeCategory.operator === 'and'}
-                              onChange={() => toggleOperator(activeCategory)}
-                            />
-                          )}
-                          label={activeCategory.operator === 'and' ? 'All' : 'Any'}
-                        />
-                      )}
-                      </div>
-                      <div>
+                     <div>
                      <Typography variant="subtitle1"> Title of the Filter </Typography>
                      </div>
+                    <div className={classes.secondaryPanelOptions}>
+                      { activeCategory.operatorKey
+                        && (
+                          <FormControlLabel
+                            control={(
+                              <Switch
+                                id={`${activeCategory.key}-operator-panel-toggle`}
+                                color="primary"
+                                checked={activeCategory.operator === 'and'}
+                                onChange={() => toggleOperator(activeCategory)}
+                              />
+                            )}
+                            label={activeCategory.operator === 'and' ? 'All' : 'Any'}
+                          />
+                        )}
+                        <ButtonGroup
+                        variant="text"
+                        color="primary"
+                        size="medium"
+                        aria-label="apply to filter dropdown"
+                      >
+                        <Button
+                          onClick={() => handleAction('clearFilter')}
+                          disabled={activeCategory.required}
+                        >
+                          Clear
+                        </Button>
+                        <Button
+                          onClick={() => handleAction('resetFilter')}
+                        >
+                          Reset
+                        </Button>
+                      </ButtonGroup>
+                    </div>
                   </ListSubheader>
                 )}
               >

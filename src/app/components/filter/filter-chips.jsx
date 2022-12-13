@@ -40,6 +40,7 @@ const useStyles = makeStyles(() => ({
     alignContent: 'flex-start',
     flexWrap: 'wrap',
     flexDirection: 'row',
+    alignItems:'center',
   },
 }));
 

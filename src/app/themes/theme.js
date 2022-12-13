@@ -228,6 +228,13 @@ const theme = createTheme({
         width: '100%',
       },
     },
+    MuiFormControlLabel:{
+      root: {
+        marginLeft: '4px',
+        marginRight: '8px',
+        marginBottom: '0',
+      },
+    },
     MuiFormHelperText: {
       root: {
         fontSize: 12,
