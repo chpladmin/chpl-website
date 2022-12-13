@@ -221,8 +221,6 @@ export default class NetworkService {
     switch (type) {
       case 'complaintListings':
         return this.apiGET('/collections/certified-products?fields=id,acb,chplProductNumber,developer,product');
-      case 'correctiveAction':
-        return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,openDirectReviewNonConformityCount,closedDirectReviewNonConformityCount');
       case 'surveillanceManagement':
         return this.apiGET('/collections/certified-products?fields=id,edition,curesUpdate,developer,developerId,product,version,chplProductNumber,certificationStatus,acb,openSurveillanceCount,closedSurveillanceCount,openSurveillanceNonConformityCount,closedSurveillanceNonConformityCount,surveillanceDates');
       // no default
