@@ -265,9 +265,9 @@ function ChplFilterPanel() {
                     className={classes.clearResetContainer}
                     disableGutters
                   >
-                     <div>
-                     <Typography variant="subtitle1"> Title of the Filter </Typography>
-                     </div>
+                    <Typography variant="subtitle1">
+                      { activeCategory.getFilterDisplay(activeCategory) }
+                    </Typography>
                     <div className={classes.secondaryPanelOptions}>
                       { activeCategory.operatorKey
                         && (
