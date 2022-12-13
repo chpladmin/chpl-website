@@ -166,6 +166,7 @@
           <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
         </span>
         <span ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
+          <chpl-ics-family-bridge></chpl-ics-family-bridge>
           <h5>Inherits from</h5>
           <ul>
             <li ng-repeat="listing in $ctrl.listing.ics.parents | orderBy: ['certificationDate','chplProductNumber']">

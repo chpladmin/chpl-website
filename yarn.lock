@@ -6192,7 +6192,7 @@ __metadata:
     clean-webpack-plugin: ^0.1.19
     concurrently: ^7.3.0
     css-loader: ^0.28.11
-    cytoscape: 2.6
+    cytoscape: ^3.23.0
     del: ~2.0.2
     eslint: 7.2.0
     eslint-config-airbnb: 18.2.1
@@ -6250,6 +6250,7 @@ __metadata:
     prop-types: ^15.7.2
     puppeteer: ^1.8.0
     react: ^17.0.1
+    react-cytoscapejs: ^2.0.0
     react-dom: ^17.0.1
     react-moment: ^1.1.1
     react-query: ^3.19.6
@@ -7552,10 +7553,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cytoscape@npm:2.6":
-  version: 2.6.12
-  resolution: "cytoscape@npm:2.6.12"
-  checksum: 7aebb16320a1c8e9f8496edb61ddfb706b74ee5ae16390829d857aa916bac53d61997c570e9b50ddf54b2d1827cf0185c6bd287a6eeb9c4c266681e061317154
+"cytoscape@npm:^3.23.0":
+  version: 3.23.0
+  resolution: "cytoscape@npm:3.23.0"
+  dependencies:
+    heap: ^0.2.6
+    lodash: ^4.17.21
+  checksum: bcb3c48068384309287553a8b2561bf500562548563ef900c43d011b4a2c8e7cbf0c44f40f7f4ad1b661ff959385c627027f7e7a642021a3716054ae093d3749
   languageName: node
   linkType: hard
 
@@ -11157,6 +11161,13 @@ export-to-csv@andlar/export-to-csv:
   bin:
     he: bin/he
   checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
+  languageName: node
+  linkType: hard
+
+"heap@npm:^0.2.6":
+  version: 0.2.7
+  resolution: "heap@npm:0.2.7"
+  checksum: b0f3963a799e02173f994c452921a777f2b895b710119df999736bfed7477235c2860c423d9aea18a9f3b3d065cb1114d605c208cfcb8d0ac550f97ec5d28cb0
   languageName: node
   linkType: hard
 
@@ -18915,6 +18926,18 @@ export-to-csv@andlar/export-to-csv:
   peerDependencies:
     react: ^15.3.0 || ^16.0.0 || ^17.0.0
   checksum: dae8caae192d4937a151ec3ddad540fe4846d28646aee6d90774abcc6a077761926c99f2bcd9506a76a65524ec2c32b5ec1341e8096fcd3f6335365eaf065137
+  languageName: node
+  linkType: hard
+
+"react-cytoscapejs@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-cytoscapejs@npm:2.0.0"
+  dependencies:
+    prop-types: ^15.8.1
+  peerDependencies:
+    cytoscape: ^3.2.19
+    react: ">=15.0.0"
+  checksum: 911a972262a4a7752b476108b334e53764198703802b7f3d2018f34be6a49ccfac43e3b5c33e8fb589e21be60c6745b131d2854a48903c29d8f9e2849d7d436a
   languageName: node
   linkType: hard
 
