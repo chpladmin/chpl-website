@@ -18,7 +18,7 @@ import {
   ChplConfirmVersion,
 } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
-import ChplIcsFamily from './listing/details/ics-family/ics-family';
+import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
