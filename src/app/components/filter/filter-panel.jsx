@@ -68,10 +68,10 @@ const useStyles = makeStyles({
     display: 'grid',
   },
   clearResetContainer: {
-    display:'flex',
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   searchInput: {
     flexGrow: 1,
@@ -87,11 +87,11 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
-  secondaryPanelOptions:{
-    display:'flex',
+  secondaryPanelOptions: {
+    display: 'flex',
     flexDirection: 'row',
     gap: '8px',
-  }
+  },
 });
 
 function ChplFilterPanel() {
@@ -265,9 +265,9 @@ function ChplFilterPanel() {
                     className={classes.clearResetContainer}
                     disableGutters
                   >
-                     <div>
-                     <Typography variant="subtitle1"> Title of the Filter </Typography>
-                     </div>
+                    <Typography variant="subtitle1">
+                      { activeCategory.getFilterDisplay(activeCategory) }
+                    </Typography>
                     <div className={classes.secondaryPanelOptions}>
                       { activeCategory.operatorKey
                         && (
@@ -283,7 +283,7 @@ function ChplFilterPanel() {
                             label={activeCategory.operator === 'and' ? 'All' : 'Any'}
                           />
                         )}
-                        <ButtonGroup
+                      <ButtonGroup
                         variant="text"
                         color="primary"
                         size="medium"

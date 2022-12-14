@@ -23,7 +23,8 @@ const useStyles = makeStyles(() => ({
   appBar: {
     backgroundColor: '#fafdff',
   },
- }));
+}));
+
 function TabPanel(props) {
   const { children, value, index } = props;
 
@@ -64,11 +65,12 @@ function ChplTabbedValueEntry(props) {
     retiredLabel,
   } = props;
   const [activeTab, setActiveTab] = useState(0);
+  const classes = useStyles();
 
   const handleChange = (event, newTab) => {
     setActiveTab(newTab);
   };
-  const classes = useStyles();
+
   const getToggle = (value) => {
     const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
     return (
@@ -103,7 +105,7 @@ function ChplTabbedValueEntry(props) {
           aria-label="Filter tabs"
           variant="fullWidth"
           textColor="primary"
-          indicatorColor='primary'
+          indicatorColor="primary"
         >
           <Tab label="Active" {...a11yProps(0)} />
           <Tab label={retiredLabel} {...a11yProps(1)} />

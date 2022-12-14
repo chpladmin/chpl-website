@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => ({
     alignContent: 'flex-start',
     flexWrap: 'wrap',
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center',
   },
 }));
 
@@ -85,64 +85,59 @@ function ChplFilterChips() {
   };
 
   return (
-    <>
     <span className={classes.filterContainer} id="filter-chips">
-    <div>
       <Typography variant="subtitle2">Filters Applied:</Typography>
-    </div>
-    <div className={classes.filterChipsContainer}>
-      { filters.map((f) => (
-        <span
-          className={classes.filterSelectedContainer}
-          key={f.key}
-        >
-          
-          <Typography variant="body1">
-            <strong>
-              {f.getFilterDisplay(f)}
-            </strong>
-          </Typography>
-          { f.operatorKey
-            && (
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id={`${f.key}-operator-chips-toggle`}
-                    color="primary"
-                    checked={f.operator === 'and'}
-                    onChange={() => toggleOperator(f)}
-                  />
-                )}
-                label={f.operator === 'and' ? 'All' : 'Any'}
-              />
-            )}
-          {f.values
-            .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
-            .map((v) => (
-              <Chip
-                key={v.value}
-                label={f.getValueDisplay(v)}
-                onDelete={() => removeChip(f, v)}
-                color="primary"
-                variant="outlined"
-                disabled={f.required && f.values.length === 1}
-              />
-            ))}
-          { f.values.length > DISPLAY_MAX
-            && (
-              <Button
-                onClick={() => toggleShowAll(f)}
-                color="primary"
-                variant="text"
-              >
-                { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
-              </Button>
-            )}
-        </span>
-      ))}
-    </div>
+      <div className={classes.filterChipsContainer}>
+        { filters.map((f) => (
+          <span
+            className={classes.filterSelectedContainer}
+            key={f.key}
+          >
+            <Typography variant="body1">
+              <strong>
+                {f.getFilterDisplay(f)}
+              </strong>
+            </Typography>
+            { f.operatorKey
+              && (
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      id={`${f.key}-operator-chips-toggle`}
+                      color="primary"
+                      checked={f.operator === 'and'}
+                      onChange={() => toggleOperator(f)}
+                    />
+                  )}
+                  label={f.operator === 'and' ? 'All' : 'Any'}
+                />
+              )}
+            {f.values
+              .filter((v, idx) => f.showAll || idx < DISPLAY_MAX)
+              .map((v) => (
+                <Chip
+                  key={v.value}
+                  label={f.getValueDisplay(v)}
+                  onDelete={() => removeChip(f, v)}
+                  color="primary"
+                  variant="outlined"
+                  disabled={f.required && f.values.length === 1}
+                />
+              ))}
+            { f.values.length > DISPLAY_MAX
+              && (
+                <Button
+                  onClick={() => toggleShowAll(f)}
+                  color="primary"
+                  variant="text"
+                >
+                  { f.showAll ? 'Show Fewer' : `Show ${f.values.length - DISPLAY_MAX} More` }
+                </Button>
+              )}
+          </span>
+        ))}
+      </div>
     </span>
-    </>
   );
 }
 

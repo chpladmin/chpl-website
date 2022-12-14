@@ -228,7 +228,7 @@ const theme = createTheme({
         width: '100%',
       },
     },
-    MuiFormControlLabel:{
+    MuiFormControlLabel: {
       root: {
         marginLeft: '4px',
         marginRight: '8px',
@@ -304,12 +304,11 @@ const theme = createTheme({
         },
       },
     },
-    MuiTab:{
+    MuiTab: {
       root: {
         fontSize: '.9em',
       },
-
-      textColorPrimary:{
+      textColorPrimary: {
         color: '#156dac',
         '&$selected': {
           fontWeight: 'bold',
@@ -322,7 +321,6 @@ const theme = createTheme({
         backgroundColor: '#000000',
       },
     },
-
     MuiTable: {
       root: {
         borderRadius: '8px',
