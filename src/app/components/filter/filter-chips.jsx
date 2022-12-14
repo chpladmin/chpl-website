@@ -36,7 +36,6 @@ const useStyles = makeStyles(() => ({
   filterChipsContainer: {
     display: 'flex',
     gap: '8px',
-    alignItems: 'flex-start',
     alignContent: 'flex-start',
     flexWrap: 'wrap',
     flexDirection: 'row',
