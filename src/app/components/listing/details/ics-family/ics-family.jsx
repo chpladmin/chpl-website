@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -41,6 +41,15 @@ function ChplIcsFamily(props) {
   const [elements, setElements] = useState([]);
   const [isShowingDetails, setIsShowingDetails] = useState(false);
   const [isShowingDiagram, setIsShowingDiagram] = useState(false);
+  const cy = useRef(null);
+  const setCytoscape = useCallback((ref) => {
+    ref.on('tap', (e) => {
+      if (e.target !== ref) {
+        console.log(e.target.id());
+      }
+    });
+    cy.current = ref;
+  }, [cy]);
 
   const layout = {
     name: 'breadthfirst',
@@ -122,6 +131,7 @@ function ChplIcsFamily(props) {
              autoungrabify={true}
              layout={layout}
              stylesheet={stylesheet}
+             cy={setCytoscape}
            />
            <Button
              onClick={() => setIsShowingDetails(!isShowingDetails)}>
