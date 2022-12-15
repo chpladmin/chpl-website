@@ -43,13 +43,25 @@ function ChplIcsFamily(props) {
   const [isShowingDiagram, setIsShowingDiagram] = useState(false);
   const cy = useRef(null);
   const setCytoscape = useCallback((ref) => {
-    ref.on('tap', (e) => {
+    if (cy.current) return;
+    cy.current = ref;
+    cy.current.on('tap', (e) => {
       if (e.target !== ref) {
         console.log(e.target.id());
       }
     });
-    cy.current = ref;
   }, [cy]);
+
+  /*
+   useEffect(() => {
+    return () => {
+      if (cy.current) {
+        cy.current.removeAllListeners();
+        cy.current = null;
+      }
+    };
+  }, []);
+  */
 
   const layout = {
     name: 'breadthfirst',
