@@ -136,6 +136,7 @@ function ChplIcsFamily(props) {
         { isShowingDiagram ? 'Hide' : 'Show' }
         {' '}
         ICS Relationships
+        { isLoading && <CircularProgress/> }
       </Button>
       { isShowingDiagram &&
         (
