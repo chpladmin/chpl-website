@@ -16,53 +16,6 @@ import CytoscapeComponent from 'react-cytoscapejs';
 
 import { useFetchIcsFamilyData } from 'api/listing';
 
-const generateElements = (listings, active) => {
-  const nodes = listings.map((l) => ({
-    data: {
-      ...l,
-      label: `${l.chplProductNumber}\n${l.certificationStatus.name}`,
-      active: l.id === active,
-    },
-  }));
-  const edges = listings.flatMap((l) => l.parents.map((p) => ({
-    data: {
-      source: p.id,
-      target: l.id,
-      label: `Edge from ${p.chplProductNumber} to ${l.chplProductNumber}`,
-    },
-  })));
-  const data = nodes.concat([...edges]);
-  return data;
-};
-
-function ChplIcsFamily(props) {
-  const { id } = props;
-  const { data, isLoading, isSuccess } = useFetchIcsFamilyData({ id });
-  const [elements, setElements] = useState([]);
-  const [isShowingDetails, setIsShowingDetails] = useState(false);
-  const [isShowingDiagram, setIsShowingDiagram] = useState(false);
-  const cy = useRef(null);
-  const setCytoscape = useCallback((ref) => {
-    if (cy.current) return;
-    cy.current = ref;
-    cy.current.on('tap', (e) => {
-      if (e.target !== ref) {
-        console.log(e.target.id());
-      }
-    });
-  }, [cy]);
-
-  /*
-   useEffect(() => {
-    return () => {
-      if (cy.current) {
-        cy.current.removeAllListeners();
-        cy.current = null;
-      }
-    };
-  }, []);
-  */
-
   const layout = {
     name: 'breadthfirst',
     animate: true,
@@ -110,12 +63,63 @@ function ChplIcsFamily(props) {
     },
   ];
 
+const generateElements = (listings, active) => {
+  const nodes = listings.map((l) => ({
+    data: {
+      ...l,
+      label: `${l.chplProductNumber}\n${l.certificationStatus.name}`,
+      active: l.id === active,
+    },
+  }));
+  const edges = listings.flatMap((l) => l.parents.map((p) => ({
+    data: {
+      source: p.id,
+      target: l.id,
+      label: `Edge from ${p.chplProductNumber} to ${l.chplProductNumber}`,
+    },
+  })));
+  const data = nodes.concat([...edges]);
+  return data;
+};
+
+function ChplIcsFamily(props) {
+  const { id } = props;
+  const { data, isLoading, isSuccess } = useFetchIcsFamilyData({ id });
+  const [elements, setElements] = useState([]);
+  const [isShowingDiagram, setIsShowingDiagram] = useState(false);
+  const [isShowingListingDetails, setIsShowingListingDetails] = useState(false);
+  const [listing, setListing] = useState({});
+  const [listingId, setListingId] = useState(undefined);
+  const [listings, setListings] = useState([]);
+  const cy = useRef(null);
+
+  useEffect(() => {
+    if (cy.current && !isShowingDiagram) {
+      cy.current.removeAllListeners();
+      cy.current = null;
+    }
+  }, [isShowingDiagram]);
+
   useEffect(() => {
     if (isLoading || !isSuccess) {
       return;
     }
+    setListings(data);
     setElements(generateElements(data, id));
   }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    setListing(listings.find((l) => `${l.id}` === listingId));
+    setIsShowingListingDetails(true);
+  }, [listingId]);
+
+  const setCytoscape = useCallback((ref) => {
+    if (cy.current) return;
+    cy.current = ref;
+    cy.current.on('tap', 'node', (e) => {
+      setListingId(e.target.id());
+    });
+  }, [cy]);
 
   if (!isLoading && !isSuccess) {
     return (
@@ -127,33 +131,38 @@ function ChplIcsFamily(props) {
     <>
       <Button
         disabled={isLoading}
-        onClick={() => setIsShowingDiagram(!isShowingDiagram)}>
+        onClick={() => setIsShowingDiagram(!isShowingDiagram)}
+      >
         { isShowingDiagram ? 'Hide' : 'Show' }
         {' '}
         ICS Relationships
       </Button>
-      {isShowingDiagram &&
-       (
-         <>
-           <CytoscapeComponent
-             elements={elements}
-             style={ { width: '600px', height: '600px' } }
-             minZoom={0.3}
-             maxZoom={3}
-             autoungrabify={true}
-             layout={layout}
-             stylesheet={stylesheet}
-             cy={setCytoscape}
-           />
-           <Button
-             onClick={() => setIsShowingDetails(!isShowingDetails)}>
-             { isShowingDetails ? 'Hide' : 'Show' }
-             {' '}
-             Details
-           </Button>
-         </>
-       )}
-      {isShowingDetails && 'Details - TBD'}
+      { isShowingDiagram &&
+        (
+          <>
+            <CytoscapeComponent
+              elements={elements}
+              style={ { width: '600px', height: '600px' } }
+              minZoom={0.3}
+              maxZoom={3}
+              autoungrabify={true}
+              layout={layout}
+              stylesheet={stylesheet}
+              cy={setCytoscape}
+            />
+            { isShowingListingDetails && listing &&
+              (
+                <>
+                  <Typography>{ listing.chplProductNumber }</Typography>
+                  <Button
+                    onClick={() => setIsShowingListingDetails(false)}
+                  >
+                    Hide Details
+                  </Button>
+                </>
+              )}
+          </>
+        )}
     </>
   );
 }
