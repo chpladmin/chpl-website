@@ -14,6 +14,12 @@ import ChplTabbedValueEntry from './tabbed-value-entry';
 
 import { ChplTextField } from 'components/util';
 
+const classes = {
+  singularSelectors: {
+    textTransform: 'none',
+  },
+};
+
 const getAcbValueEntry = (props) => (
   <ChplTabbedValueEntry
     isActive={(value, filter) => !filter.getValueDisplay(value).includes('Retired')}
@@ -95,6 +101,7 @@ const getRadioValueEntry = ({ filter, handleFilterUpdate }) => {
           label={filter.getLongValueDisplay(value)}
           id={labelId}
           key={labelId}
+          style={classes.singularSelectors}
         />
       );
     });
