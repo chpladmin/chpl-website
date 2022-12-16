@@ -95,6 +95,15 @@ function ChplIcsFamily(props) {
   const cy = useRef(null);
 
   useEffect(() => {
+    return () => {
+      if (cy.current) {
+        cy.current.removeAllListeners();
+        cy.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (cy.current && !isShowingDiagram) {
       cy.current.removeAllListeners();
       cy.current = null;
@@ -110,8 +119,9 @@ function ChplIcsFamily(props) {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    setListing(listings.find((l) => `${l.id}` === listingId));
-    setIsShowingListingDetails(true);
+    const listing = listings.find((l) => `${l.id}` === listingId);
+    setListing(listing);
+    setIsShowingListingDetails(!!listing);
   }, [listingId]);
 
   const setCytoscape = useCallback((ref) => {
