@@ -139,6 +139,9 @@ const theme = createTheme({
       containedSizeLarge: {
         fontSize: '1.125em',
       },
+      outlined: {
+        border: '#000 solid 1px',
+      },
     },
     MuiCard: {
       root: {
@@ -225,6 +228,13 @@ const theme = createTheme({
         width: '100%',
       },
     },
+    MuiFormControlLabel: {
+      root: {
+        marginLeft: '4px',
+        marginRight: '8px',
+        marginBottom: '0',
+      },
+    },
     MuiFormHelperText: {
       root: {
         fontSize: 12,
@@ -292,6 +302,23 @@ const theme = createTheme({
         '&$checked': {
           color: '#156dac',
         },
+      },
+    },
+    MuiTab: {
+      root: {
+        fontSize: '.9em',
+      },
+      textColorPrimary: {
+        color: '#156dac',
+        '&$selected': {
+          fontWeight: 'bold',
+          color: '#000',
+        },
+      },
+    },
+    MuiTabs: {
+      indicator: {
+        backgroundColor: '#000000',
       },
     },
     MuiTable: {
