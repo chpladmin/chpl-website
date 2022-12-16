@@ -79,6 +79,7 @@ const generateElements = (listings, active) => {
 function ChplIcsFamily(props) {
   const { id } = props;
   const { data, isLoading, isSuccess } = useFetchIcsFamilyData({ id });
+  const [compare, setCompare] = useState('');
   const [elements, setElements] = useState([]);
   const [isShowingDiagram, setIsShowingDiagram] = useState(false);
   const [isShowingListingDetails, setIsShowingListingDetails] = useState(false);
@@ -107,6 +108,7 @@ function ChplIcsFamily(props) {
     }
     setListings(data);
     setElements(generateElements(data, id));
+    setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
@@ -153,6 +155,14 @@ function ChplIcsFamily(props) {
               stylesheet={stylesheet}
               cy={setCytoscape}
             />
+            { !isLoading
+              && (
+                <ChplLink
+                  href={compare}
+                  text="Compare"
+                  external={false}
+                />
+              )}
             { isShowingListingDetails
               && (
                 <>
