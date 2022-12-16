@@ -180,13 +180,16 @@ function ChplIcsFamily(props) {
                     {' '}
                     { listing?.certificationStatus.name }
                   </Typography>
-                  <Typography>
-                    <ChplLink
-                      href={`#/listing/${listing?.id}?panel=additional`}
-                      text="View full details"
-                      external={false}
-                    />
-                  </Typography>
+                  { listing?.id && (id !== listing.id)
+                    && (
+                      <Typography>
+                        <ChplLink
+                          href={`#/listing/${listing?.id}?panel=additional`}
+                          text="View full details"
+                          external={false}
+                        />
+                      </Typography>
+                    )}
                   <Button
                     onClick={() => setIsShowingListingDetails(false)}
                   >
