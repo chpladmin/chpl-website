@@ -1,13 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 
 import { useAxios } from './axios';
-import options from './options';
 
 const useFetchIcsFamilyData = ({ id }) => {
   const axios = useAxios();
   return useQuery(['listing/ics-relationships', id], async () => {
     if (id) {
-      const response = await axios.get(`certified_products/${id}/ics_relationships`); // todo: change to "-", not "_"
+      const response = await axios.get(`certified_products/${id}/ics-relationships`);
       return response.data;
     }
     return {};
@@ -17,5 +16,5 @@ const useFetchIcsFamilyData = ({ id }) => {
 };
 
 export {
-  useFetchIcsFamilyData,
+  useFetchIcsFamilyData, // eslint-disable-line import/prefer-default-export
 };
