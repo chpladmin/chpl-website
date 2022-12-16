@@ -15,6 +15,7 @@ import { number } from 'prop-types';
 import CytoscapeComponent from 'react-cytoscapejs';
 
 import { useFetchIcsFamilyData } from 'api/listing';
+import { ChplLink } from 'components/util';
 
   const layout = {
     name: 'breadthfirst',
@@ -151,10 +152,27 @@ function ChplIcsFamily(props) {
               stylesheet={stylesheet}
               cy={setCytoscape}
             />
-            { isShowingListingDetails && listing &&
+            { isShowingListingDetails &&
               (
                 <>
-                  <Typography>{ listing.chplProductNumber }</Typography>
+                  <Typography variant="h5">{ listing?.chplProductNumber }</Typography>
+                  <Typography><strong>Developer:</strong>
+                    <ChplLink
+                      href={`#/organizations/developers/${listing?.developer.id}`}
+                      text={ listing?.developer.name }
+                      external={false}
+                    />
+                  </Typography>
+                  <Typography><strong>Product:</strong> { listing?.product.name }</Typography>
+                  <Typography><strong>Version:</strong> { listing?.version.name }</Typography>
+                  <Typography><strong>Certification Status:</strong> { listing?.certificationStatus.name }</Typography>
+                  <Typography>
+                    <ChplLink
+                      href={`#/listing/${listing?.id}?panel=additional`}
+                      text="View full details"
+                      external={false}
+                    />
+                  </Typography>
                   <Button
                     onClick={() => setIsShowingListingDetails(false)}
                   >
