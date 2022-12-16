@@ -1,15 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Button,
-  ButtonGroup,
   CircularProgress,
-  FormControlLabel,
-  List,
-  ListSubheader,
-  Popover,
-  Switch,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { number } from 'prop-types';
 import CytoscapeComponent from 'react-cytoscapejs';
@@ -17,52 +15,52 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import { useFetchIcsFamilyData } from 'api/listing';
 import { ChplLink } from 'components/util';
 
-  const layout = {
-    name: 'breadthfirst',
-    animate: true,
-    directed: 'true',
-    spacingFactor: 1.1,
-  };
+const layout = {
+  name: 'breadthfirst',
+  animate: true,
+  directed: 'true',
+  spacingFactor: 1.1,
+};
 
-  const stylesheet = [
-    {
-      selector: 'node',
-      style: {
-        //width: 'label' ,
-        //height: 'label',
-        shape: 'roundrectangle',
-        label: 'data(label)',
-        color: 'white',
-        'font-size': '12pt',
-        'min-zoomed-font-size': '6pt',
-        'text-halign': 'center',
-        'text-valign': 'center',
-        'text-wrap': 'wrap',
-        'text-max-width': 1000,
-        'border-width': 0,
-        'background-color': 'blue',
-        'padding-left': '10px',
-        'padding-top': '15px',
-        'padding-right': '10px',
-        'padding-bottom': '15px',
-      },
+const stylesheet = [
+  {
+    selector: 'node',
+    style: {
+      // width: 'label' ,
+      // height: 'label',
+      shape: 'roundrectangle',
+      label: 'data(label)',
+      color: 'white',
+      'font-size': '12pt',
+      'min-zoomed-font-size': '6pt',
+      'text-halign': 'center',
+      'text-valign': 'center',
+      'text-wrap': 'wrap',
+      'text-max-width': 1000,
+      'border-width': 0,
+      'background-color': 'blue',
+      'padding-left': '10px',
+      'padding-top': '15px',
+      'padding-right': '10px',
+      'padding-bottom': '15px',
     },
-    {
-      selector: 'node[?active]',
-      style: {
-        'background-color': 'green',
-      },
+  },
+  {
+    selector: 'node[?active]',
+    style: {
+      'background-color': 'green',
     },
-    {
-      selector: 'edge',
-      style: {
-        width: 6,
-        'line-color': '#ccc',
-        'target-arrow-color': '#ccc',
-        'target-arrow-shape': 'triangle',
-      },
+  },
+  {
+    selector: 'edge',
+    style: {
+      width: 6,
+      'line-color': '#ccc',
+      'target-arrow-color': '#ccc',
+      'target-arrow-shape': 'triangle',
     },
-  ];
+  },
+];
 
 const generateElements = (listings, active) => {
   const nodes = listings.map((l) => ({
@@ -94,13 +92,11 @@ function ChplIcsFamily(props) {
   const [listings, setListings] = useState([]);
   const cy = useRef(null);
 
-  useEffect(() => {
-    return () => {
-      if (cy.current) {
-        cy.current.removeAllListeners();
-        cy.current = null;
-      }
-    };
+  useEffect(() => () => {
+    if (cy.current) {
+      cy.current.removeAllListeners();
+      cy.current = null;
+    }
   }, []);
 
   useEffect(() => {
@@ -119,9 +115,9 @@ function ChplIcsFamily(props) {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    const listing = listings.find((l) => `${l.id}` === listingId);
-    setListing(listing);
-    setIsShowingListingDetails(!!listing);
+    const selected = listings.find((l) => `${l.id}` === listingId);
+    setListing(selected);
+    setIsShowingListingDetails(!!selected);
   }, [listingId]);
 
   const setCytoscape = useCallback((ref) => {
@@ -147,35 +143,48 @@ function ChplIcsFamily(props) {
         { isShowingDiagram ? 'Hide' : 'Show' }
         {' '}
         ICS Relationships
-        { isLoading && <CircularProgress/> }
+        { isLoading && <CircularProgress /> }
       </Button>
-      { isShowingDiagram &&
-        (
+      { isShowingDiagram
+        && (
           <>
             <CytoscapeComponent
               elements={elements}
-              style={ { width: '600px', height: '600px' } }
+              style={{ width: '600px', height: '600px' }}
               minZoom={0.3}
               maxZoom={3}
-              autoungrabify={true}
+              autoungrabify
               layout={layout}
               stylesheet={stylesheet}
               cy={setCytoscape}
             />
-            { isShowingListingDetails &&
-              (
+            { isShowingListingDetails
+              && (
                 <>
                   <Typography variant="h5">{ listing?.chplProductNumber }</Typography>
-                  <Typography><strong>Developer:</strong>
+                  <Typography>
+                    <strong>Developer:</strong>
                     <ChplLink
                       href={`#/organizations/developers/${listing?.developer.id}`}
-                      text={ listing?.developer.name }
+                      text={listing?.developer.name}
                       external={false}
                     />
                   </Typography>
-                  <Typography><strong>Product:</strong> { listing?.product.name }</Typography>
-                  <Typography><strong>Version:</strong> { listing?.version.name }</Typography>
-                  <Typography><strong>Certification Status:</strong> { listing?.certificationStatus.name }</Typography>
+                  <Typography>
+                    <strong>Product:</strong>
+                    {' '}
+                    { listing?.product.name }
+                  </Typography>
+                  <Typography>
+                    <strong>Version:</strong>
+                    {' '}
+                    { listing?.version.name }
+                  </Typography>
+                  <Typography>
+                    <strong>Certification Status:</strong>
+                    {' '}
+                    { listing?.certificationStatus.name }
+                  </Typography>
                   <Typography>
                     <ChplLink
                       href={`#/listing/${listing?.id}?panel=additional`}
