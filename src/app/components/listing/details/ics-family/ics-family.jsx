@@ -19,48 +19,43 @@ const layout = {
   name: 'breadthfirst',
   animate: true,
   directed: 'true',
-  spacingFactor: 1.1,
+  spacingFactor: 0.5,
 };
 
-const stylesheet = [
-  {
-    selector: 'node',
-    style: {
-      // width: 'label' ,
-      // height: 'label',
-      shape: 'roundrectangle',
-      label: 'data(label)',
-      color: 'white',
-      'font-size': '12pt',
-      'min-zoomed-font-size': '6pt',
-      'text-halign': 'center',
-      'text-valign': 'center',
-      'text-wrap': 'wrap',
-      'text-max-width': 1000,
-      'border-width': 0,
-      'background-color': 'blue',
-      'padding-left': '10px',
-      'padding-top': '15px',
-      'padding-right': '10px',
-      'padding-bottom': '15px',
-    },
+const stylesheet = [{
+  selector: 'node',
+  style: {
+    width: 170,
+    shape: 'roundrectangle',
+    label: 'data(label)',
+    color: 'white',
+    'font-size': '12pt',
+    'min-zoomed-font-size': '6pt',
+    'text-halign': 'center',
+    'text-valign': 'center',
+    'text-wrap': 'wrap',
+    'text-max-width': 1000,
+    'border-width': 0,
+    'background-color': 'blue',
+    'padding-left': '10px',
+    'padding-top': '15px',
+    'padding-right': '10px',
+    'padding-bottom': '15px',
   },
-  {
-    selector: 'node[?active]',
-    style: {
-      'background-color': 'green',
-    },
+}, {
+  selector: 'node[?active]',
+  style: {
+    'background-color': 'green',
   },
-  {
-    selector: 'edge',
-    style: {
-      width: 6,
-      'line-color': '#ccc',
-      'target-arrow-color': '#ccc',
-      'target-arrow-shape': 'triangle',
-    },
+}, {
+  selector: 'edge',
+  style: {
+    width: 6,
+    'line-color': '#ccc',
+    'mid-target-arrow-color': '#ccc',
+    'mid-target-arrow-shape': 'triangle',
   },
-];
+}];
 
 const generateElements = (listings, active) => {
   const nodes = listings.map((l) => ({
