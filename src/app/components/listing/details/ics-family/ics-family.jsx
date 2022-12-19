@@ -7,6 +7,13 @@ import React, {
 import {
   Button,
   CircularProgress,
+  List,
+  ListItem,
+  Table,
+  TableCell,
+  TableRow,
+  TableHead,
+  TableBody,
   Typography,
 } from '@material-ui/core';
 import { number } from 'prop-types';
@@ -106,7 +113,7 @@ function ChplIcsFamily(props) {
     if (isLoading || !isSuccess) {
       return;
     }
-    setListings(data);
+    setListings(data.sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
     setElements(generateElements(data, id));
     setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
   }, [data, isLoading, isSuccess]);
@@ -145,16 +152,72 @@ function ChplIcsFamily(props) {
       { isShowingDiagram
         && (
           <>
-            <CytoscapeComponent
-              elements={elements}
-              style={{ width: '600px', height: '600px' }}
-              minZoom={0.3}
-              maxZoom={3}
-              autoungrabify
-              layout={layout}
-              stylesheet={stylesheet}
-              cy={setCytoscape}
-            />
+            <figure>
+              <CytoscapeComponent
+                elements={elements}
+                style={{ width: '600px', height: '600px' }}
+                minZoom={0.3}
+                maxZoom={3}
+                autoungrabify
+                layout={layout}
+                stylesheet={stylesheet}
+                cy={setCytoscape}
+              />
+              <figcaption className="sr-only">
+                <Typography variant="h5">Overview</Typography>
+                <Typography>The image shows the ICS relationships between related Products</Typography>
+                <Typography variant="h5">Values</Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>CHPL Product Number</TableCell>
+                      <TableCell>Certification Status</TableCell>
+                      <TableCell>Inherits from</TableCell>
+                      <TableCell>Source for</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { listings.map((l) => (
+                      <TableRow key={l.id}>
+                        <TableCell>
+                          { l.id === id
+                            ? (
+                              <>
+                                { l.chplProductNumber }
+                              </>
+                            ) : (
+                              <ChplLink
+                                href={`#/listing/${l.id}?panel=additional`}
+                                text={l.chplProductNumber}
+                                external={false}
+                              />
+                            )}
+                        </TableCell>
+                        <TableCell>{ l.certificationStatus.name }</TableCell>
+                        <TableCell>
+                          <List>
+                            { l.parents.map((p) => (
+                              <ListItem key={p.chplProductNumber}>
+                                {p.chplProductNumber}
+                              </ListItem>
+                            ))}
+                          </List>
+                        </TableCell>
+                        <TableCell>
+                          <List>
+                            { l.children.map((c) => (
+                              <ListItem key={c.chplProductNumber}>
+                                {c.chplProductNumber}
+                              </ListItem>
+                            ))}
+                          </List>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </figcaption>
+            </figure>
             { !isLoading
               && (
                 <ChplLink
