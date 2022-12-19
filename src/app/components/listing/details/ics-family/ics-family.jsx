@@ -116,13 +116,13 @@ function ChplIcsFamily(props) {
     setListings(data.sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
     setElements(generateElements(data, id));
     setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
-  }, [data, isLoading, isSuccess]);
+  }, [data, isLoading, isSuccess, id]);
 
   useEffect(() => {
     const selected = listings.find((l) => `${l.id}` === listingId);
     setListing(selected);
     setIsShowingListingDetails(!!selected);
-  }, [listingId]);
+  }, [listings, listingId]);
 
   const setCytoscape = useCallback((ref) => {
     if (cy.current) return;
@@ -155,7 +155,7 @@ function ChplIcsFamily(props) {
             <figure>
               <CytoscapeComponent
                 elements={elements}
-                style={{ width: '600px', height: '600px' }}
+                style={{ width: '100%', height: '600px' }}
                 minZoom={0.3}
                 maxZoom={3}
                 autoungrabify

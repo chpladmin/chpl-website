@@ -166,7 +166,6 @@
           <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
         </span>
         <span ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
-          <chpl-ics-family-bridge id="$ctrl.listing.id"></chpl-ics-family-bridge>
           <h5>Inherits from</h5>
           <ul>
             <li ng-repeat="listing in $ctrl.listing.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
@@ -185,7 +184,7 @@
           </ul>
         </span>
         <span ng-if="!$ctrl.isConfirming && (($ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0) || ($ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0))">
-          <button class="btn btn-ai-success" ng-click="$ctrl.viewIcsFamily()">View ICS Relationships</button>
+          <chpl-ics-family-bridge id="$ctrl.listing.id"></chpl-ics-family-bridge>
         </span>
         <span ng-if="$ctrl.listing.otherAcb" id="panel-additional-information-other-acb">
           <h4>Other ACB</h4>
