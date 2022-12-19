@@ -14,7 +14,7 @@ let searchPage;
 let toast;
 let listingEdit;
 
-describe('On 2015 Listing details page', () => {
+describe('On Listing details page', () => {
   beforeEach(async () => {
     listingEdit = new ListingEditComponent();
     page = new ListingPage();
@@ -29,7 +29,7 @@ describe('On 2015 Listing details page', () => {
     login.logOut();
   });
 
-  describe('when editing RWT data', () => {
+  describe('when editing RWT data of 2015 edition listing', () => {
     beforeEach(async () => {
       await hooks.open('#/listing/9715');
     });
@@ -63,7 +63,7 @@ describe('On 2015 Listing details page', () => {
     });
   });
 
-  xdescribe('when changing CHPL Product Number data', () => {
+  xdescribe('when changing CHPL Product Number data of 2015 edition listing', () => {
     beforeEach(async () => {
       await hooks.open('#/listing/9902');
     });
@@ -115,6 +115,44 @@ describe('On 2015 Listing details page', () => {
       browser.waitUntil(() => !searchPage.isLoading);
       searchPage.searchForText(initialChplProductNumber);
       expect(searchPage.getTableCellText(searchPage.results[0], 0)).not.toContain(initialChplProductNumber);
+    });
+  });
+
+  describe('when editing a 2011 edition listing', () => {
+    beforeEach(async () => {
+      await hooks.open('#/listing/41');
+    });
+
+    it('should be able to add reason for edit and save edits', () => {
+      const timestamp = Date.now();
+      login.logIn('onc');
+      page.editCertifiedProduct.click();
+      hooks.waitForSpinnerToDisappear();
+      listingEdit.reasonForChange.setValue(timestamp);
+      action.save();
+      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
+      toast.clearAllToast();
+      expect(page.listingBasicInformation.getText()).toContain(timestamp);
+    });
+  });
+
+  describe('when editing a 2014 edition listing', () => {
+    beforeEach(async () => {
+      await hooks.open('#/listing/437');
+    });
+
+    it('should be able to add reason for edit and save edits', () => {
+      const timestamp = Date.now();
+      login.logIn('onc');
+      page.editCertifiedProduct.click();
+      hooks.waitForSpinnerToDisappear();
+      listingEdit.reasonForChange.setValue(timestamp);
+      action.save();
+      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
+      toast.clearAllToast();
+      expect(page.listingBasicInformation.getText()).toContain(timestamp);
     });
   });
 });

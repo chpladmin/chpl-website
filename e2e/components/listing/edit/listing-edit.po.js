@@ -19,6 +19,7 @@ class ListingEditComponent {
       chplProductNumberProdCode: '#id-prod',
       chplProductNumberVerCode: '#id-ver',
       warningLabel: 'span*=I have reviewed the warning and wish to proceed with this update',
+      reasonForChange: '#reason-for-change',
     };
   }
 
@@ -176,6 +177,11 @@ class ListingEditComponent {
     }
     return $(`//*[@id="criteria_${criteriaId}_details_row_Test_procedure"]`);
   }
+
+  get reasonForChange() {
+    return $(this.elements.reasonForChange);
+  }
+
 }
 
 export default ListingEditComponent;
