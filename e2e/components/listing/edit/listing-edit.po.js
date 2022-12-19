@@ -19,6 +19,7 @@ class ListingEditComponent {
       chplProductNumberProdCode: '#id-prod',
       chplProductNumberVerCode: '#id-ver',
       warningLabel: 'span*=I have reviewed the warning and wish to proceed with this update',
+      mandatoryDisclosures: '#mandatory-disclosures',
       reasonForChange: '#reason-for-change',
     };
   }
@@ -180,6 +181,10 @@ class ListingEditComponent {
 
   get reasonForChange() {
     return $(this.elements.reasonForChange);
+  }
+
+  get mandatoryDisclosures() {
+    return $(this.elements.mandatoryDisclosures);
   }
 
 }

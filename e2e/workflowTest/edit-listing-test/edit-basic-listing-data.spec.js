@@ -125,15 +125,17 @@ describe('On Listing details page', () => {
 
     it('should be able to add reason for edit and save edits', () => {
       const timestamp = Date.now();
+      const mandatoryDisclosureUrl = `https://website${timestamp}.com`;
       login.logIn('onc');
       page.editCertifiedProduct.click();
       hooks.waitForSpinnerToDisappear();
-      listingEdit.reasonForChange.setValue(timestamp);
+      listingEdit.mandatoryDisclosures.setValue(mandatoryDisclosureUrl);
+      listingEdit.reasonForChange.setValue('test reason');
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
-      expect(page.listingBasicInformation.getText()).toContain(timestamp);
+      expect(page.listingBasicInformation.getText()).toContain(mandatoryDisclosureUrl);
     });
   });
 
@@ -144,15 +146,17 @@ describe('On Listing details page', () => {
 
     it('should be able to add reason for edit and save edits', () => {
       const timestamp = Date.now();
+      const mandatoryDisclosureUrl = `https://website${timestamp}.com`;
       login.logIn('onc');
       page.editCertifiedProduct.click();
       hooks.waitForSpinnerToDisappear();
-      listingEdit.reasonForChange.setValue(timestamp);
+      listingEdit.mandatoryDisclosures.setValue(mandatoryDisclosureUrl);
+      listingEdit.reasonForChange.setValue('test reason');
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
-      expect(page.listingBasicInformation.getText()).toContain(timestamp);
+      expect(page.listingBasicInformation.getText()).toContain(mandatoryDisclosureUrl);
     });
   });
 });
