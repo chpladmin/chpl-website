@@ -2,6 +2,10 @@ const suite = {
   description: 'with issues related to measures specified at the listing level',
   file: '../../../resources/listings/2015_Measures.csv',
   listings: [{
+    listingId: '15.04.04.1722.MEA3.V1.00.1.210607',
+    expectedErrors: [],
+    expectedWarnings: [],
+  }, {
     listingId: '15.04.04.1722.MEA4.V1.00.1.210607',
     expectedErrors: [
       'The G1 measure Electronic Prescribing: Eligible Clinician for RT1 cannot have associated criterion 170.315 (b)(2).',
@@ -32,7 +36,10 @@ const suite = {
     ],
   }, {
     listingId: '15.04.04.1722.MEA6.V1.00.1.210607',
-    expectedErrors: [],
+    expectedErrors: [
+      'Duplicate G2 Measure: Provide Patients Electronic Access to Their Health Information (formerly Patient Electronic Access): Eligible Clinician for RT2 was found. The measure must be associated with all of the relevant criteria as a single element.',
+      'Duplicate G1 Measure: Provide Patients Electronic Access to Their Health Information (formerly Patient Electronic Access): Eligible Hospital/Critical Access Hospital for RT2 was found. The measure must be associated with all of the relevant criteria as a single element.'
+    ],
     expectedWarnings: [],
   }, {
     listingId: '15.04.04.1722.MEA7.V1.00.1.210607',
@@ -40,8 +47,6 @@ const suite = {
       'The G2 Measure: Patient Electronic Access: Eligible Professional for RT2 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Patient-Specific Education: Eligible Professional for RT3 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Electronic Prescribing: Eligible Clinician for RT1 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G2 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G1 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
     ],
     expectedWarnings: [],
   }, {
