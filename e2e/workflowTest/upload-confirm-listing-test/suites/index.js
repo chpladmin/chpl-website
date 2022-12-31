@@ -5,7 +5,6 @@ import criteriaRelationshipsErrorsAndWarnings from './criteria-relationships-err
 import developerErrorsAndWarnings from './developer-errors-and-warnings';
 import icsErrors from './ics-errors';
 import invalidFormatsErrorsAndWarnings from './invalid-formats-errors-and-warnings';
-import measuresAtCriteriaLevelErrorsAndWarnings from './measures-at-criteria-level-errors-and-warnings';
 import measuresErrorsAndWarnings from './measures-errors-and-warnings';
 import noErrors from './no-errors';
 import optionalStandardsErrorsAndWarnings from './optional-standards-errors-and-warnings';
@@ -22,7 +21,6 @@ const suites = [
   developerErrorsAndWarnings,
   icsErrors,
   invalidFormatsErrorsAndWarnings,
-  measuresAtCriteriaLevelErrorsAndWarnings,
   measuresErrorsAndWarnings,
   noErrors,
   optionalStandardsErrorsAndWarnings,
@@ -41,7 +39,6 @@ export {
   developerErrorsAndWarnings,
   icsErrors,
   invalidFormatsErrorsAndWarnings,
-  measuresAtCriteriaLevelErrorsAndWarnings,
   measuresErrorsAndWarnings,
   noErrors,
   optionalStandardsErrorsAndWarnings,
