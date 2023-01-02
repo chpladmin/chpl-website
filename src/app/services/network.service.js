@@ -350,7 +350,7 @@ export default class NetworkService {
   }
 
   getQmsStandards() {
-    return this.apiGET('/data/qms_standards');
+    return this.apiGET('/qms-standards');
   }
 
   getQuarterlySurveillanceQuarters() {

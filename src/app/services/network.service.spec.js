@@ -824,7 +824,7 @@
       });
 
       it('should getQmsStandards', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/qms_standards$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/qms-standards$/).respond(200, { data: 'response' });
         networkService.getQmsStandards().then((response) => {
           expect(response.data).toEqual('response');
         });
