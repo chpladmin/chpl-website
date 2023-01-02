@@ -27,12 +27,12 @@ const suite = {
       'G1/G2 Measure Type is missing.',
     ],
     expectedWarnings: [
-      'G2 Measure \'EC\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
-      'G2 Measure \'RT1\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
+      'G2 Measure \'EC\' was not found associated with 170.315 (e)(1), 170.315 (e)(1) (Cures Update) and has been removed from the listing.',
+      'G2 Measure \'RT1\' was not found associated with 170.315 (e)(1), 170.315 (e)(1) (Cures Update) and has been removed from the listing.',
       'G1 Measure \'\' was not found and has been removed from the listing.',
       'Measure \'EC\' was not found and has been removed from the listing.',
       'Measure \'RT1\' was not found and has been removed from the listing.',
-      'Measure \'\' was not found associated with 170.315 (e)(1), 170.315 (g)(8), 170.315 (g)(9) and has been removed from the listing.',
+      'Measure \'\' was not found associated with 170.315 (e)(1), 170.315 (g)(9) (Cures Update), 170.315 (g)(9), 170.315 (e)(1) (Cures Update), 170.315 (g)(8) and has been removed from the listing.',
     ],
   }, {
     listingId: '15.04.04.1722.MEA6.V1.00.1.210607',
