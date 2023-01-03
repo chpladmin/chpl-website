@@ -3,11 +3,12 @@ import Hooks from '../../utilities/hooks';
 import CriteriaComponent from '../../components/listing/details/criteria/criteria.po';
 import LoginComponent from '../../components/login/login.sync.po';
 
+import inputs from './dataProviders/attribute-value-options-dp';
+
 let criteria;
 let hooks;
 let login;
 let page;
-const inputs = require('./dataProviders/attribute-value-options-dp');
 
 inputs.forEach((input) => {
   const {
