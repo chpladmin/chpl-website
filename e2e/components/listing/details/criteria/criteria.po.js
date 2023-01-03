@@ -137,27 +137,27 @@ class CriteriaComponent {
 
   editCriteriaOldButton(criteriaOld, cures) {
     if (cures) {
-      return $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button');
+      return $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button=Edit');
     } else {
-      return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button');
+      return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit');
     }
   }
 
   openAttestedCriteriaOld(criteriaOld, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$$('button')[1].click();
+      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button=Edit').click();
     } else {
-      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$$('button')[1].click();
+      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit').click();
     }
   }
 
   openUnattestedCriteriaOld(criteriaOld, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button').click();
+      $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button=Edit').click();
     } else {
-      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button').click();
+      $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit').click();
     }
   }
 
