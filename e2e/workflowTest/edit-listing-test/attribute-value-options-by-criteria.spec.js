@@ -1,4 +1,3 @@
-import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
 import CriteriaComponent from '../../components/listing/details/criteria/criteria.po';
 import LoginComponent from '../../components/login/login.sync.po';
@@ -8,13 +7,12 @@ import inputs from './dataProviders/attribute-value-options-dp';
 let criteria;
 let hooks;
 let login;
-let page;
 
 inputs.forEach((input) => {
   const {
     criteriaName,
     conformanceMethodOptions,
-    id,
+    // id, (used in UI-Upgrade flag on mode)
     criteriaOld,
     cures,
     testToolsOptions,
@@ -22,7 +20,6 @@ inputs.forEach((input) => {
 
   describe('As an ONC user, On the 2015 Listing editing page', () => {
     beforeEach(async () => {
-      page = new ListingPage();
       hooks = new Hooks();
       login = new LoginComponent();
       criteria = new CriteriaComponent();
@@ -44,6 +41,15 @@ inputs.forEach((input) => {
         const expectedTt = testToolsOptions;
         const expectedCm = conformanceMethodOptions;
 
+        /*
+          * Disabling code that runs tests against edit screen with UI-Upgrade flag on
+          * as the method used to determine if the flag is on is not working correctly
+          * and hence giving weird results. I suggest leaving this section disabled until
+          * the ui-upgrade flag is turned on (or at least planned to be) and in that case,
+          * disabling the code for the old version. Having two versions of these edit steps
+          * makes the tests flaky
+          */
+        /*
         if (criteria.uiUpgradeFlag()) {
           criteria.expandCriteria(id);
           criteria.editCriteria(id);
@@ -66,20 +72,21 @@ inputs.forEach((input) => {
             expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
           });
         } else {
-          criteria.editCriteriaOldButton(criteriaOld, cures).scrollIntoView({ block: 'center', inline: 'center' });
-          criteria.openUnattestedCriteriaOld(criteriaOld, cures);
-          criteria.attestCriteriaOld(criteriaOld);
-          const actualTt = new Set(criteria.testToolsDropdownOptionsOld.map((item) => item.getText()));
-          expect(actualTt.size - 2).toBe(expectedTt.length);
-          expectedTt.forEach((exp) => {
-            expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
-          });
-          const actualCm = new Set(criteria.conformanceMethodDropdownOptionsOld.map((item) => item.getText()));
-          expect(actualCm.size - 2).toBe(expectedCm.length);
-          expectedCm.forEach((exp) => {
-            expect(actualCm.has(exp)).toBe(true, `did not find expected option of Conformance Method: "${exp}"`);
-          });
-        }
+        */
+        criteria.editCriteriaOldButton(criteriaOld, cures).scrollIntoView({ block: 'center', inline: 'center' });
+        criteria.openUnattestedCriteriaOld(criteriaOld, cures);
+        criteria.attestCriteriaOld(criteriaOld);
+        const actualTt = new Set(criteria.testToolsDropdownOptionsOld.map((item) => item.getText()));
+        expect(actualTt.size - 2).toBe(expectedTt.length);
+        expectedTt.forEach((exp) => {
+          expect(actualTt.has(exp)).toBe(true, `did not find expected option of test tools: "${exp}"`);
+        });
+        const actualCm = new Set(criteria.conformanceMethodDropdownOptionsOld.map((item) => item.getText()));
+        expect(actualCm.size - 2).toBe(expectedCm.length);
+        expectedCm.forEach((exp) => {
+          expect(actualCm.has(exp)).toBe(true, `did not find expected option of Conformance Method: "${exp}"`);
+        });
+      // }
       });
     });
   });
