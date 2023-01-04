@@ -10,10 +10,10 @@ function CompareWrapper(props) {
   const { children } = props;
   const [listings, setListings] = useState([]);
 
-  let addListing, isInWidget, removeListing;
+  let isInWidget;
 
   useEffect(() => {
-    setListings($localStorage?.compareWidget?.products)
+    setListings($localStorage?.compareWidget?.products);
   }, []);
 
   useEffect(() => {
@@ -25,15 +25,18 @@ function CompareWrapper(props) {
     };
   }, [$rootScope, isInWidget, setListings]);
 
-  addListing = (listing) => {
-    $rootScope.$broadcast('addListing', listing);
+  const addListing = (listing) => {
+    $rootScope.$broadcast('addListing', {
+      ...listing,
+      product: listing.product.name ? listing.product.name : listing.product,
+    });
     $rootScope.$broadcast('ShowCompareWidget');
     $rootScope.$digest();
   };
 
   isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
-  removeListing = (listing) => {
+  const removeListing = (listing) => {
     $rootScope.$broadcast('removeListing', listing);
     $rootScope.$broadcast('ShowCompareWidget');
     $rootScope.$digest();
