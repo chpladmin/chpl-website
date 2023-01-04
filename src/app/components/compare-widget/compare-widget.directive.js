@@ -47,6 +47,9 @@
 
     function clearProducts () {
       $analytics.eventTrack('Remove all Listings', { category: 'Compare Widget' });
+      vm.compareWidget.productIds.forEach((id) => {
+        $rootScope.$broadcast('removedListing', { id });
+      });
       vm.compareWidget = {
         products: [],
         productIds: [],
