@@ -43,7 +43,7 @@ import {
   surveillanceRequirementType,
 } from './surveillance';
 import { testData, selectedTestData } from './test-data';
-import { testFunctionality, selectedTestFunctionality } from './test-functionality';
+import { functionalitiesTested, selectedFunctionalitiesTested } from './functionalities-tested';
 import { testProcedure, selectedTestProcedure } from './test-procedure';
 import { testStandard, selectedTestStandard } from './test-standard';
 import { testTool, selectedTestTool } from './test-tool';
@@ -70,6 +70,7 @@ export {
   directReview,
   filter,
   formik,
+  functionalitiesTested,
   job,
   listing,
   optionalStandard,
@@ -83,7 +84,7 @@ export {
   selectedOptionalStandard,
   selectedSvap,
   selectedTestData,
-  selectedTestFunctionality,
+  selectedFunctionalitiesTested,
   selectedTestProcedure,
   selectedTestStandard,
   selectedTestTool,
@@ -94,7 +95,6 @@ export {
   surveillanceRequirementType,
   svap,
   testData,
-  testFunctionality,
   testProcedure,
   testStandard,
   testTool,

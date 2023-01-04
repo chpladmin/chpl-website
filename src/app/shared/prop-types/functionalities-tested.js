@@ -2,20 +2,18 @@
 import { number, shape, string } from 'prop-types';
 import practiceType from './practice-type';
 
-const testFunctionality = shape({
+const functionalitiesTested = shape({
   description: string,
   id: number,
   name: string,
   practiceType,
-  year: string,
 });
 
-const selectedTestFunctionality = shape({
+const selectedFunctionalitiesTested = shape({
   description: string,
   id: number,
   name: string,
-  testFunctionalityId: number,
-  year: string,
+  functionalityTestedId: number,
 });
 
-export { testFunctionality, selectedTestFunctionality };
+export { functionalitiesTested, selectedFunctionalitiesTested };

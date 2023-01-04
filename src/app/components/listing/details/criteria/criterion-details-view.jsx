@@ -201,9 +201,9 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.g2Success ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.testFunctionality
+          { criterion.success && criterion.functionalitiesTested
             && (
-              <TableRow key="testFunctionality">
+              <TableRow key="functionalitiesTested">
                 <TableCell component="th" scope="row">
                   <ChplTooltip title="Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only.">
                     <IconButton className={classes.infoIcon}>
@@ -215,19 +215,19 @@ function ChplCriterionDetailsView(props) {
                   Functionality Tested
                 </TableCell>
                 <TableCell>
-                  { criterion.testFunctionality.length > 0
+                  { criterion.functionalitiesTested.length > 0
                     && (
                       <ul className={classes.unindentedData}>
-                        { criterion.testFunctionality.map((tf, index) => (
-                          <li key={tf.id || tf.key || index}>
-                            { tf.description
-                              && <ChplEllipsis text={tf.description} maxLength={100} wordBoundaries />}
-                            { !tf.description && tf.name }
+                        { criterion.functionalitiesTested.map((ft, index) => (
+                          <li key={ft.id || ft.key || index}>
+                            { ft.description
+                              && <ChplEllipsis text={ft.description} maxLength={100} wordBoundaries />}
+                            { !ft.description && ft.name }
                           </li>
                         ))}
                       </ul>
                     )}
-                  { criterion.testFunctionality.length === 0 && 'None' }
+                  { criterion.functionalitiesTested.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
             )}

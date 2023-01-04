@@ -198,32 +198,32 @@
         let other2 = { name: '170.102(19)(ii)' };
 
         it('should sort b5 before b8', () => {
-          expect(util.sortTestFunctionality(b5, b8)).toBeLessThan(0);
-          expect(util.sortTestFunctionality(b8, b5)).toBeGreaterThan(0);
+          expect(util.sortFunctionalitiesTested(b5, b8)).toBeLessThan(0);
+          expect(util.sortFunctionalitiesTested(b8, b5)).toBeGreaterThan(0);
         });
 
         it('should sort b5 before d', () => {
-          expect(util.sortTestFunctionality(b5, d)).toBeLessThan(0);
-          expect(util.sortTestFunctionality(d, b5)).toBeGreaterThan(0);
+          expect(util.sortFunctionalitiesTested(b5, d)).toBeLessThan(0);
+          expect(util.sortFunctionalitiesTested(d, b5)).toBeGreaterThan(0);
         });
 
         it('should sort b8 before d', () => {
-          expect(util.sortTestFunctionality(b8, d)).toBeLessThan(0);
-          expect(util.sortTestFunctionality(d, b8)).toBeGreaterThan(0);
+          expect(util.sortFunctionalitiesTested(b8, d)).toBeLessThan(0);
+          expect(util.sortFunctionalitiesTested(d, b8)).toBeGreaterThan(0);
         });
 
         it('shouldn\'t sort identical values', () => {
-          expect(util.sortTestFunctionality(b8, b8)).toBe(0);
+          expect(util.sortFunctionalitiesTested(b8, b8)).toBe(0);
         });
 
         it('should sort other last', () => {
-          expect(util.sortTestFunctionality(b8, other)).toBeLessThan(0);
-          expect(util.sortTestFunctionality(other, b8)).toBeGreaterThan(0);
+          expect(util.sortFunctionalitiesTested(b8, other)).toBeLessThan(0);
+          expect(util.sortFunctionalitiesTested(other, b8)).toBeGreaterThan(0);
         });
 
         it('should sort others', () => {
-          expect(util.sortTestFunctionality(other, other2)).toBeLessThan(0);
-          expect(util.sortTestFunctionality(other2, other)).toBeGreaterThan(0);
+          expect(util.sortFunctionalitiesTested(other, other2)).toBeLessThan(0);
+          expect(util.sortFunctionalitiesTested(other2, other)).toBeGreaterThan(0);
         });
 
         describe('mass sort', () => {
@@ -239,7 +239,7 @@
           ];
 
           it('should sort real data', () => {
-            let sorted = raw.sort(util.sortTestFunctionality);
+            let sorted = raw.sort(util.sortFunctionalitiesTested);
             expect(sorted[0].name).toBe('(b)(1)(ii)(A)(5)(i)');
             expect(sorted[7].name).toBe('170.102(19)(ii)');
           });

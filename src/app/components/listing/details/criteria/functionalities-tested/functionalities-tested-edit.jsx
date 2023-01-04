@@ -22,7 +22,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from '../../../../util';
-import { testFunctionality, selectedTestFunctionality } from '../../../../../shared/prop-types';
+import { functionalitiesTested, selectedFunctionalitiesTested } from '../../../../../shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -48,11 +48,11 @@ const validationSchema = yup.object({
     .required('Test Functionality is required'),
 });
 
-function ChplTestFunctionalityEdit(props) {
+function ChplFunctionalitiesTestedEdit(props) {
   /* eslint-disable react/destructuring-assignment */
   const [adding, setAdding] = useState(false);
-  const [testFunctionalityUsed, setTestFunctionalityUsed] = useState(props.testFunctionality.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  const [options, setOptions] = useState(props.options.filter((option) => props.testFunctionality.filter((used) => used.testFunctionalityId === option.id).length === 0));
+  const [functionalitiesTestedUsed, setFunctionalitiesTestedUsed] = useState(props.functionalitiesTested.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  const [options, setOptions] = useState(props.options.filter((option) => props.functionalitiesTested.filter((used) => used.functionalityTestedId === option.id).length === 0));
   const classes = useStyles();
   /* eslint-enable react/destructuring-assignment */
 
@@ -71,24 +71,24 @@ function ChplTestFunctionalityEdit(props) {
   });
 
   const update = (updated) => {
-    props.onChange({ key: 'testFunctionality', data: updated });
+    props.onChange({ key: 'functionalitiesTested', data: updated });
   };
 
   addNew = () => {
     const updated = [
-      ...testFunctionalityUsed,
+      ...functionalitiesTestedUsed,
       {
         description: formik.values.tf.description,
         id: undefined,
         name: formik.values.tf.name,
-        testFunctionalityId: formik.values.tf.id,
+        functionalityTestedId: formik.values.tf.id,
         key: Date.now(),
       },
     ];
     const removed = formik.values.tf.id;
     setAdding(false);
     formik.resetForm();
-    setTestFunctionalityUsed(updated);
+    setFunctionalitiesTestedUsed(updated);
     setOptions(options.filter((option) => option.id !== removed));
     update(updated);
   };
@@ -99,18 +99,18 @@ function ChplTestFunctionalityEdit(props) {
   };
 
   const removeItem = (item) => {
-    const updated = testFunctionalityUsed.filter((used) => used.testFunctionalityId !== item.testFunctionalityId);
-    setTestFunctionalityUsed(updated);
+    const updated = functionalitiesTestedUsed.filter((used) => used.functionalityTestedId !== item.functionalityTestedId);
+    setFunctionalitiesTestedUsed(updated);
     setOptions([...options, {
       ...item,
-      id: item.testFunctionalityId,
+      id: item.functionalityTestedId,
     }]);
     update(updated);
   };
 
   return (
     <div className={classes.container}>
-      { testFunctionalityUsed.length > 0
+      { functionalitiesTestedUsed.length > 0
         && (
           <TableContainer component={Paper}>
             <Table>
@@ -121,7 +121,7 @@ function ChplTestFunctionalityEdit(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { testFunctionalityUsed.map((item, index) => (
+                { functionalitiesTestedUsed.map((item, index) => (
                   <TableRow key={item.id || item.key || index}>
                     <TableCell>
                       <Typography variant="body2">{ item.name }</Typography>
@@ -206,10 +206,10 @@ function ChplTestFunctionalityEdit(props) {
   );
 }
 
-export default ChplTestFunctionalityEdit;
+export default ChplFunctionalitiesTestedEdit;
 
-ChplTestFunctionalityEdit.propTypes = {
-  testFunctionality: arrayOf(selectedTestFunctionality).isRequired,
-  options: arrayOf(testFunctionality).isRequired,
+ChplFunctionalitiesTestedEdit.propTypes = {
+  functionalitiesTested: arrayOf(selectedFunctionalitiesTested).isRequired,
+  options: arrayOf(functionalitiesTested).isRequired,
   onChange: func.isRequired,
 };

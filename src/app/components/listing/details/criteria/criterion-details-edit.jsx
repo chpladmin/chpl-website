@@ -22,7 +22,7 @@ import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import ChplConformanceMethodsEdit from './conformance-methods';
 import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
-import ChplTestFunctionalityEdit from './test-functionality';
+import ChplFunctionalitiesTestedEdit from './functionalities-tested';
 import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 import ChplTestStandardsEdit from './test-standards';
@@ -308,7 +308,7 @@ function ChplCriterionDetailsEdit(props) {
                     </div>
                   </>
                 )}
-              { (criterion.testFunctionality?.length > 0 || criterion.allowedTestFunctionalities?.length > 0)
+              { (criterion.functionalitiesTested?.length > 0 || criterion.allowedFunctionalitiesTested?.length > 0)
                 && (
                   <>
                     <div>
@@ -321,9 +321,9 @@ function ChplCriterionDetailsEdit(props) {
                       >
                         Functionality Tested
                       </Typography>
-                      <ChplTestFunctionalityEdit
-                        testFunctionality={criterion.testFunctionality}
-                        options={criterion.allowedTestFunctionalities}
+                      <ChplFunctionalitiesTestedEdit
+                        functionalitiesTested={criterion.functionalitiesTested}
+                        options={criterion.allowedFunctionalitiesTested}
                         onChange={handleDetailChange}
                       />
                     </div>

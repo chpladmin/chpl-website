@@ -26,7 +26,7 @@
         {targetedUserName: 'Ambulatory and InPatient'},
         {targetedUserName: 'Patient Clinics'},
       ],
-      testFunctionality: [
+      functionalitiesTested: [
         {name: 'Test 2'},
         {name: 'Test 1'},
       ],
@@ -203,26 +203,26 @@
 
     describe('when comparing test functionality', () => {
       it('should report adds', () => {
-        const before = angular.copy(mock.testFunctionality);
-        const after = angular.copy(mock.testFunctionality).concat(angular.copy(mock.testFunctionality[0]));
+        const before = angular.copy(mock.functionalitiesTested);
+        const after = angular.copy(mock.functionalitiesTested).concat(angular.copy(mock.functionalitiesTested[0]));
         after[after.length - 1].name = 'Vets';
-        expect(service.compare(before, after, 'testFunctionality')).toEqual(['<li>Added Test Functionality "Vets"</li>']);
+        expect(service.compare(before, after, 'functionalitiesTested')).toEqual(['<li>Added Functionalities Tested "Vets"</li>']);
       });
 
       it('should report adds to an empty array', () => {
-        const after = [].concat(angular.copy(mock.testFunctionality[0]));
-        expect(service.compare([], after, 'testFunctionality')).toEqual(['<li>Added Test Functionality "Test 2"</li>']);
+        const after = [].concat(angular.copy(mock.functionalitiesTested[0]));
+        expect(service.compare([], after, 'functionalitiesTested')).toEqual(['<li>Added Functionalities Tested "Test 2"</li>']);
       });
 
       it('should report removals', () => {
-        const before = angular.copy(mock.testFunctionality);
-        const after = angular.copy(mock.testFunctionality).slice(1);
-        expect(service.compare(before, after, 'testFunctionality')).toEqual(['<li>Removed Test Functionality "Test 2"</li>']);
+        const before = angular.copy(mock.functionalitiesTested);
+        const after = angular.copy(mock.functionalitiesTested).slice(1);
+        expect(service.compare(before, after, 'functionalitiesTested')).toEqual(['<li>Removed Functionalities Tested "Test 2"</li>']);
       });
 
       it('should report removals to an empty array', () => {
-        const before = [].concat(angular.copy(mock.testFunctionality[0]));
-        expect(service.compare(before, [], 'testFunctionality')).toEqual(['<li>Removed Test Functionality "Test 2"</li>']);
+        const before = [].concat(angular.copy(mock.functionalitiesTested[0]));
+        expect(service.compare(before, [], 'functionalitiesTested')).toEqual(['<li>Removed Functionalities Tested "Test 2"</li>']);
       });
     });
 

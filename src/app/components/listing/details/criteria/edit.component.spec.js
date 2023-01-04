@@ -8,7 +8,7 @@
     mock.cert = {
       id: 1,
       number: '170.315 (c)(4)',
-      allowedTestFunctionalities: [
+      allowedFunctionalitiesTested: [
         {'id': 1, 'name': '(a)(1)(ii)'},
         {'id': 2, 'name': '(a)(2)(ii)'},
         {'id': 3, 'name': '(a)(1)(i)'},
@@ -48,7 +48,7 @@
         scope.dismiss = jasmine.createSpy('dismiss');
         scope.resolve = {
           cert: angular.copy(mock.cert),
-          allowedTestFunctionalities: [
+          allowedFunctionalitiesTested: [
             {'id': 1, 'name': '(a)(1)(ii)'},
             {'id': 2, 'name': '(a)(2)(ii)'},
             {'id': 3, 'name': '(a)(1)(i)'},
@@ -159,11 +159,11 @@
         });
       });
 
-      describe('with relation to test functionality', () => {
+      describe('with respect to test functionality', () => {
         it('should be sorted by name', () => {
-          expect(ctrl.sortedTestFunctionalities[0].name).toBe('(a)(1)(i)');
-          expect(ctrl.sortedTestFunctionalities[1].name).toBe('(a)(1)(ii)');
-          expect(ctrl.sortedTestFunctionalities[2].name).toBe('(a)(2)(ii)');
+          expect(ctrl.sortedFunctionalitiesTested[0].name).toBe('(a)(1)(i)');
+          expect(ctrl.sortedFunctionalitiesTested[1].name).toBe('(a)(1)(ii)');
+          expect(ctrl.sortedFunctionalitiesTested[2].name).toBe('(a)(2)(ii)');
         });
       });
 

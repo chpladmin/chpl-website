@@ -160,11 +160,11 @@
             expect(ctrl.hasPhantomData()).toBe(true);
           });
 
-          it('should analyze testFunctionality', () => {
+          it('should analyze functionalitiesTested', () => {
             expect(ctrl.hasPhantomData()).toBe(false);
-            ctrl.cert.testFunctionality = [];
+            ctrl.cert.functionalitiesTested = [];
             expect(ctrl.hasPhantomData()).toBe(false);
-            ctrl.cert.testFunctionality = [1];
+            ctrl.cert.functionalitiesTested = [1];
             expect(ctrl.hasPhantomData()).toBe(true);
           });
 
