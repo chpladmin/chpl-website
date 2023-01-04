@@ -5,6 +5,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
 
 function CompareWrapper(props) {
+  const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
   const { children } = props;
   const [listings, setListings] = useState([]);
@@ -12,7 +13,7 @@ function CompareWrapper(props) {
   let addListing, isInWidget, removeListing;
 
   useEffect(() => {
-    // figure out how to read listings in Angular state
+    setListings($localStorage?.compareWidget?.products)
   }, []);
 
   useEffect(() => {
@@ -42,7 +43,6 @@ function CompareWrapper(props) {
     addListing,
     isInWidget,
     removeListing,
-    listings,
   };
 
   return (
