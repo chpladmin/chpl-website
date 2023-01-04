@@ -8,6 +8,7 @@ import {
   Button,
   CircularProgress,
   List,
+  Link,
   ListItem,
   Table,
   TableCell,
@@ -18,6 +19,7 @@ import {
   Card,
   CardContent,
   Divider,
+  makeStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -27,6 +29,27 @@ import CytoscapeComponent from 'react-cytoscapejs';
 
 import { useFetchIcsFamilyData } from 'api/listing';
 import { ChplLink } from 'components/util';
+
+const useStyles = makeStyles({
+  cardContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    gap: '8px',
+  },
+  detailContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    gap: '4px',
+  },
+  directionContainer: {
+    width: '50%',
+  },
+  spacingforshowButton: {
+    marginBottom: '8px',
+  },
+});
 
 const layout = {
   name: 'breadthfirst',
@@ -100,6 +123,7 @@ function ChplIcsFamily(props) {
   const [listingId, setListingId] = useState(undefined);
   const [listings, setListings] = useState([]);
   const cy = useRef(null);
+  const classes = useStyles();
 
   useEffect(() => () => {
     if (cy.current) {
@@ -146,41 +170,42 @@ function ChplIcsFamily(props) {
 
   return (
     <>
-      <Button
-        variant="contained"
-        color="secondary"
-        disabled={isLoading}
-        onClick={() => setIsShowingDiagram(!isShowingDiagram)}
-        endIcon={isShowingDiagram ? <VisibilityOffIcon /> : <VisibilityIcon />}
-      >
-        { isShowingDiagram ? 'Hide' : 'Show' }
-        {' '}
-        ICS Relationships
+      <div className={classes.spacingforshowButton}>
+        <Button
+          variant="contained"
+          color="secondary"
+          disabled={isLoading}
+          onClick={() => setIsShowingDiagram(!isShowingDiagram)}
+          endIcon={isShowingDiagram ? <VisibilityOffIcon /> : <VisibilityIcon />}
+        >
+          { isShowingDiagram ? 'Hide' : 'Show' }
+          {' '}
+          ICS Relationships
+        </Button>
         { isLoading && <CircularProgress /> }
-      </Button>
+      </div>
       { isShowingDiagram
         && (
           <Card>
             <CardContent>
               <figure>
-                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }}>
-                  <div style={{ width: '50%' }}>
-                    <Typography gutterBottom> Select a listing to the right to view more information. You can also click and drag to scroll through the listings.</Typography>
+                <div className={classes.cardContainer}>
+                  <div className={classes.directionContainer}>
+                    <Typography> Select a listing to the right to view more information. You can also click and drag to scroll through the listings.</Typography>
                     <Typography>
-                      {' '}
                       To compare all listings together, please select
-                      <ChplLink
+                      {' '}
+                      {' '}
+                      <Link
                         href={compare}
-                        text="compare all."
                         external={false}
-                      />
+                      >
+                        compare all.
+                      </Link>
                     </Typography>
                     { isShowingListingDetails
                   && (
-                    <div style={{
-                      display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', flexDirection: 'column',
-                    }}
-                    >
+                    <div className={classes.detailContainer}>
                       <Divider />
                       <Typography variant="h5"><strong>CHPL Product Number:</strong></Typography>
                       <ChplLink
@@ -188,7 +213,7 @@ function ChplIcsFamily(props) {
                         text={listing?.chplProductNumber}
                         external={false}
                       />
-                      <Typography gutterBottom>
+                      <Typography>
                         <strong>Developer:</strong>
                         <ChplLink
                           href={`#/organizations/developers/${listing?.developer.id}`}
@@ -199,15 +224,15 @@ function ChplIcsFamily(props) {
                       <Typography>
                         <strong>Product:</strong>
                       </Typography>
-                      <Typography gutterBottom>{ listing?.product.name }</Typography>
+                      <Typography>{ listing?.product.name }</Typography>
                       <Typography>
                         <strong>Version:</strong>
                       </Typography>
-                      <Typography gutterBottom>
+                      <Typography>
                         { listing?.version.name }
                       </Typography>
                       <Typography><strong>Certification Status:</strong></Typography>
-                      <Typography gutterBottom>
+                      <Typography>
                         { listing?.certificationStatus.name }
                       </Typography>
                       <br />
