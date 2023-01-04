@@ -21,21 +21,15 @@ function CompareWrapper(props) {
     };
   }, [$rootScope, addListing, removeListing]);
 
-  addListing = (listing) => {
-    console.log('addListing', listing, listings);
-  };
+  addListing = (listing) => !isInWidget(listing) && setListings((prev) => prev.concat(listing));
 
-  isInList = (listing) => {
-    console.log('isinlist', listing, listings);
-  };
+  isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
-  removeListing = (listing) => {
-    console.log('removeListing', listing, listings);
-  };
+  removeListing = (listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id));
 
   const compareState = {
     addListing,
-    isInList,
+    isInWidget,
     removeListing,
     listings,
   };
