@@ -87,7 +87,7 @@ describe('managing complaints as a ROLE_ACB user', () => {
     const optionalFields = {
       oncId: `Test - ${timestamp}`,
       actions: `Test - ${timestamp}`,
-      criterion: '170.315 (b)(9): Care Plan',
+      criterion: '170.315 (b)(9): Care Plan (Cures Update)',
       listings: '15.04.04.3010.Onco.28.01.1.181214',
       surveillance: '15.04.04.3010.Onco.28.01.1.181214: SURV01',
     };
@@ -116,7 +116,7 @@ describe('managing complaints as a ROLE_ACB user', () => {
     const optionalFields = {
       oncId: `Test - ${timestamp}`,
       actions: `Test - ${timestamp}`,
-      criterion: '170.315 (b)(9): Care Plan',
+      criterion: '170.315 (b)(9): Care Plan (Cures Update)',
       listings: '15.04.04.2838.PARA.17.00.1.171228',
       surveillance: '15.04.04.2838.PARA.17.00.1.171228: SURV01',
     };
