@@ -17,7 +17,7 @@
     };
   }
   /** @ngInject */
-  function CompareWidgetController ($analytics, $localStorage, $log, $scope) {
+  function CompareWidgetController ($analytics, $localStorage, $log, $rootScope, $scope) {
     var vm = this;
 
     vm.clearProducts = clearProducts;
@@ -97,6 +97,7 @@
           $analytics.eventTrack('Add Listing', { category: 'Compare Widget', label: number });
         }
         vm.compareWidget.products.push({id: id, name: name, chplProductNumber: number});
+        $rootScope.$broadcast('addListing', {id, name, number});
       }
     }
 
@@ -117,6 +118,7 @@
           vm.compareWidget.products.splice(i,1);
         }
       }
+      $rootScope.$broadcast('removeListing', {id, name, number});
     }
 
     function saveWidget () {
