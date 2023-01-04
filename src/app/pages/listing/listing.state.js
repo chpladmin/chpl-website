@@ -34,7 +34,6 @@ const states = [{
         networkService.getQmsStandards().then((response) => { resources.qmsStandards = response; }),
         networkService.getTargetedUsers().then((response) => { resources.targetedUsers = response; }),
         networkService.getTestData().then((response) => { resources.testData = response; }),
-        networkService.getTestFunctionality().then((response) => { resources.testFunctionalities = response; }),
         networkService.getTestProcedures().then((response) => { resources.testProcedures = response; }),
         networkService.getTestStandards().then((response) => { resources.testStandards = response; }),
         networkService.getUcdProcesses().then((response) => { resources.ucdProcesses = response; }),

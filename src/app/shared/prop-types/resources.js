@@ -8,7 +8,6 @@ import {
 import acb from './acb';
 import practiceType from './practice-type';
 import { testData } from './test-data';
-import { testFunctionality } from './test-functionality';
 import { testProcedure } from './test-procedure';
 import { testStandard } from './test-standard';
 import { testTool } from './test-tool';
@@ -33,10 +32,6 @@ const resources = shape({
   testData: shape({
     expandable: bool,
     data: arrayOf(testData),
-  }),
-  testFunctionalities: shape({
-    expandable: bool,
-    data: arrayOf(testFunctionality),
   }),
   testProcedures: shape({
     expandable: bool,

@@ -1032,14 +1032,6 @@
         $httpBackend.flush();
       });
 
-      it('should getTestFunctionality', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/test_functionality$/).respond(200, { data: 'response' });
-        networkService.getTestFunctionality().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getTestProcedures', () => {
         $httpBackend.expectGET(/^\/rest\/data\/test_procedures$/).respond(200, { data: 'response' });
         networkService.getTestProcedures().then((response) => {

@@ -29,7 +29,6 @@
           getSearchOptions: jasmine.createSpy('getSearchOptions'),
           getTargetedUsers: jasmine.createSpy('getTargetedUsers'),
           getTestData: jasmine.createSpy('getTestData'),
-          getTestFunctionality: jasmine.createSpy('getTestFunctionality'),
           getTestProcedures: jasmine.createSpy('getTestProcedures'),
           getTestStandards: jasmine.createSpy('getTestStandards'),
           getUcdProcesses: jasmine.createSpy('getUcdProcesses'),
@@ -51,7 +50,6 @@
         networkService.getSearchOptions.and.returnValue($q.when({}));
         networkService.getTargetedUsers.and.returnValue($q.when({}));
         networkService.getTestData.and.returnValue($q.when({}));
-        networkService.getTestFunctionality.and.returnValue($q.when({}));
         networkService.getTestProcedures.and.returnValue($q.when({}));
         networkService.getTestStandards.and.returnValue($q.when({}));
         networkService.getUcdProcesses.and.returnValue($q.when({}));
