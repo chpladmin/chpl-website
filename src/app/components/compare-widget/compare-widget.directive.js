@@ -36,11 +36,11 @@
       });
       $scope.$on('$destroy', compareAll);
       var addListing = $scope.$on('addListing', (evt, listing) => {
-        addProduct(listing.id, listing.product, listing.chplProductNumber);
+        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
       });
       $scope.$on('$destroy', addListing);
       var removeListing = $scope.$on('removeListing', (evt, listing) => {
-        removeProduct(listing.id, listing.chplProductNumber);
+        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
       });
       $scope.$on('$destroy', removeListing);
     };
@@ -56,7 +56,7 @@
 
     function isInList (id) {
       for (var i = 0; i < vm.compareWidget.products.length; i++) {
-        if (vm.compareWidget.products[i].id === id) {
+        if (parseInt(vm.compareWidget.products[i].id, 10) === parseInt(id, 10)) {
           return true;
         }
       }
@@ -85,14 +85,14 @@
     }
 
     function toggleProduct (id, name, number, doNotTrack) {
-      if (vm.isInList(id)) {
-        removeProduct(id, number);
+      if (vm.isInList(parseInt(id, 10))) {
+        removeProduct(parseInt(id, 10), number);
       } else {
-        addProduct(id, name, number, doNotTrack);
+        addProduct(parseInt(id, 10), name, number, doNotTrack);
       }
       vm.compareWidget.productIds = [];
       for (var i = 0; i < vm.compareWidget.products.length; i++) {
-        vm.compareWidget.productIds.push(vm.compareWidget.products[i].id);
+        vm.compareWidget.productIds.push(parseInt(vm.compareWidget.products[i].id, 10));
       }
       saveWidget();
     }
@@ -105,7 +105,7 @@
           $analytics.eventTrack('Add Listing', { category: 'Compare Widget', label: number });
         }
         vm.compareWidget.products.push({id: id, name: name, chplProductNumber: number});
-        $rootScope.$broadcast('addedListing', {id: parseInt(id, 10), chplProductNumber: number});
+        $rootScope.$broadcast('addedListing', {id, chplProductNumber: number});
       }
     }
 
@@ -122,11 +122,11 @@
         $analytics.eventTrack('Remove Listing', { category: 'Compare Widget', label: number });
       }
       for (var i = 0; i < vm.compareWidget.products.length; i++) {
-        if (vm.compareWidget.products[i].id === id || parseInt(vm.compareWidget.products[i].id) === parseInt(id)) {
+        if (vm.compareWidget.products[i].id === id || parseInt(vm.compareWidget.products[i].id, 10) === parseInt(id, 10)) {
           vm.compareWidget.products.splice(i,1);
         }
       }
-      $rootScope.$broadcast('removedListing', {id: parseInt(id, 10), chplProductNumber: number});
+      $rootScope.$broadcast('removedListing', {id, chplProductNumber: number});
     }
 
     function saveWidget () {
