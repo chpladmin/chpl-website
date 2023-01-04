@@ -7,6 +7,7 @@ import {
   ChplAttestationsViewWrapper,
 } from './attestation';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
+import ChplCompareButtonWrapper from './compare-widget/compare-button-wrapper';
 import { ChplDeveloper } from './developer';
 import ChplDirectReviewsView from './direct-reviews/direct-reviews-view';
 import { ChplFuzzyType } from './fuzzy-type';
@@ -61,6 +62,7 @@ angular
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
+  .component('chplCompareButtonWrapperBridge', reactToAngularComponent(ChplCompareButtonWrapper))
   .component('chplConfirmDeveloperWrapperBridge', reactToAngularComponent(ChplConfirmDeveloperWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))

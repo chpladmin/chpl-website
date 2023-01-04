@@ -30,11 +30,19 @@
 
     this.$onInit = function () {
       getWidget();
-      var compareAll = $scope.$on('compareAll', (msg, payload) => {
+      var compareAll = $scope.$on('compareAll', (evt, payload) => {
         vm.clearProducts();
         payload.forEach((item) => { vm.toggleProduct(item.productId, item.name, item.chplProductNumber, true); });
       });
       $scope.$on('$destroy', compareAll);
+      var addListing = $scope.$on('addListing', (evt, listing) => {
+        addProduct(listing.id, listing.product, listing.chplProductNumber);
+      });
+      $scope.$on('$destroy', addListing);
+      var removeListing = $scope.$on('removeListing', (evt, listing) => {
+        removeProduct(listing.id, listing.chplProductNumber);
+      });
+      $scope.$on('$destroy', removeListing);
     };
 
     function clearProducts () {
@@ -97,7 +105,7 @@
           $analytics.eventTrack('Add Listing', { category: 'Compare Widget', label: number });
         }
         vm.compareWidget.products.push({id: id, name: name, chplProductNumber: number});
-        $rootScope.$broadcast('addListing', {id, name, number});
+        $rootScope.$broadcast('addedListing', {id: parseInt(id, 10), chplProductNumber: number});
       }
     }
 
@@ -118,7 +126,7 @@
           vm.compareWidget.products.splice(i,1);
         }
       }
-      $rootScope.$broadcast('removeListing', {id, name, number});
+      $rootScope.$broadcast('removedListing', {id: parseInt(id, 10), chplProductNumber: number});
     }
 
     function saveWidget () {
