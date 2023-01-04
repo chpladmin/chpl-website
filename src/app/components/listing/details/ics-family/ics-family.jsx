@@ -15,7 +15,13 @@ import {
   TableHead,
   TableBody,
   Typography,
+  Card,
+  CardContent,
+  Divider,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { number } from 'prop-types';
 import CytoscapeComponent from 'react-cytoscapejs';
 
@@ -141,8 +147,11 @@ function ChplIcsFamily(props) {
   return (
     <>
       <Button
+        variant="contained"
+        color="secondary"
         disabled={isLoading}
         onClick={() => setIsShowingDiagram(!isShowingDiagram)}
+        endIcon={isShowingDiagram ? <VisibilityOffIcon /> : <VisibilityIcon />}
       >
         { isShowingDiagram ? 'Hide' : 'Show' }
         {' '}
@@ -151,126 +160,137 @@ function ChplIcsFamily(props) {
       </Button>
       { isShowingDiagram
         && (
-          <>
-            <figure>
-              <CytoscapeComponent
-                elements={elements}
-                style={{ width: '100%', height: '600px' }}
-                minZoom={0.3}
-                maxZoom={3}
-                autoungrabify
-                layout={layout}
-                stylesheet={stylesheet}
-                cy={setCytoscape}
-              />
-              <figcaption className="sr-only">
-                <Typography variant="h5">Overview</Typography>
-                <Typography>The image shows the ICS relationships between related Products</Typography>
-                <Typography variant="h5">Values</Typography>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>CHPL Product Number</TableCell>
-                      <TableCell>Certification Status</TableCell>
-                      <TableCell>Inherits from</TableCell>
-                      <TableCell>Source for</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    { listings.map((l) => (
-                      <TableRow key={l.id}>
-                        <TableCell>
-                          { l.id === id
-                            ? (
-                              <>
-                                { l.chplProductNumber }
-                              </>
-                            ) : (
-                              <ChplLink
-                                href={`#/listing/${l.id}?panel=additional`}
-                                text={l.chplProductNumber}
-                                external={false}
-                              />
-                            )}
-                        </TableCell>
-                        <TableCell>{ l.certificationStatus.name }</TableCell>
-                        <TableCell>
-                          <List>
-                            { l.parents.map((p) => (
-                              <ListItem key={p.chplProductNumber}>
-                                {p.chplProductNumber}
-                              </ListItem>
-                            ))}
-                          </List>
-                        </TableCell>
-                        <TableCell>
-                          <List>
-                            { l.children.map((c) => (
-                              <ListItem key={c.chplProductNumber}>
-                                {c.chplProductNumber}
-                              </ListItem>
-                            ))}
-                          </List>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </figcaption>
-            </figure>
-            { !isLoading
-              && (
-                <ChplLink
-                  href={compare}
-                  text="Compare"
-                  external={false}
-                />
-              )}
-            { isShowingListingDetails
-              && (
-                <>
-                  <Typography variant="h5">{ listing?.chplProductNumber }</Typography>
-                  <Typography>
-                    <strong>Developer:</strong>
-                    <ChplLink
-                      href={`#/organizations/developers/${listing?.developer.id}`}
-                      text={listing?.developer.name}
-                      external={false}
-                    />
-                  </Typography>
-                  <Typography>
-                    <strong>Product:</strong>
-                    {' '}
-                    { listing?.product.name }
-                  </Typography>
-                  <Typography>
-                    <strong>Version:</strong>
-                    {' '}
-                    { listing?.version.name }
-                  </Typography>
-                  <Typography>
-                    <strong>Certification Status:</strong>
-                    {' '}
-                    { listing?.certificationStatus.name }
-                  </Typography>
-                  { listing?.id && (id !== listing.id)
-                    && (
-                      <Typography>
+          <Card>
+            <CardContent>
+              <figure>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '8px' }}>
+                  <div style={{ width: '50%' }}>
+                    <Typography gutterBottom> Select a listing to the right to view more information. You can also click and drag to scroll through the listings.</Typography>
+                    <Typography>
+                      {' '}
+                      To compare all listings together, please select
+                      <ChplLink
+                        href={compare}
+                        text="compare all."
+                        external={false}
+                      />
+                    </Typography>
+                    { isShowingListingDetails
+                  && (
+                    <div style={{
+                      display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', flexDirection: 'column',
+                    }}
+                    >
+                      <Divider />
+                      <Typography variant="h5"><strong>CHPL Product Number:</strong></Typography>
+                      <ChplLink
+                        href={`#/listing/${listing?.id}?panel=additional`}
+                        text={listing?.chplProductNumber}
+                        external={false}
+                      />
+                      <Typography gutterBottom>
+                        <strong>Developer:</strong>
                         <ChplLink
-                          href={`#/listing/${listing?.id}?panel=additional`}
-                          text="View full details"
+                          href={`#/organizations/developers/${listing?.developer.id}`}
+                          text={listing?.developer.name}
                           external={false}
                         />
                       </Typography>
-                    )}
-                  <Button
-                    onClick={() => setIsShowingListingDetails(false)}
-                  >
-                    Hide Details
-                  </Button>
-                </>
-              )}
-          </>
+                      <Typography>
+                        <strong>Product:</strong>
+                      </Typography>
+                      <Typography gutterBottom>{ listing?.product.name }</Typography>
+                      <Typography>
+                        <strong>Version:</strong>
+                      </Typography>
+                      <Typography gutterBottom>
+                        { listing?.version.name }
+                      </Typography>
+                      <Typography><strong>Certification Status:</strong></Typography>
+                      <Typography gutterBottom>
+                        { listing?.certificationStatus.name }
+                      </Typography>
+                      <br />
+                      <Button
+                        endIcon={<CloseIcon />}
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setIsShowingListingDetails(false)}
+                      >
+                        Close Details
+                      </Button>
+                    </div>
+                  )}
+                  </div>
+                  <CytoscapeComponent
+                    elements={elements}
+                    style={{ width: '50%', height: '40vh' }}
+                    minZoom={1}
+                    maxZoom={1}
+                    autoungrabify
+                    layout={layout}
+                    stylesheet={stylesheet}
+                    cy={setCytoscape}
+                  />
+                </div>
+                <figcaption className="sr-only">
+                  <Typography variant="h5">Overview</Typography>
+                  <Typography>The image shows the ICS relationships between related Products</Typography>
+                  <Typography variant="h5">Values</Typography>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>CHPL Product Number</TableCell>
+                        <TableCell>Certification Status</TableCell>
+                        <TableCell>Inherits from</TableCell>
+                        <TableCell>Source for</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      { listings.map((l) => (
+                        <TableRow key={l.id}>
+                          <TableCell>
+                            { l.id === id
+                              ? (
+                                <>
+                                  { l.chplProductNumber }
+                                </>
+                              ) : (
+                                <ChplLink
+                                  href={`#/listing/${l.id}?panel=additional`}
+                                  text={l.chplProductNumber}
+                                  external={false}
+                                />
+                              )}
+                          </TableCell>
+                          <TableCell>{ l.certificationStatus.name }</TableCell>
+                          <TableCell>
+                            <List>
+                              { l.parents.map((p) => (
+                                <ListItem key={p.chplProductNumber}>
+                                  {p.chplProductNumber}
+                                </ListItem>
+                              ))}
+                            </List>
+                          </TableCell>
+                          <TableCell>
+                            <List>
+                              { l.children.map((c) => (
+                                <ListItem key={c.chplProductNumber}>
+                                  {c.chplProductNumber}
+                                </ListItem>
+                              ))}
+                            </List>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </figcaption>
+              </figure>
+            </CardContent>
+          </Card>
         )}
     </>
   );
