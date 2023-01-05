@@ -20,6 +20,9 @@ import {
   CardContent,
   Divider,
   makeStyles,
+  CardActions,
+  CardActionArea,
+  CardHeader,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -34,17 +37,20 @@ const useStyles = makeStyles({
   cardContainer: {
     display: 'flex',
     justifyContent: 'flex-start',
-    gap: '8px',
+    gap: '16px',
   },
   detailContainer: {
     display: 'flex',
-    alignItems: 'flex-start',
     justifyContent: 'flex-start',
     flexDirection: 'column',
     gap: '4px',
   },
   directionContainer: {
     width: '50%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    gap: '32px',
   },
   spacingforshowButton: {
     marginBottom: '8px',
@@ -61,10 +67,10 @@ const layout = {
 const stylesheet = [{
   selector: 'node',
   style: {
-    width: 170,
+    width: 200,
     shape: 'roundrectangle',
     label: 'data(label)',
-    color: 'white',
+    color: 'black',
     'font-size': '12pt',
     'min-zoomed-font-size': '6pt',
     'text-halign': 'center',
@@ -72,16 +78,17 @@ const stylesheet = [{
     'text-wrap': 'wrap',
     'text-max-width': 1000,
     'border-width': 0,
-    'background-color': 'blue',
-    'padding-left': '10px',
+    'background-color': '#eee',
+    'padding-left': '15px',
     'padding-top': '15px',
-    'padding-right': '10px',
+    'padding-right': '15px',
     'padding-bottom': '15px',
   },
 }, {
   selector: 'node[?active]',
   style: {
-    'background-color': 'green',
+    'background-color': '#2E7D32',
+    color: 'white',
   },
 }, {
   selector: 'edge',
@@ -191,23 +198,21 @@ function ChplIcsFamily(props) {
               <figure>
                 <div className={classes.cardContainer}>
                   <div className={classes.directionContainer}>
-                    <Typography> Select a listing to the right to view more information. You can also click and drag to scroll through the listings.</Typography>
-                    <Typography>
-                      To compare all listings together, please select
-                      {' '}
-                      {' '}
-                      <Link
+                    <div>
+                    <Typography gutterBottom> Select a listing to the right to view more information. You can also click and drag to scroll through the listings.</Typography>
+                    <ChplLink
                         href={compare}
+                        text="Compare all listings"
                         external={false}
-                      >
-                        compare all.
-                      </Link>
-                    </Typography>
+                      />
+                    </div>
                     { isShowingListingDetails
                   && (
-                    <div className={classes.detailContainer}>
-                      <Divider />
-                      <Typography variant="h5"><strong>CHPL Product Number:</strong></Typography>
+                    <div>
+                      <Card className={classes.detailContainer}>
+                        <CardHeader title='Details'></CardHeader>
+                        <CardContent className={classes.detailContainer}>
+                        <Typography><strong>CHPL Product Number:</strong></Typography>
                       <ChplLink
                         href={`#/listing/${listing?.id}?panel=additional`}
                         text={listing?.chplProductNumber}
@@ -234,9 +239,10 @@ function ChplIcsFamily(props) {
                       <Typography><strong>Certification Status:</strong></Typography>
                       <Typography>
                         { listing?.certificationStatus.name }
-                      </Typography>
-                      <br />
-                      <Button
+                      </Typography>          
+                      </CardContent>
+                      <CardActions>
+                        <Button
                         endIcon={<CloseIcon />}
                         size="small"
                         variant="contained"
@@ -245,14 +251,16 @@ function ChplIcsFamily(props) {
                       >
                         Close Details
                       </Button>
+                      </CardActions>
+                      </Card>
                     </div>
                   )}
                   </div>
                   <CytoscapeComponent
                     elements={elements}
-                    style={{ width: '50%', height: '40vh' }}
-                    minZoom={1}
-                    maxZoom={1}
+                    style={{ width: '50%', height: '475px', borderLeft:'1px solid #ccc' }}
+                    minZoom={0.5}
+                    maxZoom={0.9}
                     autoungrabify
                     layout={layout}
                     stylesheet={stylesheet}
