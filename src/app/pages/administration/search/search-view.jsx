@@ -56,7 +56,7 @@ const headers = [
   { property: 'version', text: 'Version', sortable: true },
   { property: 'certification_date', text: 'Certification Date', sortable: true, reverseDefault: true },
   { text: 'Certification Status' },
-  { text: 'Actions', invisible: true, },
+  { text: 'Actions', invisible: true },
 ];
 /* eslint-enable object-curly-newline */
 

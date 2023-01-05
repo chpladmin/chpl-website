@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Chip,
@@ -18,17 +18,17 @@ function ChplCompareDisplay() {
 
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'Compare Widget' });
-    let previously = $localStorage.previouslyCompared || [];
+    const previously = $localStorage.previouslyCompared || [];
     listings.forEach((listing) => {
       if (previously.indexOf(listing.id) === -1) {
         previously.push(listing.id);
-      };
+      }
     });
     while (previously.length > 20) {
       previously.shift();
     }
     $localStorage.previouslyCompared = previously;
-    $location.url('/compare/' + listings.map((listing) => listing.id).join('&'));
+    $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();
   };
@@ -49,7 +49,7 @@ function ChplCompareDisplay() {
 
   return (
     <>
-      { listings.sort((a, b) => a.name < b.name ? -1 : 1)
+      { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
         .map((listing) => (
           <Chip
             key={listing.id}

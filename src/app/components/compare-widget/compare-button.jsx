@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
 } from '@material-ui/core';
@@ -12,14 +12,14 @@ function ChplCompareButton(props) {
   const { listing } = props;
   const { addListing, isInWidget, removeListing } = useContext(CompareContext);
 
-  const handleClick = () => isInWidget(listing) ? removeListing(listing) : addListing(listing);
+  const handleClick = () => (isInWidget(listing) ? removeListing(listing) : addListing(listing));
 
   return (
     <Button
       variant="contained"
       id={`toggle-compare-${listing.id}`}
       onClick={handleClick}
-      endIcon={isInWidget(listing) ? <RemoveIcon/> : <AddIcon/>}
+      endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
     >
       Compare
     </Button>
