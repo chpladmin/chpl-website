@@ -5,7 +5,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplFunctionalitiesTestedEdit from './functionalities-ed-edit';
+import ChplFunctionalitiesTestedEdit from './functionalities-tested-edit';
 
 const hocMock = {
   onChange: jest.fn(),
@@ -62,8 +62,8 @@ describe('the ChplFunctionalitiesTestedEdit component', () => {
       render(
         <ChplFunctionalitiesTestedEdit
           functionalitiesTested={[
-            { name: 'zz name', functionalitiesTestedId: 2 },
-            { name: 'name 1', functionalitiesTestedId: 3 },
+            { name: 'zz name', functionalityTestedId: 2 },
+            { name: 'name 1', functionalityTestedId: 3 },
           ]}
           options={[
             { name: 'zz name', id: 2 },
@@ -125,9 +125,9 @@ describe('the ChplFunctionalitiesTestedEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { functionalitiesTestedId: 3, name: 'name 1' },
-            { functionalitiesTestedId: 2, name: 'zz name' },
-            { functionalitiesTestedId: 4, name: 'a name', key: expect.any(Number) },
+            { functionalityTestedId: 3, name: 'name 1' },
+            { functionalityTestedId: 2, name: 'zz name' },
+            { functionalityTestedId: 4, name: 'a name', key: expect.any(Number) },
           ],
           key: 'functionalitiesTested',
         });
@@ -140,8 +140,8 @@ describe('the ChplFunctionalitiesTestedEdit component', () => {
       render(
         <ChplFunctionalitiesTestedEdit
           functionalitiesTested={[
-            { name: 'zz name', FunctionalityTestedId: 2 },
-            { name: 'name 1', FunctionalityTestedId: 3 },
+            { name: 'zz name', functionalityTestedId: 2 },
+            { name: 'name 1', functionalityTestedId: 3 },
           ]}
           options={[
             { name: 'zz name', id: 2 },
