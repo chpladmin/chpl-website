@@ -143,7 +143,7 @@ describe('the search page', () => {
   });
 
   describe('when searching listings by CHPL ID', () => {
-    const chplId = '15.99.04.3078.Ninj.01.00.0.200629';
+    const chplId = '15.04.04.1061.AllM.12.01.1.230104';
     beforeEach(() => {
       page.searchForListing(chplId);
       hooks.waitForSpinnerToDisappear();
