@@ -45,6 +45,7 @@ function CompareWrapper(props) {
   const compareState = {
     addListing,
     isInWidget,
+    listings,
     removeListing,
   };
 

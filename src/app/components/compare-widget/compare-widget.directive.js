@@ -40,7 +40,7 @@
       });
       $scope.$on('$destroy', addListing);
       var removeListing = $scope.$on('removeListing', (evt, listing) => {
-        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
+        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber, listing.doNotTrack);
       });
       $scope.$on('$destroy', removeListing);
     };
@@ -89,7 +89,7 @@
 
     function toggleProduct (id, name, number, doNotTrack) {
       if (vm.isInList(parseInt(id, 10))) {
-        removeProduct(parseInt(id, 10), number);
+        removeProduct(parseInt(id, 10), number, doNotTrack);
       } else {
         addProduct(parseInt(id, 10), name, number, doNotTrack);
       }
@@ -107,8 +107,8 @@
         if (!doNotTrack) {
           $analytics.eventTrack('Add Listing', { category: 'Compare Widget', label: number });
         }
-        vm.compareWidget.products.push({id: id, name: name, chplProductNumber: number});
-        $rootScope.$broadcast('addedListing', {id, chplProductNumber: number});
+        vm.compareWidget.products.push({id, name, chplProductNumber: number});
+        $rootScope.$broadcast('addedListing', {id, name, chplProductNumber: number});
       }
     }
 
@@ -120,8 +120,8 @@
       }
     }
 
-    function removeProduct (id, number) {
-      if (number) {
+    function removeProduct (id, number, doNotTrack) {
+      if (number && !doNotTrack) {
         $analytics.eventTrack('Remove Listing', { category: 'Compare Widget', label: number });
       }
       for (var i = 0; i < vm.compareWidget.products.length; i++) {
