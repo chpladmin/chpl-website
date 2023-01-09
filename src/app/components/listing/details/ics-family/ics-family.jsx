@@ -198,147 +198,147 @@ function ChplIcsFamily(props) {
         && (
           <Card>
             <CardContent>
-                <div className={classes.cardContainer}>
-                  <div className={classes.directionContainer}>
-                    <div>
-                      <Typography gutterBottom>
-                        Select a listing to the right to view more information. You can also click and drag to scroll through the listings.
-                      </Typography>
-                      <ChplLink
-                        href={compare}
-                        text="Compare all listings"
-                        external={false}
-                      />
-                    </div>
-                    { isShowingListingDetails
-                      && (
-                        <div>
-                          <Card className={classes.detailContainer}>
-                            <CardHeader title="Details" />
-                            <CardContent className={classes.detailContainer}>
-                              <Typography>
-                                <strong>CHPL Product Number:</strong>
-                              </Typography>
-                              { listing?.id === id
-                                ? (
-                                  <Typography>{ listing?.chplProductNumber }</Typography>
-                                ) : (
-                                  <ChplLink
-                                    href={`#/listing/${listing?.id}?panel=additional`}
-                                    text={listing?.chplProductNumber}
-                                    external={false}
-                                    router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
-                                  />
-                                )}
-                              <Typography>
-                                <strong>Developer:</strong>
-                                <ChplLink
-                                  href={`#/organizations/developers/${listing?.developer.id}`}
-                                  text={listing?.developer.name}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
-                                />
-                              </Typography>
-                              <Typography>
-                                <strong>Product:</strong>
-                              </Typography>
-                              <Typography>{ listing?.product.name }</Typography>
-                              <Typography>
-                                <strong>Version:</strong>
-                              </Typography>
-                              <Typography>
-                                { listing?.version.name }
-                              </Typography>
-                              <Typography>
-                                <strong>Certification Status:</strong>
-                              </Typography>
-                              <Typography>
-                                { listing?.certificationStatus.name }
-                              </Typography>
-                            </CardContent>
-                            <CardActions>
-                              <Button
-                                endIcon={<CloseIcon />}
-                                size="small"
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => setListingId(undefined)}
-                              >
-                                Close Details
-                              </Button>
-                            </CardActions>
-                          </Card>
-                        </div>
-                      )}
+              <div className={classes.cardContainer}>
+                <div className={classes.directionContainer}>
+                  <div>
+                    <Typography gutterBottom>
+                      Select a listing to the right to view more information. You can also click and drag to scroll through the listings.
+                    </Typography>
+                    <ChplLink
+                      href={compare}
+                      text="Compare all listings"
+                      external={false}
+                    />
                   </div>
-                  <div className={classes.figureContainer}>
-                  <figure>
-                  <CytoscapeComponent
-                    elements={elements}
-                    style={{ width: '100%', height: '475px'}}
-                    minZoom={0.5}
-                    maxZoom={0.9}
-                    autoungrabify
-                    layout={layout}
-                    stylesheet={stylesheet}
-                    cy={setCytoscape}
-                  />
-                <figcaption className="sr-only">
-                  <Typography variant="h5">Overview</Typography>
-                  <Typography>The image shows the ICS relationships between related Products</Typography>
-                  <Typography variant="h5">Values</Typography>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>CHPL Product Number</TableCell>
-                        <TableCell>Certification Status</TableCell>
-                        <TableCell>Inherits from</TableCell>
-                        <TableCell>Source for</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      { listings.map((l) => (
-                        <TableRow key={l.id}>
-                          <TableCell>
-                            { l.id === id
+                  { isShowingListingDetails
+                    && (
+                      <div>
+                        <Card className={classes.detailContainer}>
+                          <CardHeader title="Details" />
+                          <CardContent className={classes.detailContainer}>
+                            <Typography>
+                              <strong>CHPL Product Number:</strong>
+                            </Typography>
+                            { listing?.id === id
                               ? (
-                                <>
-                                  { l.chplProductNumber }
-                                </>
+                                <Typography>{ listing?.chplProductNumber }</Typography>
                               ) : (
                                 <ChplLink
-                                  href={`#/listing/${l.id}?panel=additional`}
-                                  text={l.chplProductNumber}
+                                  href={`#/listing/${listing?.id}?panel=additional`}
+                                  text={listing?.chplProductNumber}
                                   external={false}
+                                  router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
                                 />
                               )}
-                          </TableCell>
-                          <TableCell>{ l.certificationStatus.name }</TableCell>
-                          <TableCell>
-                            <List>
-                              { l.parents.map((p) => (
-                                <ListItem key={p.chplProductNumber}>
-                                  {p.chplProductNumber}
-                                </ListItem>
-                              ))}
-                            </List>
-                          </TableCell>
-                          <TableCell>
-                            <List>
-                              { l.children.map((c) => (
-                                <ListItem key={c.chplProductNumber}>
-                                  {c.chplProductNumber}
-                                </ListItem>
-                              ))}
-                            </List>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </figcaption>
-              </figure>
-              </div>
+                            <Typography>
+                              <strong>Developer:</strong>
+                              <ChplLink
+                                href={`#/organizations/developers/${listing?.developer.id}`}
+                                text={listing?.developer.name}
+                                external={false}
+                                router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
+                              />
+                            </Typography>
+                            <Typography>
+                              <strong>Product:</strong>
+                            </Typography>
+                            <Typography>{ listing?.product.name }</Typography>
+                            <Typography>
+                              <strong>Version:</strong>
+                            </Typography>
+                            <Typography>
+                              { listing?.version.name }
+                            </Typography>
+                            <Typography>
+                              <strong>Certification Status:</strong>
+                            </Typography>
+                            <Typography>
+                              { listing?.certificationStatus.name }
+                            </Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Button
+                              endIcon={<CloseIcon />}
+                              size="small"
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => setListingId(undefined)}
+                            >
+                              Close Details
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </div>
+                    )}
+                </div>
+                <div className={classes.figureContainer}>
+                  <figure>
+                    <CytoscapeComponent
+                      elements={elements}
+                      style={{ width: '100%', height: '475px' }}
+                      minZoom={0.5}
+                      maxZoom={0.9}
+                      autoungrabify
+                      layout={layout}
+                      stylesheet={stylesheet}
+                      cy={setCytoscape}
+                    />
+                    <figcaption className="sr-only">
+                      <Typography variant="h5">Overview</Typography>
+                      <Typography>The image shows the ICS relationships between related Products</Typography>
+                      <Typography variant="h5">Values</Typography>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>CHPL Product Number</TableCell>
+                            <TableCell>Certification Status</TableCell>
+                            <TableCell>Inherits from</TableCell>
+                            <TableCell>Source for</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          { listings.map((l) => (
+                            <TableRow key={l.id}>
+                              <TableCell>
+                                { l.id === id
+                                  ? (
+                                    <>
+                                      { l.chplProductNumber }
+                                    </>
+                                  ) : (
+                                    <ChplLink
+                                      href={`#/listing/${l.id}?panel=additional`}
+                                      text={l.chplProductNumber}
+                                      external={false}
+                                    />
+                                  )}
+                              </TableCell>
+                              <TableCell>{ l.certificationStatus.name }</TableCell>
+                              <TableCell>
+                                <List>
+                                  { l.parents.map((p) => (
+                                    <ListItem key={p.chplProductNumber}>
+                                      {p.chplProductNumber}
+                                    </ListItem>
+                                  ))}
+                                </List>
+                              </TableCell>
+                              <TableCell>
+                                <List>
+                                  { l.children.map((c) => (
+                                    <ListItem key={c.chplProductNumber}>
+                                      {c.chplProductNumber}
+                                    </ListItem>
+                                  ))}
+                                </List>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </figcaption>
+                  </figure>
+                </div>
               </div>
             </CardContent>
           </Card>
