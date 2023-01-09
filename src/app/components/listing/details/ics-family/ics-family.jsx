@@ -211,13 +211,20 @@ function ChplIcsFamily(props) {
                           <Card className={classes.detailContainer}>
                             <CardHeader title="Details" />
                             <CardContent className={classes.detailContainer}>
-                              <Typography><strong>CHPL Product Number:</strong></Typography>
-                              <ChplLink
-                                href={`#/listing/${listing?.id}?panel=additional`}
-                                text={listing?.chplProductNumber}
-                                external={false}
-                                router={{ sref: 'listing', options: { id: listing.id, panel: 'additional' } }}
-                              />
+                              <Typography>
+                                <strong>CHPL Product Number:</strong>
+                              </Typography>
+                              { listing?.id === id
+                                ? (
+                                  <Typography>{ listing?.chplProductNumber }</Typography>
+                                ) : (
+                                  <ChplLink
+                                    href={`#/listing/${listing?.id}?panel=additional`}
+                                    text={listing?.chplProductNumber}
+                                    external={false}
+                                    router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
+                                  />
+                                )}
                               <Typography>
                                 <strong>Developer:</strong>
                                 <ChplLink
