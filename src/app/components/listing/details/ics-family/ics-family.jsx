@@ -193,7 +193,6 @@ function ChplIcsFamily(props) {
         && (
           <Card>
             <CardContent>
-              <figure>
                 <div className={classes.cardContainer}>
                   <div className={classes.directionContainer}>
                     <div>
@@ -258,9 +257,11 @@ function ChplIcsFamily(props) {
                         </div>
                       )}
                   </div>
+                  <div style={{ width: '50%', height: '475px', borderLeft: '1px solid #ccc' }}>
+                  <figure>
                   <CytoscapeComponent
                     elements={elements}
-                    style={{ width: '50%', height: '475px', borderLeft: '1px solid #ccc' }}
+                    style={{ width: '100%', height: '475px'}}
                     minZoom={0.5}
                     maxZoom={0.9}
                     autoungrabify
@@ -268,7 +269,6 @@ function ChplIcsFamily(props) {
                     stylesheet={stylesheet}
                     cy={setCytoscape}
                   />
-                </div>
                 <figcaption className="sr-only">
                   <Typography variant="h5">Overview</Typography>
                   <Typography>The image shows the ICS relationships between related Products</Typography>
@@ -324,6 +324,8 @@ function ChplIcsFamily(props) {
                   </Table>
                 </figcaption>
               </figure>
+              </div>
+              </div>
             </CardContent>
           </Card>
         )}
