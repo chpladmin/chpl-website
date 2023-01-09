@@ -215,6 +215,7 @@ function ChplIcsFamily(props) {
                             href={`#/listing/${listing?.id}?panel=additional`}
                             text={listing?.chplProductNumber}
                             external={false}
+                            router={{ sref: 'listing', options: { id: listing.id, panel: 'additional' } }}
                           />
                           <Typography>
                             <strong>Developer:</strong>
@@ -222,6 +223,7 @@ function ChplIcsFamily(props) {
                               href={`#/organizations/developers/${listing?.developer.id}`}
                               text={listing?.developer.name}
                               external={false}
+                              router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
                             />
                           </Typography>
                           <Typography>
