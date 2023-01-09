@@ -49,6 +49,11 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '32px',
   },
+  figureContainer: {
+    width: '50%',
+    height: '475px',
+    borderLeft: '1px solid #ccc',
+  },
   spacingforshowButton: {
     marginBottom: '8px',
   },
@@ -244,7 +249,9 @@ function ChplIcsFamily(props) {
                               <Typography>
                                 { listing?.version.name }
                               </Typography>
-                              <Typography><strong>Certification Status:</strong></Typography>
+                              <Typography>
+                                <strong>Certification Status:</strong>
+                              </Typography>
                               <Typography>
                                 { listing?.certificationStatus.name }
                               </Typography>
@@ -264,7 +271,7 @@ function ChplIcsFamily(props) {
                         </div>
                       )}
                   </div>
-                  <div style={{ width: '50%', height: '475px', borderLeft: '1px solid #ccc' }}>
+                  <div className={classes.figureContainer}>
                   <figure>
                   <CytoscapeComponent
                     elements={elements}
