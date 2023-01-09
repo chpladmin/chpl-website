@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -11,11 +12,10 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import { ExportToCsv } from 'export-to-csv';
 
-import {
-  useFetchCollection,
-} from 'api/collections';
+import { useFetchCollection } from 'api/collections';
 import {
   ChplLink,
   ChplPagination,
@@ -28,10 +28,40 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
+const csvOptions = {
+  filename: 'listings',
+  showLabels: true,
+  headers: [
+    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
+    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
+    { headerName: 'Developer', objectKey: 'developerName' },
+    { headerName: 'Product', objectKey: 'productName' },
+    { headerName: 'Version', objectKey: 'versionName' },
+    { headerName: 'Certification Date', objectKey: 'certificationDate' },
+    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
+  ],
+};
+
+/* eslint-disable object-curly-newline */
+const headers = [
+  { property: 'chpl_id', text: 'CHPL ID', sortable: true },
+  { text: 'Certification Edition' },
+  { property: 'developer', text: 'Developer', sortable: true },
+  { property: 'product', text: 'Product', sortable: true },
+  { property: 'version', text: 'Version', sortable: true },
+  { property: 'certification_date', text: 'Certification Date', sortable: true, reverseDefault: true },
+  { text: 'Certification Status' },
+];
+/* eslint-enable object-curly-newline */
+
 const useStyles = makeStyles({
+  iconSpacing: {
+    marginLeft: '4px',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -41,13 +71,9 @@ const useStyles = makeStyles({
   },
   pageBody: {
     display: 'grid',
-    gridTemplateColumns: ' 1fr',
     gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '2fr 1fr',
-    },
   },
   pageContent: {
     display: 'grid',
@@ -103,14 +129,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSedCollectionView(props) {
-  const storageKey = 'storageKey-sedView';
+function ChplSearchView(props) {
+  const storageKey = 'storageKey-searchView';
   const $analytics = getAngularService('$analytics');
-  const $uibModal = getAngularService('$uibModal');
-  const API = getAngularService('API');
-  const authService = getAngularService('authService');
   const { analytics } = props;
-  const [downloadLink, setDownloadLink] = useState('');
+  const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -125,7 +148,7 @@ function ChplSedCollectionView(props) {
     pageNumber,
     pageSize,
     sortDescending,
-    query: `certificationCriteriaIds=52&${filterContext.queryString()}`,
+    query: filterContext.queryString(),
   });
 
   useEffect(() => {
@@ -151,40 +174,15 @@ function ChplSedCollectionView(props) {
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
-  useEffect(() => {
-    setDownloadLink(`${API}/certified_products/sed_details?api_key=${authService.getApiKey()}`);
-  }, [API, authService]);
-
-  /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-  const headers = [
-    { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-    { text: 'Certification Edition' },
-    { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'product', text: 'Product', sortable: true },
-    { property: 'version', text: 'Version', sortable: true },
-    { text: 'Certification Status' },
-    { text: 'Actions', invisible: true },
-  ];
+  const downloadSearch = () => {
+    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
+    csvExporter.generateCsv(listings);
+  };
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
-  };
-
-  const viewDetails = (id) => {
-    $uibModal.open({
-      templateUrl: 'chpl.collections/sed/sed-modal.html',
-      controller: 'ViewSedModalController',
-      controllerAs: 'vm',
-      animation: false,
-      backdrop: 'static',
-      keyboard: false,
-      size: 'lg',
-      resolve: {
-        id() { return id; },
-      },
-    });
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
@@ -193,30 +191,12 @@ function ChplSedCollectionView(props) {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">SED Information for 2015 Edition Products</Typography>
+        <Typography variant="h1">Search</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div>
-          <Typography variant="body1" gutterBottom>
-            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED):
-          </Typography>
-          <Typography variant="body1">
-            Please note that by default, only listings that are active or suspended are shown in the search results.
-          </Typography>
-        </div>
-        <div>
-          <h2>SED Information Dataset</h2>
-          <Typography variant="body1" gutterBottom>
-            Please note the All SED Details file contains information for all certified product listings and is not filtered based on search results.
-          </Typography>
-          <ChplLink
-            href={downloadLink}
-            text="Download All SED Details"
-            id="download-sed-details"
-            analytics={{ event: 'Download All SED Details', category: analytics.category }}
-            external={false}
-          />
-        </div>
+        <Typography variant="body1">
+          Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.
+        </Typography>
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
@@ -248,6 +228,26 @@ function ChplSedCollectionView(props) {
                     </Typography>
                   )}
               </div>
+              { listings.length > 0
+                && (
+                  <ButtonGroup size="small" className={classes.wrap}>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      fullWidth
+                      id="download-filtered-listings"
+                      onClick={downloadSearch}
+                    >
+                      Download
+                      {' '}
+                      { listings.length }
+                      {' '}
+                      Result
+                      { listings.length !== 1 ? 's' : '' }
+                      <GetAppIcon className={classes.iconSpacing} />
+                    </Button>
+                  </ButtonGroup>
+                )}
             </div>
             { listings.length > 0
               && (
@@ -255,7 +255,7 @@ function ChplSedCollectionView(props) {
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="SED Collections table"
+                      aria-label="Search results table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
@@ -271,11 +271,11 @@ function ChplSedCollectionView(props) {
                               <TableCell className={classes.stickyColumn}>
                                 <strong>
                                   <ChplLink
-                                    href={`#/listing/${item.id}?panel=sed`}
+                                    href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
                                     analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                                     external={false}
-                                    router={{ sref: 'listing', options: { id: item.id, panel: 'sed' } }}
+                                    router={{ sref: 'listing', options: { id: item.id } }}
                                   />
                                 </strong>
                               </TableCell>
@@ -295,18 +295,8 @@ function ChplSedCollectionView(props) {
                               </TableCell>
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
+                              <TableCell>{ getDisplayDateFormat(item.certificationDate) }</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
-                              <TableCell>
-                                <Button
-                                  color="primary"
-                                  variant="contained"
-                                  id={`view-details-${item.id}`}
-                                  onClick={() => viewDetails(item.id)}
-                                  endIcon={<InfoIcon />}
-                                >
-                                  View
-                                </Button>
-                              </TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
@@ -329,9 +319,9 @@ function ChplSedCollectionView(props) {
   );
 }
 
-export default ChplSedCollectionView;
+export default ChplSearchView;
 
-ChplSedCollectionView.propTypes = {
+ChplSearchView.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }).isRequired,

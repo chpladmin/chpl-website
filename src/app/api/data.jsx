@@ -11,6 +11,14 @@ const useFetchComplainantTypes = () => {
   }, options.daily);
 };
 
+const useFetchCqms = () => {
+  const axios = useAxios();
+  return useQuery(['data/search-options/'], async () => {
+    const response = await axios.get('data/search-options');
+    return response.data.cqms;
+  }, options.daily);
+};
+
 const useFetchCriteria = () => {
   const axios = useAxios();
   return useQuery(['data/certification-criteria/'], async () => {
@@ -21,5 +29,6 @@ const useFetchCriteria = () => {
 
 export {
   useFetchComplainantTypes,
+  useFetchCqms,
   useFetchCriteria,
 };

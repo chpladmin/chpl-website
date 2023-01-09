@@ -4,52 +4,16 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import {
-  Checkbox,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core';
-import {
-  arrayOf,
-  bool,
-  func,
-  number,
-  oneOfType,
-  shape,
-  string,
-} from 'prop-types';
+import { arrayOf, shape, string } from 'prop-types';
 
-import { ChplTextField } from 'components/util';
+import { getDefaultValueEntry, getDateEntry, getDateTimeEntry } from './filters/value-entries';
+
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { filter as filterPropType } from 'shared/prop-types';
 
 const FilterContext = createContext();
-
-const getDefaultValueEntry = ({ filter, handleFilterToggle }) => filter.values
-  .map((value) => {
-    const labelId = `filter-panel-secondary-items-${(`${value.value}`).replace(/ /g, '_')}`;
-    return (
-      <ListItem
-        key={value.value}
-        button
-        onClick={() => handleFilterToggle(value)}
-        disabled={filter.required && value.selected && filter.values.filter((a) => a.selected).length === 1}
-      >
-        <ListItemIcon>
-          <Checkbox
-            color="primary"
-            edge="start"
-            checked={value?.selected || false}
-            tabIndex={-1}
-            inputProps={{ 'aria-labelledby': labelId }}
-          />
-        </ListItemIcon>
-        <ListItemText id={labelId}>{filter.getValueDisplay(value)}</ListItemText>
-      </ListItem>
-    );
-  });
 
 const getDateDisplay = (value) => (
   <>
@@ -69,35 +33,14 @@ const getDateDisplay = (value) => (
   </>
 );
 
-const generateDateEntry = ({ filter, handleFilterUpdate, type }) => filter.values
-  .sort((a, b) => (a.value > b.value ? -1 : 1))
-  .map((value) => {
-    const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
-    return (
-      <React.Fragment key={value.value}>
-        <div>
-          {filter.getValueDisplay(value)}
-        </div>
-        <ChplTextField
-          id={labelId}
-          type={type}
-          value={value.selected}
-          onChange={(event) => handleFilterUpdate(event, filter, value)}
-        />
-      </React.Fragment>
-    );
-  });
-
-const getDateTimeEntry = ({ filter, handleFilterUpdate }) => generateDateEntry({ filter, handleFilterUpdate, type: 'datetime-local' });
-
-const getDateEntry = ({ filter, handleFilterUpdate }) => generateDateEntry({ filter, handleFilterUpdate, type: 'date' });
-
 const defaultFilter = {
   getQuery: (filter) => `${filter.key}=${filter.values.sort((a, b) => (a.value < b.value ? -1 : 1)).map((v) => v.value).join(',')}${filter.operatorKey ? `&${filter.operatorKey}=${filter.operator}` : ''}`,
   getFilterDisplay: (filter) => filter.display,
   getValueDisplay: (value) => value.display,
+  getLongValueDisplay: (value) => value.longDisplay || value.display,
   getValueEntry: getDefaultValueEntry,
   sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
+  singular: false,
 };
 
 const clearFilter = (filter, category, setFilters) => {
@@ -161,18 +104,33 @@ const toggleShowAll = (filters, category, setFilters) => {
 
 const updateFilter = (filters, category, value, setFilters) => {
   const filter = filters.find((f) => f.key === category.key);
-  const item = filter.values.find((v) => v.value === value.value);
-  const updatedItem = {
-    ...item,
-    selected: value.selected,
-  };
-  const updatedFilter = {
-    ...filter,
-    values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
-  };
-  const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
-  if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
-    setFilters(updatedFilters);
+  if (filter.singular) {
+    const values = filter.values.map((v) => ({
+      ...v,
+      selected: v.value === value.value,
+    }));
+    const updatedFilter = {
+      ...filter,
+      values,
+    };
+    const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+      setFilters(updatedFilters);
+    }
+  } else {
+    const item = filter.values.find((v) => v.value === value.value);
+    const updatedItem = {
+      ...item,
+      selected: value.selected,
+    };
+    const updatedFilter = {
+      ...filter,
+      values: filter.values.filter((v) => v.value !== value.value).concat(updatedItem),
+    };
+    const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
+      setFilters(updatedFilters);
+    }
   }
 };
 
@@ -313,21 +271,7 @@ function FilterProvider(props) {
 }
 
 FilterProvider.propTypes = {
-  filters: arrayOf(shape({
-    key: string.isRequired,
-    display: string.isRequired,
-    required: bool,
-    operatorKey: string,
-    operator: string,
-    values: arrayOf(shape({
-      value: oneOfType([number, string]).isRequired,
-      default: oneOfType([bool, string]),
-      display: string,
-    })).isRequired,
-    getQuery: func,
-    getValueDisplay: func,
-    getValueEntry: func,
-  })).isRequired,
+  filters: arrayOf(filterPropType).isRequired,
   analytics: shape({
     category: string.isRequired,
   }),

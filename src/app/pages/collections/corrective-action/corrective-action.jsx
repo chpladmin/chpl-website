@@ -1,43 +1,34 @@
 import React, { useEffect, useState } from 'react';
 
-import ChplInactiveCertificatesCollectionView from './inactive-certificates-view';
+import ChplCorrectiveActionCollectionView from './corrective-action-view';
 
 import { useFetchCriteria } from 'api/data';
-import { FilterProvider } from 'components/filter';
+import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
   certificationCriteriaIds,
   certificationDate,
   certificationStatuses,
-  decertificationDate,
   derivedCertificationEditions,
 } from 'components/filter/filters';
 
 const staticFilters = [
   certificationBodies,
   certificationDate,
-  decertificationDate, {
-    ...derivedCertificationEditions,
+  certificationStatuses,
+  derivedCertificationEditions, {
+    ...defaultFilter,
+    key: 'nonConformityOptions',
+    display: 'Non-conformities',
     required: true,
+    operatorKey: 'nonConformityOptionsOperator',
     values: [
-      { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
-    ],
-  }, {
-    ...certificationStatuses,
-    values: [
-      { value: 'Active' },
-      { value: 'Suspended by ONC' },
-      { value: 'Suspended by ONC-ACB' },
-      { value: 'Terminated by ONC' },
-      { value: 'Withdrawn by Developer Under Surveillance/Review' },
-      { value: 'Withdrawn by ONC-ACB' },
-      { value: 'Withdrawn by Developer', default: true },
-      { value: 'Retired' },
+      { value: 'open_nonconformity', display: 'Open Non-conformity', default: true },
+      { value: 'closed_nonconformity', display: 'Closed Non-conformity', default: true },
     ],
   }];
 
-function ChplInactiveCertificatesCollectionPage() {
+function ChplCorrectiveActionCollectionPage() {
   const [filters, setFilters] = useState(staticFilters);
   const ccQuery = useFetchCriteria();
 
@@ -62,23 +53,23 @@ function ChplInactiveCertificatesCollectionPage() {
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   const analytics = {
-    category: 'Inactive Certificates',
+    category: 'Products: Corrective Action Status',
   };
 
   return (
     <FilterProvider
       analytics={analytics}
       filters={filters}
-      storageKey="storageKey-inactiveCertificatesPage"
+      storageKey="storageKey-correctiveActionPage"
     >
-      <ChplInactiveCertificatesCollectionView
+      <ChplCorrectiveActionCollectionView
         analytics={analytics}
       />
     </FilterProvider>
   );
 }
 
-export default ChplInactiveCertificatesCollectionPage;
+export default ChplCorrectiveActionCollectionPage;
 
-ChplInactiveCertificatesCollectionPage.propTypes = {
+ChplCorrectiveActionCollectionPage.propTypes = {
 };
