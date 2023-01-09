@@ -58,7 +58,7 @@ const layout = {
   name: 'breadthfirst',
   animate: true,
   directed: 'true',
-  spacingFactor: 0.5,
+  spacingFactor: 0.75,
 };
 
 const stylesheet = [{
