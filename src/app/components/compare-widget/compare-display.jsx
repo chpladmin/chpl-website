@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import {
   Button,
-  Divider,
   CardContent,
   Chip,
+  Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -16,13 +15,13 @@ import { getAngularService } from 'services/angular-react-helper';
 import { CompareContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
-  buttonContainer:{
+  buttonContainer: {
     marginTop: '16px',
     gap: '8px',
-    display:'flex',
+    display: 'flex',
     flexDirection: 'column',
   },
-  cardcontentPadding:{
+  cardcontentPadding: {
     padding: '8px',
   },
   chipContainer: {
@@ -43,7 +42,6 @@ const useStyles = makeStyles({
     display: 'flex',
   },
 });
-
 
 function ChplCompareDisplay() {
   const $analytics = getAngularService('$analytics');
@@ -87,43 +85,43 @@ function ChplCompareDisplay() {
   return (
     <CardContent className={classes.cardcontentPadding}>
       <div className={classes.chipContainer}>
-      { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
-        .map((listing) => (
-          <Chip
-            className={classes.productChips}
-            color="primary"
-            variant="outlined"
-            key={listing.id}
-            label={<ChplEllipsis text={listing.name} />}
-            onDelete={() => removeListing(listing)}
-          />
-        ))}
+        { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
+          .map((listing) => (
+            <Chip
+              className={classes.productChips}
+              color="primary"
+              variant="outlined"
+              key={listing.id}
+              label={<ChplEllipsis text={listing.name} />}
+              onDelete={() => removeListing(listing)}
+            />
+          ))}
       </div>
-      <Divider/>
-      <div className={classes.buttonContainer} >
-      <Button
-        fullWidth
-        color="primary"
-        variant="contained"
-        id="compare-listings"
-        onClick={compareAll}
-        disabled={listings.length === 1}
-        endIcon={<CompareArrowsIcon/>}
-      >
-        Compare products
-      </Button>
-      <Button
-        className={classes.deleteButton}
-        fullWidth
-        variant="contained"
-        id="remove-listings"
-        onClick={removeAll}
-        endIcon={<DeleteIcon/>}
-      >
-        Remove all products
-      </Button>
+      <Divider />
+      <div className={classes.buttonContainer}>
+        <Button
+          fullWidth
+          color="primary"
+          variant="contained"
+          id="compare-listings"
+          onClick={compareAll}
+          disabled={listings.length === 1}
+          endIcon={<CompareArrowsIcon />}
+        >
+          Compare products
+        </Button>
+        <Button
+          className={classes.deleteButton}
+          fullWidth
+          variant="contained"
+          id="remove-listings"
+          onClick={removeAll}
+          endIcon={<DeleteIcon />}
+        >
+          Remove all products
+        </Button>
       </div>
-      </CardContent>
+    </CardContent>
   );
 }
 
