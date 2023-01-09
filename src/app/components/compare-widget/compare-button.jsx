@@ -17,6 +17,8 @@ function ChplCompareButton(props) {
   return (
     <Button
       variant="contained"
+      size="small"
+      color="secondary"
       id={`toggle-compare-${listing.id}`}
       onClick={handleClick}
       endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
