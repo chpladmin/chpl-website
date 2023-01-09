@@ -247,7 +247,7 @@ function ChplIcsFamily(props) {
                             size="small"
                             variant="contained"
                             color="secondary"
-                            onClick={() => setIsShowingListingDetails(false)}
+                            onClick={() => setListingId(undefined)}
                           >
                             Close Details
                           </Button>
