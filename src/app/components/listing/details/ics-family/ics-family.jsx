@@ -6,20 +6,20 @@ import React, {
 } from 'react';
 import {
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
   CircularProgress,
   List,
   ListItem,
   Table,
-  TableCell,
-  TableRow,
-  TableHead,
   TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
-  Card,
-  CardContent,
   makeStyles,
-  CardActions,
-  CardHeader,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -197,7 +197,9 @@ function ChplIcsFamily(props) {
                 <div className={classes.cardContainer}>
                   <div className={classes.directionContainer}>
                     <div>
-                      <Typography gutterBottom> Select a listing to the right to view more information. You can also click and drag to scroll through the listings.</Typography>
+                      <Typography gutterBottom>
+                        Select a listing to the right to view more information. You can also click and drag to scroll through the listings.
+                      </Typography>
                       <ChplLink
                         href={compare}
                         text="Compare all listings"
@@ -205,56 +207,56 @@ function ChplIcsFamily(props) {
                       />
                     </div>
                     { isShowingListingDetails
-                  && (
-                    <div>
-                      <Card className={classes.detailContainer}>
-                        <CardHeader title="Details" />
-                        <CardContent className={classes.detailContainer}>
-                          <Typography><strong>CHPL Product Number:</strong></Typography>
-                          <ChplLink
-                            href={`#/listing/${listing?.id}?panel=additional`}
-                            text={listing?.chplProductNumber}
-                            external={false}
-                            router={{ sref: 'listing', options: { id: listing.id, panel: 'additional' } }}
-                          />
-                          <Typography>
-                            <strong>Developer:</strong>
-                            <ChplLink
-                              href={`#/organizations/developers/${listing?.developer.id}`}
-                              text={listing?.developer.name}
-                              external={false}
-                              router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
-                            />
-                          </Typography>
-                          <Typography>
-                            <strong>Product:</strong>
-                          </Typography>
-                          <Typography>{ listing?.product.name }</Typography>
-                          <Typography>
-                            <strong>Version:</strong>
-                          </Typography>
-                          <Typography>
-                            { listing?.version.name }
-                          </Typography>
-                          <Typography><strong>Certification Status:</strong></Typography>
-                          <Typography>
-                            { listing?.certificationStatus.name }
-                          </Typography>
-                        </CardContent>
-                        <CardActions>
-                          <Button
-                            endIcon={<CloseIcon />}
-                            size="small"
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => setListingId(undefined)}
-                          >
-                            Close Details
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    </div>
-                  )}
+                      && (
+                        <div>
+                          <Card className={classes.detailContainer}>
+                            <CardHeader title="Details" />
+                            <CardContent className={classes.detailContainer}>
+                              <Typography><strong>CHPL Product Number:</strong></Typography>
+                              <ChplLink
+                                href={`#/listing/${listing?.id}?panel=additional`}
+                                text={listing?.chplProductNumber}
+                                external={false}
+                                router={{ sref: 'listing', options: { id: listing.id, panel: 'additional' } }}
+                              />
+                              <Typography>
+                                <strong>Developer:</strong>
+                                <ChplLink
+                                  href={`#/organizations/developers/${listing?.developer.id}`}
+                                  text={listing?.developer.name}
+                                  external={false}
+                                  router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
+                                />
+                              </Typography>
+                              <Typography>
+                                <strong>Product:</strong>
+                              </Typography>
+                              <Typography>{ listing?.product.name }</Typography>
+                              <Typography>
+                                <strong>Version:</strong>
+                              </Typography>
+                              <Typography>
+                                { listing?.version.name }
+                              </Typography>
+                              <Typography><strong>Certification Status:</strong></Typography>
+                              <Typography>
+                                { listing?.certificationStatus.name }
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Button
+                                endIcon={<CloseIcon />}
+                                size="small"
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => setListingId(undefined)}
+                              >
+                                Close Details
+                              </Button>
+                            </CardActions>
+                          </Card>
+                        </div>
+                      )}
                   </div>
                   <CytoscapeComponent
                     elements={elements}
