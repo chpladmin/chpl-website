@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 11.47.0
+_9 January 2023_
+
+### Features
+* Restore ability to use removed criteria to generate 15E CMS IDs
+
+### User Interface Updates
+* Display "removed/retired" filters separately from active ones
+* Provide new search UI/UX page for UAT
+* Display Corrective Action shortcut in new UI/UX
+
+---
+
 ## Version 11.46.0
 _12 December 2022_
 
