@@ -92,7 +92,7 @@ function ChplCompareDisplay() {
               color="primary"
               variant="outlined"
               key={listing.id}
-              label={<ChplEllipsis text={listing.name} />}
+              label={<ChplEllipsis className={classes.chplEllipsis} text={listing.name} />}
               onDelete={() => removeListing(listing)}
             />
           ))}
