@@ -17,7 +17,7 @@ function CompareWrapper(props) {
   }, []);
 
   useEffect(() => {
-    const deregisterAddWatcher = $rootScope.$on('addedListing', (evt, listing) => !isInWidget(listing) && setListings((prev) => prev.concat(listing)));
+    const deregisterAddWatcher = $rootScope.$on('addedListing', (evt, listing) => setListings((prev) => (!isInWidget(listing) ? prev.concat(listing) : prev)));
     const deregisterRemoveWatcher = $rootScope.$on('removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
     return () => {
       deregisterAddWatcher();
