@@ -32,12 +32,16 @@
         payload.forEach((item) => { vm.toggleProduct(item.productId, item.name, item.chplProductNumber, true); });
       });
       $scope.$on('$destroy', compareAll);
+      var removeAll = $scope.$on('removeAll', (evt, payload) => {
+        clearProducts();
+      });
+      $scope.$on('$destroy', removeAll);
       var addListing = $scope.$on('addListing', (evt, listing) => {
         vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
       });
       $scope.$on('$destroy', addListing);
       var removeListing = $scope.$on('removeListing', (evt, listing) => {
-        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber, listing.doNotTrack);
+        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
       });
       $scope.$on('$destroy', removeListing);
     };
