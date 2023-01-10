@@ -33,7 +33,7 @@ describe('On surveillance management page, ROLE_ACB user', () => {
 
   it('should be able to close surveillance by adding end date', () => {
     const nonConformitydetails = {
-      type: 'Annual Real World Testing Results',
+      type: 'Annual Real World Testing Results Reports',
       determinationDate: '01/01/2020',
       summary: 'test summary',
       findings: 'test findings',
@@ -46,7 +46,7 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     page.initiateSurveillanceButton.click();
     surveillance.startDate.addValue('04/01/2020');
     surveillance.surveillanceType.selectByVisibleText('Reactive');
-    surveillance.addRequirement('Real World Testing Submission', 'Annual Real World Testing Results', 'Non-Conformity');
+    surveillance.addRequirement('Real World Testing Submission', 'Annual Real World Testing Results Reports', 'Non-Conformity');
     surveillance.addnonConformity(nonConformitydetails, 'Reactive');
     surveillance.saveButton.click();
     surveillance.saveButton.click();
@@ -66,11 +66,10 @@ describe('On surveillance management page, ROLE_ACB user', () => {
   it('should be able to close surveillance by closing all non conformities', () => {
     const error = 'End Date is required when there are no open Nonconformities';
     const nonConformitydetails = {
-      type: 'Annual Real World Testing Results',
+      type: 'Annual Real World Testing Results Reports',
       determinationDate: '01/01/2020',
       summary: 'test summary',
       findings: 'test findings',
-      resolution: 'Test resolution',
     };
     page.search(listing);
     page.clickOnListing(listing);
@@ -80,7 +79,7 @@ describe('On surveillance management page, ROLE_ACB user', () => {
     page.initiateSurveillanceButton.click();
     surveillance.startDate.addValue('05/01/2020');
     surveillance.surveillanceType.selectByVisibleText('Reactive');
-    surveillance.addRequirement('Real World Testing Submission', 'Annual Real World Testing Results', 'Non-Conformity');
+    surveillance.addRequirement('Real World Testing Submission', 'Annual Real World Testing Results Reports', 'Non-Conformity');
     surveillance.addnonConformity(nonConformitydetails, 'Reactive');
     surveillance.saveButton.click();
     surveillance.saveButton.click();

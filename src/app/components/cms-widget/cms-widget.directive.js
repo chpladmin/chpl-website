@@ -431,7 +431,7 @@ import 'jspdf-autotable';
           {'key': '|,170.314 (d)(8),170.315 (d)(8)', 'description': '(8) #170.314(d)(8) or #170.315(d)(8)'},
         ];
       } else if (year === '2015') {
-        if (vm.isOn('erd-phase-2')) {
+        if (vm.isOn('cannot-generate-15e')) {
           return [
             {'key': null, 'description': 'Demographics'},
             {'key': '170.315 (a)(5)', 'description': '#170.315(a)(5)'},
