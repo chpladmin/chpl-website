@@ -268,10 +268,6 @@ export default class NetworkService {
     return this.apiGET('/data/education_types');
   }
 
-  getFuzzyTypes(forceReload) {
-    return this.apiGET('/data/fuzzy_choices', { forceReload });
-  }
-
   getIncumbentDevelopersStatistics() {
     return this.apiGET('/statistics/incumbent_developers');
   }
@@ -354,7 +350,7 @@ export default class NetworkService {
   }
 
   getQmsStandards() {
-    return this.apiGET('/data/qms_standards');
+    return this.apiGET('/qms-standards');
   }
 
   getQuarterlySurveillanceQuarters() {
@@ -634,10 +630,6 @@ export default class NetworkService {
 
   updateDeveloper(developer) {
     return this.apiPUT(`/developers/${developer.id}`, developer);
-  }
-
-  updateFuzzyType(fuzzyType) {
-    return this.apiPUT(`/data/fuzzy_choices/${fuzzyType.id}`, fuzzyType);
   }
 
   updateProduct(productObject) {
