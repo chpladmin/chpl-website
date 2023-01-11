@@ -4,20 +4,20 @@ import {
   IconButton,
   makeStyles,
 } from '@material-ui/core';
-import ChplTooltip from './chpl-tooltip';
-
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
+import ChplTooltip from './chpl-tooltip';
+
 const useStyles = makeStyles({
-chplEllipsis:{
-  border: 'none',
-  backgroundColor:'transparent',
-  color: '#156dac',
-  '&:hover': {
-    color: '#00437c',
+  chplEllipsis: {
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: '#156dac',
+    '&:hover': {
+      color: '#00437c',
+    },
   },
-},
 });
 function ChplEllipsis(props) {
   const [isShortened, setShortened] = useState(true);
@@ -49,7 +49,11 @@ function ChplEllipsis(props) {
       {display !== text && isShortened
        && (
          <ChplTooltip title={text}>
-           <IconButton size="small" className={classes.chplEllipsis}  onClick={() => setShortened(false)}>
+           <IconButton
+             size="small"
+             className={classes.chplEllipsis}
+             onClick={() => setShortened(false)}
+           >
              <MoreHorizIcon />
              <span className="sr-only">Expand description</span>
            </IconButton>
@@ -57,8 +61,12 @@ function ChplEllipsis(props) {
        )}
       {display !== text && !isShortened
        && (
-         <IconButton size="small" className={classes.chplEllipsis} onClick={() => setShortened(true)}>
-           <ArrowBackIcon/>
+         <IconButton
+           size="small"
+           className={classes.chplEllipsis}
+           onClick={() => setShortened(true)}
+         >
+           <ArrowBackIcon />
            <span className="sr-only">Minimize description</span>
          </IconButton>
        )}
