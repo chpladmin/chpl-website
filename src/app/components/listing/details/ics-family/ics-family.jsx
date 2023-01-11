@@ -186,6 +186,7 @@ function ChplIcsFamily(props) {
           disabled={isLoading}
           onClick={() => setIsShowingDiagram(!isShowingDiagram)}
           endIcon={isShowingDiagram ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          id="toggle-ics-relationship-diagram-button"
         >
           { isLoading && <CircularProgress size={20} /> }
           {' '}
