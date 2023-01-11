@@ -88,7 +88,7 @@ describe('when on 2015 listing page', () => {
 
   describe('when clicking on compare button', () => {
     it('should add listing to compare widget', () => {
-      compareComponent.addToCompare('9833').click();
+      compareComponent.addListingToCompare('9833');
       expect(compareComponent.compareProductsButton.isDisplayed()).toBe(true);
     });
   });
@@ -145,7 +145,7 @@ describe('when on 2014 listing page - ', () => {
 
   describe('when clicking on compare button', () => {
     beforeEach(() => {
-      compareComponent.addToCompare('8490').click();
+      compareComponent.addListingToCompare('8490');
     });
 
     it('should add listing to compare widget after clicking on compare button', () => {
