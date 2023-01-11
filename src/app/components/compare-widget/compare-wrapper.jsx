@@ -10,20 +10,18 @@ function CompareWrapper(props) {
   const { children } = props;
   const [listings, setListings] = useState([]);
 
-  let isInWidget;
-
   useEffect(() => {
     setListings($localStorage?.compareWidget?.products);
   }, []);
 
   useEffect(() => {
-    const deregisterAddWatcher = $rootScope.$on('addedListing', (evt, listing) => setListings((prev) => (!isInWidget(listing) ? prev.concat(listing) : prev)));
+    const deregisterAddWatcher = $rootScope.$on('addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
     const deregisterRemoveWatcher = $rootScope.$on('removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
     return () => {
       deregisterAddWatcher();
       deregisterRemoveWatcher();
     };
-  }, [$rootScope, isInWidget, setListings]);
+  }, [$rootScope, setListings]);
 
   const addListing = (listing) => {
     $rootScope.$broadcast('addListing', {
@@ -34,7 +32,7 @@ function CompareWrapper(props) {
     $rootScope.$digest();
   };
 
-  isInWidget = (listing) => listings.find((l) => l.id === listing.id);
+  const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
   const removeListing = (listing) => {
     $rootScope.$broadcast('removeListing', listing);
