@@ -23,13 +23,14 @@ import formik from './formik';
 import { job, scheduledSystemTrigger, trigger } from './jobs';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import product from './product';
-import qmsStandard from './qms-standard';
 import reliedUponSoftware from './relied-upon-software';
 import resources from './resources';
 import routerConfig from './router-config';
 import {
   accessibilityStandard,
   accessibilityStandardType,
+  qmsStandard,
+  qmsStandardType,
   svap,
   selectedSvap,
   ucdProcess,
@@ -76,6 +77,7 @@ export {
   optionalStandard,
   product,
   qmsStandard,
+  qmsStandardType,
   reliedUponSoftware,
   resources,
   routerConfig,

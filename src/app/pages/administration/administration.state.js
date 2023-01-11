@@ -96,24 +96,6 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ACB'],
     },
   }, {
-    name: 'administration.fuzzy-matching',
-    url: '/fuzzy-matching',
-    component: 'chplFuzzyMatching',
-    resolve: {
-      fuzzyTypes: (authService, networkService) => {
-        'ngInject';
-
-        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-          return networkService.getFuzzyTypes();
-        }
-        return [];
-      },
-    },
-    data: {
-      title: 'CHPL Administration - Fuzzy Matching',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
-    },
-  }, {
     name: 'administration.jobs',
     url: '/jobs',
     component: 'chplJobsWrapperBridge',

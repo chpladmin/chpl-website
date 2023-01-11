@@ -647,14 +647,6 @@
         $httpBackend.flush();
       });
 
-      it('should getFuzzyTypes', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/fuzzy_choices$/).respond(200, { data: 'response' });
-        networkService.getFuzzyTypes().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getIncumbentDeveloperStatistics', () => {
         $httpBackend.expectGET(/^\/rest\/statistics\/incumbent_developers$/).respond(200, { data: 'response' });
         networkService.getIncumbentDevelopersStatistics().then((response) => {
@@ -832,7 +824,7 @@
       });
 
       it('should getQmsStandards', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/qms_standards$/).respond(200, { data: 'response' });
+        $httpBackend.expectGET(/^\/rest\/qms-standards$/).respond(200, { data: 'response' });
         networkService.getQmsStandards().then((response) => {
           expect(response.data).toEqual('response');
         });
@@ -1347,14 +1339,6 @@
       it('should updateDeveloper', () => {
         $httpBackend.expectPUT(/^\/rest\/developers\/id$/).respond(200, { data: 'response' });
         networkService.updateDeveloper({ id: 'id' }).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should updateFuzzyType', () => {
-        $httpBackend.expectPUT(/^\/rest\/data\/fuzzy_choices\/3$/).respond(200, { data: 'response' });
-        networkService.updateFuzzyType({ id: 3 }).then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();
