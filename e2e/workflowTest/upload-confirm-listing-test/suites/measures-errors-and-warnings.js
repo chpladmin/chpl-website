@@ -36,10 +36,7 @@ const suite = {
     ],
   }, {
     listingId: '15.04.04.1722.MEA6.V1.00.1.210607',
-    expectedErrors: [
-      'Duplicate G2 Measure: Provide Patients Electronic Access to Their Health Information (formerly Patient Electronic Access): Eligible Clinician for RT2 was found. The measure must be associated with all of the relevant criteria as a single element.',
-      'Duplicate G1 Measure: Provide Patients Electronic Access to Their Health Information (formerly Patient Electronic Access): Eligible Hospital/Critical Access Hospital for RT2 was found. The measure must be associated with all of the relevant criteria as a single element.'
-    ],
+    expectedErrors: [],
     expectedWarnings: [],
   }, {
     listingId: '15.04.04.1722.MEA7.V1.00.1.210607',
