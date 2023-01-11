@@ -162,7 +162,7 @@
         </span>
         <span ng-if="$ctrl.listing.ics !== null" id="panel-additional-information-certification-history">
           <h4>Certification History</h4>
-          <p ng-if="$ctrl.listing.ics.inherits !== null"><strong>Inherited Certification Status (ICS):</strong> {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
+          <p ng-if="$ctrl.listing.ics.inherits !== null"><strong>Inherited Certified Status (ICS):</strong> {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
           <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
         </span>
         <span ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
