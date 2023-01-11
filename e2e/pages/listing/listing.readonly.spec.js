@@ -85,12 +85,10 @@ describe('when on 2015 listing page', () => {
       expect(cmsComponent.progressBar.isDisplayed()).toBe(true);
     });
   });
-  describe('when clicking on compare button', () => {
-    beforeEach(async () => {
-      compareComponent.addToCompare('9833').click();
-    });
 
+  describe('when clicking on compare button', () => {
     it('should add listing to compare widget', () => {
+      compareComponent.addToCompare('9833').click();
       expect(compareComponent.compareProductsButton.isDisplayed()).toBe(true);
     });
   });
@@ -145,7 +143,7 @@ describe('when on 2014 listing page - ', () => {
     expect(cmsComponent.addToCms('8490').isDisplayed()).toBe(false);
   });
 
-  describe('when clicking on  cms id button', () => {
+  describe('when clicking on compare button', () => {
     beforeEach(() => {
       compareComponent.addToCompare('8490').click();
     });

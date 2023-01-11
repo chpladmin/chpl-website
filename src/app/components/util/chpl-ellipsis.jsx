@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { bool, number, string } from 'prop-types';
 import {
   IconButton,
   makeStyles,
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { bool, number, string } from 'prop-types';
 
 import ChplTooltip from './chpl-tooltip';
 
@@ -19,6 +19,7 @@ const useStyles = makeStyles({
     },
   },
 });
+
 function ChplEllipsis(props) {
   const [isShortened, setShortened] = useState(true);
   const { text } = props;
@@ -45,8 +46,8 @@ function ChplEllipsis(props) {
 
   return (
     <>
-      {isShortened ? display : text}
-      {display !== text && isShortened
+      { isShortened ? display : text }
+      { display !== text && isShortened
        && (
          <ChplTooltip title={text}>
            <IconButton
@@ -59,7 +60,7 @@ function ChplEllipsis(props) {
            </IconButton>
          </ChplTooltip>
        )}
-      {display !== text && !isShortened
+      { display !== text && !isShortened
        && (
          <IconButton
            size="small"
