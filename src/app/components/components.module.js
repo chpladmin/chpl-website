@@ -9,7 +9,6 @@ import {
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import { ChplDeveloper } from './developer';
 import ChplDirectReviewsView from './direct-reviews/direct-reviews-view';
-import { ChplFuzzyType } from './fuzzy-type';
 import {
   ChplConfirmDeveloperWrapper,
   ChplConfirmListingsWrapper,
@@ -72,7 +71,6 @@ angular
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsView))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
-  .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
   .component('chplIcsFamilyBridge', reactToAngularComponent(ChplIcsFamily))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
