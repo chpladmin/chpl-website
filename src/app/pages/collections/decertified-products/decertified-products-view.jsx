@@ -16,6 +16,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
+import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
   ChplPagination,
@@ -54,6 +55,7 @@ const headers = [
   { property: 'version', text: 'Version', sortable: true },
   { text: 'Certification Status' },
   { text: 'Decertification Date' },
+  { text: 'Actions', invisible: true },
 ];
 
 const useStyles = makeStyles({
@@ -304,6 +306,9 @@ function ChplDecertifiedProductsCollectionView(props) {
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
                               <TableCell>{getDisplayDateFormat(item.decertificationDate)}</TableCell>
+                              <TableCell>
+                                <ChplCompareButton listing={item} />
+                              </TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
