@@ -1,73 +1,53 @@
 import Hooks from '../../../../utilities/hooks';
+
 import AdditionalComponent from './additional.po';
 
 let additional;
 let hooks;
 
-beforeEach(() => {
-  hooks = new Hooks();
-  additional = new AdditionalComponent();
-});
-
-afterEach(() => {
-  if (additional.icsRelationshipModal.isDisplayed()) {
-    additional.closeModal();
-    browser.waitUntil(() => !additional.icsRelationshipModal.isDisplayed());
-  }
-});
-
-describe('the 2015 listing page for listing with ICS value false', () => {
+describe('the Listing details "additional" panel', () => {
   beforeEach(() => {
-    hooks.open('#/listing/9833');
-    hooks.waitForSpinnerToAppear();
-    hooks.waitForSpinnerToDisappear();
+    hooks = new Hooks();
+    additional = new AdditionalComponent();
   });
 
-  it('should not display ICS relationship button under additional information', () => {
-    additional.additionalHeader.scrollIntoView();
-    additional.expandAdditional();
-    expect(additional.icsButton.isDisplayed()).toBe(false);
-  });
-});
-
-describe('the 2015 listing page for listing with ICS value true', () => {
-  beforeEach(() => {
-    hooks.open('#/listing/10540');
-    hooks.waitForSpinnerToAppear();
-    hooks.waitForSpinnerToDisappear();
-  });
-
-  describe('when expanding additional information', () => {
-    beforeEach(() => {
+  describe('for a 2015 listing page for listing with ICS value false', () => {
+    it('should not display ICS relationship button under additional information', () => {
+      hooks.open('#/listing/9833');
+      hooks.waitForSpinnerToDisappear();
       additional.additionalHeader.scrollIntoView();
       additional.expandAdditional();
+      expect(additional.icsButton.isDisplayed()).toBe(false);
+    });
+  });
+
+  describe('for a 2015 listing page for listing with ICS value true', () => {
+    beforeEach(() => {
+      hooks.open('#/listing/10540');
+      hooks.waitForSpinnerToDisappear();
+      additional.additionalHeader.scrollIntoView();
+      additional.expandAdditional();
+      browser.waitUntil(() => additional.icsButton.isDisplayed());
+      browser.waitUntil(() => additional.icsButton.isEnabled());
     });
 
     it('should display ICS relationship button under additional information', () => {
-      browser.waitUntil(() => additional.icsButton.isDisplayed());
       expect(additional.icsButton.isDisplayed()).toBe(true);
+      expect(additional.icsButton.isEnabled()).toBe(true);
     });
 
-    describe('when clicking on ICS relationship button', () => {
-      it('should display ICS relationship modal and compare button after clicking on ICS relationship button', () => {
-        additional.icsButton.click();
-        browser.waitUntil(() => additional.icsRelationshipModal.isDisplayed());
-        expect(additional.icsRelationshipModal.isDisplayed()).toBe(true);
-        expect(additional.compareButton.isDisplayed()).toBe(true);
-      });
+    it('should display ICS relationship modal and compare button after clicking on ICS relationship button', () => {
+      additional.icsButton.click();
+      expect(additional.icsRelationshipPanel).toHaveTextContaining('Select a listing to the right');
+      expect(additional.compareLink.isDisplayed()).toBe(true);
+      additional.icsButton.click();
     });
   });
-});
 
-describe('the 2014 listing page', () => {
-  beforeEach(() => {
-    hooks.open('#/listing/8867');
-    hooks.waitForSpinnerToAppear();
-    hooks.waitForSpinnerToDisappear();
-  });
-
-  describe('when expanding additional information', () => {
+  describe('for a 2014 listing', () => {
     beforeEach(() => {
+      hooks.open('#/listing/8867?panel=additional');
+      hooks.waitForSpinnerToDisappear();
       additional.additionalHeader.scrollIntoView();
       additional.expandAdditional();
     });

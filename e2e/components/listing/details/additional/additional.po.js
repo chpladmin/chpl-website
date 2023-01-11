@@ -2,9 +2,8 @@ class AdditionalComponent {
   constructor() {
     this.elements = {
       additionalHeader: '//div[text()="Additional Information"]',
-      icsButton: '//button[text()="View ICS Relationships"]',
-      icsRelationshipModal: '#modalLabel',
-      compareButton: '//button[text()="Compare all Products"]',
+      icsButton: '#toggle-ics-relationship-diagram-button',
+      compareLink: 'a=Compare all listings',
       testResultsSummary: '#panel-additional-information-test-results-summary',
       modalHeader: '.modal-header',
     };
@@ -22,16 +21,12 @@ class AdditionalComponent {
     return $(this.elements.icsButton);
   }
 
-  get icsRelationshipModal() {
-    return $(this.elements.icsRelationshipModal);
+  get icsRelationshipPanel() {
+    return this.icsButton.parentElement().nextElement();
   }
 
-  get compareButton() {
-    return $(this.elements.compareButton);
-  }
-
-  closeModal() {
-    $(this.elements.modalHeader).$('//button').click();
+  get compareLink() {
+    return $(this.elements.compareLink);
   }
 
   expandAdditional() {
