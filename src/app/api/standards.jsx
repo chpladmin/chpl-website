@@ -40,6 +40,44 @@ const usePutAccessibilityStandard = () => {
   });
 };
 
+const useDeleteQmsStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`qms-standards/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['qms-standards']);
+    },
+  });
+};
+
+const useFetchQmsStandards = () => {
+  const axios = useAxios();
+  return useQuery(['qms-standards'], async () => {
+    const response = await axios.get('qms-standards');
+    return response.data;
+  });
+};
+
+const usePostQmsStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('qms-standards', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['qms-standards']);
+    },
+  });
+};
+
+const usePutQmsStandard = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('qms-standards', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['qms-standards']);
+    },
+  });
+};
+
 const useDeleteSvap = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -129,6 +167,10 @@ export {
   useFetchAccessibilityStandards,
   usePostAccessibilityStandard,
   usePutAccessibilityStandard,
+  useDeleteQmsStandard,
+  useFetchQmsStandards,
+  usePostQmsStandard,
+  usePutQmsStandard,
   useDeleteSvap,
   useFetchCriteriaForSvaps,
   useFetchSvaps,

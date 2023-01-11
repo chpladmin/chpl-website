@@ -20,6 +20,19 @@ const accessibilityStandardType = shape({
   name: string,
 });
 
+const qmsStandard = shape({
+  applicableCriteria: string,
+  id: number,
+  qmsModification: string,
+  qmsStandardId: number,
+  qmsStandardName: string,
+});
+
+const qmsStandardType = shape({
+  id: number,
+  name: string,
+});
+
 const svap = shape({
   approvedStandardVersion: string,
   criteria: arrayOf(criterion),
@@ -50,6 +63,8 @@ const ucdProcess = shape({
 export {
   accessibilityStandard,
   accessibilityStandardType,
+  qmsStandard,
+  qmsStandardType,
   svap,
   selectedSvap,
   ucdProcess,
