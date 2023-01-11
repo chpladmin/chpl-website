@@ -12,6 +12,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import ChplAnnouncements from 'components/announcement/announcements';
 import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
+import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
 import ChplSvaps from 'components/standards/svap/svaps';
 import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
 import { BreadcrumbContext } from 'shared/contexts';
@@ -84,6 +85,10 @@ function ChplSystemMaintenance() {
     hide('announcements.viewall');
     hide('announcements.add.disabled');
     hide('announcements.edit.disabled');
+    hide('qmsStandards.viewall.disabled');
+    hide('qmsStandards.viewall');
+    hide('qmsStandards.add.disabled');
+    hide('qmsStandards.edit.disabled');
     hide('svaps.viewall.disabled');
     hide('svaps.viewall');
     hide('svaps.add.disabled');
@@ -131,6 +136,18 @@ function ChplSystemMaintenance() {
             Accessibility Standards
           </Button>
           <Button
+            onClick={() => navigate('qmsStandards')}
+            disabled={active === 'qmsStandards'}
+            id="system-maintenance-navigation-qms-standards"
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            QMS Standards
+          </Button>
+          <Button
             onClick={() => navigate('svaps')}
             disabled={active === 'svaps'}
             id="system-maintenance-navigation-svaps"
@@ -167,7 +184,7 @@ function ChplSystemMaintenance() {
                 <List>
                   <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
                   <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
-                  <ListItem>QMS Standards - [future] Add and update the QMS Standards available to be applied to listings</ListItem>
+                  <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
@@ -181,6 +198,10 @@ function ChplSystemMaintenance() {
         { active === 'accessibilityStandards'
           && (
             <ChplAccessibilityStandards />
+          )}
+        { active === 'qmsStandards'
+          && (
+            <ChplQmsStandards />
           )}
         { active === 'svaps'
           && (
