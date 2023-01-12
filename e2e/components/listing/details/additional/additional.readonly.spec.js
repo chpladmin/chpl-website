@@ -38,7 +38,7 @@ describe('the Listing details "additional" panel', () => {
 
     it('should display ICS relationship modal and compare button after clicking on ICS relationship button', () => {
       additional.icsButton.click();
-      expect(additional.icsRelationshipPanel).toHaveTextContaining('Select a listing to the right');
+      expect(additional.icsRelationshipPanel).toHaveTextContaining('Select a Certified Product to the right');
       expect(additional.compareLink.isDisplayed()).toBe(true);
       additional.icsButton.click();
     });

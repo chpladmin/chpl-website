@@ -203,11 +203,11 @@ function ChplIcsFamily(props) {
                 <div className={classes.directionContainer}>
                   <div>
                     <Typography gutterBottom>
-                      Select a listing to the right to view more information. You can also click and drag to scroll through the listings.
+                      Select a Certified Product to the right to view more information. You can also click and drag to scroll through the Certified Products.
                     </Typography>
                     <ChplLink
                       href={compare}
-                      text="Compare all listings"
+                      text="Compare all Certified Products"
                       external={false}
                     />
                   </div>

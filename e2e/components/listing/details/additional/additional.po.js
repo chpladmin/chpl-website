@@ -3,7 +3,7 @@ class AdditionalComponent {
     this.elements = {
       additionalHeader: '//div[text()="Additional Information"]',
       icsButton: '#toggle-ics-relationship-diagram-button',
-      compareLink: 'a=Compare all listings',
+      compareLink: 'a=Compare all Certified Products',
       testResultsSummary: '#panel-additional-information-test-results-summary',
       modalHeader: '.modal-header',
     };
