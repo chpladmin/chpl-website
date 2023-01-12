@@ -296,16 +296,19 @@ function ChplSedCollectionView(props) {
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
                               <TableCell>
-                                <Button
-                                  color="primary"
-                                  variant="contained"
-                                  id={`view-details-${item.id}`}
-                                  onClick={() => viewDetails(item.id)}
-                                  endIcon={<InfoIcon />}
+                                <ChplCompareButton
+                                  listing={item}
                                 >
-                                  View
-                                </Button>
-                                <ChplCompareButton listing={item} />
+                                  <Button
+                                    color="primary"
+                                    variant="contained"
+                                    id={`view-details-${item.id}`}
+                                    onClick={() => viewDetails(item.id)}
+                                    endIcon={<InfoIcon />}
+                                  >
+                                    View
+                                  </Button>
+                                </ChplCompareButton>
                               </TableCell>
                             </TableRow>
                           ))}
