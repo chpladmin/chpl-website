@@ -46,10 +46,11 @@ describe('the Listing details "additional" panel', () => {
 
   describe('for a 2014 listing', () => {
     beforeEach(() => {
-      hooks.open('#/listing/8867?panel=additional');
+      hooks.open('#/listing/8867');
       hooks.waitForSpinnerToDisappear();
       additional.additionalHeader.scrollIntoView();
       additional.expandAdditional();
+      additional.additionalHeader.scrollIntoView();
     });
 
     it('should not display ICS relationship button under additional information', () => {
