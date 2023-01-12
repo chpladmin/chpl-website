@@ -278,7 +278,7 @@ function ChplIcsFamily(props) {
                       elements={elements}
                       style={{ width: '100%', height: '475px' }}
                       minZoom={0.5}
-                      maxZoom={0.9}
+                      maxZoom={1.2}
                       autoungrabify
                       layout={layout}
                       stylesheet={stylesheet}
