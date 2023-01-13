@@ -29,6 +29,7 @@ import CytoscapeComponent from 'react-cytoscapejs';
 
 import { useFetchIcsFamilyData } from 'api/listing';
 import { ChplLink } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -123,15 +124,17 @@ const generateElements = (listings, active) => {
 };
 
 function ChplIcsFamily(props) {
+  const $analytics = getAngularService('$analytics');
   const { id } = props;
   const { data, isLoading, isSuccess } = useFetchIcsFamilyData({ id });
   const [compare, setCompare] = useState('');
   const [elements, setElements] = useState([]);
   const [isShowingDiagram, setIsShowingDiagram] = useState(false);
   const [isShowingListingDetails, setIsShowingListingDetails] = useState(false);
-  const [listing, setListing] = useState({});
+  const [listing, setListing] = useState(undefined);
   const [listingId, setListingId] = useState(undefined);
   const [listings, setListings] = useState([]);
+  const [pageChplProductNumber, setPageChplProductNumber] = useState(undefined);
   const cy = useRef(null);
   const classes = useStyles();
 
@@ -156,6 +159,7 @@ function ChplIcsFamily(props) {
     setListings(data.sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
     setElements(generateElements(data, id));
     setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
+    setPageChplProductNumber(data.find((l) => l.id === id).chplProductNumber);
   }, [data, isLoading, isSuccess, id]);
 
   useEffect(() => {
@@ -164,11 +168,26 @@ function ChplIcsFamily(props) {
     setIsShowingListingDetails(!!selected);
   }, [listings, listingId]);
 
+  useEffect(() => {
+    $analytics.eventTrack(`${listing ? 'Show' : 'Hide'} ICS Relationship Detail`, { category: 'Listing Details', label: listing?.chplProductNumber ?? pageChplProductNumber });
+  }, [listing]);
+
+  const toggleDisplay = () => {
+    setIsShowingDiagram(!isShowingDiagram);
+    $analytics.eventTrack(`${isShowingDiagram ? 'Hide' : 'Show'} ICS Relationships`, { category: 'Listing Details', label: pageChplProductNumber });
+  };
+
   const setCytoscape = useCallback((ref) => {
     if (cy.current) return;
     cy.current = ref;
     cy.current.on('tap', 'node', (e) => {
       setListingId(e.target.id());
+    });
+    cy.current.on('dragpan', () => {
+      $analytics.eventTrack('Pan ICS Relationship Diagram', { category: 'Listing Details', label: pageChplProductNumber });
+    });
+    cy.current.on('scrollzoom', () => {
+      $analytics.eventTrack('Zoom ICS Relationship Diagram', { category: 'Listing Details', label: pageChplProductNumber });
     });
   }, [cy]);
 
@@ -185,7 +204,7 @@ function ChplIcsFamily(props) {
           variant="contained"
           color="secondary"
           disabled={isLoading}
-          onClick={() => setIsShowingDiagram(!isShowingDiagram)}
+          onClick={toggleDisplay}
           endIcon={isShowingDiagram ? <VisibilityOffIcon /> : <VisibilityIcon />}
           id="toggle-ics-relationship-diagram-button"
         >
@@ -210,6 +229,7 @@ function ChplIcsFamily(props) {
                       href={compare}
                       text="Compare all Certified Products"
                       external={false}
+                      analytics={{ event: 'Compare All ICS Listings', category: 'Listing Details', label: pageChplProductNumber }}
                     />
                   </div>
                   { isShowingListingDetails
@@ -230,6 +250,7 @@ function ChplIcsFamily(props) {
                                   text={listing?.chplProductNumber}
                                   external={false}
                                   router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
+                                  analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: pageChplProductNumber }}
                                 />
                               )}
                             <Typography>
@@ -239,6 +260,7 @@ function ChplIcsFamily(props) {
                                 text={listing?.developer.name}
                                 external={false}
                                 router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
+                                analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: listing.developer.name }}
                               />
                             </Typography>
                             <Typography>
