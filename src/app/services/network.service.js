@@ -268,6 +268,10 @@ export default class NetworkService {
     return this.apiGET('/data/education_types');
   }
 
+  getFunctionalitiesTested() {
+    return this.apiGET('/functionalities-tested');
+  }
+
   getIncumbentDevelopersStatistics() {
     return this.apiGET('/statistics/incumbent_developers');
   }

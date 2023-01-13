@@ -647,6 +647,14 @@
         $httpBackend.flush();
       });
 
+      it('should getFunctionalitiesTested', () => {
+        $httpBackend.expectGET(/^\/rest\/functionalities-tested$/).respond(200, { data: 'response' });
+        networkService.getFunctionalitiesTested().then((response) => {
+          expect(response.data).toEqual('response');
+        });
+        $httpBackend.flush();
+      });
+
       it('should getIncumbentDeveloperStatistics', () => {
         $httpBackend.expectGET(/^\/rest\/statistics\/incumbent_developers$/).respond(200, { data: 'response' });
         networkService.getIncumbentDevelopersStatistics().then((response) => {

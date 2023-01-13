@@ -8,10 +8,10 @@ import {
 } from 'prop-types';
 
 import criterion from './criterion';
+import functionalitiesTested from './functionalities-tested';
 import reliedUponSoftware from './relied-upon-software';
 import { selectedSvap, svap } from './standards';
 import { selectedTestData } from './test-data';
-import { selectedFunctionalitiesTested, functionalitiesTested } from './functionalities-tested';
 import { selectedTestProcedure } from './test-procedure';
 import { selectedTestStandard } from './test-standard';
 import { selectedTestTool } from './test-tool';
@@ -19,7 +19,6 @@ import { selectedTestTool } from './test-tool';
 const certificationResult = shape({
   additionalSoftware: arrayOf(reliedUponSoftware),
   allowedSvaps: arrayOf(svap),
-  allowedFunctionalitiesTestd: arrayOf(functionalitiesTested),
   apiDocumentation: string,
   attestationAnswer: bool,
   attestationAnswerStr: string,
@@ -37,7 +36,7 @@ const certificationResult = shape({
   success: bool,
   svaps: arrayOf(selectedSvap),
   testDataUsed: arrayOf(selectedTestData),
-  functionalitiesTested: arrayOf(selectedFunctionalitiesTested),
+  functionalitiesTested: arrayOf(functionalitiesTested),
   testProcedures: arrayOf(selectedTestProcedure),
   testStandards: arrayOf(selectedTestStandard),
   testToolsUsed: arrayOf(selectedTestTool),

@@ -308,7 +308,7 @@ function ChplCriterionDetailsEdit(props) {
                     </div>
                   </>
                 )}
-              { (criterion.functionalitiesTested?.length > 0 || criterion.allowedFunctionalitiesTested?.length > 0)
+              { criterion.functionalitiesTested
                 && (
                   <>
                     <div>
@@ -323,7 +323,7 @@ function ChplCriterionDetailsEdit(props) {
                       </Typography>
                       <ChplFunctionalitiesTestedEdit
                         functionalitiesTested={criterion.functionalitiesTested}
-                        options={criterion.allowedFunctionalitiesTested}
+                        options={resources.functionalitiesTested}
                         onChange={handleDetailChange}
                       />
                     </div>

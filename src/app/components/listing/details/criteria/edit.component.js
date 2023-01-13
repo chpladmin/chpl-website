@@ -14,10 +14,10 @@ const CertificationCriteriaEditComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.addNewValue = utilService.addNewValue;
       this.extendSelect = utilService.extendSelect;
+      this.CertificationResultFunctionalitiesTested = CertificationResultFunctionalitiesTested;
       this.CertificationResultConformanceMethod = CertificationResultConformanceMethod;
       this.CertificationResultOptionalStandard = CertificationResultOptionalStandard;
       this.CertificationResultTestData = CertificationResultTestData;
-      this.CertificationResultFunctionalitiesTested = CertificationResultFunctionalitiesTested;
       this.CertificationResultTestProcedure = CertificationResultTestProcedure;
       this.CertificationResultTestStandard = CertificationResultTestStandard;
       this.CertificationResultTestTool = CertificationResultTestTool;
@@ -266,7 +266,7 @@ const CertificationCriteriaEditComponent = {
     }
 
     getSelectedFunctionalityTestedKeys() {
-      if (!this.cert.unctionalitiesTested) {
+      if (!this.cert.functionalitiesTested) {
         return [];
       }
       return this.cert.functionalitiesTested.map((ft) => ({ key: ft.functionalityTestedId }));
@@ -339,7 +339,9 @@ const CertificationCriteriaEditComponent = {
     }
 
     getSortedFunctionalitiesTested() {
-      return this.$filter('orderBy')(this.cert.allowedFunctionalitiesTested, 'name');
+      return this.resources.functionalitiesTested
+        .filter((ft) => ft.criteria.id === this.cert.id)
+        .sort((a, b) => (a.name < b.name ? -1 : 1));
     }
 
     setAvailableTestValues() {

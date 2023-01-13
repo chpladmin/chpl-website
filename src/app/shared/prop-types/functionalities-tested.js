@@ -1,19 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { number, shape, string } from 'prop-types';
+import {
+  arrayOf, number, shape, string,
+} from 'prop-types';
+
+import criterion from './criterion';
 import practiceType from './practice-type';
 
 const functionalitiesTested = shape({
+  criteria: arrayOf(criterion),
   description: string,
   id: number,
   name: string,
   practiceType,
 });
 
-const selectedFunctionalitiesTested = shape({
-  description: string,
-  id: number,
-  name: string,
-  functionalityTestedId: number,
-});
-
-export { functionalitiesTested, selectedFunctionalitiesTested };
+export default functionalitiesTested;

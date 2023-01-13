@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import { arrayOf, func } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
   ButtonGroup,
@@ -18,13 +14,17 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from '../../../../util';
-import { functionalitiesTested, selectedFunctionalitiesTested } from '../../../../../shared/prop-types';
+import { ChplTextField } from 'components/util';
+import { functionalitiesTested as functionalitiesTestedType } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     display: 'grid',
     gap: '8px',
@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
   dataEntryAddNew: {
     gridColumn: '1 / -1',
   },
-}));
+});
 
 const validationSchema = yup.object({
   tf: yup.object()
@@ -209,7 +209,7 @@ function ChplFunctionalitiesTestedEdit(props) {
 export default ChplFunctionalitiesTestedEdit;
 
 ChplFunctionalitiesTestedEdit.propTypes = {
-  functionalitiesTested: arrayOf(selectedFunctionalitiesTested).isRequired,
-  options: arrayOf(functionalitiesTested).isRequired,
+  functionalitiesTested: arrayOf(functionalitiesTestedType).isRequired,
+  options: arrayOf(functionalitiesTestedType).isRequired,
   onChange: func.isRequired,
 };
