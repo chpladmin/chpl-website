@@ -59,9 +59,9 @@ const suite = {
       '170.315 (g)(3) is required but was not found.',
     ],
     expectedWarnings: [
-      'Certification 170.315 (a)(1) contains duplicate Test Functionality: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
+      'Certification 170.315 (a)(1) contains duplicate Functionality Tested: Number \'(a)(1)(ii)\'. The duplicates have been removed.',
       'Criteria 170.315 (b)(1) (Cures Update) contains an invalid test tool \'test tool\'. It has been removed from the pending listing.',
-      'Criteria 170.315 (a)(1) contains an invalid test functionality \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
+      'Criteria 170.315 (a)(1) contains an invalid Functionality Tested \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
       'Certification 170.315 (d)(13) (Cures Update) has a Use Case but no Attestation Answer.',
       'Test data \'test data\' is invalid for the criterion 170.315 (b)(1) (Cures Update) and has been removed from the listing.',
       'CHPL certification ID was not found.',
