@@ -53,14 +53,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplCriterionDetailsEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [criterion, setCriterion] = useState(props.criterion);
-  const [hasIcs] = useState(props.hasIcs);
-  const [isConfirming] = useState(props.isConfirming);
-  const [resources] = useState(props.resources);
-  const classes = useStyles();
   const { hasAnyRole } = getAngularService('authService');
+  const { hasIcs, isConfirming } = props;
+  /* eslint-disable react/destructuring-assignment */
+  const resources = {
+    ...props.resources,
+    functionalitiesTested: props.resources.functionalitiesTested.filter((ft) => ft.criteria.some((c) => c.id === props.criterion.criterion.id)),
+  };
+  const [criterion, setCriterion] = useState(props.criterion);
   /* eslint-enable react/destructuring-assignment */
+  const classes = useStyles();
 
   const formik = useFormik({
     initialValues: {

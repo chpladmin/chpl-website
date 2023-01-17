@@ -340,7 +340,7 @@ const CertificationCriteriaEditComponent = {
 
     getSortedFunctionalitiesTested() {
       return this.resources.functionalitiesTested
-        .filter((ft) => ft.criteria.id === this.cert.id)
+        .filter((ft) => ft.criteria.some((c) => c.id === this.cert.criterion.id))
         .sort((a, b) => (a.name < b.name ? -1 : 1));
     }
 
@@ -364,7 +364,7 @@ const CertificationCriteriaEditComponent = {
             ...att,
             dropDownText: att.name + (att.retired ? ' (Retired)' : ''),
           }));
-        this.cert.testToolsUsed.forEach((tt) => {
+        this.cert.testToolsUsed?.forEach((tt) => {
           if (!this.cert.allowedTestTools.find((att) => att.id === tt.testToolId)) {
             this.cert.allowedTestTools.push({
               id: tt.testToolId,
