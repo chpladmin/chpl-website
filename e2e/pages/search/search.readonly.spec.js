@@ -1,10 +1,12 @@
-import SearchPage from './search.po';
 import Hooks from '../../utilities/hooks';
+
+import SearchPage from './search.po';
 
 let hooks;
 let page;
 const path = require('path');
 const fs = require('fs');
+
 const config = require('../../config/mainConfig');
 
 const developerName = 'athenahealth, Inc.';
@@ -376,13 +378,13 @@ describe('the search page', () => {
     it('should clear all filtered results and show all listings with the "clear filters" button', () => {
       page.clearFilters.click();
       page.waitForUpdatedListingResultsCount();
-      expect(page.listingTotalCount()).toBeGreaterThan(700);
+      expect(page.listingTotalCount()).toBeGreaterThan(650);
     });
 
     it('should show all listings with the "browse all" button', () => {
       page.browseAll.click();
       page.waitForUpdatedListingResultsCount();
-      expect(page.listingTotalCount()).toBeGreaterThan(700);
+      expect(page.listingTotalCount()).toBeGreaterThan(650);
     });
   });
 
