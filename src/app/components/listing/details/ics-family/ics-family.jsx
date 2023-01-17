@@ -180,10 +180,16 @@ function ChplIcsFamily(props) {
     $analytics.eventTrack(`${isShowingDiagram ? 'Hide' : 'Show'} ICS Relationships`, { category: 'Listing Details', label: pageChplProductNumber });
   };
 
+  const closeDetails = () => {
+    $analytics.eventTrack('Hide ICS Relationship Detail', { category: 'Listing Details', label: listing.chplProductNumber });
+    setListingId(undefined);
+  };
+
   const setCytoscape = useCallback((ref) => {
     if (cy.current) return;
     cy.current = ref;
     cy.current.on('tap', 'node', (e) => {
+      $analytics.eventTrack('Show ICS Relationship Detail', { category: 'Listing Details', label: e.target.data().chplProductNumber });
       setListingId(e.target.id());
     });
     cy.current.on('dragpan', () => {
@@ -289,7 +295,7 @@ function ChplIcsFamily(props) {
                               size="small"
                               variant="contained"
                               color="secondary"
-                              onClick={() => setListingId(undefined)}
+                              onClick={closeDetails}
                             >
                               Close Details
                             </Button>
