@@ -175,12 +175,6 @@ function ChplIcsFamily(props) {
     setIsShowingListingDetails(!!selected);
   }, [listingId]);
 
-  useEffect(() => {
-    if (listing || pageChplProductNumber) {
-      $analytics.eventTrack(`${listing ? 'Show' : 'Hide'} ICS Relationship Detail`, { category: 'Listing Details', label: listing?.chplProductNumber ?? pageChplProductNumber });
-    }
-  }, [listing]);
-
   const toggleDisplay = () => {
     setIsShowingDiagram(!isShowingDiagram);
     $analytics.eventTrack(`${isShowingDiagram ? 'Hide' : 'Show'} ICS Relationships`, { category: 'Listing Details', label: pageChplProductNumber });
