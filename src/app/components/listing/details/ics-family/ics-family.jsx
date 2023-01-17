@@ -173,10 +173,12 @@ function ChplIcsFamily(props) {
     const selected = listings.find((l) => `${l.id}` === listingId);
     setListing(selected);
     setIsShowingListingDetails(!!selected);
-  }, [listings, listingId]);
+  }, [listingId]);
 
   useEffect(() => {
-    $analytics.eventTrack(`${listing ? 'Show' : 'Hide'} ICS Relationship Detail`, { category: 'Listing Details', label: listing?.chplProductNumber ?? pageChplProductNumber });
+    if (listing || pageChplProductNumber) {
+      $analytics.eventTrack(`${listing ? 'Show' : 'Hide'} ICS Relationship Detail`, { category: 'Listing Details', label: listing?.chplProductNumber ?? pageChplProductNumber });
+    }
   }, [listing]);
 
   const toggleDisplay = () => {
