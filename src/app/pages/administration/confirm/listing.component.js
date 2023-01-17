@@ -50,6 +50,7 @@ const ConfirmListingComponent = {
           }),
         this.networkService.getAccessibilityStandards().then((response) => { pending.accessibilityStandards = response; }),
         this.networkService.getAtls(false).then((response) => { pending.testingLabs = response.atls; }),
+        this.networkService.getFunctionalitiesTested().then((response) => { pending.functionalitiesTested = response; }),
         this.networkService.getMeasures().then((response) => { pending.measures = response; }),
         this.networkService.getMeasureTypes().then((response) => { pending.measureTypes = response; }),
         this.networkService.getQmsStandards().then((response) => { pending.qmsStandards = response; }),

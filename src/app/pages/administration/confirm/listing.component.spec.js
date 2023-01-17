@@ -23,6 +23,7 @@
           getAccessibilityStandards: jasmine.createSpy('getAccessibilityStandards'),
           getAtls: jasmine.createSpy('getAtls'),
           getDeveloper: jasmine.createSpy('getDeveloper'),
+          getFunctionalitiesTested: jasmine.createSpy('getFunctionalitiesTested'),
           getMeasureTypes: jasmine.createSpy('getMeasureTypes'),
           getMeasures: jasmine.createSpy('getMeasures'),
           getQmsStandards: jasmine.createSpy('getQmsStandards'),
@@ -44,6 +45,7 @@
         networkService.getAccessibilityStandards.and.returnValue($q.when({}));
         networkService.getAtls.and.returnValue($q.when({}));
         networkService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
+        networkService.getFunctionalitiesTested.and.returnValue($q.when([]));
         networkService.getMeasureTypes.and.returnValue($q.when({}));
         networkService.getMeasures.and.returnValue($q.when({}));
         networkService.getQmsStandards.and.returnValue($q.when({}));
