@@ -12,6 +12,7 @@ const typeOrder = [
   '170.523 (t): Health IT Module voluntary standards and implementation specifications updates notices',
   'Annual Real World Testing Plan',
   'Annual Real World Testing Results Reports',
+  'Inherited Certified Status',
   'Semiannual Attestations Submission',
   'Other Non-Conformity',
 ];
