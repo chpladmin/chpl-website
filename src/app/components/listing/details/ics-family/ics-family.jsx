@@ -91,8 +91,14 @@ const stylesheet = [{
 }, {
   selector: 'node[?active]',
   style: {
-    'background-color': '#2E7D32',
+    'background-color': '#2e7d32',
     color: 'white',
+  },
+}, {
+  selector: 'node[?selected]',
+  style: {
+    'border-width': '8px',
+    'border-color': '#2e7d32',
   },
 }, {
   selector: 'edge',
@@ -104,12 +110,13 @@ const stylesheet = [{
   },
 }];
 
-const generateElements = (listings, active) => {
+const generateElements = (listings, activeId, selectedId) => {
   const nodes = listings.map((l) => ({
     data: {
       ...l,
       label: `${l.chplProductNumber}\n${l.certificationStatus.name}`,
-      active: l.id === active,
+      active: l.id === activeId,
+      selected: l.id === selectedId,
     },
   }));
   const edges = listings.flatMap((l) => l.parents.map((p) => ({
@@ -157,10 +164,10 @@ function ChplIcsFamily(props) {
       return;
     }
     setListings(data.sort((a, b) => (a.chplProductNumber < b.chplProductNumber ? -1 : 1)));
-    setElements(generateElements(data, id));
+    setElements(generateElements(data, id, parseInt(listingId, 10)));
     setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
     setPageChplProductNumber(data.find((l) => l.id === id).chplProductNumber);
-  }, [data, isLoading, isSuccess, id]);
+  }, [data, isLoading, isSuccess, id, listingId]);
 
   useEffect(() => {
     const selected = listings.find((l) => `${l.id}` === listingId);
