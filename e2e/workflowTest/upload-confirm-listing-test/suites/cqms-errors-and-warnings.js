@@ -19,15 +19,8 @@ const suite = {
     expectedErrors: [
       'Certification criterion \'170.315 (c)(1)\' was found but no matching Clinical Quality Measurement was found.',
       'Certification criterion \'170.315 (c)(2)\' was found but no matching Clinical Quality Measurement was found.',
-      'Certification criterion \'170.315 (c)(3)\' was found but no matching Clinical Quality Measurement was found.',
-      'Certification criterion \'170.315 (c)(4)\' was found but no matching Clinical Quality Measurement was found.',
-    ],
-    expectedWarnings: [
-    ],
-  }, {
-    listingId: '15.02.04.2701.CQM3.12.00.1.220920',
-    expectedErrors: [
       'Certification criterion \'170.315 (c)(3) (Cures Update)\' was found but no matching Clinical Quality Measurement was found.',
+      'Certification criterion \'170.315 (c)(4)\' was found but no matching Clinical Quality Measurement was found.',
     ],
     expectedWarnings: [
     ],

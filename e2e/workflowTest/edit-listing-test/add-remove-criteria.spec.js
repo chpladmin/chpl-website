@@ -33,19 +33,30 @@ describe('On the 2015 Listing page', () => {
     afterEach(async () => {
       login.logOut();
     });
+
     it('should able to unattest attested criteria 170.315 (d)(3) cures update', () => {
-      if (criteria.uiUpgradeFlag()) {
+      /*
+       * Disabling code that runs tests against edit screen with UI-Upgrade flag on
+       * as the method used to determine if the flag is on is not working correctly
+       * and hence giving weird results. I suggest leaving this section disabled until
+       * the ui-upgrade flag is turned on (or at least planned to be) and in that case,
+       * disabling the code for the old version. Having two versions of these edit steps
+       * makes the tests flaky
+       */
+      /*
+        if (criteria.uiUpgradeFlag()) {
         criteria.expandCriteria('174');
         criteria.editCriteria('174');
         criteria.attestToggle.click();
         criteria.accept.click();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
-      } else {
-        criteria.editCriteriaOldButton('170.315 (d)(3)').scrollIntoView({ block: 'center', inline: 'center' });
-        criteria.openAttestedCriteriaOld('170.315 (d)(3)', true);
-        criteria.attestCriteriaOld('170.315 (d)(3)');
-        criteria.saveCertifiedProductOld.click();
-      }
+        } else {
+      */
+      criteria.editCriteriaOldButton('170.315 (d)(3)').scrollIntoView({ block: 'center', inline: 'center' });
+      criteria.openAttestedCriteriaOld('170.315 (d)(3)', true);
+      criteria.attestCriteriaOld('170.315 (d)(3)');
+      criteria.saveCertifiedProductOld.click();
+      //      }
       page.reason.addValue('test');
       action.save();
       hooks.waitForSpinnerToDisappear();
@@ -57,7 +68,16 @@ describe('On the 2015 Listing page', () => {
     });
 
     it('should able to attest unattested criteria 170.315 (g)(6) cures update', () => {
-      if (criteria.uiUpgradeFlag()) {
+      /*
+       * Disabling code that runs tests against edit screen with UI-Upgrade flag on
+       * as the method used to determine if the flag is on is not working correctly
+       * and hence giving weird results. I suggest leaving this section disabled until
+       * the ui-upgrade flag is turned on (or at least planned to be) and in that case,
+       * disabling the code for the old version. Having two versions of these edit steps
+       * makes the tests flaky
+       */
+      /*
+        if (criteria.uiUpgradeFlag()) {
         criteria.expandCriteria('180');
         criteria.editCriteria('180');
         criteria.attestToggle.click();
@@ -67,14 +87,15 @@ describe('On the 2015 Listing page', () => {
         criteria.addTestTools('Edge Testing Tool', '2.1');
         criteria.accept.click();
         expect(criteria.chipText('Staged Changes').isDisplayed()).toBe(true);
-      } else {
-        criteria.editCriteriaOldButton('170.315 (g)(6)').scrollIntoView({ block: 'center', inline: 'center' });
-        criteria.openUnattestedCriteriaOld('170.315 (g)(6)', true);
-        criteria.attestCriteriaOld('170.315 (g)(6)');
-        criteria.addConformanceMethodsOld('ONC Test Procedure', '1.1');
-        criteria.addTestToolsOld('Edge Testing Tool', '1.1');
-        criteria.saveCertifiedProductOld.click();
-      }
+        } else {
+      */
+      criteria.editCriteriaOldButton('170.315 (g)(6)').scrollIntoView({ block: 'center', inline: 'center' });
+      criteria.openUnattestedCriteriaOld('170.315 (g)(6)', true);
+      criteria.attestCriteriaOld('170.315 (g)(6)');
+      criteria.addConformanceMethodsOld('ONC Test Procedure', '1.1');
+      criteria.addTestToolsOld('Edge Testing Tool', '1.1');
+      criteria.saveCertifiedProductOld.click();
+      //      }
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());

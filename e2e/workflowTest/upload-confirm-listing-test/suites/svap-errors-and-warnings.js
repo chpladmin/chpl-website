@@ -4,9 +4,9 @@ const suite = {
   listings: [{
     listingId: '15.02.04.2701.SVP1.12.00.1.220920',
     expectedErrors: [
+      'Standards Version Advancement Process 170.205(h)(3); 170.205(k)(3) for criteria 170.315 (c)(3) has been replaced and is only allowable for listings with ICS.',
     ],
     expectedWarnings: [
-      'Standards Version Advancement Process 170.205(h)(3); 170.205(k)(3) is not valid for criteria 170.315 (c)(3). It has been removed.',
       'Standards Version Advancement Process(es) are not applicable for the criterion 170.315 (g)(5). They have been removed.',
     ],
   }, {
