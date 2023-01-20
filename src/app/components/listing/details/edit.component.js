@@ -78,7 +78,7 @@ const ListingDetailsEditComponent = {
         warnings: [],
       };
       if (this.missingIcsSource()) {
-        this.messages.errors.push('Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from');
+        this.messages.errors.push('Listing is marked as having Inherited Certified Status but does not have references to the Listing(s) it inherited from');
       }
     }
 

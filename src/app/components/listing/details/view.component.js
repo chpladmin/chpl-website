@@ -158,25 +158,6 @@ const ListingDetailsViewComponent = {
         this.$analytics.eventTrack('See Only Certified Certification Criteria/Clinical Quality Measures', { category: 'Listing Details', label: this.listing.chplProductNumber });
       }
     }
-
-    viewIcsFamily() {
-      const that = this;
-      this.networkService.getIcsFamily(this.listing.id).then((family) => {
-        that.uibModalInstance = that.$uibModal.open({
-          templateUrl: 'chpl.components/listing/details/ics-family/ics-family-modal.html',
-          controller: 'IcsFamilyController',
-          controllerAs: 'vm',
-          animation: false,
-          backdrop: 'static',
-          keyboard: false,
-          size: 'lg',
-          resolve: {
-            family() { return family; },
-            listing() { return that.listing; },
-          },
-        });
-      });
-    }
   },
 };
 
