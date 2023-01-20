@@ -33,7 +33,7 @@ describe('the Scheduled Jobs page', () => {
         'Developer Access Report',
         'Developer Attestations Check-in Report Email',
         'Developer Attestations Report Email',
-        'Inherited Certification Status Errors Report',
+        'ICS Errors Report',
         'Listing Validation Email Report',
         'ONC-ACB Questionable URL Report',
         'Overnight Broken Surveillance Rules Report',
