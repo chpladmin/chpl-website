@@ -5,6 +5,7 @@ const states = [{
   params: {
     forceReload: { squash: true, value: null },
   },
+  data: { title: 'CHPL Listing Details' },
   resolve: {
     listing: (networkService, $location, $transition$) => {
       'ngInject';
