@@ -16,6 +16,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
+import ChplCmsButton from 'components/cms-widget/cms-button';
 import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
@@ -300,6 +301,7 @@ function ChplSearchView(props) {
                               <TableCell>{ getDisplayDateFormat(item.certificationDate) }</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
                               <TableCell>
+                                <ChplCmsButton listing={item} />
                                 <ChplCompareButton listing={item} />
                               </TableCell>
                             </TableRow>
