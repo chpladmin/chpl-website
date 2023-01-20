@@ -52,7 +52,6 @@ const useStyles = makeStyles({
   },
   figureContainer: {
     width: '50%',
-    height: '475px',
     borderLeft: '1px solid #ccc',
   },
   spacingforshowButton: {
