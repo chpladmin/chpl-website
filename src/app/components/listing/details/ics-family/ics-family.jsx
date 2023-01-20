@@ -259,7 +259,7 @@ function ChplIcsFamily(props) {
                                   text={listing?.chplProductNumber}
                                   external={false}
                                   router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
-                                  analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: pageChplProductNumber }}
+                                  analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
                                 />
                               )}
                             <Typography>
