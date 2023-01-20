@@ -19,7 +19,7 @@ describe('the Real World Testing collection page', () => {
   });
 
   it('should have table headers in a defined order', async () => {
-    const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer', 'Product', 'Version', 'Certification Status', 'Real World Testing Plans URL', 'Real World Testing Results URL'];
+    const expectedHeaders = ['CHPL ID', 'Certification Edition', 'Developer', 'Product', 'Version', 'Certification Status', 'Real World Testing Plans URL', 'Real World Testing Results URL', 'Actions'];
     const actualHeaders = await page.getTableHeaders();
     await expect(actualHeaders.length).toBe(expectedHeaders.length, 'Found incorrect number of columns');
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
@@ -63,7 +63,7 @@ describe('the Real World Testing collection page', () => {
       });
 
       it('should show only listings that match the CHPL ID', async () => {
-        const searchTerm = '3125.Powe';
+        const searchTerm = '1030.Crys';
         const columnIndex = 0;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);

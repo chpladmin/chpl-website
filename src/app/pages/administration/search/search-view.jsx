@@ -16,6 +16,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
+import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
   ChplPagination,
@@ -55,6 +56,7 @@ const headers = [
   { property: 'version', text: 'Version', sortable: true },
   { property: 'certification_date', text: 'Certification Date', sortable: true, reverseDefault: true },
   { text: 'Certification Status' },
+  { text: 'Actions', invisible: true },
 ];
 /* eslint-enable object-curly-newline */
 
@@ -297,6 +299,9 @@ function ChplSearchView(props) {
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{ getDisplayDateFormat(item.certificationDate) }</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
+                              <TableCell>
+                                <ChplCompareButton listing={item} />
+                              </TableCell>
                             </TableRow>
                           ))}
                       </TableBody>

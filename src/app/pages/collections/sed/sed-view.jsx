@@ -13,9 +13,8 @@ import {
 import { shape, string } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 
-import {
-  useFetchCollection,
-} from 'api/collections';
+import { useFetchCollection } from 'api/collections';
+import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
   ChplPagination,
@@ -297,15 +296,19 @@ function ChplSedCollectionView(props) {
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
                               <TableCell>
-                                <Button
-                                  color="primary"
-                                  variant="contained"
-                                  id={`view-details-${item.id}`}
-                                  onClick={() => viewDetails(item.id)}
-                                  endIcon={<InfoIcon />}
+                                <ChplCompareButton
+                                  listing={item}
                                 >
-                                  View
-                                </Button>
+                                  <Button
+                                    color="primary"
+                                    variant="contained"
+                                    id={`view-details-${item.id}`}
+                                    onClick={() => viewDetails(item.id)}
+                                    endIcon={<InfoIcon />}
+                                  >
+                                    View
+                                  </Button>
+                                </ChplCompareButton>
                               </TableCell>
                             </TableRow>
                           ))}

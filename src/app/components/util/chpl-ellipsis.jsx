@@ -1,13 +1,31 @@
 import React, { useState } from 'react';
+import {
+  IconButton,
+  makeStyles,
+} from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { bool, number, string } from 'prop-types';
 
 import ChplTooltip from './chpl-tooltip';
+
+const useStyles = makeStyles({
+  chplEllipsis: {
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: '#156dac',
+    '&:hover': {
+      color: '#00437c',
+    },
+  },
+});
 
 function ChplEllipsis(props) {
   const [isShortened, setShortened] = useState(true);
   const { text } = props;
   const { wordBoundaries } = props;
   const { maxLength } = props;
+  const classes = useStyles();
 
   if (!text) {
     return null;
@@ -27,25 +45,33 @@ function ChplEllipsis(props) {
   }
 
   return (
-    <span>
-      {isShortened ? display : text}
-      {display !== text && isShortened
+    <>
+      { isShortened ? display : text }
+      { display !== text && isShortened
        && (
          <ChplTooltip title={text}>
-           <button type="button" className="btn btn-link btn-xs" onClick={() => setShortened(false)}>
-             <i className="fa fa-ellipsis-h" />
+           <IconButton
+             size="small"
+             className={classes.chplEllipsis}
+             onClick={() => setShortened(false)}
+           >
+             <MoreHorizIcon />
              <span className="sr-only">Expand description</span>
-           </button>
+           </IconButton>
          </ChplTooltip>
        )}
-      {display !== text && !isShortened
+      { display !== text && !isShortened
        && (
-         <button type="button" className="btn btn-link btn-xs" onClick={() => setShortened(true)}>
-           <i className="fa fa-arrow-left" />
+         <IconButton
+           size="small"
+           className={classes.chplEllipsis}
+           onClick={() => setShortened(true)}
+         >
+           <ArrowBackIcon />
            <span className="sr-only">Minimize description</span>
-         </button>
+         </IconButton>
        )}
-    </span>
+    </>
   );
 }
 

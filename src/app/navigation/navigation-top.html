@@ -27,7 +27,7 @@
           <li class="dropdown" uib-dropdown is-open="vm.compareWidgetExpanded" auto-close="disabled">
             <a href class="dropdown-toggle" id="compare-widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.compareWidgetExpanded">Compare Products <span class="fa" ng-class="vm.compareWidgetExpanded ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
             <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="compare-widget-toggle" id="compare-widget-dropdown">
-              <ai-compare-widget-display widget="vm.compareWidget"></ai-compare-widget-display>
+              <chpl-compare-display-wrapper-bridge></chpl-compare-display-wrapper-bridge>
             </div>
           </li>
           <li class="dropdown" uib-dropdown is-open="vm.resourcesIsOpen">
