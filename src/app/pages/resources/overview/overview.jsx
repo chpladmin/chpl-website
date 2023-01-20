@@ -83,11 +83,7 @@ function ChplResourcesOverview() {
     if (isLoading || !isSuccess) {
       return;
     }
-    setAnnouncements(data.map((announcement) => ({
-      ...announcement,
-      startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
-      endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
-    })).sort((a, b) => a.startDate - b.startDate));
+    setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
   }, [data, isLoading, isSuccess, DateUtil]);
 
   return (
@@ -177,13 +173,6 @@ function ChplResourcesOverview() {
                           {announcement.text}
                         </>
                       )}
-                     <br />
-                     Start date:
-                     {' '}
-                     {announcement.startDisplay}
-                     , End date:
-                     {' '}
-                     {announcement.endDisplay}
                    </li>
                  ))}
                </ul>
