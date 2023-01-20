@@ -324,6 +324,9 @@ function ChplIcsFamily(props) {
                         <TableHead>
                           <TableRow>
                             <TableCell>CHPL Product Number</TableCell>
+                            <TableCell>Developer</TableCell>
+                            <TableCell>Product</TableCell>
+                            <TableCell>Version</TableCell>
                             <TableCell>Certification Status</TableCell>
                             <TableCell>Inherits from</TableCell>
                             <TableCell>Source for</TableCell>
@@ -343,9 +346,22 @@ function ChplIcsFamily(props) {
                                       href={`#/listing/${l.id}?panel=additional`}
                                       text={l.chplProductNumber}
                                       external={false}
+                                      router={{ sref: 'listing', options: { id: l?.id, panel: 'additional' } }}
+                                      analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: l.chplProductNumber }}
                                     />
                                   )}
                               </TableCell>
+                              <TableCell>
+                                <ChplLink
+                                  href={`#/organizations/developers/${l?.developer.id}`}
+                                  text={l?.developer.name}
+                                  external={false}
+                                  router={{ sref: 'organizations.developers.developer', options: { id: l?.developer.id } }}
+                                  analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: l.developer.name }}
+                                />
+                              </TableCell>
+                              <TableCell>{ l.product.name }</TableCell>
+                              <TableCell>{ l.version.name }</TableCell>
                               <TableCell>{ l.certificationStatus.name }</TableCell>
                               <TableCell>
                                 <List>
