@@ -15,9 +15,8 @@ import { shape, string } from 'prop-types';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
-import {
-  useFetchCollection,
-} from 'api/collections';
+import { useFetchCollection } from 'api/collections';
+import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
   ChplPagination,
@@ -173,6 +172,7 @@ function ChplRealWorldTestingCollectionView(props) {
     { text: 'Certification Status' },
     { text: 'Real World Testing Plans URL' },
     { text: 'Real World Testing Results URL' },
+    { text: 'Actions', invisible: true },
   ];
 
   const downloadRealWorldTesting = () => {
@@ -343,6 +343,9 @@ function ChplRealWorldTestingCollectionView(props) {
                                   ) : (
                                     <>N/A</>
                                   )}
+                              </TableCell>
+                              <TableCell>
+                                <ChplCompareButton listing={item} />
                               </TableCell>
                             </TableRow>
                           ))}

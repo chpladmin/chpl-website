@@ -20,6 +20,7 @@ import {
   useFetchApiDocumentationData,
   useFetchCollection,
 } from 'api/collections';
+import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
   ChplPagination,
@@ -277,6 +278,7 @@ function ChplApiDocumentationCollectionView(props) {
     { text: 'API Documentation' },
     { text: 'Service Base URL List' },
     { text: 'Mandatory Disclosures URL' },
+    { text: 'Actions', invisible: true },
   ];
 
   const downloadApiDocumentation = () => {
@@ -479,6 +481,9 @@ function ChplApiDocumentationCollectionView(props) {
                                   ) : (
                                     <>N/A</>
                                   )}
+                              </TableCell>
+                              <TableCell>
+                                <ChplCompareButton listing={item} />
                               </TableCell>
                             </TableRow>
                           ))}

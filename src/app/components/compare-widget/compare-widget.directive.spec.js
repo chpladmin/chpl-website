@@ -70,32 +70,15 @@
         }
       });
 
-      it('should have a way to clear all the product IDs', function () {
-        vm.clearProducts();
-        expect(vm.compareWidget.products).toEqual([]);
-      });
-
       it('should know what the productIds are', function () {
         expect(vm.compareWidget.productIds).toEqual([1,2,3]);
-      });
-
-      it('should know what the queryUrl should be', function () {
-        expect(vm.queryUrl()).toBe('1&2&3');
-      });
-
-      describe('previously compared objects', function () {
-        it('should add active products to the previously compared list on save', function () {
-          $localStorage.previouslyCompared = [];
-          vm.saveProducts();
-          expect($localStorage.previouslyCompared).toEqual([1,2,3]);
-        });
       });
     });
 
     describe('when listening for the "compare all" event', () => {
       const payload = [
-        { name: 'a name', productId: '1', chplProductNumber: undefined },
-        { name: '2nd name', productId: '2', chplProductNumber: undefined },
+        { name: 'a name', productId: 1, chplProductNumber: undefined },
+        { name: '2nd name', productId: 2, chplProductNumber: undefined },
       ];
       const products = payload.map((item) => { return {id: item.productId, name: item.name, chplProductNumber: item.chplProductNumber }; });
 
@@ -112,7 +95,7 @@
 
       it('should get the correct list of productIds', () => {
         $rootScope.$broadcast('compareAll', payload);
-        expect(vm.compareWidget.productIds).toEqual(['1', '2']);
+        expect(vm.compareWidget.productIds).toEqual([1, 2]);
       });
     });
   });

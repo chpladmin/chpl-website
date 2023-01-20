@@ -24,11 +24,7 @@
             product-name="{{ $ctrl.listing.product.name }}"
             chpl-product-number="{{ $ctrl.listing.chplProductNumber }}"
             ></ai-cms-widget-button>
-          <ai-compare-widget-button
-            product-id="{{ $ctrl.listing.id }}"
-            product-name="{{ $ctrl.listing.product.name }}"
-            chpl-product-number="{{ $ctrl.listing.chplProductNumber }}"
-            ></ai-compare-widget-button>
+          <chpl-compare-button-wrapper-bridge listing="$ctrl.listing"></chpl-compare-button-wrapper-bridge>
         </div>
       </div>
     </div>
