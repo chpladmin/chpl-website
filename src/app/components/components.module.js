@@ -7,9 +7,10 @@ import {
   ChplAttestationsViewWrapper,
 } from './attestation';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
+import ChplCompareButtonWrapper from './compare-widget/compare-button-wrapper';
+import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import { ChplDeveloper } from './developer';
 import ChplDirectReviewsView from './direct-reviews/direct-reviews-view';
-import { ChplFuzzyType } from './fuzzy-type';
 import {
   ChplConfirmDeveloperWrapper,
   ChplConfirmListingsWrapper,
@@ -18,6 +19,7 @@ import {
   ChplConfirmVersion,
 } from './listing/confirm';
 import { ChplCriteria } from './listing/details/criteria';
+import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
@@ -61,6 +63,8 @@ angular
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
+  .component('chplCompareButtonWrapperBridge', reactToAngularComponent(ChplCompareButtonWrapper))
+  .component('chplCompareDisplayWrapperBridge', reactToAngularComponent(ChplCompareDisplayWrapper))
   .component('chplConfirmDeveloperWrapperBridge', reactToAngularComponent(ChplConfirmDeveloperWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
@@ -71,7 +75,7 @@ angular
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsView))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
-  .component('chplFuzzyTypeBridge', reactToAngularComponent(ChplFuzzyType))
+  .component('chplIcsFamilyBridge', reactToAngularComponent(ChplIcsFamily))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))

@@ -1,20 +1,25 @@
-import CmsWidgetComponent from './cms-widget.po';
 import SearchPage from '../../pages/search/search.po';
 import Hooks from '../../utilities/hooks';
 
-const config = require('../../config/mainConfig');
+import CmsWidgetComponent from './cms-widget.po';
+
 const path = require('path');
 const fs = require('fs');
 
-let cms, hooks, search;
-let listingId1 = 9851;
-let listingId2 = 9879;
-let search1 = '2621';//using developer code to search listing
-let search2 = '2155';//using developer code to search listing
-let cmsId;
+const config = require('../../config/mainConfig');
+
+const listingId1 = 9851;
+const listingId2 = 11149;
+const search1 = '2621';//using developer code to search listing
+const search2 = '2155';//using developer code to search listing
 const chplPublicGuide = 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf';
 const cmsReverseLookup = '#/resources/cms-lookup';
 const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition';
+
+let cms;
+let hooks;
+let search;
+let cmsId;
 
 beforeAll(async () => {
   search = new SearchPage();

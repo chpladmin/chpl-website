@@ -52,7 +52,7 @@ const ListingDetailsEditComponent = {
       if (changes.resources && changes.resources.currentValue) {
         this.resources = angular.copy(changes.resources.currentValue);
         this.resources.accessibilityStandards = this.resources.accessibilityStandards.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-        this.resources.qmsStandards = this.resources.qmsStandards.data.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+        this.resources.qmsStandards = this.resources.qmsStandards.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
         this.resources.targetedUsers = this.resources.targetedUsers.data.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
       }
       if (this.listing && this.resources) {
@@ -78,7 +78,7 @@ const ListingDetailsEditComponent = {
         warnings: [],
       };
       if (this.missingIcsSource()) {
-        this.messages.errors.push('Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from');
+        this.messages.errors.push('Listing is marked as having Inherited Certified Status but does not have references to the Listing(s) it inherited from');
       }
     }
 

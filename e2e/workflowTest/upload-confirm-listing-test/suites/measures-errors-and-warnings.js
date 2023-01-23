@@ -2,6 +2,10 @@ const suite = {
   description: 'with issues related to measures specified at the listing level',
   file: '../../../resources/listings/2015_Measures.csv',
   listings: [{
+    listingId: '15.04.04.1722.MEA3.V1.00.1.210607',
+    expectedErrors: [],
+    expectedWarnings: [],
+  }, {
     listingId: '15.04.04.1722.MEA4.V1.00.1.210607',
     expectedErrors: [
       'The G1 measure Electronic Prescribing: Eligible Clinician for RT1 cannot have associated criterion 170.315 (b)(2).',
@@ -23,12 +27,12 @@ const suite = {
       'G1/G2 Measure Type is missing.',
     ],
     expectedWarnings: [
-      'G2 Measure \'EC\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
-      'G2 Measure \'RT1\' was not found associated with 170.315 (e)(1) and has been removed from the listing.',
+      'G2 Measure \'EC\' was not found associated with 170.315 (e)(1) and 170.315 (e)(1) (Cures Update) and has been removed from the listing.',
+      'G2 Measure \'RT1\' was not found associated with 170.315 (e)(1) and 170.315 (e)(1) (Cures Update) and has been removed from the listing.',
       'G1 Measure \'\' was not found and has been removed from the listing.',
       'Measure \'EC\' was not found and has been removed from the listing.',
       'Measure \'RT1\' was not found and has been removed from the listing.',
-      'Measure \'\' was not found associated with 170.315 (e)(1), 170.315 (g)(8), 170.315 (g)(9) and has been removed from the listing.',
+      'Measure \'\' was not found associated with 170.315 (e)(1), 170.315 (g)(9) (Cures Update), 170.315 (g)(9), 170.315 (e)(1) (Cures Update), and 170.315 (g)(8) and has been removed from the listing.',
     ],
   }, {
     listingId: '15.04.04.1722.MEA6.V1.00.1.210607',
@@ -40,8 +44,6 @@ const suite = {
       'The G2 Measure: Patient Electronic Access: Eligible Professional for RT2 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Patient-Specific Education: Eligible Professional for RT3 may not be referenced since this listing does not have ICS. The measure has been removed.',
       'The G1 Measure: Electronic Prescribing: Eligible Clinician for RT1 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G2 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
-      'The G1 Measure: Patient Care Record Exchange: Eligible Professional for RT7 may not be referenced since this listing does not have ICS. The measure has been removed.',
     ],
     expectedWarnings: [],
   }, {

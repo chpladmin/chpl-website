@@ -162,7 +162,7 @@
         </span>
         <span ng-if="$ctrl.listing.ics !== null" id="panel-additional-information-certification-history">
           <h4>Certification History</h4>
-          <p ng-if="$ctrl.listing.ics.inherits !== null"><strong>Inherited Certification Status (ICS):</strong> {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
+          <p ng-if="$ctrl.listing.ics.inherits !== null"><strong>Inherited Certified Status (ICS):</strong> {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
           <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
         </span>
         <span ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
@@ -184,7 +184,7 @@
           </ul>
         </span>
         <span ng-if="!$ctrl.isConfirming && (($ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0) || ($ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0))">
-          <button class="btn btn-ai-success" ng-click="$ctrl.viewIcsFamily()">View ICS Relationships</button>
+          <chpl-ics-family-bridge id="$ctrl.listing.id"></chpl-ics-family-bridge>
         </span>
         <span ng-if="$ctrl.listing.otherAcb" id="panel-additional-information-other-acb">
           <h4>Other ACB</h4>

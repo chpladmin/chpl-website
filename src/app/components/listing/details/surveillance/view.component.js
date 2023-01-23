@@ -9,7 +9,7 @@ const surveillanceResults = (surv) => {
   for (let i = 0; i < surv.requirements.length; i += 1) {
     for (let j = 0; j < surv.requirements[i].nonconformities.length; j += 1) {
       let result = `${surv.requirements[i].nonconformities[j].nonconformityStatus} Non-Conformity Found for `;
-      if (surv.requirements[i].requirementType.removed) {
+      if (surv.requirements[i].requirementType?.removed) {
         result += `<span class="removed">${getRequirementDisplay(surv.requirements[i])}</span>`;
       } else {
         result += getRequirementDisplay(surv.requirements[i]);

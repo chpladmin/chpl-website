@@ -178,7 +178,7 @@
         </div>
 
         <div class="form-group">
-          <label for="cp-ics">Inherited Certification Status</label>
+          <label for="cp-ics">Inherited Certified Status</label>
           <input type="checkbox" ng-model="$ctrl.listing.ics.inherits" id="cp-ics" ng-change="$ctrl.update()">
         </div>
         <div ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.listing.ics.inherits">
@@ -299,10 +299,10 @@
         </div>
 
         <div class="manage-list__container">
-          <div class="data-label manage-list--span-2">QMS Standard</div>
+          <div class="data-label">QMS Standard</div>
           <div class="data-label">QMS Modification</div>
           <div class="data-label">QMS Applicable Criteria</div>
-          <div class="manage-list__item--start manage-list--span-2" ng-repeat-start="item in $ctrl.listing.qmsStandards track by $index">
+          <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.qmsStandards track by $index">
             {{ item.qmsStandardName }}
           </div>
           <div>
@@ -314,20 +314,12 @@
           <div class="manage-list__item--end" ng-repeat-end>
             <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('qmsStandards', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
           </div>
-          <div class="manage-list__item--start" ng-if="$ctrl.addingItem['qmsStandards'] && !$ctrl.creatingItem['qmsStandards']">
+          <div class="manage-list__item--start" ng-if="$ctrl.addingItem['qmsStandards']">
             <div class="data-element sr-only"><label for="qms-standard-add-new">Add new Qms Standard</label></div>
             <select class="form-control" ng-model="$ctrl.newItem['qmsStandards'].qmsStandardName"
                     id="qms-standard-add-new" name="qmsStandardAddNew" required
                     ng-options="option.name as option.name for option in $ctrl.filterListEditItems('qmsStandards', $ctrl.resources.qmsStandards)">
             </select>
-          </div>
-          <div class="manage-list__item--start" ng-if="$ctrl.addingItem['qmsStandards'] && $ctrl.creatingItem['qmsStandards']">
-            <div class="data-element sr-only"><label for="qms-standard-add-new">Create new Qms Standard</label></div>
-            <input type="text" class="form-control" ng-model="$ctrl.newItem['qmsStandards'].qmsStandardName"
-                   id="qms-standard-add-new" name="qmsStandardAddNew" required>
-          </div>
-          <div ng-if="$ctrl.addingItem['qmsStandards']">
-            <button class="btn btn-default btn--wrap" ng-click="$ctrl.creatingItem['qmsStandards'] = !$ctrl.creatingItem['qmsStandards']"><i class="fa" ng-class="$ctrl.creatingItem['qmsStandards'] ? 'fa-toggle-on' : 'fa-toggle-off'"></i>{{ $ctrl.creatingItem['qmsStandards'] ? 'Create new' : 'Add existing' }} QMS Standard</button>
           </div>
           <div ng-if="$ctrl.addingItem['qmsStandards']">
             <div class="data-element sr-only"><label for="qms-standard-modification">QMS Modification</label></div>

@@ -16,6 +16,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
+import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
   ChplPagination,
@@ -60,6 +61,7 @@ const headers = [
   { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs', sortable: true, reverseDefault: true },
   { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs', sortable: true, reverseDefault: true },
   { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs', sortable: true, reverseDefault: true },
+  { text: 'Actions', invisible: true },
 ];
 /* eslint-enable object-curly-newline */
 
@@ -342,6 +344,9 @@ function ChplCorrectiveActionCollectionView(props) {
                                     <TableCell>{item.closedSurveillanceNonConformityCount}</TableCell>
                                     <TableCell>{item.openDirectReviewNonConformityCount}</TableCell>
                                     <TableCell>{item.closedDirectReviewNonConformityCount}</TableCell>
+                                    <TableCell>
+                                      <ChplCompareButton listing={item} />
+                                    </TableCell>
                                   </TableRow>
                                 ))}
                             </TableBody>

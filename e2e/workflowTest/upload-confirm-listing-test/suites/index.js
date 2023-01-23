@@ -3,9 +3,9 @@ import conformanceMethodsErrorsAndWarnings from './conformance-methods-errors-an
 import cqmsErrorsAndWarnings from './cqms-errors-and-warnings';
 import criteriaRelationshipsErrorsAndWarnings from './criteria-relationships-errors-and-warnings';
 import developerErrorsAndWarnings from './developer-errors-and-warnings';
+import fuzzyMatchingWarnings from './fuzzy-matching-warnings';
 import icsErrors from './ics-errors';
 import invalidFormatsErrorsAndWarnings from './invalid-formats-errors-and-warnings';
-import measuresAtCriteriaLevelErrorsAndWarnings from './measures-at-criteria-level-errors-and-warnings';
 import measuresErrorsAndWarnings from './measures-errors-and-warnings';
 import noErrors from './no-errors';
 import optionalStandardsErrorsAndWarnings from './optional-standards-errors-and-warnings';
@@ -20,9 +20,9 @@ const suites = [
   cqmsErrorsAndWarnings,
   criteriaRelationshipsErrorsAndWarnings,
   developerErrorsAndWarnings,
+  fuzzyMatchingWarnings,
   icsErrors,
   invalidFormatsErrorsAndWarnings,
-  measuresAtCriteriaLevelErrorsAndWarnings,
   measuresErrorsAndWarnings,
   noErrors,
   optionalStandardsErrorsAndWarnings,
@@ -39,9 +39,9 @@ export {
   cqmsErrorsAndWarnings,
   criteriaRelationshipsErrorsAndWarnings,
   developerErrorsAndWarnings,
+  fuzzyMatchingWarnings,
   icsErrors,
   invalidFormatsErrorsAndWarnings,
-  measuresAtCriteriaLevelErrorsAndWarnings,
   measuresErrorsAndWarnings,
   noErrors,
   optionalStandardsErrorsAndWarnings,
