@@ -61,10 +61,6 @@
       } else {
         addProduct(parseInt(id, 10), name, number, doNotTrack);
       }
-      vm.compareWidget.productIds = [];
-      for (var i = 0; i < vm.compareWidget.products.length; i++) {
-        vm.compareWidget.productIds.push(parseInt(vm.compareWidget.products[i].id, 10));
-      }
       saveWidget();
     }
 
@@ -81,12 +77,11 @@
     }
 
     function clearProducts () {
-      vm.compareWidget?.productIds.forEach((id) => {
-        $rootScope.$broadcast('removedListing', { id });
+      vm.compareWidget?.products.forEach((listing) => {
+        $rootScope.$broadcast('removedListing', listing);
       });
       vm.compareWidget = {
         products: [],
-        productIds: [],
       };
       saveWidget();
     }
@@ -108,7 +103,7 @@
           vm.compareWidget.products.splice(i,1);
         }
       }
-      $rootScope.$broadcast('removedListing', {id, chplProductNumber: number});
+      $rootScope.$broadcast('removedListing', {id});
     }
 
     function saveWidget () {

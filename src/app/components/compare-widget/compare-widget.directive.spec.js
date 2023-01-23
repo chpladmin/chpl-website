@@ -43,7 +43,7 @@
     it('should have isolate scope object with instanciate members', function () {
       expect(vm).toEqual(jasmine.any(Object));
       expect(vm.compareWidget).toEqual(
-        {products: [], productIds: []}
+        {products: []}
       );
     });
 
@@ -69,10 +69,6 @@
           vm.toggleProduct(mock.products[i].id,mock.products[i].name);
         }
       });
-
-      it('should know what the productIds are', function () {
-        expect(vm.compareWidget.productIds).toEqual([1,2,3]);
-      });
     });
 
     describe('when listening for the "compare all" event', () => {
@@ -91,11 +87,6 @@
         vm.compareWidget.products = [1, 2];
         $rootScope.$broadcast('compareAll', payload);
         expect(vm.compareWidget.products).toEqual(products);
-      });
-
-      it('should get the correct list of productIds', () => {
-        $rootScope.$broadcast('compareAll', payload);
-        expect(vm.compareWidget.productIds).toEqual([1, 2]);
       });
     });
   });
