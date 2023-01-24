@@ -7,6 +7,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -45,18 +46,17 @@ const useStyles = makeStyles({
 
 function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
-  const $localStorage = getAngularService('$localStorage');
-  const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
   const classes = useStyles();
 
+  const actOnCertId = () => {
+    console.log('acting');
+  };
+
   const compareAll = () => {
     $analytics.eventTrack('Cms Listings', { category: 'Cms Widget' });
     console.log('do compare all');
-    //$location.url(`/cms/${listings.map((listing) => listing.id).join('&')}`);
-    //$rootScope.$broadcast('HideCmsWidget');
-    //$rootScope.$digest();
   };
 
   const removeAll = () => {
@@ -94,18 +94,18 @@ function ChplCmsDisplay() {
           id="act-on-cert-id"
           onClick={actOnCertId}
           disabled={listings.length === 1}
-          endIcon={<CmsArrowsIcon />}
+          endIcon={<CheckIcon />}
         >
           Create Certification ID
         </Button>
         <Button
           fullWidth
           color="primary"
-          variant="secondary"
+          variant="outlined"
           id="compare-listings"
           onClick={compareAll}
           disabled={listings.length === 1}
-          endIcon={<CmsArrowsIcon />}
+          endIcon={<CompareArrowsIcon />}
         >
           Compare Products
         </Button>
