@@ -12,12 +12,9 @@ function CmsWrapper(props) {
   const [cannotGenerate15EIsOn, setCannotGenerate15EIsOn] = useState(false);
   const [listings, setListings] = useState([]);
 
-  /*
-    // figure out how to / what to load from localstorage
   useEffect(() => {
-    setListings($localStorage?.cmsWidget?.products);
+    setListings($localStorage?.cmsWidget?.products ?? []);
   }, []);
-  */
 
   useEffect(() => {
     setCannotGenerate15EIsOn(isOn('cannot-generate-15e'));

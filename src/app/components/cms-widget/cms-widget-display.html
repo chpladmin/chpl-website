@@ -1,6 +1,6 @@
 <div>
   <div ng-if="widget.inProgress">Processing <i class="fa fa-spinner fa-spin"></i></div>
-  <div ng-if="!widget.productIds || widget.productIds.length === 0">No products selected.</div>
+  <div ng-if="!widget.products || widget.products.length === 0">No products selected.</div>
   <ul class="list-unstyled selectedProducts" ng-if="widget.searchResult.products.length> 0">
     <li ng-repeat="item in widget.searchResult.products | orderBy:'name'">
       <button class="btn btn-ai-grey btn-sm btn-block" ng-click="removeProduct(item.productId, item.chplProductNumber)">
@@ -9,8 +9,8 @@
       </button>
     </li>
   </ul>
-  <div ng-if="!widget.productIds || widget.productIds.length === 0 || widget.searchResult.metPercentages.criteriaMet < 100">
-    For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-category="CMS Widget" analytics-event="Open CHPL Public User Guide">CHPL Public User Guide</a>. Note the selected product<span ng-if="widget.productIds.length !== 1">s</span> must meet 100% of the Base Criteria.
+  <div ng-if="!widget.products || widget.products.length === 0 || widget.searchResult.metPercentages.criteriaMet < 100">
+    For assistance, view the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-category="CMS Widget" analytics-event="Open CHPL Public User Guide">CHPL Public User Guide</a>. Note the selected product<span ng-if="widget.products.length !== 1">s</span> must meet 100% of the Base Criteria.
   </div>
   <div ng-if="widget.searchResult.products">
     <a href="http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition" analytics-on="click" analytics-category="CMS Widget" analytics-event="Open Base Criteria">Base Criteria</a> Met<br />

@@ -21,17 +21,17 @@ import 'jspdf-autotable';
   }
 
   /** @ngInject */
-  function CmsWidgetController ($analytics, $filter, $localStorage, $log, $rootScope, featureFlags, networkService, utilService) {
+  function CmsWidgetController ($analytics, $filter, $localStorage, $log, $rootScope, $scope, featureFlags, networkService, utilService) {
     var vm = this;
 
-    vm.addProduct = addProduct;
+    //vm.addProduct = addProduct;
     vm.clearProducts = clearProducts;
     vm.compare = compare;
-    vm.create = create;
+    //vm.create = create;
     vm.isInList = isInList;
     vm.isOn = featureFlags.isOn;
     vm.generatePdf = generatePdf;
-    vm.removeProduct = removeProduct;
+    //vm.removeProduct = removeProduct;
     vm.search = search;
     vm.toggleProduct = toggleProduct;
 
@@ -73,7 +73,7 @@ import 'jspdf-autotable';
       });
       //$analytics.eventTrack('Remove All Listings', { category: 'CMS Widget' });
       vm.widget = {
-        productIds: [],
+        products: [],
       };
       setWidget(vm.widget);
     }
@@ -92,7 +92,7 @@ import 'jspdf-autotable';
       if (vm.widget.searchResult && vm.widget.searchResult.year) {
         $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
       }
-      networkService.createCmsId(vm.widget.productIds)
+      networkService.createCmsId(vm.widget.products.map((l) => l.id))
         .then(response => {
           vm.widget.createResponse = response;
           vm.widget.inProgress = false;
@@ -110,8 +110,8 @@ import 'jspdf-autotable';
     }
 
     function isInList (id) {
-      for (var i = 0; i < vm.widget.productIds.length; i++) {
-        if (vm.widget.productIds[i] === id) {
+      for (var i = 0; i < vm.widget.products.length; i++) {
+        if (parseInt(vm.widget.products[i].id, 10) === parseInt(id, 10)) {
           return true;
         }
       }
@@ -120,9 +120,9 @@ import 'jspdf-autotable';
 
     function removeProduct (id, number) {
       $analytics.eventTrack('Remove Listing', { category: 'CMS Widget', label: number });
-      for (var i = 0; i < vm.widget.productIds.length; i++) {
-        if (vm.widget.productIds[i] === id || parseInt(vm.widget.productIds[i]) === parseInt(id)) {
-          vm.widget.productIds.splice(i,1);
+      for (var i = 0; i < vm.widget.products.length; i++) {
+        if (vm.widget.products[i] === id || parseInt(vm.widget.products[i], 10) === parseInt(id, 10)) {
+          vm.widget.products.splice(i,1);
           vm.search();
         }
       }
@@ -139,9 +139,9 @@ import 'jspdf-autotable';
 
     function search () {
       delete vm.widget.createResponse;
-      if (vm.widget.productIds.length > 0) {
+      if (vm.widget.products.length > 0) {
         vm.widget.inProgress = true;
-        networkService.getCmsIds(vm.widget.productIds.join(','))
+        networkService.getCmsIds(vm.widget.products.map((l) => l.id).join(','))
           .then((response) => {
             vm.widget.searchResult = response;
             vm.widget.inProgress = false;
