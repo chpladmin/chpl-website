@@ -42,20 +42,36 @@ import 'jspdf-autotable';
         vm.widget = getWidget();
         vm.widget.errorMessage = undefined;
       } else {
-        vm.clearProducts();
+        clearProducts();
       }
+      var removeAll = $scope.$on('cms.removeAll', (evt, payload) => {
+        clearProducts();
+      });
+      $scope.$on('$destroy', removeAll);
+      var addListing = $scope.$on('cms.addListing', (evt, listing) => {
+        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
+      });
+      $scope.$on('$destroy', addListing);
+      var removeListing = $scope.$on('cms.removeListing', (evt, listing) => {
+        vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
+      });
+      $scope.$on('$destroy', removeListing);
     };
 
-    function addProduct (id, number) {
+    function addProduct (id, name, number) {
       if (!isInList(id)) {
         $analytics.eventTrack('Add Listing', { category: 'CMS Widget', label: number });
-        vm.widget.productIds.push(id);
+        vm.widget.products.push({id, name, chplProductNumber: number});
         vm.search();
+        $rootScope.$broadcast('cms.addedListing', {id, name, chplProductNumber: number});
       }
     }
 
     function clearProducts () {
-      $analytics.eventTrack('Remove All Listings', { category: 'CMS Widget' });
+      vm.widget?.products.forEach((listing) => {
+        $rootScope.$broadcast('cms.removedListing', listing);
+      });
+      //$analytics.eventTrack('Remove All Listings', { category: 'CMS Widget' });
       vm.widget = {
         productIds: [],
       };
@@ -66,7 +82,7 @@ import 'jspdf-autotable';
       const payload = vm.widget.searchResult.products.map((item) => { return { productId: item.productId + '', name: item.name }; });
       $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
       $rootScope.$broadcast('compare.compareAll', payload);
-      $rootScope.$broadcast('HideWidget');
+      $rootScope.$broadcast('HideCmsWidget');
       $rootScope.$broadcast('ShowCompareWidget');
     }
 
@@ -110,13 +126,14 @@ import 'jspdf-autotable';
           vm.search();
         }
       }
+      $rootScope.$broadcast('cms.removedListing', {id});
     }
 
-    function toggleProduct (id, number) {
-      if (vm.isInList(id)) {
-        vm.removeProduct(id, number);
+    function toggleProduct (id, name, number) {
+      if (vm.isInList(parseInt(id, 10))) {
+        removeProduct(parseInt(id, 10), number);
       } else {
-        vm.addProduct(id, number);
+        addProduct(parseInt(id, 10), name, number);
       }
     }
 

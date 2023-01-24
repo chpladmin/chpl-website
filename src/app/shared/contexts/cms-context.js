@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 const CmsContext = createContext({
   addListing: () => {},
+  canDisplayButton: () => false,
   isInWidget: () => false,
   listings: [],
   removeListing: () => {},
