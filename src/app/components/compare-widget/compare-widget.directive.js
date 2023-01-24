@@ -27,20 +27,20 @@
 
     this.$onInit = function () {
       getWidget();
-      var compareAll = $scope.$on('compareAll', (evt, payload) => { // compares all in the CMS ID generator widget
+      var compareAll = $scope.$on('compare.compareAll', (evt, payload) => { // compares all in the CMS ID generator widget
         clearProducts();
         payload.forEach((item) => { vm.toggleProduct(item.productId, item.name, item.chplProductNumber, true); });
       });
       $scope.$on('$destroy', compareAll);
-      var removeAll = $scope.$on('removeAll', (evt, payload) => {
+      var removeAll = $scope.$on('compare.removeAll', (evt, payload) => {
         clearProducts();
       });
       $scope.$on('$destroy', removeAll);
-      var addListing = $scope.$on('addListing', (evt, listing) => {
+      var addListing = $scope.$on('compare.addListing', (evt, listing) => {
         vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
       });
       $scope.$on('$destroy', addListing);
-      var removeListing = $scope.$on('removeListing', (evt, listing) => {
+      var removeListing = $scope.$on('compare.removeListing', (evt, listing) => {
         vm.toggleProduct(listing.id, listing.product, listing.chplProductNumber);
       });
       $scope.$on('$destroy', removeListing);
@@ -72,13 +72,13 @@
           $analytics.eventTrack('Add Listing', { category: 'Compare Widget', label: number });
         }
         vm.compareWidget.products.push({id, name, chplProductNumber: number});
-        $rootScope.$broadcast('addedListing', {id, name, chplProductNumber: number});
+        $rootScope.$broadcast('compare.addedListing', {id, name, chplProductNumber: number});
       }
     }
 
     function clearProducts () {
       vm.compareWidget?.products.forEach((listing) => {
-        $rootScope.$broadcast('removedListing', listing);
+        $rootScope.$broadcast('compare.removedListing', listing);
       });
       vm.compareWidget = {
         products: [],
@@ -103,7 +103,7 @@
           vm.compareWidget.products.splice(i,1);
         }
       }
-      $rootScope.$broadcast('removedListing', {id});
+      $rootScope.$broadcast('compare.removedListing', {id});
     }
 
     function saveWidget () {

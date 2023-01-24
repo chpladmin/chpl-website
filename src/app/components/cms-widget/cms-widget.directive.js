@@ -65,7 +65,7 @@ import 'jspdf-autotable';
     function compare () {
       const payload = vm.widget.searchResult.products.map((item) => { return { productId: item.productId + '', name: item.name }; });
       $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
-      $rootScope.$broadcast('compareAll', payload);
+      $rootScope.$broadcast('compare.compareAll', payload);
       $rootScope.$broadcast('HideWidget');
       $rootScope.$broadcast('ShowCompareWidget');
     }
