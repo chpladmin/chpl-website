@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 11.48.0
+_23 January 2023_
+
+### Features
+* Track analytics related to ICS diagram
+* Display "Compare Widget" with new UI/UX
+* Convert "+Compare" button to React
+* Allow management of QMS Standards
+
+### User Interface Updates
+* Display ICS Relationship diagram inline on Listing Details page
+
+### Bug Fixes
+* Restore "page title" for Listing Details pages
+* Restore display of Surveillance data on Listing details page
+
+---
+
 ## Version 11.47.0
 _9 January 2023_
 
