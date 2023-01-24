@@ -20,7 +20,6 @@ import {
   ChplLink,
   InternalScrollButton,
 } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -72,7 +71,6 @@ const getOrgs = (query, key) => {
 };
 
 function ChplResourcesOverview() {
-  const DateUtil = getAngularService('DateUtil');
   const { data, isLoading, isSuccess } = useFetchAnnouncements({ getFuture: false });
   const acbQuery = useFetchAcbs();
   const atlQuery = useFetchAtls();
@@ -83,12 +81,8 @@ function ChplResourcesOverview() {
     if (isLoading || !isSuccess) {
       return;
     }
-    setAnnouncements(data.map((announcement) => ({
-      ...announcement,
-      startDisplay: DateUtil.getDisplayDateFormat(announcement.startDate),
-      endDisplay: DateUtil.getDisplayDateFormat(announcement.endDate),
-    })).sort((a, b) => a.startDate - b.startDate));
-  }, [data, isLoading, isSuccess, DateUtil]);
+    setAnnouncements(data.sort((a, b) => a.startDate - b.startDate));
+  }, [data, isLoading, isSuccess]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -177,13 +171,6 @@ function ChplResourcesOverview() {
                           {announcement.text}
                         </>
                       )}
-                     <br />
-                     Start date:
-                     {' '}
-                     {announcement.startDisplay}
-                     , End date:
-                     {' '}
-                     {announcement.endDisplay}
                    </li>
                  ))}
                </ul>
