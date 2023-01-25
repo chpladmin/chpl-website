@@ -16,9 +16,9 @@
       },
       templateUrl: 'chpl.components/cms-widget/cms-widget-button.html',
       link: function (scope, el, attrs, widgetController) {
-        scope.toggleProduct = function (id, number) {
-          scope.$emit('ShowWidget');
-          widgetController.toggleProduct(id, number);
+        scope.toggleProduct = function (id, name, number) {
+          widgetController.toggleProduct(id, name, number);
+          scope.$emit('ShowCmsWidget');
         };
         scope.isInList = function (id) {
           return widgetController.isInList(id);

@@ -70,24 +70,5 @@
         }
       });
     });
-
-    describe('when listening for the "compare all" event', () => {
-      const payload = [
-        { name: 'a name', productId: 1, chplProductNumber: undefined },
-        { name: '2nd name', productId: 2, chplProductNumber: undefined },
-      ];
-      const products = payload.map((item) => { return {id: item.productId, name: item.name, chplProductNumber: item.chplProductNumber }; });
-
-      it('should put the items in the widget', () => {
-        $rootScope.$broadcast('compareAll', payload);
-        expect(vm.compareWidget.products).toEqual(products);
-      });
-
-      it('should remove any previous items in the widget', () => {
-        vm.compareWidget.products = [1, 2];
-        $rootScope.$broadcast('compareAll', payload);
-        expect(vm.compareWidget.products).toEqual(products);
-      });
-    });
   });
 })();

@@ -17,7 +17,7 @@
     };
   }
   /** @ngInject */
-  function CompareWidgetController ($analytics, $localStorage, $log, $rootScope, $scope) {
+  function CompareWidgetController ($analytics, $localStorage, $rootScope, $scope) {
     var vm = this;
 
     vm.isInList = isInList;

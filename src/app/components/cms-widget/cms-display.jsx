@@ -105,6 +105,7 @@ function ChplCmsDisplay() {
     $rootScope.$broadcast('compare.compareAll', listings);
     $rootScope.$broadcast('HideCmsWidget');
     $rootScope.$broadcast('ShowCompareWidget');
+    $rootScope.$digest();
   };
 
   const copyToClipboard = () => {

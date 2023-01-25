@@ -11,7 +11,7 @@ function CompareWrapper(props) {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
-    setListings($localStorage?.compareWidget?.products);
+    setListings($localStorage?.compareWidget?.products ?? []);
   }, []);
 
   useEffect(() => {
