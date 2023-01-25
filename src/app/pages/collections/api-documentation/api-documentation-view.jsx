@@ -20,6 +20,7 @@ import {
   useFetchApiDocumentationData,
   useFetchCollection,
 } from 'api/collections';
+import ChplCmsButton from 'components/cms-widget/cms-button';
 import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
@@ -483,7 +484,9 @@ function ChplApiDocumentationCollectionView(props) {
                                   )}
                               </TableCell>
                               <TableCell>
-                                <ChplCompareButton listing={item} />
+                                <ChplCompareButton listing={item}>
+                                  <ChplCmsButton listing={item} />
+                                </ChplCompareButton>
                               </TableCell>
                             </TableRow>
                           ))}

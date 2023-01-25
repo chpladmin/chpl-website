@@ -14,6 +14,7 @@ import { shape, string } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchCollection } from 'api/collections';
+import ChplCmsButton from 'components/cms-widget/cms-button';
 import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
@@ -308,6 +309,7 @@ function ChplSedCollectionView(props) {
                                   >
                                     View
                                   </Button>
+                                  <ChplCmsButton listing={item} />
                                 </ChplCompareButton>
                               </TableCell>
                             </TableRow>

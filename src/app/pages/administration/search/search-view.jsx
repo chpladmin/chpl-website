@@ -301,8 +301,9 @@ function ChplSearchView(props) {
                               <TableCell>{ getDisplayDateFormat(item.certificationDate) }</TableCell>
                               <TableCell>{item.certificationStatus.name}</TableCell>
                               <TableCell>
-                                <ChplCmsButton listing={item} />
-                                <ChplCompareButton listing={item} />
+                                <ChplCmsButton listing={item}>
+                                  <ChplCompareButton listing={item} />
+                                </ChplCmsButton>
                               </TableCell>
                             </TableRow>
                           ))}

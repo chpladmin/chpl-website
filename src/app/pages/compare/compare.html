@@ -19,11 +19,7 @@
             <th scope="col"><span class="sr-only">Category</span></th>
             <th scope="col" ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">
               {{ listing.product.name }}<br />
-              <ai-cms-widget-button
-                product-id="{{ listing.id }}"
-                product-name="{{ listing.product.name }}"
-                chpl-product-number="{{ listing.chplProductNumber }}"
-                ng-if="$ctrl.canCertId(listing)"></ai-cms-widget-button>
+              <chpl-cms-button-wrapper-bridge listing="listing"></chpl-cms-button-wrapper-bridge>
             </th>
           </tr>
         </thead>
