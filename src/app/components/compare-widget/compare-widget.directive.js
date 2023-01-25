@@ -29,7 +29,7 @@
       getWidget();
       var compareAll = $scope.$on('compare.compareAll', (evt, payload) => { // compares all in the CMS ID generator widget
         clearProducts();
-        payload.forEach((item) => { vm.toggleProduct(item.productId, item.name, item.chplProductNumber, true); });
+        payload.forEach((item) => { vm.toggleProduct(item.id, item.name, item.chplProductNumber, true); });
       });
       $scope.$on('$destroy', compareAll);
       var removeAll = $scope.$on('compare.removeAll', (evt, payload) => {

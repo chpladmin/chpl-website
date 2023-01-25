@@ -102,7 +102,9 @@ function ChplCmsDisplay() {
 
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
-    console.log('do compare all');
+    $rootScope.$broadcast('compare.compareAll', listings);
+    $rootScope.$broadcast('HideCmsWidget');
+    $rootScope.$broadcast('ShowCompareWidget');
   };
 
   const copyToClipboard = () => {
