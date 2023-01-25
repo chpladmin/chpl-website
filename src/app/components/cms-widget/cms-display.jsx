@@ -5,6 +5,7 @@ import {
   CardContent,
   Chip,
   Divider,
+  IconButton,
   LinearProgress,
   List,
   ListItem,
@@ -15,7 +16,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { useFetchCmsIdAnalysis } from 'api/cms';
+import { useFetchCmsIdAnalysis, usePostCreateCmsId } from 'api/cms';
 import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
@@ -75,6 +76,8 @@ function ChplCmsDisplay() {
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CmsContext);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
+  const { mutate } = usePostCreateCmsId(listings);
+  const [certId, setCertId] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
   const classes = useStyles();
 
@@ -83,32 +86,108 @@ function ChplCmsDisplay() {
     setIdAnalysis(data);
   }, [data, isFetching, isSuccess]);
 
-  const actOnCertId = () => {
-    console.log('acting');
-  };
+  useEffect(() => {
+    setCertId(undefined);
+  }, [listings]);
 
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'CMS Widget' });
     console.log('do compare all');
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(certId);
+  };
+
+  const createCertId = () => {
+    $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
+    mutate({}, {
+      onSuccess: (response) => {
+        setCertId(response.data.ehrCertificationId);
+      },
+    });
+  };
+
   const removeAll = () => {
     $analytics.eventTrack('Remove all Listings', { category: 'CMS Widget' });
-    $rootScope.$broadcast('removeAll');
+    $rootScope.$broadcast('cms.removeAll');
   };
 
   if (!listings || listings.length === 0) {
     return (
-      <Typography>No products selected</Typography>
+      <>
+        <Typography>No products selected</Typography>
+        <Typography>
+          Note: the selected product
+          {listings?.length !== 1 ? 's' : ''}
+          {' '}
+          must meet 100% of the Base Criteria. For assistance, view the
+          {' '}
+          <ChplLink
+            href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+            text="CHPL Public User Guide"
+            analytics={{ event: 'Open CHPL Public User Guide', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          {' '}
+          or
+          {' '}
+          <ChplLink
+            href="http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition"
+            text="Base Criteria"
+            analytics={{ event: 'Open Base Criteria', category: 'CMS Widget' }}
+            external={false}
+            inline
+          />
+          .
+        </Typography>
+        <Divider />
+        <Typography>
+          To view which products were used to create a specific CMS ID, use the
+          {' '}
+          <ChplLink
+            href="#/resources/cms-lookup"
+            text="CMS ID Reverse Lookup"
+            analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
+            external={false}
+            router={{ sref: 'resources.cms-lookup' }}
+            inline
+          />
+          .
+        </Typography>
+      </>
     );
   }
 
   return (
     <CardContent className={classes.cardcontentPadding}>
+      { certId
+        && (
+          <>
+            <Typography>
+              Your CMS EHR Certification ID
+            </Typography>
+            <Typography>
+              { certId }
+            </Typography>
+            <IconButton
+              onClick={copyToClipboard}
+            >
+              <CheckIcon />
+            </IconButton>
+            <Typography>
+              * Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
+            </Typography>
+          </>
+        )}
       { idAnalysis.metPercentages?.criteriaMet < 100
         && (
           <Typography>
-            Note the selected product{listings?.length !== 1 ? 's' : ''} must meet 100% of the Base Criteria. For assistance, view the
+            Note: the selected product
+            {listings?.length !== 1 ? 's' : ''}
+            {' '}
+            must meet 100% of the Base Criteria. For assistance, view the
             {' '}
             <ChplLink
               href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
@@ -160,6 +239,7 @@ function ChplCmsDisplay() {
             </List>
           </>
         )}
+      <Divider />
       <div className={classes.chipContainer}>
         { listings.sort((a, b) => (a.name < b.name ? -1 : 1))
           .map((listing) => (
@@ -173,6 +253,7 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
+      <Divider />
       <Typography>
         To view which products were used to create a specific CMS ID, use the
         {' '}
@@ -193,7 +274,7 @@ function ChplCmsDisplay() {
           color="primary"
           variant="contained"
           id="act-on-cert-id"
-          onClick={actOnCertId}
+          onClick={createCertId}
           disabled={!idAnalysis.valid}
           endIcon={<CheckIcon />}
         >

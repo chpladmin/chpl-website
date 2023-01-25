@@ -30,6 +30,12 @@ const useFetchListings = ({ cmsIds }) => {
   );
 };
 
+const usePostCreateCmsId = (listings) => {
+  const axios = useAxios();
+  const ids = listings.map((l) => l.id).sort((a, b) => a - b).join(',');
+  return useMutation(async () => axios.post(`/certification_ids?ids=${ids}`, {}));
+};
+
 const usePostReportRequest = () => {
   const axios = useAxios();
   return useMutation(async () => axios.post('certification_ids/report-request', {}));
@@ -38,5 +44,6 @@ const usePostReportRequest = () => {
 export {
   useFetchCmsIdAnalysis,
   useFetchListings,
+  usePostCreateCmsId,
   usePostReportRequest,
 };
