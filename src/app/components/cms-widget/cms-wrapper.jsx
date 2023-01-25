@@ -52,6 +52,7 @@ function CmsWrapper(props) {
   const cmsState = {
     addListing,
     canDisplayButton,
+    cannotGenerate15EIsOn,
     isInWidget,
     listings,
     removeListing,

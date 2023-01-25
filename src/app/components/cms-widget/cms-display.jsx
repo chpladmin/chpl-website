@@ -16,7 +16,9 @@ import CheckIcon from '@material-ui/icons/Check';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { useFetchCmsIdAnalysis, usePostCreateCmsId } from 'api/cms';
+import createPdf from './cms-pdf';
+
+import { useFetchCmsIdAnalysis, useFetchCmsIdPdf, usePostCreateCmsId } from 'api/cms';
 import { ChplLink } from 'components/util';
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
@@ -74,17 +76,25 @@ const useStyles = makeStyles({
 function ChplCmsDisplay() {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
-  const { listings, removeListing } = useContext(CmsContext);
-  const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
-  const { mutate } = usePostCreateCmsId(listings);
+  const { cannotGenerate15EIsOn, listings, removeListing } = useContext(CmsContext);
   const [certId, setCertId] = useState(undefined);
   const [idAnalysis, setIdAnalysis] = useState({});
+  const [isDownloading, setIsDownloading] = useState(false);
+  const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
+  const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(certId, isDownloading);
+  const { mutate } = usePostCreateCmsId(listings);
   const classes = useStyles();
 
   useEffect(() => {
     if (isFetching || !isSuccess) { return; }
     setIdAnalysis(data);
   }, [data, isFetching, isSuccess]);
+
+  useEffect(() => {
+    if (pdfIsFetching || !pdfIsSuccess) { return; }
+    createPdf(pdfData, cannotGenerate15EIsOn);
+    setIsDownloading(false);
+  }, [pdfData, pdfIsFetching, pdfIsSuccess, cannotGenerate15EIsOn]);
 
   useEffect(() => {
     setCertId(undefined);
@@ -106,6 +116,11 @@ function ChplCmsDisplay() {
         setCertId(response.data.ehrCertificationId);
       },
     });
+  };
+
+  const downloadPdf = () => {
+    $analytics.eventTrack('Download EHR Certification ID PDF', { category: 'CMS Widget' });
+    setIsDownloading(true);
   };
 
   const removeAll = () => {
@@ -269,17 +284,33 @@ function ChplCmsDisplay() {
       </Typography>
       <Divider />
       <div className={classes.buttonContainer}>
-        <Button
-          fullWidth
-          color="primary"
-          variant="contained"
-          id="act-on-cert-id"
-          onClick={createCertId}
-          disabled={!idAnalysis.valid}
-          endIcon={<CheckIcon />}
-        >
-          Create Certification ID
-        </Button>
+        { !certId
+          && (
+            <Button
+              fullWidth
+              color="primary"
+              variant="contained"
+              id="create-cert-id"
+              onClick={createCertId}
+              disabled={!idAnalysis.valid}
+              endIcon={<CheckIcon />}
+            >
+              Create Certification ID
+            </Button>
+          )}
+        { certId
+          && (
+            <Button
+              fullWidth
+              color="primary"
+              variant="contained"
+              id="download-cert-id"
+              onClick={downloadPdf}
+              endIcon={<CheckIcon />}
+            >
+              Download PDF
+            </Button>
+          )}
         <Button
           fullWidth
           color="primary"

@@ -14,6 +14,16 @@ const useFetchCmsIdAnalysis = (listings) => {
   });
 };
 
+const useFetchCmsIdPdf = (certId, isDownloading) => {
+  const axios = useAxios();
+  return useQuery(['certification_ids', certId, 'includeCriteria'], async () => {
+    const response = await axios.get(`/certification_ids/${certId}?includeCriteria=true`);
+    return response.data;
+  }, {
+    enabled: !!certId && isDownloading,
+  });
+};
+
 const useFetchListings = ({ cmsIds }) => {
   const axios = useAxios();
   return useQueries(
@@ -43,6 +53,7 @@ const usePostReportRequest = () => {
 
 export {
   useFetchCmsIdAnalysis,
+  useFetchCmsIdPdf,
   useFetchListings,
   usePostCreateCmsId,
   usePostReportRequest,
