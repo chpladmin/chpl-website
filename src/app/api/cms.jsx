@@ -1,7 +1,18 @@
-import { useMutation, useQueries } from 'react-query';
+import { useMutation, useQuery, useQueries } from 'react-query';
 
 import { useAxios } from './axios';
 import options from './options';
+
+const useFetchCmsIdAnalysis = (listings) => {
+  const axios = useAxios();
+  const ids = listings.map((l) => l.id).sort((a, b) => a - b).join(',');
+  return useQuery(['certification_ids', ids], async () => {
+    const response = await axios.get(`/certification_ids/search?ids=${ids}`);
+    return response.data;
+  }, {
+    enabled: listings?.length > 0,
+  });
+};
 
 const useFetchListings = ({ cmsIds }) => {
   const axios = useAxios();
@@ -25,6 +36,7 @@ const usePostReportRequest = () => {
 };
 
 export {
+  useFetchCmsIdAnalysis,
   useFetchListings,
   usePostReportRequest,
 };

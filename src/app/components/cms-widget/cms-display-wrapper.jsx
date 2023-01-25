@@ -6,14 +6,20 @@ import {
 import ChplCmsDisplay from './cms-display';
 import CmsWrapper from './cms-wrapper';
 
+import ApiWrapper from 'api/api-wrapper';
+import FlagWrapper from 'api/flag-wrapper';
 import theme from 'themes/theme';
 
 function ChplCmsDisplayWrapper() {
   return (
     <ThemeProvider theme={theme}>
-      <CmsWrapper>
-        <ChplCmsDisplay />
-      </CmsWrapper>
+      <ApiWrapper showQueryTools={false}>
+        <FlagWrapper>
+          <CmsWrapper>
+            <ChplCmsDisplay />
+          </CmsWrapper>
+        </FlagWrapper>
+      </ApiWrapper>
     </ThemeProvider>
   );
 }
