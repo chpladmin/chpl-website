@@ -1,95 +1,102 @@
-const elements = {
-  cmsWidget: '#widget-toggle',
-  chplPublicUserGuide: '=CHPL Public User Guide',
-  cmsIdReverseLookup: '=CMS ID Reverse Lookup',
-  progressBar: '.progress-bar',
-  certId: '#get-ehr-cert-id',
-  removeProducts: '#cms-remove-all',
-  baseCriteria: '=Base Criteria',
-  compareProducts: '#cms-compare',
-  cmsCertificationId: 'strong.ng-binding',
-  compareWidgetDropdown: '#compare-widget-dropdown',
-  missingBaseCriteriaListOr: '.cms-widget__missing-or',
-  missingBaseCriteriaListAnd: '.cms-widget__missing-and',
-  downloadPDF: '#download-ehr-cert',
-  processingSpinner: '.fa.fa-spinner.fa-spin',
-  noProductsSelected: '//*[@id="widget-dropdown"]/ai-cms-widget-display/div/div[1]',
-};
-
 class CmsWidgetComponent {
-  constructor () { }
-
-  get cmsWidget () {
-    return $(elements.cmsWidget);
+  constructor() {
+    this.elements = {
+      cmsWidget: '#widget-toggle',
+      widgetContainer: '#widget-dropdown',
+      chplPublicUserGuide: '=CHPL Public User Guide',
+      cmsIdReverseLookup: '=CMS ID Reverse Lookup',
+      progressBar: '#progress-bar',
+      progressBarBar: '#progress-bar-bar',
+      progressBarText: '#progress-bar-text',
+      certId: '#create-cert-id',
+      removeProducts: '#remove-listings',
+      baseCriteria: '=Base Criteria',
+      compareProducts: '#compare-listings',
+      cmsCertificationId: 'strong.ng-binding',
+      compareWidgetDropdown: '#compare-widget-dropdown',
+      downloadPdf: '#download-cert-id',
+      processingSpinner: '#cms-id-processing',
+      missingBaseCriteriaListAnd: '#missing-and',
+      missingBaseCriteriaListOr: '#missing-or',
+      toggleCertIdButton: (listingId) => $(`#toggle-cms-${listingId}`),
+    };
   }
 
-  get compareProductsButton () {
-    return $(elements.compareProducts);
+  get cmsWidget() {
+    return $(this.elements.cmsWidget);
   }
 
-  get chplPublicUserGuideLink () {
-    return $(elements.chplPublicUserGuide);
+  get compareProductsButton() {
+    return $(this.elements.compareProducts);
   }
 
-  get cmsIdReverseLookupLink () {
-    return $(elements.cmsIdReverseLookup);
+  get chplPublicUserGuideLink() {
+    return $(this.elements.chplPublicUserGuide);
   }
 
-  get progressBar () {
-    return $(elements.progressBar);
+  get cmsIdReverseLookupLink() {
+    return $(this.elements.cmsIdReverseLookup);
   }
 
-  get getCertIdButton () {
-    return $(elements.certId);
+  get progressBar() {
+    return $(this.elements.progressBar);
   }
 
-  get removeProductsButton () {
-    return $(elements.removeProducts);
+  get progressBarValue() {
+    return $(this.elements.progressBarBar);
   }
 
-  get baseCriteriaLink () {
-    return $(elements.baseCriteria);
+  get progressBarText() {
+    return $(this.elements.progressBarText);
   }
 
-  get noProductsSelectedText () {
-    return $(elements.noProductsSelected);
+  get getCertIdButton() {
+    return $(this.elements.certId);
   }
 
-  get cmsCertificationIdText () {
-    return $(elements.cmsCertificationId);
+  get removeProductsButton() {
+    return $(this.elements.removeProducts);
   }
 
-  get compareWidgetDropdown () {
-    return $(elements.compareWidgetDropdown);
+  get baseCriteriaLink() {
+    return $(this.elements.baseCriteria);
   }
 
-  get missingBaseCriteriaListOr () {
-    return $(elements.missingBaseCriteriaListOr);
+  get widgetText() {
+    return $(this.elements.widgetContainer).$$('p');
   }
 
-  get missingBaseCriteriaListAnd () {
-    return $(elements.missingBaseCriteriaListAnd);
+  get cmsCertificationIdText() {
+    return $(this.elements.cmsCertificationId);
   }
 
-  get downloadPdfButton () {
-    return $(elements.downloadPDF);
+  get compareWidgetDropdown() {
+    return $(this.elements.compareWidgetDropdown);
   }
 
-  waitForProcessingSpinnerToDisappear () {
-    browser.waitUntil( () => !$(elements.processingSpinner).isDisplayed());
+  get missingBaseCriteriaListAnd() {
+    return $(this.elements.missingBaseCriteriaListAnd);
   }
 
-  certIdButton (listingId) {
-    return $('#toggle-cms-' + listingId);
+  get missingBaseCriteriaListOr() {
+    return $(this.elements.missingBaseCriteriaListOr);
   }
 
-  addListingToCms (listingId) {
-    this.certIdButton(listingId).scrollIntoView({block: 'center', inline: 'center'});
+  get downloadPdfButton() {
+    return $(this.elements.downloadPdf);
+  }
+
+  waitForProcessingSpinnerToDisappear() {
+    browser.waitUntil(() => !$(this.elements.processingSpinner).isDisplayed());
+  }
+
+  certIdButton(listingId) {
+    return this.elements.toggleCertIdButton(listingId);
+  }
+
+  addListingToCms(listingId) {
+    this.certIdButton(listingId).scrollIntoView({ block: 'center', inline: 'center' });
     this.certIdButton(listingId).click();
-  }
-
-  addToCms (listingId){
-    return $(`#toggle-cms-${listingId}`);
   }
 }
 

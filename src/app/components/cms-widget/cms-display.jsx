@@ -4,6 +4,7 @@ import {
   Box,
   CardContent,
   Chip,
+  CircularProgress,
   Divider,
   IconButton,
   LinearProgress,
@@ -28,24 +29,26 @@ import { CmsContext } from 'shared/contexts';
 const ProgressBar = (props) => {
   const { value } = props;
   return (
-    <Box pt={2} gridGap={8} pb={2} display="flex" alignItems="center">
-      <Box width="58%">
+    <Box
+      display="flex"
+      alignItems="center"
+      id="progress-bar"
+    >
+      <Box width="100%" mr={1}>
         <LinearProgress
+          id="progress-bar-bar"
           variant="determinate"
           {...props}
         />
       </Box>
-      <Box>
-        <Typography variant="body2" color="textPrimary">
-          <strong>
-            {' '}
-            { value }
-            %
-
-            {' '}
-            Base Criteria Met
-            {' '}
-          </strong>
+      <Box minWidth={70}>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          id="progress-bar-text"
+        >
+          { value }
+          % Base Criteria Met
         </Typography>
       </Box>
     </Box>
@@ -131,6 +134,7 @@ function ChplCmsDisplay() {
   };
 
   const copyToClipboard = () => {
+    $analytics.eventTrack('Copy EHR Certification ID to Clipboard', { category: 'CMS Widget' });
     navigator.clipboard.writeText(certId);
   };
 
@@ -261,31 +265,25 @@ function ChplCmsDisplay() {
       { idAnalysis.missingAnd?.length > 0
         && (
           <>
-            <Divider />
-            <Box mt={2}>
-              <Typography variant="body2">Please select a product or products that contain the following criteria:</Typography>
-              <Typography variant="body2">
-                { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}>{ criterion }</ListItem>)}
-              </Typography>
-            </Box>
+            <Typography>Please select a product or products that contain the following criteria:</Typography>
+            <List id="missing-and">
+              { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}>{ criterion }</ListItem>)}
+            </List>
           </>
         )}
       { idAnalysis.missingOr?.length > 0
         && (
           <>
-            <Divider />
-            <Box>
-              <Typography variant="body2">
-                { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
-                { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
-                {' '}
-                with at least 1 criteria from the following group
-                { idAnalysis.missingOr.length > 1 && 's' }
-              </Typography>
-              <Typography variant="body2">
-                { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}>{ criteria.join(', ') }</ListItem>)}
-              </Typography>
-            </Box>
+            <Typography>
+              { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
+              { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
+              {' '}
+              with at least 1 criteria from the following group
+              { idAnalysis.missingOr.length > 1 && 's' }
+            </Typography>
+            <List id="missing-or">
+              { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}>{ criteria.join(', ') }</ListItem>)}
+            </List>
           </>
         )}
       <Divider />
@@ -302,6 +300,7 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
+      { isFetching && <CircularProgress id="cms-id-processing" size={20} /> }
       <Divider />
       <Typography variant="body2">
         To view which products were used to create a specific CMS ID, use the

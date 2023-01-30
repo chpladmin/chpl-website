@@ -98,11 +98,7 @@
       if (number && !doNotTrack) {
         $analytics.eventTrack('Remove Listing', { category: 'Compare Widget', label: number });
       }
-      for (var i = 0; i < vm.compareWidget.products.length; i++) {
-        if (vm.compareWidget.products[i].id === id || parseInt(vm.compareWidget.products[i].id, 10) === parseInt(id, 10)) {
-          vm.compareWidget.products.splice(i,1);
-        }
-      }
+      vm.compareWidget.products = vm.compareWidget.products.filter((p) => p.id !== id);
       $rootScope.$broadcast('compare.removedListing', {id});
     }
 
