@@ -119,6 +119,7 @@ function ChplCmsDisplay() {
   };
 
   const copyToClipboard = () => {
+    $analytics.eventTrack('Copy EHR Certification ID to Clipboard', { category: 'CMS Widget' });
     navigator.clipboard.writeText(certId);
   };
 
