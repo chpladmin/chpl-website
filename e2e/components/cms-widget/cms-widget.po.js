@@ -1,19 +1,21 @@
 const elements = {
   cmsWidget: '#widget-toggle',
+  widgetContainer: '#widget-dropdown',
   chplPublicUserGuide: '=CHPL Public User Guide',
   cmsIdReverseLookup: '=CMS ID Reverse Lookup',
-  progressBar: '.progress-bar',
-  certId: '#get-ehr-cert-id',
-  removeProducts: '#cms-remove-all',
+  progressBar: '#progress-bar',
+  progressBarBar: '#progress-bar-bar',
+  progressBarText: '#progress-bar-text',
+  certId: '#create-cert-id',
+  removeProducts: '#remove-listings',
   baseCriteria: '=Base Criteria',
-  compareProducts: '#cms-compare',
+  compareProducts: '#compare-listings',
   cmsCertificationId: 'strong.ng-binding',
   compareWidgetDropdown: '#compare-widget-dropdown',
-  missingBaseCriteriaListOr: '.cms-widget__missing-or',
-  missingBaseCriteriaListAnd: '.cms-widget__missing-and',
-  downloadPDF: '#download-ehr-cert',
-  processingSpinner: '.fa.fa-spinner.fa-spin',
-  noProductsSelected: '//*[@id="widget-dropdown"]/ai-cms-widget-display/div/div[1]',
+  downloadPdf: '#download-cert-id',
+  processingSpinner: '#cms-id-processing',
+  missingBaseCriteriaListAnd: '#missing-and',
+  missingBaseCriteriaListOr: '#missing-or',
 };
 
 class CmsWidgetComponent {
@@ -39,6 +41,14 @@ class CmsWidgetComponent {
     return $(elements.progressBar);
   }
 
+  get progressBarValue () {
+    return $(elements.progressBarBar);
+  }
+
+  get progressBarText () {
+    return $(elements.progressBarText);
+  }
+
   get getCertIdButton () {
     return $(elements.certId);
   }
@@ -51,8 +61,8 @@ class CmsWidgetComponent {
     return $(elements.baseCriteria);
   }
 
-  get noProductsSelectedText () {
-    return $(elements.noProductsSelected);
+  get widgetText () {
+    return $(elements.widgetContainer).$$('p');
   }
 
   get cmsCertificationIdText () {
@@ -63,16 +73,16 @@ class CmsWidgetComponent {
     return $(elements.compareWidgetDropdown);
   }
 
-  get missingBaseCriteriaListOr () {
-    return $(elements.missingBaseCriteriaListOr);
-  }
-
   get missingBaseCriteriaListAnd () {
     return $(elements.missingBaseCriteriaListAnd);
   }
 
+  get missingBaseCriteriaListOr () {
+    return $(elements.missingBaseCriteriaListOr);
+  }
+
   get downloadPdfButton () {
-    return $(elements.downloadPDF);
+    return $(elements.downloadPdf);
   }
 
   waitForProcessingSpinnerToDisappear () {

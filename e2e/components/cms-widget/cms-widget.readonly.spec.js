@@ -35,7 +35,11 @@ describe('on cms widget', () => {
     });
 
     it('should say No Products Selected text', () => {
-      expect(cms.noProductsSelectedText.getText()).toBe('No products selected.');
+      expect(cms.widgetText.map((p) => p.getText())).toEqual([
+        'No products selected.',
+        'Note: the selected products must meet 100% of the Base Criteria. For assistance, view the CHPL Public User Guide or Base Criteria.',
+        'To view which products were used to create a specific CMS ID, use the CMS ID Reverse Lookup.',
+      ]);
     });
 
     it('should have correct link to CHPL public guide', () => {
@@ -47,16 +51,16 @@ describe('on cms widget', () => {
     });
 
     it('should not have progress bar', () => {
-      expect(cms.progressBar.isDisplayed()).toBeFalse;
+      expect(cms.progressBar.isDisplayed()).toBeFalse();
     });
 
-    it('should not have base criteria link', () => {
-      expect(cms.baseCriteriaLink.isDisplayed()).toBeFalse;
+    it('should have base criteria link', () => {
+      expect(cms.baseCriteriaLink.isDisplayed()).toBeTrue();
     });
 
     it('should not have missing base criteria list', () => {
-      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeFalse;
-      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeFalse;
+      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeFalse();
+      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeFalse();
     });
 
   });
@@ -70,14 +74,14 @@ describe('on cms widget', () => {
       cms.waitForProcessingSpinnerToDisappear();
     });
 
-    it('should have progress bar of blue color and say 80 % of the base criteria met', () => {
-      expect(cms.progressBar.getText()).toBe('80% Base Criteria Met');
-      expect(cms.progressBar.getCSSProperty('background-color')['parsed']['hex']).toBe('#156dac');
+    it('should have progress bar with correct text and value', () => {
+      expect(cms.progressBarText.getText()).toBe('80% Base Criteria Met');
+      expect(cms.progressBarValue.getAttribute('aria-valuenow')).toBe('80');
     });
 
     it('should have missing base criteria list', () => {
-      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeTrue;
-      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeTrue;
+      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeTrue();
+      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeTrue();
     });
 
     it('should have correct link to CHPL public guide', () => {
@@ -85,32 +89,33 @@ describe('on cms widget', () => {
     });
 
     it('should have get cert Id button and disabled', () => {
-      expect(cms.getCertIdButton.isDisplayed()).toBeTrue;
-      expect(cms.getCertIdButton.isClickable()).toBeFalse;
+      expect(cms.getCertIdButton.isDisplayed()).toBeTrue();
+      expect(cms.getCertIdButton.isClickable()).toBeFalse();
     });
 
     it('should have correct base criteria link', () => {
-      expect(cms.baseCriteriaLink.isDisplayed()).toBeTrue;
+      expect(cms.baseCriteriaLink.isDisplayed()).toBeTrue();
       expect(cms.baseCriteriaLink.getAttribute('href')).toBe(baseCriteria);
     });
 
     it('should have correct CMS ID reverse look up link', () => {
-      expect(cms.cmsIdReverseLookupLink.isDisplayed()).toBeTrue;
+      expect(cms.cmsIdReverseLookupLink.isDisplayed()).toBeTrue();
       expect(cms.cmsIdReverseLookupLink.getAttribute('href')).toBe(cmsReverseLookup);
     });
 
-    it('should not have compare products button', () => {
-      expect(cms.compareProductsButton.isDisplayed()).toBeFalse;
+    it('should have a disabled compare products button', () => {
+      expect(cms.compareProductsButton.isDisplayed()).toBeTrue();
+      expect(cms.compareProductsButton.isEnabled()).toBeFalse();
     });
 
     it('should have remove all products button and enabled', () => {
-      expect(cms.removeProductsButton.isDisplayed()).toBeTrue;
-      expect(cms.removeProductsButton.isClickable()).toBeTrue;
+      expect(cms.removeProductsButton.isDisplayed()).toBeTrue();
+      expect(cms.removeProductsButton.isClickable()).toBeTrue();
     });
 
     it('remove products button should remove products from widget', () => {
       cms.removeProductsButton.click();
-      expect(cms.removeProductsButton.isDisplayed()).toBeFalse;
+      expect(cms.removeProductsButton.isDisplayed()).toBeFalse();
     });
   });
 
@@ -126,45 +131,44 @@ describe('on cms widget', () => {
       cms.waitForProcessingSpinnerToDisappear();
     });
 
-    it('should have progress bar of green color and say 100% of the base criteria met', () => {
-      expect(cms.progressBar.getText()).toBe('100% Base Criteria Met');
-      expect(cms.progressBar.getCSSProperty('background-color')['parsed']['hex']).toBe('#356635');
+    it('should have progress bar with the right text and value', () => {
+      expect(cms.progressBarText.getText()).toBe('100% Base Criteria Met');
+      expect(cms.progressBarValue.getAttribute('aria-valuenow')).toBe('100');
     });
 
     it('should not have missing base criteria list', () => {
-      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeFalse;
-      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeFalse;
+      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeFalse();
+      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeFalse();
     });
 
     it('should have correct CMS ID reverse look up link', () => {
-      expect(cms.cmsIdReverseLookupLink.isDisplayed()).toBeTrue;
+      expect(cms.cmsIdReverseLookupLink.isDisplayed()).toBeTrue();
       expect(cms.cmsIdReverseLookupLink.getAttribute('href')).toBe(cmsReverseLookup);
     });
 
-    it('should have correct base criteria link', () => {
-      expect(cms.baseCriteriaLink.isDisplayed()).toBeTrue;
-      expect(cms.baseCriteriaLink.getAttribute('href')).toBe(baseCriteria);
+    it('should not have a base criteria link', () => {
+      expect(cms.baseCriteriaLink.isDisplayed()).toBeFalse();
     });
 
     it('should not have link to CHPL public guide', () => {
-      expect(cms.chplPublicUserGuideLink.isDisplayed()).toBeFalse;
+      expect(cms.chplPublicUserGuideLink.isDisplayed()).toBeFalse();
     });
 
     it('should have remove all products button and enabled', () => {
-      expect(cms.removeProductsButton.isDisplayed()).toBeTrue;
-      expect(cms.removeProductsButton.isClickable()).toBeTrue;
+      expect(cms.removeProductsButton.isDisplayed()).toBeTrue();
+      expect(cms.removeProductsButton.isClickable()).toBeTrue();
     });
 
     it('should have get cert Id button and enabled', () => {
-      expect(cms.getCertIdButton.isDisplayed()).toBeTrue;
-      expect(cms.getCertIdButton.isClickable()).toBeTrue;
+      expect(cms.getCertIdButton.isDisplayed()).toBeTrue();
+      expect(cms.getCertIdButton.isClickable()).toBeTrue();
     });
 
     it('get cert ID button generates CMS ID for the listings added', () => {
       cms.getCertIdButton.click();
       hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
-      expect(cms.cmsCertificationIdText.isDisplayed()).toBeTrue;
+      expect(cms.cmsCertificationIdText.isDisplayed()).toBeTrue();
       cmsId = cms.cmsCertificationIdText.getText();
     });
 
@@ -173,16 +177,16 @@ describe('on cms widget', () => {
       const fileName = cmsId + '.pdf';
       const filePath = path.join(global.downloadDir, fileName);
       browser.waitForFileExists(filePath,config.timeout);
-      expect(fs.existsSync(filePath)).toBeTrue;
+      expect(fs.existsSync(filePath)).toBeTrue();
     });
 
     it('should have compare products button', () => {
-      expect(cms.compareProductsButton.isDisplayed()).toBeTrue;
+      expect(cms.compareProductsButton.isDisplayed()).toBeTrue();
     });
 
     it('compare products button should open compare widget', () => {
       cms.compareProductsButton.click();
-      expect(cms.compareWidgetDropdown.isDisplayed()).toBeTrue;
+      expect(cms.compareWidgetDropdown.isDisplayed()).toBeTrue();
     });
   });
 });
