@@ -40,7 +40,7 @@ describe('the Download page', () => {
   });
 
   it('should have correct information about SVAP', () => {
-    const expectedText = 'Standards Version Advancement Process (SVAP) Summary: Entire collection of all SVAP values that have been associated with a criterion for a certified product. Available as a CSV file; updated nightly.';
+    const expectedText = 'Standards Version Advancement Process (SVAP) Summary: Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.';
     expect(page.content.getText()).toContain(expectedText);
   });
 
