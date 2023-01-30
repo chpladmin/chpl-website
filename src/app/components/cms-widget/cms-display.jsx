@@ -7,8 +7,9 @@ import {
   CircularProgress,
   Divider,
   IconButton,
-  LinearProgress,
+  List,
   ListItem,
+  LinearProgress,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -30,25 +31,34 @@ const ProgressBar = (props) => {
   const { value } = props;
   return (
     <Box
+      pt={2}
+      gridGap={8}
+      pb={2}
       display="flex"
       alignItems="center"
+      justifyContent="space-between"
       id="progress-bar"
     >
-      <Box width="100%" mr={1}>
+      <Box width="56%">
         <LinearProgress
           id="progress-bar-bar"
           variant="determinate"
           {...props}
         />
       </Box>
-      <Box minWidth={70}>
+      <Box>
         <Typography
           variant="body2"
-          color="textSecondary"
+          color="textPrimary"
           id="progress-bar-text"
         >
-          { value }
-          % Base Criteria Met
+          <strong>
+            { value }
+            {' '}
+            %
+            {' '}
+          </strong>
+          Base Criteria Met
         </Typography>
       </Box>
     </Box>
@@ -265,16 +275,18 @@ function ChplCmsDisplay() {
       { idAnalysis.missingAnd?.length > 0
         && (
           <>
-            <Typography>Please select a product or products that contain the following criteria:</Typography>
+            <Divider />
+            <Typography variant="body2">Please select a product or products that contain the following criteria:</Typography>
             <List id="missing-and">
-              { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}>{ criterion }</ListItem>)}
+              { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
             </List>
           </>
         )}
       { idAnalysis.missingOr?.length > 0
         && (
           <>
-            <Typography>
+            <Divider />
+            <Typography variant="body2">
               { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
               { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
               {' '}
@@ -282,7 +294,7 @@ function ChplCmsDisplay() {
               { idAnalysis.missingOr.length > 1 && 's' }
             </Typography>
             <List id="missing-or">
-              { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}>{ criteria.join(', ') }</ListItem>)}
+              { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}><Typography variant="body2">{ criteria.join(', ') }</Typography></ListItem>)}
             </List>
           </>
         )}
