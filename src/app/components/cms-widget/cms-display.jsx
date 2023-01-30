@@ -28,15 +28,24 @@ import { CmsContext } from 'shared/contexts';
 const ProgressBar = (props) => {
   const { value } = props;
   return (
-    <Box display="flex" alignItems="center">
+    <Box
+      display="flex"
+      alignItems="center"
+      id="progress-bar"
+    >
       <Box width="100%" mr={1}>
         <LinearProgress
+          id="progress-bar-bar"
           variant="determinate"
           {...props}
         />
       </Box>
       <Box minWidth={70}>
-        <Typography variant="body2" color="textSecondary">
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          id="progress-bar-text"
+        >
           { value }
           % Base Criteria Met
         </Typography>
@@ -238,7 +247,7 @@ function ChplCmsDisplay() {
         && (
           <>
             <Typography>Please select a product or products that contain the following criteria:</Typography>
-            <List>
+            <List id="missing-and">
               { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}>{ criterion }</ListItem>)}
             </List>
           </>
@@ -253,7 +262,7 @@ function ChplCmsDisplay() {
               with at least 1 criteria from the following group
               { idAnalysis.missingOr.length > 1 && 's' }
             </Typography>
-            <List>
+            <List id="missing-or">
               { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}>{ criteria.join(', ') }</ListItem>)}
             </List>
           </>
