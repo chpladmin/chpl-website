@@ -76,7 +76,7 @@ describe('when on 2015 listing page', () => {
 
   describe('when clicking on cms id button', () => {
     beforeEach(async () => {
-      cmsComponent.addToCms('9833').click();
+      cmsComponent.certIdButton('9833').click();
       hooks.waitForSpinnerToDisappear();
       cmsComponent.waitForProcessingSpinnerToDisappear();
     });
@@ -140,7 +140,7 @@ describe('when on 2014 listing page - ', () => {
   });
 
   it('should not have cms widget button', () => {
-    expect(cmsComponent.addToCms('8490').isDisplayed()).toBe(false);
+    expect(cmsComponent.certIdButton('8490').isDisplayed()).toBe(false);
   });
 
   describe('when clicking on compare button', () => {
