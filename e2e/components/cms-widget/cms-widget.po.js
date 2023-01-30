@@ -12,7 +12,7 @@ class CmsWidgetComponent {
       removeProducts: '#remove-listings',
       baseCriteria: '=Base Criteria',
       compareProducts: '#compare-listings',
-      cmsCertificationId: 'strong.ng-binding',
+      cmsCertificationId: '#ehr-cert-id',
       compareWidgetDropdown: '#compare-widget-dropdown',
       downloadPdf: '#download-cert-id',
       processingSpinner: '#cms-id-processing',

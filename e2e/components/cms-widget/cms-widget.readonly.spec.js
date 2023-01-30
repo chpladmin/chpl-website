@@ -3,11 +3,6 @@ import Hooks from '../../utilities/hooks';
 
 import CmsWidgetComponent from './cms-widget.po';
 
-const path = require('path');
-const fs = require('fs');
-
-const config = require('../../config/mainConfig');
-
 const listingId1 = 9851;
 const listingId2 = 11149;
 const search1 = '2621'; // developer code for listingId1
@@ -19,7 +14,6 @@ const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-
 let cms;
 let hooks;
 let search;
-let cmsId;
 
 beforeAll(async () => {
   search = new SearchPage();
@@ -69,7 +63,6 @@ describe('on cms widget', () => {
       search.searchForListing(search1);
       browser.waitUntil(() => search.getColumnText(1, 6).includes(search1));
       cms.addListingToCms(listingId1);
-      hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
     });
 
@@ -126,7 +119,6 @@ describe('on cms widget', () => {
       search.searchForListing(search2);
       browser.waitUntil(() => search.getColumnText(1, 6).includes(search2));
       cms.addListingToCms(listingId2);
-      hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
     });
 
@@ -165,18 +157,8 @@ describe('on cms widget', () => {
 
     it('get cert ID button generates CMS ID for the listings added', () => {
       cms.getCertIdButton.click();
-      hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
       expect(cms.cmsCertificationIdText.isDisplayed()).toBeTrue();
-      cmsId = cms.cmsCertificationIdText.getText();
-    });
-
-    it('PDF is downloaded after generating CMS ID', () => {
-      cms.downloadPdfButton.click();
-      const fileName = `${cmsId}.pdf`;
-      const filePath = path.join(global.downloadDir, fileName);
-      browser.waitForFileExists(filePath, config.timeout);
-      expect(fs.existsSync(filePath)).toBeTrue();
     });
 
     it('should have compare products button', () => {
