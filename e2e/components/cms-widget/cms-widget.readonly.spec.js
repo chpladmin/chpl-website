@@ -10,8 +10,8 @@ const config = require('../../config/mainConfig');
 
 const listingId1 = 9851;
 const listingId2 = 11149;
-const search1 = '2621';//using developer code to search listing
-const search2 = '2155';//using developer code to search listing
+const search1 = '2621'; // developer code for listingId1
+const search2 = '2155'; // developer code for listingId2
 const chplPublicGuide = 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf';
 const cmsReverseLookup = '#/resources/cms-lookup';
 const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition';
@@ -62,13 +62,12 @@ describe('on cms widget', () => {
       expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeFalse();
       expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeFalse();
     });
-
   });
 
   describe('if a listing added meet 80% of base criteria (View with partial products selected) - ', () => {
     beforeAll(() => {
       search.searchForListing(search1);
-      browser.waitUntil(() => search.getColumnText(1,6).includes(search1));
+      browser.waitUntil(() => search.getColumnText(1, 6).includes(search1));
       cms.addListingToCms(listingId1);
       hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
@@ -122,10 +121,10 @@ describe('on cms widget', () => {
   describe('if there are listings added which meets 100% of base criteria(View with 100% products) - ', () => {
     beforeAll(() => {
       search.searchForListing(search1);
-      browser.waitUntil(() => search.getColumnText(1,6).includes(search1));
+      browser.waitUntil(() => search.getColumnText(1, 6).includes(search1));
       cms.addListingToCms(listingId1);
       search.searchForListing(search2);
-      browser.waitUntil(() => search.getColumnText(1,6).includes(search2));
+      browser.waitUntil(() => search.getColumnText(1, 6).includes(search2));
       cms.addListingToCms(listingId2);
       hooks.waitForSpinnerToDisappear();
       cms.waitForProcessingSpinnerToDisappear();
@@ -174,9 +173,9 @@ describe('on cms widget', () => {
 
     it('PDF is downloaded after generating CMS ID', () => {
       cms.downloadPdfButton.click();
-      const fileName = cmsId + '.pdf';
+      const fileName = `${cmsId}.pdf`;
       const filePath = path.join(global.downloadDir, fileName);
-      browser.waitForFileExists(filePath,config.timeout);
+      browser.waitForFileExists(filePath, config.timeout);
       expect(fs.existsSync(filePath)).toBeTrue();
     });
 
