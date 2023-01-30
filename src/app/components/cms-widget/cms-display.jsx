@@ -13,9 +13,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 
 import createPdf from './cms-pdf';
 
@@ -29,25 +31,33 @@ const ProgressBar = (props) => {
   const { value } = props;
   return (
     <Box
+      pt={2}
+      gridGap={8}
+      pb={2}
       display="flex"
       alignItems="center"
+      justifyContent="space-between"
       id="progress-bar"
     >
-      <Box width="100%" mr={1}>
+      <Box width="56%">
         <LinearProgress
           id="progress-bar-bar"
           variant="determinate"
           {...props}
         />
       </Box>
-      <Box minWidth={70}>
+      <Box>
         <Typography
           variant="body2"
-          color="textSecondary"
+          color="textPrimary"
           id="progress-bar-text"
         >
-          { value }
-          % Base Criteria Met
+          <strong>
+            { value }
+            %
+          </strong>
+          {' '}
+          Base Criteria Met
         </Typography>
       </Box>
     </Box>
@@ -61,6 +71,12 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  secondaryButtonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: '8px',
+  },
   cardcontentPadding: {
     padding: '8px',
   },
@@ -68,6 +84,8 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
+    gap: '4px',
+    marginTop: '16px',
   },
   deleteButton: {
     backgroundColor: '#c44f65',
@@ -80,6 +98,12 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     marginBottom: '8px',
     display: 'flex',
+  },
+  certCopyContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
@@ -145,7 +169,7 @@ function ChplCmsDisplay() {
   if (!listings || listings.length === 0) {
     return (
       <>
-        <Typography>No products selected</Typography>
+        <Typography gutterBottom><strong>No products selected.</strong></Typography>
         <Typography>
           Note: the selected product
           {listings?.length !== 1 ? 's' : ''}
@@ -172,7 +196,7 @@ function ChplCmsDisplay() {
           .
         </Typography>
         <Divider />
-        <Typography>
+        <Typography variant="body2">
           To view which products were used to create a specific CMS ID, use the
           {' '}
           <ChplLink
@@ -195,17 +219,20 @@ function ChplCmsDisplay() {
         && (
           <>
             <Typography>
-              Your CMS EHR Certification ID
+              <strong> Your CMS EHR Certification ID</strong>
             </Typography>
-            <Typography>
-              { certId }
-            </Typography>
-            <IconButton
-              onClick={copyToClipboard}
-            >
-              <CheckIcon />
-            </IconButton>
-            <Typography>
+            <div className={classes.certCopyContainer}>
+              <Typography color="primary">
+                { certId }
+              </Typography>
+              <IconButton
+                onClick={copyToClipboard}
+                color="primary"
+              >
+                <FileCopyOutlinedIcon />
+              </IconButton>
+            </div>
+            <Typography variant="body2">
               * Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
             </Typography>
           </>
@@ -247,16 +274,18 @@ function ChplCmsDisplay() {
       { idAnalysis.missingAnd?.length > 0
         && (
           <>
-            <Typography>Please select a product or products that contain the following criteria:</Typography>
+            <Divider />
+            <Typography variant="body2">Please select a product or products that contain the following criteria:</Typography>
             <List id="missing-and">
-              { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}>{ criterion }</ListItem>)}
+              { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
             </List>
           </>
         )}
       { idAnalysis.missingOr?.length > 0
         && (
           <>
-            <Typography>
+            <Divider />
+            <Typography variant="body2">
               { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
               { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
               {' '}
@@ -264,7 +293,7 @@ function ChplCmsDisplay() {
               { idAnalysis.missingOr.length > 1 && 's' }
             </Typography>
             <List id="missing-or">
-              { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}>{ criteria.join(', ') }</ListItem>)}
+              { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}><Typography variant="body2">{ criteria.join(', ') }</Typography></ListItem>)}
             </List>
           </>
         )}
@@ -284,7 +313,7 @@ function ChplCmsDisplay() {
       </div>
       { isFetching && <CircularProgress id="cms-id-processing" size={20} /> }
       <Divider />
-      <Typography>
+      <Typography variant="body2">
         To view which products were used to create a specific CMS ID, use the
         {' '}
         <ChplLink
@@ -297,7 +326,6 @@ function ChplCmsDisplay() {
         />
         .
       </Typography>
-      <Divider />
       <div className={classes.buttonContainer}>
         { !certId
           && (
@@ -308,7 +336,7 @@ function ChplCmsDisplay() {
               id="create-cert-id"
               onClick={createCertId}
               disabled={!idAnalysis.valid}
-              endIcon={<CheckIcon />}
+              endIcon={<ArrowForwardIcon />}
             >
               Create Certification ID
             </Button>
@@ -321,32 +349,34 @@ function ChplCmsDisplay() {
               variant="contained"
               id="download-cert-id"
               onClick={downloadPdf}
-              endIcon={<CheckIcon />}
+              endIcon={<ArrowDownwardIcon />}
             >
               Download PDF
             </Button>
           )}
-        <Button
-          fullWidth
-          color="primary"
-          variant="outlined"
-          id="compare-listings"
-          onClick={compareAll}
-          disabled={listings.length === 1}
-          endIcon={<CompareArrowsIcon />}
-        >
-          Compare Products
-        </Button>
-        <Button
-          className={classes.deleteButton}
-          fullWidth
-          variant="contained"
-          id="remove-listings"
-          onClick={removeAll}
-          endIcon={<DeleteIcon />}
-        >
-          Remove All
-        </Button>
+        <div className={classes.secondaryButtonContainer}>
+          <Button
+            fullWidth
+            color="primary"
+            variant="outlined"
+            id="compare-listings"
+            onClick={compareAll}
+            disabled={listings.length === 1}
+            endIcon={<CompareArrowsIcon />}
+          >
+            Compare All
+          </Button>
+          <Button
+            fullWidth
+            className={classes.deleteButton}
+            variant="contained"
+            id="remove-listings"
+            onClick={removeAll}
+            endIcon={<DeleteIcon />}
+          >
+            Remove All
+          </Button>
+        </div>
       </div>
     </CardContent>
   );
