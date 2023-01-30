@@ -41,9 +41,11 @@ const ProgressBar = (props) => {
             {' '}
             { value }
             %
-         
-          {' '}
-          Base Criteria Met </strong>
+
+            {' '}
+            Base Criteria Met
+            {' '}
+          </strong>
         </Typography>
       </Box>
     </Box>
@@ -302,18 +304,18 @@ function ChplCmsDisplay() {
       </div>
       <Divider />
       <Typography variant="body2">
-          To view which products were used to create a specific CMS ID, use the
-          {' '}
-          <ChplLink
-            href="#/resources/cms-lookup"
-            text="CMS ID Reverse Lookup"
-            analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
-            external={false}
-            router={{ sref: 'resources.cms-lookup' }}
-            inline
-          />
-          .
-        </Typography>
+        To view which products were used to create a specific CMS ID, use the
+        {' '}
+        <ChplLink
+          href="#/resources/cms-lookup"
+          text="CMS ID Reverse Lookup"
+          analytics={{ event: 'Go to CMS ID Reverse Lookup page', category: 'CMS Widget' }}
+          external={false}
+          router={{ sref: 'resources.cms-lookup' }}
+          inline
+        />
+        .
+      </Typography>
       <div className={classes.buttonContainer}>
         { !certId
           && (
