@@ -4,6 +4,7 @@ import {
   Box,
   CardContent,
   Chip,
+  CircularProgress,
   Divider,
   IconButton,
   LinearProgress,
@@ -271,6 +272,7 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
+      { isFetching && <CircularProgress id="cms-id-processing" size={20} /> }
       <Divider />
       <Typography>
         To view which products were used to create a specific CMS ID, use the
