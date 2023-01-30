@@ -90,11 +90,7 @@
 
     function removeProduct (id, number) {
       $analytics.eventTrack('Remove Listing', { category: 'CMS Widget', label: number });
-      for (var i = 0; i < vm.cmsWidget.products.length; i++) {
-        if (vm.cmsWidget.products[i] === id || parseInt(vm.cmsWidget.products[i], 10) === parseInt(id, 10)) {
-          vm.cmsWidget.products.splice(i,1);
-        }
-      }
+      vm.cmsWidget.products = vm.cmsWidget.products.filter((p) => p.id !== id);
       $rootScope.$broadcast('cms.removedListing', {id});
     }
 
