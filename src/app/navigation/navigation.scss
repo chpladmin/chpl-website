@@ -193,12 +193,12 @@
         }
 
         &#compare-widget-dropdown {
-            max-height: 450px;
+            max-height: 64vh;
             overflow-y: auto;
         }
 
         &#widget-dropdown {
-            max-height: 450px;
+            max-height: 64vh;
             overflow-y: auto;
             min-width: $screen-xs * 4 / 5;
         }
