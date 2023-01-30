@@ -116,7 +116,7 @@ function ChplCmsDisplay() {
   const [isDownloading, setIsDownloading] = useState(false);
   const { data, isFetching, isSuccess } = useFetchCmsIdAnalysis(listings);
   const { data: pdfData, isFetching: pdfIsFetching, isSuccess: pdfIsSuccess } = useFetchCmsIdPdf(certId, isDownloading);
-  const { mutate } = usePostCreateCmsId(listings);
+  const { mutate, isLoading } = usePostCreateCmsId(listings);
   const classes = useStyles();
 
   useEffect(() => {
@@ -221,7 +221,7 @@ function ChplCmsDisplay() {
             <Typography>
               <strong> Your CMS EHR Certification ID</strong>
             </Typography>
-            <div className={classes.certCopyContainer}>
+            <div className={classes.certCopyContainer} id="ehr-cert-id">
               <Typography color="primary">
                 { certId }
               </Typography>
@@ -311,7 +311,7 @@ function ChplCmsDisplay() {
             />
           ))}
       </div>
-      { isFetching && <CircularProgress id="cms-id-processing" size={20} /> }
+      { (isFetching || isLoading || isDownloading) && <CircularProgress id="cms-id-processing" size={20} /> }
       <Divider />
       <Typography variant="body2">
         To view which products were used to create a specific CMS ID, use the
