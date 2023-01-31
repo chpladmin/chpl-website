@@ -82,7 +82,11 @@
 
     function getWidget () {
       if ($localStorage.cmsWidget) {
-        vm.cmsWidget = $localStorage.cmsWidget;
+        if ($localStorage.cmsWidget.productIds) {
+          clearProducts();
+        } else {
+          vm.cmsWidget = $localStorage.cmsWidget;
+        }
       } else {
         clearProducts();
       }
