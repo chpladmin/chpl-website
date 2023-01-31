@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -34,13 +34,12 @@ import {
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
-const csvOptions = (erdPhase2IsOn) => ({
+const csvOptions = () => ({
   filename: 'api-documentation',
   showLabels: true,
-  headers: erdPhase2IsOn ? [
+  headers: [
     { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
     { headerName: 'Certification Edition', objectKey: 'fullEdition' },
     { headerName: 'Developer', objectKey: 'developerName' },
@@ -48,20 +47,6 @@ const csvOptions = (erdPhase2IsOn) => ({
     { headerName: 'Version', objectKey: 'versionName' },
     { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
     { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
-    { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
-  ] : [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-    { headerName: 'API Documentation - 170.315 (g)(8)', objectKey: 'apiDocumentation57' },
-    { headerName: 'API Documentation - 170.315 (g)(9)', objectKey: 'apiDocumentation58' },
     { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
     { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
     { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
@@ -141,23 +126,16 @@ const useStyles = makeStyles({
   },
 });
 
-const criteriaLookup = (erdPhase2IsOn) => (erdPhase2IsOn
-  ? {
-    56: { display: '170.315 (g)(7)', sort: 0 },
-    181: { display: '170.315 (g)(9) (Cures Update)', sort: 1 },
-    182: { display: '170.315 (g)(10) (Cures Update)', sort: 2 },
-  } : {
-    56: { display: '170.315 (g)(7)', sort: 0 },
-    57: { display: '170.315 (g)(8)', sort: 1 },
-    58: { display: '170.315 (g)(9)', sort: 2 },
-    181: { display: '170.315 (g)(9) (Cures Update)', sort: 3 },
-    182: { display: '170.315 (g)(10) (Cures Update)', sort: 4 },
-  });
+const criteriaLookup = {
+  56: { display: '170.315 (g)(7)', sort: 0 },
+  181: { display: '170.315 (g)(9) (Cures Update)', sort: 1 },
+  182: { display: '170.315 (g)(10) (Cures Update)', sort: 2 },
+};
 
-const parseApiDocumentation = ({ apiDocumentation }, analytics, erdPhase2IsOn) => {
+const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
   const items = Object.entries(apiDocumentation
-    .filter((item) => !erdPhase2IsOn || (item.criterion.id !== 57 && item.criterion.id !== 58))
+    .filter((item) => (item.criterion.id !== 57 && item.criterion.id !== 58)) // might be able to remove this line if API doesn't return the removed API Documentation criteria
     .map((item) => ({
       id: item.criterion.id,
       url: item.value,
@@ -169,8 +147,8 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics, erdPhase2IsOn) =
     .map(([url, ids]) => ({
       url,
       criteria: ids
-        .sort((a, b) => criteriaLookup(erdPhase2IsOn)[a].sort - criteriaLookup(erdPhase2IsOn)[b].sort)
-        .map((id) => criteriaLookup(erdPhase2IsOn)[id].display)
+        .sort((a, b) => criteriaLookup[a].sort - criteriaLookup[b].sort)
+        .map((id) => criteriaLookup[id].display)
         .join(', '),
     }))
     .sort((a, b) => (a.criteria < b.criteria ? -1 : 1));
@@ -202,10 +180,8 @@ function ChplApiDocumentationCollectionView(props) {
   const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
-  const { isOn } = useContext(FlagContext);
   const [documentationDate, setDocumentationDate] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
-  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -225,10 +201,6 @@ function ChplApiDocumentationCollectionView(props) {
   const { data: documentation } = useFetchApiDocumentationData();
 
   useEffect(() => {
-    setErdPhase2IsOn(isOn('erd-phase-2'));
-  }, [isOn]);
-
-  useEffect(() => {
     if (isLoading) { return; }
     if (isError || !data.results) {
       setListings([]);
@@ -237,10 +209,8 @@ function ChplApiDocumentationCollectionView(props) {
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      apiDocumentation: parseApiDocumentation(listing, analytics, erdPhase2IsOn),
+      apiDocumentation: parseApiDocumentation(listing, analytics),
       apiDocumentation56: getApiDocumentationForCsv(listing, 56),
-      apiDocumentation57: erdPhase2IsOn ? '' : getApiDocumentationForCsv(listing, 57),
-      apiDocumentation58: erdPhase2IsOn ? '' : getApiDocumentationForCsv(listing, 58),
       apiDocumentation181: getApiDocumentationForCsv(listing, 181),
       apiDocumentation182: getApiDocumentationForCsv(listing, 182),
       serviceBaseUrlList: parseServiceBaseUrlList(listing),
@@ -250,7 +220,7 @@ function ChplApiDocumentationCollectionView(props) {
       certificationStatusName: listing.certificationStatus.name,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics, erdPhase2IsOn]);
+  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -283,7 +253,7 @@ function ChplApiDocumentationCollectionView(props) {
 
   const downloadApiDocumentation = () => {
     $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    const csvExporter = new ExportToCsv(csvOptions(erdPhase2IsOn));
+    const csvExporter = new ExportToCsv(csvOptions());
     csvExporter.generateCsv(listings);
   };
 
@@ -308,15 +278,7 @@ function ChplApiDocumentationCollectionView(props) {
           </Typography>
           <ul>
             <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-            { !erdPhase2IsOn
-              && (
-                <li>&sect;170.315 (g)(8): Application Access - Data Category</li>
-              )}
             <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
-            { !erdPhase2IsOn
-              && (
-                <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
-              )}
             <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services (Cures Update)</li>
           </ul>
           <Typography variant="body1" gutterBottom>
