@@ -158,7 +158,7 @@ function ChplResourcesDownload() {
                   <li>
                     <strong>Standards Version Advancement Process (SVAP) Summary:</strong>
                     {' '}
-                    Standards Version Advancement Process (SVAP) Summary: Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
+                    Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
                   </li>
                 </ul>
               </li>
