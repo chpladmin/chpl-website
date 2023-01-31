@@ -647,6 +647,14 @@
         $httpBackend.flush();
       });
 
+      it('should getFunctionalitiesTested', () => {
+        $httpBackend.expectGET(/^\/rest\/functionalities-tested$/).respond(200, { data: 'response' });
+        networkService.getFunctionalitiesTested().then((response) => {
+          expect(response.data).toEqual('response');
+        });
+        $httpBackend.flush();
+      });
+
       it('should getIncumbentDeveloperStatistics', () => {
         $httpBackend.expectGET(/^\/rest\/statistics\/incumbent_developers$/).respond(200, { data: 'response' });
         networkService.getIncumbentDevelopersStatistics().then((response) => {
@@ -1019,14 +1027,6 @@
       it('should getTestData', () => {
         $httpBackend.expectGET(/^\/rest\/data\/test_data$/).respond(200, { data: 'response' });
         networkService.getTestData().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getTestFunctionality', () => {
-        $httpBackend.expectGET(/^\/rest\/data\/test_functionality$/).respond(200, { data: 'response' });
-        networkService.getTestFunctionality().then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

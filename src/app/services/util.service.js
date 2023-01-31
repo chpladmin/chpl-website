@@ -29,7 +29,7 @@
       sortCqm: sortCqm,
       sortCqmActual: sortCqmActual,
       sortNonconformityTypes: sortNonconformityTypes,
-      sortTestFunctionality: sortTestFunctionality,
+      sortFunctionalitiesTested: sortFunctionalitiesTested,
       statusFont: statusFont,
       ternaryFilter: ternaryFilter,
     };
@@ -297,10 +297,10 @@
       });
     }
 
-    function sortTestFunctionality(tfA, tfB) {
+    function sortFunctionalitiesTested(ftA, ftB) {
       let matcher = /^\((.+?)\)/;
-      let a = tfA.name;
-      let b = tfB.name;
+      let a = ftA.name;
+      let b = ftB.name;
       while (a && a.length > 0 && b && b.length > 0) {
         let aVals = a.match(matcher);
         let bVals = b.match(matcher);

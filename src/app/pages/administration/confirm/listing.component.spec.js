@@ -23,13 +23,13 @@
           getAccessibilityStandards: jasmine.createSpy('getAccessibilityStandards'),
           getAtls: jasmine.createSpy('getAtls'),
           getDeveloper: jasmine.createSpy('getDeveloper'),
+          getFunctionalitiesTested: jasmine.createSpy('getFunctionalitiesTested'),
           getMeasureTypes: jasmine.createSpy('getMeasureTypes'),
           getMeasures: jasmine.createSpy('getMeasures'),
           getQmsStandards: jasmine.createSpy('getQmsStandards'),
           getSearchOptions: jasmine.createSpy('getSearchOptions'),
           getTargetedUsers: jasmine.createSpy('getTargetedUsers'),
           getTestData: jasmine.createSpy('getTestData'),
-          getTestFunctionality: jasmine.createSpy('getTestFunctionality'),
           getTestProcedures: jasmine.createSpy('getTestProcedures'),
           getTestStandards: jasmine.createSpy('getTestStandards'),
           getUcdProcesses: jasmine.createSpy('getUcdProcesses'),
@@ -45,13 +45,13 @@
         networkService.getAccessibilityStandards.and.returnValue($q.when({}));
         networkService.getAtls.and.returnValue($q.when({}));
         networkService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
+        networkService.getFunctionalitiesTested.and.returnValue($q.when([]));
         networkService.getMeasureTypes.and.returnValue($q.when({}));
         networkService.getMeasures.and.returnValue($q.when({}));
         networkService.getQmsStandards.and.returnValue($q.when({}));
         networkService.getSearchOptions.and.returnValue($q.when({}));
         networkService.getTargetedUsers.and.returnValue($q.when({}));
         networkService.getTestData.and.returnValue($q.when({}));
-        networkService.getTestFunctionality.and.returnValue($q.when({}));
         networkService.getTestProcedures.and.returnValue($q.when({}));
         networkService.getTestStandards.and.returnValue($q.when({}));
         networkService.getUcdProcesses.and.returnValue($q.when({}));

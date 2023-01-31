@@ -26,8 +26,8 @@ const CertificationCriteriaViewComponent = {
     $onChanges(changes) {
       if (changes.cert) {
         this.cert = angular.copy(changes.cert.currentValue);
-        if (this.cert.testFunctionality) {
-          this.cert.testFunctionality = this.cert.testFunctionality.sort(this.utilService.sortTestFunctionality);
+        if (this.cert.functionalitiesTested) {
+          this.cert.functionalitiesTested = this.cert.functionalitiesTested.sort(this.utilService.sortFunctionalitiesTested);
         }
       }
       if (changes.resources) {
@@ -77,7 +77,7 @@ const CertificationCriteriaViewComponent = {
                 || (this.cert.privacySecurityFramework && this.cert.privacySecurityFramework.length > 0)
                 || (this.cert.sed)
                 || (this.cert.testDataUsed && this.cert.testDataUsed.length > 0)
-                || (this.cert.testFunctionality && this.cert.testFunctionality.length > 0)
+                || (this.cert.functionalitiesTested && this.cert.functionalitiesTested.length > 0)
                 || (this.cert.testProcedures && this.cert.testProcedures.length > 0)
                 || (this.cert.testStandards && this.cert.testStandards.length > 0)
                 || (this.cert.testToolsUsed && this.cert.testToolsUsed.length > 0)
