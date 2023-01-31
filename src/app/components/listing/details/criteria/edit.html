@@ -127,35 +127,35 @@
           <td><label class="control-label" for="data_g2Success{{ $ctrl.cert.criterion.number }}">Measure Successfully Tested for G2</label></td>
           <td><select class="form-control input-sm" id="data_g2Success{{ $ctrl.cert.criterion.number }}" name="data_g2Success" ng_model="$ctrl.cert.g2Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality !== null && $ctrl.sortedTestFunctionalities.length > 0">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.functionalitiesTested !== null && $ctrl.sortedFunctionalitiesTested.length > 0">
           <td>Functionality Tested</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
               <div class="form-group form-group-sm">
                 <div class="col-sm-12">
                   <chpl-expandable-list
-                    identifier="testFunctionality"
+                    identifier="functionalityTested"
                     item-key="id"
                     item-text="name"
-                    items="$ctrl.sortedTestFunctionalities"
-                    selected-item-keys="$ctrl.selectedTestFunctionalityKeys"
-                    placeholder="Select a Test Functionality"
-                    on-change="$ctrl.testFunctionalityOnChange(action)">
+                    items="$ctrl.sortedFunctionalitiesTested"
+                    selected-item-keys="$ctrl.selectedFunctionalityTestedKeys"
+                    placeholder="Select a Functionality Tested"
+                    on-change="$ctrl.functionalityTestedOnChange(action)">
                   </chpl-expandable-list>
                 </div>
               </div>
             </div>
           </td>
-          <td ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality && $ctrl.cert.testFunctionality.length > 0 && !$ctrl.canEdit()">
+          <td ng-if="$ctrl.cert.success && $ctrl.cert.functionalitiesTested && $ctrl.cert.functionalitiesTested.length > 0 && !$ctrl.canEdit()">
             <ul>
-              <li ng-repeat="m in $ctrl.cert.testFunctionality">
+              <li ng-repeat="m in $ctrl.cert.functionalitiesTested">
                 <span ng-if="!m.description">{{ m.name }}</span>
                 <chpl-ellipsis-bridge ng-if="m.description" text="m.description" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
-                <span ng-if="m.testFunctionalityId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
+                <span ng-if="m.functionalityTestedId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
               </li>
             </ul>
           </td>
-          <td ng-if="(!$ctrl.cert.testFunctionality || $ctrl.cert.testFunctionality.length === 0) && !$ctrl.canEdit()">None</td>
+          <td ng-if="(!$ctrl.cert.functionalitiesTested || $ctrl.cert.functionalitiesTested.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null">
           <td>Conformance method</td>

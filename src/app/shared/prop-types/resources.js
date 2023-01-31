@@ -5,10 +5,11 @@ import {
   object,
   shape,
 } from 'prop-types';
+
 import acb from './acb';
+import functionalityTested from './functionalities-tested';
 import practiceType from './practice-type';
 import { testData } from './test-data';
-import { testFunctionality } from './test-functionality';
 import { testProcedure } from './test-procedure';
 import { testStandard } from './test-standard';
 import { testTool } from './test-tool';
@@ -18,6 +19,7 @@ const resources = shape({
   bodies: arrayOf(acb),
   classifications: arrayOf(object),
   editions: arrayOf(object),
+  functionaltiesTested: arrayOf(functionalityTested),
   measureTypes: shape({
     expandable: bool,
     data: arrayOf(object),
@@ -34,10 +36,6 @@ const resources = shape({
     expandable: bool,
     data: arrayOf(testData),
   }),
-  testFunctionalities: shape({
-    expandable: bool,
-    data: arrayOf(testFunctionality),
-  }),
   testProcedures: shape({
     expandable: bool,
     data: arrayOf(testProcedure),
@@ -51,10 +49,7 @@ const resources = shape({
     data: arrayOf(testTool),
   }),
   testingLabs: arrayOf(object),
-  ucdProcesses: shape({
-    expandable: bool,
-    data: arrayOf(object),
-  }),
+  ucdProcesses: arrayOf(object),
 });
 
 export default resources;
