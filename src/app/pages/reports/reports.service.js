@@ -208,6 +208,11 @@ export class ReportService {
         sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
         write: f => 'Test Functionality "' + f.name + '"',
       };
+    case 'functionalitiesTested':
+      return {
+        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+        write: f => 'Functionalities Tested "' + f.name + '"',
+      };
     default:
       return {
         sort: (p, c) => {

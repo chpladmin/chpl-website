@@ -6,7 +6,7 @@ const CertificationCriteriaEditComponent = {
     dismiss: '&',
   },
   controller: class CertificationCriteriaEditController {
-    constructor($filter, $log, authService, utilService, CertificationResultConformanceMethod, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+    constructor($filter, $log, authService, utilService, CertificationResultConformanceMethod, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultFunctionalitiesTested, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
       'ngInject';
 
       this.$filter = $filter;
@@ -14,10 +14,10 @@ const CertificationCriteriaEditComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.addNewValue = utilService.addNewValue;
       this.extendSelect = utilService.extendSelect;
+      this.CertificationResultFunctionalitiesTested = CertificationResultFunctionalitiesTested;
       this.CertificationResultConformanceMethod = CertificationResultConformanceMethod;
       this.CertificationResultOptionalStandard = CertificationResultOptionalStandard;
       this.CertificationResultTestData = CertificationResultTestData;
-      this.CertificationResultTestFunctionality = CertificationResultTestFunctionality;
       this.CertificationResultTestProcedure = CertificationResultTestProcedure;
       this.CertificationResultTestStandard = CertificationResultTestStandard;
       this.CertificationResultTestTool = CertificationResultTestTool;
@@ -46,14 +46,14 @@ const CertificationCriteriaEditComponent = {
 
       this.selectedConformanceMethodKeys = this.getSelectedConformanceMethodKeys();
       this.selectedTestDataKeys = this.getSelectedTestDataKeys();
-      this.selectedTestFunctionalityKeys = this.getSelectedTestFunctionalityKeys();
+      this.selectedFunctionalityTestedKeys = this.getSelectedFunctionalityTestedKeys();
       this.selectedTestProcedureKeys = this.getSelectedTestProcedureKeys();
       this.selectedOptionalStandardKeys = this.getSelectedOptionalStandardKeys();
       this.selectedTestStandardKeys = this.getSelectedTestStandardKeys();
       this.newOptionalStandards = this.getNewOptionalStandards();
       this.newTestStandards = this.getNewTestStandards();
       this.selectedTestToolKeys = this.getSelectedTestToolKeys();
-      this.sortedTestFunctionalities = this.getSortedTestFunctionalities();
+      this.sortedFunctionalitiesTested = this.getSortedFunctionalitiesTested();
       this.selectedSvapKeys = this.getSelectedSvapKeys();
       this.setAvailableTestValues();
       this.setSvapDisplayText();
@@ -129,14 +129,14 @@ const CertificationCriteriaEditComponent = {
       }
     }
 
-    testFunctionalityOnChange(action) {
+    functionalityTestedOnChange(action) {
       switch (action.action) {
         case 'Remove':
-          this.cert.testFunctionality = this.cert.testFunctionality
-            .filter((crtf) => crtf.testFunctionalityId !== action.item.item.id);
+          this.cert.functionalitiesTested = this.cert.functionalitiesTested
+            .filter((crft) => crft.functionalityTestedId !== action.item.item.id);
           break;
         case 'Add':
-          this.cert.testFunctionality.push(new this.CertificationResultTestFunctionality(action.item.item));
+          this.cert.functionalitiesTested.push(new this.CertificationResultFunctionalitiesTested(action.item.item));
           break;
         default:
       }
@@ -265,11 +265,11 @@ const CertificationCriteriaEditComponent = {
       }));
     }
 
-    getSelectedTestFunctionalityKeys() {
-      if (!this.cert.testFunctionality) {
+    getSelectedFunctionalityTestedKeys() {
+      if (!this.cert.functionalitiesTested) {
         return [];
       }
-      return this.cert.testFunctionality.map((tf) => ({ key: tf.testFunctionalityId }));
+      return this.cert.functionalitiesTested.map((ft) => ({ key: ft.functionalityTestedId }));
     }
 
     getSelectedTestProcedureKeys() {
@@ -338,8 +338,10 @@ const CertificationCriteriaEditComponent = {
       }));
     }
 
-    getSortedTestFunctionalities() {
-      return this.$filter('orderBy')(this.cert.allowedTestFunctionalities, 'name');
+    getSortedFunctionalitiesTested() {
+      return this.resources.functionalitiesTested
+        .filter((ft) => ft.criteria.some((c) => c.id === this.cert.criterion.id))
+        .sort((a, b) => (a.name < b.name ? -1 : 1));
     }
 
     setAvailableTestValues() {
@@ -362,7 +364,7 @@ const CertificationCriteriaEditComponent = {
             ...att,
             dropDownText: att.name + (att.retired ? ' (Retired)' : ''),
           }));
-        this.cert.testToolsUsed.forEach((tt) => {
+        this.cert.testToolsUsed?.forEach((tt) => {
           if (!this.cert.allowedTestTools.find((att) => att.id === tt.testToolId)) {
             this.cert.allowedTestTools.push({
               id: tt.testToolId,

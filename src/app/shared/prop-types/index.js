@@ -20,6 +20,7 @@ import developer from './developer';
 import directReview from './direct-review';
 import filter from './filter';
 import formik from './formik';
+import functionalitiesTested from './functionalities-tested';
 import { job, scheduledSystemTrigger, trigger } from './jobs';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import product from './product';
@@ -44,7 +45,6 @@ import {
   surveillanceRequirementType,
 } from './surveillance';
 import { testData, selectedTestData } from './test-data';
-import { testFunctionality, selectedTestFunctionality } from './test-functionality';
 import { testProcedure, selectedTestProcedure } from './test-procedure';
 import { testStandard, selectedTestStandard } from './test-standard';
 import { testTool, selectedTestTool } from './test-tool';
@@ -71,6 +71,7 @@ export {
   directReview,
   filter,
   formik,
+  functionalitiesTested,
   job,
   listing,
   optionalStandard,
@@ -85,7 +86,6 @@ export {
   selectedOptionalStandard,
   selectedSvap,
   selectedTestData,
-  selectedTestFunctionality,
   selectedTestProcedure,
   selectedTestStandard,
   selectedTestTool,
@@ -96,7 +96,6 @@ export {
   surveillanceRequirementType,
   svap,
   testData,
-  testFunctionality,
   testProcedure,
   testStandard,
   testTool,
