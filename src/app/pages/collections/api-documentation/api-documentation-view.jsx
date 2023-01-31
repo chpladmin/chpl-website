@@ -135,7 +135,7 @@ const criteriaLookup = {
 const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
   if (apiDocumentation.length === 0) { return 'N/A'; }
   const items = Object.entries(apiDocumentation
-    .filter((item) => (item.criterion.id !== 57 && item.criterion.id !== 58)) // might be able to remove this line if API doesn't return the removed API Documentation criteria
+    .filter((item) => (item.criterion.id !== 57 && item.criterion.id !== 58))
     .map((item) => ({
       id: item.criterion.id,
       url: item.value,
