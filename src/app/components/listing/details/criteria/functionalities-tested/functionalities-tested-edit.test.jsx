@@ -5,13 +5,13 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplTestFunctionalityEdit from './test-functionality-edit';
+import ChplFunctionalitiesTestedEdit from './functionalities-tested-edit';
 
 const hocMock = {
   onChange: jest.fn(),
 };
 
-describe('the ChplTestFunctionalityEdit component', () => {
+describe('the ChplFunctionalitiesTestedEdit component', () => {
   afterEach(() => {
     cleanup();
   });
@@ -19,10 +19,10 @@ describe('the ChplTestFunctionalityEdit component', () => {
   describe('when rendering', () => {
     beforeEach(async () => {
       render(
-        <ChplTestFunctionalityEdit
-          testFunctionality={[
-            { name: 'zz name', testFunctionalityId: 2 },
-            { name: 'name 1', testFunctionalityId: 3 },
+        <ChplFunctionalitiesTestedEdit
+          functionalitiesTested={[
+            { name: 'zz name', functionalityTestedId: 2 },
+            { name: 'name 1', functionalityTestedId: 3 },
           ]}
           options={[
             { name: 'zz name', id: 2 },
@@ -60,10 +60,10 @@ describe('the ChplTestFunctionalityEdit component', () => {
   describe('when selecting items', () => {
     beforeEach(async () => {
       render(
-        <ChplTestFunctionalityEdit
-          testFunctionality={[
-            { name: 'zz name', testFunctionalityId: 2 },
-            { name: 'name 1', testFunctionalityId: 3 },
+        <ChplFunctionalitiesTestedEdit
+          functionalitiesTested={[
+            { name: 'zz name', functionalityTestedId: 2 },
+            { name: 'name 1', functionalityTestedId: 3 },
           ]}
           options={[
             { name: 'zz name', id: 2 },
@@ -125,11 +125,11 @@ describe('the ChplTestFunctionalityEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { testFunctionalityId: 3, name: 'name 1' },
-            { testFunctionalityId: 2, name: 'zz name' },
-            { testFunctionalityId: 4, name: 'a name', key: expect.any(Number) },
+            { functionalityTestedId: 3, name: 'name 1' },
+            { functionalityTestedId: 2, name: 'zz name' },
+            { functionalityTestedId: 4, name: 'a name', key: expect.any(Number) },
           ],
-          key: 'testFunctionality',
+          key: 'functionalitiesTested',
         });
       });
     });
@@ -138,10 +138,10 @@ describe('the ChplTestFunctionalityEdit component', () => {
   describe('when removing items', () => {
     beforeEach(async () => {
       render(
-        <ChplTestFunctionalityEdit
-          testFunctionality={[
-            { name: 'zz name', testFunctionalityId: 2 },
-            { name: 'name 1', testFunctionalityId: 3 },
+        <ChplFunctionalitiesTestedEdit
+          functionalitiesTested={[
+            { name: 'zz name', functionalityTestedId: 2 },
+            { name: 'name 1', functionalityTestedId: 3 },
           ]}
           options={[
             { name: 'zz name', id: 2 },
@@ -170,9 +170,9 @@ describe('the ChplTestFunctionalityEdit component', () => {
       await waitFor(() => {
         expect(hocMock.onChange).toHaveBeenCalledWith({
           data: [
-            { testFunctionalityId: 2, name: 'zz name' },
+            { functionalityTestedId: 2, name: 'zz name' },
           ],
-          key: 'testFunctionality',
+          key: 'functionalitiesTested',
         });
       });
     });
