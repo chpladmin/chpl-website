@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
   IconButton,
   Paper,
   Table,
@@ -26,7 +25,6 @@ const headers = [
   { property: 'name', text: 'Job Name', sortable: true },
   { property: 'description', text: 'Description' },
   { property: 'oncAcbSpecific', text: 'ONC-ACB Specific', sortable: true },
-  { property: 'jobType', text: 'Job Type', sortable: true },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
 
@@ -41,12 +39,6 @@ const useStyles = makeStyles({
     backgroundColor: '#fff',
   },
 });
-
-const groupMapping = {
-  systemJobs: 'System Job',
-  chplJobs: 'User Job',
-  subordinateJobs: 'Subordinate Job',
-};
 
 const getAction = (item, dispatch) => {
   if (item.jobDataMap.editableJobFields) {
@@ -102,7 +94,6 @@ function ChplJobTypesView(props) {
       .map((job) => ({
         ...job,
         oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
-        jobType: groupMapping[job.group],
         action: getAction(job, dispatch),
       }))
       .sort(sortComparator('name')));
@@ -110,7 +101,7 @@ function ChplJobTypesView(props) {
 
   const filterHeaders = () => headers.filter((item) => hasAnyRole(['ROLE_ADMIN'])
                           || (item.property === 'oncAcbSpecific' && hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF']))
-                          || (item.property !== 'jobType' && item.property !== 'oncAcbSpecific'));
+                          || (item.property !== 'oncAcbSpecific'));
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -149,12 +140,6 @@ function ChplJobTypesView(props) {
                       && (
                         <TableCell>
                           { item.oncAcbSpecific }
-                        </TableCell>
-                      )}
-                    { hasAnyRole(['ROLE_ADMIN'])
-                      && (
-                        <TableCell>
-                          <Chip size="medium" color="default" variant="outlined" label={item.jobType} />
                         </TableCell>
                       )}
                     <TableCell align="right">
