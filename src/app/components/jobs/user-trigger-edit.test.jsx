@@ -40,7 +40,7 @@ describe('the ChplUserTriggerEdit component', () => {
   });
 
   it('should have a header', async () => {
-    expect(screen.getByText('Create Job: job name')).toBeInTheDocument();
+    expect(screen.getByText('Schedule Report: job name')).toBeInTheDocument();
   });
 
   describe('when interacting with a job', () => {
