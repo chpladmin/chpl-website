@@ -7,12 +7,12 @@ let hooks;
 let login;
 let page;
 
-describe('the Scheduled Jobs page', () => {
+describe('the Reports page', () => {
   beforeEach(async () => {
     login = new LoginComponent();
     page = new ScheduledPage();
     hooks = new Hooks();
-    await hooks.open('#/administration/jobs');
+    await hooks.open('#/administration/reports');
   });
 
   describe('for ROLE_ONC_STAFF', () => {
