@@ -97,8 +97,7 @@ function ChplSystemMaintenance() {
     hide('svaps.edit.disabled');
     hide('systemJobs.viewall.disabled');
     hide('systemJobs.viewall');
-    hide('systemJobs.add.disabled');
-    hide('systemJobs.edit.disabled');
+    hide('systemJobs.schedule.disabled');
     hide('ucdProcesses.viewall.disabled');
     hide('ucdProcesses.viewall');
     hide('ucdProcesses.add.disabled');
