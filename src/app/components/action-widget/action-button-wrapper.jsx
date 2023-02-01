@@ -3,15 +3,16 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 
-import ChplCmsButton from './cms-button';
-import CmsWrapper from './cms-wrapper';
+import ChplActionButton from './action-button';
 
 import ApiWrapper from 'api/api-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
+import CmsWrapper from 'components/cms-widget/cms-wrapper';
+import CompareWrapper from 'components/compare-widget/compare-wrapper';
 import { listing as listingPropType } from 'shared/prop-types';
 import theme from 'themes/theme';
 
-function ChplCmsButtonWrapper(props) {
+function ChplActionButtonWrapper(props) {
   const { listing } = props;
 
   return (
@@ -19,7 +20,9 @@ function ChplCmsButtonWrapper(props) {
       <ApiWrapper showQueryTools={false}>
         <FlagWrapper>
           <CmsWrapper>
-            <ChplCmsButton listing={listing} />
+            <CompareWrapper>
+              <ChplActionButton listing={listing} />
+            </CompareWrapper>
           </CmsWrapper>
         </FlagWrapper>
       </ApiWrapper>
@@ -27,8 +30,8 @@ function ChplCmsButtonWrapper(props) {
   );
 }
 
-export default ChplCmsButtonWrapper;
+export default ChplActionButtonWrapper;
 
-ChplCmsButtonWrapper.propTypes = {
+ChplActionButtonWrapper.propTypes = {
   listing: listingPropType.isRequired,
 };

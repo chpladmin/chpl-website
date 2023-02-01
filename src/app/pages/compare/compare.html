@@ -19,7 +19,7 @@
             <th scope="col"><span class="sr-only">Category</span></th>
             <th scope="col" ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">
               {{ listing.product.name }}<br />
-              <chpl-cms-button-wrapper-bridge listing="listing"></chpl-cms-button-wrapper-bridge>
+              <chpl-action-button-wrapper-bridge listing="listing"></chpl-action-button-wrapper-bridge>
             </th>
           </tr>
         </thead>

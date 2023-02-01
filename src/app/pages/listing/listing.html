@@ -36,8 +36,7 @@
             </div>
             <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
             <div class="btn-group">
-              <chpl-cms-button-wrapper-bridge listing="$ctrl.listing"></chpl-cms-button-wrapper-bridge>
-              <chpl-compare-button-wrapper-bridge listing="$ctrl.listing"></chpl-compare-button-wrapper-bridge>
+              <chpl-action-button-wrapper-bridge listing="$ctrl.listing"></chpl-action-button-wrapper-bridge>
             </div>
           </div>
         </div>
