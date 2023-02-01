@@ -11,7 +11,7 @@ import * as jsJoda from '@js-joda/core';
 import '@js-joda/timezone';
 
 import ChplJobEdit from './job-edit';
-import ChplJobTypesView from './job-types-view';
+import ChplSystemJobTypesView from './system-job-types-view';
 import ChplSystemTriggersView from './system-triggers-view';
 
 import {
@@ -180,7 +180,7 @@ function ChplJobs() {
                 )}
               { !jobTypeQuery.isLoading && jobTypeQuery.isSuccess && jobTypes.length > 0
                 && (
-                  <ChplJobTypesView
+                  <ChplSystemJobTypesView
                     jobTypes={jobTypes}
                     dispatch={handleDispatch}
                   />

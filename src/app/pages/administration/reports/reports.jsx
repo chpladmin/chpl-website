@@ -17,7 +17,7 @@ import {
   usePutTrigger,
 } from 'api/jobs';
 import ChplJobEdit from 'components/jobs/job-edit';
-import ChplJobTypesView from 'components/jobs/job-types-view';
+import ChplReportJobTypesView from 'components/jobs/report-job-types-view';
 import ChplUserTriggersView from 'components/jobs/user-triggers-view';
 
 const useStyles = makeStyles({
@@ -141,7 +141,7 @@ function ChplReports() {
                 )}
               { !jobTypeQuery.isLoading && jobTypeQuery.isSuccess && jobTypes.length > 0
                 && (
-                  <ChplJobTypesView
+                  <ChplReportJobTypesView
                     jobTypes={jobTypes}
                     dispatch={handleDispatch}
                   />

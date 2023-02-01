@@ -1,8 +1,8 @@
 class ScheduledPage {
   constructor() {
     this.elements = {
-      availableJobTable: 'table[aria-label="Types of Jobs table"]',
-      button: (name) => `button[aria-label="Schedule Job ${name}"]`,
+      availableJobTable: 'table[aria-label="Types of Reports table"]',
+      button: (name) => `button[aria-label="Schedule Report ${name}"]`,
       availableAcbs: 'div[aria-label="ONC-ACBs available to schedule"]',
     };
   }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -12,19 +12,15 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import EventIcon from '@material-ui/icons/Event';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { UserContext } from 'shared/contexts';
 import { job as jobType } from 'shared/prop-types';
 
 const headers = [
   { property: 'name', text: 'Job Name', sortable: true },
   { property: 'description', text: 'Description' },
-  { property: 'oncAcbSpecific', text: 'ONC-ACB Specific', sortable: true },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
 
@@ -40,50 +36,8 @@ const useStyles = makeStyles({
   },
 });
 
-const getAction = (item, dispatch) => {
-  if (item.jobDataMap.editableJobFields) {
-    return (
-      <IconButton
-        onClick={() => dispatch({ action: 'edit', payload: item })}
-        variant="contained"
-        color="primary"
-        aria-label={`Edit Job ${item.name}`}
-      >
-        <EditIcon />
-      </IconButton>
-    );
-  }
-  switch (item.group) {
-    case 'chplJobs':
-      return (
-        <IconButton
-          onClick={() => dispatch({ action: 'schedule', payload: item })}
-          color="primary"
-          aria-label={`Schedule Job ${item.name}`}
-        >
-          <EventIcon />
-        </IconButton>
-      );
-    case 'systemJobs':
-      return (
-        <IconButton
-          onClick={() => dispatch({ action: 'schedule', payload: item })}
-          color="primary"
-          aria-label={`Schedule Job ${item.name}`}
-        >
-          <PlayArrowIcon />
-        </IconButton>
-      );
-    case 'subordinateJobs':
-      return null;
-      // no default
-  }
-  return null;
-};
-
-function ChplJobTypesView(props) {
+function ChplSystemJobTypesView(props) {
   const { dispatch } = props;
-  const { hasAnyRole } = useContext(UserContext);
   const [jobTypes, setJobTypes] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
@@ -91,17 +45,8 @@ function ChplJobTypesView(props) {
 
   useEffect(() => {
     setJobTypes(props.jobTypes
-      .map((job) => ({
-        ...job,
-        oncAcbSpecific: job.jobDataMap.acbSpecific ? 'Yes' : 'No',
-        action: getAction(job, dispatch),
-      }))
       .sort(sortComparator('name')));
   }, []);
-
-  const filterHeaders = () => headers.filter((item) => hasAnyRole(['ROLE_ADMIN'])
-                          || (item.property === 'oncAcbSpecific' && hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF']))
-                          || (item.property !== 'oncAcbSpecific'));
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -120,7 +65,7 @@ function ChplJobTypesView(props) {
             aria-label="Types of Jobs table"
           >
             <ChplSortableHeaders
-              headers={filterHeaders()}
+              headers={headers}
               onTableSort={handleTableSort}
               orderBy={orderBy}
               order={order}
@@ -136,14 +81,14 @@ function ChplJobTypesView(props) {
                     <TableCell>
                       { item.description }
                     </TableCell>
-                    { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
-                      && (
-                        <TableCell>
-                          { item.oncAcbSpecific }
-                        </TableCell>
-                      )}
                     <TableCell align="right">
-                      { item.action }
+                      <IconButton
+                        onClick={() => dispatch({ action: 'schedule', payload: item })}
+                        color="primary"
+                        aria-label={`Schedule Job ${item.name}`}
+                      >
+                        <PlayArrowIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -155,9 +100,9 @@ function ChplJobTypesView(props) {
   );
 }
 
-export default ChplJobTypesView;
+export default ChplSystemJobTypesView;
 
-ChplJobTypesView.propTypes = {
+ChplSystemJobTypesView.propTypes = {
   jobTypes: arrayOf(jobType).isRequired,
   dispatch: func.isRequired,
 };
