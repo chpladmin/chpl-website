@@ -89,7 +89,7 @@ function ChplReports() {
         }
         break;
       case 'schedule':
-        if (payload.group === 'chplReports') {
+        if (payload.group === 'chplJobs') {
           setJob({ job: payload });
         }
         break;
