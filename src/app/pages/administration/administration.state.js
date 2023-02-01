@@ -96,19 +96,13 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ACB'],
     },
   }, {
-    name: 'administration.jobs',
-    url: '/jobs',
-    component: 'chplJobsWrapperBridge',
+    name: 'administration.reports',
+    url: '/reports',
+    component: 'chplReportsWrapperBridge',
     data: {
-      title: 'CHPL Administration - Jobs - Scheduled',
+      title: 'CHPL Administration - Reports',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
     },
-  }, {
-    name: 'administration.jobs.scheduled',
-    url: '/scheduled',
-    redirectTo: () => ({
-      state: 'administration.jobs',
-    }),
   }, {
     name: 'administration.search',
     url: '/search',
