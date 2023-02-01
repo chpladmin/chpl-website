@@ -7,8 +7,15 @@ import userEvent from '@testing-library/user-event';
 
 import ChplSystemTriggerCreate from './system-trigger-create';
 
+import { BreadcrumbContext } from 'shared/contexts';
+
 const hocMock = {
   dispatch: jest.fn(),
+  breadcrumbContext: {
+    append: () => {},
+    display: () => {},
+    hide: () => {},
+  },
 };
 
 const jobMock = {
@@ -21,10 +28,12 @@ const jobMock = {
 describe('the ChplSystemTriggerCreate component', () => {
   beforeEach(async () => {
     render(
-      <ChplSystemTriggerCreate
-        job={jobMock}
-        dispatch={hocMock.dispatch}
-      />,
+      <BreadcrumbContext.Provider value={hocMock.breadcrumbContext}>
+        <ChplSystemTriggerCreate
+          job={jobMock}
+          dispatch={hocMock.dispatch}
+        />
+      </BreadcrumbContext.Provider>,
     );
   });
 
