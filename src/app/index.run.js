@@ -1,16 +1,10 @@
-import { Visualizer } from '@uirouter/visualizer';
-
 (() => {
   /** @ngInject */
-  function runBlock($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $uiRouter, $window, Title, authService, featureFlags, networkService) {
+  function runBlock($anchorScroll, $http, $location, $log, $rootScope, $state, $stateParams, $timeout, $transitions, $window, Title, authService, featureFlags, networkService) {
     const loadFlags = () => {
       // get flag state from API
       featureFlags.set($http.get('/rest/feature-flags'))
         .then(() => {
-          // Display ui-router state changes
-          if (featureFlags.isOn('states')) {
-            $uiRouter.plugin(Visualizer);
-          }
           $rootScope.$broadcast('flags loaded');
         });
     };

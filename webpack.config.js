@@ -225,16 +225,6 @@ module.exports = (env) => {
   if (env.NODE_ENV === 'development') {
     config.devtool = 'inline-source-map';
   }
-  if (env.style) {
-    config.plugins.push(
-      new HtmlWebpackPlugin({
-        filename: 'style.html',
-        hash: true,
-        inject: 'body',
-        template: path.resolve(__dirname, './src/style.html'),
-      }),
-    );
-  }
   if (env.server) {
     config.devServer = {
       clientLogLevel: 'silent',
