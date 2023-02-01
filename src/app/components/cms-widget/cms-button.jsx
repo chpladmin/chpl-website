@@ -25,12 +25,13 @@ function ChplCmsButton(props) {
 
   return (
     <Button
+      color="secondary"
       variant="contained"
       size="small"
-      color="secondary"
       id={`toggle-cms-${listing.id}`}
       onClick={handleClick}
       endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
+      fullWidth
     >
       Cert ID
     </Button>

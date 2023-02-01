@@ -1,7 +1,4 @@
 import React from 'react';
-import {
-  ButtonGroup,
-} from '@material-ui/core';
 import { node } from 'prop-types';
 
 import CompareButton from 'components/compare-widget/compare-button';
@@ -12,11 +9,11 @@ function ChplActionButton(props) {
   const { children, listing } = props;
 
   return (
-    <ButtonGroup>
+    <>
       { children }
       <CompareButton listing={listing} />
       <CmsButton listing={listing} />
-    </ButtonGroup>
+    </>
   );
 }
 
