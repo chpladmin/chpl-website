@@ -105,6 +105,10 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  missingLists: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 });
 
 function ChplCmsDisplay() {
@@ -271,30 +275,36 @@ function ChplCmsDisplay() {
             value={idAnalysis.metPercentages.criteriaMet}
           />
         )}
-      { idAnalysis.missingAnd?.length > 0
+      { (idAnalysis.missingAnd?.length > 0 || idAnalysis.missingOr?.length > 0)
         && (
           <>
             <Divider />
-            <Typography variant="body2">Please select a product or products that contain the following criteria:</Typography>
-            <List id="missing-and">
-              { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
-            </List>
-          </>
-        )}
-      { idAnalysis.missingOr?.length > 0
-        && (
-          <>
-            <Divider />
-            <Typography variant="body2">
-              { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
-              { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
-              {' '}
-              with at least 1 criteria from the following group
-              { idAnalysis.missingOr.length > 1 && 's' }
-            </Typography>
-            <List id="missing-or">
-              { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}><Typography variant="body2">{ criteria.join(', ') }</Typography></ListItem>)}
-            </List>
+            <div className={classes.missingLists}>
+              { idAnalysis.missingAnd?.length > 0
+                && (
+                  <div>
+                    <Typography variant="body2">Please select a product or products that contain the following criteria:</Typography>
+                    <List id="missing-and">
+                      { idAnalysis.missingAnd.map((criterion) => <ListItem key={criterion}><Typography variant="body2">{ criterion }</Typography></ListItem>)}
+                    </List>
+                  </div>
+                )}
+              { idAnalysis.missingOr?.length > 0
+                && (
+                  <div>
+                    <Typography variant="body2">
+                      { idAnalysis.missingAnd.length > 0 && 'In addition, products' }
+                      { idAnalysis.missingAnd.length === 0 && 'Please select a product' }
+                      {' '}
+                      with at least 1 criteria from the following group
+                      { idAnalysis.missingOr.length > 1 && 's' }
+                    </Typography>
+                    <List id="missing-or">
+                      { idAnalysis.missingOr.map((criteria) => <ListItem key={criteria.join(',')}><Typography variant="body2">{ criteria.join(', ') }</Typography></ListItem>)}
+                    </List>
+                  </div>
+                )}
+            </div>
           </>
         )}
       <Divider />
