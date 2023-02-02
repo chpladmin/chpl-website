@@ -61,8 +61,7 @@ describe('the search page', () => {
     });
   });
 
-  //ignoring this test as it is flaky
-  xdescribe('when browsing all listings', () => {
+  describe('when browsing all listings', () => {
     beforeEach(() => {
       page.browseAllButton.click();
       if (!page.downloadResultsButton.isDisplayed()) {
@@ -77,8 +76,7 @@ describe('the search page', () => {
     });
   });
 
-  //ignoring this test as it is flaky
-  xdescribe('When observing listing details button', () => {
+  describe('When observing listing details button', () => {
     beforeEach(() => {
       page.waitForUpdatedListingResultsCount();
     });
