@@ -13,7 +13,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { ChplReliedUponSoftwareView } from './relied-upon-software';
+import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
 import {

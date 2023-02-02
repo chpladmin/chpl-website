@@ -18,15 +18,15 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
-import ChplConformanceMethodsEdit from './conformance-methods';
-import ChplOptionalStandardsEdit from './optional-standards';
-import ChplSvapsEdit from './svaps';
-import ChplFunctionalitiesTestedEdit from './functionalities-tested';
-import ChplTestDataEdit from './test-data';
-import ChplTestProceduresEdit from './test-procedures';
-import ChplTestStandardsEdit from './test-standards';
-import ChplTestToolsEdit from './test-tools';
+import ChplReliedUponSoftwareEdit from './relied-upon-software/relied-upon-software-edit';
+import ChplConformanceMethodsEdit from './conformance-methods/conformance-methods-edit';
+import ChplOptionalStandardsEdit from './optional-standards/optional-standards-edit';
+import ChplSvapsEdit from './svaps/svaps-edit';
+import ChplFunctionalitiesTestedEdit from './functionalities-tested/functionalities-tested-edit';
+import ChplTestDataEdit from './test-data/test-data-edit';
+import ChplTestProceduresEdit from './test-procedures/test-procedures-edit';
+import ChplTestStandardsEdit from './test-standards/test-standards-edit';
+import ChplTestToolsEdit from './test-tools/test-tools-edit';
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
