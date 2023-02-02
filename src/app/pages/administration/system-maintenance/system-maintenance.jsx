@@ -208,7 +208,7 @@ function ChplSystemMaintenance() {
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
-                      <ListItem>System Jobs - TBD</ListItem>
+                      <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
                     )}
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
