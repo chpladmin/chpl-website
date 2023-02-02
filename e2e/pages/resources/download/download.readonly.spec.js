@@ -15,7 +15,7 @@ describe('the Download page', () => {
     await hooks.open('#/resources/download');
   });
 
-  describe('2015/2014/2011 Edition products section', () => {
+  describe('in the 2015/2014/2011 Edition products section', () => {
     it('should have correct information about 2015 edition products file', () => {
       const expectedText = 'The 2015 Edition Products file is updated nightly.';
       expect(page.content.getText()).toContain(expectedText);
@@ -27,7 +27,7 @@ describe('the Download page', () => {
     });
   });
 
-  describe('2015/2014 Edition summary section', () => {
+  describe('in the 2015/2014 Edition summary section', () => {
     it('should have correct information about 2015 edition summary file', () => {
       const expectedText = 'The 2015 Edition Summary file is updated nightly.';
       expect(page.content.getText()).toContain(expectedText);
@@ -39,7 +39,12 @@ describe('the Download page', () => {
     });
   });
 
-  describe('compliance activities section', () => {
+  it('should have correct information about SVAP', () => {
+    const expectedText = 'Standards Version Advancement Process (SVAP) Summary: Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.';
+    expect(page.content.getText()).toContain(expectedText);
+  });
+
+  describe('in the compliance activities section', () => {
     it('should have correct information about Surveillance Activity', () => {
       const expectedText = 'Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.';
       expect(page.content.getText()).toContain(expectedText);
@@ -63,11 +68,6 @@ describe('the Download page', () => {
 
     afterEach(() => {
       browser.call(() => login.logOut());
-    });
-
-    it('should have correct information about SVAP', () => {
-      const expectedText = 'Standards Version Advancement Process (SVAP) Summary: Entire collection of all SVAP values that have been associated with a criterion for a certified product. Available as a CSV file; updated nightly.';
-      expect(page.content.getText()).toContain(expectedText);
     });
 
     it('should have correct information about the basic surveillance file', () => {
