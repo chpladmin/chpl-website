@@ -83,14 +83,11 @@ function ChplResourcesDownload() {
       'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'Surveillance (Basic)' },
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
-      'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'SVAP Summary' },
+      'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
       if (option === 'Surveillance (Basic)' && !hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-        return false;
-      }
-      if (option === 'SVAP Summary (csv)' && !hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
         return false;
       }
       return true;
@@ -158,14 +155,11 @@ function ChplResourcesDownload() {
                       </li>
                     </ul>
                   </li>
-                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
-                    && (
-                      <li>
-                        <strong>Standards Version Advancement Process (SVAP) Summary:</strong>
-                        {' '}
-                        Entire collection of all SVAP values that have been associated with a criterion for a certified product. Available as a CSV file; updated nightly.
-                      </li>
-                    )}
+                  <li>
+                    <strong>Standards Version Advancement Process (SVAP) Summary:</strong>
+                    {' '}
+                    Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
+                  </li>
                 </ul>
               </li>
               <li>
