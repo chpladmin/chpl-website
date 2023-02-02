@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   CircularProgress,
-  Container,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
@@ -27,10 +28,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-  },
-  titlePadding: {
-    paddingTop: '16px',
-    paddingBottom: '16px',
   },
 });
 
@@ -154,48 +151,48 @@ function ChplJobs() {
     }
   };
 
-  return (
-    <Container maxWidth="lg">
-      <Typography className={classes.titlePadding} variant="h1">System Jobs</Typography>
-      { !job
-        && (
-          <div className={classes.container}>
-            <div>
-              { (systemQuery.isLoading || !systemQuery.isSuccess)
-                && (
-                  <CircularProgress />
-                )}
-              { !systemQuery.isLoading && systemQuery.isSuccess
-                && (
-                  <ChplSystemTriggersView
-                    triggers={systemTriggers}
-                    dispatch={handleDispatch}
-                  />
-                )}
-            </div>
-            <div>
-              { (jobTypeQuery.isLoading || !jobTypeQuery.isSuccess)
-                && (
-                  <CircularProgress />
-                )}
-              { !jobTypeQuery.isLoading && jobTypeQuery.isSuccess && jobTypes.length > 0
-                && (
-                  <ChplSystemJobTypesView
-                    jobTypes={jobTypes}
-                    dispatch={handleDispatch}
-                  />
-                )}
-            </div>
-          </div>
-        )}
-      { job
-        && (
+  if (job) {
+    return (
+      <Card>
+        <CardHeader title="Schedule System Job" />
+        <CardContent>
           <ChplJobEdit
             job={job}
             dispatch={handleDispatch}
           />
-        )}
-    </Container>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (systemQuery.isLoading || jobTypeQuery.isLoading) {
+    return (
+      <CircularProgress />
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader title="System Jobs" />
+      <CardContent>
+        <div className={classes.container}>
+          { systemQuery.isSuccess
+            && (
+              <ChplSystemTriggersView
+                triggers={systemTriggers}
+                dispatch={handleDispatch}
+              />
+            )}
+          { jobTypeQuery.isSuccess && jobTypes.length > 0
+            && (
+              <ChplSystemJobTypesView
+                jobTypes={jobTypes}
+                dispatch={handleDispatch}
+              />
+            )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
