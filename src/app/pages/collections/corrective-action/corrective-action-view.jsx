@@ -16,6 +16,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplCompareButton from 'components/compare-widget/compare-button';
 import {
   ChplLink,
@@ -29,6 +30,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
@@ -56,7 +58,7 @@ const headers = [
   { property: 'developer', text: 'Developer', sortable: true },
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
-  { text: 'Certification Status' },
+  { text: 'Certification Status', extra: <ChplCertificationStatusLegend /> },
   { property: 'open_surveillance_nc_count', text: '# Open Surveillance NCs', sortable: true, reverseDefault: true },
   { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs', sortable: true, reverseDefault: true },
   { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs', sortable: true, reverseDefault: true },
@@ -339,7 +341,7 @@ function ChplCorrectiveActionCollectionView(props) {
                                     </TableCell>
                                     <TableCell>{item.product.name}</TableCell>
                                     <TableCell>{item.version.name}</TableCell>
-                                    <TableCell>{item.certificationStatus.name}</TableCell>
+                                    <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
                                     <TableCell>{item.openSurveillanceNonConformityCount}</TableCell>
                                     <TableCell>{item.closedSurveillanceNonConformityCount}</TableCell>
                                     <TableCell>{item.openDirectReviewNonConformityCount}</TableCell>
