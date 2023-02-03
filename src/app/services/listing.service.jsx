@@ -1,12 +1,23 @@
 import React from 'react';
 import {
+  IconButton,
   Typography,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 
+import { ChplTooltip } from 'components/util';
+
+const getFullButton = (text, icon) => (
+  <ChplTooltip title={text}>
+    <IconButton>
+      { icon }
+    </IconButton>
+  </ChplTooltip>
+);
+
 const getStatusIcon = (status) => {
   switch (status.name) {
-    case 'Active': return (<InfoIcon />);
+    case 'Active': return getFullButton(status.name, <InfoIcon />);
     case 'Suspended by ONC':
     case 'Suspended by ONC-ACB':
     case 'Terminated by ONC':
