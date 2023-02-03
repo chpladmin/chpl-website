@@ -78,18 +78,18 @@ function ChplSortableHeaders(props) {
                   onClick={createSortHandler(cell)}
                 >
                   <span className={cell.invisible && classes.visuallyHidden}>
-                    <div className={classes.statusContainer} >
-                    { cell.text }
-                    { cell.extra }
+                    <div className={classes.statusContainer}>
+                      { cell.text }
+                      { cell.extra }
                     </div>
                   </span>
                 </TableSortLabel>
               ) : (
                 <span className={cell.invisible && classes.visuallyHidden}>
-                 <div className={classes.statusContainer} >
+                  <div className={classes.statusContainer}>
                     { cell.text }
                     { cell.extra }
-                    </div>
+                  </div>
                 </span>
               )}
           </TableCell>
