@@ -20,6 +20,12 @@ const useStyles = makeStyles({
     top: 20,
     width: 1,
   },
+  statusContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'center',
+  },
   stickyColumn: {
     position: 'sticky',
     left: 0,
@@ -72,14 +78,18 @@ function ChplSortableHeaders(props) {
                   onClick={createSortHandler(cell)}
                 >
                   <span className={cell.invisible && classes.visuallyHidden}>
+                    <div className={classes.statusContainer} >
                     { cell.text }
                     { cell.extra }
+                    </div>
                   </span>
                 </TableSortLabel>
               ) : (
                 <span className={cell.invisible && classes.visuallyHidden}>
-                  { cell.text }
-                  { cell.extra }
+                 <div className={classes.statusContainer} >
+                    { cell.text }
+                    { cell.extra }
+                    </div>
                 </span>
               )}
           </TableCell>
