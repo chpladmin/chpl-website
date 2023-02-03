@@ -51,7 +51,7 @@ function ChplCriteria(props) {
   const handleSave = (criterion) => {
     const updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
     updated.push(criterion);
-    setCriteria(updated);
+    setCriteria(updated.sort((a, b) => sortCriteria(a.criterion, b.criterion)));
     props.onSave(updated);
   };
 
