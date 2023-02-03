@@ -27,8 +27,8 @@ const useStyles = makeStyles(() => ({
   infoIcon: {
     float: 'right',
   },
-  infoIconColor:{
-   color:'#156dac',
+  infoIconColor: {
+    color: '#156dac',
   },
   unindentedData: {
     marginLeft: '-25px',
@@ -53,9 +53,9 @@ function ChplCriterionDetailsView(props) {
 
   return (
     <Card>
-    <TableContainer component={Paper}>
-      <Table aria-label="Criterion Details Table">
-        { (criterion.success || criterion.g1Success !== null || criterion.g2Success !== null)
+      <TableContainer component={Paper}>
+        <Table aria-label="Criterion Details Table">
+          { (criterion.success || criterion.g1Success !== null || criterion.g2Success !== null)
           && (
             <TableHead>
               <TableRow>
@@ -68,8 +68,8 @@ function ChplCriterionDetailsView(props) {
               </TableRow>
             </TableHead>
           )}
-        <TableBody>
-          { criterion.success && criterion.additionalSoftware?.length > 0
+          <TableBody>
+            { criterion.success && criterion.additionalSoftware?.length > 0
             && (
               <TableRow key="additionalSoftware">
                 <TableCell component="th" scope="row">
@@ -85,7 +85,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell><ChplReliedUponSoftwareView sw={criterion.additionalSoftware} /></TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.gap !== null
+            { criterion.success && criterion.gap !== null
             && (
               <TableRow key="gap">
                 <TableCell component="th" scope="row">
@@ -93,7 +93,7 @@ function ChplCriterionDetailsView(props) {
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
                         className={classes.infoIconColor}
-                        />
+                      />
                     </IconButton>
                   </ChplTooltip>
                   Gap
@@ -101,7 +101,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.gap ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.svaps?.length > 0
+            { criterion.success && criterion.svaps?.length > 0
             && (
               <TableRow key="svap">
                 <TableCell component="th" scope="row">
@@ -109,7 +109,7 @@ function ChplCriterionDetailsView(props) {
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
                         className={classes.infoIconColor}
-                        />
+                      />
                     </IconButton>
                   </ChplTooltip>
                   Standards Version Advancement Process
@@ -123,7 +123,7 @@ function ChplCriterionDetailsView(props) {
                             <ChplTooltip title="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.">
                               <IconButton className={classes.infoIcon}>
                                 <InfoIcon
-                                   className={classes.infoIconColor}
+                                  className={classes.infoIconColor}
                                 />
                               </IconButton>
                             </ChplTooltip>
@@ -135,7 +135,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { showOptionalStandardsSection()
+            { showOptionalStandardsSection()
             && (
               <TableRow key="optionalStandards">
                 <TableCell component="th" scope="row">
@@ -174,7 +174,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.g1Success !== null
+            { criterion.g1Success !== null
             && (
               <TableRow key="g1Success">
                 <TableCell component="th" scope="row">
@@ -190,7 +190,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.g1Success ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-          { criterion.g2Success !== null
+            { criterion.g2Success !== null
             && (
               <TableRow key="g2Success">
                 <TableCell component="th" scope="row">
@@ -206,7 +206,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.g2Success ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.functionalitiesTested
+            { criterion.success && criterion.functionalitiesTested
             && (
               <TableRow key="functionalitiesTested">
                 <TableCell component="th" scope="row">
@@ -236,7 +236,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.conformanceMethods
+            { criterion.success && criterion.conformanceMethods
             && (
               <TableRow key="conformanceMethods">
                 <TableCell component="th" scope="row">
@@ -274,7 +274,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && !criterion.conformanceMethods
+            { criterion.success && !criterion.conformanceMethods
             && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">
@@ -307,7 +307,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && (criterion.criterion.number === '170.315 (g)(4)' || criterion.criterion.number === '170.314 (g)(4)')
+            { criterion.success && (criterion.criterion.number === '170.315 (g)(4)' || criterion.criterion.number === '170.314 (g)(4)')
             && (
               <TableRow key="qms">
                 <TableCell component="th" scope="row">
@@ -348,7 +348,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.criterion.number === '170.315 (g)(5)'
+            { criterion.success && criterion.criterion.number === '170.315 (g)(5)'
             && (
               <TableRow key="accessibility">
                 <TableCell component="th" scope="row">
@@ -376,7 +376,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.testToolsUsed
+            { criterion.success && criterion.testToolsUsed
             && (
               <TableRow key="testToolsUsed">
                 <TableCell component="th" scope="row">
@@ -409,7 +409,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.testDataUsed
+            { criterion.success && criterion.testDataUsed
             && (
               <TableRow key="testDataUsed">
                 <TableCell component="th" scope="row">
@@ -445,7 +445,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.apiDocumentation !== null
+            { criterion.success && criterion.apiDocumentation !== null
             && (
               <TableRow key="apiDocumentation">
                 <TableCell component="th" scope="row">
@@ -465,7 +465,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.exportDocumentation !== null
+            { criterion.success && criterion.exportDocumentation !== null
             && (
               <TableRow key="exportDocumentation">
                 <TableCell component="th" scope="row">
@@ -485,7 +485,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.attestationAnswer !== null
+            { criterion.success && criterion.attestationAnswer !== null
             && (
               <TableRow key="attestationAnswer">
                 <TableCell component="th" scope="row">
@@ -501,7 +501,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.attestationAnswer ? 'Yes' : 'No'}</TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.documentationUrl !== null
+            { criterion.success && criterion.documentationUrl !== null
             && (
               <TableRow key="documentationUrl">
                 <TableCell component="th" scope="row">
@@ -521,7 +521,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.useCases !== null && criterion.attestationAnswer
+            { criterion.success && criterion.useCases !== null && criterion.attestationAnswer
             && (
               <TableRow key="useCases">
                 <TableCell component="th" scope="row">
@@ -541,7 +541,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.serviceBaseUrlList !== null
+            { criterion.success && criterion.serviceBaseUrlList !== null
             && (
               <TableRow key="serviceBaseUrlList">
                 <TableCell component="th" scope="row">
@@ -561,7 +561,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.privacySecurityFramework !== null
+            { criterion.success && criterion.privacySecurityFramework !== null
             && (
               <TableRow key="privacySecurityFramework">
                 <TableCell component="th" scope="row">
@@ -577,7 +577,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.privacySecurityFramework}</TableCell>
               </TableRow>
             )}
-          { criterion.success && criterion.sed !== null
+            { criterion.success && criterion.sed !== null
             && (
               <TableRow key="sed">
                 <TableCell component="th" scope="row">
@@ -593,9 +593,9 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.sed ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Card>
   );
 }

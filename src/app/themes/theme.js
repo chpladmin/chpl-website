@@ -72,9 +72,9 @@ const theme = createTheme({
     },
   },
   overrides: {
-    MuiAccordion:{
-      root:{
-        marginBottom:'4px',
+    MuiAccordion: {
+      root: {
+        marginBottom: '4px',
         '&$before': {
           opacity: '0',
         },
@@ -83,11 +83,11 @@ const theme = createTheme({
     MuiAccordionSummary: {
       root: {
         padding: '8px',
-        borderRadius:'4px!important',
+        borderRadius: '4px!important',
         '&$expanded': {
           boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
           backgroundColor: '#f9f9f9',
-          borderRadius:'4px',
+          borderRadius: '4px',
           borderBottom: '.5px solid #c2c6ca',
         },
       },
