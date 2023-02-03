@@ -26,26 +26,25 @@ import {
   qmsStandard,
 } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
-    infoIconColor: {
-      color: '#156dac',
-      marginLeft: '4px',
-      marginTop: '4px',
-    },
-    NestedAccordionLevelOne: {
-      borderRadius: '4px',
-      display: 'grid',
-      borderColor: ' #c2c6ca',
-      borderWidth: '.5px',
-      borderStyle: 'solid',
-    },
-    NestedAccordionLevelOneSummary: {
-      backgroundColor: '#EFEFEF!important',
-      borderRadius: '4px',
-      borderBottom: '.5px solid #c2c6ca',
-    },
-  })
-);
+const useStyles = makeStyles({
+  infoIconColor: {
+    color: '#156dac',
+    marginLeft: '4px',
+    marginTop: '4px',
+  },
+  NestedAccordionLevelOne: {
+    borderRadius: '4px',
+    display: 'grid',
+    borderColor: ' #c2c6ca',
+    borderWidth: '.5px',
+    borderStyle: 'solid',
+  },
+  NestedAccordionLevelOneSummary: {
+    backgroundColor: '#efefef !important',
+    borderRadius: '4px',
+    borderBottom: '.5px solid #c2c6ca',
+  },
+});
 
 function ChplCriteria(props) {
   const { hasIcs, isConfirming } = props;

@@ -137,8 +137,8 @@
                   <div class="read-only-data">{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtPlansCheckDate) }}</div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsUrl">
-                  <div class="data-label listing__enhanced-label--small">Results</div>
-                  <div class="read-only-data"><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl" id="rwt-results-url"></chpl-link-bridge></div>
+                  <div class="data-label listing__enhanced-label--small" id="rwt-results-url">Results</div>
+                  <div class="read-only-data"><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl"></chpl-link-bridge></div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
                   <div class="data-label listing__enhanced-label--small">Last ONC-ACB Completeness Check</div>

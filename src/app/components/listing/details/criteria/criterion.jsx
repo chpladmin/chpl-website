@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     borderStyle: 'solid',
   },
   criterionAccordionSummary: {
-    backgroundColor: '#f9f9f9!important',
+    backgroundColor: '#f9f9f9 !important',
     borderRadius: '4px',
     borderBottom: '.5px solid #c2c6ca',
   },
