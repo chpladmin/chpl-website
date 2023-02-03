@@ -1,12 +1,4 @@
-import React, { useState } from 'react';
-import {
-  arrayOf,
-  bool,
-  func,
-} from 'prop-types';
-import { ThemeProvider } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoIcon from '@material-ui/icons/Info';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -14,12 +6,19 @@ import {
   Container,
   makeStyles,
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import InfoIcon from '@material-ui/icons/Info';
+import {
+  arrayOf,
+  bool,
+  func,
+} from 'prop-types';
 
 import ChplCriterion from './criterion';
 
-import theme from 'themes/theme';
 import { ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { sortCriteria } from 'services/criteria.service';
+import { UserContext } from 'shared/contexts';
 import {
   accessibilityStandard,
   certificationResult,
@@ -27,7 +26,7 @@ import {
   qmsStandard,
 } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   NestedAccordionLevelOne: {
     borderRadius: '8px',
     display: 'grid',
@@ -36,17 +35,18 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f9f9f9',
     borderRadius: '8px',
   },
-}));
+});
 
 function ChplCriteria(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const sortCerts = getAngularService('utilService').sortCertActual;
-  const { hasAnyRole } = getAngularService('authService');
-  const [criteria, setCriteria] = useState(props.certificationResults);
-  const [hasIcs] = useState(props.hasIcs);
-  const [isConfirming] = useState(props.isConfirming);
+  const { hasIcs, isConfirming } = props;
+  const { hasAnyRole } = useContext(UserContext);
+  const [criteria, setCriteria] = useState([]);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
+
+  useEffect(() => {
+    setCriteria(props.certificationResults
+      .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
+  }, [props.certificationResults]); // eslint-disable-line react/destructuring-assignment
 
   const handleSave = (criterion) => {
     const updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
@@ -66,9 +66,8 @@ function ChplCriteria(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
-        .sort((a, b) => sortCerts(a, b))
         .map((cc) => (
           <ChplCriterion
             key={cc.criterion.id}
@@ -100,7 +99,6 @@ function ChplCriteria(props) {
             <AccordionDetails>
               <Container>
                 { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
-                  .sort((a, b) => sortCerts(a, b))
                   .map((cc) => (
                     <ChplCriterion
                       key={cc.criterion.id}
@@ -116,7 +114,7 @@ function ChplCriteria(props) {
             </AccordionDetails>
           </Accordion>
         )}
-    </ThemeProvider>
+    </>
   );
 }
 
