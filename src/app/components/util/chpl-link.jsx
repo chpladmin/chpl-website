@@ -35,16 +35,14 @@ function ChplLink(props) {
   } = props;
   const classes = useStyles();
   const [href, setHref] = useState('');
-  const [id, setId] = useState('');
   const [text, setText] = useState('');
   const $analytics = getAngularService('$analytics');
   const $state = getAngularService('$state');
 
   useEffect(() => {
     setHref(prependLink(props.href));
-    setId(props.id || props.href);
     setText(props.text || props.href);
-  }, [props.href, props.id, props.text]); // eslint-disable-line react/destructuring-assignment
+  }, [props.href, props.text]); // eslint-disable-line react/destructuring-assignment
 
   let clicked = false;
   const track = (e) => {
@@ -87,7 +85,7 @@ function ChplLink(props) {
 
   return (
     <span className={classes.chplLink}>
-      <a href={href} onClick={track} id={id}>
+      <a href={href} onClick={track}>
         {text}
       </a>
       { external
@@ -109,7 +107,6 @@ ChplLink.propTypes = {
   analytics: analyticsConfig,
   external: bool,
   router: routerConfig,
-  id: string,
 };
 
 ChplLink.defaultProps = {
@@ -117,5 +114,4 @@ ChplLink.defaultProps = {
   analytics: {},
   external: true,
   router: {},
-  id: '',
 };
