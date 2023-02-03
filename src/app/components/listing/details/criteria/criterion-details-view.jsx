@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { arrayOf } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 import {
+  Card,
   IconButton,
   Paper,
   Table,
@@ -26,6 +27,9 @@ const useStyles = makeStyles(() => ({
   infoIcon: {
     float: 'right',
   },
+  infoIconColor:{
+   color:'#156dac',
+  },
   unindentedData: {
     marginLeft: '-25px',
   },
@@ -48,6 +52,7 @@ function ChplCriterionDetailsView(props) {
             || (criterion.testStandards?.length > 0 && criterion.optionalStandards));
 
   return (
+    <Card>
     <TableContainer component={Paper}>
       <Table aria-label="Criterion Details Table">
         { (criterion.success || criterion.g1Success !== null || criterion.g2Success !== null)
@@ -71,7 +76,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criterion.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -87,8 +92,8 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The corresponding certification criterion are gap certified (True or False).">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
-                      />
+                        className={classes.infoIconColor}
+                        />
                     </IconButton>
                   </ChplTooltip>
                   Gap
@@ -103,8 +108,8 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="Standards Version Advancement Process (SVAP) is a process to enable health IT developers’ ability to incorporate newer versions of Secretary-adopted standards and implementation specification">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
-                      />
+                        className={classes.infoIconColor}
+                        />
                     </IconButton>
                   </ChplTooltip>
                   Standards Version Advancement Process
@@ -118,7 +123,7 @@ function ChplCriterionDetailsView(props) {
                             <ChplTooltip title="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.">
                               <IconButton className={classes.infoIcon}>
                                 <InfoIcon
-                                  color="primary"
+                                   className={classes.infoIconColor}
                                 />
                               </IconButton>
                             </ChplTooltip>
@@ -137,7 +142,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The standard(s) used to meet a certification criterion where additional, optional standards are permitted.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -176,7 +181,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(1)).">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -192,7 +197,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(2)).">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -208,7 +213,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -238,7 +243,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The method used to evaluate compliance with the certification criterion. For the Test Procedure method, this also includes the version used during testing of the certification criterion functionality.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -276,7 +281,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The type of test procedure and the version used during testing of the certification criterion functionality.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -309,7 +314,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="If the corresponding certified product has a Quality Management System (QMS): 1) the standard or mapping used to meet the quality management system certification criterion, and 2) if a QMS standard or mapping was modified, documentation on the changes made. Specific requirements for 2015 Edition are different than for 2014 Edition.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -350,7 +355,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -378,7 +383,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The name and version of the test tool used during testing of the certification criterion functionality.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -411,7 +416,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The test data version and any alterations or modifications to the ONC-approved test data. It is an optional field except for the products testing for automated numerator recording (&sect;170.314(g)(1) or &sect;170.315(g)(1)) and automated measure calculation (&sect; 170.314(g)(2) or &sect;170.315(g)(2)). For those products, the field is required.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -447,7 +452,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The publicly accessible hyperlink to the required documentation used to meet the applicable API certification criteria (&sect;170.315(g)(7) through 170.315(g)(10)).">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -467,7 +472,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -487,7 +492,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -503,7 +508,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -523,7 +528,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -543,7 +548,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -563,7 +568,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). ">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -579,7 +584,7 @@ function ChplCriterionDetailsView(props) {
                   <ChplTooltip title="The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
-                        color="primary"
+                        className={classes.infoIconColor}
                       />
                     </IconButton>
                   </ChplTooltip>
@@ -591,6 +596,7 @@ function ChplCriterionDetailsView(props) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Card>
   );
 }
 

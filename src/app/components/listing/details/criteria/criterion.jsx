@@ -38,16 +38,16 @@ const useStyles = makeStyles(() => ({
   criterionAccordion: {
     borderRadius: '8px',
     display: 'grid',
+    borderColor: ' #c2c6ca',
+    borderWidth:'.5px',
+    borderStyle:'solid',
   },
   criterionAccordionSummary: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    border: '.5px solid #c2c6ca',
+    backgroundColor: '#f9f9f9!important',
+    borderRadius: '4px',
+    borderBottom: '.5px solid #c2c6ca',
   },
   criterionAccordionDetails: {
-    borderBottom: '.5px solid #c2c6ca',
-    borderLeft: '.5px solid #c2c6ca',
-    borderRight: '.5px solid #c2c6ca',
     borderRadius: '0 0 8px 8px',
   },
   iconSpacing: {
@@ -95,13 +95,13 @@ function ChplCriterion(props) {
   const getIcon = () => (expanded
     ? (
       <>
-        Hide Details
+        <Typography color="primary" variant="body2">Hide Details</Typography>
         <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
       </>
     )
     : (
       <>
-        Show Details
+        <Typography color="primary" variant="body2">Show Details</Typography>
         <ExpandMoreIcon color="primary" fontSize="large" />
       </>
     ));
@@ -134,11 +134,13 @@ function ChplCriterion(props) {
   };
 
   return (
+    <div>
     <Accordion
       disabled={!criterion.success && !(criterion.g1Success !== null || criterion.g2Success !== null) && !canEdit}
       className={classes.criterionAccordion}
       onChange={handleAccordionChange}
       id={`criterion-id-${criterion.criterion.id}`}
+      
     >
       <AccordionSummary
         className={classes.criterionAccordionSummary}
@@ -192,7 +194,7 @@ function ChplCriterion(props) {
               )}
           </Grid>
           <Grid item xs={8}>
-            <Typography>
+            <Typography variant="body2">
               <ChplHighlightCures text={criterion.criterion.title} />
             </Typography>
           </Grid>
@@ -247,6 +249,7 @@ function ChplCriterion(props) {
         </Container>
       </AccordionDetails>
     </Accordion>
+    </div>
   );
 }
 
