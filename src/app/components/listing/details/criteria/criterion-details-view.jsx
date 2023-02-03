@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { arrayOf } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 import {
@@ -23,7 +23,7 @@ import {
   qmsStandard,
 } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   infoIcon: {
     float: 'right',
   },
@@ -33,15 +33,11 @@ const useStyles = makeStyles(() => ({
   unindentedData: {
     marginLeft: '-25px',
   },
-}));
+});
 
 function ChplCriterionDetailsView(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [criterion] = useState(props.criterion);
-  const [qmsStandards] = useState(props.qmsStandards);
-  const [accessibilityStandards] = useState(props.accessibilityStandards);
+  const { criterion, qmsStandards, accessibilityStandards } = props;
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   if (criterion.criterion.certificationEdition === '2011') {
     return null;

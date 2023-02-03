@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { bool, func } from 'prop-types';
 import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
@@ -29,7 +29,7 @@ import ChplTestStandardsEdit from './test-standards/test-standards-edit';
 import ChplTestToolsEdit from './test-tools/test-tools-edit';
 
 import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
 import {
   certificationResult,
   resources as resourceDefinition,
@@ -46,14 +46,14 @@ const validationSchema = yup.object({
     .url('Enter a valid URL'),
 });
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   subtitleSpacing: {
     marginBottom: '8px',
   },
-}));
+});
 
 function ChplCriterionDetailsEdit(props) {
-  const { hasAnyRole } = getAngularService('authService');
+  const { hasAnyRole } = useContext(UserContext);
   const { hasIcs, isConfirming } = props;
   /* eslint-disable react/destructuring-assignment */
   const resources = {

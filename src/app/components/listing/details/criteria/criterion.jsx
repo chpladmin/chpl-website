@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
 import {
-  arrayOf,
-  bool,
-  func,
-} from 'prop-types';
-import CloudDoneIcon from '@material-ui/icons/CloudDone';
-import CheckIcon from '@material-ui/icons/Check';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SyncIcon from '@material-ui/icons/Sync';
-import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -21,12 +11,23 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloudDoneIcon from '@material-ui/icons/CloudDone';
+import CheckIcon from '@material-ui/icons/Check';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SyncIcon from '@material-ui/icons/Sync';
+import {
+  arrayOf,
+  bool,
+  func,
+} from 'prop-types';
 
 import ChplCriterionDetailsEdit from './criterion-details-edit';
 import ChplCriterionDetailsView from './criterion-details-view';
 
 import { ChplHighlightCures } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
+import { isCures } from 'services/criteria.service';
 import {
   accessibilityStandard,
   certificationResult,
@@ -34,7 +35,7 @@ import {
   qmsStandard,
 } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   criterionAccordion: {
     borderRadius: '8px',
     display: 'grid',
@@ -72,25 +73,24 @@ const useStyles = makeStyles(() => ({
   rotate: {
     transform: 'rotate(180deg)',
   },
-}));
+});
 
 function ChplCriterion(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [canEdit] = useState(props.canEdit);
-  const [criterion, setCriterion] = useState(props.certificationResult);
+  const {
+    accessibilityStandards,
+    canEdit,
+    hasIcs,
+    isConfirming,
+    qmsStandards,
+    resources,
+  } = props;
+  const [criterion, setCriterion] = useState(props.certificationResult); // eslint-disable-line react/destructuring-assignment
   const [editing, setEditing] = useState(false);
-  const [hasIcs] = useState(props.hasIcs);
-  const [isConfirming] = useState(props.isConfirming);
   const [expanded, setExpanded] = useState(false);
   const [pending, setPending] = useState(false);
-  const [resources] = useState(props.resources);
   const [staged, setStaged] = useState(false);
-  const [qmsStandards] = useState(props.qmsStandards);
-  const [accessibilityStandards] = useState(props.accessibilityStandards);
   const $analytics = getAngularService('$analytics');
-  const utilService = getAngularService('utilService');
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   const getIcon = () => (expanded
     ? (
@@ -109,7 +109,7 @@ function ChplCriterion(props) {
   const handleAccordionChange = (event, isExpanded) => {
     setExpanded(!expanded);
     if (isExpanded) {
-      const label = criterion.criterion.number + (utilService.isCures(criterion.criterion) ? ' (Cures Update)' : '');
+      const label = criterion.criterion.number + (isCures(criterion.criterion) ? ' (Cures Update)' : '');
       $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
     }
   };
