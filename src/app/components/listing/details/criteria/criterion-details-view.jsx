@@ -1,9 +1,9 @@
 import React from 'react';
-import { arrayOf } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
 import {
   Card,
   IconButton,
+  List,
+  ListItem,
   Paper,
   Table,
   TableBody,
@@ -13,6 +13,8 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
+import { arrayOf } from 'prop-types';
 
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
@@ -29,9 +31,6 @@ const useStyles = makeStyles({
   },
   infoIconColor: {
     color: '#156dac',
-  },
-  unindentedData: {
-    marginLeft: '-25px',
   },
 });
 
@@ -111,9 +110,9 @@ function ChplCriterionDetailsView(props) {
                   Standards Version Advancement Process
                 </TableCell>
                 <TableCell>
-                  <ul className={classes.unindentedData}>
+                  <List>
                     { criterion.svaps.map((svap, index) => (
-                      <li key={svap.id || svap.key || index}>
+                      <ListItem key={svap.id || svap.key || index}>
                         { svap.replaced
                           && (
                             <ChplTooltip title="This version of the adopted standard or implementation specification is approved for use under previous SVAP flexibility, but please note a newer SVAP version is now available for use in the Program.">
@@ -125,9 +124,9 @@ function ChplCriterionDetailsView(props) {
                             </ChplTooltip>
                           )}
                         <ChplEllipsis text={`${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`} maxLength={100} wordBoundaries />
-                      </li>
+                      </ListItem>
                     ))}
-                  </ul>
+                  </List>
                 </TableCell>
               </TableRow>
             )}
@@ -147,25 +146,25 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>
                   { criterion.optionalStandards?.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { criterion.optionalStandards.map((os, index) => (
-                          <li key={os.id || os.key || index}>
+                          <ListItem key={os.id || os.key || index}>
                             <ChplEllipsis text={os.description || os.citation} maxLength={100} wordBoundaries />
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { criterion.testStandards?.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { criterion.testStandards.map((ts, index) => (
-                          <li key={ts.id || ts.key || index}>
+                          <ListItem key={ts.id || ts.key || index}>
                             { ts.testStandardDescription
                               && <ChplEllipsis text={ts.testStandardDescription} maxLength={100} wordBoundaries />}
                             { !ts.testStandardDescription && ts.testStandardName }
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                 </TableCell>
               </TableRow>
@@ -218,15 +217,15 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>
                   { criterion.functionalitiesTested.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { criterion.functionalitiesTested.map((ft, index) => (
-                          <li key={ft.id || ft.key || index}>
+                          <ListItem key={ft.id || ft.key || index}>
                             { ft.description
                               && <ChplEllipsis text={ft.description} maxLength={100} wordBoundaries />}
                             { !ft.description && ft.name }
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { criterion.functionalitiesTested.length === 0 && 'None' }
                 </TableCell>
@@ -248,9 +247,9 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>
                   { criterion.conformanceMethods.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { criterion.conformanceMethods.map((cm, index) => (
-                          <li key={cm.id || cm.key || index} className={cm.conformanceMethod.removed ? 'removed' : ''}>
+                          <ListItem key={cm.id || cm.key || index} className={cm.conformanceMethod.removed ? 'removed' : ''}>
                             Name:
                             {' '}
                             {`${cm.conformanceMethod.removed ? 'Removed | ' : ''} ${cm.conformanceMethod.name}`}
@@ -262,9 +261,9 @@ function ChplCriterionDetailsView(props) {
                                   { cm.conformanceMethodVersion }
                                 </>
                               )}
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { criterion.conformanceMethods.length === 0 && 'None' }
                 </TableCell>
@@ -286,18 +285,18 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>
                   { criterion.testProcedures.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { criterion.testProcedures.map((tp, index) => (
-                          <li key={tp.id || tp.key || index}>
+                          <ListItem key={tp.id || tp.key || index}>
                             Name:
                             {' '}
                             { tp.testProcedure.name }
                             ; Version:
                             {' '}
                             { tp.testProcedureVersion }
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { criterion.testProcedures.length === 0 && 'None' }
                 </TableCell>
@@ -319,9 +318,9 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>
                   { qmsStandards?.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { qmsStandards.map((qms, index) => (
-                          <li key={qms.id || index}>
+                          <ListItem key={qms.id || index}>
                             <strong>Standard: </strong>
                             { qms.qmsStandardName }
                             <br />
@@ -336,9 +335,9 @@ function ChplCriterionDetailsView(props) {
                             <strong>Applicable Criteria: </strong>
                             { qms.applicableCriteria || 'N/A' }
                             <br />
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { (!qmsStandards || qmsStandards.length === 0) && 'N/A' }
                 </TableCell>
@@ -360,13 +359,13 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>
                   { accessibilityStandards?.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { accessibilityStandards.map((std, index) => (
-                          <li key={std.id || index}>
+                          <ListItem key={std.id || index}>
                             { std.accessibilityStandardName }
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { (!accessibilityStandards || accessibilityStandards.length === 0) && 'N/A' }
                 </TableCell>
@@ -388,18 +387,18 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>
                   { criterion.testToolsUsed.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { criterion.testToolsUsed.map((tt, index) => (
-                          <li key={tt.id || tt.key || index}>
+                          <ListItem key={tt.id || tt.key || index}>
                             Tool:
                             {' '}
                             {`${tt.testToolName}${tt.retired ? ' (Retired)' : ''}`}
                             ; Version:
                             {' '}
                             { tt.testToolVersion || 'N/A' }
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { criterion.testToolsUsed.length === 0 && 'None' }
                 </TableCell>
@@ -416,14 +415,14 @@ function ChplCriterionDetailsView(props) {
                       />
                     </IconButton>
                   </ChplTooltip>
-                  Test Data
+                  Test Data Used
                 </TableCell>
                 <TableCell>
                   { criterion.testDataUsed.length > 0
                     && (
-                      <ul className={classes.unindentedData}>
+                      <List>
                         { criterion.testDataUsed.map((td, index) => (
-                          <li key={td.id || td.key || index}>
+                          <ListItem key={td.id || td.key || index}>
                             Data:
                             {' '}
                             { td.testData.name || 'N/A' }
@@ -433,9 +432,9 @@ function ChplCriterionDetailsView(props) {
                             ; Alteration:
                             {' '}
                             { td.alteration || 'N/A' }
-                          </li>
+                          </ListItem>
                         ))}
-                      </ul>
+                      </List>
                     )}
                   { criterion.testDataUsed.length === 0 && 'None' }
                 </TableCell>

@@ -1,7 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { bool, func } from 'prop-types';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import {
   Button,
   Card,
@@ -15,6 +12,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
+import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
