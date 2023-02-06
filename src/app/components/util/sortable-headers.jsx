@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     top: 20,
     width: 1,
   },
-  statusContainer: {
+  extraContainer: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
@@ -77,20 +77,16 @@ function ChplSortableHeaders(props) {
                   direction={orderBy === cell.property ? order : (cell.reverseDefault ? 'desc' : 'asc')}
                   onClick={createSortHandler(cell)}
                 >
-                  <span className={cell.invisible && classes.visuallyHidden}>
-                    <div className={classes.statusContainer}>
-                      { cell.text }
-                      { cell.extra }
-                    </div>
-                  </span>
-                </TableSortLabel>
-              ) : (
-                <span className={cell.invisible && classes.visuallyHidden}>
-                  <div className={classes.statusContainer}>
+                  <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
                     { cell.text }
                     { cell.extra }
                   </div>
-                </span>
+                </TableSortLabel>
+              ) : (
+                <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
+                  { cell.text }
+                  { cell.extra }
+                </div>
               )}
           </TableCell>
         ))}
