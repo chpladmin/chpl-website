@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 11.48.1
+_6 February 2023_
+
+### User Interface Updates
+* Display "SVAP Summary" download file on Resources page
+* Remove start/end dates from announcements on public Overview page
+
+---
+
 ## Version 11.48.0
 _23 January 2023_
 

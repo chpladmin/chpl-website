@@ -174,6 +174,10 @@ const ReportsListingsComponent = {
         if (testFunctionality.length > 0) {
           obj.changes.push(`<li>Test Functionality changes<ul>${testFunctionality.join('')}</li>`);
         }
+        const functionalitiesTested = this.ReportService.compare(prev[i].functionalitiesTested, curr[i].functionalitiesTested, 'functionalitiesTested');
+        if (functionalitiesTested.length > 0) {
+          obj.changes.push(`<li>Functionalities Tested changes<ul>${functionalitiesTested.join('')}</li>`);
+        }
         const svapKeys = [{ key: 'regulatoryTextCitation', display: 'SVAP' }];
         const svap = this.ReportService.compareArray(prev[i].svaps, curr[i].svaps, svapKeys, 'regulatoryTextCitation');
         if (svap.length > 0) {

@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event';
 import { when } from 'jest-when';
 
 import * as angularReactHelper from '../../../services/angular-react-helper';
+
 import ChplResourcesDownload from './download';
 
 const ApiMock = 'API';
@@ -38,14 +39,6 @@ describe('the ChplResourcesDownload page', () => {
   });
 
   describe('when rendering', () => {
-    it('should not show the restricted SVAP item', async () => {
-      const item = screen.queryByText(/Standards Version Advancement Process (SVAP) Summary:/i);
-
-      await waitFor(() => {
-        expect(item).toBe(null);
-      });
-    });
-
     it('should not show the restricted Surveillance item', async () => {
       const item = screen.queryByText(/Surveillance (Basic):/i);
 
@@ -58,7 +51,7 @@ describe('the ChplResourcesDownload page', () => {
       const items = screen.getAllByRole('listitem');
 
       await waitFor(() => {
-        expect(items.length).toBe(11);
+        expect(items.length).toBe(12);
       });
     });
   });

@@ -3,6 +3,7 @@ import conformanceMethodsErrorsAndWarnings from './conformance-methods-errors-an
 import cqmsErrorsAndWarnings from './cqms-errors-and-warnings';
 import criteriaRelationshipsErrorsAndWarnings from './criteria-relationships-errors-and-warnings';
 import developerErrorsAndWarnings from './developer-errors-and-warnings';
+import functionalityTestedErrorsAndWarnings from './functionality-tested-errors-and-warnings';
 import fuzzyMatchingWarnings from './fuzzy-matching-warnings';
 import icsErrors from './ics-errors';
 import invalidFormatsErrorsAndWarnings from './invalid-formats-errors-and-warnings';
@@ -20,6 +21,7 @@ const suites = [
   cqmsErrorsAndWarnings,
   criteriaRelationshipsErrorsAndWarnings,
   developerErrorsAndWarnings,
+  functionalityTestedErrorsAndWarnings,
   fuzzyMatchingWarnings,
   icsErrors,
   invalidFormatsErrorsAndWarnings,
@@ -39,6 +41,7 @@ export {
   cqmsErrorsAndWarnings,
   criteriaRelationshipsErrorsAndWarnings,
   developerErrorsAndWarnings,
+  functionalityTestedErrorsAndWarnings,
   fuzzyMatchingWarnings,
   icsErrors,
   invalidFormatsErrorsAndWarnings,

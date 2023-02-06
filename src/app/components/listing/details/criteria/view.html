@@ -79,20 +79,20 @@
             </td>
             <td>{{ $ctrl.cert.g2Success ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.testFunctionality !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Functionality_Tested{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.functionalitiesTested !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Functionality_Tested{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Functionality Tested <button class="btn btn-link btn-xs pull-right" uib-tooltip="Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
-            <td ng-if="$ctrl.cert.testFunctionality && $ctrl.cert.testFunctionality.length > 0">
+            <td ng-if="$ctrl.cert.functionalitiesTested && $ctrl.cert.functionalitiesTested.length > 0">
               <ul>
-                <li ng-repeat="m in $ctrl.cert.testFunctionality">
+                <li ng-repeat="m in $ctrl.cert.functionalitiesTested">
                   <span ng-if="!m.description">{{ m.name }}</span>
                   <chpl-ellipsis-bridge ng-if="m.description" text="m.description" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
-                  <span ng-if="m.testFunctionalityId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
+                  <span ng-if="m.functionalityTestedId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
                 </li>
               </ul>
             </td>
-            <td ng-if="!$ctrl.cert.testFunctionality || $ctrl.cert.testFunctionality.length === 0">None</td>
+            <td ng-if="!$ctrl.cert.functionalitiesTested || $ctrl.cert.functionalitiesTested.length === 0">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_conformance_method{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>

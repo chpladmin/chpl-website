@@ -22,7 +22,7 @@ import { ChplReliedUponSoftwareEdit } from './relied-upon-software';
 import ChplConformanceMethodsEdit from './conformance-methods';
 import ChplOptionalStandardsEdit from './optional-standards';
 import ChplSvapsEdit from './svaps';
-import ChplTestFunctionalityEdit from './test-functionality';
+import ChplFunctionalitiesTestedEdit from './functionalities-tested';
 import ChplTestDataEdit from './test-data';
 import ChplTestProceduresEdit from './test-procedures';
 import ChplTestStandardsEdit from './test-standards';
@@ -53,14 +53,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplCriterionDetailsEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [criterion, setCriterion] = useState(props.criterion);
-  const [hasIcs] = useState(props.hasIcs);
-  const [isConfirming] = useState(props.isConfirming);
-  const [resources] = useState(props.resources);
-  const classes = useStyles();
   const { hasAnyRole } = getAngularService('authService');
+  const { hasIcs, isConfirming } = props;
+  /* eslint-disable react/destructuring-assignment */
+  const resources = {
+    ...props.resources,
+    functionalitiesTested: props.resources.functionalitiesTested.filter((ft) => ft.criteria.some((c) => c.id === props.criterion.criterion.id)),
+  };
+  const [criterion, setCriterion] = useState(props.criterion);
   /* eslint-enable react/destructuring-assignment */
+  const classes = useStyles();
 
   const formik = useFormik({
     initialValues: {
@@ -308,7 +310,7 @@ function ChplCriterionDetailsEdit(props) {
                     </div>
                   </>
                 )}
-              { (criterion.testFunctionality?.length > 0 || criterion.allowedTestFunctionalities?.length > 0)
+              { criterion.functionalitiesTested
                 && (
                   <>
                     <div>
@@ -321,9 +323,9 @@ function ChplCriterionDetailsEdit(props) {
                       >
                         Functionality Tested
                       </Typography>
-                      <ChplTestFunctionalityEdit
-                        testFunctionality={criterion.testFunctionality}
-                        options={criterion.allowedTestFunctionalities}
+                      <ChplFunctionalitiesTestedEdit
+                        functionalitiesTested={criterion.functionalitiesTested}
+                        options={resources.functionalitiesTested}
                         onChange={handleDetailChange}
                       />
                     </div>
