@@ -13,7 +13,7 @@ const palette = {
   secondaryLight: '#ffffff',
   secondary: '#f5f9fd',
   secondaryDark: '#c2c6ca',
-  warning: '#e6ea0b',
+  warning: '#e3bf00',
   white: '#fff',
 };
 
