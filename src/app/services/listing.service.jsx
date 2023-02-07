@@ -16,7 +16,7 @@ import { ChplTooltip } from 'components/util';
 import { palette } from 'themes';
 
 const getFullButton = (text, icon) => (
-  <ChplTooltip title={text}>
+  <ChplTooltip title={`Certification Status: ${text}`}>
     <IconButton>
       { icon }
     </IconButton>
