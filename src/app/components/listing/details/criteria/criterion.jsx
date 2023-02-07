@@ -39,16 +39,16 @@ const useStyles = makeStyles({
   criterionAccordion: {
     borderRadius: '8px',
     display: 'grid',
+    borderColor: ' #c2c6ca',
+    borderWidth: '.5px',
+    borderStyle: 'solid',
   },
   criterionAccordionSummary: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    border: '.5px solid #c2c6ca',
+    backgroundColor: '#f9f9f9 !important',
+    borderRadius: '4px',
+    borderBottom: '.5px solid #c2c6ca',
   },
   criterionAccordionDetails: {
-    borderBottom: '.5px solid #c2c6ca',
-    borderLeft: '.5px solid #c2c6ca',
-    borderRight: '.5px solid #c2c6ca',
     borderRadius: '0 0 8px 8px',
   },
   iconSpacing: {
@@ -95,13 +95,13 @@ function ChplCriterion(props) {
   const getIcon = () => (expanded
     ? (
       <>
-        Hide Details
+        <Typography color="primary" variant="body2">Hide Details</Typography>
         <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
       </>
     )
     : (
       <>
-        Show Details
+        <Typography color="primary" variant="body2">Show Details</Typography>
         <ExpandMoreIcon color="primary" fontSize="large" />
       </>
     ));
@@ -134,37 +134,38 @@ function ChplCriterion(props) {
   };
 
   return (
-    <Accordion
-      disabled={!criterion.success && !(criterion.g1Success !== null || criterion.g2Success !== null) && !canEdit}
-      className={classes.criterionAccordion}
-      onChange={handleAccordionChange}
-      id={`criterion-id-${criterion.criterion.id}`}
-    >
-      <AccordionSummary
-        className={classes.criterionAccordionSummary}
-        expandIcon={getIcon()}
-        id={`criterion-id-${criterion.criterion.id}-header`}
+    <div>
+      <Accordion
+        disabled={!criterion.success && !(criterion.g1Success !== null || criterion.g2Success !== null) && !canEdit}
+        className={classes.criterionAccordion}
+        onChange={handleAccordionChange}
+        id={`criterion-id-${criterion.criterion.id}`}
       >
-        <Grid container alignItems="center" spacing={4}>
-          <Grid item xs={1}>
-            { criterion.success
+        <AccordionSummary
+          className={classes.criterionAccordionSummary}
+          expandIcon={getIcon()}
+          id={`criterion-id-${criterion.criterion.id}-header`}
+        >
+          <Grid container alignItems="center" spacing={4}>
+            <Grid item xs={1}>
+              { criterion.success
               && (
                 <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
               )}
-          </Grid>
-          <Grid item xs={3}>
-            <Typography variant="subtitle1">
-              { criterion.criterion.removed
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant="subtitle1">
+                { criterion.criterion.removed
                 && (
                   <>
                     Removed |
                   </>
                 )}
-              <div className={classes.criterionNumber}>
-                {criterion.criterion.number}
-              </div>
-            </Typography>
-            { pending
+                <div className={classes.criterionNumber}>
+                  {criterion.criterion.number}
+                </div>
+              </Typography>
+              { pending
               && (
                 <Chip
                   overlap="circle"
@@ -177,7 +178,7 @@ function ChplCriterion(props) {
                   )}
                 />
               )}
-            { staged && !pending
+              { staged && !pending
               && (
                 <Chip
                   overlap="circle"
@@ -190,33 +191,33 @@ function ChplCriterion(props) {
                   )}
                 />
               )}
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="body2">
+                <ChplHighlightCures text={criterion.criterion.title} />
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <Typography>
-              <ChplHighlightCures text={criterion.criterion.title} />
-            </Typography>
-          </Grid>
-        </Grid>
-      </AccordionSummary>
-      <AccordionDetails
-        className={classes.criterionAccordionDetails}
-        id={`criterion-id-${criterion.criterion.id}-details`}
-      >
-        <Container>
-          { editing
-            ? (
-              <ChplCriterionDetailsEdit
-                criterion={criterion}
-                hasIcs={hasIcs}
-                isConfirming={isConfirming}
-                onCancel={handleCancel}
-                onChange={handleChange}
-                onSave={handleSave}
-                resources={resources}
-              />
-            ) : (
-              <>
-                { canEdit
+        </AccordionSummary>
+        <AccordionDetails
+          className={classes.criterionAccordionDetails}
+          id={`criterion-id-${criterion.criterion.id}-details`}
+        >
+          <Container>
+            { editing
+              ? (
+                <ChplCriterionDetailsEdit
+                  criterion={criterion}
+                  hasIcs={hasIcs}
+                  isConfirming={isConfirming}
+                  onCancel={handleCancel}
+                  onChange={handleChange}
+                  onSave={handleSave}
+                  resources={resources}
+                />
+              ) : (
+                <>
+                  { canEdit
                   && (
                     <div>
                       <Button
@@ -235,18 +236,19 @@ function ChplCriterion(props) {
                       </Button>
                     </div>
                   )}
-                <div>
-                  <ChplCriterionDetailsView
-                    criterion={criterion}
-                    accessibilityStandards={accessibilityStandards}
-                    qmsStandards={qmsStandards}
-                  />
-                </div>
-              </>
-            )}
-        </Container>
-      </AccordionDetails>
-    </Accordion>
+                  <div>
+                    <ChplCriterionDetailsView
+                      criterion={criterion}
+                      accessibilityStandards={accessibilityStandards}
+                      qmsStandards={qmsStandards}
+                    />
+                  </div>
+                </>
+              )}
+          </Container>
+        </AccordionDetails>
+      </Accordion>
+    </div>
   );
 }
 
