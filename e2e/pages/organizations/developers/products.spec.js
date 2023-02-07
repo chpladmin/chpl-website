@@ -167,6 +167,33 @@ describe('the Product part of the Developers page', () => {
         });
       });
     });
+
+    describe('when on the "Zoobook Systems LLC" Developer page', () => {
+      beforeEach(() => {
+        const developer = 'Zoobook Systems LLC';
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
+      });
+
+      describe('when editing "Zoobook EHR" product', () => {
+        const name = 'Zoobook EHR';
+        let product;
+        beforeEach(() => {
+          product = page.getProduct(name);
+          product.scrollIntoView({ block: 'center', inline: 'center' });
+          page.selectProduct(product);
+          page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
+		  page.editProduct(product);
+          page.editProductsHeader.waitForDisplayed();
+        });
+        it('should not allow user to transfer all products away from that developer', () => {
+          page.selectProductOwner('ZirMed - active');
+          actionBar.save();
+          expect(actionBar.errorMessages.getText()).toEqual('Zoobook Systems LLC has no other products so this product cannot be transferred. Please contact ONC if this is needed.');
+        });
+      });
+    });
   });
 
   describe('when logged in as an ONC', () => {
