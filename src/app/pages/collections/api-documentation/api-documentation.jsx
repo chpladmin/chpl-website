@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
@@ -11,7 +11,6 @@ import {
   certificationStatuses,
   derivedCertificationEditions,
 } from 'components/filter/filters';
-import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationBodies,
@@ -26,14 +25,8 @@ const staticFilters = [
   }];
 
 function ChplApiDocumentationCollectionPage() {
-  const { isOn } = useContext(FlagContext);
-  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const ccQuery = useFetchCriteria();
-
-  useEffect(() => {
-    setErdPhase2IsOn(isOn('erd-phase-2'));
-  }, [isOn]);
 
   useEffect(() => {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
@@ -46,7 +39,7 @@ function ChplApiDocumentationCollectionPage() {
         value: cc.id,
         display: `${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
         longDisplay: `${cc.removed ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
-        default: erdPhase2IsOn ? [56, 181, 182].includes(cc.id) : [56, 57, 58, 181, 182].includes(cc.id),
+        default: [56, 181, 182].includes(cc.id),
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
@@ -54,7 +47,7 @@ function ChplApiDocumentationCollectionPage() {
         ...certificationCriteriaIds,
         values,
       }));
-  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess, erdPhase2IsOn]);
+  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   const analytics = {
     category: 'API Information for 2015 Edition Products',
