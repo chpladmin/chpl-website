@@ -28,8 +28,14 @@ const SurveillanceEditComponent = {
         surveillanceRequirements: {
           data: this.resolve.surveillanceTypes.surveillanceRequirements.data
             .filter((req) => req.requirementGroupType.name !== 'Certified Capability'
-                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
-                    || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.certificationEdition?.name),
+              || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
+              || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.certificationEdition?.name),
+        },
+        nonconformityTypes: {
+          data: this.resolve.surveillanceTypes.nonconformityTypes.data
+            .filter((ncType) => ncType.certificationEdition === null
+              || ncType.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
+              || ncType.certificationEdition.year === this.resolve.surveillance.certifiedProduct.certificationEdition?.name),
         },
       };
 
