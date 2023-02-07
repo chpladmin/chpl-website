@@ -86,7 +86,7 @@ function ChplLink(props) {
 
   if (inline && !external) {
     return (
-      <a href={href} onClick={track} id={id}>
+      <a href={href} onClick={track}>
         {text}
       </a>
     );
