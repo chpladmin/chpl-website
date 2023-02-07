@@ -7,7 +7,7 @@ const useDeleteComplaint = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`complaints/${data.id}`), {
     onSuccess: () => {
-      queryClient.invalidateQueries('complaints/search');
+      queryClient.invalidateQueries('complaints/search/v2');
     },
   });
 };
@@ -20,14 +20,14 @@ const useFetchComplaints = ({
   query,
 }) => {
   const axios = useAxios();
-  return useQuery(['complaints/search', {
+  return useQuery(['complaints/search/v2', {
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query,
   }], async () => {
-    const response = await axios.get(`complaints/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    const response = await axios.get(`complaints/search/v2?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };
@@ -37,7 +37,7 @@ const usePostComplaint = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('complaints', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries('complaints/search');
+      queryClient.invalidateQueries('complaints/search/v2');
     },
   });
 };
@@ -52,7 +52,7 @@ const usePutComplaint = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`complaints/${data.id}`, data), {
     onSuccess: () => {
-      queryClient.invalidateQueries('complaints/search');
+      queryClient.invalidateQueries('complaints/search/v2');
     },
   });
 };
