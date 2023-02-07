@@ -20,7 +20,7 @@ import {
   useFetchApiDocumentationData,
   useFetchCollection,
 } from 'api/collections';
-import ChplCompareButton from 'components/compare-widget/compare-button';
+import ChplActionButton from 'components/action-widget/action-button';
 import {
   ChplLink,
   ChplPagination,
@@ -483,7 +483,7 @@ function ChplApiDocumentationCollectionView(props) {
                                   )}
                               </TableCell>
                               <TableCell>
-                                <ChplCompareButton listing={item} />
+                                <ChplActionButton listing={item} />
                               </TableCell>
                             </TableRow>
                           ))}

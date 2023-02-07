@@ -76,7 +76,7 @@ describe('when on 2015 listing page', () => {
 
   describe('when clicking on cms id button', () => {
     beforeEach(async () => {
-      cmsComponent.addToCms('9833').click();
+      cmsComponent.certIdButton('9833').click();
       hooks.waitForSpinnerToDisappear();
       cmsComponent.waitForProcessingSpinnerToDisappear();
     });
@@ -86,11 +86,9 @@ describe('when on 2015 listing page', () => {
     });
   });
 
-  describe('when clicking on compare button', () => {
-    it('should add listing to compare widget', () => {
-      compareComponent.addListingToCompare('9833');
-      expect(compareComponent.compareProductsButton.isDisplayed()).toBe(true);
-    });
+  it('should add listing to compare widget', () => {
+    compareComponent.addListingToCompare('9833');
+    expect(compareComponent.isInList('Practice Fusion EHR')).toBeTrue();
   });
 
   it('should have developer page link under developer name', () => {
@@ -140,17 +138,12 @@ describe('when on 2014 listing page - ', () => {
   });
 
   it('should not have cms widget button', () => {
-    expect(cmsComponent.addToCms('8490').isDisplayed()).toBe(false);
+    expect(cmsComponent.certIdButton('8490').isDisplayed()).toBe(false);
   });
 
-  describe('when clicking on compare button', () => {
-    beforeEach(() => {
-      compareComponent.addListingToCompare('8490');
-    });
-
-    it('should add listing to compare widget after clicking on compare button', () => {
-      expect(compareComponent.compareProductsButton.isDisplayed()).toBe(true);
-    });
+  it('should add listing to compare widget after clicking on compare button', () => {
+    compareComponent.addListingToCompare('8490');
+    expect(compareComponent.isInList('24/7 smartEMR')).toBeTrue();
   });
 
   it('should open developer dashboard', () => {

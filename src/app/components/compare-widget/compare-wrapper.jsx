@@ -11,12 +11,12 @@ function CompareWrapper(props) {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
-    setListings($localStorage?.compareWidget?.products);
+    setListings($localStorage?.compareWidget?.products ?? []);
   }, []);
 
   useEffect(() => {
-    const deregisterAddWatcher = $rootScope.$on('addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
-    const deregisterRemoveWatcher = $rootScope.$on('removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
+    const deregisterAddWatcher = $rootScope.$on('compare.addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
+    const deregisterRemoveWatcher = $rootScope.$on('compare.removedListing', (evt, listing) => setListings((prev) => prev.filter((l) => l.id !== listing.id)));
     return () => {
       deregisterAddWatcher();
       deregisterRemoveWatcher();
@@ -24,7 +24,7 @@ function CompareWrapper(props) {
   }, [$rootScope, setListings]);
 
   const addListing = (listing) => {
-    $rootScope.$broadcast('addListing', {
+    $rootScope.$broadcast('compare.addListing', {
       ...listing,
       product: listing.product.name ? listing.product.name : listing.product,
     });
@@ -35,7 +35,7 @@ function CompareWrapper(props) {
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
   const removeListing = (listing) => {
-    $rootScope.$broadcast('removeListing', listing);
+    $rootScope.$broadcast('compare.removeListing', listing);
     $rootScope.$broadcast('ShowCompareWidget');
     $rootScope.$digest();
   };
