@@ -21,7 +21,7 @@
           <li class="dropdown" uib-dropdown is-open="vm.widgetExpanded" auto-close="disabled">
             <a href class="dropdown-toggle" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID Creator <span class="fa" ng-class="vm.widgetExpanded ? 'fa-caret-down' : 'fa-caret-left'"></span></a>
             <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="widget-toggle" id="widget-dropdown">
-              <ai-cms-widget-display widget="vm.widget"></ai-cms-widget-display>
+              <chpl-cms-display-wrapper-bridge></chpl-cms-display-wrapper-bridge>
             </div>
           </li>
           <li class="dropdown" uib-dropdown is-open="vm.compareWidgetExpanded" auto-close="disabled">

@@ -70,7 +70,7 @@ function ChplCompareDisplay() {
 
   const removeAll = () => {
     $analytics.eventTrack('Remove all Listings', { category: 'Compare Widget' });
-    $rootScope.$broadcast('removeAll');
+    $rootScope.$broadcast('compare.removeAll');
   };
 
   if (!listings || listings.length === 0) {

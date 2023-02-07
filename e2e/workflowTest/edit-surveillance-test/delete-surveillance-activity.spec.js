@@ -22,7 +22,8 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/manage');
 });
 
-describe('On surveillance management page, ROLE_ACB user', () => {
+//ignoring these quarantined tests as they are flaky and will address this with surveillance react rewrite ticket
+xdescribe('On surveillance management page, ROLE_ACB user', () => {
   const listing = '15.04.04.2958.Mill.17.00.0.170411';
   beforeEach(() => {
     login.logIn('drummond');

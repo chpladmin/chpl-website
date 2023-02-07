@@ -182,14 +182,6 @@
         $httpBackend.flush();
       });
 
-      it('should createCmsId', () => {
-        $httpBackend.expectPOST(/^\/rest\/certification_ids\?ids=1,2,3$/).respond(200, { data: 'response' });
-        networkService.createCmsId([1, 2, 3]).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should createComplaint', () => {
         $httpBackend.expectPOST(/^\/rest\/complaints/).respond(200, { data: 'response' });
         networkService.createComplaint('payload').then((response) => {
@@ -520,30 +512,9 @@
         $httpBackend.flush();
       });
 
-      it('should getCmsId', () => {
-        $httpBackend.expectGET(/^\/rest\/certification_ids\/key\?includeCriteria=false$/).respond(200, { data: 'response' });
-        networkService.getCmsId('key').then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-        $httpBackend.expectGET(/^\/rest\/certification_ids\/key\?includeCriteria=true$/).respond(200, { data: 'response' });
-        networkService.getCmsId('key', true).then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
       it('should getComplaints', () => {
         $httpBackend.expectGET(/^\/rest\/complaints$/).respond(200, { data: 'response' });
         networkService.getComplaints().then((response) => {
-          expect(response.data).toEqual('response');
-        });
-        $httpBackend.flush();
-      });
-
-      it('should getCmsIds', () => {
-        $httpBackend.expectGET(/^\/rest\/certification_ids\/search\?ids=ids$/).respond(200, { data: 'response' });
-        networkService.getCmsIds('ids').then((response) => {
           expect(response.data).toEqual('response');
         });
         $httpBackend.flush();

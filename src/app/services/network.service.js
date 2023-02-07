@@ -52,10 +52,6 @@ export default class NetworkService {
     return this.apiPOST('/surveillance-report/annual', report);
   }
 
-  createCmsId(ids) {
-    return this.apiPOST(`/certification_ids?ids=${ids.join(',')}`, {});
-  }
-
   createComplaint(complaint) {
     return this.apiPOST('/complaints', complaint);
   }
@@ -207,14 +203,6 @@ export default class NetworkService {
 
   getChangeRequestTypes() {
     return this.apiGET('/data/change-request-types');
-  }
-
-  getCmsId(key, includeCriteria) {
-    return this.apiGET(`/certification_ids/${key}?includeCriteria=${includeCriteria ? 'true' : 'false'}`);
-  }
-
-  getCmsIds(ids) {
-    return this.apiGET(`/certification_ids/search?ids=${ids}`);
   }
 
   getCollection(type) {

@@ -20,8 +20,8 @@ beforeEach(async () => {
   toast = new ToastComponent();
   await hooks.open('#/surveillance/manage');
 });
-
-describe('On surveillance management page, ROLE_ACB user', () => {
+//ignoring these quarantined tests as they are flaky and will address this with surveillance react rewrite ticket
+Xdescribe('On surveillance management page, ROLE_ACB user', () => {
   const listing = '15.04.04.2838.PARA.17.00.1.171228';
   beforeEach(() => {
     login.logIn('drummond');

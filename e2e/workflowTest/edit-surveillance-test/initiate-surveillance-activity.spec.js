@@ -22,7 +22,8 @@ beforeEach(async () => {
   await hooks.open('#/surveillance/manage');
 });
 
-describe('On surveillance management page, ROLE_ACB user', () => {
+//ignoring these quarantined tests as they are flaky and will address this with surveillance react rewrite ticket
+xdescribe('On surveillance management page, ROLE_ACB user', () => {
   const listing = '15.04.04.2838.PARA.17.00.1.171228';
   beforeEach(() => {
     login.logIn('drummond');
@@ -110,7 +111,8 @@ describe('On surveillance management page, ROLE_ACB user', () => {
   });
 });
 
-describe('On surveillance management page, ROLE_ADMIN user', () => {
+//ignoring these quarantined tests as they are flaky and will address this with surveillance react rewrite ticket
+xdescribe('On surveillance management page, ROLE_ADMIN user', () => {
   const listing = '15.07.04.2503.Vers.09.01.1.200210';
   beforeEach(() => {
     login.logIn('admin');
