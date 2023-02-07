@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 
-import { ChplDialogTitle } from 'components/util';
+import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getStatusIcon } from 'services/listing.service';
 
 const useStyles = makeStyles({
@@ -42,15 +42,17 @@ function ChplCertificationStatusLegend() {
 
   return (
     <>
-      <IconButton
-        id="view-certification-status-legend"
-        aria-label="Open Certification Status Legend dialog"
-        color="primary"
-        variant="outlined"
-        onClick={handleClickOpen}
-      >
-        <InfoIcon />
-      </IconButton>
+      <ChplTooltip title="Certification Status Legend">
+        <IconButton
+          id="view-certification-status-legend"
+          aria-label="Open Certification Status Legend dialog"
+          color="primary"
+          variant="outlined"
+          onClick={handleClickOpen}
+        >
+          <InfoIcon />
+        </IconButton>
+      </ChplTooltip>
       <Dialog
         onClose={handleClose}
         aria-labelledby="certification-status-legend-title"
