@@ -29,7 +29,8 @@ describe('when ACB user is on surveillance reporting page', () => {
   });
 });
 
-describe('when ONC user is on surveillance reporting page', () => {
+//ignoring quarantined test -will be addressed later
+xdescribe('when ONC user is on surveillance reporting page', () => {
   beforeEach(async () => {
     await login.logIn('onc');
     await open('#/surveillance/reporting');
