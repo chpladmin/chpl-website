@@ -40,14 +40,5 @@
     it('should be compiled', function () {
       expect(el.html()).not.toEqual(null);
     });
-
-    it('should call the parent controller on click', function () {
-      el.find('button').triggerHandler('click');
-      expect(mock.toggleProduct).toHaveBeenCalledWith('3', 'prodNum');
-    });
-
-    it('should call the parent controller when being compiled to know if the product is in the list', function () {
-      expect(mock.isInList).toHaveBeenCalledWith('3');
-    });
   });
 })();

@@ -1,5 +1,6 @@
 import IndexWrapper from '../index-wrapper';
 
+import ChplActionButtonWrapper from './action-widget/action-button-wrapper';
 import { ChplApiKeyConfirm } from './api-key';
 import {
   ChplAttestationCreateWrapper,
@@ -7,7 +8,7 @@ import {
   ChplAttestationsViewWrapper,
 } from './attestation';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
-import ChplCompareButtonWrapper from './compare-widget/compare-button-wrapper';
+import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import { ChplDeveloper } from './developer';
 import ChplDirectReviewsView from './direct-reviews/direct-reviews-view';
@@ -57,13 +58,14 @@ angular
   ])
   .component('chplActionBarBridge', reactToAngularComponent(ChplActionBar))
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
+  .component('chplActionButtonWrapperBridge', reactToAngularComponent(ChplActionButtonWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
-  .component('chplCompareButtonWrapperBridge', reactToAngularComponent(ChplCompareButtonWrapper))
+  .component('chplCmsDisplayWrapperBridge', reactToAngularComponent(ChplCmsDisplayWrapper))
   .component('chplCompareDisplayWrapperBridge', reactToAngularComponent(ChplCompareDisplayWrapper))
   .component('chplConfirmDeveloperWrapperBridge', reactToAngularComponent(ChplConfirmDeveloperWrapper))
   .component('chplConfirmListingsWrapperBridge', reactToAngularComponent(ChplConfirmListingsWrapper))

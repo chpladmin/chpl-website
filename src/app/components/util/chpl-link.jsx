@@ -29,8 +29,9 @@ const prependLink = (url) => {
 
 function ChplLink(props) {
   const {
-    external,
     analytics,
+    external,
+    inline,
     router,
   } = props;
   const classes = useStyles();
@@ -83,6 +84,14 @@ function ChplLink(props) {
     }
   };
 
+  if (inline && !external) {
+    return (
+      <a href={href} onClick={track} id={id}>
+        {text}
+      </a>
+    );
+  }
+
   return (
     <span className={classes.chplLink}>
       <a href={href} onClick={track}>
@@ -106,6 +115,7 @@ ChplLink.propTypes = {
   href: string.isRequired,
   analytics: analyticsConfig,
   external: bool,
+  inline: bool,
   router: routerConfig,
 };
 
@@ -113,5 +123,6 @@ ChplLink.defaultProps = {
   text: '',
   analytics: {},
   external: true,
+  inline: false,
   router: {},
 };

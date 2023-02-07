@@ -5,32 +5,41 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-import { CompareContext } from 'shared/contexts';
+import { CmsContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 
-function ChplCompareButton(props) {
+function ChplCmsButton(props) {
   const { listing } = props;
-  const { addListing, isInWidget, removeListing } = useContext(CompareContext);
+  const {
+    addListing,
+    canDisplayButton,
+    isInWidget,
+    removeListing,
+  } = useContext(CmsContext);
 
   const handleClick = () => (isInWidget(listing) ? removeListing(listing) : addListing(listing));
+
+  if (!canDisplayButton(listing)) {
+    return null;
+  }
 
   return (
     <Button
       color="secondary"
       variant="contained"
       size="small"
-      id={`toggle-compare-${listing.id}`}
+      id={`toggle-cms-${listing.id}`}
       onClick={handleClick}
       endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
       fullWidth
     >
-      Compare
+      Cert ID
     </Button>
   );
 }
 
-export default ChplCompareButton;
+export default ChplCmsButton;
 
-ChplCompareButton.propTypes = {
+ChplCmsButton.propTypes = {
   listing: listingPropType.isRequired,
 };

@@ -36,12 +36,7 @@
             </div>
             <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
             <div class="btn-group">
-              <div class="btn-group" ng-if="$ctrl.canCertId($ctrl.listing)">
-                <ai-cms-widget-button product-id="{{ $ctrl.listing.id }}" product-name="{{ $ctrl.listing.product.name }}" chpl-product-number="{{ $ctrl.listing.chplProductNumber }}"></ai-cms-widget-button>
-              </div>
-              <div class="btn-group">
-                <chpl-compare-button-wrapper-bridge listing="$ctrl.listing"></chpl-compare-button-wrapper-bridge>
-              </div>
+              <chpl-action-button-wrapper-bridge listing="$ctrl.listing"></chpl-action-button-wrapper-bridge>
             </div>
           </div>
         </div>
