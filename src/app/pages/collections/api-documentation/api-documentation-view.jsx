@@ -47,7 +47,7 @@ const csvOptions = () => ({
     { headerName: 'Developer', objectKey: 'developerName' },
     { headerName: 'Product', objectKey: 'productName' },
     { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
+    { headerName: 'Status', objectKey: 'certificationStatusName' },
     { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
     { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
     { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },

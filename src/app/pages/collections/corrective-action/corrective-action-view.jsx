@@ -58,7 +58,7 @@ const headers = [
   { property: 'developer', text: 'Developer', sortable: true },
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
-  { text: 'Certification Status', extra: <ChplCertificationStatusLegend /> },
+  { text: 'Status', extra: <ChplCertificationStatusLegend /> },
   { property: 'open_surveillance_nc_count', text: '# Open Surveillance NCs', sortable: true, reverseDefault: true },
   { property: 'closed_surveillance_nc_count', text: '# Closed Surveillance NCs', sortable: true, reverseDefault: true },
   { property: 'open_direct_review_nc_count', text: '# Open Direct Review NCs', sortable: true, reverseDefault: true },

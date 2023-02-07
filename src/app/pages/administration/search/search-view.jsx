@@ -57,7 +57,7 @@ const headers = [
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
   { property: 'certification_date', text: 'Certification Date', sortable: true, reverseDefault: true },
-  { text: 'Certification Status', extra: <ChplCertificationStatusLegend /> },
+  { text: 'Status', extra: <ChplCertificationStatusLegend /> },
   { text: 'Actions', invisible: true },
 ];
 /* eslint-enable object-curly-newline */

@@ -171,7 +171,7 @@ function ChplRealWorldTestingCollectionView(props) {
     { property: 'developer', text: 'Developer', sortable: true },
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
-    { text: 'Certification Status', extra: <ChplCertificationStatusLegend /> },
+    { text: 'Status', extra: <ChplCertificationStatusLegend /> },
     { text: 'Real World Testing Plans URL' },
     { text: 'Real World Testing Results URL' },
     { text: 'Actions', invisible: true },

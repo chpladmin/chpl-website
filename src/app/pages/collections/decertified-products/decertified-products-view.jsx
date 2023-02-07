@@ -55,7 +55,7 @@ const headers = [
   { property: 'developer', text: 'Developer', sortable: true },
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
-  { text: 'Certification Status', extra: <ChplCertificationStatusLegend /> },
+  { text: 'Status', extra: <ChplCertificationStatusLegend /> },
   { text: 'Decertification Date' },
   { text: 'Actions', invisible: true },
 ];
