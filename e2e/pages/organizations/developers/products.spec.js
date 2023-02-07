@@ -184,9 +184,10 @@ describe('the Product part of the Developers page', () => {
           product.scrollIntoView({ block: 'center', inline: 'center' });
           page.selectProduct(product);
           page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
-		  page.editProduct(product);
+          page.editProduct(product);
           page.editProductsHeader.waitForDisplayed();
         });
+
         it('should not allow user to transfer all products away from that developer', () => {
           page.selectProductOwner('ZirMed - active');
           actionBar.save();
