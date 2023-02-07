@@ -17,7 +17,7 @@ import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
-import ChplCompareButton from 'components/compare-widget/compare-button';
+import ChplActionButton from 'components/action-widget/action-button';
 import {
   ChplLink,
   ChplPagination,
@@ -347,7 +347,7 @@ function ChplRealWorldTestingCollectionView(props) {
                                   )}
                               </TableCell>
                               <TableCell>
-                                <ChplCompareButton listing={item} />
+                                <ChplActionButton listing={item} />
                               </TableCell>
                             </TableRow>
                           ))}

@@ -27,7 +27,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
       vm.toggleNavOpen();
     }
 
-    const showCmsWidgetHook = $rootScope.$on('ShowWidget', () => {
+    const showCmsWidgetHook = $rootScope.$on('ShowCmsWidget', () => {
       vm.showCmsWidget(true);
       if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         vm.toggleNavOpen();
@@ -35,7 +35,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     });
     $scope.$on('$destroy', showCmsWidgetHook);
 
-    const hideCmsWidget = $rootScope.$on('HideWidget', () => {
+    const hideCmsWidget = $rootScope.$on('HideCmsWidget', () => {
       vm.showCmsWidget(false);
     });
     $scope.$on('$destroy', hideCmsWidget);
