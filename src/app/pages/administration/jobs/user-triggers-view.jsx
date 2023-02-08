@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { arrayOf, func } from 'prop-types';
+import cronstrue from 'cronstrue';
 
 import { ChplSortableHeaders } from 'components/util';
 import { acb as acbType, trigger as triggerType } from 'shared/prop-types';
@@ -51,7 +52,7 @@ function ChplUserTriggersView(props) {
       .map((trigger) => {
         const response = {
           ...trigger,
-          details: [`Schedule: ${trigger.cronSchedule}`, `Type: ${trigger.job.name}`],
+          details: [`Schedule: ${cronstrue.toString(trigger.cronSchedule, { verbose: true, dayOfWeekStartIndexZero: false })}`, `Type: ${trigger.job.name}`],
         };
         if (trigger.acb) {
           const relevant = trigger.acb
