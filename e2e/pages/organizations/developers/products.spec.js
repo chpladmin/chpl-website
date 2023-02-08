@@ -168,24 +168,24 @@ describe('the Product part of the Developers page', () => {
       });
     });
 
-        describe('when editing "Zoobook EHR" product under "Zoobook Systems LLC"', () => {
+    describe('when editing "Zoobook EHR" product under "Zoobook Systems LLC"', () => {
 	      it('should not allow user to transfer all products away from that developer', () => {
-           const developer = 'Zoobook Systems LLC';
-           const name = 'Zoobook EHR';
-           let product;
-           page.selectDeveloper(developer);
-           page.getDeveloperPageTitle(developer).waitForDisplayed();
-           page.selectAllCertificationStatus();
-           product = page.getProduct(name);
-           product.scrollIntoView({ block: 'center', inline: 'center' });
-           page.selectProduct(product);
-           page.editProduct(product);
-           page.editProductsHeader.waitForDisplayed();
-           page.selectProductOwner('ZirMed - active');
-           actionBar.save();
-           expect(actionBar.errorMessages.getText()).toEqual('Zoobook Systems LLC has no other products so this product cannot be transferred. Please contact ONC if this is needed.');
-        });
+        const developer = 'Zoobook Systems LLC';
+        const name = 'Zoobook EHR';
+        let product;
+        page.selectDeveloper(developer);
+        page.getDeveloperPageTitle(developer).waitForDisplayed();
+        page.selectAllCertificationStatus();
+        product = page.getProduct(name);
+        product.scrollIntoView({ block: 'center', inline: 'center' });
+        page.selectProduct(product);
+        page.editProduct(product);
+        page.editProductsHeader.waitForDisplayed();
+        page.selectProductOwner('ZirMed - active');
+        actionBar.save();
+        expect(actionBar.errorMessages.getText()).toEqual('Zoobook Systems LLC has no other products so this product cannot be transferred. Please contact ONC if this is needed.');
       });
+    });
   });
 
   describe('when logged in as an ONC', () => {
