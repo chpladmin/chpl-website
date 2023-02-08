@@ -6,6 +6,8 @@ import {
   Divider,
   FormControlLabel,
   FormHelperText,
+  MenuItem,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -62,12 +64,14 @@ const validationSchema = yup.object({
 function ChplCronGen(props) {
   const [cron, setCron] = useState('');
   const [days, setDays] = useState(new Set());
+  const [selectedDom, setSelectedDom] = useState(jsJoda.LocalDate.now().dayOfMonth());
+  const [isWeekly, setIsWeekly] = useState(true);
   const classes = useStyles();
 
   let formik;
 
   useEffect(() => {
-    const [, minute, hour, , , day] = props.initialValue.split(' ');
+    const [, minute, hour, dom, , day] = props.initialValue.split(' ');
     const time = jsJoda.ZonedDateTime
       .of3(jsJoda.LocalDate.now(),
         jsJoda.LocalTime.parse(`${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`),
@@ -80,6 +84,10 @@ function ChplCronGen(props) {
       setDays(() => new Set());
     } else {
       setDays(() => new Set(day.split(',').filter((p) => p.length === 3)));
+    }
+    if (dom !== '1/1' && dom !== '?') {
+      setSelectedDom(parseInt(dom, 10));
+      setIsWeekly(false);
     }
     setCron(props.initialValue);
   }, []);
@@ -94,14 +102,24 @@ function ChplCronGen(props) {
     }
   };
 
+  const handleDom = (event) => {
+    const day = event.target.value;
+    setSelectedDom(day);
+  };
+
   const updateCron = () => {
     try {
       const utc = jsJoda.LocalDateTime
         .ofDateAndTime(jsJoda.LocalDate.now(), jsJoda.LocalTime.parse(formik.values.runTime))
         .atZone(jsJoda.ZoneId.of('America/New_York'))
         .withZoneSameInstant(jsJoda.ZoneId.of('UTC-00:00'));
-      const daySpecific = !(days.size === 0 || days.size === 7);
-      const updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
+      let updated;
+      if (isWeekly) {
+        const daySpecific = !(days.size === 0 || days.size === 7);
+        updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
+      } else {
+        updated = `0 ${utc.minute()} ${utc.hour()} ${selectedDom} * ? *`;
+      }
       setCron(updated);
       props.dispatch(updated);
     } catch {
@@ -116,7 +134,7 @@ function ChplCronGen(props) {
     validationSchema,
   });
 
-  useEffect(() => updateCron(), [days, formik.values.runTime]);
+  useEffect(() => updateCron(), [days, isWeekly, selectedDom, formik.values.runTime]);
 
   return (
     <Card>
@@ -126,40 +144,74 @@ function ChplCronGen(props) {
           <code className={classes.cronValue}>{cron}</code>
         </div>
         <Divider />
+        <FormControlLabel
+          control={(
+            <Switch
+              id="schedule-type"
+              name="scheduleType"
+              color="primary"
+              checked={isWeekly}
+              onChange={() => setIsWeekly(!isWeekly)}
+            />
+          )}
+          label={isWeekly ? 'Weekly' : 'Monthly'}
+        />
         <div className={classes.datetimeLayout}>
-          <div>
-            <Typography variant="subtitle2">Every:</Typography>
-            <div className={classes.day}>
-              <FormControlLabel
-                label="Sunday"
-                control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
-              />
-              <FormControlLabel
-                label="Monday"
-                control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
-              />
-              <FormControlLabel
-                label="Tuesday"
-                control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
-              />
-              <FormControlLabel
-                label="Wednesday"
-                control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
-              />
-              <FormControlLabel
-                label="Thursday"
-                control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
-              />
-              <FormControlLabel
-                label="Friday"
-                control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
-              />
-              <FormControlLabel
-                label="Saturday"
-                control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
-              />
-            </div>
-          </div>
+          { isWeekly
+            && (
+              <div>
+                <Typography variant="subtitle2">Every:</Typography>
+                <div className={classes.day}>
+                  <FormControlLabel
+                    label="Sunday"
+                    control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
+                  />
+                  <FormControlLabel
+                    label="Monday"
+                    control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
+                  />
+                  <FormControlLabel
+                    label="Tuesday"
+                    control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
+                  />
+                  <FormControlLabel
+                    label="Wednesday"
+                    control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
+                  />
+                  <FormControlLabel
+                    label="Thursday"
+                    control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
+                  />
+                  <FormControlLabel
+                    label="Friday"
+                    control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
+                  />
+                  <FormControlLabel
+                    label="Saturday"
+                    control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
+                  />
+                </div>
+              </div>
+            )}
+          { !isWeekly
+            && (
+              <div>
+                <ChplTextField
+                  select
+                  id="day-of-month"
+                  name="dayOfMonth"
+                  label="Day of Month"
+                  value={selectedDom}
+                  onChange={handleDom}
+                >
+                  { Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                    <MenuItem value={day} key={day}>
+                      { day }
+                    </MenuItem>
+                  ))}
+                </ChplTextField>
+              </div>
+            )}
           <div>
             <Typography gutterBottom variant="subtitle2">At:</Typography>
             <ChplTextField
