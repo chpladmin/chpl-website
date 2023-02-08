@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   CardContent,
   Checkbox,
@@ -7,7 +8,6 @@ import {
   FormControlLabel,
   FormHelperText,
   MenuItem,
-  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -64,8 +64,10 @@ const validationSchema = yup.object({
 function ChplCronGen(props) {
   const [cron, setCron] = useState('');
   const [days, setDays] = useState(new Set());
+  const [nthWeekday, setNthWeekday] = useState('1');
+  const [nthWeekdayDay, setNthWeekdayDay] = useState('2');
   const [selectedDom, setSelectedDom] = useState(jsJoda.LocalDate.now().dayOfMonth());
-  const [isWeekly, setIsWeekly] = useState(true);
+  const [dayType, setDayType] = useState('daily');
   const classes = useStyles();
 
   let formik;
@@ -82,12 +84,18 @@ function ChplCronGen(props) {
     formik.setFieldValue('runTime', time);
     if (day === '?') {
       setDays(() => new Set());
+    } else if (day.includes('#')) {
+      setDays(() => new Set());
+      const [nthDay, nth] = day.split('#');
+      setNthWeekday(nth);
+      setNthWeekdayDay(nthDay);
+      setDayType('nthWeekday');
     } else {
       setDays(() => new Set(day.split(',').filter((p) => p.length === 3)));
     }
     if (dom !== '1/1' && dom !== '?') {
       setSelectedDom(parseInt(dom, 10));
-      setIsWeekly(false);
+      setDayType('dayOfMonth');
     }
     setCron(props.initialValue);
   }, []);
@@ -107,6 +115,16 @@ function ChplCronGen(props) {
     setSelectedDom(day);
   };
 
+  const handleNthWeekday = (event) => {
+    const nth = event.target.value;
+    setNthWeekday(nth);
+  };
+
+  const handleNthWeekdayDay = (event) => {
+    const day = event.target.value;
+    setNthWeekdayDay(day);
+  };
+
   const updateCron = () => {
     try {
       const utc = jsJoda.LocalDateTime
@@ -114,11 +132,19 @@ function ChplCronGen(props) {
         .atZone(jsJoda.ZoneId.of('America/New_York'))
         .withZoneSameInstant(jsJoda.ZoneId.of('UTC-00:00'));
       let updated;
-      if (isWeekly) {
-        const daySpecific = !(days.size === 0 || days.size === 7);
-        updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
-      } else {
-        updated = `0 ${utc.minute()} ${utc.hour()} ${selectedDom} * ? *`;
+      switch (dayType) {
+        case 'daily': {
+          const daySpecific = !(days.size === 0 || days.size === 7);
+          updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
+          break;
+        }
+        case 'dayOfMonth':
+          updated = `0 ${utc.minute()} ${utc.hour()} ${selectedDom} * ? *`;
+          break;
+        case 'nthWeekday':
+          updated = `0 ${utc.minute()} ${utc.hour()} ? * ${nthWeekdayDay}#${nthWeekday} *`;
+          break;
+          // no default
       }
       setCron(updated);
       props.dispatch(updated);
@@ -134,7 +160,14 @@ function ChplCronGen(props) {
     validationSchema,
   });
 
-  useEffect(() => updateCron(), [days, isWeekly, selectedDom, formik.values.runTime]);
+  useEffect(() => updateCron(), [
+    days,
+    dayType,
+    nthWeekday,
+    nthWeekdayDay,
+    selectedDom,
+    formik.values.runTime,
+  ]);
 
   return (
     <Card>
@@ -144,20 +177,11 @@ function ChplCronGen(props) {
           <code className={classes.cronValue}>{cron}</code>
         </div>
         <Divider />
-        <FormControlLabel
-          control={(
-            <Switch
-              id="schedule-type"
-              name="scheduleType"
-              color="primary"
-              checked={isWeekly}
-              onChange={() => setIsWeekly(!isWeekly)}
-            />
-          )}
-          label={isWeekly ? 'Weekly' : 'Monthly'}
-        />
+        <Button disabled={dayType === 'daily'} onClick={() => setDayType('daily')}>Daily</Button>
+        <Button disabled={dayType === 'dayOfMonth'} onClick={() => setDayType('dayOfMonth')}>Day of Month</Button>
+        <Button disabled={dayType === 'nthWeekday'} onClick={() => setDayType('nthWeekday')}>Nth Weekday</Button>
         <div className={classes.datetimeLayout}>
-          { isWeekly
+          { dayType === 'daily'
             && (
               <div>
                 <Typography variant="subtitle2">Every:</Typography>
@@ -193,7 +217,7 @@ function ChplCronGen(props) {
                 </div>
               </div>
             )}
-          { !isWeekly
+          { dayType === 'dayOfMonth'
             && (
               <div>
                 <ChplTextField
@@ -210,6 +234,43 @@ function ChplCronGen(props) {
                     </MenuItem>
                   ))}
                 </ChplTextField>
+              </div>
+            )}
+          { dayType === 'nthWeekday'
+            && (
+              <div>
+                On the
+                <ChplTextField
+                  select
+                  id="nth-weekday"
+                  name="nthWeekday"
+                  label="Nth"
+                  value={nthWeekday}
+                  onChange={handleNthWeekday}
+                >
+                  <MenuItem value="1" key="first">First</MenuItem>
+                  <MenuItem value="2" key="second">Second</MenuItem>
+                  <MenuItem value="3" key="third">Third</MenuItem>
+                  <MenuItem value="4" key="fourth">Fourth</MenuItem>
+                  <MenuItem value="5" key="fifth">Fifth</MenuItem>
+                </ChplTextField>
+                <ChplTextField
+                  select
+                  id="nth-weekday-day"
+                  name="nthWeekdayDay"
+                  label="Day"
+                  value={nthWeekdayDay}
+                  onChange={handleNthWeekdayDay}
+                >
+                  <MenuItem value="1" key="sunday">Sunday</MenuItem>
+                  <MenuItem value="2" key="monday">Monday</MenuItem>
+                  <MenuItem value="3" key="tuesday">Tuesday</MenuItem>
+                  <MenuItem value="4" key="wednesday">Wednesday</MenuItem>
+                  <MenuItem value="5" key="thursday">Thursday</MenuItem>
+                  <MenuItem value="6" key="friday">Friday</MenuItem>
+                  <MenuItem value="7" key="saturday">Saturday</MenuItem>
+                </ChplTextField>
+                of the month
               </div>
             )}
           <div>
