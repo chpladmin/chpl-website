@@ -109,7 +109,6 @@ function ChplCriteria(props) {
               <AccordionDetails>
                 <Container>
                   { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
-                    .sort((a, b) => sortCerts(a, b))
                     .map((cc) => (
                       <ChplCriterion
                         key={cc.criterion.id}
