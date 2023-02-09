@@ -23,15 +23,6 @@ import { ChplTextField } from 'components/util';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  datetimeLayout: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    padding: '16px 0px',
-    [theme.breakpoints.up('md')]: {
-      justifyContent: 'space-between',
-    },
-  },
   cron: {
     display: 'flex',
     gap: '16px',
@@ -49,7 +40,6 @@ const useStyles = makeStyles({
   helperTextSpacing: {
     marginLeft: '14px',
   },
-
   nthWeekDayContainer: {
     display: 'flex',
     flexDirection: 'row',
