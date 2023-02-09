@@ -6192,6 +6192,7 @@ __metadata:
     chromedriver: ^109.0.0
     clean-webpack-plugin: ^0.1.19
     concurrently: ^7.3.0
+    cronstrue: ^2.22.0
     css-loader: ^0.28.11
     cytoscape: ^3.23.0
     del: ~2.0.2
@@ -7203,6 +7204,15 @@ __metadata:
     safe-buffer: ^5.0.1
     sha.js: ^2.4.8
   checksum: ba12bb2257b585a0396108c72830e85f882ab659c3320c83584b1037f8ab72415095167ced80dc4ce8e446a8ecc4b2acf36d87befe0707d73b26cf9dc77440ed
+  languageName: node
+  linkType: hard
+
+"cronstrue@npm:^2.22.0":
+  version: 2.22.0
+  resolution: "cronstrue@npm:2.22.0"
+  bin:
+    cronstrue: bin/cli.js
+  checksum: 5017cccddee819c162d3b71c2a517c2468834f6454e9ce6a21016149848a69cf7f7433584c61dd1b92adea79ea461da291d32f48129c0a5ccef93019be93494f
   languageName: node
   linkType: hard
 
@@ -11349,7 +11359,7 @@ export-to-csv@andlar/export-to-csv:
     ignore: ^3.3.5
     strip-ansi: ^4.0.0
     text-table: ^0.2.0
-  checksum: 1f333d8b4292b43f2ba090112a404778ceb932c087c52ebe1c05d1aadc35a8360d99720882bd22c555d8ecee3447c288e2cd6f1d21d5f6b8431afd778712e675
+  checksum: 1c215a977968637c363e423d3b35b9f32dedae7666277e03146b9f7c222ae512e7567fd3ecbf3e9c34a4233133e4f785098697c5eb334b34079753ca52b199c3
   languageName: node
   linkType: hard
 
