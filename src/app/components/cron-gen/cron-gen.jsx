@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
+  AppBar,
   Card,
   CardContent,
   Checkbox,
-  Divider,
   FormControlLabel,
   FormHelperText,
   MenuItem,
+  Tab,
+  Tabs,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -24,9 +25,10 @@ const useStyles = makeStyles({
   datetimeLayout: {
     display: 'flex',
     flexDirection: 'column',
+    gap: '8px',
+    padding: '16px 0px',
     [theme.breakpoints.up('md')]: {
       justifyContent: 'space-between',
-      flexDirection: 'row',
     },
   },
   cron: {
@@ -44,6 +46,7 @@ const useStyles = makeStyles({
     backgroundColor: '#599bde15',
     borderRadius: '64px',
     padding: '8px',
+    marginBottom: '8px',
     fontWeight: '800',
     maxWidth: 'max-content',
   },
@@ -53,6 +56,32 @@ const useStyles = makeStyles({
   },
   helperTextSpacing: {
     marginLeft: '14px',
+  },
+
+  nthWeekDayContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '8px',
+    alignItems: 'center',
+    padding: '32px 0 16px 0',
+  },
+  dayOfTheMonthContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    padding: '32px 0 16px 0',
+  },
+  dailyContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    padding: '16px 0',
+  },
+  nthWeekDay: {
+    width: '32%',
+  },
+  '& .MuiTabs-indicator': {
+    backgroundColor: '#1890ff',
   },
 });
 
@@ -173,17 +202,24 @@ function ChplCronGen(props) {
     <Card>
       <CardContent>
         <div className={classes.cron}>
-          <Typography variant="subtitle2">Cron value:</Typography>
+          <Typography variant="subtitle1">Cron value:</Typography>
           <code className={classes.cronValue}>{cron}</code>
         </div>
-        <Divider />
-        <Button disabled={dayType === 'daily'} onClick={() => setDayType('daily')}>Daily</Button>
-        <Button disabled={dayType === 'dayOfMonth'} onClick={() => setDayType('dayOfMonth')}>Day of Month</Button>
-        <Button disabled={dayType === 'nthWeekday'} onClick={() => setDayType('nthWeekday')}>Nth Weekday</Button>
-        <div className={classes.datetimeLayout}>
+        <AppBar elevation={1} position="static" color="transparent">
+          <Tabs
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+          >
+            <Tab label="Daily" onClick={() => setDayType('daily')} />
+            <Tab label="Day of Month" onClick={() => setDayType('dayOfMonth')} />
+            <Tab label="Nth Weekday" onClick={() => setDayType('nthWeekday')} />
+          </Tabs>
+        </AppBar>
+        <div>
           { dayType === 'daily'
             && (
-              <div>
+              <div className={classes.dailyContainer}>
                 <Typography variant="subtitle2">Every:</Typography>
                 <div className={classes.day}>
                   <FormControlLabel
@@ -219,7 +255,7 @@ function ChplCronGen(props) {
             )}
           { dayType === 'dayOfMonth'
             && (
-              <div>
+              <div className={classes.dayOfTheMonthContainer}>
                 <ChplTextField
                   select
                   id="day-of-month"
@@ -238,8 +274,8 @@ function ChplCronGen(props) {
             )}
           { dayType === 'nthWeekday'
             && (
-              <div>
-                On the
+              <div className={classes.nthWeekDayContainer}>
+                <Typography variant="subtitle2">On the</Typography>
                 <ChplTextField
                   select
                   id="nth-weekday"
@@ -247,6 +283,7 @@ function ChplCronGen(props) {
                   label="Nth"
                   value={nthWeekday}
                   onChange={handleNthWeekday}
+                  className={classes.nthWeekDay}
                 >
                   <MenuItem value="1" key="first">First</MenuItem>
                   <MenuItem value="2" key="second">Second</MenuItem>
@@ -261,6 +298,7 @@ function ChplCronGen(props) {
                   label="Day"
                   value={nthWeekdayDay}
                   onChange={handleNthWeekdayDay}
+                  className={classes.nthWeekDay}
                 >
                   <MenuItem value="1" key="sunday">Sunday</MenuItem>
                   <MenuItem value="2" key="monday">Monday</MenuItem>
@@ -270,7 +308,7 @@ function ChplCronGen(props) {
                   <MenuItem value="6" key="friday">Friday</MenuItem>
                   <MenuItem value="7" key="saturday">Saturday</MenuItem>
                 </ChplTextField>
-                of the month
+                <Typography variant="subtitle2">of the month</Typography>
               </div>
             )}
           <div>
