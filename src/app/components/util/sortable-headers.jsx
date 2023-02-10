@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf, bool, func, oneOf, shape, string,
+  arrayOf, bool, func, node, oneOf, shape, string,
 } from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TableHead from '@material-ui/core/TableHead';
@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableCell from '@material-ui/core/TableCell';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -20,13 +20,19 @@ const useStyles = makeStyles(() => ({
     top: 20,
     width: 1,
   },
+  extraContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'center',
+  },
   stickyColumn: {
     position: 'sticky',
     left: 0,
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
     backgroundColor: '#ffffff',
   },
-}));
+});
 
 function ChplSortableHeaders(props) {
   const { headers } = props;
@@ -71,14 +77,16 @@ function ChplSortableHeaders(props) {
                   direction={orderBy === cell.property ? order : (cell.reverseDefault ? 'desc' : 'asc')}
                   onClick={createSortHandler(cell)}
                 >
-                  <span className={cell.invisible && classes.visuallyHidden}>
+                  <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
                     { cell.text }
-                  </span>
+                    { cell.extra }
+                  </div>
                 </TableSortLabel>
               ) : (
-                <span className={cell.invisible && classes.visuallyHidden}>
+                <div className={`${classes.extraContainer} ${cell.invisible && classes.visuallyHidden}`}>
                   { cell.text }
-                </span>
+                  { cell.extra }
+                </div>
               )}
           </TableCell>
         ))}
@@ -100,6 +108,7 @@ ChplSortableHeaders.propTypes = {
     invisible: bool, // hide text (leave visible for SR)
     sortable: bool, // is this column sortable?
     reverseDefault: bool, // if sortable, should it default to descending?
+    extra: node, // extra nodes to add as children
   })).isRequired,
   onTableSort: func,
   order: oneOf(['asc', 'desc']),
