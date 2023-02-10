@@ -52,7 +52,7 @@ function ChplUserTriggersView(props) {
       .map((trigger) => {
         const response = {
           ...trigger,
-          details: [`Schedule: ${cronstrue.toString(trigger.cronSchedule, { verbose: true, dayOfWeekStartIndexZero: false })}`, `Type: ${trigger.job.name}`],
+          details: [`Schedule: ${cronstrue.toString(trigger.cronSchedule, { verbose: true, dayOfWeekStartIndexZero: false })} (Note: time is in GMT)`, `Type: ${trigger.job.name}`],
         };
         if (trigger.acb) {
           const relevant = trigger.acb

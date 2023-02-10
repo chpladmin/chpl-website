@@ -183,6 +183,8 @@ function ChplCronGen(props) {
         <div className={classes.cron}>
           <Typography variant="subtitle2">Schedule:</Typography>
           { cron && cronstrue.toString(cron, { verbose: true, dayOfWeekStartIndexZero: false }) }
+          {' '}
+          (Note: time is in GMT)
         </div>
         <AppBar elevation={1} position="static" color="transparent">
           <Tabs
