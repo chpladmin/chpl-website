@@ -40,10 +40,6 @@ const useStyles = makeStyles({
     fontWeight: '800',
     maxWidth: 'max-content',
   },
-  day: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   helperTextSpacing: {
     marginLeft: '14px',
   },
@@ -52,12 +48,6 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '8px',
     alignItems: 'center',
-    padding: '32px 0 16px 0',
-  },
-  dayOfTheMonthContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
     padding: '32px 0 16px 0',
   },
   dailyContainer: {
@@ -79,6 +69,7 @@ const validationSchema = yup.object({
 const getCheckbox = (display, name, value, onChange, state) => (
   <FormControlLabel
     label={display}
+    key={value}
     control={<Checkbox name={name} value={value} onChange={onChange} checked={state.has(value)} />}
   />
 );
@@ -86,9 +77,9 @@ const getCheckbox = (display, name, value, onChange, state) => (
 function ChplCronGen(props) {
   const [cron, setCron] = useState('');
   const [days, setDays] = useState(new Set());
+  const [selectedDaysOfMonth, setSelectedDaysOfMonth] = useState(new Set());
   const [nthWeekday, setNthWeekday] = useState('1');
   const [nthWeekdayDay, setNthWeekdayDay] = useState('2');
-  const [selectedDom, setSelectedDom] = useState(jsJoda.LocalDate.now().dayOfMonth());
   const [dayType, setDayType] = useState('daily');
   const classes = useStyles();
 
@@ -116,7 +107,7 @@ function ChplCronGen(props) {
       setDays(() => new Set(day.split(',').filter((p) => p.length === 3)));
     }
     if (dom !== '1/1' && dom !== '?' && dom !== '*') {
-      setSelectedDom(parseInt(dom, 10));
+      setSelectedDaysOfMonth(() => new Set(dom.split(',')));
       setDayType('dayOfMonth');
     }
     setCron(props.initialValue);
@@ -132,9 +123,14 @@ function ChplCronGen(props) {
     }
   };
 
-  const handleDom = (event) => {
+  const handleDaysOfMonth = (event) => {
     const day = event.target.value;
-    setSelectedDom(day);
+    const adding = event.target.checked;
+    if (adding) {
+      setSelectedDaysOfMonth((prev) => new Set(prev.add(day)));
+    } else {
+      setSelectedDaysOfMonth((prev) => new Set([...prev].filter((x) => x !== day)));
+    }
   };
 
   const handleNthWeekday = (event) => {
@@ -160,9 +156,11 @@ function ChplCronGen(props) {
           updated = `0 ${utc.minute()} ${utc.hour()} ${daySpecific ? '?' : '1/1'} * ${daySpecific ? [...days].join(',') : '?'} *`;
           break;
         }
-        case 'dayOfMonth':
-          updated = `0 ${utc.minute()} ${utc.hour()} ${selectedDom} * ? *`;
+        case 'dayOfMonth': {
+          const daySelected = !(selectedDaysOfMonth.size === 0 || selectedDaysOfMonth.size === 31);
+          updated = `0 ${utc.minute()} ${utc.hour()} ${daySelected ? [...selectedDaysOfMonth].join(',') : '1/1'} * ? *`;
           break;
+        }
         case 'nthWeekday':
           updated = `0 ${utc.minute()} ${utc.hour()} ? * ${nthWeekdayDay}#${nthWeekday} *`;
           break;
@@ -187,7 +185,7 @@ function ChplCronGen(props) {
     dayType,
     nthWeekday,
     nthWeekdayDay,
-    selectedDom,
+    selectedDaysOfMonth,
     formik.values.runTime,
   ]);
 
@@ -214,7 +212,7 @@ function ChplCronGen(props) {
           && (
             <div className={classes.dailyContainer}>
               <Typography variant="subtitle2">Every:</Typography>
-              <div className={classes.day}>
+              <div>
                 { getCheckbox('Sunday', 'days', 'SUN', handleDays, days) }
                 { getCheckbox('Monday', 'days', 'MON', handleDays, days) }
                 { getCheckbox('Tuesday', 'days', 'TUE', handleDays, days) }
@@ -227,21 +225,11 @@ function ChplCronGen(props) {
           )}
         { dayType === 'dayOfMonth'
           && (
-            <div className={classes.dayOfTheMonthContainer}>
-              <ChplTextField
-                select
-                id="day-of-month"
-                name="dayOfMonth"
-                label="Day of Month"
-                value={selectedDom}
-                onChange={handleDom}
-              >
-                { Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                  <MenuItem value={day} key={day}>
-                    { day }
-                  </MenuItem>
-                ))}
-              </ChplTextField>
+            <div className={classes.dailyContainer}>
+              <Typography variant="subtitle2">Every:</Typography>
+              <div>
+                { Array.from({ length: 31 }, (_, i) => i + 1).map((day) => getCheckbox(`${day}`, 'daysOfMonth', `${day}`, handleDaysOfMonth, selectedDaysOfMonth))}
+              </div>
             </div>
           )}
         { dayType === 'nthWeekday'
