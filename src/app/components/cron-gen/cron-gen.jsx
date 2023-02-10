@@ -101,7 +101,7 @@ function ChplCronGen(props) {
     } else {
       setDays(() => new Set(day.split(',').filter((p) => p.length === 3)));
     }
-    if (dom !== '1/1' && dom !== '?') {
+    if (dom !== '1/1' && dom !== '?' && dom !== '*') {
       setSelectedDom(parseInt(dom, 10));
       setDayType('dayOfMonth');
     }
