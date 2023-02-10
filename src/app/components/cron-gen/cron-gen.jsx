@@ -77,7 +77,7 @@ const getCheckbox = (display, name, value, onChange, state) => (
 function ChplCronGen(props) {
   const [cron, setCron] = useState('');
   const [days, setDays] = useState(new Set());
-  const [selectedDaysOfMonth, setSelectedDaysOfMonth] = useState(new Set());
+  const [selectedDaysOfMonth, setSelectedDaysOfMonth] = useState(new Set().add(`${jsJoda.LocalDate.now().dayOfMonth()}`));
   const [nthWeekday, setNthWeekday] = useState('1');
   const [nthWeekdayDay, setNthWeekdayDay] = useState('2');
   const [dayType, setDayType] = useState('daily');
