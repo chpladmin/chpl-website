@@ -192,10 +192,11 @@ function ChplCronGen(props) {
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth"
+            value={dayType}
           >
-            <Tab label="Daily" onClick={() => setDayType('daily')} />
-            <Tab label="Day of Month" onClick={() => setDayType('dayOfMonth')} />
-            <Tab label="Nth Weekday" onClick={() => setDayType('nthWeekday')} />
+            <Tab label="Daily" value="daily" onClick={() => setDayType('daily')} />
+            <Tab label="Day of Month" value="dayOfMonth" onClick={() => setDayType('dayOfMonth')} />
+            <Tab label="Nth Weekday" value="nthWeekday" onClick={() => setDayType('nthWeekday')} />
           </Tabs>
         </AppBar>
         <div>
