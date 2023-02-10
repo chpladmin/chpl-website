@@ -16,6 +16,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
 import {
   ChplLink,
@@ -29,6 +30,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
@@ -53,7 +55,7 @@ const headers = [
   { property: 'developer', text: 'Developer', sortable: true },
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
-  { text: 'Certification Status' },
+  { text: 'Status', extra: <ChplCertificationStatusLegend /> },
   { text: 'Decertification Date' },
   { text: 'Actions', invisible: true },
 ];
@@ -304,7 +306,7 @@ function ChplInactiveCertificatesCollectionView(props) {
                               </TableCell>
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
-                              <TableCell>{item.certificationStatus.name}</TableCell>
+                              <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
                               <TableCell>{getDisplayDateFormat(item.decertificationDate)}</TableCell>
                               <TableCell>
                                 <ChplActionButton listing={item} />

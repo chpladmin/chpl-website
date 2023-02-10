@@ -20,6 +20,7 @@ import {
   useFetchApiDocumentationData,
   useFetchCollection,
 } from 'api/collections';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
 import {
   ChplLink,
@@ -33,6 +34,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
@@ -244,7 +246,7 @@ function ChplApiDocumentationCollectionView(props) {
     { property: 'developer', text: 'Developer', sortable: true },
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
-    { text: 'Certification Status' },
+    { text: 'Status', extra: <ChplCertificationStatusLegend /> },
     { text: 'API Documentation' },
     { text: 'Service Base URL List' },
     { text: 'Mandatory Disclosures URL' },
@@ -413,7 +415,7 @@ function ChplApiDocumentationCollectionView(props) {
                               </TableCell>
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
-                              <TableCell>{item.certificationStatus.name}</TableCell>
+                              <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
                               <TableCell className={classes.linkWrap}>
                                 { item.apiDocumentation }
                               </TableCell>

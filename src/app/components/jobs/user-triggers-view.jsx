@@ -21,7 +21,7 @@ import { acb as acbType, trigger as triggerType } from 'shared/prop-types';
 
 const headers = [
   { property: 'email', text: 'Email' },
-  { property: 'details', text: 'Job details' },
+  { property: 'details', text: 'Report details' },
   { property: 'actions', text: 'Actions', invisible: true },
 ];
 
@@ -69,20 +69,20 @@ function ChplUserTriggersView(props) {
 
   return (
     <Card>
-      <CardHeader title="Currently Scheduled User Jobs" />
+      <CardHeader title="Currently Scheduled Reports" />
       <CardContent>
         <>
           { (triggers.length === 0)
             && (
               <Typography className={classes.noResultsContainer}>
-                No results found. To get started, select the type of job then click on the calender icon to set-up a schedule job.
+                No results found. To get started, click on the calendar icon next to the desired report to schedule it.
               </Typography>
             )}
           { triggers.length > 0
             && (
             <TableContainer className={classes.container} component={Paper}>
               <Table
-                aria-label="User Jobs table"
+                aria-label="Reports table"
               >
                 <ChplSortableHeaders
                   headers={headers}
@@ -109,7 +109,7 @@ function ChplUserTriggersView(props) {
                           <IconButton
                             onClick={() => dispatch({ action: 'edit', payload: item })}
                             color="primary"
-                            aria-label={`Edit Job ${item.name}`}
+                            aria-label={`Edit Report ${item.name}`}
                           >
                             <EditIcon />
                           </IconButton>
