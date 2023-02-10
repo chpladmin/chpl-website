@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
+  AppBar,
   Card,
   CardContent,
   Checkbox,
-  Divider,
   FormControlLabel,
   FormHelperText,
   MenuItem,
+  Tab,
+  Tabs,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -22,14 +23,6 @@ import { ChplTextField } from 'components/util';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  datetimeLayout: {
-    display: 'flex',
-    flexDirection: 'column',
-    [theme.breakpoints.up('md')]: {
-      justifyContent: 'space-between',
-      flexDirection: 'row',
-    },
-  },
   cron: {
     display: 'flex',
     gap: '16px',
@@ -46,6 +39,28 @@ const useStyles = makeStyles({
   },
   helperTextSpacing: {
     marginLeft: '14px',
+  },
+  nthWeekDayContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '8px',
+    alignItems: 'center',
+    padding: '32px 0 16px 0',
+  },
+  dayOfTheMonthContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    padding: '32px 0 16px 0',
+  },
+  dailyContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    padding: '16px 0',
+  },
+  nthWeekDay: {
+    width: '32%',
   },
 });
 
@@ -169,120 +184,126 @@ function ChplCronGen(props) {
           <Typography variant="subtitle2">Schedule:</Typography>
           { cron && cronstrue.toString(cron, { verbose: true, dayOfWeekStartIndexZero: false }) }
         </div>
-        <Divider />
-        <Button disabled={dayType === 'daily'} onClick={() => setDayType('daily')}>Daily</Button>
-        <Button disabled={dayType === 'dayOfMonth'} onClick={() => setDayType('dayOfMonth')}>Day of Month</Button>
-        <Button disabled={dayType === 'nthWeekday'} onClick={() => setDayType('nthWeekday')}>Nth Weekday</Button>
-        <div className={classes.datetimeLayout}>
-          { dayType === 'daily'
-            && (
-              <div>
-                <Typography variant="subtitle2">Every:</Typography>
-                <div className={classes.day}>
-                  <FormControlLabel
-                    label="Sunday"
-                    control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
-                  />
-                  <FormControlLabel
-                    label="Monday"
-                    control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
-                  />
-                  <FormControlLabel
-                    label="Tuesday"
-                    control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
-                  />
-                  <FormControlLabel
-                    label="Wednesday"
-                    control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
-                  />
-                  <FormControlLabel
-                    label="Thursday"
-                    control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
-                  />
-                  <FormControlLabel
-                    label="Friday"
-                    control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
-                  />
-                  <FormControlLabel
-                    label="Saturday"
-                    control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
-                  />
-                </div>
+        <AppBar elevation={1} position="static" color="transparent">
+          <Tabs
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            value={dayType}
+          >
+            <Tab label="Daily" value="daily" onClick={() => setDayType('daily')} />
+            <Tab label="Day of Month" value="dayOfMonth" onClick={() => setDayType('dayOfMonth')} />
+            <Tab label="Nth Weekday" value="nthWeekday" onClick={() => setDayType('nthWeekday')} />
+          </Tabs>
+        </AppBar>
+        { dayType === 'daily'
+          && (
+            <div className={classes.dailyContainer}>
+              <Typography variant="subtitle2">Every:</Typography>
+              <div className={classes.day}>
+                <FormControlLabel
+                  label="Sunday"
+                  control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
+                />
+                <FormControlLabel
+                  label="Monday"
+                  control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
+                />
+                <FormControlLabel
+                  label="Tuesday"
+                  control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
+                />
+                <FormControlLabel
+                  label="Wednesday"
+                  control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
+                />
+                <FormControlLabel
+                  label="Thursday"
+                  control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
+                />
+                <FormControlLabel
+                  label="Friday"
+                  control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
+                />
+                <FormControlLabel
+                  label="Saturday"
+                  control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
+                />
               </div>
-            )}
-          { dayType === 'dayOfMonth'
-            && (
-              <div>
-                <ChplTextField
-                  select
-                  id="day-of-month"
-                  name="dayOfMonth"
-                  label="Day of Month"
-                  value={selectedDom}
-                  onChange={handleDom}
-                >
-                  { Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                    <MenuItem value={day} key={day}>
-                      { day }
-                    </MenuItem>
-                  ))}
-                </ChplTextField>
-              </div>
-            )}
-          { dayType === 'nthWeekday'
-            && (
-              <div>
-                On the
-                <ChplTextField
-                  select
-                  id="nth-weekday"
-                  name="nthWeekday"
-                  label="Nth"
-                  value={nthWeekday}
-                  onChange={handleNthWeekday}
-                >
-                  <MenuItem value="1" key="first">First</MenuItem>
-                  <MenuItem value="2" key="second">Second</MenuItem>
-                  <MenuItem value="3" key="third">Third</MenuItem>
-                  <MenuItem value="4" key="fourth">Fourth</MenuItem>
-                  <MenuItem value="5" key="fifth">Fifth</MenuItem>
-                </ChplTextField>
-                <ChplTextField
-                  select
-                  id="nth-weekday-day"
-                  name="nthWeekdayDay"
-                  label="Day"
-                  value={nthWeekdayDay}
-                  onChange={handleNthWeekdayDay}
-                >
-                  <MenuItem value="1" key="sunday">Sunday</MenuItem>
-                  <MenuItem value="2" key="monday">Monday</MenuItem>
-                  <MenuItem value="3" key="tuesday">Tuesday</MenuItem>
-                  <MenuItem value="4" key="wednesday">Wednesday</MenuItem>
-                  <MenuItem value="5" key="thursday">Thursday</MenuItem>
-                  <MenuItem value="6" key="friday">Friday</MenuItem>
-                  <MenuItem value="7" key="saturday">Saturday</MenuItem>
-                </ChplTextField>
-                of the month
-              </div>
-            )}
-          <div>
-            <Typography gutterBottom variant="subtitle2">At:</Typography>
-            <ChplTextField
-              id="run-time"
-              name="runTime"
-              label="Run Time"
-              type="time"
-              required
-              value={formik.values.runTime}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.runTime && !!formik.errors.runTime}
-              helperText={formik.touched.runTime && formik.errors.runTime}
-            />
-            <FormHelperText className={classes.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
-          </div>
-        </div>
+            </div>
+          )}
+        { dayType === 'dayOfMonth'
+          && (
+            <div className={classes.dayOfTheMonthContainer}>
+              <ChplTextField
+                select
+                id="day-of-month"
+                name="dayOfMonth"
+                label="Day of Month"
+                value={selectedDom}
+                onChange={handleDom}
+              >
+                { Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                  <MenuItem value={day} key={day}>
+                    { day }
+                  </MenuItem>
+                ))}
+              </ChplTextField>
+            </div>
+          )}
+        { dayType === 'nthWeekday'
+          && (
+            <div className={classes.nthWeekDayContainer}>
+              <Typography variant="subtitle2">On the</Typography>
+              <ChplTextField
+                select
+                id="nth-weekday"
+                name="nthWeekday"
+                label="Nth"
+                value={nthWeekday}
+                onChange={handleNthWeekday}
+                className={classes.nthWeekDay}
+              >
+                <MenuItem value="1" key="first">First</MenuItem>
+                <MenuItem value="2" key="second">Second</MenuItem>
+                <MenuItem value="3" key="third">Third</MenuItem>
+                <MenuItem value="4" key="fourth">Fourth</MenuItem>
+                <MenuItem value="5" key="fifth">Fifth</MenuItem>
+              </ChplTextField>
+              <ChplTextField
+                select
+                id="nth-weekday-day"
+                name="nthWeekdayDay"
+                label="Day"
+                value={nthWeekdayDay}
+                onChange={handleNthWeekdayDay}
+                className={classes.nthWeekDay}
+              >
+                <MenuItem value="1" key="sunday">Sunday</MenuItem>
+                <MenuItem value="2" key="monday">Monday</MenuItem>
+                <MenuItem value="3" key="tuesday">Tuesday</MenuItem>
+                <MenuItem value="4" key="wednesday">Wednesday</MenuItem>
+                <MenuItem value="5" key="thursday">Thursday</MenuItem>
+                <MenuItem value="6" key="friday">Friday</MenuItem>
+                <MenuItem value="7" key="saturday">Saturday</MenuItem>
+              </ChplTextField>
+              <Typography variant="subtitle2">of the month</Typography>
+            </div>
+          )}
+        <Typography gutterBottom variant="subtitle2">At:</Typography>
+        <ChplTextField
+          id="run-time"
+          name="runTime"
+          label="Run Time"
+          type="time"
+          required
+          value={formik.values.runTime}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.runTime && !!formik.errors.runTime}
+          helperText={formik.touched.runTime && formik.errors.runTime}
+        />
+        <FormHelperText className={classes.helperTextSpacing}> All times should be entered as Eastern Time (ET)</FormHelperText>
       </CardContent>
     </Card>
   );
