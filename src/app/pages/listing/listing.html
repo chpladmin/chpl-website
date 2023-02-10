@@ -35,9 +35,6 @@
               <button class="btn btn-default" ui-sref=".view.edit"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</button>
             </div>
             <p ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"><a ui-sref="surveillance.manage({listingId: $ctrl.listing.id, chplProductNumber: $ctrl.listing.chplProductNumber})"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
-            <div ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN'])">
-              <a href="{{ $ctrl.downloadLink }}">Download Uploaded CSV</a>
-            </div>
             <div class="btn-group">
               <chpl-action-button-wrapper-bridge listing="$ctrl.listing"></chpl-action-button-wrapper-bridge>
             </div>
