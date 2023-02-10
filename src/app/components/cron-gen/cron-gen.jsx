@@ -76,6 +76,13 @@ const validationSchema = yup.object({
     .required('Run time must be entered'),
 });
 
+const getCheckbox = (display, name, value, onChange, state) => (
+  <FormControlLabel
+    label={display}
+    control={<Checkbox name={name} value={value} onChange={onChange} checked={state.has(value)} />}
+  />
+);
+
 function ChplCronGen(props) {
   const [cron, setCron] = useState('');
   const [days, setDays] = useState(new Set());
@@ -208,34 +215,13 @@ function ChplCronGen(props) {
             <div className={classes.dailyContainer}>
               <Typography variant="subtitle2">Every:</Typography>
               <div className={classes.day}>
-                <FormControlLabel
-                  label="Sunday"
-                  control={<Checkbox name="days" value="SUN" onChange={handleDays} checked={days.has('SUN')} />}
-                />
-                <FormControlLabel
-                  label="Monday"
-                  control={<Checkbox name="days" value="MON" onChange={handleDays} checked={days.has('MON')} />}
-                />
-                <FormControlLabel
-                  label="Tuesday"
-                  control={<Checkbox name="days" value="TUE" onChange={handleDays} checked={days.has('TUE')} />}
-                />
-                <FormControlLabel
-                  label="Wednesday"
-                  control={<Checkbox name="days" value="WED" onChange={handleDays} checked={days.has('WED')} />}
-                />
-                <FormControlLabel
-                  label="Thursday"
-                  control={<Checkbox name="days" value="THU" onChange={handleDays} checked={days.has('THU')} />}
-                />
-                <FormControlLabel
-                  label="Friday"
-                  control={<Checkbox name="days" value="FRI" onChange={handleDays} checked={days.has('FRI')} />}
-                />
-                <FormControlLabel
-                  label="Saturday"
-                  control={<Checkbox name="days" value="SAT" onChange={handleDays} checked={days.has('SAT')} />}
-                />
+                { getCheckbox('Sunday', 'days', 'SUN', handleDays, days) }
+                { getCheckbox('Monday', 'days', 'MON', handleDays, days) }
+                { getCheckbox('Tuesday', 'days', 'TUE', handleDays, days) }
+                { getCheckbox('Wednesday', 'days', 'WED', handleDays, days) }
+                { getCheckbox('Thursday', 'days', 'THU', handleDays, days) }
+                { getCheckbox('Friday', 'days', 'FRI', handleDays, days) }
+                { getCheckbox('Saturday', 'days', 'SAT', handleDays, days) }
               </div>
             </div>
           )}
