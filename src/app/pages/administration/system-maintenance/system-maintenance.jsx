@@ -14,8 +14,9 @@ import ChplAnnouncements from 'components/announcement/announcements';
 import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
 import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
 import ChplSvaps from 'components/standards/svap/svaps';
+import ChplSystemJobs from 'components/jobs/system-jobs';
 import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
-import { BreadcrumbContext } from 'shared/contexts';
+import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -47,6 +48,7 @@ const useStyles = makeStyles({
 });
 
 function ChplSystemMaintenance() {
+  const { hasAnyRole } = useContext(UserContext);
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [active, setActive] = useState('');
   const classes = useStyles();
@@ -93,6 +95,9 @@ function ChplSystemMaintenance() {
     hide('svaps.viewall');
     hide('svaps.add.disabled');
     hide('svaps.edit.disabled');
+    hide('systemJobs.viewall.disabled');
+    hide('systemJobs.viewall');
+    hide('systemJobs.schedule.disabled');
     hide('ucdProcesses.viewall.disabled');
     hide('ucdProcesses.viewall');
     hide('ucdProcesses.add.disabled');
@@ -159,6 +164,21 @@ function ChplSystemMaintenance() {
           >
             SVAP
           </Button>
+          { hasAnyRole(['ROLE_ADMIN'])
+            && (
+              <Button
+                onClick={() => navigate('systemJobs')}
+                disabled={active === 'systemJobs'}
+                id="system-maintenance-navigation-system-jobs"
+                fullWidth
+                variant="text"
+                color="primary"
+                endIcon={<ArrowForwardIcon />}
+                className={classes.menuItems}
+              >
+                System Jobs
+              </Button>
+            )}
           <Button
             onClick={() => navigate('ucdProcesses')}
             disabled={active === 'ucdProcesses'}
@@ -186,6 +206,10 @@ function ChplSystemMaintenance() {
                   <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
+                      <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
+                    )}
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
               </CardContent>
@@ -206,6 +230,10 @@ function ChplSystemMaintenance() {
         { active === 'svaps'
           && (
             <ChplSvaps />
+          )}
+        { active === 'systemJobs'
+          && (
+            <ChplSystemJobs />
           )}
         { active === 'ucdProcesses'
           && (

@@ -49,7 +49,6 @@ function ChplUploadPromotingInteroperability() {
   const API = getAngularService('API');
   const Upload = getAngularService('Upload');
   const authService = getAngularService('authService');
-  const $state = getAngularService('$state');
   const toaster = getAngularService('toaster');
   const classes = useStyles();
   let formik;
@@ -88,7 +87,6 @@ function ChplUploadPromotingInteroperability() {
           title: 'Success',
           body: message,
         });
-        $state.go('administration.jobs');
       })
       .catch((error) => {
         let message = `File "${file.name}" was not uploaded successfully.`;

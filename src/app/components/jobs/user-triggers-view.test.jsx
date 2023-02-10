@@ -36,12 +36,12 @@ describe('the ChplUserTriggersView component', () => {
   });
 
   it('should have a table of jobs', async () => {
-    expect(screen.getByRole('table', { name: 'User Jobs table' })).toBeInTheDocument();
+    expect(screen.getByRole('table', { name: 'Reports table' })).toBeInTheDocument();
   });
 
   describe('when interacting with a job', () => {
     it('should call the callback to edit a job', async () => {
-      userEvent.click(screen.getByRole('button', { name: /Edit Job job name/i }));
+      userEvent.click(screen.getByRole('button', { name: /Edit Report job name/i }));
 
       await waitFor(() => {
         expect(hocMock.dispatch).toHaveBeenCalledWith({ action: 'edit', payload: expect.objectContaining(triggersMock[0]) });

@@ -28,7 +28,7 @@ function ChplJobEdit(props) {
     );
   }
 
-  if (job.job.group === 'chplJobs') {
+  if (job.job.group === 'chplJobs' && acbs.length > 0) {
     return (
       <ChplUserTriggerEdit
         acbs={acbs}
@@ -44,7 +44,11 @@ function ChplJobEdit(props) {
 export default ChplJobEdit;
 
 ChplJobEdit.propTypes = {
-  acbs: arrayOf(acbPropType).isRequired,
+  acbs: arrayOf(acbPropType),
   dispatch: func.isRequired,
   job: jobType.isRequired,
+};
+
+ChplJobEdit.defaultProps = {
+  acbs: [],
 };
