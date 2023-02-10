@@ -6192,7 +6192,6 @@ __metadata:
     chromedriver: ^109.0.0
     clean-webpack-plugin: ^0.1.19
     concurrently: ^7.3.0
-    cronstrue: ^2.22.0
     css-loader: ^0.28.11
     cytoscape: ^3.23.0
     del: ~2.0.2
@@ -7204,15 +7203,6 @@ __metadata:
     safe-buffer: ^5.0.1
     sha.js: ^2.4.8
   checksum: ba12bb2257b585a0396108c72830e85f882ab659c3320c83584b1037f8ab72415095167ced80dc4ce8e446a8ecc4b2acf36d87befe0707d73b26cf9dc77440ed
-  languageName: node
-  linkType: hard
-
-"cronstrue@npm:^2.22.0":
-  version: 2.22.0
-  resolution: "cronstrue@npm:2.22.0"
-  bin:
-    cronstrue: bin/cli.js
-  checksum: 5017cccddee819c162d3b71c2a517c2468834f6454e9ce6a21016149848a69cf7f7433584c61dd1b92adea79ea461da291d32f48129c0a5ccef93019be93494f
   languageName: node
   linkType: hard
 

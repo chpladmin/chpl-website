@@ -17,7 +17,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import * as jsJoda from '@js-joda/core';
 import '@js-joda/timezone';
-import cronstrue from 'cronstrue';
 
 import { ChplTextField } from 'components/util';
 import theme from 'themes/theme';
@@ -32,6 +31,14 @@ const useStyles = makeStyles({
       alignItems: 'center',
       justifyContent: 'space-between',
     },
+  },
+  cronValue: {
+    color: '#156dac',
+    backgroundColor: '#599bde15',
+    borderRadius: '64px',
+    padding: '8px',
+    fontWeight: '800',
+    maxWidth: 'max-content',
   },
   day: {
     display: 'flex',
@@ -182,9 +189,7 @@ function ChplCronGen(props) {
       <CardContent>
         <div className={classes.cron}>
           <Typography variant="subtitle2">Schedule:</Typography>
-          { cron && cronstrue.toString(cron, { verbose: true, dayOfWeekStartIndexZero: false }) }
-          {' '}
-          (Note: time is in GMT)
+          <code className={classes.cronValue}>{cron}</code>
         </div>
         <AppBar elevation={1} position="static" color="transparent">
           <Tabs
