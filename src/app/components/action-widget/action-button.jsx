@@ -15,10 +15,13 @@ function ChplActionButton(props) {
   const { children, listing } = props;
   const { hasAnyRole } = useContext(UserContext);
   const API = getAngularService('API');
-  const authService = getAngularService('authService');
+  const {
+    getApiKey,
+    getToken,
+  } = getAngularService('authService');
 
   const handleClick = () => {
-    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${authService.getApiKey()}`;
+    const downloadLink = `${API}/listings/${listing.id}/uploaded-file?api_key=${getApiKey()}&authorization=Bearer%20${getToken()}`;
     window.open(downloadLink);
   };
 
