@@ -93,11 +93,11 @@ function ChplCqms(props) {
                 </TableCell>
                 <TableCell>
                   <ChplTooltip title={cqm.description}>
-                    <>
+                    <Typography>
                       { cqm.cmsId ? cqm.cmsId : `NQF-${cqm.nqfNumber}` }:
                       {' '}
                       { cqm.title}
-                    </>
+                    </Typography>
                   </ChplTooltip>
                 </TableCell>
                 { edition.name === '2015' && getCriteriaCells(cqm) }
