@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import InfoIcon from '@material-ui/icons/Info';
 import { arrayOf, bool } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
@@ -21,14 +20,6 @@ import {
 } from 'shared/prop-types';
 
 const useStyles = makeStyles({
-  NestedAccordionLevelOne: {
-    borderRadius: '8px',
-    display: 'grid',
-  },
-  NestedAccordionLevelOneSummary: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-  },
 });
 
 function ChplCqms(props) {
@@ -40,18 +31,20 @@ function ChplCqms(props) {
     setViewAll(props.viewAll);
   }, [props.viewAll]); // eslint-disable-line react/destructuring-assignment
 
-  const getCriteriaCells = (cqm) => {
-    const cells = [1, 2, 3, 4].map((num) => {
-      const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
-      return (
-        <TableCell key={num}>
-          <span className="sr-only">{ meets ? 'meets' : 'does not meet' } 170.315 (c)({num})</span>
-          { meets ? <CheckIcon fontSize="large" /> :<CheckBoxOutlineBlankIcon fontSize="large" /> }
-        </TableCell>
-      );
-    });
-    return cells;
-  }
+  const getCriteriaCells = (cqm) => [1, 2, 3, 4].map((num) => {
+    const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
+    return (
+      <TableCell key={num}>
+        <span className="sr-only">
+          { meets ? 'meets' : 'does not meet' }
+          170.315 (c)(
+          {num}
+          )
+        </span>
+        { meets ? <CheckIcon fontSize="large" /> : <CheckBoxOutlineBlankIcon fontSize="large" /> }
+      </TableCell>
+    );
+  });
 
   return (
     <>
@@ -94,7 +87,8 @@ function ChplCqms(props) {
                 <TableCell>
                   <ChplTooltip title={cqm.description}>
                     <Typography>
-                      { cqm.cmsId ? cqm.cmsId : `NQF-${cqm.nqfNumber}` }:
+                      { cqm.cmsId ? cqm.cmsId : `NQF-${cqm.nqfNumber}` }
+                      :
                       {' '}
                       { cqm.title}
                     </Typography>
@@ -102,7 +96,7 @@ function ChplCqms(props) {
                 </TableCell>
                 { edition.name === '2015' && getCriteriaCells(cqm) }
               </TableRow>
-          ))}
+            ))}
         </TableBody>
       </Table>
     </>
