@@ -38,7 +38,20 @@ function ChplCqms(props) {
 
   useEffect(() => {
     setViewAll(props.viewAll);
-  }, [props.viewAll]);
+  }, [props.viewAll]); // eslint-disable-line react/destructuring-assignment
+
+  const getCriteriaCells = (cqm) => {
+    const cells = [1, 2, 3, 4].map((num) => {
+      const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
+      return (
+        <TableCell key={num}>
+          <span className="sr-only">{ meets ? 'meets' : 'does not meet' } 170.315 (c)({num})</span>
+          { meets ? <CheckIcon fontSize="large" /> :<CheckBoxOutlineBlankIcon fontSize="large" /> }
+        </TableCell>
+      );
+    });
+    return cells;
+  }
 
   return (
     <>
@@ -87,15 +100,7 @@ function ChplCqms(props) {
                     </>
                   </ChplTooltip>
                 </TableCell>
-            { edition.name === '2015'
-              && (
-                <>
-                  <TableCell>{ cqm.criteria.find((crit) => crit.certificationNumber === '170.315 (c)(1)') ? 'meets' : 'does not meet'} 170.315 (c)(1)</TableCell>
-                  <TableCell>{ cqm.criteria.find((crit) => crit.certificationNumber === '170.315 (c)(2)') ? 'meets' : 'does not meet'} 170.315 (c)(2)</TableCell>
-                  <TableCell>{ cqm.criteria.find((crit) => crit.certificationNumber === '170.315 (c)(3)') ? 'meets' : 'does not meet'} 170.315 (c)(3)</TableCell>
-                  <TableCell>{ cqm.criteria.find((crit) => crit.certificationNumber === '170.315 (c)(4)') ? 'meets' : 'does not meet'} 170.315 (c)(4)</TableCell>
-                </>
-              )}
+                { edition.name === '2015' && getCriteriaCells(cqm) }
               </TableRow>
           ))}
         </TableBody>
