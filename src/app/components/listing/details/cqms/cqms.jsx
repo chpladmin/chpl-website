@@ -63,6 +63,7 @@ function ChplCqms(props) {
         </TableHead>
         <TableBody>
           { cqms.filter((cqm) => viewAll || cqm.success)
+            .sort(sortCqms)
             .map((cqm) => (
               <TableRow key={cqm.id ?? cqm.cmsId}>
                 <TableCell>
