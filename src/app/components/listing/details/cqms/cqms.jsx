@@ -8,6 +8,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import InfoIcon from '@material-ui/icons/Info';
 import { arrayOf, bool } from 'prop-types';
 
@@ -64,8 +66,16 @@ function ChplCqms(props) {
             .map((cqm) => (
               <TableRow key={cqm.id ?? cqm.cmsId}>
                 <TableCell>
-                  { cqm.success ? 'meets' : 'does not meet' }
+                  <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
+                  { edition.name === '2011' && cqm.success
+                    && (
+                      <CheckIcon fontSize="large" />
+                    )}
                   { cqm.successVersions?.length > 0 && cqm.successVersions.join(', ') }
+                  { !cqm.success
+                    && (
+                      <CheckBoxOutlineBlankIcon fontSize="large" />
+                    )}
                 </TableCell>
                 <TableCell>
                   <ChplTooltip title={cqm.description}>
