@@ -4,7 +4,7 @@ const ListingComponent = {
     listing: '<',
   },
   controller: class ListingComponent {
-    constructor($localStorage, $log, $q, $state, $stateParams, API, DateUtil, authService, featureFlags, utilService) {
+    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, featureFlags, utilService) {
       'ngInject';
 
       this.$localStorage = $localStorage;
@@ -12,7 +12,6 @@ const ListingComponent = {
       this.$q = $q;
       this.$state = $state;
       this.$stateParams = $stateParams;
-      this.API = API;
       this.DateUtil = DateUtil;
       this.authService = authService;
       this.isOn = featureFlags.isOn;
@@ -28,7 +27,6 @@ const ListingComponent = {
     $onChanges(changes) {
       if (changes.listing) {
         this.listing = changes.listing.currentValue;
-        this.downloadLink = `${this.API}/listings/${this.listing.id}/uploaded-file?api_key=${this.authService.getApiKey()}`;
         this.chplProductNumberHistory = [...new Set(this.listing.chplProductNumberHistory.map((item) => item.chplProductNumber))]
           .filter((item) => item !== this.listing.chplProductNumber)
           .sort((a, b) => (a < b ? -1 : 1));
