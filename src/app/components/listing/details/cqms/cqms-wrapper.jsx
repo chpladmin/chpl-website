@@ -1,21 +1,18 @@
 import React from 'react';
-import {
-  ThemeProvider,
-} from '@material-ui/core';
 import { arrayOf, bool } from 'prop-types';
 
 import ChplCqms from './cqms';
 
+import AppWrapper from 'app-wrapper';
 import { certificationEdition, cqm } from 'shared/prop-types';
-import theme from 'themes/theme';
 
 function ChplCqmsWrapper(props) {
   const { cqms, edition, viewAll } = props;
 
   return (
-    <ThemeProvider theme={theme}>
+    <AppWrapper>
       <ChplCqms cqms={cqms} edition={edition} viewAll={viewAll} />
-    </ThemeProvider>
+    </AppWrapper>
   );
 }
 
