@@ -41,21 +41,21 @@ describe('the ONC-ACB Management page', () => {
     }
   });
 
-  describe('when logged in as ICSA Labs', () => {
+  describe('when logged in as SLI Compliance', () => {
     beforeEach(() => {
-      login.logIn('icsa');
+      login.logIn('sli');
     });
 
     afterEach(() => {
       login.logOut();
     });
 
-    it('should display registered users under ICSA Labs', () => {
-      const acb = 'ICSA Labs';
+    it('should display registered users under SLI Compliance', () => {
+      const acb = 'SLI Compliance';
       page.openOrganizationDetails(acb);
       expect(page.manageUsersPanelHeader).toBeDisplayed();
       expect(page.manageUsersPanel.getText()).toContain('ROLE_ACB');
-      expect(page.manageUsersPanel.getText()).toContain('ICSA Labs');
+      expect(page.manageUsersPanel.getText()).toContain('SLI Compliance');
     });
 
     it('should not present the option to edit ACB details for Drummond Group', () => {
@@ -70,9 +70,9 @@ describe('the ONC-ACB Management page', () => {
       expect(page.manageUsersPanelHeader.isDisplayed()).toBe(false);
     });
 
-    describe('when editing ICSA Labs details', () => {
+    describe('when editing SLI Compliance details', () => {
       beforeEach(() => {
-        const acb = 'ICSA Labs';
+        const acb = 'SLI Compliance';
         page.openOrganizationDetails(acb);
         page.organizationEditButton.click();
       });
