@@ -20,7 +20,7 @@ See installation instructions here: [nodejs][nodejs] but be aware that the requi
 
 ### Install yarn
 
-The project uses Yarn 2+. Installation instructions for Yarn 2+ are not easily found, but some information can be found at: [yarn][yarn 1] and [yarn2][yarn 2+]. The basic steps are to install yarn 1 globally, then run `yarn install` in the project directory. Yarn 1 can be installed globally with npm: `npm install -g yarn`
+The project uses Yarn 2+. Installation instructions for Yarn 2+ are not easily found, but some information can be found at: [yarn 1][yarn] and [yarn 2+][yarn2]. The basic steps are to install yarn 1 globally, then run `yarn install` in the project directory. Yarn 1 can be installed globally with npm: `npm install -g yarn`
 
 ### Install dependencies
 
