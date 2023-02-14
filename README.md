@@ -1,9 +1,5 @@
 # chpl-website
 
-[![Build Status](http://54.213.57.151:9090/job/andlar_chpl-website/badge/icon)](http://54.213.57.151:9090/job/andlar_chpl-website)
-[![Test Coverage](https://codeclimate.com/github/andlar/chpl-website/badges/coverage.svg)](https://codeclimate.com/github/andlar/chpl-website/coverage)
-[![Code Climate](https://codeclimate.com/github/andlar/chpl-website/badges/gpa.svg)](https://codeclimate.com/github/andlar/chpl-website)
-
 The web UI for chpl
 
 ## Prerequisites
@@ -40,12 +36,14 @@ yarn install
 * `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
 * `yarn start:dev`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but connecting to the DEV environment for data
 * `yarn start:prod`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but using the production settings for js minification / packaging / etc.
+* `yarn start:all`: Run `yarn start`, `yarn test:auto` and `yarn test:react:auto` all at once, in the same terminal
 * `yarn profile`: Generate a webpack statistics output file
 * `yarn test`: Run the Karma-based unit tests once (tests based on the AngularJS components)
 * `yarn test:auto`: Run the Karma-based unit tests continuously (tests based on the AngularJS components), re-running the tests on any file change
 * `yarn test:ahrq`: Run Karma-based tests once in a fashion suitable for the deployment environment (tests based on the AngularJS components)
 * `yarn test:ci`: Run Karma-based tests once in a fashion suitable for a Continuous Integration environment (tests based on the AngularJS components)
 * `yarn test:react`: Run Jest-based unit tests once (tests based on the React components)
+* `yarn test:react:auto`: Run Jest-based unit tests continuously (tests based on the React components)
 * `lint`: Run ESLint against all JavaScript files in the project
 * `lint:fix`: Run ESLint against all JavaScript files in the project and fix any errors that ESLint can fix automatically. Especially useful when run as `yarn lint:fix src/app/path/to/file.js[x]` to automatically apply fixes against a single file
 * `yarn e2e`: Run the end to end integration tests, as well as e2e linting
@@ -57,7 +55,6 @@ yarn install
 Usable on `yarn build` and `yarn start`, these parameters control configuration of some properties
 
 * `--env.NODE_ENV=production` or `--env.NODE_ENV=development` to indicate whether to build for development or production environments. Defaults to `development` if not provided
-* `--env.style` to create a a style guide page at url/style.html. Defaults to "don't create" if not provided
 
 #### Linting
 
