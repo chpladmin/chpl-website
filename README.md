@@ -8,12 +8,11 @@ The web UI for chpl
 
 ## Prerequisites
 
-Git, Node.js, Yarn, and Webpack are required to install and test this project.
+Git, Node.js, and Yarn are required to install and test this project.
 
  * Git: [git][git]
  * Node.js: [nodejs][nodejs]
  * Yarn: [yarn][yarn]
- * Webpack: [webpack][webpack]
 
 ## Getting Started
 
@@ -21,11 +20,11 @@ Clone the repository using [git][git]:
 
 ### Install Node.js
 
-See installation instructions here: [nodejs][nodejs]
+See installation instructions here: [nodejs][nodejs] but be aware that the required version of Node is 14.x
 
-### Install yarn and webpack
+### Install yarn
 
-Yarn: [yarn][yarn]
+The project uses Yarn 2+. Installation instructions for Yarn 2+ are not easily found, but some information can be found at: [yarn][yarn 1] and [yarn2][yarn 2+]. The basic steps are to install yarn 1 globally, then run `yarn install` in the project directory. Yarn 1 can be installed globally with npm: `npm install -g yarn`
 
 ### Install dependencies
 
@@ -98,4 +97,4 @@ When debugging, taking screenshots can be useful. The command `browser.saveScree
 [git]: http://git-scm.com/
 [nodejs]: https://nodejs.org/en/download/
 [yarn]: https://yarnpkg.com/en/
-[webpack]: https://webpack.js.org/
+[yarn2]: https://yarnpkg.com/getting-started/migration
