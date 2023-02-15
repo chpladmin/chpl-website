@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Card,
   Table,
   TableBody,
   TableCell,
@@ -9,7 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { arrayOf, bool } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
@@ -20,6 +21,9 @@ import {
 } from 'shared/prop-types';
 
 const useStyles = makeStyles({
+  cqmHelperText: {
+    padding: '16px 0',
+  },
 });
 
 function ChplCqms(props) {
@@ -41,22 +45,23 @@ function ChplCqms(props) {
           {num}
           )
         </span>
-        { meets ? <CheckIcon fontSize="large" /> : <CheckBoxOutlineBlankIcon fontSize="large" /> }
+        { meets ? <CheckIcon fontSize="large" /> : <NotInterestedIcon color="disabled" fontSize="large" /> }
       </TableCell>
     );
   });
 
   return (
     <>
-      <Typography>
+      <Typography className={classes.cqmHelperText}>
         Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
       </Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>{ edition.name === '2011' ? 'Meets' : 'Version' }</TableCell>
-            <TableCell>Quality Measure</TableCell>
-            { edition.name === '2015'
+      <Card>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>{ edition.name === '2011' ? 'Meets' : 'Version' }</TableCell>
+              <TableCell>Quality Measure</TableCell>
+              { edition.name === '2015'
               && (
                 <>
                   <TableCell>170.315 (c)(1)</TableCell>
@@ -65,40 +70,41 @@ function ChplCqms(props) {
                   <TableCell>170.315 (c)(4)</TableCell>
                 </>
               )}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { cqms.filter((cqm) => viewAll || cqm.success)
-            .sort(sortCqms)
-            .map((cqm) => (
-              <TableRow key={cqm.id ?? cqm.cmsId}>
-                <TableCell>
-                  <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
-                  { edition.name === '2011' && cqm.success
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { cqms.filter((cqm) => viewAll || cqm.success)
+              .sort(sortCqms)
+              .map((cqm) => (
+                <TableRow key={cqm.id ?? cqm.cmsId}>
+                  <TableCell>
+                    <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
+                    { edition.name === '2011' && cqm.success
                     && (
                       <CheckIcon fontSize="large" />
                     )}
-                  { cqm.successVersions?.length > 0 && cqm.successVersions.join(', ') }
-                  { !cqm.success
+                    { cqm.successVersions?.length > 0 && cqm.successVersions.join(', ') }
+                    { !cqm.success
                     && (
-                      <CheckBoxOutlineBlankIcon fontSize="large" />
+                      <NotInterestedIcon fontSize="large" />
                     )}
-                </TableCell>
-                <TableCell>
-                  <ChplTooltip title={cqm.description}>
-                    <Typography>
-                      { cqm.cmsId ? cqm.cmsId : `NQF-${cqm.nqfNumber}` }
-                      :
-                      {' '}
-                      { cqm.title}
-                    </Typography>
-                  </ChplTooltip>
-                </TableCell>
-                { edition.name === '2015' && getCriteriaCells(cqm) }
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+                  </TableCell>
+                  <TableCell>
+                    <ChplTooltip title={cqm.description}>
+                      <Typography>
+                        { cqm.cmsId ? cqm.cmsId : `NQF-${cqm.nqfNumber}` }
+                        :
+                        {' '}
+                        { cqm.title}
+                      </Typography>
+                    </ChplTooltip>
+                  </TableCell>
+                  { edition.name === '2015' && getCriteriaCells(cqm) }
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </Card>
     </>
   );
 }
