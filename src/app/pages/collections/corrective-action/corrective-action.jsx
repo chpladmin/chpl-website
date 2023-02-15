@@ -42,7 +42,7 @@ function ChplCorrectiveActionCollectionPage() {
         ...acb,
         value: acb.name,
         display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
-        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 1 month
+        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationBodies')
