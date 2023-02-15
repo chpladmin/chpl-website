@@ -45,7 +45,7 @@ const getCriteriaValueEntry = (props) => (
 const generateDateEntry = ({ filter, handleFilterUpdate, type }) => (
   <>
     {filter.values
-      .sort((a, b) => (a.value > b.value ? -1 : 1))
+      .sort((a, b) => (a.value < b.value ? -1 : 1))
       .map((value) => {
         const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
         return (
