@@ -22,7 +22,6 @@ function ChplCompareButton(props) {
       id={`toggle-compare-${listing.id}`}
       onClick={handleClick}
       endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
-      fullWidth
     >
       Compare
     </Button>
