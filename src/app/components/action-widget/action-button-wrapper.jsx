@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ThemeProvider,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 
 import ChplActionButton from './action-button';
 
@@ -35,4 +36,10 @@ export default ChplActionButtonWrapper;
 
 ChplActionButtonWrapper.propTypes = {
   listing: listingPropType.isRequired,
+  horizontal: bool,
+};
+
+ChplActionButtonWrapper.defaultProps = {
+  children: undefined,
+  horizontal: true,
 };
