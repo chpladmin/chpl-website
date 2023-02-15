@@ -95,7 +95,6 @@
         expect(networkService.updateProduct).toHaveBeenCalledWith({
           product,
           productIds: [39, 32],
-          newDeveloperId: 22,
         });
       });
     });
