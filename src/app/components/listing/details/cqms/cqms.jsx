@@ -24,6 +24,9 @@ const useStyles = makeStyles({
   cqmHelperText: {
     padding: '16px 0',
   },
+  disabledRow: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
 });
 
 function ChplCqms(props) {
@@ -76,7 +79,7 @@ function ChplCqms(props) {
             { cqms.filter((cqm) => viewAll || cqm.success)
               .sort(sortCqms)
               .map((cqm) => (
-                <TableRow key={cqm.id ?? cqm.cmsId}>
+                <TableRow key={cqm.id ?? cqm.cmsId} className={!cqm.success && classes.disabledRow}>
                   <TableCell>
                     <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
                     { edition.name === '2011' && cqm.success
@@ -84,10 +87,6 @@ function ChplCqms(props) {
                       <CheckIcon fontSize="large" />
                     )}
                     { cqm.successVersions?.length > 0 && cqm.successVersions.join(', ') }
-                    { !cqm.success
-                    && (
-                      <NotInterestedIcon fontSize="large" />
-                    )}
                   </TableCell>
                   <TableCell>
                     <ChplTooltip title={cqm.description}>
