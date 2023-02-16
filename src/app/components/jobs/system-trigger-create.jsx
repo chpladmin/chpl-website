@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -14,6 +15,7 @@ import * as jsJoda from '@js-joda/core';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
+import { BreadcrumbContext } from 'shared/contexts';
 import { job as jobType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -32,11 +34,26 @@ const validationSchema = yup.object({
 
 function ChplSystemTriggerCreate(props) {
   const { job, dispatch } = props;
+  const { append, display, hide } = useContext(BreadcrumbContext);
   const classes = useStyles();
-
   let formik;
 
+  useEffect(() => {
+    append(
+      <Button
+        key="systemJobs.schedule.disabled"
+        depth={2}
+        variant="text"
+        disabled
+      >
+        Schedule
+      </Button>,
+    );
+    display('systemJobs.schedule.disabled');
+  }, []);
+
   const handleDispatch = (action) => {
+    hide('systemJobs.schedule.disabled');
     switch (action) {
       case 'cancel':
         dispatch({ action: 'close' });
