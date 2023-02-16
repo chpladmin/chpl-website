@@ -1,8 +1,8 @@
 /* global MINUTES_BETWEEN_KEEPALIVE MINUTES_UNTIL_IDLE MINUTES_UNTIL_LOGOUT */
 import 'ng-file-upload';
 import ChplCmsWrapper from './cms/cms-wrapper';
-import ChplJobsWrapper from './jobs/jobs-wrapper';
 import ChplLoginPage from './login';
+import ChplReportsWrapper from './reports/reports-wrapper';
 import ChplSearchWrapper from './search/search-wrapper';
 import ChplSystemMaintenanceWrapper from './system-maintenance/system-maintenance-wrapper';
 
@@ -36,7 +36,7 @@ angular
     KeepaliveProvider.interval(60 * MINUTES_BETWEEN_KEEPALIVE);
   })
   .component('chplCmsWrapperBridge', reactToAngularComponent(ChplCmsWrapper))
-  .component('chplJobsWrapperBridge', reactToAngularComponent(ChplJobsWrapper))
   .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage))
+  .component('chplReportsWrapperBridge', reactToAngularComponent(ChplReportsWrapper))
   .component('chplSearchWrapperBridge', reactToAngularComponent(ChplSearchWrapper))
   .component('chplSystemMaintenanceWrapperBridge', reactToAngularComponent(ChplSystemMaintenanceWrapper));
