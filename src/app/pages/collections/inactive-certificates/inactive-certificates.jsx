@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import ChplInactiveCertificatesCollectionView from './inactive-certificates-view';
 
+import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria } from 'api/data';
 import { FilterProvider } from 'components/filter';
 import {
@@ -14,7 +15,6 @@ import {
 } from 'components/filter/filters';
 
 const staticFilters = [
-  certificationBodies,
   certificationDate,
   decertificationDate, {
     ...derivedCertificationEditions,
@@ -39,7 +39,27 @@ const staticFilters = [
 
 function ChplInactiveCertificatesCollectionPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
+
+  useEffect(() => {
+    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+      return;
+    }
+    const values = acbQuery.data.acbs
+      .map((acb) => ({
+        ...acb,
+        value: acb.name,
+        display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
+        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationBodies')
+      .concat({
+        ...certificationBodies,
+        values,
+      }));
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
   useEffect(() => {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
