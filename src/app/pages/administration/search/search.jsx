@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import ChplSearchView from './search-view';
 
+import { useFetchAcbs } from 'api/acbs';
 import { useFetchCqms, useFetchCriteria } from 'api/data';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
@@ -15,7 +16,6 @@ import {
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 
 const staticFilters = [
-  certificationBodies,
   certificationDate,
   certificationStatuses,
   derivedCertificationEditions, {
@@ -45,8 +45,28 @@ const staticFilters = [
 
 function ChplSearchPage() {
   const [filters, setFilters] = useState(staticFilters);
+  const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
+
+  useEffect(() => {
+    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+      return;
+    }
+    const values = acbQuery.data.acbs
+      .map((acb) => ({
+        ...acb,
+        value: acb.name,
+        display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
+        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationBodies')
+      .concat({
+        ...certificationBodies,
+        values,
+      }));
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
   useEffect(() => {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
