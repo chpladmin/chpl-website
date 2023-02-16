@@ -1,5 +1,5 @@
 import ChplApiDocumentationCollectionWrapper from './api-documentation/api-documentation-wrapper';
-import ChplBannedDevelopersCollectionPage from './banned-developers/banned-developers';
+import ChplBannedDevelopersCollectionWrapper from './banned-developers/banned-developers-wrapper';
 import ChplCorrectiveActionCollectionWrapper from './corrective-action/corrective-action-wrapper';
 import ChplDecertifiedProductsCollectionWrapper from './decertified-products/decertified-products-wrapper';
 import ChplInactiveCertificatesCollectionWrapper from './inactive-certificates/inactive-certificates-wrapper';
@@ -15,7 +15,7 @@ export default angular
     'ui.bootstrap',
   ])
   .component('chplApiDocumentationCollectionWrapperBridge', reactToAngularComponent(ChplApiDocumentationCollectionWrapper))
-  .component('chplBannedDevelopersCollectionPageBridge', reactToAngularComponent(ChplBannedDevelopersCollectionPage))
+  .component('chplBannedDevelopersCollectionPageBridge', reactToAngularComponent(ChplBannedDevelopersCollectionWrapper))
   .component('chplCorrectiveActionCollectionWrapperBridge', reactToAngularComponent(ChplCorrectiveActionCollectionWrapper))
   .component('chplDecertifiedProductsCollectionWrapperBridge', reactToAngularComponent(ChplDecertifiedProductsCollectionWrapper))
   .component('chplInactiveCertificatesCollectionWrapperBridge', reactToAngularComponent(ChplInactiveCertificatesCollectionWrapper))
