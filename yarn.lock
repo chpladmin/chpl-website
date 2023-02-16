@@ -3151,23 +3151,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uirouter/core@npm:6.0.7":
-  version: 6.0.7
-  resolution: "@uirouter/core@npm:6.0.7"
-  checksum: adf87e1a599ab7e06d51473ce3d7a787b87594142bdf992f9f95989d14f434eaa8c56621edfea96d4ccdb84abed205ef4b9a0a375345f3402edb4aa44c460a09
-  languageName: node
-  linkType: hard
-
-"@uirouter/visualizer@npm:^6.0.2":
-  version: 6.0.3
-  resolution: "@uirouter/visualizer@npm:6.0.3"
-  dependencies:
-    d3-hierarchy: ^1.1.8
-    d3-interpolate: ^1.3.2
-    preact: ~8.4.2
-  peerDependencies:
-    "@uirouter/core": ">=5.0.0"
-  checksum: 13ff997a38de73a32fc16f1df3507e3ac2b7d0f34a90a6dbf545c175bf5df777aeaa85c56bc132d40cb9cd2d1090bfc13daca325043221bbcfcc5f6751959533
+"@uirouter/core@npm:6.0.8":
+  version: 6.0.8
+  resolution: "@uirouter/core@npm:6.0.8"
+  checksum: d5548ed07b7618bd054c0c4eefa0ed1a3126a028f0c6a7cf0ac710ac1db331c6ac17ea86518622dd0718517051284d39f8b2ebcf2ae98bf620b13f94b10c93bd
   languageName: node
   linkType: hard
 
@@ -3964,13 +3951,13 @@ __metadata:
   linkType: hard
 
 "angular-ui-router@npm:^1.0.20":
-  version: 1.0.29
-  resolution: "angular-ui-router@npm:1.0.29"
+  version: 1.0.30
+  resolution: "angular-ui-router@npm:1.0.30"
   dependencies:
-    "@uirouter/core": 6.0.7
+    "@uirouter/core": 6.0.8
   peerDependencies:
     angular: ">=1.2.0"
-  checksum: 49dc87e38e2b0744e3605c0614ae18ca42d05280081406488af3c390e43751a3712a6b927214b237f832ff43d69e45aab0aeac158fb2ba869f804660f2725e25
+  checksum: dd1402dcccba06ba91fc0b31aa5399871a817a21593938365cb03fac4736fbc0e280124eab1a0a788eb18cf8e23b522a1b7cdd8cd30c8fd5b71ceaa7144415e0
   languageName: node
   linkType: hard
 
@@ -6153,7 +6140,6 @@ __metadata:
     "@testing-library/jest-dom": ^5.11.9
     "@testing-library/react": ^11.2.5
     "@testing-library/user-event": ^13.0.10
-    "@uirouter/visualizer": ^6.0.2
     "@wdio/allure-reporter": ^7.10.1
     "@wdio/cli": ^7.11.1
     "@wdio/codemod": ^0.12.0
@@ -7560,29 +7546,6 @@ __metadata:
     heap: ^0.2.6
     lodash: ^4.17.21
   checksum: bcb3c48068384309287553a8b2561bf500562548563ef900c43d011b4a2c8e7cbf0c44f40f7f4ad1b661ff959385c627027f7e7a642021a3716054ae093d3749
-  languageName: node
-  linkType: hard
-
-"d3-color@npm:1":
-  version: 1.4.1
-  resolution: "d3-color@npm:1.4.1"
-  checksum: a214b61458b5fcb7ad1a84faed0e02918037bab6be37f2d437bf0e2915cbd854d89fbf93754f17b0781c89e39d46704633d05a2bfae77e6209f0f4b140f9894b
-  languageName: node
-  linkType: hard
-
-"d3-hierarchy@npm:^1.1.8":
-  version: 1.1.9
-  resolution: "d3-hierarchy@npm:1.1.9"
-  checksum: 5fd8761c302252cb9abe9ce2a0934fc97104dd0df8d1b5de6472532903416f40e13b4b58d03ce215a0b816d7129c4ed4503bd4fdbc00a130fdcf46a63d734a52
-  languageName: node
-  linkType: hard
-
-"d3-interpolate@npm:^1.3.2":
-  version: 1.4.0
-  resolution: "d3-interpolate@npm:1.4.0"
-  dependencies:
-    d3-color: 1
-  checksum: d98988bd1e2f59d01f100d0a19315ad8f82ef022aa09a65aff76f747a44f9b52f2d64c6578b8f47e01f2b14a8f0ef88f5460d11173c0dd2d58238c217ac0ec03
   languageName: node
   linkType: hard
 
@@ -18304,13 +18267,6 @@ export-to-csv@andlar/export-to-csv:
     picocolors: ^1.0.0
     source-map-js: ^0.6.2
   checksum: 1a230553d74c66aa9585c90781ed8ea75f19cefea405d2117b67fbeb24b5b5e0e17be2e0c5a07db31dd085643a13394127ab2222e940771b70498331bf20f35e
-  languageName: node
-  linkType: hard
-
-"preact@npm:~8.4.2":
-  version: 8.4.2
-  resolution: "preact@npm:8.4.2"
-  checksum: 1617417d4d5c6b25d11ebe4e5be678e4379ec4f21636e5b65d3308140271be180fb3e06c2ff3e84de103a4de9cba3d9260301f146d385a2c447e6c6baca373fe
   languageName: node
   linkType: hard
 

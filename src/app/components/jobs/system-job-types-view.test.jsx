@@ -5,9 +5,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplJobTypesView from './job-types-view';
-
-import { UserContext } from 'shared/contexts';
+import ChplSystemJobTypesView from './system-job-types-view';
 
 const hocMock = {
   dispatch: jest.fn(),
@@ -16,23 +14,17 @@ const hocMock = {
 const jobTypesMock = [{
   name: 'test name',
   description: 'test description',
-  group: 'chplJobs',
+  group: 'systemJobs',
   jobDataMap: {},
 }];
 
-const userContextMock = {
-  hasAnyRole: () => true,
-};
-
-describe('the ChplJobTypesView component', () => {
+describe('the ChplSystemJobTypesView component', () => {
   beforeEach(async () => {
     render(
-      <UserContext.Provider value={userContextMock}>
-        <ChplJobTypesView
-          jobTypes={jobTypesMock}
-          dispatch={hocMock.dispatch}
-        />
-      </UserContext.Provider>,
+      <ChplSystemJobTypesView
+        jobTypes={jobTypesMock}
+        dispatch={hocMock.dispatch}
+      />,
     );
   });
 
