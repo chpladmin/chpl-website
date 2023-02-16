@@ -3,12 +3,16 @@ import { arrayOf, bool, string } from 'prop-types';
 
 import ChplComplaintsView from './complaints-view';
 
+import { useFetchAcbs } from 'api/acbs';
 import {
   FilterProvider,
   defaultFilter,
   getDateDisplay,
   getDateEntry,
 } from 'components/filter';
+import {
+  certificationBodies,
+} from 'components/filter/filters';
 import { UserContext } from 'shared/contexts';
 
 const analytics = {
@@ -16,19 +20,6 @@ const analytics = {
 };
 
 const staticFilters = [{
-  ...defaultFilter,
-  key: 'certificationBodies',
-  display: 'ONC-ACB',
-  values: [
-    { value: 'CCHIT', display: 'CCHIT (Retired)' },
-    { value: 'Drummond Group', default: true },
-    { value: 'ICSA Labs', default: true },
-    { value: 'Leidos', default: true },
-    { value: 'SLI Compliance', default: true },
-    { value: 'Surescripts LLC', display: 'Surescripts LLC (Retired)' },
-    { value: 'UL LLC', display: 'UL LLC (Retired)' },
-  ],
-}, {
   ...defaultFilter,
   key: 'closedDate',
   display: 'Closed Date',
@@ -117,6 +108,26 @@ function ChplComplaints(props) {
   const [bonusQuery, setBonusQuery] = useState('');
   const [disallowedFilters, setDisallowedFilters] = useState([]);
   const [filters, setFilters] = useState(staticFilters);
+  const acbQuery = useFetchAcbs();
+
+  useEffect(() => {
+    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+      return;
+    }
+    const values = acbQuery.data.acbs
+      .map((acb) => ({
+        ...acb,
+        value: acb.name,
+        display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
+        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationBodies')
+      .concat({
+        ...certificationBodies,
+        values,
+      }));
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
   useEffect(() => {
     setBonusQuery(initialBonusQuery);
