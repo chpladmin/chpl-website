@@ -102,7 +102,7 @@ const toggleShowAll = (filters, category, setFilters) => {
   setFilters(updatedFilters);
 };
 
-const updateFilter = (filters, category, value, setFilters) => {
+const updateFilter = (filters, category, value, setFilters, setSearchTerm) => {
   const filter = filters.find((f) => f.key === category.key);
   if (filter.singular) {
     const values = filter.values.map((v) => ({
@@ -123,6 +123,7 @@ const updateFilter = (filters, category, value, setFilters) => {
           selected: false,
         })),
       })).filter((f) => f.key !== category.key).concat(updatedFilter);
+      setSearchTerm('');
     } else {
       updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
     }
@@ -231,7 +232,7 @@ function FilterProvider(props) {
         toggleShowAll(filters, category, setFilters);
         break;
       case 'update':
-        updateFilter(filters, category, value, setFilters);
+        updateFilter(filters, category, value, setFilters, setSearchTerm);
         break;
       default:
         console.log({ action, category, value });
