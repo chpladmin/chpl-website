@@ -89,9 +89,9 @@ function ChplFilterQuickFilters() {
           <MenuItem
             key={v.value}
             onClick={() => loadQuickFilter(v)}
-            disabled={v.display.includes('(0)')}
+            disabled={quickFilter.getValueDisplay(v).includes('(0)')}
           >
-            { v.display }
+            { quickFilter.getValueDisplay(v) }
           </MenuItem>
         ))}
       </Menu>
