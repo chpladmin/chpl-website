@@ -102,6 +102,7 @@ const getRadioValueEntry = ({ filter, handleFilterUpdate }) => {
           id={labelId}
           key={labelId}
           style={classes.singularSelectors}
+          disabled={filter.getLongValueDisplay(value).includes('(0)')}
         />
       );
     });
