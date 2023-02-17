@@ -113,7 +113,19 @@ const updateFilter = (filters, category, value, setFilters) => {
       ...filter,
       values,
     };
-    const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    let updatedFilters;
+    if (filter.loneFilter) {
+      updatedFilters = filters.map((f) => ({
+        ...f,
+        operator: f.operatorKey ? 'or' : undefined,
+        values: f.values.map((v) => ({
+          ...v,
+          selected: false,
+        })),
+      })).filter((f) => f.key !== category.key).concat(updatedFilter);
+    } else {
+      updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    }
     if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
       setFilters(updatedFilters);
     }
