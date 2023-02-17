@@ -26,6 +26,7 @@ import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import {
   ChplFilterChips,
   ChplFilterPanel,
+  ChplFilterQuickFilters,
   ChplFilterSearchTerm,
   useFilterContext,
 } from 'components/filter';
@@ -91,7 +92,7 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
+      gridTemplateColumns: 'auto 10fr auto auto',
     },
   },
   stickyColumn: {
@@ -205,6 +206,7 @@ function ChplSearchView(props) {
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
         <ChplFilterPanel />
+        <ChplFilterQuickFilters />
       </div>
       <div>
         <ChplFilterChips />
