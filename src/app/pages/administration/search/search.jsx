@@ -52,22 +52,17 @@ function ChplSearchPage() {
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
 
+  let getValueDisplay;
+  let getQuery;
+
   useEffect(() => {
-    const getQuery = (state) => {
-      const value = state.values[0]?.value;
-      if (value === 'Previously Compared' && getPreviouslyCompared().length > 0) {
-        return `${state.key}=${getPreviouslyCompared().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
-      }
-      if (value === 'Previously Viewed' && getPreviouslyViewed().length > 0) {
-        return `${state.key}=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
-      }
-      return null;
-    };
     setFilters((f) => f
       .filter((filter) => filter.key !== 'quickFilters')
       .concat({
         ...quickFilters,
         getQuery,
+        getValueDisplay,
+        getLongValueDisplay: getValueDisplay,
       }));
   }, [getPreviouslyCompared, getPreviouslyViewed]);
 
@@ -130,6 +125,19 @@ function ChplSearchPage() {
 
   const analytics = {
     category: 'Search',
+  };
+
+  getValueDisplay = (value) => `${value.value} (${value.value.includes('Compared') ? getPreviouslyCompared().length : getPreviouslyViewed().length})`;
+
+  getQuery = (state) => {
+    const value = state.values[0]?.value;
+    if (value === 'Previously Compared' && getPreviouslyCompared().length > 0) {
+      return `${state.key}=${getPreviouslyCompared().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+    }
+    if (value === 'Previously Viewed' && getPreviouslyViewed().length > 0) {
+      return `${state.key}=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+    }
+    return null;
   };
 
   return (
