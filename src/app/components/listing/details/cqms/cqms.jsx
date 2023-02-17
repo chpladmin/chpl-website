@@ -21,7 +21,7 @@ import {
 } from 'shared/prop-types';
 
 const useStyles = makeStyles({
-  cqmHelperText: {
+  helperText: {
     padding: '16px 0',
   },
   disabledRow: {
@@ -55,7 +55,7 @@ function ChplCqms(props) {
 
   return (
     <>
-      <Typography className={classes.cqmHelperText}>
+      <Typography className={classes.helperText}>
         Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
       </Typography>
       <Card>
@@ -83,9 +83,9 @@ function ChplCqms(props) {
                   <TableCell>
                     <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
                     { edition.name === '2011' && cqm.success
-                    && (
-                      <CheckIcon fontSize="large" />
-                    )}
+                      && (
+                        <CheckIcon fontSize="large" />
+                      )}
                     { cqm.successVersions?.length > 0 && cqm.successVersions.join(', ') }
                   </TableCell>
                   <TableCell>
