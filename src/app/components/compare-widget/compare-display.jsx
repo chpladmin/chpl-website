@@ -12,7 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import ChplEllipsis from 'components/util/chpl-ellipsis';
 import { getAngularService } from 'services/angular-react-helper';
-import { BrowserContext, CompareContext } from 'shared/contexts';
+import { CompareContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   buttonContainer: {
@@ -48,12 +48,10 @@ function ChplCompareDisplay() {
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
-  const { addToCompared } = useContext(BrowserContext);
   const classes = useStyles();
 
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'Compare Widget' });
-    listings.forEach((listing) => addToCompared(listing));
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();

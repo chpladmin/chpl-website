@@ -7,6 +7,7 @@ import {
   ChplAttestationEditWrapper,
   ChplAttestationsViewWrapper,
 } from './attestation';
+import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
 import ChplBrowserViewedWidgetWrapper from './browser/browser-viewed-widget-wrapper';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
@@ -64,6 +65,7 @@ angular
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
+  .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
   .component('chplBrowserViewedWidgetBridge', reactToAngularComponent(ChplBrowserViewedWidgetWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
