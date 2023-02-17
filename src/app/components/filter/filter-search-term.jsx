@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
   searchBar: {
     display: 'grid',
-    gridTemplateColumns: '10fr auto',
+    gridTemplateColumns: '9fr auto',
   },
   searchIcon: {
     display: 'none',
