@@ -181,9 +181,11 @@ describe('the Product part of the Developers page', () => {
           page.selectProduct(product);
           page.editProduct(product);
           page.editProductsHeader.waitForDisplayed();
+          hooks.waitForSpinnerToDisappear();
           page.selectProductOwner('ZirMed - active');
           actionBar.save();
-          expect(actionBar.errorMessages.getText()).toEqual('Zoobook Systems LLC has no other products so this product cannot be transferred. Please contact ONC if this is needed.');
+          browser.waitUntil(() => toast.toastMessage.isDisplayed());
+          expect(toast.toastMessage.getText()).toEqual('Zoobook Systems LLC has no other products so this product cannot be transferred. Please contact ONC if this is needed.');
         });
      });
   });
