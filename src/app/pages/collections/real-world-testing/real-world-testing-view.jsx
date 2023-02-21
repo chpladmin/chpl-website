@@ -16,7 +16,8 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
-import ChplCompareButton from 'components/compare-widget/compare-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplActionButton from 'components/action-widget/action-button';
 import {
   ChplLink,
   ChplPagination,
@@ -29,6 +30,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
@@ -169,7 +171,7 @@ function ChplRealWorldTestingCollectionView(props) {
     { property: 'developer', text: 'Developer', sortable: true },
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
-    { text: 'Certification Status' },
+    { text: 'Status', extra: <ChplCertificationStatusLegend /> },
     { text: 'Real World Testing Plans URL' },
     { text: 'Real World Testing Results URL' },
     { text: 'Actions', invisible: true },
@@ -323,7 +325,7 @@ function ChplRealWorldTestingCollectionView(props) {
                               </TableCell>
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
-                              <TableCell>{item.certificationStatus.name}</TableCell>
+                              <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
                               <TableCell className={classes.linkWrap}>
                                 {item.rwtPlansUrl
                                 && (
@@ -345,7 +347,7 @@ function ChplRealWorldTestingCollectionView(props) {
                                   )}
                               </TableCell>
                               <TableCell>
-                                <ChplCompareButton listing={item} />
+                                <ChplActionButton listing={item} />
                               </TableCell>
                             </TableRow>
                           ))}

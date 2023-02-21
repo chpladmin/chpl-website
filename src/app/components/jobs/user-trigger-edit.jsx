@@ -154,7 +154,7 @@ function ChplUserTriggerEdit(props) {
       <Card>
         <CardHeader
           titleTypographyProps={{ gutterBottom: true, variant: 'h5' }}
-          title={`${trigger.name ? 'Edit' : 'Create'} Job: ${trigger.job.name}`}
+          title={`${trigger.name ? 'Edit' : 'Schedule'} Report: ${trigger.job.name}`}
           subheader={(
             <Typography className={classes.subHeaderColor} variant="body1">
               {trigger.job.description}

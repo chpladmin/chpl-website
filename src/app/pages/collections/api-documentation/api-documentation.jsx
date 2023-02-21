@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
+import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria } from 'api/data';
 import { FilterProvider } from 'components/filter';
 import {
@@ -11,10 +12,8 @@ import {
   certificationStatuses,
   derivedCertificationEditions,
 } from 'components/filter/filters';
-import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [
-  certificationBodies,
   certificationDate,
   certificationStatuses, {
     ...derivedCertificationEditions,
@@ -26,14 +25,28 @@ const staticFilters = [
   }];
 
 function ChplApiDocumentationCollectionPage() {
-  const { isOn } = useContext(FlagContext);
-  const [erdPhase2IsOn, setErdPhase2IsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
+  const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
 
   useEffect(() => {
-    setErdPhase2IsOn(isOn('erd-phase-2'));
-  }, [isOn]);
+    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+      return;
+    }
+    const values = acbQuery.data.acbs
+      .map((acb) => ({
+        ...acb,
+        value: acb.name,
+        display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
+        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'certificationBodies')
+      .concat({
+        ...certificationBodies,
+        values,
+      }));
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
 
   useEffect(() => {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
@@ -46,7 +59,7 @@ function ChplApiDocumentationCollectionPage() {
         value: cc.id,
         display: `${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
         longDisplay: `${cc.removed ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
-        default: erdPhase2IsOn ? [56, 181, 182].includes(cc.id) : [56, 57, 58, 181, 182].includes(cc.id),
+        default: [56, 181, 182].includes(cc.id),
       }));
     setFilters((f) => f
       .filter((filter) => filter.key !== 'certificationCriteriaIds')
@@ -54,7 +67,7 @@ function ChplApiDocumentationCollectionPage() {
         ...certificationCriteriaIds,
         values,
       }));
-  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess, erdPhase2IsOn]);
+  }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
 
   const analytics = {
     category: 'API Information for 2015 Edition Products',

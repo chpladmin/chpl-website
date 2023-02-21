@@ -16,7 +16,8 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
-import ChplCompareButton from 'components/compare-widget/compare-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplActionButton from 'components/action-widget/action-button';
 import {
   ChplLink,
   ChplPagination,
@@ -29,6 +30,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
@@ -55,7 +57,7 @@ const headers = [
   { property: 'product', text: 'Product', sortable: true },
   { property: 'version', text: 'Version', sortable: true },
   { property: 'certification_date', text: 'Certification Date', sortable: true, reverseDefault: true },
-  { text: 'Certification Status' },
+  { text: 'Status', extra: <ChplCertificationStatusLegend /> },
   { text: 'Actions', invisible: true },
 ];
 /* eslint-enable object-curly-newline */
@@ -298,9 +300,9 @@ function ChplSearchView(props) {
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{ getDisplayDateFormat(item.certificationDate) }</TableCell>
-                              <TableCell>{item.certificationStatus.name}</TableCell>
+                              <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
                               <TableCell>
-                                <ChplCompareButton listing={item} />
+                                <ChplActionButton listing={item} />
                               </TableCell>
                             </TableRow>
                           ))}
