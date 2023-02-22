@@ -308,7 +308,6 @@ function ChplSedCollectionView(props) {
                                     id={`view-details-${item.id}`}
                                     onClick={() => viewDetails(item.id)}
                                     endIcon={<InfoIcon />}
-                                    fullWidth
                                   >
                                     View
                                   </Button>

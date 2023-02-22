@@ -31,7 +31,6 @@ function ChplCmsButton(props) {
       id={`toggle-cms-${listing.id}`}
       onClick={handleClick}
       endIcon={isInWidget(listing) ? <RemoveIcon /> : <AddIcon />}
-      fullWidth
     >
       Cert ID
     </Button>
