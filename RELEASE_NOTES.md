@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 11.49.0
+_21 February 2023_
+
+### Features
+* Filter the available Non-conformities based on the Listing Edition
+* Convert CMS ID widget/buttons to React
+
+### User Interface Updates
+* Provide React version of Certification Status Legend on all new style search pages
+* Change "Reports" nav menu item to be "Activity"
+* Move "System Jobs" to new "Reports" navigation menu item
+
+### Bug Fixes
+* Respect "retirement" status of ONC-ACBs on Shortcut pages
+* Default to non-removed criteria on API Information shortcut page
+
+---
+
 ## Version 11.48.1
 _6 February 2023_
 
