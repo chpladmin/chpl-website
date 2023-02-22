@@ -132,10 +132,10 @@ function ChplSearchPage() {
   getQuery = (state) => {
     const value = state.values[0]?.value;
     if (value === 'Previously Compared' && getPreviouslyCompared().length > 0) {
-      return `${state.key}=${getPreviouslyCompared().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+      return `listingIds=${getPreviouslyCompared().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     if (value === 'Previously Viewed' && getPreviouslyViewed().length > 0) {
-      return `${state.key}=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+      return `listingIds=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
     }
     return null;
   };
