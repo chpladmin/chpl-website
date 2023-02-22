@@ -76,6 +76,8 @@ function ChplFilterQuickFilters() {
             border: `1px solid ${palette.grey}`,
             boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
             backgroundColor: '#fff',
+            marginTop: '19px',
+            marginRight: '16px',
           },
         }}
       >
