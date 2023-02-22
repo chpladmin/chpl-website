@@ -58,6 +58,7 @@ function ChplFilterQuickFilters() {
         id="quick-filter-menu"
         open={open}
         anchorEl={anchor}
+        getContentAnchorEl={null}
         keepMounted
         onClose={handleClose}
         anchorOrigin={{
@@ -72,8 +73,6 @@ function ChplFilterQuickFilters() {
           style: {
             alignItems: 'center',
             borderRadius: '0 0 8px 8px',
-            marginTop: '53px',
-            marginLeft: '16px',
             border: `1px solid ${palette.grey}`,
             boxShadow: 'rgb(149 157 165 / 40%) 0px 6px 16px 6px',
             backgroundColor: '#fff',
