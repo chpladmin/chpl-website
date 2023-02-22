@@ -61,6 +61,7 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateColumns: '1fr',
     alignItems: 'center',
+    minHeight: '8vh',
     maxHeight: '40vh',
     overflowY: 'auto',
   },
