@@ -52,7 +52,7 @@
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cqm'" id="panel-cqm">
         <span feature-flag="ui-upgrade" feature-flag-hide>
-          <p>Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
+          <p ng-if="$ctrl.listing.certificationEdition.name === '2015'">Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
           <table class="table">
             <thead>
               <tr>

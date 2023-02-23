@@ -55,9 +55,12 @@ function ChplCqms(props) {
 
   return (
     <>
-      <Typography className={classes.helperText}>
-        Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
-      </Typography>
+      { edition.name === '2015'
+        && (
+          <Typography className={classes.helperText}>
+            Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
+          </Typography>
+        )}
       <Card>
         <Table>
           <TableHead>
