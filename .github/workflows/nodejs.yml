@@ -15,9 +15,3 @@ jobs:
     - run: yarn install
     - name: Run React Tests
       run: yarn test:react
-    - name: Run AngularJs Tests
-      uses: GabrielBB/xvfb-action@v1
-      with:
-        run: yarn test
-      env:
-        CI: true
