@@ -1,16 +1,11 @@
 name: CHPL UI Unit Tests
-
 on: [push]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x]
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -19,11 +14,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn install
     - name: Run React Tests
-      uses: GabrielBB/xvfb-action@v1
       with:
         run: yarn test:react
-      env:
-        CI: true
     - name: Run AngularJs Tests
       uses: GabrielBB/xvfb-action@v1
       with:
