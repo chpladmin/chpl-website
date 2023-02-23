@@ -20,7 +20,7 @@
             <th scope="col" ng-repeat="listing in $ctrl.listings | orderBy:'certificationDate'">
               {{ listing.product.name }}<br />
               <chpl-browser-compared-widget-bridge listing="listing"></chpl-browser-compared-widget-bridge>
-              <chpl-action-button-wrapper-bridge listing="listing"></chpl-action-button-wrapper-bridge>
+              <chpl-action-button-wrapper-bridge listing="listing" horizontal="false"></chpl-action-button-wrapper-bridge>
             </th>
           </tr>
         </thead>
