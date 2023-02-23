@@ -23,11 +23,11 @@ jobs:
       uses: GabrielBB/xvfb-action@v1
       with:
         run: yarn test:react
-        env:
-          CI: true
+      env:
+        CI: true
     - name: Run Angular Tests
       uses: GabrielBB/xvfb-action@v1
       with:
         run: yarn test
-        env:
-          CI: true
+      env:
+        CI: true
