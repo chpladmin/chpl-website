@@ -13,7 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: nanasess/setup-chromedriver@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -25,7 +24,7 @@ jobs:
         run: yarn test:react
       env:
         CI: true
-    - name: Run Angular Tests
+    - name: Run AngularJs Tests
       uses: GabrielBB/xvfb-action@v1
       with:
         run: yarn test
