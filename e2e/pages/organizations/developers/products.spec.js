@@ -219,7 +219,7 @@ describe('the Product part of the Developers page', () => {
           page.getProductInfo(product).waitForDisplayed({ timeout: 55000 });
         });
 
-        xit('should have a product split', () => {
+        it('should have a product split', () => {
           expect(page.getSplitButton(product)).toExist();
         });
 
