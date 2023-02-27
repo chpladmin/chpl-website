@@ -4,12 +4,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import {
-  arrayOf,
-  bool,
-  shape,
-  string,
-} from 'prop-types';
+import { arrayOf, shape, string } from 'prop-types';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckIcon from '@material-ui/icons/Check';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -26,7 +21,7 @@ const csvOptions = {
   showLabels: true,
 };
 
-const initialHeaders = [
+const allHeaders = [
   { headerName: 'CHPL ID', objectKey: 'chplProductNumber', selected: true },
   { headerName: 'Certification Edition', objectKey: 'fullEdition', selected: true },
   { headerName: 'Developer', objectKey: 'developerName', selected: true },
@@ -58,10 +53,13 @@ const initialHeaders = [
 const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation?.find((item) => item.criterion.id === id)?.value || '';
 
 function ChplDownloadListings(props) {
-  const { analytics, extraHeaders } = props;
+  const { analytics, disabled, toggled } = props;
   const $analytics = getAngularService('$analytics');
   const [anchor, setAnchor] = useState(null);
-  const [headers, setHeaders] = useState(initialHeaders.concat(extraHeaders));
+  const [headers, setHeaders] = useState(allHeaders.filter((h) => !disabled.includes(h.objectKey)).map((h) => ({
+    ...h,
+    selected: toggled.includes(h.objectKey) ? !h.selected : h.selected,
+  })));
   const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -72,6 +70,7 @@ function ChplDownloadListings(props) {
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,
+      decertificationDate: listing.decertificationDate ?? '',
       certificationStatusName: listing.certificationStatus.name,
       acb: listing.certificationBody.name,
       practiceTypeName: listing.practiceType?.name ?? '',
@@ -194,15 +193,13 @@ ChplDownloadListings.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }),
-  extraHeaders: arrayOf(shape({
-    headerName: string.isRequired,
-    objectKey: string.isRequired,
-    selected: bool.isRequired,
-  })),
+  disabled: arrayOf(string),
+  toggled: arrayOf(string),
 };
 
 ChplDownloadListings.defaultProps = {
   listings: [],
   analytics: undefined,
-  extraHeaders: [],
+  disabled: [],
+  toggled: [],
 };
