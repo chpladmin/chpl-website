@@ -122,7 +122,7 @@ function ChplInactiveCertificatesCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
-  const disabledCsvHeaders = ['rwtPlansUrl', 'rwtResultsUrl'];
+  const disabledCsvHeaders = ['rwt'];
   const toggledCsvDefaults = ['decertificationDate'];
 
   const filterContext = useFilterContext();

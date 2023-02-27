@@ -142,13 +142,8 @@ function ChplCorrectiveActionCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
-  const disabledCsvHeaders = ['rwtPlansUrl', 'rwtResultsUrl'];
-  const toggledCsvDefaults = [
-    'openSurveillanceNonConformityCount',
-    'closedSurveillanceNonConformityCount',
-    'openDirectReviewNonConformityCount',
-    'closedDirectReviewNonConformityCount',
-  ];
+  const disabledCsvHeaders = ['rwt'];
+  const toggledCsvDefaults = ['compliance'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({

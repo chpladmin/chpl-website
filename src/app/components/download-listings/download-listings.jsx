@@ -22,41 +22,58 @@ const csvOptions = {
 };
 
 const allHeaders = [
-  { headerName: 'CHPL ID', objectKey: 'chplProductNumber', selected: true },
-  { headerName: 'Certification Edition', objectKey: 'fullEdition', selected: true },
-  { headerName: 'Developer', objectKey: 'developerName', selected: true },
-  { headerName: 'Product', objectKey: 'productName', selected: true },
-  { headerName: 'Version', objectKey: 'versionName', selected: true },
-  { headerName: 'Certification Date', objectKey: 'certificationDate', selected: true },
+  { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
+  { headerName: 'Certification Edition', objectKey: 'fullEdition' },
+  { headerName: 'Developer', objectKey: 'developerName', group: 'productData' },
+  { headerName: 'Product', objectKey: 'productName', group: 'productData' },
+  { headerName: 'Version', objectKey: 'versionName', group: 'productData' },
+  { headerName: 'Certification Date', objectKey: 'certificationDate' },
   { headerName: 'Decertification Date', objectKey: 'decertificationDate' },
-  { headerName: 'Certification Status', objectKey: 'certificationStatusName', selected: true },
+  { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
   { headerName: 'ONC-ACB', objectKey: 'acb' },
   { headerName: 'Practice Type', objectKey: 'practiceTypeName' },
-  { headerName: 'Details', objectKey: 'detailsLink', selected: true },
+  { headerName: 'Details', objectKey: 'detailsLink' },
   { headerName: 'Certification Criteria', objectKey: 'criteria' },
   { headerName: 'Clinical Quality Measures', objectKey: 'cqms' },
-  { headerName: 'Total Surveillance', objectKey: 'surveillanceCount' },
-  { headerName: 'Open Surveillance Non-conformities', objectKey: 'openSurveillanceNonConformityCount' },
-  { headerName: 'Closed Surveillance Non-conformities', objectKey: 'closedSurveillanceNonConformityCount' },
-  { headerName: 'Total Direct Reviews', objectKey: 'directReviewCount' },
-  { headerName: 'Open Direct Review Non-conformities', objectKey: 'openDirectReviewNonConformityCount' },
-  { headerName: 'Closed Direct Review Non-conformities', objectKey: 'closedDirectReviewNonConformityCount' },
-  { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-  { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-  { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
-  { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
-  { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
-  { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl' },
-  { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl' },
+  { headerName: 'Total Surveillance', objectKey: 'surveillanceCount', group: 'compliance' },
+  { headerName: 'Open Surveillance Non-conformities', objectKey: 'openSurveillanceNonConformityCount', group: 'compliance' },
+  { headerName: 'Closed Surveillance Non-conformities', objectKey: 'closedSurveillanceNonConformityCount', group: 'compliance' },
+  { headerName: 'Total Direct Reviews', objectKey: 'directReviewCount', group: 'compliance' },
+  { headerName: 'Open Direct Review Non-conformities', objectKey: 'openDirectReviewNonConformityCount', group: 'compliance' },
+  { headerName: 'Closed Direct Review Non-conformities', objectKey: 'closedDirectReviewNonConformityCount', group: 'compliance' },
+  { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56', group: 'apiDocumentation' },
+  { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181', group: 'apiDocumentation' },
+  { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182', group: 'apiDocumentation' },
+  { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList', group: 'apiDocumentation' },
+  { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures', group: 'apiDocumentation' },
+  { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl', group: 'rwt' },
+  { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl', group: 'rwt' },
+];
+
+const allCategories = [
+  { name: 'CHPL ID', key: 'chplProductNumber', selected: true },
+  { name: 'Certification Edition', key: 'fullEdition', selected: true },
+  { name: 'Product data', key: 'productData', selected: true },
+  { name: 'Certification Date', key: 'certificationDate', selected: true },
+  { name: 'Decertification Date', key: 'decertificationDate' },
+  { name: 'Certification Status', key: 'certificationStatusName', selected: true },
+  { name: 'ONC-ACB', key: 'acb' },
+  { name: 'Practice Type', key: 'practiceTypeName' },
+  { name: 'Details', key: 'detailsLink', selected: true },
+  { name: 'Certification Criteria', key: 'criteria' },
+  { name: 'Clinical Quality Measures', key: 'cqms' },
+  { name: 'Compliance', key: 'compliance' },
+  { name: 'API Documentation', key: 'apiDocumentation' },
+  { name: 'Real World Testing', key: 'rwt' },
 ];
 
 function ChplDownloadListings(props) {
   const { analytics, disabled, toggled } = props;
   const $analytics = getAngularService('$analytics');
   const [anchor, setAnchor] = useState(null);
-  const [headers, setHeaders] = useState(allHeaders.filter((h) => !disabled.includes(h.objectKey)).map((h) => ({
+  const [categories, setCategories] = useState(allCategories.filter((h) => !disabled.includes(h.key)).map((h) => ({
     ...h,
-    selected: toggled.includes(h.objectKey) ? !h.selected : h.selected,
+    selected: toggled.includes(h.key) ? !h.selected : h.selected,
   })));
   const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
@@ -98,9 +115,10 @@ function ChplDownloadListings(props) {
   };
 
   const handleDownload = () => {
+    const activeCategories = categories.filter((cat) => cat.selected).map((cat) => cat.key);
     const csvExporter = new ExportToCsv({
       ...csvOptions,
-      headers: headers.filter((h) => h.selected),
+      headers: allHeaders.filter((h) => activeCategories.includes(h.objectKey) || activeCategories.includes(h.group)),
     });
     if (analytics) {
       $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
@@ -109,9 +127,9 @@ function ChplDownloadListings(props) {
   };
 
   const toggle = (header) => {
-    setHeaders((previous) => previous.map((p) => ({
+    setCategories((previous) => previous.map((p) => ({
       ...p,
-      selected: header.headerName === p.headerName ? !p.selected : p.selected,
+      selected: header.key === p.key ? !p.selected : p.selected,
     })));
   };
 
@@ -160,16 +178,16 @@ function ChplDownloadListings(props) {
           },
         }}
       >
-        { headers.map((h) => (
+        { categories.map((c) => (
           <MenuItem
-            onClick={() => toggle(h)}
-            key={h.objectKey}
-            selected={h.selected}
+            onClick={() => toggle(c)}
+            key={c.key}
+            selected={c.selected}
           >
-            <span className="sr-only">{ h.selected ? 'selected: ' : 'not selected: '}</span>
-            { h.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
+            <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
+            { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
             {' '}
-            { h.headerName }
+            { c.name }
           </MenuItem>
         ))}
         <MenuItem
