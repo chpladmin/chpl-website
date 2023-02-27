@@ -50,7 +50,7 @@ const allHeaders = [
   { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl' },
 ];
 
-const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation?.find((item) => item.criterion.id === id)?.value || '';
+const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation.find((cc) => cc.criterion.id === id)?.value || '';
 
 function ChplDownloadListings(props) {
   const { analytics, disabled, toggled } = props;

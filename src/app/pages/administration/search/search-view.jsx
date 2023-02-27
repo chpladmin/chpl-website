@@ -13,8 +13,8 @@ import { shape, string } from 'prop-types';
 
 import { useFetchCollection } from 'api/collections';
 import ChplActionButton from 'components/action-widget/action-button';
-import ChplDownloadListings from 'components/download-listings/download-listings';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
   ChplPagination,
@@ -124,8 +124,6 @@ function ChplSearchView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
-  const disabledCsvHeaders = ['rwtPlansUrl', 'rwtResultsUrl'];
-  const toggledCsvDefaults = ['chplProductNumber', 'mandatoryDisclosures'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -208,8 +206,6 @@ function ChplSearchView(props) {
                   <ChplDownloadListings
                     analytics={analytics}
                     listings={listings}
-                    disabled={disabledCsvHeaders}
-                    toggled={toggledCsvDefaults}
                   />
                 )}
             </div>

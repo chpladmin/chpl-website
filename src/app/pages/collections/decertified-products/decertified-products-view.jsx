@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -12,12 +10,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
   ChplPagination,
@@ -35,20 +32,6 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
-const csvOptions = {
-  filename: 'decertified-products',
-  showLabels: true,
-  headers: [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'Decertification Date', objectKey: 'decertificationDate' },
-  ],
-};
-
 const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
   { text: 'Certification Edition' },
@@ -61,9 +44,6 @@ const headers = [
 ];
 
 const useStyles = makeStyles({
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -135,7 +115,6 @@ function ChplDecertifiedProductsCollectionView(props) {
   const storageKey = 'storageKey-decertifiedProductsView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
-  const csvExporter = new ExportToCsv(csvOptions);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -143,6 +122,8 @@ function ChplDecertifiedProductsCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
+  const disabledCsvHeaders = ['rwtPlansUrl', 'rwtResultsUrl'];
+  const toggledCsvDefaults = ['decertificationDate'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -161,11 +142,6 @@ function ChplDecertifiedProductsCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      developerName: listing.developer.name,
-      productName: listing.product.name,
-      versionName: listing.version.name,
-      certificationStatusName: listing.certificationStatus.name,
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -175,11 +151,6 @@ function ChplDecertifiedProductsCollectionView(props) {
       setPageNumber(0);
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
-
-  const downloadDecertifiedProducts = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    csvExporter.generateCsv(listings);
-  };
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -241,23 +212,12 @@ function ChplDecertifiedProductsCollectionView(props) {
               </div>
               { listings.length > 0
                 && (
-                  <ButtonGroup size="small" className={classes.wrap}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      fullWidth
-                      id="download-filtered-listings"
-                      onClick={downloadDecertifiedProducts}
-                    >
-                      Download
-                      {' '}
-                      { listings.length }
-                      {' '}
-                      Result
-                      { listings.length !== 1 ? 's' : '' }
-                      <GetAppIcon className={classes.iconSpacing} />
-                    </Button>
-                  </ButtonGroup>
+                  <ChplDownloadListings
+                    analytics={analytics}
+                    listings={listings}
+                    disabled={disabledCsvHeaders}
+                    toggled={toggledCsvDefaults}
+                  />
                 )}
             </div>
             { listings.length > 0

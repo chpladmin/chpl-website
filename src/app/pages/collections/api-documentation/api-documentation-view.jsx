@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -13,15 +11,14 @@ import {
 } from '@material-ui/core';
 import Moment from 'react-moment';
 import { shape, string } from 'prop-types';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import { ExportToCsv } from 'export-to-csv';
 
 import {
   useFetchApiDocumentationData,
   useFetchCollection,
 } from 'api/collections';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
   ChplPagination,
@@ -37,24 +34,6 @@ import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
-
-const csvOptions = () => ({
-  filename: 'api-documentation',
-  showLabels: true,
-  headers: [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
-    { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
-    { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
-    { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
-    { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
-  ],
-});
 
 const useStyles = makeStyles({
   linkWrap: {
@@ -172,10 +151,6 @@ const parseApiDocumentation = ({ apiDocumentation }, analytics) => {
   );
 };
 
-const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation?.find((item) => item.criterion.id === id)?.value || '';
-
-const parseServiceBaseUrlList = ({ serviceBaseUrlList }) => serviceBaseUrlList?.value || '';
-
 function ChplApiDocumentationCollectionView(props) {
   const storageKey = 'storageKey-apiDocumentationView';
   const $analytics = getAngularService('$analytics');
@@ -191,6 +166,14 @@ function ChplApiDocumentationCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
+  const disabledCsvHeaders = ['rwtPlansUrl', 'rwtResultsUrl'];
+  const toggledCsvDefaults = [
+    'apiDocumentation56',
+    'apiDocumentation181',
+    'apiDocumentation182',
+    'mandatoryDisclosures',
+    'serviceBaseUrlList',
+  ];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -210,16 +193,8 @@ function ChplApiDocumentationCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      apiDocumentation: parseApiDocumentation(listing, analytics),
-      apiDocumentation56: getApiDocumentationForCsv(listing, 56),
-      apiDocumentation181: getApiDocumentationForCsv(listing, 181),
-      apiDocumentation182: getApiDocumentationForCsv(listing, 182),
-      serviceBaseUrlList: parseServiceBaseUrlList(listing),
-      developerName: listing.developer.name,
-      productName: listing.product.name,
-      versionName: listing.version.name,
-      certificationStatusName: listing.certificationStatus.name,
+      apiDocumentationNode: parseApiDocumentation(listing, analytics),
+      serviceBaseUrlList: listing.serviceBaseUrlList?.value || '',
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -252,12 +227,6 @@ function ChplApiDocumentationCollectionView(props) {
     { text: 'Mandatory Disclosures URL' },
     { text: 'Actions', invisible: true },
   ];
-
-  const downloadApiDocumentation = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    const csvExporter = new ExportToCsv(csvOptions());
-    csvExporter.generateCsv(listings);
-  };
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -350,23 +319,12 @@ function ChplApiDocumentationCollectionView(props) {
               </div>
               { listings.length > 0
                 && (
-                  <ButtonGroup size="small" className={classes.wrap}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      fullWidth
-                      id="download-filtered-listings"
-                      onClick={downloadApiDocumentation}
-                      endIcon={<GetAppIcon />}
-                    >
-                      Download
-                      {' '}
-                      { listings.length }
-                      {' '}
-                      Result
-                      { listings.length !== 1 ? 's' : '' }
-                    </Button>
-                  </ButtonGroup>
+                  <ChplDownloadListings
+                    analytics={analytics}
+                    listings={listings}
+                    disabled={disabledCsvHeaders}
+                    toggled={toggledCsvDefaults}
+                  />
                 )}
             </div>
             { listings.length > 0
@@ -417,7 +375,7 @@ function ChplApiDocumentationCollectionView(props) {
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
                               <TableCell className={classes.linkWrap}>
-                                { item.apiDocumentation }
+                                { item.apiDocumentationNode }
                               </TableCell>
                               <TableCell className={classes.linkWrap}>
                                 { item.serviceBaseUrlList
