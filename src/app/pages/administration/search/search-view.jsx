@@ -16,8 +16,9 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplDownloadListings from 'components/download-listings/download-listings';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import {
   ChplLink,
   ChplPagination,
@@ -234,23 +235,10 @@ function ChplSearchView(props) {
               </div>
               { listings.length > 0
                 && (
-                  <ButtonGroup size="small" className={classes.wrap}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      fullWidth
-                      id="download-filtered-listings"
-                      onClick={downloadSearch}
-                    >
-                      Download
-                      {' '}
-                      { listings.length }
-                      {' '}
-                      Result
-                      { listings.length !== 1 ? 's' : '' }
-                      <GetAppIcon className={classes.iconSpacing} />
-                    </Button>
-                  </ButtonGroup>
+                  <ChplDownloadListings
+                    analytics={analytics}
+                    listings={listings}
+                  />
                 )}
             </div>
             { listings.length > 0
