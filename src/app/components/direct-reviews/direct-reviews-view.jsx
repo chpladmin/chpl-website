@@ -17,6 +17,51 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
+const getFriendlyValues = (nc) => {
+  let friendlyCapApprovalDate;
+  let friendlyCapMustCompleteDate;
+  let friendlyCapEndDate;
+  switch (nc.capStatus) {
+    case 'CAP approved':
+      friendlyCapApprovalDate = getDisplayDateFormat(nc.capApprovalDate, 'Has not been determined');
+      friendlyCapMustCompleteDate = getDisplayDateFormat(nc.capMustCompleteDate, 'Has not been determined');
+      friendlyCapEndDate = getDisplayDateFormat(nc.capEndDate, 'Has not been completed');
+      break;
+    case 'CAP not approved':
+      friendlyCapApprovalDate = 'Corrective Action Plan not approved';
+      friendlyCapMustCompleteDate = 'Not determined';
+      friendlyCapEndDate = 'Not completed';
+      break;
+    case 'Failed to complete':
+      friendlyCapApprovalDate = getDisplayDateFormat(nc.capApprovalDate, 'Has not been determined');
+      friendlyCapMustCompleteDate = getDisplayDateFormat(nc.capMustCompleteDate, 'Has not been determined');
+      friendlyCapEndDate = 'Not completed';
+      break;
+    case 'No CAP provided for approval':
+      friendlyCapApprovalDate = 'No Corrective Action Plan provided for approval';
+      friendlyCapMustCompleteDate = 'Not determined';
+      friendlyCapEndDate = 'Not completed';
+      break;
+    case 'Resolved without CAP':
+      friendlyCapApprovalDate = 'Resolved without Corrective Action Plan';
+      friendlyCapMustCompleteDate = 'Not applicable';
+      friendlyCapEndDate = getDisplayDateFormat(nc.capEndDate, 'Has not been completed');
+      break;
+    case 'To be determined':
+      friendlyCapApprovalDate = 'To be determined';
+      friendlyCapMustCompleteDate = 'Not determined';
+      friendlyCapEndDate = 'Not completed';
+      break;
+      // no default
+  }
+  return {
+    ...nc,
+    friendlyCapApprovalDate,
+    friendlyCapMustCompleteDate,
+    friendlyCapEndDate,
+  };
+};
+
 const sortDirectReviews = (a, b) => {
   if (a.endDate && b.endDate) {
     return a.endDate < b.endDate ? 1 : -1;
@@ -61,12 +106,7 @@ function ChplDirectReviewsView(props) {
         ncSummary,
         isClosed: !!endDate,
         nonConformities: dr.nonConformities
-          .map((nc) => ({
-            ...nc,
-            friendlyCapApprovalDate: getDisplayDateFormat(nc.capApprovalDate, 'Has not been determined'),
-            friendlyCapMustCompleteDate: getDisplayDateFormat(nc.capMustCompleteDate, 'Has not been determined'),
-            friendlyCapEndDate: getDisplayDateFormat(nc.capEndDate, 'Has not been completed'),
-          }))
+          .map(getFriendlyValues)
           .sort((a, b) => {
             if (a.capApprovalDate && b.capApprovalDate) {
               if (a.capApprovalDate < b.capApprovalDate) { return 1; }
