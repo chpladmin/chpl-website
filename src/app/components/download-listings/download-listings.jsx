@@ -33,6 +33,7 @@ const initialHeaders = [
   { headerName: 'Product', objectKey: 'productName', selected: true },
   { headerName: 'Version', objectKey: 'versionName', selected: true },
   { headerName: 'Certification Date', objectKey: 'certificationDate', selected: true },
+  { headerName: 'Decertification Date', objectKey: 'decertificationDate' },
   { headerName: 'Certification Status', objectKey: 'certificationStatusName', selected: true },
   { headerName: 'ONC-ACB', objectKey: 'acb' },
   { headerName: 'Practice Type', objectKey: 'practiceTypeName' },
@@ -45,7 +46,16 @@ const initialHeaders = [
   { headerName: 'Total Direct Reviews', objectKey: 'directReviewCount' },
   { headerName: 'Open Direct Review Non-conformities', objectKey: 'openDirectReviewNonConformityCount' },
   { headerName: 'Closed Direct Review Non-conformities', objectKey: 'closedDirectReviewNonConformityCount' },
+  { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56' },
+  { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181' },
+  { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182' },
+  { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList' },
+  { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures' },
+  { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl' },
+  { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl' },
 ];
+
+const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation?.find((item) => item.criterion.id === id)?.value || '';
 
 function ChplDownloadListings(props) {
   const { analytics, extraHeaders } = props;
@@ -68,6 +78,12 @@ function ChplDownloadListings(props) {
       detailsLink: `https://chpl.healthit.gov/#/listing/${listing.id}`,
       criteria: listing.criteriaMet.sort(sortCriteria).map((cc) => `${cc.number}: ${cc.title}`).join('\n'),
       cqms: listing.cqmsMet.map((cqm) => ({ ...cqm, name: cqm.number })).sort(sortCqms).map((cqm) => cqm.number).join('\n'),
+      apiDocumentation56: getApiDocumentationForCsv(listing, 56),
+      apiDocumentation181: getApiDocumentationForCsv(listing, 181),
+      apiDocumentation182: getApiDocumentationForCsv(listing, 182),
+      serviceBaseUrlList: listing.serviceBaseUrlList?.value || '',
+      rwtPlansUrl: listing.rwtPlansUrl || '',
+      rwtResultsUrl: listing.rwtResultsUrl || '',
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 
