@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Button,
   Menu,
   MenuItem,
-  makeStyles,
 } from '@material-ui/core';
-import { arrayOf, bool, shape, string } from 'prop-types';
+import {
+  arrayOf,
+  bool,
+  shape,
+  string,
+} from 'prop-types';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckIcon from '@material-ui/icons/Check';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -15,23 +18,6 @@ import { ExportToCsv } from 'export-to-csv';
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 import { palette } from 'themes';
-
-const useStyles = makeStyles({
-  tableActions: {
-    display: 'flex',
-    gap: '4px',
-    flexWrap: 'wrap',
-    alignContent: 'stretch',
-    alignItems: 'stretch',
-    flexDirection: 'column',
-  },
-  tableActionsHorizontal: {
-    display: 'flex',
-    gap: '4px',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-  },
-});
 
 const csvOptions = {
   filename: 'listings',
@@ -49,12 +35,23 @@ const initialHeaders = [
 ];
 
 function ChplDownloadListings(props) {
-  const { analytics, extraHeaders, listings } = props;
+  const { analytics, extraHeaders } = props;
   const $analytics = getAngularService('$analytics');
   const [anchor, setAnchor] = useState(null);
-  const [headers, setHeaders] = useState(initialHeaders);
+  const [headers, setHeaders] = useState(initialHeaders.concat(extraHeaders));
+  const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
+
+  useEffect(() => {
+    setListings(props.listings.map((listing) => ({
+      ...listing,
+      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      developerName: listing.developer.name,
+      productName: listing.product.name,
+      versionName: listing.version.name,
+      certificationStatusName: listing.certificationStatus.name,
+    })));
+  }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 
   const handleClick = (e) => {
     if (analytics) {
@@ -133,24 +130,23 @@ function ChplDownloadListings(props) {
         }}
       >
         { headers.map((h) => (
-        <MenuItem
-          onClick={() => toggle(h)}
-          key={h.objectKey}
-        >
-          <span className="sr-only">{ h.selected ? 'selected: ' : 'not selected: '}</span>
-          { h.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
-          { h.headerName }
-        </MenuItem>
+          <MenuItem
+            onClick={() => toggle(h)}
+            key={h.objectKey}
+            selected={h.selected}
+          >
+            <span className="sr-only">{ h.selected ? 'selected: ' : 'not selected: '}</span>
+            { h.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
+            {' '}
+            { h.headerName }
+          </MenuItem>
         ))}
         <MenuItem
           onClick={handleDownload}
         >
           Download
           {' '}
-          { listings.length }
-          {' '}
-          Result
-          { listings.length !== 1 ? 's' : '' }
+          <GetAppIcon />
         </MenuItem>
       </Menu>
     </>
@@ -167,12 +163,12 @@ ChplDownloadListings.propTypes = {
   extraHeaders: arrayOf(shape({
     headerName: string.isRequired,
     objectKey: string.isRequired,
-    selected: bool.isRequired
+    selected: bool.isRequired,
   })),
 };
 
 ChplDownloadListings.defaultProps = {
   listings: [],
-  anayltics: undefined,
+  analytics: undefined,
   extraHeaders: [],
 };
