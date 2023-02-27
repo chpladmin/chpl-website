@@ -50,8 +50,6 @@ const allHeaders = [
   { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl' },
 ];
 
-const getApiDocumentationForCsv = ({ apiDocumentation }, id) => apiDocumentation.find((cc) => cc.criterion.id === id)?.value || '';
-
 function ChplDownloadListings(props) {
   const { analytics, disabled, toggled } = props;
   const $analytics = getAngularService('$analytics');
@@ -77,9 +75,9 @@ function ChplDownloadListings(props) {
       detailsLink: `https://chpl.healthit.gov/#/listing/${listing.id}`,
       criteria: listing.criteriaMet.sort(sortCriteria).map((cc) => `${cc.number}: ${cc.title}`).join('\n'),
       cqms: listing.cqmsMet.map((cqm) => ({ ...cqm, name: cqm.number })).sort(sortCqms).map((cqm) => cqm.number).join('\n'),
-      apiDocumentation56: getApiDocumentationForCsv(listing, 56),
-      apiDocumentation181: getApiDocumentationForCsv(listing, 181),
-      apiDocumentation182: getApiDocumentationForCsv(listing, 182),
+      apiDocumentation56: listing.apiDocumentation.find((cc) => cc.criterion.id === 56)?.value || '',
+      apiDocumentation181: listing.apiDocumentation.find((cc) => cc.criterion.id === 181)?.value || '',
+      apiDocumentation182: listing.apiDocumentation.find((cc) => cc.criterion.id === 182)?.value || '',
       serviceBaseUrlList: listing.serviceBaseUrlList?.value || '',
       rwtPlansUrl: listing.rwtPlansUrl || '',
       rwtResultsUrl: listing.rwtResultsUrl || '',
