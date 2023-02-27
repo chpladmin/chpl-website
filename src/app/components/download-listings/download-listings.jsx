@@ -17,6 +17,8 @@ import { ExportToCsv } from 'export-to-csv';
 
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
+import { sortCqms } from 'services/cqms.service';
+import { sortCriteria } from 'services/criteria.service';
 import { palette } from 'themes';
 
 const csvOptions = {
@@ -32,6 +34,17 @@ const initialHeaders = [
   { headerName: 'Version', objectKey: 'versionName', selected: true },
   { headerName: 'Certification Date', objectKey: 'certificationDate', selected: true },
   { headerName: 'Certification Status', objectKey: 'certificationStatusName', selected: true },
+  { headerName: 'ONC-ACB', objectKey: 'acb' },
+  { headerName: 'Practice Type', objectKey: 'practiceTypeName' },
+  { headerName: 'Details', objectKey: 'detailsLink', selected: true },
+  { headerName: 'Certification Criteria', objectKey: 'criteria' },
+  { headerName: 'Clinical Quality Measures', objectKey: 'cqms' },
+  { headerName: 'Total Surveillance', objectKey: 'surveillanceCount' },
+  { headerName: 'Open Surveillance Non-conformities', objectKey: 'openSurveillanceNonConformityCount' },
+  { headerName: 'Closed Surveillance Non-conformities', objectKey: 'closedSurveillanceNonConformityCount' },
+  { headerName: 'Total Direct Reviews', objectKey: 'directReviewCount' },
+  { headerName: 'Open Direct Review Non-conformities', objectKey: 'openDirectReviewNonConformityCount' },
+  { headerName: 'Closed Direct Review Non-conformities', objectKey: 'closedDirectReviewNonConformityCount' },
 ];
 
 function ChplDownloadListings(props) {
@@ -50,6 +63,11 @@ function ChplDownloadListings(props) {
       productName: listing.product.name,
       versionName: listing.version.name,
       certificationStatusName: listing.certificationStatus.name,
+      acb: listing.certificationBody.name,
+      practiceTypeName: listing.practiceType?.name ?? '',
+      detailsLink: `https://chpl.healthit.gov/#/listing/${listing.id}`,
+      criteria: listing.criteriaMet.sort(sortCriteria).map((cc) => `${cc.number}: ${cc.title}`).join('\n'),
+      cqms: listing.cqmsMet.map((cqm) => ({ ...cqm, name: cqm.number })).sort(sortCqms).map((cqm) => cqm.number).join('\n'),
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 
