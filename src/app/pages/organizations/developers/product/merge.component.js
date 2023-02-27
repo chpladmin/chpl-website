@@ -42,7 +42,6 @@ const ProductsMergeComponent = {
       const productToSave = {
         product,
         productIds: this.selectedProducts.map((d) => d.id),
-        newDeveloperId: this.developer.id,
       };
       productToSave.productIds.push(this.product.id);
       const that = this;

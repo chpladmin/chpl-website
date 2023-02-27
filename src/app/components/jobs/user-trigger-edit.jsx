@@ -13,7 +13,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
-import ChplCronGen from 'components/cron-gen';
+import ChplCronGen from 'components/cron-gen/cron-gen';
 import { ChplTextField } from 'components/util';
 import { acb as acbPropType, trigger as triggerType } from 'shared/prop-types';
 import theme from 'themes/theme';
