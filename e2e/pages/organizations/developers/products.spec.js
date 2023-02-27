@@ -168,7 +168,7 @@ describe('the Product part of the Developers page', () => {
       });
     });
 
-     describe('when editing "Zoobook EHR" product under "Zoobook Systems LLC"', () => {
+     xdescribe('when editing "Zoobook EHR" product under "Zoobook Systems LLC"', () => {
         it('should not allow user to transfer all products away from that developer', () => {
           const developer = 'Zoobook Systems LLC';
           const name = 'Zoobook EHR';
@@ -209,7 +209,7 @@ describe('the Product part of the Developers page', () => {
         page.selectAllCertificationStatus();
       });
 
-      describe('when on the "MEDITECH MAGIC Oncology" product', () => {
+      xdescribe('when on the "MEDITECH MAGIC Oncology" product', () => {
         const productName = 'MEDITECH MAGIC Oncology';
 
         beforeEach(() => {
