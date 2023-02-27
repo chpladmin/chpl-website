@@ -51,33 +51,42 @@
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cqm'" id="panel-cqm">
-        <p>Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="cols">{{ $ctrl.listing.certificationEdition.name === '2011' ? 'Meets' : 'Version' }}</th>
-              <th scope="cols">Quality Measure</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(1)</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(2)</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(3)</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(4)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-if="$ctrl.viewAllCerts || n.success" ng-repeat="n in $ctrl.cqms | orderBy:$ctrl.sortCqms track by $index">
-              <td class="text-center">
-                <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
-                <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-                <strong ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.join(', ') }}</strong>
-              </td>
-              <td><a href uib-tooltip="{{ n.description }}" tooltip-trigger="'mouseenter focus click'"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</a></td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC1 ? 'meets' : 'does not meet'}} 170.317 (c)(1)</span><i class="fa fa-lg" ng-class="n.hasC1 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC2 ? 'meets' : 'does not meet'}} 170.317 (c)(2)</span><i class="fa fa-lg" ng-class="n.hasC2 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC3 ? 'meets' : 'does not meet'}} 170.317 (c)(3)</span><i class="fa fa-lg" ng-class="n.hasC3 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC4 ? 'meets' : 'does not meet'}} 170.317 (c)(4)</span><i class="fa fa-lg" ng-class="n.hasC4 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
-            </tr>
-          </tbody>
-        </table>
+        <span feature-flag="ui-upgrade" feature-flag-hide>
+          <p ng-if="$ctrl.listing.certificationEdition.name === '2015'">Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="cols">{{ $ctrl.listing.certificationEdition.name === '2011' ? 'Meets' : 'Version' }}</th>
+                <th scope="cols">Quality Measure</th>
+                <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(1)</th>
+                <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(2)</th>
+                <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(3)</th>
+                <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(4)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-if="$ctrl.viewAllCerts || n.success" ng-repeat="n in $ctrl.cqms | orderBy:$ctrl.sortCqms track by $index">
+                <td class="text-center">
+                  <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
+                  <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
+                  <strong ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.join(', ') }}</strong>
+                </td>
+                <td><a href uib-tooltip="{{ n.description }}" tooltip-trigger="'mouseenter focus click'"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</a></td>
+                <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC1 ? 'meets' : 'does not meet'}} 170.317 (c)(1)</span><i class="fa fa-lg" ng-class="n.hasC1 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+                <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC2 ? 'meets' : 'does not meet'}} 170.317 (c)(2)</span><i class="fa fa-lg" ng-class="n.hasC2 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+                <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC3 ? 'meets' : 'does not meet'}} 170.317 (c)(3)</span><i class="fa fa-lg" ng-class="n.hasC3 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+                <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC4 ? 'meets' : 'does not meet'}} 170.317 (c)(4)</span><i class="fa fa-lg" ng-class="n.hasC4 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </span>
+        <span feature-flag="ui-upgrade">
+          <chpl-cqms-bridge
+            cqms="$ctrl.listing.cqmResults"
+            edition="$ctrl.listing.certificationEdition"
+            view-all="$ctrl.viewAllCerts"
+            ></chpl-cqms-bridge>
+        </span>
       </div>
     </div>
 
