@@ -166,7 +166,6 @@ function ChplApiDocumentationCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
-  const disabledCsvHeaders = ['rwt'];
   const toggledCsvDefaults = ['apiDocumentation'];
 
   const filterContext = useFilterContext();
@@ -316,7 +315,6 @@ function ChplApiDocumentationCollectionView(props) {
                   <ChplDownloadListings
                     analytics={analytics}
                     listings={listings}
-                    disabled={disabledCsvHeaders}
                     toggled={toggledCsvDefaults}
                   />
                 )}

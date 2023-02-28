@@ -68,10 +68,10 @@ const allCategories = [
 ];
 
 function ChplDownloadListings(props) {
-  const { analytics, disabled, toggled } = props;
+  const { analytics, toggled } = props;
   const $analytics = getAngularService('$analytics');
   const [anchor, setAnchor] = useState(null);
-  const [categories, setCategories] = useState(allCategories.filter((h) => !disabled.includes(h.key)).map((h) => ({
+  const [categories, setCategories] = useState(allCategories.map((h) => ({
     ...h,
     selected: toggled.includes(h.key) ? !h.selected : h.selected,
   })));
@@ -209,13 +209,11 @@ ChplDownloadListings.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }),
-  disabled: arrayOf(string),
   toggled: arrayOf(string),
 };
 
 ChplDownloadListings.defaultProps = {
   listings: [],
   analytics: undefined,
-  disabled: [],
   toggled: [],
 };

@@ -120,7 +120,6 @@ function ChplSedCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
-  const disabledCsvHeaders = ['rwt'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -252,7 +251,6 @@ function ChplSedCollectionView(props) {
                   <ChplDownloadListings
                     analytics={analytics}
                     listings={listings}
-                    disabled={disabledCsvHeaders}
                   />
                 )}
             </div>

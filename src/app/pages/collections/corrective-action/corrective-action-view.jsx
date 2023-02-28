@@ -142,7 +142,6 @@ function ChplCorrectiveActionCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
-  const disabledCsvHeaders = ['rwt'];
   const toggledCsvDefaults = ['compliance'];
 
   const filterContext = useFilterContext();
@@ -247,7 +246,6 @@ function ChplCorrectiveActionCollectionView(props) {
                         <ChplDownloadListings
                           analytics={analytics}
                           listings={listings}
-                          disabled={disabledCsvHeaders}
                           toggled={toggledCsvDefaults}
                         />
                       )}
