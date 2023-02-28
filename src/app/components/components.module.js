@@ -20,7 +20,7 @@ import {
   ChplConfirmVersion,
 } from './listing/confirm';
 import ChplCqms from './listing/details/cqms/cqms-wrapper';
-import { ChplCriteria } from './listing/details/criteria';
+import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
 import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
@@ -75,7 +75,7 @@ angular
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCqmsBridge', reactToAngularComponent(ChplCqms))
-  .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteria))
+  .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsView))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
