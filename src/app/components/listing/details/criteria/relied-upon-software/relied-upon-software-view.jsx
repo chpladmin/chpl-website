@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { arrayOf } from 'prop-types';
 import {
   makeStyles,
 } from '@material-ui/core';
+import { arrayOf } from 'prop-types';
 
-import { reliedUponSoftware } from '../../../../../shared/prop-types';
+import { reliedUponSoftware } from 'shared/prop-types';
 
 const getDisplay = (sw) => (
   <>
@@ -31,11 +31,11 @@ const isAndOrOr = (subIndex, groupLength, mainIndex, groupCount) => {
   return '';
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   unindentedData: {
     marginLeft: '-25px',
   },
-}));
+});
 
 function ChplReliedUponSoftwareView(props) {
   /* eslint-disable react/destructuring-assignment */
