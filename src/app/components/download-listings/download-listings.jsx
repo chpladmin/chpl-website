@@ -182,21 +182,19 @@ function ChplDownloadListings(props) {
           },
         }}
       >
-        { categories.map((c) => (
-          <>
-            <MenuItem
-              onClick={() => toggle(c)}
-              key={c.key}
-              selected={c.selected}
-            >
-              <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
-              { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
-              {' '}
-              { c.name }
-            </MenuItem>
-            { c.hasDivider && <Divider /> }
-          </>
-        ))}
+        { categories.map((c) => [
+          <MenuItem
+            onClick={() => toggle(c)}
+            key={c.key}
+            selected={c.selected}
+          >
+            <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
+            { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
+            {' '}
+            { c.name }
+          </MenuItem>,
+          c.hasDivider && <Divider />,
+        ])}
         <Divider />
         <MenuItem
           onClick={handleDownload}
