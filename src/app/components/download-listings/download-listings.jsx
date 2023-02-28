@@ -103,6 +103,8 @@ function ChplDownloadListings(props) {
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 
+  const canDownload = () => categories.some((cat) => cat.selected);
+
   const handleClick = (e) => {
     if (analytics) {
       $analytics.eventTrack('Open Download Filter', { category: analytics.category });
@@ -198,6 +200,7 @@ function ChplDownloadListings(props) {
         <Divider />
         <MenuItem
           onClick={handleDownload}
+          disabled={!canDownload()}
         >
           Download
           {' '}
