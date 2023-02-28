@@ -125,7 +125,19 @@ function ChplDownloadListings(props) {
       headers: allHeaders.filter((h) => activeCategories.includes(h.objectKey) || activeCategories.includes(h.group)),
     });
     if (analytics) {
-      $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
+      const defaulted = allCategories.filter((cat) => cat.selected || toggled.includes(cat.key));
+      const added = categories.filter((cat) => cat.selected && !defaulted.some((def) => def.key === cat.key));
+      const removed = defaulted.filter((def) => !categories.find((cat) => cat.selected && cat.key === def.key));
+      if (added.length === 0 && removed.length === 0) {
+        $analytics.eventTrack('Download Results With Default Data', { category: analytics.category });
+      } else {
+        added.forEach((cat) => {
+          $analytics.eventTrack('Download Results With Additional Data', { category: analytics.category, label: cat.name });
+        });
+        removed.forEach((cat) => {
+          $analytics.eventTrack('Download Results With Less Data', { category: analytics.category, label: cat.name });
+        });
+      }
     }
     csvExporter.generateCsv(listings);
   };
