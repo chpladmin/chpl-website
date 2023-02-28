@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
+  Divider,
   Menu,
   MenuItem,
 } from '@material-ui/core';
@@ -50,13 +51,14 @@ const allHeaders = [
   { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl', group: 'rwt' },
 ];
 
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const allCategories = [
   { name: 'CHPL ID', key: 'chplProductNumber', selected: true },
   { name: 'Certification Edition', key: 'fullEdition', selected: true },
   { name: 'Product data', key: 'productData', selected: true },
   { name: 'Certification Date', key: 'certificationDate', selected: true },
   { name: 'Certification Status', key: 'certificationStatusName', selected: true },
-  { name: 'Details', key: 'detailsLink', selected: true },
+  { name: 'Details', key: 'detailsLink', selected: true, hasDivider: true },
   { name: 'API Documentation', key: 'apiDocumentation' },
   { name: 'Certification Criteria', key: 'criteria' },
   { name: 'Clinical Quality Measures', key: 'cqms' },
@@ -179,17 +181,21 @@ function ChplDownloadListings(props) {
         }}
       >
         { categories.map((c) => (
-          <MenuItem
-            onClick={() => toggle(c)}
-            key={c.key}
-            selected={c.selected}
-          >
-            <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
-            { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
-            {' '}
-            { c.name }
-          </MenuItem>
+          <>
+            <MenuItem
+              onClick={() => toggle(c)}
+              key={c.key}
+              selected={c.selected}
+            >
+              <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
+              { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
+              {' '}
+              { c.name }
+            </MenuItem>
+            { c.hasDivider && <Divider /> }
+          </>
         ))}
+        <Divider />
         <MenuItem
           onClick={handleDownload}
         >

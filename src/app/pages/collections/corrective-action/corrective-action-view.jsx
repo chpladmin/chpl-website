@@ -31,7 +31,7 @@ import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
-/* eslint-disable object-curly-newline */
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
   { text: 'Certification Edition' },
@@ -45,7 +45,6 @@ const headers = [
   { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs', sortable: true, reverseDefault: true },
   { text: 'Actions', invisible: true },
 ];
-/* eslint-enable object-curly-newline */
 
 const useStyles = makeStyles({
   linkWrap: {

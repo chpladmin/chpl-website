@@ -32,7 +32,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
-/* eslint-disable object-curly-newline */
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
   { text: 'Certification Edition' },
@@ -43,7 +43,6 @@ const headers = [
   { text: 'Status', extra: <ChplCertificationStatusLegend /> },
   { text: 'Actions', invisible: true },
 ];
-/* eslint-enable object-curly-newline */
 
 const useStyles = makeStyles({
   linkWrap: {
