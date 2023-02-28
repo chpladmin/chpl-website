@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import { arrayOf, func } from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import {
   Button,
   ButtonGroup,
@@ -17,13 +13,17 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+import { arrayOf, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { ChplTextField } from '../../../../util';
-import { reliedUponSoftware } from '../../../../../shared/prop-types';
+import { ChplTextField } from 'components/util';
+import { reliedUponSoftware } from 'shared/prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     display: 'grid',
     gap: '8px',
@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
     gridColumn: '1 / -1',
     gridRow: '1 / 3',
   },
-}));
+});
 
 const validationSchema = yup.object({
 });

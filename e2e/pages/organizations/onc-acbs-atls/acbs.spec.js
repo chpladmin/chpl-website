@@ -31,14 +31,14 @@ describe('the ONC-ACB Management page', () => {
     await hooks.open('#/organizations/onc-acbs');
   });
 
-  describe('when logged in as ICSA Labs', () => {
+  describe('when logged in as SLI Compliance', () => {
     beforeEach(() => {
-      login.logIn('icsa');
+      login.logIn('sli');
       hooks.waitForSpinnerToDisappear();
     });
 
     afterEach(() => {
-      const organizationName = 'ICSA Labs';
+      const organizationName = 'SLI Compliance';
       page.openOrganizationDetails(organizationName);
       page.organizationEditButton.click();
       page.organizationName.setValue(organizationName);
@@ -46,10 +46,10 @@ describe('the ONC-ACB Management page', () => {
       login.logOut();
     });
 
-    it('should allow user to edit ICSA Labs details', () => {
-      const acb = 'ICSA Labs';
+    it('should allow user to edit SLI Compliance details', () => {
+      const acb = 'SLI Compliance';
       const newAcbName = `${acb} - ${timestamp}`;
-      const acbId = '6';
+      const acbId = '4';
       page.openOrganizationDetails(acb);
       page.organizationEditButton.click();
       page.organizationName.setValue(newAcbName);

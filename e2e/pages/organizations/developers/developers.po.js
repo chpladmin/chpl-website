@@ -7,6 +7,7 @@ const elements = {
   products: '.products__product',
   editProductName: '#product-name',
   editProductCode: '#product-code',
+  currentProductOwner: '#product-owner-current',
   activeVersion: '#active-version',
   editVersionName: '#version-name',
   editVersionCode: '#version-code',
@@ -97,6 +98,14 @@ class DevelopersPage {
 
   get editProductCode() {
     return $(this.elements.editProductCode);
+  }
+
+  get currentProductOwner() {
+    return $(this.elements.currentProductOwner);
+  }
+
+  selectProductOwner(developerName) {
+    this.currentProductOwner.selectByVisibleText(developerName);
   }
 
   get editVersionName() {
