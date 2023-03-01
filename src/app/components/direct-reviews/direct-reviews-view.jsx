@@ -34,6 +34,13 @@ const sortDirectReviews = (a, b) => {
   return a.endDate ? 1 : -1;
 };
 
+const sortNonconformities = (a, b) => {
+  if (a.nonConformityStatus !== b.nonConformityStatus) {
+    return a.nonConformityStatus === 'Open' ? -1 : 1;
+  }
+  return a.created - b.created;
+};
+
 function ChplDirectReviewsView(props) {
   const [directReviews, setDirectReviews] = useState([]);
   const classes = useStyles();
@@ -69,19 +76,7 @@ function ChplDirectReviewsView(props) {
         isClosed: !!endDate,
         nonConformities: dr.nonConformities
           .map(getFriendlyValues)
-          .sort((a, b) => {
-            if (a.capApprovalDate && b.capApprovalDate) {
-              if (a.capApprovalDate < b.capApprovalDate) { return 1; }
-              if (a.capApprovalDate > b.capApprovalDate) { return -1; }
-            }
-            if (a.capEndDate && b.capEndDate) {
-              if (a.capEndDate < b.capEndDate) { return 1; }
-              if (a.capEndDate > b.capEndDate) { return -1; }
-            }
-            if (a.capEndDate) { return -1; }
-            if (b.capEndDate) { return 1; }
-            return 0;
-          }),
+          .sort(sortNonconformities),
       };
     }).sort(sortDirectReviews));
   }, [props.directReviews]); // eslint-disable-line react/destructuring-assignment
