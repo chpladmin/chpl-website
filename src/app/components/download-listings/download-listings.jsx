@@ -2,20 +2,30 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   Divider,
+  ButtonGroup,
   Menu,
   MenuItem,
+  makeStyles,
 } from '@material-ui/core';
 import { arrayOf, shape, string } from 'prop-types';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckIcon from '@material-ui/icons/Check';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ExportToCsv } from 'export-to-csv';
+
+import { ChplTooltip } from '../util';
 
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
 import { palette } from 'themes';
+
+const useStyles = makeStyles({
+  noMargin: {
+    margin: '0',
+  },
+});
 
 const csvOptions = {
   filename: 'listings',
@@ -149,26 +159,44 @@ function ChplDownloadListings(props) {
     })));
   };
 
+  const classes = useStyles();
+
   return (
     <>
-      <Button
-        aria-controls="download-listings-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        color="secondary"
-        variant="contained"
-        size="small"
-        fullWidth
-        id="open-download-listings-menu"
-        endIcon={<GetAppIcon />}
-      >
-        Download
-        {' '}
-        { listings.length }
-        {' '}
-        Result
-        { listings.length !== 1 ? 's' : '' }
-      </Button>
+      <ButtonGroup>
+        <Button
+          aria-controls="download-listings-menu"
+          aria-haspopup="true"
+          onClick={handleDownload}
+          disabled={!canDownload()}
+          color="secondary"
+          variant="contained"
+          size="small"
+          id="open-download-listings-menu"
+        >
+          Download
+          {' '}
+          { listings.length }
+          {' '}
+          Result
+          { listings.length !== 1 ? 's' : '' }
+        </Button>
+        <ChplTooltip title="Select columns to download">
+          <Button
+            aria-controls="download-listings-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+            color="secondary"
+            variant="contained"
+            size="small"
+            style={{ margin: '0' }}
+            id="open-download-listings-menu"
+            className={classes.dropDownDownloads}
+          >
+            <ExpandMoreIcon />
+          </Button>
+        </ChplTooltip>
+      </ButtonGroup>
       <Menu
         id="download-listings-menu"
         open={open}
@@ -176,6 +204,7 @@ function ChplDownloadListings(props) {
         getContentAnchorEl={null}
         keepMounted
         onClose={handleClose}
+        variant="selectedMenu"
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -199,23 +228,15 @@ function ChplDownloadListings(props) {
             onClick={() => toggle(c)}
             key={c.key}
             selected={c.selected}
+            style={{ gap: '8px', padding: '8px 16px' }}
           >
             <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
-            { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon /> }
+            { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon color="primary" /> }
             {' '}
             { c.name }
           </MenuItem>,
-          c.hasDivider && <Divider />,
+          c.hasDivider && <Divider className={classes.noMargin} />,
         ])}
-        <Divider />
-        <MenuItem
-          onClick={handleDownload}
-          disabled={!canDownload()}
-        >
-          Download
-          {' '}
-          <GetAppIcon />
-        </MenuItem>
       </Menu>
     </>
   );
