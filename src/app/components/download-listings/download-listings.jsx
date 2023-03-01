@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   Button,
-  Divider,
   ButtonGroup,
+  Divider,
   Menu,
   MenuItem,
   makeStyles,
@@ -13,8 +13,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ExportToCsv } from 'export-to-csv';
 
-import { ChplTooltip } from '../util';
-
+import { ChplTooltip } from 'components/util';
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 import { sortCqms } from 'services/cqms.service';
@@ -89,6 +88,7 @@ function ChplDownloadListings(props) {
   })));
   const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     setListings(props.listings.map((listing) => ({
@@ -159,20 +159,16 @@ function ChplDownloadListings(props) {
     })));
   };
 
-  const classes = useStyles();
-
   return (
     <>
       <ButtonGroup>
         <Button
-          aria-controls="download-listings-menu"
-          aria-haspopup="true"
           onClick={handleDownload}
           disabled={!canDownload()}
           color="secondary"
           variant="contained"
           size="small"
-          id="open-download-listings-menu"
+          id="download-listings"
         >
           Download
           {' '}
@@ -189,9 +185,8 @@ function ChplDownloadListings(props) {
             color="secondary"
             variant="contained"
             size="small"
-            style={{ margin: '0' }}
             id="open-download-listings-menu"
-            className={classes.dropDownDownloads}
+            className={classes.noMargin}
           >
             <ExpandMoreIcon />
           </Button>
@@ -232,7 +227,6 @@ function ChplDownloadListings(props) {
           >
             <span className="sr-only">{ c.selected ? 'selected: ' : 'not selected: '}</span>
             { c.selected ? <CheckIcon /> : <CheckBoxOutlineBlankIcon color="primary" /> }
-            {' '}
             { c.name }
           </MenuItem>,
           c.hasDivider && <Divider className={classes.noMargin} />,
