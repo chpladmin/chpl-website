@@ -48,7 +48,6 @@ const suite = {
       'The value for Use Cases in criteria 170.315 (d)(13) (Cures Update) is not a valid URL.',
       'The unique id indicates the product does not have additional software but some is specified in the upload file.',
       'Privacy and Security Framework is required for certification 170.315 (a)(1).',
-      'Privacy and Security Framework is required for certification 170.315 (b)(1) (Cures Update).',
       'Listing has not attested to (g)(3), but at least one criteria was found attesting to SED.',
       'GAP is required for certification 170.315 (d)(1).',
       'Export Documentation is required for certification 170.315 (b)(10) (Cures Update).',
