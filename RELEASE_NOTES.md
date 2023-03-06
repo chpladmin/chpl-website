@@ -1,5 +1,26 @@
 # Release Notes
 
+## Version 11.50.0
+_6 March 2023_
+
+### Features
+* Allow user to select "nth weekday" of the month for scheduling Reports
+* Allow user to select "day of month" for scheduling Reports
+
+### Flagged Features
+* Display CQMs in updated UI/UX
+* Display Certification Criteria in updated UI/UX
+
+### User Interface Updates
+* Allow download of CSV that was used to generate the Listing
+* Display Reports schedule in human readable form
+* Use updated API to search with inclusive dates
+
+### Bug Fixes
+* Display error messages when Product edit returns them
+
+---
+
 ## Version 11.49.0
 _21 February 2023_
 
