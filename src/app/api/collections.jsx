@@ -19,10 +19,10 @@ const useFetchBannedDevelopersCollection = ({
   query,
 }) => {
   const axios = useAxios();
-  return useQuery(['developers/search', {
+  return useQuery(['developers/search/v2', {
     orderBy, pageNumber, pageSize, sortDescending, query,
   }], async () => {
-    const response = await axios.get(`/developers/search?statuses=Under certification ban by ONC&${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    const response = await axios.get(`/developers/search/v2?statuses=Under certification ban by ONC&${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };
@@ -35,10 +35,10 @@ const useFetchCollection = ({
   query,
 }) => {
   const axios = useAxios();
-  return useQuery(['search/v2', {
+  return useQuery(['search/v3', {
     orderBy, pageNumber, pageSize, sortDescending, query,
   }], async () => {
-    const response = await axios.get(`/search/v2?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    const response = await axios.get(`/search/v3?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };
