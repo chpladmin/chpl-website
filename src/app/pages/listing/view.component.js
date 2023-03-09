@@ -33,19 +33,6 @@ const ListingViewPage = {
           .filter((item) => item !== this.listing.chplProductNumber)
           .sort((a, b) => (a < b ? -1 : 1));
         this.backupListing = angular.copy(this.listing);
-        if (this.$localStorage.previouslyViewed) {
-          this.previouslyViewed = this.$localStorage.previouslyViewed;
-
-          if (this.previouslyViewed.indexOf((`${this.listing.id}`)) === -1) {
-            this.previouslyViewed.push((`${this.listing.id}`));
-            if (this.previouslyViewed.length > 20) {
-              this.previouslyViewed.shift();
-            }
-            this.$localStorage.previouslyViewed = this.previouslyViewed;
-          }
-        } else {
-          this.$localStorage.previouslyViewed = [`${this.listing.id}`];
-        }
       }
     }
 

@@ -5,6 +5,7 @@ import certificationStatuses from './certification-statuses';
 import cqms from './cqms';
 import decertificationDate from './decertification-date';
 import derivedCertificationEditions from './derived-certification-editions';
+import quickFilters from './quick-filters';
 
 export {
   certificationBodies,
@@ -14,4 +15,5 @@ export {
   cqms,
   decertificationDate,
   derivedCertificationEditions,
+  quickFilters,
 };
