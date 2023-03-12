@@ -21,7 +21,7 @@ import { filter as filterPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles(() => ({
   appBar: {
-    backgroundColor: '#fafdff',
+    backgroundColor: '#ffffff',
   },
 }));
 
@@ -98,7 +98,7 @@ function ChplTabbedValueEntry(props) {
 
   return (
     <>
-      <AppBar className={classes.appBar} position="sticky">
+      <AppBar className={classes.appBar} elevation={0} position="sticky">
         <Tabs
           value={activeTab}
           onChange={handleChange}

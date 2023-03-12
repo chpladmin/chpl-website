@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import ChplSearchView from './search-view';
 
@@ -12,8 +12,10 @@ import {
   certificationStatuses,
   cqms,
   derivedCertificationEditions,
+  quickFilters,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import { BrowserContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -44,10 +46,25 @@ const staticFilters = [
   }];
 
 function ChplSearchPage() {
+  const { getPreviouslyCompared, getPreviouslyViewed } = useContext(BrowserContext);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
   const cqmQuery = useFetchCqms();
+
+  let getValueDisplay;
+  let getQuery;
+
+  useEffect(() => {
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'quickFilters')
+      .concat({
+        ...quickFilters,
+        getQuery,
+        getValueDisplay,
+        getLongValueDisplay: getValueDisplay,
+      }));
+  }, [getPreviouslyCompared, getPreviouslyViewed]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -108,6 +125,19 @@ function ChplSearchPage() {
 
   const analytics = {
     category: 'Search',
+  };
+
+  getValueDisplay = (value) => `${value.value} (${value.value.includes('Compared') ? getPreviouslyCompared().length : getPreviouslyViewed().length})`;
+
+  getQuery = (state) => {
+    const value = state.values[0]?.value;
+    if (value === 'Previously Compared' && getPreviouslyCompared().length > 0) {
+      return `listingIds=${getPreviouslyCompared().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+    }
+    if (value === 'Previously Viewed' && getPreviouslyViewed().length > 0) {
+      return `listingIds=${getPreviouslyViewed().sort((a, b) => (a < b ? -1 : 1)).join(',')}`;
+    }
+    return null;
   };
 
   return (
