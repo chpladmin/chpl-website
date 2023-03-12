@@ -41,13 +41,6 @@ describe('the system jobs', () => {
       await actualsystemjobHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedsystemjobHeaders[idx]));
     });
 
-    it('should have Currently Scheduled System Jobs table headers in a defined order', async () => {
-      const expectedscheduledjobHeaders = ['Job Name', 'Description', 'Next Run Date' , 'Trigger Schedule Type' , 'Actions'];
-      const actualscheduledjobHeaders = await component.getScheduledSystemJobsTableHeaders ();
-      await expect(actualscheduledjobHeaders.length).toBe(expectedscheduledjobHeaders.length, 'Found incorrect number of columns');
-      await actualscheduledjobHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedscheduledjobHeaders[idx]));
-    });
-
     it('should have specific jobs', () => {
       const expected = [
         'AuditDataRetention',

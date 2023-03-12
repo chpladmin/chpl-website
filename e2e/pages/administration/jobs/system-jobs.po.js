@@ -14,14 +14,6 @@ class SystemJobsComponent {
            ).$$('th');
   }
 
-  async getScheduledSystemJobsTableHeaders() {
-    return (await
-            (await
-             $(this.elements.scheduledsystemjobsTable)
-            ).$('thead')
-           ).$$('th');
-  }
-
   getAvailableJobs() {
     return $(this.elements.systemjobsTable)
       .$('tbody')
