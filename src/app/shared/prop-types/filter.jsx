@@ -12,6 +12,8 @@ const filter = shape({
   key: string.isRequired,
   display: string.isRequired,
   required: bool,
+  singular: bool,
+  loneFilter: bool,
   operatorKey: string,
   operator: string,
   values: arrayOf(shape({
