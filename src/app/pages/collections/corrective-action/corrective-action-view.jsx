@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -12,12 +10,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
   ChplPagination,
@@ -34,24 +31,7 @@ import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
-const csvOptions = {
-  filename: 'corrective-action',
-  showLabels: true,
-  headers: [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: '# Open Surveillance NCs', objectKey: 'openSurveillanceNonConformityCount' },
-    { headerName: '# Closed Surveillance NCs', objectKey: 'closedSurveillanceNonConformityCount' },
-    { headerName: '# Open Direct Review NCs', objectKey: 'openDirectReviewNonConformityCount' },
-    { headerName: '# Closed Direct Review NCs', objectKey: 'closedDirectReviewNonConformityCount' },
-  ],
-};
-
-/* eslint-disable object-curly-newline */
+/* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const headers = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
   { text: 'Certification Edition' },
@@ -65,12 +45,8 @@ const headers = [
   { property: 'closed_direct_review_nc_count', text: '# Closed Direct Review NCs', sortable: true, reverseDefault: true },
   { text: 'Actions', invisible: true },
 ];
-/* eslint-enable object-curly-newline */
 
 const useStyles = makeStyles({
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -157,7 +133,6 @@ function ChplCorrectiveActionCollectionView(props) {
   const storageKey = 'storageKey-correctiveActionView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
-  const csvExporter = new ExportToCsv(csvOptions);
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'open_surveillance_nc_count');
@@ -166,6 +141,7 @@ function ChplCorrectiveActionCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
+  const toggledCsvDefaults = ['compliance'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -185,11 +161,6 @@ function ChplCorrectiveActionCollectionView(props) {
     setDirectReviewsAvailable(data?.directReviewsAvailable);
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      developerName: listing.developer.name,
-      productName: listing.product.name,
-      versionName: listing.version.name,
-      certificationStatusName: listing.certificationStatus.name,
       panel: getPanel(listing),
     })));
     setRecordCount(data.recordCount);
@@ -200,11 +171,6 @@ function ChplCorrectiveActionCollectionView(props) {
       setPageNumber(0);
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
-
-  const downloadListings = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    csvExporter.generateCsv(listings);
-  };
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -276,23 +242,11 @@ function ChplCorrectiveActionCollectionView(props) {
                     </div>
                     { listings.length > 0
                       && (
-                        <ButtonGroup size="small" className={classes.wrap}>
-                          <Button
-                            color="secondary"
-                            variant="contained"
-                            fullWidth
-                            id="download-filtered-listings"
-                            onClick={downloadListings}
-                          >
-                            Download
-                            {' '}
-                            { listings.length }
-                            {' '}
-                            Result
-                            { listings.length !== 1 ? 's' : '' }
-                            <GetAppIcon className={classes.iconSpacing} />
-                          </Button>
-                        </ButtonGroup>
+                        <ChplDownloadListings
+                          analytics={analytics}
+                          listings={listings}
+                          toggled={toggledCsvDefaults}
+                        />
                       )}
                   </div>
                   { listings.length > 0
