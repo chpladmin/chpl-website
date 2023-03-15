@@ -65,7 +65,7 @@ describe('the Corrective Action collection page', () => {
       });
 
       it('should show only listings that match the developer', async () => {
-        const searchTerm = 'Iatric';
+        const searchTerm = 'Iatric Systems';
         const columnIndex = 2;
         await page.searchForText(searchTerm);
         await expect(await page.getCellInRow(0, columnIndex)).toContain(searchTerm);
