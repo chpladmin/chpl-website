@@ -14,8 +14,9 @@ import { shape, string } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchCollection } from 'api/collections';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
   ChplPagination,
@@ -138,10 +139,6 @@ function ChplSedCollectionView(props) {
     setListings(data.results.map((listing) => ({
       ...listing,
       fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      developerName: listing.developer.name,
-      productName: listing.product.name,
-      versionName: listing.version.name,
-      certificationStatusName: listing.certificationStatus.name,
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -249,6 +246,13 @@ function ChplSedCollectionView(props) {
                     </Typography>
                   )}
               </div>
+              { listings.length > 0
+                && (
+                  <ChplDownloadListings
+                    analytics={analytics}
+                    listings={listings}
+                  />
+                )}
             </div>
             { listings.length > 0
               && (
