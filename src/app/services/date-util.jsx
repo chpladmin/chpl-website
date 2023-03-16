@@ -20,7 +20,7 @@ const isLocalDateTime = (dateTimeToTest) => {
   }
 };
 
-const getDisplayDateFormat = (date) => {
+const getDisplayDateFormat = (date, fallback = 'N/A') => {
   const timeFormatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y h:mm:ss a').withLocale(Locale.US);
   const dateFormatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y').withLocale(Locale.US);
   if (typeof (date) === 'number') {
@@ -34,7 +34,7 @@ const getDisplayDateFormat = (date) => {
   if (typeof (date) === 'string' && isLocalDateTime(date)) {
     return jsJoda.LocalDateTime.parse(date).format(timeFormatter);
   }
-  return 'N/A';
+  return fallback;
 };
 
 export {
