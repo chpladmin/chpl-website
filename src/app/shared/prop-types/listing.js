@@ -2,6 +2,7 @@ import {
   arrayOf,
   bool,
   number,
+  object,
   shape,
   string,
 } from 'prop-types';
@@ -35,4 +36,14 @@ const cqm = shape({
   typeId: number,
 });
 
-export { certificationEdition, cqm };
+const sed = shape({
+  testTasks: arrayOf(object),
+  uceProcesses: arrayOf(object),
+});
+
+const listing = shape({
+  certificationEdition,
+  sed,
+});
+
+export { certificationEdition, cqm, listing };

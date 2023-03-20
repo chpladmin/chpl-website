@@ -25,6 +25,7 @@ import ChplCqms from './listing/details/cqms/cqms-wrapper';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
 import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
+import ChplSed from './listing/details/sed/sed-wrapper';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
@@ -86,6 +87,7 @@ angular
   .component('chplIcsFamilyBridge', reactToAngularComponent(ChplIcsFamily))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
+  .component('chplSedBridge', reactToAngularComponent(ChplSed))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
