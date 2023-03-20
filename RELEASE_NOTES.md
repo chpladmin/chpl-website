@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 11.51.0
+_20 March 2023_
+
+### Features
+* Allow selection of columns for Listing download
+* Enable "Quick Filters" for previously viewed/compared listings
+
+---
+
 ## Version 11.50.0
 _6 March 2023_
 
