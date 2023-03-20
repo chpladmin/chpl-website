@@ -17,6 +17,13 @@ const useStyles = makeStyles({
   ...utilStyles,
 });
 
+const getFriendlyValues = (nc) => ({
+  ...nc,
+  friendlyCapApprovalDate: getDisplayDateFormat(nc.capApprovalDate, nc.capApprovalDate),
+  friendlyCapMustCompleteDate: getDisplayDateFormat(nc.capMustCompleteDate, nc.capMustCompleteDate),
+  friendlyCapEndDate: getDisplayDateFormat(nc.capEndDate, nc.capEndDate),
+});
+
 const sortDirectReviews = (a, b) => {
   if (a.endDate && b.endDate) {
     return a.endDate < b.endDate ? 1 : -1;
@@ -25,6 +32,13 @@ const sortDirectReviews = (a, b) => {
     return a.startDate < b.startDate ? 1 : -1;
   }
   return a.endDate ? 1 : -1;
+};
+
+const sortNonconformities = (a, b) => {
+  if (a.nonConformityStatus !== b.nonConformityStatus) {
+    return a.nonConformityStatus === 'Open' ? -1 : 1;
+  }
+  return a.created - b.created;
 };
 
 function ChplDirectReviewsView(props) {
@@ -61,25 +75,8 @@ function ChplDirectReviewsView(props) {
         ncSummary,
         isClosed: !!endDate,
         nonConformities: dr.nonConformities
-          .map((nc) => ({
-            ...nc,
-            friendlyCapApprovalDate: getDisplayDateFormat(nc.capApprovalDate, 'Has not been determined'),
-            friendlyCapMustCompleteDate: getDisplayDateFormat(nc.capMustCompleteDate, 'Has not been determined'),
-            friendlyCapEndDate: getDisplayDateFormat(nc.capEndDate, 'Has not been completed'),
-          }))
-          .sort((a, b) => {
-            if (a.capApprovalDate && b.capApprovalDate) {
-              if (a.capApprovalDate < b.capApprovalDate) { return 1; }
-              if (a.capApprovalDate > b.capApprovalDate) { return -1; }
-            }
-            if (a.capEndDate && b.capEndDate) {
-              if (a.capEndDate < b.capEndDate) { return 1; }
-              if (a.capEndDate > b.capEndDate) { return -1; }
-            }
-            if (a.capEndDate) { return -1; }
-            if (b.capEndDate) { return 1; }
-            return 0;
-          }),
+          .map(getFriendlyValues)
+          .sort(sortNonconformities),
       };
     }).sort(sortDirectReviews));
   }, [props.directReviews]); // eslint-disable-line react/destructuring-assignment

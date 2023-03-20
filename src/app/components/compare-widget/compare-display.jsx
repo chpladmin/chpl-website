@@ -45,7 +45,6 @@ const useStyles = makeStyles({
 
 function ChplCompareDisplay() {
   const $analytics = getAngularService('$analytics');
-  const $localStorage = getAngularService('$localStorage');
   const $location = getAngularService('$location');
   const $rootScope = getAngularService('$rootScope');
   const { listings, removeListing } = useContext(CompareContext);
@@ -53,16 +52,6 @@ function ChplCompareDisplay() {
 
   const compareAll = () => {
     $analytics.eventTrack('Compare Listings', { category: 'Compare Widget' });
-    const previously = $localStorage.previouslyCompared || [];
-    listings.forEach((listing) => {
-      if (previously.indexOf(listing.id) === -1) {
-        previously.push(listing.id);
-      }
-    });
-    while (previously.length > 20) {
-      previously.shift();
-    }
-    $localStorage.previouslyCompared = previously;
     $location.url(`/compare/${listings.map((listing) => listing.id).join('&')}`);
     $rootScope.$broadcast('HideCompareWidget');
     $rootScope.$digest();

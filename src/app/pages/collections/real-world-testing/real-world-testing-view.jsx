@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
   Paper,
   Table,
   TableBody,
@@ -12,12 +10,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import { ExportToCsv } from 'export-to-csv';
 
 import { useFetchCollection } from 'api/collections';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
+import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
   ChplLink,
   ChplPagination,
@@ -34,25 +31,7 @@ import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
-const csvOptions = {
-  filename: 'real-world-testing',
-  showLabels: true,
-  headers: [
-    { headerName: 'CHPL ID', objectKey: 'chplProductNumber' },
-    { headerName: 'Certification Edition', objectKey: 'fullEdition' },
-    { headerName: 'Developer', objectKey: 'developerName' },
-    { headerName: 'Product', objectKey: 'productName' },
-    { headerName: 'Version', objectKey: 'versionName' },
-    { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
-    { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl' },
-    { headerName: 'Real World Testing Results URL', objectKey: 'friendlyRwtResultsUrl' },
-  ],
-};
-
 const useStyles = makeStyles({
-  iconSpacing: {
-    marginLeft: '4px',
-  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
@@ -119,10 +98,7 @@ const useStyles = makeStyles({
 function ChplRealWorldTestingCollectionView(props) {
   const storageKey = 'storageKey-realWorldTestingView';
   const $analytics = getAngularService('$analytics');
-  const {
-    analytics,
-  } = props;
-  const csvExporter = new ExportToCsv(csvOptions);
+  const { analytics } = props;
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -130,6 +106,7 @@ function ChplRealWorldTestingCollectionView(props) {
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
+  const toggledCsvDefaults = ['rwt'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -154,12 +131,6 @@ function ChplRealWorldTestingCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
-      friendlyRwtResultsUrl: listing.rwtResultsUrl ? listing.rwtResultsUrl : 'N/A',
-      developerName: listing.developer.name,
-      productName: listing.product.name,
-      versionName: listing.version.name,
-      certificationStatusName: listing.certificationStatus.name,
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading]);
@@ -176,11 +147,6 @@ function ChplRealWorldTestingCollectionView(props) {
     { text: 'Real World Testing Results URL' },
     { text: 'Actions', invisible: true },
   ];
-
-  const downloadRealWorldTesting = () => {
-    $analytics.eventTrack('Download Results', { category: analytics.category, label: listings.length });
-    csvExporter.generateCsv(listings);
-  };
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -264,23 +230,11 @@ function ChplRealWorldTestingCollectionView(props) {
               </div>
               { listings.length > 0
                 && (
-                  <ButtonGroup size="small" className={classes.wrap}>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      fullWidth
-                      id="download-real-world-testing"
-                      onClick={downloadRealWorldTesting}
-                    >
-                      Download
-                      {' '}
-                      { listings.length }
-                      {' '}
-                      Result
-                      { listings.length !== 1 ? 's' : '' }
-                      <GetAppIcon className={classes.iconSpacing} />
-                    </Button>
-                  </ButtonGroup>
+                  <ChplDownloadListings
+                    analytics={analytics}
+                    listings={listings}
+                    toggled={toggledCsvDefaults}
+                  />
                 )}
             </div>
             { listings.length > 0

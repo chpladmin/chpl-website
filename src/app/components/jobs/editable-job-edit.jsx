@@ -56,7 +56,7 @@ function ChplEditableJobEdit(props) {
 
   useEffect(() => {
     setJob(props.job);
-    setEmails(props.job.jobDataMap.email.split(','));
+    setEmails(props.job.jobDataMap.email ? props.job.jobDataMap.email.split(',') : []);
   }, [props.job]); // eslint-disable-line react/destructuring-assignment
 
   const handleDispatch = (action) => {
