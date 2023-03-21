@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   CardHeader,
   List,
@@ -17,6 +18,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
 import { ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
 
@@ -40,7 +42,16 @@ function ChplSed({ listing }) {
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
+  const $state = getAngularService('$state');
   const classes = useStyles();
+
+  const downloadDetails = () => {
+    console.log('downloading details');
+  };
+
+  const viewTask = (task) => {
+    console.log('viewing task', task);
+  };
 
   return (
     <>
@@ -111,12 +122,18 @@ function ChplSed({ listing }) {
       </Card>
       <Card>
         <CardHeader title="SED Testing Tasks" />
+        <Button
+          onClick={downloadDetails}
+        >
+          Download Task Details
+        </Button>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Description</TableCell>
               <TableCell>Task Rating and Scale Type</TableCell>
               <TableCell>Certification Criteria</TableCell>
+              <TableCell><span className="sr-only">Actions</span></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -139,6 +156,13 @@ function ChplSed({ listing }) {
                          { criterion.number }: { criterion.title }
                        </ListItem>
                      ))}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => viewTask(task)}
+                    >
+                      View
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
