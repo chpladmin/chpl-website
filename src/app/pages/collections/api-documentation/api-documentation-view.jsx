@@ -187,7 +187,7 @@ function ChplApiDocumentationCollectionView(props) {
     setListings(data.results.map((listing) => ({
       ...listing,
       apiDocumentationNode: parseApiDocumentation(listing, analytics),
-      serviceBaseUrlList: listing.serviceBaseUrlList?.value || '',
+      serviceBaseUrlListValue: listing.serviceBaseUrlList?.value || '',
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -370,14 +370,14 @@ function ChplApiDocumentationCollectionView(props) {
                                 { item.apiDocumentationNode }
                               </TableCell>
                               <TableCell className={classes.linkWrap}>
-                                { item.serviceBaseUrlList
+                                { item.serviceBaseUrlListValue
                                   ? (
                                     <dl>
                                       <dt>170.315 (g)(10) (Cures Update)</dt>
                                       <dd>
                                         <ChplLink
-                                          href={item.serviceBaseUrlList}
-                                          analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlList }}
+                                          href={item.serviceBaseUrlListValue}
+                                          analytics={{ event: 'Go to Service Base URL List website', category: analytics.category, label: item.serviceBaseUrlListValue }}
                                         />
                                       </dd>
                                     </dl>
