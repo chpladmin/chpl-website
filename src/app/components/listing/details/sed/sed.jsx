@@ -15,7 +15,7 @@ import {
 import CheckIcon from '@material-ui/icons/Check';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
-import { ChplTooltip } from 'components/util';
+import { ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
@@ -46,20 +46,33 @@ function ChplSed({ listing }) {
     <>
       <Card>
         <Typography>
-          Date SED Testing was Completed
-          { getDisplayDateFormat(sedTestingEndDay) }
+          Full Usability Report
+        </Typography>
+        <Typography>
+          { sedReportFileLocation
+            && (
+              <ChplLink
+                href={sedReportFileLocation}
+                analytics={{ event: 'Usability Report', category: 'Download Details', label: sedReportFileLocation }}
+              />
+            )}
+          { !sedReportFileLocation && 'No report on file'}
         </Typography>
         <Typography>
           Description of Intended Users
-          { sedIntendedUserDescription }
         </Typography>
         <Typography>
-          Full Usability Report
-          { sedReportFileLocation }
+          { sedIntendedUserDescription ?? 'N/A' }
+        </Typography>
+        <Typography>
+          Date SED Testing was Completed
+        </Typography>
+        <Typography>
+          { getDisplayDateFormat(sedTestingEndDay) }
         </Typography>
       </Card>
       <Card>
-        <CardHeader title="UCD Processes" />
+        <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <Table>
           <TableHead>
             <TableRow>
