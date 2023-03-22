@@ -111,7 +111,8 @@ function ChplSedTaskView({ listing, sedTaskId }) {
   };
 
   const scroll = (target) => {
-    console.log(`scrolling to ${target}`);
+    const section = document.querySelector(`#${target}` );
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   if (!task) { return null; }
@@ -182,7 +183,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
         </Card>
       </div>
       <div className={classes.taskData}>
-        <Card className={classes.fullWidthGridRow}>
+        <Card className={classes.fullWidthGridRow} id="summary">
           <CardHeader title="Summary" />
           <Table>
             <TableHead>
@@ -214,7 +215,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             </TableBody>
           </Table>
         </Card>
-        <Card>
+        <Card id="rating">
           <CardHeader title="Rating" />
           <Table>
             <TableHead>
@@ -264,7 +265,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             </TableBody>
           </Table>
         </Card>
-        <Card>
+        <Card id="success">
           <CardHeader title="Task Success" />
           <Table>
             <TableHead>
@@ -310,7 +311,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             </TableBody>
           </Table>
         </Card>
-        <Card className={classes.fullWidthGridRow}>
+        <Card className={classes.fullWidthGridRow} id="participants">
           <CardHeader title="Participants" />
           <Table>
             <TableHead>
