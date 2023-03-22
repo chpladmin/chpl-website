@@ -193,6 +193,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                           { criterion.removed && 'Removed | ' }
                           { criterion.number }
                           :
+                          {' '}
                           <ChplHighlightCures text={criterion.title} />
                         </ListItem>
                       ))}
@@ -336,6 +337,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                         <ListItem key={occupation.name}>
                           { occupation.name }
                           :
+                          {' '}
                           { occupation.count}
                           {' '}
                           /

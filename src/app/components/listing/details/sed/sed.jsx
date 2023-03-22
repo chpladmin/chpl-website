@@ -102,6 +102,7 @@ function ChplSed({ listing }) {
                             { criterion.removed && 'Removed | ' }
                             { criterion.number }
                             :
+                            {' '}
                             <ChplHighlightCures text={criterion.title} />
                           </ListItem>
                         ))}
@@ -155,6 +156,7 @@ function ChplSed({ listing }) {
                           { criterion.removed && 'Removed | ' }
                           { criterion.number }
                           :
+                          {' '}
                           <ChplHighlightCures text={criterion.title} />
                         </ListItem>
                       ))}
