@@ -59,7 +59,7 @@ function ChplSedDownload({ listing }) {
       .flatMap((task) => task.testParticipants.map((participant) => ({
         ...base,
         ...task,
-        criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}${isCures(crit) ? ' (Cures Update)' : ''}`),
+        criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}${isCures(crit) ? ' (Cures Update)' : ''}`).join(';'),
         ...participant,
       })))
       .sort((a, b) => {
