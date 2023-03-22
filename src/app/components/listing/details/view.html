@@ -98,7 +98,7 @@
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-show="$ctrl.panelShown === 'sed'" id="panel-sed">
-        <span feature-flag="ui-upgrade" >
+        <span feature-flag="ui-upgrade">
           <ai-sed
             criteria-count="$ctrl.sedCriteriaCount"
             listing="$ctrl.listing"
@@ -106,7 +106,7 @@
             task-count="$ctrl.sedTaskCount">
           </ai-sed>
         </span>
-        <span feature-flag="ui-upgrade" feature-flag-hide>
+        <span feature-flag="ui-upgrade">
           <chpl-sed-bridge
             listing="$ctrl.listing"
             ></chpl-sed-bridge>
