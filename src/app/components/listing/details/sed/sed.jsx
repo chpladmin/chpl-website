@@ -51,7 +51,6 @@ function ChplSed({ listing }) {
 
   const viewTask = (task) => {
     $state.go('.sedTask', { sedTaskId: task.id });
-    console.log('viewing task', task);
   };
 
   return (
