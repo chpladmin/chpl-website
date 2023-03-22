@@ -18,7 +18,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
 import ChplSedDownload from './sed-download';
 
-import { ChplLink, ChplTooltip } from 'components/util';
+import { ChplHighlightCures, ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -102,7 +102,7 @@ function ChplSed({ listing }) {
                        .map((criterion) => (
                          <ListItem key={criterion.id}>
                            { criterion.removed && 'Removed | ' }
-                           { criterion.number }: { criterion.title }
+                           { criterion.number }: <ChplHighlightCures text={ criterion.title } />
                          </ListItem>
                        ))}
                     </List>
@@ -149,7 +149,7 @@ function ChplSed({ listing }) {
                      .map((criterion) => (
                        <ListItem key={criterion.id}>
                          { criterion.removed && 'Removed | ' }
-                         { criterion.number }: { criterion.title }
+                         { criterion.number }:  <ChplHighlightCures text={ criterion.title } />
                        </ListItem>
                      ))}
                   </TableCell>

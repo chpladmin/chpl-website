@@ -21,7 +21,7 @@ import { number } from 'prop-types';
 
 import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
-import { ChplLink, ChplTooltip } from 'components/util';
+import { ChplHighlightCures, ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -204,7 +204,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                      .map((criterion) => (
                        <ListItem key={criterion.id}>
                          { criterion.removed && 'Removed | ' }
-                         { criterion.number }: { criterion.title }
+                         { criterion.number }:  <ChplHighlightCures text={ criterion.title } />
                        </ListItem>
                      ))}
                   </List>
