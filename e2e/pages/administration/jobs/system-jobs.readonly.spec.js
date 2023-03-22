@@ -55,6 +55,7 @@ describe('the system jobs', () => {
         'downloadFileJob2011',
         'downloadFileJob2014',
         'downloadFileJob2015',
+        'fixupQuestionableActivityJob',
         'g3Sed2015DownloadFileJob',
         'icsErrorsReportCreator',
         'listingValidationReportCreator',
@@ -65,7 +66,6 @@ describe('the system jobs', () => {
         'surveillanceDownloadFileJob',
         'svapActivityDownloadFileGeneration',
         'updateListingStatusJob',
-        'updateParticipantsJob',
         'urlStatusDataCollector',
       ];
       let jobs = component.getAvailableJobs();
