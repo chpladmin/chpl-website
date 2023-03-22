@@ -55,18 +55,22 @@ function ChplSedDownload({ listing }) {
       product: listing.product.name,
       version: listing.version.version,
     };
-    const tasks = listing.sed.testTasks.flatMap((task) => {
-      const baseTask = {
-        ...base,
-        ...task,
-        criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}${isCures(crit) ? ' (Cures Update)' : ''}`),
-      };
-      return task.testParticipants.map((participant) => ({
-        ...baseTask,
-        ...participant,
-      }));
-    });
-    setRows(tasks);
+    setRows(listing.sed.testTasks
+          .flatMap((task) => task.testParticipants.map((participant) => ({
+              ...base,
+              ...task,
+              criteria: task.criteria.sort(sortCriteria).map((crit) => `${crit.removed ? 'Removed | ' : ''}${crit.number}${isCures(crit) ? ' (Cures Update)' : ''}`),
+              ...participant,
+          })))
+            .sort((a, b) => {
+              if (a.description !== b.description) { return a.description < b.description ? -1 : 1; }
+              if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
+              if (a.educationTypeName !== b.educationTypeName) { return a.educationTypeName < b.educationTypeName ? -1 : 1; }
+              if (a.productExperienceMonths !== b.productExperienceMonths) { return a.productExperienceMonths - b.productExperienceMonths; }
+              if (a.professionalExperienceMonths !== b.professionalExperienceMonths) { return a.professionalExperienceMonths - b.professionalExperienceMonths; }
+              if (a.computerExperienceMonths !== b.computerExperienceMonths) { return a.computerExperienceMonths - b.computerExperienceMonths; }
+              return 0;
+            }));
   }, [listing]);
 
   const handleDownload = () => {
