@@ -19,6 +19,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { number } from 'prop-types';
 
+import ChplSedTaskParticipantsView from './sed-task-participants-view';
+
 import { ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
@@ -101,10 +103,6 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                    }))
                    .sort((a, b) => a.name < b.name ? -1 : 1));
   }, [listing, sedTaskId]);
-
-  const downloadDetails = () => {
-    console.log('downloading details');
-  };
 
   const goBack = () => {
     $state.go('^');
@@ -313,6 +311,9 @@ function ChplSedTaskView({ listing, sedTaskId }) {
         </Card>
         <Card className={classes.fullWidthGridRow} id="participants">
           <CardHeader title="Participants" />
+          <ChplSedTaskParticipantsView
+            participants={task.testParticipants}
+          />
           <Table>
             <TableHead>
               <TableRow>

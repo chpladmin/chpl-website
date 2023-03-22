@@ -38,7 +38,7 @@ const cqm = shape({
 
 const sed = shape({
   testTasks: arrayOf(object),
-  uceProcesses: arrayOf(object),
+  ucdProcesses: arrayOf(object),
 });
 
 const listing = shape({
