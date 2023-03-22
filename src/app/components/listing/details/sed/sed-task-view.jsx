@@ -10,21 +10,17 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import CheckIcon from '@material-ui/icons/Check';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { number } from 'prop-types';
 
 import ChplSedTaskParticipantsView from './sed-task-participants-view';
 
-import { ChplHighlightCures, ChplLink, ChplTooltip } from 'components/util';
+import { ChplHighlightCures } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
-import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme, utilStyles } from 'themes';
 
@@ -61,24 +57,19 @@ const useStyles = makeStyles({
   },
 });
 
-const sortTestTasks = (a, b) => a.description < b.description ? -1 : 1;
-
-const sortUcdProcesses = (a, b) => a.name < b.name ? -1 : 1;
-
 const makeRounded = (val) => Math.round(val * 1000) / 1000;
 
-const makePercentage = (val) => `${ makeRounded(val * 100) }%`
+const makePercentage = (val) => `${makeRounded(val * 100)}%`;
 
 function ChplSedTaskView({ listing, sedTaskId }) {
   const $state = getAngularService('$state');
-  const [active, setActive] = useState('');
   const [meanExperience, setMeanExperience] = useState(0);
   const [occupations, setOccupations] = useState([]);
   const [task, setTask] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
-    const inputTask = listing.sed.testTasks.find((task) => task.id === sedTaskId);
+    const inputTask = listing.sed.testTasks.find((t) => t.id === sedTaskId);
     if (!inputTask) { return; }
     setTask(inputTask);
     setMeanExperience(makeRounded(inputTask.testParticipants.reduce((sum, participant) => sum + participant.productExperienceMonths, 0) / inputTask.testParticipants.length));
@@ -89,19 +80,19 @@ function ChplSedTaskView({ listing, sedTaskId }) {
           [participant.occupation]: 1,
         };
       }
-        return {
-          ...obj,
-          [participant.occupation]: obj[participant.occupation] + 1,
-        };
+      return {
+        ...obj,
+        [participant.occupation]: obj[participant.occupation] + 1,
+      };
     }, {});
     setOccupations(Object
-                   .entries(occupationsObj)
-                   .map(([key, value]) => ({
-                       name: key,
-                       count: value,
-                       percentage: makePercentage(value / inputTask.testParticipants.length),
-                   }))
-                   .sort((a, b) => a.name < b.name ? -1 : 1));
+      .entries(occupationsObj)
+      .map(([key, value]) => ({
+        name: key,
+        count: value,
+        percentage: makePercentage(value / inputTask.testParticipants.length),
+      }))
+      .sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [listing, sedTaskId]);
 
   const goBack = () => {
@@ -109,7 +100,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
   };
 
   const scroll = (target) => {
-    const section = document.querySelector(`#${target}` );
+    const section = document.querySelector(`#${target}`);
     section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
@@ -121,7 +112,6 @@ function ChplSedTaskView({ listing, sedTaskId }) {
         <Card>
           <Button
             onClick={() => scroll('summary')}
-            disabled={active === 'summary'}
             id="sed-task-view-scroll-to-summary"
             fullWidth
             variant="text"
@@ -133,7 +123,6 @@ function ChplSedTaskView({ listing, sedTaskId }) {
           </Button>
           <Button
             onClick={() => scroll('rating')}
-            disabled={active === 'rating'}
             id="sed-task-view-scroll-to-rating"
             fullWidth
             variant="text"
@@ -145,7 +134,6 @@ function ChplSedTaskView({ listing, sedTaskId }) {
           </Button>
           <Button
             onClick={() => scroll('success')}
-            disabled={active === 'success'}
             id="sed-task-view-scroll-to-success"
             fullWidth
             variant="text"
@@ -157,7 +145,6 @@ function ChplSedTaskView({ listing, sedTaskId }) {
           </Button>
           <Button
             onClick={() => scroll('participants')}
-            disabled={active === 'participants'}
             id="sed-task-view-scroll-to-participants"
             fullWidth
             variant="text"
@@ -200,13 +187,15 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                 <TableCell>
                   <List>
                     {task.criteria
-                     .sort(sortCriteria)
-                     .map((criterion) => (
-                       <ListItem key={criterion.id}>
-                         { criterion.removed && 'Removed | ' }
-                         { criterion.number }:  <ChplHighlightCures text={ criterion.title } />
-                       </ListItem>
-                     ))}
+                      .sort(sortCriteria)
+                      .map((criterion) => (
+                        <ListItem key={criterion.id}>
+                          { criterion.removed && 'Removed | ' }
+                          { criterion.number }
+                          :
+                          <ChplHighlightCures text={criterion.title} />
+                        </ListItem>
+                      ))}
                   </List>
                 </TableCell>
               </TableRow>
@@ -258,7 +247,13 @@ function ChplSedTaskView({ listing, sedTaskId }) {
               </TableRow>
               <TableRow>
                 <TableCell>Task Time Deviation - Observed/Optimal (s)</TableCell>
-                <TableCell>{ task.taskTimeDeviationObservedAvg } / { task.taskTimeDeviationOptimalAvg }</TableCell>
+                <TableCell>
+                  { task.taskTimeDeviationObservedAvg }
+                  {' '}
+                  /
+                  {' '}
+                  { task.taskTimeDeviationOptimalAvg }
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -304,7 +299,13 @@ function ChplSedTaskView({ listing, sedTaskId }) {
               </TableRow>
               <TableRow>
                 <TableCell>Task Task Path - Observed/Optimal (# of Steps)</TableCell>
-                <TableCell>{ task.taskPathDeviationObserved } / { task.taskPathDeviationOptimal }</TableCell>
+                <TableCell>
+                  { task.taskPathDeviationObserved }
+                  {' '}
+                  /
+                  {' '}
+                  { task.taskPathDeviationOptimal }
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -331,11 +332,20 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                 <TableCell>
                   <List>
                     {occupations
-                     .map((occupation) => (
-                       <ListItem key={occupation.name}>
-                         { occupation.name }: { occupation.count} / { task.testParticipants.length } ({ occupation.percentage })
-                       </ListItem>
-                     ))}
+                      .map((occupation) => (
+                        <ListItem key={occupation.name}>
+                          { occupation.name }
+                          :
+                          { occupation.count}
+                          {' '}
+                          /
+                          { task.testParticipants.length }
+                          {' '}
+                          (
+                          { occupation.percentage }
+                          )
+                        </ListItem>
+                      ))}
                   </List>
                 </TableCell>
               </TableRow>

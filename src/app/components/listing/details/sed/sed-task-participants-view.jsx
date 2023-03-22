@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
   Dialog,
   DialogContent,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -17,7 +16,7 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import { arrayOf, object } from 'prop-types';
 
-import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { ChplDialogTitle } from 'components/util';
 
 const useStyles = makeStyles({
   legendTitle: {
@@ -31,7 +30,7 @@ const useStyles = makeStyles({
 
 function ChplSedTaskParticipantsView(props) {
   const [open, setOpen] = useState(false);
-  const participants = props.participants.sort((a, b) => {
+  const participants = props.participants.sort((a, b) => { // eslint-disable-line react/destructuring-assignment
     if (a.occupation !== b.occupation) { return a.occupation < b.occupation ? -1 : 1; }
     if (a.educationTypeName !== b.educationTypeName) { return a.educationTypeName < b.educationTypeName ? -1 : 1; }
     if (a.productExperienceMonths !== b.productExperienceMonths) { return a.productExperienceMonths - b.productExperienceMonths; }
@@ -115,5 +114,5 @@ function ChplSedTaskParticipantsView(props) {
 export default ChplSedTaskParticipantsView;
 
 ChplSedTaskParticipantsView.propTypes = {
-  participants: arrayOf(object),
+  participants: arrayOf(object).isRequired, // eslint-disable-line react/forbid-prop-types
 };

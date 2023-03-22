@@ -1,5 +1,4 @@
 import React from 'react';
-import { arrayOf, bool } from 'prop-types';
 
 import ChplSed from './sed';
 

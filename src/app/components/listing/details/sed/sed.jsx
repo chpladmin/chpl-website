@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Button,
   Card,
@@ -13,12 +13,10 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
 import ChplSedDownload from './sed-download';
 
-import { ChplHighlightCures, ChplLink, ChplTooltip } from 'components/util';
+import { ChplHighlightCures, ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -33,9 +31,9 @@ const useStyles = makeStyles({
   },
 });
 
-const sortTestTasks = (a, b) => a.description < b.description ? -1 : 1;
+const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
 
-const sortUcdProcesses = (a, b) => a.name < b.name ? -1 : 1;
+const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
 
 function ChplSed({ listing }) {
   const {
@@ -98,13 +96,15 @@ function ChplSed({ listing }) {
                   <TableCell>
                     <List>
                       {ucd.criteria
-                       .sort(sortCriteria)
-                       .map((criterion) => (
-                         <ListItem key={criterion.id}>
-                           { criterion.removed && 'Removed | ' }
-                           { criterion.number }: <ChplHighlightCures text={ criterion.title } />
-                         </ListItem>
-                       ))}
+                        .sort(sortCriteria)
+                        .map((criterion) => (
+                          <ListItem key={criterion.id}>
+                            { criterion.removed && 'Removed | ' }
+                            { criterion.number }
+                            :
+                            <ChplHighlightCures text={criterion.title} />
+                          </ListItem>
+                        ))}
                     </List>
                   </TableCell>
                   <TableCell>
@@ -141,17 +141,23 @@ function ChplSed({ listing }) {
                     { task.description }
                   </TableCell>
                   <TableCell>
-                    { task.taskRating } ({ task.taskRatingScale })
+                    { task.taskRating }
+                    {' '}
+                    (
+                    { task.taskRatingScale }
+                    )
                   </TableCell>
                   <TableCell>
                     {task.criteria
-                     .sort(sortCriteria)
-                     .map((criterion) => (
-                       <ListItem key={criterion.id}>
-                         { criterion.removed && 'Removed | ' }
-                         { criterion.number }:  <ChplHighlightCures text={ criterion.title } />
-                       </ListItem>
-                     ))}
+                      .sort(sortCriteria)
+                      .map((criterion) => (
+                        <ListItem key={criterion.id}>
+                          { criterion.removed && 'Removed | ' }
+                          { criterion.number }
+                          :
+                          <ChplHighlightCures text={criterion.title} />
+                        </ListItem>
+                      ))}
                   </TableCell>
                   <TableCell>
                     <Button
