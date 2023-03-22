@@ -16,6 +16,8 @@ import {
 import CheckIcon from '@material-ui/icons/Check';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 
+import ChplSedDownload from './sed-download';
+
 import { ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
@@ -44,10 +46,6 @@ function ChplSed({ listing }) {
   } = listing;
   const $state = getAngularService('$state');
   const classes = useStyles();
-
-  const downloadDetails = () => {
-    console.log('downloading details');
-  };
 
   const viewTask = (task) => {
     $state.go('.sedTask', { sedTaskId: task.id });
@@ -122,11 +120,9 @@ function ChplSed({ listing }) {
       </Card>
       <Card>
         <CardHeader title="SED Testing Tasks" />
-        <Button
-          onClick={downloadDetails}
-        >
-          Download Task Details
-        </Button>
+        <ChplSedDownload
+          listing={listing}
+        />
         <Table>
           <TableHead>
             <TableRow>
