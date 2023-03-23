@@ -4,6 +4,7 @@ import { number } from 'prop-types';
 import ChplSedTaskView from './sed-task-view';
 
 import AppWrapper from 'app-wrapper';
+import BreadcrumbWrapper from 'components/breadcrumb/breadcrumb-wrapper';
 import { listing as listingType } from 'shared/prop-types/listing';
 
 function ChplSedTaskViewWrapper(props) {
@@ -11,10 +12,12 @@ function ChplSedTaskViewWrapper(props) {
 
   return (
     <AppWrapper>
-      <ChplSedTaskView
-        listing={listing}
-        sedTaskId={sedTaskId}
-      />
+      <BreadcrumbWrapper title="SED Information">
+        <ChplSedTaskView
+          listing={listing}
+          sedTaskId={sedTaskId}
+        />
+      </BreadcrumbWrapper>
     </AppWrapper>
   );
 }

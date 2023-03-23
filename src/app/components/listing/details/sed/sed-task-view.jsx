@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -21,6 +21,7 @@ import ChplSedTaskParticipantsView from './sed-task-participants-view';
 import { ChplHighlightCures } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
+import { BreadcrumbContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 import { theme, utilStyles } from 'themes';
 
@@ -63,12 +64,36 @@ const makePercentage = (val) => `${makeRounded(val * 100)}%`;
 
 function ChplSedTaskView({ listing, sedTaskId }) {
   const $state = getAngularService('$state');
+  const { append, display } = useContext(BreadcrumbContext);
   const [meanExperience, setMeanExperience] = useState(0);
   const [occupations, setOccupations] = useState([]);
   const [task, setTask] = useState(undefined);
   const classes = useStyles();
+  let goBack;
 
   useEffect(() => {
+    append(
+      <Button
+        key="listing"
+        depth={0}
+        variant="text"
+        onClick={goBack}
+      >
+        { listing.product.name }
+      </Button>,
+    );
+    append(
+      <Button
+        key="sed-task"
+        depth={1}
+        variant="text"
+        disabled
+      >
+        SED Testing Task
+      </Button>,
+    );
+    display('listing');
+    display('sed-task');
     const inputTask = listing.sed.testTasks.find((t) => t.id === sedTaskId);
     if (!inputTask) { return; }
     setTask(inputTask);
@@ -95,7 +120,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
       .sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [listing, sedTaskId]);
 
-  const goBack = () => {
+  goBack = () => {
     $state.go('^');
   };
 
