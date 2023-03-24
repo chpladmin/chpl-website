@@ -308,7 +308,20 @@ function ChplFilterPanel() {
                 )}
               >
                 <div className={classes.filterGroupTwoContainer}>
-                  { activeCategory.getValueEntry({
+                  { activeCategory.disabled
+                    && (
+                      <>
+                        <Typography variant="body1" gutterBottom>
+                          This information is temporarily unavailable. Please check back later.
+                        </Typography>
+                        <Typography variant="body1">
+                          Surveillance and Direct Review information can be downloaded from the
+                          {' '}
+                          <a href="#/resources/download">Download the CHPL page</a>
+                        </Typography>
+                      </>
+                    )}
+                  { !activeCategory.disabled && activeCategory.getValueEntry({
                     filter: activeCategory,
                     handleFilterToggle,
                     handleFilterUpdate,
