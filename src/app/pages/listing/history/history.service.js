@@ -248,6 +248,10 @@ const interpretDeveloper = (activity) => {
     if (prev && prev.name !== curr.name) {
       ret.change.push(`Developer changed from ${prev.name} to ${curr.name}`);
     }
+    if (prev && curr && prev.id !== curr.id) {
+      ret.change.push(`Developer "${prev.name}" joined Developer "${curr.name}"`);
+    }
+    merged = [prev.id];
   } else if (activity.description.startsWith('Merged ')) {
     ret.change.push(`Developers ${prev.map((p) => p.name).join(' and ')} merged to form ${curr.name}`);
     merged = prev.map((p) => p.id || p.developerId);

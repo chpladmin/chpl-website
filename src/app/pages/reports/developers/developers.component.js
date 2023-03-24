@@ -174,7 +174,7 @@ lookup = {
     message: (before, after) => comparePrimitive(before, after, 'developerCode', 'Developer Code'),
   },
   'root.id': {
-    message: () => undefined,
+    message: (before, after) => `Developer "${before.name}" joined Developer "${after.name}"`,
   },
   'root.lastModifiedDate': {
     message: () => undefined,
