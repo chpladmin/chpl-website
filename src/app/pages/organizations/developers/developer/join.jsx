@@ -67,7 +67,7 @@ function ChplJoinDevelopers({ id }) {
         setIsProcessing(true);
         mutate({
           developer: activeDeveloper,
-          developersToJoin,
+          developerIds: developersToJoin.map((dev) => dev.id),
         }, {
           onSuccess: () => {
             setIsProcessing(false);
