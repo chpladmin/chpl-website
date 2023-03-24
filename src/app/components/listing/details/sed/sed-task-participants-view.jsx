@@ -63,7 +63,7 @@ function ChplSedTaskParticipantsView(props) {
         onClose={handleClose}
         aria-labelledby="participant-details-title"
         open={open}
-        maxWidth="md"
+        maxWidth="lg"
       >
         <ChplDialogTitle
           id="participant-details-title"
