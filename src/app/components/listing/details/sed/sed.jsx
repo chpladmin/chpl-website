@@ -1,7 +1,9 @@
 import React from 'react';
 import {
+  Box,
   Button,
   Card,
+  CardContent,
   CardHeader,
   List,
   ListItem,
@@ -13,6 +15,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import ChplSedDownload from './sed-download';
 
@@ -50,130 +53,150 @@ function ChplSed({ listing }) {
   };
 
   return (
-    <>
+    <Box display="flex" gridGap={16} flexDirection="column">
       <Card>
-        <Typography>
-          Full Usability Report
-        </Typography>
-        <Typography>
-          { sedReportFileLocation
-            && (
-              <ChplLink
-                href={sedReportFileLocation}
-                analytics={{ event: 'Usability Report', category: 'Download Details', label: sedReportFileLocation }}
-              />
-            )}
-          { !sedReportFileLocation && 'No report on file'}
-        </Typography>
-        <Typography>
-          Description of Intended Users
-        </Typography>
-        <Typography>
-          { sedIntendedUserDescription ?? 'N/A' }
-        </Typography>
-        <Typography>
-          Date SED Testing was Completed
-        </Typography>
-        <Typography>
-          { getDisplayDateFormat(sedTestingEndDay) }
-        </Typography>
+        <CardContent>
+          <Box display="flex" gridGap={8} flexDirection="column">
+            <Box>
+              <Typography variant="subtitle1">
+                Full Usability Report
+              </Typography>
+              <Typography>
+                {sedReportFileLocation
+                  && (
+                    <ChplLink
+                      href={sedReportFileLocation}
+                      analytics={{ event: 'Usability Report', category: 'Download Details', label: sedReportFileLocation }}
+                    />
+                  )}
+                {!sedReportFileLocation && 'No report on file'}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="subtitle1">
+                Description of Intended Users
+              </Typography>
+              <Typography>
+                {sedIntendedUserDescription ?? 'N/A'}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="subtitle1">
+                Date SED Testing was Completed
+              </Typography>
+              <Typography>
+                {getDisplayDateFormat(sedTestingEndDay)}
+              </Typography>
+            </Box>
+          </Box>
+        </CardContent>
       </Card>
       <Card>
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Certification Criteria</TableCell>
-              <TableCell>UCD Process</TableCell>
-              <TableCell>UCD Process Details</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { sed.ucdProcesses
-              .sort(sortUcdProcesses)
-              .map((ucd) => (
-                <TableRow key={ucd.id}>
-                  <TableCell>
-                    <List>
-                      {ucd.criteria
-                        .sort(sortCriteria)
-                        .map((criterion) => (
-                          <ListItem key={criterion.id}>
-                            { criterion.removed && 'Removed | ' }
-                            { criterion.number }
-                            :
-                            {' '}
-                            <ChplHighlightCures text={criterion.title} />
-                          </ListItem>
-                        ))}
-                    </List>
-                  </TableCell>
-                  <TableCell>
-                    { ucd.name }
-                  </TableCell>
-                  <TableCell>
-                    { ucd.details }
-                  </TableCell>
+        <CardContent>
+          <Card>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Certification Criteria</TableCell>
+                  <TableCell>UCD Process</TableCell>
+                  <TableCell>UCD Process Details</TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+              </TableHead>
+              <TableBody>
+                {sed.ucdProcesses
+                  .sort(sortUcdProcesses)
+                  .map((ucd) => (
+                    <TableRow key={ucd.id}>
+                      <TableCell>
+                        <List>
+                          {ucd.criteria
+                            .sort(sortCriteria)
+                            .map((criterion) => (
+                              <ListItem key={criterion.id}>
+                                {criterion.removed && 'Removed | '}
+                                {criterion.number}
+                                :
+                                {' '}
+                                <ChplHighlightCures text={criterion.title} />
+                              </ListItem>
+                            ))}
+                        </List>
+                      </TableCell>
+                      <TableCell>
+                        {ucd.name}
+                      </TableCell>
+                      <TableCell>
+                        {ucd.details}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </CardContent>
       </Card>
       <Card>
         <CardHeader title="SED Testing Tasks" />
-        <ChplSedDownload
-          listing={listing}
-        />
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Description</TableCell>
-              <TableCell>Task Rating and Scale Type</TableCell>
-              <TableCell>Certification Criteria</TableCell>
-              <TableCell><span className="sr-only">Actions</span></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { sed.testTasks
-              .sort(sortTestTasks)
-              .map((task) => (
-                <TableRow key={task.id}>
-                  <TableCell>
-                    { task.description }
-                  </TableCell>
-                  <TableCell>
-                    { task.taskRating }
-                    {' '}
-                    (
-                    { task.taskRatingScale }
-                    )
-                  </TableCell>
-                  <TableCell>
-                    {task.criteria
-                      .sort(sortCriteria)
-                      .map((criterion) => (
-                        <ListItem key={criterion.id}>
-                          { criterion.removed && 'Removed | ' }
-                          { criterion.number }
-                          :
-                          {' '}
-                          <ChplHighlightCures text={criterion.title} />
-                        </ListItem>
-                      ))}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => viewTask(task)}
-                    >
-                      View
-                    </Button>
-                  </TableCell>
+        <Box display="flex" justifyContent="flex-end" pt={4} pr={4} pl={4}>
+          <ChplSedDownload
+            listing={listing}
+          />
+        </Box>
+        <CardContent>
+          <Card>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Task Rating and Scale Type</TableCell>
+                  <TableCell>Certification Criteria</TableCell>
+                  <TableCell><span className="sr-only">Actions</span></TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+              </TableHead>
+              <TableBody>
+                {sed.testTasks
+                  .sort(sortTestTasks)
+                  .map((task) => (
+                    <TableRow key={task.id}>
+                      <TableCell>
+                        {task.description}
+                      </TableCell>
+                      <TableCell>
+                        {task.taskRating}
+                        {' '}
+                        (
+                        {task.taskRatingScale}
+                        )
+                      </TableCell>
+                      <TableCell>
+                        {task.criteria
+                          .sort(sortCriteria)
+                          .map((criterion) => (
+                            <ListItem key={criterion.id}>
+                              {criterion.removed && 'Removed | '}
+                              {criterion.number}
+                              :
+                              {' '}
+                              <ChplHighlightCures text={criterion.title} />
+                            </ListItem>
+                          ))}
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="contained" color="secondary" size="small" endIcon={<VisibilityIcon/>}
+                          onClick={() => viewTask(task)}
+                        >
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </Card>
+        </CardContent>
       </Card>
-    </>
+    </Box>
   );
 }
 
