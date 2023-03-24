@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardHeader,
@@ -12,8 +13,11 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
+import AlarmOnIcon from '@material-ui/icons/AlarmOn';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
+import PeopleOutlineOutlinedIcon from '@material-ui/icons/PeopleOutlineOutlined';
+import SubjectIcon from '@material-ui/icons/Subject';
 import { number } from 'prop-types';
 
 import ChplSedTaskParticipantsView from './sed-task-participants-view';
@@ -32,6 +36,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '16px',
+    padding:'16px',
+    backgroundColor:'#f9f9f9',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
@@ -41,6 +47,8 @@ const useStyles = makeStyles({
   navigation: {
     display: 'flex',
     flexDirection: 'column',
+    position: 'sticky',
+    top: '100px',
   },
   menuItems: {
     padding: '8px',
@@ -55,6 +63,7 @@ const useStyles = makeStyles({
     display: 'grid',
     flexDirection: 'column',
     gridTemplateColumns: '1fr 1fr',
+    gridGap: '16px',
   },
 });
 
@@ -134,14 +143,14 @@ function ChplSedTaskView({ listing, sedTaskId }) {
   return (
     <div className={classes.container}>
       <div className={classes.navigation}>
-        <Card>
+        <Card className={classes.stickyNav}>
           <Button
             onClick={() => scroll('summary')}
             id="sed-task-view-scroll-to-summary"
             fullWidth
             variant="text"
             color="primary"
-            endIcon={<ArrowForwardIcon />}
+            endIcon={<SubjectIcon />}
             className={classes.menuItems}
           >
             Summary
@@ -152,7 +161,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             fullWidth
             variant="text"
             color="primary"
-            endIcon={<ArrowForwardIcon />}
+            endIcon={<AlarmOnIcon/>}
             className={classes.menuItems}
           >
             Rating &amp; Task Time
@@ -163,7 +172,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             fullWidth
             variant="text"
             color="primary"
-            endIcon={<ArrowForwardIcon />}
+            endIcon={<AssignmentTurnedInOutlinedIcon />}
             className={classes.menuItems}
           >
             Task Success &amp; Error
@@ -174,7 +183,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             fullWidth
             variant="text"
             color="primary"
-            endIcon={<ArrowForwardIcon />}
+            endIcon={<PeopleOutlineOutlinedIcon/>}
             className={classes.menuItems}
           >
             Participants
@@ -338,9 +347,11 @@ function ChplSedTaskView({ listing, sedTaskId }) {
         </Card>
         <Card className={classes.fullWidthGridRow} id="participants">
           <CardHeader title="Participants" />
+          <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4} >
           <ChplSedTaskParticipantsView
             participants={task.testParticipants}
           />
+          </Box>
           <Table>
             <TableHead>
               <TableRow>
