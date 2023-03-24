@@ -51,7 +51,6 @@ function ChplJoinDevelopers({ id }) {
 
   const addDeveloper = (_, developer) => {
     if (developer) {
-      console.log(developer);
       setDevelopersToJoin((prev) => prev.concat(developer));
     }
   };
@@ -87,7 +86,6 @@ function ChplJoinDevelopers({ id }) {
   };
 
   const removeDeveloper = (developer) => {
-    console.log(developer);
     setDevelopersToJoin((prev) => prev.filter((dev) => dev.id !== developer.id));
   };
 
