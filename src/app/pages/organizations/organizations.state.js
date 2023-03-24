@@ -58,23 +58,6 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ONC'],
     },
   }, {
-    name: 'organizations.developers.developer.merge',
-    url: '/merge',
-    views: {
-      'view@^': 'chplDevelopersMerge',
-    },
-    resolve: {
-      developers: (networkService) => {
-        'ngInject';
-
-        return networkService.getDevelopers();
-      },
-    },
-    data: {
-      title: 'CHPL Developers - Merge',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
-    },
-  }, {
     name: 'organizations.developers.developer.attestation',
     url: '/attestation',
   }, {
