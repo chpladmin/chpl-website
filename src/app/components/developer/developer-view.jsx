@@ -165,7 +165,7 @@ function ChplDeveloperView(props) {
   const DateUtil = getAngularService('DateUtil');
   const {
     canEdit,
-    canMerge,
+    canJoin,
     canSplit,
     isSplitting,
   } = props;
@@ -185,8 +185,8 @@ function ChplDeveloperView(props) {
           || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active') // allowed for ACB iff Developer is "Active"
           || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff Developer is "Active" & CRs can be submitted
     }
-    if (action === 'merge') {
-      return canMerge
+    if (action === 'join') {
+      return canJoin
         && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
     }
     if (action === 'split') {
@@ -201,12 +201,12 @@ function ChplDeveloperView(props) {
     props.dispatch('edit');
   };
 
-  const split = () => {
-    props.dispatch('split');
+  const join = () => {
+    props.dispatch('join');
   };
 
-  const merge = () => {
-    props.dispatch('merge');
+  const split = () => {
+    props.dispatch('split');
   };
 
   return (
@@ -307,7 +307,7 @@ function ChplDeveloperView(props) {
           {developer?.statusEvents?.length > 0 && getStatusData(developer.statusEvents, DateUtil, classes)}
         </div>
       </CardContent>
-      {(can('edit') || can('split') || can('merge'))
+      {(can('edit') || can('split') || can('join'))
         && (
           <CardActions className={classes.cardActions}>
             <ButtonGroup
@@ -339,14 +339,14 @@ function ChplDeveloperView(props) {
                     </Button>
                   </ChplTooltip>
                 )}
-              {can('merge')
+              {can('join')
                 && (
-                  <ChplTooltip title={`Merge ${developer.name}`}>
+                  <ChplTooltip title={`Join ${developer.name}`}>
                     <Button
                       variant="outlined"
-                      aria-label={`Merge ${developer.name}`}
-                      id="developer-component-merge"
-                      onClick={merge}
+                      aria-label={`Join ${developer.name}`}
+                      id="developer-component-join"
+                      onClick={join}
                     >
                       <CallMergeIcon />
                     </Button>
@@ -363,7 +363,7 @@ export default ChplDeveloperView;
 
 ChplDeveloperView.propTypes = {
   canEdit: bool.isRequired,
-  canMerge: bool.isRequired,
+  canJoin: bool.isRequired,
   canSplit: bool.isRequired,
   developer: developerPropType.isRequired,
   dispatch: func.isRequired,

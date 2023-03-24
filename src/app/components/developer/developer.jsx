@@ -16,7 +16,7 @@ import { developer as developerPropType } from 'shared/prop-types';
 function ChplDeveloper(props) {
   const {
     canEdit,
-    canMerge,
+    canJoin,
     canSplit,
     demographicChangeRequestIsOn,
     developer,
@@ -58,7 +58,7 @@ function ChplDeveloper(props) {
           && (
             <ChplDeveloperView
               canEdit={canEdit}
-              canMerge={canMerge}
+              canJoin={canJoin}
               canSplit={canSplit}
               developer={developer}
               dispatch={dispatch}
@@ -74,7 +74,7 @@ export default ChplDeveloper;
 
 ChplDeveloper.propTypes = {
   canEdit: bool,
-  canMerge: bool,
+  canJoin: bool,
   canSplit: bool,
   demographicChangeRequestIsOn: bool,
   developer: developerPropType.isRequired,
@@ -89,7 +89,7 @@ ChplDeveloper.propTypes = {
 
 ChplDeveloper.defaultProps = {
   canEdit: false,
-  canMerge: false,
+  canJoin: false,
   canSplit: false,
   demographicChangeRequestIsOn: false,
   dispatch: () => {},
