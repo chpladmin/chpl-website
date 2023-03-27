@@ -1,3 +1,101 @@
+import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import { sortCriteria } from 'services/criteria.service';
+import { getDisplayDateFormat } from 'services/date-util';
+
+let lookup;
+
+const compareCertificationResults = (initialBefore, initialAfter) => {
+  const changes = [];
+  const before = initialBefore.sort((x, y) => sortCriteria(x.criterion, y.criterion));
+  const after = initialAfter.sort((x, y) => sortCriteria(x.criterion, y.criterion));
+  before.forEach((b, idx) => changes.push(compareObject(b, after[idx], lookup, 'certificationResults')));
+  if (changes && changes.length > 0) {
+    return `Certification Criteria updates<ul>${changes.join('')}</ul>`;
+  }
+  return undefined;
+}
+
+const compareSedTasks = (initialBefore, initialAfter) => {
+  const changes = [];
+  let b = 0;
+  let a = 0;
+  const before = initialBefore.sort((x, y) => x.description < y.description ? -1 : 1);
+  const after = initialAfter.sort((x, y) => x.description < y.description ? -1 : 1);
+  while (b < before.length || a < after.length) {
+    if (before[b]?.description === after[a]?.description) {
+      const diffs = compareObject(before[b], after[a], lookup, 'sedTasks')
+            .filter((msgs) => msgs.length > 0)
+            .map((msg) => `<li>${msg}</li>`);
+      if (diffs && diffs.length > 0) {
+        changes.push(...diffs);
+      }
+      b += 1;
+      a += 1;
+    } else if ((before[b]?.description < after[a]?.description) || (before[b] && !after[a])) {
+      changes.push(`<li>Test Task ${before[b].description} was removed</>`);
+      b += 1;
+    } else if ((before[b]?.description > after[a]?.description) || (!before[b] && after[a])) {
+      changes.push(`<li>Test Task ${after[a].description} was added</li>`);
+      a += 1;
+    }
+    if (changes && changes.length > 0) {
+      return `SED Tasks changes<ul>${changes.join('')}</ul>`;
+    }
+    return undefined;
+  }
+};
+
+const compareUcdProcesses = (initialBefore, initialAfter) => {
+  const changes = [];
+  let b = 0;
+  let a = 0;
+  const before = initialBefore.sort((x, y) => x.name < y.name ? -1 : 1);
+  const after = initialAfter.sort((x, y) => x.name < y.name ? -1 : 1);
+  while (b < before.length || a < after.length) {
+    if (before[b]?.name === after[a]?.name) {
+      const diffs = compareObject(before[b], after[a], lookup, 'ucdProcesses')
+            .filter((msgs) => msgs.length > 0)
+            .map((msg) => `<li>${msg}</li>`);
+      if (diffs && diffs.length > 0) {
+        changes.push(...diffs);
+      }
+      b += 1;
+      a += 1;
+    } else if ((before[b]?.name < after[a]?.name) || (before[b] && !after[a])) {
+      changes.push(`<li>UCD Process ${before[b].name} was removed</>`);
+      b += 1;
+    } else if ((before[b]?.name > after[a]?.name) || (!before[b] && after[a])) {
+      changes.push(`<li>UCD Process ${after[a].name} was added</li>`);
+      a += 1;
+    }
+    if (changes && changes.length > 0) {
+      return `SED Processes changes<ul>${changes.join('')}</ul>`;
+    }
+    return undefined;
+  }
+};
+
+lookup = {
+  'certificationResults.allowedConformanceMethods': { message: () => undefined },
+  'certificationResults.allowedOptionalStandards': { message: () => undefined },
+  'certificationResults.allowedSvaps': { message: () => undefined },
+  'certificationResults.allowedTestFunctionalities': { message: () => undefined },
+  'certificationResults.apiDocumentation': { message: (before, after) => comparePrimitive(before, after, 'apiDocumentation', 'API Documentation') },
+  'root.certificationResults': { message: compareCertificationResults },
+  'root.countClosedNonconformities': { message: () => undefined },
+  'root.countClosedSurveillance': { message: () => undefined },
+  'root.countOpenNonconformities': { message: () => undefined },
+  'root.countOpenSurveillance': { message: () => undefined },
+  'root.errorMessages': { message: () => undefined },
+  'root.lastModifiedDate': { message: () => undefined },
+  'root.rwtPlansCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansCheckDate', 'Real World Testing Plans Last Completeness Check Date', getDisplayDateFormat) },
+  'root.rwtPlansUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansUrl', 'Real World Testing Plans URL') },
+  'root.sed': { message: () => 'SED Changes' },
+  'root.sed.testTasks': { message: compareSedTasks },
+  'root.sed.ucdProcesses': { message: compareUcdProcesses },
+  'root.warningMessages': { message: () => undefined },
+};
+
 const ReportsListingsComponent = {
   templateUrl: 'chpl.reports/listings/listings.html',
   controller: class ReportsListingsComponent {
@@ -761,11 +859,13 @@ const ReportsListingsComponent = {
         const activity = {
           action: '',
           details: [],
+          newDetails: [],
         };
         if (item.description === 'Created a certified product') {
           activity.action = 'Created a certified product';
         } else if (item.description.startsWith('Updated certified')) {
           activity.action = 'Updated a certified product';
+          activity.newDetails = compareObject(item.originalData, item.newData, lookup);
           if (item.newData.certificationStatus) {
             change = this.ReportService.nestedCompare(item.originalData, item.newData, 'certificationStatus', 'name', 'Certification Status');
             if (change) {
@@ -860,7 +960,7 @@ const ReportsListingsComponent = {
             activity.details.push(`Targeted Users changes:<ul>${targetedUsers.join('')}</ul>`);
           }
         } else if (item.description.startsWith('Changed ACB ownership')) {
-          console.log('ownership');
+          //console.log('ownership');
           const changes = ['Changed ONC-ACB ownership'];
           if (item.originalData.chplProductNumber !== item.newData.chplProductNumber) {
             changes.push(`<ul><li>CHPL Product Number changed from ${item.originalData.chplProductNumber} to ${item.newData.chplProductNumber}</li></ul>`);
@@ -875,6 +975,7 @@ const ReportsListingsComponent = {
             activity.action = 'Surveillance was added';
           } else if (item.description.startsWith('Surveillance was updated')) {
             activity.action = 'Surveillance was updated';
+            activity.newDetails = compareObject(item.originalData, item.newData, lookup);
             for (j = 0; j < item.originalData.surveillance.length; j += 1) {
               let action = [`${item.originalData.surveillance[j].friendlyId}<ul><li>`];
               const actions = [];
@@ -920,6 +1021,7 @@ const ReportsListingsComponent = {
         }
         meta.action = activity.action;
         meta.details = activity.details;
+        meta.newDetails = activity.newDetails;
         meta.csvDetails = activity.details.join('\n');
       });
     }

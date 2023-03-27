@@ -125,8 +125,13 @@
               {{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}
               <div ng-if="activity.action && activity.showDetails">
                 <span ng-bind-html="activity.action"></span>
+                old
                 <ul>
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
+                </ul>
+                new
+                <ul>
+                  <li ng-repeat="str in activity.newDetails | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
                 <button class="btn btn-sm btn-ai-success" ng-click="$ctrl.compareSurveillances(activity.source.oldS, activity.source.newS)" ng-if="activity.source"><i class="fa fa-search"></i>View Details</button>
               </div>
