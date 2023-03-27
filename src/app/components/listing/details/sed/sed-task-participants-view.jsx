@@ -13,10 +13,10 @@ import {
   TableRow,
   makeStyles,
 } from '@material-ui/core';
+import { Visibility } from '@material-ui/icons';
 import { arrayOf, object } from 'prop-types';
 
 import { ChplDialogTitle } from 'components/util';
-import { Visibility } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   legendTitle: {

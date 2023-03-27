@@ -13,7 +13,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
@@ -24,15 +23,6 @@ import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
-
-const useStyles = makeStyles({
-  helperText: {
-    padding: '16px 0',
-  },
-  disabledRow: {
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-  },
-});
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
 
@@ -46,7 +36,6 @@ function ChplSed({ listing }) {
     sedTestingEndDay,
   } = listing;
   const $state = getAngularService('$state');
-  const classes = useStyles();
 
   const viewTask = (task) => {
     $state.go('.sedTask', { sedTaskId: task.id });
@@ -57,7 +46,7 @@ function ChplSed({ listing }) {
       <Card>
         <CardContent>
           <Box display="flex" gridGap={8} flexDirection="column">
-            <Box>
+            <div>
               <Typography variant="subtitle1">
                 Full Usability Report
               </Typography>
@@ -71,23 +60,23 @@ function ChplSed({ listing }) {
                   )}
                 {!sedReportFileLocation && 'No report on file'}
               </Typography>
-            </Box>
-            <Box>
+            </div>
+            <div>
               <Typography variant="subtitle1">
                 Description of Intended Users
               </Typography>
               <Typography>
                 {sedIntendedUserDescription ?? 'N/A'}
               </Typography>
-            </Box>
-            <Box>
+            </div>
+            <div>
               <Typography variant="subtitle1">
                 Date SED Testing was Completed
               </Typography>
               <Typography>
                 {getDisplayDateFormat(sedTestingEndDay)}
               </Typography>
-            </Box>
+            </div>
           </Box>
         </CardContent>
       </Card>
@@ -183,7 +172,11 @@ function ChplSed({ listing }) {
                           ))}
                       </TableCell>
                       <TableCell>
-                        <Button variant="contained" color="secondary" size="small" endIcon={<VisibilityIcon/>}
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          endIcon={<VisibilityIcon />}
                           onClick={() => viewTask(task)}
                         >
                           View

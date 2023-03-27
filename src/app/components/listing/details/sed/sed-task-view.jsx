@@ -36,8 +36,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '16px',
-    padding:'16px',
-    backgroundColor:'#f9f9f9',
+    padding: '16px',
+    backgroundColor: '#f9f9f9',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
@@ -143,7 +143,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
   return (
     <div className={classes.container}>
       <div className={classes.navigation}>
-        <Card className={classes.stickyNav}>
+        <Card>
           <Button
             onClick={() => scroll('summary')}
             id="sed-task-view-scroll-to-summary"
@@ -161,7 +161,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             fullWidth
             variant="text"
             color="primary"
-            endIcon={<AlarmOnIcon/>}
+            endIcon={<AlarmOnIcon />}
             className={classes.menuItems}
           >
             Rating &amp; Task Time
@@ -183,7 +183,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
             fullWidth
             variant="text"
             color="primary"
-            endIcon={<PeopleOutlineOutlinedIcon/>}
+            endIcon={<PeopleOutlineOutlinedIcon />}
             className={classes.menuItems}
           >
             Participants
@@ -347,10 +347,10 @@ function ChplSedTaskView({ listing, sedTaskId }) {
         </Card>
         <Card className={classes.fullWidthGridRow} id="participants">
           <CardHeader title="Participants" />
-          <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4} >
-          <ChplSedTaskParticipantsView
-            participants={task.testParticipants}
-          />
+          <Box display="flex" flexDirection="row" justifyContent="flex-end" p={4}>
+            <ChplSedTaskParticipantsView
+              participants={task.testParticipants}
+            />
           </Box>
           <Table>
             <TableHead>
