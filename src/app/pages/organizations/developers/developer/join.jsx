@@ -16,6 +16,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
+import AddIcon from '@material-ui/icons/Add';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { number } from 'prop-types';
 import { useSnackbar } from 'notistack';
@@ -24,47 +26,41 @@ import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import ClearIcon from '@material-ui/icons/Clear';
-import AddIcon from '@material-ui/icons/Add';
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
-  headingPadding: {
-    padding: '16px 0',
-    backgroundColor: '#fff',
-  },
-  boxContainer: {
-    padding: "32px 32px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    gridGap: "16px",
+  pageContainer: {
+    padding: '32px 32px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gridGap: '16px',
     [theme.breakpoints.up('md')]: {
-      flexDirection: "row",
+      flexDirection: 'row',
     },
   },
   cardContainer: {
-    width: "auto",
-    height: "700px",
-    overflowY: "scroll",
+    width: 'auto',
+    height: '700px',
+    overflowY: 'scroll',
     [theme.breakpoints.up('md')]: {
-      width: "50vw",
-      height: "auto",
-      overflowY: "hidden",
+      width: '50vw',
+      height: 'auto',
+      overflowY: 'hidden',
     },
   },
   stickyCardContainer: {
-    width: "100%",
+    width: '100%',
     position: 'sticky',
     top: '100px',
     [theme.breakpoints.up('md')]: {
-      width: "50vw",
+      width: '50vw',
     },
   },
   errorColor: {
     border: '1px solid #c44f65',
-    color: '#c44f65',
+    color: palette.error,
   },
 });
 
@@ -120,7 +116,7 @@ function ChplJoinDevelopers({ id }) {
           },
         });
         break;
-      // no default
+        // no default
     }
   };
 
@@ -132,13 +128,13 @@ function ChplJoinDevelopers({ id }) {
 
   return (
     <>
-      <Box p={8} bgcolor="#fff">
+      <Box p={8} bgcolor={palette.white}>
         <Typography variant="h1">
           Join Developers
         </Typography>
       </Box>
       <Container disableGutters maxWidth="xl">
-        <Box className={classes.boxContainer}>
+        <Box className={classes.pageContainer}>
           <Card className={classes.stickyCardContainer}>
             <CardHeader title={`Developers joining ${activeDeveloper.name}`} />
             <CardContent>
@@ -166,7 +162,7 @@ function ChplJoinDevelopers({ id }) {
                                 onClick={() => removeDeveloper(developer)}
                                 variant="outlined"
                                 className={classes.errorColor}
-                                endIcon={<ClearIcon fontSize='small' />}
+                                endIcon={<ClearIcon fontSize="small" />}
                               >
                                 Remove
                               </Button>
@@ -219,7 +215,7 @@ function ChplJoinDevelopers({ id }) {
                               disabled={!canAdd(developer)}
                               color="secondary"
                               variant="contained"
-                              endIcon={<AddIcon fontSize='small' />}
+                              endIcon={<AddIcon fontSize="small" />}
                             >
                               Add
                             </Button>
