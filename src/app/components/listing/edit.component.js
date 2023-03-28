@@ -67,10 +67,10 @@ const ListingEditComponent = {
       }
       this.listing.certifyingBody = this.utilService.findModel(this.listing.certifyingBody, this.resources.bodies);
       if (this.listing.rwtPlansCheckDate) {
-        this.listing.rwtPlansCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtPlansCheckDate));
+        this.listing.rwtPlansCheckDateObject = this.DateUtil.getDateFromLocalDate(this.DateUtil.getLocalDate(this.listing.rwtPlansCheckDate));
       }
       if (this.listing.rwtResultsCheckDate) {
-        this.listing.rwtResultsCheckDateObject = new Date(this.DateUtil.localDateToTimestamp(this.listing.rwtResultsCheckDate));
+        this.listing.rwtResultsCheckDateObject = this.DateUtil.getDateFromLocalDate(this.DateUtil.getLocalDate(this.listing.rwtResultsCheckDate));
       }
     }
 
@@ -175,12 +175,12 @@ const ListingEditComponent = {
         this.listing.chplProductNumber = `${prefix}.${prod}.${ver}.${ics}.${suffix}`;
       }
       if (this.listing.rwtPlansCheckDateObject) {
-        this.listing.rwtPlansCheckDate = this.DateUtil.timestampToString(this.listing.rwtPlansCheckDateObject.getTime(), 'yyyy-MM-dd');
+        this.listing.rwtPlansCheckDate = this.listing.rwtPlansCheckDateObject.toISOString().substring(0,10);
       } else {
         this.listing.rwtPlansCheckDate = null;
       }
       if (this.listing.rwtResultsCheckDateObject) {
-        this.listing.rwtResultsCheckDate = this.DateUtil.timestampToString(this.listing.rwtResultsCheckDateObject.getTime(), 'yyyy-MM-dd');
+        this.listing.rwtPlansCheckDate = this.listing.rwtPlansCheckDateObject.toISOString().substring(0,10);
       } else {
         this.listing.rwtResultsCheckDate = null;
       }
