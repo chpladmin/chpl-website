@@ -90,6 +90,8 @@ lookup = {
   'root.lastModifiedDate': { message: () => undefined },
   'root.rwtPlansCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansCheckDate', 'Real World Testing Plans Last Completeness Check Date', getDisplayDateFormat) },
   'root.rwtPlansUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansUrl', 'Real World Testing Plans URL') },
+  'root.rwtResultsCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsCheckDate', 'Real World Testing Results Last Completeness Check Date', getDisplayDateFormat) },
+  'root.rwtResultsUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsUrl', 'Real World Testing Results URL') },
   'root.sed': { message: () => 'SED Changes' },
   'root.sed.testTasks': { message: compareSedTasks },
   'root.sed.ucdProcesses': { message: compareUcdProcesses },
