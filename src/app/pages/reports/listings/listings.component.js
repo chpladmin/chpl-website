@@ -1,5 +1,5 @@
 import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
-import { sortCriteria } from 'services/criteria.service';
+import { isCures, sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 let lookup;
@@ -8,9 +8,14 @@ const compareCertificationResults = (initialBefore, initialAfter) => {
   const changes = [];
   const before = initialBefore.sort((x, y) => sortCriteria(x.criterion, y.criterion));
   const after = initialAfter.sort((x, y) => sortCriteria(x.criterion, y.criterion));
-  before.forEach((b, idx) => changes.push(compareObject(b, after[idx], lookup, 'certificationResults')));
+  before.forEach((b, idx) => {
+    const diffs = compareObject(b, after[idx], lookup, 'certificationResults');
+    if (diffs.length > 0) {
+      changes.push(`Certification "${b.criterion.number}${isCures(b.criterion) ? ' (Cures Update)' : ''}" changes<ul>${diffs.map((msg) => `<li>${msg}</li>`).join('')}</ul>`);
+    }
+  });
   if (changes && changes.length > 0) {
-    return `Certification Criteria updates<ul>${changes.join('')}</ul>`;
+    return changes.join('');
   }
   return undefined;
 }
@@ -81,6 +86,9 @@ lookup = {
   'certificationResults.allowedSvaps': { message: () => undefined },
   'certificationResults.allowedTestFunctionalities': { message: () => undefined },
   'certificationResults.apiDocumentation': { message: (before, after) => comparePrimitive(before, after, 'apiDocumentation', 'API Documentation') },
+  'certificationResults.privacySecurityFramework': { message: (before, after) => comparePrimitive(before, after, 'privacySecurityFramework', 'Privacy & Security Framework') },
+  'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
+  'certificationResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
   'root.certificationResults': { message: compareCertificationResults },
   'root.countClosedNonconformities': { message: () => undefined },
   'root.countClosedSurveillance': { message: () => undefined },
