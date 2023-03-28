@@ -250,8 +250,8 @@ const interpretDeveloper = (activity) => {
     }
     if (prev && curr && prev.id !== curr.id) {
       ret.change.push(`Developer "${prev.name}" joined Developer "${curr.name}"`);
+      merged = [prev.id];
     }
-    merged = [prev.id];
   } else if (activity.description.startsWith('Merged ')) {
     ret.change.push(`Developers ${prev.map((p) => p.name).join(' and ')} merged to form ${curr.name}`);
     merged = prev.map((p) => p.id || p.developerId);
@@ -271,9 +271,13 @@ const interpretProduct = (activity) => {
   const { originalData: prev, newData: curr } = activity;
   let merged = [];
   let split = {};
+  let ownerChanges = [];
   if (activity.description.startsWith('Product ')) {
     if (prev && prev.name !== curr.name) {
       ret.change.push(`Product changed from ${prev.name} to ${curr.name}`);
+    }
+    if (prev && curr && prev.ownerHistory?.length !== curr.ownerHistory?.length) {
+      ownerChanges = [...curr.ownerHistory];
     }
   } else if (activity.description.startsWith('Merged ')) {
     ret.change.push(`Products ${prev.map((p) => p.name).join(' and ')} merged to form ${curr.name}`);
@@ -282,7 +286,7 @@ const interpretProduct = (activity) => {
     ret.change.push(`Product ${prev.name} split to become Products ${curr[0].name} and ${curr[1].name}`);
     split = { id: prev.id, end: activity.activityDate - SPLIT_DATE_SKEW_ADJUSTMENT };
   }
-  return { interpreted: ret, merged, split };
+  return { interpreted: ret, merged, ownerChanges, split };
 };
 
 const interpretVersion = (activity) => {
