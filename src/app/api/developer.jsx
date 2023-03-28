@@ -35,10 +35,7 @@ const usePutJoinDevelopers = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`developers/${data.developer.id}/join`, data)
-    .then((response) => response)
-    .catch((error) => {
-      throw error;
-    }), {
+    .then((response) => response), {
     onSuccess: () => {
       queryClient.invalidateQueries('developers');
     },

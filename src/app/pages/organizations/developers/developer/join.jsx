@@ -103,13 +103,17 @@ function ChplJoinDevelopers({ id }) {
           developer: activeDeveloper,
           developerIds: developersToJoin.map((dev) => dev.id),
         }, {
-          onSuccess: () => {
+          onSuccess: (response) => {
             setIsProcessing(false);
+            const message = `Your action has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`;
+            enqueueSnackbar(message, {
+              variant: 'success',
+            });
             $state.go('^');
           },
-          onError: () => {
+          onError: (error) => {
             setIsProcessing(false);
-            const message = 'An error has occurred';
+            const message = `An error has occurred: ${error.response.data.error}`;
             enqueueSnackbar(message, {
               variant: 'error',
             });
