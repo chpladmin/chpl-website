@@ -174,7 +174,7 @@ lookup = {
     message: (before, after) => comparePrimitive(before, after, 'developerCode', 'Developer Code'),
   },
   'root.id': {
-    message: (before, after) => `Developer "${before.name}" joined Developer "${after.name}"`,
+    message: () => undefined,
   },
   'root.lastModifiedDate': {
     message: () => undefined,
@@ -301,8 +301,12 @@ const ReportsDevelopersComponent = {
           details: [],
         };
         if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, both not arrays; update
-          activity.action = `Updated developer "${item.newData.name}"`;
-          activity.details = compareObject(item.originalData, item.newData, lookup);
+          if (item.description.includes('joined')) {
+            activity.action = `Developer "${item.originalData.name}" joined Developer "${item.newData.name}"`;
+          } else {
+            activity.action = `Updated developer "${item.newData.name}"`;
+            activity.details = compareObject(item.originalData, item.newData, lookup);
+          }
         } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // merge
           activity.action = `Developers ${item.originalData.map((d) => d.name).join(' and ')} merged to form ${item.newData.name}`;
           activity.details = [];
