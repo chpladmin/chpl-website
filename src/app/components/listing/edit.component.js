@@ -180,7 +180,7 @@ const ListingEditComponent = {
         this.listing.rwtPlansCheckDate = null;
       }
       if (this.listing.rwtResultsCheckDateObject) {
-        this.listing.rwtPlansCheckDate = this.listing.rwtPlansCheckDateObject.toISOString().substring(0,10);
+        this.listing.rwtResultsCheckDate = this.listing.rwtResultsCheckDateObject.toISOString().substring(0,10);
       } else {
         this.listing.rwtResultsCheckDate = null;
       }
