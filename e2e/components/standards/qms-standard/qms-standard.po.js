@@ -4,6 +4,7 @@ class QmsStandardComponent {
       addButton: '#add-new-qms-standard',
       name: '#name',
       dataTable: 'table[aria-label="QMS Standard table"]',
+      editButton: '#edit-qms-standard-20',
     };
   }
 
@@ -19,6 +20,14 @@ class QmsStandardComponent {
     return $(this.elements.dataTable);
   }
 
+  get editButton() {
+    return $(this.elements.editButton);
+  }
+
+  async qmsDataAvailable() {
+    return (await $(this.elements.dataTable)).isExisting();
+  }
+
   /* eslint-disable indent */
   async getData() {
     return (await
@@ -28,6 +37,17 @@ class QmsStandardComponent {
            ).$$('tr');
   }
   /* eslint-enable indent */
-}
 
+  async editQmsStandard(standardName) {
+    const rows = await this.getData();
+    await rows.forEach(async (row) => {
+      const cells = await row.$$('td');
+      await cells.forEach(async (cell) => {
+        if ((await cell.getText()).includes(standardName)) {
+          await cells[1].click();
+        }
+      });
+    });
+  }
+}
 export default QmsStandardComponent;
