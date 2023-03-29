@@ -20,7 +20,6 @@ import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { number } from 'prop-types';
-import { useSnackbar } from 'notistack';
 
 import { useFetchDevelopers, usePutJoinDevelopers } from 'api/developer';
 import { ChplActionBar } from 'components/action-bar';
@@ -65,10 +64,11 @@ const useStyles = makeStyles({
 });
 
 function ChplJoinDevelopers({ id }) {
+  const $rootScope = getAngularService('$rootScope');
   const $state = getAngularService('$state');
+  const toaster = getAngularService('toaster');
   const { data, isLoading } = useFetchDevelopers();
   const { mutate } = usePutJoinDevelopers();
-  const { enqueueSnackbar } = useSnackbar();
   const [activeDeveloper, setActiveDeveloper] = useState(undefined);
   const [developers, setDevelopers] = useState([]);
   const [developersToJoin, setDevelopersToJoin] = useState([]);
@@ -106,17 +106,22 @@ function ChplJoinDevelopers({ id }) {
           onSuccess: (response) => {
             setIsProcessing(false);
             const message = `Your action has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`;
-            enqueueSnackbar(message, {
-              variant: 'success',
+            toaster.pop({
+              type: 'success',
+              title: 'Join submitted',
+              body: message,
             });
             $state.go('^');
           },
           onError: (error) => {
             setIsProcessing(false);
-            const message = `An error has occurred: ${error.response.data.error}`;
-            enqueueSnackbar(message, {
-              variant: 'error',
+            const message = error.response.data.error;
+            toaster.pop({
+              type: 'error',
+              title: 'An error has occurred',
+              body: message,
             });
+            $rootScope.$digest();
           },
         });
         break;
