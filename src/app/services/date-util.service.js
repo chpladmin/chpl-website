@@ -126,6 +126,10 @@ class DateUtil {
   getDateFromLocalDate(localDate) {
     return jsJoda.convert(localDate).toDate();
   }
+  
+  getLocalDateFromJsDate(date) {
+    return date.toISOString().substring(0,10);
+  }
 }
 
 angular.module('chpl.services')

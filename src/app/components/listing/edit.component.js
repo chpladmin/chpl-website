@@ -175,12 +175,12 @@ const ListingEditComponent = {
         this.listing.chplProductNumber = `${prefix}.${prod}.${ver}.${ics}.${suffix}`;
       }
       if (this.listing.rwtPlansCheckDateObject) {
-        this.listing.rwtPlansCheckDate = this.listing.rwtPlansCheckDateObject.toISOString().substring(0,10);
+        this.listing.rwtPlansCheckDate = this.DateUtil.getLocalDateFromJsDate(this.listing.rwtPlansCheckDateObject);
       } else {
         this.listing.rwtPlansCheckDate = null;
       }
       if (this.listing.rwtResultsCheckDateObject) {
-        this.listing.rwtResultsCheckDate = this.listing.rwtResultsCheckDateObject.toISOString().substring(0,10);
+        this.listing.rwtResultsCheckDate = this.DateUtil.getLocalDateFromJsDate(this.listing.rwtResultsCheckDateObject);
       } else {
         this.listing.rwtResultsCheckDate = null;
       }
