@@ -28,6 +28,61 @@ const findType = (before, after) => {
   return 'object';
 };
 
+  /**
+     * Compare two arrays.
+     * previous & current are arrays of objects
+     * options is an object containing functions
+     *   required functions:
+     *      sort - function (a, b) : return negative number, 0, or positive number for whether a is <, =, or > b, respectively
+     *      write - function (o) : return string of user friendly name of object o
+     *   optional functions:
+     *      compare - f (a, b) : return true iff a !== b and should be considered as a change
+     *      change - f (p, c) : return string of user friendly description of change from p to c
+     * lookup is the lookup table to get messages from
+     * Returns array of changes between the arrays
+     */
+const compareArrays = (previous, current, options, lookup) => {
+  if (!Array.isArray(previous) || !Array.isArray(current)) {
+    return [];
+  }
+  const ret = [];
+  const prev = [...previous].sort(options.sort);
+  const curr = [...current].sort(options.sort);
+  let p = 0;
+  let c = 0;
+
+  while (p < prev.length && c < curr.length) {
+    const sort = options.sort(prev[p], curr[c]);
+    if (sort < 0) {
+      ret.push('<li>Removed ' + options.write(prev[p]) + '</li>');
+      p++;
+    } else if (sort > 0) {
+      ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
+      c++;
+    } else if (sort === 0) {
+      if (typeof options.compare === 'function' && options.compare(prev[p], curr[c])) {
+        ret.push('<li>' + options.change(prev[p], curr[c]) + '</li>');
+      }
+      p++;
+      c++;
+    } else {
+      console.debug('Invalid sort', prev[p], curr[c], sort);
+      p++;
+      c++;
+    }
+  }
+  while (c < curr.length) {
+    ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
+    c++;
+  }
+  while (p < prev.length) {
+    ret.push('<li>Removed ' + options.write(prev[p]) + '</li>');
+    p++;
+  }
+
+  return ret;
+};
+
 const compareObject = (before, after, lookup, root = 'root') => {
   const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
   const diffs = keys.map((key) => {
@@ -60,6 +115,7 @@ const comparePrimitive = (before, after, key, title, transform = (val) => val) =
 };
 
 export {
+  compareArrays,
   compareObject,
   comparePrimitive,
 };

@@ -1,8 +1,28 @@
-import { compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
+import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { isCures, sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 let lookup;
+
+const compare = (before, after, key) => {
+  let title, options;
+  switch (key) {
+      case 'testFunctionality':
+      options = {
+        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+        write: f => 'Test Functionality "' + f.name + '"',
+      };
+      title = 'Test Functionality';
+      break;
+    default:
+      console.debug('error');
+  }
+  const changes = compareArrays(before, after, options);
+  if (changes && changes.length > 0) {
+    return `${title} changes<ul>${changes.join('')}</ul>`;
+  }
+  return undefined;
+};
 
 const compareCertificationResults = (initialBefore, initialAfter) => {
   const changes = [];
@@ -85,10 +105,12 @@ lookup = {
   'certificationResults.allowedOptionalStandards': { message: () => undefined },
   'certificationResults.allowedSvaps': { message: () => undefined },
   'certificationResults.allowedTestFunctionalities': { message: () => undefined },
+  'certificationResults.allowedTestTools': { message: () => undefined },
   'certificationResults.apiDocumentation': { message: (before, after) => comparePrimitive(before, after, 'apiDocumentation', 'API Documentation') },
   'certificationResults.privacySecurityFramework': { message: (before, after) => comparePrimitive(before, after, 'privacySecurityFramework', 'Privacy & Security Framework') },
   'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
   'certificationResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
+  'certificationResults.testFunctionality': { message: (before, after) => compare(before, after, 'testFunctionality') },
   'root.certificationResults': { message: compareCertificationResults },
   'root.countClosedNonconformities': { message: () => undefined },
   'root.countClosedSurveillance': { message: () => undefined },
