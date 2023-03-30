@@ -44,7 +44,7 @@ function ChplNotFound() {
   useEffect(() => {
     const { target } = $stateParams;
     if (target) {
-      $analytics.eventTrack('Page Not Found', { category: 'navigation', label: target });
+      $analytics.eventTrack('Page Not Found', { category: 'Navigation', label: target });
     }
   }, [$analytics, $stateParams]);
 
