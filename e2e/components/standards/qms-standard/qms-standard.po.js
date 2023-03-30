@@ -4,7 +4,6 @@ class QmsStandardComponent {
       addButton: '#add-new-qms-standard',
       name: '#name',
       dataTable: 'table[aria-label="QMS Standard table"]',
-      editButton: '#edit-qms-standard-20',
     };
   }
 
@@ -18,10 +17,6 @@ class QmsStandardComponent {
 
   get dataTable() {
     return $(this.elements.dataTable);
-  }
-
-  get editButton() {
-    return $(this.elements.editButton);
   }
 
   async qmsDataAvailable() {

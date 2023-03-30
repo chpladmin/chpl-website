@@ -34,7 +34,7 @@ describe('the qms standard component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add, edit and delete qms standard ', async () => {
+    it('should be able to add, edit and delete qms standards', async () => {
       const name = `0Test - ${Date.now()}`;
       const newName = `1Test - ${Date.now()}`;
       const initialCount = (await component.getData()).length;

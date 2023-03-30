@@ -19,6 +19,10 @@ class UcdProcessComponent {
     return $(this.elements.dataTable);
   }
 
+  async ucdDataAvailable() {
+    return (await $(this.elements.dataTable)).isExisting();
+  }
+
   /* eslint-disable indent */
   async getData() {
     return (await
@@ -28,6 +32,18 @@ class UcdProcessComponent {
            ).$$('tr');
   }
   /* eslint-enable indent */
+
+  async editUcdProcess(processName) {
+    const rows = await this.getData();
+    await rows.forEach(async (row) => {
+      const cells = await row.$$('td');
+      await cells.forEach(async (cell) => {
+        if ((await cell.getText()).includes(processName)) {
+          await cells[1].click();
+        }
+      });
+    });
+  }
 }
 
 export default UcdProcessComponent;

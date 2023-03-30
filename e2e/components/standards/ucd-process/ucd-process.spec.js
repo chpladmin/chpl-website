@@ -34,14 +34,25 @@ describe('the ucd process component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add a new process', async () => {
-      const name = `Test - ${Date.now()}`;
+    it('should be able to add, edit and delete UCD processes', async () => {
+      const name = `0Test - ${Date.now()}`;
+      const newName = `1Test - ${Date.now()}`;
       const initialCount = (await component.getData()).length;
       await (await component.addButton).click();
       await (await component.name).setValue(name);
       await action.save();
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
+      await component.editUcdProcess(name);
+      await (await component.name).clearValue();
+      await (await component.name).addValue(newName);
+      await action.save();
+      await expect(await (await component.dataTable).getText()).toContain(newName);
+      await component.editUcdProcess(newName);
+      await action.delete();
+      await action.clickYesToConfirm();
+      await (browser.waitUntil(async () => component.ucdDataAvailable()));
+      await expect(await (await component.dataTable).getText()).not.toContain(newName);
     });
   });
 });
