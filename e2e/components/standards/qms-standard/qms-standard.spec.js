@@ -44,11 +44,11 @@ describe('the qms standard component', () => {
       await action.save();
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
-      await page.editSatndards(name);
+      await page.editStandards(name);
       await (await component.name).setValue(newName);
       await action.save();
       await expect(await (await component.dataTable).getText()).toContain(newName);
-      await page.editSatndards(nameAfterEdit);
+      await page.editStandards(nameAfterEdit);
       await action.delete();
       await action.clickYesToConfirm();
       await (browser.waitUntil(async () => (await component.getData()).length === initialCount));

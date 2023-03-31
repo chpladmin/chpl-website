@@ -47,12 +47,12 @@ describe('the svap component', () => {
       await action.save();
       await browser.waitUntil(async () => (await component.getSvaps()).length > initialCount);
       await expect(await (await component.svapTable).getText()).toContain(version);
-      await page.editSatndards(version);
+      await page.editStandards(version);
       await (await component.version).clearValue();
       await (await component.version).setValue(newVersion);
       await action.save();
       await expect(await (await component.svapTable).getText()).toContain(newVersion);
-      await page.editSatndards(versionAfterEdit);
+      await page.editStandards(versionAfterEdit);
       await action.delete();
       await action.clickYesToConfirm();
       await (browser.waitUntil(async () => (await component.getSvaps()).length === initialCount));
