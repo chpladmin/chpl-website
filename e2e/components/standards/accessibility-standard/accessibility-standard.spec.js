@@ -34,14 +34,25 @@ describe('the accessibility standard component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add a new standard', async () => {
-      const name = `Test - ${Date.now()}`;
+    it('should be able to add a new accessibility standard and then edit and delete', async () => {
+      const name = `1Test - ${Date.now()}`;
+      const editName = `2Test - ${Date.now()}`;
+      const updatedName = name + editName;
       const initialCount = (await component.getData()).length;
       await (await component.addButton).click();
       await (await component.name).setValue(name);
       await action.save();
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
-    });
+      await page.editStandards(name);
+      await (await component.name).setValue(editName);
+      await action.save();
+      await expect(await (await component.dataTable).getText()).toContain(updatedName);
+      await page.editStandards(updatedName);
+      await action.delete();
+      await action.clickYesToConfirm();
+      await browser.waitUntil(async () => (await component.getData()).length === initialCount);
+      await expect(await (await component.dataTable).getText()).not.toContain(updatedName);
+    }); 
   });
 });
