@@ -150,7 +150,6 @@ function ChplJoinDevelopers({ id }) {
             <CardContent>
               {developersToJoin.length === 0
                && (
-                 <>
                    <Box display="flex" flexDirection="column" gridGap="8px">
                      <Typography variant="h6" gutterBottom><strong>Instructions</strong></Typography>
                      <Typography variant="body1" gutterBottom>
@@ -163,7 +162,6 @@ function ChplJoinDevelopers({ id }) {
                        Once the action is completed, the retained developer will be updated with the appropriate data from the selected developer(s), and the selected developer(s) will be deleted. Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action.
                      </Typography>
                    </Box>
-                 </>
                )}
               {developersToJoin.length > 0
                 && (
