@@ -37,6 +37,7 @@ describe('the svap component', () => {
     it('should be able to add, edit and delete svaps', async () => {
       const version = `0Test - ${Date.now()}`;
       const newVersion = `1Test - ${Date.now()}`;
+      const versionAfterEdit = version + newVersion;
       const initialCount = (await component.getSvaps()).length;
       await (await component.addButton).click();
       await (await component.citation).setValue('00-Citation');
@@ -46,15 +47,15 @@ describe('the svap component', () => {
       await action.save();
       await browser.waitUntil(async () => (await component.getSvaps()).length > initialCount);
       await expect(await (await component.svapTable).getText()).toContain(version);
-      await component.editSvap(version);
+      await page.editSatndards(version);
       await (await component.version).clearValue();
-      await (await component.version).addValue(newVersion);
+      await (await component.version).setValue(newVersion);
       await action.save();
       await expect(await (await component.svapTable).getText()).toContain(newVersion);
-      await component.editSvap(newVersion);
+      await page.editSatndards(versionAfterEdit);
       await action.delete();
       await action.clickYesToConfirm();
-      await (browser.waitUntil(async () => component.svapDataAvailable()));
+      await (browser.waitUntil(async () => (await component.getSvaps()).length === initialCount));
       await expect(await (await component.svapTable).getText()).not.toContain(newVersion);
     });
   });

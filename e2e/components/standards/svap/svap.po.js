@@ -29,10 +29,6 @@ class SvapComponent {
     return $(this.elements.svapTable);
   }
 
-  async svapDataAvailable() {
-    return (await $(this.elements.svapTable)).isExisting();
-  }
-
   /* eslint-disable indent */
   async getSvaps() {
     return (await
@@ -42,18 +38,6 @@ class SvapComponent {
            ).$$('tr');
   }
   /* eslint-enable indent */
-
-  async editSvap(version) {
-    const rows = await this.getSvaps();
-    await rows.forEach(async (row) => {
-      const cells = await row.$$('td');
-      await cells.forEach(async (cell) => {
-        if ((await cell.getText()).includes(version)) {
-          await cells[4].click();
-        }
-      });
-    });
-  }
 }
 
 export default SvapComponent;
