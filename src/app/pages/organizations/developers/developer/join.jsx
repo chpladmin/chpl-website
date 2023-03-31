@@ -147,7 +147,20 @@ function ChplJoinDevelopers({ id }) {
           <Card className={classes.stickyCardContainer}>
             <CardHeader title={`Developers joining ${activeDeveloper.name}`} />
             <CardContent>
-              {developersToJoin.length === 0 && 'None selected'}
+              {developersToJoin.length === 0
+               && (
+                 <>
+                   <Typography variant="body1" gutterBottom>
+                     &quot;Join Developers&quot; allows you to merge the content of one developer into another. This means that certain information about the selected &quot;old&quot; developer will no longer be present, including any demographic data, Attestations previously submitted, Direct Reviews associated with the developer or any of their listings, and any users that may have been associated with the developer.
+                   </Typography>
+                   <Typography variant="body1" gutterBottom>
+                     To use the &quot;Join Developers&quot; feature, please select one or more developers that you want to join with the retained developer. This action will combine all the products, versions, and listings with the selected developer(s) under the retained developer.
+                   </Typography>
+                   <Typography variant="body1">
+                     Once the action is completed, the retained developer will be updated with the appropriate data from the selected developer(s), and the selected developer(s) will be deleted. Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action.
+                   </Typography>
+                 </>
+               )}
               {developersToJoin.length > 0
                 && (
                   <TableContainer>
