@@ -7,15 +7,52 @@ let lookup;
 const compare = (before, after, key) => {
   let title, options;
   switch (key) {
-      case 'testFunctionality':
+    case 'conformanceMethods':
+      options = {
+        sort: (p, c) => p.conformanceMethod.name < c.conformanceMethod.name ? -1 : p.conformanceMethod.name > c.conformanceMethod.name ? 1 : 0,
+        write: f => 'Conformance Method "' + f.conformanceMethod.name + '"',
+        compare: (p, c) => p.conformanceMethodVersion !== c.conformanceMethodVersion,
+        change: (p, c) => 'Conformance Method Version changed from ' + p.conformanceMethodVersion + ' to ' + c.conformanceMethodVersion,
+      };
+      title = 'Conformance Methods';
+      break;
+    case 'functionalitiesTested':
       options = {
         sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
         write: f => 'Test Functionality "' + f.name + '"',
       };
       title = 'Test Functionality';
       break;
+    case 'testDataUsed':
+      options = {
+        sort: (p, c) => p.testData.name < c.testData.name ? -1 : p.testData.name > c.testData.name ? 1 : 0,
+        write: f => 'Test Data "' + f.testData.name + '"',
+        compare: (p, c) => (p.version !== c.version || p.alteration !== c.alteration),
+        change: (p, c) => (p.version !== c.version && 'Test Data Version changed from ' + p.version + ' to ' + c.version)
+          + (p.version !== c.version && p.alteration !== c.alteration && '</li><li>')
+          + (p.alteration !== c.alteration && 'Test Data Alteration changed from ' + p.alteration + ' to ' + c.alteration),
+      };
+      title = 'Test Data';
+      break;
+    case 'testFunctionality':
+      options = {
+        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+        write: f => 'Test Functionality "' + f.name + '"',
+      };
+      title = 'Test Functionality';
+      break;
+    case 'testToolsUsed':
+      options = {
+        sort: (p, c) => p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0,
+        write: f => 'Test Tool "' + f.testToolName + '"',
+        compare: (p, c) => p.testToolVersion !== c.testToolVersion,
+        change: (p, c) => 'Test Tool Version changed from ' + p.testToolVersion + ' to ' + c.testToolVersion,
+      };
+      title = 'Test Tools';
+      break;
     default:
-      console.debug('error');
+      console.debug({before, after, key, site: 'compareArrayOptionFinder'});
+      return undefined;
   }
   const changes = compareArrays(before, after, options);
   if (changes && changes.length > 0) {
@@ -107,17 +144,27 @@ lookup = {
   'certificationResults.allowedTestFunctionalities': { message: () => undefined },
   'certificationResults.allowedTestTools': { message: () => undefined },
   'certificationResults.apiDocumentation': { message: (before, after) => comparePrimitive(before, after, 'apiDocumentation', 'API Documentation') },
+  'certificationResults.conformanceMethods': { message: (before, after) => compare(before, after, 'conformanceMethods') },
+  'certificationResults.functionalitiesTested': { message: (before, after) => compare(before, after, 'functionalitiesTested') },
   'certificationResults.privacySecurityFramework': { message: (before, after) => comparePrimitive(before, after, 'privacySecurityFramework', 'Privacy & Security Framework') },
   'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
+  'certificationResults.serviceBaseUrlList': { message: (before, after) => comparePrimitive(before, after, 'serviceBaseUrlList', 'Service Base URL List') },
   'certificationResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
+  'certificationResults.testDataUsed': { message: (before, after) => compare(before, after, 'testDataUsed') },
   'certificationResults.testFunctionality': { message: (before, after) => compare(before, after, 'testFunctionality') },
+  'certificationResults.testProcedures': { message: (before, after) => compare(before, after, 'testProcedures') },
+  'certificationResults.testStandards': { message: (before, after) => compare(before, after, 'testStandards') },
+  'certificationResults.testToolsUsed': { message: (before, after) => compare(before, after, 'testToolsUsed') },
   'root.certificationResults': { message: compareCertificationResults },
+  'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
   'root.countClosedNonconformities': { message: () => undefined },
   'root.countClosedSurveillance': { message: () => undefined },
   'root.countOpenNonconformities': { message: () => undefined },
   'root.countOpenSurveillance': { message: () => undefined },
+  'root.developer': { message: () => undefined },
   'root.errorMessages': { message: () => undefined },
   'root.lastModifiedDate': { message: () => undefined },
+  'root.product': { message: () => undefined },
   'root.rwtPlansCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansCheckDate', 'Real World Testing Plans Last Completeness Check Date', getDisplayDateFormat) },
   'root.rwtPlansUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansUrl', 'Real World Testing Plans URL') },
   'root.rwtResultsCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsCheckDate', 'Real World Testing Results Last Completeness Check Date', getDisplayDateFormat) },
