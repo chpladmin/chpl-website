@@ -13,13 +13,6 @@ class SystemJobsComponent {
             ).$('thead')
            ).$$('th');
   }
-
-  getAvailableJobs() {
-    return $(this.elements.systemjobsTable)
-      .$('tbody')
-      .$$('tr')
-      .map((row) => row.$$('td')[0].getText());
-  }
 }
 
 export default SystemJobsComponent;

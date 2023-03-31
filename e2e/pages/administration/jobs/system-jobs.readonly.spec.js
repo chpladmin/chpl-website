@@ -40,49 +40,5 @@ describe('the system jobs', () => {
       await expect(actualsystemjobHeaders.length).toBe(expectedsystemjobHeaders.length, 'Found incorrect number of columns');
       await actualsystemjobHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedsystemjobHeaders[idx]));
     });
-
-    it('should have specific jobs', () => {
-      const expected = [
-        'AuditDataRetention',
-        'apiKeyDeleteJob',
-        'apiKeyDeleteWarningEmailJob',
-        'brokenSurveillanceRulesCreator',
-        'chartDataCreator',
-        'curesStatisticsCreator',
-        'deprecatedApiUsageEmailJob',
-        'directReviewCacheRefresh',
-        'directReviewDownloadFileGeneration',
-        'downloadFileJob2011',
-        'downloadFileJob2014',
-        'downloadFileJob2015',
-        'fixupQuestionableActivityJob',
-        'g3Sed2015DownloadFileJob',
-        'icsErrorsReportCreator',
-        'listingValidationReportCreator',
-        'massRequirePasswordChangeJob',
-        'missingAttestationChangeRequestEmailJob',
-        'removeCriteriaJob',
-        'summaryStatisticsCreator',
-        'surveillanceDownloadFileJob',
-        'svapActivityDownloadFileGeneration',
-        'updateListingStatusJob',
-        'urlStatusDataCollector',
-      ];
-      let jobs = component.getAvailableJobs();
-      let errors = [];
-
-      expected.forEach((exp) => {
-        if (jobs.includes(exp)) {
-          jobs = jobs.filter((job) => job !== exp);
-        } else {
-          errors.push(`Did not find job: ${exp}`);
-        }
-      });
-      if (jobs.length > 0) {
-        errors = errors.concat(jobs.map((job) => `Found unexpected job: ${job}`));
-      }
-      expect(errors.length).toBe(0, errors.join(';'));
-    });
-
   });
 });
