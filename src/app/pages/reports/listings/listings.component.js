@@ -184,6 +184,7 @@ const compareUcdProcesses = (initialBefore, initialAfter) => {
 };
 
 lookup = {
+  shortCircuit: ['root.developer', 'root.product'],
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },
   'certificationResults.allowedConformanceMethods': { message: () => undefined },
   'certificationResults.allowedOptionalStandards': { message: () => undefined },
@@ -210,10 +211,8 @@ lookup = {
   'root.countClosedSurveillance': { message: () => undefined },
   'root.countOpenNonconformities': { message: () => undefined },
   'root.countOpenSurveillance': { message: () => undefined },
-  'root.developer': { message: () => undefined },
   'root.errorMessages': { message: () => undefined },
   'root.lastModifiedDate': { message: () => undefined },
-  'root.product': { message: () => undefined },
   'root.rwtPlansCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansCheckDate', 'Real World Testing Plans Last Completeness Check Date', getDisplayDateFormat) },
   'root.rwtPlansUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansUrl', 'Real World Testing Plans URL') },
   'root.rwtResultsCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsCheckDate', 'Real World Testing Results Last Completeness Check Date', getDisplayDateFormat) },
