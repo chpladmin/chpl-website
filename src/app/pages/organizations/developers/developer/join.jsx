@@ -40,7 +40,7 @@ const useStyles = makeStyles({
     },
   },
   cardContainer: {
-    width: 'auto',
+    width: '100%',
     height: '700px',
     overflowY: 'scroll',
     [theme.breakpoints.up('md')]: {
@@ -51,10 +51,10 @@ const useStyles = makeStyles({
   },
   stickyCardContainer: {
     width: '100%',
-    position: 'sticky',
-    top: '100px',
     [theme.breakpoints.up('md')]: {
       width: '50vw',
+      position: 'sticky',
+      top: '100px',
     },
   },
   errorColor: {
@@ -149,7 +149,8 @@ function ChplJoinDevelopers({ id }) {
             <CardContent>
               {developersToJoin.length === 0
                && (
-                 <>
+                 <Box display="flex" flexDirection="column" gridGap="8px">
+                   <Typography variant="h6" gutterBottom><strong>Instructions</strong></Typography>
                    <Typography variant="body1" gutterBottom>
                      &quot;Join Developers&quot; allows you to merge the content of one developer into another. This means that certain information about the selected &quot;old&quot; developer will no longer be present, including any demographic data, Attestations previously submitted, Direct Reviews associated with the developer or any of their listings, and any users that may have been associated with the developer.
                    </Typography>
@@ -159,7 +160,7 @@ function ChplJoinDevelopers({ id }) {
                    <Typography variant="body1">
                      Once the action is completed, the retained developer will be updated with the appropriate data from the selected developer(s), and the selected developer(s) will be deleted. Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action.
                    </Typography>
-                 </>
+                 </Box>
                )}
               {developersToJoin.length > 0
                 && (
