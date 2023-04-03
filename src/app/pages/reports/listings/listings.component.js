@@ -11,14 +11,12 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
         write: s => 'Relied Upon Software "' + s.name + '"',
-        root: 'additionalSoftware',
       };
       break;
     case 'certificationEvents':
       options = {
         sort: (p, c) => p.eventDate - c.eventDate,
         write: f => 'Certification Status "' + f.status.name + '"' + ((f.reason && ` with reason ${f.reason}`) ?? ''),
-        root: 'certificationEvents',
       };
       break;
     case 'children':
@@ -32,7 +30,6 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.conformanceMethod.name < c.conformanceMethod.name ? -1 : p.conformanceMethod.name > c.conformanceMethod.name ? 1 : 0,
         write: f => 'Conformance Method "' + f.conformanceMethod.name + '"',
-        root: 'conformanceMethods',
       };
       break;
     case 'functionalitiesTested':
@@ -64,7 +61,6 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.testData.name < c.testData.name ? -1 : p.testData.name > c.testData.name ? 1 : 0,
         write: f => 'Test Data "' + f.testData.name + '"',
-        root: 'testDataUsed',
       };
       break;
     case 'testFunctionality':
@@ -85,7 +81,6 @@ const compare = (before, after, key, title = 'unknown') => {
           return p.testProcedure?.name < c.testProcedure?.name ? -1 : p.testProcedure?.name > c.testProcedure?.name ? 1 : 0;
         },
         write: f => 'Test Procedure "' + f.testProcedure.name + '"',
-        root: 'testProcedures',
       };
       break;
     case 'testStandards':
@@ -94,31 +89,36 @@ const compare = (before, after, key, title = 'unknown') => {
         write: f => 'Test Standard "' + f.testStandardName + '"',
       };
       break;
-    case 'testToolsUsed':
+    case 'testTasks':
       options = {
-        sort: (p, c) => p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0,
-        write: f => 'Test Tool "' + f.testToolName + '"',
-        root: 'testToolsUsed',
+        sort: (p, c) => p.description < c.description ? -1 : p.description > c.description ? 1 : 0,
+        write: f => 'Test Task "' + f.description + '"',
       };
       break;
-    case 'ucdProcesses':
-      options = {
-        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
-        write: f => 'UCD Process "' + f.name + '"',
-        root: 'ucdProcesses',
-      };
-      break;
+    case 'testTasks.criteria':
     case 'ucdProcesses.criteria':
       options = {
         sort: sortCriteria,
         write: f => `${f.number}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}: ${f.title}`,
       };
       break;
+    case 'testToolsUsed':
+      options = {
+        sort: (p, c) => p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0,
+        write: f => 'Test Tool "' + f.testToolName + '"',
+      };
+      break;
+    case 'ucdProcesses':
+      options = {
+        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+        write: f => 'UCD Process "' + f.name + '"',
+      };
+      break;
     default:
       console.debug(after.length > 0 ? {before, after, key, site: 'compareArrayOptionFinder'} : {key, site: 'compareArrayOptionFinder'});
       return undefined;
   }
-  const changes = compareArrays(before, after, options, lookup);
+  const changes = compareArrays(before, after, {...options, root: key }, lookup);
   if (changes && changes.length > 0) {
     return `${title} changes<ul>${changes.join('')}</ul>`;
   }
@@ -243,6 +243,7 @@ lookup = {
   'root.countOpenSurveillance': { message: () => undefined },
   'root.curesUpdate': { message: (before, after) => comparePrimitive(before, after, 'curesUpdate', '2015 Edition Cures Update status') },
   'root.decertificationDate': { message: () => undefined },
+  'root.directReviews': { message: () => undefined },
   'root.errorMessages': { message: () => undefined },
   'root.ics': { message: (before) => {
     typeof before !== 'object' && console.debug({before, key: 'root.ics'});
@@ -258,10 +259,12 @@ lookup = {
   'root.rwtResultsCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsCheckDate', 'Real World Testing Results Last Completeness Check Date', getDisplayDateFormat) },
   'root.rwtResultsUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsUrl', 'Real World Testing Results URL') },
   'root.sed': { message: () => 'SED Changes' },
-  'root.sed.testTasks': { message: compareSedTasks },
+  'root.sed.testTasks': { message: (before, after) => compare(before, after, 'testTasks', 'SED Test Tasks') },
   'root.sed.ucdProcesses': { message: (before, after) => compare(before, after, 'ucdProcesses', 'SED Processes') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.warningMessages': { message: () => undefined },
+  'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
+  'testTasks.id': { message: () => undefined },
   'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
 };
 
