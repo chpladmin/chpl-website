@@ -147,55 +147,57 @@ function ChplJoinDevelopers({ id }) {
           <Card className={classes.stickyCardContainer}>
             <CardHeader title={`Developers joining ${activeDeveloper.name}`} />
             <CardContent>
-              {developersToJoin.length === 0
-               && (
-                 <Box display="flex" flexDirection="column" gridGap="8px">
-                   <Typography variant="h6" gutterBottom><strong>Instructions</strong></Typography>
-                   <Typography variant="body1" gutterBottom>
-                     &quot;Join Developers&quot; allows you to merge the content of one developer into another. This means that certain information about the selected &quot;old&quot; developer will no longer be present, including any demographic data, Attestations previously submitted, Direct Reviews associated with the developer or any of their listings, and any users that may have been associated with the developer.
-                   </Typography>
-                   <Typography variant="body1" gutterBottom>
-                     To use the &quot;Join Developers&quot; feature, please select one or more developers that you want to join with the retained developer. This action will combine all the products, versions, and listings with the selected developer(s) under the retained developer.
-                   </Typography>
-                   <Typography variant="body1">
-                     Once the action is completed, the retained developer will be updated with the appropriate data from the selected developer(s), and the selected developer(s) will be deleted. Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action.
-                   </Typography>
-                 </Box>
-               )}
-              {developersToJoin.length > 0
-                && (
-                  <TableContainer>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Code</TableCell>
-                          <TableCell>Name</TableCell>
-                          <TableCell>Status</TableCell>
-                          <TableCell><span className="sr-only">Action</span></TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {developersToJoin.map((developer) => (
-                          <TableRow key={developer.id}>
-                            <TableCell>{developer.developerCode}</TableCell>
-                            <TableCell>{developer.name}</TableCell>
-                            <TableCell>{developer.status.status}</TableCell>
-                            <TableCell>
-                              <Button
-                                onClick={() => removeDeveloper(developer)}
-                                variant="outlined"
-                                className={classes.errorColor}
-                                endIcon={<ClearIcon fontSize="small" />}
-                              >
-                                Remove
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                )}
+              <Box display="flex" flexDirection="column" gridGap="8px">
+                <Typography variant="h6" gutterBottom>
+                  <strong>Instructions</strong>
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  &quot;Join Developers&quot; allows you to merge the content of one developer into another. This means that certain information about the selected &quot;old&quot; developer will no longer be present, including any demographic data, Attestations previously submitted, Direct Reviews associated with the developer or any of their listings, and any users that may have been associated with the developer.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  To use the &quot;Join Developers&quot; feature, please select one or more developers that you want to join with the retained developer. This action will combine all the products, versions, and listings with the selected developer(s) under the retained developer.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Once the action is completed, the retained developer will be updated with the appropriate data from the selected developer(s), and the selected developer(s) will be deleted.
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  <strong>*** Please note that this action cannot be undone, so be sure to carefully review your selections before proceeding with the Join Developers action. ***</strong>
+                </Typography>
+                {developersToJoin.length > 0
+                 && (
+                   <TableContainer>
+                     <Table>
+                       <TableHead>
+                         <TableRow>
+                           <TableCell>Code</TableCell>
+                           <TableCell>Name</TableCell>
+                           <TableCell>Status</TableCell>
+                           <TableCell><span className="sr-only">Action</span></TableCell>
+                         </TableRow>
+                       </TableHead>
+                       <TableBody>
+                         {developersToJoin.map((developer) => (
+                           <TableRow key={developer.id}>
+                             <TableCell>{developer.developerCode}</TableCell>
+                             <TableCell>{developer.name}</TableCell>
+                             <TableCell>{developer.status.status}</TableCell>
+                             <TableCell>
+                               <Button
+                                 onClick={() => removeDeveloper(developer)}
+                                 variant="outlined"
+                                 className={classes.errorColor}
+                                 endIcon={<ClearIcon fontSize="small" />}
+                               >
+                                 Remove
+                               </Button>
+                             </TableCell>
+                           </TableRow>
+                         ))}
+                       </TableBody>
+                     </Table>
+                   </TableContainer>
+                 )}
+              </Box>
             </CardContent>
           </Card>
           <Card className={classes.cardContainer}>
