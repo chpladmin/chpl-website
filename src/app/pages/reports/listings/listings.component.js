@@ -125,11 +125,24 @@ const compare = (before, after, key, title = 'unknown') => {
         change: (p, c) => 'Test Tool Version changed from ' + p.testToolVersion + ' to ' + c.testToolVersion,
       };
       break;
+    case 'ucdProcesses':
+      options = {
+        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+        write: f => 'UCD Process "' + f.name + '"',
+        root: 'ucdProcesses',
+      };
+      break;
+    case 'ucdProcesses.criteria':
+      options = {
+        sort: sortCriteria,
+        write: f => `${f.number}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}: ${f.title}`,
+      };
+      break;
     default:
       console.debug(after.length > 0 ? {before, after, key, site: 'compareArrayOptionFinder'} : {key, site: 'compareArrayOptionFinder'});
       return undefined;
   }
-  const changes = compareArrays(before, after, options);
+  const changes = compareArrays(before, after, options, lookup);
   if (changes && changes.length > 0) {
     return `${title} changes<ul>${changes.join('')}</ul>`;
   }
@@ -143,7 +156,7 @@ const compareCertificationResults = (initialBefore, initialAfter) => {
   before.forEach((b, idx) => {
     const diffs = compareObject(b, after[idx], lookup, 'certificationResults');
     if (diffs.length > 0) {
-      const title = b.criterion ? `${b.criterion.number}${isCures(b.criterion) ? ' (Cures Update)' : ''}` : `${b.number}${isCures(b) ? ' (Cures Update)' : ''}`
+      const title = b.criterion ? `${b.criterion.number}${isCures(b.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${b.number}${isCures(b) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`
       changes.push(`Certification "${title}" changes<ul>${diffs.map((msg) => `<li>${msg}</li>`).join('')}</ul>`);
     }
   });
@@ -269,9 +282,10 @@ lookup = {
   'root.rwtResultsUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsUrl', 'Real World Testing Results URL') },
   'root.sed': { message: () => 'SED Changes' },
   'root.sed.testTasks': { message: compareSedTasks },
-  'root.sed.ucdProcesses': { message: compareUcdProcesses },
+  'root.sed.ucdProcesses': { message: (before, after) => compare(before, after, 'ucdProcesses', 'SED Processes') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.warningMessages': { message: () => undefined },
+  'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
 };
 
 const ReportsListingsComponent = {
