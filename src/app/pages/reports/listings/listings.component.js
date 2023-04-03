@@ -11,32 +11,14 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
         write: s => 'Relied Upon Software "' + s.name + '"',
-        compare: (p, c) => p.version !== c.version || p.grouping !== c.grouping || p.certifiedProductNumber !== c.certifiedProductNumber || p.justification !== c.justification,
-        change: (p, c) => {
-          let ret = 'Updated Relied Upon Software "' + p.name + '":<ul>';
-          if (p.version !== c.version) {
-            ret += '<li>Version changed from "' + p.version + '" to "' + c.version + '"</li>';
-          }
-          if (p.grouping !== c.grouping) {
-            ret += '<li>Grouping changed from "' + p.grouping + '" to "' + c.grouping + '"</li>';
-          }
-          if (p.certifiedProductNumber !== c.certifiedProductNumber) {
-            ret += '<li>CHPL Product Number changed from "' + p.certifiedProductNumber + '" to "' + c.certifiedProductNumber + '"</li>';
-          }
-          if (p.justification !== c.justification) {
-            ret += '<li>Justification changed from "' + p.justification + '" to "' + c.justification + '"</li>';
-          }
-          ret += '</ul>';
-          return ret;
-        },
+        root: 'additionalSoftware',
       };
       break;
     case 'certificationEvents':
       options = {
         sort: (p, c) => p.eventDate - c.eventDate,
         write: f => 'Certification Status "' + f.status.name + '"' + ((f.reason && ` with reason ${f.reason}`) ?? ''),
-        compare: (p, c) => p.reason !== c.reason,
-        change: (p, c) => 'Certification Status Reason for Change changed from ' + p.reason + ' to ' + c.reason,
+        root: 'certificationEvents',
       };
       break;
     case 'children':
@@ -50,8 +32,7 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.conformanceMethod.name < c.conformanceMethod.name ? -1 : p.conformanceMethod.name > c.conformanceMethod.name ? 1 : 0,
         write: f => 'Conformance Method "' + f.conformanceMethod.name + '"',
-        compare: (p, c) => p.conformanceMethodVersion !== c.conformanceMethodVersion,
-        change: (p, c) => 'Conformance Method Version changed from ' + p.conformanceMethodVersion + ' to ' + c.conformanceMethodVersion,
+        root: 'conformanceMethods',
       };
       break;
     case 'functionalitiesTested':
@@ -83,10 +64,7 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.testData.name < c.testData.name ? -1 : p.testData.name > c.testData.name ? 1 : 0,
         write: f => 'Test Data "' + f.testData.name + '"',
-        compare: (p, c) => (p.version !== c.version || p.alteration !== c.alteration),
-        change: (p, c) => (p.version !== c.version && 'Test Data Version changed from ' + p.version + ' to ' + c.version)
-          + (p.version !== c.version && p.alteration !== c.alteration && '</li><li>')
-          + (p.alteration !== c.alteration && 'Test Data Alteration changed from ' + p.alteration + ' to ' + c.alteration),
+        root: 'testDataUsed',
       };
       break;
     case 'testFunctionality':
@@ -107,8 +85,7 @@ const compare = (before, after, key, title = 'unknown') => {
           return p.testProcedure?.name < c.testProcedure?.name ? -1 : p.testProcedure?.name > c.testProcedure?.name ? 1 : 0;
         },
         write: f => 'Test Procedure "' + f.testProcedure.name + '"',
-        compare: (p, c) => p.testProcedureVersion !== c.testProcedureVersion,
-        change: (p, c) => 'Test Procedure Version changed from ' + p.testProcedureVersion + ' to ' + c.testProcedureVersion,
+        root: 'testProcedures',
       };
       break;
     case 'testStandards':
@@ -121,8 +98,7 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0,
         write: f => 'Test Tool "' + f.testToolName + '"',
-        compare: (p, c) => p.testToolVersion !== c.testToolVersion,
-        change: (p, c) => 'Test Tool Version changed from ' + p.testToolVersion + ' to ' + c.testToolVersion,
+        root: 'testToolsUsed',
       };
       break;
     case 'ucdProcesses':
@@ -254,6 +230,7 @@ lookup = {
   'certificationResults.testStandards': { message: (before, after) => compare(before, after, 'testStandards', 'Test Standards') },
   'certificationResults.testToolsUsed': { message: (before, after) => compare(before, after, 'testToolsUsed', 'Test Tools') },
   'certificationResults.useCases': { message: (before, after) => comparePrimitive(before, after, 'useCases', 'Use Cases') },
+  'conformanceMethods.id': { message: () => undefined },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
   'root.certificationResults': { message: compareCertificationResults },
