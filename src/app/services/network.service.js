@@ -216,8 +216,8 @@ export default class NetworkService {
     return null;
   }
 
-  getComplaints() {
-    return this.apiGET('/complaints');
+  getComplaintsWithSurveillance(surveillanceId) {
+    return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
   }
 
   getCriterionProductStatistics() {

@@ -174,6 +174,7 @@ function ChplChangeRequest(props) {
   const [details, setDetails] = useState();
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
@@ -383,9 +384,11 @@ function ChplChangeRequest(props) {
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
 
   save = (request) => {
+    setIsSaving(true);
     mutate(request, {
       onSuccess: () => {
         props.dispatch('close');
+        setIsSaving(false);
       },
       onError: (error) => {
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
@@ -393,6 +396,7 @@ function ChplChangeRequest(props) {
             variant: 'info',
           });
           props.dispatch('close');
+          setIsSaving(false);
         } else {
           const message = error.response.data?.error
                 || error.response.data?.errorMessages.join(' ');
@@ -400,6 +404,7 @@ function ChplChangeRequest(props) {
             variant: 'error',
           });
           formik.resetForm();
+          setIsSaving(false);
         }
       },
     });
@@ -606,6 +611,7 @@ function ChplChangeRequest(props) {
         canClose={!isEditing}
         canCancel={isEditing}
         canSave={isEditing}
+        isDisabled={isSaving}
       />
     </>
   );

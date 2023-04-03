@@ -117,6 +117,7 @@ function ChplSearchView(props) {
   const storageKey = 'storageKey-searchView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
+  const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -140,17 +141,23 @@ function ChplSearchView(props) {
       setListings([]);
       return;
     }
+    setDirectReviewsAvailable(data?.directReviewsAvailable);
     setListings(data.results.map((listing) => ({
       ...listing,
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
+  }, [data?.directReviewsAvailable, data?.results, data?.recordCount, isError, isLoading, analytics]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
       setPageNumber(0);
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
+
+  useEffect(() => {
+    filterContext.dispatch('setFilterDisability', 'hasHadComplianceActivity', !directReviewsAvailable);
+    filterContext.dispatch('setFilterDisability', 'nonConformityOptions', !directReviewsAvailable);
+  }, [directReviewsAvailable]);
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
