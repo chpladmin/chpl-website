@@ -105,10 +105,10 @@ function ChplJoinDevelopers({ id }) {
         }, {
           onSuccess: (response) => {
             setIsProcessing(false);
-            const message = `Your action has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`;
+            const message = `Your request has been submitted and you'll get an email at ${response.data.job.jobDataMap.user.email} when it's done`;
             toaster.pop({
               type: 'success',
-              title: 'Join submitted',
+              title: 'Join Developer request submitted',
               body: message,
             });
             $state.go('^');
