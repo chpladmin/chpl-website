@@ -217,7 +217,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                 <TableCell>{ task.description }</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Criteria</TableCell>
+                <TableCell>Associated Certification Criteria</TableCell>
                 <TableCell>
                   <List>
                     {task.criteria
@@ -333,7 +333,7 @@ function ChplSedTaskView({ listing, sedTaskId }) {
                 <TableCell>{ task.taskErrorsStddev }</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Task Task Path - Observed/Optimal (# of Steps)</TableCell>
+                <TableCell>Task Path Deviation - Observed/Optimal (# of Steps)</TableCell>
                 <TableCell>
                   { task.taskPathDeviationObserved }
                   {' '}
