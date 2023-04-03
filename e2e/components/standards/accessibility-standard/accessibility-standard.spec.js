@@ -4,6 +4,8 @@ import { open } from '../../../utilities/hooks.async';
 import SystemMaintenancePage from '../../../pages/administration/system-maintenance/system-maintenance.po';
 
 import AccessibilityStandardComponent from './accessibility-standard.po';
+import { async } from 'rxjs';
+import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
 
 let login;
 let page;
@@ -47,6 +49,7 @@ describe('the accessibility standard component', () => {
       await page.editStandards(name);
       await (await component.name).setValue(editName);
       await action.save();
+      await browser.waitUntil(async () => (await component.dataTable).getText().not.toContain(name));
       await expect(await (await component.dataTable).getText()).toContain(updatedName);
       await page.editStandards(updatedName);
       await action.delete();
