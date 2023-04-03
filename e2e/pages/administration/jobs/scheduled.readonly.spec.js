@@ -32,7 +32,6 @@ describe('the Reports page', () => {
         'Cures Statistics Email',
         'Developer Access Report',
         'Developer Attestations Check-in Report Email',
-        'Developer Attestations Report Email',
         'ICS Errors Report',
         'Listing Validation Email Report',
         'ONC-ACB Questionable URL Report',

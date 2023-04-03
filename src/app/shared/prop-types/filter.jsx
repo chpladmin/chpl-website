@@ -10,6 +10,7 @@ import {
 
 const filter = shape({
   key: string.isRequired,
+  disabled: bool,
   display: string.isRequired,
   required: bool,
   singular: bool,

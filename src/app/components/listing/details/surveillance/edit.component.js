@@ -92,19 +92,14 @@ const SurveillanceEditComponent = {
     deleteSurveillance() {
       const that = this;
       if (this.reason) {
-        this.getAssociatedComplaints().then((complaints) => {
-          let complaintsString;
-          if (Array.isArray(complaints) && complaints.length > 0) {
-            complaintsString = complaints.map((complaint) => complaint.acbComplaintId).join(', ');
-          }
-
+        this.getAssociatedComplaintText(that.surveillance.id).then((complaintText) => {
           that.networkService.deleteSurveillance(that.surveillance.id, that.reason)
             .then((response) => {
               if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                if (complaintsString) {
+                if (complaintText) {
                   that.toaster.pop({
                     type: 'success',
-                    body: `Surveillance has been removed from the following complaints: ${complaintsString}`,
+                    body: `Surveillance has been removed from the following complaints: ${complaintText}`,
                   });
                 }
                 that.close({ $value: response });
@@ -118,27 +113,26 @@ const SurveillanceEditComponent = {
       }
     }
 
-    getAssociatedComplaints() {
-      const that = this;
-      const complaintsPromise = new Promise((resolve) => {
+    getAssociatedComplaintText(surveillanceId) {
+      const complaintsTextPromise = new Promise((resolve) => {
+        let complaintsText = "";
         const complaints = [];
-        this.networkService.getComplaints().then((response) => {
-          if (Array.isArray(response.results)) {
+        this.networkService.getComplaintsWithSurveillance(surveillanceId).then((response) => {
+          if (response.recordCount > response.pageSize) {
+              complaintsText = response.recordCount + ' complaints';
+          } else if (Array.isArray(response.results)) {
             response.results.forEach((complaint) => {
-              if (Array.isArray(complaint.surveillances)) {
-                for (const complaintSurveillance of complaint.surveillances) {
-                  if (complaintSurveillance.surveillance.id === that.surveillance.id) {
-                    complaints.push(complaint);
-                    break;
-                  }
-                }
-              }
+                complaints.push(complaint);
             });
           }
-          resolve(complaints);
+
+          if (Array.isArray(complaints) && complaints.length > 0) {
+            complaintsText = complaints.map((complaint) => complaint.acbComplaintId).join(', ');
+          }
+          resolve(complaintsText);
         });
       });
-      return complaintsPromise;
+      return complaintsTextPromise;
     }
 
     editRequirement(req) {
