@@ -148,66 +148,6 @@ const compareCertificationResults = (initialBefore, initialAfter) => {
   return undefined;
 }
 
-const compareSedTasks = (initialBefore, initialAfter) => {
-  const changes = [];
-  let b = 0;
-  let a = 0;
-  const before = initialBefore.sort((x, y) => x.description < y.description ? -1 : 1);
-  const after = initialAfter.sort((x, y) => x.description < y.description ? -1 : 1);
-  while (b < before.length || a < after.length) {
-    if (before[b]?.description === after[a]?.description) {
-      const diffs = compareObject(before[b], after[a], lookup, 'sedTasks')
-            .filter((msgs) => msgs.length > 0)
-            .map((msg) => `<li>${msg}</li>`);
-      if (diffs && diffs.length > 0) {
-        changes.push(...diffs);
-      }
-      b += 1;
-      a += 1;
-    } else if ((before[b]?.description < after[a]?.description) || (before[b] && !after[a])) {
-      changes.push(`<li>Test Task ${before[b].description} was removed</>`);
-      b += 1;
-    } else if ((before[b]?.description > after[a]?.description) || (!before[b] && after[a])) {
-      changes.push(`<li>Test Task ${after[a].description} was added</li>`);
-      a += 1;
-    }
-    if (changes && changes.length > 0) {
-      return `SED Tasks changes<ul>${changes.join('')}</ul>`;
-    }
-    return undefined;
-  }
-};
-
-const compareUcdProcesses = (initialBefore, initialAfter) => {
-  const changes = [];
-  let b = 0;
-  let a = 0;
-  const before = initialBefore.sort((x, y) => x.name < y.name ? -1 : 1);
-  const after = initialAfter.sort((x, y) => x.name < y.name ? -1 : 1);
-  while (b < before.length || a < after.length) {
-    if (before[b]?.name === after[a]?.name) {
-      const diffs = compareObject(before[b], after[a], lookup, 'ucdProcesses')
-            .filter((msgs) => msgs.length > 0)
-            .map((msg) => `<li>${msg}</li>`);
-      if (diffs && diffs.length > 0) {
-        changes.push(...diffs);
-      }
-      b += 1;
-      a += 1;
-    } else if ((before[b]?.name < after[a]?.name) || (before[b] && !after[a])) {
-      changes.push(`<li>UCD Process ${before[b].name} was removed</>`);
-      b += 1;
-    } else if ((before[b]?.name > after[a]?.name) || (!before[b] && after[a])) {
-      changes.push(`<li>UCD Process ${after[a].name} was added</li>`);
-      a += 1;
-    }
-    if (changes && changes.length > 0) {
-      return `SED Processes changes<ul>${changes.join('')}</ul>`;
-    }
-    return undefined;
-  }
-};
-
 lookup = {
   shortCircuit: ['root.currentStatus', 'root.developer', 'root.product'],
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },

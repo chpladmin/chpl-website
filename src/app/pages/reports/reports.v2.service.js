@@ -60,14 +60,9 @@ const compareArrays = (previous, current, options, lookup) => {
       ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
       c++;
     } else if (sort === 0) {
-      if (typeof options.compare === 'function' && options.compare(prev[p], curr[c])) {
-        ret.push('<li>' + options.change(prev[p], curr[c]) + '</li>');
-      }
-      if (options.root) {
-        const compared = compareObject(prev[p], curr[c], lookup, options.root);
-        if (compared.length > 0) {
-          ret.push(compared);
-        }
+      const compared = compareObject(prev[p], curr[c], lookup, options.root);
+      if (compared.length > 0) {
+        ret.push(compared);
       }
       p++;
       c++;
