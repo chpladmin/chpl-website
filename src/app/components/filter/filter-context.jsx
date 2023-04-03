@@ -41,6 +41,7 @@ const defaultFilter = {
   getValueEntry: getDefaultValueEntry,
   sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
   singular: false,
+  disabled: false,
 };
 
 const clearFilter = (filter, category, setFilters) => {
@@ -63,6 +64,15 @@ const resetFilter = (filter, category, setFilters) => {
       selected: v.default,
     })),
   }));
+};
+
+const setFilterDisability = (filters, category, disabled, setFilters) => {
+  const filter = filters.find((f) => f.key === category);
+  const updatedFilter = {
+    ...filter,
+    disabled,
+  };
+  setFilters((previous) => previous.filter((f) => f.key !== category).concat(updatedFilter));
 };
 
 const toggleFilter = (filters, category, value, setFilters) => {
@@ -221,6 +231,9 @@ function FilterProvider(props) {
             selected: v.default,
           })),
         })));
+        break;
+      case 'setFilterDisability':
+        setFilterDisability(filters, category, value, setFilters);
         break;
       case 'toggle':
         toggleFilter(filters, category, value, setFilters);

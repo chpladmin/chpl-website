@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 11.51.1
+_3 April 2023_
+
+### User Interface Updates
+* Disable Compliance/Non-conformity filters when Direct Review data is not available
+* Disable "Products: Corrective Action Status" shortcut page when Direct Review data is not available
+
+### Bug Fixes
+* Eliminate ability to "double-click" when saving Attestations
+
+---
+
 ## Version 11.51.0
 _20 March 2023_
 
