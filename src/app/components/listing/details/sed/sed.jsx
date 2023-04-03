@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -30,16 +30,30 @@ const sortUcdProcesses = (a, b) => (a.name < b.name ? -1 : 1);
 
 function ChplSed({ listing }) {
   const {
+    certificationResults,
     sed,
     sedIntendedUserDescription,
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
   const $state = getAngularService('$state');
+  const [hasSed, setHasSed] = useState(false);
+
+  useEffect(() => {
+    setHasSed(certificationResults.some((cr) => cr.success && cr.sed));
+  }, [certificationResults]);
 
   const viewTask = (task) => {
     $state.go('.sedTask', { sedTaskId: task.id });
   };
+
+  if (!hasSed) {
+    return (
+      <Typography variant="body1">
+        No Certification Criteria were tested for SED.
+      </Typography>
+    );
+  }
 
   return (
     <Box display="flex" gridGap={16} flexDirection="column">
