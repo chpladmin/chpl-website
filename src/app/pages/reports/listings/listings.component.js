@@ -51,6 +51,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: f => 'Optional Standard "' + f.citation + ': ' + f.description + '"',
       };
       break;
+    case 'promotingInteroperabilityUserHistory':
+      options = {
+        sort: (p, c) => p.userCountDate < c.userCountDate ? -1 : p.userCountDate > c.userCountDate ? 1 : 0,
+        write: f => `Promoting Interoperability User Count of "${f.userCount}" as of "${getDisplayDateFormat(f.userCountDate)}"`
+      };
+      break;
     case 'svaps':
       options = {
         sort: (p, c) => p.regulatoryTextCitation < c.regulatoryTextCitation ? -1 : p.regulatoryTextCitation > c.regulatoryTextCitation ? 1 : 0,
@@ -254,6 +260,7 @@ lookup = {
   'root.ics.parents': { message: (before, after) => compare(before, after, 'parents', 'ICS Parents') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.mandatoryDisclosures': { message: (before, after) => comparePrimitive(before, after, 'mandatoryDisclosures', 'Mandatory Disclosures URL') },
+  'root.promotingInteroperabilityUserHistory': { message: (before, after) => compare(before, after, 'promotingInteroperabilityUserHistory', 'Promoting Interoperability User') },
   'root.rwtPlansCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansCheckDate', 'Real World Testing Plans Last Completeness Check Date', getDisplayDateFormat) },
   'root.rwtPlansUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansUrl', 'Real World Testing Plans URL') },
   'root.rwtResultsCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsCheckDate', 'Real World Testing Results Last Completeness Check Date', getDisplayDateFormat) },
@@ -261,6 +268,7 @@ lookup = {
   'root.sed': { message: () => 'SED Changes' },
   'root.sed.testTasks': { message: (before, after) => compare(before, after, 'testTasks', 'SED Test Tasks') },
   'root.sed.ucdProcesses': { message: (before, after) => compare(before, after, 'ucdProcesses', 'SED Processes') },
+  'root.sedReportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'sedReportFileLocation', 'SED Report File Location') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.warningMessages': { message: () => undefined },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
