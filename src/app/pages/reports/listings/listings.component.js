@@ -97,7 +97,15 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'testProcedures':
       options = {
-        sort: (p, c) => p.testProcedure.name < c.testProcedure.name ? -1 : p.testProcedure.name > c.testProcedure.name ? 1 : 0,
+        sort: (p, c) => {
+          if (!p.testProcedure) {
+            if (p.testProcedureVersion !== c.testProcedureVersion) {
+              console.debug({p, c, msg: 'Test Procedure Version change found; no name availble'});
+            }
+            return 0;
+          }
+          return p.testProcedure?.name < c.testProcedure?.name ? -1 : p.testProcedure?.name > c.testProcedure?.name ? 1 : 0;
+        },
         write: f => 'Test Procedure "' + f.testProcedure.name + '"',
         compare: (p, c) => p.testProcedureVersion !== c.testProcedureVersion,
         change: (p, c) => 'Test Procedure Version changed from ' + p.testProcedureVersion + ' to ' + c.testProcedureVersion,
