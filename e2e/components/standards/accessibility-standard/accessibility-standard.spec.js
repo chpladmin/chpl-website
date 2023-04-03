@@ -4,8 +4,6 @@ import { open } from '../../../utilities/hooks.async';
 import SystemMaintenancePage from '../../../pages/administration/system-maintenance/system-maintenance.po';
 
 import AccessibilityStandardComponent from './accessibility-standard.po';
-import { async } from 'rxjs';
-import { AsyncScheduler } from 'rxjs/internal/scheduler/AsyncScheduler';
 
 let login;
 let page;
