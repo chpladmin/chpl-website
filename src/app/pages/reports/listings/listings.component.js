@@ -8,6 +8,12 @@ let lookup;
 const compare = (before, after, key, title = 'unknown') => {
   let options;
   switch (key) {
+    case 'accessibilityStandards':
+      options = {
+        sort: (p, c) => p.accessibilityStandardName < c.accessibilityStandardName ? -1 : p.accessibilityStandardName > c.accessibilityStandardName ? 1 : 0,
+        write: f => `Accessibility Standard "${f.accessibilityStandardName}"`,
+      };
+      break;
     case 'additionalSoftware':
       options = {
         sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
@@ -41,6 +47,7 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'certificationResults':
     case 'cqmResults.criteria':
+    case 'measures.associatedCriteria':
     case 'testTasks.criteria':
     case 'ucdProcesses.criteria':
       options = {
@@ -61,6 +68,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: f => 'MACRA Measure "' + f.abbreviation + '"',
       };
       break;
+    case 'measures':
+      options = {
+        sort: (p, c) => p.measure.abbreviation < c.measure.abbreviation ? -1 : p.measure.abbreviation > c.measure.abbreviation ? 1 : 0,
+        write: f => `Measure "${f.measure.abbreviation}: ${f.measure.requiredTest}"`,
+      };
+      break;
     case 'optionalStandards':
       options = {
         sort: (p, c) => p.citation < c.citation ? -1 : p.citation > c.citation ? 1 : 0,
@@ -73,16 +86,28 @@ const compare = (before, after, key, title = 'unknown') => {
         write: f => `Promoting Interoperability User Count of "${f.userCount}" as of "${getDisplayDateFormat(f.userCountDate)}"`
       };
       break;
-    case 'successVersions':
+    case 'qmsStandards':
       options = {
-        sort: (p, c) => p < c ? -1 : p > c ? 1 : 0,
-        write: f => `Version "${f}`,
+        sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : 0,
+        write: f => `QMS Standard "${f.qmsStandardName}"`,
       };
       break;
     case 'svaps':
       options = {
         sort: (p, c) => p.regulatoryTextCitation < c.regulatoryTextCitation ? -1 : p.regulatoryTextCitation > c.regulatoryTextCitation ? 1 : 0,
         write: f => 'SVAP "' + f.regulatoryTextCitation + '"',
+      };
+      break;
+    case 'targetedUsers':
+      options = {
+        sort: (p, c) => p.targetedUserName < c.targetedUserName ? -1 : p.targetedUserName > c.targetedUserName ? 1 : 0,
+        write: f => `Targeted User "${f.targetedUserName}"`,
+      };
+      break;
+    case 'testingLabs':
+      options = {
+        sort: (p, c) => p.testingLabName < c.testingLabName ? -1 : p.testingLabName > c.testingLabName ? 1 : 0,
+        write: f => `Testing Lab "${f.testingLabName}"`,
       };
       break;
     case 'testDataUsed':
@@ -127,6 +152,12 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0,
         write: f => 'Test Tool "' + f.testToolName + '"',
+      };
+      break;
+    case 'text':
+      options = {
+        sort: (p, c) => p < c ? -1 : p > c ? 1 : 0,
+        write: f => `"${f}"`,
       };
       break;
     case 'ucdProcesses':
@@ -195,8 +226,11 @@ lookup = {
   'cqmResults.criteria': { message: (before, after) => compare(before, after, 'cqmResults.criteria', 'Certification Criteria') },
   'cqmResults.id': { message: () => undefined },
   'cqmResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
-  'cqmResults.successVersions': { message: (before, after) => compare(before, after, 'successVersions', 'CQM Versions') },
+  'cqmResults.successVersions': { message: (before, after) => compare(before, after, 'text', 'CQM Versions') },
+  'measures.measure.allowedCriteria': { message: () => undefined },
+  'measures.associatedCriteria': { message: (before, after) => compare(before, after, 'measures.associatedCriteria', 'Certification Criteria') },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
+  'root.accessibilityStandards': { message: (before, after) => compare(before, after, 'accessibilityStandards', 'Accessibility Standards') },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
   'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
@@ -220,7 +254,11 @@ lookup = {
   'root.ics.parents': { message: (before, after) => compare(before, after, 'parents', 'ICS Parents') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.mandatoryDisclosures': { message: (before, after) => comparePrimitive(before, after, 'mandatoryDisclosures', 'Mandatory Disclosures URL') },
+  'root.measures': { message: (before, after) => compare(before, after, 'measures', 'G1/G2 Measure') },
+  'root.otherAcb': { message: (before, after) => comparePrimitive(before, after, 'otherAcb', 'Other ONC-ACB') },
   'root.promotingInteroperabilityUserHistory': { message: (before, after) => compare(before, after, 'promotingInteroperabilityUserHistory', 'Promoting Interoperability User') },
+  'root.qmsStandards': { message: (before, after) => compare(before, after, 'qmsStandards', 'QMS Standards') },
+  'root.reportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'reportFileLocation', 'ONC-ATL Test Report File Location') },
   'root.rwtPlansCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansCheckDate', 'Real World Testing Plans Last Completeness Check Date', getDisplayDateFormat) },
   'root.rwtPlansUrl': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansUrl', 'Real World Testing Plans URL') },
   'root.rwtResultsCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtResultsCheckDate', 'Real World Testing Results Last Completeness Check Date', getDisplayDateFormat) },
@@ -232,6 +270,9 @@ lookup = {
   'root.sedReportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'sedReportFileLocation', 'SED Report File Location') },
   'root.sedTestingEndDate': { message: (before, after) => before.sedTestingEndDay ? undefined : comparePrimitive(before, after, 'sedTestingEndDate', 'SED Testing End Date', getDisplayDateFormat) },
   'root.sedTestingEndDay': { message: (before, after) => comparePrimitive(before, after, 'sedTestingEndDay', 'SED Testing End Date', getDisplayDateFormat) },
+  'root.svapNoticeUrl': { message: (before, after) => comparePrimitive(before, after, 'svapNoticeUrl', 'SVAP Notice URL') },
+  'root.targetedUsers': { message: (before, after) => compare(before, after, 'targetedUsers', 'Targeted Users') },
+  'root.testingLabs': { message: (before, after) => compare(before, after, 'testingLabs', 'Testing Labs') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.warningMessages': { message: () => undefined },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
