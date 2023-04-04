@@ -1,5 +1,6 @@
 import { compareArrays, compareObject, comparePrimitive } from 'pages/reports/reports.v2.service';
 import { isCures, sortCriteria } from 'services/criteria.service';
+import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 let lookup;
@@ -32,6 +33,21 @@ const compare = (before, after, key, title = 'unknown') => {
         write: f => 'Conformance Method "' + f.conformanceMethod.name + '"',
       };
       break;
+    case 'cqmResults':
+      options = {
+        sort: sortCqms,
+        write: f => `CQM "${f.cmsId}"`,
+      };
+      break;
+    case 'certificationResults':
+    case 'cqmResults.criteria':
+    case 'testTasks.criteria':
+    case 'ucdProcesses.criteria':
+      options = {
+        sort: (p, c) => sortCriteria(p.criterion ?? p, c.criterion ?? c),
+        write: f => f.criterion ? `${f.criterion.number}${isCures(f.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${f.number}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`,
+      };
+      break;
     case 'functionalitiesTested':
       options = {
         sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
@@ -55,6 +71,12 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => p.userCountDate < c.userCountDate ? -1 : p.userCountDate > c.userCountDate ? 1 : 0,
         write: f => `Promoting Interoperability User Count of "${f.userCount}" as of "${getDisplayDateFormat(f.userCountDate)}"`
+      };
+      break;
+    case 'successVersions':
+      options = {
+        sort: (p, c) => p < c ? -1 : p > c ? 1 : 0,
+        write: f => `Version "${f}`,
       };
       break;
     case 'svaps':
@@ -101,13 +123,6 @@ const compare = (before, after, key, title = 'unknown') => {
         write: f => 'Test Task "' + f.description + '"',
       };
       break;
-    case 'testTasks.criteria':
-    case 'ucdProcesses.criteria':
-      options = {
-        sort: sortCriteria,
-        write: f => `${f.number}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}: ${f.title}`,
-      };
-      break;
     case 'testToolsUsed':
       options = {
         sort: (p, c) => p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0,
@@ -130,23 +145,6 @@ const compare = (before, after, key, title = 'unknown') => {
   }
   return undefined;
 };
-
-const compareCertificationResults = (initialBefore, initialAfter) => {
-  const changes = [];
-  const before = initialBefore.sort((x, y) => sortCriteria(x.criterion ?? x, y.criterion ?? y));
-  const after = initialAfter.sort((x, y) => sortCriteria(x.criterion ?? x, y.criterion ?? y));
-  before.forEach((b, idx) => {
-    const diffs = compareObject(b, after[idx], lookup, 'certificationResults');
-    if (diffs.length > 0) {
-      const title = b.criterion ? `${b.criterion.number}${isCures(b.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${b.number}${isCures(b) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`
-      changes.push(`<li>Certification "${title}" changes<ul>${diffs.map((msg) => `<li>${msg}</li>`).join('')}</ul></li>`);
-    }
-  });
-  if (changes && changes.length > 0) {
-    return changes.join('');
-  }
-  return undefined;
-}
 
 const compareTestParticipants = (before, after) => {
   const added = after.filter((a) => !before.some((b) => b.id === a.id));
@@ -193,9 +191,14 @@ lookup = {
   'certificationResults.testToolsUsed': { message: (before, after) => compare(before, after, 'testToolsUsed', 'Test Tools') },
   'certificationResults.useCases': { message: (before, after) => comparePrimitive(before, after, 'useCases', 'Use Cases') },
   'conformanceMethods.id': { message: () => undefined },
+  'cqmResults.allVersions': { message: () => undefined },
+  'cqmResults.criteria': { message: (before, after) => compare(before, after, 'cqmResults.criteria', 'Certification Criteria') },
+  'cqmResults.id': { message: () => undefined },
+  'cqmResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
+  'cqmResults.successVersions': { message: (before, after) => compare(before, after, 'successVersions', 'CQM Versions') },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
-  'root.certificationResults': { message: compareCertificationResults },
+  'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
   'root.countCerts': { message: () => undefined },
   'root.countClosedNonconformities': { message: () => undefined },
@@ -203,6 +206,7 @@ lookup = {
   'root.countCqms': { message: () => undefined },
   'root.countOpenNonconformities': { message: () => undefined },
   'root.countOpenSurveillance': { message: () => undefined },
+  'root.cqmResults': { message: (before, after) => compare(before, after, 'cqmResults', 'CQM Changes') },
   'root.curesUpdate': { message: (before, after) => comparePrimitive(before, after, 'curesUpdate', '2015 Edition Cures Update status') },
   'root.decertificationDate': { message: () => undefined },
   'root.directReviews': { message: () => undefined },
