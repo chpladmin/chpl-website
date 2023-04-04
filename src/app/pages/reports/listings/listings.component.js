@@ -213,6 +213,9 @@ lookup = {
   'root.warningMessages': { message: () => undefined },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
   'testTasks.id': { message: () => undefined },
+  'testTasks.taskPathDeviationObserved': { message: (before, after) => comparePrimitive(before, after, 'taskPathDeviationObserved', 'Task Path Deviation Observed') },
+  'testTasks.taskSuccessStddev': { message: (before, after) => comparePrimitive(before, after, 'taskSuccessStddev', 'Task Success Standard Deviation') },
+  'testTasks.testParticipants': { message: (before, after) => compare(before, after, 'testParticipants', 'Test Participants') },
   'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
 };
 
