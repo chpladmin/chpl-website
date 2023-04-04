@@ -145,7 +145,7 @@ describe('the Developers page', () => {
         page.moveDeveloperToBeJoined('ABH Enterprises, LLC');
         actionBar.save();
         browser.waitUntil(() => toast.toastTitle.isDisplayed());
-        expect(toast.toastTitle.getText()).toEqual('Join submitted');
+        expect(toast.toastTitle.getText()).toEqual('Join Developer request submitted');
       });
     });
 
