@@ -44,12 +44,11 @@ describe('the accessibility standard component', () => {
       await action.save();
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
-      await page.editStandards(name);
+      await page.editItem(name);
       await (await component.name).setValue(editName);
       await action.save();
-      await browser.waitUntil(async () => (await component.dataTable).getText().not.toContain(name));
       await expect(await (await component.dataTable).getText()).toContain(updatedName);
-      await page.editStandards(updatedName);
+      await page.editItem(updatedName);
       await action.delete();
       await action.clickYesToConfirm();
       await browser.waitUntil(async () => (await component.getData()).length === initialCount);

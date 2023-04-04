@@ -21,6 +21,10 @@ class SystemMaintenancePage {
     await (await $(this.elements.navigationButton(target))).click();
   }
 
+  async editItem(identifier) {
+    await (await (await (await (await $(`td=${identifier}`)).parentElement()).$('button')).click());
+  }
+
   async canNavigate(target) {
     return (await $(this.elements.navigationButton(target))).isClickable();
   }
