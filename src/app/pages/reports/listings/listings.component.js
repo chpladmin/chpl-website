@@ -17,13 +17,13 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'additionalSoftware':
       options = {
         sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
-        write: s => 'Relied Upon Software "' + s.name + '"',
+        write: s => `Relied Upon Software "${s.name}"`,
       };
       break;
     case 'certificationEvents':
       options = {
         sort: (p, c) => p.eventDate - c.eventDate,
-        write: f => 'Certification Status "' + f.status.name + '"' + ((f.reason && ` with reason ${f.reason}`) ?? ''),
+        write: f => `Certification Status "${f.status.name}"`,
       };
       break;
     case 'children':
@@ -195,6 +195,13 @@ const compareTestParticipants = (before, after) => {
 
 lookup = {
   shortCircuit: ['root.currentStatus', 'root.developer', 'root.product'],
+  'additionalSoftware.certifiedProductId': { message: () => undefined },
+  'additionalSoftware.certifiedProductNumber': { message: (before, after) => comparePrimitive(before, after, 'certifiedProductNumber', 'Certified Product Code') },
+  'additionalSoftware.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
+  'additionalSoftware.grouping': { message: (before, after) => comparePrimitive(before, after, 'grouping', 'Group') },
+  'additionalSoftware.id': { message: () => undefined },
+  'additionalSoftware.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
+  'certificationEvents.reason': { message: (before, after) => comparePrimitive(before, after, 'reason', 'Reason for Status change') },
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },
   'certificationResults.allowedConformanceMethods': { message: () => undefined },
   'certificationResults.allowedMacraMeasures': { message: () => undefined },
@@ -206,9 +213,11 @@ lookup = {
   'certificationResults.attestationAnswer': { message: (before, after) => comparePrimitive(before, after, 'attestationAnswer', 'Attestation') },
   'certificationResults.conformanceMethods': { message: (before, after) => compare(before, after, 'conformanceMethods', 'Conformance Methods') },
   'certificationResults.documentationUrl': { message: (before, after) => comparePrimitive(before, after, 'documentationUrl', 'Documentation URL') },
+  'certificationResults.exportDocumentation': { message: (before, after) => comparePrimitive(before, after, 'exportDocumentation', 'Export Documentation') },
   'certificationResults.functionalitiesTested': { message: (before, after) => compare(before, after, 'functionalitiesTested', 'Test Functionality') },
   'certificationResults.g1MacraMeasures': { message: (before, after) => compare(before, after, 'g1MacraMeasures', 'G1 MACRA Measures') },
   'certificationResults.g2MacraMeasures': { message: (before, after) => compare(before, after, 'g2MacraMeasures', 'G2 MACRA Measures') },
+  'certificationResults.gap': { message: (before, after) => comparePrimitive(before, after, 'gap', 'GAP') },
   'certificationResults.optionalStandards': { message: (before, after) => compare(before, after, 'optionalStandards', 'Optional Standards') },
   'certificationResults.privacySecurityFramework': { message: (before, after) => comparePrimitive(before, after, 'privacySecurityFramework', 'Privacy & Security Framework') },
   'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
@@ -221,19 +230,30 @@ lookup = {
   'certificationResults.testStandards': { message: (before, after) => compare(before, after, 'testStandards', 'Test Standards') },
   'certificationResults.testToolsUsed': { message: (before, after) => compare(before, after, 'testToolsUsed', 'Test Tools') },
   'certificationResults.useCases': { message: (before, after) => comparePrimitive(before, after, 'useCases', 'Use Cases') },
+  'children.lastModifiedDate': { message: () => undefined },
+  'conformanceMethods.conformanceMethod': { message: (before) => `Conformance Method "${before.name}"` },
+  'conformanceMethods.conformanceMethod.removed': { message: (before, after) => comparePrimitive(before, after, 'removed', 'Removed') },
+  'conformanceMethods.conformanceMethodVersion': { message: (before, after) => comparePrimitive(before, after, 'conformanceMethodVersion', 'Version') },
   'conformanceMethods.id': { message: () => undefined },
   'cqmResults.allVersions': { message: () => undefined },
   'cqmResults.criteria': { message: (before, after) => compare(before, after, 'cqmResults.criteria', 'Certification Criteria') },
+  'cqmResults.criteria.id': { message: () => undefined },
+  'cqmResults.description': { message: () => undefined },
   'cqmResults.id': { message: () => undefined },
+  'cqmResults.number': { message: () => undefined },
+  'cqmResults.nqfNumber': { message: () => undefined },
   'cqmResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
   'cqmResults.successVersions': { message: (before, after) => compare(before, after, 'text', 'CQM Versions') },
-  'measures.measure.allowedCriteria': { message: () => undefined },
+  'cqmResults.title': { message: () => undefined },
   'measures.associatedCriteria': { message: (before, after) => compare(before, after, 'measures.associatedCriteria', 'Certification Criteria') },
+  'measures.measure.allowedCriteria': { message: () => undefined },
+  'parents.lastModifiedDate': { message: () => undefined },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.accessibilityStandards': { message: (before, after) => compare(before, after, 'accessibilityStandards', 'Accessibility Standards') },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
   'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
+  'root.chplProductNumberHistory': { message: () => undefined }, // probably?
   'root.countCerts': { message: () => undefined },
   'root.countClosedNonconformities': { message: () => undefined },
   'root.countClosedSurveillance': { message: () => undefined },
@@ -270,11 +290,14 @@ lookup = {
   'root.sedReportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'sedReportFileLocation', 'SED Report File Location') },
   'root.sedTestingEndDate': { message: (before, after) => before.sedTestingEndDay ? undefined : comparePrimitive(before, after, 'sedTestingEndDate', 'SED Testing End Date', getDisplayDateFormat) },
   'root.sedTestingEndDay': { message: (before, after) => comparePrimitive(before, after, 'sedTestingEndDay', 'SED Testing End Date', getDisplayDateFormat) },
+  'root.surveillance': { message: () => undefined }, // consider making this do more
   'root.svapNoticeUrl': { message: (before, after) => comparePrimitive(before, after, 'svapNoticeUrl', 'SVAP Notice URL') },
   'root.targetedUsers': { message: (before, after) => compare(before, after, 'targetedUsers', 'Targeted Users') },
   'root.testingLabs': { message: (before, after) => compare(before, after, 'testingLabs', 'Testing Labs') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.warningMessages': { message: () => undefined },
+  'testDataUsed.id': { message: () => undefined },
+  'testDataUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
   'testTasks.id': { message: () => undefined },
   'testTasks.taskErrors': { message: (before, after) => comparePrimitive(before, after, 'taskErrors', 'Task Errors') },
@@ -291,6 +314,8 @@ lookup = {
   'testTasks.taskTimeDeviationOptimalAvg': { message: (before, after) => comparePrimitive(before, after, 'taskTimeDeviationOptimalAvg', 'Task Time Deviation Optimal Average') },
   'testTasks.taskTimeStddev': { message: (before, after) => comparePrimitive(before, after, 'taskTimeStddev', 'Task Time Standard Deviation') },
   'testTasks.testParticipants': { message: compareTestParticipants },
+  'testToolsUsed.id': { message: () => undefined },
+  'testToolsUsed.testToolVersion': { message: (before, after) => comparePrimitive(before, after, 'testToolVersion', 'Version') },
   'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
   'ucdProcesses.details': { message: (before, after) => comparePrimitive(before, after, 'details', 'UCD Process Details') },
 };
