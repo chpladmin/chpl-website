@@ -62,7 +62,7 @@ const compareArrays = (previous, current, options, lookup) => {
     } else if (sort === 0) {
       const compared = compareObject(prev[p], curr[c], lookup, options.root);
       if (compared.length > 0) {
-        ret.push(compared);
+        ret.push(`<li>${options.write(curr[c])} changes<ul>${compared.map((msg) => `<li>${msg}</li>`).join('')}</ul></li>`);
       }
       p++;
       c++;

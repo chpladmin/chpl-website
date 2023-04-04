@@ -139,11 +139,27 @@ const compareCertificationResults = (initialBefore, initialAfter) => {
     const diffs = compareObject(b, after[idx], lookup, 'certificationResults');
     if (diffs.length > 0) {
       const title = b.criterion ? `${b.criterion.number}${isCures(b.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${b.number}${isCures(b) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`
-      changes.push(`Certification "${title}" changes<ul>${diffs.map((msg) => `<li>${msg}</li>`).join('')}</ul>`);
+      changes.push(`<li>Certification "${title}" changes<ul>${diffs.map((msg) => `<li>${msg}</li>`).join('')}</ul></li>`);
     }
   });
   if (changes && changes.length > 0) {
     return changes.join('');
+  }
+  return undefined;
+}
+
+const compareTestParticipants = (before, after) => {
+  const added = after.filter((a) => !before.some((b) => b.id === a.id));
+  const removed = before.filter((b) => !after.some((a) => a.id === b.id));
+  const changes = [];
+  if (added.length > 0) {
+    changes.push(`<li>Added ${added.length} Test Participant${added.length > 1 ? 's' : ''}`);
+  }
+  if (removed.length > 0) {
+    changes.push(`<li>Removed ${removed.length} Test Participant${removed.length > 1 ? 's' : ''}`);
+  }
+  if (changes && changes.length > 0) {
+    return `Test Participant changes<ul>${changes.join('')}</ul>`;
   }
   return undefined;
 }
@@ -215,7 +231,7 @@ lookup = {
   'testTasks.id': { message: () => undefined },
   'testTasks.taskPathDeviationObserved': { message: (before, after) => comparePrimitive(before, after, 'taskPathDeviationObserved', 'Task Path Deviation Observed') },
   'testTasks.taskSuccessStddev': { message: (before, after) => comparePrimitive(before, after, 'taskSuccessStddev', 'Task Success Standard Deviation') },
-  'testTasks.testParticipants': { message: (before, after) => compare(before, after, 'testParticipants', 'Test Participants') },
+  'testTasks.testParticipants': { message: compareTestParticipants },
   'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
 };
 
