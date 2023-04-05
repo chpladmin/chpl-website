@@ -476,42 +476,9 @@ const ReportsListingsComponent = {
             activity.action = 'Surveillance was added';
           } else if (item.description.startsWith('Surveillance was updated')) {
             activity.action = 'Surveillance was updated';
-            activity.newDetails = compareObject(item.originalData, item.newData, lookup);
-            let j;
-            let k;
-            let change;
-            for (j = 0; j < item.originalData.surveillance.length; j += 1) {
-              let action = [`${item.originalData.surveillance[j].friendlyId}<ul><li>`];
-              const actions = [];
-              const simpleFields = [
-                { key: 'endDate', display: 'End Date', filter: 'date' },
-                { key: 'friendlyId', display: 'Surveillance ID' },
-                { key: 'randomizedSitesUsed', display: 'Number of sites surveilled' },
-                { key: 'startDate', display: 'Start Date', filter: 'date' },
-              ];
-              const nestedKeys = [
-                { key: 'type', subkey: 'name', display: 'Certification Type' },
-              ];
-              for (k = 0; k < simpleFields.length; k += 1) {
-                change = this.ReportService.compareItem(item.originalData.surveillance[j], item.newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
-                if (change) { actions.push(change); }
-              }
-              for (k = 0; k < nestedKeys.length; k += 1) {
-                change = this.ReportService.nestedCompare(item.originalData.surveillance[j], item.newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
-                if (change) {
-                  actions.push(change);
-                }
-              }
-              if (actions.length === 0) {
-                meta.source = {
-                  oldS: item.originalData,
-                  newS: item.newData,
-                };
-              } else {
-                action += actions.join('</li><li>');
-                action += '</li></ul>';
-                activity.details.push(action);
-              }
+            meta.source = {
+              oldS: item.originalData,
+              newS: item.newData,
             }
           } else {
             activity.action = `${item.description}`;
