@@ -68,6 +68,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => `MACRA Measure "${f.abbreviation}"`,
       };
       break;
+    case 'meaningfulUseUserHistory':
+      options = {
+        sort: (p, c) => (p.userCountDate < c.userCountDate ? -1 : p.userCountDate > c.userCountDate ? 1 : 0),
+        write: (f) => `Meaningful Use User Count of "${f.userCount}" as of "${getDisplayDateFormat(f.userCountDate)}"`,
+      };
+      break;
     case 'measures':
       options = {
         sort: (p, c) => (p.measure.abbreviation < c.measure.abbreviation ? -1 : p.measure.abbreviation > c.measure.abbreviation ? 1 : 0),
@@ -278,9 +284,10 @@ lookup = {
   'root.ics.parents': { message: (before, after) => compare(before, after, 'parents', 'ICS Parents') },
   'root.lastModifiedDate': { message: () => undefined },
   'root.mandatoryDisclosures': { message: (before, after) => comparePrimitive(before, after, 'mandatoryDisclosures', 'Mandatory Disclosures URL') },
+  'root.meaningfulUseUserHistory': { message: (before, after) => compare(before, after, 'meaningfulUseUserHistory', 'Meaningful Use User History') },
   'root.measures': { message: (before, after) => compare(before, after, 'measures', 'G1/G2 Measure') },
   'root.otherAcb': { message: (before, after) => comparePrimitive(before, after, 'otherAcb', 'Other ONC-ACB') },
-  'root.promotingInteroperabilityUserHistory': { message: (before, after) => compare(before, after, 'promotingInteroperabilityUserHistory', 'Promoting Interoperability User') },
+  'root.promotingInteroperabilityUserHistory': { message: (before, after) => compare(before, after, 'promotingInteroperabilityUserHistory', 'Promoting Interoperability User History') },
   'root.qmsStandards': { message: (before, after) => compare(before, after, 'qmsStandards', 'QMS Standards') },
   'root.reportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'reportFileLocation', 'ONC-ATL Test Report File Location') },
   'root.rwtPlansCheckDate': { message: (before, after) => comparePrimitive(before, after, 'rwtPlansCheckDate', 'Real World Testing Plans Last Completeness Check Date', getDisplayDateFormat) },
