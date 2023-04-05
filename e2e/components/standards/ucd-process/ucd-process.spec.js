@@ -37,7 +37,6 @@ describe('the ucd process component', () => {
     it('should be able to add, edit and delete UCD processes', async () => {
       const name = `0Test - ${Date.now()}`;
       const newName = `1Test - ${Date.now()}`;
-      const nameAfterEdit = name + newName;
       const initialCount = (await component.getData()).length;
       await (await component.addButton).click();
       await (await component.name).setValue(name);
@@ -45,11 +44,14 @@ describe('the ucd process component', () => {
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
       await page.editItem(name);
+      await (await component.name).click();
+      await browser.keys(['Control', 'a']);
+      await browser.keys(['Backspace']);
       await (await component.name).setValue(newName);
       await action.save();
-      await browser.waitUntil(async () => (await component.getData()).length > initialCount);
+      browser.waitUntil(async () => (await (await $$(component.dataTable)).getText()).not.toContain(name));
       await expect(await (await component.dataTable).getText()).toContain(newName);
-      await page.editItem(nameAfterEdit);
+      await page.editItem(newName);
       await action.delete();
       await action.clickYesToConfirm();
       await (browser.waitUntil(async () => (await component.getData()).length === initialCount));
