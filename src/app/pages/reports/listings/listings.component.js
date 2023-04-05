@@ -83,8 +83,13 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'nonconformities':
       options = {
-        sort: (p, c) => (p.type.id < c.type.id ? -1 : p.type.id > c.type.id ? 1 : 0),
-        write: (f) => `Non-conformity "${f.type.title}"`,
+        sort: (p, c) => {
+          if (p.type) {
+            return (p.type.id < c.type.id ? -1 : p.type.id > c.type.id ? 1 : 0);
+          }
+          return (p.nonconformityType < c.nonconformityType ? -1 : p.nonconformityType > c.nonconformityType ? 1 : 0);
+        },
+        write: (f) => `Non-conformity "${f.type?.title ?? f.nonconformityType}"`,
       };
       break;
     case 'optionalStandards':
@@ -107,8 +112,13 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'requirements':
       options = {
-        sort: (p, c) => (p.requirementType.id < c.requirementType.id ? -1 : p.requirementType.id > c.requirementType.id ? 1 : 0),
-        write: (f) => `Requirement "${f.requirementType.title}"`,
+        sort: (p, c) => {
+          if (p.requirementType) {
+            return (p.requirementType.id < c.requirementType.id ? -1 : p.requirementType.id > c.requirementType.id ? 1 : 0);
+          }
+          return (p.requirement < c.requirement ? -1 : p.requirement > c.requirement ? 1 : 0);
+        },
+        write: (f) => `Requirement "${f.requirementType?.title ?? f.requirement}"`,
       };
       break;
     case 'surveillance':
@@ -336,10 +346,12 @@ lookup = {
   'root.testingLabs': { message: (before, after) => compare(before, after, 'testingLabs', 'Testing Labs') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.warningMessages': { message: () => undefined },
+  'surveillance.endDate': { message: (before, after) => comparePrimitive(before, after, 'endDate', 'End Date', getDisplayDateFormat) },
   'surveillance.endDay': { message: (before, after) => comparePrimitive(before, after, 'endDay', 'End Day', getDisplayDateFormat) },
   'surveillance.errorMessages': { message: () => undefined },
   'surveillance.lastModifiedDate': { message: () => undefined },
   'surveillance.requirements': { message: (before, after) => compare(before, after, 'requirements', 'Requirements') },
+  'surveillance.startDate': { message: (before, after) => comparePrimitive(before, after, 'startDate', 'Start Date', getDisplayDateFormat) },
   'surveillance.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Day', getDisplayDateFormat) },
   'surveillance.warningMessages': { message: () => undefined },
   'testDataUsed.id': { message: () => undefined },
