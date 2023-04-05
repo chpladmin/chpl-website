@@ -44,11 +44,12 @@ describe('the ucd process component', () => {
       await action.save();
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
-      await page.editStandards(name);
+      await page.editItem(name);
       await (await component.name).setValue(newName);
       await action.save();
+      await browser.waitUntil(async () => (await component.getData).getText()).not.toContain(name);
       await expect(await (await component.dataTable).getText()).toContain(newName);
-      await page.editStandards(nameAfterEdit);
+      await page.editItem(nameAfterEdit);
       await action.delete();
       await action.clickYesToConfirm();
       await (browser.waitUntil(async () => (await component.getData()).length === initialCount));
