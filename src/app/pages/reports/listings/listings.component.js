@@ -80,6 +80,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => `Measure "${f.measure.abbreviation}: ${f.measure.requiredTest}"`,
       };
       break;
+    case 'nonconformities':
+      options = {
+        sort: (p, c) => (p.type.id < c.type.id ? -1 : p.type.id > c.type.id ? 1 : 0),
+        write: (f) => `Non-conformity "${f.type.title}"`,
+      };
+      break;
     case 'optionalStandards':
       options = {
         sort: (p, c) => (p.citation < c.citation ? -1 : p.citation > c.citation ? 1 : 0),
@@ -96,6 +102,18 @@ const compare = (before, after, key, title = 'unknown') => {
       options = {
         sort: (p, c) => (p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : 0),
         write: (f) => `QMS Standard "${f.qmsStandardName}"`,
+      };
+      break;
+    case 'requirements':
+      options = {
+        sort: (p, c) => (p.requirementType.id < c.requirementType.id ? -1 : p.requirementType.id > c.requirementType.id ? 1 : 0),
+        write: (f) => `Requirement "${f.requirementType.title}"`,
+      };
+      break;
+    case 'surveillance':
+      options = {
+        sort: (p, c) => (p.friendlyId < c.friendlyId ? -1 : p.friendlyId > c.friendlyId ? 1 : 0),
+        write: (f) => `Surveillance "${f.friendlyId}"`,
       };
       break;
     case 'svaps':
@@ -202,7 +220,7 @@ const compareTestParticipants = (before, after) => {
 };
 
 lookup = {
-  shortCircuit: ['root.currentStatus', 'root.developer', 'root.product'],
+  shortCircuit: ['root.currentStatus', 'root.developer', 'root.product', 'surveillance.certifiedProduct'],
   'additionalSoftware.certifiedProductId': { message: () => undefined },
   'additionalSoftware.certifiedProductNumber': { message: (before, after) => comparePrimitive(before, after, 'certifiedProductNumber', 'Certified Product Code') },
   'additionalSoftware.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
@@ -255,7 +273,17 @@ lookup = {
   'cqmResults.title': { message: () => undefined },
   'measures.associatedCriteria': { message: (before, after) => compare(before, after, 'measures.associatedCriteria', 'Certification Criteria') },
   'measures.measure.allowedCriteria': { message: () => undefined },
+  'nonconformities.capApprovalDay': { message: (before, after) => comparePrimitive(before, after, 'capApprovalDay', 'CAP Approval Day', getDisplayDateFormat) },
+  'nonconformities.capEndDay': { message: (before, after) => comparePrimitive(before, after, 'capEndDay', 'CAP End Day', getDisplayDateFormat) },
+  'nonconformities.capMustCompleteDay': { message: (before, after) => comparePrimitive(before, after, 'capMustCompleteDay', 'CAP Must Complete Day', getDisplayDateFormat) },
+  'nonconformities.findings': { message: (before, after) => comparePrimitive(before, after, 'findings', 'Findings') },
+  'nonconformities.lastModifiedDate': { message: () => undefined },
+  'nonconformities.nonconformityCloseDay': { message: (before, after) => comparePrimitive(before, after, 'nonconformityCloseDay', 'Close Day', getDisplayDateFormat) },
+  'nonconformities.nonconformityStatus': { message: (before, after) => comparePrimitive(before, after, 'nonconformityStatus', 'Status') },
+  'nonconformities.resolution': { message: (before, after) => comparePrimitive(before, after, 'resolution', 'Resolution') },
+  'nonconformities.summary': { message: (before, after) => comparePrimitive(before, after, 'summary', 'Summary') },
   'parents.lastModifiedDate': { message: () => undefined },
+  'requirements.nonconformities': { message: (before, after) => compare(before, after, 'nonconformities', 'Non-conformities') },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.accessibilityStandards': { message: (before, after) => compare(before, after, 'accessibilityStandards', 'Accessibility Standards') },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
@@ -301,12 +329,18 @@ lookup = {
   'root.sedReportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'sedReportFileLocation', 'SED Report File Location') },
   'root.sedTestingEndDate': { message: (before, after) => (before.sedTestingEndDay ? undefined : comparePrimitive(before, after, 'sedTestingEndDate', 'SED Testing End Date', getDisplayDateFormat)) },
   'root.sedTestingEndDay': { message: (before, after) => comparePrimitive(before, after, 'sedTestingEndDay', 'SED Testing End Date', getDisplayDateFormat) },
-  'root.surveillance': { message: () => undefined }, // consider making this do more
+  'root.surveillance': { message: (before, after) => compare(before, after, 'surveillance', 'Surveillance') },
   'root.svapNoticeUrl': { message: (before, after) => comparePrimitive(before, after, 'svapNoticeUrl', 'SVAP Notice URL') },
   'root.targetedUsers': { message: (before, after) => compare(before, after, 'targetedUsers', 'Targeted Users') },
   'root.testingLabs': { message: (before, after) => compare(before, after, 'testingLabs', 'Testing Labs') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
   'root.warningMessages': { message: () => undefined },
+  'surveillance.endDay': { message: (before, after) => comparePrimitive(before, after, 'endDay', 'End Day', getDisplayDateFormat) },
+  'surveillance.errorMessages': { message: () => undefined },
+  'surveillance.lastModifiedDate': { message: () => undefined },
+  'surveillance.requirements': { message: (before, after) => compare(before, after, 'requirements', 'Requirements') },
+  'surveillance.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Day', getDisplayDateFormat) },
+  'surveillance.warningMessages': { message: () => undefined },
   'testDataUsed.id': { message: () => undefined },
   'testDataUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
@@ -436,20 +470,6 @@ const ReportsListingsComponent = {
       this.tableController = tableController;
     }
 
-    compareSurveillances(oldS, newS) {
-      this.$uibModal.open({
-        component: 'chplCompareSurveillances',
-        animation: false,
-        backdrop: 'static',
-        keyboard: false,
-        size: 'lg',
-        resolve: {
-          oldSurveillance: () => oldS,
-          newSurveillance: () => newS,
-        },
-      });
-    }
-
     parse(meta) {
       return this.networkService.getActivityById(meta.id, { ignoreLoadingBar: true }).then((item) => {
         const activity = {
@@ -476,10 +496,7 @@ const ReportsListingsComponent = {
             activity.action = 'Surveillance was added';
           } else if (item.description.startsWith('Surveillance was updated')) {
             activity.action = 'Surveillance was updated';
-            meta.source = {
-              oldS: item.originalData,
-              newS: item.newData,
-            }
+            activity.details = compareObject(item.originalData, item.newData, lookup);
           } else {
             activity.action = `${item.description}`;
           }
