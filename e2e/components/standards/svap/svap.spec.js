@@ -51,7 +51,7 @@ describe('the svap component', () => {
       await (await component.version).clearValue();
       await (await component.version).setValue(newVersion);
       await action.save();
-      await browser.waitUntil(async () => (await component.svapTable).getText()).not.toContain(version);
+      await browser.waitUntil(async () => (await component.getSvaps()).length > initialCount);
       await expect(await (await component.svapTable).getText()).toContain(newVersion);
       await page.editItem(versionAfterEdit);
       await action.delete();

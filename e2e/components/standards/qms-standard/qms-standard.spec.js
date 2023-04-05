@@ -47,7 +47,7 @@ describe('the qms standard component', () => {
       await page.editItem(name);
       await (await component.name).setValue(newName);
       await action.save();
-      await browser.waitUntil(async () => (await component.getData).getText()).not.toContain(name);
+      await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(newName);
       await page.editItem(nameAfterEdit);
       await action.delete();
