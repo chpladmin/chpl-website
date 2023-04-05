@@ -29,4 +29,5 @@ class QmsStandardComponent {
   }
   /* eslint-enable indent */
 }
+
 export default QmsStandardComponent;
