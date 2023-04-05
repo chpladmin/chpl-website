@@ -196,8 +196,8 @@ const criteriaSortOrder = [
 const isCures = (criterion) => criterion.title.indexOf('Cures Update') > -1;
 
 const sortCriteria = (a, b) => {
-  const aValue = a.number + (isCures(a) ? ' (Cures Update)' : '');
-  const bValue = b.number + (isCures(b) ? ' (Cures Update)' : '');
+  const aValue = (a.number ?? a.certificationNumber) + ((a.title && isCures(a)) ? ' (Cures Update)' : '');
+  const bValue = (b.number ?? b.certificationNumber) + ((b.title && isCures(b)) ? ' (Cures Update)' : '');
   return criteriaSortOrder.indexOf(aValue) - criteriaSortOrder.indexOf(bValue);
 };
 
