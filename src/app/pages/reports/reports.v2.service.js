@@ -28,19 +28,38 @@ const findType = (before, after) => {
   return 'object';
 };
 
-  /**
-     * Compare two arrays.
-     * previous & current are arrays of objects
-     * options is an object containing functions
-     *   required functions:
-     *      sort - function (a, b) : return negative number, 0, or positive number for whether a is <, =, or > b, respectively
-     *      write - function (o) : return string of user friendly name of object o
-     *   optional functions:
-     *      compare - f (a, b) : return true iff a !== b and should be considered as a change
-     *      change - f (p, c) : return string of user friendly description of change from p to c
-     * lookup is the lookup table to get messages from
-     * Returns array of changes between the arrays
-     */
+const compareObject = (before, after, lookup, root = 'root') => {
+  const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
+  let messages;
+  const diffs = keys.map((key) => {
+    const b = before ? before[key] : undefined;
+    const a = after ? after[key] : undefined;
+    switch (findType(b, a)) {
+      case 'primitive':
+        return b !== a ? getMessage(before, after, root, key, lookup) : '';
+      case 'array':
+        return getMessage(b, a, root, key, lookup);
+      case 'object':
+        if (lookup.shortCircuit?.includes(`${root}.${key}`)) { return undefined; }
+        messages = compareObject(b, a, lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
+        return messages.length > 0 ? (`${getMessage(before, after, root, key, lookup)}<ul>${messages.join('')}</ul>`) : '';
+      default:
+        return undefined;
+    }
+  }).filter((msg) => !!msg);
+  return diffs;
+};
+
+/**
+ * Compare two arrays.
+ * previous & current are arrays of objects
+ * options is an object containing functions
+ *   required functions:
+ *      sort - function (a, b) : return negative number, 0, or positive number for whether a is <, =, or > b, respectively
+ *      write - function (o) : return string of user friendly name of object o
+ * lookup is the lookup table to get messages from
+ * Returns array of changes between the arrays
+ */
 const compareArrays = (previous, current, options, lookup) => {
   if (!Array.isArray(previous) || !Array.isArray(current)) {
     return [];
@@ -54,55 +73,34 @@ const compareArrays = (previous, current, options, lookup) => {
   while (p < prev.length && c < curr.length) {
     const sort = options.sort(prev[p], curr[c]);
     if (sort < 0) {
-      ret.push('<li>Removed ' + options.write(prev[p]) + '</li>');
-      p++;
+      ret.push(`<li>Removed ${options.write(prev[p])}</li>`);
+      p += 1;
     } else if (sort > 0) {
-      ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
-      c++;
+      ret.push(`<li>Added ${options.write(curr[c])}</li>`);
+      c += 1;
     } else if (sort === 0) {
       const compared = compareObject(prev[p], curr[c], lookup, options.root);
       if (compared.length > 0) {
         ret.push(`<li>${options.write(curr[c])} changes<ul>${compared.map((msg) => `<li>${msg}</li>`).join('')}</ul></li>`);
       }
-      p++;
-      c++;
+      p += 1;
+      c += 1;
     } else {
       console.debug('Invalid sort', prev[p], curr[c], sort);
-      p++;
-      c++;
+      p += 1;
+      c += 1;
     }
   }
   while (c < curr.length) {
-    ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
-    c++;
+    ret.push(`<li>Added ${options.write(curr[c])}</li>`);
+    c += 1;
   }
   while (p < prev.length) {
-    ret.push('<li>Removed ' + options.write(prev[p]) + '</li>');
-    p++;
+    ret.push(`<li>Removed ${options.write(prev[p])}</li>`);
+    p += 1;
   }
 
   return ret;
-};
-
-const compareObject = (before, after, lookup, root = 'root') => {
-  const keys = (before && Object.keys(before)) || (after && Object.keys(after)) || [];
-  const diffs = keys.map((key) => {
-    const b = before ? before[key] : undefined;
-    const a = after ? after[key] : undefined;
-    switch (findType(b, a)) {
-      case 'primitive':
-        return b !== a ? getMessage(before, after, root, key, lookup) : '';
-      case 'array':
-        return getMessage(b, a, root, key, lookup);
-      case 'object':
-        if (lookup.shortCircuit?.includes(`${root}.${key}`)) { return undefined; }
-        const messages = compareObject(b, a, lookup, `${root}.${key}`).map((msg) => `<li>${msg}</li>`);
-        return messages.length > 0 ? (`${getMessage(before, after, root, key, lookup)}<ul>${messages.join('')}</ul>`) : '';
-      default:
-        return undefined;
-    }
-  }).filter((msg) => !!msg);
-  return diffs;
 };
 
 const comparePrimitive = (before, after, key, title, transform = (val) => val) => {

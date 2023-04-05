@@ -5,6 +5,7 @@ import { getDisplayDateFormat } from 'services/date-util';
 
 let lookup;
 
+/* eslint-disable no-nested-ternary */
 const compare = (before, after, key, title = 'unknown') => {
   let options;
   switch (key) {
@@ -303,7 +304,7 @@ lookup = {
   'root.errorMessages': { message: () => undefined },
   'root.ics': {
     message: (before) => {
-      typeof before !== 'object' && console.debug({ before, key: 'root.ics' });
+      if (typeof before !== 'object') { console.debug({ before, key: 'root.ics' }); }
       return 'Inherited Certification Status changes';
     },
   },
