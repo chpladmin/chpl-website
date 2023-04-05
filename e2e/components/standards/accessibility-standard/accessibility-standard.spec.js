@@ -37,7 +37,6 @@ describe('the accessibility standard component', () => {
     it('should be able to add a new accessibility standard and then edit and delete', async () => {
       const name = `1Test - ${Date.now()}`;
       const editName = `2Test - ${Date.now()}`;
-      const updatedName = name + editName;
       const initialCount = (await component.getData()).length;
       await (await component.addButton).click();
       await (await component.name).setValue(name);
@@ -45,14 +44,18 @@ describe('the accessibility standard component', () => {
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
       await page.editItem(name);
+      await (await component.name).click();
+      await browser.keys(['Control', 'a']);
+      await browser.keys(['Backspace']);
       await (await component.name).setValue(editName);
       await action.save();
-      await expect(await (await component.dataTable).getText()).toContain(updatedName);
-      await page.editItem(updatedName);
+      browser.waitUntil(async () => (await (await $$(component.dataTable)).getText()).not.toContain(name));
+      await expect(await (await component.dataTable).getText()).toContain(editName);
+      await page.editItem(editName);
       await action.delete();
       await action.clickYesToConfirm();
       await browser.waitUntil(async () => (await component.getData()).length === initialCount);
-      await expect(await (await component.dataTable).getText()).not.toContain(updatedName);
+      await expect(await (await component.dataTable).getText()).not.toContain(editName);
     }); 
   });
 });
