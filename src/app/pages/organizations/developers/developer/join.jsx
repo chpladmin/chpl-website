@@ -208,7 +208,7 @@ function ChplJoinDevelopers({ id }) {
                 <Autocomplete
                   id="developers"
                   name="developers"
-                  options={developers}
+                  options={developers.filter((d) => canAdd(d))}
                   onChange={addDeveloper}
                   inputValue={developerValueToLoad}
                   onInputChange={(event, newValue) => {
