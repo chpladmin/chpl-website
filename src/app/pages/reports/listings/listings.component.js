@@ -232,6 +232,7 @@ const compareTestParticipants = (before, after) => {
 
 lookup = {
   shortCircuit: ['root.currentStatus', 'root.developer', 'root.product', 'surveillance.certifiedProduct'],
+  'accessibilityStandards.id': { message: () => undefined },
   'additionalSoftware.certifiedProductId': { message: () => undefined },
   'additionalSoftware.certifiedProductNumber': { message: (before, after) => comparePrimitive(before, after, 'certifiedProductNumber', 'Certified Product Code') },
   'additionalSoftware.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
@@ -285,6 +286,7 @@ lookup = {
   'cqmResults.successVersions': { message: (before, after) => compare(before, after, 'text', 'CQM Versions') },
   'cqmResults.title': { message: () => undefined },
   'measures.associatedCriteria': { message: (before, after) => compare(before, after, 'measures.associatedCriteria', 'Certification Criteria') },
+  'measures.id': { message: () => undefined },
   'measures.measure.allowedCriteria': { message: () => undefined },
   'nonconformities.capApprovalDate': { message: (before, after) => comparePrimitive(before, after, 'capApprovalDate', 'CAP Approval Date', getDisplayDateFormat) },
   'nonconformities.capApprovalDay': { message: (before, after) => comparePrimitive(before, after, 'capApprovalDay', 'CAP Approval Day', getDisplayDateFormat) },
@@ -297,6 +299,7 @@ lookup = {
   'nonconformities.developerExplanation': { message: (before, after) => comparePrimitive(before, after, 'developerExplanation', 'Developer Explanation') },
   'nonconformities.documents': { message: (before, after) => compare(before, after, 'documents', 'Documents') },
   'nonconformities.findings': { message: (before, after) => comparePrimitive(before, after, 'findings', 'Findings') },
+  'nonconformities.id': { message: () => undefined },
   'nonconformities.lastModifiedDate': { message: () => undefined },
   'nonconformities.nonconformityCloseDay': { message: (before, after) => comparePrimitive(before, after, 'nonconformityCloseDay', 'Close Day', getDisplayDateFormat) },
   'nonconformities.nonconformityStatus': { message: (before, after) => comparePrimitive(before, after, 'nonconformityStatus', 'Status') },
