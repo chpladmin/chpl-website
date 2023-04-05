@@ -112,7 +112,7 @@ const comparePrimitive = (before, after, key, title, transform = (val) => val) =
   if (before && before[key] && (!after || !after[key])) {
     return `${title} removed: ${transform(before[key])}`;
   }
-  return `${title} changed from ${transform(before[key])} to ${transform(after[key])}`;
+  return `${title} changed from "${transform(before[key])}" to "${transform(after[key])}"`;
 };
 
 export {
