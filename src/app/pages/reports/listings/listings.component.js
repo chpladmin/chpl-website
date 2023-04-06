@@ -56,6 +56,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => (f.criterion ? `${f.criterion.number}${isCures(f.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${f.number}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`),
       };
       break;
+    case 'documents':
+      options = {
+        sort: (p, c) => (p.fileName < c.fileName ? -1 : p.fileName > c.fileName ? 1 : 0),
+        write: (f) => `File "${f.fileName}"`,
+      };
+      break;
     case 'functionalitiesTested':
       options = {
         sort: (p, c) => (p.name < c.name ? -1 : p.name > c.name ? 1 : 0),
@@ -261,6 +267,7 @@ lookup = {
   'certificationResults.g1MacraMeasures': { message: (before, after) => compare(before, after, 'g1MacraMeasures', 'G1 MACRA Measures') },
   'certificationResults.g2MacraMeasures': { message: (before, after) => compare(before, after, 'g2MacraMeasures', 'G2 MACRA Measures') },
   'certificationResults.gap': { message: (before, after) => comparePrimitive(before, after, 'gap', 'GAP') },
+  'certificationResults.number': { message: () => undefined },
   'certificationResults.optionalStandards': { message: (before, after) => compare(before, after, 'optionalStandards', 'Optional Standards') },
   'certificationResults.privacySecurityFramework': { message: (before, after) => comparePrimitive(before, after, 'privacySecurityFramework', 'Privacy & Security Framework') },
   'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
@@ -273,6 +280,7 @@ lookup = {
   'certificationResults.testStandards': { message: (before, after) => compare(before, after, 'testStandards', 'Test Standards') },
   'certificationResults.testTasks': { message: (before, after) => compare(before, after, 'testTasks', 'Test Tasks') },
   'certificationResults.testToolsUsed': { message: (before, after) => compare(before, after, 'testToolsUsed', 'Test Tools') },
+  'certificationResults.title': { message: () => undefined },
   'certificationResults.ucdProcesses': { message: (before, after) => compare(before, after, 'certificationResults.ucdProcesses', 'UCD Processes') },
   'certificationResults.useCases': { message: (before, after) => comparePrimitive(before, after, 'useCases', 'Use Cases') },
   'children.lastModifiedDate': { message: () => undefined },
@@ -306,6 +314,7 @@ lookup = {
   'nonconformities.findings': { message: (before, after) => comparePrimitive(before, after, 'findings', 'Findings') },
   'nonconformities.id': { message: () => undefined },
   'nonconformities.lastModifiedDate': { message: () => undefined },
+  'nonconformities.nonconformityCloseDate': { message: (before, after) => comparePrimitive(before, after, 'nonconformityCloseDate', 'Close Date', getDisplayDateFormat) },
   'nonconformities.nonconformityCloseDay': { message: (before, after) => comparePrimitive(before, after, 'nonconformityCloseDay', 'Close Day', getDisplayDateFormat) },
   'nonconformities.nonconformityStatus': { message: (before, after) => comparePrimitive(before, after, 'nonconformityStatus', 'Status') },
   'nonconformities.resolution': { message: (before, after) => comparePrimitive(before, after, 'resolution', 'Resolution') },
@@ -391,6 +400,7 @@ lookup = {
   'surveillance.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Day', getDisplayDateFormat) },
   'surveillance.warningMessages': { message: () => undefined },
   'testDataUsed.id': { message: () => undefined },
+  'testDataUsed.alteration': { message: (before, after) => comparePrimitive(before, after, 'alteration', 'Alteration') },
   'testDataUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
   'testProcedures.id': { message: () => undefined },
   'testProcedures.testProcedureVersion': { message: (before, after) => comparePrimitive(before, after, 'testProcedureVersion', 'Version') },
@@ -553,8 +563,10 @@ const ReportsListingsComponent = {
           }
         } else if (item.description.startsWith('Documentation')) {
           activity.action = 'Documentation was added to a nonconformity';
+          activity.details = compareObject(item.originalData, item.newData, lookup);
         } else if (item.description.startsWith('A document was removed')) {
           activity.action = 'Documentation was removed from a nonconformity';
+          activity.details = compareObject(item.originalData, item.newData, lookup);
         } else {
           activity.action = item.description;
         }
