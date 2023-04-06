@@ -226,7 +226,15 @@ const compareTestParticipants = (before, after) => {
 };
 
 lookup = {
-  shortCircuit: ['root.currentStatus', 'root.developer', 'root.product', 'requirements.requirementType', 'surveillance.certifiedProduct'],
+  shortCircuit: [
+    'requirements.requirementType',
+    'root.currentStatus',
+    'root.developer',
+    'root.oldestStatus',
+    'root.product',
+    'root.version',
+    'surveillance.certifiedProduct',
+  ],
   'accessibilityStandards.id': { message: () => undefined },
   'additionalSoftware.certifiedProductId': { message: () => undefined },
   'additionalSoftware.certifiedProductNumber': { message: (before, after) => comparePrimitive(before, after, 'certifiedProductNumber', 'Certified Product Code') },
