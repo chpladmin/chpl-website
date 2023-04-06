@@ -112,12 +112,7 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'requirements':
       options = {
-        sort: (p, c) => {
-          if (p.requirementType) {
-            return (p.requirementType.id < c.requirementType.id ? -1 : p.requirementType.id > c.requirementType.id ? 1 : 0);
-          }
-          return (p.requirement < c.requirement ? -1 : p.requirement > c.requirement ? 1 : 0);
-        },
+        sort: (p, c) => (p.id < c.id ? -1 : p.id > c.id ? 1 : 0),
         write: (f) => `Requirement "${f.requirementType?.title ?? f.requirement}"`,
       };
       break;
@@ -231,7 +226,7 @@ const compareTestParticipants = (before, after) => {
 };
 
 lookup = {
-  shortCircuit: ['root.currentStatus', 'root.developer', 'root.product', 'surveillance.certifiedProduct'],
+  shortCircuit: ['root.currentStatus', 'root.developer', 'root.product', 'requirements.requirementType', 'surveillance.certifiedProduct'],
   'accessibilityStandards.id': { message: () => undefined },
   'additionalSoftware.certifiedProductId': { message: () => undefined },
   'additionalSoftware.certifiedProductNumber': { message: (before, after) => comparePrimitive(before, after, 'certifiedProductNumber', 'Certified Product Code') },
@@ -311,7 +306,20 @@ lookup = {
   'parents.lastModifiedDate': { message: () => undefined },
   'qmsStandards.id': { message: () => undefined },
   'qmsStandards.qmsModification': { message: (before, after) => comparePrimitive(before, after, 'qmsModification', 'QMS Modification') },
+  'requirements.criterion': { message: () => 'Certification Criterion' },
+  'requirements.criterion.certificationEdition': { message: () => undefined },
+  'requirements.criterion.certificationEditionId': { message: () => undefined },
+  'requirements.criterion.id': { message: () => undefined },
+  'requirements.criterion.number': { message: (before, after) => comparePrimitive(before, after, 'number', 'Number') },
+  'requirements.criterion.removed': { message: () => undefined },
+  'requirements.criterion.title': { message: (before, after) => comparePrimitive(before, after, 'title', 'Title') },
   'requirements.nonconformities': { message: (before, after) => compare(before, after, 'nonconformities', 'Non-conformities') },
+  'requirements.requirement': { message: (before, after) => comparePrimitive(before, after, 'requirement', 'Requirement') },
+  'requirements.requirementTypeOther': { message: (before, after) => comparePrimitive(before, after, 'requirementTypeOther', 'Requirement Type (Other)') },
+  'requirements.requirementName': { message: (before, after) => comparePrimitive(before, after, 'requirementName', 'Requirement Name') },
+  'requirements.type': { message: () => 'Requirement Type' },
+  'requirements.type.id': { message: () => undefined },
+  'requirements.type.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.accessibilityStandards': { message: (before, after) => compare(before, after, 'accessibilityStandards', 'Accessibility Standards') },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
