@@ -44,10 +44,7 @@ describe('the accessibility standard component', () => {
       await browser.waitUntil(async () => (await component.getData()).length > initialCount);
       await expect(await (await component.dataTable).getText()).toContain(name);
       await page.editItem(name);
-      await (await component.name).click();
-      await browser.keys(['Control', 'a']);
-      await browser.keys(['Backspace']);
-      await (await component.name).setValue(editName);
+      await page.setValue(editName);
       await action.save();
       browser.waitUntil(async () => (await (await $$(component.dataTable)).getText()).not.toContain(name));
       await expect(await (await component.dataTable).getText()).toContain(editName);
