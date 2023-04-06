@@ -47,10 +47,7 @@ describe('the svap component', () => {
       await browser.waitUntil(async () => (await component.getSvaps()).length > initialCount);
       await expect(await (await component.svapTable).getText()).toContain(version);
       await page.editItem(version);
-      await (await component.version).click();
-      await browser.keys(['Control', 'a']);
-      await browser.keys(['Backspace']);
-      await (await component.version).setValue(newVersion);
+      await component.setValue(newVersion);
       await action.save();
       browser.waitUntil(async () => (await (await $$(component.svapTable)).getText()).not.toContain(version));
       await expect(await (await component.svapTable).getText()).toContain(newVersion);

@@ -1,8 +1,11 @@
 import { open as openPage } from '../../../utilities/hooks.async';
+import QmsStandardComponent from '../../../components/standards/qms-standard/qms-standard.po';
 
-class SystemMaintenancePage {
+class SystemMaintenancePage extends QmsStandardComponent {
   constructor() {
+    super();
     this.elements = {
+      ...this.elements,
       title: 'h1',
       navigationButton: (target) => `#system-maintenance-navigation-${target}`,
     };
@@ -27,6 +30,13 @@ class SystemMaintenancePage {
 
   async editItem(identifier) {
     await (await (await (await (await $(`td=${identifier}`)).parentElement()).$('button')).click());
+  }
+
+  async setValue(identifier) {
+    await (await this.name).click();
+    await browser.keys(['Control', 'a']);
+    await browser.keys(['Backspace']);
+    await (await this.name).setValue(identifier);
   }
 }
 

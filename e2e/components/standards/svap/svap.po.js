@@ -38,6 +38,13 @@ class SvapComponent {
            ).$$('tr');
   }
   /* eslint-enable indent */
+
+  async setValue(identifier) {
+    await (await this.version).click();
+    await browser.keys(['Control', 'a']);
+    await browser.keys(['Backspace']);
+    await (await this.version).setValue(identifier);
+  }
 }
 
 export default SvapComponent;
