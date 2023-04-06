@@ -53,7 +53,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'ucdProcesses.criteria':
       options = {
         sort: (p, c) => sortCriteria(p.criterion ?? p, c.criterion ?? c),
-        write: (f) => (f.criterion ? `${f.criterion.number}${isCures(f.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${f.number}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`),
+        write: (f) => (f.criterion ? `${f.criterion.number}${isCures(f.criterion) ? ' <span class="cures-update">(Cures Update)</span>' : ''}` : `${f.number ?? f.certificationNumber}${isCures(f) ? ' <span class="cures-update">(Cures Update)</span>' : ''}`),
       };
       break;
     case 'documents':
@@ -250,6 +250,8 @@ lookup = {
   'additionalSoftware.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
   'certificationEvents.eventDate': { message: (before, after) => comparePrimitive(before, after, 'eventDate', 'Status Change Date', getDisplayDateFormat) },
   'certificationEvents.id': { message: () => undefined },
+  'certificationEvents.lastModifiedDate': { message: () => undefined },
+  'certificationEvents.lastModifiedUser': { message: () => undefined },
   'certificationEvents.reason': { message: (before, after) => comparePrimitive(before, after, 'reason', 'Reason for Status change') },
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },
   'certificationResults.allowedConformanceMethods': { message: () => undefined },
@@ -301,6 +303,9 @@ lookup = {
   'measures.associatedCriteria': { message: (before, after) => compare(before, after, 'measures.associatedCriteria', 'Certification Criteria') },
   'measures.id': { message: () => undefined },
   'measures.measure.allowedCriteria': { message: () => undefined },
+  'measures.measureType': { message: () => 'Measure Type' },
+  'measures.measureType.id': { message: () => undefined },
+  'measures.measureType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'nonconformities.capApprovalDate': { message: (before, after) => comparePrimitive(before, after, 'capApprovalDate', 'CAP Approval Date', getDisplayDateFormat) },
   'nonconformities.capApprovalDay': { message: (before, after) => comparePrimitive(before, after, 'capApprovalDay', 'CAP Approval Day', getDisplayDateFormat) },
   'nonconformities.capEndDate': { message: (before, after) => comparePrimitive(before, after, 'capEndDate', 'CAP End Date', getDisplayDateFormat) },
