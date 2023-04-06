@@ -23,7 +23,7 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'certificationEvents':
       options = {
-        sort: (p, c) => p.eventDate - c.eventDate,
+        sort: (p, c) => (p.status.name === c.status.name ? 0 : p.eventDate - c.eventDate),
         write: (f) => `Certification Status "${f.status.name}"`,
       };
       break;
@@ -234,6 +234,8 @@ lookup = {
   'additionalSoftware.grouping': { message: (before, after) => comparePrimitive(before, after, 'grouping', 'Group') },
   'additionalSoftware.id': { message: () => undefined },
   'additionalSoftware.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
+  'certificationEvents.eventDate': { message: (before, after) => comparePrimitive(before, after, 'eventDate', 'Status Change Date', getDisplayDateFormat) },
+  'certificationEvents.id': { message: () => undefined },
   'certificationEvents.reason': { message: (before, after) => comparePrimitive(before, after, 'reason', 'Reason for Status change') },
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },
   'certificationResults.allowedConformanceMethods': { message: () => undefined },
@@ -322,6 +324,7 @@ lookup = {
   'requirements.type.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.accessibilityStandards': { message: (before, after) => compare(before, after, 'accessibilityStandards', 'Accessibility Standards') },
+  'root.certificationDate': { message: (before, after) => comparePrimitive(before, after, 'certificationDate', 'Certification Date', getDisplayDateFormat) },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
   'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
