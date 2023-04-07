@@ -6,7 +6,6 @@ class SystemMaintenancePage {
       ...this.elements,
       title: 'h1',
       navigationButton: (target) => `#system-maintenance-navigation-${target}`,
-      addButton: '#add-new-qms-standard',
       itemName: '#name',
       dataTable: 'table',
     };

@@ -6,6 +6,7 @@ class QmsStandardPage extends SystemMaintenancePage {
     this.elements = {
       ...this.elements,
       dataTable: 'table[aria-label="QMS Standard table"]',
+      addButton: '#add-new-qms-standard',
     };
   }
 }
