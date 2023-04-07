@@ -198,14 +198,14 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'ucdProcesses':
       options = {
-        sort: (p, c) => (p.name < c.name ? -1 : p.name > c.name ? 1 : 0),
-        write: (f) => `UCD Process "${f.name}"`,
+        sort: (p, c) => (p.name ?? p.ucdProcessName < c.name ?? c.ucdProcessName ? -1 : p.name ?? p.ucdProcessName > c.name ?? c.ucdProcessName ? 1 : 0),
+        write: (f) => `UCD Process "${f.name ?? f.ucdProcessName}"`,
       };
       break;
     default:
-      console.debug(after.length > 0 ? {
-        before, after, key, site: 'compareArrayOptionFinder',
-      } : { key, site: 'compareArrayOptionFinder' });
+      if (after.length > 0) {
+        console.debug({ before, after, key });
+      }
       return undefined;
   }
   const changes = compareArrays(before, after, { ...options, root: key }, lookup);
@@ -356,6 +356,9 @@ lookup = {
   'root.certificationDate': { message: (before, after) => comparePrimitive(before, after, 'certificationDate', 'Certification Date', getDisplayDateFormat) },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
   'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
+  'root.certificationStatus': { message: () => 'Certification Status' },
+  'root.certificationStatus.id': { message: () => undefined },
+  'root.certificationStatus.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Status') },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
   'root.chplProductNumberHistory': { message: () => undefined }, // probably?
   'root.countCerts': { message: () => undefined },
@@ -409,6 +412,7 @@ lookup = {
   'root.testingLab.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'ONC-ATL') },
   'root.testingLabs': { message: (before, after) => compare(before, after, 'testingLabs', 'Testing Labs') },
   'root.transparencyAttestationUrl': { message: (before, after) => comparePrimitive(before, after, 'transparencyAttestationUrl', 'Mandatory Disclosures URL') },
+  'root.visibleOnChpl': { message: (before, after) => comparePrimitive(before, after, 'visibleOnChpl', 'Visible on CHPL') },
   'root.warningMessages': { message: () => undefined },
   'surveillance.endDate': { message: (before, after) => comparePrimitive(before, after, 'endDate', 'End Date', getDisplayDateFormat) },
   'surveillance.endDay': { message: (before, after) => comparePrimitive(before, after, 'endDay', 'End Day', getDisplayDateFormat) },
