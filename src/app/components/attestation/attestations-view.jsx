@@ -121,7 +121,7 @@ function ChplAttestationsView(props) {
                       { attestations
                         .filter((att) => att.status === 'ATTESTATIONS_SUBMITTED' || canSeeUnsubmittedAttestationData())
                         .map((item) => (
-                          <TableRow key={item.id}>
+                          <TableRow key={item.id ?? item.attestationPeriod.id}>
                             <TableCell>
                               { getDisplayDateFormat(item.attestationPeriod.periodStart) }
                               {' '}

@@ -3,6 +3,7 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   ThemeProvider,
   makeStyles,
@@ -48,6 +49,13 @@ const useStyles = makeStyles({
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
   deleteButton: {
     backgroundColor: '#c44f65',
     color: '#ffffff',
@@ -75,6 +83,7 @@ function ChplActionBar(props) {
   const [errors, setErrors] = useState([]);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [pendingAction, setPendingAction] = useState('');
   const [pendingMessage, setPendingMessage] = useState('');
   const [showAcknowledgement, setShowAcknowledgement] = useState(false);
@@ -96,6 +105,10 @@ function ChplActionBar(props) {
   useEffect(() => {
     setIsDisabled(props.isDisabled);
   }, [props.isDisabled]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setIsProcessing(props.isProcessing);
+  }, [props.isProcessing]); // eslint-disable-line react/destructuring-assignment
 
   const act = (action) => {
     if (props.dispatch) {
@@ -207,9 +220,10 @@ function ChplActionBar(props) {
                   id="action-bar-confirm"
                   variant="contained"
                   onClick={() => act('confirm')}
-                  disabled={isDisabled}
+                  disabled={isDisabled || isProcessing}
                   className={classes.actionBarButton}
                 >
+                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
                   Confirm
                   <SaveIcon
                     className={classes.iconSpacing}
@@ -237,10 +251,11 @@ function ChplActionBar(props) {
                   id="action-bar-save"
                   variant="contained"
                   onClick={() => act('save')}
-                  disabled={isDisabled}
+                  disabled={isDisabled || isProcessing}
                   onMouseOver={() => act('mouseover')}
                   className={classes.actionBarButton}
                 >
+                  { isProcessing && <CircularProgress size={24} className={classes.buttonProgress} /> }
                   Save
                   <SaveIcon
                     className={classes.iconSpacing}
@@ -315,6 +330,7 @@ ChplActionBar.propTypes = {
   canSave: bool,
   canWithdraw: bool,
   isDisabled: bool,
+  isProcessing: bool,
   showAcknowledgement: bool,
 };
 
@@ -330,5 +346,6 @@ ChplActionBar.defaultProps = {
   canSave: true,
   canWithdraw: false,
   isDisabled: false,
+  isProcessing: false,
   showAcknowledgement: false,
 };

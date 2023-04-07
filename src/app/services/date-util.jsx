@@ -37,7 +37,21 @@ const getDisplayDateFormat = (date, fallback = 'N/A') => {
   return fallback;
 };
 
+const toTimestamp = (date) => {
+  if (typeof (date) === 'string' && isLocalDate(date)) {
+    const localDate = jsJoda.LocalDate.parse(date).plusDays(1);
+    const localTime = jsJoda.LocalTime.MIDNIGHT;
+    return jsJoda
+      .ZonedDateTime
+      .of3(localDate, localTime, jsJoda.ZoneId.of('America/New_York'))
+      .toInstant()
+      .toEpochMilli();
+  }
+  return undefined;
+};
+
 export {
   getDisplayDateFormat,
   jsJoda,
+  toTimestamp,
 };
