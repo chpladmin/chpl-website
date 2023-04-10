@@ -28,7 +28,8 @@ ChplActionBarWrapper.propTypes = {
   canDelete: bool,
   canReject: bool,
   isDisabled: bool,
-  showAcknowledgement: bool,
+  showErrorAcknowledgement: bool,
+  showWarningAcknowledgement: bool,
 };
 
 ChplActionBarWrapper.defaultProps = {
@@ -38,5 +39,6 @@ ChplActionBarWrapper.defaultProps = {
   canDelete: false,
   canReject: false,
   isDisabled: false,
-  showAcknowledgement: false,
+  showErrorAcknowledgement: false,
+  showWarningAcknowledgement: false,
 };
