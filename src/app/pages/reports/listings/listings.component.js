@@ -17,14 +17,14 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'additionalSoftware':
       options = {
-        sort: (p, c) => (p.name < c.name ? -1 : p.name > c.name ? 1 : 0),
-        write: (s) => `Relied Upon Software "${s.name}"`,
+        sort: (p, c) => (p.id < c.id ? -1 : p.id > c.id ? 1 : 0),
+        write: (f) => `Relied Upon Software "${f.name ?? f.certifiedProductNumber}"`,
       };
       break;
     case 'certificationEvents':
       options = {
-        sort: (p, c) => (p.status.name === c.status.name ? 0 : p.eventDate - c.eventDate),
-        write: (f) => `Certification Status "${f.status.name}"`,
+        sort: (p, c) => (p.status?.name ?? p.certificationStatusName === c.status?.name ?? c.certificationStatusName ? 0 : p.eventDate - c.eventDate),
+        write: (f) => `Certification Status "${f.status?.name ?? f.certificationStatusName}"`,
       };
       break;
     case 'children':
@@ -148,8 +148,8 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'testDataUsed':
       options = {
-        sort: (p, c) => (p.testData.name < c.testData.name ? -1 : p.testData.name > c.testData.name ? 1 : 0),
-        write: (f) => `Test Data "${f.testData.name}"`,
+        sort: (p, c) => (p.testData?.name ?? p.version < c.testData?.name ?? c.version ? -1 : p.testData?.name ?? p.version > c.testData?.name ?? c.version ? 1 : 0),
+        write: (f) => `Test Data "${f.testData?.name ?? f.version}"`,
       };
       break;
     case 'testFunctionality':
@@ -169,7 +169,7 @@ const compare = (before, after, key, title = 'unknown') => {
           }
           return p.testProcedure?.name < c.testProcedure?.name ? -1 : p.testProcedure?.name > c.testProcedure?.name ? 1 : 0;
         },
-        write: (f) => `Test Procedure "${f.testProcedure.name}"`,
+        write: (f) => `Test Procedure "${f.testProcedure?.name ?? f.testProcedureVersion}"`,
       };
       break;
     case 'testStandards':
@@ -253,6 +253,9 @@ lookup = {
   'certificationEvents.lastModifiedDate': { message: () => undefined },
   'certificationEvents.lastModifiedUser': { message: () => undefined },
   'certificationEvents.reason': { message: (before, after) => comparePrimitive(before, after, 'reason', 'Reason for Status change') },
+  'certificationEvents.status': { message: () => 'Certification Status' },
+  'certificationEvents.status.id': { message: () => undefined },
+  'certificationEvents.status.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Status') },
   'certificationResults.additionalSoftware': { message: (before, after) => compare(before, after, 'additionalSoftware', 'Relied Upon Software') },
   'certificationResults.allowedConformanceMethods': { message: () => undefined },
   'certificationResults.allowedMacraMeasures': { message: () => undefined },
@@ -285,7 +288,7 @@ lookup = {
   'certificationResults.testTasks': { message: (before, after) => compare(before, after, 'testTasks', 'Test Tasks') },
   'certificationResults.testToolsUsed': { message: (before, after) => compare(before, after, 'testToolsUsed', 'Test Tools') },
   'certificationResults.title': { message: () => undefined },
-  'certificationResults.ucdProcesses': { message: (before, after) => compare(before, after, 'certificationResults.ucdProcesses', 'UCD Processes') },
+  'certificationResults.ucdProcesses': { message: (before, after) => compare(before, after, 'ucdProcesses', 'UCD Processes') },
   'certificationResults.useCases': { message: (before, after) => comparePrimitive(before, after, 'useCases', 'Use Cases') },
   'children.lastModifiedDate': { message: () => undefined },
   'conformanceMethods.conformanceMethod': { message: (before) => `Conformance Method "${before.name}"` },
@@ -358,9 +361,13 @@ lookup = {
   'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
   'root.certificationStatus': { message: () => 'Certification Status' },
   'root.certificationStatus.id': { message: () => undefined },
+  'root.certificationStatus.date': { message: (before, after) => comparePrimitive(before, after, 'date', 'Certification Status Date', getDisplayDateFormat) },
   'root.certificationStatus.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Status') },
   'root.chplProductNumber': { message: (before, after) => comparePrimitive(before, after, 'chplProductNumber', 'CHPL Product Number') },
   'root.chplProductNumberHistory': { message: () => undefined }, // probably?
+  'root.classificationType': { message: () => 'Listing Classification' },
+  'root.classificationType.id': { message: () => undefined },
+  'root.classificationType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'root.countCerts': { message: () => undefined },
   'root.countClosedNonconformities': { message: () => undefined },
   'root.countClosedSurveillance': { message: () => undefined },
@@ -389,6 +396,7 @@ lookup = {
   'root.practiceType': { message: () => 'Practice Type' },
   'root.practiceType.id': { message: () => undefined },
   'root.practiceType.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
+  'root.productAdditionalSoftware': { message: (before, after) => comparePrimitive(before, after, 'productAdditionalSoftware', 'Listing Relied Upon Software') },
   'root.promotingInteroperabilityUserHistory': { message: (before, after) => compare(before, after, 'promotingInteroperabilityUserHistory', 'Promoting Interoperability User History') },
   'root.qmsStandards': { message: (before, after) => compare(before, after, 'qmsStandards', 'QMS Standards') },
   'root.reportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'reportFileLocation', 'ONC-ATL Test Report File Location') },
@@ -406,6 +414,7 @@ lookup = {
   'root.surveillance': { message: (before, after) => compare(before, after, 'surveillance', 'Surveillance') },
   'root.svapNoticeUrl': { message: (before, after) => comparePrimitive(before, after, 'svapNoticeUrl', 'SVAP Notice URL') },
   'root.targetedUsers': { message: (before, after) => compare(before, after, 'targetedUsers', 'Targeted Users ') },
+  'root.termsOfUse': { message: (before, after) => comparePrimitive(before, after, 'termsOfUse', 'Terms Of Use') },
   'root.testingLab': { message: () => 'ONC-ATL' },
   'root.testingLab.code': { message: () => undefined },
   'root.testingLab.id': { message: () => undefined },
@@ -427,6 +436,7 @@ lookup = {
   'testDataUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
   'testProcedures.id': { message: () => undefined },
   'testProcedures.testProcedureVersion': { message: (before, after) => comparePrimitive(before, after, 'testProcedureVersion', 'Version') },
+  'testStandards.id': { message: () => undefined },
   'testTasks.criteria': { message: (before, after) => compare(before, after, 'testTasks.criteria', 'Certification Criteria') },
   'testTasks.id': { message: () => undefined },
   'testTasks.taskErrors': { message: (before, after) => comparePrimitive(before, after, 'taskErrors', 'Task Errors') },
@@ -443,10 +453,13 @@ lookup = {
   'testTasks.taskTimeDeviationOptimalAvg': { message: (before, after) => comparePrimitive(before, after, 'taskTimeDeviationOptimalAvg', 'Task Time Deviation Optimal Average') },
   'testTasks.taskTimeStddev': { message: (before, after) => comparePrimitive(before, after, 'taskTimeStddev', 'Task Time Standard Deviation') },
   'testTasks.testParticipants': { message: compareTestParticipants },
+  'testTasks.testTaskId': { message: () => undefined },
   'testToolsUsed.id': { message: () => undefined },
   'testToolsUsed.testToolVersion': { message: (before, after) => comparePrimitive(before, after, 'testToolVersion', 'Version') },
   'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
   'ucdProcesses.details': { message: (before, after) => comparePrimitive(before, after, 'details', 'UCD Process Details') },
+  'ucdProcesses.id': { message: () => undefined },
+  'ucdProcesses.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
 };
 
 const ReportsListingsComponent = {
