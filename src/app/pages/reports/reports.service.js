@@ -124,41 +124,6 @@ export class ReportService {
 
   getOptions (key) {
     switch (key) {
-    case 'additionalSoftware':
-      return {
-        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
-        write: s => 'Relied Upon Software "' + s.name + '"',
-        compare: (p, c) => p.version !== c.version || p.grouping !== c.grouping || p.certifiedProductNumber !== c.certifiedProductNumber || p.justification !== c.justification,
-        change: (p, c) => {
-          let ret = 'Updated Relied Upon Software "' + p.name + '":<ul>';
-          if (p.version !== c.version) {
-            ret += '<li>Version changed from "' + p.version + '" to "' + c.version + '"</li>';
-          }
-          if (p.grouping !== c.grouping) {
-            ret += '<li>Grouping changed from "' + p.grouping + '" to "' + c.grouping + '"</li>';
-          }
-          if (p.certifiedProductNumber !== c.certifiedProductNumber) {
-            ret += '<li>CHPL Product Number changed from "' + p.certifiedProductNumber + '" to "' + c.certifiedProductNumber + '"</li>';
-          }
-          if (p.justification !== c.justification) {
-            ret += '<li>Justification changed from "' + p.justification + '" to "' + c.justification + '"</li>';
-          }
-          ret += '</ul>';
-          return ret;
-        },
-      };
-    case 'criteria':
-      return {
-        sort: (p, c) => p.number < c.number ? -1 : p.number > c.number ? 1 : p.title < c.title ? -1 : p.title > c.title ? 1 : 0,
-        write: c => c.number + ': ' + c.title.replace(/\(Cures Update\)/, '<span class="cures-update">(Cures Update)</span>'),
-      };
-    case 'meaningfulUseUserHistory':
-      return {
-        sort: (p, c) => p.muuDate - c.muuDate,
-        write: m => 'MUU Count of ' + m.muuCount + ' on ' + this.$filter('date')(m.muuDate, 'mediumDate', 'UTC'),
-        compare: (p, c) => p.muuCount !== c.muuCount,
-        change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
-      };
     case 'measures':
       return {
         sort: (p, c) => {
@@ -181,37 +146,6 @@ export class ReportService {
                     + '", for ' + p.measureType.name + ' changed from criteria: '
                     + p.associatedCriteria.map(c => c.number + ': ' + c.title).join(', ')
                     + ' to: ' + c.associatedCriteria.map(c => c.number + ': ' + c.title).join(', '),
-      };
-    case 'promotingInteroperabilityUserHistory':
-      return {
-        sort: (p, c) => {
-          if (p.userCountDate < c.userCountDate) { return -1; }
-          if (p.userCountDate > c.userCountDate) { return 1; }
-          return 0;
-        },
-        write: m => 'Promoting Interoperability Count of ' + m.userCount + ' on ' + m.userCountDate,
-        compare: (p, c) => p.userCount !== c.userCount,
-        change: (p, c) => 'Promoting Interoperability Count changed from ' + p.userCount + ' to ' + c.userCount + ' on ' + p.userCountDate,
-      };
-    case 'qmsStandards':
-      return {
-        sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : p.qmsModification < c.qmsModification ? -1 : p.qmsModification > c.qmsModification ? 1 : p.applicableCriteria < c.applicableCriteria ? -1 : p.applicableCriteria > c.applicableCriteria ? 1 : 0,
-        write: q => 'QMS Standard "' + q.qmsStandardName + '" with modification "' + q.qmsModification + '" applicable to criteria: "' + q.applicableCriteria + '"',
-      };
-    case 'targetedUsers':
-      return {
-        sort: (p, c) => p.targetedUserName < c.targetedUserName ? -1 : p.targetedUserName > c.targetedUserName ? 1 : 0,
-        write: t => 'Targeted User "' + t.targetedUserName + '"',
-      };
-    case 'testFunctionality':
-      return {
-        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
-        write: f => 'Test Functionality "' + f.name + '"',
-      };
-    case 'functionalitiesTested':
-      return {
-        sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
-        write: f => 'Functionalities Tested "' + f.name + '"',
       };
     default:
       return {
