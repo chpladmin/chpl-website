@@ -84,7 +84,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'measures':
       options = {
         sort: (p, c) => (p.measure.id < c.measure.id ? -1 : p.measure.id > c.measure.id ? 1 : 0),
-        write: (f) => `Measure "${f.measure.abbreviation}: ${f.measure.requiredTest}"`,
+        write: (f) => `Measure "${f.measure.removed ? '<span class="removed">Removed | ' : ''}${f.measure.abbreviation}: ${f.measure.requiredTest}${f.measure.removed ? '</span>' : ''}"`,
       };
       break;
     case 'nonconformities':
