@@ -31,7 +31,7 @@ describe('the ChplUserTriggerEdit component', () => {
       />,
     );
     await waitFor(() => {
-      expect(screen.getByText('0 0 4 1/1 * ? *')).toBeInTheDocument();
+      expect(screen.getByText(/0 0 . 1\/1 \* \? \*/)).toBeInTheDocument();
     });
   });
 

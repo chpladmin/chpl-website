@@ -72,7 +72,7 @@ const DeveloperViewComponent = {
       if (action === 'manageTracking') { return this.hasAnyRole(['ROLE_DEVELOPER']); } // only DEVELOPER can manage tracking
       if (action === 'split-developer' && this.developer.products.length < 2) { return false; } // cannot split developer without at least two products
       if (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; } // can do everything
-      if (action === 'merge') { return false; } // if not above roles, can't merge
+      if (action === 'join') { return false; } // if not above roles, can't join
       if (action === 'split-developer') { return this.developer.status.status === 'Active' && this.hasAnyRole(['ROLE_ACB']); } // ACB can split
       if (action === 'edit') {
         if (this.featureFlags.isOn('demographic-change-request')) {

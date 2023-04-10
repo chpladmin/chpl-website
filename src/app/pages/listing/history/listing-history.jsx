@@ -18,9 +18,10 @@ import {
 } from '@material-ui/core';
 import { bool, object } from 'prop-types';
 
-import theme from '../../../themes/theme';
-import { getAngularService } from '../../../services/angular-react-helper';
-import { ChplDialogTitle } from '../../../components/util';
+import { ChplDialogTitle } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { toTimestamp } from 'services/date-util';
+import theme from 'themes/theme';
 
 import {
   interpretActivity,
@@ -94,7 +95,7 @@ function ChplListingHistory(props) {
       networkService.getSingleProductActivityMetadata(id, { end }).then((metadata) => {
         interpretedProducts.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          const { interpreted, merged, split } = interpretProduct(response);
+          const { interpreted, merged, ownerChanges, split } = interpretProduct(response);
           if (interpreted.change.length > 0) {
             setActivity((activity) => [
               ...activity,
@@ -102,6 +103,7 @@ function ChplListingHistory(props) {
             ]);
           }
           merged.forEach((next) => evaluateProductActivity(next));
+          ownerChanges.forEach((owner) => evaluateDeveloperActivity(owner.developer.id, toTimestamp(owner.transferDay)));
           if (split?.id) {
             evaluateProductActivity(split.id, split.end);
           }
