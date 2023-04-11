@@ -22,7 +22,7 @@ import filter from './filter';
 import formik from './formik';
 import functionalitiesTested from './functionalities-tested';
 import { job, scheduledSystemTrigger, trigger } from './jobs';
-import { certificationEdition, cqm } from './listing';
+import { certificationEdition, cqm, measure } from './listing';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import product from './product';
 import reliedUponSoftware from './relied-upon-software';
@@ -77,6 +77,7 @@ export {
   functionalitiesTested,
   job,
   listing,
+  measure,
   optionalStandard,
   product,
   qmsStandard,

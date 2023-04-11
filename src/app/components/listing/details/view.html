@@ -122,7 +122,14 @@
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'g1g2'" id="panel-g1g2">
-        <chpl-g1g2-view measures="$ctrl.listing.measures"></chpl-g1g2-view>
+        <span feature-flag="ui-upgrade" feature-flag-hide>
+          <chpl-g1g2-view measures="$ctrl.listing.measures"></chpl-g1g2-view>
+        </span>
+        <span feature-flag="ui-upgrade">
+          <chpl-g1g2-bridge
+            measures="$ctrl.listing.measures"
+            ></chpl-g1g2-bridge>
+        </span>
       </div>
     </div>
 
