@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Card,
   IconButton,
   Table,
@@ -13,11 +14,16 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import { arrayOf } from 'prop-types';
 
+import { palette, utilStyles } from 'themes';
 import { ChplTooltip } from 'components/util';
 import { measure as measureType } from 'shared/prop-types';
 import { sortCriteria } from 'services/criteria.service';
 
 const useStyles = makeStyles({
+  ...utilStyles,
+  infoIcon: {
+    color: `${palette.primary}`,
+  },
 });
 
 const getDisplayCriteria = (criteria) => [...new Set(criteria.map((c) => c.number))]
@@ -53,23 +59,25 @@ function ChplG1g2(props) {
           { measures
             .map((measure) => (
               <TableRow key={measure.id}>
-                <TableCell className={measure.measure.removed ? 'removed' : ''}>
-                  { measure.measure.removed
+                <TableCell className={measure.measure.removed ? classes.removedText : ''}>
+                  <Box display="flex" alignItems="center" gridGap={4}>
+                    { measure.measure.removed
                     && (
                       <>
                         Removed |
                         {' '}
                       </>
                     )}
-                  { measure.measure.name }
-                  { measure.measure.removed
+                    { measure.measure.name }
+                    { measure.measure.removed
                     && (
                       <ChplTooltip title="This MACRA Measure has been removed from the Program.">
                         <IconButton>
-                          <InfoIcon />
+                          <InfoIcon className={classes.infoIcon} />
                         </IconButton>
                       </ChplTooltip>
                     )}
+                  </Box>
                 </TableCell>
                 <TableCell>
                   { measure.measure.requiredTest}
