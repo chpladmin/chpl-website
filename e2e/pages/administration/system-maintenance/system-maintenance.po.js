@@ -6,6 +6,7 @@ class SystemMaintenancePage {
       ...this.elements,
       title: 'h1',
       navigationButton: (target) => `#system-maintenance-navigation-${target}`,
+      addButton: '#add-new-item',
       itemName: '#name',
       dataTable: 'table',
     };
@@ -45,10 +46,6 @@ class SystemMaintenancePage {
            ).$$('tr');
   }
   /* eslint-enable indent */
-
-  async editItem(identifier) {
-    await (await (await (await (await $(`td=${identifier}`)).parentElement()).$('button')).click());
-  }
 
   async canNavigate(target) {
     return (await $(this.elements.navigationButton(target))).isClickable();
