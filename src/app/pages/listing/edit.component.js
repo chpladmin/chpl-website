@@ -28,6 +28,8 @@ const ListingEditPageComponent = {
         basic: [],
         details: [],
         save: [],
+        businessErrors: [],
+        dataErrors: [],
       };
       this.warnings = {
         basic: [],
@@ -71,7 +73,7 @@ const ListingEditPageComponent = {
       this.errorMessages = [].concat(this.errors.basic, this.errors.details, this.errors.save, this.higherErrors).filter((message) => message);
       this.warningMessages = [].concat(this.warnings.basic, this.warnings.details, this.warnings.save, this.higherWarnings).filter((message) => message);
       this.showWarningAcknowledgement = !this.isConfirming && this.warningMessages.length > 0;
-      this.showErrorAcknowledgement = !this.isConfirming && this.errorMessages.length > 0;
+      this.showErrorAcknowledgement = !this.isConfirming && this.errors.businessErrors.length > 0 && this.errors.dataErrors.length === 0;
     }
 
     isValid() {
@@ -127,6 +129,12 @@ const ListingEditPageComponent = {
             }
             if (error.data.errorMessages && error.data.errorMessages.length > 0) {
               that.errors.save = that.errors.save.concat(error.data.errorMessages);
+            }
+            if (error.data.businessErrorMessages) {
+              that.errors.businessErrors = error.data.businessErrorMessages;
+            }
+            if (error.data.dataErrorMessages) {
+              that.errors.dataErrors = error.data.dataErrorMessages;
             }
             if (error.data.warningMessages && error.data.warningMessages.length > 0) {
               that.warnings.save = that.warnings.save.concat(error.data.warningMessages);
