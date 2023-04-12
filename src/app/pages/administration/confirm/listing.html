@@ -52,7 +52,7 @@
         ></chpl-inspect-listing>
     </div>
   </div>
-  <chpl-action-bar-bridge
+  <chpl-action-bar-wrapper-bridge
     ng-if="!$ctrl.isEditing"
     can-confirm="true"
     can-reject="true"
@@ -61,5 +61,5 @@
     errors="$ctrl.errorMessages"
     warnings="$ctrl.warningMessages"
     dispatch="::$ctrl.handleActionDispatch">
-  </chpl-action-bar-bridge>
+  </chpl-action-bar-wrapper-bridge>
 </div>
