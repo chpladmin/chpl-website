@@ -20,11 +20,10 @@ import SaveIcon from '@material-ui/icons/Save';
 import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
 
-import theme from 'themes/theme';
-
+import { palette, theme} from '../../themes';
 const useStyles = makeStyles({
   actionBar: {
-    backgroundColor: '#fff',
+    backgroundColor: palette.white,
     position: 'fixed',
     bottom: '0',
     right: '0',
@@ -44,20 +43,20 @@ const useStyles = makeStyles({
     padding: '16px 0',
   },
   actionBarErrorAcknowledgement: {
-    color: '#ffffff',
-    backgroundColor: '#c44f65',
+    color: palette.white,
+    backgroundColor: palette.error,
     textAlign: 'center',
-    borderBottom: '1px solid #ddd',
+    borderBottom: `1px solid ${palette.greyLight}`,
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
   actionBarErrorText: {
-    color: '#ffffff',
+    color: palette.white,
   },
   actionBarWarningAcknowledgement: {
-    color: '#c44f65',
+    color: palette.error,
     textAlign: 'center',
-    borderBottom: '1px solid #ddd',
+    borderBottom: `1px solid ${palette.greyLight}`,
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
@@ -69,14 +68,14 @@ const useStyles = makeStyles({
     marginLeft: -12,
   },
   deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
+    backgroundColor: palette.error,
+    color: palette.white,
     '&:hover': {
-      backgroundColor: '#853544',
+      backgroundColor: palette.errorDark,
     },
   },
   errorCheckbox: {
-    color: '#ffffff',
+    color: palette.white,
   },
   iconSpacing: {
     marginLeft: '4px',
