@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -19,6 +19,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
 
+import { UserContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -87,6 +88,7 @@ function ChplActionBar(props) {
     canSave,
     canWithdraw,
   } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const [errorAcknowledged, setErrorAcknowledged] = useState(false);
   const [warningAcknowledged, setWarningAcknowledged] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -109,8 +111,8 @@ function ChplActionBar(props) {
   }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setShowErrorAcknowledgement(props.showErrorAcknowledgement);
-  }, [props.showErrorAcknowledgement]); // eslint-disable-line react/destructuring-assignment
+    setShowErrorAcknowledgement(props.showErrorAcknowledgement && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']));
+  }, [props.showErrorAcknowledgement, hasAnyRole]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setShowWarningAcknowledgement(props.showWarningAcknowledgement);
