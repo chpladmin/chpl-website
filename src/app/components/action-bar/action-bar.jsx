@@ -6,6 +6,7 @@ import {
   CircularProgress,
   FormControlLabel,
   ThemeProvider,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -20,11 +21,11 @@ import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
 
 import { UserContext } from 'shared/contexts';
-import theme from 'themes/theme';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   actionBar: {
-    backgroundColor: '#fff',
+    backgroundColor: palette.white,
     position: 'fixed',
     bottom: '0',
     right: '0',
@@ -44,17 +45,20 @@ const useStyles = makeStyles({
     padding: '16px 0',
   },
   actionBarErrorAcknowledgement: {
-    color: '#ffffff',
-    backgroundColor: '#c44f65',
+    color: palette.white,
+    backgroundColor: palette.error,
     textAlign: 'center',
-    borderBottom: '1px solid #ddd',
+    borderBottom: `1px solid ${palette.greyLight}`,
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
+  actionBarErrorText: {
+    color: palette.white,
+  },
   actionBarWarningAcknowledgement: {
-    color: '#c44f65',
+    color: palette.error,
     textAlign: 'center',
-    borderBottom: '1px solid #ddd',
+    borderBottom: `1px solid ${palette.greyLight}`,
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
@@ -66,11 +70,14 @@ const useStyles = makeStyles({
     marginLeft: -12,
   },
   deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
+    backgroundColor: palette.error,
+    color: palette.white,
     '&:hover': {
-      backgroundColor: '#853544',
+      backgroundColor: palette.errorDark,
     },
+  },
+  errorCheckbox: {
+    color: palette.white,
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -189,14 +196,18 @@ function ChplActionBar(props) {
             <div
               className={classes.actionBarErrorAcknowledgement}
             >
+              <Typography variant="body1">Caution: You are about to bypass error messages to update this product. This action may have unintended consequences. Please check the box and press save to confirm that you want to proceed</Typography>
               <FormControlLabel
-                label={`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}
+                label={
+                  <Typography className={classes.actionBarErrorText}><strong>{`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}</strong></Typography>
+}
                 control={(
                   <Checkbox
-                    name="errorAcknowledge"
                     value="errorAcknowledge"
                     onChange={toggleErrorAcknowledgement}
                     checked={errorAcknowledged}
+                    color="default"
+                    className={classes.errorCheckbox}
                   />
                 )}
               />
