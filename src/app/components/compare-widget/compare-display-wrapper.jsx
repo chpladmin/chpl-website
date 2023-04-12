@@ -6,13 +6,16 @@ import {
 import ChplCompareDisplay from './compare-display';
 import CompareWrapper from './compare-wrapper';
 
+import BrowserWrapper from 'components/browser/browser-wrapper';
 import theme from 'themes/theme';
 
 function ChplCompareDisplayWrapper() {
   return (
     <ThemeProvider theme={theme}>
       <CompareWrapper>
-        <ChplCompareDisplay />
+        <BrowserWrapper>
+          <ChplCompareDisplay />
+        </BrowserWrapper>
       </CompareWrapper>
     </ThemeProvider>
   );

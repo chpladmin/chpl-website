@@ -7,6 +7,7 @@ class ActionBarComponent {
       errors: '#action-bar-errors > ul > li',
       warnings: '#action-bar-warnings > ul > li',
       closeMessages: '#action-bar-messages-close',
+      confirmationYes: '#action-confirmation-yes',
     };
   }
 
@@ -32,6 +33,10 @@ class ActionBarComponent {
 
   async waitForMessages() {
     await (await $(this.elements.messages)).waitForDisplayed();
+  }
+
+  async clickYesToConfirm() {
+    await (await $(this.elements.confirmationYes)).click();
   }
 }
 

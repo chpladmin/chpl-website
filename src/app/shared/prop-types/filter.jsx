@@ -10,8 +10,11 @@ import {
 
 const filter = shape({
   key: string.isRequired,
+  disabled: bool,
   display: string.isRequired,
   required: bool,
+  singular: bool,
+  loneFilter: bool,
   operatorKey: string,
   operator: string,
   values: arrayOf(shape({

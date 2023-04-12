@@ -31,4 +31,20 @@ const usePostAttestationException = () => {
   });
 };
 
-export { useFetchAttestations, useFetchDevelopers, usePostAttestationException };
+const usePutJoinDevelopers = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`developers/${data.developer.id}/join`, data)
+    .then((response) => response), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('developers');
+    },
+  });
+};
+
+export {
+  useFetchAttestations,
+  useFetchDevelopers,
+  usePostAttestationException,
+  usePutJoinDevelopers,
+};

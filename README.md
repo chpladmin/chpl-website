@@ -38,12 +38,8 @@ yarn install
 * `yarn start:prod`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading, but using the production settings for js minification / packaging / etc.
 * `yarn start:all`: Run `yarn start`, `yarn test:auto` and `yarn test:react:auto` all at once, in the same terminal
 * `yarn profile`: Generate a webpack statistics output file
-* `yarn test`: Run the Karma-based unit tests once (tests based on the AngularJS components)
-* `yarn test:auto`: Run the Karma-based unit tests continuously (tests based on the AngularJS components), re-running the tests on any file change
-* `yarn test:ahrq`: Run Karma-based tests once in a fashion suitable for the deployment environment (tests based on the AngularJS components)
-* `yarn test:ci`: Run Karma-based tests once in a fashion suitable for a Continuous Integration environment (tests based on the AngularJS components)
-* `yarn test:react`: Run Jest-based unit tests once (tests based on the React components)
-* `yarn test:react:auto`: Run Jest-based unit tests continuously (tests based on the React components)
+* `yarn test`: Run the Jest-based unit tests once (tests based on the React components)
+* `yarn test:auto`: Run the Jest-based unit tests continuously (tests based on the React components), re-running the tests on any file change
 * `lint`: Run ESLint against all JavaScript files in the project
 * `lint:fix`: Run ESLint against all JavaScript files in the project and fix any errors that ESLint can fix automatically. Especially useful when run as `yarn lint:fix src/app/path/to/file.js[x]` to automatically apply fixes against a single file
 * `yarn e2e`: Run the end to end integration tests, as well as e2e linting

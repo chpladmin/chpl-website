@@ -16,18 +16,16 @@ import { developer as developerPropType } from 'shared/prop-types';
 function ChplDeveloper(props) {
   const {
     canEdit,
-    canMerge,
+    canJoin,
     canSplit,
     demographicChangeRequestIsOn,
     developer,
     dispatch,
     errorMessages,
     isEditing,
-    isMerging,
     isSplitting,
   } = props;
   const [isInvalid, setIsInvalid] = useState(false);
-  const [mergingDevelopers, setMergingDevelopers] = useState([]);
   const flags = {
     demographicChangeRequestIsOn,
   };
@@ -36,29 +34,24 @@ function ChplDeveloper(props) {
     setIsInvalid(props.isInvalid);
   }, [props.isInvalid]); // eslint-disable-line react/destructuring-assignment
 
-  useEffect(() => {
-    setMergingDevelopers(props.mergingDevelopers);
-  }, [props.mergingDevelopers]); // eslint-disable-line react/destructuring-assignment
-
   return (
     <UserWrapper>
       <FlagContext.Provider value={flags}>
-        { (isEditing || isMerging)
+        { (isEditing)
           && (
             <ChplDeveloperEdit
               developer={developer}
               dispatch={dispatch}
               isInvalid={isInvalid}
               isSplitting={isSplitting}
-              mergingDevelopers={mergingDevelopers}
               errorMessages={errorMessages}
             />
           )}
-        { !isEditing && !isMerging
+        { !isEditing
           && (
             <ChplDeveloperView
               canEdit={canEdit}
-              canMerge={canMerge}
+              canJoin={canJoin}
               canSplit={canSplit}
               developer={developer}
               dispatch={dispatch}
@@ -74,7 +67,7 @@ export default ChplDeveloper;
 
 ChplDeveloper.propTypes = {
   canEdit: bool,
-  canMerge: bool,
+  canJoin: bool,
   canSplit: bool,
   demographicChangeRequestIsOn: bool,
   developer: developerPropType.isRequired,
@@ -82,21 +75,17 @@ ChplDeveloper.propTypes = {
   errorMessages: arrayOf(string),
   isEditing: bool,
   isInvalid: bool,
-  isMerging: bool,
   isSplitting: bool,
-  mergingDevelopers: arrayOf(developerPropType),
 };
 
 ChplDeveloper.defaultProps = {
   canEdit: false,
-  canMerge: false,
+  canJoin: false,
   canSplit: false,
   demographicChangeRequestIsOn: false,
   dispatch: () => {},
   errorMessages: [],
   isEditing: false,
   isInvalid: false,
-  isMerging: false,
   isSplitting: false,
-  mergingDevelopers: [],
 };

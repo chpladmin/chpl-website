@@ -118,6 +118,18 @@ class DateUtil {
   timestampToZonedDateTime(dateLong) {
     return jsJoda.ZonedDateTime.ofInstant(jsJoda.Instant.ofEpochMilli(dateLong), this.ZONE_ID);
   }
+
+  getLocalDate(stringAsLocalDate) {
+    return jsJoda.LocalDate.parse(stringAsLocalDate);
+  }
+  
+  getDateFromLocalDate(localDate) {
+    return jsJoda.convert(localDate).toDate();
+  }
+  
+  getLocalDateFromJsDate(date) {
+    return date.toISOString().substring(0,10);
+  }
 }
 
 angular.module('chpl.services')
