@@ -6,6 +6,7 @@ import {
   CircularProgress,
   FormControlLabel,
   ThemeProvider,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -50,6 +51,9 @@ const useStyles = makeStyles({
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
+  actionBarErrorText: {
+    color: '#ffffff',
+  },
   actionBarWarningAcknowledgement: {
     color: '#c44f65',
     textAlign: 'center',
@@ -70,6 +74,9 @@ const useStyles = makeStyles({
     '&:hover': {
       backgroundColor: '#853544',
     },
+  },
+  errorCheckbox: {
+    color: '#ffffff',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -187,14 +194,18 @@ function ChplActionBar(props) {
             <div
               className={classes.actionBarErrorAcknowledgement}
             >
+              <Typography variant="body1">Caution: You are about to bypass error messages to update this product. This action may have unintended consequences. Please check the box and press save to confirm that you want to proceed</Typography>
               <FormControlLabel
-                label={`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}
+                label={
+                  <Typography className={classes.actionBarErrorText}><strong>{`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}</strong></Typography>
+}
                 control={(
                   <Checkbox
-                    name="errorAcknowledge"
                     value="errorAcknowledge"
                     onChange={toggleErrorAcknowledgement}
                     checked={errorAcknowledged}
+                    color="default"
+                    className={classes.errorCheckbox}
                   />
                 )}
               />
