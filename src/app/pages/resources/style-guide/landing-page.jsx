@@ -10,8 +10,18 @@ import {
     CardContent,
     Link,
 } from '@material-ui/core';
-
+import CodeIcon from '@material-ui/icons/Code';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
+import ImageIcon from '@material-ui/icons/Image';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
+import BlockIcon from '@material-ui/icons/Block';
+import DescriptionIcon from '@material-ui/icons/Description';
+import StopIcon from '@material-ui/icons/Stop';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import GavelIcon from '@material-ui/icons/Gavel';
+import CancelIcon from '@material-ui/icons/Cancel';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Image from '../../../../assets/images/Chpl_Logo-01.png';
 import SgSearchBar from './sg-search-bar';
 import {
@@ -20,6 +30,7 @@ import {
     ChplFilterSearchTerm,
     useFilterContext,
 } from 'components/filter';
+import { theme, utilStyles } from 'themes';
 const useStyles = makeStyles(() => ({
     landingPageBackground: {
         backgroundPosition: 'right',
@@ -28,9 +39,40 @@ const useStyles = makeStyles(() => ({
     },
     helpCards: {
         width: '100%',
+        
     },
     subHeaders: {
         color: '#fff',
+    },
+    collectionsCard:{
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '48%',
+          },
+          [theme.breakpoints.up('md')]: {
+            width: '48%',
+          },
+          [theme.breakpoints.up('lg')]: {
+            width: '25%',
+          },
+    },
+    collectionsCardContainer :{
+        display:"flex", 
+        flexDirection:"column",
+        gridGap:"16px",
+        flexWrap: 'nowrap',
+        [theme.breakpoints.up('sm')]: {
+            flexDirection:'row',
+            flexWrap: 'wrap',
+          },
+          [theme.breakpoints.up('md')]: {
+            flexWrap: 'wrap',
+          },
+          [theme.breakpoints.up('lg')]: {
+            flexWrap: 'nowrap',
+          },
     },
 }));
 
@@ -57,16 +99,16 @@ function LandingPage() {
                             <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use on of our collections page to help find a particular category of listings</Typography>
                         </Box>
                         <Box display="flex" flexDirection="column" gridGap={16}>
-                            <Box display="flex" flexDirection="row" gridGap={16}>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                            <Box className={classes.collectionsCardContainer}>
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <CodeIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
                                                         <Link href="/#/collections/api-documentation">
-                                                            API INFO FOR 2015 products
+                                                            API info for 2015 products
                                                         </Link>
                                                     </Typography>
                                                     <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
@@ -75,15 +117,15 @@ function LandingPage() {
                                         </CardContent>
                                     </Card>
                                 </Box>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <VerifiedUserIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
                                                         <Link href="/#/collections/api-documentation">
-                                                            SED INFO FOR 2015 products
+                                                            SED info for 2015 products
                                                         </Link>
                                                     </Typography><Typography variant="body2">This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED). </Typography>
                                                 </Box>
@@ -91,13 +133,13 @@ function LandingPage() {
                                         </CardContent>
                                     </Card>
                                 </Box>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <StopIcon color="primary" />
                                                 <Box mt={-1}>
-                                                    <Typography variant="subtitle1">
+                                                    <Typography >
                                                         <Link href="/#/collections/api-documentation">
                                                             Inactive Certificates
                                                         </Link>
@@ -110,11 +152,11 @@ function LandingPage() {
                                         </CardContent>
                                     </Card>
                                 </Box>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <BlockIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
                                                         <Link href="/#/collections/api-documentation">
@@ -130,12 +172,12 @@ function LandingPage() {
                                     </Card>
                                 </Box>
                             </Box>
-                            <Box display="flex" flexDirection="row" gridGap={16}>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                            <Box className={classes.collectionsCardContainer}>
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <GavelIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
                                                         <Link href="/#/collections/api-documentation">
@@ -150,11 +192,11 @@ function LandingPage() {
                                         </CardContent>
                                     </Card>
                                 </Box>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <ImageIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
                                                         <Link href="/#/collections/api-documentation">
@@ -166,11 +208,11 @@ function LandingPage() {
                                         </CardContent>
                                     </Card>
                                 </Box>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <ErrorOutlineOutlinedIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
                                                         <Link href="/#/collections/api-documentation">
@@ -185,11 +227,11 @@ function LandingPage() {
                                         </CardContent>
                                     </Card>
                                 </Box>
-                                <Box display="flex" flexDirection="row" width="25vw">
+                                <Box className={classes.collectionsCard}>
                                     <Card>
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <CancelIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
                                                         <Link href="/#/collections/api-documentation">
@@ -209,7 +251,7 @@ function LandingPage() {
                                     <Card className={classes.helpCards}>
                                         <CardContent>
                                             <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <DescriptionIcon fontSize="large" color="primary" />
                                                 <Box>
                                                     <Typography align="center" variant='subtitle1'>
                                                         <Link href="/#/collections/api-documentation">
@@ -225,11 +267,11 @@ function LandingPage() {
                                     <Card className={classes.helpCards}>
                                         <CardContent>
                                             <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <AnnouncementIcon fontSize="large" color="primary" />
                                                 <Box>
                                                     <Typography align="center" variant='subtitle1'>
                                                         <Link href="/#/collections/api-documentation">
-                                                            Annoucement & Updates
+                                                         Announcement & Updates
                                                         </Link>
                                                     </Typography>                                                </Box>
                                             </Box>
@@ -240,7 +282,7 @@ function LandingPage() {
                                     <Card className={classes.helpCards}>
                                         <CardContent>
                                             <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                                                <ArrowForwardOutlinedIcon color="primary" />
+                                                <MenuBookIcon fontSize="large" color="primary"/>
                                                 <Box>
                                                     <Typography align="center" variant='subtitle1'>
                                                         <Link href="/#/collections/api-documentation">
