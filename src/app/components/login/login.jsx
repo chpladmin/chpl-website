@@ -198,17 +198,11 @@ function ChplLogin(props) {
   };
 
   const getTitle = () => {
-    if (!user?.fullName) { // I think this if statement should go away when we only have one UserContext
-      if (state !== 'SIGNIN' && state !== 'RESETTING' && state !== 'FORGOTPASSWORD') {
-        setState('SIGNIN');
-      }
-      return 'Login required';
-    }
     switch (state) {
-      case 'CHANGEPASSWORD': return `Change password for ${user.fullName}`;
+      case 'CHANGEPASSWORD': return `Change password${user ? ` for ${user.fullName}` : ''}`;
       case 'FORGOTPASSWORD': return 'Reset password';
-      case 'IMPERSONATING': return `Impersonating ${user.fullName}`;
-      case 'LOGGEDIN': return user.fullName;
+      case 'IMPERSONATING': return `Impersonating ${user?.fullName}`;
+      case 'LOGGEDIN': return user?.fullName ?? 'Logged in';
       case 'RESETTING': return 'Reset password';
       case 'SIGNIN': return 'Login required';
       default: return 'Unknown state';
