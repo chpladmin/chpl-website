@@ -569,7 +569,7 @@ export default class NetworkService {
   }
 
   emailResetPassword(userObj) {
-    return this.apiPOST('/auth/email_reset_password', userObj);
+    return this.apiPOST('/auth/email-reset-password', userObj);
   }
 
   revokeApi(user) {
