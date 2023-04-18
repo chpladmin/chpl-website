@@ -7,9 +7,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -17,16 +14,20 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
 import SendIcon from '@material-ui/icons/Send';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
-
-import { getAngularService } from '../../services/angular-react-helper';
-import { UserContext } from '../../shared/contexts';
-import { ChplTextField } from '../util';
+import { func } from 'prop-types';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { useSnackbar } from 'notistack';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
+import { getAngularService } from 'services/angular-react-helper';
+import { UserContext } from 'shared/contexts';
+import { ChplTextField } from 'components/util';
+
 const zxcvbn = require('zxcvbn');
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -36,10 +37,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#ffffff',
     padding: '16px 0px 0px 16px',
   },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
-}));
+});
 
 const changeSchema = yup.object({
   oldPassword: yup.string()
@@ -90,8 +88,7 @@ const signinSchema = yup.object({
     .required('Email (or User Name) is required'),
 });
 
-function ChplLogin(props) {
-  /* eslint-disable react/destructuring-assignment */
+function ChplLogin({ dispatch }) {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const $stateParams = getAngularService('$stateParams');
@@ -99,10 +96,10 @@ function ChplLogin(props) {
   const Keepalive = getAngularService('Keepalive');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
-  const toaster = getAngularService('toaster');
   const {
     user, setUser, impersonating, setImpersonating,
   } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState('SIGNIN');
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [resetToken, setResetToken] = useState('');
@@ -112,7 +109,6 @@ function ChplLogin(props) {
   let resetFormik;
   let sendResetFormik;
   let signinFormik;
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     if ($stateParams.token) {
@@ -154,11 +150,8 @@ function ChplLogin(props) {
 
   const toastWhenUsernameUsed = (enteredUsername, loggedInUser) => {
     if (enteredUsername !== loggedInUser.email) {
-      toaster.pop({
-        header: 'Warning',
-        type: 'warning',
-        body: `Please use your email address "${loggedInUser.email}" instead of your username to log in. The use of a username to log in is being phased out, and will be removed at a future date`,
-      });
+      const body = `Please use your email address "${loggedInUser.email}" instead of your username to log in. The use of a username to log in is being phased out, and will be removed at a future date`;
+      enqueueSnackbar(body, { variant: 'warning' });
     }
   };
 
@@ -169,10 +162,8 @@ function ChplLogin(props) {
           $analytics.eventTrack('Change Password', { category: 'Authentication' });
           setState('LOGGEDIN');
           changeFormik.resetForm();
-          toaster.pop({
-            type: 'success',
-            body: 'Password successfully changed',
-          });
+          const body = 'Password successfully changed';
+          enqueueSnackbar(body, { variant: 'success' });
         } else {
           let body = 'Your password was not changed. ';
           if (response.warning) {
@@ -184,16 +175,11 @@ function ChplLogin(props) {
           if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
             body += 'Please try again with a stronger password.';
           }
-          toaster.pop({
-            type: 'error',
-            body,
-          });
+          enqueueSnackbar(body, { variant: 'error' });
         }
       }, () => {
-        toaster.pop({
-          type: 'error',
-          body: 'Error. Please check your credentials or contact the administrator',
-        });
+        const body = 'Error. Please check your credentials or contact the administrator';
+        enqueueSnackbar(body, { variant: 'error' });
       });
   };
 
@@ -223,30 +209,21 @@ function ChplLogin(props) {
             Idle.watch();
             Keepalive.ping();
             $rootScope.$broadcast('loggedIn');
-            props.dispatch('loggedIn');
+            dispatch('loggedIn');
             toastWhenUsernameUsed(signinFormik.values.userName, data);
           });
       }, (error) => {
         if (error?.status === 461) {
           const body = 'Your account has not been confirmed, please check your email to confirm your account.';
-          toaster.pop({
-            type: 'info',
-            body,
-          });
+          enqueueSnackbar(body, { variant: 'info' });
         } else if (error?.data?.error === 'The user is required to change their password on next login.') {
           const body = 'Password change is required';
-          toaster.pop({
-            type: 'info',
-            body,
-          });
+          enqueueSnackbar(body, { variant: 'info' });
           sendResetFormik.values.email = signinFormik.values.userName;
           sendReset();
         } else {
           const body = 'Bad username and password combination or account is locked / disabled.';
-          toaster.pop({
-            type: 'error',
-            body,
-          });
+          enqueueSnackbar(body, { variant: 'error' });
         }
       });
   };
@@ -270,10 +247,8 @@ function ChplLogin(props) {
         if (response.passwordUpdated) {
           setState('SIGNIN');
           resetFormik.resetForm();
-          toaster.pop({
-            type: 'success',
-            body: 'Password successfully changed',
-          });
+          const body = 'Password successfully changed';
+          enqueueSnackbar(body, { variant: 'success' });
         } else {
           let body = 'Your password was not changed. ';
           if (response.warning) {
@@ -285,17 +260,11 @@ function ChplLogin(props) {
           if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
             body += 'Your token was invalid or you need a stronger password.';
           }
-          toaster.pop({
-            type: 'error',
-            body,
-          });
+          enqueueSnackbar(body, { variant: 'error' });
         }
       }, () => {
         const body = 'There was an error changing your password';
-        toaster.pop({
-          type: 'error',
-          body,
-        });
+        enqueueSnackbar(body, { variant: 'error' });
       });
   };
 
@@ -305,16 +274,11 @@ function ChplLogin(props) {
         $analytics.eventTrack('Send Reset Email', { category: 'Authentication' });
         setState('SIGNIN');
         sendResetFormik.resetForm();
-        toaster.pop({
-          type: 'success',
-          body: `Password email reset sent to ${sendResetFormik.values.email}; please check your email`,
-        });
+        const body = `Password email reset sent to ${sendResetFormik.values.email}; please check your email`;
+        enqueueSnackbar(body, { variant: 'success' });
       }, () => {
         const body = `Email could not be sent to ${sendResetFormik.values.email}`;
-        toaster.pop({
-          type: 'error',
-          body,
-        });
+        enqueueSnackbar(body, { variant: 'error' });
       });
   };
 
@@ -591,9 +555,9 @@ function ChplLogin(props) {
              color="secondary"
              variant="contained"
              onClick={stopImpersonating}
+             endIcon={<NotInterestedIcon />}
            >
              Stop Impersonating
-             <NotInterestedIcon className={classes.iconSpacing} />
            </Button>
          )}
         {(state === 'LOGGEDIN' || state === 'IMPERSONATING')
@@ -603,9 +567,9 @@ function ChplLogin(props) {
              color="primary"
              variant="contained"
              onClick={logout}
+             endIcon={<ExitToAppIcon />}
            >
              Log Out
-             <ExitToAppIcon className={classes.iconSpacing} />
            </Button>
          )}
         {state === 'LOGGEDIN'
@@ -615,9 +579,9 @@ function ChplLogin(props) {
              color="secondary"
              variant="contained"
              onClick={(e) => { setState('CHANGEPASSWORD'); e.stopPropagation(); }}
+             endIcon={<CreateIcon />}
            >
              Change Password
-             <CreateIcon className={classes.iconSpacing} />
            </Button>
          )}
         {state === 'RESETTING'
@@ -627,9 +591,9 @@ function ChplLogin(props) {
              color="primary"
              variant="contained"
              onClick={submitReset}
+             endIcon={<VpnKeyIcon />}
            >
              Confirm Password Reset
-             <VpnKeyIcon className={classes.iconSpacing} />
            </Button>
          )}
         {state === 'SIGNIN'
@@ -639,9 +603,9 @@ function ChplLogin(props) {
              color="primary"
              variant="contained"
              onClick={submitSignin}
+             endIcon={<VpnKeyIcon />}
            >
              Log In
-             <VpnKeyIcon className={classes.iconSpacing} />
            </Button>
          )}
         {state === 'SIGNIN'
@@ -651,9 +615,9 @@ function ChplLogin(props) {
              color="secondary"
              variant="contained"
              onClick={(e) => { setState('FORGOTPASSWORD'); e.stopPropagation(); }}
+             endIcon={<HelpOutlineIcon />}
            >
              Forgot Password
-             <HelpOutlineIcon className={classes.iconSpacing} />
            </Button>
          )}
         {state === 'FORGOTPASSWORD'
@@ -663,9 +627,9 @@ function ChplLogin(props) {
              color="primary"
              variant="contained"
              onClick={submitResetRequest}
+             endIcon={<SendIcon />}
            >
              Send reset email
-             <SendIcon className={classes.iconSpacing} />
            </Button>
          )}
         {state === 'CHANGEPASSWORD'
@@ -675,9 +639,9 @@ function ChplLogin(props) {
              color="primary"
              variant="contained"
              onClick={submitChange}
+             endIcon={<VpnKeyIcon />}
            >
              Confirm new Password
-             <VpnKeyIcon className={classes.iconSpacing} />
            </Button>
          )}
         {(state === 'FORGOTPASSWORD' || state === 'CHANGEPASSWORD' || state === 'RESETTING')
@@ -687,9 +651,9 @@ function ChplLogin(props) {
              color="default"
              variant="contained"
              onClick={cancel}
+             endIcon={<ClearIcon />}
            >
              Cancel
-             <ClearIcon className={classes.iconSpacing} />
            </Button>
          )}
         {state === 'SIGNIN'
