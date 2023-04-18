@@ -22,57 +22,63 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import GavelIcon from '@material-ui/icons/Gavel';
 import CancelIcon from '@material-ui/icons/Cancel';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
-import Image from '../../../../assets/images/Chpl_Logo-01.png';
 import SgSearchBar from './sg-search-bar';
-import {
-    ChplFilterChips,
-    ChplFilterPanel,
-    ChplFilterSearchTerm,
-    useFilterContext,
-} from 'components/filter';
+
+import Image from '../../../../assets/images/Chpl_Logo-01.png';
+
+
 import { theme, utilStyles } from 'themes';
 const useStyles = makeStyles(() => ({
     landingPageBackground: {
-        backgroundPosition: 'right',
+        backgroundPosition: '48vw 40vh',
         backgroundRepeat: 'no-repeat',
-        background: 'rgba(2,23,60,1)',
+        background: 'rgba(2,23,60,1)' + `url(${Image})`,
+        backgroundBlendMode: 'soft-light',
     },
     helpCards: {
         width: '100%',
-        
+
+    },
+    helpCardsContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        gridGap: '16px',
     },
     subHeaders: {
         color: '#fff',
     },
-    collectionsCard:{
+    collectionsCard: {
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
         [theme.breakpoints.up('sm')]: {
+            width: '100%',
+        },
+        [theme.breakpoints.up('md')]: {
             width: '48%',
-          },
-          [theme.breakpoints.up('md')]: {
-            width: '48%',
-          },
-          [theme.breakpoints.up('lg')]: {
+        },
+        [theme.breakpoints.up('lg')]: {
             width: '25%',
-          },
+        },
     },
-    collectionsCardContainer :{
-        display:"flex", 
-        flexDirection:"column",
-        gridGap:"16px",
+    collectionsCardContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gridGap: "16px",
         flexWrap: 'nowrap',
         [theme.breakpoints.up('sm')]: {
-            flexDirection:'row',
+            flexDirection: 'row',
             flexWrap: 'wrap',
-          },
-          [theme.breakpoints.up('md')]: {
+        },
+        [theme.breakpoints.up('md')]: {
             flexWrap: 'wrap',
-          },
-          [theme.breakpoints.up('lg')]: {
+            justifyContent: 'space-between',
+            padding: 'none',
+        },
+        [theme.breakpoints.up('lg')]: {
             flexWrap: 'nowrap',
-          },
+            padding: 'none',
+        },
     },
 }));
 
@@ -101,13 +107,13 @@ function LandingPage() {
                         <Box display="flex" flexDirection="column" gridGap={16}>
                             <Box className={classes.collectionsCardContainer}>
                                 <Box className={classes.collectionsCard}>
-                                    <Card>
+                                    <Card raised="true">
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gridGap={8}>
                                                 <CodeIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
-                                                        <Link href="/#/collections/api-documentation">
+                                                        <Link href="/#/collections/sed">
                                                             API info for 2015 products
                                                         </Link>
                                                     </Typography>
@@ -140,13 +146,13 @@ function LandingPage() {
                                                 <StopIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography >
-                                                        <Link href="/#/collections/api-documentation">
+                                                        <Link href="/#/collections/inactive">
                                                             Inactive Certificates
                                                         </Link>
                                                     </Typography>
                                                     <Typography variant="body2">
-                                                        This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL). 
-                                                     </Typography>
+                                                        This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL).
+                                                    </Typography>
                                                 </Box>
                                             </Box>
                                         </CardContent>
@@ -159,12 +165,12 @@ function LandingPage() {
                                                 <BlockIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
-                                                        <Link href="/#/collections/api-documentation">
+                                                        <Link href="/#/collections/developers">
                                                             Banned Developers
                                                         </Link>
                                                     </Typography>
                                                     <Typography variant="body2">
-                                                    This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program.
+                                                        This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program.
                                                     </Typography>
                                                 </Box>
                                             </Box>
@@ -185,7 +191,7 @@ function LandingPage() {
                                                         </Link>
                                                     </Typography>
                                                     <Typography variant="body2">
-                                                    This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement.
+                                                        This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement.
                                                     </Typography>
                                                 </Box>
                                             </Box>
@@ -199,7 +205,7 @@ function LandingPage() {
                                                 <ImageIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
-                                                        <Link href="/#/collections/api-documentation">
+                                                        <Link href="/#/collections/charts">
                                                             Charts
                                                         </Link>
                                                     </Typography><Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
@@ -215,13 +221,13 @@ function LandingPage() {
                                                 <ErrorOutlineOutlinedIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
-                                                        <Link href="/#/collections/api-documentation">
+                                                        <Link href="/#/collections/corrective-action">
                                                             Products Corrective Actions
                                                         </Link>
                                                     </Typography>
-                                                        <Typography variant="body2">
-                                                            This is a list of all health IT products for which a non-conformity has been recorded. 
-                                                        </Typography>
+                                                    <Typography variant="body2">
+                                                        This is a list of all health IT products for which a non-conformity has been recorded.
+                                                    </Typography>
                                                 </Box>
                                             </Box>
                                         </CardContent>
@@ -234,7 +240,7 @@ function LandingPage() {
                                                 <CancelIcon color="primary" />
                                                 <Box mt={-1}>
                                                     <Typography>
-                                                        <Link href="/#/collections/api-documentation">
+                                                        <Link href="/#/collections/products">
                                                             Decertified Products
                                                         </Link>
                                                     </Typography>
@@ -245,16 +251,18 @@ function LandingPage() {
                                     </Card>
                                 </Box>
                             </Box>
-                            <Typography pt={8} pb={8} className={classes.subHeaders} align="left" variant="h3" gutterBottom>Need Help? Learn more about CHPL through our documentation.</Typography>
-                            <Box display="flex" flexDirection="row" justifyContent="space-between" gridGap={16}>
+                            <Box pt={4} pb={4}>
+                            <Typography className={classes.subHeaders} align="left" variant="h3" >Need Help? Learn more about CHPL through our documentation.</Typography>
+                            </Box>
+                            <Box className={classes.helpCardsContainer}>
                                 <Box width="33.3vw" display="flex" flexDirection="row" >
                                     <Card className={classes.helpCards}>
                                         <CardContent>
                                             <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
                                                 <DescriptionIcon fontSize="large" color="primary" />
                                                 <Box>
-                                                    <Typography align="center" variant='subtitle1'>
-                                                        <Link href="/#/collections/api-documentation">
+                                                    <Typography align="center">
+                                                        <Link href="/#/resources/overview">
                                                             An Overview of Chpl
                                                         </Link>
                                                     </Typography>
@@ -269,9 +277,9 @@ function LandingPage() {
                                             <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
                                                 <AnnouncementIcon fontSize="large" color="primary" />
                                                 <Box>
-                                                    <Typography align="center" variant='subtitle1'>
-                                                        <Link href="/#/collections/api-documentation">
-                                                         Announcement & Updates
+                                                    <Typography align="center" >
+                                                        <Link href="/#/">
+                                                            Announcement & Updates
                                                         </Link>
                                                     </Typography>                                                </Box>
                                             </Box>
@@ -282,10 +290,10 @@ function LandingPage() {
                                     <Card className={classes.helpCards}>
                                         <CardContent>
                                             <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                                                <MenuBookIcon fontSize="large" color="primary"/>
+                                                <MenuBookIcon fontSize="large" color="primary" />
                                                 <Box>
-                                                    <Typography align="center" variant='subtitle1'>
-                                                        <Link href="/#/collections/api-documentation">
+                                                    <Typography align="center">
+                                                        <Link href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">
                                                             Training Guide
                                                         </Link>
                                                     </Typography>
