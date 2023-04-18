@@ -22,6 +22,7 @@ import { useSnackbar } from 'notistack';
 import PasswordStrengthMeter from './password-strength-meter';
 
 import {
+  usePostChangePassword,
   usePostEmailResetPassword,
   usePostResetPassword,
 } from 'api/auth';
@@ -104,6 +105,7 @@ function ChplLogin({ dispatch }) {
     user, setUser, impersonating, setImpersonating,
   } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
+  const postChangePassword = usePostChangePassword();
   const postEmailResetPassword = usePostEmailResetPassword();
   const postResetPassword = usePostResetPassword();
   const [state, setState] = useState('SIGNIN');
@@ -162,8 +164,11 @@ function ChplLogin({ dispatch }) {
   };
 
   const changePassword = () => {
-    networkService.changePassword({ oldPassword: changeFormik.values.oldPassword, newPassword: changeFormik.values.newPassword })
-      .then((response) => {
+    postChangePassword.mutate({
+      oldPassword: changeFormik.values.oldPassword,
+      newPassword: changeFormik.values.newPassword,
+    }, {
+      onSuccess: (response) => {
         if (response.passwordUpdated) {
           $analytics.eventTrack('Change Password', { category: 'Authentication' });
           setState('LOGGEDIN');
@@ -183,10 +188,12 @@ function ChplLogin({ dispatch }) {
           }
           enqueueSnackbar(body, { variant: 'error' });
         }
-      }, () => {
+      },
+      onError: () => {
         const body = 'Error. Please check your credentials or contact the administrator';
         enqueueSnackbar(body, { variant: 'error' });
-      });
+      },
+    });
   };
 
   const getTitle = () => {

@@ -2,6 +2,12 @@ import { useMutation } from 'react-query';
 
 import { useAxios } from './axios';
 
+const usePostChangePassword = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('auth/change-password', data)
+    .then((response) => response));
+};
+
 const usePostEmailResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/email-reset-password', data)
@@ -15,6 +21,7 @@ const usePostResetPassword = () => {
 };
 
 export {
+  usePostChangePassword,
   usePostEmailResetPassword,
   usePostResetPassword,
 };

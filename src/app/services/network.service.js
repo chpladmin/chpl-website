@@ -18,16 +18,6 @@ export default class NetworkService {
     return this.apiPOST(`/users/${userId}/authorize`, userAuthorization);
   }
 
-  changePassword(userObj) {
-    let url;
-    if (userObj.userName && userObj.userName.length > 0) {
-      url = '/auth/change-expired-password';
-    } else {
-      url = '/auth/change-password';
-    }
-    return this.apiPOST(url, userObj);
-  }
-
   confirmApiKey(hash) {
     return this.apiPOST('/key/confirm', hash);
   }
