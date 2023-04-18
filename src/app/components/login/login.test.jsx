@@ -33,6 +33,19 @@ const authServiceMock = {
   saveCurrentUser: jest.fn(() => {}),
 };
 
+const mockApi = {
+  isLoading: true,
+  mutate: () => {},
+  data: { },
+};
+
+jest.mock('api/auth', () => ({
+  __esModule: true,
+  usePostChangePassword: () => mockApi,
+  usePostEmailResetPassword: () => mockApi,
+  usePostResetPassword: () => mockApi,
+}));
+
 const networkServiceMock = {
   getUserById: jest.fn(() => Promise.resolve({ user: 'id' })),
   login: jest.fn(() => Promise.resolve({})),
