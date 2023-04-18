@@ -1,17 +1,15 @@
 import React from 'react';
 import {
   Box,
-  ButtonBase,
   makeStyles,
-  IconButton,
   Typography,
   Container,
   Card,
   CardContent,
   Link,
 } from '@material-ui/core';
+
 import CodeIcon from '@material-ui/icons/Code';
-import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import ImageIcon from '@material-ui/icons/Image';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
@@ -27,7 +25,7 @@ import Image from '../../../../assets/images/Chpl_Logo-01.png';
 
 import SgSearchBar from './sg-search-bar';
 
-import { theme, utilStyles } from 'themes';
+import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
   landingPageBackground: {
