@@ -21,6 +21,10 @@ import { useSnackbar } from 'notistack';
 
 import PasswordStrengthMeter from './password-strength-meter';
 
+import {
+  usePostEmailResetPassword,
+  usePostResetPassword,
+} from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
@@ -100,6 +104,8 @@ function ChplLogin({ dispatch }) {
     user, setUser, impersonating, setImpersonating,
   } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
+  const postEmailResetPassword = usePostEmailResetPassword();
+  const postResetPassword = usePostResetPassword();
   const [state, setState] = useState('SIGNIN');
   const [passwordMessages, setPasswordMessages] = useState([]);
   const [resetToken, setResetToken] = useState('');
@@ -239,11 +245,11 @@ function ChplLogin({ dispatch }) {
   };
 
   const reset = () => {
-    networkService.resetPassword({
+    postResetPassword.mutate({
       token: resetToken,
       newPassword: resetFormik.values.newPassword,
-    })
-      .then((response) => {
+    }, {
+      onSuccess: (response) => {
         if (response.passwordUpdated) {
           setState('SIGNIN');
           resetFormik.resetForm();
@@ -262,24 +268,28 @@ function ChplLogin({ dispatch }) {
           }
           enqueueSnackbar(body, { variant: 'error' });
         }
-      }, () => {
+      },
+      onError: () => {
         const body = 'There was an error changing your password';
         enqueueSnackbar(body, { variant: 'error' });
-      });
+      },
+    });
   };
 
   sendReset = () => {
-    networkService.emailResetPassword({ email: sendResetFormik.values.email })
-      .then(() => {
+    postEmailResetPassword.mutate({ email: sendResetFormik.values.email }, {
+      onSuccess: () => {
         $analytics.eventTrack('Send Reset Email', { category: 'Authentication' });
         setState('SIGNIN');
         sendResetFormik.resetForm();
         const body = `Password email reset sent to ${sendResetFormik.values.email}; please check your email`;
         enqueueSnackbar(body, { variant: 'success' });
-      }, () => {
+      },
+      onError: () => {
         const body = `Email could not be sent to ${sendResetFormik.values.email}`;
         enqueueSnackbar(body, { variant: 'error' });
-      });
+      },
+    });
   };
 
   const stopImpersonating = (e) => {

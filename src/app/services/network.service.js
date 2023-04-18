@@ -564,14 +564,6 @@ export default class NetworkService {
     return this.apiPOST('/key/request', apiKeyRequest);
   }
 
-  resetPassword(userObj) {
-    return this.apiPOST('/auth/reset-password-request', userObj);
-  }
-
-  emailResetPassword(userObj) {
-    return this.apiPOST('/auth/email-reset-password', userObj);
-  }
-
   revokeApi(user) {
     return this.apiDELETE(`/key/${user.key}`);
   }
