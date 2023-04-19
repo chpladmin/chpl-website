@@ -68,6 +68,10 @@ const ListingDetailsViewComponent = {
         this.countCerts = this.listing.certificationResults.filter((cr) => cr.success).length;
         this.countCqms = this.listing.cqmResults.filter((cqm) => cqm.success).length;
         this.cqms = this.listing.cqmResults;
+        this.sedCriteriaCount = this.listing.certificationResults
+          .filter((cert) => cert.success && cert.sed)
+          .map((cert) => cert.criterion)?.length ?? 0;
+        this.sedTaskCount = this.listing.sed?.testTasks.length ?? 0;
         if (this.listing.promotingInteroperabilityUserHistory?.length > 0) {
           const currentPI = this.listing.promotingInteroperabilityUserHistory.sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))[0];
           this.currentPI = {

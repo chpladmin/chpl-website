@@ -6,7 +6,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Chip,
   Container,
   Divider,
   FormControlLabel,
@@ -23,7 +22,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import {
@@ -135,92 +133,10 @@ const validationSchema = yup.object({
     .max(300, 'Website is too long'),
 });
 
-const fillOptionByDeveloper = (developer, options) => {
-  if (developer.website) {
-    options.website.push(developer.website);
-  }
-  if (developer.contact) {
-    if (developer.contact.fullName) {
-      options.fullName.push(developer.contact.fullName);
-    }
-    if (developer.contact.title) {
-      options.title.push(developer.contact.title);
-    }
-    if (developer.contact.email) {
-      options.email.push(developer.contact.email);
-    }
-    if (developer.contact.phoneNumber) {
-      options.phoneNumber.push(developer.contact.phoneNumber);
-    }
-  }
-  if (developer.address) {
-    if (developer.address.line1) {
-      options.line1.push(developer.address.line1);
-    }
-    if (developer.address.line2) {
-      options.line2.push(developer.address.line2);
-    }
-    if (developer.address.city) {
-      options.city.push(developer.address.city);
-    }
-    if (developer.address.state) {
-      options.state.push(developer.address.state);
-    }
-    if (developer.address.zipcode) {
-      options.zipcode.push(developer.address.zipcode);
-    }
-    if (developer.address.country) {
-      options.country.push(developer.address.country);
-    }
-  }
-};
-
-const generateOptions = (developer, mergingDevelopers) => {
-  if (mergingDevelopers.length === 0) {
-    return {};
-  }
-  const options = {
-    name: Array.from(new Set([developer.name].concat(mergingDevelopers.map((d) => d.name)))),
-    website: [],
-    fullName: [],
-    title: [],
-    email: [],
-    phoneNumber: [],
-    line1: [],
-    line2: [],
-    city: [],
-    state: [],
-    zipcode: [],
-    country: [],
-  };
-  fillOptionByDeveloper(developer, options);
-  mergingDevelopers.forEach((d) => fillOptionByDeveloper(d, options));
-  options.website = Array.from(new Set(options.website));
-  options.fullName = Array.from(new Set(options.fullName));
-  options.title = Array.from(new Set(options.title));
-  options.email = Array.from(new Set(options.email));
-  options.phoneNumber = Array.from(new Set(options.phoneNumber));
-  options.line1 = Array.from(new Set(options.line1));
-  options.line2 = Array.from(new Set(options.line2));
-  options.city = Array.from(new Set(options.city));
-  options.state = Array.from(new Set(options.state));
-  options.zipcode = Array.from(new Set(options.zipcode));
-  options.country = Array.from(new Set(options.country));
-  return options;
-};
-
-const getOptions = (options, predicate, existing) => {
-  if (!options || !options[predicate]) { return []; }
-  return options[predicate]
-    .filter((o) => o && o.length > 0 && o !== existing)
-    .sort((a, b) => (a < b ? -1 : 1));
-};
-
 const getEditField = ({
   key,
   display,
   formik,
-  mergeOptions = [],
   required = true,
   className,
 }) => (
@@ -236,17 +152,6 @@ const getEditField = ({
       error={formik.touched[key] && !!formik.errors[key]}
       helperText={formik.touched[key] && formik.errors[key]}
     />
-    { getOptions(mergeOptions, key, formik.values[key]).map((o) => (
-      <Chip
-        key={o}
-        label={o}
-        id={`use-${o}-${key}`}
-        onClick={() => formik.setFieldValue(key, o)}
-        variant="outlined"
-        style={{ margin: '8px 4px 0px' }}
-        icon={<AddCircleRoundedIcon color="primary" />}
-      />
-    ))}
   </div>
 );
 
@@ -262,7 +167,6 @@ function ChplDeveloperEdit(props) {
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
   const [isInvalid, setIsInvalid] = useState(false);
-  const [options, setOptions] = useState({});
   const [statusEvents, setStatusEvents] = useState([]);
   const classes = useStyles();
   let formik;
@@ -278,10 +182,6 @@ function ChplDeveloperEdit(props) {
   useEffect(() => {
     setErrorMessages(props.errorMessages);
   }, [props.errorMessages]); // eslint-disable-line react/destructuring-assignment
-
-  useEffect(() => {
-    setOptions(generateOptions(developer, props.mergingDevelopers));
-  }, [props.mergingDevelopers, developer]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     if (!statusEvents || statusEvents.length === 0) {
@@ -320,7 +220,6 @@ function ChplDeveloperEdit(props) {
   const getEnhancedEditField = (editProps) => getEditField({
     ...editProps,
     formik,
-    mergeOptions: options,
   });
 
   const save = () => {
@@ -624,5 +523,4 @@ ChplDeveloperEdit.propTypes = {
   errorMessages: arrayOf(string).isRequired,
   isInvalid: bool.isRequired,
   isSplitting: bool.isRequired,
-  mergingDevelopers: arrayOf(developerPropType).isRequired,
 };

@@ -43,7 +43,7 @@ describe('the ChplDeveloperView component', () => {
             developer={developerMock}
             dispatch={hocMock.dispatch}
             canEdit
-            canMerge
+            canJoin
             canSplit
             isSplitting={false}
           />

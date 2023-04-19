@@ -18,7 +18,7 @@ const mock = {
   qmsStandards: [
     { id: 1, name: 'citation 1' },
     { id: 2, name: 'a citation 2' },
-    { id: 1, name: 'last citation 3' },
+    { id: 3, name: 'last citation 3' },
   ],
   breadcrumbContext: {
     append: () => {},

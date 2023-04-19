@@ -21,7 +21,7 @@ const elements = {
   developerStatus: '#developer-status-0',
   splitDeveloper: '#developer-component-split',
   developerName: '#name',
-  mergeDeveloper: '#developer-component-merge',
+  joinDeveloper: '#developer-component-join',
   editWebsite: '#website',
   contact: {
     fullName: '#fullName',
@@ -269,8 +269,8 @@ class DevelopersPage {
     return $(this.elements.developerName);
   }
 
-  get mergeDeveloper() {
-    return $(this.elements.mergeDeveloper);
+  get joinDeveloper() {
+    return $(this.elements.joinDeveloper);
   }
 
   get fullName() {
@@ -317,8 +317,8 @@ class DevelopersPage {
     $(`#developers-product-move-new-${id}`).click();
   }
 
-  moveDeveloperToBeMerged(developerName) {
-    $(`//div[text()='${developerName}']`).click();
+  moveDeveloperToBeJoined(developerName) {
+    $(`td=${developerName}`).parentElement().$('button').click();
   }
 
   selectAllCertificationStatus() {

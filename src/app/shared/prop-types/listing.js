@@ -2,6 +2,7 @@ import {
   arrayOf,
   bool,
   number,
+  object,
   shape,
   string,
 } from 'prop-types';
@@ -35,4 +36,43 @@ const cqm = shape({
   typeId: number,
 });
 
-export { certificationEdition, cqm };
+const measure = shape({
+  associatedCriteria: arrayOf(criterion),
+  id: number,
+  measure: shape({
+    abbreviation: string,
+    allowedCriteria: arrayOf(criterion),
+    domain: shape({
+      id: number,
+      name: string,
+    }),
+    id: number,
+    name: string,
+    removed: bool,
+    requiredTest: string,
+    requiresCriteriaSelection: bool,
+  }),
+  measureType: shape({
+    id: number,
+    name: string,
+  }),
+});
+
+const sed = shape({
+  testTasks: arrayOf(object),
+  ucdProcesses: arrayOf(object),
+});
+
+const listing = shape({
+  certificationEdition,
+  cqmResults: arrayOf(cqm),
+  measures: arrayOf(measure),
+  sed,
+});
+
+export {
+  certificationEdition,
+  cqm,
+  listing,
+  measure,
+};

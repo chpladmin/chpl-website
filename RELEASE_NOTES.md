@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 11.51.2
+_19 April 2023_
+
+### Bug Fixes
+* Real World Testing Check Date displays day after date entered for time zones other than Eastern
+
+### User Interface Updates
+* Allow "Joining" of Developers in React UI
+
+### Flagged User Interface Updates
+* Convert SED View on Listing Details page to React
+* Convert G1/G2 Measures on Listing Details page to React
+
+---
+
 ## Version 11.51.1
 _3 April 2023_
 

@@ -32,5 +32,46 @@ describe('the system maintenance page', () => {
       await page.navigate('announcements');
       await expect(await page.canNavigate('announcements')).toBe(false);
     });
+
+    it('should allow navigation to "accessibility-standards" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('accessibility-standards')).toBe(true);
+      await page.navigate('accessibility-standards');
+      await expect(await page.canNavigate('accessibility-standards')).toBe(false);
+    });
+
+    it('should allow navigation to "qms-standards" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('qms-standards')).toBe(true);
+      await page.navigate('qms-standards');
+      await expect(await page.canNavigate('qms-standards')).toBe(false);
+    });
+
+    it('should allow navigation to "svaps" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('svaps')).toBe(true);
+      await page.navigate('svaps');
+      await expect(await page.canNavigate('svaps')).toBe(false);
+    });
+
+    it('should allow navigation to "ucd-processes" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('ucd-processes')).toBe(true);
+      await page.navigate('ucd-processes');
+      await expect(await page.canNavigate('ucd-processes')).toBe(false);
+    });
+  });
+
+  describe('when logged in as ADMIN', () => {
+    beforeEach(async () => {
+      await login.logIn('admin');
+      await page.open();
+    });
+
+    afterEach(async () => {
+      await login.logOut();
+    });
+
+    it('should allow navigation to "system-jobs" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('system-jobs')).toBe(true);
+      await page.navigate('system-jobs');
+      await expect(await page.canNavigate('system-jobs')).toBe(false);
+    });
   });
 });
