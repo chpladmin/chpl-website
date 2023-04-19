@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-    Box,
-    Card,
-    CardContent,
-    Container,
-    Link,
-    Typography,
-    makeStyles,
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Link,
+  Typography,
+  makeStyles,
 } from '@material-ui/core';
 
 import AnnouncementIcon from '@material-ui/icons/Announcement';
@@ -33,306 +33,306 @@ const useStyles = makeStyles(() => ({
         flexDirection: 'row',
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-            width: '100%',
+          width: '100%',
         },
         [theme.breakpoints.up('md')]: {
-            width: '48%',
+          width: '48%',
         },
         [theme.breakpoints.up('lg')]: {
-            width: '25%',
+          width: '25%',
         },
-    },
-    collectionsCards: {
+      },
+      collectionsCards: {
         width: '-webkit-fill-available',
-    },
-    collectionsCardContainer: {
+      },
+      collectionsCardContainer: {
         display: 'flex',
         flexDirection: 'column',
         gridGap: '16px',
         flexWrap: 'nowrap',
         padding: '0 16px',
         [theme.breakpoints.up('sm')]: {
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            padding: '0',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          padding: '0',
         },
         [theme.breakpoints.up('md')]: {
-            flexWrap: 'wrap',
-            justifyContent: 'space-evenly',
-            padding: '0',
+          flexWrap: 'wrap',
+          justifyContent: 'space-evenly',
+          padding: '0',
         },
         [theme.breakpoints.up('lg')]: {
-            flexWrap: 'nowrap',
-            padding: '0',
+          flexWrap: 'nowrap',
+          padding: '0',
         },
+      },
+  helpCard: {
+    width: '100%',
+    flexDirection: 'column',
+    display: 'flex',
+    [theme.breakpoints.up('sm')]: {
+      width: '33.3%',
+      flexDirection: 'row',
     },
-    helpCard: {
-        width: '100%',
-        flexDirection: 'column',
-        display: 'flex',
-        [theme.breakpoints.up('sm')]: {
-            width: '33.3%',
-            flexDirection: 'row',
-        },
+  },
+  helpCardContent: {
+    width: '100%',
+  },
+  helpCardsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gridGap: '16px',
+    padding: '0 16px',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      padding: '0',
     },
-    helpCardContent: {
-        width: '100%',
+  },
+  landingPageBackground: {
+    backgroundPosition: '48vw 40vh',
+    backgroundRepeat: 'no-repeat',
+    background: 'rgba(2,23,60,1)' + `url(${Image})`,
+    backgroundBlendMode: 'soft-light',
+  },
+  subHeaders: {
+    color: '#fff',
+    padding: '0 16px',
+    [theme.breakpoints.up('sm')]: {
+      padding: '0',
     },
-    helpCardsContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        gridGap: '16px',
-        padding: '0 16px',
-        [theme.breakpoints.up('sm')]: {
-            flexDirection: 'row',
-            padding: '0',
-        },
-    },
-    landingPageBackground: {
-        backgroundPosition: '48vw 40vh',
-        backgroundRepeat: 'no-repeat',
-        background: 'rgba(2,23,60,1)' + `url(${Image})`,
-        backgroundBlendMode: 'soft-light',
-    },
-    subHeaders: {
-        color: '#fff',
-        padding: '0 16px',
-        [theme.breakpoints.up('sm')]: {
-            padding: '0',
-        },
-    },
-
+  },
+ 
 }));
 
 function LandingPage() {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <>
-            <Box pt={16} pb={24}>
-                <Container maxWidth="md">
-                    <Typography align="center" variant="h1" gutterBottom>Welcome to the Certified Health IT Product List (CHPL)</Typography>
-                    <Typography align="center" variant="body1">The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program.</Typography>
-                </Container>
+  return (
+    <>
+      <Box pt={16} pb={24}>
+        <Container maxWidth="md">
+          <Typography align="center" variant="h1" gutterBottom>Welcome to the Certified Health IT Product List (CHPL)</Typography>
+          <Typography align="center" variant="body1">The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program.</Typography>
+        </Container>
+      </Box>
+      <Box className={classes.landingPageBackground} pb={16} height="fit-content">
+        <Box className={classes.landingPageImageryBackground}>
+          <Container maxWidth="md">
+            <Box mt={-8}>
+              {/* Placeholder for search bar */}
+              <SgSearchBar />
             </Box>
-            <Box className={classes.landingPageBackground} pb={16} height="fit-content">
-                <Box className={classes.landingPageImageryBackground}>
-                    <Container maxWidth="md">
-                        <Box mt={-8}>
-                            {/* Placeholder for search bar */}
-                            <SgSearchBar />
+            <Box pt={8} pb={4}>
+              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use on of our collections page to help find a particular category of listings</Typography>
+            </Box>
+            <Box display="flex" flexDirection="column" gridGap={16}>
+              <Box className={classes.collectionsCardContainer}>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <CodeIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/sed">
+                              API info for 2015 products
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
                         </Box>
-                        <Box pt={8} pb={4}>
-                            <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use on of our collections page to help find a particular category of listings</Typography>
-                        </Box>
-                        <Box display="flex" flexDirection="column" gridGap={16}>
-                            <Box className={classes.collectionsCardContainer}>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <CodeIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/sed">
-                                                            API info for 2015 products
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <VerifiedUserIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/api-documentation">
-                                                            SED info for 2015 products
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED). </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <StopIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/inactive">
-                                                            Inactive Certificates
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL).
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <BlockIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/developers">
-                                                            Banned Developers
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program.
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                            </Box>
-                            <Box className={classes.collectionsCardContainer}>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <GavelIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/api-documentation">
-                                                            Real World Testing
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement.
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ImageIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/charts">
-                                                            Charts
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <ErrorOutlineOutlinedIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/corrective-action">
-                                                            Products Corrective Actions
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification.
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.collectionsCard}>
-                                    <Card className={classes.collectionsCards}>
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gridGap={8}>
-                                                <CancelIcon color="primary" />
-                                                <Box mt={-1}>
-                                                    <Typography>
-                                                        <Link href="/#/collections/products">
-                                                            Decertified Products
-                                                        </Link>
-                                                    </Typography>
-                                                    <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                            </Box>
-                            <Box pt={4} pb={4}>
-                                <Typography className={classes.subHeaders} align="left" variant="h3">Need Help? Learn more about CHPL through our documentation.</Typography>
-                            </Box>
-                            <Box className={classes.helpCardsContainer}>
-                                <Box className={classes.helpCard}>
-                                    <Card className={classes.helpCardContent}>
-                                        <CardContent>
-                                            <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                                                <DescriptionIcon fontSize="large" color="primary" />
-                                                <Box>
-                                                    <Typography align="center">
-                                                        <Link href="/#/resources/overview">
-                                                            An Overview of Chpl
-                                                        </Link>
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.helpCard}>
-                                    <Card className={classes.helpCardContent}>
-                                        <CardContent>
-                                            <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                                                <AnnouncementIcon fontSize="large" color="primary" />
-                                                <Box>
-                                                    <Typography align="center">
-                                                        <Link href="/#/">
-                                                            Announcement & Updates
-                                                        </Link>
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                                <Box className={classes.helpCard}>
-                                    <Card className={classes.helpCardContent}>
-                                        <CardContent>
-                                            <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                                                <MenuBookIcon fontSize="large" color="primary" />
-                                                <Box>
-                                                    <Typography align="center">
-                                                        <Link target="blank" href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">
-                                                            Training Guide
-                                                        </Link>
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Container>
+                      </Box>
+                    </CardContent>
+                  </Card>
                 </Box>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <VerifiedUserIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/api-documentation">
+                              SED info for 2015 products
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED). </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <StopIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/inactive">
+                              Inactive Certificates
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">
+                            This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL).
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <BlockIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/developers">
+                              Banned Developers
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">
+                            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program.
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Box>
+              <Box className={classes.collectionsCardContainer}>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <GavelIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/api-documentation">
+                              Real World Testing
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">
+                            This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement.
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <ImageIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/charts">
+                              Charts
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <ErrorOutlineOutlinedIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/corrective-action">
+                              Products Corrective Actions
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">
+                            This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification.
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <CancelIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <Link href="/#/collections/products">
+                              Decertified Products
+                            </Link>
+                          </Typography>
+                          <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Box>
+              <Box pt={4} pb={4}>
+                <Typography className={classes.subHeaders} align="left" variant="h3">Need Help? Learn more about CHPL through our documentation.</Typography>
+              </Box>
+              <Box className={classes.helpCardsContainer}>
+                <Box className={classes.helpCard}>
+                  <Card className={classes.helpCardContent}>
+                    <CardContent>
+                      <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
+                        <DescriptionIcon fontSize="large" color="primary" />
+                        <Box>
+                          <Typography align="center">
+                            <Link href="/#/resources/overview">
+                              An Overview of Chpl
+                            </Link>
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.helpCard}>
+                  <Card className={classes.helpCardContent}>
+                    <CardContent>
+                      <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
+                        <AnnouncementIcon fontSize="large" color="primary" />
+                        <Box>
+                          <Typography align="center">
+                            <Link href="/#/">
+                              Announcement & Updates
+                            </Link>
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.helpCard}>
+                  <Card className={classes.helpCardContent}>
+                    <CardContent>
+                      <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
+                        <MenuBookIcon fontSize="large" color="primary" />
+                        <Box>
+                          <Typography align="center">
+                            <Link target="blank" href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">
+                              Training Guide
+                            </Link>
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Box>
             </Box>
-        </>
-    );
+          </Container>
+        </Box>
+      </Box>
+    </>
+  );
 }
 
 export default LandingPage;
