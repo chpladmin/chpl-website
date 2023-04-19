@@ -11,13 +11,13 @@ const usePostChangePassword = () => {
 const usePostEmailResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/email-reset-password', data)
-    .then((response) => response));
+    .then((response) => response?.data));
 };
 
 const usePostResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/reset-password-request', data)
-    .then((response) => response));
+    .then((response) => response.data));
 };
 
 export {
