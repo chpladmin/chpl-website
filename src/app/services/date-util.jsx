@@ -20,7 +20,7 @@ const isLocalDateTime = (dateTimeToTest) => {
   }
 };
 
-const getDisplayDateFormat = (date) => {
+const getDisplayDateFormat = (date, fallback = 'N/A') => {
   const timeFormatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y h:mm:ss a').withLocale(Locale.US);
   const dateFormatter = jsJoda.DateTimeFormatter.ofPattern('MMM d, y').withLocale(Locale.US);
   if (typeof (date) === 'number') {
@@ -34,10 +34,24 @@ const getDisplayDateFormat = (date) => {
   if (typeof (date) === 'string' && isLocalDateTime(date)) {
     return jsJoda.LocalDateTime.parse(date).format(timeFormatter);
   }
-  return 'N/A';
+  return fallback;
+};
+
+const toTimestamp = (date) => {
+  if (typeof (date) === 'string' && isLocalDate(date)) {
+    const localDate = jsJoda.LocalDate.parse(date).plusDays(1);
+    const localTime = jsJoda.LocalTime.MIDNIGHT;
+    return jsJoda
+      .ZonedDateTime
+      .of3(localDate, localTime, jsJoda.ZoneId.of('America/New_York'))
+      .toInstant()
+      .toEpochMilli();
+  }
+  return undefined;
 };
 
 export {
   getDisplayDateFormat,
   jsJoda,
+  toTimestamp,
 };

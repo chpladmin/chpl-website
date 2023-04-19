@@ -43,6 +43,13 @@ const states = [{
     },
   },
 }, {
+  name: 'listing.sedTask',
+  component: 'chplListingSedTaskView',
+  params: {
+    sedTaskId: { squash: true, value: null },
+  },
+  data: { title: 'CHPL Listing Details - SED Task' },
+}, {
   name: 'listing.view',
   url: '/view',
   component: 'chplListingViewPage',

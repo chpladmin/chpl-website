@@ -48,21 +48,14 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
-    name: 'organizations.developers.developer.merge',
-    url: '/merge',
+    name: 'organizations.developers.developer.join',
+    url: '/join',
     views: {
-      'view@^': 'chplDevelopersMerge',
-    },
-    resolve: {
-      developers: (networkService) => {
-        'ngInject';
-
-        return networkService.getDevelopers();
-      },
+      'view@^': 'chplDevelopersJoin',
     },
     data: {
-      title: 'CHPL Developers - Merge',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      title: 'CHPL Developers - Join',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
     },
   }, {
     name: 'organizations.developers.developer.attestation',

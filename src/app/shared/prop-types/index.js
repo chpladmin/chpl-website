@@ -22,6 +22,7 @@ import filter from './filter';
 import formik from './formik';
 import functionalitiesTested from './functionalities-tested';
 import { job, scheduledSystemTrigger, trigger } from './jobs';
+import { certificationEdition, cqm, measure } from './listing';
 import { optionalStandard, selectedOptionalStandard } from './optional-standard';
 import product from './product';
 import reliedUponSoftware from './relied-upon-software';
@@ -58,6 +59,7 @@ export {
   address,
   analyticsConfig,
   announcement,
+  certificationEdition,
   certificationResult,
   changeRequest,
   changeRequestStatusType,
@@ -66,6 +68,7 @@ export {
   complaintCriterion,
   conformanceMethod,
   contact,
+  cqm,
   criterion,
   developer,
   directReview,
@@ -74,6 +77,7 @@ export {
   functionalitiesTested,
   job,
   listing,
+  measure,
   optionalStandard,
   product,
   qmsStandard,

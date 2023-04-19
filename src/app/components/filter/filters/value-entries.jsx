@@ -42,24 +42,31 @@ const getCriteriaValueEntry = (props) => (
   />
 );
 
-const generateDateEntry = ({ filter, handleFilterUpdate, type }) => filter.values
-  .sort((a, b) => (a.value > b.value ? -1 : 1))
-  .map((value) => {
-    const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
-    return (
-      <React.Fragment key={value.value}>
-        <div>
-          {filter.getValueDisplay(value)}
-        </div>
-        <ChplTextField
-          id={labelId}
-          type={type}
-          value={value.selected}
-          onChange={(event) => handleFilterUpdate(event, filter, value)}
-        />
-      </React.Fragment>
-    );
-  });
+const generateDateEntry = ({ filter, handleFilterUpdate, type }) => (
+  <>
+    {filter.values
+      .sort((a, b) => (a.value < b.value ? -1 : 1))
+      .map((value) => {
+        const labelId = `filter-panel-secondary-items-${value.value.replace(/ /g, '_')}`;
+        return (
+          <React.Fragment key={value.value}>
+            <div>
+              {filter.getValueDisplay(value)}
+            </div>
+            <ChplTextField
+              id={labelId}
+              type={type}
+              value={value.selected}
+              onChange={(event) => handleFilterUpdate(event, filter, value)}
+            />
+          </React.Fragment>
+        );
+      })}
+    <div>
+      Note: dates are inclusive
+    </div>
+  </>
+);
 
 const getDateTimeEntry = ({ filter, handleFilterUpdate }) => generateDateEntry({ filter, handleFilterUpdate, type: 'datetime-local' });
 
@@ -102,6 +109,7 @@ const getRadioValueEntry = ({ filter, handleFilterUpdate }) => {
           id={labelId}
           key={labelId}
           style={classes.singularSelectors}
+          disabled={filter.getLongValueDisplay(value).includes('(0)')}
         />
       );
     });

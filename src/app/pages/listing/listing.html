@@ -1,4 +1,5 @@
 <ui-view>
+  <chpl-browser-viewed-widget-bridge listing="$ctrl.listing"></chpl-browser-viewed-widget-bridge>
   <div class="container" ng-if="!$ctrl.loading">
     <div class="row text-bottom" ng-if="$ctrl.listing">
       <div class="col-sm-8">
@@ -128,8 +129,8 @@
                 <div class="data-label" ng-if="$ctrl.listing.rwtPlansUrl">
                   <label for="rwtPlansUrl">Plans</label>
                 </div>
-                <div ng-if="$ctrl.listing.rwtPlansUrl">
-                  <p><chpl-link-bridge href="$ctrl.listing.rwtPlansUrl" name="rwtPlansUrl" id="rwt-plans-url"></chpl-link-bridge></p>
+                <div ng-if="$ctrl.listing.rwtPlansUrl" id="rwt-plans-url">
+                  <p><chpl-link-bridge href="$ctrl.listing.rwtPlansUrl" name="rwtPlansUrl"></chpl-link-bridge></p>
                 </div>
                 <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
                   <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtPlansCheckDate) }}</p>
@@ -137,8 +138,8 @@
                 <div class="data-label" ng-if="$ctrl.listing.rwtResultsUrl">
                   <label for="rwtRsultsURL">Results</label>
                 </div>
-                <div ng-if="$ctrl.listing.rwtResultsUrl">
-                  <p><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl" id="rwt-results-url"></chpl-link-bridge></p>
+                <div ng-if="$ctrl.listing.rwtResultsUrl" id="rwt-results-url">
+                  <p><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl"></chpl-link-bridge></p>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
                   <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtResultsCheckDate) }}</p>

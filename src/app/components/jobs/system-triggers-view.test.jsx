@@ -6,6 +6,10 @@ import '@testing-library/jest-dom';
 
 import ChplSystemTriggersView from './system-triggers-view';
 
+const hocMock = {
+  dispatch: jest.fn(),
+};
+
 const triggersMock = [{
   name: 'job name',
   description: 'job description',
@@ -18,6 +22,7 @@ describe('the ChplSystemTriggersView component', () => {
     render(
       <ChplSystemTriggersView
         triggers={triggersMock}
+        dispatch={hocMock.dispatch}
       />,
     );
   });

@@ -1,4 +1,5 @@
 <div class="container-fluid">
+  <chpl-browser-viewed-widget-bridge listing="$ctrl.listing"></chpl-browser-viewed-widget-bridge>
   <div class="main-content" id="main-content" tabindex="-1" ng-if="!$ctrl.listing">
     <p class="lead">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
   </div>
@@ -123,16 +124,16 @@
                   <div class="data-label listing__enhanced-label--small">Real World Testing</div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtPlansUrl">
-                  <div class="data-label listing__enhanced-label--small">Plans</div>
-                  <div class="read-only-data"><chpl-link-bridge href="$ctrl.listing.rwtPlansUrl" name="rwtPlansUrl" id="rwt-plans-url"></chpl-link-bridge></div>
+                  <div class="data-label listing__enhanced-label--small" id="rwt-plans-url">Plans</div>
+                  <div class="read-only-data"><chpl-link-bridge href="$ctrl.listing.rwtPlansUrl" name="rwtPlansUrl"></chpl-link-bridge></div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtPlansCheckDate && $ctrl.canViewRwtDates()">
                   <div class="data-label listing__enhanced-label--small">Last ONC-ACB Completeness Check</div>
                   <div class="read-only-data">{{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtPlansCheckDate) }}</div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsUrl">
-                  <div class="data-label listing__enhanced-label--small">Results</div>
-                  <div class="read-only-data"><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl" id="rwt-results-url"></chpl-link-bridge></div>
+                  <div class="data-label listing__enhanced-label--small" id="rwt-results-url">Results</div>
+                  <div class="read-only-data"><chpl-link-bridge href="$ctrl.listing.rwtResultsUrl" name="rwtResultsUrl"></chpl-link-bridge></div>
                 </div>
                 <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
                   <div class="data-label listing__enhanced-label--small">Last ONC-ACB Completeness Check</div>

@@ -93,8 +93,8 @@ describe('the Developers page', () => {
           expect(page.splitDeveloper.isDisplayed()).toBe(true);
         });
 
-        it('should not have merge developer button', () => {
-          expect(page.mergeDeveloper.isDisplayed()).toBe(false);
+        it('should not have join developer button', () => {
+          expect(page.joinDeveloper.isDisplayed()).toBe(false);
         });
       });
     });
@@ -136,19 +136,16 @@ describe('the Developers page', () => {
         page.selectAllCertificationStatus();
       });
 
-      it('should have merge developer button', () => {
-        expect(page.mergeDeveloper.isDisplayed()).toBe(true);
+      it('should have join developer button', () => {
+        expect(page.joinDeveloper.isDisplayed()).toBe(true);
       });
 
-      it('should allow merge to happen', () => {
-        page.mergeDeveloper.click();
-        page.moveDeveloperToBeMerged('ABH Enterprises, LLC');
-        page.editWebsite.setValue(website);
-        page.setAddress(developerAddress);
-        page.setContact(developerContact);
+      it('should allow join to happen', () => {
+        page.joinDeveloper.click();
+        page.moveDeveloperToBeJoined('ABH Enterprises, LLC');
         actionBar.save();
         browser.waitUntil(() => toast.toastTitle.isDisplayed());
-        expect(toast.toastTitle.getText()).toEqual('Merge submitted');
+        expect(toast.toastTitle.getText()).toEqual('Join Developer request submitted');
       });
     });
 

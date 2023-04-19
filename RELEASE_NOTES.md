@@ -1,5 +1,65 @@
 # Release Notes
 
+## Version 11.51.1
+_3 April 2023_
+
+### User Interface Updates
+* Disable Compliance/Non-conformity filters when Direct Review data is not available
+* Disable "Products: Corrective Action Status" shortcut page when Direct Review data is not available
+
+### Bug Fixes
+* Eliminate ability to "double-click" when saving Attestations
+
+---
+
+## Version 11.51.0
+_20 March 2023_
+
+### Features
+* Allow selection of columns for Listing download
+* Enable "Quick Filters" for previously viewed/compared listings
+
+---
+
+## Version 11.50.0
+_6 March 2023_
+
+### Features
+* Allow user to select "nth weekday" of the month for scheduling Reports
+* Allow user to select "day of month" for scheduling Reports
+
+### Flagged Features
+* Display CQMs in updated UI/UX
+* Display Certification Criteria in updated UI/UX
+
+### User Interface Updates
+* Allow download of CSV that was used to generate the Listing
+* Display Reports schedule in human readable form
+* Use updated API to search with inclusive dates
+
+### Bug Fixes
+* Display error messages when Product edit returns them
+
+---
+
+## Version 11.49.0
+_21 February 2023_
+
+### Features
+* Filter the available Non-conformities based on the Listing Edition
+* Convert CMS ID widget/buttons to React
+
+### User Interface Updates
+* Provide React version of Certification Status Legend on all new style search pages
+* Change "Reports" nav menu item to be "Activity"
+* Move "System Jobs" to new "Reports" navigation menu item
+
+### Bug Fixes
+* Respect "retirement" status of ONC-ACBs on Shortcut pages
+* Default to non-removed criteria on API Information shortcut page
+
+---
+
 ## Version 11.48.1
 _6 February 2023_
 

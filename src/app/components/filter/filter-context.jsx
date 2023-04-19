@@ -41,6 +41,7 @@ const defaultFilter = {
   getValueEntry: getDefaultValueEntry,
   sortValues: (filter, a, b) => (filter.getValueDisplay(a) < filter.getValueDisplay(b) ? -1 : 1),
   singular: false,
+  disabled: false,
 };
 
 const clearFilter = (filter, category, setFilters) => {
@@ -63,6 +64,15 @@ const resetFilter = (filter, category, setFilters) => {
       selected: v.default,
     })),
   }));
+};
+
+const setFilterDisability = (filters, category, disabled, setFilters) => {
+  const filter = filters.find((f) => f.key === category);
+  const updatedFilter = {
+    ...filter,
+    disabled,
+  };
+  setFilters((previous) => previous.filter((f) => f.key !== category).concat(updatedFilter));
 };
 
 const toggleFilter = (filters, category, value, setFilters) => {
@@ -102,7 +112,7 @@ const toggleShowAll = (filters, category, setFilters) => {
   setFilters(updatedFilters);
 };
 
-const updateFilter = (filters, category, value, setFilters) => {
+const updateFilter = (filters, category, value, setFilters, setSearchTerm) => {
   const filter = filters.find((f) => f.key === category.key);
   if (filter.singular) {
     const values = filter.values.map((v) => ({
@@ -113,7 +123,20 @@ const updateFilter = (filters, category, value, setFilters) => {
       ...filter,
       values,
     };
-    const updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    let updatedFilters;
+    if (filter.loneFilter) {
+      updatedFilters = filters.map((f) => ({
+        ...f,
+        operator: f.operatorKey ? 'or' : undefined,
+        values: f.values.map((v) => ({
+          ...v,
+          selected: false,
+        })),
+      })).filter((f) => f.key !== category.key).concat(updatedFilter);
+      setSearchTerm('');
+    } else {
+      updatedFilters = filters.filter((f) => f.key !== category.key).concat(updatedFilter);
+    }
     if (!filter.required || updatedFilter.values.reduce((has, v) => has || v.selected, false)) {
       setFilters(updatedFilters);
     }
@@ -209,6 +232,9 @@ function FilterProvider(props) {
           })),
         })));
         break;
+      case 'setFilterDisability':
+        setFilterDisability(filters, category, value, setFilters);
+        break;
       case 'toggle':
         toggleFilter(filters, category, value, setFilters);
         break;
@@ -219,7 +245,7 @@ function FilterProvider(props) {
         toggleShowAll(filters, category, setFilters);
         break;
       case 'update':
-        updateFilter(filters, category, value, setFilters);
+        updateFilter(filters, category, value, setFilters, setSearchTerm);
         break;
       default:
         console.log({ action, category, value });

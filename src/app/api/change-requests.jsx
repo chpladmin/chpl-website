@@ -24,14 +24,14 @@ const useFetchChangeRequests = ({
   query,
 }) => {
   const axios = useAxios();
-  return useQuery(['change-requests/search', {
+  return useQuery(['change-requests/search/v2', {
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
     query,
   }], async () => {
-    const response = await axios.get(`change-requests/search?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
+    const response = await axios.get(`change-requests/search/v2?${query}&pageNumber=${pageNumber}&pageSize=${pageSize}&orderBy=${orderBy}&sortDescending=${sortDescending}`);
     return response.data;
   }, { keepPreviousData: true });
 };
@@ -58,13 +58,13 @@ const usePostChangeRequest = () => {
   return useMutation(async (data) => axios.post('change-requests', data), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
-      queryClient.invalidateQueries('change-requests/search');
+      queryClient.invalidateQueries('change-requests/search/v2');
       queryClient.invalidateQueries('developers/attestations');
     },
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
-        queryClient.invalidateQueries('change-requests/search');
+        queryClient.invalidateQueries('change-requests/search/v2');
         queryClient.invalidateQueries('developers/attestations');
       }
       return error;
@@ -83,13 +83,13 @@ const usePutChangeRequest = () => {
   return useMutation(async (data) => axios.put('change-requests', data), {
     onSuccess: () => {
       queryClient.invalidateQueries('change-requests');
-      queryClient.invalidateQueries('change-requests/search');
+      queryClient.invalidateQueries('change-requests/search/v2');
       queryClient.invalidateQueries('developers/attestations');
     },
     onError: (error) => {
       if (error.response.data.error?.startsWith('Email could not be sent to')) {
         queryClient.invalidateQueries('change-requests');
-        queryClient.invalidateQueries('change-requests/search');
+        queryClient.invalidateQueries('change-requests/search/v2');
         queryClient.invalidateQueries('developers/attestations');
       }
       return error;

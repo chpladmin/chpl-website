@@ -6,6 +6,7 @@
     <div class="row" ng-show="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>
+        <p ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])">Try the new <a ui-sref="administration.search"><i class="fa fa-caret-right" ng-if="vm.isActive('administration.search')"></i> Search (preview)</a></p>
       </div>
     </div>
     <div class="form-horizontal search-inputs" ng-form="vm.searchForm" aria-live="polite">
