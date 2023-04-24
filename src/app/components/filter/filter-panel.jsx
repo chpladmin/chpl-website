@@ -152,6 +152,7 @@ function ChplFilterPanel() {
       $analytics.eventTrack('Toggle Filter', { category: filterContext.analytics.category, label: `${activeCategory.display}: ${activeCategory.getValueDisplay(value)}` });
     }
     filterContext.dispatch('toggle', activeCategory, value);
+    filterContext.dispatch('hasSearched');
   };
 
   const handleFilterUpdate = (event, filter, value) => {
@@ -159,6 +160,7 @@ function ChplFilterPanel() {
       ...value,
       selected: event.target.value,
     });
+    filterContext.dispatch('hasSearched');
   };
 
   const toggleOperator = (f) => {

@@ -8,7 +8,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import BlockIcon from '@material-ui/icons/Block';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -21,51 +20,54 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import StopIcon from '@material-ui/icons/Stop';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
-import Image from '../../../../assets/images/Chpl_Logo-01.png';
+import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
-import SgSearchBar from './sg-search-bar';
-
+import {
+  ChplFilterPanel,
+  ChplFilterQuickFilters,
+  ChplFilterSearchTerm,
+} from 'components/filter';
 import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
-    collectionsCard: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-          width: '100%',
-        },
-        [theme.breakpoints.up('md')]: {
-          width: '48%',
-        },
-        [theme.breakpoints.up('lg')]: {
-          width: '25%',
-        },
-      },
-      collectionsCards: {
-        width: '-webkit-fill-available',
-      },
-      collectionsCardContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        gridGap: '16px',
-        flexWrap: 'nowrap',
-        padding: '0 16px',
-        [theme.breakpoints.up('sm')]: {
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          padding: '0',
-        },
-        [theme.breakpoints.up('md')]: {
-          flexWrap: 'wrap',
-          justifyContent: 'space-evenly',
-          padding: '0',
-        },
-        [theme.breakpoints.up('lg')]: {
-          flexWrap: 'nowrap',
-          padding: '0',
-        },
-      },
+  collectionsCard: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '48%',
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: '25%',
+    },
+  },
+  collectionsCards: {
+    width: '-webkit-fill-available',
+  },
+  collectionsCardContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gridGap: '16px',
+    flexWrap: 'nowrap',
+    padding: '0 16px',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      padding: '0',
+    },
+    [theme.breakpoints.up('md')]: {
+      flexWrap: 'wrap',
+      justifyContent: 'space-evenly',
+      padding: '0',
+    },
+    [theme.breakpoints.up('lg')]: {
+      flexWrap: 'nowrap',
+      padding: '0',
+    },
+  },
   helpCard: {
     width: '100%',
     flexDirection: 'column',
@@ -91,7 +93,7 @@ const useStyles = makeStyles(() => ({
   landingPageBackground: {
     backgroundPosition: '48vw 40vh',
     backgroundRepeat: 'no-repeat',
-    background: 'rgba(2,23,60,1)' + `url(${Image})`,
+    background: `rgba(2,23,60,1) url(${Image})`,
     backgroundBlendMode: 'soft-light',
   },
   subHeaders: {
@@ -101,10 +103,9 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
- 
 }));
 
-function LandingPage() {
+function ChplLandingPage() {
   const classes = useStyles();
 
   return (
@@ -119,8 +120,9 @@ function LandingPage() {
         <Box className={classes.landingPageImageryBackground}>
           <Container maxWidth="md">
             <Box mt={-8}>
-              {/* Placeholder for search bar */}
-              <SgSearchBar />
+              <ChplFilterSearchTerm />
+              <ChplFilterPanel />
+              <ChplFilterQuickFilters />
             </Box>
             <Box pt={8} pb={4}>
               <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use on of our collections page to help find a particular category of listings</Typography>
@@ -173,7 +175,7 @@ function LandingPage() {
                             </Link>
                           </Typography>
                           <Typography variant="body2">
-                            This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL).
+                            This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the Certified Health IT Products List (CHPL).
                           </Typography>
                         </Box>
                       </Box>
@@ -335,4 +337,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default ChplLandingPage;
