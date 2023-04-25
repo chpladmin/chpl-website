@@ -10,8 +10,15 @@ class SearchPage extends CollectionPage {
     };
   }
 
+  async bypassLandingPage() {
+    await (
+      await $(this.elements.filterSearchTermGo)
+    ).click();
+  }
+
   async open() {
     await openPage('#/administration/search');
+    await this.bypassLandingPage();
     await (browser.waitUntil(async () => !(await this.isLoading())));
   }
 }
