@@ -27,7 +27,7 @@ import {
   ChplFilterSearchTerm,
 } from 'components/filter';
 import { ChplLink } from 'components/util';
-import { theme } from 'themes';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
   collectionsCard: {
@@ -103,6 +103,17 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
+  searchContainer: {
+    backgroundColor: palette.grey,
+    padding: '16px 32px',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '16px',
+    alignItems: 'center',
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: 'auto 10fr auto auto',
+    },
+  },
 }));
 
 function ChplLandingPage() {
@@ -119,7 +130,7 @@ function ChplLandingPage() {
       <Box className={classes.landingPageBackground} pb={16} height="fit-content">
         <Box className={classes.landingPageImageryBackground}>
           <Container maxWidth="md">
-            <Box mt={-8}>
+            <Box className={classes.searchContainer} mt={-8}>
               <ChplFilterSearchTerm />
               <ChplFilterPanel />
               <ChplFilterQuickFilters />
