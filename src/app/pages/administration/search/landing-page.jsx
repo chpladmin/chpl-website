@@ -123,8 +123,12 @@ function ChplLandingPage() {
     <>
       <Box pt={16} pb={24}>
         <Container maxWidth="md">
-          <Typography align="center" variant="h1" gutterBottom>Welcome to the Certified Health IT Product List (CHPL)</Typography>
-          <Typography align="center" variant="body1">The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program.</Typography>
+          <Typography align="center" variant="h1" gutterBottom>
+            Welcome to the Certified Health IT Product List
+          </Typography>
+          <Typography align="center" variant="body1">
+            The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program
+          </Typography>
         </Container>
       </Box>
       <Box className={classes.landingPageBackground} pb={16} height="fit-content">
@@ -136,7 +140,9 @@ function ChplLandingPage() {
               <ChplFilterQuickFilters />
             </Box>
             <Box pt={8} pb={4}>
-              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use our collections pages to help find a particular category of listings</Typography>
+              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>
+                Use our collections pages to help find a particular category of listings
+              </Typography>
             </Box>
             <Box display="flex" flexDirection="column" gridGap={16}>
               <Box className={classes.collectionsCardContainer}>
@@ -154,7 +160,9 @@ function ChplLandingPage() {
                               router={{ sref: 'collections.api-documentation' }}
                             />
                           </Typography>
-                          <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
+                          <Typography variant="body2">
+                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                          </Typography>
                         </Box>
                       </Box>
                     </CardContent>
@@ -174,7 +182,9 @@ function ChplLandingPage() {
                               router={{ sref: 'collections.sed' }}
                             />
                           </Typography>
-                          <Typography variant="body2">This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED). </Typography>
+                          <Typography variant="body2">
+                            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED)
+                          </Typography>
                         </Box>
                       </Box>
                     </CardContent>
@@ -195,7 +205,7 @@ function ChplLandingPage() {
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the Certified Health IT Products List (CHPL).
+                            This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the CHPL
                           </Typography>
                         </Box>
                       </Box>
@@ -217,7 +227,7 @@ function ChplLandingPage() {
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program.
+                            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program
                           </Typography>
                         </Box>
                       </Box>
@@ -241,7 +251,7 @@ function ChplLandingPage() {
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement.
+                            This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement
                           </Typography>
                         </Box>
                       </Box>
@@ -262,7 +272,9 @@ function ChplLandingPage() {
                               router={{ sref: 'charts' }}
                             />
                           </Typography>
-                          <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
+                          <Typography variant="body2">
+                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                          </Typography>
                         </Box>
                       </Box>
                     </CardContent>
@@ -283,7 +295,7 @@ function ChplLandingPage() {
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification.
+                            This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification
                           </Typography>
                         </Box>
                       </Box>
@@ -304,7 +316,9 @@ function ChplLandingPage() {
                               router={{ sref: 'collections.decertified-products' }}
                             />
                           </Typography>
-                          <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
+                          <Typography variant="body2">
+                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                          </Typography>
                         </Box>
                       </Box>
                     </CardContent>
@@ -312,7 +326,9 @@ function ChplLandingPage() {
                 </Box>
               </Box>
               <Box pt={4} pb={4}>
-                <Typography className={classes.subHeaders} align="left" variant="h3">Need Help? Learn more about CHPL through our documentation.</Typography>
+                <Typography className={classes.subHeaders} align="left" variant="h2">
+                  Need Help? Learn more about CHPL through our documentation
+                </Typography>
               </Box>
               <Box className={classes.helpCardsContainer}>
                 <Box className={classes.helpCard}>
