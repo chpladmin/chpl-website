@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   Container,
-  Link,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -27,6 +26,7 @@ import {
   ChplFilterQuickFilters,
   ChplFilterSearchTerm,
 } from 'components/filter';
+import { ChplLink } from 'components/util';
 import { theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
@@ -125,7 +125,7 @@ function ChplLandingPage() {
               <ChplFilterQuickFilters />
             </Box>
             <Box pt={8} pb={4}>
-              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use on of our collections page to help find a particular category of listings</Typography>
+              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use our collections pages to help find a particular category of listings</Typography>
             </Box>
             <Box display="flex" flexDirection="column" gridGap={16}>
               <Box className={classes.collectionsCardContainer}>
@@ -136,9 +136,12 @@ function ChplLandingPage() {
                         <CodeIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/sed">
-                              API info for 2015 products
-                            </Link>
+                            <ChplLink
+                              href="#/collections/api-documentation"
+                              text="API info for 2015 products"
+                              external={false}
+                              router={{ sref: 'collections.api-documentation' }}
+                            />
                           </Typography>
                           <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
                         </Box>
@@ -153,9 +156,12 @@ function ChplLandingPage() {
                         <VerifiedUserIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/api-documentation">
-                              SED info for 2015 products
-                            </Link>
+                            <ChplLink
+                              href="#/collections/sed"
+                              text="SED info for 2015 products"
+                              external={false}
+                              router={{ sref: 'collections.sed' }}
+                            />
                           </Typography>
                           <Typography variant="body2">This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED). </Typography>
                         </Box>
@@ -170,9 +176,12 @@ function ChplLandingPage() {
                         <StopIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/inactive">
-                              Inactive Certificates
-                            </Link>
+                            <ChplLink
+                              href="#/collections/inactive-certificates"
+                              text="Inactive Certificates"
+                              external={false}
+                              router={{ sref: 'collections.inactive-certificates' }}
+                            />
                           </Typography>
                           <Typography variant="body2">
                             This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the Certified Health IT Products List (CHPL).
@@ -189,9 +198,12 @@ function ChplLandingPage() {
                         <BlockIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/developers">
-                              Banned Developers
-                            </Link>
+                            <ChplLink
+                              href="#/collections/developers"
+                              text="Banned Developers"
+                              external={false}
+                              router={{ sref: 'collections.developers' }}
+                            />
                           </Typography>
                           <Typography variant="body2">
                             This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program.
@@ -210,9 +222,12 @@ function ChplLandingPage() {
                         <GavelIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/api-documentation">
-                              Real World Testing
-                            </Link>
+                            <ChplLink
+                              href="#/collections/real-world-testing"
+                              text="Real World Testing"
+                              external={false}
+                              router={{ sref: 'collections.real-world-testing' }}
+                            />
                           </Typography>
                           <Typography variant="body2">
                             This list includes Health IT Module(s) eligible for Real World Testing, which is an annual Condition and Maintenance of Certification requirement.
@@ -229,9 +244,12 @@ function ChplLandingPage() {
                         <ImageIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/charts">
-                              Charts
-                            </Link>
+                            <ChplLink
+                              href="#/charts"
+                              text="Charts"
+                              external={false}
+                              router={{ sref: 'charts' }}
+                            />
                           </Typography>
                           <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
                         </Box>
@@ -246,9 +264,12 @@ function ChplLandingPage() {
                         <ErrorOutlineOutlinedIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/corrective-action">
-                              Products Corrective Actions
-                            </Link>
+                            <ChplLink
+                              href="#/collections/corrective-action"
+                              text="Products: Corrective Actions"
+                              external={false}
+                              router={{ sref: 'collections.corrective-action' }}
+                            />
                           </Typography>
                           <Typography variant="body2">
                             This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification.
@@ -265,9 +286,12 @@ function ChplLandingPage() {
                         <CancelIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
-                            <Link href="/#/collections/products">
-                              Decertified Products
-                            </Link>
+                            <ChplLink
+                              href="#/collections/decertified-products"
+                              text="Decertified Products"
+                              external={false}
+                              router={{ sref: 'collections.decertified-products' }}
+                            />
                           </Typography>
                           <Typography variant="body2">This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria </Typography>
                         </Box>
@@ -287,9 +311,12 @@ function ChplLandingPage() {
                         <DescriptionIcon fontSize="large" color="primary" />
                         <Box>
                           <Typography align="center">
-                            <Link href="/#/resources/overview">
-                              An Overview of Chpl
-                            </Link>
+                            <ChplLink
+                              href="#/resources/overview"
+                              text="An Overview of the CHPL"
+                              external={false}
+                              router={{ sref: 'resources.overview' }}
+                            />
                           </Typography>
                         </Box>
                       </Box>
@@ -303,9 +330,12 @@ function ChplLandingPage() {
                         <AnnouncementIcon fontSize="large" color="primary" />
                         <Box>
                           <Typography align="center">
-                            <Link href="/#/">
-                              Announcement & Updates
-                            </Link>
+                            <ChplLink
+                              href="#/resources/chpl-api"
+                              text="CHPL API"
+                              external={false}
+                              router={{ sref: 'resources.chpl-api' }}
+                            />
                           </Typography>
                         </Box>
                       </Box>
@@ -319,9 +349,11 @@ function ChplLandingPage() {
                         <MenuBookIcon fontSize="large" color="primary" />
                         <Box>
                           <Typography align="center">
-                            <Link target="blank" href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">
-                              Training Guide
-                            </Link>
+                            <ChplLink
+                              href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
+                              text="Training Guide"
+                              external={false}
+                            />
                           </Typography>
                         </Box>
                       </Box>
