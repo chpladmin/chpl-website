@@ -1,68 +1,159 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  Link,
+  List,
+  ListItem,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
-import { arrayOf } from 'prop-types';
 
-import { palette, utilStyles } from 'themes';
-import { measure as measureType } from 'shared/prop-types';
+import ChplIcsFamily from 'components/listing/details/ics-family/ics-family';
+import { ChplLink } from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
+import { listing as listingType } from 'shared/prop-types/listing';
 
-const useStyles = makeStyles({
-  ...utilStyles,
-  infoIcon: {
-    color: `${palette.primary}`,
-  },
-});
-function ChplAdditionalinformation() {
-  const classes = useStyles();
+const getRelatives = (listings) => listings.map((listing) => (
+  <ListItem key={listing.chplProductNumber}>
+    { listing.id
+      && (
+        <ChplLink
+          href={`#/listing/${listing.id}?panel=additional`}
+          text={`${listing.chplProductNumber} (${getDisplayDateFormat(listing.certificationDate)})`}
+          external={false}
+          router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
+          analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
+        />
+      )}
+    { !listing.id
+      && (
+        <Typography>{ listing.chplProductNumber }</Typography>
+      )}
+  </ListItem>
+));
+
+function ChplAdditionalInformation(props) {
+  const { listing } = props;
+  const [currentPi, setCurrentPi] = useState(undefined);
+
+  useEffect(() => {
+    if (listing.promotingInteroperabilityUserHistory?.length > 0) {
+      setCurrentPi(listing.promotingInteroperabilityUserHistory.sort((a, b) => (a.userCountDate < b.userCountDate ? 1 : -1))[0]);
+    }
+  }, [listing]);
 
   return (
     <>
       <Box gridGap={8} display="flex" flexDirection="column">
-        <Card>
-          <CardHeader title="Certification History" />
-          <CardContent>
-            <Typography variant="subtitle1">Inherited Certified Status (ICS): </Typography>
-            <Typography gutterBottom>True</Typography>
-            <Typography variant="subtitle1">Inherits From </Typography>
-            <Link gutterBottom>15.04.04.2087.Acui.02.00.1.180409 (Apr 9, 2018)</Link>
-            <Typography variant="subtitle1">ICS Source for </Typography>
-            <Link gutterBottom>15.04.04.1447.Beac.22.17.1.220511 (May 11, 2022)</Link>
-          </CardContent>
-          <CardActions>
-            <Button variant="contained" color="secondary">Show ICS Relationship</Button>
-          </CardActions>
-        </Card>
-        <Card>
-          <CardHeader title="Test Results Summary" />
-          <CardContent>
-            <Typography>No report on file.</Typography>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader title="Other ACB" />
-          <CardContent>
-            <Typography>No report on file.</Typography>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader title="Developer Identified Targeted User" />
-          <CardContent>
-            <Typography>No report on file.</Typography>
-          </CardContent>
-        </Card>
+        { listing.certificationEdition.name === '2014'
+          && (
+            <Card>
+              <CardHeader title="Test Results Summary" />
+              <CardContent>
+                { listing.reportFileLocation
+                  && (
+                    <ChplLink
+                      href={listing.reportFileLocation}
+                      text={listing.reportFileLocation}
+                      analytics={{ event: 'Test Results Summary', category: 'Download Details', label: listing.reportFileLocation }}
+                    />
+                  )}
+                { !listing.reportFileLocation
+                  && (
+                    <Typography>No report on file.</Typography>
+                  )}
+              </CardContent>
+            </Card>
+          )}
+        { listing.ics !== null
+          && (
+            <Card>
+              <CardHeader title="Certification History" />
+              <CardContent>
+                { listing.ics.inherits !== null
+                  && (
+                    <>
+                      <Typography variant="subtitle1">Inherited Certified Status (ICS):</Typography>
+                      <Typography gutterBottom>{ listing.ics.inherits ? 'True' : 'False' }</Typography>
+                    </>
+                  )}
+                { listing.ics.inherits === null
+                  && (
+                    <>
+                      <Typography gutterBottom>N/A</Typography>
+                    </>
+                  )}
+                { listing.ics.parents?.length > 0
+                  && (
+                    <>
+                      <Typography variant="subtitle1">Inherits From</Typography>
+                      <List>
+                        { getRelatives(listing.ics.parents) }
+                      </List>
+                    </>
+                  )}
+                { listing.ics.children?.length > 0
+                  && (
+                    <>
+                      <Typography variant="subtitle1">ICS Source for</Typography>
+                      <List>
+                        { getRelatives(listing.ics.children) }
+                      </List>
+                    </>
+                  )}
+              </CardContent>
+              { listing.certificationEdition.name === '2015'
+                && (
+                  <CardActions>
+                    <ChplIcsFamily
+                      id={listing.id}
+                    />
+                  </CardActions>
+                )}
+            </Card>
+          )}
+        { listing.otherAcb !== null
+          && (
+            <Card>
+              <CardHeader title="Other ACB" />
+              <CardContent>
+                <Typography>{ listing.otherAcb }</Typography>
+              </CardContent>
+            </Card>
+          )}
+        { listing.targetedUsers?.length > 0
+          && (
+            <Card>
+              <CardHeader title="Developer Identified Targeted Users" />
+              <CardContent>
+                <List>
+                  { listing.targetedUsers.map((user) => (
+                    <ListItem key={user.targetedUserName}>
+                      { user.targetedUserName }
+                    </ListItem>
+                  ))}
+                </List>
+              </CardContent>
+            </Card>
+          )}
         <Card>
           <CardHeader title="Estimated Number of Promoting Interoperability Users" />
           <CardContent>
-            No Promoting Interoperability Users data exists.
+            { currentPi
+              && (
+                <Typography>
+                  { currentPi.userCount }
+                  , last updated on
+                  {' '}
+                  { getDisplayDateFormat(currentPi.userCountDate) }
+                </Typography>
+              )}
+            { !currentPi
+              && (
+                <Typography>No Promoting Interoperability Users data exists.</Typography>
+              )}
           </CardContent>
         </Card>
       </Box>
@@ -70,8 +161,8 @@ function ChplAdditionalinformation() {
   );
 }
 
-export default ChplAdditionalinformation;
+export default ChplAdditionalInformation;
 
-ChplAdditionalinformation.propTypes = {
-  measures: arrayOf(measureType).isRequired,
+ChplAdditionalInformation.propTypes = {
+  listing: listingType.isRequired,
 };

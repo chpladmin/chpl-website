@@ -160,7 +160,9 @@
           <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'directReviews'" id="panel-direct-reviews-activities">
             <span ng-if="$ctrl.listing.directReviewsAvailable">
               <p>Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing</p>
-              <chpl-direct-reviews-view-bridge direct-reviews="$ctrl.listing.directReviews"></chpl-direct-reviews-view-bridge>
+              <chpl-direct-reviews-view-bridge
+                direct-reviews="$ctrl.listing.directReviews"
+                ></chpl-direct-reviews-view-bridge>
             </span>
             <span ng-if="!$ctrl.listing.directReviewsAvailable">
               <p>Direct Review information is not currently available, please check back later</p>
@@ -170,7 +172,6 @@
       </div>
     </div>
 
-
     <!-- Additional Information -->
     <div class="panel panel-ai">
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('additional')" aria-expanded="{{ $ctrl.panelShown === 'additional' }}">
@@ -178,56 +179,64 @@
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'additional'" id="panel-additional-information">
-        <span ng-if="$ctrl.listing.certificationEdition.name === '2014'" id="panel-additional-information-test-results-summary">
-          <h4>Test Results Summary</h4>
-          <a ai-a ng-if="$ctrl.listing.reportFileLocation" href="{{ $ctrl.listing.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.reportFileLocation }">{{ $ctrl.listing.reportFileLocation }}</a>
-          <p ng-if="!$ctrl.listing.reportFileLocation">No report on file</p>
+        <span feature-flag="ui-upgrade" feature-flag-hide>
+          <span ng-if="$ctrl.listing.certificationEdition.name === '2014'" id="panel-additional-information-test-results-summary">
+            <h4>Test Results Summary</h4>
+            <a ai-a ng-if="$ctrl.listing.reportFileLocation" href="{{ $ctrl.listing.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: $ctrl.listing.reportFileLocation }">{{ $ctrl.listing.reportFileLocation }}</a>
+            <p ng-if="!$ctrl.listing.reportFileLocation">No report on file</p>
+          </span>
+          <span ng-if="$ctrl.listing.ics !== null" id="panel-additional-information-certification-history">
+            <h4>Certification History</h4>
+            <p ng-if="$ctrl.listing.ics.inherits !== null"><strong>Inherited Certified Status (ICS):</strong> {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
+            <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
+          </span>
+          <span ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
+            <h5>Inherits from</h5>
+            <ul>
+              <li ng-repeat="listing in $ctrl.listing.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
+                <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+                <span ng-if="listing.id"><a ui-sref="listing({id: listing.id, panel: 'additional'})">{{ listing.chplProductNumber }}</a> ({{ $ctrl.DateUtil.getCertificationDay(listing) }})</span>
+              </li>
+            </ul>
+          </span>
+          <span ng-if="$ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0">
+            <h5>ICS Source for</h5>
+            <ul>
+              <li ng-repeat="listing in $ctrl.listing.ics.children | orderBy: ['certificationDate','chplProductNumber']">
+                <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+                <span ng-if="listing.id"><a ui-sref="listing({id: listing.id, panel: 'additional'})">{{ listing.chplProductNumber }}</a> ({{ $ctrl.DateUtil.getCertificationDay(listing) }})</span>
+              </li>
+            </ul>
+          </span>
+          <span ng-if="!$ctrl.isConfirming && (($ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0) || ($ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0))">
+            <chpl-ics-family-bridge
+              id="$ctrl.listing.id"
+              ></chpl-ics-family-bridge>
+          </span>
+          <span ng-if="$ctrl.listing.otherAcb" id="panel-additional-information-other-acb">
+            <h4>Other ACB</h4>
+            <p>{{ $ctrl.listing.otherAcb }}</p>
+          </span>
+          <span ng-if="$ctrl.listing.targetedUsers && $ctrl.listing.targetedUsers.length > 0" id="panel-additional-information-developer-identified-targeted-user">
+            <h4>Developer Identified Targeted User<span ng-if="$ctrl.listing.targetedUsers.length > 1">s</span></h4>
+            <ul>
+              <li ng-repeat="user in $ctrl.listing.targetedUsers">{{ user.targetedUserName }}</li>
+            </ul>
+          </span>
+          <span ng-if="$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
+            <h4>Estimated Number of Promoting Interoperability Users</h4>
+            <p>{{ $ctrl.currentPI.userCount }}, last updated on {{ $ctrl.currentPI.userCountDate }}</p>
+          </span>
+          <span ng-if="!$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
+            <h4>Estimated Number of Promoting Interoperability Users</h4>
+            <p>No Promoting Interoperability Users data exists</p>
+          </span>
         </span>
-        <span ng-if="$ctrl.listing.ics !== null" id="panel-additional-information-certification-history">
-          <h4>Certification History</h4>
-          <p ng-if="$ctrl.listing.ics.inherits !== null"><strong>Inherited Certified Status (ICS):</strong> {{ $ctrl.listing.ics.inherits ? 'True' : 'False' }}</p>
-          <p ng-if="$ctrl.listing.ics.inherits === null">N/A</p>
+        <span feature-flag="ui-upgrade">
+          <chpl-additional-information-wrapper-bridge
+            listing="$ctrl.listing"
+            ></chpl-additional-information-wrapper-bridge>
         </span>
-        <span ng-if="$ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0">
-          <h5>Inherits from</h5>
-          <ul>
-            <li ng-repeat="listing in $ctrl.listing.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
-              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
-              <span ng-if="listing.id"><a ui-sref="listing({id: listing.id, panel: 'additional'})">{{ listing.chplProductNumber }}</a> ({{ $ctrl.DateUtil.getCertificationDay(listing) }})</span>
-            </li>
-          </ul>
-        </span>
-        <span ng-if="$ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0">
-          <h5>ICS Source for</h5>
-          <ul>
-            <li ng-repeat="listing in $ctrl.listing.ics.children | orderBy: ['certificationDate','chplProductNumber']">
-              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
-              <span ng-if="listing.id"><a ui-sref="listing({id: listing.id, panel: 'additional'})">{{ listing.chplProductNumber }}</a> ({{ $ctrl.DateUtil.getCertificationDay(listing) }})</span>
-            </li>
-          </ul>
-        </span>
-        <span ng-if="!$ctrl.isConfirming && (($ctrl.listing.ics.parents && $ctrl.listing.ics.parents.length > 0) || ($ctrl.listing.ics.children && $ctrl.listing.ics.children.length > 0))">
-          <chpl-ics-family-bridge id="$ctrl.listing.id"></chpl-ics-family-bridge>
-        </span>
-        <span ng-if="$ctrl.listing.otherAcb" id="panel-additional-information-other-acb">
-          <h4>Other ACB</h4>
-          <p>{{ $ctrl.listing.otherAcb }}</p>
-        </span>
-        <span ng-if="$ctrl.listing.targetedUsers && $ctrl.listing.targetedUsers.length > 0" id="panel-additional-information-developer-identified-targeted-user">
-          <h4>Developer Identified Targeted User<span ng-if="$ctrl.listing.targetedUsers.length > 1">s</span></h4>
-          <ul>
-            <li ng-repeat="user in $ctrl.listing.targetedUsers">{{ user.targetedUserName }}</li>
-          </ul>
-        </span>
-        <span ng-if="$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
-          <h4>Estimated Number of Promoting Interoperability Users</h4>
-          <p>{{ $ctrl.currentPI.userCount }}, last updated on {{ $ctrl.currentPI.userCountDate }}</p>
-        </span>
-        <span ng-if="!$ctrl.currentPI" id="panel-additional-information-estimated-number-of-promoting-interoperability-users">
-          <h4>Estimated Number of Promoting Interoperability Users</h4>
-          <p>No Promoting Interoperability Users data exists</p>
-        </span>
-        <chpl-additional-information-wrapper-bridge></chpl-additional-information-wrapper-bridge>
       </div>
     </div>
   </div>

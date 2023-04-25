@@ -1,23 +1,22 @@
 import React from 'react';
-import { arrayOf } from 'prop-types';
 
-import ChplAdditionalinformation from './additional-information';
+import ChplAdditionalInformation from './additional-information';
 
 import AppWrapper from 'app-wrapper';
-import { measure } from 'shared/prop-types';
+import { listing as listingType } from 'shared/prop-types/listing';
 
-function ChplAdditionalinformationWrapper(props) {
-  const { measures } = props;
+function ChplAdditionalInformationWrapper(props) {
+  const { listing } = props;
 
   return (
     <AppWrapper>
-      <ChplAdditionalinformation/>
+      <ChplAdditionalInformation listing={listing} />
     </AppWrapper>
   );
 }
 
-export default ChplAdditionalinformationWrapper;
+export default ChplAdditionalInformationWrapper;
 
-ChplAdditionalinformationWrapper.propTypes = {
-  measures: arrayOf(measure).isRequired,
+ChplAdditionalInformationWrapper.propTypes = {
+  listing: listingType.isRequired,
 };
