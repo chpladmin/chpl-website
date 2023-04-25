@@ -342,10 +342,10 @@ function ChplLandingPage() {
                         <Box>
                           <Typography align="center">
                             <ChplLink
-                              href="#/resources/chpl-api"
+                              href="#/resources/api"
                               text="CHPL API"
                               external={false}
-                              router={{ sref: 'resources.chpl-api' }}
+                              router={{ sref: 'resources.api' }}
                             />
                           </Typography>
                         </Box>
