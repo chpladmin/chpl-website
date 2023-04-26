@@ -4,6 +4,7 @@ import ChplSvapCollectionView from './svap-view';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchCriteria } from 'api/data';
+import { useFetchSvaps } from 'api/standards';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
@@ -13,6 +14,7 @@ import {
   derivedCertificationEditions,
 } from 'components/filter/filters';
 import { getRadioValueEntry } from 'components/filter/filters/value-entries';
+import ChplTabbedValueEntry from 'components/filter/filters/tabbed-value-entry';
 
 const staticFilters = [
   certificationDate,
@@ -35,10 +37,19 @@ const staticFilters = [
     ],
   }];
 
+const getSvapValueEntry = (props) => (
+  <ChplTabbedValueEntry
+    retiredLabel="Replaced"
+    isActive={(value, filter) => !filter.getValueDisplay(value).includes('|')}
+    {...props}
+  />
+);
+
 function ChplSvapCollectionPage() {
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
+  const svapQuery = useFetchSvaps();
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -78,6 +89,30 @@ function ChplSvapCollectionPage() {
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
+
+  useEffect(() => {
+    if (svapQuery.isLoading || !svapQuery.isSuccess) {
+      return;
+    }
+    const values = svapQuery.data
+      .map((svap) => ({
+        ...svap,
+        value: svap.svapId,
+        display: `${svap.replaced ? 'Replaced | ' : ''}${svap.regulatoryTextCitation}`,
+        longDisplay: `${svap.replaced ? 'Replaced | ' : ''}${svap.regulatoryTextCitation}: ${svap.approvedStandardVersion}`,
+      }));
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'svapIds')
+      .concat({
+        ...defaultFilter,
+        key: 'svapIds',
+        display: 'SVAP',
+        operatorKey: 'svapOperator',
+        sortValues: (_, a, b) => (a.regulatoryTextCitation < b.regulatoryTextCitation ? -1 : 1),
+        getValueEntry: getSvapValueEntry,
+        values,
+      }));
+  }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
   const analytics = {
     category: 'SVAP Information',

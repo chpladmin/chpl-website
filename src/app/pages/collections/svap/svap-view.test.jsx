@@ -40,6 +40,11 @@ jest.mock('api/collections', () => ({
   useFetchCollection: () => mockApi,
 }));
 
+jest.mock('api/standards', () => ({
+  __esModule: true,
+  useFetchSvaps: () => mockApi,
+}));
+
 describe('the ChplSvapCollectionView component', () => {
   afterEach(() => {
     cleanup();
