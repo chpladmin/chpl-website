@@ -27,6 +27,16 @@ const staticFilters = [
     ],
   }, {
     ...defaultFilter,
+    key: 'hasAnySvap',
+    display: 'Has any SVAP',
+    getValueEntry: getRadioValueEntry,
+    singular: true,
+    values: [
+      { value: 'true', display: 'Has SVAP Information', default: true },
+      { value: 'false', display: 'Does not have SVAP Information' },
+    ],
+  }, {
+    ...defaultFilter,
     key: 'hasSvapNoticeUrl',
     display: 'SVAP Notice URL',
     getValueEntry: getRadioValueEntry,
