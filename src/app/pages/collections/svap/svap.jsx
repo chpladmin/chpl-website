@@ -32,7 +32,7 @@ const staticFilters = [
     getValueEntry: getRadioValueEntry,
     singular: true,
     values: [
-      { value: 'true', display: 'Has SVAP Notice URL', default: true },
+      { value: 'true', display: 'Has SVAP Notice URL' },
       { value: 'false', display: 'Does not have SVAP Notice URL' },
     ],
   }];
