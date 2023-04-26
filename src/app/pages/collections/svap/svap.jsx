@@ -12,6 +12,7 @@ import {
   certificationStatuses,
   derivedCertificationEditions,
 } from 'components/filter/filters';
+import { getRadioValueEntry } from 'components/filter/filters/value-entries';
 
 const staticFilters = [
   certificationDate,
@@ -24,11 +25,13 @@ const staticFilters = [
     ],
   }, {
     ...defaultFilter,
-    key: 'svapUrl',
+    key: 'hasSvapNoticeUrl',
     display: 'SVAP Notice URL',
+    getValueEntry: getRadioValueEntry,
+    singular: true,
     values: [
-      { value: 'has_svap_notice_url', display: 'Has SVAP Notice URL', default: true },
-      { value: 'no_svap_notice_url', display: 'Does not have SVAP Notice URL' },
+      { value: 'true', display: 'Has SVAP Notice URL', default: true },
+      { value: 'false', display: 'Does not have SVAP Notice URL' },
     ],
   }];
 
