@@ -118,6 +118,7 @@ const parseSvap = ({ svaps }, data) => {
         <React.Fragment key={`${item.criterion.id}-${item.value}`}>
           <dt>{ item.display }</dt>
           <dd>
+            { item.svap.replaced ? 'Replaced | ' : '' }
             { item.svap.regulatoryTextCitation }
             :
             {' '}
