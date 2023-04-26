@@ -12,6 +12,7 @@ import {
 import { shape, string } from 'prop-types';
 
 import { useFetchCollection } from 'api/collections';
+import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
 import {
@@ -26,14 +27,13 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { sortCriteria } from 'services/criteria.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
-  linkWrap: {
-    overflowWrap: 'anywhere',
-  },
+  ...utilStyles,
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -102,6 +102,26 @@ const useStyles = makeStyles({
   },
 });
 
+const parseSvap = ({ svaps }) => {
+  if (svaps.length === 0) { return 'N/A'; }
+  const items = svaps
+    .map((item) => ({
+      ...item,
+      svap: 'tbd',
+    }))
+    .sort((a, b) => sortCriteria(a.criterion, b.criterion));
+  return (
+    <dl>
+      {items.map((item) => (
+        <React.Fragment key={`${item.criterion.id}-${item.value}`}>
+          <dt>{ item.criterion.number }</dt>
+          <dd>{ item.svap }</dd>
+        </React.Fragment>
+      ))}
+    </dl>
+  );
+};
+
 function ChplSvapCollectionView(props) {
   const storageKey = 'storageKey-svapView';
   const $analytics = getAngularService('$analytics');
@@ -131,7 +151,7 @@ function ChplSvapCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      svapNode: parseSvap(listing),
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -150,6 +170,9 @@ function ChplSvapCollectionView(props) {
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
     { text: 'Status', extra: <ChplCertificationStatusLegend /> },
+    { text: 'SVAP Information' },
+    { text: 'SVAP Notice URL' },
+    { text: 'Actions', invisible: true },
   ];
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -261,6 +284,23 @@ function ChplSvapCollectionView(props) {
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.svapNode }
+                              </TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.svapNoticeUrl
+                                  ? (
+                                    <ChplLink
+                                      href={item.svapNoticeUrl}
+                                      analytics={{ event: 'Go to SVAP Notice URL', category: analytics.category, label: item.svapNoticeUrl }}
+                                    />
+                                  ) : (
+                                    <>N/A</>
+                                  )}
+                              </TableCell>
+                              <TableCell>
+                                <ChplActionButton listing={item} />
+                              </TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
