@@ -15,7 +15,6 @@
             <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
             <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
             <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true" st-sort-default="reverse">Certification Date</th>
-            <th scope="col" class="search-header" st-sort="lastModifiedDate" st-skip-natural="true">Last Modified Date</th>
             <th scope="col" class="search-header" st-sort="surveillanceCount" st-skip-natural="true"># Relevant Surveillances</th>
             <th scope="col"><span class="sr-only">Actions</span></th>
           </tr>
@@ -25,7 +24,6 @@
             <td>{{ listing.chplProductNumber }}</td>
             <td>{{ listing.edition }}</td>
             <td>{{ listing.formattedCertificationDate | date : 'mediumDate' : 'UTC' }}</td>
-            <td>{{ listing.formattedLastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
             <td>{{ listing.surveillanceCount }}</td>
             <td>
               <button class="btn btn-link" id="view-listing-data-{{ listing.chplProductNumber }}"

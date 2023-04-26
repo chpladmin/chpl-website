@@ -1,4 +1,6 @@
-const interpretActivity = (activity, utilService, ReportService) => {
+import { compareListing } from 'pages/reports/listings/listings.service';
+
+const interpretActivity = (activity, utilService) => {
   const ret = {
     ...activity,
     change: [],
@@ -19,7 +21,7 @@ const interpretActivity = (activity, utilService, ReportService) => {
         ...cqmChanges,
       ];
     }
-    const basicChanges = interpretListingChange(prev, curr, utilService, ReportService);
+    const basicChanges = interpretListingChange(prev, curr, utilService);
     if (basicChanges.length > 0) {
       ret.change = [
         ...ret.change,
@@ -173,7 +175,7 @@ const compareArray = (prev, curr, root) => {
   return ret;
 };
 
-const interpretListingChange = (prev, curr, utilService, ReportService) => {
+const interpretListingChange = (prev, curr, utilService) => {
   const changes = [];
   if (prev.chplProductNumber !== curr.chplProductNumber) {
     changes.push(`CHPL Product Number changed from ${prev.chplProductNumber} to ${curr.chplProductNumber}`);
@@ -199,9 +201,9 @@ const interpretListingChange = (prev, curr, utilService, ReportService) => {
       changes.push(`Real World Testing Results URL changed from ${prev.rwtResultsUrl} to ${curr.rwtResultsUrl}`);
     }
   }
-  const measures = ReportService.compare(prev.measures, curr.measures, 'measures');
+  const measures = compareListing({measures: prev.measures}, {measures: curr.measures});
   if (measures.length > 0) {
-    changes.push(`G1/G2 measure changes:<ul>${measures.join('')}</ul>`);
+    changes.push(measures);
   }
   return changes;
 };

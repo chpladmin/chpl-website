@@ -193,11 +193,11 @@ const criteriaSortOrder = [
   '170.306 (i)',
 ];
 
-const isCures = (criterion) => criterion.title.indexOf('Cures Update') > -1;
+const isCures = (criterion) => criterion.title ? criterion.title.indexOf('Cures Update') > -1 : false;
 
 const sortCriteria = (a, b) => {
-  const aValue = a.number + (isCures(a) ? ' (Cures Update)' : '');
-  const bValue = b.number + (isCures(b) ? ' (Cures Update)' : '');
+  const aValue = (a.number ?? a.certificationNumber) + (isCures(a) ? ' (Cures Update)' : '');
+  const bValue = (b.number ?? b.certificationNumber) + (isCures(b) ? ' (Cures Update)' : '');
   return criteriaSortOrder.indexOf(aValue) - criteriaSortOrder.indexOf(bValue);
 };
 
