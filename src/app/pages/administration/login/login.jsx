@@ -40,5 +40,13 @@ ChplLoginPage.propTypes = {
     state: func.isRequired,
     params: func.isRequired,
     options: func.isRequired,
-  }).isRequired,
+  }),
+};
+
+ChplLoginPage.defaultProps = {
+  returnTo: {
+    state: () => 'search',
+    params: () => {},
+    options: () => {},
+  },
 };

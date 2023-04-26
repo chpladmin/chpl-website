@@ -43,7 +43,6 @@ import {
   ChplNonProdIndicator,
 } from './util';
 import { ChplActionBar, ChplActionBarWrapper } from './action-bar';
-import { UserWrapper } from './login';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -98,5 +97,4 @@ angular
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
-  .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper))
-  .component('userWrapperBridge', reactToAngularComponent(UserWrapper));
+  .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));
