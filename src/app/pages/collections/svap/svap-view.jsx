@@ -130,6 +130,19 @@ const parseSvap = ({ svaps }, data) => {
   );
 };
 
+const parseSvapCsv = ({ svaps }, data) => {
+  if (svaps.length === 0) { return 'N/A'; }
+  return svaps
+    .map((item) => ({
+      ...item,
+      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+      svap: data.find((s) => s.svapId === item.value),
+    }))
+    .sort((a, b) => sortCriteria(a.criterion, b.criterion))
+    .map((item) => `${item.display} - ${item.svap.replaced ? 'Replaced | ' : ''}${item.svap.regulatoryTextCitation}: ${item.svap.approvedStandardVersion}`)
+    .join(';');
+};
+
 function ChplSvapCollectionView(props) {
   const storageKey = 'storageKey-svapView';
   const $analytics = getAngularService('$analytics');
@@ -142,6 +155,7 @@ function ChplSvapCollectionView(props) {
   const [svaps, setSvaps] = useState([]);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
+  const toggledCsvDefaults = ['svap'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -161,6 +175,7 @@ function ChplSvapCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
+      svapCsv: parseSvapCsv(listing, svaps),
       svapNode: parseSvap(listing, svaps),
     })));
     setRecordCount(data.recordCount);
@@ -251,6 +266,7 @@ function ChplSvapCollectionView(props) {
                   <ChplDownloadListings
                     analytics={analytics}
                     listings={listings}
+                    toggled={toggledCsvDefaults}
                   />
                 )}
             </div>
