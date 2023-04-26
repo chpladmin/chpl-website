@@ -362,6 +362,7 @@ lookup = {
   'requirements.type.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Type') },
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.accessibilityStandards': { message: (before, after) => compare(before, after, 'accessibilityStandards', 'Accessibility Standards') },
+  'root.businessErrorMessages': { message: () => undefined },
   'root.certificationDate': { message: (before, after) => comparePrimitive(before, after, 'certificationDate', 'Certification Date', getDisplayDateFormat) },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
   'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
@@ -382,6 +383,7 @@ lookup = {
   'root.countOpenSurveillance': { message: () => undefined },
   'root.cqmResults': { message: (before, after) => compare(before, after, 'cqmResults', 'CQM Changes') },
   'root.curesUpdate': { message: (before, after) => comparePrimitive(before, after, 'curesUpdate', '2015 Edition Cures Update status') },
+  'root.dataErrorMessages': { message: () => undefined },
   'root.decertificationDate': { message: () => undefined },
   'root.directReviews': { message: () => undefined },
   'root.errorMessages': { message: () => undefined },
@@ -470,4 +472,4 @@ lookup = {
 
 const compareListing = (prev, curr) => compareObject(prev, curr, lookup);
 
-export { compareListing };
+export { compareListing }; // eslint-disable-line import/prefer-default-export
