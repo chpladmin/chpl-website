@@ -109,24 +109,28 @@ const parseSvap = ({ svaps }, data) => {
     .map((item) => ({
       ...item,
       display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
-      svap: data.find((s) => s.svapId === item.value),
+      svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
     }))
     .sort((a, b) => sortCriteria(a.criterion, b.criterion));
   return (
-    <dl>
+    <ul>
       {items.map((item) => (
-        <React.Fragment key={`${item.criterion.id}-${item.value}`}>
-          <dt>{ item.display }</dt>
-          <dd>
-            { item.svap.replaced ? 'Replaced | ' : '' }
-            { item.svap.regulatoryTextCitation }
-            :
-            {' '}
-            { item.svap.approvedStandardVersion }
-          </dd>
+        <React.Fragment key={`${item.criterion.id}`}>
+          <li>{ item.display }</li>
+          <ul>
+            { item.svaps.map((svap) => (
+              <li key={svap.svapId}>
+                { svap.replaced ? 'Replaced | ' : '' }
+                { svap.regulatoryTextCitation }
+                :
+                {' '}
+                { svap.approvedStandardVersion }
+              </li>
+            ))}
+          </ul>
         </React.Fragment>
       ))}
-    </dl>
+    </ul>
   );
 };
 
@@ -136,11 +140,11 @@ const parseSvapCsv = ({ svaps }, data) => {
     .map((item) => ({
       ...item,
       display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
-      svap: data.find((s) => s.svapId === item.value),
+      svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
     }))
     .sort((a, b) => sortCriteria(a.criterion, b.criterion))
-    .map((item) => `${item.display} - ${item.svap.replaced ? 'Replaced | ' : ''}${item.svap.regulatoryTextCitation}: ${item.svap.approvedStandardVersion}`)
-    .join(';');
+    .map((item) => `${item.display} - ${item.svaps.map((svap) => `${svap.replaced ? 'Replaced | ' : ''}${svap.regulatoryTextCitation}: ${svap.approvedStandardVersion}`).join(';')}`)
+    .join('\n');
 };
 
 function ChplSvapCollectionView(props) {
