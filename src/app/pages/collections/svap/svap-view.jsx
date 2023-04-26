@@ -12,6 +12,7 @@ import {
 import { shape, string } from 'prop-types';
 
 import { useFetchCollection } from 'api/collections';
+import { useFetchSvaps } from 'api/standards';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
@@ -102,20 +103,26 @@ const useStyles = makeStyles({
   },
 });
 
-const parseSvap = ({ svaps }) => {
+const parseSvap = ({ svaps }, data) => {
   if (svaps.length === 0) { return 'N/A'; }
   const items = svaps
     .map((item) => ({
       ...item,
-      svap: 'tbd',
+      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+      svap: data.find((s) => s.svapId === item.value),
     }))
     .sort((a, b) => sortCriteria(a.criterion, b.criterion));
   return (
     <dl>
       {items.map((item) => (
         <React.Fragment key={`${item.criterion.id}-${item.value}`}>
-          <dt>{ item.criterion.number }</dt>
-          <dd>{ item.svap }</dd>
+          <dt>{ item.display }</dt>
+          <dd>
+            { item.svap.regulatoryTextCitation }
+            :
+            {' '}
+            { item.svap.approvedStandardVersion }
+          </dd>
         </React.Fragment>
       ))}
     </dl>
@@ -131,6 +138,7 @@ function ChplSvapCollectionView(props) {
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [svaps, setSvaps] = useState([]);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
@@ -142,25 +150,33 @@ function ChplSvapCollectionView(props) {
     sortDescending,
     query: `certificationCriteriaIds=52&${filterContext.queryString()}`,
   });
+  const svapQuery = useFetchSvaps();
 
   useEffect(() => {
-    if (isLoading) { return; }
+    if (isLoading || svaps.length === 0) { return; }
     if (isError || !data.results) {
       setListings([]);
       return;
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      svapNode: parseSvap(listing),
+      svapNode: parseSvap(listing, svaps),
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
+  }, [data?.results, data?.recordCount, isError, isLoading, svaps]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
       setPageNumber(0);
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
+
+  useEffect(() => {
+    if (svapQuery.isLoading || !svapQuery.isSuccess) {
+      return;
+    }
+    setSvaps(svapQuery.data);
+  }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
