@@ -158,6 +158,7 @@ function ChplLandingPage() {
                               text="API info for 2015 products"
                               external={false}
                               router={{ sref: 'collections.api-documentation' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'API Info for 2015 Ed. Products' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -180,6 +181,7 @@ function ChplLandingPage() {
                               text="SED info for 2015 products"
                               external={false}
                               router={{ sref: 'collections.sed' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'SED info for 2015 products' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -202,6 +204,7 @@ function ChplLandingPage() {
                               text="Inactive Certificates"
                               external={false}
                               router={{ sref: 'collections.inactive-certificates' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Inactive Certificates' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -224,6 +227,7 @@ function ChplLandingPage() {
                               text="Banned Developers"
                               external={false}
                               router={{ sref: 'collections.developers' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Banned Developers' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -248,6 +252,7 @@ function ChplLandingPage() {
                               text="Real World Testing"
                               external={false}
                               router={{ sref: 'collections.real-world-testing' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Real World Testing' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -270,6 +275,7 @@ function ChplLandingPage() {
                               text="Charts"
                               external={false}
                               router={{ sref: 'charts' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Charts' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -292,6 +298,7 @@ function ChplLandingPage() {
                               text="Products: Corrective Actions"
                               external={false}
                               router={{ sref: 'collections.corrective-action' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Products: Corrective Action' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -314,6 +321,7 @@ function ChplLandingPage() {
                               text="Decertified Products"
                               external={false}
                               router={{ sref: 'collections.decertified-products' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Decertified Products' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -343,6 +351,7 @@ function ChplLandingPage() {
                               text="An Overview of the CHPL"
                               external={false}
                               router={{ sref: 'resources.overview' }}
+                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL Overview' }}
                             />
                           </Typography>
                         </Box>
@@ -362,6 +371,7 @@ function ChplLandingPage() {
                               text="CHPL API"
                               external={false}
                               router={{ sref: 'resources.api' }}
+                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL API' }}
                             />
                           </Typography>
                         </Box>
@@ -380,6 +390,7 @@ function ChplLandingPage() {
                               href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
                               text="Training Guide"
                               external={false}
+                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'Training Guide' }}
                             />
                           </Typography>
                         </Box>
