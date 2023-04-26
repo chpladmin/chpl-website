@@ -233,7 +233,8 @@ const compareTestParticipants = (before, after) => {
 
 lookup = {
   shortCircuit: [
-    'requirements.requirementType',
+    'requirements.requirementType.certificationEdition',
+    'requirements.requirementType.requirementGroupType',
     'root.currentStatus',
     'root.developer',
     'root.oldestStatus',
@@ -349,6 +350,11 @@ lookup = {
   'requirements.result.id': { message: () => undefined },
   'requirements.result.name': { message: (before, after) => comparePrimitive(before, after, 'name', 'Name') },
   'requirements.requirement': { message: (before, after) => comparePrimitive(before, after, 'requirement', 'Requirement') },
+  'requirements.requirementType': { message: () => 'Requirement Type' },
+  'requirements.requirementType.id': { message: () => undefined },
+  'requirements.requirementType.number': { message: () => undefined },
+  'requirements.requirementType.removed': { message: () => undefined },
+  'requirements.requirementType.title': { message: (before, after) => comparePrimitive(before, after, 'title', 'Title') },
   'requirements.requirementTypeOther': { message: (before, after) => comparePrimitive(before, after, 'requirementTypeOther', 'Requirement Type (Other)') },
   'requirements.requirementName': { message: (before, after) => comparePrimitive(before, after, 'requirementName', 'Requirement Name') },
   'requirements.type': { message: () => 'Requirement Type' },
