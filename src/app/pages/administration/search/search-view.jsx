@@ -75,7 +75,7 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto auto',
+      gridTemplateColumns: 'auto 10fr auto',
     },
   },
   stickyColumn: {
