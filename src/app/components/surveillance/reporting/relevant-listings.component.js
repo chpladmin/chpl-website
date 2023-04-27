@@ -23,8 +23,6 @@ const SurveillanceReportRelevantListingsComponent = {
           this.listings = this.listings.map((listing) => ({
             ...listing,
             formattedCertificationDate: new Date(listing.certificationDate),
-            lastModifiedDate: parseInt(listing.lastModifiedDate, 10),
-            formattedLastModifiedDate: new Date(listing.lastModifiedDate),
             surveillanceCount: listing.surveillances.length,
             edition: listing.edition + (listing.curesUpdate ? ' Cures Update' : ''),
           }));

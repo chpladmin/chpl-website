@@ -1,14 +1,9 @@
 import React, { useEffect } from 'react';
-import {
-  ThemeProvider,
-} from '@material-ui/core';
 
-import theme from './themes/theme';
-import {
-  ChplLoginToggle,
-  UserWrapper,
-} from './components/login';
-import { getAngularService } from './services/angular-react-helper';
+import AppWrapper from './app-wrapper';
+
+import { ChplLoginToggle } from 'components/login';
+import { getAngularService } from 'services/angular-react-helper';
 
 function IndexWrapper() {
   const $rootScope = getAngularService('$rootScope');
@@ -36,11 +31,9 @@ function IndexWrapper() {
   }, [$rootScope, Idle, Keepalive, authService, networkService]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <UserWrapper>
-        <ChplLoginToggle />
-      </UserWrapper>
-    </ThemeProvider>
+    <AppWrapper showQueryTools={false}>
+      <ChplLoginToggle />
+    </AppWrapper>
   );
 }
 

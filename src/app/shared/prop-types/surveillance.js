@@ -66,7 +66,6 @@ const certifiedProduct = shape({
   curesUpdate: bool,
   edition: string,
   id: number,
-  lasModifiedDate: number,
 });
 
 const surveillanceRequirement = shape({
