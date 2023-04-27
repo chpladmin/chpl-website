@@ -18,16 +18,6 @@ export default class NetworkService {
     return this.apiPOST(`/users/${userId}/authorize`, userAuthorization);
   }
 
-  changePassword(userObj) {
-    let url;
-    if (userObj.userName && userObj.userName.length > 0) {
-      url = '/auth/change_expired_password';
-    } else {
-      url = '/auth/change_password';
-    }
-    return this.apiPOST(url, userObj);
-  }
-
   confirmApiKey(hash) {
     return this.apiPOST('/key/confirm', hash);
   }
@@ -509,7 +499,7 @@ export default class NetworkService {
   }
 
   impersonateUser(user) {
-    return this.apiGET(`/auth/beta/impersonate?id=${user.userId}`);
+    return this.apiGET(`/auth/impersonate?id=${user.userId}`);
   }
 
   initiateSurveillance(surveillance) {
@@ -521,7 +511,7 @@ export default class NetworkService {
   }
 
   keepalive() {
-    return this.apiGET('/auth/keep_alive', { ignoreLoadingBar: true });
+    return this.apiGET('/auth/keep-alive', { ignoreLoadingBar: true });
   }
 
   login(userObj) {
@@ -562,14 +552,6 @@ export default class NetworkService {
 
   requestApiKey(apiKeyRequest) {
     return this.apiPOST('/key/request', apiKeyRequest);
-  }
-
-  resetPassword(userObj) {
-    return this.apiPOST('/auth/reset_password_request', userObj);
-  }
-
-  emailResetPassword(userObj) {
-    return this.apiPOST('/auth/email_reset_password', userObj);
   }
 
   revokeApi(user) {
