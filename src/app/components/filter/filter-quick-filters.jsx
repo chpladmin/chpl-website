@@ -41,6 +41,7 @@ function ChplFilterQuickFilters() {
       ...value,
       selected: true,
     });
+    dispatch('hasSearched');
   };
 
   if (!quickFilter) {
