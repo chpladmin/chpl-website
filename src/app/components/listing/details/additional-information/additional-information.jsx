@@ -104,7 +104,7 @@ function ChplAdditionalInformation(props) {
                     </>
                   )}
               </CardContent>
-              { listing.certificationEdition.name === '2015'
+              { listing.ics.inherits && listing.certificationEdition.name === '2015'
                 && (
                   <CardActions>
                     <ChplIcsFamily
