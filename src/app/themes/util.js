@@ -14,6 +14,9 @@ const util = {
   iconSpacing: {
     marginLeft: '4px',
   },
+  removedText: {
+    fontStyle: 'italic',
+  },
 };
 
 export default util;

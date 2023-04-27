@@ -1,5 +1,5 @@
 import React from 'react';
-import { node } from 'prop-types';
+import { bool, node } from 'prop-types';
 
 import ApiWrapper from 'api/api-wrapper';
 import BrowserWrapper from 'components/browser/browser-wrapper';
@@ -8,10 +8,10 @@ import CompareWrapper from 'components/compare-widget/compare-wrapper';
 import FlagWrapper from 'api/flag-wrapper';
 import { UserWrapper } from 'components/login';
 
-function AppWrapper({ children }) {
+function AppWrapper({ children, showQueryTools }) {
   return (
     <UserWrapper>
-      <ApiWrapper>
+      <ApiWrapper showQueryTools={showQueryTools}>
         <FlagWrapper>
           <CompareWrapper>
             <CmsWrapper>
@@ -30,4 +30,9 @@ export default AppWrapper;
 
 AppWrapper.propTypes = {
   children: node.isRequired,
+  showQueryTools: bool,
+};
+
+AppWrapper.defaultProps = {
+  showQueryTools: true,
 };

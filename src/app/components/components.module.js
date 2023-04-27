@@ -1,5 +1,6 @@
 import IndexWrapper from '../index-wrapper';
 
+import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
 import ChplActionButtonWrapper from './action-widget/action-button-wrapper';
 import { ChplApiKeyConfirm } from './api-key';
 import {
@@ -23,6 +24,8 @@ import {
 } from './listing/confirm';
 import ChplCqms from './listing/details/cqms/cqms-wrapper';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
+import ChplG1g2 from './listing/details/g1g2/g1g2-wrapper';
+import ChplAdditionalinformationWrapper from './listing/details/additional-information/additional-information-wrapper';
 import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSed from './listing/details/sed/sed-wrapper';
@@ -41,8 +44,6 @@ import {
   ChplLink,
   ChplNonProdIndicator,
 } from './util';
-import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
-import { UserWrapper } from './login';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -63,6 +64,7 @@ angular
   ])
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
   .component('chplActionButtonWrapperBridge', reactToAngularComponent(ChplActionButtonWrapper))
+  .component('chplAdditionalInformationWrapperBridge', reactToAngularComponent(ChplAdditionalinformationWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
@@ -84,6 +86,7 @@ angular
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsView))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
+  .component('chplG1g2Bridge', reactToAngularComponent(ChplG1g2))
   .component('chplIcsFamilyBridge', reactToAngularComponent(ChplIcsFamily))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
@@ -95,5 +98,4 @@ angular
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
-  .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper))
-  .component('userWrapperBridge', reactToAngularComponent(UserWrapper));
+  .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));
