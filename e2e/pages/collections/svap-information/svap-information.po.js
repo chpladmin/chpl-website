@@ -14,10 +14,6 @@ class SvapInformationPage extends CollectionPage {
     await openPage('#/collections/svap');
     await (browser.waitUntil(async () => !(await this.isLoading())));
   }
-
-  async getDownloadSVAPInformation() {
-    return $(this.elements.downloadSVAPInformation);
-  }
 }
 
 export default SvapInformationPage;
