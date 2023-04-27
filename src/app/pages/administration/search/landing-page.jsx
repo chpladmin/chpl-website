@@ -112,7 +112,7 @@ const useStyles = makeStyles(() => ({
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
-    boxShadow: '#00000040 0px 8px 8px 4px',
+    boxShadow: '#00000040 0px 24px 8px 4px',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 10fr auto',
     },
