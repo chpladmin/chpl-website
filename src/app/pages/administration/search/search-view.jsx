@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -188,8 +189,10 @@ function ChplSearchView(props) {
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-        <ChplFilterQuickFilters />
+          <Box display="flex" justifyContent="space-between">
+            <ChplFilterPanel />
+            <ChplFilterQuickFilters />
+          </Box>
       </div>
       <div>
         <ChplFilterChips />
