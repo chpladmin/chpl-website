@@ -24,6 +24,7 @@ import {
 import ChplCqms from './listing/details/cqms/cqms-wrapper';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
 import ChplG1g2 from './listing/details/g1g2/g1g2-wrapper';
+import ChplAdditionalinformationWrapper from './listing/details/additional-information/additional-information-wrapper';
 import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSed from './listing/details/sed/sed-wrapper';
@@ -64,6 +65,7 @@ angular
   .component('chplActionBarBridge', reactToAngularComponent(ChplActionBar))
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
   .component('chplActionButtonWrapperBridge', reactToAngularComponent(ChplActionButtonWrapper))
+  .component('chplAdditionalInformationWrapperBridge', reactToAngularComponent(ChplAdditionalinformationWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
