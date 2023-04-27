@@ -103,16 +103,21 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
+  searchButtonContainer:{
+    display:'flex',
+    justifyContent: 'space-between',
+    gridGap:'8px',
+  },
   searchContainer: {
     backgroundColor: palette.grey,
     position: 'relative',
-    top:'-32px',
+    top: '-32px',
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
-    boxShadow: '#00000040 0px 24px 8px 4px',
+    boxShadow: '#00000040 0px 24px 24px 2px',
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 10fr auto',
     },
@@ -139,13 +144,15 @@ function ChplLandingPage() {
           <Container maxWidth="md">
             <Box className={classes.searchContainer}>
               <ChplFilterSearchTerm />
-              <Box display="flex" justifyContent="space-between">
+              <Box className={classes.searchButtonContainer}>
                 <ChplFilterPanel />
                 <ChplFilterQuickFilters />
               </Box>
             </Box>
             <Box pb={4}>
-              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>Use our collections pages to help find a particular category of listings</Typography>
+              <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>
+                Use our collections pages to help find a particular category of listings
+              </Typography>
             </Box>
             <Box display="flex" flexDirection="column" gridGap={16}>
               <Box className={classes.collectionsCardContainer}>
