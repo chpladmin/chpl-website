@@ -51,10 +51,10 @@ describe('the SVAP Information collection page', () => {
         await expect(countAfter).toBeLessThan(countBefore);
       });
 
-      it('should filter on has any SVAP', async () => {
-        await page.removeFilter('Has any SVAP', 'Has SVAP Information');
+      it('should filter on SVAP value', async () => {
+        await page.setListFilter('svapIds', '20');
         countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeGreaterThan(countBefore);
+        await expect(countAfter).toBeLessThan(countBefore);
       });
 
       it('should filter on ONC-ACB', async () => {
