@@ -7,7 +7,6 @@ class SvapInformationPage extends CollectionPage {
     this.elements = {
       ...this.elements,
       header: 'h1=SVAP Information',
-      downloadSVAPInformation: '#download-listings',
     };
   }
 
