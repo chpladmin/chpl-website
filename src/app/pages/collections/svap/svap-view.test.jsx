@@ -15,6 +15,8 @@ const angularMock = {
 };
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(angularMock);
+when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue('fake key');
+when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(angularMock);
 
 const mockContext = {
   queryString: jest.fn(() => 'queryString'),
