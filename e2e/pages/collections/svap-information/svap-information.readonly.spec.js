@@ -21,6 +21,10 @@ describe('the SVAP Information collection page', () => {
     await actualHeaders.forEach(async (header, idx) => expect(await header.getText()).toBe(expectedHeaders[idx]));
   });
 
+  it('should have SVAP documentation download button', async () => {
+    await expect(await (await page.getDownloadSvapDocumentation()).isDisplayed()).toBe(true);
+  });
+
   describe('when filtering', () => {
     describe('using predefined filters', () => {
       let countBefore;
