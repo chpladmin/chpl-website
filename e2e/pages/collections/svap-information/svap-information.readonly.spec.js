@@ -1,10 +1,5 @@
 import SvapInformationPage from './svap-information.po';
 
-const path = require('path');
-const fs = require('fs');
-
-const config = require('../../../config/mainConfig');
-
 let page;
 
 describe('the SVAP Information collection page', () => {
