@@ -103,15 +103,23 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
+  searchButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gridGap: '8px',
+  },
   searchContainer: {
     backgroundColor: palette.grey,
+    position: 'relative',
+    top: '-32px',
     padding: '16px 32px',
     display: 'grid',
     gridTemplateColumns: '1fr',
     gap: '16px',
     alignItems: 'center',
+    boxShadow: '#00000040 0px 24px 24px 2px',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto auto',
+      gridTemplateColumns: 'auto 10fr auto',
     },
   },
 }));
@@ -134,12 +142,14 @@ function ChplLandingPage() {
       <Box className={classes.landingPageBackground} pb={16} height="fit-content">
         <Box className={classes.landingPageImageryBackground}>
           <Container maxWidth="md">
-            <Box className={classes.searchContainer} mt={-8}>
+            <Box className={classes.searchContainer}>
               <ChplFilterSearchTerm />
-              <ChplFilterPanel />
-              <ChplFilterQuickFilters />
+              <Box className={classes.searchButtonContainer}>
+                <ChplFilterPanel />
+                <ChplFilterQuickFilters />
+              </Box>
             </Box>
-            <Box pt={8} pb={4}>
+            <Box pb={4}>
               <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>
                 Use our collections pages to help find a particular category of listings
               </Typography>
