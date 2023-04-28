@@ -103,10 +103,10 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
-  searchButtonContainer:{
-    display:'flex',
+  searchButtonContainer: {
+    display: 'flex',
     justifyContent: 'space-between',
-    gridGap:'8px',
+    gridGap: '8px',
   },
   searchContainer: {
     backgroundColor: palette.grey,

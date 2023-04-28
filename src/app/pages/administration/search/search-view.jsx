@@ -67,10 +67,10 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
   },
-  searchButtonContainer:{
-    display:'flex',
+  searchButtonContainer: {
+    display: 'flex',
     justifyContent: 'space-between',
-    gridGap:'8px',
+    gridGap: '8px',
   },
   searchContainer: {
     backgroundColor: palette.grey,
@@ -194,10 +194,10 @@ function ChplSearchView(props) {
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
-          <Box className={classes.searchButtonContainer}>
-            <ChplFilterPanel />
-            <ChplFilterQuickFilters />
-          </Box>
+        <Box className={classes.searchButtonContainer}>
+          <ChplFilterPanel />
+          <ChplFilterQuickFilters />
+        </Box>
       </div>
       <div>
         <ChplFilterChips />
