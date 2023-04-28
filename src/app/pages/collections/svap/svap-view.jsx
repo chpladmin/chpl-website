@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -31,6 +31,7 @@ import { getAngularService } from 'services/angular-react-helper';
 import { sortCriteria } from 'services/criteria.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -150,7 +151,11 @@ const parseSvapCsv = ({ svaps }, data) => {
 function ChplSvapCollectionView(props) {
   const storageKey = 'storageKey-svapView';
   const $analytics = getAngularService('$analytics');
+  const API = getAngularService('API');
+  const authService = getAngularService('authService');
   const { analytics } = props;
+  const { hasAnyRole } = useContext(UserContext);
+  const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -198,6 +203,10 @@ function ChplSvapCollectionView(props) {
     setSvaps(svapQuery.data);
   }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
+  useEffect(() => {
+    setDownloadLink(`${API}/svap/download?api_key=${authService.getApiKey()}`);
+  }, [API, authService]);
+
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
     { property: 'chpl_id', text: 'CHPL ID', sortable: true },
@@ -234,6 +243,19 @@ function ChplSvapCollectionView(props) {
             Please note that by default, only listings that are active or suspended are shown in the search results.
           </Typography>
         </div>
+        <div>
+          <h2>SVAP Information</h2>
+          <Typography variant="body1" gutterBottom>
+            Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
+          </Typography>
+          <ChplLink
+            href={downloadLink}
+            text="SVAP Summary"
+            id="download-svap-documentation"
+            analytics={{ event: 'Download SVAP data', category: analytics.category }}
+            external={false}
+          />
+        </div>
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
@@ -265,7 +287,7 @@ function ChplSvapCollectionView(props) {
                     </Typography>
                   )}
               </div>
-              { listings.length > 0
+              { listings.length > 0 && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                 && (
                   <ChplDownloadListings
                     analytics={analytics}

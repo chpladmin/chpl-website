@@ -33,12 +33,10 @@ import {
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { palette, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
-  linkWrap: {
-    overflowWrap: 'anywhere',
-  },
+  ...utilStyles,
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
