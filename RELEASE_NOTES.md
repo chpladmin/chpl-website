@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 11.51.3
+_1 May 2023_
+
+### UI Updates
+
+* Display Listing Activity in a more consistent format
+
+---
+
 ## Version 11.51.2
 _19 April 2023_
 
