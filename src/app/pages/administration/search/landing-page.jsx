@@ -172,7 +172,7 @@ function ChplLandingPage() {
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                            This list includes all 2015 Edition, including Cures update, health IT products that have been certified to at least one API Criteria
                           </Typography>
                         </Box>
                       </Box>
@@ -289,7 +289,7 @@ function ChplLandingPage() {
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                            Charts are a dynamic display of the data currently on the CHPL
                           </Typography>
                         </Box>
                       </Box>
@@ -335,7 +335,7 @@ function ChplLandingPage() {
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                            This list includes all health IT products that have had their status changed to a &quot;decertified&quot; status on the CHPL
                           </Typography>
                         </Box>
                       </Box>
