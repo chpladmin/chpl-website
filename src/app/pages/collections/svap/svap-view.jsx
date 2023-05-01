@@ -251,7 +251,6 @@ function ChplSvapCollectionView(props) {
           <ChplLink
             href={downloadLink}
             text="SVAP Summary"
-            id="download-svap-documentation"
             analytics={{ event: 'Download SVAP data', category: analytics.category }}
             external={false}
           />

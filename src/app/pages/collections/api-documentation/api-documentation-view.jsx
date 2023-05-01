@@ -258,7 +258,6 @@ function ChplApiDocumentationCollectionView(props) {
           <ChplLink
             href={downloadLink}
             text="Download API Documentation Dataset"
-            id="download-api-documentation"
             analytics={{ event: 'Download API Documentation data', category: analytics.category }}
             external={false}
           />
