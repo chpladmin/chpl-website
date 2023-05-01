@@ -7,7 +7,7 @@ class SvapInformationPage extends CollectionPage {
     this.elements = {
       ...this.elements,
       header: 'h1=SVAP Information',
-      downloadSvapDocumentation: '#download-svap-documentation',
+      downloadSvapDocumentation: 'a=SVAP Summary',
     };
   }
 
