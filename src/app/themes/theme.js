@@ -177,6 +177,7 @@ const theme = createTheme({
     MuiCardHeader: {
       root: {
         backgroundColor: '#f5f9fd',
+        borderBottom: '.5px solid #c2c6ca',
       },
       title: {
         fontWeight: '600',
