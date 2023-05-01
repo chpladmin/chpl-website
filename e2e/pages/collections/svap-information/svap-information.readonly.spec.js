@@ -8,10 +8,9 @@ describe('the SVAP Information collection page', () => {
     await page.open();
   });
 
-  //below text will be updated, once PO confirmed exact text on svap information page
   it('should have body text', async () => {
-    await expect(await page.getBodyText()).toContain('This list includes all 2015 Edition, including Cures Update, health IT products that have been INSERT TEXT HERE');
-    await expect(await page.getBodyText()).toContain('Please note that by default, only listings that are active or suspended are shown in the search results.');
+    await expect(await page.getBodyText()).toContain('This collection features Health IT Module(s) that have successfully adopted advanced interoperability standards through the');
+    await expect(await page.getBodyText()).toContain('Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in §170.405(a)');
   });
 
   it('should have table headers in a defined order', async () => {
