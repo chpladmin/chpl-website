@@ -210,7 +210,6 @@ function ChplSedCollectionView(props) {
           <ChplLink
             href={downloadLink}
             text="Download All SED Details"
-            id="download-sed-details"
             analytics={{ event: 'Download All SED Details', category: analytics.category }}
             external={false}
           />
