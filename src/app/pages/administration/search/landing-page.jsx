@@ -333,6 +333,29 @@ function ChplLandingPage() {
                     </CardContent>
                   </Card>
                 </Box>
+                <Box className={classes.collectionsCard}>
+                  <Card className={classes.collectionsCards}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <CancelIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <ChplLink
+                              href="#/collections/svap"
+                              text="SVAP Information"
+                              external={false}
+                              router={{ sref: 'collections.svap' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'SVAP' }}
+                            />
+                          </Typography>
+                          <Typography variant="body2">
+                            Standards Version Advancement Process (SVAP) This list includes Health IT Module(s) utilizing advanced interoperability standards through the SVAP process, promoting streamlined adoption and improved communication
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
               </Box>
               <Box pt={4} pb={4}>
                 <Typography className={classes.subHeaders} align="left" variant="h2">
