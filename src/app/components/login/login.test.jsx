@@ -33,6 +33,19 @@ const authServiceMock = {
   saveCurrentUser: jest.fn(() => {}),
 };
 
+const mockApi = {
+  isLoading: true,
+  mutate: () => {},
+  data: { },
+};
+
+jest.mock('api/auth', () => ({
+  __esModule: true,
+  usePostChangePassword: () => mockApi,
+  usePostEmailResetPassword: () => mockApi,
+  usePostResetPassword: () => mockApi,
+}));
+
 const networkServiceMock = {
   getUserById: jest.fn(() => Promise.resolve({ user: 'id' })),
   login: jest.fn(() => Promise.resolve({})),
@@ -42,9 +55,14 @@ const hocMock = {
   handleDispatch: jest.fn(() => {}),
 };
 
-const toasterMock = {
-  pop: jest.fn(),
-};
+const mockEnqueue = jest.fn();
+
+jest.mock('notistack', () => ({
+  ...jest.requireActual('notistack'),
+  useSnackbar: () => ({
+    enqueueSnackbar: mockEnqueue,
+  }),
+}));
 
 angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
@@ -54,8 +72,6 @@ when(angularReactHelper.getAngularService).calledWith('Idle').mockReturnValue(Id
 when(angularReactHelper.getAngularService).calledWith('Keepalive').mockReturnValue(KeepaliveMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
-when(angularReactHelper.getAngularService).calledWith('networkService').mockReturnValue(networkServiceMock);
-when(angularReactHelper.getAngularService).calledWith('toaster').mockReturnValue(toasterMock);
 
 describe('the ChplLogin component', () => {
   afterEach(() => {
