@@ -216,7 +216,7 @@ function ChplSvapCollectionView(props) {
     { property: 'version', text: 'Version', sortable: true },
     { text: 'Status', extra: <ChplCertificationStatusLegend /> },
     { text: 'SVAP Information' },
-    { text: 'SVAP Notice URL' },
+    { text: 'SVAP Notice' },
     { text: 'Actions', invisible: true },
   ];
 
