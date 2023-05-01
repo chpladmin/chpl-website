@@ -22,7 +22,6 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
 import {
-  ChplFilterPanel,
   ChplFilterQuickFilters,
   ChplFilterSearchTerm,
 } from 'components/filter';
@@ -103,11 +102,6 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
-  searchButtonContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gridGap: '8px',
-  },
   searchContainer: {
     backgroundColor: palette.grey,
     position: 'relative',
@@ -144,10 +138,7 @@ function ChplLandingPage() {
           <Container maxWidth="md">
             <Box className={classes.searchContainer}>
               <ChplFilterSearchTerm />
-              <Box className={classes.searchButtonContainer}>
-                <ChplFilterPanel />
-                <ChplFilterQuickFilters />
-              </Box>
+              <ChplFilterQuickFilters />
             </Box>
             <Box pb={4}>
               <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>
