@@ -237,7 +237,29 @@ function ChplSvapCollectionView(props) {
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
           <Typography variant="body1" gutterBottom>
-            This list includes all 2015 Edition, including Cures Update, health IT products that have been INSERT TEXT HERE
+            This collection features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
+            {' '}
+            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap" analytics-on="click" analytics-event="SVAP" analytics-properties="{ category: 'Collections' }">Standards Version Advancement Process (SVAP)</a>
+            . The SVAP, introduced in the ONC&apos;s
+            {' '}
+            <a href="https://www.healthit.gov/topic/information-blocking" analytics-on="click" analytics-event="Cures Act Final Rule" analytics-properties="{ category: 'Collections' }">Cures Act Final Rule</a>
+            , aims to streamline the adoption of newer standards, improving communication and data exchange across healthcare systems.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in &sect;170.405(a) of the
+            {' '}
+            <a href="https://www.healthit.gov/topic/information-blocking" analytics-on="click" analytics-event="Cures Act Final Rule" analytics-properties="{ category: 'Collections' }">Cures Act Final Rule</a>
+            . The SVAP Collection serves as a valuable resource for healthcare providers seeking Health IT solutions that employ the latest interoperability standards.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            SVAP information and related data are available on the CHPL website and can also be accessed through the
+            {' '}
+            <a href="#/resources/download" analytics-on="click" analytics-event="Download the CHPL" analytics-properties="{ category: 'Collections' }">Download the CHPL</a>
+            {' '}
+            page. For more details, please visit the
+            {' '}
+            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap" analytics-on="click" analytics-event="SVAP Resources" analytics-properties="{ category: 'Collections' }">SVAP Resources</a>
+            .
           </Typography>
           <Typography variant="body1">
             Please note that by default, only listings that are active or suspended are shown in the search results.
