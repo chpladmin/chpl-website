@@ -9,13 +9,13 @@ import {
 } from '@material-ui/core';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import BlockIcon from '@material-ui/icons/Block';
-import CancelIcon from '@material-ui/icons/Cancel';
 import CodeIcon from '@material-ui/icons/Code';
 import DescriptionIcon from '@material-ui/icons/Description';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import ImageIcon from '@material-ui/icons/Image';
 import GavelIcon from '@material-ui/icons/Gavel';
+import ImageIcon from '@material-ui/icons/Image';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
 import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
@@ -43,6 +43,9 @@ const useStyles = makeStyles(() => ({
   },
   collectionsCards: {
     width: '-webkit-fill-available',
+    '& a': {
+      fontSize: 'large',
+    },
   },
   collectionsCardContainer: {
     display: 'flex',
@@ -76,6 +79,9 @@ const useStyles = makeStyles(() => ({
   },
   complianceCardContent: {
     width: '100%',
+    '& a': {
+      fontSize: 'large',
+    },
   },
   complianceCardsContainer: {
     display: 'flex',
@@ -98,6 +104,9 @@ const useStyles = makeStyles(() => ({
   },
   helpCardContent: {
     width: '100%',
+    '& a': {
+      fontSize: 'large',
+    },
   },
   helpCardsContainer: {
     display: 'flex',
@@ -176,7 +185,7 @@ function ChplLandingPage() {
                           <Typography>
                             <ChplLink
                               href="#/collections/api-documentation"
-                              text="API info for 2015 products"
+                              text="API Information"
                               external={false}
                               router={{ sref: 'collections.api-documentation' }}
                               analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'API Info for 2015 Ed. Products' }}
@@ -240,7 +249,7 @@ function ChplLandingPage() {
                   <Card className={classes.collectionsCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <CancelIcon color="primary" />
+                        <TrendingUpIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
                             <ChplLink
@@ -275,7 +284,7 @@ function ChplLandingPage() {
                           <Typography align="center">
                             <ChplLink
                               href="#/resources/overview"
-                              text="An Overview of the CHPL"
+                              text="CHPL Overview"
                               external={false}
                               router={{ sref: 'resources.overview' }}
                               analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL Overview' }}
