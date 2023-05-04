@@ -266,13 +266,13 @@ function ChplSvapCollectionView(props) {
           </Typography>
         </div>
         <div>
-          <h2>SVAP Information</h2>
+          <h2>SVAP Dataset</h2>
           <Typography variant="body1" gutterBottom>
             Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
           </Typography>
           <ChplLink
             href={downloadLink}
-            text="SVAP Summary"
+            text="Download SVAP Summary"
             analytics={{ event: 'Download SVAP data', category: analytics.category }}
             external={false}
           />
