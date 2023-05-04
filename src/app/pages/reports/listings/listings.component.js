@@ -1,5 +1,9 @@
 import { compareListing } from './listings.service';
 
+const cleanContents = (input) => input
+  .replace(/\n/g, ' ')
+  .substring(0, 32000);
+
 const ReportsListingsComponent = {
   templateUrl: 'chpl.reports/listings/listings.html',
   controller: class ReportsListingsComponent {
@@ -146,7 +150,7 @@ const ReportsListingsComponent = {
         }
         meta.action = activity.action;
         meta.details = activity.details;
-        meta.csvDetails = activity.details.join('\n');
+        meta.csvDetails = activity.details.map(cleanContents).join('\n');
       });
     }
 
