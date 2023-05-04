@@ -383,9 +383,12 @@ function ChplChangeRequest(props) {
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
 
-  save = (request) => {
+  save = (request, acknowledgeWarnings = false) => {
     setIsSaving(true);
-    mutate(request, {
+    mutate({
+      acknowledgeWarnings,
+      changeRequest: request,
+    }, {
       onSuccess: () => {
         props.dispatch('close');
         setIsSaving(false);
