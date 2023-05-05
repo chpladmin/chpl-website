@@ -58,6 +58,8 @@ const allHeaders = [
   { headerName: 'Practice Type', objectKey: 'practiceTypeName' },
   { headerName: 'Real World Testing Plans URL', objectKey: 'rwtPlansUrl', group: 'rwt' },
   { headerName: 'Real World Testing Results URL', objectKey: 'rwtResultsUrl', group: 'rwt' },
+  { headerName: 'SVAP', objectKey: 'svap', group: 'svap' },
+  { headerName: 'SVAP Notice URL', objectKey: 'svapNoticeUrl', group: 'svap' },
 ];
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -76,6 +78,7 @@ const allCategories = [
   { name: 'ONC-ACB', key: 'acb' },
   { name: 'Practice Type', key: 'practiceTypeName' },
   { name: 'Real World Testing', key: 'rwt' },
+  { name: 'SVAP', key: 'svap' },
 ];
 
 function ChplDownloadListings(props) {
@@ -110,6 +113,8 @@ function ChplDownloadListings(props) {
       serviceBaseUrlList: listing.serviceBaseUrlList?.value || '',
       rwtPlansUrl: listing.rwtPlansUrl || '',
       rwtResultsUrl: listing.rwtResultsUrl || '',
+      svap: listing.svapCsv || '',
+      svapNoticeUrl: listing.svapNoticeUrl || '',
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
 

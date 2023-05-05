@@ -17,6 +17,7 @@ angularReactHelper.getAngularService = jest.fn();
 when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue($analyticsMock);
 
 const mockValue = {
+  dispatch: jest.fn(() => {}),
   setSearchTerm: jest.fn(() => {}),
   searchTerm: '',
 };

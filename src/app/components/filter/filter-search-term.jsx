@@ -48,7 +48,12 @@ function ChplFilterSearchTerm(props) {
   const [term, setTerm] = useState('');
   const classes = useStyles();
 
-  const { analytics, searchTerm, setSearchTerm } = useFilterContext();
+  const {
+    analytics,
+    dispatch,
+    searchTerm,
+    setSearchTerm,
+  } = useFilterContext();
 
   useEffect(() => {
     setTerm(searchTerm);
@@ -67,6 +72,7 @@ function ChplFilterSearchTerm(props) {
       $analytics.eventTrack('Enter Value Into Text Filter', { category: analytics.category, label: term });
     }
     setSearchTerm(term);
+    dispatch('hasSearched');
   };
 
   const handleTerm = (event) => {
