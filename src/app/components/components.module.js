@@ -30,6 +30,7 @@ import ChplSed from './listing/details/sed/sed-wrapper';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplSedTaskView from './listing/details/sed/sed-task-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
+import ChplComplianceWrapper from './listing/details/compliance/compliance-wrapper';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
   ChplUploadPromotingInteroperability,
@@ -80,6 +81,7 @@ angular
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
   .component('chplConfirmProgressBridge', reactToAngularComponent(ChplConfirmProgress))
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
+  .component('chplComplianceBridge', reactToAngularComponent(ChplComplianceWrapper))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCqmsBridge', reactToAngularComponent(ChplCqms))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
