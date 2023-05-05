@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -11,9 +10,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchCollection } from 'api/collections';
+import { useFetchSvaps } from 'api/standards';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
 import ChplDownloadListings from 'components/download-listings/download-listings';
@@ -29,14 +28,14 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
+import { sortCriteria } from 'services/criteria.service';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
-import { palette, theme } from 'themes';
+import { UserContext } from 'shared/contexts';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
-  linkWrap: {
-    overflowWrap: 'anywhere',
-  },
+  ...utilStyles,
   pageHeader: {
     padding: '32px',
     backgroundColor: '#ffffff',
@@ -105,21 +104,67 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplSedCollectionView(props) {
-  const storageKey = 'storageKey-sedView';
+const parseSvap = ({ svaps }, data) => {
+  if (svaps.length === 0) { return 'N/A'; }
+  const items = svaps
+    .map((item) => ({
+      ...item,
+      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+      svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
+    }))
+    .sort((a, b) => sortCriteria(a.criterion, b.criterion));
+  return (
+    <ul>
+      {items.map((item) => (
+        <React.Fragment key={`${item.criterion.id}`}>
+          <li>{ item.display }</li>
+          <ul>
+            { item.svaps.map((svap) => (
+              <li key={svap.svapId}>
+                { svap.replaced ? 'Replaced | ' : '' }
+                { svap.regulatoryTextCitation }
+                :
+                {' '}
+                { svap.approvedStandardVersion }
+              </li>
+            ))}
+          </ul>
+        </React.Fragment>
+      ))}
+    </ul>
+  );
+};
+
+const parseSvapCsv = ({ svaps }, data) => {
+  if (svaps.length === 0) { return 'N/A'; }
+  return svaps
+    .map((item) => ({
+      ...item,
+      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+      svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
+    }))
+    .sort((a, b) => sortCriteria(a.criterion, b.criterion))
+    .map((item) => `${item.display} - ${item.svaps.map((svap) => `${svap.replaced ? 'Replaced | ' : ''}${svap.regulatoryTextCitation}: ${svap.approvedStandardVersion}`).join(';')}`)
+    .join('\n');
+};
+
+function ChplSvapCollectionView(props) {
+  const storageKey = 'storageKey-svapView';
   const $analytics = getAngularService('$analytics');
-  const $uibModal = getAngularService('$uibModal');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
+  const { hasAnyRole } = useContext(UserContext);
   const [downloadLink, setDownloadLink] = useState('');
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
   const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [svaps, setSvaps] = useState([]);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
+  const toggledCsvDefaults = ['svap'];
 
   const filterContext = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
@@ -129,19 +174,21 @@ function ChplSedCollectionView(props) {
     sortDescending,
     query: `certificationCriteriaIds=52&${filterContext.queryString()}`,
   });
+  const svapQuery = useFetchSvaps();
 
   useEffect(() => {
-    if (isLoading) { return; }
+    if (isLoading || svaps.length === 0) { return; }
     if (isError || !data.results) {
       setListings([]);
       return;
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      svapCsv: parseSvapCsv(listing, svaps),
+      svapNode: parseSvap(listing, svaps),
     })));
     setRecordCount(data.recordCount);
-  }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
+  }, [data?.results, data?.recordCount, isError, isLoading, svaps]);
 
   useEffect(() => {
     if (data?.recordCount > 0 && pageNumber > 0 && data?.results?.length === 0) {
@@ -150,7 +197,14 @@ function ChplSedCollectionView(props) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/certified_products/sed_details?api_key=${authService.getApiKey()}`);
+    if (svapQuery.isLoading || !svapQuery.isSuccess) {
+      return;
+    }
+    setSvaps(svapQuery.data);
+  }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
+
+  useEffect(() => {
+    setDownloadLink(`${API}/svap/download?api_key=${authService.getApiKey()}`);
   }, [API, authService]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -161,6 +215,8 @@ function ChplSedCollectionView(props) {
     { property: 'product', text: 'Product', sortable: true },
     { property: 'version', text: 'Version', sortable: true },
     { text: 'Status', extra: <ChplCertificationStatusLegend /> },
+    { text: 'SVAP Information' },
+    { text: 'SVAP Notice' },
     { text: 'Actions', invisible: true },
   ];
 
@@ -170,47 +226,54 @@ function ChplSedCollectionView(props) {
     setSortDescending(orderDirection === 'desc');
   };
 
-  const viewDetails = (id) => {
-    $uibModal.open({
-      templateUrl: 'chpl.collections/sed/sed-modal.html',
-      controller: 'ViewSedModalController',
-      controllerAs: 'vm',
-      animation: false,
-      backdrop: 'static',
-      keyboard: false,
-      size: 'lg',
-      resolve: {
-        id() { return id; },
-      },
-    });
-  };
-
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">SED Information for 2015 Edition Products</Typography>
+        <Typography variant="h1">SVAP Information</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
           <Typography variant="body1" gutterBottom>
-            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED):
+            This collection features Health IT Module(s) that have successfully adopted advanced interoperability standards through the
+            {' '}
+            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap" analytics-on="click" analytics-event="SVAP" analytics-properties="{ category: 'Collections' }">Standards Version Advancement Process (SVAP)</a>
+            . The SVAP, introduced in the ONC&apos;s
+            {' '}
+            <a href="https://www.healthit.gov/topic/information-blocking" analytics-on="click" analytics-event="Cures Act Final Rule" analytics-properties="{ category: 'Collections' }">Cures Act Final Rule</a>
+            , aims to streamline the adoption of newer standards, improving communication and data exchange across healthcare systems.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Health IT developers participating in the ONC Health IT Certification Program are encouraged to incorporate the most up-to-date standards in their Health IT Module(s), as outlined in &sect;170.405(a) of the
+            {' '}
+            <a href="https://www.healthit.gov/topic/information-blocking" analytics-on="click" analytics-event="Cures Act Final Rule" analytics-properties="{ category: 'Collections' }">Cures Act Final Rule</a>
+            . The SVAP Collection serves as a valuable resource for healthcare providers seeking Health IT solutions that employ the latest interoperability standards.
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            SVAP information and related data are available on the CHPL website and can also be accessed through the
+            {' '}
+            <a href="#/resources/download" analytics-on="click" analytics-event="Download the CHPL" analytics-properties="{ category: 'Collections' }">Download the CHPL</a>
+            {' '}
+            page. For more details, please visit the
+            {' '}
+            <a href="https://www.healthit.gov/topic/standards-version-advancement-process-svap" analytics-on="click" analytics-event="SVAP Resources" analytics-properties="{ category: 'Collections' }">SVAP Resources</a>
+            .
           </Typography>
           <Typography variant="body1">
             Please note that by default, only listings that are active or suspended are shown in the search results.
           </Typography>
         </div>
         <div>
-          <h2>SED Information Dataset</h2>
+          <h2>SVAP Dataset</h2>
           <Typography variant="body1" gutterBottom>
-            Please note the All SED Details file contains information for all certified product listings and is not filtered based on search results.
+            Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
           </Typography>
           <ChplLink
             href={downloadLink}
-            text="Download All SED Details"
-            analytics={{ event: 'Download All SED Details', category: analytics.category }}
+            text="Download SVAP Summary"
+            analytics={{ event: 'Download SVAP data', category: analytics.category }}
             external={false}
           />
         </div>
@@ -245,11 +308,12 @@ function ChplSedCollectionView(props) {
                     </Typography>
                   )}
               </div>
-              { listings.length > 0
+              { listings.length > 0 && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                 && (
                   <ChplDownloadListings
                     analytics={analytics}
                     listings={listings}
+                    toggled={toggledCsvDefaults}
                   />
                 )}
             </div>
@@ -259,7 +323,7 @@ function ChplSedCollectionView(props) {
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="SED Collections table"
+                      aria-label="SVAP Collections table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
@@ -275,11 +339,11 @@ function ChplSedCollectionView(props) {
                               <TableCell className={classes.stickyColumn}>
                                 <strong>
                                   <ChplLink
-                                    href={`#/listing/${item.id}?panel=sed`}
+                                    href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
                                     analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                                     external={false}
-                                    router={{ sref: 'listing', options: { id: item.id, panel: 'sed' } }}
+                                    router={{ sref: 'listing', options: { id: item.id } }}
                                   />
                                 </strong>
                               </TableCell>
@@ -300,21 +364,22 @@ function ChplSedCollectionView(props) {
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.svapNode }
+                              </TableCell>
+                              <TableCell className={classes.linkWrap}>
+                                { item.svapNoticeUrl
+                                  ? (
+                                    <ChplLink
+                                      href={item.svapNoticeUrl}
+                                      analytics={{ event: 'Go to SVAP Notice URL', category: analytics.category, label: item.svapNoticeUrl }}
+                                    />
+                                  ) : (
+                                    <>N/A</>
+                                  )}
+                              </TableCell>
                               <TableCell>
-                                <ChplActionButton
-                                  listing={item}
-                                >
-                                  <Button
-                                    color="primary"
-                                    variant="contained"
-                                    size="small"
-                                    id={`view-details-${item.id}`}
-                                    onClick={() => viewDetails(item.id)}
-                                    endIcon={<InfoIcon />}
-                                  >
-                                    View
-                                  </Button>
-                                </ChplActionButton>
+                                <ChplActionButton listing={item} />
                               </TableCell>
                             </TableRow>
                           ))}
@@ -338,9 +403,9 @@ function ChplSedCollectionView(props) {
   );
 }
 
-export default ChplSedCollectionView;
+export default ChplSvapCollectionView;
 
-ChplSedCollectionView.propTypes = {
+ChplSvapCollectionView.propTypes = {
   analytics: shape({
     category: string.isRequired,
   }).isRequired,

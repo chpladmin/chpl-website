@@ -7,7 +7,7 @@ class ApiDocumentationPage extends CollectionPage {
     this.elements = {
       ...this.elements,
       header: 'h1=API Information for 2015 Edition Products',
-      downloadApiDocumentation: '#download-api-documentation',
+      downloadApiDocumentation: 'a=Download API Documentation Dataset',
     };
   }
 

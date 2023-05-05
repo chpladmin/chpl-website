@@ -163,6 +163,7 @@ function FilterProvider(props) {
     analytics, storageKey,
   } = props;
   const [filters, setFilters] = useState([]);
+  const [hasSearched, setHasSearched] = useStorage(`${storageKey}-hasSearched`, false);
   const [operators, setOperators] = useStorage(`${storageKey}-operators`, {});
   const [searchTerm, setSearchTerm] = useState('');
   const [storedSearchTerm, setStoredSearchTerm] = useStorage(`${storageKey}-searchTerm`, '');
@@ -212,6 +213,9 @@ function FilterProvider(props) {
           $analytics.eventTrack('Clear Filter', { category: analytics.category, label: category.display });
         }
         clearFilter(filters.find((f) => f.key === category.key), category, setFilters);
+        break;
+      case 'hasSearched':
+        setHasSearched(value ?? true);
         break;
       case 'resetFilter':
         if (analytics) {
@@ -288,7 +292,7 @@ function FilterProvider(props) {
     .join('&');
 
   const filterData = {
-    analytics, dispatch, filters, queryParams, queryString, searchTerm, setSearchTerm,
+    analytics, dispatch, filters, hasSearched, queryParams, queryString, searchTerm, setSearchTerm,
   };
 
   /* eslint-disable react/jsx-props-no-spreading */

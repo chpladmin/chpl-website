@@ -33,11 +33,11 @@ describe('the Change Requests page', () => {
     });
 
     it('should find a specific Rejected Change Request', async () => {
-      const searchTerm = 'VersaS';
+      const searchTerm = 'Universal EHR';
       const developerColumn = 0;
       const creationColumn = 2;
-      const developerName = 'VersaSuite';
-      const creationTime = 'May 13, 2022 10:58:51 AM';
+      const developerName = 'Universal EHR, Inc.';
+      const creationTime = 'Apr 20, 2022 1:28:20 PM';
       await page.setListFilter('currentStatusNames', 'Rejected');
       await page.removeFilter('Change Request Status', 'Pending Developer Action');
       await page.searchForText(searchTerm);
