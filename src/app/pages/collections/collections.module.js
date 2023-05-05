@@ -5,6 +5,7 @@ import ChplDecertifiedProductsCollectionWrapper from './decertified-products/dec
 import ChplInactiveCertificatesCollectionWrapper from './inactive-certificates/inactive-certificates-wrapper';
 import ChplRealWorldTestingCollectionWrapper from './real-world-testing/real-world-testing-wrapper';
 import ChplSedCollectionWrapper from './sed/sed-wrapper';
+import ChplSvapCollectionWrapper from './svap/svap-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -20,4 +21,5 @@ export default angular
   .component('chplDecertifiedProductsCollectionWrapperBridge', reactToAngularComponent(ChplDecertifiedProductsCollectionWrapper))
   .component('chplInactiveCertificatesCollectionWrapperBridge', reactToAngularComponent(ChplInactiveCertificatesCollectionWrapper))
   .component('chplRealWorldTestingCollectionWrapperBridge', reactToAngularComponent(ChplRealWorldTestingCollectionWrapper))
-  .component('chplSedCollectionWrapperBridge', reactToAngularComponent(ChplSedCollectionWrapper));
+  .component('chplSedCollectionWrapperBridge', reactToAngularComponent(ChplSedCollectionWrapper))
+  .component('chplSvapCollectionWrapperBridge', reactToAngularComponent(ChplSvapCollectionWrapper));

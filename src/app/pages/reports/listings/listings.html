@@ -128,7 +128,6 @@
                 <ul>
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
-                <button class="btn btn-sm btn-ai-success" ng-click="$ctrl.compareSurveillances(activity.source.oldS, activity.source.newS)" ng-if="activity.source"><i class="fa fa-search"></i>View Details</button>
               </div>
             </td>
           </tr>

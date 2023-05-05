@@ -9,20 +9,17 @@ import {
 } from '@material-ui/core';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import BlockIcon from '@material-ui/icons/Block';
-import CancelIcon from '@material-ui/icons/Cancel';
 import CodeIcon from '@material-ui/icons/Code';
 import DescriptionIcon from '@material-ui/icons/Description';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import ImageIcon from '@material-ui/icons/Image';
 import GavelIcon from '@material-ui/icons/Gavel';
+import ImageIcon from '@material-ui/icons/Image';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
-import StopIcon from '@material-ui/icons/Stop';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
 import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
 import {
-  ChplFilterPanel,
   ChplFilterQuickFilters,
   ChplFilterSearchTerm,
 } from 'components/filter';
@@ -46,6 +43,9 @@ const useStyles = makeStyles(() => ({
   },
   collectionsCards: {
     width: '-webkit-fill-available',
+    '& a': {
+      fontSize: 'large',
+    },
   },
   collectionsCardContainer: {
     display: 'flex',
@@ -68,6 +68,31 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
+  complianceCard: {
+    width: '100%',
+    flexDirection: 'column',
+    display: 'flex',
+    [theme.breakpoints.up('sm')]: {
+      width: '50%',
+      flexDirection: 'row',
+    },
+  },
+  complianceCardContent: {
+    width: '100%',
+    '& a': {
+      fontSize: 'large',
+    },
+  },
+  complianceCardsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gridGap: '16px',
+    padding: '0 16px',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      padding: '0',
+    },
+  },
   helpCard: {
     width: '100%',
     flexDirection: 'column',
@@ -79,6 +104,9 @@ const useStyles = makeStyles(() => ({
   },
   helpCardContent: {
     width: '100%',
+    '& a': {
+      fontSize: 'large',
+    },
   },
   helpCardsContainer: {
     display: 'flex',
@@ -102,11 +130,6 @@ const useStyles = makeStyles(() => ({
     [theme.breakpoints.up('sm')]: {
       padding: '0',
     },
-  },
-  searchButtonContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gridGap: '8px',
   },
   searchContainer: {
     backgroundColor: palette.grey,
@@ -144,10 +167,7 @@ function ChplLandingPage() {
           <Container maxWidth="md">
             <Box className={classes.searchContainer}>
               <ChplFilterSearchTerm />
-              <Box className={classes.searchButtonContainer}>
-                <ChplFilterPanel />
-                <ChplFilterQuickFilters />
-              </Box>
+              <ChplFilterQuickFilters />
             </Box>
             <Box pb={4}>
               <Typography className={classes.subHeaders} align="left" variant="h2" gutterBottom>
@@ -165,87 +185,20 @@ function ChplLandingPage() {
                           <Typography>
                             <ChplLink
                               href="#/collections/api-documentation"
-                              text="API info for 2015 products"
+                              text="API Information"
                               external={false}
                               router={{ sref: 'collections.api-documentation' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'API Info for 2015 Ed. Products' }}
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                            This list includes all 2015 Edition, including Cures update, health IT products that have been certified to at least one API Criteria
                           </Typography>
                         </Box>
                       </Box>
                     </CardContent>
                   </Card>
                 </Box>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <VerifiedUserIcon color="primary" />
-                        <Box mt={-1}>
-                          <Typography>
-                            <ChplLink
-                              href="#/collections/sed"
-                              text="SED info for 2015 products"
-                              external={false}
-                              router={{ sref: 'collections.sed' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED)
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <StopIcon color="primary" />
-                        <Box mt={-1}>
-                          <Typography>
-                            <ChplLink
-                              href="#/collections/inactive-certificates"
-                              text="Inactive Certificates"
-                              external={false}
-                              router={{ sref: 'collections.inactive-certificates' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This list includes all health IT products that have had their status changed to an &quot;inactive&quot; status on the CHPL
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <BlockIcon color="primary" />
-                        <Box mt={-1}>
-                          <Typography>
-                            <ChplLink
-                              href="#/collections/developers"
-                              text="Banned Developers"
-                              external={false}
-                              router={{ sref: 'collections.developers' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-              </Box>
-              <Box className={classes.collectionsCardContainer}>
                 <Box className={classes.collectionsCard}>
                   <Card className={classes.collectionsCards}>
                     <CardContent>
@@ -258,6 +211,7 @@ function ChplLandingPage() {
                               text="Real World Testing"
                               external={false}
                               router={{ sref: 'collections.real-world-testing' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Real World Testing' }}
                             />
                           </Typography>
                           <Typography variant="body2">
@@ -280,10 +234,11 @@ function ChplLandingPage() {
                               text="Charts"
                               external={false}
                               router={{ sref: 'charts' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Charts' }}
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                            Charts are a dynamic display of the data currently on the CHPL
                           </Typography>
                         </Box>
                       </Box>
@@ -294,40 +249,19 @@ function ChplLandingPage() {
                   <Card className={classes.collectionsCards}>
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
-                        <ErrorOutlineOutlinedIcon color="primary" />
+                        <TrendingUpIcon color="primary" />
                         <Box mt={-1}>
                           <Typography>
                             <ChplLink
-                              href="#/collections/corrective-action"
-                              text="Products: Corrective Actions"
+                              href="#/collections/svap"
+                              text="SVAP Information"
                               external={false}
-                              router={{ sref: 'collections.corrective-action' }}
+                              router={{ sref: 'collections.svap' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'SVAP' }}
                             />
                           </Typography>
                           <Typography variant="body2">
-                            This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
-                <Box className={classes.collectionsCard}>
-                  <Card className={classes.collectionsCards}>
-                    <CardContent>
-                      <Box display="flex" flexDirection="row" gridGap={8}>
-                        <CancelIcon color="primary" />
-                        <Box mt={-1}>
-                          <Typography>
-                            <ChplLink
-                              href="#/collections/decertified-products"
-                              text="Decertified Products"
-                              external={false}
-                              router={{ sref: 'collections.decertified-products' }}
-                            />
-                          </Typography>
-                          <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures update, health it products that have been certified to at least one API Criteria
+                            Standards Version Advancement Process (SVAP) This list includes Health IT Module(s) utilizing advanced interoperability standards through the SVAP process, promoting streamlined adoption and improved communication
                           </Typography>
                         </Box>
                       </Box>
@@ -350,9 +284,10 @@ function ChplLandingPage() {
                           <Typography align="center">
                             <ChplLink
                               href="#/resources/overview"
-                              text="An Overview of the CHPL"
+                              text="CHPL Overview"
                               external={false}
                               router={{ sref: 'resources.overview' }}
+                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL Overview' }}
                             />
                           </Typography>
                         </Box>
@@ -372,6 +307,7 @@ function ChplLandingPage() {
                               text="CHPL API"
                               external={false}
                               router={{ sref: 'resources.api' }}
+                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'CHPL API' }}
                             />
                           </Typography>
                         </Box>
@@ -390,7 +326,61 @@ function ChplLandingPage() {
                               href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
                               text="Training Guide"
                               external={false}
+                              analytics={{ event: 'Use Documentation Button', category: 'Navigation', label: 'Training Guide' }}
                             />
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Box>
+              <Box pt={4} pb={4}>
+                <Typography className={classes.subHeaders} align="left" variant="h2">
+                  Check our compliance pages
+                </Typography>
+              </Box>
+              <Box className={classes.complianceCardsContainer}>
+                <Box className={classes.complianceCard}>
+                  <Card className={classes.complianceCardContent}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <BlockIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <ChplLink
+                              href="#/collections/developers"
+                              text="Banned Developers"
+                              external={false}
+                              router={{ sref: 'collections.developers' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Banned Developers' }}
+                            />
+                          </Typography>
+                          <Typography variant="body2">
+                            This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+                <Box className={classes.complianceCard}>
+                  <Card className={classes.complianceCardContent}>
+                    <CardContent>
+                      <Box display="flex" flexDirection="row" gridGap={8}>
+                        <ErrorOutlineOutlinedIcon color="primary" />
+                        <Box mt={-1}>
+                          <Typography>
+                            <ChplLink
+                              href="#/collections/corrective-action"
+                              text="Products: Corrective Actions"
+                              external={false}
+                              router={{ sref: 'collections.corrective-action' }}
+                              analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'Products: Corrective Action' }}
+                            />
+                          </Typography>
+                          <Typography variant="body2">
+                            This is a list of all health IT products for which a non-conformity has been recorded. ONC-ACB or ONC determines that the product does not comply with a requirement of certification
                           </Typography>
                         </Box>
                       </Box>
