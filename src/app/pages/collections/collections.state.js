@@ -30,15 +30,20 @@ const states = [
     component: 'chplDecertifiedProductsCollectionWrapperBridge',
     data: { title: 'Decertified Products' },
   }, {
+    name: 'collections.real-world-testing',
+    url: '/real-world-testing',
+    component: 'chplRealWorldTestingCollectionWrapperBridge',
+    data: { title: 'Real World Testing' },
+  }, {
     name: 'collections.sed',
     url: '/sed',
     component: 'chplSedCollectionWrapperBridge',
     data: { title: 'SED Information for 2015 Edition Products' },
   }, {
-    name: 'collections.real-world-testing',
-    url: '/real-world-testing',
-    component: 'chplRealWorldTestingCollectionWrapperBridge',
-    data: { title: 'Real World Testing' },
+    name: 'collections.svap',
+    url: '/svap',
+    component: 'chplSvapCollectionWrapperBridge',
+    data: { title: 'SVAP Information' },
   },
 ];
 

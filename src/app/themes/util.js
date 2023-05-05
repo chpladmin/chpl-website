@@ -14,6 +14,9 @@ const util = {
   iconSpacing: {
     marginLeft: '4px',
   },
+  linkWrap: {
+    overflowWrap: 'anywhere',
+  },
   removedText: {
     fontStyle: 'italic',
   },

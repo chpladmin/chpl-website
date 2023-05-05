@@ -26,6 +26,7 @@ describe('the top navigation', () => {
         'Inactive Certificates',
         'Products: Corrective Action',
         'SED Info for 2015 Ed. Products',
+        'SVAP Information',
       ];
       component.shortcutToggle.click();
       const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
@@ -133,6 +134,7 @@ describe('the top navigation', () => {
           'Inactive Certificates',
           'Products: Corrective Action',
           'SED Info for 2015 Ed. Products',
+          'SVAP Information',
         ];
         component.shortcutToggle.click();
         const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
@@ -209,6 +211,7 @@ describe('the top navigation', () => {
           'Inactive Certificates',
           'Products: Corrective Action',
           'SED Info for 2015 Ed. Products',
+          'SVAP Information',
         ];
         component.shortcutToggle.click();
         const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
