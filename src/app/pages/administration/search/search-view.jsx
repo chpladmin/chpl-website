@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -10,6 +12,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
+
+import ChplLandingPage from './landing-page';
 
 import { useFetchCollection } from 'api/collections';
 import ChplActionButton from 'components/action-widget/action-button';
@@ -63,6 +67,11 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
   },
+  searchButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gridGap: '8px',
+  },
   searchContainer: {
     backgroundColor: palette.grey,
     padding: '16px 32px',
@@ -71,7 +80,7 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto auto',
+      gridTemplateColumns: 'auto 10fr auto',
     },
   },
   stickyColumn: {
@@ -126,13 +135,13 @@ function ChplSearchView(props) {
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
-  const filterContext = useFilterContext();
+  const { dispatch, hasSearched, queryString } = useFilterContext();
   const { data, isError, isLoading } = useFetchCollection({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
-    query: filterContext.queryString(),
+    query: queryString(),
   });
 
   useEffect(() => {
@@ -155,8 +164,8 @@ function ChplSearchView(props) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    filterContext.dispatch('setFilterDisability', 'hasHadComplianceActivity', !directReviewsAvailable);
-    filterContext.dispatch('setFilterDisability', 'nonConformityOptions', !directReviewsAvailable);
+    dispatch('setFilterDisability', 'hasHadComplianceActivity', !directReviewsAvailable);
+    dispatch('setFilterDisability', 'nonConformityOptions', !directReviewsAvailable);
   }, [directReviewsAvailable]);
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -168,10 +177,15 @@ function ChplSearchView(props) {
   const pageStart = (pageNumber * pageSize) + 1;
   const pageEnd = Math.min((pageNumber + 1) * pageSize, recordCount);
 
+  if (!hasSearched) {
+    return <ChplLandingPage />;
+  }
+
   return (
     <>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Search</Typography>
+        <Button onClick={() => dispatch('hasSearched', undefined, false)}>Restore Landing Page</Button>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography variant="body1">
@@ -180,8 +194,10 @@ function ChplSearchView(props) {
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-        <ChplFilterQuickFilters />
+        <Box className={classes.searchButtonContainer}>
+          <ChplFilterPanel />
+          <ChplFilterQuickFilters />
+        </Box>
       </div>
       <div>
         <ChplFilterChips />
