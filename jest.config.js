@@ -4,9 +4,9 @@ module.exports = {
   coverageReporters: ['html', 'lcov', 'text-summary'], // 'json'
   moduleDirectories: ['src/app', 'node_modules'],
   reporters: [
-    //'default',
+    'default',
     ['jest-junit', { outputDirectory: './test_reports/unit/jsx'}],
-    ['jest-silent-reporter', { useDots: true }],
   ],
+  testEnvironment: 'jsdom',
   testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
 };
