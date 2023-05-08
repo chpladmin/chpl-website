@@ -53,7 +53,7 @@ const ReportsListingsComponent = {
               if (a.retired) {
                 ret.display = `${a.name} (Retired)`;
                 ret.retired = true;
-                ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                ret.selected = true;
               } else {
                 ret.selected = that.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                   || user.organizations.filter((o) => o.name === a.name).length > 0;
