@@ -374,7 +374,7 @@ function ChplChangeRequest(props) {
           formik.submitForm();
         }
         break;
-      case 'toggleAcknowledgement':
+      case 'toggleWarningAcknowledgement':
         setAcknowledgeWarnings((prev) => !prev);
         break;
       case 'withdraw':
