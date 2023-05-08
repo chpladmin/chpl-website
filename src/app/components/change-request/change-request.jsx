@@ -628,7 +628,7 @@ function ChplChangeRequest(props) {
         canCancel={isEditing}
         canSave={isEditing}
         isDisabled={isSaving}
-        showAcknowledgement={showAcknowledgement}
+        showWarningAcknowledgement={showAcknowledgement}
         warnings={warnings}
       />
     </>
