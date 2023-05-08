@@ -609,7 +609,7 @@ function ChplChangeRequest(props) {
                       onBlur={formik.handleBlur}
                       error={formik.touched.comment && !!formik.errors.comment}
                       helperText={formik.touched.comment && formik.errors.comment}
-                      rows={4}
+                      minRows={4}
                     />
                   </div>
                 </div>
