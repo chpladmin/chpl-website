@@ -6,7 +6,6 @@ module.exports = {
   reporters: [
     'default',
     ['jest-junit', { outputDirectory: './test_reports/unit/jsx'}],
-    //['jest-silent-reporter', { useDots: true }],
   ],
   testEnvironment: 'jsdom',
   testRegex: '(/__tests__/.*|(\\.|/)(test))\\.[jt]sx?$',
