@@ -168,6 +168,7 @@ function ChplChangeRequest(props) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { changeRequest: { id }, showBreadcrumbs } = props;
+  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -175,6 +176,8 @@ function ChplChangeRequest(props) {
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
+  const [warnings, setWarnings] = useState([]);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
@@ -371,6 +374,9 @@ function ChplChangeRequest(props) {
           formik.submitForm();
         }
         break;
+      case 'toggleAcknowledgement':
+        setAcknowledgeWarnings((prev) => !prev);
+        break;
       case 'withdraw':
         handleWithdrawal();
         break;
@@ -383,7 +389,7 @@ function ChplChangeRequest(props) {
   const isReasonRequired = () => formik.values.changeRequestStatusType?.name === 'Rejected'
         || (formik.values.changeRequestStatusType?.name === 'Pending Developer Action' && !hasAnyRole(['ROLE_DEVELOPER']));
 
-  save = (request, acknowledgeWarnings = false) => {
+  save = (request) => {
     setIsSaving(true);
     mutate({
       acknowledgeWarnings,
@@ -392,6 +398,7 @@ function ChplChangeRequest(props) {
       onSuccess: () => {
         props.dispatch('close');
         setIsSaving(false);
+        setWarnings([]);
       },
       onError: (error) => {
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
@@ -400,6 +407,11 @@ function ChplChangeRequest(props) {
           });
           props.dispatch('close');
           setIsSaving(false);
+          setWarnings([]);
+        } else if (error.response.data.warningMessages?.length > 0) {
+          setShowAcknowledgement(true);
+          setIsSaving(false);
+          setWarnings(error.response.data.warningMessages);
         } else {
           const message = error.response.data?.error
                 || error.response.data?.errorMessages.join(' ');
@@ -408,6 +420,7 @@ function ChplChangeRequest(props) {
           });
           formik.resetForm();
           setIsSaving(false);
+          setWarnings([]);
         }
       },
     });
@@ -615,6 +628,8 @@ function ChplChangeRequest(props) {
         canCancel={isEditing}
         canSave={isEditing}
         isDisabled={isSaving}
+        showAcknowledgement={showAcknowledgement}
+        warnings={warnings}
       />
     </>
   );
