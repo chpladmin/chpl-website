@@ -458,6 +458,11 @@ const theme = createTheme({
         fontSize: '1rem',
       },
     },
+    MuiSvgIcon:{
+      colorPrimary: {
+        color: '#156dac!important',
+      },
+    },
   },
 });
 

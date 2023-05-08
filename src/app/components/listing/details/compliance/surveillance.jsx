@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 import { palette, utilStyles } from 'themes';
+import { getDisplayDateFormat } from 'services/date-util';
+
 import { ChplTooltip } from 'components/util';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const useStyles = makeStyles({
@@ -51,20 +53,14 @@ const useStyles = makeStyles({
     fontWeight: '300',
   },
 });
+import {
+  surveillance as surveillancePropType,
+} from 'shared/prop-types';
 
-
-function ChplCompliance(props) {
-  const { compliance } = props;
+function ChplSurveillance(props) {
+  const { surveillance } = props;
   const classes = useStyles();
-  /*
-    if (!surveillance || surveillance.length === 0) {
-      return (
-        <Typography>
-          No data for surveillance activites.
-        </Typography>
-      );
-    }
-  */
+
   return (
     <div>
       <Box display="flex" flexDirection={"column"}>
@@ -123,7 +119,7 @@ function ChplCompliance(props) {
                       Date Surveillance Ended
                       </Typography>
                       <Typography>
-                        MM/DD/YYYY
+                      {surveillance.endDay }
                       </Typography>
                     </Box>
                     <Box>
@@ -412,4 +408,8 @@ function ChplCompliance(props) {
   );
 }
 
-export default ChplCompliance;
+export default ChplSurveillance;
+
+ChplSurveillance.propTypes = {
+  surveillance: surveillancePropType.isRequired,
+};
