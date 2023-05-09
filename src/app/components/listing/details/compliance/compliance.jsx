@@ -7,12 +7,14 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { arrayOf } from 'prop-types';
-import { palette, utilStyles } from 'themes';
-import { measure as measureType } from 'shared/prop-types';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { arrayOf } from 'prop-types';
+
 import ChplDirectReviews from './direct-reviews';
 import ChplSurveillance from './surveillance';
+import { directReview as directReviewPropType, surveillance as surveillancePropType } from 'shared/prop-types';
+import { palette, utilStyles } from 'themes';
+
 const useStyles = makeStyles({
   ...utilStyles,
   infoIcon: {
@@ -56,46 +58,34 @@ const useStyles = makeStyles({
 
 
 function ChplCompliance(props) {
-  const { compliance } = props;
-  const { surveillance } = props;
   const { directReviews } = props;
+  const { surveillance } = props;
   const classes = useStyles();
-  /*
-    if (!compliance || compliance.length === 0) {
-      return (
-        <Typography>
-          No data for Compliance Activites.
-        </Typography>
-      );
-    }
-  */
+
   return (
-    <div>
-      <Accordion className={classes.NestedAccordionLevelOne}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          className={classes.NestedAccordionLevelOneSummary}
-          color="secondary"
-        >
-          <Typography>
-            Compliance Activites
-          </Typography>
-        </AccordionSummary>
-        <Box display="flex" flexDirection={"column"}>
-          <CardContent compliance={compliance}>
-            {/*Surveillance*/}
-            <ChplSurveillance surveillance={surveillance}/>
-            {/*Direct Reviews*/}
-            <ChplDirectReviews/>
-          </CardContent>
-        </Box >
-      </Accordion >
-    </div >
+    <Accordion className={classes.NestedAccordionLevelOne}>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        className={classes.NestedAccordionLevelOneSummary}
+        color="secondary"
+      >
+        <Typography>
+          Compliance Activites
+        </Typography>
+      </AccordionSummary>
+      <Box display="flex" flexDirection={"column"}>
+        <CardContent>
+          <ChplSurveillance surveillance={surveillance} />
+          <ChplDirectReviews directReviews={directReviews} />
+        </CardContent>
+      </Box>
+    </Accordion>
   );
 }
 
 export default ChplCompliance;
 
 ChplCompliance.propTypes = {
-  ChplSurveillance,
+  directReviews: arrayOf(directReviewPropType).isRequired,
+  surveillance: arrayOf(surveillancePropType).isRequired,
 };

@@ -411,5 +411,5 @@ function ChplSurveillance(props) {
 export default ChplSurveillance;
 
 ChplSurveillance.propTypes = {
-  surveillance: surveillancePropType.isRequired,
+  surveillance: arrayOf(surveillancePropType).isRequired,
 };

@@ -1,15 +1,21 @@
 import React from 'react';
+import { arrayOf } from 'prop-types';
+
+import ChplCompliance from './compliance';
 
 import AppWrapper from 'app-wrapper';
-import { surveillance as surveillancePropType} from 'shared/prop-types';
-import ChplCompliance from './compliance.jsx';
+import { directReview as directReviewPropType, surveillance as surveillancePropType } from 'shared/prop-types';
 
 function ChplComplianceWrapper(props) {
+  const { directReviews } = props;
   const { surveillance } = props;
 
   return (
     <AppWrapper>
-      <ChplCompliance surveillance={surveillance} />
+      <ChplCompliance
+        directReviews={directReviews}
+        surveillance={surveillance}
+      />
     </AppWrapper>
   );
 }
@@ -17,5 +23,11 @@ function ChplComplianceWrapper(props) {
 export default ChplComplianceWrapper;
 
 ChplComplianceWrapper.propTypes = {
-  surveillance: surveillancePropType
+  directReviews: arrayOf(directReviewPropType),
+  surveillance: arrayOf(surveillancePropType),
+};
+
+ChplComplianceWrapper.defaultProps = {
+  directReviews: [],
+  surveillance: [],
 };
