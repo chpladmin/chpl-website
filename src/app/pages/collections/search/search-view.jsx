@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
   Paper,
   Table,
   TableBody,
@@ -67,11 +65,6 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
   },
-  searchButtonContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gridGap: '8px',
-  },
   searchContainer: {
     backgroundColor: palette.grey,
     padding: '16px 32px',
@@ -80,7 +73,7 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto',
+      gridTemplateColumns: 'auto 10fr auto auto',
     },
   },
   stickyColumn: {
@@ -125,6 +118,7 @@ const useStyles = makeStyles({
 function ChplSearchView(props) {
   const storageKey = 'storageKey-searchView';
   const $analytics = getAngularService('$analytics');
+  const $rootScope = getAngularService('$rootScope');
   const { analytics } = props;
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
@@ -143,6 +137,13 @@ function ChplSearchView(props) {
     sortDescending,
     query: queryString(),
   });
+
+  useEffect(() => {
+    const clearResultsWatcher = $rootScope.$on('ClearResults', () => dispatch('hasSearched', undefined, false));
+    return () => {
+      clearResultsWatcher();
+    };
+  }, [$rootScope, dispatch]);
 
   useEffect(() => {
     if (isLoading) { return; }
@@ -185,7 +186,6 @@ function ChplSearchView(props) {
     <>
       <div className={classes.pageHeader}>
         <Typography variant="h1">Search</Typography>
-        <Button onClick={() => dispatch('hasSearched', undefined, false)}>Restore Landing Page</Button>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography variant="body1">
@@ -194,10 +194,8 @@ function ChplSearchView(props) {
       </div>
       <div className={classes.searchContainer} component={Paper}>
         <ChplFilterSearchTerm />
-        <Box className={classes.searchButtonContainer}>
-          <ChplFilterPanel />
-          <ChplFilterQuickFilters />
-        </Box>
+        <ChplFilterPanel />
+        <ChplFilterQuickFilters />
       </div>
       <div>
         <ChplFilterChips />
