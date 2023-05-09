@@ -62,7 +62,7 @@ function ChplSurveillance(props) {
   const classes = useStyles();
 
   return (
-    <Box display="flex" flexDirection={"column"}>
+    <Box display="flex" flexDirection="column">
       <Accordion className={classes.NestedAccordionLevelOne}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -96,8 +96,8 @@ function ChplSurveillance(props) {
               <CardContent>
                 <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                   <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
+                    <Box display="flex" flexDirection="column">
+                      <Typography variant="subtitle2">
                         Date Surveillance Began
                       </Typography>
                       <Typography>
@@ -109,13 +109,13 @@ function ChplSurveillance(props) {
                         placement="top"
                         title="Placement text"
                       >
-                        <InfoIcon color="primary"></InfoIcon>
+                        <InfoIcon color="primary" />
                       </ChplTooltip>
                     </Box>
                   </Box>
                   <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
+                    <Box display="flex" flexDirection="column">
+                      <Typography variant="subtitle2">
                         Date Surveillance Ended
                       </Typography>
                       <Typography>
@@ -127,13 +127,13 @@ function ChplSurveillance(props) {
                         placement="top"
                         title="Placement text"
                       >
-                        <InfoIcon color="primary"></InfoIcon>
+                        <InfoIcon color="primary" />
                       </ChplTooltip>
                     </Box>
                   </Box>
                   <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
+                    <Box display="flex" flexDirection="column">
+                      <Typography variant="subtitle2">
                         Surveillance Type
                       </Typography>
                       <Typography>
@@ -145,13 +145,13 @@ function ChplSurveillance(props) {
                         placement="top"
                         title="Placement text"
                       >
-                        <InfoIcon color="primary"></InfoIcon>
+                        <InfoIcon color="primary" />
                       </ChplTooltip>
                     </Box>
                   </Box>
                   <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
+                    <Box display="flex" flexDirection="column">
+                      <Typography variant="subtitle2">
                         Certification Criteria and Program Requirements Surveilled
                       </Typography>
                       <Typography>
@@ -163,13 +163,13 @@ function ChplSurveillance(props) {
                         placement="top"
                         title="Placement text"
                       >
-                        <InfoIcon color="primary"></InfoIcon>
+                        <InfoIcon color="primary" />
                       </ChplTooltip>
                     </Box>
                   </Box>
                   <Box width="100%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
+                    <Box display="flex" flexDirection="column">
+                      <Typography variant="subtitle2">
                         Surveillance Results
                       </Typography>
                       <Typography gutterBottom>
@@ -181,7 +181,7 @@ function ChplSurveillance(props) {
                         placement="top"
                         title="Placement text"
                       >
-                        <InfoIcon color="primary"></InfoIcon>
+                        <InfoIcon color="primary" />
                       </ChplTooltip>
                     </Box>
                   </Box>
@@ -199,8 +199,8 @@ function ChplSurveillance(props) {
                   <CardContent>
                     <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Date of Detemination of Non-Conformity
                           </Typography>
                           <Typography>
@@ -212,13 +212,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Corrective Action Plan Approval Date
                           </Typography>
                           <Typography>
@@ -230,13 +230,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Date Corrective Action Began
                           </Typography>
                           <Typography>
@@ -248,13 +248,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Date Corrective Action Plan Must Be Completed
                           </Typography>
                           <Typography>
@@ -266,13 +266,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Date Corrective Action Plan Was Completed
                           </Typography>
                           <Typography>
@@ -284,13 +284,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Non-Conformity Type
                           </Typography>
                           <Typography>
@@ -302,13 +302,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Non-Conformity Status
                           </Typography>
                           <Typography>
@@ -320,13 +320,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Non-Conformity Summary
                           </Typography>
                           <Typography>
@@ -338,13 +338,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="100%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Findings
                           </Typography>
                           <Typography gutterBottom>
@@ -356,13 +356,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="100%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Developer Explanation
                           </Typography>
                           <Typography gutterBottom>
@@ -374,13 +374,13 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>
                       <Box width="100%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column" >
-                          <Typography variant='subtitle2'>
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
                             Resolution
                           </Typography>
                           <Typography gutterBottom>
@@ -392,7 +392,7 @@ function ChplSurveillance(props) {
                             placement="top"
                             title="Placement text"
                           >
-                            <InfoIcon color="primary"></InfoIcon>
+                            <InfoIcon color="primary" />
                           </ChplTooltip>
                         </Box>
                       </Box>

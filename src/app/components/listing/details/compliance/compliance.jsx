@@ -12,6 +12,7 @@ import { arrayOf } from 'prop-types';
 
 import ChplDirectReviews from './direct-reviews';
 import ChplSurveillance from './surveillance';
+
 import { directReview as directReviewPropType, surveillance as surveillancePropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
@@ -56,7 +57,6 @@ const useStyles = makeStyles({
   },
 });
 
-
 function ChplCompliance(props) {
   const { directReviews } = props;
   const { surveillance } = props;
@@ -73,7 +73,7 @@ function ChplCompliance(props) {
           Compliance Activites
         </Typography>
       </AccordionSummary>
-      <Box display="flex" flexDirection={"column"}>
+      <Box display="flex" flexDirection="column">
         <CardContent>
           <ChplSurveillance surveillance={surveillance} />
           <ChplDirectReviews directReviews={directReviews} />
