@@ -13,7 +13,7 @@ import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper'
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import { ChplDeveloper } from './developer';
-import ChplDirectReviewsView from './direct-reviews/direct-reviews-view';
+import ChplDirectReviewsWrapper from './direct-reviews/direct-reviews-wrapper';
 import {
   ChplConfirmDeveloperWrapper,
   ChplConfirmListingsWrapper,
@@ -86,7 +86,7 @@ angular
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
   .component('chplCqmsBridge', reactToAngularComponent(ChplCqms))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
-  .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsView))
+  .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
   .component('chplG1g2Bridge', reactToAngularComponent(ChplG1g2))
