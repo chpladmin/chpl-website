@@ -17,7 +17,7 @@ class SearchPage extends CollectionPage {
   }
 
   async open() {
-    await openPage('#/administration/search');
+    await openPage('#/search');
     await this.bypassLandingPage();
     await (browser.waitUntil(async () => !(await this.isLoading())));
   }
