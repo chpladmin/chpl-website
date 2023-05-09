@@ -8,11 +8,14 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import { palette, utilStyles } from 'themes';
-import { getDisplayDateFormat } from 'services/date-util';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { arrayOf } from 'prop-types';
 
 import { ChplTooltip } from 'components/util';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { getDisplayDateFormat } from 'services/date-util';
+import { surveillance as surveillancePropType } from 'shared/prop-types';
+import { palette, utilStyles } from 'themes';
+
 const useStyles = makeStyles({
   ...utilStyles,
   infoIcon: {
@@ -53,43 +56,40 @@ const useStyles = makeStyles({
     fontWeight: '300',
   },
 });
-import {
-  surveillance as surveillancePropType,
-} from 'shared/prop-types';
 
 function ChplSurveillance(props) {
   const { surveillance } = props;
   const classes = useStyles();
 
   return (
-    <div>
-      <Box display="flex" flexDirection={"column"}>
-        {/*Surveillance*/}
-        <Accordion className={classes.NestedAccordionLevelOne}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            className={classes.NestedAccordionLevelOneSummary}
-            color="secondary"
-          >
-            <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
-              <Typography>
-                Surveillance Activites
-              </Typography>
-              <Typography variant="body2">
-                1 closed / 2 non conformities found
-              </Typography>
-            </Box>
-          </AccordionSummary>
-          <CardContent>
-            <Typography gutterBottom>
-              Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing
+    <Box display="flex" flexDirection={"column"}>
+      <Accordion className={classes.NestedAccordionLevelOne}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          className={classes.NestedAccordionLevelOneSummary}
+          color="secondary"
+        >
+          <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
+            <Typography>
+              Surveillance Activites
             </Typography>
-            <Accordion className={classes.NestedAccordionLevelOne}>
+            <Typography variant="body2">
+              3 found
+            </Typography>
+          </Box>
+        </AccordionSummary>
+        <CardContent>
+          <Typography gutterBottom>
+            Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing
+          </Typography>
+          { surveillance.map((surv) => (
+            <Accordion className={classes.NestedAccordionLevelOne} key={surv.id}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 className={classes.NestedAccordionLevelTwoSummary}
                 color="secondary"
-              > <Typography>
+              >
+                <Typography>
                   Closed Surveillance, Ended Feb 1, 2023: Closed Non-Conformity was found
                 </Typography>
               </AccordionSummary>
@@ -116,10 +116,10 @@ function ChplSurveillance(props) {
                   <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                     <Box display="flex" flexDirection="column" >
                       <Typography variant='subtitle2'>
-                      Date Surveillance Ended
+                        Date Surveillance Ended
                       </Typography>
                       <Typography>
-                      {surveillance.endDay }
+                        { getDisplayDateFormat(surv.endDay) }
                       </Typography>
                     </Box>
                     <Box>
@@ -152,7 +152,7 @@ function ChplSurveillance(props) {
                   <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                     <Box display="flex" flexDirection="column" >
                       <Typography variant='subtitle2'>
-                      Certification Criteria and Program Requirements Surveilled
+                        Certification Criteria and Program Requirements Surveilled
                       </Typography>
                       <Typography>
                         MM/DD/YYYY
@@ -201,7 +201,7 @@ function ChplSurveillance(props) {
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                         <Box display="flex" flexDirection="column" >
                           <Typography variant='subtitle2'>
-                            Date of Detemination of Non-Conformity 
+                            Date of Detemination of Non-Conformity
                           </Typography>
                           <Typography>
                             MM/DD/YYYY
@@ -273,7 +273,7 @@ function ChplSurveillance(props) {
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                         <Box display="flex" flexDirection="column" >
                           <Typography variant='subtitle2'>
-                          Date Corrective Action Plan Was Completed
+                            Date Corrective Action Plan Was Completed
                           </Typography>
                           <Typography>
                             MM/DD/YYYY
@@ -309,7 +309,7 @@ function ChplSurveillance(props) {
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                         <Box display="flex" flexDirection="column" >
                           <Typography variant='subtitle2'>
-                          Non-Conformity Status
+                            Non-Conformity Status
                           </Typography>
                           <Typography>
                             MM/DD/YYYY
@@ -327,7 +327,7 @@ function ChplSurveillance(props) {
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                         <Box display="flex" flexDirection="column" >
                           <Typography variant='subtitle2'>
-                          Non-Conformity Summary
+                            Non-Conformity Summary
                           </Typography>
                           <Typography>
                             MM/DD/YYYY
@@ -343,68 +343,68 @@ function ChplSurveillance(props) {
                         </Box>
                       </Box>
                       <Box width="100%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
-                        Findings
-                      </Typography>
-                      <Typography gutterBottom>
-                        MM/DD/YYYY
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <ChplTooltip
-                        placement="top"
-                        title="Placement text"
-                      >
-                        <InfoIcon color="primary"></InfoIcon>
-                      </ChplTooltip>
-                    </Box>
+                        <Box display="flex" flexDirection="column" >
+                          <Typography variant='subtitle2'>
+                            Findings
+                          </Typography>
+                          <Typography gutterBottom>
+                            MM/DD/YYYY
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <ChplTooltip
+                            placement="top"
+                            title="Placement text"
+                          >
+                            <InfoIcon color="primary"></InfoIcon>
+                          </ChplTooltip>
+                        </Box>
                       </Box>
                       <Box width="100%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
-                        Developer Explanation
-                      </Typography>
-                      <Typography gutterBottom>
-                        MM/DD/YYYY
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <ChplTooltip
-                        placement="top"
-                        title="Placement text"
-                      >
-                        <InfoIcon color="primary"></InfoIcon>
-                      </ChplTooltip>
-                    </Box>
+                        <Box display="flex" flexDirection="column" >
+                          <Typography variant='subtitle2'>
+                            Developer Explanation
+                          </Typography>
+                          <Typography gutterBottom>
+                            MM/DD/YYYY
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <ChplTooltip
+                            placement="top"
+                            title="Placement text"
+                          >
+                            <InfoIcon color="primary"></InfoIcon>
+                          </ChplTooltip>
+                        </Box>
                       </Box>
                       <Box width="100%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                    <Box display="flex" flexDirection="column" >
-                      <Typography variant='subtitle2'>
-                        Resolution
-                      </Typography>
-                      <Typography gutterBottom>
-                        MM/DD/YYYY
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <ChplTooltip
-                        placement="top"
-                        title="Placement text"
-                      >
-                        <InfoIcon color="primary"></InfoIcon>
-                      </ChplTooltip>
-                    </Box>
+                        <Box display="flex" flexDirection="column" >
+                          <Typography variant='subtitle2'>
+                            Resolution
+                          </Typography>
+                          <Typography gutterBottom>
+                            MM/DD/YYYY
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <ChplTooltip
+                            placement="top"
+                            title="Placement text"
+                          >
+                            <InfoIcon color="primary"></InfoIcon>
+                          </ChplTooltip>
+                        </Box>
                       </Box>
                     </Box>
                   </CardContent>
                 </Accordion>
               </CardContent>
             </Accordion>
-          </CardContent>
-        </Accordion>
-      </Box >
-    </div >
+          ))}
+        </CardContent>
+      </Accordion>
+    </Box>
   );
 }
 
