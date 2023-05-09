@@ -85,7 +85,7 @@ function ChplDirectReviews(props) {
       <CardContent>
         <Typography gutterBottom>
           Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing
-</Typography>
+        </Typography>
         <ChplDirectReviewsView directReviews={directReviews} />
         { directReviews.map((dr) => (
           <Accordion className={classes.NestedAccordionLevelOne}>
@@ -103,13 +103,13 @@ function ChplDirectReviews(props) {
                 <CardHeader
                   titleTypographyProps={{ variant: 'h6' }}
                   className={classes.subCard}
-                  title="Non Conformity Type: 170.315(d)(2) Example Text (Cures Update)">
-                </CardHeader>
+                  title="Non Conformity Type: 170.315(d)(2) Example Text (Cures Update)"
+                />
                 <CardContent>
                   <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                     <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column" >
-                        <Typography variant='subtitle2'>
+                      <Box display="flex" flexDirection="column">
+                        <Typography variant="subtitle2">
                           Developer Associated Listings
                         </Typography>
                         <Typography>
@@ -121,13 +121,13 @@ function ChplDirectReviews(props) {
                           placement="top"
                           title="Placement text"
                         >
-                          <InfoIcon color="primary"></InfoIcon>
+                          <InfoIcon color="primary" />
                         </ChplTooltip>
                       </Box>
                     </Box>
                     <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column" >
-                        <Typography variant='subtitle2'>
+                      <Box display="flex" flexDirection="column">
+                        <Typography variant="subtitle2">
                           Corrective Action Plan Approval date
                         </Typography>
                         <Typography>
@@ -139,13 +139,13 @@ function ChplDirectReviews(props) {
                           placement="top"
                           title="Placement text"
                         >
-                          <InfoIcon color="primary"></InfoIcon>
+                          <InfoIcon color="primary" />
                         </ChplTooltip>
                       </Box>
                     </Box>
                     <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column" >
-                        <Typography variant='subtitle2'>
+                      <Box display="flex" flexDirection="column">
+                        <Typography variant="subtitle2">
                           Corrective Action Plan Must Be Completed
                         </Typography>
                         <Typography>
@@ -157,13 +157,13 @@ function ChplDirectReviews(props) {
                           placement="top"
                           title="Placement text"
                         >
-                          <InfoIcon color="primary"></InfoIcon>
+                          <InfoIcon color="primary" />
                         </ChplTooltip>
                       </Box>
                     </Box>
                     <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column" >
-                        <Typography variant='subtitle2'>
+                      <Box display="flex" flexDirection="column">
+                        <Typography variant="subtitle2">
                           Corrective Action Plan was completed
                         </Typography>
                         <Typography>
@@ -175,7 +175,7 @@ function ChplDirectReviews(props) {
                           placement="top"
                           title="Placement text"
                         >
-                          <InfoIcon color="primary"></InfoIcon>
+                          <InfoIcon color="primary" />
                         </ChplTooltip>
                       </Box>
                     </Box>
