@@ -172,7 +172,10 @@
       </div>
     </div>
 
-    <chpl-compliance-bridge></chpl-compliance-bridge>
+    <chpl-compliance-bridge
+      surveillance="$ctrl.listing.surveillance"
+      ></chpl-compliance-bridge>
+
     <!-- Additional Information -->
     <div class="panel panel-ai">
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('additional')" aria-expanded="{{ $ctrl.panelShown === 'additional' }}">

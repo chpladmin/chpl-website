@@ -5,10 +5,11 @@ import { surveillance as surveillancePropType} from 'shared/prop-types';
 import ChplCompliance from './compliance.jsx';
 
 function ChplComplianceWrapper(props) {
+  const { surveillance } = props;
 
   return (
     <AppWrapper>
-      <ChplCompliance/>
+      <ChplCompliance surveillance={surveillance} />
     </AppWrapper>
   );
 }
