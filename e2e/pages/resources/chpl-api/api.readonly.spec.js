@@ -31,7 +31,7 @@ describe('the CHPL API page', () => {
   });
 
   it('should have controllers and endpoints information', async () => {
-    await (await $(page.announcementsController).scrollIntoView());
+    await (await (page.announcementsController).scrollIntoView());
     await hooks.waitForSpinnerToDisappear();
     await (await page.attestationController).click();
     await (await page.getAttestationEndpoint).click();
