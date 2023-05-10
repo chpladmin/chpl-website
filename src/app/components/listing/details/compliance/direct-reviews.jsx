@@ -5,7 +5,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardHeader,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -16,20 +15,22 @@ import { arrayOf } from 'prop-types';
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewPropType } from 'shared/prop-types';
-import { palette, utilStyles } from 'themes';
+import { palette, utilStyles} from 'themes';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles({
   ...utilStyles,
   infoIcon: {
     color: `${palette.primary}`,
   },
-  root: {
-    width: '100%',
-    padding: '0 8px !important',
-  },
   subCard: {
     backgroundColor: `${palette.white}`,
     borderBottom: `.5px solid ${palette.divider}`,
+    display: 'flex',
+    flexDirection: 'row',
+    padding: '16px 16px',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   directReviews: {
     borderRadius: '4px',
@@ -54,8 +55,30 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '0 8px!important',
   },
-  '& span.MuiTypography-root.MuiCardHeader-title.MuiTypography-h6.MuiTypography-displayBlock': {
-    fontWeight: '300',
+  dataContainer: {
+    display: 'flex', 
+    gridGap: '8px',
+    flexWrap: 'wrap', 
+    flexDirection: 'column', 
+    justifyContent:'space-between',
+    [theme.breakpoints.up('md')]: {
+    flexDirection: 'row', 
+  }, 
+},
+  labelAndData: {
+    display: 'flex', 
+    gridGap: '8px',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent:'space-between',
+    [theme.breakpoints.up('lg')]: {
+      width: '48%',
+    }, 
+  },
+  ncContainer:{
+    display: 'flex', 
+    flexDirection: 'column',
+    marginBottom: '16px',
   },
 });
 
@@ -178,104 +201,106 @@ function ChplDirectReviews(props) {
                   </Typography>
                 )}
               { dr.nonConformities.map((nc) => (
-                <Card key={nc.created}>
-                  <CardHeader
-                    titleTypographyProps={{ variant: 'h6' }}
-                    className={classes.subCard}
-                    title={nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}
-                  >
-                    <ChplTooltip
-                      title="Type of non-conformity found during review"
-                    >
+                <Box className={classes.ncContainer}>
+                  <Card key={nc.created}>
+                    <Box
+                      className={classes.subCard}
+                      >
+                      <Typography variant="h6">{nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}</Typography>
+
+                      <ChplTooltip
+                          title="Type of non-conformity found during review"
+                        >
                       <InfoIcon color="primary" />
-                    </ChplTooltip>
-                  </CardHeader>
-                  <CardContent>
-                    <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Developer Associated Listings
-                          </Typography>
-                          { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
-                            && (
-                              <Typography>
-                                None
-                              </Typography>
-                            )}
-                          { nc.developerAssociatedListings?.length > 0
-                            && (
-                              <ul>
-                                { nc.developerAssociatedListings.map((dal) => (
-                                  <li key={dal.id}>
-                                    <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="A listing of other certified products associated with the non-conformity, as applicable"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Corrective Action Plan Approval Date
-                          </Typography>
-                          <Typography>
-                            { nc.friendlyCapApprovalDate }
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="The date that ONC approved the corrective action plan proposed by the developer"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Date Corrective Action Must Be Completed
-                          </Typography>
-                          <Typography>
-                            { nc.friendlyCapMustCompleteDate }
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Date Corrective Action Was Completed
-                          </Typography>
-                          <Typography>
-                            { nc.friendlyCapEndDate }
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="The date the corrective action was completed"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
+                        </ChplTooltip>
                     </Box>
-                  </CardContent>
-                </Card>
+                    <CardContent>
+                      <Box className={classes.dataContainer}>
+                        <Box className={classes.labelAndData}>
+                          <Box display="flex" flexDirection="column">
+                            <Typography variant="subtitle2">
+                              Developer Associated Listings
+                            </Typography>
+                            { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
+                              && (
+                                <Typography>
+                                  None
+                                </Typography>
+                              )}
+                            { nc.developerAssociatedListings?.length > 0
+                              && (
+                                <ul>
+                                  { nc.developerAssociatedListings.map((dal) => (
+                                    <li key={dal.id}>
+                                      <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                          </Box>
+                          <Box>
+                            <ChplTooltip
+                              title="A listing of other certified products associated with the non-conformity, as applicable"
+                            >
+                              <InfoIcon color="primary" />
+                            </ChplTooltip>
+                          </Box>
+                        </Box>
+                        <Box className={classes.labelAndData}>
+                          <Box display="flex" flexDirection="column">
+                            <Typography variant="subtitle2">
+                              Corrective Action Plan Approval Date
+                            </Typography>
+                            <Typography>
+                              { nc.friendlyCapApprovalDate }
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <ChplTooltip
+                              title="The date that ONC approved the corrective action plan proposed by the developer"
+                            >
+                              <InfoIcon color="primary" />
+                            </ChplTooltip>
+                          </Box>
+                        </Box>
+                        <Box className={classes.labelAndData}>
+                          <Box display="flex" flexDirection="column">
+                            <Typography variant="subtitle2">
+                              Date Corrective Action Must Be Completed
+                            </Typography>
+                            <Typography>
+                              { nc.friendlyCapMustCompleteDate }
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <ChplTooltip
+                              title="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable"
+                            >
+                              <InfoIcon color="primary" />
+                            </ChplTooltip>
+                          </Box>
+                        </Box>
+                        <Box className={classes.labelAndData}>
+                          <Box display="flex" flexDirection="column">
+                            <Typography variant="subtitle2">
+                              Date Corrective Action Was Completed
+                            </Typography>
+                            <Typography>
+                              { nc.friendlyCapEndDate }
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <ChplTooltip
+                              title="The date the corrective action was completed"
+                            >
+                              <InfoIcon color="primary" />
+                            </ChplTooltip>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
               ))}
             </CardContent>
           </Accordion>
