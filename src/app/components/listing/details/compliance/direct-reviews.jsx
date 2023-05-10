@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -15,6 +15,7 @@ import { arrayOf } from 'prop-types';
 
 import ChplDirectReviewsView from 'components/direct-reviews/direct-reviews-view';
 import { ChplTooltip } from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 import { palette, utilStyles } from 'themes';
 
@@ -25,32 +26,32 @@ const useStyles = makeStyles({
   },
   root: {
     width: '100%',
-    padding: '0 8px!important',
+    padding: '0 8px !important',
   },
   subCard: {
     backgroundColor: `${palette.white}`,
-    borderBottom: '.5px solid #c2c6ca',
+    borderBottom: `.5px solid ${palette.divider}`,
   },
-  NestedAccordionLevelOne: {
+  directReviews: {
     borderRadius: '4px',
     display: 'grid',
-    borderColor: ' #c2c6ca',
+    borderColor: `${palette.divider}`,
     borderWidth: '.5px',
     borderStyle: 'solid',
     padding: '0px',
     backgroundColor: `${palette.white}`,
   },
-  NestedAccordionLevelOneSummary: {
+  directReviewsSummary: {
     backgroundColor: `${palette.secondary}!important`,
     borderRadius: '4px',
-    borderBottom: '.5px solid #c2c6ca',
+    borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
     padding: '0 8px!important',
   },
-  NestedAccordionLevelTwoSummary: {
+  directReviewSummary: {
     backgroundColor: `${palette.white}!important`,
     borderRadius: '4px',
-    borderBottom: '.5px solid #c2c6ca',
+    borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
     padding: '0 8px!important',
   },
@@ -59,15 +60,75 @@ const useStyles = makeStyles({
   },
 });
 
+const getFriendlyValues = (nc) => ({
+  ...nc,
+  friendlyCapApprovalDate: getDisplayDateFormat(nc.capApprovalDate, nc.capApprovalDate),
+  friendlyCapMustCompleteDate: getDisplayDateFormat(nc.capMustCompleteDate, nc.capMustCompleteDate),
+  friendlyCapEndDate: getDisplayDateFormat(nc.capEndDate, nc.capEndDate),
+});
+
+const sortDirectReviews = (a, b) => {
+  if (a.endDate && b.endDate) {
+    return a.endDate < b.endDate ? 1 : -1;
+  }
+  if (!a.endDate && !b.endDate) {
+    return a.startDate < b.startDate ? 1 : -1;
+  }
+  return a.endDate ? 1 : -1;
+};
+
+const sortNonconformities = (a, b) => {
+  if (a.nonConformityStatus !== b.nonConformityStatus) {
+    return a.nonConformityStatus === 'Open' ? -1 : 1;
+  }
+  return a.created - b.created;
+};
+
 function ChplDirectReviews(props) {
-  const { directReviews } = props;
+  const [directReviews, setDirectReviews] = useState([]);
   const classes = useStyles();
 
+  useEffect(() => {
+    setDirectReviews(props.directReviews.map((dr) => {
+      const open = dr.nonConformities
+        .filter((nc) => nc.nonConformityStatus === 'Open')
+        .length;
+      const total = dr.nonConformities.length;
+      let { ncSummary } = dr;
+      if (open > 0) {
+        ncSummary = `${open} open / ${total}`;
+      } else if (total > 0) {
+        ncSummary = `${total} closed`;
+      } else {
+        ncSummary = 'no';
+      }
+      ncSummary += ` non-conformit${total !== 1 ? 'ies' : 'y'} found`;
+      const startDate = dr.nonConformities
+        .filter((nc) => nc.capApprovalDate)
+        .sort((a, b) => (a.capApprovalDate < b.capApprovalDate ? -1 : 1))[0]?.capApprovalDate;
+      const endDates = dr.nonConformities
+        .filter((nc) => nc.capApprovalDate)
+        .filter((nc) => nc.capEndDate)
+        .sort((a, b) => (a.capEndDate > b.capEndDate ? -1 : 1));
+      const endDate = open === 0 && endDates[0]?.capEndDate;
+      return {
+        ...dr,
+        startDate,
+        endDate,
+        ncSummary,
+        isClosed: !!endDate,
+        nonConformities: dr.nonConformities
+          .map(getFriendlyValues)
+          .sort(sortNonconformities),
+      };
+    }).sort(sortDirectReviews));
+  }, [props.directReviews]);
+
   return (
-    <Accordion className={classes.NestedAccordionLevelOne}>
+    <Accordion className={classes.directReviews}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        className={classes.NestedAccordionLevelOneSummary}
+        className={classes.directReviewsSummary}
         color="secondary"
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
@@ -88,100 +149,122 @@ function ChplDirectReviews(props) {
         </Typography>
         <ChplDirectReviewsView directReviews={directReviews} />
         { directReviews.map((dr) => (
-          <Accordion className={classes.NestedAccordionLevelOne}>
+          <Accordion className={classes.directReviews}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              className={classes.NestedAccordionLevelTwoSummary}
+              className={classes.directReviewSummary}
               color="secondary"
             >
-              <Typography>
-                Open Direct Review
-              </Typography>
+              <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
+                <Typography>
+                  { dr.isClosed ? 'Closed' : 'Open' }
+                  {' '}
+                  Direct Review
+                </Typography>
+                <Typography>
+                  { dr.ncSummary }
+                </Typography>
+              </Box>
             </AccordionSummary>
             <CardContent>
-              <Card>
-                <CardHeader
-                  titleTypographyProps={{ variant: 'h6' }}
-                  className={classes.subCard}
-                  title="Non Conformity Type: 170.315(d)(2) Example Text (Cures Update)"
-                />
-                <CardContent>
-                  <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
-                    <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column">
-                        <Typography variant="subtitle2">
-                          Developer Associated Listings
-                        </Typography>
-                        <Typography>
-                          MM/DD/YYYY
-                        </Typography>
+              { dr.nonConformities.map((nc) => (
+                <Card key={nc.created}>
+                  <CardHeader
+                    titleTypographyProps={{ variant: 'h6' }}
+                    className={classes.subCard}
+                    title={nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}
+                  />
+                  <CardContent>
+                    <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
+                            Developer Associated Listings
+                          </Typography>
+                          <Typography>
+                            { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
+                              && (
+                                <>None</>
+                              )}
+                            { nc.developerAssociatedListings?.length > 0
+                              && (
+                                <ul>
+                                  { nc.developerAssociatedListings.map((dal) => (
+                                    <li key={dal.id}>
+                                      <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <ChplTooltip
+                            placement="top"
+                            title="Placement text"
+                          >
+                            <InfoIcon color="primary" />
+                          </ChplTooltip>
+                        </Box>
                       </Box>
-                      <Box>
-                        <ChplTooltip
-                          placement="top"
-                          title="Placement text"
-                        >
-                          <InfoIcon color="primary" />
-                        </ChplTooltip>
+                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
+                            Corrective Action Plan Approval date
+                          </Typography>
+                          <Typography>
+                            { nc.friendlyCapApprovalDate }
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <ChplTooltip
+                            placement="top"
+                            title="Placement text"
+                          >
+                            <InfoIcon color="primary" />
+                          </ChplTooltip>
+                        </Box>
+                      </Box>
+                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
+                            Corrective Action Plan Must Be Completed
+                          </Typography>
+                          <Typography>
+                            { nc.friendlyCapMustCompleteDate }
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <ChplTooltip
+                            placement="top"
+                            title="Placement text"
+                          >
+                            <InfoIcon color="primary" />
+                          </ChplTooltip>
+                        </Box>
+                      </Box>
+                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="subtitle2">
+                            Corrective Action Plan was completed
+                          </Typography>
+                          <Typography>
+                            { nc.friendlyCapEndDate }
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <ChplTooltip
+                            placement="top"
+                            title="Placement text"
+                          >
+                            <InfoIcon color="primary" />
+                          </ChplTooltip>
+                        </Box>
                       </Box>
                     </Box>
-                    <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column">
-                        <Typography variant="subtitle2">
-                          Corrective Action Plan Approval date
-                        </Typography>
-                        <Typography>
-                          MM/DD/YYYY
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <ChplTooltip
-                          placement="top"
-                          title="Placement text"
-                        >
-                          <InfoIcon color="primary" />
-                        </ChplTooltip>
-                      </Box>
-                    </Box>
-                    <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column">
-                        <Typography variant="subtitle2">
-                          Corrective Action Plan Must Be Completed
-                        </Typography>
-                        <Typography>
-                          MM/DD/YYYY
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <ChplTooltip
-                          placement="top"
-                          title="Placement text"
-                        >
-                          <InfoIcon color="primary" />
-                        </ChplTooltip>
-                      </Box>
-                    </Box>
-                    <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                      <Box display="flex" flexDirection="column">
-                        <Typography variant="subtitle2">
-                          Corrective Action Plan was completed
-                        </Typography>
-                        <Typography>
-                          MM/DD/YYYY
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <ChplTooltip
-                          placement="top"
-                          title="Placement text"
-                        >
-                          <InfoIcon color="primary" />
-                        </ChplTooltip>
-                      </Box>
-                    </Box>
-                  </Box>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              ))}
             </CardContent>
           </Accordion>
         ))}
