@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Paper,
   Table,
   TableBody,
@@ -73,8 +74,13 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'center',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 10fr auto auto',
+      gridTemplateColumns: 'auto 10fr auto',
     },
+  },
+  searchButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gridGap: '8px',
   },
   stickyColumn: {
     position: 'sticky',
@@ -192,10 +198,12 @@ function ChplSearchView(props) {
           Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.
         </Typography>
       </div>
-      <div className={classes.searchContainer} component={Paper}>
+      <div className={classes.searchContainer}>
         <ChplFilterSearchTerm />
-        <ChplFilterPanel />
-        <ChplFilterQuickFilters />
+        <Box className={classes.searchButtonContainer}>
+          <ChplFilterPanel />
+          <ChplFilterQuickFilters />
+        </Box>
       </div>
       <div>
         <ChplFilterChips />
