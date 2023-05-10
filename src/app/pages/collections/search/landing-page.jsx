@@ -7,10 +7,10 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
 import BlockIcon from '@material-ui/icons/Block';
 import CodeIcon from '@material-ui/icons/Code';
 import DescriptionIcon from '@material-ui/icons/Description';
+import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
 import GavelIcon from '@material-ui/icons/Gavel';
 import ImageIcon from '@material-ui/icons/Image';
@@ -67,6 +67,12 @@ const useStyles = makeStyles(() => ({
       flexWrap: 'nowrap',
       padding: '0',
     },
+  },
+  collectionsCardText:{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    marginTop: '-4px',
   },
   complianceCard: {
     width: '100%',
@@ -182,7 +188,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <CodeIcon color="primary" />
-                        <Box mt={-1}>
+                        <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/api-documentation"
@@ -205,7 +211,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <GavelIcon color="primary" />
-                        <Box mt={-1}>
+                        <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/real-world-testing"
@@ -228,7 +234,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <ImageIcon color="primary" />
-                        <Box mt={-1}>
+                        <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
                               href="#/charts"
@@ -251,7 +257,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <TrendingUpIcon color="primary" />
-                        <Box mt={-1}>
+                        <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/svap"
@@ -300,7 +306,7 @@ function ChplLandingPage() {
                   <Card className={classes.helpCardContent}>
                     <CardContent>
                       <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
-                        <AnnouncementIcon fontSize="large" color="primary" />
+                        <DeveloperModeIcon fontSize="large" color="primary" />
                         <Box>
                           <Typography align="center">
                             <ChplLink
@@ -321,7 +327,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box p={4} display="flex" justifyContent="center" flexDirection="column" alignItems="center" gridGap={8}>
                         <MenuBookIcon fontSize="large" color="primary" />
-                        <Box>
+                        <Box display="flex" gridGap={4}>
                           <Typography align="center">
                             <ChplLink
                               href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf"
@@ -347,7 +353,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <BlockIcon color="primary" />
-                        <Box mt={-1}>
+                        <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/developers"
@@ -370,7 +376,7 @@ function ChplLandingPage() {
                     <CardContent>
                       <Box display="flex" flexDirection="row" gridGap={8}>
                         <ErrorOutlineOutlinedIcon color="primary" />
-                        <Box mt={-1}>
+                        <Box className={classes.collectionsCardText}>
                           <Typography>
                             <ChplLink
                               href="#/collections/corrective-action"
