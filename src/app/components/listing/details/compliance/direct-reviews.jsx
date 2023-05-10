@@ -13,7 +13,6 @@ import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { arrayOf } from 'prop-types';
 
-import ChplDirectReviewsView from 'components/direct-reviews/direct-reviews-view';
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewPropType } from 'shared/prop-types';
@@ -147,9 +146,14 @@ function ChplDirectReviews(props) {
         <Typography gutterBottom>
           Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing
         </Typography>
-        <ChplDirectReviewsView directReviews={directReviews} />
+        { directReviews.length === 0
+          && (
+            <Typography>
+              No Direct Reviews have been conducted
+            </Typography>
+          )}
         { directReviews.map((dr) => (
-          <Accordion className={classes.directReviews}>
+          <Accordion className={classes.directReviews} key={dr.created}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               className={classes.directReviewSummary}
@@ -167,13 +171,25 @@ function ChplDirectReviews(props) {
               </Box>
             </AccordionSummary>
             <CardContent>
+              { (!dr.nonConformities || dr.nonConformities.length === 0)
+                && (
+                  <Typography>
+                    Has not been determined
+                  </Typography>
+                )}
               { dr.nonConformities.map((nc) => (
                 <Card key={nc.created}>
                   <CardHeader
                     titleTypographyProps={{ variant: 'h6' }}
                     className={classes.subCard}
                     title={nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}
-                  />
+                  >
+                    <ChplTooltip
+                      title="Type of non-conformity found during review"
+                    >
+                      <InfoIcon color="primary" />
+                    </ChplTooltip>
+                  </CardHeader>
                   <CardContent>
                     <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
@@ -181,27 +197,26 @@ function ChplDirectReviews(props) {
                           <Typography variant="subtitle2">
                             Developer Associated Listings
                           </Typography>
-                          <Typography>
-                            { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
-                              && (
-                                <>None</>
-                              )}
-                            { nc.developerAssociatedListings?.length > 0
-                              && (
-                                <ul>
-                                  { nc.developerAssociatedListings.map((dal) => (
-                                    <li key={dal.id}>
-                                      <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                          </Typography>
+                          { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
+                            && (
+                              <Typography>
+                                None
+                              </Typography>
+                            )}
+                          { nc.developerAssociatedListings?.length > 0
+                            && (
+                              <ul>
+                                { nc.developerAssociatedListings.map((dal) => (
+                                  <li key={dal.id}>
+                                    <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
                         </Box>
                         <Box>
                           <ChplTooltip
-                            placement="top"
-                            title="Placement text"
+                            title="A listing of other certified products associated with the non-conformity, as applicable"
                           >
                             <InfoIcon color="primary" />
                           </ChplTooltip>
@@ -210,7 +225,7 @@ function ChplDirectReviews(props) {
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                         <Box display="flex" flexDirection="column">
                           <Typography variant="subtitle2">
-                            Corrective Action Plan Approval date
+                            Corrective Action Plan Approval Date
                           </Typography>
                           <Typography>
                             { nc.friendlyCapApprovalDate }
@@ -218,8 +233,7 @@ function ChplDirectReviews(props) {
                         </Box>
                         <Box>
                           <ChplTooltip
-                            placement="top"
-                            title="Placement text"
+                            title="The date that ONC approved the corrective action plan proposed by the developer"
                           >
                             <InfoIcon color="primary" />
                           </ChplTooltip>
@@ -228,7 +242,7 @@ function ChplDirectReviews(props) {
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                         <Box display="flex" flexDirection="column">
                           <Typography variant="subtitle2">
-                            Corrective Action Plan Must Be Completed
+                            Date Corrective Action Must Be Completed
                           </Typography>
                           <Typography>
                             { nc.friendlyCapMustCompleteDate }
@@ -236,8 +250,7 @@ function ChplDirectReviews(props) {
                         </Box>
                         <Box>
                           <ChplTooltip
-                            placement="top"
-                            title="Placement text"
+                            title="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable"
                           >
                             <InfoIcon color="primary" />
                           </ChplTooltip>
@@ -246,7 +259,7 @@ function ChplDirectReviews(props) {
                       <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
                         <Box display="flex" flexDirection="column">
                           <Typography variant="subtitle2">
-                            Corrective Action Plan was completed
+                            Date Corrective Action Was Completed
                           </Typography>
                           <Typography>
                             { nc.friendlyCapEndDate }
@@ -254,8 +267,7 @@ function ChplDirectReviews(props) {
                         </Box>
                         <Box>
                           <ChplTooltip
-                            placement="top"
-                            title="Placement text"
+                            title="The date the corrective action was completed"
                           >
                             <InfoIcon color="primary" />
                           </ChplTooltip>
