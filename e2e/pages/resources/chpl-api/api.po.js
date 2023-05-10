@@ -43,10 +43,10 @@ class ApiPage {
     return $(this.elements.registerButton);
   }
 
-  async register() {
+  async register(name, email) {
     await (await this.nameOrganization).click();
-    await (await this.nameOrganization).setValue('test');
-    await (await this.email).addValue('test@testorg.com');
+    await (await this.nameOrganization).setValue(name);
+    await (await this.email).addValue(email);
     await (await this.registerButton).click();
   }
 }

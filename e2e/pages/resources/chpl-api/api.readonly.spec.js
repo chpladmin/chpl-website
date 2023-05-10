@@ -25,7 +25,7 @@ describe('the CHPL API page', () => {
   });
 
   it('should allow users to register for API key', async () => {
-    await page.register();
+    await page.register('test', 'test@testorg.com');
     await (browser.waitUntil(async () => (await (toast.toastMessage)).isDisplayed()));
     await expect(await (await toast.toastMessage).getText()).toEqual('To confirm your email address, an email was sent to: test@testorg.com Please follow the instructions in the email to obtain your API key.');
   });
