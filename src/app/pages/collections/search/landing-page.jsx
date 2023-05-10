@@ -123,6 +123,7 @@ const useStyles = makeStyles(() => ({
     backgroundRepeat: 'no-repeat',
     background: `rgba(2,23,60,1) url(${Image})`,
     backgroundBlendMode: 'soft-light',
+    minHeight: '100vh',
   },
   subHeaders: {
     color: '#fff',
@@ -137,7 +138,7 @@ const useStyles = makeStyles(() => ({
     top: '-32px',
     padding: '16px 32px',
     display: 'grid',
-    gridTemplateColumns: '1fr',
+    gridTemplateColumns: '10fr auto',
     gap: '16px',
     alignItems: 'center',
     boxShadow: '#00000040 0px 24px 24px 2px',
