@@ -41,21 +41,11 @@ const ReportsListingsComponent = {
         .then((options) => {
           that.acbItems = options.acbs
             .sort((a, b) => (a.name < b.name ? -1 : 1))
-            .map((a) => {
-              const ret = {
-                value: a.id,
-                display: a.name,
-              };
-              if (a.retired) {
-                ret.display = `${a.name} (Retired)`;
-                ret.retired = true;
-                ret.selected = true;
-              } else {
-                ret.selected = that.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-                  || user.organizations.filter((o) => o.name === a.name).length > 0;
-              }
-              return ret;
-            });
+            .map((a) => ({
+              value: a.id,
+              display: `${a.name}${a.retired ? ' (Retired)' : ''}`,
+              selected: that.authService.hasAnyRole(['ROLE_ACB']) ? (user.organizations.filter((o) => o.name === a.name).length > 0) : true,
+            }));
         });
       if (this.$stateParams.listingId) {
         this.listingId = this.$stateParams.listingId;
