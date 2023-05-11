@@ -78,7 +78,6 @@ const useStyles = makeStyles({
   ncContainer:{
     display: 'flex', 
     flexDirection: 'column',
-    marginBottom: '16px',
   },
 });
 
@@ -154,7 +153,7 @@ function ChplDirectReviews(props) {
         color="secondary"
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
-          <Typography>
+          <Typography variant="body1">
             Direct Review Activities
           </Typography>
           <Typography variant="body2">
@@ -183,7 +182,7 @@ function ChplDirectReviews(props) {
               color="secondary"
             >
               <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
-                <Typography>
+                <Typography variant="body1">
                   { dr.isClosed ? 'Closed' : 'Open' }
                   {' '}
                   Direct Review
@@ -206,7 +205,7 @@ function ChplDirectReviews(props) {
                     <Box
                       className={classes.subCard}
                       >
-                      <Typography variant="h6">{nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}</Typography>
+                      <Typography variant="body1">{nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}</Typography>
 
                       <ChplTooltip
                           title="Type of non-conformity found during review"
