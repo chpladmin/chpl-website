@@ -124,7 +124,6 @@ const useStyles = makeStyles({
 function ChplSearchView(props) {
   const storageKey = 'storageKey-searchView';
   const $analytics = getAngularService('$analytics');
-  const $rootScope = getAngularService('$rootScope');
   const { analytics } = props;
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
   const [listings, setListings] = useState([]);
@@ -143,13 +142,6 @@ function ChplSearchView(props) {
     sortDescending,
     query: queryString(),
   });
-
-  useEffect(() => {
-    const clearResultsWatcher = $rootScope.$on('ClearResults', () => dispatch('hasSearched', undefined, false));
-    return () => {
-      clearResultsWatcher();
-    };
-  }, [$rootScope, dispatch]);
 
   useEffect(() => {
     if (isLoading) { return; }
