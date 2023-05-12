@@ -83,12 +83,12 @@ const sortNonconformities = (a, b) => {
   return a.created - b.created;
 };
 
-function ChplDirectReviews(props) {
+function ChplDirectReviews({ directReviews: initialDirectReviews }) {
   const [directReviews, setDirectReviews] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setDirectReviews(props.directReviews.map((dr) => {
+    setDirectReviews(initialDirectReviews.map((dr) => {
       const open = dr.nonConformities
         .filter((nc) => nc.nonConformityStatus === 'Open')
         .length;
@@ -121,7 +121,7 @@ function ChplDirectReviews(props) {
           .sort(sortNonconformities),
       };
     }).sort(sortDirectReviews));
-  }, [props.directReviews]);
+  }, [initialDirectReviews]);
 
   return (
     <Accordion className={classes.directReviews}>
