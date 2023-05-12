@@ -18,7 +18,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'additionalSoftware':
       options = {
         sort: (p, c) => (p.id < c.id ? -1 : p.id > c.id ? 1 : 0),
-        write: (f) => `Relied Upon Software "${f.name ?? f.certifiedProductNumber}"`,
+        write: (f) => `Relied Upon Software "${f.certifiedProductNumber ?? f.name}"`,
       };
       break;
     case 'certificationEvents':
