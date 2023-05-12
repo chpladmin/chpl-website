@@ -6,7 +6,7 @@ class SearchPage extends CollectionPage {
     super();
     this.elements = {
       ...this.elements,
-      header: 'h1=Search',
+      header: 'h1=CHPL Listings',
     };
   }
 
