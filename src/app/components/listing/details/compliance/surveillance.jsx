@@ -61,8 +61,8 @@ const useStyles = makeStyles({
 });
 
 const getDataDisplay = (title, value, tooltip, fullWidth = false) => (
-  <Box width={fullWidth ? '100%' : '48%'} gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-    <Box display="flex" flexDirection="column">
+  <Box width={fullWidth ? '100%' : '48%'} alignItems={fullWidth ? 'flex-start' : 'center'} gridGap="8px" display="flex" justifyContent="space-between">
+    <Box display="flex" flexDirection="column" width="100%">
       <Typography variant="subtitle2">
         { title }
       </Typography>
@@ -111,10 +111,12 @@ const getSurveillanceResult = (surveillance) => {
     <List>
       { getSurveillanceResultsSummary(surveillance).map((result) => (
         <ListItem key={result.id}>
-          { `${result.statusName} Non-Conformity Found for` }
+          <Box display="flex" flexDirection="column" justifyContent="space-between">
+          <strong>{ `${result.statusName} Non-Conformity Found for` }</strong>
           <span className={result.removed ? 'removed' : ''}>
             { result.display }
           </span>
+          </Box>
         </ListItem>
       ))}
     </List>
