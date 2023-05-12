@@ -1,0 +1,21 @@
+<div role="modal" aria-labeled-by="modalLabel">
+  <div class="modal-header">
+    <button class="btn btn-default pull-right" ng-click="vm.close()" aria-label="Close modal"><i class="fa fa-close"></i><span class="sr-only">Close modal</span></button>
+    <h4 class="modal-title" id="modalLabel">SED Information</h4>
+  </div>
+  <div class="modal-body">
+    <div ng-if="!vm.listing">Please wait while SED Details are loaded <i class="fa fa-spin fa-spinner"></i></div>
+
+    <ai-sed ng-if="vm.listing"
+            analytics-category="SED Information for 2015 Edition Products"
+            listing="vm.listing">
+    </ai-sed>
+
+  </div>
+  <div class="modal-footer">
+    <span class="pull-left">
+      <button class="btn btn-default"
+              ng-click="vm.close()">Close</button>
+    </span>
+  </div>
+</div>
