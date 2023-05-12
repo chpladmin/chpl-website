@@ -134,7 +134,7 @@
     </div>
 
     <!-- Compliance Activities -->
-    <div class="panel panel-ai">
+    <div class="panel panel-ai" feature-flag="ui-upgrade" feature-flag-hide>
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews' }}">
         <div class="listing-details__element-header-title">Compliance Activities</div>
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'compliance' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
@@ -172,10 +172,12 @@
       </div>
     </div>
 
-    <chpl-compliance-bridge
-      direct-reviews="$ctrl.listing.directReviews"
-      surveillance="$ctrl.listing.surveillance"
-      ></chpl-compliance-bridge>
+    <span feature-flag="ui-upgrade">
+      <chpl-compliance-bridge
+        direct-reviews="$ctrl.listing.directReviews"
+        surveillance="$ctrl.listing.surveillance"
+        ></chpl-compliance-bridge>
+    </span>
 
     <!-- Additional Information -->
     <div class="panel panel-ai">
