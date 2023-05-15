@@ -6,6 +6,8 @@ import {
   Card,
   CardContent,
   CardHeader,
+  List,
+  ListItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -220,13 +222,13 @@ function ChplDirectReviews({ directReviews: initialDirectReviews }) {
                            )}
                           { nc.developerAssociatedListings?.length > 0
                             && (
-                              <ul>
+                              <List>
                                 { nc.developerAssociatedListings.map((dal) => (
-                                  <li key={dal.id}>
+                                  <ListItem key={dal.id}>
                                     <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
-                                  </li>
+                                  </ListItem>
                                 ))}
-                              </ul>
+                              </List>
                             )}
                         </>,
                         'A listing of other certified products associated with the non-conformity, as applicable') }
