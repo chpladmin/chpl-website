@@ -198,7 +198,7 @@ function ChplRealWorldTestingCollectionView(props) {
           Please note that by default, only listings that are active or suspended are shown in the search results.
         </Typography>
       </div>
-      <div className={classes.searchContainer} component={Paper}>
+      <div className={classes.searchContainer}>
         <ChplFilterSearchTerm />
         <ChplFilterPanel />
       </div>
@@ -267,7 +267,11 @@ function ChplRealWorldTestingCollectionView(props) {
                                   />
                                 </strong>
                               </TableCell>
-                              <TableCell>{item.fullEdition}</TableCell>
+                              <TableCell>
+                                {item.edition.name}
+                                {' '}
+                                {item.curesUpdate ? 'Cures Update' : '' }
+                              </TableCell>
                               <TableCell>
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}
