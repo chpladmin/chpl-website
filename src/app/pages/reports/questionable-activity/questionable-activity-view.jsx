@@ -296,7 +296,20 @@ function ChplQuestionableActivityView(props) {
                               </TableCell>
                               <TableCell>{item.triggerName}</TableCell>
                               <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
-                              <TableCell>{item.reason}</TableCell>
+                              <TableCell>
+                                { item.reason
+                                  && (
+                                    <Typography>
+                                      {item.reason}
+                                    </Typography>
+                                  )}
+                                { item.certificationStatusChangeReason
+                                  && (
+                                    <Typography>
+                                      {item.certificationStatusChangeReason}
+                                    </Typography>
+                                  )}
+                              </TableCell>
                               <TableCell>
                                 { item.activityId
                                   && (
