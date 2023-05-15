@@ -59,6 +59,24 @@ const useStyles = makeStyles({
   },
 });
 
+const getDataDisplay = (title, value, tooltip) => (
+  <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
+    <Box display="flex" flexDirection="column">
+      <Typography variant="subtitle2">
+        { title }
+      </Typography>
+      { value }
+    </Box>
+    <Box>
+      <ChplTooltip
+        title={tooltip}
+      >
+        <InfoIcon color="primary" />
+      </ChplTooltip>
+    </Box>
+  </Box>
+);
+
 const getFriendlyValues = (nc) => ({
   ...nc,
   friendlyCapApprovalDate: getDisplayDateFormat(nc.capApprovalDate, nc.capApprovalDate),
@@ -192,17 +210,14 @@ function ChplDirectReviews({ directReviews: initialDirectReviews }) {
                   </CardHeader>
                   <CardContent>
                     <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Developer Associated Listings
-                          </Typography>
-                          { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
-                            && (
-                              <Typography>
-                                None
-                              </Typography>
-                            )}
+                      { getDataDisplay('Developer Associated Listings',
+                        <>
+                          {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
+                           && (
+                             <Typography>
+                               None
+                             </Typography>
+                           )}
                           { nc.developerAssociatedListings?.length > 0
                             && (
                               <ul>
@@ -213,66 +228,11 @@ function ChplDirectReviews({ directReviews: initialDirectReviews }) {
                                 ))}
                               </ul>
                             )}
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="A listing of other certified products associated with the non-conformity, as applicable"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Corrective Action Plan Approval Date
-                          </Typography>
-                          <Typography>
-                            { nc.friendlyCapApprovalDate }
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="The date that ONC approved the corrective action plan proposed by the developer"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Date Corrective Action Must Be Completed
-                          </Typography>
-                          <Typography>
-                            { nc.friendlyCapMustCompleteDate }
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
-                      <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-                        <Box display="flex" flexDirection="column">
-                          <Typography variant="subtitle2">
-                            Date Corrective Action Was Completed
-                          </Typography>
-                          <Typography>
-                            { nc.friendlyCapEndDate }
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <ChplTooltip
-                            title="The date the corrective action was completed"
-                          >
-                            <InfoIcon color="primary" />
-                          </ChplTooltip>
-                        </Box>
-                      </Box>
+                        </>,
+                        'A listing of other certified products associated with the non-conformity, as applicable') }
+                      { getDataDisplay('Corrective Action Plan Approval Date', <Typography>{ nc.friendlyCapApprovalDate }</Typography>, 'The date that ONC approved the corrective action plan proposed by the developer') }
+                      { getDataDisplay('Date Corrective Action Must Be Completed', <Typography>{ nc.friendlyCapMustCompleteDate }</Typography>, 'The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable') }
+                      { getDataDisplay('Date Corrective Action Was Completed', <Typography>{ nc.friendlyCapEndDate }</Typography>, 'The date the corrective action was completed') }
                     </Box>
                   </CardContent>
                 </Card>
