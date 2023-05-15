@@ -13,10 +13,7 @@ import {
 import { shape, string } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 
-import { useFetchCollection } from 'api/collections';
-import ChplActionButton from 'components/action-widget/action-button';
-import ChplCertificationStatusLegend from 'components/certification-status/certification-status';
-import ChplDownloadListings from 'components/download-listings/download-listings';
+import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import {
   ChplLink,
   ChplPagination,
@@ -29,7 +26,7 @@ import {
   useFilterContext,
 } from 'components/filter';
 import { getAngularService } from 'services/angular-react-helper';
-import { getStatusIcon } from 'services/listing.service';
+import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
 import { palette, theme } from 'themes';
 
@@ -106,39 +103,38 @@ const useStyles = makeStyles({
 });
 
 function ChplQuestionableActivityView(props) {
-  const storageKey = 'storageKey-sedView';
+  const storageKey = 'storageKey-questionableActivity';
   const $analytics = getAngularService('$analytics');
   const $uibModal = getAngularService('$uibModal');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
+  const [activities, setActivities] = useState([]);
   const [downloadLink, setDownloadLink] = useState('');
-  const [listings, setListings] = useState([]);
-  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
+  const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'activity_date');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
   const [pageSize, setPageSize] = useStorage(`${storageKey}-pageSize`, 25);
-  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, false);
+  const [sortDescending, setSortDescending] = useStorage(`${storageKey}-sortDescending`, true);
   const [recordCount, setRecordCount] = useState(0);
   const classes = useStyles();
 
   const filterContext = useFilterContext();
-  const { data, isError, isLoading } = useFetchCollection({
+  const { data, isError, isLoading } = useFetchQuestionableActivity({
     orderBy,
     pageNumber,
     pageSize,
     sortDescending,
-    query: `certificationCriteriaIds=52&${filterContext.queryString()}`,
+    query: filterContext.queryString(),
   });
 
   useEffect(() => {
     if (isLoading) { return; }
     if (isError || !data.results) {
-      setListings([]);
+      setActivities([]);
       return;
     }
-    setListings(data.results.map((listing) => ({
-      ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
+    setActivities(data.results.map((activity) => ({
+      ...activity,
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -155,12 +151,13 @@ function ChplQuestionableActivityView(props) {
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
-    { property: 'chpl_id', text: 'CHPL ID', sortable: true },
-    { text: 'Certification Edition' },
-    { property: 'developer', text: 'Developer', sortable: true },
-    { property: 'product', text: 'Product', sortable: true },
-    { property: 'version', text: 'Version', sortable: true },
-    { text: 'Status', extra: <ChplCertificationStatusLegend /> },
+    { text: 'Developer' },
+    { text: 'Product' },
+    { text: 'Version' },
+    { text: 'CHPL ID' },
+    { text: 'Activity' },
+    { property: 'activity_date', text: 'Activity Date', sortable: true },
+    { text: 'Reason' },
     { text: 'Actions', invisible: true },
   ];
 
@@ -191,7 +188,7 @@ function ChplQuestionableActivityView(props) {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">SED Information for 2015 Edition Products</Typography>
+        <Typography variant="h1">Questionable Activity</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
@@ -215,7 +212,7 @@ function ChplQuestionableActivityView(props) {
           />
         </div>
       </div>
-      <div className={classes.searchContainer} component={Paper}>
+      <div className={classes.searchContainer}>
         <ChplFilterSearchTerm />
         <ChplFilterPanel />
       </div>
@@ -232,34 +229,33 @@ function ChplQuestionableActivityView(props) {
             <div className={classes.tableResultsHeaderContainer}>
               <div className={`${classes.resultsContainer} ${classes.wrap}`}>
                 <Typography variant="subtitle2">Search Results:</Typography>
-                { listings.length === 0
+                { activities.length === 0
                   && (
                     <Typography>
                       No results found
                     </Typography>
                   )}
-                { listings.length > 0
+                { activities.length > 0
                   && (
                     <Typography variant="body2">
                       {`(${pageStart}-${pageEnd} of ${recordCount} Results)`}
                     </Typography>
                   )}
               </div>
-              { listings.length > 0
+              { activities.length > 0
                 && (
-                  <ChplDownloadListings
-                    analytics={analytics}
-                    listings={listings}
-                  />
+                  <Typography>
+                    New download here
+                  </Typography>
                 )}
             </div>
-            { listings.length > 0
+            { activities.length > 0
               && (
                 <>
                   <TableContainer className={classes.tableContainer} component={Paper}>
                     <Table
                       stickyHeader
-                      aria-label="SED Collections table"
+                      aria-label="Questionable Activity table"
                     >
                       <ChplSortableHeaders
                         headers={headers}
@@ -269,52 +265,52 @@ function ChplQuestionableActivityView(props) {
                         stickyHeader
                       />
                       <TableBody>
-                        { listings
+                        { activities
                           .map((item) => (
                             <TableRow key={item.id}>
-                              <TableCell className={classes.stickyColumn}>
-                                <strong>
+                              <TableCell>
+                                { item.developerId
+                                  && (
+                                    <ChplLink
+                                      href={`#/organizations/developers/${item.developerId}`}
+                                      text={item.developerName}
+                                      analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developerName }}
+                                      external={false}
+                                      router={{ sref: 'organizations.developers.developer', options: { id: item.developerId } }}
+                                    />
+                                  )}
+                              </TableCell>
+                              <TableCell>{item.productName}</TableCell>
+                              <TableCell>{item.versionName}</TableCell>
+                              <TableCell>
+                                { item.listingId
+                                  && (
                                   <ChplLink
-                                    href={`#/listing/${item.id}?panel=sed`}
+                                    href={`#/listing/${item.listingId}`}
                                     text={item.chplProductNumber}
                                     analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                                     external={false}
-                                    router={{ sref: 'listing', options: { id: item.id, panel: 'sed' } }}
+                                    router={{ sref: 'listing', options: { id: item.listingId } }}
                                   />
-                                </strong>
+                                  )}
                               </TableCell>
+                              <TableCell>{item.triggerName}</TableCell>
+                              <TableCell>{ getDisplayDateFormat(item.activityDate) }</TableCell>
+                              <TableCell>{item.reason}</TableCell>
                               <TableCell>
-                                {item.edition.name}
-                                {' '}
-                                {item.curesUpdate ? 'Cures Update' : '' }
-                              </TableCell>
-                              <TableCell>
-                                <ChplLink
-                                  href={`#/organizations/developers/${item.developer.id}`}
-                                  text={item.developer.name}
-                                  analytics={{ event: 'Go to Developer Page', category: analytics.category, label: item.developer.name }}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: item.developer.id } }}
-                                />
-                              </TableCell>
-                              <TableCell>{item.product.name}</TableCell>
-                              <TableCell>{item.version.name}</TableCell>
-                              <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
-                              <TableCell>
-                                <ChplActionButton
-                                  listing={item}
-                                >
-                                  <Button
-                                    color="primary"
-                                    variant="contained"
-                                    size="small"
-                                    id={`view-details-${item.id}`}
-                                    onClick={() => viewDetails(item.id)}
-                                    endIcon={<InfoIcon />}
-                                  >
-                                    View
-                                  </Button>
-                                </ChplActionButton>
+                                { item.activityId
+                                  && (
+                                    <Button
+                                      color="primary"
+                                      variant="contained"
+                                      size="small"
+                                      id={`view-details-${item.activityId}`}
+                                      onClick={() => viewDetails(item.activityId)}
+                                      endIcon={<InfoIcon />}
+                                    >
+                                      Details
+                                    </Button>
+                                  )}
                               </TableCell>
                             </TableRow>
                           ))}

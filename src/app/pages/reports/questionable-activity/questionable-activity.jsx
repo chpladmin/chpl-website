@@ -2,58 +2,63 @@ import React, { useEffect, useState } from 'react';
 
 import ChplQuestionableActivityView from './questionable-activity-view';
 
-import { useFetchAcbs } from 'api/acbs';
-import { FilterProvider } from 'components/filter';
+import { useFetchQuestionableActivityData } from 'api/questionable-activity';
 import {
-  certificationBodies,
-  certificationDate,
-  certificationStatuses,
-  derivedCertificationEditions,
-} from 'components/filter/filters';
+  FilterProvider,
+  defaultFilter,
+  getDateDisplay,
+  getDateEntry,
+} from 'components/filter';
 
-const staticFilters = [
-  certificationDate,
-  certificationStatuses, {
-    ...derivedCertificationEditions,
-    required: true,
-    values: [
-      { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
-    ],
-  }];
+const staticFilters = [{
+  ...defaultFilter,
+  key: 'activityDate',
+  display: 'Activity Date',
+  values: [
+    { value: 'Before', default: '' },
+    { value: 'After', default: '2022-01-01' },
+  ],
+  getQuery: (value) => value.values
+    .sort((a, b) => (a.value < b.value ? -1 : 1))
+    .map((v) => `${v.value === 'After' ? 'activityDateStart' : 'activityDateEnd'}=${v.selected}`)
+    .join('&'),
+  getValueDisplay: getDateDisplay,
+  getValueEntry: getDateEntry,
+}];
 
 function ChplQuestionableActivityPage() {
   const [filters, setFilters] = useState(staticFilters);
-  const acbQuery = useFetchAcbs();
+  const qaTypeQuery = useFetchQuestionableActivityData();
 
   useEffect(() => {
-    if (acbQuery.isLoading || !acbQuery.isSuccess) {
+    if (qaTypeQuery.isLoading || !qaTypeQuery.isSuccess) {
       return;
     }
-    const values = acbQuery.data.acbs
-      .map((acb) => ({
-        ...acb,
-        value: acb.name,
-        display: `${acb.retired ? 'Retired | ' : ''}${acb.name}`,
-        default: !acb.retired || ((Date.now() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4)), // approx 4 months
+    const values = qaTypeQuery.data
+      .map((type) => ({
+        ...type,
+        value: type.id,
+        display: `${type.name} (${type.level})`,
       }));
     setFilters((f) => f
-      .filter((filter) => filter.key !== 'certificationBodies')
+      .filter((filter) => filter.key !== 'triggerIds')
       .concat({
-        ...certificationBodies,
+        ...defaultFilter,
+        key: 'triggerIds',
+        display: 'Questionable Activity Type',
         values,
       }));
-  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
+  }, [qaTypeQuery.data, qaTypeQuery.isLoading, qaTypeQuery.isSuccess]);
 
   const analytics = {
-    category: 'SED Information for 2015 Edition Products',
+    category: 'Questionable Activity',
   };
 
   return (
     <FilterProvider
       analytics={analytics}
       filters={filters}
-      storageKey="storageKey-sedPage"
+      storageKey="storageKey-questionableActivity"
     >
       <ChplQuestionableActivityView
         analytics={analytics}
