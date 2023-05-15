@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 11.52.0
+_15 May 2023_
+
+### Features
+* Create "SVAP Information Collection Page"
+
+### User Interface Updates
+* Show "Landing Page" on fresh load of new search page
+
+### Bug Fixes
+* Show "Edition" on Real-World-Testing Collection page
+
+---
+
 ## Version 11.51.3
 _1 May 2023_
 
