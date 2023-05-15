@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -18,6 +18,7 @@ import {
 import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
+import { useFetchActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -38,8 +39,23 @@ const getDisplay = (title, value) => (
 );
 
 function ChplActivityDetails({ activity }) {
+  const [details, setDetails] = useState(undefined);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
+
+  const { data, isError, isLoading } = useFetchActivity({
+    id: activity.activityId,
+    isEnabled: open,
+  });
+
+  useEffect(() => {
+    if (isLoading) { return; }
+    if (isError) {
+      setDetails(undefined);
+      return;
+    }
+    setDetails('activity');
+  }, [isError, isLoading]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -106,7 +122,7 @@ function ChplActivityDetails({ activity }) {
             { activity.activityId
               && (
                 <>
-                  insert activity parsing here
+                  { details }
                 </>
               )}
           </Card>
