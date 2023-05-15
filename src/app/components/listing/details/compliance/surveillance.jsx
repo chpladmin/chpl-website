@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     borderBottom: `.5px solid ${palette.divider}`,
   },
   surveillance: {
-    borderRadius: '4px',
+    borderRadius: '0 4px 4px 0!important',
     display: 'grid',
     borderColor: `${palette.divider}`,
     borderWidth: '.5px',
@@ -206,10 +206,9 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                 { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
                 { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
-              <Divider />
-              <Box pt={2}>
+              <Box borderLeft={`solid 2px ${palette.primary}`}>
                 { surv.requirements.map((req) => req.nonconformities.map((nc) => (
-                  <Accordion className={classes.surveillance} key={nc.id}>
+                  <Accordion variant="elevation" className={classes.surveillance} key={nc.id}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       className={classes.surveillanceDetailsSummary}
