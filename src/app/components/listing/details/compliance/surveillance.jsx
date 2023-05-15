@@ -166,7 +166,7 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography>
-            Surveillance Activites
+            Surveillance Activities
           </Typography>
           <Typography variant="body2">
             (
