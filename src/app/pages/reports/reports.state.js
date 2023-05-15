@@ -65,6 +65,14 @@ const states = [{
   component: 'chplReportsProducts',
   data: { title: 'CHPL Reports - Products' },
 }, {
+  name: 'reports.questionable-activity',
+  url: '/questionable-activity',
+  component: 'chplQuestionableActivityWrapperBridge',
+  data: {
+    title: 'CHPL Reports - Questionable Activity',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+  },
+}, {
   name: 'reports.user-actions',
   url: '/user-actions',
   component: 'chplReportsUserActions',
