@@ -15,8 +15,7 @@ import { arrayOf } from 'prop-types';
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewPropType } from 'shared/prop-types';
-import { palette, utilStyles} from 'themes';
-import theme from 'themes/theme';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -56,27 +55,27 @@ const useStyles = makeStyles({
     padding: '0 8px!important',
   },
   dataContainer: {
-    display: 'flex', 
+    display: 'flex',
     gridGap: '8px',
-    flexWrap: 'wrap', 
-    flexDirection: 'column', 
-    justifyContent:'space-between',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     [theme.breakpoints.up('md')]: {
-    flexDirection: 'row', 
-  }, 
-},
+      flexDirection: 'row',
+    },
+  },
   labelAndData: {
-    display: 'flex', 
+    display: 'flex',
     gridGap: '8px',
     width: '100%',
     alignItems: 'center',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     [theme.breakpoints.up('lg')]: {
       width: '48%',
-    }, 
+    },
   },
-  ncContainer:{
-    display: 'flex', 
+  ncContainer: {
+    display: 'flex',
     flexDirection: 'column',
   },
 });
@@ -204,14 +203,14 @@ function ChplDirectReviews({ directReviews: initialDirectReviews }) {
                   <Card key={nc.created}>
                     <Box
                       className={classes.subCard}
-                      >
+                    >
                       <Typography variant="body1">{nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}</Typography>
 
                       <ChplTooltip
-                          title="Type of non-conformity found during review"
-                        >
-                      <InfoIcon color="primary" />
-                        </ChplTooltip>
+                        title="Type of non-conformity found during review"
+                      >
+                        <InfoIcon color="primary" />
+                      </ChplTooltip>
                     </Box>
                     <CardContent>
                       <Box className={classes.dataContainer}>
