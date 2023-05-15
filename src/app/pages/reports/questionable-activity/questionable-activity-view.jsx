@@ -14,6 +14,7 @@ import { shape, string } from 'prop-types';
 import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
+import ChplActivityDetails from 'components/activity/activity-details';
 import {
   ChplLink,
   ChplPagination,
@@ -311,19 +312,7 @@ function ChplQuestionableActivityView(props) {
                                   )}
                               </TableCell>
                               <TableCell>
-                                { item.activityId
-                                  && (
-                                    <Button
-                                      color="primary"
-                                      variant="contained"
-                                      size="small"
-                                      id={`view-details-${item.activityId}`}
-                                      onClick={() => viewDetails(item.activityId)}
-                                      endIcon={<InfoIcon />}
-                                    >
-                                      Details
-                                    </Button>
-                                  )}
+                                <ChplActivityDetails activity={item} />
                               </TableCell>
                             </TableRow>
                           ))}
