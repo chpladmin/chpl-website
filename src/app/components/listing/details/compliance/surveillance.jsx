@@ -9,12 +9,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { arrayOf } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
-import { ChplTooltip } from 'components/util';
+
 import { getDisplayDateFormat } from 'services/date-util';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
 import { getRequirementDisplay, sortRequirements } from 'services/surveillance.service';
@@ -197,20 +196,20 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                 { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
                 { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
-                { surv.requirements.map((req) => req.nonconformities.map((nc) => (
-                  <Accordion square="false" variant="elevation" className={classes.surveillance} key={nc.id}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      className={classes.surveillanceDetailsHeaderWithBorder}
-                      color="secondary"
-                    >
-                      <Typography>
-                        Details for
-                        {' '}
-                        { getRequirementDisplay(req) }
-                      </Typography>
-                    </AccordionSummary>
-                    <Box className={classes.surveillanceDetailsBorder}>
+              { surv.requirements.map((req) => req.nonconformities.map((nc) => (
+                <Accordion square="false" variant="elevation" className={classes.surveillance} key={nc.id}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    className={classes.surveillanceDetailsHeaderWithBorder}
+                    color="secondary"
+                  >
+                    <Typography>
+                      Details for
+                      {' '}
+                      { getRequirementDisplay(req) }
+                    </Typography>
+                  </AccordionSummary>
+                  <Box className={classes.surveillanceDetailsBorder}>
                     <CardContent>
                       <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                         { getDataDisplay('Date of Determination of Non-Conformity', <Typography>{ getDisplayDateFormat(nc.dateOfDeterminationDay) }</Typography>, 'The date that the ONC-ACB determined that a non-conformity was present.') }
@@ -243,9 +242,9 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                         { getDataDisplay('Resolution', <Typography>{ nc.resolution }</Typography>, 'A detailed description of how the non-conformity was resolved.', true) }
                       </Box>
                     </CardContent>
-                    </Box>
-                  </Accordion>
-                )))}
+                  </Box>
+                </Accordion>
+              )))}
             </CardContent>
           </Accordion>
         ))}
