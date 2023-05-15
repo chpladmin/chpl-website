@@ -4,6 +4,7 @@ import {
   AccordionSummary,
   Box,
   CardContent,
+  Divider,
   List,
   ListItem,
   Typography,
@@ -112,10 +113,9 @@ const getSurveillanceResult = (surveillance) => {
       { getSurveillanceResultsSummary(surveillance).map((result) => (
         <ListItem key={result.id}>
           <Box display="flex" flexDirection="column" justifyContent="space-between">
-          <strong>{ `${result.statusName} Non-Conformity Found for` }</strong>
-          <span className={result.removed ? 'removed' : ''}>
-            { result.display }
-          </span>
+          <Typography variant='body1'>
+            { `${result.statusName} Non-Conformity Found for ` } <span className={result.removed ? 'removed' : ''}>{ result.display }</span>
+          </Typography>
           </Box>
         </ListItem>
       ))}
@@ -192,7 +192,7 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
               </Typography>
             </AccordionSummary>
             <CardContent>
-              <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+              <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between" pb={2}>
                 { getDataDisplay('Date Surveillance Began', <Typography>{ getDisplayDateFormat(surv.startDay) }</Typography>, 'The date surveillance was initiated') }
                 { getDataDisplay('Date Surveillance Ended', <Typography>{ getDisplayDateFormat(surv.endDay) }</Typography>, 'The date surveillance was completed') }
                 { getDataDisplay('Surveillance Type',
@@ -204,6 +204,8 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                 { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
                 { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
+              <Divider/>
+              <Box pt={2}>
               { surv.requirements.map((req) => req.nonconformities.map((nc) => (
                 <Accordion className={classes.surveillance} key={nc.id}>
                   <AccordionSummary
@@ -251,6 +253,7 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                   </CardContent>
                 </Accordion>
               )))}
+              </Box>
             </CardContent>
           </Accordion>
         ))}
