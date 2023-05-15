@@ -70,7 +70,7 @@ function ChplCompliance(props) {
         color="secondary"
       >
         <Typography>
-          Compliance Activites
+          Compliance Activities
         </Typography>
       </AccordionSummary>
       <Box display="flex" flexDirection="column">
