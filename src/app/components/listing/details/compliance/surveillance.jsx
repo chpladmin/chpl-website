@@ -4,7 +4,6 @@ import {
   AccordionSummary,
   Box,
   CardContent,
-  Divider,
   List,
   ListItem,
   Typography,
@@ -14,6 +13,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { arrayOf } from 'prop-types';
 
+import { getDataDisplay } from './compliance.services';
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { surveillance as surveillancePropType } from 'shared/prop-types';
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     borderBottom: `.5px solid ${palette.divider}`,
   },
   surveillance: {
-    borderRadius: '0 4px 4px 0!important',
+    borderRadius: '4px',
     display: 'grid',
     borderColor: `${palette.divider}`,
     borderWidth: '.5px',
@@ -56,28 +56,20 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '0 8px !important',
   },
+  surveillanceDetailsHeaderWithBorder: {
+    backgroundColor: `${palette.white}!important`,
+    borderRadius: '4px',
+    borderLeft: `2px solid ${palette.primary}!important`,
+    width: '100%',
+    padding: '0 8px !important',
+  },
+  surveillanceDetailsBorder: {
+    borderLeft: `2px solid ${palette.primary}!important`,
+  },
   '& span.MuiTypography-root.MuiCardHeader-title.MuiTypography-h6.MuiTypography-displayBlock': {
     fontWeight: '300',
   },
 });
-
-const getDataDisplay = (title, value, tooltip, fullWidth = false) => (
-  <Box width={fullWidth ? '100%' : '48%'} alignItems={fullWidth ? 'flex-start' : 'center'} gridGap="8px" display="flex" justifyContent="space-between">
-    <Box display="flex" flexDirection="column" width="100%">
-      <Typography variant="subtitle2">
-        { title }
-      </Typography>
-      { value }
-    </Box>
-    <Box>
-      <ChplTooltip
-        title={tooltip}
-      >
-        <InfoIcon color="primary" />
-      </ChplTooltip>
-    </Box>
-  </Box>
-);
 
 const getItemsSurveilled = (surveillance) => {
   if (surveillance.requirements?.length === 0) { return 'None'; }
@@ -187,7 +179,6 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               className={classes.surveillanceDetailsSummary}
-              color="secondary"
             >
               <Typography>
                 { getSurveillanceTitle(surv) }
@@ -206,12 +197,11 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                 { getDataDisplay('Certification Criteria and Program Requirements Surveilled', getItemsSurveilled(surv), 'The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement.', true) }
                 { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
-              <Box borderLeft={`solid 2px ${palette.primary}`}>
                 { surv.requirements.map((req) => req.nonconformities.map((nc) => (
-                  <Accordion variant="elevation" className={classes.surveillance} key={nc.id}>
+                  <Accordion square="false" variant="elevation" className={classes.surveillance} key={nc.id}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
-                      className={classes.surveillanceDetailsSummary}
+                      className={classes.surveillanceDetailsHeaderWithBorder}
                       color="secondary"
                     >
                       <Typography>
@@ -220,6 +210,7 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                         { getRequirementDisplay(req) }
                       </Typography>
                     </AccordionSummary>
+                    <Box className={classes.surveillanceDetailsBorder}>
                     <CardContent>
                       <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
                         { getDataDisplay('Date of Determination of Non-Conformity', <Typography>{ getDisplayDateFormat(nc.dateOfDeterminationDay) }</Typography>, 'The date that the ONC-ACB determined that a non-conformity was present.') }
@@ -252,9 +243,9 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                         { getDataDisplay('Resolution', <Typography>{ nc.resolution }</Typography>, 'A detailed description of how the non-conformity was resolved.', true) }
                       </Box>
                     </CardContent>
+                    </Box>
                   </Accordion>
                 )))}
-              </Box>
             </CardContent>
           </Accordion>
         ))}

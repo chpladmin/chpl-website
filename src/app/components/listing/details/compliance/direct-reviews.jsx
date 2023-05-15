@@ -15,6 +15,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { arrayOf } from 'prop-types';
 
+import { getDataDisplay } from './compliance.services';
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewPropType } from 'shared/prop-types';
@@ -83,23 +84,6 @@ const useStyles = makeStyles({
   },
 });
 
-const getDataDisplay = (title, value, tooltip) => (
-  <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-    <Box display="flex" flexDirection="column">
-      <Typography variant="subtitle2">
-        { title }
-      </Typography>
-      { value }
-    </Box>
-    <Box>
-      <ChplTooltip
-        title={tooltip}
-      >
-        <InfoIcon color="primary" />
-      </ChplTooltip>
-    </Box>
-  </Box>
-);
 
 const getFriendlyValues = (nc) => ({
   ...nc,
