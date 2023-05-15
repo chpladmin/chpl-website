@@ -20,6 +20,7 @@ import { object } from 'prop-types';
 
 import { useFetchActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { compareListing } from 'pages/reports/listings/listings.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({
@@ -50,11 +51,13 @@ function ChplActivityDetails({ activity }) {
 
   useEffect(() => {
     if (isLoading) { return; }
-    if (isError) {
+    if (isError || !data) {
       setDetails(undefined);
       return;
     }
-    setDetails('activity');
+    setDetails(compareListing(data?.originalData, data?.newData)
+               .map((item) => `<li>${item}</li`)
+               .join(''));
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
@@ -118,11 +121,12 @@ function ChplActivityDetails({ activity }) {
             { getDisplay('certificationStatusId', activity.certificationStatusId) }
             { getDisplay('certificationStatusName', activity.certificationStatusName) }
             { getDisplay('certificationCriterionId', activity.certificationCriterionId) }
-            <Divider />
-            { activity.activityId
+            { activity.activityId && details?.length > 0
               && (
                 <>
-                  { details }
+                  <Divider />
+                  <ul dangerouslySetInnerHTML={{__html: details}}>
+                  </ul>
                 </>
               )}
           </Card>
