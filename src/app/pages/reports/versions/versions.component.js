@@ -1,4 +1,6 @@
-export const ReportsVersionsComponent = {
+import { compareVersion } from './versions.service';
+
+const ReportsVersionsComponent = {
   templateUrl: 'chpl.reports/versions/versions.html',
   controller: class ReportsVersionsComponent {
     constructor ($log, $scope, ReportService, networkService, utilService) {
@@ -58,23 +60,13 @@ export const ReportsVersionsComponent = {
 
     parse (meta) {
       return this.networkService.getActivityById(meta.id).then(item => {
-        var activity = {
+        const activity = {
           id: item.id,
           date: item.activityDate,
         };
-
-        var change;
         if (item.originalData && !angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, neither an array: update
           activity.action = 'Updated version "' + item.newData.version + '"';
-          activity.details = [];
-          change = this.ReportService.compareItem(item.originalData, item.newData, 'version', 'Version');
-          if (change) {
-            activity.details.push(change);
-          }
-          change = this.ReportService.compareItem(item.originalData, item.newData, 'productName', 'Associated Product');
-          if (change) {
-            activity.details.push(change);
-          }
+          activity.details = compareVersion(item.originalData, item.newData);
         } else if (item.originalData && angular.isArray(item.originalData) && item.newData && !angular.isArray(item.newData)) { // both exist, original array, final object: merge
           activity.action = 'Versions ' + item.originalData.map(d => d.version).join(' and ') + ' merged to form ' + item.newData.version;
           activity.details = [];
@@ -173,3 +165,5 @@ export const ReportsVersionsComponent = {
 
 angular.module('chpl.reports')
   .component('chplReportsVersions', ReportsVersionsComponent);
+
+export default ReportsVersionsComponent;
