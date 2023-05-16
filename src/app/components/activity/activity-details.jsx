@@ -20,6 +20,7 @@ import { object } from 'prop-types';
 
 import { useFetchActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { compareDeveloper } from 'pages/reports/developers/developers.service';
 import { compareListing } from 'pages/reports/listings/listings.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
@@ -55,9 +56,18 @@ function ChplActivityDetails({ activity }) {
       setDetails(undefined);
       return;
     }
-    setDetails(compareListing(data?.originalData, data?.newData)
-               .map((item) => `<li>${item}</li>`)
-               .join(''));
+    switch (activity.triggerLevel) {
+      case 'Developer':
+        setDetails(compareDeveloper(data?.originalData, data?.newData)
+                   .map((item) => `<li>${item}</li>`)
+                   .join(''));
+        break;
+      case 'Listing':
+        setDetails(compareListing(data?.originalData, data?.newData)
+                   .map((item) => `<li>${item}</li>`)
+                   .join(''));
+        break;
+    }
   }, [isError, isLoading]);
 
   const handleClickOpen = () => {
