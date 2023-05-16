@@ -147,10 +147,10 @@ function ChplQuestionableActivityView(props) {
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
   const headers = [
-    { text: 'Developer' },
-    { text: 'Product' },
+    { property: 'developer', text: 'Developer', sortable: true },
+    { property: 'product', text: 'Product', sortable: true },
     { text: 'Version' },
-    { text: 'CHPL ID' },
+    { property: 'chpl_product_number', text: 'CHPL ID', sortable: true },
     { text: 'Activity' },
     { property: 'activity_date', text: 'Activity Date', sortable: true },
     { text: 'Reason' },
