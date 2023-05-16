@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -11,7 +10,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { shape, string } from 'prop-types';
-import InfoIcon from '@material-ui/icons/Info';
 
 import { useFetchQuestionableActivity } from 'api/questionable-activity';
 import ChplActivityDetails from 'components/activity/activity-details';
@@ -106,7 +104,6 @@ const useStyles = makeStyles({
 function ChplQuestionableActivityView(props) {
   const storageKey = 'storageKey-questionableActivity';
   const $analytics = getAngularService('$analytics');
-  const $uibModal = getAngularService('$uibModal');
   const API = getAngularService('API');
   const authService = getAngularService('authService');
   const { analytics } = props;
@@ -147,7 +144,7 @@ function ChplQuestionableActivityView(props) {
   }, [data?.recordCount, pageNumber, data?.results?.length]);
 
   useEffect(() => {
-    setDownloadLink(`${API}/certified_products/sed_details?api_key=${authService.getApiKey()}`);
+    setDownloadLink(`${API}/questionable-activity/download?api_key=${authService.getApiKey()}&authorization=Bearer%20${authService.getToken()}`);
   }, [API, authService]);
 
   /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -166,21 +163,6 @@ function ChplQuestionableActivityView(props) {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
     setSortDescending(orderDirection === 'desc');
-  };
-
-  const viewDetails = (id) => {
-    $uibModal.open({
-      templateUrl: 'chpl.collections/sed/sed-modal.html',
-      controller: 'ViewQuestionableActivityModalController',
-      controllerAs: 'vm',
-      animation: false,
-      backdrop: 'static',
-      keyboard: false,
-      size: 'lg',
-      resolve: {
-        id() { return id; },
-      },
-    });
   };
 
   const pageStart = (pageNumber * pageSize) + 1;
@@ -206,7 +188,7 @@ function ChplQuestionableActivityView(props) {
             Please note the All SED Details file contains information for all certified product listings and is not filtered based on search results.
           </Typography>
           <ChplLink
-            href={downloadLink}
+            href={`${downloadLink}&${filterContext.queryString()}`}
             text="Download All SED Details"
             analytics={{ event: 'Download All SED Details', category: analytics.category }}
             external={false}
@@ -245,9 +227,12 @@ function ChplQuestionableActivityView(props) {
               </div>
               { activities.length > 0
                 && (
-                  <Typography>
-                    New download here
-                  </Typography>
+                  <ChplLink
+                    href={`${downloadLink}&${filterContext.queryString()}`}
+                    text="Download Filtered results"
+                    analytics={{ event: 'Download Filtered results', category: analytics.category }}
+                    external={false}
+                  />
                 )}
             </div>
             { activities.length > 0
