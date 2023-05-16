@@ -5,13 +5,6 @@ import {
   Dialog,
   DialogContent,
   Divider,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -38,7 +31,9 @@ const useStyles = makeStyles({
 
 const getDisplay = (title, value) => (
   <Typography>
-    {title}: {value}
+    {title}
+    :
+    {value}
   </Typography>
 );
 
@@ -62,24 +57,25 @@ function ChplActivityDetails({ activity }) {
       case 'Certification Criteria':
       case 'Listing':
         setDetails(compareListing(data?.originalData, data?.newData)
-                   .map((item) => `<li>${item}</li>`)
-                   .join(''));
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
         break;
       case 'Developer':
         setDetails(compareDeveloper(data?.originalData, data?.newData)
-                   .map((item) => `<li>${item}</li>`)
-                   .join(''));
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
         break;
       case 'Product':
         setDetails(compareProduct(data?.originalData, data?.newData)
-                   .map((item) => `<li>${item}</li>`)
-                   .join(''));
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
         break;
       case 'Version':
         setDetails(compareVersion(data?.originalData, data?.newData)
-                   .map((item) => `<li>${item}</li>`)
-                   .join(''));
+          .map((item) => `<li>${item}</li>`)
+          .join(''));
         break;
+        // no default
     }
   }, [isError, isLoading]);
 
@@ -148,8 +144,7 @@ function ChplActivityDetails({ activity }) {
               && (
                 <>
                   <Divider />
-                  <ul dangerouslySetInnerHTML={{__html: details}}>
-                  </ul>
+                  <ul dangerouslySetInnerHTML={{ __html: details }} />
                 </>
               )}
           </Card>
