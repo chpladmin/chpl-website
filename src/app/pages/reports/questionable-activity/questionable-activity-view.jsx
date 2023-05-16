@@ -149,7 +149,7 @@ function ChplQuestionableActivityView(props) {
   const headers = [
     { property: 'developer', text: 'Developer', sortable: true },
     { property: 'product', text: 'Product', sortable: true },
-    { text: 'Version' },
+    { property: 'version', text: 'Version', sortable: true },
     { property: 'chpl_product_number', text: 'CHPL ID', sortable: true },
     { text: 'Activity' },
     { property: 'activity_date', text: 'Activity Date', sortable: true },
