@@ -18,7 +18,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'additionalSoftware':
       options = {
         sort: (p, c) => (p.id < c.id ? -1 : p.id > c.id ? 1 : 0),
-        write: (f) => `Relied Upon Software "${f.name ?? f.certifiedProductNumber}"`,
+        write: (f) => `Relied Upon Software "${f.certifiedProductNumber ?? f.name}"`,
       };
       break;
     case 'certificationEvents':
@@ -174,7 +174,15 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'testStandards':
       options = {
-        sort: (p, c) => (p.testStandardName < c.testStandardName ? -1 : p.testStandardName > c.testStandardName ? 1 : 0),
+        sort: (p, c) => {
+          if (p.testStandardName === null && c.testStandardName !== null) {
+            return -1;
+          }
+          if (p.testStandardName !== null && c.testStandardName === null) {
+            return 1;
+          }
+          return (p.testStandardName < c.testStandardName ? -1 : p.testStandardName > c.testStandardName ? 1 : 0);
+        },
         write: (f) => `Test Standard "${f.testStandardName}"`,
       };
       break;
