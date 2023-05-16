@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 
 import { useAxios } from './axios';
 
@@ -13,5 +13,5 @@ const useFetchActivity = ({ id, isEnabled }) => {
 };
 
 export {
-  useFetchActivity,
+  useFetchActivity, // eslint-disable-line import/prefer-default-export
 };
