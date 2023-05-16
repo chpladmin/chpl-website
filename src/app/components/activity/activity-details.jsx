@@ -56,7 +56,7 @@ function ChplActivityDetails({ activity }) {
       return;
     }
     setDetails(compareListing(data?.originalData, data?.newData)
-               .map((item) => `<li>${item}</li`)
+               .map((item) => `<li>${item}</li>`)
                .join(''));
   }, [isError, isLoading]);
 

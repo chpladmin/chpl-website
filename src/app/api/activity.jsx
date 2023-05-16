@@ -8,7 +8,7 @@ const useFetchActivity = ({ id, isEnabled }) => {
     const response = await axios.get(`activity/${id}`);
     return response.data;
   }, {
-    enabled: isEnabled,
+    enabled: isEnabled && !!id,
   });
 };
 
