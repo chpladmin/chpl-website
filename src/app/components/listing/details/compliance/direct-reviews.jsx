@@ -15,23 +15,26 @@ import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { arrayOf } from 'prop-types';
 
+import { getDataDisplay } from './compliance.services';
+
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewPropType } from 'shared/prop-types';
-import { palette, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
   infoIcon: {
     color: `${palette.primary}`,
   },
-  root: {
-    width: '100%',
-    padding: '0 8px !important',
-  },
   subCard: {
     backgroundColor: `${palette.white}`,
     borderBottom: `.5px solid ${palette.divider}`,
+    display: 'flex',
+    flexDirection: 'row',
+    padding: '16px 16px',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   directReviews: {
     borderRadius: '4px',
@@ -56,28 +59,31 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '0 8px!important',
   },
-  '& span.MuiTypography-root.MuiCardHeader-title.MuiTypography-h6.MuiTypography-displayBlock': {
-    fontWeight: '300',
+  dataContainer: {
+    display: 'flex',
+    gridGap: '8px',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  },
+  labelAndData: {
+    display: 'flex',
+    gridGap: '8px',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('lg')]: {
+      width: '48%',
+    },
+  },
+  ncContainer: {
+    display: 'flex',
+    flexDirection: 'column',
   },
 });
-
-const getDataDisplay = (title, value, tooltip) => (
-  <Box width="48%" gridGap="8px" alignItems="center" display="flex" justifyContent="space-between">
-    <Box display="flex" flexDirection="column">
-      <Typography variant="subtitle2">
-        { title }
-      </Typography>
-      { value }
-    </Box>
-    <Box>
-      <ChplTooltip
-        title={tooltip}
-      >
-        <InfoIcon color="primary" />
-      </ChplTooltip>
-    </Box>
-  </Box>
-);
 
 const getFriendlyValues = (nc) => ({
   ...nc,
@@ -151,7 +157,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews }) {
         color="secondary"
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
-          <Typography>
+          <Typography variant="body1">
             Direct Review Activities
           </Typography>
           <Typography variant="body2">
@@ -180,7 +186,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews }) {
               color="secondary"
             >
               <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
-                <Typography>
+                <Typography variant="body1">
                   { dr.isClosed ? 'Closed' : 'Open' }
                   {' '}
                   Direct Review
