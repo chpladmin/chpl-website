@@ -29,13 +29,17 @@ const useStyles = makeStyles({
   },
 });
 
-const getDisplay = (title, value) => (
-  <Typography>
-    {title}
-    :
-    {value}
-  </Typography>
-);
+const getDisplay = (title, value) => {
+  if (!value) { return null; }
+  return (
+    <Typography>
+      {title}
+      :
+      {' '}
+      {value}
+    </Typography>
+  );
+};
 
 function ChplActivityDetails({ activity }) {
   const [details, setDetails] = useState(undefined);
@@ -116,30 +120,18 @@ function ChplActivityDetails({ activity }) {
         </ChplDialogTitle>
         <DialogContent dividers>
           <Card>
-            { getDisplay('id', activity.id) }
-            { getDisplay('triggerLevel', activity.triggerLevel) }
-            { getDisplay('triggerName', activity.triggerName) }
-            { getDisplay('activityId', activity.activityId) }
-            { getDisplay('before', activity.before) }
-            { getDisplay('after', activity.after) }
-            { getDisplay('activityDate', getDisplayDateFormat(activity.activityDate)) }
-            { getDisplay('userId', activity.userId) }
-            { getDisplay('username', activity.username) }
-            { getDisplay('certificationStatusChangeReason', activity.certificationStatusChangeReason) }
-            { getDisplay('reason', activity.reason) }
-            { getDisplay('developerId', activity.developerId) }
-            { getDisplay('developerName', activity.developerName) }
-            { getDisplay('productId', activity.productId) }
-            { getDisplay('productName', activity.productName) }
-            { getDisplay('versionId', activity.versionId) }
-            { getDisplay('versionName', activity.versionName) }
-            { getDisplay('listingId', activity.listingId) }
-            { getDisplay('chplProductNumber', activity.chplProductNumber) }
-            { getDisplay('acbId', activity.acbId) }
-            { getDisplay('acbName', activity.acbName) }
-            { getDisplay('certificationStatusId', activity.certificationStatusId) }
-            { getDisplay('certificationStatusName', activity.certificationStatusName) }
-            { getDisplay('certificationCriterionId', activity.certificationCriterionId) }
+            { getDisplay('Trigger Level', activity.triggerLevel) }
+            { getDisplay('Trigger Name', activity.triggerName) }
+            { getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate)) }
+            { getDisplay('Acting User', activity.username) }
+            { getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason) }
+            { getDisplay('Reason', activity.reason) }
+            { getDisplay('Developer', activity.developerName) }
+            { getDisplay('Product', activity.productName) }
+            { getDisplay('Version', activity.versionName) }
+            { getDisplay('CHPL Product Number', activity.chplProductNumber) }
+            { getDisplay('ONC-ACB', activity.acbName) }
+            { getDisplay('Certification Status', activity.certificationStatusName) }
             { activity.activityId && details?.length > 0
               && (
                 <>
