@@ -5,7 +5,7 @@ import {
 import { when } from 'jest-when';
 import '@testing-library/jest-dom';
 
-import ChplQuestionableActivityView from './sed-view';
+import ChplQuestionableActivityView from './questionable-activity-view';
 
 import * as angularReactHelper from 'services/angular-react-helper';
 
@@ -38,9 +38,9 @@ jest.mock('components/filter', () => ({
 }));
 /* eslint-enable react/display-name */
 
-jest.mock('api/collections', () => ({
+jest.mock('api/questionable-activity', () => ({
   __esModule: true,
-  useFetchCollection: () => mockApi,
+  useFetchQuestionableActivity: () => mockApi,
 }));
 
 describe('the ChplQuestionableActivityView component', () => {
@@ -54,7 +54,7 @@ describe('the ChplQuestionableActivityView component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('SED Information for 2015 Edition Products');
+      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Questionable Activity');
     });
   });
 });
