@@ -70,7 +70,7 @@ const states = [{
   component: 'chplQuestionableActivityWrapperBridge',
   data: {
     title: 'CHPL Activity - Questionable Activity',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
   },
 }, {
   name: 'reports.user-actions',
