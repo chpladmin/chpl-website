@@ -22,6 +22,8 @@ import { useFetchActivity } from 'api/activity';
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { compareDeveloper } from 'pages/reports/developers/developers.service';
 import { compareListing } from 'pages/reports/listings/listings.service';
+import { compareProduct } from 'pages/reports/products/products.service';
+import { compareVersion } from 'pages/reports/versions/versions.service';
 import { getDisplayDateFormat } from 'services/date-util';
 
 const useStyles = makeStyles({
@@ -57,13 +59,24 @@ function ChplActivityDetails({ activity }) {
       return;
     }
     switch (activity.triggerLevel) {
+      case 'Certification Criteria':
+      case 'Listing':
+        setDetails(compareListing(data?.originalData, data?.newData)
+                   .map((item) => `<li>${item}</li>`)
+                   .join(''));
+        break;
       case 'Developer':
         setDetails(compareDeveloper(data?.originalData, data?.newData)
                    .map((item) => `<li>${item}</li>`)
                    .join(''));
         break;
-      case 'Listing':
-        setDetails(compareListing(data?.originalData, data?.newData)
+      case 'Product':
+        setDetails(compareProduct(data?.originalData, data?.newData)
+                   .map((item) => `<li>${item}</li>`)
+                   .join(''));
+        break;
+      case 'Version':
+        setDetails(compareVersion(data?.originalData, data?.newData)
                    .map((item) => `<li>${item}</li>`)
                    .join(''));
         break;
