@@ -44,9 +44,6 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px 32px',
     backgroundColor: '#f9f9f9',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '2fr 1fr',
-    },
   },
   pageContent: {
     display: 'grid',
@@ -187,18 +184,6 @@ function ChplQuestionableActivityView(props) {
           <Typography variant="body1">
             Please note that by default, only listings that are active or suspended are shown in the search results.
           </Typography>
-        </div>
-        <div>
-          <h2>SED Information Dataset</h2>
-          <Typography variant="body1" gutterBottom>
-            Please note the All SED Details file contains information for all certified product listings and is not filtered based on search results.
-          </Typography>
-          <ChplLink
-            href={`${downloadLink}&${filterContext.queryString()}`}
-            text="Download All SED Details"
-            analytics={{ event: 'Download All SED Details', category: analytics.category }}
-            external={false}
-          />
         </div>
       </div>
       <div className={classes.searchContainer}>
