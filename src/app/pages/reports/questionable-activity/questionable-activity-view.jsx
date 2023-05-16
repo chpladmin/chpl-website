@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -159,6 +160,11 @@ function ChplQuestionableActivityView(props) {
     { text: 'Actions', invisible: true },
   ];
 
+  const handleClick = () => {
+    $analytics.eventTrack('Download Filtered results', { category: analytics.category });
+    window.open(`${downloadLink}&${filterContext.queryString()}`);
+  };
+
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
@@ -227,12 +233,15 @@ function ChplQuestionableActivityView(props) {
               </div>
               { activities.length > 0
                 && (
-                  <ChplLink
-                    href={`${downloadLink}&${filterContext.queryString()}`}
-                    text="Download Filtered results"
-                    analytics={{ event: 'Download Filtered results', category: analytics.category }}
-                    external={false}
-                  />
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    size="small"
+                    id="download-filtered-results"
+                    onClick={handleClick}
+                  >
+                    Download Filtered Results
+                  </Button>
                 )}
             </div>
             { activities.length > 0
