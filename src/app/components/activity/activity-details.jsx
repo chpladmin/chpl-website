@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
   Button,
-  Card,
   Dialog,
   DialogContent,
-  Divider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
@@ -29,15 +32,19 @@ const useStyles = makeStyles({
   },
 });
 
-const getDisplay = (title, value) => {
+const getDisplay = (title, value, fullWidth = false) => {
   if (!value) { return null; }
   return (
-    <Typography>
-      {title}
-      :
-      {' '}
-      {value}
-    </Typography>
+    <Box width={fullWidth ? '100%' : '48%'} alignItems={fullWidth ? 'flex-start' : 'center'} gridGap="8px" display="flex" justifyContent="space-between">
+      <Box display="flex" flexDirection="column" width="100%">
+        <Typography variant="subtitle1">
+          {title}
+        </Typography>
+        <Typography>
+          {value}
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
@@ -97,8 +104,8 @@ function ChplActivityDetails({ activity }) {
         <Button
           id={`view-activity-details-${activity.id}`}
           aria-label="Open Activity Details dialog"
-          color="primary"
-          variant="outlined"
+          color="secondary"
+          variant="contained"
           onClick={handleClickOpen}
           endIcon={<InfoIcon />}
         >
@@ -109,37 +116,45 @@ function ChplActivityDetails({ activity }) {
         onClose={handleClose}
         aria-labelledby={`activity-details-${activity.id}-title`}
         open={open}
-        maxWidth="md"
+        maxWidth="sm"
       >
         <ChplDialogTitle
           id={`activity-details-${activity.id}-title`}
           onClose={handleClose}
           className={classes.legendTitle}
         >
-          Activity Details
+          Questionable Activity Details
         </ChplDialogTitle>
         <DialogContent dividers>
-          <Card>
-            { getDisplay('Trigger Level', activity.triggerLevel) }
-            { getDisplay('Trigger Name', activity.triggerName) }
-            { getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate)) }
-            { getDisplay('Acting User', activity.username) }
-            { getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason) }
-            { getDisplay('Reason', activity.reason) }
-            { getDisplay('Developer', activity.developerName) }
-            { getDisplay('Product', activity.productName) }
-            { getDisplay('Version', activity.versionName) }
-            { getDisplay('CHPL Product Number', activity.chplProductNumber) }
-            { getDisplay('ONC-ACB', activity.acbName) }
-            { getDisplay('Certification Status', activity.certificationStatusName) }
-            { activity.activityId && details?.length > 0
-              && (
-                <>
-                  <Divider />
+          <Box pb={4} display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+            {getDisplay('Trigger Level', activity.triggerLevel)}
+            {getDisplay('Trigger Name', activity.triggerName)}
+            {getDisplay('Activity Date', getDisplayDateFormat(activity.activityDate))}
+            {getDisplay('Acting User', activity.username)}
+            {getDisplay('Developer', activity.developerName)}
+            {getDisplay('Product', activity.productName)}
+            {getDisplay('Version', activity.versionName)}
+            {getDisplay('CHPL Product Number', activity.chplProductNumber)}
+            {getDisplay('ONC-ACB', activity.acbName)}
+            {getDisplay('Certification Status', activity.certificationStatusName)}
+            {getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason, true)}
+            {getDisplay('Reason', activity.reason, true)}
+          </Box>
+          { activity.activityId && details?.length > 0
+            && (
+              <Accordion variant="outlined">
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    variant="subtitle2"
+                  >
+                    Activity Details
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
                   <ul dangerouslySetInnerHTML={{ __html: details }} />
-                </>
-              )}
-          </Card>
+                </AccordionDetails>
+              </Accordion>
+            )}
         </DialogContent>
       </Dialog>
     </>
