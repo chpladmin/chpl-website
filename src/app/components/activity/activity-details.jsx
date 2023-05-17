@@ -10,8 +10,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import InfoIcon from '@material-ui/icons/Info';
 import { object } from 'prop-types';
 
 import { useFetchActivity } from 'api/activity';
@@ -86,7 +86,7 @@ function ChplActivityDetails({ activity }) {
           .map((item) => `<li>${item}</li>`)
           .join(''));
         break;
-      // no default
+        // no default
     }
   }, [isError, isLoading]);
 
@@ -140,22 +140,20 @@ function ChplActivityDetails({ activity }) {
             {getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason, true)}
             {getDisplay('Reason', activity.reason, true)}
           </Box>
-          {activity.activityId && details?.length > 0
+          { activity.activityId && details?.length > 0
             && (
-              <>
-                <Accordion variant="outlined">
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography
-                      variant="subtitle2"
-                    >
-                      Activity Details
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <ul dangerouslySetInnerHTML={{ __html: details }} />
-                  </AccordionDetails>
-                </Accordion>
-              </>
+              <Accordion variant="outlined">
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography
+                    variant="subtitle2"
+                  >
+                    Activity Details
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <ul dangerouslySetInnerHTML={{ __html: details }} />
+                </AccordionDetails>
+              </Accordion>
             )}
         </DialogContent>
       </Dialog>
