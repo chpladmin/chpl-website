@@ -3,7 +3,6 @@ import 'ng-file-upload';
 import ChplCmsWrapper from './cms/cms-wrapper';
 import ChplLoginPage from './login';
 import ChplReportsWrapper from './reports/reports-wrapper';
-import ChplSearchWrapper from './search/search-wrapper';
 import ChplSystemMaintenanceWrapper from './system-maintenance/system-maintenance-wrapper';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
@@ -38,5 +37,4 @@ angular
   .component('chplCmsWrapperBridge', reactToAngularComponent(ChplCmsWrapper))
   .component('chplLoginPageBridge', reactToAngularComponent(ChplLoginPage))
   .component('chplReportsWrapperBridge', reactToAngularComponent(ChplReportsWrapper))
-  .component('chplSearchWrapperBridge', reactToAngularComponent(ChplSearchWrapper))
   .component('chplSystemMaintenanceWrapperBridge', reactToAngularComponent(ChplSystemMaintenanceWrapper));

@@ -29,8 +29,9 @@ const useStyles = makeStyles({
   stickyColumn: {
     position: 'sticky',
     left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
+    boxShadow: 'rgba(149, 157, 165, 0.1) 4px 4px 8px',
     backgroundColor: '#ffffff',
+    zIndex: 1000,
   },
 });
 
