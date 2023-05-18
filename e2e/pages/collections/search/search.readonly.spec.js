@@ -1,18 +1,8 @@
-import LoginComponent from '../../../components/login/login.po';
-import { open as openPage } from '../../../utilities/hooks.async';
-
 import SearchPage from './search.po';
 
-let login;
 let page;
 
 describe('the Search page', () => {
-  beforeAll(async () => {
-    login = new LoginComponent();
-    await openPage('#/resources/overview');
-    await login.logIn('admin');
-  });
-
   beforeEach(async () => {
     page = new SearchPage();
     await page.open();
