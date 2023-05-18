@@ -83,7 +83,12 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   function clear() {
     $rootScope.$broadcast('ClearResults', {});
     $localStorage.clearResults = true;
-    $location.url('/search');
+    sessionStorage.removeItem('storageKey-searchPage-hasSearched');
+    if ($location.url() === '/search') {
+      $state.reload();
+    } else {
+      $state.go('search');
+    }
   }
 
   function isActive(state) {

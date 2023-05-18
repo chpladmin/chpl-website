@@ -39,7 +39,6 @@ import organizations from './pages/organizations/index';
 import reports from './pages/reports/index';
 import resources from './pages/resources/index';
 import /* registrationModule from */ './pages/registration/index';
-import /* searchModule from */ './pages/search/index';
 import services from './services/index';
 import /* sharedModule from */ './shared/index';
 import surveillance from './pages/surveillance/index';
@@ -87,7 +86,6 @@ const dependencies = [
   'chpl.constants',
   'chpl.navigation',
   'chpl.registration',
-  'chpl.search',
   'chpl.shared',
 ];
 
