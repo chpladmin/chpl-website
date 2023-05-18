@@ -35,7 +35,8 @@
     is-disabled="($ctrl.showFormErrors && !$ctrl.isValid()) || $ctrl.isSaving"
     errors="$ctrl.errorMessages"
     warnings="$ctrl.warningMessages"
-    show-acknowledgement="$ctrl.showAcknowledgement"
+    show-error-acknowledgement="$ctrl.showErrorAcknowledgement"
+    show-warning-acknowledgement="$ctrl.showWarningAcknowledgement"
     dispatch="::$ctrl.takeActionBarAction">
   </chpl-action-bar-wrapper-bridge>
 </div>

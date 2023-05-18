@@ -149,7 +149,7 @@ const ConfirmListingComponent = {
           break;
         case 'confirm': this.confirm();
           break;
-        case 'toggleAcknowledgement': this.acknowledgeWarnings = !this.acknowledgeWarnings;
+        case 'toggleWarningAcknowledgement': this.acknowledgeWarnings = !this.acknowledgeWarnings;
           break;
         case 'reject': this.reject();
           break;

@@ -1,20 +1,20 @@
 import React from 'react';
 import {
-  ThemeProvider,
-} from '@material-ui/core';
-import {
-  arrayOf, bool, func, string,
+  arrayOf,
+  bool,
+  func,
+  string,
 } from 'prop-types';
 
 import ChplActionBar from './action-bar';
 
-import theme from 'themes/theme';
+import AppWrapper from 'app-wrapper';
 
 function ChplActionBarWrapper(props) {
   return (
-    <ThemeProvider theme={theme}>
+    <AppWrapper>
       <ChplActionBar {...props} />
-    </ThemeProvider>
+    </AppWrapper>
   );
 }
 
@@ -28,7 +28,8 @@ ChplActionBarWrapper.propTypes = {
   canDelete: bool,
   canReject: bool,
   isDisabled: bool,
-  showAcknowledgement: bool,
+  showErrorAcknowledgement: bool,
+  showWarningAcknowledgement: bool,
 };
 
 ChplActionBarWrapper.defaultProps = {
@@ -38,5 +39,6 @@ ChplActionBarWrapper.defaultProps = {
   canDelete: false,
   canReject: false,
   isDisabled: false,
-  showAcknowledgement: false,
+  showErrorAcknowledgement: false,
+  showWarningAcknowledgement: false,
 };
