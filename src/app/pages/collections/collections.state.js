@@ -1,5 +1,12 @@
 const states = [
   {
+    name: 'search',
+    url: '/search',
+    component: 'chplSearchWrapperBridge',
+    data: {
+      title: 'CHPL Search',
+    },
+  }, {
     name: 'collections',
     abstract: true,
     url: '/collections',

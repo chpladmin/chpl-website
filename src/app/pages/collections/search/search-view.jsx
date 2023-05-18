@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Paper,
   Table,
   TableBody,
@@ -67,11 +66,6 @@ const useStyles = makeStyles({
     display: 'grid',
     gridTemplateRows: '3fr 1fr',
   },
-  searchButtonContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gridGap: '8px',
-  },
   searchContainer: {
     backgroundColor: palette.grey,
     padding: '16px 32px',
@@ -82,6 +76,11 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'auto 10fr auto',
     },
+  },
+  searchButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gridGap: '8px',
   },
   stickyColumn: {
     position: 'sticky',
@@ -184,15 +183,14 @@ function ChplSearchView(props) {
   return (
     <>
       <div className={classes.pageHeader}>
-        <Typography variant="h1">Search</Typography>
-        <Button onClick={() => dispatch('hasSearched', undefined, false)}>Restore Landing Page</Button>
+        <Typography variant="h1">CHPL Listings</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography variant="body1">
           Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.
         </Typography>
       </div>
-      <div className={classes.searchContainer} component={Paper}>
+      <div className={classes.searchContainer}>
         <ChplFilterSearchTerm />
         <Box className={classes.searchButtonContainer}>
           <ChplFilterPanel />

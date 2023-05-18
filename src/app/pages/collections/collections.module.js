@@ -4,6 +4,7 @@ import ChplCorrectiveActionCollectionWrapper from './corrective-action/correctiv
 import ChplDecertifiedProductsCollectionWrapper from './decertified-products/decertified-products-wrapper';
 import ChplInactiveCertificatesCollectionWrapper from './inactive-certificates/inactive-certificates-wrapper';
 import ChplRealWorldTestingCollectionWrapper from './real-world-testing/real-world-testing-wrapper';
+import ChplSearchWrapper from './search/search-wrapper';
 import ChplSedCollectionWrapper from './sed/sed-wrapper';
 import ChplSvapCollectionWrapper from './svap/svap-wrapper';
 
@@ -21,5 +22,6 @@ export default angular
   .component('chplDecertifiedProductsCollectionWrapperBridge', reactToAngularComponent(ChplDecertifiedProductsCollectionWrapper))
   .component('chplInactiveCertificatesCollectionWrapperBridge', reactToAngularComponent(ChplInactiveCertificatesCollectionWrapper))
   .component('chplRealWorldTestingCollectionWrapperBridge', reactToAngularComponent(ChplRealWorldTestingCollectionWrapper))
+  .component('chplSearchWrapperBridge', reactToAngularComponent(ChplSearchWrapper))
   .component('chplSedCollectionWrapperBridge', reactToAngularComponent(ChplSedCollectionWrapper))
   .component('chplSvapCollectionWrapperBridge', reactToAngularComponent(ChplSvapCollectionWrapper));

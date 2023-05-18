@@ -21,14 +21,6 @@ function otherwise($injector, $location) {
 
 (() => {
   function routeConfig($stateProvider, $urlRouterProvider) {
-    $stateProvider
-      .state('search', {
-        url: '/search',
-        controller: 'SearchController',
-        controllerAs: 'vm',
-        template: require('./pages/search/search.html'), // eslint-disable-line global-require
-        data: { title: 'CHPL Search' },
-      });
     $urlRouterProvider.when('', '/search');
     $urlRouterProvider.when('/', '/search');
     $urlRouterProvider.otherwise(otherwise);
