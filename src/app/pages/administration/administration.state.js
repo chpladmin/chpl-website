@@ -104,14 +104,6 @@ const states = [
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
     },
   }, {
-    name: 'administration.search',
-    url: '/search',
-    component: 'chplSearchWrapperBridge',
-    data: {
-      title: 'CHPL Search',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
-    },
-  }, {
     name: 'administration.system-maintenance',
     url: '/system-maintenance',
     component: 'chplSystemMaintenanceWrapperBridge',
