@@ -1,5 +1,6 @@
 import IndexWrapper from '../index-wrapper';
 
+import ChplActionBarWrapper from './action-bar/action-bar-wrapper';
 import ChplActionButtonWrapper from './action-widget/action-button-wrapper';
 import { ChplApiKeyConfirm } from './api-key';
 import {
@@ -44,7 +45,6 @@ import {
   ChplLink,
   ChplNonProdIndicator,
 } from './util';
-import { ChplActionBar, ChplActionBarWrapper } from './action-bar';
 
 import { reactToAngularComponent } from 'services/angular-react-helper';
 
@@ -63,7 +63,6 @@ angular
     'ui.bootstrap',
     'ui.router',
   ])
-  .component('chplActionBarBridge', reactToAngularComponent(ChplActionBar))
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
   .component('chplActionButtonWrapperBridge', reactToAngularComponent(ChplActionButtonWrapper))
   .component('chplAdditionalInformationWrapperBridge', reactToAngularComponent(ChplAdditionalinformationWrapper))
