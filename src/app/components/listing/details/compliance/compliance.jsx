@@ -8,7 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { arrayOf } from 'prop-types';
+import { arrayOf, bool } from 'prop-types';
 
 import ChplDirectReviews from './direct-reviews';
 import ChplSurveillance from './surveillance';
@@ -57,9 +57,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCompliance(props) {
-  const { directReviews } = props;
-  const { surveillance } = props;
+function ChplCompliance({ directReviews, directReviewsAvailable, surveillance }) {
   const classes = useStyles();
 
   return (
@@ -76,7 +74,7 @@ function ChplCompliance(props) {
       <Box display="flex" flexDirection="column">
         <CardContent>
           <ChplSurveillance surveillance={surveillance} />
-          <ChplDirectReviews directReviews={directReviews} />
+          <ChplDirectReviews directReviews={directReviews} directReviewsAvailable={directReviewsAvailable} />
         </CardContent>
       </Box>
     </Accordion>
@@ -87,5 +85,6 @@ export default ChplCompliance;
 
 ChplCompliance.propTypes = {
   directReviews: arrayOf(directReviewPropType).isRequired,
+  directReviewsAvailable: bool.isRequired,
   surveillance: arrayOf(surveillancePropType).isRequired,
 };

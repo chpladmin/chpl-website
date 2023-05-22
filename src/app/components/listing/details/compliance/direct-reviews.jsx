@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { arrayOf } from 'prop-types';
+import { arrayOf, bool } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
 
@@ -109,7 +109,7 @@ const sortNonconformities = (a, b) => {
   return a.created - b.created;
 };
 
-function ChplDirectReviews({ directReviews: initialDirectReviews }) {
+function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable }) {
   const [directReviews, setDirectReviews] = useState([]);
   const classes = useStyles();
 
@@ -160,19 +160,37 @@ function ChplDirectReviews({ directReviews: initialDirectReviews }) {
           <Typography variant="body1">
             Direct Review Activities
           </Typography>
-          <Typography variant="body2">
-            (
-            { directReviews.length }
-            {' '}
-            found)
-          </Typography>
+          { directReviewsAvailable
+            && (
+              <Typography variant="body2">
+                (
+                { directReviews.length }
+                {' '}
+                found)
+              </Typography>
+            )}
+          { !directReviewsAvailable
+            && (
+              <Typography variant="body2">
+                error
+              </Typography>
+            )}
         </Box>
       </AccordionSummary>
       <CardContent>
-        <Typography gutterBottom>
-          Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing
-        </Typography>
-        { directReviews.length === 0
+        { directReviewsAvailable
+          && (
+            <Typography gutterBottom>
+              Direct Review information is displayed here if a Direct Review has been opened by ONC that either affects this listing directly or applies to the developer of this listing
+            </Typography>
+          )}
+        { !directReviewsAvailable
+          && (
+            <Typography gutterBottom>
+              Direct Review information is not currently available, please check back later
+            </Typography>
+          )}
+        { directReviewsAvailable && directReviews.length === 0
           && (
             <Typography>
               No Direct Reviews have been conducted
@@ -257,4 +275,5 @@ export default ChplDirectReviews;
 
 ChplDirectReviews.propTypes = {
   directReviews: arrayOf(directReviewPropType).isRequired,
+  directReviewsAvailable: bool.isRequired,
 };
