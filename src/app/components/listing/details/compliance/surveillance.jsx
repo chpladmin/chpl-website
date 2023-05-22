@@ -203,7 +203,7 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
                 { getDataDisplay('Surveillance Result', getSurveillanceResult(surv), 'Whether or not a non-conformity was found for the conducted surveillance.', true) }
               </Box>
               { surv.requirements.map((req) => req.nonconformities.map((nc) => (
-                <Accordion square="false" variant="elevation" className={classes.surveillance} key={nc.id}>
+                <Accordion variant="elevation" className={classes.surveillance} key={nc.id}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     className={classes.surveillanceDetailsHeaderWithBorder}
