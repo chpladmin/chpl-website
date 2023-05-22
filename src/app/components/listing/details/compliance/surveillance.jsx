@@ -173,6 +173,12 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
         <Typography gutterBottom>
           Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing
         </Typography>
+        { surveillance.length === 0
+          && (
+            <Typography>
+              No surveillance activity has been conducted for this listing
+            </Typography>
+          )}
         { surveillance.map((surv) => (
           <Accordion className={classes.surveillance} key={surv.id}>
             <AccordionSummary
