@@ -11,22 +11,17 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { arrayOf, bool } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
 
-import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  infoIcon: {
-    color: `${palette.primary}`,
-  },
   subCard: {
     backgroundColor: `${palette.white}`,
     borderBottom: `.5px solid ${palette.divider}`,
@@ -227,15 +222,10 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                     titleTypographyProps={{ variant: 'h6' }}
                     className={classes.subCard}
                     title={nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}
-                  >
-                    <ChplTooltip
-                      title="Type of non-conformity found during review"
-                    >
-                      <InfoIcon color="primary" />
-                    </ChplTooltip>
-                  </CardHeader>
+                  />
                   <CardContent>
                     <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+                      { getDataDisplay('Non-conformity Type', <Typography>{ nc.nonConformityType }</Typography>, 'Type of non-conformity found during review') }
                       { getDataDisplay('Developer Associated Listings',
                         <>
                           {(!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
