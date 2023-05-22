@@ -135,19 +135,6 @@ const parseSvap = ({ svaps }, data) => {
   );
 };
 
-const parseSvapCsv = ({ svaps }, data) => {
-  if (svaps.length === 0) { return 'N/A'; }
-  return svaps
-    .map((item) => ({
-      ...item,
-      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
-      svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
-    }))
-    .sort((a, b) => sortCriteria(a.criterion, b.criterion))
-    .map((item) => `${item.display} - ${item.svaps.map((svap) => `${svap.replaced ? 'Replaced | ' : ''}${svap.regulatoryTextCitation}: ${svap.approvedStandardVersion}`).join(';')}`)
-    .join('\n');
-};
-
 function ChplSvapCollectionView(props) {
   const storageKey = 'storageKey-svapView';
   const $analytics = getAngularService('$analytics');
@@ -184,7 +171,6 @@ function ChplSvapCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      svapCsv: parseSvapCsv(listing, svaps),
       svapNode: parseSvap(listing, svaps),
     })));
     setRecordCount(data.recordCount);
