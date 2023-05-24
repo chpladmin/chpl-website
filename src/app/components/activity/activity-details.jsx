@@ -136,6 +136,7 @@ function ChplActivityDetails({ activity }) {
             {getDisplay('Version', activity.versionName)}
             {getDisplay('CHPL Product Number', activity.chplProductNumber)}
             {getDisplay('ONC-ACB', activity.acbName)}
+            {getDisplay('Description', activity.description)}
             {getDisplay('Certification Status', activity.certificationStatusName)}
             {getDisplay('Certification Status Change Reason', activity.certificationStatusChangeReason, true)}
             {getDisplay('Reason', activity.reason, true)}
