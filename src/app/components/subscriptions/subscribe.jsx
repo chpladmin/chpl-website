@@ -58,8 +58,13 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
       subscribedObjectTypeId,
       subscribedObjectId,
     }, {
-      onSuccess: () => {
-        const body = `A confirmation email has been sent to ${formik.values.email}`;
+      onSuccess: (response) => {
+        let body;
+        if (response.data.status.name === 'Pending') {
+          body = `A confirmation email has been sent to ${response.data.email}`;
+        } else {
+          body = `Your subscription will be delivered to ${response.data.email}`;
+        }
         enqueueSnackbar(body, { variant: 'success' });
         formik.resetForm();
       },
@@ -92,7 +97,7 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
               <strong>Want Updates?</strong>
             </Typography>
             <Typography>
-              If you're interested in keeping up-to-date with changes to this listing from the Certified Health IT Product List (CHPL) fill out the fields below.
+              If you&apos;re interested in keeping up-to-date with changes to this listing from the Certified Health IT Product List (CHPL) fill out the fields below.
             </Typography>
           </div>
           <ChplTextField
