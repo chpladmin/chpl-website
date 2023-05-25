@@ -178,11 +178,8 @@ function ChplQuestionableActivityView(props) {
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <div>
-          <Typography variant="body1" gutterBottom>
-            This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED):
-          </Typography>
           <Typography variant="body1">
-            Please note that by default, only listings that are active or suspended are shown in the search results.
+            The Questionable Activity Report offers users the ability to monitor the activities performed on specific CHPL products by ONC-Authorized Certification Bodies and assess their adherence to ONC-established rules. This feature serves as an essential transparency mechanism, allowing ONC to identify any questionable actions that may warrant further investigation. Users can filter and search this list based on their specific interests or concerns.
           </Typography>
         </div>
       </div>
