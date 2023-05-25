@@ -27,6 +27,7 @@ import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
 import ChplG1g2 from './listing/details/g1g2/g1g2-wrapper';
 import ChplAdditionalinformationWrapper from './listing/details/additional-information/additional-information-wrapper';
 import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
+import ChplSubscribeWrapper from './subscriptions/subscribe-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSed from './listing/details/sed/sed-wrapper';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
@@ -93,6 +94,7 @@ angular
   .component('chplSedBridge', reactToAngularComponent(ChplSed))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
   .component('chplSedTaskViewBridge', reactToAngularComponent(ChplSedTaskView))
+  .component('chplSubscribeBridge', reactToAngularComponent(ChplSubscribeWrapper))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
