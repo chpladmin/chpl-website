@@ -75,9 +75,6 @@ const theme = createTheme({
     MuiAccordion: {
       root: {
         marginBottom: '4px',
-        '&$before': {
-          opacity: '0',
-        },
       },
     },
     MuiAccordionSummary: {
@@ -456,6 +453,11 @@ const theme = createTheme({
       },
       text: {
         fontSize: '1rem',
+      },
+    },
+    MuiSvgIcon: {
+      colorPrimary: {
+        color: '#156dac !important',
       },
     },
   },
