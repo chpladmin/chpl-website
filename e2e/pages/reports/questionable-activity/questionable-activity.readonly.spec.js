@@ -19,7 +19,7 @@ describe('the Questionable Activity page', () => {
   });
 
   it('should have body text', async () => {
-    await expect(await page.getBodyText()).toContain('Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.');
+    await expect(await page.getBodyText()).toContain('The Questionable Activity Report offers users the ability to monitor the activities performed on specific CHPL products by ONC-Authorized Certification Bodies and assess their adherence to ONC-established rules. This feature serves as an essential transparency mechanism, allowing ONC to identify any questionable actions that may warrant further investigation. Users can filter and search this list based on their specific interests or concerns.');
   });
 
   it('should have table headers in a defined order', async () => {
