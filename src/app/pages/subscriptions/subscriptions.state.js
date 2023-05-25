@@ -18,6 +18,21 @@ const states = [{
     },
   },
   data: { title: 'CHPL Subscriptions' },
+}, {
+  name: 'subscriptions.manage',
+  url: '/manage/{hash}',
+  component: 'chplSubscriptionsManageSubscription',
+  params: {
+    hash: { squash: true, value: null },
+  },
+  resolve: {
+    hash: ($transition$) => {
+      'ngInject';
+
+      return $transition$.params().hash;
+    },
+  },
+  data: { title: 'CHPL Subscriptions' },
 }];
 
 function subscriptionsStatesConfig($stateProvider) {

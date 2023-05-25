@@ -41,7 +41,7 @@ function ChplConfirmSubscription(props) {
   return (
     <Container className={classes.content}>
       <Typography variant="h1">
-        Subscription
+        Confirm Subscription
       </Typography>
       <Typography>
         { message }
