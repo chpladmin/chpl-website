@@ -15,7 +15,13 @@ const usePostSubscription = () => {
   return useMutation(async (data) => axios.post('subscriptions', data));
 };
 
+const usePutSubscriber = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.put('subscriptions/confirm-subscriber', data));
+};
+
 export {
   useFetchReasons,
   usePostSubscription,
+  usePutSubscriber,
 };
