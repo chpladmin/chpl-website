@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   IconButton,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -92,115 +91,113 @@ function ChplDirectReviewsView(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className="direct-reviews">
-        { directReviews.length === 0
-          && (
-            <Typography>
-              No Direct Reviews have been conducted
-            </Typography>
-          )}
-        { directReviews.map((dr) => (
-          <div className="direct-review panel-ai" key={dr.created}>
-            <div className={`direct-review__header panel-heading ${dr.isClosed ? 'direct-review__header--closed' : 'direct-review__header--open'}`} role="button" onClick={() => toggleOpen(dr)}>
-              <div className="direct-review__header-title">
-                { dr.isClosed ? 'Closed' : 'Open' }
-                {' '}
-                Direct Review
-              </div>
-              <div className="direct-review__header-nc-summary">{ dr.ncSummary }</div>
-              <div className="direct-review__header-toggle"><i className={`fa fa-lg ${dr.open ? 'fa-caret-down' : 'fa-caret-left'}`} /></div>
+    <div className="direct-reviews">
+      { directReviews.length === 0
+        && (
+          <Typography>
+            No Direct Reviews have been conducted
+          </Typography>
+        )}
+      { directReviews.map((dr) => (
+        <div className="direct-review panel-ai" key={dr.created}>
+          <div className={`direct-review__header panel-heading ${dr.isClosed ? 'direct-review__header--closed' : 'direct-review__header--open'}`} role="button" onClick={() => toggleOpen(dr)}>
+            <div className="direct-review__header-title">
+              { dr.isClosed ? 'Closed' : 'Open' }
+              {' '}
+              Direct Review
             </div>
-            { dr.open
-              && (
-                <div className="panel-body">
-                  { (!dr.nonConformities || dr.nonConformities.length === 0)
-                    && (
-                      <>
-                        Has not been determined
-                      </>
-                    )}
-                  { dr.nonConformities?.length > 0
-                    && (
-                      <table className="table table-responsive">
-                        <thead>
-                          <tr>
-                            <th scope="col">
-                              Non-Conformity Type
-                              <ChplTooltip title="Type of non-conformity found during review">
-                                <IconButton className={classes.iconSpacing}>
-                                  <InfoIcon color="primary" />
-                                </IconButton>
-                              </ChplTooltip>
-                            </th>
-                            <th scope="col">
-                              Developer Associated Listings
-                              <ChplTooltip title="A listing of other certified products associated with the non-conformity, as applicable">
-                                <IconButton className={classes.iconSpacing}>
-                                  <InfoIcon color="primary" />
-                                </IconButton>
-                              </ChplTooltip>
-                            </th>
-                            <th scope="col">
-                              Corrective Action Plan Approval Date
-                              <ChplTooltip title="The date that ONC approved the corrective action plan proposed by the developer">
-                                <IconButton className={classes.iconSpacing}>
-                                  <InfoIcon color="primary" />
-                                </IconButton>
-                              </ChplTooltip>
-                            </th>
-                            <th scope="col">
-                              Date Corrective Action Must Be Completed
-                              <ChplTooltip title="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable">
-                                <IconButton className={classes.iconSpacing}>
-                                  <InfoIcon color="primary" />
-                                </IconButton>
-                              </ChplTooltip>
-                            </th>
-                            <th scope="col">
-                              Date Corrective Action Was Completed
-                              <ChplTooltip title="The date the corrective action was completed">
-                                <IconButton className={classes.iconSpacing}>
-                                  <InfoIcon color="primary" />
-                                </IconButton>
-                              </ChplTooltip>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          { dr.nonConformities.map((nc) => (
-                            <tr key={nc.created}>
-                              <td>{ nc.nonConformityType ? nc.nonConformityType : 'Has not been determined' }</td>
-                              <td>
-                                { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
-                                  && (
-                                    <>None</>
-                                  )}
-                                { nc.developerAssociatedListings?.length > 0
-                                  && (
-                                    <ul>
-                                      { nc.developerAssociatedListings.map((dal) => (
-                                        <li key={dal.id}>
-                                          <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )}
-                              </td>
-                              <td>{ nc.friendlyCapApprovalDate }</td>
-                              <td>{ nc.friendlyCapMustCompleteDate }</td>
-                              <td>{ nc.friendlyCapEndDate }</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                </div>
-              )}
+            <div className="direct-review__header-nc-summary">{ dr.ncSummary }</div>
+            <div className="direct-review__header-toggle"><i className={`fa fa-lg ${dr.open ? 'fa-caret-down' : 'fa-caret-left'}`} /></div>
           </div>
-        ))}
-      </div>
-    </ThemeProvider>
+          { dr.open
+            && (
+              <div className="panel-body">
+                { (!dr.nonConformities || dr.nonConformities.length === 0)
+                  && (
+                    <>
+                      Has not been determined
+                    </>
+                  )}
+                { dr.nonConformities?.length > 0
+                  && (
+                    <table className="table table-responsive">
+                      <thead>
+                        <tr>
+                          <th scope="col">
+                            Non-Conformity Type
+                            <ChplTooltip title="Type of non-conformity found during review">
+                              <IconButton className={classes.iconSpacing}>
+                                <InfoIcon color="primary" />
+                              </IconButton>
+                            </ChplTooltip>
+                          </th>
+                          <th scope="col">
+                            Developer Associated Listings
+                            <ChplTooltip title="A listing of other certified products associated with the non-conformity, as applicable">
+                              <IconButton className={classes.iconSpacing}>
+                                <InfoIcon color="primary" />
+                              </IconButton>
+                            </ChplTooltip>
+                          </th>
+                          <th scope="col">
+                            Corrective Action Plan Approval Date
+                            <ChplTooltip title="The date that ONC approved the corrective action plan proposed by the developer">
+                              <IconButton className={classes.iconSpacing}>
+                                <InfoIcon color="primary" />
+                              </IconButton>
+                            </ChplTooltip>
+                          </th>
+                          <th scope="col">
+                            Date Corrective Action Must Be Completed
+                            <ChplTooltip title="The date that the corrective action must be completed in order to avoid termination of the certified product’s certification status and/or a certification ban of the developer, as applicable">
+                              <IconButton className={classes.iconSpacing}>
+                                <InfoIcon color="primary" />
+                              </IconButton>
+                            </ChplTooltip>
+                          </th>
+                          <th scope="col">
+                            Date Corrective Action Was Completed
+                            <ChplTooltip title="The date the corrective action was completed">
+                              <IconButton className={classes.iconSpacing}>
+                                <InfoIcon color="primary" />
+                              </IconButton>
+                            </ChplTooltip>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        { dr.nonConformities.map((nc) => (
+                          <tr key={nc.created}>
+                            <td>{ nc.nonConformityType ? nc.nonConformityType : 'Has not been determined' }</td>
+                            <td>
+                              { (!nc.developerAssociatedListings || nc.developerAssociatedListings.length === 0)
+                                && (
+                                  <>None</>
+                                )}
+                              { nc.developerAssociatedListings?.length > 0
+                                && (
+                                  <ul>
+                                    { nc.developerAssociatedListings.map((dal) => (
+                                      <li key={dal.id}>
+                                        <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                            </td>
+                            <td>{ nc.friendlyCapApprovalDate }</td>
+                            <td>{ nc.friendlyCapMustCompleteDate }</td>
+                            <td>{ nc.friendlyCapEndDate }</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+              </div>
+            )}
+        </div>
+      ))}
+    </div>
   );
 }
 

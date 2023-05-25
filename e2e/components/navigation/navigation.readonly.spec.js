@@ -101,6 +101,7 @@ describe('the top navigation', () => {
           'User Actions',
           'Users',
           'Versions',
+          'Questionable Activity',
         ];
         component.reportsToggle.click();
         const reports = new Set(component.reports.map((item) => item.getText()));
@@ -192,6 +193,7 @@ describe('the top navigation', () => {
           'User Actions',
           'Users',
           'Versions',
+          'Questionable Activity',
         ];
         component.reportsToggle.click();
         const reports = new Set(component.reports.map((item) => item.getText()));

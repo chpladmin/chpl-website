@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -13,11 +13,13 @@ import CheckIcon from '@material-ui/icons/Check';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { ExportToCsv } from 'export-to-csv';
 
+import { useFetchSvaps } from 'api/standards';
 import { ChplTooltip } from 'components/util';
 import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
+import { UserContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -81,9 +83,23 @@ const allCategories = [
   { name: 'SVAP', key: 'svap' },
 ];
 
+const parseSvapCsv = ({ svaps }, data) => {
+  if (svaps.length === 0) { return 'N/A'; }
+  return svaps
+    .map((item) => ({
+      ...item,
+      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+      svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
+    }))
+    .sort((a, b) => sortCriteria(a.criterion, b.criterion))
+    .map((item) => `${item.display} - ${item.svaps.map((svap) => `${svap?.replaced ? 'Replaced | ' : ''}${svap?.regulatoryTextCitation}: ${svap?.approvedStandardVersion}`).join(';')}`)
+    .join('\n');
+};
+
 function ChplDownloadListings(props) {
   const { analytics, toggled } = props;
   const $analytics = getAngularService('$analytics');
+  const { hasAnyRole } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [categories, setCategories] = useState(allCategories.map((h) => ({
     ...h,
@@ -91,6 +107,8 @@ function ChplDownloadListings(props) {
   })));
   const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
+  const [svaps, setSvaps] = useState([]);
+  const svapQuery = useFetchSvaps();
   const classes = useStyles();
 
   useEffect(() => {
@@ -113,10 +131,17 @@ function ChplDownloadListings(props) {
       serviceBaseUrlList: listing.serviceBaseUrlList?.value || '',
       rwtPlansUrl: listing.rwtPlansUrl || '',
       rwtResultsUrl: listing.rwtResultsUrl || '',
-      svap: listing.svapCsv || '',
+      svap: parseSvapCsv(listing, svaps),
       svapNoticeUrl: listing.svapNoticeUrl || '',
     })));
   }, [props.listings]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    if (svapQuery.isLoading || !svapQuery.isSuccess) {
+      return;
+    }
+    setSvaps(svapQuery.data);
+  }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
   const canDownload = () => categories.some((cat) => cat.selected);
 
@@ -223,7 +248,7 @@ function ChplDownloadListings(props) {
           },
         }}
       >
-        { categories.map((c) => [
+        { categories.filter((c) => (c.key !== 'svap' || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))).map((c) => [
           <MenuItem
             onClick={() => toggle(c)}
             key={c.key}
