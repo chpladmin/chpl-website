@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
-  CardHeader,
+  CardContent,
   MenuItem,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
@@ -12,10 +14,18 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
+import Image from '../../../assets/images/SubscribeTo.png';
+
 import { useFetchReasons, usePostSubscription } from 'api/subscriptions';
 import { ChplTextField } from 'components/util';
 
 const useStyles = makeStyles({
+  subscribeToBackground: {
+    backgroundImage: `url(${Image})`,
+    minHeight: '186px',
+    marginLeft: '-20px',
+    backgroundSize: '100%',
+  },
 });
 
 const validationSchema = yup.object({
@@ -74,44 +84,56 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
 
   return (
     <Card>
-      <CardHeader title="Subscribe for updates" />
-      <ChplTextField
-        id="email"
-        name="email"
-        label="Email"
-        required
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.email && !!formik.errors.email}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-      <ChplTextField
-        select
-        id="reason"
-        name="reason"
-        label="Reason"
-        required
-        value={formik.values.reason}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.reason && !!formik.errors.reason}
-        helperText={formik.touched.reason && formik.errors.reason}
-      >
-        { reasons.map((item) => (
-          <MenuItem value={item} key={item.id}>
-            { item.name }
-          </MenuItem>
-        ))}
-      </ChplTextField>
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={subscribe}
-        endIcon={<SendIcon />}
-      >
-        Subscribe
-      </Button>
+      <Box className={classes.subscribeToBackground} />
+      <CardContent>
+        <Box display="flex" flexDirection="column" gridGap={16}>
+          <div>
+            <Typography gutterBottom variant="h5">
+              <strong>Want Updates?</strong>
+            </Typography>
+            <Typography>
+              If you're interested in keeping up-to-date with changes to this listing from the Certified Health IT Product List (CHPL) fill out the fields below.
+            </Typography>
+          </div>
+          <ChplTextField
+            id="email"
+            name="email"
+            label="Email"
+            required
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && !!formik.errors.email}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <ChplTextField
+            select
+            id="reason"
+            name="reason"
+            label="Reason"
+            required
+            value={formik.values.reason}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.reason && !!formik.errors.reason}
+            helperText={formik.touched.reason && formik.errors.reason}
+          >
+            { reasons.map((item) => (
+              <MenuItem value={item} key={item.id}>
+                { item.name }
+              </MenuItem>
+            ))}
+          </ChplTextField>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={subscribe}
+            endIcon={<SendIcon />}
+          >
+            Subscribe
+          </Button>
+        </Box>
+      </CardContent>
     </Card>
   );
 }
