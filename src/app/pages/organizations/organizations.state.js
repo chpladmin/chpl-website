@@ -159,7 +159,7 @@ const states = [
   }, {
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
-    component: 'chplOncOrganizations',
+    component: 'chplOncOrganizationsBridge',
     resolve: {
       allOrgs: (authService, networkService) => {
         'ngInject';

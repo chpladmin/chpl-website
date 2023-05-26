@@ -77,10 +77,8 @@ function ChplOncOrganizationView(props) {
 
   const can = (action) => {
     if (action === 'edit') {
-      return canEdit
-        && (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-          || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active') // allowed for ACB iff OncOrganization is "Active"
-          || (hasAnyRole(['ROLE_DEVELOPER']) && developer.status.status === 'Active' && demographicChangeRequestIsOn)); // allowed for DEVELOPER iff OncOrganization is "Active" & CRs can be submitted
+      return (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+          || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active')); // allowed for ACB iff OncOrganization is "Active"
     }
     return false;
   };
@@ -91,7 +89,7 @@ function ChplOncOrganizationView(props) {
 
   return (
     <Card
-      title={`${organziation.name} Information`}
+      title={`${organization.name} Information`}
     >
       <CardHeader
         title={organization.name}
@@ -135,14 +133,14 @@ function ChplOncOrganizationView(props) {
              {organization.address.country}
            </Typography>
          )}
-      </div>
+
       {organization.website
        && (
          <Typography variant="body1" gutterBottom>
            <strong>Website</strong>
            <br />
            <ChplLink
-             href={developer.website}
+             href={organization.website}
            />
          </Typography>
        )}
