@@ -9,13 +9,17 @@ import { acb as acbPropType } from 'shared/prop-types';
 function ChplOncOrganization(props) {
   const {
     organization,
-    dispatch,
   } = props;
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDispatch = (action, payload) => {
     console.log({action, payload});
-    dispatch(action, payload);
+    switch (action) {
+      case 'edit':
+        setIsEditing(true);
+        break;
+        // no default
+    }
   };
 
   if (isEditing) {
@@ -39,9 +43,4 @@ export default ChplOncOrganization;
 
 ChplOncOrganization.propTypes = {
   organization: acbPropType.isRequired,
-  dispatch: func,
-};
-
-ChplOncOrganization.defaultProps = {
-  dispatch: () => {},
 };

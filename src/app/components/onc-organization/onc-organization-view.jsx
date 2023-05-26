@@ -37,33 +37,9 @@ const useStyles = makeStyles({
     gridTemplateColumns: '1fr 1fr',
     gap: '16px',
   },
-  historyContent: {
-    display: 'grid',
-    padding: '4px',
-  },
-  developerHeader: {
+  header: {
     margin: '0',
     fontSize: '1.25em',
-  },
-  statusHistorySummary: {
-    backgroundColor: '#fff',
-    boxShadow: 'none',
-    borderRadius: '8px',
-  },
-  statusHistory: {
-    boxShadow: 'none',
-    borderRadius: '8px',
-    border: '.5px solid #c2c6ca',
-    fontWeight: 'bold',
-    marginTop: '8px',
-  },
-  fullWidth: {
-    gridColumn: '1 / -1',
-  },
-  MuiAccordionroot: {
-    '&.MuiAccordion-root:before': {
-      backgroundColor: 'transparent',
-    },
   },
 });
 
@@ -74,14 +50,6 @@ function ChplOncOrganizationView(props) {
   } = props;
   const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
-
-  const can = (action) => {
-    if (action === 'edit') {
-      return (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
-          || (hasAnyRole(['ROLE_ACB']) && developer.status.status === 'Active')); // allowed for ACB iff OncOrganization is "Active"
-    }
-    return false;
-  };
 
   const edit = () => {
     props.dispatch('edit');
@@ -94,7 +62,7 @@ function ChplOncOrganizationView(props) {
       <CardHeader
         title={organization.name}
         component="h2"
-        className={classes.developerHeader}
+        className={classes.header}
       />
       <CardContent className={classes.content}>
         <Typography variant="body1" gutterBottom>
@@ -133,37 +101,33 @@ function ChplOncOrganizationView(props) {
              {organization.address.country}
            </Typography>
          )}
-
-      {organization.website
-       && (
-         <Typography variant="body1" gutterBottom>
-           <strong>Website</strong>
-           <br />
-           <ChplLink
-             href={organization.website}
-           />
-         </Typography>
-       )}
-    </CardContent>
-    {(can('edit'))
-     && (
-       <CardActions className={classes.cardActions}>
-         <ButtonGroup
-           color="primary"
-         >
-           <ChplTooltip title={`Edit ${organization.name} Information`}>
-             <Button
-               variant="contained"
-               aria-label={`Edit ${organization.name} Information`}
-               id="organization-component-edit"
-               onClick={edit}
-             >
-               <EditOutlinedIcon />
-             </Button>
-           </ChplTooltip>
-         </ButtonGroup>
-       </CardActions>
-     )}
+        {organization.website
+         && (
+           <Typography variant="body1" gutterBottom>
+             <strong>Website</strong>
+             <br />
+             <ChplLink
+               href={organization.website}
+             />
+           </Typography>
+         )}
+      </CardContent>
+      <CardActions>
+        <ButtonGroup
+          color="primary"
+        >
+          <ChplTooltip title={`Edit ${organization.name} Information`}>
+            <Button
+              variant="contained"
+              aria-label={`Edit ${organization.name} Information`}
+              id="organization-component-edit"
+              onClick={edit}
+            >
+              <EditOutlinedIcon />
+            </Button>
+          </ChplTooltip>
+        </ButtonGroup>
+      </CardActions>
     </Card>
   );
 }
