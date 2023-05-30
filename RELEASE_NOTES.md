@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 12.0.0
+_30 May 2023_
+
+### Features
+* Enable view/search of Questionable Activity for admins
+* Deploy new Search / Landing page
+
+### User Interface Updates
+* Default to all ONC-ACBs on Listing Activity
+* Provide a way to acknowledge message that save will break business rules
+
+### Bug Fixes
+* Handle extremely long activity in listing activity download file
+
+---
+
 ## Version 11.52.0
 _15 May 2023_
 
