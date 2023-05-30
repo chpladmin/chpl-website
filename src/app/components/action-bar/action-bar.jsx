@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -6,6 +6,7 @@ import {
   CircularProgress,
   FormControlLabel,
   ThemeProvider,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import {
@@ -19,11 +20,12 @@ import SaveIcon from '@material-ui/icons/Save';
 import ChplActionBarConfirmation from './action-bar-confirmation';
 import ChplActionBarMessages from './action-bar-messages';
 
-import theme from 'themes/theme';
+import { UserContext } from 'shared/contexts';
+import { palette, theme } from 'themes';
 
 const useStyles = makeStyles({
   actionBar: {
-    backgroundColor: '#fff',
+    backgroundColor: palette.white,
     position: 'fixed',
     bottom: '0',
     right: '0',
@@ -42,10 +44,21 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     padding: '16px 0',
   },
-  actionBarAcknowledgement: {
-    color: '#c44f65',
+  actionBarErrorAcknowledgement: {
+    color: palette.white,
+    backgroundColor: palette.error,
     textAlign: 'center',
-    borderBottom: '1px solid #ddd',
+    borderBottom: `1px solid ${palette.greyLight}`,
+    padding: '16px',
+    boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
+  },
+  actionBarErrorText: {
+    color: palette.white,
+  },
+  actionBarWarningAcknowledgement: {
+    color: palette.error,
+    textAlign: 'center',
+    borderBottom: `1px solid ${palette.greyLight}`,
     padding: '16px',
     boxShadow: '0 -8px 8px -4px rgba(149, 157, 165, .1)',
   },
@@ -57,11 +70,14 @@ const useStyles = makeStyles({
     marginLeft: -12,
   },
   deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
+    backgroundColor: palette.error,
+    color: palette.white,
     '&:hover': {
-      backgroundColor: '#853544',
+      backgroundColor: palette.errorDark,
     },
+  },
+  errorCheckbox: {
+    color: palette.white,
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -79,14 +95,17 @@ function ChplActionBar(props) {
     canSave,
     canWithdraw,
   } = props;
-  const [acknowledged, setAcknowledged] = useState(false);
+  const { hasAnyRole } = useContext(UserContext);
+  const [errorAcknowledged, setErrorAcknowledged] = useState(false);
+  const [warningAcknowledged, setWarningAcknowledged] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isConfirming, setIsConfirming] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [pendingAction, setPendingAction] = useState('');
   const [pendingMessage, setPendingMessage] = useState('');
-  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
+  const [showErrorAcknowledgement, setShowErrorAcknowledgement] = useState(false);
+  const [showWarningAcknowledgement, setShowWarningAcknowledgement] = useState(false);
   const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
 
@@ -99,8 +118,12 @@ function ChplActionBar(props) {
   }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setShowAcknowledgement(props.showAcknowledgement);
-  }, [props.showAcknowledgement]); // eslint-disable-line react/destructuring-assignment
+    setShowErrorAcknowledgement(props.showErrorAcknowledgement && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']));
+  }, [props.showErrorAcknowledgement, hasAnyRole]); // eslint-disable-line react/destructuring-assignment
+
+  useEffect(() => {
+    setShowWarningAcknowledgement(props.showWarningAcknowledgement);
+  }, [props.showWarningAcknowledgement]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
     setIsDisabled(props.isDisabled);
@@ -148,9 +171,14 @@ function ChplActionBar(props) {
     setPendingAction('');
   };
 
-  const toggleAcknowledgement = () => {
-    setAcknowledged(!acknowledged);
-    act('toggleAcknowledgement');
+  const toggleErrorAcknowledgement = () => {
+    setErrorAcknowledged(!errorAcknowledged);
+    act('toggleErrorAcknowledgement');
+  };
+
+  const toggleWarningAcknowledgement = () => {
+    setWarningAcknowledged(!warningAcknowledged);
+    act('toggleWarningAcknowledgement');
   };
 
   return (
@@ -163,19 +191,41 @@ function ChplActionBar(props) {
             pendingMessage={pendingMessage}
           />
           )}
-        { showAcknowledgement
+        { showErrorAcknowledgement
           && (
             <div
-              className={classes.actionBarAcknowledgement}
+              className={classes.actionBarErrorAcknowledgement}
+            >
+              <Typography variant="body1">Caution: You are about to bypass error messages to update this product. This action may have unintended consequences. Please check the box and press save to confirm that you want to proceed</Typography>
+              <FormControlLabel
+                label={
+                  <Typography className={classes.actionBarErrorText}><strong>{`I have reviewed the error${errors.length !== 1 ? 's' : ''} and wish to proceed with this update`}</strong></Typography>
+}
+                control={(
+                  <Checkbox
+                    value="errorAcknowledge"
+                    onChange={toggleErrorAcknowledgement}
+                    checked={errorAcknowledged}
+                    color="default"
+                    className={classes.errorCheckbox}
+                  />
+                )}
+              />
+            </div>
+          )}
+        { showWarningAcknowledgement
+          && (
+            <div
+              className={classes.actionBarWarningAcknowledgement}
             >
               <FormControlLabel
                 label={`I have reviewed the warning${warnings.length !== 1 ? 's' : ''} and wish to proceed with this update`}
                 control={(
                   <Checkbox
-                    name="acknowledge"
-                    value="acknowledge"
-                    onChange={() => toggleAcknowledgement()}
-                    checked={acknowledged}
+                    name="warningAcknowledge"
+                    value="warningAcknowledge"
+                    onChange={toggleWarningAcknowledgement}
+                    checked={warningAcknowledged}
                   />
                 )}
               />
@@ -331,7 +381,8 @@ ChplActionBar.propTypes = {
   canWithdraw: bool,
   isDisabled: bool,
   isProcessing: bool,
-  showAcknowledgement: bool,
+  showErrorAcknowledgement: bool,
+  showWarningAcknowledgement: bool,
 };
 
 ChplActionBar.defaultProps = {
@@ -347,5 +398,6 @@ ChplActionBar.defaultProps = {
   canWithdraw: false,
   isDisabled: false,
   isProcessing: false,
-  showAcknowledgement: false,
+  showErrorAcknowledgement: false,
+  showWarningAcknowledgement: false,
 };

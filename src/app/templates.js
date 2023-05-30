@@ -10,7 +10,6 @@ ctxs.push({ module: 'chpl.organizations', ctx: require.context('./pages/organiza
 ctxs.push({ module: 'chpl.registration', ctx: require.context('./pages/registration/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.reports', ctx: require.context('./pages/reports/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.resources', ctx: require.context('./pages/resources/', true, /.*\.html$/) });
-ctxs.push({ module: 'chpl.search', ctx: require.context('./pages/search/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.services', ctx: require.context('./services/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.surveillance', ctx: require.context('./pages/surveillance/', true, /.*\.html$/) });
 ctxs.push({ module: 'chpl.users', ctx: require.context('./pages/users/', true, /.*\.html$/) });
