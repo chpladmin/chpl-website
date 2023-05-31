@@ -2,10 +2,10 @@ import { useMutation, useQuery } from 'react-query';
 
 import { useAxios } from './axios';
 
-const useFetchReasons = () => {
+const useFetchRoles = () => {
   const axios = useAxios();
-  return useQuery(['subscriptions/reasons'], async () => {
-    const response = await axios.get('subscriptions/reasons');
+  return useQuery(['subscriptions/roles'], async () => {
+    const response = await axios.get('subscriptions/roles');
     return response.data;
   });
 };
@@ -21,7 +21,7 @@ const usePutSubscriber = () => {
 };
 
 export {
-  useFetchReasons,
+  useFetchRoles,
   usePostSubscription,
   usePutSubscriber,
 };

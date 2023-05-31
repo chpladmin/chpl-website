@@ -16,7 +16,7 @@ import { useSnackbar } from 'notistack';
 
 import Image from '../../../assets/images/SubscribeTo.png';
 
-import { useFetchReasons, usePostSubscription } from 'api/subscriptions';
+import { useFetchRoles, usePostSubscription } from 'api/subscriptions';
 import { ChplTextField } from 'components/util';
 
 const useStyles = makeStyles({
@@ -32,14 +32,14 @@ const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Email format is invalid'),
-  reason: yup.object()
-    .required('Reason is required'),
+  role: yup.object()
+    .required('Role is required'),
 });
 
 function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   const { enqueueSnackbar } = useSnackbar();
-  const [reasons, setReasons] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchReasons();
+  const [roles, setRoles] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchRoles();
   const postSubscription = usePostSubscription();
   const classes = useStyles();
   let formik;
@@ -48,13 +48,13 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
     if (isLoading || !isSuccess) {
       return;
     }
-    setReasons(data.sort((a, b) => (a.sortOrder - b.sortOrder)));
+    setRoles(data.sort((a, b) => (a.sortOrder - b.sortOrder)));
   }, [data, isLoading, isSuccess]);
 
   const subscribe = () => {
     postSubscription.mutate({
       email: formik.values.email,
-      reasonId: formik.values.reason.id,
+      roleId: formik.values.role.id,
       subscribedObjectTypeId,
       subscribedObjectId,
     }, {
@@ -80,7 +80,7 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
     validationSchema,
     initialValues: {
       email: '',
-      reason: '',
+      role: '',
     },
     onSubmit: () => {
       subscribe();
@@ -113,17 +113,17 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
           />
           <ChplTextField
             select
-            id="reason"
-            name="reason"
-            label="Reason"
+            id="role"
+            name="role"
+            label="Role"
             required
-            value={formik.values.reason}
+            value={formik.values.role}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.reason && !!formik.errors.reason}
-            helperText={formik.touched.reason && formik.errors.reason}
+            error={formik.touched.role && !!formik.errors.role}
+            helperText={formik.touched.role && formik.errors.role}
           >
-            { reasons.map((item) => (
+            { roles.map((item) => (
               <MenuItem value={item} key={item.id}>
                 { item.name }
               </MenuItem>
