@@ -76,40 +76,6 @@ const validationSchema = yup.object({
   name: yup.string()
     .required('Name is required')
     .max(300, 'Name is too long'),
-  isAdding: yup.boolean()
-    .required()
-    .oneOf([false]),
-  status: yup.string()
-    .when('isAdding', {
-      is: true,
-      then: yup.string()
-        .required('OncOrganization Status is required'),
-    }),
-  statusDate: yup.date()
-    .when('isAdding', {
-      is: true,
-      then: yup.date()
-        .required('Change Date is required'),
-    }),
-  reason: yup.string()
-    .max(500, 'Reason is too long')
-    .when('status', {
-      is: 'Under certification ban by ONC',
-      then: yup.string()
-        .required('Reason is required'),
-    }),
-  fullName: yup.string()
-    .required('Full Name is required')
-    .max(500, 'Full Name is too long'),
-  title: yup.string()
-    .max(250, 'Title is too long'),
-  email: yup.string()
-    .email('Improper format (sample@example.com)')
-    .required('Email is required')
-    .max(250, 'Email is too long'),
-  phoneNumber: yup.string()
-    .required('Phone is required')
-    .max(100, 'Phone is too long'),
   line1: yup.string()
     .required('Address is required')
     .max(250, 'Address is too long'),
@@ -182,15 +148,6 @@ function ChplOncOrganizationEdit(props) {
     const updatedOncOrganization = {
       ...organization,
       name: formik.values.name,
-      selfOncOrganization: formik.values.selfOncOrganization,
-      statusEvents,
-      contact: {
-        ...organization.contact,
-        fullName: formik.values.fullName,
-        title: formik.values.title,
-        email: formik.values.email,
-        phoneNumber: formik.values.phoneNumber,
-      },
       address: {
         ...organization.address,
         line1: formik.values.line1,
@@ -217,55 +174,18 @@ function ChplOncOrganizationEdit(props) {
     }
   };
 
-  const cancelAdd = () => {
-    formik.setValues({
-      ...formik.values,
-      isAdding: false,
-      status: '',
-      statusDate: '',
-      reason: '',
-    });
-  };
-
-  const addStatus = () => {
-    setStatusEvents([
-      ...statusEvents,
-      {
-        status: { status: formik.values.status },
-        statusDate: (new Date(formik.values.statusDate)).getTime(),
-        reason: formik.values.reason,
-      },
-    ]);
-    cancelAdd();
-  };
-
-  const isAddDisabled = () => !!formik.errors.status || !!formik.errors.statusDate || !!formik.errors.reason;
-
-  const removeStatus = (status) => {
-    setStatusEvents(statusEvents.filter((item) => item.statusDate !== status.statusDate));
-  };
-
   const isActionDisabled = () => isInvalid || errors.length > 0 || !formik.isValid;
 
   formik = useFormik({
     initialValues: {
       name: organization.name || '',
-      selfOncOrganization: !!organization.selfOncOrganization,
-      status: '',
-      statusDate: '',
-      reason: '',
-      isAdding: false,
-      fullName: organization.contact?.fullName || '',
-      title: organization.contact?.title || '',
-      email: organization.contact?.email || '',
-      phoneNumber: organization.contact?.phoneNumber || '',
+      website: organization.website || '',
       line1: organization.address?.line1 || '',
       line2: organization.address?.line2 || '',
       city: organization.address?.city || '',
       state: organization.address?.state || '',
       zipcode: organization.address?.zipcode || '',
       country: organization.address?.country || '',
-      website: organization.website || '',
     },
     onSubmit: () => {
       save();
@@ -277,30 +197,17 @@ function ChplOncOrganizationEdit(props) {
     <>
       <Container maxWidth="md">
         <Card>
-          { isSplitting
-          && (
-            <CardHeader
-              title="New OncOrganization"
-              component="h2"
-              className={classes.organizationHeader}
-            />
-          )}
-          { !isSplitting
-          && (
-            <CardHeader
-              title={organization.name}
-              className={classes.organizationHeader}
-              component="h2"
-            />
-          )}
+          <CardHeader
+            title={organization.name}
+            className={classes.organizationHeader}
+            component="h2"
+          />
           <CardContent className={classes.content}>
-            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
-            && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
+            { getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
+            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
             <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'fullName', display: 'Full Name' }) }
-            { getEnhancedEditField({ key: 'title', display: 'Title', required: false }) }
-            { getEnhancedEditField({ key: 'email', display: 'Email' }) }
-            { getEnhancedEditField({ key: 'phoneNumber', display: 'Phone' }) }
+            Retired
+            Retirement Date
             <Divider className={classes.fullWidth} />
             { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
             { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
@@ -309,7 +216,6 @@ function ChplOncOrganizationEdit(props) {
             { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
             { getEnhancedEditField({ key: 'country', display: 'Country' }) }
             <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
           </CardContent>
         </Card>
         <ChplActionBar

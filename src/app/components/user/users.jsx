@@ -84,6 +84,7 @@ function ChplUsers(props) {
       case 'cancel':
         setUser(undefined);
         handleFilter({ target: { value: '' } });
+        props.dispatch('cancel');
         break;
       case 'delete':
         setUser(undefined);
@@ -91,6 +92,7 @@ function ChplUsers(props) {
         break;
       case 'edit':
         setUser(data);
+        props.dispatch('edit', 'user');
         break;
       case 'impersonate':
         networkService.impersonateUser(data)

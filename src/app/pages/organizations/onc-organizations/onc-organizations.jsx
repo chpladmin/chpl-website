@@ -55,6 +55,7 @@ function ChplOncOrganizations() {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [acbs, setAcbs] = useState([]);
   const [active, setActive] = useState({});
+  const [isEditing, setIsEditing] = useState('');
   const [users, setUsers] = useState([]);
   const { data, isLoading, isSuccess } = useFetchAcbs(true);
   const userQuery = useFetchUsersAtAcb(active);
@@ -99,6 +100,7 @@ function ChplOncOrganizations() {
   navigate = (target) => {
     acbs.forEach((acb) => hide(`${acb.name}.viewall.disabled`));
     setActive(target);
+    setIsEditing('');
     setUsers([]);
     if (target) {
       display('onc-organizations');
@@ -110,7 +112,27 @@ function ChplOncOrganizations() {
   };
 
   const handleDispatch = (action, payload) => {
-    console.log({ action, payload });
+    switch (action) {
+      case 'cancel':
+        setIsEditing('');
+        break;
+      case 'delete':
+        console.error('todo: set up deleting');
+        setIsEditing('');
+        break;
+      case 'edit':
+        setIsEditing(payload);
+        break;
+      case 'invite':
+        console.error('todo: set up invitation');
+        setIsEditing('');
+        break;
+      case 'refresh':
+        setIsEditing('');
+        break;
+      default:
+        console.log({ action, payload });
+    }
   };
 
   return (
@@ -139,8 +161,14 @@ function ChplOncOrganizations() {
         { active.id
           ? (
             <>
-              <ChplOncOrganization organization={active} />
-              <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
+              { isEditing !== 'user'
+                && (
+                  <ChplOncOrganization dispatch={handleDispatch} organization={active} />
+                )}
+              { isEditing !== 'acb'
+                && (
+                  <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
+                )}
             </>
           ) : (
             <Card>
