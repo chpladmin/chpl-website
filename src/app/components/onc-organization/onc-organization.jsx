@@ -4,6 +4,7 @@ import { func } from 'prop-types';
 import ChplOncOrganizationEdit from './onc-organization-edit';
 import ChplOncOrganizationView from './onc-organization-view';
 
+import { usePutAcb } from 'api/acbs';
 import { acb as acbPropType } from 'shared/prop-types';
 
 function ChplOncOrganization(props) {
@@ -12,6 +13,7 @@ function ChplOncOrganization(props) {
     organization,
   } = props;
   const [isEditing, setIsEditing] = useState(false);
+  const { mutate } = usePutAcb();
 
   const handleDispatch = (action, payload) => {
     switch (action) {
@@ -24,9 +26,15 @@ function ChplOncOrganization(props) {
         dispatch('edit', 'acb');
         break;
       case 'save':
-        console.error('todo: set up saving');
-        setIsEditing(false);
-        dispatch('cancel');
+        mutate(payload, {
+          onSuccess: () => {
+            setIsEditing(false);
+            dispatch('cancel');
+          },
+          onError: (error) => {
+            console.log({error});
+          },
+        });
         break;
       default:
         console.log({action, payload});

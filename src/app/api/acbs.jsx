@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 import options from './options';
@@ -13,7 +13,7 @@ const useFetchAcbs = (editable = false) => {
 
 const useFetchUsersAtAcb = ({ id }) => {
   const axios = useAxios();
-  return useQuery(['acbs', id], async () => {
+  return useQuery(['acbs', 'users', id], async () => {
     const response = await axios.get(`acbs/${id}/users`);
     return response.data;
   }, {
@@ -21,7 +21,18 @@ const useFetchUsersAtAcb = ({ id }) => {
   });
 };
 
+const usePutAcb = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`acbs/${data.id}`, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('acbs');
+    },
+  });
+};
+
 export {
   useFetchAcbs,
   useFetchUsersAtAcb,
+  usePutAcb,
 };
