@@ -15,9 +15,9 @@ describe('the Reports page', () => {
     await hooks.open('#/administration/reports');
   });
 
-  describe('for ROLE_ONC_STAFF', () => {
+  describe('for ROLE_ONC', () => {
     beforeEach(() => {
-      login.logIn('oncstaff');
+      login.logIn('onc');
       hooks.waitForSpinnerToDisappear();
     });
 
@@ -58,7 +58,8 @@ describe('the Reports page', () => {
       }
       expect(errors.length).toBe(0, errors.join(';'));
     });
-//ignoring this quarantined test as it is flaky --will address this later
+
+    // ignoring this quarantined test as it is flaky --will address this later
     xit('should show Retired ONC-ACBs are retired on the scheduling page', () => {
       page.startSchedulingAJob('All Broken Surveillance Rules Report');
       const acbs = page.getAvailableAcbs();
