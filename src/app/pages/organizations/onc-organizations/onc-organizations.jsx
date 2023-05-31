@@ -10,8 +10,9 @@ import {
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import { useFetchAcbs } from 'api/acbs';
+import { useFetchAcbs, useFetchUsersAtAcb } from 'api/acbs';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
+import ChplUsers from 'components/user/users';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
@@ -53,8 +54,11 @@ function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [acbs, setAcbs] = useState([]);
-  const [active, setActive] = useState('');
+  const [active, setActive] = useState({});
+  const [users, setUsers] = useState([]);
   const { data, isLoading, isSuccess } = useFetchAcbs(true);
+  const userQuery = useFetchUsersAtAcb(active);
+  const roles = ['ROLE_ACB'];
   const classes = useStyles();
   let navigate;
 
@@ -62,6 +66,11 @@ function ChplOncOrganizations() {
     if (isLoading || !isSuccess) { return; }
     setAcbs(data.acbs.sort(sortAcbs));
   }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    if (userQuery.isLoading || !userQuery.isSuccess) { return; }
+    setUsers(userQuery.data.users);
+  }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
   useEffect(() => {
     append(
@@ -79,7 +88,7 @@ function ChplOncOrganizations() {
         key="onc-organizations"
         depth={0}
         variant="text"
-        onClick={() => navigate('')}
+        onClick={() => navigate({})}
       >
         ONC Organizations
       </Button>,
@@ -90,6 +99,7 @@ function ChplOncOrganizations() {
   navigate = (target) => {
     acbs.forEach((acb) => hide(`${acb.name}.viewall.disabled`));
     setActive(target);
+    setUsers([]);
     if (target) {
       display('onc-organizations');
       hide('onc-organizations.disabled');
@@ -97,6 +107,10 @@ function ChplOncOrganizations() {
       display('onc-organizations.disabled');
       hide('onc-organizations');
     }
+  };
+
+  const handleDispatch = (action, payload) => {
+    console.log({ action, payload });
   };
 
   return (
@@ -122,8 +136,13 @@ function ChplOncOrganizations() {
         </Card>
       </div>
       <div>
-        { active === ''
-          && (
+        { active.id
+          ? (
+            <>
+              <ChplOncOrganization organization={active} />
+              <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
+            </>
+          ) : (
             <Card>
               <CardContent>
                 <Typography>
@@ -131,10 +150,6 @@ function ChplOncOrganizations() {
                 </Typography>
               </CardContent>
             </Card>
-          )}
-        { active !== ''
-          && (
-            <ChplOncOrganization organization={active} />
           )}
       </div>
     </div>

@@ -11,6 +11,17 @@ const useFetchAcbs = (editable = false) => {
   }, options.daily);
 };
 
-/* eslint-disable import/prefer-default-export */
-// remove eslint disable line when new api methods are added
-export { useFetchAcbs };
+const useFetchUsersAtAcb = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['acbs', id], async () => {
+    const response = await axios.get(`acbs/${id}/users`);
+    return response.data;
+  }, {
+    enabled: !!id,
+  });
+};
+
+export {
+  useFetchAcbs,
+  useFetchUsersAtAcb,
+};
