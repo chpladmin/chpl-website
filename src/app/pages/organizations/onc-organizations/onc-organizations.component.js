@@ -3,7 +3,6 @@ const OncOrganizationsComponent = {
   bindings: {
     allOrgs: '<',
     editableOrgs: '<',
-    roles: '<',
     key: '@',
     type: '@',
     functions: '<',
@@ -20,13 +19,14 @@ const OncOrganizationsComponent = {
       this.hasAnyRole = authService.hasAnyRole;
       this.networkService = networkService;
       this.toaster = toaster;
+      this.roles = ['ROLE_ACB'];
     }
 
     $onInit() {
       const that = this;
       const loggedIn = this.$scope.$on('loggedIn', () => that.loadOrgs());
       this.$scope.$on('$destroy', loggedIn);
-      if (this.$state.params.id) {
+      if (this.$state.params.id && this.key === 'acbs') {
         this.loadUsers();
       }
       this.takeUserAction = this.takeUserAction.bind(this);
@@ -38,9 +38,6 @@ const OncOrganizationsComponent = {
       }
       if (changes.editableOrgs && changes.editableOrgs.currentValue) {
         this.editableOrgs = angular.copy(changes.editableOrgs.currentValue[this.key]);
-      }
-      if (changes.roles && changes.roles.currentValue) {
-        this.roles = angular.copy(changes.roles.currentValue);
       }
       if (changes.functions && changes.functions.currentValue) {
         this.functions = angular.copy(changes.functions.currentValue);
@@ -80,8 +77,7 @@ const OncOrganizationsComponent = {
     }
 
     loadUsers(id = this.$state.params.id) {
-      const allowedRoles = ['ROLE_ADMIN', 'ROLE_ONC'];
-      allowedRoles.push(this.roles[0]);
+      const allowedRoles = ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'];
       if (this.hasAnyRole(allowedRoles)) {
         this.networkService[this.functions.getUsers](id).then((results) => { this.users = results.users; });
       }

@@ -5,7 +5,7 @@ const states = [{
   component: 'chplReports',
   data: {
     title: 'CHPL Activity',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB', 'ROLE_ATL'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
   },
 }, {
   name: 'reports.acbs',
@@ -13,7 +13,7 @@ const states = [{
   component: 'chplReportsAcbs',
   data: {
     title: 'CHPL Activity - ONC-ACBs',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
   },
 }, {
   name: 'reports.announcements',
@@ -37,7 +37,7 @@ const states = [{
   component: 'chplReportsAtls',
   data: {
     title: 'CHPL Activity - ONC-ATLs',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ATL'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
   },
 }, {
   name: 'reports.listings',
@@ -70,7 +70,7 @@ const states = [{
   component: 'chplQuestionableActivityWrapperBridge',
   data: {
     title: 'CHPL Activity - Questionable Activity',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
   },
 }, {
   name: 'reports.user-actions',
@@ -78,7 +78,7 @@ const states = [{
   component: 'chplReportsUserActions',
   data: {
     title: 'CHPL Activity - User Actions',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
   },
 }, {
   name: 'reports.users',
@@ -86,7 +86,7 @@ const states = [{
   component: 'chplReportsUsers',
   data: {
     title: 'CHPL Activity - Users',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC'],
   },
 }, {
   name: 'reports.versions',

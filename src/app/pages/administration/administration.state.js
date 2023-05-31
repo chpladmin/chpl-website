@@ -101,7 +101,7 @@ const states = [
     component: 'chplReportsWrapperBridge',
     data: {
       title: 'CHPL Administration - Reports',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'administration.system-maintenance',
