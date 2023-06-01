@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
+  Chip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -128,8 +130,10 @@ function ChplOncOrganizations() {
               endIcon={<ArrowForwardIcon />}
               className={classes.menuItems}
             >
-              { acb.name }
-              { acb.retired ? ' | Retired' : '' }
+              <Box display="flex" flexDirection="row" gridGap={4}>
+                { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
+                { acb.name }
+              </Box>
             </Button>
           ))}
         </Card>
