@@ -21,6 +21,16 @@ const useFetchUsersAtAcb = ({ id }) => {
   });
 };
 
+const usePostAcb = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('acbs', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('acbs');
+    },
+  });
+};
+
 const usePutAcb = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -34,5 +44,6 @@ const usePutAcb = () => {
 export {
   useFetchAcbs,
   useFetchUsersAtAcb,
+  usePostAcb,
   usePutAcb,
 };

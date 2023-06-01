@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Button,
   Card,
   CardContent,
-  Button,
-  List,
-  ListItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -55,6 +53,7 @@ function ChplOncOrganizations() {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [acbs, setAcbs] = useState([]);
   const [active, setActive] = useState({});
+  const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
   const [users, setUsers] = useState([]);
   const { data, isLoading, isSuccess } = useFetchAcbs(true);
@@ -114,6 +113,7 @@ function ChplOncOrganizations() {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
+        setIsCreating(false);
         setIsEditing('');
         break;
       case 'delete':
@@ -128,6 +128,7 @@ function ChplOncOrganizations() {
         setIsEditing('');
         break;
       case 'refresh':
+        setIsCreating(false);
         setIsEditing('');
         break;
       default:
@@ -159,7 +160,7 @@ function ChplOncOrganizations() {
       </div>
       <div>
         { active.id
-          ? (
+          && (
             <>
               { isEditing !== 'user'
                 && (
@@ -170,14 +171,25 @@ function ChplOncOrganizations() {
                   <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
                 )}
             </>
-          ) : (
-            <Card>
-              <CardContent>
-                <Typography>
-                  ONC Organization maintenance
-                </Typography>
-              </CardContent>
-            </Card>
+          )}
+        { !active.id && !isCreating
+         && (
+         <Card>
+           <CardContent>
+             <Typography>
+               ONC Organization maintenance
+             </Typography>
+             <Button
+               onClick={() => setIsCreating(true)}
+             >
+               Create
+             </Button>
+           </CardContent>
+         </Card>
+         )}
+        { isCreating && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+          && (
+            <ChplOncOrganization dispatch={handleDispatch} organization={{}} isCreating />
           )}
       </div>
     </div>
