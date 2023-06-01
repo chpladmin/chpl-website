@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bool, func } from 'prop-types';
 
 import ChplOncOrganizationEdit from './onc-organization-edit';
@@ -16,6 +16,10 @@ function ChplOncOrganization(props) {
   const [isEditing, setIsEditing] = useState(false);
   const { mutate: post } = usePostAcb();
   const { mutate: put } = usePutAcb();
+
+  useEffect(() => {
+    setIsEditing(isCreating);
+  }, [isCreating]);
 
   const handleDispatch = (action, payload) => {
     const mutate = isCreating ? post : put;

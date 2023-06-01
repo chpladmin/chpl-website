@@ -198,7 +198,7 @@ function ChplOncOrganizationEdit(props) {
       <Container maxWidth="md">
         <Card>
           <CardHeader
-            title={organization.name}
+            title={organization.name ?? 'Create new ONC-ACB'}
             className={classes.organizationHeader}
             component="h2"
           />
