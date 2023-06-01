@@ -18,7 +18,7 @@ const useFetchAcbs = (editable = false) => {
   return useQuery(['acbs', editable], async () => {
     const response = await axios.get(`acbs?editable=${editable ? 'true' : 'false'}`);
     return response.data;
-  }, options.daily);
+  }, editable ? {} : options.daily);
 };
 
 const useFetchUsersAtAcb = (acb) => {
