@@ -14,6 +14,7 @@ function ChplOncOrganization(props) {
     isCreating,
   } = props;
   const [isEditing, setIsEditing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { mutate: post } = usePostAcb();
   const { mutate: put } = usePutAcb();
 
@@ -33,9 +34,11 @@ function ChplOncOrganization(props) {
         dispatch('edit', 'acb');
         break;
       case 'save':
+        setIsProcessing(true);
         mutate(payload, {
           onSuccess: () => {
             setIsEditing(false);
+            setIsProcessing(false);
             dispatch('cancel');
           },
           onError: (error) => {
@@ -53,6 +56,7 @@ function ChplOncOrganization(props) {
       <ChplOncOrganizationEdit
         organization={organization}
         dispatch={handleDispatch}
+        isProcessing={isProcessing}
       />
     );
   }

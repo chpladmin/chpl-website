@@ -9,7 +9,7 @@ import {
   Switch,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -146,6 +146,7 @@ function ChplOncOrganizationEdit(props) {
   const {
     organization,
     dispatch,
+    isProcessing,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [errors, setErrors] = useState([]);
@@ -271,8 +272,9 @@ function ChplOncOrganizationEdit(props) {
         </Card>
         <ChplActionBar
           dispatch={handleDispatch}
-          isDisabled={isActionDisabled()}
           errors={errorMessages.concat(errors)}
+          isDisabled={isActionDisabled()}
+          isProcessing={isProcessing}
           warnings={warnings}
         />
       </Container>
@@ -285,4 +287,5 @@ export default ChplOncOrganizationEdit;
 ChplOncOrganizationEdit.propTypes = {
   organization: acbPropType.isRequired,
   dispatch: func.isRequired,
+  isProcessing: bool.isRequired,
 };
