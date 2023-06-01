@@ -1,41 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
-  Button,
-  ButtonGroup,
-  IconButton,
   Card,
-  CardHeader,
   CardContent,
+  CardHeader,
   Container,
   Divider,
   FormControlLabel,
-  MenuItem,
   Switch,
-  Table,
-  TableContainer,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableFooter,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-import {
-  arrayOf,
-  bool,
-  func,
-  string,
-} from 'prop-types';
+import { func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { acb as acbPropType } from 'shared/prop-types';
 
@@ -74,29 +53,69 @@ const useStyles = makeStyles({
 
 const validationSchema = yup.object({
   name: yup.string()
-    .required('Name is required')
-    .max(300, 'Name is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .required('Name is required')
+        .max(300, 'Name is too long'),
+    }),
+  retired: yup.boolean(),
+  retirementDay: yup.date()
+    .when('retired', {
+      is: true,
+      then: yup.date()
+        .required('Retirement Date is required')
+        .max(new Date(), 'Retirement Date must be in the past'),
+    }),
   line1: yup.string()
-    .required('Address is required')
-    .max(250, 'Address is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .required('Address is required')
+        .max(250, 'Address is too long'),
+    }),
   line2: yup.string()
-    .max(250, 'Line 2 is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .max(250, 'Line 2 is too long'),
+    }),
   city: yup.string()
-    .required('City is required')
-    .max(250, 'City is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .required('City is required')
+        .max(250, 'City is too long'),
+    }),
   state: yup.string()
-    .required('State is required')
-    .max(250, 'State is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .required('State is required')
+        .max(250, 'State is too long'),
+    }),
   zipcode: yup.string()
-    .required('Zip is required')
-    .max(25, 'Zip is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .required('Zip is required')
+        .max(25, 'Zip is too long'),
+    }),
   country: yup.string()
-    .required('Country is required')
-    .max(250, 'Country is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .required('Country is required')
+        .max(250, 'Country is too long'),
+    }),
   website: yup.string()
-    .url('Improper format (http://www.example.com)')
-    .required('Website is required')
-    .max(300, 'Website is too long'),
+    .when('retired', {
+      is: false,
+      then: yup.string()
+        .url('Improper format (http://www.example.com)')
+        .required('Website is required')
+        .max(300, 'Website is too long'),
+    }),
 });
 
 const getEditField = ({
@@ -105,6 +124,7 @@ const getEditField = ({
   formik,
   required = true,
   className,
+  disabled,
 }) => (
   <div className={className}>
     <ChplTextField
@@ -112,6 +132,7 @@ const getEditField = ({
       name={key}
       label={display}
       required={required}
+      disabled={disabled}
       value={formik.values[key]}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}
@@ -130,8 +151,6 @@ function ChplOncOrganizationEdit(props) {
   const [errors, setErrors] = useState([]);
   const [errorMessages, setErrorMessages] = useState([]);
   const [warnings, setWarnings] = useState([]);
-  const [isInvalid, setIsInvalid] = useState(false);
-  const [statusEvents, setStatusEvents] = useState([]);
   const classes = useStyles();
   let formik;
 
@@ -148,6 +167,9 @@ function ChplOncOrganizationEdit(props) {
     const updatedOncOrganization = {
       ...organization,
       name: formik.values.name,
+      retired: formik.values.retired,
+      retirementDay: formik.values.retirementDay,
+      website: formik.values.website,
       address: {
         ...organization.address,
         line1: formik.values.line1,
@@ -157,7 +179,6 @@ function ChplOncOrganizationEdit(props) {
         zipcode: formik.values.zipcode,
         country: formik.values.country,
       },
-      website: formik.values.website,
     };
     dispatch('save', updatedOncOrganization);
   };
@@ -174,18 +195,20 @@ function ChplOncOrganizationEdit(props) {
     }
   };
 
-  const isActionDisabled = () => isInvalid || errors.length > 0 || !formik.isValid;
+  const isActionDisabled = () => errors.length > 0 || !formik.isValid;
 
   formik = useFormik({
     initialValues: {
-      name: organization.name || '',
-      website: organization.website || '',
-      line1: organization.address?.line1 || '',
-      line2: organization.address?.line2 || '',
-      city: organization.address?.city || '',
-      state: organization.address?.state || '',
-      zipcode: organization.address?.zipcode || '',
-      country: organization.address?.country || '',
+      name: organization.name ?? '',
+      retired: !!organization.retired,
+      retirementDay: organization.retirementDay ?? '',
+      website: organization.website ?? '',
+      line1: organization.address?.line1 ?? '',
+      line2: organization.address?.line2 ?? '',
+      city: organization.address?.city ?? '',
+      state: organization.address?.state ?? '',
+      zipcode: organization.address?.zipcode ?? '',
+      country: organization.address?.country ?? '',
     },
     onSubmit: () => {
       save();
@@ -193,6 +216,7 @@ function ChplOncOrganizationEdit(props) {
     validationSchema,
   });
 
+  /* eslint-disable object-curly-newline */
   return (
     <>
       <Container maxWidth="md">
@@ -203,18 +227,45 @@ function ChplOncOrganizationEdit(props) {
             component="h2"
           />
           <CardContent className={classes.content}>
-            { getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
-            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth }) }
+            { getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth, disabled: formik.values.retired }) }
+            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth, disabled: formik.values.retired }) }
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+              && (
+                <>
+                  <Divider className={classes.fullWidth} />
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                        id="retired"
+                        name="retired"
+                        color="primary"
+                        checked={formik.values.retired}
+                        onChange={formik.handleChange}
+                      />
+                    )}
+                    label="Retired"
+                  />
+                  <ChplTextField
+                    id="retirement-day"
+                    name="retirementDay"
+                    label="Retirement Date"
+                    type="date"
+                    disabled={!formik.values.retired}
+                    value={formik.values.retirementDay}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.retirementDay && !!formik.errors.retirementDay}
+                    helperText={formik.touched.retirementDay && formik.errors.retirementDay}
+                  />
+                </>
+              )}
             <Divider className={classes.fullWidth} />
-            Retired
-            Retirement Date
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'line1', display: 'Address' }) }
-            { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false }) }
-            { getEnhancedEditField({ key: 'city', display: 'City' }) }
-            { getEnhancedEditField({ key: 'state', display: 'State' }) }
-            { getEnhancedEditField({ key: 'zipcode', display: 'Zip' }) }
-            { getEnhancedEditField({ key: 'country', display: 'Country' }) }
+            { getEnhancedEditField({ key: 'line1', display: 'Address', disabled: formik.values.retired }) }
+            { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false, disabled: formik.values.retired }) }
+            { getEnhancedEditField({ key: 'city', display: 'City', disabled: formik.values.retired }) }
+            { getEnhancedEditField({ key: 'state', display: 'State', disabled: formik.values.retired }) }
+            { getEnhancedEditField({ key: 'zipcode', display: 'Zip', disabled: formik.values.retired }) }
+            { getEnhancedEditField({ key: 'country', display: 'Country', disabled: formik.values.retired }) }
             <Divider className={classes.fullWidth} />
           </CardContent>
         </Card>
