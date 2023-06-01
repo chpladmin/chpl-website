@@ -73,6 +73,16 @@ function ChplOncOrganizations() {
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
   useEffect(() => {
+    if (isCreating) {
+      display('onc-organizations');
+      hide('onc-organizations.disabled');
+    } else {
+      display('onc-organizations.disabled');
+      hide('onc-organizations');
+    }
+  }, [isCreating]);
+
+  useEffect(() => {
     append(
       <Button
         key="onc-organizations.disabled"
@@ -99,6 +109,7 @@ function ChplOncOrganizations() {
   navigate = (target) => {
     acbs.forEach((acb) => hide(`${acb.name}.viewall.disabled`));
     setActive(target);
+    setIsCreating(false);
     setIsEditing('');
     setUsers([]);
     if (target) {
