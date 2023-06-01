@@ -64,7 +64,6 @@ function ChplOncOrganizations() {
   const userQuery = useFetchUsersAtAcb(active);
   const roles = ['ROLE_ACB'];
   const classes = useStyles();
-  let navigate;
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
@@ -76,7 +75,7 @@ function ChplOncOrganizations() {
     setUsers(userQuery.data.users);
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
-  navigate = (target) => {
+  const navigate = (target) => {
     setActive(target);
     setIsCreating(false);
     setIsEditing('');

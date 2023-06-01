@@ -229,7 +229,7 @@ function ChplOncOrganizationEdit(props) {
           <CardContent className={classes.content}>
             { getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth, disabled: formik.values.retired }) }
             { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth, disabled: formik.values.retired }) }
-            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && organization.name
               && (
                 <>
                   <Divider className={classes.fullWidth} />
