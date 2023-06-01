@@ -3,6 +3,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useAxios } from './axios';
 import options from './options';
 
+const useDeleteUserFromAcb = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`acbs/${data.id}/users/${data.userId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['acbs', 'users']);
+    },
+  });
+};
+
 const useFetchAcbs = (editable = false) => {
   const axios = useAxios();
   return useQuery(['acbs', editable], async () => {
@@ -42,6 +52,7 @@ const usePutAcb = () => {
 };
 
 export {
+  useDeleteUserFromAcb,
   useFetchAcbs,
   useFetchUsersAtAcb,
   usePostAcb,

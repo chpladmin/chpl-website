@@ -8,7 +8,11 @@ import {
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
-import { useFetchAcbs, useFetchUsersAtAcb } from 'api/acbs';
+import {
+  useDeleteUserFromAcb,
+  useFetchAcbs,
+  useFetchUsersAtAcb,
+} from 'api/acbs';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
 import { BreadcrumbContext, UserContext } from 'shared/contexts';
@@ -56,6 +60,7 @@ function ChplOncOrganizations() {
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
   const [users, setUsers] = useState([]);
+  const { mutate: remove } = useDeleteUserFromAcb();
   const { data, isLoading, isSuccess } = useFetchAcbs(true);
   const userQuery = useFetchUsersAtAcb(active);
   const roles = ['ROLE_ACB'];
@@ -128,8 +133,14 @@ function ChplOncOrganizations() {
         setIsEditing('');
         break;
       case 'delete':
-        console.error('todo: set up deleting');
-        setIsEditing('');
+        remove({ id: active.id, userId: payload }, {
+          onSuccess: () => {
+            setIsEditing('');
+          },
+          onError: (error) => {
+            console.log({ error });
+          },
+        });
         break;
       case 'edit':
         setIsEditing(payload);
