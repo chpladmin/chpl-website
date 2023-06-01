@@ -21,7 +21,8 @@ const useFetchAcbs = (editable = false) => {
   }, options.daily);
 };
 
-const useFetchUsersAtAcb = ({ id }) => {
+const useFetchUsersAtAcb = (acb) => {
+  const id = acb?.id;
   const axios = useAxios();
   return useQuery(['acbs', 'users', id], async () => {
     const response = await axios.get(`acbs/${id}/users`);

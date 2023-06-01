@@ -15,7 +15,7 @@ import {
 } from 'api/acbs';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -54,9 +54,8 @@ const sortAcbs = (a, b) => {
 
 function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
-  const { append, display, hide } = useContext(BreadcrumbContext);
   const [acbs, setAcbs] = useState([]);
-  const [active, setActive] = useState({});
+  const [active, setActive] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
   const [users, setUsers] = useState([]);
@@ -77,65 +76,22 @@ function ChplOncOrganizations() {
     setUsers(userQuery.data.users);
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
-  useEffect(() => {
-    if (isCreating) {
-      display('onc-organizations');
-      hide('onc-organizations.disabled');
-    } else {
-      display('onc-organizations.disabled');
-      hide('onc-organizations');
-    }
-  }, [isCreating]);
-
-  useEffect(() => {
-    append(
-      <Button
-        key="onc-organizations.disabled"
-        depth={0}
-        variant="text"
-        disabled
-      >
-        ONC Organizations
-      </Button>,
-    );
-    append(
-      <Button
-        key="onc-organizations"
-        depth={0}
-        variant="text"
-        onClick={() => navigate({})}
-      >
-        ONC Organizations
-      </Button>,
-    );
-    display('onc-organizations.disabled');
-  }, []);
-
   navigate = (target) => {
-    acbs.forEach((acb) => hide(`${acb.name}.viewall.disabled`));
     setActive(target);
     setIsCreating(false);
     setIsEditing('');
     setUsers([]);
-    if (target) {
-      display('onc-organizations');
-      hide('onc-organizations.disabled');
-    } else {
-      display('onc-organizations.disabled');
-      hide('onc-organizations');
-    }
   };
 
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
-        setIsCreating(false);
-        setIsEditing('');
+        navigate(undefined);
         break;
       case 'delete':
         remove({ id: active.id, userId: payload }, {
           onSuccess: () => {
-            setIsEditing('');
+            navigate(undefined);
           },
           onError: (error) => {
             console.log({ error });
@@ -147,11 +103,10 @@ function ChplOncOrganizations() {
         break;
       case 'invite':
         console.error('todo: set up invitation');
-        setIsEditing('');
+        navigate(undefined);
         break;
       case 'refresh':
-        setIsCreating(false);
-        setIsEditing('');
+        navigate(undefined);
         break;
       default:
         console.log({ action, payload });
@@ -166,7 +121,7 @@ function ChplOncOrganizations() {
             <Button
               key={acb.name}
               onClick={() => navigate(acb)}
-              disabled={active.name === acb.name}
+              disabled={active?.name === acb.name}
               id={`onc-organizations-navigation-${acb.name}`}
               fullWidth
               variant="text"
@@ -181,7 +136,7 @@ function ChplOncOrganizations() {
         </Card>
       </div>
       <div>
-        { active.id
+        { active?.id
           && (
             <>
               { isEditing !== 'user'
@@ -194,7 +149,7 @@ function ChplOncOrganizations() {
                 )}
             </>
           )}
-        { !active.id && !isCreating
+        { !active?.id && !isCreating
          && (
          <Card>
            <CardContent>
