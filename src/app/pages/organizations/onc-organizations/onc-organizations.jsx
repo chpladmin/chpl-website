@@ -33,6 +33,8 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
+  acbContainer: {
+  },
   navigation: {
     display: 'flex',
     flexDirection: 'column',
@@ -70,6 +72,9 @@ function ChplOncOrganizations() {
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
     setAcbs(data.acbs.sort(sortAcbs));
+    if (data.acbs.length === 1) {
+      setActive(data.acbs[0]);
+    }
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
@@ -78,10 +83,13 @@ function ChplOncOrganizations() {
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
   const navigate = (target) => {
-    setActive(target);
+    const next = target ? target : (acbs.length === 1 ? acbs[0] : undefined);
+    setActive(next);
     setIsCreating(false);
     setIsEditing('');
-    setUsers([]);
+    if (!next) {
+      setUsers([]);
+    }
   };
 
   const handleDispatch = (action, payload) => {
@@ -115,29 +123,32 @@ function ChplOncOrganizations() {
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.navigation}>
-        <Card>
-          { acbs.map((acb) => (
-            <Button
-              key={acb.name}
-              onClick={() => navigate(acb)}
-              disabled={active?.name === acb.name}
-              id={`onc-organizations-navigation-${acb.name}`}
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<ArrowForwardIcon />}
-              className={classes.menuItems}
-            >
-              <Box display="flex" flexDirection="row" gridGap={4}>
-                { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
-                { acb.name }
-              </Box>
-            </Button>
-          ))}
-        </Card>
-      </div>
+    <div className={acbs.length > 1 ? classes.container : classes.acbContainer}>
+      { acbs.length > 1
+        && (
+          <div className={classes.navigation}>
+            <Card>
+              { acbs.map((acb) => (
+                <Button
+                  key={acb.name}
+                  onClick={() => navigate(acb)}
+                  disabled={active?.name === acb.name}
+                  id={`onc-organizations-navigation-${acb.name}`}
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  className={classes.menuItems}
+                >
+                  <Box display="flex" flexDirection="row" gridGap={4}>
+                    { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
+                    { acb.name }
+                  </Box>
+                </Button>
+              ))}
+            </Card>
+          </div>
+        )}
       <div>
         { active?.id
           && (
