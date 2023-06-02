@@ -7,6 +7,7 @@ import {
   Divider,
   FormControlLabel,
   Switch,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { func } from 'prop-types';
@@ -227,8 +228,9 @@ function ChplOncOrganizationEdit(props) {
             component="h2"
           />
           <CardContent className={classes.content}>
-            { getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth, disabled: formik.values.retired }) }
-            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth, disabled: formik.values.retired }) }
+            <Typography className={classes.fullWidth} variant="subtitle1">General Info</Typography>
+            { getEnhancedEditField({ key: 'name', display: 'Name', disabled: formik.values.retired }) }
+            { getEnhancedEditField({ key: 'website', display: 'Website', disabled: formik.values.retired }) }
             { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
               && (
                 <>
@@ -250,6 +252,7 @@ function ChplOncOrganizationEdit(props) {
                     name="retirementDay"
                     label="Retirement Date"
                     type="date"
+                    placeholder="something"
                     disabled={!formik.values.retired}
                     value={formik.values.retirementDay}
                     onChange={formik.handleChange}
@@ -260,13 +263,13 @@ function ChplOncOrganizationEdit(props) {
                 </>
               )}
             <Divider className={classes.fullWidth} />
+            <Typography className={classes.fullWidth} variant="subtitle1">Address</Typography>
             { getEnhancedEditField({ key: 'line1', display: 'Address', disabled: formik.values.retired }) }
             { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false, disabled: formik.values.retired }) }
             { getEnhancedEditField({ key: 'city', display: 'City', disabled: formik.values.retired }) }
             { getEnhancedEditField({ key: 'state', display: 'State', disabled: formik.values.retired }) }
             { getEnhancedEditField({ key: 'zipcode', display: 'Zip', disabled: formik.values.retired }) }
             { getEnhancedEditField({ key: 'country', display: 'Country', disabled: formik.values.retired }) }
-            <Divider className={classes.fullWidth} />
           </CardContent>
         </Card>
         <ChplActionBar
