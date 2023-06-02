@@ -3,12 +3,15 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
+  CardHeader,
   Chip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import AddIcon from '@material-ui/icons/Add';
 
 import {
   useDeleteUserFromAcb,
@@ -184,7 +187,7 @@ function ChplOncOrganizations() {
           ))}
         </Card>
       </div>
-      <div>
+      <Box display="flex" flexDirection="column" gridGap={16}>
         { active.id
           && (
             <>
@@ -194,7 +197,15 @@ function ChplOncOrganizations() {
                 )}
               { isEditing !== 'acb'
                 && (
-                  <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
+                  <Card>
+                    <CardHeader
+                      title="Manage Users"
+                      action={
+                        <Typography>Users Count (4)</Typography>
+                  }
+                    />
+                    <CardContent><ChplUsers users={users} roles={roles} dispatch={handleDispatch} /></CardContent>
+                  </Card>
                 )}
             </>
           )}
@@ -202,22 +213,28 @@ function ChplOncOrganizations() {
          && (
          <Card>
            <CardContent>
+             <Typography gutterBottom><strong>Select a ONC-ACB from the list or create a new ONC-ACB</strong></Typography>
              <Typography>
-               ONC Organization maintenance
+               Learn more about the Office of the National Coordinator for Health Information Technology Authorized Certification Bodies. An ONC-ACB is a private organization that has been authorized by the Office of the National Coordinator for Health Information Technology (ONC) to certify electronic health record (EHR) technology for compliance with the requirements of the Medicare and Medicaid Electronic Health Record (EHR) Incentive Programs, also known as "meaningful use" programs.
              </Typography>
+           </CardContent>
+           <CardActions>
              <Button
+               variant="contained"
+               color="primary"
                onClick={() => setIsCreating(true)}
+               endIcon={<AddIcon />}
              >
                Create
              </Button>
-           </CardContent>
+           </CardActions>
          </Card>
          )}
         { isCreating && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
           && (
             <ChplOncOrganization dispatch={handleDispatch} organization={{}} isCreating />
           )}
-      </div>
+      </Box>
     </div>
   );
 }
