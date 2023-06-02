@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -33,9 +34,10 @@ import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    display: 'flex',
     gap: '16px',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   header: {
     margin: '0',
@@ -65,11 +67,26 @@ function ChplOncOrganizationView(props) {
         className={classes.header}
       />
       <CardContent className={classes.content}>
-        <Typography variant="body1" gutterBottom>
-          <strong>ONC-ACB code</strong>
-          {organization.acbCode}
-        </Typography>
-        {organization.address
+        <Box width="48%">
+          {organization.website
+         && (
+           <Typography variant="body1" gutterBottom>
+             <strong>Website</strong>
+             <br />
+             <ChplLink
+               href={organization.website}
+             />
+           </Typography>
+         )}
+        </Box>
+        <Box width="48%">
+          <Typography variant="body1" gutterBottom>
+            <strong>ONC-ACB code</strong>
+          </Typography>
+          <Typography>{organization.acbCode}</Typography>
+        </Box>
+        <Box width="48%">
+          {organization.address
          && (
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
@@ -101,16 +118,7 @@ function ChplOncOrganizationView(props) {
              {organization.address.country}
            </Typography>
          )}
-        {organization.website
-         && (
-           <Typography variant="body1" gutterBottom>
-             <strong>Website</strong>
-             <br />
-             <ChplLink
-               href={organization.website}
-             />
-           </Typography>
-         )}
+        </Box>
       </CardContent>
       <CardActions>
         <ButtonGroup
