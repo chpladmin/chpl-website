@@ -169,7 +169,7 @@ function ChplOncOrganizationEdit(props) {
       ...organization,
       name: formik.values.name,
       retired: formik.values.retired,
-      retirementDay: formik.values.retirementDay,
+      retirementDay: formik.values.retired ? formik.values.retirementDay : null,
       website: formik.values.website,
       address: {
         ...organization.address,
