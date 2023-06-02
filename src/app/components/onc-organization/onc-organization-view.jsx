@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   ButtonGroup,
@@ -13,24 +10,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-} from '@material-ui/lab';
 import { func } from 'prop-types';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplLink, ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { acb as acbPropType } from 'shared/prop-types';
-import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -50,11 +35,10 @@ function ChplOncOrganizationView(props) {
     organization,
     dispatch,
   } = props;
-  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   const edit = () => {
-    props.dispatch('edit');
+    dispatch('edit');
   };
 
   return (

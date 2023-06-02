@@ -5,7 +5,6 @@ import {
   string,
 } from 'prop-types';
 import {
-  ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
 
@@ -16,9 +15,9 @@ import ChplUserView from './user-view';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
-import theme from 'themes/theme';
+import { theme } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -46,20 +45,18 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
     },
   },
-}));
+});
 
 function ChplUsers(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [users, setUsers] = useState([]);
-  const [roles] = useState(props.roles);
-  const [user, setUser] = useState(undefined);
-  const [errors, setErrors] = useState([]);
+  const { dispatch, roles } = props;
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(undefined);
+  const [errors, setErrors] = useState([]);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     setUsers(props.users.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
@@ -81,15 +78,15 @@ function ChplUsers(props) {
       case 'cancel':
         setUser(undefined);
         handleFilter({ target: { value: '' } });
-        props.dispatch('cancel');
+        dispatch('cancel');
         break;
       case 'delete':
         setUser(undefined);
-        props.dispatch('delete', data);
+        dispatch('delete', data);
         break;
       case 'edit':
         setUser(data);
-        props.dispatch('edit', 'user');
+        dispatch('edit', 'user');
         break;
       case 'impersonate':
         networkService.impersonateUser(data)
@@ -100,18 +97,18 @@ function ChplUsers(props) {
               .then((u) => {
                 authService.saveCurrentUser(u);
                 $rootScope.$broadcast('impersonating');
-                props.dispatch('impersonate');
+                dispatch('impersonate');
               });
           });
         break;
       case 'invite':
-        props.dispatch('invite', data);
+        dispatch('invite', data);
         break;
       case 'save':
         networkService.updateUser(data)
           .then(() => {
             setUser(undefined);
-            props.dispatch('refresh');
+            dispatch('refresh');
           }, (error) => {
             if (error.data.error) {
               setErrors([error.data.error]);
@@ -126,8 +123,8 @@ function ChplUsers(props) {
 
   return (
     <ThemeProvider theme={theme}>
-
-      { user
+      <Container>
+        { user
           && (
             <ChplUserEdit
               user={user}
@@ -135,7 +132,7 @@ function ChplUsers(props) {
               dispatch={handleDispatch}
             />
           )}
-      { !user
+        { !user
           && (
             <div className={classes.container}>
               <>
@@ -163,6 +160,7 @@ function ChplUsers(props) {
               </>
             </div>
           )}
+      </Container>
     </ThemeProvider>
   );
 }

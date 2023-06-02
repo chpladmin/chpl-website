@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -147,11 +147,9 @@ function ChplOncOrganizationEdit(props) {
   const {
     organization,
     dispatch,
+    isProcessing,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
-  const [errors, setErrors] = useState([]);
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
   let formik;
 
@@ -169,7 +167,7 @@ function ChplOncOrganizationEdit(props) {
       ...organization,
       name: formik.values.name,
       retired: formik.values.retired,
-      retirementDay: formik.values.retirementDay,
+      retirementDay: formik.values.retired ? formik.values.retirementDay : null,
       website: formik.values.website,
       address: {
         ...organization.address,
@@ -196,7 +194,7 @@ function ChplOncOrganizationEdit(props) {
     }
   };
 
-  const isActionDisabled = () => errors.length > 0 || !formik.isValid;
+  const isActionDisabled = () => !formik.isValid;
 
   formik = useFormik({
     initialValues: {
@@ -223,7 +221,7 @@ function ChplOncOrganizationEdit(props) {
       <Container maxWidth="md">
         <Card>
           <CardHeader
-            title={organization.name ?? 'Create new ONC-ACB'}
+            title={organization.name ?? 'Create new Organization'}
             className={classes.organizationHeader}
             component="h2"
           />
@@ -231,7 +229,7 @@ function ChplOncOrganizationEdit(props) {
             <Typography className={classes.fullWidth} variant="subtitle1">General Info</Typography>
             { getEnhancedEditField({ key: 'name', display: 'Name', disabled: formik.values.retired }) }
             { getEnhancedEditField({ key: 'website', display: 'Website', disabled: formik.values.retired }) }
-            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && organization.name
               && (
                 <>
                   <Divider className={classes.fullWidth} />
@@ -275,8 +273,7 @@ function ChplOncOrganizationEdit(props) {
         <ChplActionBar
           dispatch={handleDispatch}
           isDisabled={isActionDisabled()}
-          errors={errorMessages.concat(errors)}
-          warnings={warnings}
+          isProcessing={isProcessing}
         />
       </Container>
     </>
@@ -288,4 +285,5 @@ export default ChplOncOrganizationEdit;
 ChplOncOrganizationEdit.propTypes = {
   organization: acbPropType.isRequired,
   dispatch: func.isRequired,
+  isProcessing: bool.isRequired,
 };

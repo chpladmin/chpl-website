@@ -18,10 +18,11 @@ const useFetchAcbs = (editable = false) => {
   return useQuery(['acbs', editable], async () => {
     const response = await axios.get(`acbs?editable=${editable ? 'true' : 'false'}`);
     return response.data;
-  }, options.daily);
+  }, editable ? {} : options.daily);
 };
 
-const useFetchUsersAtAcb = ({ id }) => {
+const useFetchUsersAtAcb = (acb) => {
+  const id = acb?.id;
   const axios = useAxios();
   return useQuery(['acbs', 'users', id], async () => {
     const response = await axios.get(`acbs/${id}/users`);
@@ -41,6 +42,11 @@ const usePostAcb = () => {
   });
 };
 
+const usePostUserInvitation = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.post('users/invite', data));
+};
+
 const usePutAcb = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -56,5 +62,6 @@ export {
   useFetchAcbs,
   useFetchUsersAtAcb,
   usePostAcb,
+  usePostUserInvitation,
   usePutAcb,
 };

@@ -11,16 +11,18 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import AddIcon from '@material-ui/icons/Add';
+import { useSnackbar } from 'notistack';
 
 import {
   useDeleteUserFromAcb,
   useFetchAcbs,
   useFetchUsersAtAcb,
+  usePostUserInvitation,
 } from 'api/acbs';
+import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
-import { BreadcrumbContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -35,6 +37,8 @@ const useStyles = makeStyles({
       gridTemplateColumns: '1fr 3fr',
       alignItems: 'start',
     },
+  },
+  orgContainer: {
   },
   navigation: {
     display: 'flex',
@@ -51,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-const sortAcbs = (a, b) => {
+const sortOrgs = (a, b) => {
   if (a.retired && !b.retired) { return 1; }
   if (!a.retired && b.retired) { return -1; }
   return a.name < b.name ? -1 : 1;
@@ -59,82 +63,62 @@ const sortAcbs = (a, b) => {
 
 function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
-  const { append, display, hide } = useContext(BreadcrumbContext);
-  const [acbs, setAcbs] = useState([]);
-  const [active, setActive] = useState({});
+  const { enqueueSnackbar } = useSnackbar();
+  const [orgs, setOrgs] = useState([]);
+  const [active, setActive] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
+  const [orgType, setOrgType] = useState('');
   const [users, setUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
-  const { data, isLoading, isSuccess } = useFetchAcbs(true);
+  const { mutate: invite } = usePostUserInvitation();
+  const acbQuery = useFetchAcbs(true);
+  const atlQuery = useFetchAtls(true);
   const userQuery = useFetchUsersAtAcb(active);
   const roles = ['ROLE_ACB'];
   const classes = useStyles();
-  let navigate;
 
   useEffect(() => {
-    if (isLoading || !isSuccess) { return; }
-    setAcbs(data.acbs.sort(sortAcbs));
-  }, [data, isLoading, isSuccess]);
-
-  useEffect(() => {
-    if (userQuery.isLoading || !userQuery.isSuccess) { return; }
-    setUsers(userQuery.data.users);
-  }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
-
-  useEffect(() => {
-    if (isCreating) {
-      display('onc-organizations');
-      hide('onc-organizations.disabled');
-    } else {
-      display('onc-organizations.disabled');
-      hide('onc-organizations');
-    }
-  }, [isCreating]);
-
-  useEffect(() => {
-    append(
-      <Button
-        key="onc-organizations.disabled"
-        depth={0}
-        variant="text"
-        disabled
-      >
-        ONC Organizations
-      </Button>,
-    );
-    append(
-      <Button
-        key="onc-organizations"
-        depth={0}
-        variant="text"
-        onClick={() => navigate({})}
-      >
-        ONC Organizations
-      </Button>,
-    );
-    display('onc-organizations.disabled');
+    setOrgType(window.location.href.includes('onc-acbs') ? 'acb' : 'atl');
   }, []);
 
-  navigate = (target) => {
-    acbs.forEach((acb) => hide(`${acb.name}.viewall.disabled`));
-    setActive(target);
+  useEffect(() => {
+    if (orgType !== 'acb') { return; }
+    if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
+    setOrgs(acbQuery.data.acbs.sort(sortOrgs));
+    if (acbQuery.data.acbs.length === 1) {
+      setActive(acbQuery.data.acbs[0]);
+    }
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess, orgType]);
+
+  useEffect(() => {
+    if (orgType !== 'atl') { return; }
+    if (atlQuery.isLoading || !atlQuery.isSuccess) { return; }
+    setOrgs(atlQuery.data.atls.sort(sortOrgs));
+    if (atlQuery.data.atls.length === 1) {
+      setActive(atlQuery.data.atls[0]);
+    }
+  }, [atlQuery.data, atlQuery.isLoading, atlQuery.isSuccess, orgType]);
+
+  useEffect(() => {
+    if (orgType !== 'acb') { return; }
+    if (userQuery.isLoading || !userQuery.isSuccess) { return; }
+    setUsers(userQuery.data.users);
+  }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess, orgType]);
+
+  const navigate = (target) => {
+    const next = target || (orgs.length === 1 ? orgs[0] : undefined);
+    setActive(next);
     setIsCreating(false);
     setIsEditing('');
-    setUsers([]);
-    if (target) {
-      display('onc-organizations');
-      hide('onc-organizations.disabled');
-    } else {
-      display('onc-organizations.disabled');
-      hide('onc-organizations');
+    if (!next) {
+      setUsers([]);
     }
   };
 
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
-        setIsCreating(false);
         setIsEditing('');
         break;
       case 'delete':
@@ -148,14 +132,27 @@ function ChplOncOrganizations() {
         });
         break;
       case 'edit':
-        setIsEditing(payload);
+        if (isCreating) {
+          navigate(undefined);
+        } else {
+          setIsEditing(payload);
+        }
         break;
       case 'invite':
-        console.error('todo: set up invitation');
-        setIsEditing('');
+        invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: active.id }, {
+          onSuccess: () => {
+            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
+              variant: 'success',
+            });
+          },
+          onError: () => {
+            enqueueSnackbar('Email was not sent', {
+              variant: 'error',
+            });
+          },
+        });
         break;
       case 'refresh':
-        setIsCreating(false);
         setIsEditing('');
         break;
       default:
@@ -164,38 +161,45 @@ function ChplOncOrganizations() {
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.navigation}>
-        <Card>
-          { acbs.map((acb) => (
-            <Button
-              key={acb.name}
-              onClick={() => navigate(acb)}
-              disabled={active.name === acb.name}
-              id={`onc-organizations-navigation-${acb.name}`}
-              fullWidth
-              variant="text"
-              color="primary"
-              endIcon={<ArrowForwardIcon />}
-              className={classes.menuItems}
-            >
-              <Box display="flex" flexDirection="row" gridGap={4}>
-                { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
-                { acb.name }
-              </Box>
-            </Button>
-          ))}
-        </Card>
-      </div>
-      <Box display="flex" flexDirection="column" gridGap={16}>
-        { active.id
+    <div className={orgs.length > 1 ? classes.container : classes.orgContainer}>
+      { orgs.length > 1
+        && (
+          <div className={classes.navigation}>
+            <Card>
+              { orgs.map((org) => (
+                <Button
+                  key={org.name}
+                  onClick={() => navigate(org)}
+                  disabled={active?.name === org.name}
+                  id={`onc-organizations-navigation-${org.name}`}
+                  fullWidth
+                  variant="text"
+                  color="primary"
+                  endIcon={<ArrowForwardIcon />}
+                  className={classes.menuItems}
+                >
+                  <Box display="flex" flexDirection="row" gridGap={4}>
+                    { org.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
+                    { org.name }
+                  </Box>
+                </Button>
+              ))}
+            </Card>
+          </div>
+        )}
+      <div>
+        { active?.id
           && (
             <>
               { isEditing !== 'user'
                 && (
-                  <ChplOncOrganization dispatch={handleDispatch} organization={active} />
+                  <ChplOncOrganization
+                    dispatch={handleDispatch}
+                    organization={active}
+                    orgType={orgType}
+                  />
                 )}
-              { isEditing !== 'acb'
+              { isEditing !== 'org' && orgType === 'acb'
                 && (
                   <Card>
                     <CardHeader
@@ -209,7 +213,7 @@ function ChplOncOrganizations() {
                 )}
             </>
           )}
-        { !active.id && !isCreating
+        { !active?.id && !isCreating
          && (
          <Card>
            <CardContent>
@@ -232,9 +236,14 @@ function ChplOncOrganizations() {
          )}
         { isCreating && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
           && (
-            <ChplOncOrganization dispatch={handleDispatch} organization={{}} isCreating />
+            <ChplOncOrganization
+              dispatch={handleDispatch}
+              organization={{}}
+              orgType={orgType}
+              isCreating
+            />
           )}
-      </Box>
+          </div>
     </div>
   );
 }
