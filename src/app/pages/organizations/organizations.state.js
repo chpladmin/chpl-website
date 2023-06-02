@@ -160,12 +160,18 @@ const states = [
     name: 'organizations.onc-acbs',
     url: '/onc-acbs',
     component: 'chplOncOrganizationsBridge',
-    data: { title: 'CHPL ONC-ACBs' },
+    data: {
+      title: 'CHPL ONC-ACBs',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    },
   }, {
     name: 'organizations.onc-atls',
     url: '/onc-atls',
     component: 'chplOncOrganizationsBridge',
-    data: { title: 'CHPL ONC-ATLs' },
+    data: {
+      title: 'CHPL ONC-ATLs',
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+    },
   },
 ];
 
