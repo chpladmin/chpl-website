@@ -30,10 +30,12 @@ export default class NetworkService {
     return this.apiPOST('/users/confirm', userObject);
   }
 
+  // check this
   createACB(acb) {
     return this.apiPOST('/acbs', acb);
   }
 
+  // check this
   createATL(atl) {
     return this.apiPOST('/atls', atl);
   }
@@ -473,10 +475,12 @@ export default class NetworkService {
     return this.apiGET('/users');
   }
 
+  // check this
   getUsersAtAcb(acbId) {
     return this.apiGET(`/acbs/${acbId}/users`);
   }
 
+  // check this
   getUsersAtAtl(atlId) {
     return this.apiGET(`/atls/${atlId}/users`);
   }
@@ -522,10 +526,12 @@ export default class NetworkService {
     return this.apiPOST('/developers/merge', mergeDeveloperObject);
   }
 
+  // check this
   modifyACB(acb) {
     return this.apiPUT(`/acbs/${acb.id}`, acb);
   }
 
+  // check this
   modifyATL(atl) {
     return this.apiPUT(`/atls/${atl.id}`, atl);
   }
@@ -538,10 +544,12 @@ export default class NetworkService {
     return this.apiDELETE(`/listings/pending/${id}`);
   }
 
+  // check this
   removeUserFromAcb(userId, acbId) {
     return this.apiDELETE(`/acbs/${acbId}/users/${userId}`);
   }
 
+  // check this
   removeUserFromAtl(userId, atlId) {
     return this.apiDELETE(`/atls/${atlId}/users/${userId}`);
   }

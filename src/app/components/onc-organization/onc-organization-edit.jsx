@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Card,
   CardContent,
@@ -149,9 +149,6 @@ function ChplOncOrganizationEdit(props) {
     isProcessing,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
-  const [errors, setErrors] = useState([]);
-  const [errorMessages, setErrorMessages] = useState([]);
-  const [warnings, setWarnings] = useState([]);
   const classes = useStyles();
   let formik;
 
@@ -196,7 +193,7 @@ function ChplOncOrganizationEdit(props) {
     }
   };
 
-  const isActionDisabled = () => errors.length > 0 || !formik.isValid;
+  const isActionDisabled = () => !formik.isValid;
 
   formik = useFormik({
     initialValues: {
@@ -223,7 +220,7 @@ function ChplOncOrganizationEdit(props) {
       <Container maxWidth="md">
         <Card>
           <CardHeader
-            title={organization.name ?? 'Create new ONC-ACB'}
+            title={organization.name ?? 'Create new Organization'}
             className={classes.organizationHeader}
             component="h2"
           />
@@ -272,10 +269,8 @@ function ChplOncOrganizationEdit(props) {
         </Card>
         <ChplActionBar
           dispatch={handleDispatch}
-          errors={errorMessages.concat(errors)}
           isDisabled={isActionDisabled()}
           isProcessing={isProcessing}
-          warnings={warnings}
         />
       </Container>
     </>

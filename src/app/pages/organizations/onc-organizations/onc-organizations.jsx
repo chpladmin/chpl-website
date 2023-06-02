@@ -15,6 +15,7 @@ import {
   useFetchAcbs,
   useFetchUsersAtAcb,
 } from 'api/acbs';
+import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
 import ChplUsers from 'components/user/users';
 import { UserContext } from 'shared/contexts';
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
-  acbContainer: {
+  orgContainer: {
   },
   navigation: {
     display: 'flex',
@@ -50,7 +51,7 @@ const useStyles = makeStyles({
   },
 });
 
-const sortAcbs = (a, b) => {
+const sortOrgs = (a, b) => {
   if (a.retired && !b.retired) { return 1; }
   if (!a.retired && b.retired) { return -1; }
   return a.name < b.name ? -1 : 1;
@@ -58,32 +59,49 @@ const sortAcbs = (a, b) => {
 
 function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
-  const [acbs, setAcbs] = useState([]);
+  const [orgs, setOrgs] = useState([]);
   const [active, setActive] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
+  const [orgType, setOrgType] = useState('');
   const [users, setUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
-  const { data, isLoading, isSuccess } = useFetchAcbs(true);
+  const acbQuery = useFetchAcbs(true);
+  const atlQuery = useFetchAtls(true);
   const userQuery = useFetchUsersAtAcb(active);
   const roles = ['ROLE_ACB'];
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading || !isSuccess) { return; }
-    setAcbs(data.acbs.sort(sortAcbs));
-    if (data.acbs.length === 1) {
-      setActive(data.acbs[0]);
-    }
-  }, [data, isLoading, isSuccess]);
+    setOrgType(window.location.href.includes('onc-acbs') ? 'acb' : 'atl');
+  }, []);
 
   useEffect(() => {
+    if (orgType !== 'acb') { return; }
+    if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
+    setOrgs(acbQuery.data.acbs.sort(sortOrgs));
+    if (acbQuery.data.acbs.length === 1) {
+      setActive(acbQuery.data.acbs[0]);
+    }
+  }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess, orgType]);
+
+  useEffect(() => {
+    if (orgType !== 'atl') { return; }
+    if (atlQuery.isLoading || !atlQuery.isSuccess) { return; }
+    setOrgs(atlQuery.data.atls.sort(sortOrgs));
+    if (atlQuery.data.atls.length === 1) {
+      setActive(atlQuery.data.atls[0]);
+    }
+  }, [atlQuery.data, atlQuery.isLoading, atlQuery.isSuccess, orgType]);
+
+  useEffect(() => {
+    if (orgType !== 'acb') { return; }
     if (userQuery.isLoading || !userQuery.isSuccess) { return; }
     setUsers(userQuery.data.users);
-  }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
+  }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess, orgType]);
 
   const navigate = (target) => {
-    const next = target || (acbs.length === 1 ? acbs[0] : undefined);
+    const next = target || (orgs.length === 1 ? orgs[0] : undefined);
     setActive(next);
     setIsCreating(false);
     setIsEditing('');
@@ -127,17 +145,17 @@ function ChplOncOrganizations() {
   };
 
   return (
-    <div className={acbs.length > 1 ? classes.container : classes.acbContainer}>
-      { acbs.length > 1
+    <div className={orgs.length > 1 ? classes.container : classes.orgContainer}>
+      { orgs.length > 1
         && (
           <div className={classes.navigation}>
             <Card>
-              { acbs.map((acb) => (
+              { orgs.map((org) => (
                 <Button
-                  key={acb.name}
-                  onClick={() => navigate(acb)}
-                  disabled={active?.name === acb.name}
-                  id={`onc-organizations-navigation-${acb.name}`}
+                  key={org.name}
+                  onClick={() => navigate(org)}
+                  disabled={active?.name === org.name}
+                  id={`onc-organizations-navigation-${org.name}`}
                   fullWidth
                   variant="text"
                   color="primary"
@@ -145,8 +163,8 @@ function ChplOncOrganizations() {
                   className={classes.menuItems}
                 >
                   <Box display="flex" flexDirection="row" gridGap={4}>
-                    { acb.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
-                    { acb.name }
+                    { org.retired ? <Chip size="small" color="default" variant="outlined" label="Retired" /> : '' }
+                    { org.name }
                   </Box>
                 </Button>
               ))}
@@ -159,11 +177,19 @@ function ChplOncOrganizations() {
             <>
               { isEditing !== 'user'
                 && (
-                  <ChplOncOrganization dispatch={handleDispatch} organization={active} />
+                  <ChplOncOrganization
+                    dispatch={handleDispatch}
+                    organization={active}
+                    orgType={orgType}
+                  />
                 )}
-              { isEditing !== 'acb'
+              { isEditing !== 'org' && orgType === 'acb'
                 && (
-                  <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
+                  <ChplUsers
+                    users={users}
+                    roles={roles}
+                    dispatch={handleDispatch}
+                  />
                 )}
             </>
           )}
@@ -174,17 +200,25 @@ function ChplOncOrganizations() {
              <Typography>
                ONC Organization maintenance
              </Typography>
-             <Button
-               onClick={() => setIsCreating(true)}
-             >
-               Create
-             </Button>
+             { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+               && (
+                 <Button
+                   onClick={() => setIsCreating(true)}
+                 >
+                   Create
+                 </Button>
+               )}
            </CardContent>
          </Card>
          )}
         { isCreating && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
           && (
-            <ChplOncOrganization dispatch={handleDispatch} organization={{}} isCreating />
+            <ChplOncOrganization
+              dispatch={handleDispatch}
+              organization={{}}
+              orgType={orgType}
+              isCreating
+            />
           )}
       </div>
     </div>

@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Button,
   ButtonGroup,
   Card,
@@ -12,24 +9,12 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import {
-  Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-} from '@material-ui/lab';
 import { func } from 'prop-types';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import CallMergeIcon from '@material-ui/icons/CallMerge';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { ChplLink, ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
+import { getDisplayDateFormat } from 'services/date-util';
 import { acb as acbPropType } from 'shared/prop-types';
-import { FlagContext, UserContext } from 'shared/contexts';
 
 const useStyles = makeStyles({
   content: {
@@ -48,11 +33,10 @@ function ChplOncOrganizationView(props) {
     organization,
     dispatch,
   } = props;
-  const { hasAnyRole } = useContext(UserContext);
   const classes = useStyles();
 
   const edit = () => {
-    props.dispatch('edit');
+    dispatch('edit');
   };
 
   return (
@@ -66,10 +50,31 @@ function ChplOncOrganizationView(props) {
       />
       <CardContent className={classes.content}>
         <Typography variant="body1" gutterBottom>
-          <strong>ONC-ACB code</strong>
-          {organization.acbCode}
+          <strong>Organization code</strong>
+          { organization.acbCode ?? organization.atlCode }
         </Typography>
-        {organization.address
+        <Typography variant="body1" gutterBottom>
+          <strong>Retired</strong>
+          { organization.retired ? 'Yes' : 'No' }
+          { organization.retired
+            && (
+              <>
+                <strong>Retirement Date</strong>
+                { getDisplayDateFormat(organization.retirementDay) }
+              </>
+            )}
+        </Typography>
+        { organization.website
+         && (
+           <Typography variant="body1" gutterBottom>
+             <strong>Website</strong>
+             <br />
+             <ChplLink
+               href={organization.website}
+             />
+           </Typography>
+         )}
+        { organization.address
          && (
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
@@ -99,16 +104,6 @@ function ChplOncOrganizationView(props) {
              {' '}
              <span className="sr-only">Country: </span>
              {organization.address.country}
-           </Typography>
-         )}
-        {organization.website
-         && (
-           <Typography variant="body1" gutterBottom>
-             <strong>Website</strong>
-             <br />
-             <ChplLink
-               href={organization.website}
-             />
            </Typography>
          )}
       </CardContent>
