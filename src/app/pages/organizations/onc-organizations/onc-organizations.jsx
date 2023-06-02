@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import AddIcon from '@material-ui/icons/Add';
 import { useSnackbar } from 'notistack';
 
 import {
@@ -187,7 +188,7 @@ function ChplOncOrganizations() {
             </Card>
           </div>
         )}
-      <div>
+      <Box display="flex" flexDirection="column" gridGap={16}>
         { active?.id
           && (
             <>
@@ -243,7 +244,7 @@ function ChplOncOrganizations() {
               isCreating
             />
           )}
-          </div>
+        </Box>
     </div>
   );
 }

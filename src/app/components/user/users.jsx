@@ -5,6 +5,7 @@ import {
   string,
 } from 'prop-types';
 import {
+  Box,
   makeStyles,
 } from '@material-ui/core';
 
@@ -122,8 +123,7 @@ function ChplUsers(props) {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
+      <Box>
         { user
           && (
             <ChplUserEdit
@@ -160,8 +160,7 @@ function ChplUsers(props) {
               </>
             </div>
           )}
-      </Container>
-    </ThemeProvider>
+          </Box>
   );
 }
 
