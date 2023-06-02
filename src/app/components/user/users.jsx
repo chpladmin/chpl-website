@@ -5,7 +5,6 @@ import {
   string,
 } from 'prop-types';
 import {
-  Container,
   ThemeProvider,
   makeStyles,
 } from '@material-ui/core';
@@ -23,11 +22,10 @@ const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '16px',
   },
   header: {
     padding: '16px',
-    margin: '0 8px',
     display: 'flex',
     gap: '8px',
     flexDirection: 'column',
@@ -36,12 +34,11 @@ const useStyles = makeStyles(() => ({
     borderRadius: '8px',
     boxShadow: 'rgb(149 157 165 / 10%) 0px 4px 8px',
     alignItems: 'stretch',
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('sm')]: {
       flexDirection: 'row',
     },
   },
   users: {
-    padding: '8px',
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
@@ -129,8 +126,8 @@ function ChplUsers(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        { user
+
+      { user
           && (
             <ChplUserEdit
               user={user}
@@ -138,7 +135,7 @@ function ChplUsers(props) {
               dispatch={handleDispatch}
             />
           )}
-        { !user
+      { !user
           && (
             <div className={classes.container}>
               <>
@@ -166,7 +163,6 @@ function ChplUsers(props) {
               </>
             </div>
           )}
-      </Container>
     </ThemeProvider>
   );
 }
