@@ -9,11 +9,13 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { useSnackbar } from 'notistack';
 
 import {
   useDeleteUserFromAcb,
   useFetchAcbs,
   useFetchUsersAtAcb,
+  usePostUserInvitation,
 } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
 import ChplOncOrganization from 'components/onc-organization/onc-organization';
@@ -59,6 +61,7 @@ const sortOrgs = (a, b) => {
 
 function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
   const [orgs, setOrgs] = useState([]);
   const [active, setActive] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
@@ -66,6 +69,7 @@ function ChplOncOrganizations() {
   const [orgType, setOrgType] = useState('');
   const [users, setUsers] = useState([]);
   const { mutate: remove } = useDeleteUserFromAcb();
+  const { mutate: invite } = usePostUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
   const userQuery = useFetchUsersAtAcb(active);
@@ -133,8 +137,18 @@ function ChplOncOrganizations() {
         }
         break;
       case 'invite':
-        console.error('todo: set up invitation');
-        setIsEditing('');
+        invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: active.id }, {
+          onSuccess: () => {
+            enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
+              variant: 'success',
+            });
+          },
+          onError: () => {
+            enqueueSnackbar('Email was not sent', {
+              variant: 'error',
+            });
+          },
+        });
         break;
       case 'refresh':
         setIsEditing('');
