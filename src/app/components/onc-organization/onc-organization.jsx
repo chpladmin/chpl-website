@@ -27,7 +27,7 @@ function ChplOncOrganization(props) {
     switch (action) {
       case 'cancel':
         setIsEditing(false);
-        dispatch('cancel');
+        dispatch('edit', '');
         break;
       case 'edit':
         setIsEditing(true);
@@ -39,7 +39,7 @@ function ChplOncOrganization(props) {
           onSuccess: () => {
             setIsEditing(false);
             setIsProcessing(false);
-            dispatch('cancel');
+            dispatch('edit', '');
           },
           onError: (error) => {
             console.log({ error });

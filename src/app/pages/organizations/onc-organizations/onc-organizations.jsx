@@ -83,7 +83,7 @@ function ChplOncOrganizations() {
   }, [userQuery.data, userQuery.isLoading, userQuery.isSuccess]);
 
   const navigate = (target) => {
-    const next = target ? target : (acbs.length === 1 ? acbs[0] : undefined);
+    const next = target || (acbs.length === 1 ? acbs[0] : undefined);
     setActive(next);
     setIsCreating(false);
     setIsEditing('');
@@ -95,12 +95,12 @@ function ChplOncOrganizations() {
   const handleDispatch = (action, payload) => {
     switch (action) {
       case 'cancel':
-        navigate(undefined);
+        setIsEditing('');
         break;
       case 'delete':
         remove({ id: active.id, userId: payload }, {
           onSuccess: () => {
-            navigate(undefined);
+            setIsEditing('');
           },
           onError: (error) => {
             console.log({ error });
@@ -108,14 +108,18 @@ function ChplOncOrganizations() {
         });
         break;
       case 'edit':
-        setIsEditing(payload);
+        if (isCreating) {
+          navigate(undefined);
+        } else {
+          setIsEditing(payload);
+        }
         break;
       case 'invite':
         console.error('todo: set up invitation');
-        navigate(undefined);
+        setIsEditing('');
         break;
       case 'refresh':
-        navigate(undefined);
+        setIsEditing('');
         break;
       default:
         console.log({ action, payload });
