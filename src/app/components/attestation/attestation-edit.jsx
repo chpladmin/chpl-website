@@ -54,11 +54,14 @@ function ChplAttestationEdit(props) {
       case 'submit':
         setIsSubmitting(true);
         mutate({
-          ...changeRequest,
-          ...payload,
-          currentStatus: {
-            changeRequestStatusType: { id: 1 },
-            comment: '',
+          acknowledgeWarnings: false,
+          changeRequest: {
+            ...changeRequest,
+            ...payload,
+            currentStatus: {
+              changeRequestStatusType: { id: 1 },
+              comment: '',
+            },
           },
         }, {
           onSuccess: () => {
