@@ -5,7 +5,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Chip,
   Typography,
   makeStyles,
@@ -202,15 +201,7 @@ function ChplOncOrganizations() {
                 )}
               { isEditing !== 'org' && orgType === 'acb'
                 && (
-                  <Card>
-                    <CardHeader
-                      title="Manage Users"
-                      action={
-                        <Typography>Users Count (4)</Typography>
-                  }
-                    />
-                    <CardContent><ChplUsers users={users} roles={roles} dispatch={handleDispatch} /></CardContent>
-                  </Card>
+                  <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
                 )}
             </>
           )}
@@ -218,10 +209,7 @@ function ChplOncOrganizations() {
          && (
          <Card>
            <CardContent>
-             <Typography gutterBottom><strong>Select a ONC-ACB from the list or create a new ONC-ACB</strong></Typography>
-             <Typography>
-               Learn more about the Office of the National Coordinator for Health Information Technology Authorized Certification Bodies. An ONC-ACB is a private organization that has been authorized by the Office of the National Coordinator for Health Information Technology (ONC) to certify electronic health record (EHR) technology for compliance with the requirements of the Medicare and Medicaid Electronic Health Record (EHR) Incentive Programs, also known as "meaningful use" programs.
-             </Typography>
+             <Typography gutterBottom><strong>ONC Organization maintenance</strong></Typography>
            </CardContent>
            <CardActions>
              <Button
@@ -244,7 +232,7 @@ function ChplOncOrganizations() {
               isCreating
             />
           )}
-        </Box>
+      </Box>
     </div>
   );
 }
