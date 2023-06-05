@@ -26,6 +26,7 @@ const useStyles = makeStyles({
   },
   header: {
     padding: '16px',
+    marginBottom: '16px',
     display: 'flex',
     gap: '8px',
     flexDirection: 'column',
