@@ -28,7 +28,6 @@ const useStyles = makeStyles({
     margin: '0',
     fontSize: '1.25em',
   },
-
   subContentBox: {
     width: '48%',
   },
@@ -55,9 +54,9 @@ function ChplOncOrganizationView(props) {
         className={classes.header}
       />
       <CardContent className={classes.content}>
-        <Box className={classes.subContentBox}>
           { organization.website
          && (
+          <Box className={classes.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Website</strong>
              <br />
@@ -65,13 +64,13 @@ function ChplOncOrganizationView(props) {
                href={organization.website}
              />
            </Typography>
+           </Box>
          )}
-        </Box>
         <Box className={classes.subContentBox}>
           <Typography variant="body1" gutterBottom>
-            <strong>ONC-ACB code</strong>
+            <strong>Organization code</strong>
           </Typography>
-          <Typography>{ organization.acbCode}</Typography>
+          <Typography>{ organization.acbCode ?? organization.atlCode }</Typography>
         </Box>
         <Box className={classes.subContentBox}>
           <Typography variant="body1" gutterBottom>
@@ -79,25 +78,24 @@ function ChplOncOrganizationView(props) {
           </Typography>
           { organization.retired ? 'Yes' : 'No' }
         </Box>
-        <Box className={classes.subContentBox}>
-          {' '}
           { organization.retired
             && (
+              <Box className={classes.subContentBox}>
               <>
                 <Typography variant="body1" gutterBottom><strong>Retirement Date</strong></Typography>
                 { getDisplayDateFormat(organization.retirementDay) }
               </>
+              </Box>
             )}
-        </Box>
-        <Box className={classes.subContentBox}>
           { organization.address
          && (
+          <Box className={classes.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
              <br />
              <span className="sr-only">Line 1: </span>
-             { organization.address.line1}
-             { organization.address.line2
+             {organization.address.line1}
+             {organization.address.line2
               && (
                 <>
                   ,
@@ -108,21 +106,21 @@ function ChplOncOrganizationView(props) {
               )}
              <br />
              <span className="sr-only">City: </span>
-             { organization.address.city}
+             {organization.address.city}
              ,
              {' '}
              <span className="sr-only">State: </span>
-             { organization.address.state}
+             {organization.address.state}
              {' '}
              <span className="sr-only">Zipcode: </span>
-             { organization.address.zipcode}
+             {organization.address.zipcode}
              ,
              {' '}
              <span className="sr-only">Country: </span>
-             { organization.address.country}
+             {organization.address.country}
            </Typography>
+           </Box>
          )}
-        </Box>
       </CardContent>
       <CardActions>
         <ButtonGroup

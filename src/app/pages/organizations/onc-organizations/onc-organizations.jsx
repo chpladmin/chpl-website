@@ -201,7 +201,11 @@ function ChplOncOrganizations() {
                 )}
               { isEditing !== 'org' && orgType === 'acb'
                 && (
-                  <ChplUsers users={users} roles={roles} dispatch={handleDispatch} />
+                  <ChplUsers 
+                    users={users} 
+                    roles={roles} 
+                    dispatch={handleDispatch} 
+                    />
                 )}
             </>
           )}
@@ -209,7 +213,17 @@ function ChplOncOrganizations() {
          && (
          <Card>
            <CardContent>
-             <Typography gutterBottom><strong>ONC Organization maintenance</strong></Typography>
+            <Typography>
+                ONC Organization maintenance
+            </Typography>
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+              && (
+                <Button
+                  onClick={() => setIsCreating(true)}
+                >
+                  Create
+                </Button>
+              )}           
            </CardContent>
            <CardActions>
              <Button

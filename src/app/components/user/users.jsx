@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { arrayOf, func, string } from 'prop-types';
 import {
   Box,
   Card,
@@ -8,6 +7,8 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+
+import { arrayOf, func, string } from 'prop-types';
 
 import ChplUserEdit from './user-edit';
 import ChplUserInvite from './user-invite';
@@ -129,52 +130,54 @@ function ChplUsers(props) {
   return (
     <Box>
       { user
-          && (
-            <ChplUserEdit
-              user={user}
-              errors={errors}
-              dispatch={handleDispatch}
-            />
-          )}
+        && (
+          <ChplUserEdit
+            user={user}
+            errors={errors}
+            dispatch={handleDispatch}
+          />
+        )}
       { !user
-          && (
-            <div className={classes.container}>
-              <Card>
-                <CardHeader
-                  title="Manage Users"
-                  classes={{
-                    action: classes.cardHeaderAction,
-                  }}
-                  action={
-                    <Typography className={classes.userCount}>Users Count (4)</Typography>
-                  }
-                />
-                <CardContent>
-                  <div className={classes.header}>
-                    <ChplTextField
-                      id="user-filter"
-                      name="userFilter"
-                      label="Search by Name, Title, or Email"
-                      onChange={handleFilter}
-                    />
-                    <ChplUserInvite
-                      roles={roles}
+        && (
+          <div className={classes.container}>
+            <Card>
+              <CardHeader
+                title="Manage Users"
+                classes={{
+                  action: classes.cardHeaderAction,
+                }}
+                action={
+                  <Typography className={classes.userCount}>
+                    Users Count (${users.length})
+                  </Typography>
+                }
+              />
+              <CardContent>
+                <div className={classes.header}>
+                  <ChplTextField
+                    id="user-filter"
+                    name="userFilter"
+                    label="Search by Name, Title, or Email"
+                    onChange={handleFilter}
+                  />
+                  <ChplUserInvite
+                    roles={roles}
+                    dispatch={handleDispatch}
+                  />
+                </div>
+                <div className={classes.users}>
+                  { users.map((u) => (
+                    <ChplUserView
+                      key={u.userId}
+                      user={u}
                       dispatch={handleDispatch}
                     />
-                  </div>
-                  <div className={classes.users}>
-                    { users.map((u) => (
-                      <ChplUserView
-                        key={u.userId}
-                        user={u}
-                        dispatch={handleDispatch}
-                      />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
     </Box>
   );
 }
