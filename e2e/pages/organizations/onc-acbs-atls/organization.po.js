@@ -1,39 +1,37 @@
-/* eslint-disable class-methods-use-this */
+import { open as openPage } from '../../../utilities/hooks.async';
+
 class OrganizationPage {
   constructor() {
     this.elements = {
-      organizationEditButton: '#edit-organization',
-      organizationName: '#organization-name',
-      organizationWebsite: '#organization-website',
+      title: 'h1=ONC Organizations',
+      navigationLinks: 'button[id^=onc-organizations-navigation-]',
+      organizationEditButton: '#organization-component-edit',
+      organizationName: '#name',
+      organizationWebsite: '#website',
+      /*
+      manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
       saveOrganizationButton: '#chpl-organization-save',
       organizationList: '.organizations-side-nav',
       retireOrganization: '#organization-retired',
       retirementDate: '#retirement-date',
       addressOnEdit: 'chpl-address',
-      manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
       errorMessage: '.text-danger.ng-scope',
+      */
     };
   }
 
-  openOrganizationDetails(organizationName) {
-    $(`//*[contains(text(),"${organizationName}")]`).click();
-  }
-
-  get organizationList() {
-    return $(this.elements.organizationList);
+  async open(org) {
+    await openPage(`#/organizations/${org}`);
+    await (browser.waitUntil(async () => (await $(this.elements.title)).isDisplayed()));
   }
 
   organizationListCount() {
-    const count = $(this.elements.organizationList).$$('.btn.btn-link').length;
+    const count = $$(this.elements.navigationLinks).length;
     return count;
   }
 
   get organizationEditButton() {
     return $(this.elements.organizationEditButton);
-  }
-
-  createOrganization(organization) {
-    $(`//*[contains(text(),"Create New ONC-${organization}")]`).click();
   }
 
   get organizationName() {
@@ -43,6 +41,21 @@ class OrganizationPage {
   get organizationWebsite() {
     return $(this.elements.organizationWebsite);
   }
+/*
+  openOrganizationDetails(organizationName) {
+    $(`//*[contains(text(),"${organizationName}")]`).click();
+  }
+
+  get organizationList() {
+    return $(this.elements.organizationList);
+  }
+
+
+
+  createOrganization(organization) {
+    $(`//*[contains(text(),"Create New ONC-${organization}")]`).click();
+  }
+
 
   get saveOrganizationButton() {
     return $(this.elements.saveOrganizationButton);
@@ -84,6 +97,7 @@ class OrganizationPage {
     const keyValue = $(this.elements.organizationList).$$('.btn.btn-link')[key];
     return keyValue;
   }
+  */
 }
 
 export default OrganizationPage;
