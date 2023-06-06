@@ -7,7 +7,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-
 import { arrayOf, func, string } from 'prop-types';
 
 import ChplUserEdit from './user-edit';
@@ -146,11 +145,16 @@ function ChplUsers(props) {
                 classes={{
                   action: classes.cardHeaderAction,
                 }}
-                action={
+                action={(
                   <Typography className={classes.userCount}>
-                    Users Count (${users.length})
+                    (
+                    {users.length}
+                    {' '}
+                    user
+                    {users.length === 1 ? '' : 's'}
+                    )
                   </Typography>
-                }
+                )}
               />
               <CardContent>
                 <div className={classes.header}>

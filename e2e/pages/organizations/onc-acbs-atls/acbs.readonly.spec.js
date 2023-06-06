@@ -65,7 +65,6 @@ describe('the ONC-ACB Management page', () => {
     });
 
     it('should have at least 6 ACB organizations', () => {
-browser.saveScreenshot(`test_reports/e2e/screenshot/${Date.now()}.png`);
       expect(page.organizationListCount()).toBeGreaterThanOrEqual(6);
     });
 

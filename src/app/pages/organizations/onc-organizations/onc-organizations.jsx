@@ -201,42 +201,37 @@ function ChplOncOrganizations() {
                 )}
               { isEditing !== 'org' && orgType === 'acb'
                 && (
-                  <ChplUsers 
-                    users={users} 
-                    roles={roles} 
-                    dispatch={handleDispatch} 
-                    />
+                  <ChplUsers
+                    users={users}
+                    roles={roles}
+                    dispatch={handleDispatch}
+                  />
                 )}
             </>
           )}
         { !active?.id && !isCreating
-         && (
-         <Card>
-           <CardContent>
-            <Typography>
-                ONC Organization maintenance
-            </Typography>
-            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-              && (
-                <Button
-                  onClick={() => setIsCreating(true)}
-                >
-                  Create
-                </Button>
-              )}           
-           </CardContent>
-           <CardActions>
-             <Button
-               variant="contained"
-               color="primary"
-               onClick={() => setIsCreating(true)}
-               endIcon={<AddIcon />}
-             >
-               Create
-             </Button>
-           </CardActions>
-         </Card>
-         )}
+          && (
+            <Card>
+              <CardContent>
+                <Typography>
+                  ONC Organization maintenance
+                </Typography>
+              </CardContent>
+              { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                && (
+                  <CardActions>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setIsCreating(true)}
+                      endIcon={<AddIcon />}
+                    >
+                      Create
+                    </Button>
+                  </CardActions>
+                )}
+            </Card>
+          )}
         { isCreating && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
           && (
             <ChplOncOrganization
