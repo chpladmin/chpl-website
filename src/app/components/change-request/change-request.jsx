@@ -168,6 +168,7 @@ function ChplChangeRequest(props) {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const { changeRequest: { id }, showBreadcrumbs } = props;
+  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [changeRequest, setChangeRequest] = useState(undefined);
   const [changeRequestStatusTypes, setChangeRequestStatusTypes] = useState([]);
   const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -175,6 +176,8 @@ function ChplChangeRequest(props) {
   const [isConfirming, setIsConfirming] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showAcknowledgement, setShowAcknowledgement] = useState(false);
+  const [warnings, setWarnings] = useState([]);
   const { data, isLoading, isSuccess } = useFetchChangeRequest({ id });
   const crstQuery = useFetchChangeRequestStatusTypes();
   const { mutate } = usePutChangeRequest();
@@ -371,6 +374,9 @@ function ChplChangeRequest(props) {
           formik.submitForm();
         }
         break;
+      case 'toggleWarningAcknowledgement':
+        setAcknowledgeWarnings((prev) => !prev);
+        break;
       case 'withdraw':
         handleWithdrawal();
         break;
@@ -385,10 +391,14 @@ function ChplChangeRequest(props) {
 
   save = (request) => {
     setIsSaving(true);
-    mutate(request, {
+    mutate({
+      acknowledgeWarnings,
+      changeRequest: request,
+    }, {
       onSuccess: () => {
         props.dispatch('close');
         setIsSaving(false);
+        setWarnings([]);
       },
       onError: (error) => {
         if (error.response.data.error?.startsWith('Email could not be sent to')) {
@@ -397,6 +407,11 @@ function ChplChangeRequest(props) {
           });
           props.dispatch('close');
           setIsSaving(false);
+          setWarnings([]);
+        } else if (error.response.data.warningMessages?.length > 0) {
+          setShowAcknowledgement(true);
+          setIsSaving(false);
+          setWarnings(error.response.data.warningMessages);
         } else {
           const message = error.response.data?.error
                 || error.response.data?.errorMessages.join(' ');
@@ -405,6 +420,7 @@ function ChplChangeRequest(props) {
           });
           formik.resetForm();
           setIsSaving(false);
+          setWarnings([]);
         }
       },
     });
@@ -593,7 +609,7 @@ function ChplChangeRequest(props) {
                       onBlur={formik.handleBlur}
                       error={formik.touched.comment && !!formik.errors.comment}
                       helperText={formik.touched.comment && formik.errors.comment}
-                      rows={4}
+                      minRows={4}
                     />
                   </div>
                 </div>
@@ -612,6 +628,8 @@ function ChplChangeRequest(props) {
         canCancel={isEditing}
         canSave={isEditing}
         isDisabled={isSaving}
+        showWarningAcknowledgement={showAcknowledgement}
+        warnings={warnings}
       />
     </>
   );
