@@ -77,7 +77,7 @@ function ChplAttestationWizard(props) {
           ...form,
           sectionHeadings: submission,
         },
-        period,
+        attestationPeriod: period,
         signature,
       },
     };
