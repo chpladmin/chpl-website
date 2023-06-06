@@ -3,10 +3,10 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Container,
   Divider,
   FormControlLabel,
   Switch,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
 import { bool, func } from 'prop-types';
@@ -123,23 +123,20 @@ const getEditField = ({
   display,
   formik,
   required = true,
-  className,
   disabled,
 }) => (
-  <div className={className}>
-    <ChplTextField
-      id={key}
-      name={key}
-      label={display}
-      required={required}
-      disabled={disabled}
-      value={formik.values[key]}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={formik.touched[key] && !!formik.errors[key]}
-      helperText={formik.touched[key] && formik.errors[key]}
-    />
-  </div>
+  <ChplTextField
+    id={key}
+    name={key}
+    label={display}
+    required={required}
+    disabled={disabled}
+    value={formik.values[key]}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    error={formik.touched[key] && !!formik.errors[key]}
+    helperText={formik.touched[key] && formik.errors[key]}
+  />
 );
 
 function ChplOncOrganizationEdit(props) {
@@ -217,17 +214,17 @@ function ChplOncOrganizationEdit(props) {
   /* eslint-disable object-curly-newline */
   return (
     <>
-      <Container maxWidth="md">
-        <Card>
-          <CardHeader
-            title={organization.name ?? 'Create new Organization'}
-            className={classes.organizationHeader}
-            component="h2"
-          />
-          <CardContent className={classes.content}>
-            { getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth, disabled: formik.values.retired }) }
-            { getEnhancedEditField({ key: 'website', display: 'Website', className: classes.fullWidth, disabled: formik.values.retired }) }
-            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && organization.name
+      <Card>
+        <CardHeader
+          title={organization.name ?? 'Create new Organization'}
+          className={classes.organizationHeader}
+          component="h2"
+        />
+        <CardContent className={classes.content}>
+          <Typography className={classes.fullWidth} variant="subtitle1">General Info</Typography>
+          { getEnhancedEditField({ key: 'name', display: 'Name', disabled: formik.values.retired }) }
+          { getEnhancedEditField({ key: 'website', display: 'Website', disabled: formik.values.retired }) }
+          { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && organization.name
               && (
                 <>
                   <Divider className={classes.fullWidth} />
@@ -248,6 +245,7 @@ function ChplOncOrganizationEdit(props) {
                     name="retirementDay"
                     label="Retirement Date"
                     type="date"
+                    placeholder="Retirement Date"
                     disabled={!formik.values.retired}
                     value={formik.values.retirementDay}
                     onChange={formik.handleChange}
@@ -257,22 +255,21 @@ function ChplOncOrganizationEdit(props) {
                   />
                 </>
               )}
-            <Divider className={classes.fullWidth} />
-            { getEnhancedEditField({ key: 'line1', display: 'Address', disabled: formik.values.retired }) }
-            { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false, disabled: formik.values.retired }) }
-            { getEnhancedEditField({ key: 'city', display: 'City', disabled: formik.values.retired }) }
-            { getEnhancedEditField({ key: 'state', display: 'State', disabled: formik.values.retired }) }
-            { getEnhancedEditField({ key: 'zipcode', display: 'Zip', disabled: formik.values.retired }) }
-            { getEnhancedEditField({ key: 'country', display: 'Country', disabled: formik.values.retired }) }
-            <Divider className={classes.fullWidth} />
-          </CardContent>
-        </Card>
-        <ChplActionBar
-          dispatch={handleDispatch}
-          isDisabled={isActionDisabled()}
-          isProcessing={isProcessing}
-        />
-      </Container>
+          <Divider className={classes.fullWidth} />
+          <Typography className={classes.fullWidth} variant="subtitle1">Address</Typography>
+          { getEnhancedEditField({ key: 'line1', display: 'Address', disabled: formik.values.retired }) }
+          { getEnhancedEditField({ key: 'line2', display: 'Line 2', required: false, disabled: formik.values.retired }) }
+          { getEnhancedEditField({ key: 'city', display: 'City', disabled: formik.values.retired }) }
+          { getEnhancedEditField({ key: 'state', display: 'State', disabled: formik.values.retired }) }
+          { getEnhancedEditField({ key: 'zipcode', display: 'Zip', disabled: formik.values.retired }) }
+          { getEnhancedEditField({ key: 'country', display: 'Country', disabled: formik.values.retired }) }
+        </CardContent>
+      </Card>
+      <ChplActionBar
+        dispatch={handleDispatch}
+        isDisabled={isActionDisabled()}
+        isProcessing={isProcessing}
+      />
     </>
   );
 }

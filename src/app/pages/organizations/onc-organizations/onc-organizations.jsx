@@ -3,12 +3,14 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   Chip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import AddIcon from '@material-ui/icons/Add';
 import { useSnackbar } from 'notistack';
 
 import {
@@ -185,7 +187,7 @@ function ChplOncOrganizations() {
             </Card>
           </div>
         )}
-      <div>
+      <Box display="flex" flexDirection="column" gridGap={16}>
         { active?.id
           && (
             <>
@@ -199,11 +201,11 @@ function ChplOncOrganizations() {
                 )}
               { isEditing !== 'org' && orgType === 'acb'
                 && (
-                  <ChplUsers
-                    users={users}
-                    roles={roles}
-                    dispatch={handleDispatch}
-                  />
+                  <ChplUsers 
+                    users={users} 
+                    roles={roles} 
+                    dispatch={handleDispatch} 
+                    />
                 )}
             </>
           )}
@@ -211,18 +213,28 @@ function ChplOncOrganizations() {
          && (
          <Card>
            <CardContent>
-             <Typography>
-               ONC Organization maintenance
-             </Typography>
-             { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-               && (
-                 <Button
-                   onClick={() => setIsCreating(true)}
-                 >
-                   Create
-                 </Button>
-               )}
+            <Typography>
+                ONC Organization maintenance
+            </Typography>
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+              && (
+                <Button
+                  onClick={() => setIsCreating(true)}
+                >
+                  Create
+                </Button>
+              )}           
            </CardContent>
+           <CardActions>
+             <Button
+               variant="contained"
+               color="primary"
+               onClick={() => setIsCreating(true)}
+               endIcon={<AddIcon />}
+             >
+               Create
+             </Button>
+           </CardActions>
          </Card>
          )}
         { isCreating && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
@@ -234,7 +246,7 @@ function ChplOncOrganizations() {
               isCreating
             />
           )}
-      </div>
+      </Box>
     </div>
   );
 }

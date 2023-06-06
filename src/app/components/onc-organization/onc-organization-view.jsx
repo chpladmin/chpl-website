@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -18,13 +19,17 @@ import { acb as acbPropType } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   content: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    display: 'flex',
     gap: '16px',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   header: {
     margin: '0',
     fontSize: '1.25em',
+  },
+  subContentBox: {
+    width: '48%',
   },
 });
 
@@ -49,23 +54,9 @@ function ChplOncOrganizationView(props) {
         className={classes.header}
       />
       <CardContent className={classes.content}>
-        <Typography variant="body1" gutterBottom>
-          <strong>Organization code</strong>
-          { organization.acbCode ?? organization.atlCode }
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          <strong>Retired</strong>
-          { organization.retired ? 'Yes' : 'No' }
-          { organization.retired
-            && (
-              <>
-                <strong>Retirement Date</strong>
-                { getDisplayDateFormat(organization.retirementDay) }
-              </>
-            )}
-        </Typography>
-        { organization.website
+          { organization.website
          && (
+          <Box className={classes.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Website</strong>
              <br />
@@ -73,9 +64,32 @@ function ChplOncOrganizationView(props) {
                href={organization.website}
              />
            </Typography>
+           </Box>
          )}
-        { organization.address
+        <Box className={classes.subContentBox}>
+          <Typography variant="body1" gutterBottom>
+            <strong>Organization code</strong>
+          </Typography>
+          <Typography>{ organization.acbCode ?? organization.atlCode }</Typography>
+        </Box>
+        <Box className={classes.subContentBox}>
+          <Typography variant="body1" gutterBottom>
+            <strong>Retired</strong>
+          </Typography>
+          { organization.retired ? 'Yes' : 'No' }
+        </Box>
+          { organization.retired
+            && (
+              <Box className={classes.subContentBox}>
+              <>
+                <Typography variant="body1" gutterBottom><strong>Retirement Date</strong></Typography>
+                { getDisplayDateFormat(organization.retirementDay) }
+              </>
+              </Box>
+            )}
+          { organization.address
          && (
+          <Box className={classes.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
              <br />
@@ -105,6 +119,7 @@ function ChplOncOrganizationView(props) {
              <span className="sr-only">Country: </span>
              {organization.address.country}
            </Typography>
+           </Box>
          )}
       </CardContent>
       <CardActions>
