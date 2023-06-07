@@ -16,13 +16,6 @@ class OrganizationPage {
       manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
       createButton: '#create-new-organization',
       saveOrganizationButton: '#action-bar-save',
-      /*
-      organizationList: '.organizations-side-nav',
-      retireOrganization: '#organization-retired',
-      retirementDate: '#retirement-date',
-      addressOnEdit: 'chpl-address',
-      errorMessage: '.text-danger.ng-scope',
-      */
     };
   }
 
@@ -87,37 +80,6 @@ class OrganizationPage {
   openOrganizationDetails(name) {
     $(this.elements.navigationLink(name)).click();
   }
-/*
-
-  get organizationList() {
-    return $(this.elements.organizationList);
-  }
-
-  get retireOrganizationCheckbox() {
-    return $(this.elements.retireOrganization);
-  }
-
-  get retirementDate() {
-    return $(this.elements.retirementDate);
-  }
-
-  get newOrganizationGeneralInfo() {
-    return $('chpl-onc-organization');
-  }
-
-  generalInformation(organizationType, organizationId) {
-    return $(`#chpl-organization-ONC-${organizationType}-${organizationId}`);
-  }
-
-  get addressErrorMessage() {
-    return $(this.elements.addressOnEdit);
-  }
-
-  organizationListValue(key) {
-    const keyValue = $(this.elements.organizationList).$$('.btn.btn-link')[key];
-    return keyValue;
-  }
-  */
 }
 
 export default OrganizationPage;
