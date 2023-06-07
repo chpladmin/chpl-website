@@ -171,7 +171,6 @@ const states = [
 
         return networkService.getAcbs(true);
       },
-      roles: () => ['ROLE_ACB'],
       key: () => 'acbs',
       type: () => 'ONC-ACB',
       functions: () => ({
@@ -238,7 +237,6 @@ const states = [
 
         return networkService.getAtls(true);
       },
-      roles: () => ['ROLE_ATL'],
       key: () => 'atls',
       type: () => 'ONC-ATL',
       functions: () => ({
@@ -274,7 +272,7 @@ const states = [
     component: 'chplOncOrganizationEdit',
     data: {
       title: 'CHPL ONC-ATL',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'],
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
     },
     ncyBreadcrumb: {
       label: 'Edit',
