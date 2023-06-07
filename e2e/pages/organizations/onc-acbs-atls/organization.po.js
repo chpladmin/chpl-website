@@ -8,8 +8,12 @@ class OrganizationPage {
       organizationEditButton: '#organization-component-edit',
       organizationName: '#name',
       organizationWebsite: '#website',
-      /*
+      organizationLine1: '#line1',
+      nameErrorMessage: '#name-helper-text',
+      websiteErrorMessage: '#website-helper-text',
+      line1ErrorMessage: '#line1-helper-text',
       manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
+      /*
       saveOrganizationButton: '#chpl-organization-save',
       organizationList: '.organizations-side-nav',
       retireOrganization: '#organization-retired',
@@ -41,6 +45,34 @@ class OrganizationPage {
   get organizationWebsite() {
     return $(this.elements.organizationWebsite);
   }
+
+  get organizationLine1() {
+    return $(this.elements.organizationLine1);
+  }
+
+  get nameErrorMessage() {
+    return $(this.elements.nameErrorMessage);
+  }
+
+  get websiteErrorMessage() {
+    return $(this.elements.websiteErrorMessage);
+  }
+
+  get line1ErrorMessage() {
+    return $(this.elements.line1ErrorMessage);
+  }
+
+  get manageUsersPanelHeader() {
+    return $(this.elements.manageUsersPanelHeader);
+  }
+
+  get manageUsersPanelHeaderUserCount() {
+    return $(this.elements.manageUsersPanelHeader).parentElement().nextElement();
+  }
+
+  get manageUsersPanel() {
+    return $(this.elements.manageUsersPanelHeader).parentElement().parentElement().nextElement();
+  }
 /*
   openOrganizationDetails(organizationName) {
     $(`//*[contains(text(),"${organizationName}")]`).click();
@@ -69,13 +101,7 @@ class OrganizationPage {
     return $(this.elements.retirementDate);
   }
 
-  get manageUsersPanelHeader() {
-    return $(this.elements.manageUsersPanelHeader);
-  }
 
-  get manageUsersPanel() {
-    return $('chpl-users-bridge');
-  }
 
   get newOrganizationGeneralInfo() {
     return $('chpl-onc-organization');
@@ -85,9 +111,6 @@ class OrganizationPage {
     return $(`#chpl-organization-ONC-${organizationType}-${organizationId}`);
   }
 
-  get errorMessage() {
-    return $(this.elements.errorMessage);
-  }
 
   get addressErrorMessage() {
     return $(this.elements.addressOnEdit);

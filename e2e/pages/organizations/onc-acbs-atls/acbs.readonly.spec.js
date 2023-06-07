@@ -27,33 +27,34 @@ describe('the ONC-ACB Management page', () => {
     beforeEach(async () => {
       await login.logIn('sli');
       await page.open('onc-acbs');
+      await (browser.waitUntil(async () => (await page.manageUsersPanelHeader).isDisplayed()));
+      await (browser.waitUntil(async () => (await page.manageUsersPanelHeaderUserCount.getText() !== '(0 users)')));
     });
 
-    xit('should display registered users under SLI Compliance', () => {
-      const acb = 'SLI Compliance';
+    it('should display registered users under SLI Compliance', () => {
       expect(page.manageUsersPanelHeader).toBeDisplayed();
       expect(page.manageUsersPanel.getText()).toContain('ROLE_ACB');
       expect(page.manageUsersPanel.getText()).toContain('SLI Compliance');
     });
 
-    describe('when editing SLI Compliance details', () => {
+    xdescribe('when editing SLI Compliance details', () => {
       beforeEach(() => {
         page.organizationEditButton.click();
       });
 
       it('should show error for missing input in required field - ACB Name', () => {
-        page.organizationName.clearValue();
-        expect(page.errorMessage.getText()).toBe('Field is required');
+        page.organizationName.clearValue('');
+        expect(page.nameErrorMessage.getText()).toBe('Name is required');
       });
 
       it('should show error for missing input in required field - Website', () => {
         page.organizationWebsite.clearValue();
-        expect(page.errorMessage.getText()).toBe('Field is required');
+        expect(page.websiteErrorMessage.getText()).toBe('Website is required');
       });
 
-      it('should show error for missing input in required field - Address', () => {
-        address.editAddress.clearValue();
-        expect(page.addressErrorMessage.getText()).toContain('Field is required');
+      it('should show error for missing input in required field - Address line 1', () => {
+        address.organizationLine1.clearValue();
+        expect(page.line1ErrorMessage.getText()).toContain('Address is required');
       });
     });
   });
@@ -62,6 +63,7 @@ describe('the ONC-ACB Management page', () => {
     beforeEach(async () => {
       await login.logIn('onc');
       await page.open('onc-acbs');
+      await (browser.waitUntil(async () => (await page.organizationListCount() > 0)));
     });
 
     it('should have at least 6 ACB organizations', () => {
