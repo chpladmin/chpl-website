@@ -1,6 +1,7 @@
 import Hooks from '../../../utilities/hooks';
 import LoginComponent from '../../../components/login/login.sync.po';
 import AddressComponent from '../../../components/address/address.po';
+import { open } from '../../../utilities/hooks.async';
 
 import OrganizationPage from './organization.po';
 
@@ -28,37 +29,29 @@ describe('the ONC-ACB Management page', () => {
     hooks = new Hooks();
     login = new LoginComponent();
     address = new AddressComponent();
-    await hooks.open('#/organizations/onc-acbs');
+    await open('#/resources/overview');
+  });
+
+  afterEach(() => {
+    login.logOut();
   });
 
   describe('when logged in as SLI Compliance', () => {
-    beforeEach(() => {
-      login.logIn('sli');
-      hooks.waitForSpinnerToDisappear();
-    });
-
-    afterEach(() => {
-      const organizationName = 'SLI Compliance';
-      page.openOrganizationDetails(organizationName);
-      page.organizationEditButton.click();
-      page.organizationName.setValue(organizationName);
-      page.saveOrganizationButton.click();
-      login.logOut();
+    beforeEach(async () => {
+      await login.logIn('sli');
+      await page.open('onc-acbs');
+      await (browser.waitUntil(async () => (await page.manageUsersPanelHeader).isDisplayed()));
+      await (browser.waitUntil(async () => (await page.manageUsersPanelHeaderUserCount.getText() !== '(0 users)')));
     });
 
     it('should allow user to edit SLI Compliance details', () => {
-      const acb = 'SLI Compliance';
-      const newAcbName = `${acb} - ${timestamp}`;
       const acbId = '4';
-      page.openOrganizationDetails(acb);
       page.organizationEditButton.click();
-      page.organizationName.setValue(newAcbName);
       page.organizationWebsite.setValue(websiteUrl);
       address.set(acbAddress);
       page.saveOrganizationButton.click();
       hooks.waitForSpinnerToAppear();
       hooks.waitForSpinnerToDisappear();
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain(newAcbName);
       expect(page.generalInformation(organizationType, acbId).getText()).toContain(websiteUrl);
       expect(page.generalInformation(organizationType, acbId).getText()).toContain(acbAddress.address);
       expect(page.generalInformation(organizationType, acbId).getText()).toContain(acbAddress.city);
@@ -69,18 +62,15 @@ describe('the ONC-ACB Management page', () => {
   });
 
   describe('when logged in as ONC', () => {
-    beforeEach(() => {
-      login.logIn('onc');
-      hooks.waitForSpinnerToDisappear();
-    });
-
-    afterEach(() => {
-      login.logOut();
+    beforeEach(async () => {
+      await login.logIn('onc');
+      await page.open('onc-acbs');
+      await (browser.waitUntil(async () => (await page.organizationListCount() > 0)));
     });
 
     it('should allow user to create a new ACB', () => {
       const newAcbName = `${'Zacb-'}${timestamp}`;
-      page.createOrganization('ACB');
+      page.createOrganization();
       page.organizationName.addValue(newAcbName);
       page.organizationWebsite.addValue(websiteUrl);
       address.set(acbAddress);

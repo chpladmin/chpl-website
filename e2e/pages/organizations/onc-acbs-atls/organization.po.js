@@ -5,6 +5,7 @@ class OrganizationPage {
     this.elements = {
       title: 'h1=ONC Organizations',
       navigationLinks: 'button[id^=onc-organizations-navigation-]',
+      navigationLink: (name) => `onc-organizations-navigation-${name}`,
       organizationEditButton: '#organization-component-edit',
       organizationName: '#name',
       organizationWebsite: '#website',
@@ -13,8 +14,9 @@ class OrganizationPage {
       websiteErrorMessage: '#website-helper-text',
       line1ErrorMessage: '#line1-helper-text',
       manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
+      createButton: '#create-new-organization',
+      saveOrganizationButton: '#action-bar-save',
       /*
-      saveOrganizationButton: '#chpl-organization-save',
       organizationList: '.organizations-side-nav',
       retireOrganization: '#organization-retired',
       retirementDate: '#retirement-date',
@@ -73,24 +75,22 @@ class OrganizationPage {
   get manageUsersPanel() {
     return $(this.elements.manageUsersPanelHeader).parentElement().parentElement().nextElement();
   }
-/*
-  openOrganizationDetails(organizationName) {
-    $(`//*[contains(text(),"${organizationName}")]`).click();
+
+  createOrganization() {
+    $(this.elements.createButton).click();
   }
-
-  get organizationList() {
-    return $(this.elements.organizationList);
-  }
-
-
-
-  createOrganization(organization) {
-    $(`//*[contains(text(),"Create New ONC-${organization}")]`).click();
-  }
-
 
   get saveOrganizationButton() {
     return $(this.elements.saveOrganizationButton);
+  }
+
+  openOrganizationDetails(name) {
+    $(this.elements.navigationLink(name)).click();
+  }
+/*
+
+  get organizationList() {
+    return $(this.elements.organizationList);
   }
 
   get retireOrganizationCheckbox() {
@@ -101,8 +101,6 @@ class OrganizationPage {
     return $(this.elements.retirementDate);
   }
 
-
-
   get newOrganizationGeneralInfo() {
     return $('chpl-onc-organization');
   }
@@ -110,7 +108,6 @@ class OrganizationPage {
   generalInformation(organizationType, organizationId) {
     return $(`#chpl-organization-ONC-${organizationType}-${organizationId}`);
   }
-
 
   get addressErrorMessage() {
     return $(this.elements.addressOnEdit);
