@@ -7,7 +7,7 @@ const states = [
       users: (authService, networkService) => {
         'ngInject';
 
-        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])) {
+        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
           return networkService.getUsers();
         }
         return [];
@@ -15,7 +15,7 @@ const states = [
     },
     data: {
       title: 'CHPL Users',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'],
+      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
     },
   },
 ];

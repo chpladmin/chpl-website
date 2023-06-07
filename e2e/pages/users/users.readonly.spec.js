@@ -24,7 +24,7 @@ describe('the User Management Page', () => {
     const pageUsers = page.getUsers();
     const organizationalUsers = pageUsers.filter((userComponent) => {
       const role = users.getDemographic(userComponent, 'Role:');
-      return ['ROLE_ACB', 'ROLE_ATL', 'ROLE_DEVELOPER'].includes(role);
+      return ['ROLE_ACB', 'ROLE_DEVELOPER'].includes(role);
     });
     expect(organizationalUsers.length).toBe(0);
   });

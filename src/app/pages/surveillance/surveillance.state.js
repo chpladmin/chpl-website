@@ -5,7 +5,7 @@ const states = [{
   component: 'chplSurveillance',
   data: {
     title: 'CHPL Surveillance',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF', 'ROLE_ACB'],
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
   },
   ncyBreadcrumb: {
     label: 'Surveillance',
