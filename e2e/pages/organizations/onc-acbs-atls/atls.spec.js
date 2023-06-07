@@ -1,6 +1,7 @@
 import Hooks from '../../../utilities/hooks';
 import AddressComponent from '../../../components/address/address.po';
 import LoginComponent from '../../../components/login/login.sync.po';
+import { open } from '../../../utilities/hooks.async';
 
 import OrganizationPage from './organization.po';
 
@@ -25,18 +26,20 @@ describe('the ONC-ATL Management page', () => {
     browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
     page = new OrganizationPage();
     hooks = new Hooks();
-    address = new AddressComponent();
     login = new LoginComponent();
-    await hooks.open('#/organizations/onc-atls');
+    address = new AddressComponent();
+    await open('#/resources/overview');
+  });
+
+  afterEach(() => {
+    login.logOut();
   });
 
   describe('when logged in as ONC', () => {
-    beforeEach(() => {
-      login.logIn('onc');
-    });
-
-    afterEach(() => {
-      login.logOut();
+    beforeEach(async () => {
+      await login.logIn('onc');
+      await page.open('onc-atls');
+      await (browser.waitUntil(async () => (await page.organizationListCount() > 0)));
     });
 
     it('should allow user to Create a new ATL', () => {
