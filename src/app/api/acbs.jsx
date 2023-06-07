@@ -21,14 +21,14 @@ const useFetchAcbs = (editable = false) => {
   }, editable ? {} : options.daily);
 };
 
-const useFetchUsersAtAcb = (acb) => {
+const useFetchUsersAtAcb = (acb, orgType) => {
   const id = acb?.id;
   const axios = useAxios();
   return useQuery(['acbs', 'users', id], async () => {
     const response = await axios.get(`acbs/${id}/users`);
     return response.data;
   }, {
-    enabled: !!id,
+    enabled: !!id && orgType === 'acb',
   });
 };
 

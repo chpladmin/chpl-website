@@ -74,7 +74,7 @@ function ChplOncOrganizations() {
   const { mutate: invite } = usePostUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
-  const userQuery = useFetchUsersAtAcb(active);
+  const userQuery = useFetchUsersAtAcb(active, orgType);
   const roles = ['ROLE_ACB'];
   const classes = useStyles();
 
