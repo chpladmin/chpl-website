@@ -32,7 +32,7 @@
         <ui-view take-action="$ctrl.takeAction(action, data)"></ui-view>
       </div>
     </div>
-    <div class="panel panel-default" ng-if="$ctrl.canEdit($ctrl.$state.params.id)">
+    <div class="panel panel-default" ng-if="$ctrl.canEdit($ctrl.$state.params.id) && $ctrl.key === 'acbs'">
       <div class="panel-heading clickable onc-organizations__panel-header" ng-click="$ctrl.usersCollapsed = !$ctrl.usersCollapsed">
         <div>
           <h3 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h3>
