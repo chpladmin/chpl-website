@@ -33,7 +33,7 @@ const validationSchema = yup.object({
     .required('Email is required')
     .email('Email format is invalid'),
   role: yup.object()
-    .required('Role is required'),
+    .required('"I\'m interested because I\'m a..." is required'),
 });
 
 function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
@@ -115,7 +115,7 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
             select
             id="role"
             name="role"
-            label="Role"
+            label="I'm interested because I'm a..."
             required
             value={formik.values.role}
             onChange={formik.handleChange}
