@@ -5,7 +5,7 @@ class OrganizationPage {
     this.elements = {
       title: 'h1=ONC Organizations',
       navigationLinks: 'button[id^=onc-organizations-navigation-]',
-      navigationLink: async (name) => `onc-organizations-navigation-${name}`,
+      navigationLink: async (name) => `#onc-organizations-navigation-${name}`,
       organizationEditButton: '#organization-component-edit',
       organizationName: '#name',
       organizationWebsite: '#website',
@@ -16,6 +16,7 @@ class OrganizationPage {
       manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
       createButton: '#create-new-organization',
       saveOrganizationButton: '#action-bar-save',
+      organizationDetails: async (name) => `h2=${name}`,
     };
   }
 
@@ -70,7 +71,7 @@ class OrganizationPage {
   }
 
   async createOrganization() {
-    await $(this.elements.createButton).click();
+    await (await $(this.elements.createButton)).click();
   }
 
   async getSaveOrganizationButton() {
@@ -78,7 +79,11 @@ class OrganizationPage {
   }
 
   async openOrganizationDetails(name) {
-    await $(await this.elements.navigationLink(name)).click();
+    await (await $(await this.elements.navigationLink(name))).click();
+  }
+
+  async getOrganizationDetails(name) {
+    return (await $(await this.elements.organizationDetails(name))).parentElement();
   }
 }
 

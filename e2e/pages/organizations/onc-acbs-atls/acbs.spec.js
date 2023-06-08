@@ -1,6 +1,6 @@
 import Hooks from '../../../utilities/hooks';
-import LoginComponent from '../../../components/login/login.sync.po';
-import AddressComponent from '../../../components/address/address.po';
+import LoginComponent from '../../../components/login/login.po';
+import AddressComponent from '../../../components/address/address.async.po';
 import { open } from '../../../utilities/hooks.async';
 
 import OrganizationPage from './organization.po';
@@ -36,7 +36,8 @@ describe('the ONC-ACB Management page', () => {
     await login.logOut();
   });
 
-  describe('when logged in as SLI Compliance', () => {
+  // ignoring because "setValue" doesn't clear and set, just appends, which means all the validations go wrong
+  xdescribe('when logged in as SLI Compliance', () => {
     beforeEach(async () => {
       await login.logIn('sli');
       await page.open('onc-acbs');
@@ -69,21 +70,22 @@ describe('the ONC-ACB Management page', () => {
     });
 
     it('should allow user to create a new ACB', async () => {
+      const initialCount = await page.organizationListCount();
       const newAcbName = `${'Zacb-'}${timestamp}`;
       await page.createOrganization();
       await (await page.getOrganizationName()).addValue(newAcbName);
       await (await page.getOrganizationWebsite()).addValue(websiteUrl);
       await address.set(acbAddress);
       await (await page.getSaveOrganizationButton()).click();
-      await hooks.waitForSpinnerToDisappear();
+      await (browser.waitUntil(async () => ((await page.organizationListCount()) > initialCount)));
       await page.openOrganizationDetails(newAcbName);
-      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(newAcbName);
-      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(websiteUrl);
-      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.address);
-      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.city);
-      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.state);
-      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.zip);
-      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.country);
+      await expect(await (await page.getOrganizationDetails(newAcbName)).getText()).toContain(newAcbName);
+      await expect(await (await page.getOrganizationDetails(newAcbName)).getText()).toContain(websiteUrl);
+      await expect(await (await page.getOrganizationDetails(newAcbName)).getText()).toContain(acbAddress.address);
+      await expect(await (await page.getOrganizationDetails(newAcbName)).getText()).toContain(acbAddress.city);
+      await expect(await (await page.getOrganizationDetails(newAcbName)).getText()).toContain(acbAddress.state);
+      await expect(await (await page.getOrganizationDetails(newAcbName)).getText()).toContain(acbAddress.zip);
+      await expect(await (await page.getOrganizationDetails(newAcbName)).getText()).toContain(acbAddress.country);
     });
   });
 });
