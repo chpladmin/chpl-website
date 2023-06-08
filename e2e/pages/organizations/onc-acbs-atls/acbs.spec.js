@@ -23,8 +23,8 @@ describe('the ONC-ACB Management page', () => {
   };
 
   beforeEach(async () => {
-    browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-    browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
+    await browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
+    await browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
     page = new OrganizationPage();
     hooks = new Hooks();
     login = new LoginComponent();
@@ -32,32 +32,32 @@ describe('the ONC-ACB Management page', () => {
     await open('#/resources/overview');
   });
 
-  afterEach(() => {
-    login.logOut();
+  afterEach(async () => {
+    await login.logOut();
   });
 
   describe('when logged in as SLI Compliance', () => {
     beforeEach(async () => {
       await login.logIn('sli');
       await page.open('onc-acbs');
-      await (browser.waitUntil(async () => (await page.getManageUsersPanelHeader()).isDisplayed()));
-      await (browser.waitUntil(async () => (await page.getManageUsersPanelHeaderUserCount().getText() !== '(0 users)')));
+      await (browser.waitUntil(async () => await (await page.getManageUsersPanelHeader()).isDisplayed()));
+      await (browser.waitUntil(async () => ((await (await page.getManageUsersPanelHeaderUserCount()).getText()) !== '(0 users)')));
     });
 
-    it('should allow user to edit SLI Compliance details', () => {
+    it('should allow user to edit SLI Compliance details', async () => {
       const acbId = '4';
-      page.getOrganizationEditButton().click();
-      page.getOrganizationWebsite().setValue(websiteUrl);
-      address.set(acbAddress);
-      page.getSaveOrganizationButton().click();
-      hooks.waitForSpinnerToAppear();
-      hooks.waitForSpinnerToDisappear();
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain(websiteUrl);
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain(acbAddress.address);
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain(acbAddress.city);
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain(acbAddress.state);
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain(acbAddress.zip);
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain(acbAddress.country);
+      await (await page.getOrganizationEditButton()).click();
+      await (await page.getOrganizationWebsite()).setValue(websiteUrl);
+      await address.set(acbAddress);
+      await (await page.getSaveOrganizationButton()).click();
+      await hooks.waitForSpinnerToAppear();
+      await hooks.waitForSpinnerToDisappear();
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain(websiteUrl);
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain(acbAddress.address);
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain(acbAddress.city);
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain(acbAddress.state);
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain(acbAddress.zip);
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain(acbAddress.country);
     });
   });
 
@@ -65,25 +65,25 @@ describe('the ONC-ACB Management page', () => {
     beforeEach(async () => {
       await login.logIn('onc');
       await page.open('onc-acbs');
-      await (browser.waitUntil(async () => (await page.organizationListCount() > 0)));
+      await (browser.waitUntil(async () => ((await page.organizationListCount()) > 0)));
     });
 
-    it('should allow user to create a new ACB', () => {
+    it('should allow user to create a new ACB', async () => {
       const newAcbName = `${'Zacb-'}${timestamp}`;
-      page.createOrganization();
-      page.getOrganizationName().addValue(newAcbName);
-      page.getOrganizationWebsite().addValue(websiteUrl);
-      address.set(acbAddress);
-      page.getSaveOrganizationButton().click();
-      hooks.waitForSpinnerToDisappear();
-      page.openOrganizationDetails(newAcbName);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(newAcbName);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(websiteUrl);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(acbAddress.address);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(acbAddress.city);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(acbAddress.state);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(acbAddress.zip);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(acbAddress.country);
+      await page.createOrganization();
+      await (await page.getOrganizationName()).addValue(newAcbName);
+      await (await page.getOrganizationWebsite()).addValue(websiteUrl);
+      await address.set(acbAddress);
+      await (await page.getSaveOrganizationButton()).click();
+      await hooks.waitForSpinnerToDisappear();
+      await page.openOrganizationDetails(newAcbName);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(newAcbName);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(websiteUrl);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.address);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.city);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.state);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.zip);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(acbAddress.country);
     });
   });
 });

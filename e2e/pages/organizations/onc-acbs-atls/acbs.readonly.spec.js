@@ -19,42 +19,42 @@ describe('the ONC-ACB Management page', () => {
     await open('#/resources/overview');
   });
 
-  afterEach(() => {
-    login.logOut();
+  afterEach(async () => {
+    await login.logOut();
   });
 
   describe('when logged in as SLI Compliance', () => {
     beforeEach(async () => {
       await login.logIn('sli');
       await page.open('onc-acbs');
-      await (browser.waitUntil(async () => (await page.getManageUsersPanelHeader()).isDisplayed()));
-      await (browser.waitUntil(async () => (await page.getManageUsersPanelHeaderUserCount().getText() !== '(0 users)')));
+      await (browser.waitUntil(async () => await (await page.getManageUsersPanelHeader()).isDisplayed()));
+      await (browser.waitUntil(async () => ((await (await page.getManageUsersPanelHeaderUserCount()).getText()) !== '(0 users)')));
     });
 
-    it('should display registered users under SLI Compliance', () => {
-      expect(page.getManageUsersPanelHeader()).toBeDisplayed();
-      expect(page.getManageUsersPanel().getText()).toContain('ROLE_ACB');
-      expect(page.getManageUsersPanel().getText()).toContain('SLI Compliance');
+    it('should display registered users under SLI Compliance', async () => {
+      await expect(await page.getManageUsersPanelHeader()).toBeDisplayed();
+      await expect(await (await page.getManageUsersPanel()).getText()).toContain('ROLE_ACB');
+      await expect(await (await page.getManageUsersPanel()).getText()).toContain('SLI Compliance');
     });
 
     xdescribe('when editing SLI Compliance details', () => {
-      beforeEach(() => {
-        page.getOrganizationEditButton().click();
+      beforeEach(async () => {
+        await (await page.getOrganizationEditButton()).click();
       });
 
-      it('should show error for missing input in required field - ACB Name', () => {
-        page.getOrganizationName().clearValue('');
-        expect(page.getNameErrorMessage().getText()).toBe('Name is required');
+      it('should show error for missing input in required field - ACB Name', async () => {
+        await (await page.getOrganizationName()).clearValue('');
+        await expect(await (await page.getNameErrorMessage()).getText()).toBe('Name is required');
       });
 
-      it('should show error for missing input in required field - Website', () => {
-        page.getOrganizationWebsite().clearValue();
-        expect(page.getWebsiteErrorMessage().getText()).toBe('Website is required');
+      it('should show error for missing input in required field - Website', async () => {
+        await (await page.getOrganizationWebsite()).clearValue();
+        await expect(await (await page.getWebsiteErrorMessage()).getText()).toBe('Website is required');
       });
 
-      it('should show error for missing input in required field - Address line 1', () => {
-        address.organizationLine1.clearValue();
-        expect(page.getLine1ErrorMessage().getText()).toContain('Address is required');
+      it('should show error for missing input in required field - Address line 1', async () => {
+        await address.organizationLine1.clearValue();
+        await expect(await (await page.getLine1ErrorMessage()).getText()).toContain('Address is required');
       });
     });
   });
@@ -63,14 +63,14 @@ describe('the ONC-ACB Management page', () => {
     beforeEach(async () => {
       await login.logIn('onc');
       await page.open('onc-acbs');
-      await (browser.waitUntil(async () => (await page.organizationListCount() > 0)));
+      await (browser.waitUntil(async () => ((await page.organizationListCount()) > 0)));
     });
 
-    it('should have at least 6 ACB organizations', () => {
-      expect(page.organizationListCount()).toBeGreaterThanOrEqual(6);
+    it('should have at least 6 ACB organizations', async () => {
+      await expect(await page.organizationListCount()).toBeGreaterThanOrEqual(6);
     });
 
-    xit('should allow user to unretire and retire existing ACB', () => {
+    xit('should allow user to unretire and retire existing ACB', async () => {
       const acb = 'CCHIT';
       const acbId = '2';
       const organizationType = 'ACB';
@@ -85,23 +85,23 @@ describe('the ONC-ACB Management page', () => {
         country: `country${timestamp}`,
       };
 
-      page.openOrganizationDetails(acb);
-      page.getOrganizationEditButton().click();
-      page.getRetireOrganizationCheckbox().click();
-      page.getOrganizationWebsite().setValue(websiteUrl);
-      address.set(acbAddress);
-      page.getSaveOrganizationButton().click();
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: No');
-      hooks.open('#/organizations/onc-acbs');
-      hooks.waitForSpinnerToDisappear();
-      page.openOrganizationDetails(acb);
-      hooks.waitForSpinnerToDisappear();
-      page.getOrganizationEditButton().click();
-      page.getRetireOrganizationCheckbox().click();
-      page.getRetirementDate().setValue(today);
-      page.getSaveOrganizationButton().click();
-      hooks.waitForSpinnerToDisappear();
-      expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: Yes');
+      await page.openOrganizationDetails(acb);
+      await (await page.getOrganizationEditButton()).click();
+      await (await page.getRetireOrganizationCheckbox()).click();
+      await (await page.getOrganizationWebsite()).setValue(websiteUrl);
+      await address.set(acbAddress);
+      await (await page.getSaveOrganizationButton()).click();
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain('Retired: No');
+      await hooks.open('#/organizations/onc-acbs');
+      await hooks.waitForSpinnerToDisappear();
+      await page.openOrganizationDetails(acb);
+      await hooks.waitForSpinnerToDisappear();
+      await (await page.getOrganizationEditButton()).click();
+      await (await page.getRetireOrganizationCheckbox()).click();
+      await (await page.getRetirementDate()).setValue(today);
+      await (await page.getSaveOrganizationButton()).click();
+      await hooks.waitForSpinnerToDisappear();
+      await expect(await (await page.generalInformation(organizationType, acbId)).getText()).toContain('Retired: Yes');
     });
   });
 });

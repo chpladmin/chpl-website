@@ -5,7 +5,7 @@ class OrganizationPage {
     this.elements = {
       title: 'h1=ONC Organizations',
       navigationLinks: 'button[id^=onc-organizations-navigation-]',
-      navigationLink: (name) => `onc-organizations-navigation-${name}`,
+      navigationLink: async (name) => `onc-organizations-navigation-${name}`,
       organizationEditButton: '#organization-component-edit',
       organizationName: '#name',
       organizationWebsite: '#website',
@@ -21,64 +21,64 @@ class OrganizationPage {
 
   async open(org) {
     await openPage(`#/organizations/${org}`);
-    await (browser.waitUntil(async () => (await $(this.elements.title)).isDisplayed()));
+    await (browser.waitUntil(async () => await (await $(this.elements.title)).isDisplayed()));
   }
 
-  organizationListCount() {
-    const count = $$(this.elements.navigationLinks).length;
+  async organizationListCount() {
+    const count = (await $$(this.elements.navigationLinks)).length;
     return count;
   }
 
-  getOrganizationEditButton() {
+  async getOrganizationEditButton() {
     return $(this.elements.organizationEditButton);
   }
 
-  getOrganizationName() {
+  async getOrganizationName() {
     return $(this.elements.organizationName);
   }
 
-  getOrganizationWebsite() {
+  async getOrganizationWebsite() {
     return $(this.elements.organizationWebsite);
   }
 
-  getOrganizationLine1() {
+  async getOrganizationLine1() {
     return $(this.elements.organizationLine1);
   }
 
-  getNameErrorMessage() {
+  async getNameErrorMessage() {
     return $(this.elements.nameErrorMessage);
   }
 
-  getWebsiteErrorMessage() {
+  async getWebsiteErrorMessage() {
     return $(this.elements.websiteErrorMessage);
   }
 
-  getLine1ErrorMessage() {
+  async getLine1ErrorMessage() {
     return $(this.elements.line1ErrorMessage);
   }
 
-  getManageUsersPanelHeader() {
+  async getManageUsersPanelHeader() {
     return $(this.elements.manageUsersPanelHeader);
   }
 
-  getManageUsersPanelHeaderUserCount() {
-    return $(this.elements.manageUsersPanelHeader).parentElement().nextElement();
+  async getManageUsersPanelHeaderUserCount() {
+    return (await $(this.elements.manageUsersPanelHeader).parentElement()).nextElement();
   }
 
-  getManageUsersPanel() {
-    return $(this.elements.manageUsersPanelHeader).parentElement().parentElement().nextElement();
+  async getManageUsersPanel() {
+    return (await (await $(this.elements.manageUsersPanelHeader).parentElement()).parentElement()).nextElement();
   }
 
-  createOrganization() {
-    $(this.elements.createButton).click();
+  async createOrganization() {
+    await $(this.elements.createButton).click();
   }
 
-  getSaveOrganizationButton() {
+  async getSaveOrganizationButton() {
     return $(this.elements.saveOrganizationButton);
   }
 
-  openOrganizationDetails(name) {
-    $(this.elements.navigationLink(name)).click();
+  async openOrganizationDetails(name) {
+    await $(await this.elements.navigationLink(name)).click();
   }
 }
 

@@ -22,8 +22,8 @@ describe('the ONC-ATL Management page', () => {
   };
 
   beforeEach(async () => {
-    browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
-    browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
+    await browser.setWindowSize(1600, 1024); // demo of a bigger screen (esp. useful for screenshots)
+    await browser.setWindowRect(0, 0, 1600, 1024); // not sure if both are required
     page = new OrganizationPage();
     hooks = new Hooks();
     login = new LoginComponent();
@@ -31,33 +31,33 @@ describe('the ONC-ATL Management page', () => {
     await open('#/resources/overview');
   });
 
-  afterEach(() => {
-    login.logOut();
+  afterEach(async () => {
+    await login.logOut();
   });
 
   describe('when logged in as ONC', () => {
     beforeEach(async () => {
       await login.logIn('onc');
       await page.open('onc-atls');
-      await (browser.waitUntil(async () => (await page.organizationListCount() > 0)));
+      await (browser.waitUntil(async () => ((await page.organizationListCount()) > 0)));
     });
 
-    it('should allow user to Create a new ATL', () => {
+    it('should allow user to Create a new ATL', async () => {
       const newAtlName = `${'Zatl-'}${timestamp}`;
-      page.createOrganization('ATL');
-      page.getOrganizationName().addValue(newAtlName);
-      page.getOrganizationWebsite().addValue(websiteUrl);
-      address.set(atlAddress);
-      page.getSaveOrganizationButton().click();
-      hooks.waitForSpinnerToDisappear();
-      page.openOrganizationDetails(newAtlName);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(newAtlName);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(websiteUrl);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(atlAddress.address);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(atlAddress.city);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(atlAddress.state);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(atlAddress.zip);
-      expect(page.getNewOrganizationGeneralInfo().getText()).toContain(atlAddress.country);
+      await page.createOrganization('ATL');
+      await (await page.getOrganizationName()).addValue(newAtlName);
+      await (await page.getOrganizationWebsite()).addValue(websiteUrl);
+      await address.set(atlAddress);
+      await (await page.getSaveOrganizationButton()).click();
+      await hooks.waitForSpinnerToDisappear();
+      await page.openOrganizationDetails(newAtlName);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(newAtlName);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(websiteUrl);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(atlAddress.address);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(atlAddress.city);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(atlAddress.state);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(atlAddress.zip);
+      await expect(await (await page.getNewOrganizationGeneralInfo()).getText()).toContain(atlAddress.country);
     });
   });
 });

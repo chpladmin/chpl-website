@@ -19,22 +19,22 @@ describe('the ONC-ATL Management page', () => {
     await open('#/resources/overview');
   });
 
-  afterEach(() => {
-    login.logOut();
+  afterEach(async () => {
+    await login.logOut();
   });
 
   describe('when logged in as ONC', () => {
     beforeEach(async () => {
       await login.logIn('onc');
       await page.open('onc-acbs');
-      await (browser.waitUntil(async () => (await page.organizationListCount() > 0)));
+      await (browser.waitUntil(async () => ((await page.organizationListCount()) > 0)));
     });
 
-    it('should have at least 7 ATL organizations', () => {
-      expect(page.organizationListCount()).toBeGreaterThanOrEqual(7);
+    it('should have at least 7 ATL organizations', async () => {
+      await expect(await page.organizationListCount()).toBeGreaterThanOrEqual(7);
     });
 
-    xit('should allow user to unretire and retire existing ATL', () => {
+    xit('should allow user to unretire and retire existing ATL', async () => {
       const atl = 'CCHIT';
       const organizationType = 'ATL';
       const atlId = '2';
@@ -49,27 +49,27 @@ describe('the ONC-ATL Management page', () => {
         country: `country${timestamp}`,
       };
 
-      hooks.open('#/organizations/onc-atls');
-      hooks.waitForSpinnerToDisappear();
-      page.openOrganizationDetails(atl);
-      hooks.waitForSpinnerToDisappear();
-      page.getOrganizationEditButton().click();
-      page.getRetireOrganizationCheckbox().click();
-      page.getOrganizationWebsite().setValue(websiteUrl);
-      address.set(atlAddress);
-      page.getSaveOrganizationButton().click();
-      hooks.waitForSpinnerToDisappear();
-      expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: No');
-      hooks.open('#/organizations/onc-atls');
-      hooks.waitForSpinnerToDisappear();
-      page.openOrganizationDetails(atl);
-      hooks.waitForSpinnerToDisappear();
-      page.getOrganizationEditButton().click();
-      page.getRetireOrganizationCheckbox().click();
-      page.getRetirementDate().setValue(today);
-      page.getSaveOrganizationButton().click();
-      hooks.waitForSpinnerToDisappear();
-      expect(page.generalInformation(organizationType, atlId).getText()).toContain('Retired: Yes');
+      await hooks.open('#/organizations/onc-atls');
+      await hooks.waitForSpinnerToDisappear();
+      await page.openOrganizationDetails(atl);
+      await hooks.waitForSpinnerToDisappear();
+      await (await page.getOrganizationEditButton()).click();
+      await (await page.getRetireOrganizationCheckbox()).click();
+      await (await page.getOrganizationWebsite()).setValue(websiteUrl);
+      await address.set(atlAddress);
+      await (await page.getSaveOrganizationButton()).click();
+      await hooks.waitForSpinnerToDisappear();
+      await expect(await (await page.generalInformation(organizationType, atlId)).getText()).toContain('Retired: No');
+      await hooks.open('#/organizations/onc-atls');
+      await hooks.waitForSpinnerToDisappear();
+      await page.openOrganizationDetails(atl);
+      await hooks.waitForSpinnerToDisappear();
+      await (await page.getOrganizationEditButton()).click();
+      await (await page.getRetireOrganizationCheckbox()).click();
+      await (await page.getRetirementDate()).setValue(today);
+      await (await page.getSaveOrganizationButton()).click();
+      await hooks.waitForSpinnerToDisappear();
+      await expect(await (await page.generalInformation(organizationType, atlId)).getText()).toContain('Retired: Yes');
     });
   });
 });
