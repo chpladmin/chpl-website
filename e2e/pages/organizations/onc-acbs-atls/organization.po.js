@@ -29,43 +29,43 @@ class OrganizationPage {
     return count;
   }
 
-  get organizationEditButton() {
+  getOrganizationEditButton() {
     return $(this.elements.organizationEditButton);
   }
 
-  get organizationName() {
+  getOrganizationName() {
     return $(this.elements.organizationName);
   }
 
-  get organizationWebsite() {
+  getOrganizationWebsite() {
     return $(this.elements.organizationWebsite);
   }
 
-  get organizationLine1() {
+  getOrganizationLine1() {
     return $(this.elements.organizationLine1);
   }
 
-  get nameErrorMessage() {
+  getNameErrorMessage() {
     return $(this.elements.nameErrorMessage);
   }
 
-  get websiteErrorMessage() {
+  getWebsiteErrorMessage() {
     return $(this.elements.websiteErrorMessage);
   }
 
-  get line1ErrorMessage() {
+  getLine1ErrorMessage() {
     return $(this.elements.line1ErrorMessage);
   }
 
-  get manageUsersPanelHeader() {
+  getManageUsersPanelHeader() {
     return $(this.elements.manageUsersPanelHeader);
   }
 
-  get manageUsersPanelHeaderUserCount() {
+  getManageUsersPanelHeaderUserCount() {
     return $(this.elements.manageUsersPanelHeader).parentElement().nextElement();
   }
 
-  get manageUsersPanel() {
+  getManageUsersPanel() {
     return $(this.elements.manageUsersPanelHeader).parentElement().parentElement().nextElement();
   }
 
@@ -73,7 +73,7 @@ class OrganizationPage {
     $(this.elements.createButton).click();
   }
 
-  get saveOrganizationButton() {
+  getSaveOrganizationButton() {
     return $(this.elements.saveOrganizationButton);
   }
 

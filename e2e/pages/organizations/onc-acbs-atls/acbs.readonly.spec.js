@@ -27,34 +27,34 @@ describe('the ONC-ACB Management page', () => {
     beforeEach(async () => {
       await login.logIn('sli');
       await page.open('onc-acbs');
-      await (browser.waitUntil(async () => (await page.manageUsersPanelHeader).isDisplayed()));
-      await (browser.waitUntil(async () => (await page.manageUsersPanelHeaderUserCount.getText() !== '(0 users)')));
+      await (browser.waitUntil(async () => (await page.getManageUsersPanelHeader()).isDisplayed()));
+      await (browser.waitUntil(async () => (await page.getManageUsersPanelHeaderUserCount().getText() !== '(0 users)')));
     });
 
     it('should display registered users under SLI Compliance', () => {
-      expect(page.manageUsersPanelHeader).toBeDisplayed();
-      expect(page.manageUsersPanel.getText()).toContain('ROLE_ACB');
-      expect(page.manageUsersPanel.getText()).toContain('SLI Compliance');
+      expect(page.getManageUsersPanelHeader()).toBeDisplayed();
+      expect(page.getManageUsersPanel().getText()).toContain('ROLE_ACB');
+      expect(page.getManageUsersPanel().getText()).toContain('SLI Compliance');
     });
 
     xdescribe('when editing SLI Compliance details', () => {
       beforeEach(() => {
-        page.organizationEditButton.click();
+        page.getOrganizationEditButton().click();
       });
 
       it('should show error for missing input in required field - ACB Name', () => {
-        page.organizationName.clearValue('');
-        expect(page.nameErrorMessage.getText()).toBe('Name is required');
+        page.getOrganizationName().clearValue('');
+        expect(page.getNameErrorMessage().getText()).toBe('Name is required');
       });
 
       it('should show error for missing input in required field - Website', () => {
-        page.organizationWebsite.clearValue();
-        expect(page.websiteErrorMessage.getText()).toBe('Website is required');
+        page.getOrganizationWebsite().clearValue();
+        expect(page.getWebsiteErrorMessage().getText()).toBe('Website is required');
       });
 
       it('should show error for missing input in required field - Address line 1', () => {
         address.organizationLine1.clearValue();
-        expect(page.line1ErrorMessage.getText()).toContain('Address is required');
+        expect(page.getLine1ErrorMessage().getText()).toContain('Address is required');
       });
     });
   });
@@ -86,20 +86,20 @@ describe('the ONC-ACB Management page', () => {
       };
 
       page.openOrganizationDetails(acb);
-      page.organizationEditButton.click();
-      page.retireOrganizationCheckbox.click();
-      page.organizationWebsite.setValue(websiteUrl);
+      page.getOrganizationEditButton().click();
+      page.getRetireOrganizationCheckbox().click();
+      page.getOrganizationWebsite().setValue(websiteUrl);
       address.set(acbAddress);
-      page.saveOrganizationButton.click();
+      page.getSaveOrganizationButton().click();
       expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: No');
       hooks.open('#/organizations/onc-acbs');
       hooks.waitForSpinnerToDisappear();
       page.openOrganizationDetails(acb);
       hooks.waitForSpinnerToDisappear();
-      page.organizationEditButton.click();
-      page.retireOrganizationCheckbox.click();
-      page.retirementDate.setValue(today);
-      page.saveOrganizationButton.click();
+      page.getOrganizationEditButton().click();
+      page.getRetireOrganizationCheckbox().click();
+      page.getRetirementDate().setValue(today);
+      page.getSaveOrganizationButton().click();
       hooks.waitForSpinnerToDisappear();
       expect(page.generalInformation(organizationType, acbId).getText()).toContain('Retired: Yes');
     });
