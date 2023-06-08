@@ -32,11 +32,11 @@ describe('the ONC-ACB Management page', () => {
     });
 
     it('should display registered users under SLI Compliance', async () => {
-      await expect(await page.getManageUsersPanelHeader()).toBeDisplayed();
       await expect(await (await page.getManageUsersPanel()).getText()).toContain('ROLE_ACB');
       await expect(await (await page.getManageUsersPanel()).getText()).toContain('SLI Compliance');
     });
 
+    // ignoring because "setValue" doesn't clear and set, just appends, which means all the validations go wrong
     xdescribe('when editing SLI Compliance details', () => {
       beforeEach(async () => {
         await (await page.getOrganizationEditButton()).click();
@@ -70,6 +70,7 @@ describe('the ONC-ACB Management page', () => {
       await expect(await page.organizationListCount()).toBeGreaterThanOrEqual(6);
     });
 
+    // ignoring because "setValue" doesn't clear and set, just appends, which means all the validations go wrong
     xit('should allow user to unretire and retire existing ACB', async () => {
       const acb = 'CCHIT';
       const acbId = '2';

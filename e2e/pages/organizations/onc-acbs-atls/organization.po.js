@@ -66,7 +66,7 @@ class OrganizationPage {
   }
 
   async getManageUsersPanel() {
-    return (await (await $(this.elements.manageUsersPanelHeader).parentElement()).parentElement()).nextElement();
+    return (await (await (await $(this.elements.manageUsersPanelHeader)).parentElement()).parentElement()).nextElement();
   }
 
   async createOrganization() {

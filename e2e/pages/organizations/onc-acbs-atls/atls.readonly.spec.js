@@ -34,6 +34,7 @@ describe('the ONC-ATL Management page', () => {
       await expect(await page.organizationListCount()).toBeGreaterThanOrEqual(7);
     });
 
+    // ignoring because "setValue" doesn't clear and set, just appends, which means all the validations go wrong
     xit('should allow user to unretire and retire existing ATL', async () => {
       const atl = 'CCHIT';
       const organizationType = 'ATL';
