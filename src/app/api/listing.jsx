@@ -15,6 +15,18 @@ const useFetchIcsFamilyData = ({ id }) => {
   });
 };
 
+const useFetchListing = ({ id }) => {
+  const axios = useAxios();
+  return useQuery(['listing', id], async () => {
+    if (id) {
+      const response = await axios.get(`certified_products/${id}/details`);
+      return response.data;
+    }
+    return {};
+  });
+};
+
 export {
-  useFetchIcsFamilyData, // eslint-disable-line import/prefer-default-export
+  useFetchIcsFamilyData,
+  useFetchListing,
 };

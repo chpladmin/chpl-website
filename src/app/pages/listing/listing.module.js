@@ -1,5 +1,7 @@
-import ChplListingHistory from './history';
 import { reactToAngularComponent } from '../../services/angular-react-helper.jsx';
+
+import ChplListingHistory from './history';
+import ChplListingPage from './listing-wrapper';
 
 angular
   .module('chpl.listing', [
@@ -11,4 +13,4 @@ angular
     'ui.router',
   ])
   .component('chplListingHistoryBridge', reactToAngularComponent(ChplListingHistory))
-;
+  .component('chplListingPageBridge', reactToAngularComponent(ChplListingPage));
