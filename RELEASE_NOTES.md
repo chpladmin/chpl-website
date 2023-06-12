@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 12.1.0
+_12 June 2023_
+
+### Features
+* Remove ROLE_ATL & ROLE_ONC_STAFF
+* Display and enable override of "attestation warning" messages
+
+---
+
 ## Version 12.0.0
 _30 May 2023_
 
