@@ -237,7 +237,7 @@ function ChplComplaintsView(props) {
   }
 
   const getButtons = () => {
-    if (hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF'])) {
+    if (hasAnyRole(['ROLE_ONC'])) {
       return (
         <ButtonGroup className={classes.wrap}>
           <Button
@@ -319,7 +319,7 @@ function ChplComplaintsView(props) {
           <CardHeader title="Complaints" />
         )}
       <CardContent>
-        <div className={classes.searchContainer} component={Paper}>
+        <div className={classes.searchContainer}>
           <ChplFilterSearchTerm
             placeholder="Search by ONC-ACB Complaint ID, ONC Complaint ID, Associated Certified Product, or Associated Criteria"
           />
