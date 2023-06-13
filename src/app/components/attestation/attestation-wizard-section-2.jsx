@@ -114,6 +114,12 @@ function ChplAttestationWizardSection2(props) {
             ))}
         </RadioGroup>
       </FormControl>
+      { item.submittedResponses[0]?.message
+        && (
+          <Typography>
+            { item.submittedResponses[0].message }
+          </Typography>
+        )}
       { item.childFormItems
         .map((child) => item.submittedResponses
           .some((resp) => resp.id === child.parentResponse.id)
