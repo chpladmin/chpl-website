@@ -162,9 +162,14 @@ function ChplListingPage({ id }) {
           <span className="anchor-element">
             <span id="listingInformation" className="page-anchor" />
           </span>
-          <Typography gutterBottom variant="h2">
-            Listing Information
-          </Typography>
+          <Card>
+            <CardContent>
+              Listing Information
+              <ChplListingInformation
+                listing={listing}
+              />
+            </CardContent>
+          </Card>
           <Divider />
 
           <span className="anchor-element">
