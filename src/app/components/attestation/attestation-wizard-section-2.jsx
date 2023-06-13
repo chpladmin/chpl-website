@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   Checkbox,
@@ -11,12 +12,14 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  Slide,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { array, func, string } from 'prop-types';
 
 import { interpretEmphatic, interpretLink } from './attestation-util';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 
 const useStyles = makeStyles({
   nonCaps: {
@@ -24,6 +27,18 @@ const useStyles = makeStyles({
   },
   radioGroup: {
     textTransform: 'none',
+  },
+  warningBox: {
+    padding: '16px',
+    backgroundColor: '#FDFDE7',
+    border: '1px solid #AFAFAF',
+    borderRadius: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '4px',
+    marginBottom: '16px',
+    gridGap: '16px',
+    alignItems: 'center',
   },
 });
 
@@ -116,9 +131,14 @@ function ChplAttestationWizardSection2(props) {
       </FormControl>
       { item.submittedResponses[0]?.message
         && (
-          <Typography>
-            { item.submittedResponses[0].message }
-          </Typography>
+          <Slide direction='up' in={item.submittedResponses}>
+          <Box className={classes.warningBox}>
+            <ReportProblemOutlinedIcon/>
+            <Typography>
+              { item.submittedResponses[0].message }
+            </Typography>
+          </Box>
+          </Slide>
         )}
       { item.childFormItems
         .map((child) => item.submittedResponses
