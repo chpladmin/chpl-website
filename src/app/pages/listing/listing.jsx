@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -15,15 +15,14 @@ import { number } from 'prop-types';
 import { useFetchListing } from 'api/listing';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import ChplCompliance from 'components/listing/details/compliance/compliance';
-import ChplCriteria from 'components/listing/details/criteria/criteria';
 import ChplCqms from 'components/listing/details/cqms/cqms';
+import ChplCriteria from 'components/listing/details/criteria/criteria';
 import ChplG1G2 from 'components/listing/details/g1g2/g1g2';
+import ChplListingInformation from 'components/listing/details/listing-information/listing-information';
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
-import {
-  ChplLink,
-  InternalScrollButton,
-} from 'components/util';
+import { InternalScrollButton } from 'components/util';
+import { FlagContext } from 'shared/contexts';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
@@ -66,9 +65,11 @@ const useStyles = makeStyles({
 
 function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
+  const { isOn } = useContext(FlagContext);
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
+  const [subscriptionsIsOn, setSubscriptionsIsOn] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -77,6 +78,10 @@ function ChplListingPage({ id }) {
     }
     setListing(data);
   }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    setSubscriptionsIsOn(isOn('subscriptions'));
+  }, [isOn]);
 
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
@@ -145,10 +150,13 @@ function ChplListingPage({ id }) {
             Additional Information
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
-          <ChplSubscribe
-            subscribedObjectId={listing.id}
-            subscribedObjectTypeId={1}
-          />
+          { subscriptionsIsOn
+            && (
+              <ChplSubscribe
+                subscribedObjectId={listing.id}
+                subscribedObjectTypeId={1}
+              />
+            )}
         </div>
         <div className={classes.content}>
           <span className="anchor-element">
@@ -235,6 +243,7 @@ function ChplListingPage({ id }) {
                 <Divider />
               </>
             )}
+
           <span className="anchor-element">
             <span id="g1g2Measures" className="page-anchor" />
           </span>
