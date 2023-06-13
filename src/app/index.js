@@ -41,6 +41,7 @@ import resources from './pages/resources/index';
 import /* registrationModule from */ './pages/registration/index';
 import services from './services/index';
 import /* sharedModule from */ './shared/index';
+import subscriptions from './pages/subscriptions/index';
 import surveillance from './pages/surveillance/index';
 import users from './pages/users/index';
 
@@ -78,6 +79,7 @@ const dependencies = [
   reports.name,
   resources.name,
   services.name,
+  subscriptions.name,
   surveillance.name,
   users.name,
   'chpl.charts',

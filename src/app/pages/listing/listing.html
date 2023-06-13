@@ -144,6 +144,9 @@
                 </div>
               </div>
             </div>
+            <div feature-flag="subscriptions">
+              <chpl-subscribe-bridge subscribed-object-id="$ctrl.listing.id"></chpl-subscribe-bridge>
+            </div>
           </div>
           <div class="col-sm-8" id="listing-information-details">
             <chpl-listing-details-view initial-panel="{{ $ctrl.panel }}"
