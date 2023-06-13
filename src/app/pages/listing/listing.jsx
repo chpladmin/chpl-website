@@ -16,6 +16,7 @@ import { useFetchListing } from 'api/listing';
 import ChplCqms from 'components/listing/details/cqms/cqms';
 import ChplCriteria from 'components/listing/details/criteria/criteria';
 import ChplSed from 'components/listing/details/sed/sed';
+import ChplSubscribe from 'components/subscriptions/subscribe';
 import {
   ChplLink,
   InternalScrollButton,
@@ -141,6 +142,10 @@ function ChplListingPage({ id }) {
             Additional Information
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
+          <ChplSubscribe
+            subscribedObjectId={listing.id}
+            subscribedObjectTypeId={1}
+          />
         </div>
         <div className={classes.content}>
           <span className="anchor-element">
