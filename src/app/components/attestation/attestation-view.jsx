@@ -32,6 +32,13 @@ const getRows = (section) => section.formItems
       </TableCell>
       <TableCell>
         { item.submittedResponses[0]?.response }
+        { item.submittedResponses[0]?.message
+          && (
+            <>
+              <br />
+              { item.submittedResponses[0].message }
+            </>
+          )}
         { item.childFormItems[0]?.submittedResponses.length > 0
               && (
                 <ul>
