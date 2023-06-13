@@ -42,7 +42,7 @@ describe('managing complaints as a ROLE_ADMIN user', () => {
     await complaintsComponent.set(fields);
     await complaintsComponent.saveComplaint();
     await (browser.waitUntil(async () => complaintsComponent.hasResults()));
-    await complaintsComponent.setListFilter('certificationBodies', 'Surescripts_LLC');
+    await complaintsComponent.setFilterFromRetiredList('certificationBodies', 'Surescripts_LLC');
     await complaintsComponent.searchFilter(fields.acbId);
     const complaint = (await complaintsComponent.getTableComplaints())[0];
     await expect(await (await complaintsComponent.getComplaintCell(complaint, ACB_ID_IDX)).getText()).toBe(fields.acbId);

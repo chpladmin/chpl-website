@@ -11,6 +11,7 @@ class CollectionPage {
       filterSearchTermGo: '#filter-search-term-go',
       filterChipsSection: '#filter-chips',
       clearSearchTermButton: 'button[aria-label="Clear search"]',
+      tabbedFilterForRetired: '#tabbed-filter-tab-1',
     };
   }
 
@@ -223,6 +224,14 @@ class CollectionPage {
     }
   }
   /* eslint-enable indent */
+
+  async setFilterFromRetiredList(category, value) {
+    await (await (await $(this.elements.filterPanelToggle)).click());
+    await (await (await $(`#filter-panel-primary-items-${category}`)).click());
+    await (await (await $(this.elements.tabbedFilterForRetired)).click());
+    await (await (await $(`#filter-panel-secondary-items-${value}`)).click());
+    await browser.keys('Escape');
+  }
 }
 
 export default CollectionPage;
