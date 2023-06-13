@@ -13,8 +13,11 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { number } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
-import ChplCqms from 'components/listing/details/cqms/cqms';
+import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
+import ChplCompliance from 'components/listing/details/compliance/compliance';
 import ChplCriteria from 'components/listing/details/criteria/criteria';
+import ChplCqms from 'components/listing/details/cqms/cqms';
+import ChplG1G2 from 'components/listing/details/g1g2/g1g2';
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
 import {
@@ -235,25 +238,42 @@ function ChplListingPage({ id }) {
           <span className="anchor-element">
             <span id="g1g2Measures" className="page-anchor" />
           </span>
-          <Typography gutterBottom variant="h2">
-            G1/G2 Measures
-          </Typography>
+          <Card>
+            <CardContent>
+              G1/G2 Measures
+              <ChplG1G2
+                measures={listing.measures}
+              />
+            </CardContent>
+          </Card>
           <Divider />
 
           <span className="anchor-element">
             <span id="complianceActivities" className="page-anchor" />
           </span>
-          <Typography gutterBottom variant="h2">
-            Compliance Activities
-          </Typography>
+          <Card>
+            <CardContent>
+              Compliance Activities
+              <ChplCompliance
+                directReviews={listing.directReviews}
+                directReviewsAvailable={listing.directReviewsAvailable}
+                surveillance={listing.surveillance}
+              />
+            </CardContent>
+          </Card>
           <Divider />
 
           <span className="anchor-element">
             <span id="additionalInformation" className="page-anchor" />
           </span>
-          <Typography gutterBottom variant="h2">
-            Additional Information
-          </Typography>
+          <Card>
+            <CardContent>
+              Additional Information
+              <ChplAdditionalInformation
+                listing={listing}
+              />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>
