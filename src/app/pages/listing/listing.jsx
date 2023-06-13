@@ -15,6 +15,7 @@ import { number } from 'prop-types';
 import { useFetchListing } from 'api/listing';
 import ChplCqms from 'components/listing/details/cqms/cqms';
 import ChplCriteria from 'components/listing/details/criteria/criteria';
+import ChplSed from 'components/listing/details/sed/sed';
 import {
   ChplLink,
   InternalScrollButton,
@@ -109,13 +110,16 @@ function ChplListingPage({ id }) {
             Clinical Quality Measures
             <ArrowForwardIcon className={classes.iconSpacing} />
           </InternalScrollButton>
-          <InternalScrollButton
-            id="safetyEnhancedDesign"
-            analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
-          >
-            Safety Enhanced Design (SED)
-            <ArrowForwardIcon className={classes.iconSpacing} />
-          </InternalScrollButton>
+          { listing.certificationEdition.name !== '2011'
+            && (
+              <InternalScrollButton
+                id="safetyEnhancedDesign"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+              >
+                Safety Enhanced Design (SED)
+                <ArrowForwardIcon className={classes.iconSpacing} />
+              </InternalScrollButton>
+            )}
           <InternalScrollButton
             id="g1g2Measures"
             analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
@@ -146,6 +150,7 @@ function ChplListingPage({ id }) {
             Listing Information
           </Typography>
           <Divider />
+
           <span className="anchor-element">
             <span id="certificationCriteria" className="page-anchor" />
           </span>
@@ -174,6 +179,7 @@ function ChplListingPage({ id }) {
             </CardContent>
           </Card>
           <Divider />
+
           <span className="anchor-element">
             <span id="clinicalQualityMeasures" className="page-anchor" />
           </span>
@@ -203,13 +209,24 @@ function ChplListingPage({ id }) {
             </CardContent>
           </Card>
           <Divider />
-          <span className="anchor-element">
-            <span id="safetyEnhancedDesign" className="page-anchor" />
-          </span>
-          <Typography gutterBottom variant="h2">
-            Safety Enhanced Design (SED)
-          </Typography>
-          <Divider />
+
+          { listing.certificationEdition.name !== '2011'
+            && (
+              <>
+                <span className="anchor-element">
+                  <span id="safetyEnhancedDesign" className="page-anchor" />
+                </span>
+                <Card>
+                  <CardContent>
+                    Safety Enhanced Design (SED)
+                    <ChplSed
+                      listing={listing}
+                    />
+                  </CardContent>
+                </Card>
+                <Divider />
+              </>
+            )}
           <span className="anchor-element">
             <span id="g1g2Measures" className="page-anchor" />
           </span>
@@ -217,6 +234,7 @@ function ChplListingPage({ id }) {
             G1/G2 Measures
           </Typography>
           <Divider />
+
           <span className="anchor-element">
             <span id="complianceActivities" className="page-anchor" />
           </span>
@@ -224,6 +242,7 @@ function ChplListingPage({ id }) {
             Compliance Activities
           </Typography>
           <Divider />
+
           <span className="anchor-element">
             <span id="additionalInformation" className="page-anchor" />
           </span>
