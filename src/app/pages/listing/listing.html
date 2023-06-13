@@ -146,6 +146,9 @@
                   <div ng-if="$ctrl.listing.rwtResultsCheckDate && $ctrl.canViewRwtDates()">
                     <p>Last ONC-ACB Completeness Check: {{ $ctrl.DateUtil.getDisplayDateFormat($ctrl.listing.rwtResultsCheckDate) }}</p>
                   </div>
+                  <div feature-flag="subscriptions">
+                    <chpl-subscribe-bridge subscribed-object-id="$ctrl.listing.id"></chpl-subscribe-bridge>
+                  </div>
                 </div>
               </div>
             </div>

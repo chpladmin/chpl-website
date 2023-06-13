@@ -28,6 +28,7 @@ module.exports = (env) => {
       organizations: path.resolve(__dirname, './src/app/pages/organizations/index.js'),
       registration: path.resolve(__dirname, './src/app/pages/registration/index.js'),
       reports: path.resolve(__dirname, './src/app/pages/reports/index.js'),
+      subscriptions: path.resolve(__dirname, './src/app/pages/subscriptions/index.js'),
       templates: path.resolve(__dirname, './src/app/templates.js'),
     },
     module: {
