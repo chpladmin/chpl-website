@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
   Card,
-  CardActions,
   CardContent,
-  CardHeader,
   CircularProgress,
   Divider,
   FormControlLabel,
   Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  ThemeProvider,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -21,6 +13,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { number } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
+import ChplCqms from 'components/listing/details/cqms/cqms';
 import ChplCriteria from 'components/listing/details/criteria/criteria';
 import {
   ChplLink,
@@ -69,6 +62,7 @@ const useStyles = makeStyles({
 function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const [listing, setListing] = useState(undefined);
+  const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
   const classes = useStyles();
 
@@ -183,9 +177,31 @@ function ChplListingPage({ id }) {
           <span className="anchor-element">
             <span id="clinicalQualityMeasures" className="page-anchor" />
           </span>
-          <Typography gutterBottom variant="h2">
-            Clinical Quality Measures
-          </Typography>
+          <Card>
+            <CardContent>
+              Clinical Quality Measures
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="see-all-cqms"
+                    name="seeAllCqms"
+                    checked={seeAllCqms}
+                    onChange={() => setSeeAllCqms(!seeAllCqms)}
+                  />
+                )}
+                label="See all CQMs"
+              />
+              (
+              { listing.cqmResults.filter((cqm) => cqm.success).length }
+              {' '}
+              found)
+              <ChplCqms
+                cqms={listing.cqmResults}
+                edition={listing.certificationEdition}
+                viewAll={seeAllCqms}
+              />
+            </CardContent>
+          </Card>
           <Divider />
           <span className="anchor-element">
             <span id="safetyEnhancedDesign" className="page-anchor" />
