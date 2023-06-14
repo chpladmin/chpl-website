@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Paper,
   Table,
@@ -9,7 +10,9 @@ import {
   TableHead,
   TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import { bool, object } from 'prop-types';
 
 import ChplAttestationCreateException from './attestation-create-exception';
@@ -19,7 +22,22 @@ import { getDisplayDateFormat } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import { developer as developerPropType } from 'shared/prop-types';
 
-const getRows = (section) => section.formItems
+const useStyles = makeStyles({
+  warningBox: {
+    padding: '16px',
+    backgroundColor: '#fdfde7',
+    border: '1px solid #afafaf',
+    borderradius: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '4px',
+    marginBottom: '16px',
+    gridGap: '16px',
+    alignItems: 'center',
+  },
+});
+
+const getRows = (section, classes) => section.formItems
   .sort((a, b) => a.sortOrder - b.sortOrder)
   .map((item) => (
     <TableRow key={`${section.id}-${item.id}`}>
@@ -34,10 +52,12 @@ const getRows = (section) => section.formItems
         { item.submittedResponses[0]?.response }
         { item.submittedResponses[0]?.message
           && (
-            <>
-              <br />
-              { item.submittedResponses[0].message }
-            </>
+            <Box className={classes.warningBox}>
+              <ReportProblemOutlinedIcon />
+              <Typography>
+                { item.submittedResponses[0].message }
+              </Typography>
+            </Box>
           )}
         { item.childFormItems[0]?.submittedResponses.length > 0
               && (
@@ -59,6 +79,7 @@ function ChplAttestationView(props) {
   const [canCreateException, setCanCreateException] = useState(false);
   const [developer, setDeveloper] = useState({});
   const [exceptionPeriod, setExceptionPeriod] = useState(undefined);
+  const classes = useStyles();
 
   useEffect(() => {
     setAttestations({
@@ -113,7 +134,7 @@ function ChplAttestationView(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                { attestations.sections.map((section) => getRows(section)) }
+                { attestations.sections.map((section) => getRows(section, classes)) }
               </TableBody>
             </Table>
           </TableContainer>
