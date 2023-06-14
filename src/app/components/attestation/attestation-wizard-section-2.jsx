@@ -15,10 +15,10 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import { array, func, string } from 'prop-types';
 
 import { interpretEmphatic, interpretLink } from './attestation-util';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 
 const useStyles = makeStyles({
   nonCaps: {
@@ -29,9 +29,9 @@ const useStyles = makeStyles({
   },
   warningBox: {
     padding: '16px',
-    backgroundColor: '#FDFDE7',
-    border: '1px solid #AFAFAF',
-    borderRadius: '4px',
+    backgroundColor: '#fdfde7',
+    border: '1px solid #afafaf',
+    borderradius: '4px',
     display: 'flex',
     flexDirection: 'row',
     marginTop: '4px',
@@ -131,7 +131,7 @@ function ChplAttestationWizardSection2(props) {
       { item.submittedResponses[0]?.message
         && (
           <Box className={classes.warningBox}>
-            <ReportProblemOutlinedIcon/>
+            <ReportProblemOutlinedIcon />
             <Typography>
               { item.submittedResponses[0].message }
             </Typography>
