@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  Paper,
+  Card,
   Table,
   TableBody,
   TableCell,
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     padding: '16px',
     backgroundColor: '#fdfde7',
     border: '1px solid #afafaf',
-    borderradius: '4px',
+    borderRadius: '4px',
     display: 'flex',
     flexDirection: 'row',
     marginTop: '4px',
@@ -111,34 +111,40 @@ function ChplAttestationView(props) {
 
   return (
     <>
-      <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
-      <Typography gutterBottom>
-        { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
-        {' '}
-        -
-        {' '}
-        { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
-      </Typography>
-      <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
-      <Typography gutterBottom>{attestations.statusText}</Typography>
-      { attestations.sections
-        && (
-          <TableContainer component={Paper}>
-            <Table
-              aria-label="Developer Attestations details"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>Attestation</TableCell>
-                  <TableCell>Response</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { attestations.sections.map((section) => getRows(section, classes)) }
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
+      <Box display="flex" flexDirection="column" gridGap={16}>
+        <div>
+          <Typography gutterBottom variant="subtitle2">Attestation Period</Typography>
+          <Typography gutterBottom>
+            { attestations.period && getDisplayDateFormat(attestations.period.periodStart) }
+            {' '}
+            -
+            {' '}
+            { attestations.period && getDisplayDateFormat(attestations.period.periodEnd) }
+          </Typography>
+        </div>
+        <div>
+          <Typography gutterBottom variant="subtitle2">Submitted attestations</Typography>
+          <Typography gutterBottom>{attestations.statusText}</Typography>
+        </div>
+        { attestations.sections
+          && (
+            <TableContainer component={Card}>
+              <Table
+                aria-label="Developer Attestations details"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Attestation</TableCell>
+                    <TableCell>Response</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { attestations.sections.map((section) => getRows(section, classes)) }
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+      </Box>
       { canCreateException && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
         && (
           <Button
