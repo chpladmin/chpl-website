@@ -12,7 +12,6 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  Slide,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -131,14 +130,12 @@ function ChplAttestationWizardSection2(props) {
       </FormControl>
       { item.submittedResponses[0]?.message
         && (
-          <Slide direction='up' in={item.submittedResponses}>
           <Box className={classes.warningBox}>
             <ReportProblemOutlinedIcon/>
             <Typography>
               { item.submittedResponses[0].message }
             </Typography>
           </Box>
-          </Slide>
         )}
       { item.childFormItems
         .map((child) => item.submittedResponses
