@@ -24,13 +24,9 @@ function ChplOncOrganization(props) {
   const { mutate: putAtl } = usePutAtl();
 
   useEffect(() => {
-    setIsEditing(isCreating);
-  }, [isCreating]);
-
-  useEffect(() => {
     setOrganization(initialOrg);
-    setIsEditing(false);
-  }, [initialOrg]);
+    setIsEditing(isCreating);
+  }, [initialOrg, isCreating]);
 
   const handleDispatch = (action, payload) => {
     const mutate = isCreating ? (orgType === 'acb' ? postAcb : postAtl) : (orgType === 'acb' ? putAcb : putAtl);
