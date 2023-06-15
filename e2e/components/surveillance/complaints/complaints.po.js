@@ -20,8 +20,6 @@ class ComplaintsComponent extends CollectionPage {
       actions: '#actions',
       oncId: '#onc-complaint-id',
       criterion: '#criteria',
-      listings: '#listings',
-      surveillance: '#surveillances',
       complainantContacted: '#complainant-contacted',
       developerContacted: '#developer-contacted',
       oncAtlContacted: '#onc-atl-contacted',
@@ -51,17 +49,6 @@ class ComplaintsComponent extends CollectionPage {
     return $(this.elements.viewButton);
   }
 
-  async selectSurveillance(surveillance) {
-    await (await $(this.elements.surveillance)).click();
-    await (await $(`//li[contains(text(),"${surveillance}")]`)).click();
-  }
-
-  async selectListing(listings) {
-    await (await $(this.elements.listings)).click();
-    await (await $(this.elements.listings)).addValue(listings);
-    await (await $(`//li[contains(text(),"${listings}")]`)).click();
-  }
-
   async set(fields) {
     await (await $(this.elements.certificationBody)).click();
     await (await $(`//li[text()="${fields.body}"]`)).click();
@@ -78,11 +65,6 @@ class ComplaintsComponent extends CollectionPage {
     await (await $(this.elements.actions)).addValue(fields.actions);
     await (await $(this.elements.criterion)).click();
     await (await $(`//li[text()="${fields.criterion}"]`)).click();
-    await (await $(this.elements.listings)).click();
-    await (await $(this.elements.listings)).addValue(fields.listings);
-    await (await $(`//li[contains(text(),"${fields.listings}")]`)).click();
-    await (await $(this.elements.surveillance)).click();
-    await (await $(`//li[contains(text(),"${fields.surveillance}")]`)).click();
     await (await $(this.elements.complainantContacted)).click();
     await (await $(this.elements.developerContacted)).click();
     await (await $(this.elements.oncAtlContacted)).click();
