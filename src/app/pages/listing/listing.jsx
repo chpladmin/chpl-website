@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   CircularProgress,
-  Divider,
   FormControlLabel,
   Switch,
   Typography,
@@ -23,40 +23,43 @@ import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
 import { InternalScrollButton } from 'components/util';
 import { FlagContext } from 'shared/contexts';
-import theme from 'themes/theme';
+import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
+  ...utilStyles,
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: '16px',
+    padding: '16px',
+    backgroundColor: '#f9f9f9',
+    [theme.breakpoints.up('md')]: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 3fr',
+      alignItems: 'start',
+    },
+  },
+  navigation: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'sticky',
+    top: '100px',
+  },
+  menuItems: {
+    padding: '8px',
+    justifyContent: 'space-between',
+    '&.Mui-disabled': {
+      color: '#000',
+      backgroundColor: '#f9f9f9',
+      fontWeight: 600,
+    },
+  },
   content: {
     display: 'grid',
-    gap: '8px',
-    overflowWrap: 'anywhere',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '32px',
+    flexDirection: 'column',
     gridTemplateColumns: '1fr',
-    padding: '32px',
-    backgroundColor: '#f9f9f9',
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 1fr',
-    },
-  },
-  pageNavigation: {
-    position: 'sticky',
-    top: 0,
-    height: 'min-content',
-    display: 'grid',
-    gap: '8px',
-    backgroundColor: '#f9f9f9',
-    justifyItems: 'start',
-    borderBottom: '1px solid #c2c6ca',
-    paddingBottom: '16px',
-    [theme.breakpoints.up('md')]: {
-      top: '100px',
-      borderRight: '1px solid #c2c6ca',
-      borderBottom: 'none',
-      paddingRight: '16px',
-    },
+    gridGap: '16px',
   },
   pageHeader: {
     padding: '32px',
@@ -96,73 +99,103 @@ function ChplListingPage({ id }) {
           { listing.product.name}
         </Typography>
       </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div className={classes.pageNavigation}>
-          <InternalScrollButton
-            id="listingInformation"
-            analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Listing Information' }}
-          >
-            Listing Information
-            <ArrowForwardIcon className={classes.iconSpacing} />
-          </InternalScrollButton>
-          <InternalScrollButton
-            id="certificationCriteria"
-            analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Certification Criteria' }}
-          >
-            Certification Criteria
-            <ArrowForwardIcon className={classes.iconSpacing} />
-          </InternalScrollButton>
-          <InternalScrollButton
-            id="clinicalQualityMeasures"
-            analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Clinical Quality Measures' }}
-          >
-            Clinical Quality Measures
-            <ArrowForwardIcon className={classes.iconSpacing} />
-          </InternalScrollButton>
-          { listing.certificationEdition.name !== '2011'
-            && (
+      <div className={classes.container} id="main-content" tabIndex="-1">
+        <div className={classes.navigation}>
+          <Card>
+            <Box
+              className={classes.menuItems}
+            >
               <InternalScrollButton
-                id="safetyEnhancedDesign"
-                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                id="listingInformation"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Listing Information' }}
               >
-                Safety Enhanced Design (SED)
+                Listing Information
                 <ArrowForwardIcon className={classes.iconSpacing} />
               </InternalScrollButton>
-            )}
-          <InternalScrollButton
-            id="g1g2Measures"
-            analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
-          >
-            G1/G2 Measures
-            <ArrowForwardIcon className={classes.iconSpacing} />
-          </InternalScrollButton>
-          <InternalScrollButton
-            id="complianceActivities"
-            analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
-          >
-            Compliance Activities
-            <ArrowForwardIcon className={classes.iconSpacing} />
-          </InternalScrollButton>
-          <InternalScrollButton
-            id="additionalInformation"
-            analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
-          >
-            Additional Information
-            <ArrowForwardIcon className={classes.iconSpacing} />
-          </InternalScrollButton>
-          { subscriptionsIsOn
-            && (
-              <ChplSubscribe
-                subscribedObjectId={listing.id}
-                subscribedObjectTypeId={1}
-              />
-            )}
+            </Box>
+            <Box
+              className={classes.menuItems}
+            >
+              <InternalScrollButton
+                id="certificationCriteria"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Certification Criteria' }}
+              >
+                Certification Criteria
+                <ArrowForwardIcon className={classes.iconSpacing} />
+              </InternalScrollButton>
+            </Box>
+            <Box
+              className={classes.menuItems}
+            >
+              <InternalScrollButton
+                id="clinicalQualityMeasures"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Clinical Quality Measures' }}
+              >
+                Clinical Quality Measures
+                <ArrowForwardIcon className={classes.iconSpacing} />
+              </InternalScrollButton>
+            </Box>
+            { listing.certificationEdition.name !== '2011'
+              && (
+                <Box
+                  className={classes.menuItems}
+                >
+                  <InternalScrollButton
+                    id="safetyEnhancedDesign"
+                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                  >
+                    Safety Enhanced Design (SED)
+                    <ArrowForwardIcon className={classes.iconSpacing} />
+                  </InternalScrollButton>
+                </Box>
+              )}
+            <Box
+              className={classes.menuItems}
+            >
+              <InternalScrollButton
+                id="g1g2Measures"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
+              >
+                G1/G2 Measures
+                <ArrowForwardIcon className={classes.iconSpacing} />
+              </InternalScrollButton>
+            </Box>
+            <Box
+              className={classes.menuItems}
+            >
+              <InternalScrollButton
+                id="complianceActivities"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
+              >
+                Compliance Activities
+                <ArrowForwardIcon className={classes.iconSpacing} />
+              </InternalScrollButton>
+            </Box>
+            <Box
+              className={classes.menuItems}
+            >
+              <InternalScrollButton
+                id="additionalInformation"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
+              >
+                Additional Information
+                <ArrowForwardIcon className={classes.iconSpacing} />
+              </InternalScrollButton>
+            </Box>
+            { subscriptionsIsOn
+              && (
+                <ChplSubscribe
+                  subscribedObjectId={listing.id}
+                  subscribedObjectTypeId={1}
+                />
+              )}
+          </Card>
         </div>
         <div className={classes.content}>
-          <span className="anchor-element">
-            <span id="listingInformation" className="page-anchor" />
-          </span>
           <Card>
+            <span className="anchor-element">
+              <span id="listingInformation" className="page-anchor" />
+            </span>
             <CardContent>
               Listing Information
               <ChplListingInformation
@@ -170,12 +203,10 @@ function ChplListingPage({ id }) {
               />
             </CardContent>
           </Card>
-          <Divider />
-
-          <span className="anchor-element">
-            <span id="certificationCriteria" className="page-anchor" />
-          </span>
           <Card>
+            <span className="anchor-element">
+              <span id="certificationCriteria" className="page-anchor" />
+            </span>
             <CardContent>
               Certification Criteria
               <FormControlLabel
@@ -199,12 +230,10 @@ function ChplListingPage({ id }) {
               />
             </CardContent>
           </Card>
-          <Divider />
-
-          <span className="anchor-element">
-            <span id="clinicalQualityMeasures" className="page-anchor" />
-          </span>
           <Card>
+            <span className="anchor-element">
+              <span id="clinicalQualityMeasures" className="page-anchor" />
+            </span>
             <CardContent>
               Clinical Quality Measures
               <FormControlLabel
@@ -229,30 +258,24 @@ function ChplListingPage({ id }) {
               />
             </CardContent>
           </Card>
-          <Divider />
-
           { listing.certificationEdition.name !== '2011'
             && (
-              <>
+              <Card>
                 <span className="anchor-element">
                   <span id="safetyEnhancedDesign" className="page-anchor" />
                 </span>
-                <Card>
-                  <CardContent>
-                    Safety Enhanced Design (SED)
-                    <ChplSed
-                      listing={listing}
-                    />
-                  </CardContent>
-                </Card>
-                <Divider />
-              </>
+                <CardContent>
+                  Safety Enhanced Design (SED)
+                  <ChplSed
+                    listing={listing}
+                  />
+                </CardContent>
+              </Card>
             )}
-
-          <span className="anchor-element">
-            <span id="g1g2Measures" className="page-anchor" />
-          </span>
           <Card>
+            <span className="anchor-element">
+              <span id="g1g2Measures" className="page-anchor" />
+            </span>
             <CardContent>
               G1/G2 Measures
               <ChplG1G2
@@ -260,12 +283,10 @@ function ChplListingPage({ id }) {
               />
             </CardContent>
           </Card>
-          <Divider />
-
-          <span className="anchor-element">
-            <span id="complianceActivities" className="page-anchor" />
-          </span>
           <Card>
+            <span className="anchor-element">
+              <span id="complianceActivities" className="page-anchor" />
+            </span>
             <CardContent>
               Compliance Activities
               <ChplCompliance
@@ -275,12 +296,10 @@ function ChplListingPage({ id }) {
               />
             </CardContent>
           </Card>
-          <Divider />
-
-          <span className="anchor-element">
-            <span id="additionalInformation" className="page-anchor" />
-          </span>
           <Card>
+            <span className="anchor-element">
+              <span id="additionalInformation" className="page-anchor" />
+            </span>
             <CardContent>
               Additional Information
               <ChplAdditionalInformation
