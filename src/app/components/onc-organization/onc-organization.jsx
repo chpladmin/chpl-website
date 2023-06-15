@@ -11,12 +11,13 @@ import { acb as acbPropType } from 'shared/prop-types';
 function ChplOncOrganization(props) {
   const {
     dispatch,
-    organization,
+    organization: initialOrg,
     orgType,
     isCreating,
   } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [organization, setOrganization] = useState(undefined);
   const { mutate: postAcb } = usePostAcb();
   const { mutate: putAcb } = usePutAcb();
   const { mutate: postAtl } = usePostAtl();
@@ -25,6 +26,11 @@ function ChplOncOrganization(props) {
   useEffect(() => {
     setIsEditing(isCreating);
   }, [isCreating]);
+
+  useEffect(() => {
+    setOrganization(initialOrg);
+    setIsEditing(false);
+  }, [initialOrg]);
 
   const handleDispatch = (action, payload) => {
     const mutate = isCreating ? (orgType === 'acb' ? postAcb : postAtl) : (orgType === 'acb' ? putAcb : putAtl);
@@ -50,10 +56,11 @@ function ChplOncOrganization(props) {
           },
         });
         break;
-      default:
-        console.log({ action, payload });
+        // no default
     }
   };
+
+  if (!organization) { return null; }
 
   if (isEditing) {
     return (
