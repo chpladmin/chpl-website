@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -35,14 +35,21 @@ const useStyles = makeStyles({
 
 function ChplOncOrganizationView(props) {
   const {
-    organization,
+    organization: initialOrg,
     dispatch,
   } = props;
+  const [organization, setOrganization] = useState(undefined);
   const classes = useStyles();
+
+  useEffect(() => {
+    setOrganization(initialOrg);
+  }, [initialOrg]);
 
   const edit = () => {
     dispatch('edit');
   };
+
+  if (!organization) { return null; }
 
   return (
     <Card
@@ -54,9 +61,9 @@ function ChplOncOrganizationView(props) {
         className={classes.header}
       />
       <CardContent className={classes.content}>
-          { organization.website
+        { organization.website
          && (
-          <Box className={classes.subContentBox}>
+         <Box className={classes.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Website</strong>
              <br />
@@ -64,7 +71,7 @@ function ChplOncOrganizationView(props) {
                href={organization.website}
              />
            </Typography>
-           </Box>
+         </Box>
          )}
         <Box className={classes.subContentBox}>
           <Typography variant="body1" gutterBottom>
@@ -78,18 +85,18 @@ function ChplOncOrganizationView(props) {
           </Typography>
           { organization.retired ? 'Yes' : 'No' }
         </Box>
-          { organization.retired
+        { organization.retired
             && (
               <Box className={classes.subContentBox}>
-              <>
-                <Typography variant="body1" gutterBottom><strong>Retirement Date</strong></Typography>
-                { getDisplayDateFormat(organization.retirementDay) }
-              </>
+                <>
+                  <Typography variant="body1" gutterBottom><strong>Retirement Date</strong></Typography>
+                  { getDisplayDateFormat(organization.retirementDay) }
+                </>
               </Box>
             )}
-          { organization.address
+        { organization.address
          && (
-          <Box className={classes.subContentBox}>
+         <Box className={classes.subContentBox}>
            <Typography variant="body1" gutterBottom>
              <strong>Address</strong>
              <br />
@@ -119,7 +126,7 @@ function ChplOncOrganizationView(props) {
              <span className="sr-only">Country: </span>
              {organization.address.country}
            </Typography>
-           </Box>
+         </Box>
          )}
       </CardContent>
       <CardActions>

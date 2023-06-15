@@ -65,7 +65,7 @@ function ChplOncOrganizations() {
   const { hasAnyRole } = useContext(UserContext);
   const { enqueueSnackbar } = useSnackbar();
   const [orgs, setOrgs] = useState([]);
-  const [active, setActive] = useState(undefined);
+  const [activeId, setActiveId] = useState(undefined);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState('');
   const [orgType, setOrgType] = useState('');
@@ -74,7 +74,7 @@ function ChplOncOrganizations() {
   const { mutate: invite } = usePostUserInvitation();
   const acbQuery = useFetchAcbs(true);
   const atlQuery = useFetchAtls(true);
-  const userQuery = useFetchUsersAtAcb(active, orgType);
+  const userQuery = useFetchUsersAtAcb(orgs.find((org) => org.id === activeId), orgType);
   const roles = ['ROLE_ACB'];
   const classes = useStyles();
 
@@ -87,7 +87,7 @@ function ChplOncOrganizations() {
     if (acbQuery.isLoading || !acbQuery.isSuccess) { return; }
     setOrgs(acbQuery.data.acbs.sort(sortOrgs));
     if (acbQuery.data.acbs.length === 1) {
-      setActive(acbQuery.data.acbs[0]);
+      setActiveId(acbQuery.data.acbs[0].id);
     }
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess, orgType]);
 
@@ -96,7 +96,7 @@ function ChplOncOrganizations() {
     if (atlQuery.isLoading || !atlQuery.isSuccess) { return; }
     setOrgs(atlQuery.data.atls.sort(sortOrgs));
     if (atlQuery.data.atls.length === 1) {
-      setActive(atlQuery.data.atls[0]);
+      setActiveId(atlQuery.data.atls[0].id);
     }
   }, [atlQuery.data, atlQuery.isLoading, atlQuery.isSuccess, orgType]);
 
@@ -108,7 +108,7 @@ function ChplOncOrganizations() {
 
   const navigate = (target) => {
     const next = target || (orgs.length === 1 ? orgs[0] : undefined);
-    setActive(next);
+    setActiveId(next.id);
     setIsCreating(false);
     setIsEditing('');
     if (!next) {
@@ -122,7 +122,7 @@ function ChplOncOrganizations() {
         setIsEditing('');
         break;
       case 'delete':
-        remove({ id: active.id, userId: payload }, {
+        remove({ id: activeId, userId: payload }, {
           onSuccess: () => {
             setIsEditing('');
           },
@@ -139,7 +139,7 @@ function ChplOncOrganizations() {
         }
         break;
       case 'invite':
-        invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: active.id }, {
+        invite({ role: 'ROLE_ACB', emailAddress: payload.email, permissionObjectId: activeId }, {
           onSuccess: () => {
             enqueueSnackbar(`Email sent successfully to ${payload.email}`, {
               variant: 'success',
@@ -155,8 +155,7 @@ function ChplOncOrganizations() {
       case 'refresh':
         setIsEditing('');
         break;
-      default:
-        console.log({ action, payload });
+        // no default
     }
   };
 
@@ -170,7 +169,7 @@ function ChplOncOrganizations() {
                 <Button
                   key={org.name}
                   onClick={() => navigate(org)}
-                  disabled={active?.name === org.name}
+                  disabled={orgs.find((o) => o.id === activeId)?.name === org.name}
                   id={`onc-organizations-navigation-${org.name}`}
                   fullWidth
                   variant="text"
@@ -188,14 +187,14 @@ function ChplOncOrganizations() {
           </div>
         )}
       <Box display="flex" flexDirection="column" gridGap={16}>
-        { active?.id
+        { activeId
           && (
             <>
               { isEditing !== 'user'
                 && (
                   <ChplOncOrganization
                     dispatch={handleDispatch}
-                    organization={active}
+                    organization={orgs.find((org) => org.id === activeId)}
                     orgType={orgType}
                   />
                 )}
@@ -209,7 +208,7 @@ function ChplOncOrganizations() {
                 )}
             </>
           )}
-        { !active?.id && !isCreating
+        { !activeId && !isCreating
           && (
             <Card>
               <CardContent>
