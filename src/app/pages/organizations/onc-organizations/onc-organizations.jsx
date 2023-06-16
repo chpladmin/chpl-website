@@ -108,7 +108,7 @@ function ChplOncOrganizations() {
 
   const navigate = (target) => {
     const next = target || (orgs.length === 1 ? orgs[0] : undefined);
-    setActiveId(next.id);
+    setActiveId(next?.id);
     setIsCreating(false);
     setIsEditing('');
     if (!next) {
