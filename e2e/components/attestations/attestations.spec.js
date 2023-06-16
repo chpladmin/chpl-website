@@ -39,6 +39,7 @@ describe('the Attestations component', () => {
     it('should allow creation of an exception for an unattested period', () => {
       const periodStart = 'Jun 30, 2020';
       const initialSnacks = snack.snackCount;
+      browser.waitUntil(() => component.attestationsTable.isDisplayed());
       component.initiateUnattestedException(periodStart);
       component.createException();
       browser.waitUntil(() => snack.snackCount === initialSnacks + 1);

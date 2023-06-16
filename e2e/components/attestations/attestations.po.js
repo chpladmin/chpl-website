@@ -104,6 +104,10 @@ class AttestationsComponent {
   submit() {
     $(this.elements.submit).click();
   }
+
+  get attestationsTable() {
+    return $(this.elements.attestationsTable);
+  }
 }
 
 export default AttestationsComponent;
