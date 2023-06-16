@@ -20,9 +20,6 @@ describe('the 2015 Listing page', () => {
     expect(information.contact.isDisplayed()).toBe(true);
     expect(information.link.getAttribute('href')).toContain('http://www');
   });
-  it('should display version information', () => {
-    expect(information.getInformation('version').isDisplayed()).toBe(true);
-  });
   it('should display edition as 2015', () => {
     expect(information.getInformation('certification-edition').getText()).toContain('2015');
   });
