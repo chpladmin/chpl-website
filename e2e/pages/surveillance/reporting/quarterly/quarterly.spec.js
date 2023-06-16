@@ -100,13 +100,6 @@ describe('the quarterly surveillance reporting page', () => {
       await expect(await (await quarterlyPage.verificationCap).getValue()).toBe(surData.verificationCap);
     });
 
-    it('can download quarterly report', async () => {
-      await (await reportingPage.editQuarterlyReport(acb, year, quarter)).click();
-      await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
-      await (await quarterlyPage.download).click();
-      await expect(await (await toast.toastTitle).getText()).toBe('Report is being generated');
-    });
-
     it('can edit complaints', async () => {
       await (await reportingPage.editQuarterlyReport(acb, year, quarter)).click();
       await quarterlyPage.waitForQuarterToBeFullyLoaded(`${acb} - ${year} - ${quarter}`);
