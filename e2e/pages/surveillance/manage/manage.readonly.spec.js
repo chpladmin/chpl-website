@@ -11,7 +11,7 @@ beforeEach(async () => {
   page = new ManagePage();
   login = new LoginComponent();
   hooks = new Hooks();
-  await hooks.open('#/surveillance/manage');
+  hooks.open('#/surveillance/manage');
 });
 
 describe('when logged in as ROLE_ADMIN', () => {
