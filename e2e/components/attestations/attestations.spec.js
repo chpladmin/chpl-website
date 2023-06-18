@@ -41,6 +41,7 @@ describe('the Attestations component', () => {
       const initialSnacks = snack.snackCount;
       browser.waitUntil(() => component.attestationsTable.isDisplayed());
       component.initiateUnattestedException(periodStart);
+      browser.waitUntil(() => component.createExceptionButton.isDisplayed());
       component.createException();
       browser.waitUntil(() => snack.snackCount === initialSnacks + 1);
       expect(component.isCreatingException()).toBe(false);
