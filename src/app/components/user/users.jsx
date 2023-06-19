@@ -13,6 +13,7 @@ import ChplUserEdit from './user-edit';
 import ChplUserInvite from './user-invite';
 import ChplUserView from './user-view';
 
+import { usePutUser } from 'api/users';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
@@ -52,24 +53,24 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplUsers(props) {
-  const { dispatch, roles } = props;
+function ChplUsers({ dispatch, roles, users: initialUsers }) {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
+  const { mutate } = usePutUser();
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState(undefined);
   const [errors, setErrors] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setUsers(props.users.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
-  }, [props.users]); // eslint-disable-line react/destructuring-assignment
+    setUsers(initialUsers.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+  }, [initialUsers]);
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
-    setUsers(props.users
+    setUsers(initialUsers
       .filter((u) => regex.test(u.fullName)
                      || regex.test(u.friendlyName)
                      || regex.test(u.title)
@@ -110,17 +111,19 @@ function ChplUsers(props) {
         dispatch('invite', data);
         break;
       case 'save':
-        networkService.updateUser(data)
-          .then(() => {
+        mutate(data, {
+          onSuccess: () => {
             setUser(undefined);
             dispatch('refresh');
-          }, (error) => {
+          },
+          onError: (error) => {
             if (error.data.error) {
               setErrors([error.data.error]);
             } else if (error.data?.errorMessages?.length > 0) {
               setErrors(error.data.errorMessages);
             }
-          });
+          },
+        });
         break;
         // no default
     }

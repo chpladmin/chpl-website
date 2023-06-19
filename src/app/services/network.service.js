@@ -590,10 +590,6 @@ export default class NetworkService {
     return this.apiPUT(`/surveillance/${surveillance.id}`, surveillance);
   }
 
-  updateUser(user) {
-    return this.apiPUT(`/users/${user.userId}`, user);
-  }
-
   updateVersion(versionObject) {
     return this.apiPUT('/versions', versionObject);
   }
