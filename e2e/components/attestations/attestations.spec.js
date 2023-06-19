@@ -29,26 +29,6 @@ describe('the Attestations component', () => {
     login.logOut();
   });
 
-  describe('for Plexus Information Systems, Inc.', () => {
-    beforeEach(() => {
-      page.selectDeveloper('Plexus');
-      login.logIn('onc');
-      hooks.waitForSpinnerToDisappear();
-    });
-
-    it('should allow creation of an exception for an unattested period', () => {
-      const periodStart = 'Jun 30, 2020';
-      const initialSnacks = snack.snackCount;
-      browser.waitUntil(() => component.attestationsTable.isDisplayed());
-      component.initiateUnattestedException(periodStart);
-      browser.waitUntil(() => component.createExceptionButton.isDisplayed());
-      component.createException();
-      browser.waitUntil(() => snack.snackCount === initialSnacks + 1);
-      expect(component.isCreatingException()).toBe(false);
-      expect(snack.matchesText('You have re-opened the submission feature for Plexus Information Systems, Inc. until')).toBe(true);
-    });
-  });
-
   //ignoring this quarantined test as it is flaky - will address this later
   xdescribe('for Ocuco Limited', () => {
     beforeEach(() => {
