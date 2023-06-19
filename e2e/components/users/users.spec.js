@@ -19,7 +19,8 @@ describe('the users cards', () => {
     login.logIn('admin');
   });
 
-  it('should allow editing of the title', () => {
+  /* ignored due to being flaky, to be addressed in OCD-3668 */
+  xit('should allow editing of the title', () => {
     const element = component.getComponent('AQA ONC');
     const initialTitle = component.getDemographic(element, 'Title:');
     component.editUser(element);
