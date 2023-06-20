@@ -16,6 +16,7 @@ import ChplListingHistory from './history';
 
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
+import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import ChplCompliance from 'components/listing/details/compliance/compliance';
 import ChplCqms from 'components/listing/details/cqms/cqms';
@@ -96,6 +97,9 @@ function ChplListingPage({ id }) {
 
   return (
     <>
+      <ChplBrowserViewedWidget
+        listing={listing}
+      />
       <div className={classes.pageHeader}>
         <Typography
           variant="h1"
