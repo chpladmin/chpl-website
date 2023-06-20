@@ -31,7 +31,7 @@ describe('the announcements', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add a new announcement, edit and delete it', async () => {
+    it('should be able to add a new announcement and edit it', async () => {
       const text = `1Test - ${Date.now()}`;
       const newText = `2Test - ${Date.now()}`;
       await (await page.addButton).click();
