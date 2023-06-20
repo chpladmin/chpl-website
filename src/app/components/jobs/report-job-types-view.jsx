@@ -14,7 +14,6 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import EventIcon from '@material-ui/icons/Event';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { arrayOf, func } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
@@ -86,7 +85,7 @@ function ChplReportJobTypesView(props) {
   }, []);
 
   const filterHeaders = () => headers.filter((item) => hasAnyRole(['ROLE_ADMIN'])
-                          || (item.property === 'oncAcbSpecific' && hasAnyRole(['ROLE_ONC', 'ROLE_ONC_STAFF']))
+                          || (item.property === 'oncAcbSpecific' && hasAnyRole(['ROLE_ONC']))
                           || (item.property !== 'oncAcbSpecific'));
 
   const handleTableSort = (event, property, orderDirection) => {
@@ -122,7 +121,7 @@ function ChplReportJobTypesView(props) {
                     <TableCell>
                       { item.description }
                     </TableCell>
-                    { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ONC_STAFF'])
+                    { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                       && (
                         <TableCell>
                           { item.oncAcbSpecific }
