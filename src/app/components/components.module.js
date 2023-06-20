@@ -22,18 +22,13 @@ import {
   ChplConfirmProgress,
   ChplConfirmVersion,
 } from './listing/confirm';
-import ChplCqms from './listing/details/cqms/cqms-wrapper';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
-import ChplG1g2 from './listing/details/g1g2/g1g2-wrapper';
-import ChplAdditionalinformationWrapper from './listing/details/additional-information/additional-information-wrapper';
 import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSubscribeWrapper from './subscriptions/subscribe-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
-import ChplSed from './listing/details/sed/sed-wrapper';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplSedTaskView from './listing/details/sed/sed-task-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
-import ChplComplianceWrapper from './listing/details/compliance/compliance-wrapper';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
   ChplUploadPromotingInteroperability,
@@ -66,7 +61,6 @@ angular
   ])
   .component('chplActionBarWrapperBridge', reactToAngularComponent(ChplActionBarWrapper))
   .component('chplActionButtonWrapperBridge', reactToAngularComponent(ChplActionButtonWrapper))
-  .component('chplAdditionalInformationWrapperBridge', reactToAngularComponent(ChplAdditionalinformationWrapper))
   .component('chplApiKeyConfirmBridge', reactToAngularComponent(ChplApiKeyConfirm))
   .component('chplAttestationCreateWrapperBridge', reactToAngularComponent(ChplAttestationCreateWrapper))
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
@@ -82,18 +76,14 @@ angular
   .component('chplConfirmProductBridge', reactToAngularComponent(ChplConfirmProduct))
   .component('chplConfirmProgressBridge', reactToAngularComponent(ChplConfirmProgress))
   .component('chplConfirmVersionBridge', reactToAngularComponent(ChplConfirmVersion))
-  .component('chplComplianceBridge', reactToAngularComponent(ChplComplianceWrapper))
   .component('chplConfirmationBridge', reactToAngularComponent(ChplConfirmation))
-  .component('chplCqmsBridge', reactToAngularComponent(ChplCqms))
   .component('chplCriteriaBridge', reactToAngularComponent(ChplCriteriaWrapper))
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
-  .component('chplG1g2Bridge', reactToAngularComponent(ChplG1g2))
   .component('chplIcsFamilyBridge', reactToAngularComponent(ChplIcsFamily))
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
-  .component('chplSedBridge', reactToAngularComponent(ChplSed))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
   .component('chplSedTaskViewBridge', reactToAngularComponent(ChplSedTaskView))
   .component('chplSubscribeBridge', reactToAngularComponent(ChplSubscribeWrapper))
