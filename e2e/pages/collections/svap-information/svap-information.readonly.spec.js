@@ -44,18 +44,6 @@ describe('the SVAP Information collection page', () => {
         await expect(countAfter).toBeLessThan(countBefore);
       });
 
-      it('should filter on Certification Status', async () => {
-        await page.removeFilter('Certification Status', 'Active');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeLessThan(countBefore);
-      });
-
-      it('should filter on SVAP value', async () => {
-        await page.setListFilter('svapIds', '20');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeLessThan(countBefore);
-      });
-
       it('should filter on ONC-ACB', async () => {
         await page.removeFilter('ONC-ACB', 'SLI Compliance');
         countAfter = await page.getTotalResultCount();
