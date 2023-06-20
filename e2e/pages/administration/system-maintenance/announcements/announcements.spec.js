@@ -41,10 +41,12 @@ describe('the announcements', () => {
       await (await page.announcementEndDateTime).keys(['Tab', 'Tab', 'ArrowUp']);
       await (await page.isPublicToggle).click();
       await action.save();
+      await (browser.waitUntil(async () => (await (page.dataTable)).isDisplayed()));
       await expect(await (await page.dataTable).getText()).toContain(text);
       await page.editItem(text);
       await page.setValue(newText);
       await action.save();
+      await (browser.waitUntil(async () => (await (page.dataTable)).isDisplayed()));
       browser.waitUntil(async () => (await (await $$(page.dataTable)).getText()).not.toContain(text));
     });
   });
