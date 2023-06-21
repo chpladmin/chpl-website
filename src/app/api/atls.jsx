@@ -1,15 +1,38 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
+import options from './options';
 
 const useFetchAtls = (editable = false) => {
   const axios = useAxios();
   return useQuery(['atls', editable], async () => {
     const response = await axios.get(`atls?editable=${editable ? 'true' : 'false'}`);
     return response.data;
+  }, editable ? {} : options.daily);
+};
+
+const usePostAtl = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('atls', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('atls');
+    },
   });
 };
 
-/* eslint-disable import/prefer-default-export */
-// remove eslint disable line when new api methods are added
-export { useFetchAtls };
+const usePutAtl = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`atls/${data.id}`, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('atls');
+    },
+  });
+};
+
+export {
+  useFetchAtls,
+  usePostAtl,
+  usePutAtl,
+};
