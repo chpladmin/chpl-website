@@ -11,6 +11,9 @@ import { analyticsConfig } from '../../shared/prop-types';
 const useStyles = makeStyles({
   noButtonWrap: {
     whiteSpace: 'nowrap',
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 });
 
