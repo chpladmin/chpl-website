@@ -10,7 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { arrayOf } from 'prop-types';
+import { arrayOf, bool } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
 
@@ -142,7 +142,7 @@ const getSurveillanceTitle = (surv) => {
   return title;
 };
 
-function ChplSurveillance({ surveillance: initialSurveillance }) {
+function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
   const [surveillance, setSurveillance] = useState([]);
   const classes = useStyles();
 
@@ -159,7 +159,7 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography>
-            Surveillance Activities
+            { ics ? 'Inherited Certified Status Surveillance Activity' : 'Surveillance Activities' }
           </Typography>
           <Typography variant="body2">
             (
@@ -176,7 +176,7 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
         { surveillance.length === 0
           && (
             <Typography>
-              No surveillance activity has been conducted for this listing
+              { ics ? 'Inherited Certified Status Surveillance (ICS) information is displayed here if a surveillance activity related to a listing\'s use of Inherited Certified Status has been opened by an ONC-ACB that affects this listing. No such ICS surveillance activity has been conducted for this listing.' : 'No surveillance activity has been conducted for this listing' }
             </Typography>
           )}
         { surveillance.map((surv) => (
@@ -263,4 +263,9 @@ export default ChplSurveillance;
 
 ChplSurveillance.propTypes = {
   surveillance: arrayOf(surveillancePropType).isRequired,
+  ics: bool,
+};
+
+ChplSurveillance.defaultProps = {
+  ics: false,
 };

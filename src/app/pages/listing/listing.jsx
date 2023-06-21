@@ -12,7 +12,11 @@ import {
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { number } from 'prop-types';
 
+import ChplListingHistory from './history';
+
 import { useFetchListing } from 'api/listing';
+import ChplActionButton from 'components/action-widget/action-button';
+import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import ChplCompliance from 'components/listing/details/compliance/compliance';
 import ChplCqms from 'components/listing/details/cqms/cqms';
@@ -21,8 +25,8 @@ import ChplG1G2 from 'components/listing/details/g1g2/g1g2';
 import ChplListingInformation from 'components/listing/details/listing-information/listing-information';
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
-import { InternalScrollButton } from 'components/util';
-import { FlagContext } from 'shared/contexts';
+import { ChplLink, InternalScrollButton } from 'components/util';
+import { UserContext, FlagContext } from 'shared/contexts';
 import { theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -68,6 +72,7 @@ const useStyles = makeStyles({
 
 function ChplListingPage({ id }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
+  const { hasAnyRole } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
@@ -92,6 +97,9 @@ function ChplListingPage({ id }) {
 
   return (
     <>
+      <ChplBrowserViewedWidget
+        listing={listing}
+      />
       <div className={classes.pageHeader}>
         <Typography
           variant="h1"
@@ -192,6 +200,42 @@ function ChplListingPage({ id }) {
           </Card>
         </div>
         <div className={classes.content}>
+          <Card>
+            <ChplListingHistory
+              listing={listing}
+              canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
+            />
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
+              && (
+                <ChplLink
+                  href={`#/listing/${listing.id}/view/edit`}
+                  text="Edit Listing"
+                  external={false}
+                  router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
+                />
+              )}
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
+              && (
+                <ChplLink
+                  href={`#/listing/${listing.id}/view/edit`}
+                  text="Edit Listing"
+                  external={false}
+                  router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
+                />
+              )}
+            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+              && (
+                <ChplLink
+                  href="#/surveillance/manage"
+                  text="Manage Surveillance Activity"
+                  external={false}
+                  router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                />
+              )}
+            <ChplActionButton
+              listing={listing}
+            />
+          </Card>
           <Card>
             <span className="anchor-element">
               <span id="listingInformation" className="page-anchor" />
