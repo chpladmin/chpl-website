@@ -74,6 +74,15 @@ const useStyles = makeStyles({
     padding: '32px',
     backgroundColor: '#FFF',
   },
+  sectionHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: '16px',
+    alignItems: 'center',
+    backgroundColor: '#f5f9fd',
+    borderBottom: '.5px solid #c2c6ca',
+  },
 });
 
 function ChplListingPage({ id }) {
@@ -153,7 +162,6 @@ function ChplListingPage({ id }) {
                   Edit
                 </Button>
               )}
-
               </Box>
             </Box>
           </Container>
@@ -254,13 +262,14 @@ function ChplListingPage({ id }) {
               </Box>
             </div>
             <div className={classes.content}>
-
               <Card>
                 <span className="anchor-element">
                   <span id="listingInformation" className="page-anchor" />
                 </span>
+                <Box className={classes.sectionHeader}>
+                  <Typography variant="h2">Listing Information</Typography>
+                </Box>
                 <CardContent>
-                  Listing Information
                   <ChplListingInformation
                     listing={listing}
                   />
@@ -276,23 +285,28 @@ function ChplListingPage({ id }) {
                 <span className="anchor-element">
                   <span id="certificationCriteria" className="page-anchor" />
                 </span>
-                <CardContent>
-                  Certification Criteria
-                  <FormControlLabel
-                    control={(
-                      <Switch
-                        id="see-all-criteria"
-                        name="seeAllCriteria"
-                        checked={seeAllCriteria}
-                        onChange={() => setSeeAllCriteria(!seeAllCriteria)}
-                      />
+                <Box className={classes.sectionHeader}>
+                  <Typography variant="h2">Certification Criteria</Typography>
+                  <div>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="see-all-criteria"
+                          name="seeAllCriteria"
+                          checked={seeAllCriteria}
+                          color="primary"
+                          onChange={() => setSeeAllCriteria(!seeAllCriteria)}
+                        />
                 )}
-                    label="See all Certification Criteria"
-                  />
-                  (
-                  { listing.certificationResults.filter((cr) => cr.success).length }
-                  {' '}
-                  found)
+                      label="See all Certification Criteria"
+                    />
+                    (
+                    { listing.certificationResults.filter((cr) => cr.success).length }
+                    {' '}
+                    found)
+                  </div>
+                </Box>
+                <CardContent>
                   <ChplCriteria
                     certificationResults={listing.certificationResults}
                     viewAll={seeAllCriteria}
@@ -303,23 +317,28 @@ function ChplListingPage({ id }) {
                 <span className="anchor-element">
                   <span id="clinicalQualityMeasures" className="page-anchor" />
                 </span>
-                <CardContent>
-                  Clinical Quality Measures
-                  <FormControlLabel
-                    control={(
-                      <Switch
-                        id="see-all-cqms"
-                        name="seeAllCqms"
-                        checked={seeAllCqms}
-                        onChange={() => setSeeAllCqms(!seeAllCqms)}
-                      />
+                <Box className={classes.sectionHeader}>
+                  <Typography variant="h2">Clinical Quality Measures</Typography>
+                  <div>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                          id="see-all-cqms"
+                          name="seeAllCqms"
+                          color="primary"
+                          checked={seeAllCqms}
+                          onChange={() => setSeeAllCqms(!seeAllCqms)}
+                        />
                 )}
-                    label="See all CQMs"
-                  />
-                  (
-                  { listing.cqmResults.filter((cqm) => cqm.success).length }
-                  {' '}
-                  found)
+                      label="See all CQMs"
+                    />
+                    (
+                    { listing.cqmResults.filter((cqm) => cqm.success).length }
+                    {' '}
+                    found)
+                  </div>
+                </Box>
+                <CardContent>
                   <ChplCqms
                     cqms={listing.cqmResults}
                     edition={listing.certificationEdition}
@@ -327,14 +346,17 @@ function ChplListingPage({ id }) {
                   />
                 </CardContent>
               </Card>
+
               { listing.certificationEdition.name !== '2011'
             && (
               <Card>
                 <span className="anchor-element">
                   <span id="safetyEnhancedDesign" className="page-anchor" />
                 </span>
+                <Box className={classes.sectionHeader}>
+                  <Typography variant="h2">Safety Enhanced Design (SED)</Typography>
+                </Box>
                 <CardContent>
-                  Safety Enhanced Design (SED)
                   <ChplSed
                     listing={listing}
                   />
@@ -345,8 +367,12 @@ function ChplListingPage({ id }) {
                 <span className="anchor-element">
                   <span id="g1g2Measures" className="page-anchor" />
                 </span>
+                <Box className={classes.sectionHeader}>
+                  <Typography variant="h2">
+                    G1/G2 Measures
+                  </Typography>
+                </Box>
                 <CardContent>
-                  G1/G2 Measures
                   <ChplG1G2
                     measures={listing.measures}
                   />
@@ -356,8 +382,13 @@ function ChplListingPage({ id }) {
                 <span className="anchor-element">
                   <span id="complianceActivities" className="page-anchor" />
                 </span>
+                <Box className={classes.sectionHeader}>
+                  <Typography variant="h2">
+                    Compliance Activities
+                  </Typography>
+                </Box>
                 <CardContent>
-                  Compliance Activities
+
                   <ChplCompliance
                     directReviews={listing.directReviews}
                     directReviewsAvailable={listing.directReviewsAvailable}
@@ -369,8 +400,13 @@ function ChplListingPage({ id }) {
                 <span className="anchor-element">
                   <span id="additionalInformation" className="page-anchor" />
                 </span>
+                <Box className={classes.sectionHeader}>
+                  <Typography variant="h2">
+                    Additional Information
+                  </Typography>
+                </Box>
                 <CardContent>
-                  Additional Information
+
                   <ChplAdditionalInformation
                     listing={listing}
                   />
