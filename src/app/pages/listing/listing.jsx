@@ -13,7 +13,14 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import EditIcon from '@material-ui/icons/Edit';
+import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
+import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
+import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
+import EditIcon from '@material-ui/icons/Edit';import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
+import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
+import SecurityOutlinedIcon from '@material-ui/icons/SecurityOutlined';
+import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { number } from 'prop-types';
 
 import ChplListingHistory from './history';
@@ -71,7 +78,7 @@ const useStyles = makeStyles({
     gridGap: '16px',
   },
   pageHeader: {
-    padding: '32px',
+    padding: '32px 0',
     backgroundColor: '#FFF',
   },
   sectionHeader: {
@@ -178,7 +185,7 @@ function ChplListingPage({ id }) {
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Listing Information' }}
                   >
                     Listing Information
-                    <ArrowForwardIcon className={classes.iconSpacing} />
+                    <NotesOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
                 <Box
@@ -189,7 +196,7 @@ function ChplListingPage({ id }) {
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Certification Criteria' }}
                   >
                     Certification Criteria
-                    <ArrowForwardIcon className={classes.iconSpacing} />
+                    <BookOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
                 <Box
@@ -200,7 +207,7 @@ function ChplListingPage({ id }) {
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Clinical Quality Measures' }}
                   >
                     Clinical Quality Measures
-                    <ArrowForwardIcon className={classes.iconSpacing} />
+                    <DoneAllOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
                 { listing.certificationEdition.name !== '2011'
@@ -213,7 +220,7 @@ function ChplListingPage({ id }) {
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
                   >
                     Safety Enhanced Design (SED)
-                    <ArrowForwardIcon className={classes.iconSpacing} />
+                    <TouchAppOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
               )}
@@ -225,7 +232,7 @@ function ChplListingPage({ id }) {
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
                   >
                     G1/G2 Measures
-                    <ArrowForwardIcon className={classes.iconSpacing} />
+                    <AssessmentOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
                 <Box
@@ -236,7 +243,7 @@ function ChplListingPage({ id }) {
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
                   >
                     Compliance Activities
-                    <ArrowForwardIcon className={classes.iconSpacing} />
+                    <SecurityOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
                 <Box
@@ -247,7 +254,7 @@ function ChplListingPage({ id }) {
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
                   >
                     Additional Information
-                    <ArrowForwardIcon className={classes.iconSpacing} />
+                    <InfoOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
               </Card>
