@@ -29,20 +29,12 @@
         developer="$ctrl.developer"
         dispatch="::$ctrl.handleAttestationDispatch"
         ></chpl-attestations-view-wrapper-bridge>
-      <div>
-        <div class="panel panel-default" ng-if="$ctrl.can('manageUsers')">
-          <div class="panel-heading">
-            <h2 class="panel-title">Manage Users ({{ $ctrl.users.length }})</h2>
-          </div>
-          <div class="panel-body">
-            <chpl-users-bridge
-              users="$ctrl.users"
-              roles="$ctrl.roles"
-              dispatch="::$ctrl.takeUserAction"
-              ></chpl-users-bridge>
-          </div>
-        </div>
-      </div>
+      <br />
+      <chpl-users-bridge
+        users="$ctrl.users"
+        roles="$ctrl.roles"
+        dispatch="::$ctrl.takeUserAction"
+        ></chpl-users-bridge>
     </div>
     <div class="col-md-8">
       <div ng-if="$ctrl.can('manageTracking')">
