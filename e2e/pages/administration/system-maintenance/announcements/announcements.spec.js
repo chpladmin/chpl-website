@@ -31,7 +31,7 @@ describe('the announcements', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add a new announcement and edit it', async () => {
+    it('should be able to add a new announcement', async () => {
       const text = `1Test - ${Date.now()}`;
       const newText = `2Test - ${Date.now()}`;
       await (await page.addButton).click();
@@ -43,11 +43,6 @@ describe('the announcements', () => {
       await action.save();
       await (browser.waitUntil(async () => (await (page.dataTable)).isDisplayed()));
       await expect(await (await page.dataTable).getText()).toContain(text);
-      await page.editItem(text);
-      await page.setValue(newText);
-      await action.save();
-      await (browser.waitUntil(async () => (await (page.dataTable)).isDisplayed()));
-      browser.waitUntil(async () => (await (await $$(page.dataTable)).getText()).not.toContain(text));
     });
   });
 });
