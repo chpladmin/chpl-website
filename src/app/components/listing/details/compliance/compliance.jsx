@@ -21,16 +21,11 @@ function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: i
   }, [initialSurveillance]);
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="subtitle1">
-          Compliance Activities
-        </Typography>
+      <div>
         <ChplSurveillance surveillance={icsSurveillance} ics />
         <ChplSurveillance surveillance={surveillance} />
         <ChplDirectReviews directReviews={directReviews} directReviewsAvailable={directReviewsAvailable} />
-      </CardContent>
-    </Card>
+    </div>
   );
 }
 
