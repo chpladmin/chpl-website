@@ -103,15 +103,13 @@ function ChplAdditionalInformation(props) {
                       </List>
                     </>
                   )}
-              </CardContent>
-              { listing.ics.inherits && listing.certificationEdition.name === '2015'
+                  { listing.ics.inherits && listing.certificationEdition.name === '2015'
                 && (
-                  <CardActions>
                     <ChplIcsFamily
                       id={listing.id}
                     />
-                  </CardActions>
                 )}
+              </CardContent>
             </Card>
           )}
         { listing.otherAcb !== null
