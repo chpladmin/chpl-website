@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   List,
@@ -126,10 +125,6 @@ function ChplListingInformation(props) {
               ) : (
                 <Typography gutterBottom>No report on File</Typography>
               )}
-            { /* chpl-listing-history-bridge */ }
-            { /* edit */ }
-            { /* manage surveillance */ }
-            { /* action button */ }
           </CardContent>
         </Card>
 
