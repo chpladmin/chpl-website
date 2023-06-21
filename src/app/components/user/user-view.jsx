@@ -166,9 +166,10 @@ function ChplUserView(props) {
               && (
                 <ChplTooltip title={`Impersonate ${user.fullName}`}>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     aria-label={`Impersonate ${user.fullName}`}
                     onClick={impersonate}
+                    color="secondary"
                   >
                     <GroupIcon />
                   </Button>

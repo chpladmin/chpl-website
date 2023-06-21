@@ -1,3 +1,5 @@
+import { compareAtl } from './atls.service';
+
 export const ReportsAtlsComponent = {
   templateUrl: 'chpl.reports/atls/atls.html',
   controller: class ReportsAtlsComponent {
@@ -56,41 +58,19 @@ export const ReportsAtlsComponent = {
 
     parse (meta) {
       return this.networkService.getActivityById(meta.id).then(item => {
-        const simpleFields = [
-          {key: 'name', display: 'Name'},
-          {key: 'retired', display: 'Retired'},
-          {key: 'retirementDate', display: 'Retirement Date', filter: 'date'},
-          {key: 'website', display: 'Website'},
-        ];
-
-        let activity = {
-          action: '',
-          details: [],
+        const activity = {
+          id: item.id,
           date: item.activityDate,
         };
-
-        if (item.originalData && !angular.isArray(item.originalData) && item.newData) { // both exist, originalData not an array: update
-          if (item.originalData.deleted !== item.newData.deleted) {
-            activity.action = item.newData.deleted ? 'ONC-ATL was deleted' : 'ONC-ATL was restored';
-          } else if (item.originalData.retired !== item.newData.retired) {
-            activity.action = item.newData.retired ? 'ONC-ATL was retired' : 'ONC-ATL was un-retired';
-          } else {
-            activity.action = 'ONC-ATL was updated';
-            simpleFields.forEach(field => {
-              let change = this.ReportService.compareItem(item.originalData, item.newData, field.key, field.display, field.filter);
-              if (change) {
-                activity.details.push(change);
-              }
-            });
-            let addressChanges = this.ReportService.compareAddress(item.originalData.address, item.newData.address);
-            if (addressChanges && addressChanges.length > 0) {
-              activity.details.push('Address changes<ul>' + addressChanges.join('') + '</ul>');
-            }
-          }
+        if (item.originalData && item.newData) { // both exist: update
+          activity.action = `Updated ONC-ATL "${item.newData.name}"`;
+          activity.details = compareAtl(item.originalData, item.newData);
         } else {
           this.ReportService.interpretNonUpdate(activity, item, 'ATL');
+          activity.action = activity.action[0];
+          activity.details = [];
+          activity.csvAction = activity.action.replace(',', '","');
         }
-
         meta.action = activity.action;
         meta.details = activity.details;
         meta.csvDetails = activity.details.join('\n');
