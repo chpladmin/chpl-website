@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import {
-  arrayOf,
-  func,
-  string,
-} from 'prop-types';
-import {
-  Container,
-  ThemeProvider,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
   makeStyles,
 } from '@material-ui/core';
+import { arrayOf, func, string } from 'prop-types';
 
 import ChplUserEdit from './user-edit';
 import ChplUserInvite from './user-invite';
 import ChplUserView from './user-view';
 
+import { usePutUser } from 'api/users';
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { user as userPropType } from 'shared/prop-types';
-import theme from 'themes/theme';
+import { theme } from 'themes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '16px',
   },
   header: {
     padding: '16px',
-    margin: '0 8px',
+    marginBottom: '16px',
     display: 'flex',
     gap: '8px',
     flexDirection: 'column',
@@ -36,12 +36,11 @@ const useStyles = makeStyles(() => ({
     borderRadius: '8px',
     boxShadow: 'rgb(149 157 165 / 10%) 0px 4px 8px',
     alignItems: 'stretch',
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('sm')]: {
       flexDirection: 'row',
     },
   },
   users: {
-    padding: '8px',
     display: 'grid',
     gap: '16px',
     gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
@@ -49,28 +48,29 @@ const useStyles = makeStyles(() => ({
       gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
     },
   },
-}));
+  cardHeaderAction: {
+    margin: '0',
+  },
+});
 
-function ChplUsers(props) {
-  /* eslint-disable react/destructuring-assignment */
-  const [users, setUsers] = useState([]);
-  const [roles] = useState(props.roles);
-  const [user, setUser] = useState(undefined);
-  const [errors, setErrors] = useState([]);
+function ChplUsers({ dispatch, roles, users: initialUsers }) {
   const $analytics = getAngularService('$analytics');
   const $rootScope = getAngularService('$rootScope');
   const authService = getAngularService('authService');
   const networkService = getAngularService('networkService');
+  const { mutate } = usePutUser();
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(undefined);
+  const [errors, setErrors] = useState([]);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
-    setUsers(props.users.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
-  }, [props.users]); // eslint-disable-line react/destructuring-assignment
+    setUsers(initialUsers.sort((a, b) => (a.fullName < b.fullName ? -1 : 1)));
+  }, [initialUsers]);
 
   const handleFilter = (event) => {
     const regex = new RegExp(event.target.value, 'i');
-    setUsers(props.users
+    setUsers(initialUsers
       .filter((u) => regex.test(u.fullName)
                      || regex.test(u.friendlyName)
                      || regex.test(u.title)
@@ -84,13 +84,15 @@ function ChplUsers(props) {
       case 'cancel':
         setUser(undefined);
         handleFilter({ target: { value: '' } });
+        dispatch('cancel');
         break;
       case 'delete':
         setUser(undefined);
-        props.dispatch('delete', data);
+        dispatch('delete', data);
         break;
       case 'edit':
         setUser(data);
+        dispatch('edit', 'user');
         break;
       case 'impersonate':
         networkService.impersonateUser(data)
@@ -101,45 +103,63 @@ function ChplUsers(props) {
               .then((u) => {
                 authService.saveCurrentUser(u);
                 $rootScope.$broadcast('impersonating');
-                props.dispatch('impersonate');
+                dispatch('impersonate');
               });
           });
         break;
       case 'invite':
-        props.dispatch('invite', data);
+        dispatch('invite', data);
         break;
       case 'save':
-        networkService.updateUser(data)
-          .then(() => {
+        mutate(data, {
+          onSuccess: () => {
             setUser(undefined);
-            props.dispatch('refresh');
-          }, (error) => {
+            dispatch('refresh');
+          },
+          onError: (error) => {
             if (error.data.error) {
               setErrors([error.data.error]);
             } else if (error.data?.errorMessages?.length > 0) {
               setErrors(error.data.errorMessages);
             }
-          });
+          },
+        });
         break;
         // no default
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
-        { user
-          && (
-            <ChplUserEdit
-              user={user}
-              errors={errors}
-              dispatch={handleDispatch}
-            />
-          )}
-        { !user
-          && (
-            <div className={classes.container}>
-              <>
+    <Box>
+      { user
+        && (
+          <ChplUserEdit
+            user={user}
+            errors={errors}
+            dispatch={handleDispatch}
+          />
+        )}
+      { !user
+        && (
+          <div className={classes.container}>
+            <Card>
+              <CardHeader
+                title="Manage Users"
+                classes={{
+                  action: classes.cardHeaderAction,
+                }}
+                action={(
+                  <Typography className={classes.userCount}>
+                    (
+                    {users.length}
+                    {' '}
+                    user
+                    {users.length === 1 ? '' : 's'}
+                    )
+                  </Typography>
+                )}
+              />
+              <CardContent>
                 <div className={classes.header}>
                   <ChplTextField
                     id="user-filter"
@@ -161,11 +181,11 @@ function ChplUsers(props) {
                     />
                   ))}
                 </div>
-              </>
-            </div>
-          )}
-      </Container>
-    </ThemeProvider>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+    </Box>
   );
 }
 
