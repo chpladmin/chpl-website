@@ -11,7 +11,6 @@ class CollectionPage {
       filterSearchTermGo: '#filter-search-term-go',
       filterChipsSection: '#filter-chips',
       clearSearchTermButton: 'button[aria-label="Clear search"]',
-      tabbedFilterForRetired: '#tabbed-filter-tab-1',
     };
   }
 
