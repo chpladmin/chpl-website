@@ -1,88 +1,89 @@
-/* eslint-disable class-methods-use-this */
+import { open as openPage } from '../../../utilities/hooks.async';
+
 class OrganizationPage {
   constructor() {
     this.elements = {
-      organizationEditButton: '#edit-organization',
-      organizationName: '#organization-name',
-      organizationWebsite: '#organization-website',
-      saveOrganizationButton: '#chpl-organization-save',
-      organizationList: '.organizations-side-nav',
-      retireOrganization: '#organization-retired',
-      retirementDate: '#retirement-date',
-      addressOnEdit: 'chpl-address',
+      title: 'h1=ONC Organizations',
+      navigationLinks: 'button[id^=onc-organizations-navigation-]',
+      navigationLink: async (name) => `#onc-organizations-navigation-${name}`,
+      organizationEditButton: '#organization-component-edit',
+      organizationName: '#name',
+      organizationWebsite: '#website',
+      organizationLine1: '#line1',
+      nameErrorMessage: '#name-helper-text',
+      websiteErrorMessage: '#website-helper-text',
+      line1ErrorMessage: '#line1-helper-text',
       manageUsersPanelHeader: '//*[contains(text(),"Manage Users")]',
-      errorMessage: '.text-danger.ng-scope',
+      createButton: '#create-new-organization',
+      saveOrganizationButton: '#action-bar-save',
+      organizationDetails: async (name) => `h2=${name}`,
     };
   }
 
-  openOrganizationDetails(organizationName) {
-    $(`//*[contains(text(),"${organizationName}")]`).click();
+  async open(org) {
+    await openPage(`#/organizations/${org}`);
+    await (browser.waitUntil(async () => await (await $(this.elements.title)).isDisplayed()));
   }
 
-  get organizationList() {
-    return $(this.elements.organizationList);
-  }
-
-  organizationListCount() {
-    const count = $(this.elements.organizationList).$$('.btn.btn-link').length;
+  async organizationListCount() {
+    const count = (await $$(this.elements.navigationLinks)).length;
     return count;
   }
 
-  get organizationEditButton() {
+  async getOrganizationEditButton() {
     return $(this.elements.organizationEditButton);
   }
 
-  createOrganization(organization) {
-    $(`//*[contains(text(),"Create New ONC-${organization}")]`).click();
-  }
-
-  get organizationName() {
+  async getOrganizationName() {
     return $(this.elements.organizationName);
   }
 
-  get organizationWebsite() {
+  async getOrganizationWebsite() {
     return $(this.elements.organizationWebsite);
   }
 
-  get saveOrganizationButton() {
-    return $(this.elements.saveOrganizationButton);
+  async getOrganizationLine1() {
+    return $(this.elements.organizationLine1);
   }
 
-  get retireOrganizationCheckbox() {
-    return $(this.elements.retireOrganization);
+  async getNameErrorMessage() {
+    return $(this.elements.nameErrorMessage);
   }
 
-  get retirementDate() {
-    return $(this.elements.retirementDate);
+  async getWebsiteErrorMessage() {
+    return $(this.elements.websiteErrorMessage);
   }
 
-  get manageUsersPanelHeader() {
+  async getLine1ErrorMessage() {
+    return $(this.elements.line1ErrorMessage);
+  }
+
+  async getManageUsersPanelHeader() {
     return $(this.elements.manageUsersPanelHeader);
   }
 
-  get manageUsersPanel() {
-    return $('chpl-users-bridge');
+  async getManageUsersPanelHeaderUserCount() {
+    return (await $(this.elements.manageUsersPanelHeader).parentElement()).nextElement();
   }
 
-  get newOrganizationGeneralInfo() {
-    return $('chpl-onc-organization');
+  async getManageUsersPanel() {
+    return (await (await (await $(this.elements.manageUsersPanelHeader)).parentElement()).parentElement()).nextElement();
   }
 
-  generalInformation(organizationType, organizationId) {
-    return $(`#chpl-organization-ONC-${organizationType}-${organizationId}`);
+  async createOrganization() {
+    await (await $(this.elements.createButton)).click();
   }
 
-  get errorMessage() {
-    return $(this.elements.errorMessage);
+  async getSaveOrganizationButton() {
+    return $(this.elements.saveOrganizationButton);
   }
 
-  get addressErrorMessage() {
-    return $(this.elements.addressOnEdit);
+  async openOrganizationDetails(name) {
+    await (await $(await this.elements.navigationLink(name))).click();
   }
 
-  organizationListValue(key) {
-    const keyValue = $(this.elements.organizationList).$$('.btn.btn-link')[key];
-    return keyValue;
+  async getOrganizationDetails(name) {
+    return (await $(await this.elements.organizationDetails(name))).parentElement();
   }
 }
 

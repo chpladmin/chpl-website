@@ -39,7 +39,7 @@ import {
   ChplUploadPromotingInteroperability,
   ChplUploadWrapper,
 } from './upload';
-import { ChplUsers } from './user';
+import ChplUsersWrapper from './user/users-wrapper';
 import {
   ChplConfirmation,
   ChplEllipsis,
@@ -101,5 +101,5 @@ angular
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
-  .component('chplUsersBridge', reactToAngularComponent(ChplUsers))
+  .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));
