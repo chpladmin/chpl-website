@@ -136,39 +136,40 @@ function ChplListingPage({ id, panel }) {
             >
               {listing.product.name}
             </Typography>
-
             <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" gridGap="4px">
-              <ChplListingHistory
-                listing={listing}
-                canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
-              />
-              {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
-               && (
-                 <ChplLink
-                   href={`#/listing/${listing.id}/view/edit`}
-                   text="Edit Listing"
-                   external={false}
-                   router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
-                 />
-               )}
               <ChplActionButton
                 listing={listing}
                 horizontal
-              />
-              {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
-               && (
-                 <Button
-                   endIcon={<EditIcon />}
-                   size="small"
-                   variant="contained"
-                   color="primary"
-                   href={`#/listing/${listing.id}/view/edit`}
-                   external={false}
-                   router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
-                 >
-                   Edit
-                 </Button>
-               )}
+              >
+                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
+                 && (
+                   <Button
+                     endIcon={<EditIcon />}
+                     size="small"
+                     variant="contained"
+                     color="primary"
+                     href={`#/listing/${listing.id}/view/edit`}
+                   >
+                     Edit
+                   </Button>
+                 )}
+                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
+                 && (
+                   <Button
+                     endIcon={<EditIcon />}
+                     size="small"
+                     variant="contained"
+                     color="primary"
+                     href={`#/listing/${listing.id}/view/edit`}
+                   >
+                     Edit
+                   </Button>
+                 )}
+                <ChplListingHistory
+                  listing={listing}
+                  canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
+                />
+              </ChplActionButton>
             </Box>
           </Box>
         </Container>
