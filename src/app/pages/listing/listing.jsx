@@ -351,7 +351,7 @@ function ChplListingPage({ id, panel }) {
              && (
                <Card>
                  <span className="anchor-element">
-                   <span id="safetyEnhancedDesign" className="page-anchor" />
+                   <span id="sed" className="page-anchor" />
                  </span>
                  <Box className={classes.sectionHeader}>
                    <Typography variant="h2">Safety Enhanced Design (SED)</Typography>
