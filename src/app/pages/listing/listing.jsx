@@ -10,7 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { number } from 'prop-types';
+import { number, string } from 'prop-types';
 
 import ChplListingHistory from './history';
 
@@ -70,7 +70,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingPage({ id }) {
+function ChplListingPage({ id, panel }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const { hasAnyRole } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
@@ -90,6 +90,14 @@ function ChplListingPage({ id }) {
   useEffect(() => {
     setSubscriptionsIsOn(isOn('subscriptions'));
   }, [isOn]);
+
+  useEffect(() => {
+    if (!panel || !listing) { return; }
+    const target = document.getElementById(panel);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [listing, panel]);
 
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
@@ -361,4 +369,9 @@ export default ChplListingPage;
 
 ChplListingPage.propTypes = {
   id: number.isRequired,
+  panel: string,
+};
+
+ChplListingPage.defaultProps = {
+  panel: undefined,
 };

@@ -1,6 +1,9 @@
 <ui-view>
   <span feature-flag="ui-upgrade">
-    <chpl-listing-page-bridge id="$ctrl.listing.id"></chpl-listing-page-bridge>
+    <chpl-listing-page-bridge
+      id="$ctrl.listing.id"
+      panel="$ctrl.panel"
+      ></chpl-listing-page-bridge>
   </span>
   <span feature-flag="ui-upgrade" feature-flag-hide>
     <chpl-browser-viewed-widget-bridge listing="$ctrl.listing"></chpl-browser-viewed-widget-bridge>
