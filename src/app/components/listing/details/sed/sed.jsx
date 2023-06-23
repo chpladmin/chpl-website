@@ -19,7 +19,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import ChplSedDownload from './sed-download';
 
 import { ChplHighlightCures, ChplLink } from 'components/util';
-import { sortCriteria } from 'services/criteria.service';
+import { sortCriteria } from 'services/listing.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
@@ -58,9 +58,10 @@ function ChplSed({ listing }) {
   return (
     <Box display="flex" gridGap={16} flexDirection="column">
       <Card>
-        <CardContent>
-          <Box display="flex" gridGap={8} flexDirection="column">
-            <div>
+          <CardHeader title="SED Summary"></CardHeader>        
+          <CardContent>
+          <Box display="flex" gridGap={8} flexDirection="row" flexWrap="wrap">
+            <Box width="100%">
               <Typography variant="subtitle1">
                 Full Usability Report
               </Typography>
@@ -74,23 +75,23 @@ function ChplSed({ listing }) {
                   )}
                 {!sedReportFileLocation && 'No report on file'}
               </Typography>
-            </div>
-            <div>
+            </Box>
+            <Box width="48%">
               <Typography variant="subtitle1">
                 Description of Intended Users
               </Typography>
               <Typography>
                 {sedIntendedUserDescription ?? 'N/A'}
               </Typography>
-            </div>
-            <div>
+            </Box>
+            <Box width="48%">
               <Typography variant="subtitle1">
                 Date SED Testing was Completed
               </Typography>
               <Typography>
                 {getDisplayDateFormat(sedTestingEndDay)}
               </Typography>
-            </div>
+            </Box>
           </Box>
         </CardContent>
       </Card>
