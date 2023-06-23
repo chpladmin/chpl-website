@@ -42,7 +42,7 @@ const useStyles = makeStyles({
     backgroundColor: `${palette.white}`,
   },
   surveillanceSummary: {
-    backgroundColor: `${palette.secondary}!important`,
+    backgroundColor: `${palette.white}!important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',

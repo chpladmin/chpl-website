@@ -17,11 +17,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { bool, object } from 'prop-types';
-
-import { ChplDialogTitle, ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
-import { toTimestamp } from 'services/date-util';
-import theme from 'themes/theme';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import {
   interpretActivity,
@@ -31,6 +27,11 @@ import {
   interpretProduct,
   interpretVersion,
 } from './history.service';
+
+import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
+import { toTimestamp } from 'services/date-util';
+import theme from 'themes/theme';
 
 const useStyles = makeStyles(() => ({
   noWrap: {
@@ -95,7 +96,9 @@ function ChplListingHistory(props) {
       networkService.getSingleProductActivityMetadata(id, { end }).then((metadata) => {
         interpretedProducts.add(id);
         metadata.forEach((item) => networkService.getActivityById(item.id).then((response) => {
-          const { interpreted, merged, ownerChanges, split } = interpretProduct(response);
+          const {
+            interpreted, merged, ownerChanges, split,
+          } = interpretProduct(response);
           if (interpreted.change.length > 0) {
             setActivity((activity) => [
               ...activity,
@@ -173,11 +176,13 @@ function ChplListingHistory(props) {
         <Button
           id="view-listing-history"
           aria-label="Open Listing History dialog"
-          color="primary"
-          variant="outlined"
+          color="secondary"
+          variant="contained"
           onClick={handleClickOpen}
+          endIcon={<VisibilityIcon />}
+          size="small"
         >
-          <i className="fa fa-eye" />
+          View Listing History
         </Button>
       </ChplTooltip>
       <Dialog

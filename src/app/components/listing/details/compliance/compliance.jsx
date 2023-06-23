@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  CardContent,
-  Typography,
-} from '@material-ui/core';
 import { arrayOf, bool } from 'prop-types';
 
 import ChplDirectReviews from './direct-reviews';
@@ -21,16 +16,11 @@ function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: i
   }, [initialSurveillance]);
 
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="subtitle1">
-          Compliance Activities
-        </Typography>
-        <ChplSurveillance surveillance={icsSurveillance} ics />
-        <ChplSurveillance surveillance={surveillance} />
-        <ChplDirectReviews directReviews={directReviews} directReviewsAvailable={directReviewsAvailable} />
-      </CardContent>
-    </Card>
+    <>
+      <ChplSurveillance surveillance={icsSurveillance} ics />
+      <ChplSurveillance surveillance={surveillance} />
+      <ChplDirectReviews directReviews={directReviews} directReviewsAvailable={directReviewsAvailable} />
+    </>
   );
 }
 

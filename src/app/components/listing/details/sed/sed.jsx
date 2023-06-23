@@ -58,14 +58,15 @@ function ChplSed({ listing }) {
   return (
     <Box display="flex" gridGap={16} flexDirection="column">
       <Card>
+        <CardHeader title="SED Summary" />
         <CardContent>
-          <Box display="flex" gridGap={8} flexDirection="column">
-            <div>
+          <Box display="flex" gridGap={8} flexDirection="row" flexWrap="wrap">
+            <Box width="100%">
               <Typography variant="subtitle1">
                 Full Usability Report
               </Typography>
               <Typography>
-                {sedReportFileLocation
+                { sedReportFileLocation
                   && (
                     <ChplLink
                       href={sedReportFileLocation}
@@ -74,23 +75,23 @@ function ChplSed({ listing }) {
                   )}
                 {!sedReportFileLocation && 'No report on file'}
               </Typography>
-            </div>
-            <div>
+            </Box>
+            <Box width="48%">
               <Typography variant="subtitle1">
                 Description of Intended Users
               </Typography>
               <Typography>
                 {sedIntendedUserDescription ?? 'N/A'}
               </Typography>
-            </div>
-            <div>
+            </Box>
+            <Box width="48%">
               <Typography variant="subtitle1">
                 Date SED Testing was Completed
               </Typography>
               <Typography>
                 {getDisplayDateFormat(sedTestingEndDay)}
               </Typography>
-            </div>
+            </Box>
           </Box>
         </CardContent>
       </Card>
@@ -107,7 +108,7 @@ function ChplSed({ listing }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sed.ucdProcesses
+                { sed.ucdProcesses
                   .sort(sortUcdProcesses)
                   .map((ucd) => (
                     <TableRow key={ucd.id}>
@@ -158,7 +159,7 @@ function ChplSed({ listing }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sed.testTasks
+                { sed.testTasks
                   .sort(sortTestTasks)
                   .map((task) => (
                     <TableRow key={task.id}>

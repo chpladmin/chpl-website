@@ -41,7 +41,7 @@ const useStyles = makeStyles({
     backgroundColor: `${palette.white}`,
   },
   directReviewsSummary: {
-    backgroundColor: `${palette.secondary}!important`,
+    backgroundColor: `${palette.white}!important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
@@ -149,7 +149,6 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         className={classes.directReviewsSummary}
-        color="secondary"
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography variant="body1">

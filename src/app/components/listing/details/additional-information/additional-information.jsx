@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   List,
@@ -103,15 +102,13 @@ function ChplAdditionalInformation(props) {
                       </List>
                     </>
                   )}
-              </CardContent>
-              { listing.ics.inherits && listing.certificationEdition.name === '2015'
-                && (
-                  <CardActions>
+                { listing.ics.inherits && listing.certificationEdition.name === '2015'
+                  && (
                     <ChplIcsFamily
                       id={listing.id}
                     />
-                  </CardActions>
-                )}
+                  )}
+              </CardContent>
             </Card>
           )}
         { listing.otherAcb !== null
