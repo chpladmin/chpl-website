@@ -12,11 +12,10 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import AssessmentOutlinedIcon from '@material-ui/icons/AssessmentOutlined';
 import BookOutlinedIcon from '@material-ui/icons/BookOutlined';
 import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
-import EditIcon from '@material-ui/icons/Edit';import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
+import EditIcon from '@material-ui/icons/Edit';
 import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
 import SecurityOutlinedIcon from '@material-ui/icons/SecurityOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
@@ -129,46 +128,41 @@ function ChplListingPage({ id }) {
               <Typography
                 variant="h1"
               >
-                { listing.product.name}
+                {listing.product.name}
               </Typography>
 
-              <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" gridGap="16px">
-
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
-              && (
-                <ChplLink
-                  href={`#/listing/${listing.id}/view/edit`}
-                  text="Edit Listing"
-                  external={false}
-                  router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
+              <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" gridGap="4px">
+                <ChplListingHistory
+                  listing={listing}
+                  canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
                 />
-              )}
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-              && (
-                <ChplLink
-                  href="#/surveillance/manage"
-                  text="Manage Surveillance Activity"
-                  external={false}
-                  router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                />
-              )}
+                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
+                  && (
+                    <ChplLink
+                      href={`#/listing/${listing.id}/view/edit`}
+                      text="Edit Listing"
+                      external={false}
+                      router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
+                    />
+                  )}
                 <ChplActionButton
                   listing={listing}
+                  horizontal
                 />
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
-              && (
-                <Button
-                  endIcon={<EditIcon />}
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  href={`#/listing/${listing.id}/view/edit`}
-                  external={false}
-                  router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
-                >
-                  Edit
-                </Button>
-              )}
+                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      href={`#/listing/${listing.id}/view/edit`}
+                      external={false}
+                      router={{ sref: 'listing.view.edit', options: { id: listing.id } }}
+                    >
+                      Edit
+                    </Button>
+                  )}
               </Box>
             </Box>
           </Container>
@@ -210,20 +204,20 @@ function ChplListingPage({ id }) {
                     <DoneAllOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
-                { listing.certificationEdition.name !== '2011'
-              && (
-                <Box
-                  className={classes.menuItems}
-                >
-                  <InternalScrollButton
-                    id="safetyEnhancedDesign"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
-                  >
-                    Safety Enhanced Design (SED)
-                    <TouchAppOutlinedIcon className={classes.iconSpacing} />
-                  </InternalScrollButton>
-                </Box>
-              )}
+                {listing.certificationEdition.name !== '2011'
+                  && (
+                    <Box
+                      className={classes.menuItems}
+                    >
+                      <InternalScrollButton
+                        id="safetyEnhancedDesign"
+                        analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                      >
+                        Safety Enhanced Design (SED)
+                        <TouchAppOutlinedIcon className={classes.iconSpacing} />
+                      </InternalScrollButton>
+                    </Box>
+                  )}
                 <Box
                   className={classes.menuItems}
                 >
@@ -259,13 +253,13 @@ function ChplListingPage({ id }) {
                 </Box>
               </Card>
               <Box>
-                { subscriptionsIsOn
-              && (
-                <ChplSubscribe
-                  subscribedObjectId={listing.id}
-                  subscribedObjectTypeId={1}
-                />
-              )}
+                {subscriptionsIsOn
+                  && (
+                    <ChplSubscribe
+                      subscribedObjectId={listing.id}
+                      subscribedObjectTypeId={1}
+                    />
+                  )}
               </Box>
             </div>
             <div className={classes.content}>
@@ -281,12 +275,6 @@ function ChplListingPage({ id }) {
                     listing={listing}
                   />
                 </CardContent>
-                <CardActions>
-                  <ChplListingHistory
-                    listing={listing}
-                    canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
-                  />
-                </CardActions>
               </Card>
               <Card>
                 <span className="anchor-element">
@@ -304,11 +292,11 @@ function ChplListingPage({ id }) {
                           color="primary"
                           onChange={() => setSeeAllCriteria(!seeAllCriteria)}
                         />
-                )}
+                      )}
                       label="See all Certification Criteria"
                     />
                     (
-                    { listing.certificationResults.filter((cr) => cr.success).length }
+                    {listing.certificationResults.filter((cr) => cr.success).length}
                     {' '}
                     found)
                   </div>
@@ -336,11 +324,11 @@ function ChplListingPage({ id }) {
                           checked={seeAllCqms}
                           onChange={() => setSeeAllCqms(!seeAllCqms)}
                         />
-                )}
+                      )}
                       label="See all CQMs"
                     />
                     (
-                    { listing.cqmResults.filter((cqm) => cqm.success).length }
+                    {listing.cqmResults.filter((cqm) => cqm.success).length}
                     {' '}
                     found)
                   </div>
@@ -354,22 +342,22 @@ function ChplListingPage({ id }) {
                 </CardContent>
               </Card>
 
-              { listing.certificationEdition.name !== '2011'
-            && (
-              <Card>
-                <span className="anchor-element">
-                  <span id="safetyEnhancedDesign" className="page-anchor" />
-                </span>
-                <Box className={classes.sectionHeader}>
-                  <Typography variant="h2">Safety Enhanced Design (SED)</Typography>
-                </Box>
-                <CardContent>
-                  <ChplSed
-                    listing={listing}
-                  />
-                </CardContent>
-              </Card>
-            )}
+              {listing.certificationEdition.name !== '2011'
+                && (
+                  <Card>
+                    <span className="anchor-element">
+                      <span id="safetyEnhancedDesign" className="page-anchor" />
+                    </span>
+                    <Box className={classes.sectionHeader}>
+                      <Typography variant="h2">Safety Enhanced Design (SED)</Typography>
+                    </Box>
+                    <CardContent>
+                      <ChplSed
+                        listing={listing}
+                      />
+                    </CardContent>
+                  </Card>
+                )}
               <Card>
                 <span className="anchor-element">
                   <span id="g1g2Measures" className="page-anchor" />
@@ -401,6 +389,22 @@ function ChplListingPage({ id }) {
                     directReviewsAvailable={listing.directReviewsAvailable}
                     surveillance={listing.surveillance}
                   />
+
+                  {hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+                  && (
+                    <Box pt={4} display="flex" flexDirection="row">
+                      <Typography>
+                        Please click the link if you want to,
+                        { }
+                      </Typography>
+                      <ChplLink
+                        href="#/surveillance/manage"
+                        text=" Manage Surveillance Activity"
+                        external={false}
+                        router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                      />
+                    </Box>
+                  )}
                 </CardContent>
               </Card>
               <Card>
