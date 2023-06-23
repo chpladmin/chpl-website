@@ -18,6 +18,8 @@ import {
 } from '@material-ui/core';
 import { bool, object } from 'prop-types';
 
+import VisibilityIcon from '@material-ui/icons/Visibility';
+
 import { ChplDialogTitle, ChplTooltip } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { toTimestamp } from 'services/date-util';
@@ -173,11 +175,13 @@ function ChplListingHistory(props) {
         <Button
           id="view-listing-history"
           aria-label="Open Listing History dialog"
-          color="primary"
-          variant="outlined"
+          color="secondary"
+          variant="contained"
           onClick={handleClickOpen}
+          endIcon={<VisibilityIcon/>}
+          size="small"
         >
-          <i className="fa fa-eye" />
+          View Listing History
         </Button>
       </ChplTooltip>
       <Dialog
