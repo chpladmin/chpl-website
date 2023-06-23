@@ -22,8 +22,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { number } from 'prop-types';
 import CytoscapeComponent from 'react-cytoscapejs';
 
@@ -53,9 +51,6 @@ const useStyles = makeStyles({
   figureContainer: {
     width: '50%',
     borderLeft: '1px solid #ccc',
-  },
-  spacingforshowButton: {
-    marginBottom: '8px',
   },
 });
 
@@ -166,6 +161,7 @@ function ChplIcsFamily(props) {
     setElements(generateElements(data, id, parseInt(listingId, 10)));
     setCompare(`#/compare/${data.map((l) => l.id).join('&')}`);
     setPageChplProductNumber(data.find((l) => l.id === id).chplProductNumber);
+    setIsShowingDiagram(true);
   }, [data, isLoading, isSuccess, id, listingId]);
 
   useEffect(() => {
@@ -173,11 +169,6 @@ function ChplIcsFamily(props) {
     setListing(selected);
     setIsShowingListingDetails(!!selected);
   }, [listingId]);
-
-  const toggleDisplay = () => {
-    setIsShowingDiagram(!isShowingDiagram);
-    $analytics.eventTrack(`${isShowingDiagram ? 'Hide' : 'Show'} ICS Relationships`, { category: 'Listing Details', label: pageChplProductNumber });
-  };
 
   const closeDetails = () => {
     $analytics.eventTrack('Hide ICS Relationship Detail', { category: 'Listing Details', label: listing.chplProductNumber });
@@ -205,193 +196,178 @@ function ChplIcsFamily(props) {
     );
   }
 
+  if (!isShowingDiagram) {
+    return (
+      <CircularProgress />
+    );
+  }
+
   return (
-    <>
-      <div className={classes.spacingforshowButton}>
-        <Button
-          variant="contained"
-          color="secondary"
-          disabled={isLoading}
-          onClick={toggleDisplay}
-          endIcon={isShowingDiagram ? <VisibilityOffIcon /> : <VisibilityIcon />}
-          id="toggle-ics-relationship-diagram-button"
-        >
-          { isLoading && <CircularProgress size={20} /> }
-          {' '}
-          { isShowingDiagram ? 'Hide' : 'Show' }
-          {' '}
-          ICS Relationships
-        </Button>
-      </div>
-      { isShowingDiagram
-        && (
-          <Card>
-            <CardContent>
-              <div className={classes.cardContainer}>
-                <div className={classes.directionContainer}>
-                  <div>
-                    <Typography gutterBottom>
-                      Select a Certified Product to the right to view more information. You can also click and drag to scroll through the Certified Products.
-                    </Typography>
-                    <ChplLink
-                      href={compare}
-                      text="Compare all Certified Products"
-                      external={false}
-                      analytics={{ event: 'Compare All ICS Listings', category: 'Listing Details', label: pageChplProductNumber }}
-                    />
-                  </div>
-                  { isShowingListingDetails
-                    && (
-                      <div>
-                        <Card className={classes.detailContainer}>
-                          <CardHeader title="Details" />
-                          <CardContent className={classes.detailContainer}>
-                            <Typography>
-                              <strong>CHPL Product Number:</strong>
-                            </Typography>
-                            { listing?.id === id
-                              ? (
-                                <Typography>{ listing?.chplProductNumber }</Typography>
-                              ) : (
-                                <ChplLink
-                                  href={`#/listing/${listing?.id}?panel=additional`}
-                                  text={listing?.chplProductNumber}
-                                  external={false}
-                                  router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
-                                  analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
-                                />
-                              )}
-                            <Typography>
-                              <strong>Developer:</strong>
+    <Card>
+      <CardContent>
+        <div className={classes.cardContainer}>
+          <div className={classes.directionContainer}>
+            <div>
+              <Typography gutterBottom>
+                Select a Certified Product to the right to view more information. You can also click and drag to scroll through the Certified Products.
+              </Typography>
+              <ChplLink
+                href={compare}
+                text="Compare all Certified Products"
+                external={false}
+                analytics={{ event: 'Compare All ICS Listings', category: 'Listing Details', label: pageChplProductNumber }}
+              />
+            </div>
+            { isShowingListingDetails
+              && (
+                <div>
+                  <Card className={classes.detailContainer}>
+                    <CardHeader title="Details" />
+                    <CardContent className={classes.detailContainer}>
+                      <Typography>
+                        <strong>CHPL Product Number:</strong>
+                      </Typography>
+                      { listing?.id === id
+                        ? (
+                          <Typography>{ listing?.chplProductNumber }</Typography>
+                        ) : (
+                          <ChplLink
+                            href={`#/listing/${listing?.id}?panel=additional`}
+                            text={listing?.chplProductNumber}
+                            external={false}
+                            router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
+                            analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
+                          />
+                        )}
+                      <Typography>
+                        <strong>Developer:</strong>
+                        <ChplLink
+                          href={`#/organizations/developers/${listing?.developer.id}`}
+                          text={listing?.developer.name}
+                          external={false}
+                          router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
+                          analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: listing.developer.name }}
+                        />
+                      </Typography>
+                      <Typography>
+                        <strong>Product:</strong>
+                      </Typography>
+                      <Typography>{ listing?.product.name }</Typography>
+                      <Typography>
+                        <strong>Version:</strong>
+                      </Typography>
+                      <Typography>
+                        { listing?.version.name }
+                      </Typography>
+                      <Typography>
+                        <strong>Certification Status:</strong>
+                      </Typography>
+                      <Typography>
+                        { listing?.certificationStatus.name }
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        endIcon={<CloseIcon />}
+                        size="small"
+                        variant="contained"
+                        color="secondary"
+                        onClick={closeDetails}
+                      >
+                        Close Details
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </div>
+              )}
+          </div>
+          <div className={classes.figureContainer}>
+            <figure>
+              <CytoscapeComponent
+                elements={elements}
+                style={{ width: '100%', height: '475px' }}
+                minZoom={0.5}
+                maxZoom={1.2}
+                autoungrabify
+                layout={layout}
+                stylesheet={stylesheet}
+                cy={setCytoscape}
+              />
+              <figcaption className="sr-only">
+                <Typography variant="h5">Overview</Typography>
+                <Typography>The image shows the ICS relationships between related Products</Typography>
+                <Typography variant="h5">Values</Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>CHPL Product Number</TableCell>
+                      <TableCell>Developer</TableCell>
+                      <TableCell>Product</TableCell>
+                      <TableCell>Version</TableCell>
+                      <TableCell>Certification Status</TableCell>
+                      <TableCell>Inherits from</TableCell>
+                      <TableCell>Source for</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    { listings.map((l) => (
+                      <TableRow key={l.id}>
+                        <TableCell>
+                          { l.id === id
+                            ? (
+                              <>
+                                { l.chplProductNumber }
+                              </>
+                            ) : (
                               <ChplLink
-                                href={`#/organizations/developers/${listing?.developer.id}`}
-                                text={listing?.developer.name}
+                                href={`#/listing/${l.id}?panel=additional`}
+                                text={l.chplProductNumber}
                                 external={false}
-                                router={{ sref: 'organizations.developers.developer', options: { id: listing?.developer.id } }}
-                                analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: listing.developer.name }}
+                                router={{ sref: 'listing', options: { id: l?.id, panel: 'additional' } }}
+                                analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: l.chplProductNumber }}
                               />
-                            </Typography>
-                            <Typography>
-                              <strong>Product:</strong>
-                            </Typography>
-                            <Typography>{ listing?.product.name }</Typography>
-                            <Typography>
-                              <strong>Version:</strong>
-                            </Typography>
-                            <Typography>
-                              { listing?.version.name }
-                            </Typography>
-                            <Typography>
-                              <strong>Certification Status:</strong>
-                            </Typography>
-                            <Typography>
-                              { listing?.certificationStatus.name }
-                            </Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Button
-                              endIcon={<CloseIcon />}
-                              size="small"
-                              variant="contained"
-                              color="secondary"
-                              onClick={closeDetails}
-                            >
-                              Close Details
-                            </Button>
-                          </CardActions>
-                        </Card>
-                      </div>
-                    )}
-                </div>
-                <div className={classes.figureContainer}>
-                  <figure>
-                    <CytoscapeComponent
-                      elements={elements}
-                      style={{ width: '100%', height: '475px' }}
-                      minZoom={0.5}
-                      maxZoom={1.2}
-                      autoungrabify
-                      layout={layout}
-                      stylesheet={stylesheet}
-                      cy={setCytoscape}
-                    />
-                    <figcaption className="sr-only">
-                      <Typography variant="h5">Overview</Typography>
-                      <Typography>The image shows the ICS relationships between related Products</Typography>
-                      <Typography variant="h5">Values</Typography>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>CHPL Product Number</TableCell>
-                            <TableCell>Developer</TableCell>
-                            <TableCell>Product</TableCell>
-                            <TableCell>Version</TableCell>
-                            <TableCell>Certification Status</TableCell>
-                            <TableCell>Inherits from</TableCell>
-                            <TableCell>Source for</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          { listings.map((l) => (
-                            <TableRow key={l.id}>
-                              <TableCell>
-                                { l.id === id
-                                  ? (
-                                    <>
-                                      { l.chplProductNumber }
-                                    </>
-                                  ) : (
-                                    <ChplLink
-                                      href={`#/listing/${l.id}?panel=additional`}
-                                      text={l.chplProductNumber}
-                                      external={false}
-                                      router={{ sref: 'listing', options: { id: l?.id, panel: 'additional' } }}
-                                      analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: l.chplProductNumber }}
-                                    />
-                                  )}
-                              </TableCell>
-                              <TableCell>
-                                <ChplLink
-                                  href={`#/organizations/developers/${l?.developer.id}`}
-                                  text={l?.developer.name}
-                                  external={false}
-                                  router={{ sref: 'organizations.developers.developer', options: { id: l?.developer.id } }}
-                                  analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: l.developer.name }}
-                                />
-                              </TableCell>
-                              <TableCell>{ l.product.name }</TableCell>
-                              <TableCell>{ l.version.name }</TableCell>
-                              <TableCell>{ l.certificationStatus.name }</TableCell>
-                              <TableCell>
-                                <List>
-                                  { l.parents.map((p) => (
-                                    <ListItem key={p.chplProductNumber}>
-                                      {p.chplProductNumber}
-                                    </ListItem>
-                                  ))}
-                                </List>
-                              </TableCell>
-                              <TableCell>
-                                <List>
-                                  { l.children.map((c) => (
-                                    <ListItem key={c.chplProductNumber}>
-                                      {c.chplProductNumber}
-                                    </ListItem>
-                                  ))}
-                                </List>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </figcaption>
-                  </figure>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-    </>
+                            )}
+                        </TableCell>
+                        <TableCell>
+                          <ChplLink
+                            href={`#/organizations/developers/${l?.developer.id}`}
+                            text={l?.developer.name}
+                            external={false}
+                            router={{ sref: 'organizations.developers.developer', options: { id: l?.developer.id } }}
+                            analytics={{ event: 'Go to ICS Relationship Developer', category: 'Listing Details', label: l.developer.name }}
+                          />
+                        </TableCell>
+                        <TableCell>{ l.product.name }</TableCell>
+                        <TableCell>{ l.version.name }</TableCell>
+                        <TableCell>{ l.certificationStatus.name }</TableCell>
+                        <TableCell>
+                          <List>
+                            { l.parents.map((p) => (
+                              <ListItem key={p.chplProductNumber}>
+                                {p.chplProductNumber}
+                              </ListItem>
+                            ))}
+                          </List>
+                        </TableCell>
+                        <TableCell>
+                          <List>
+                            { l.children.map((c) => (
+                              <ListItem key={c.chplProductNumber}>
+                                {c.chplProductNumber}
+                              </ListItem>
+                            ))}
+                          </List>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

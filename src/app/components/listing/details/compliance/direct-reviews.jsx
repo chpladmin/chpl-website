@@ -238,7 +238,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                               <List>
                                 { nc.developerAssociatedListings.map((dal) => (
                                   <ListItem key={dal.id}>
-                                    <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
+                                    <a href={`#/listing/${dal.id}?panel=compliance`}>{ dal.chplProductNumber }</a>
                                   </ListItem>
                                 ))}
                               </List>

@@ -19,7 +19,7 @@ import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
 import SecurityOutlinedIcon from '@material-ui/icons/SecurityOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import { number } from 'prop-types';
+import { number, string } from 'prop-types';
 
 import ChplListingHistory from './history';
 
@@ -90,7 +90,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingPage({ id }) {
+function ChplListingPage({ id, panel }) {
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const { hasAnyRole } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
@@ -110,6 +110,14 @@ function ChplListingPage({ id }) {
   useEffect(() => {
     setSubscriptionsIsOn(isOn('subscriptions'));
   }, [isOn]);
+
+  useEffect(() => {
+    if (!panel || !listing) { return; }
+    const target = document.getElementById(panel);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [listing, panel]);
 
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
@@ -208,7 +216,7 @@ function ChplListingPage({ id }) {
                    className={classes.menuItems}
                  >
                    <InternalScrollButton
-                     id="safetyEnhancedDesign"
+                     id="sed"
                      analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
                    >
                      Safety Enhanced Design (SED)
@@ -227,38 +235,35 @@ function ChplListingPage({ id }) {
                   <AssessmentOutlinedIcon className={classes.iconSpacing} />
                 </InternalScrollButton>
               </Box>
-              <Box
-                className={classes.menuItems}
+            <Box
+              className={classes.menuItems}
+            >
+              <InternalScrollButton
+                id="compliance"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
               >
-                <InternalScrollButton
-                  id="complianceActivities"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
-                >
-                  Compliance Activities
-                  <SecurityOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
-              </Box>
-              <Box
-                className={classes.menuItems}
+                Compliance Activities
+                <ArrowForwardIcon className={classes.iconSpacing} />
+              </InternalScrollButton>
+            </Box>
+            <Box
+              className={classes.menuItems}
+            >
+              <InternalScrollButton
+                id="additional"
+                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
               >
-                <InternalScrollButton
-                  id="additionalInformation"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
-                >
-                  Additional Information
-                  <InfoOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
-              </Box>
+            </Box>
             </Card>
-            <Box>
-              {subscriptionsIsOn
-               && (
+            {subscriptionsIsOn
+             && (
+              <Box>
                  <ChplSubscribe
                    subscribedObjectId={listing.id}
                    subscribedObjectTypeId={1}
                  />
-               )}
-            </Box>
+              </Box>
+             )}
           </div>
           <div className={classes.content}>
             <Card>
@@ -339,7 +344,6 @@ function ChplListingPage({ id }) {
                 />
               </CardContent>
             </Card>
-
             {listing.certificationEdition.name !== '2011'
              && (
                <Card>
@@ -373,7 +377,7 @@ function ChplListingPage({ id }) {
             </Card>
             <Card>
               <span className="anchor-element">
-                <span id="complianceActivities" className="page-anchor" />
+                <span id="compliance" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
                 <Typography variant="h2">
@@ -381,13 +385,11 @@ function ChplListingPage({ id }) {
                 </Typography>
               </Box>
               <CardContent>
-
                 <ChplCompliance
                   directReviews={listing.directReviews}
                   directReviewsAvailable={listing.directReviewsAvailable}
                   surveillance={listing.surveillance}
                 />
-
                 {hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
                  && (
                    <Box pt={4} display="flex" flexDirection="row">
@@ -407,7 +409,7 @@ function ChplListingPage({ id }) {
             </Card>
             <Card>
               <span className="anchor-element">
-                <span id="additionalInformation" className="page-anchor" />
+                <span id="additional" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
                 <Typography variant="h2">
@@ -415,7 +417,6 @@ function ChplListingPage({ id }) {
                 </Typography>
               </Box>
               <CardContent>
-
                 <ChplAdditionalInformation
                   listing={listing}
                 />
@@ -432,4 +433,9 @@ export default ChplListingPage;
 
 ChplListingPage.propTypes = {
   id: number.isRequired,
+  panel: string,
+};
+
+ChplListingPage.defaultProps = {
+  panel: undefined,
 };

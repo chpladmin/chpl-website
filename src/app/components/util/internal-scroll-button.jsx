@@ -17,14 +17,9 @@ const useStyles = makeStyles({
   },
 });
 
-const InternalScrollButton = (props) => {
-  /* eslint-disable react/destructuring-assignment */
+const InternalScrollButton = ({ analytics, children, id }) => {
   const $analytics = getAngularService('$analytics');
-  const [analytics] = useState(props.analytics);
-  const { children } = props;
-  const [id] = useState(props.id);
   const [target, setTarget] = useState('');
-  /* eslint-enable react/destructuring-assignment */
 
   useEffect(() => {
     setTarget(document.getElementById(id));
@@ -48,6 +43,7 @@ const InternalScrollButton = (props) => {
       onClick={handleClick}
       color="primary"
       className={classes.noButtonWrap}
+      id={`${id}-navigation-button`}
     >
       {children}
     </Button>

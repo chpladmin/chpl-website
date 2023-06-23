@@ -11,7 +11,7 @@ function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: i
   const [icsSurveillance, setIcsSurveillance] = useState([]);
 
   useEffect(() => {
-    setSurveillance(initialSurveillance.filter((surv) => surv.requirements.every((req) => req.type.name !== 'Inherited Certified Status')));
+    setSurveillance(initialSurveillance.filter((surv) => surv.requirements.some((req) => req.type.name !== 'Inherited Certified Status')));
     setIcsSurveillance(initialSurveillance.filter((surv) => surv.requirements.every((req) => req.type.name === 'Inherited Certified Status')));
   }, [initialSurveillance]);
 
