@@ -235,34 +235,37 @@ function ChplListingPage({ id, panel }) {
                   <AssessmentOutlinedIcon className={classes.iconSpacing} />
                 </InternalScrollButton>
               </Box>
-            <Box
-              className={classes.menuItems}
-            >
-              <InternalScrollButton
-                id="compliance"
-                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
+              <Box
+                className={classes.menuItems}
               >
-                Compliance Activities
-                <ArrowForwardIcon className={classes.iconSpacing} />
-              </InternalScrollButton>
-            </Box>
-            <Box
-              className={classes.menuItems}
-            >
-              <InternalScrollButton
-                id="additional"
-                analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
+                <InternalScrollButton
+                  id="compliance"
+                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
+                >
+                  Compliance Activities
+                  <SecurityOutlinedIcon className={classes.iconSpacing} />
+                </InternalScrollButton>
+              </Box>
+              <Box
+                className={classes.menuItems}
               >
-            </Box>
+                <InternalScrollButton
+                  id="additional"
+                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
+                >
+                  Additional Information
+                  <InfoOutlinedIcon className={classes.iconSpacing} />
+                </InternalScrollButton>
+              </Box>
             </Card>
-            {subscriptionsIsOn
+            { subscriptionsIsOn
              && (
-              <Box>
+               <Box>
                  <ChplSubscribe
                    subscribedObjectId={listing.id}
                    subscribedObjectTypeId={1}
                  />
-              </Box>
+               </Box>
              )}
           </div>
           <div className={classes.content}>
