@@ -19,7 +19,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import ChplSedDownload from './sed-download';
 
 import { ChplHighlightCures, ChplLink } from 'components/util';
-import { sortCriteria } from 'services/listing.service';
+import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
