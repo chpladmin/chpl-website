@@ -11,6 +11,7 @@ import {
 
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
+import { getStatusIcon } from 'services/listing.service';
 import { UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 
@@ -34,19 +35,16 @@ function ChplListingInformation(props) {
               <Typography variant="subtitle1">CHPL Product Number:</Typography>
               <Typography gutterBottom>{listing.chplProductNumber}</Typography>
             </Box>
-            <Box width="48%">
               {listing.acbCertificationId
                 && (
-                  <>
+                  <Box width="48%">
                     <Typography variant="subtitle1">ONC-ACB Certification ID:</Typography>
                     <Typography gutterBottom>{listing.acbCertificationId}</Typography>
-                  </>
+                  </Box>
                 )}
-            </Box>
-            <Box width="48%">
               {listing.chplProductNumberHistory.length > 0
                 && (
-                  <>
+                  <Box width="48%">
                     <Typography variant="subtitle1">Previous CHPL Product Numbers:</Typography>
                     <List>
                       {listing.chplProductNumberHistory.map((prev) => (
@@ -55,15 +53,14 @@ function ChplListingInformation(props) {
                         </ListItem>
                       ))}
                     </List>
-                  </>
+                  </Box>
                 )}
-            </Box>
             <Box width="48%">
               <Typography variant="subtitle1">Certification Date:</Typography>
               <Typography gutterBottom>{getDisplayDateFormat(listing.certificationDate)}</Typography>
               {listing.product.ownerHistory?.length > 0
                 && (
-                  <>
+                  <Box width="48%">
                     <Typography variant="subtitle1"> Previous Developer:</Typography>
                     <List>
                       {listing.product.ownerHistory.map((prev) => (
@@ -76,7 +73,7 @@ function ChplListingInformation(props) {
                         </ListItem>
                       ))}
                     </List>
-                  </>
+                  </Box>
                 )}
             </Box>
             <Box width="48%">
@@ -89,22 +86,25 @@ function ChplListingInformation(props) {
             </Box>
             <Box width="48%">
               <Typography variant="subtitle1">Certification Status:</Typography>
-              <Typography gutterBottom>{listing.currentStatus.status.name}</Typography>
+              <Typography gutterBottom>
+                {listing.currentStatus.status.name }
+                { getStatusIcon(listing.currentStatus.status) }
+              </Typography>
+            </Box>
               {listing.practiceType.name
                 && (
-                  <>
+                  <Box width="48%">
                     <Typography variant="subtitle1">Practice Type:</Typography>
                     <Typography gutterBottom>{listing.practiceType.name}</Typography>
-                  </>
+                  </Box>
                 )}
               {listing.classificationType.name
                 && (
-                  <>
+                  <Box width="48%">
                     <Typography variant="subtitle1">Classification Type:</Typography>
                     <Typography gutterBottom>{listing.classificationType.name}</Typography>
-                  </>
+                  </Box>
                 )}
-            </Box>
             <Box width="48%">
               <Typography variant="subtitle1">ONC-Authorized Certification Body:</Typography>
               <Typography gutterBottom>{listing.certifyingBody.name}</Typography>
