@@ -1,4 +1,4 @@
-import SearchPage from '../../pages/collections/search/search.po'
+import SearchPage from '../../pages/collections/search/search.po';
 import Hooks from '../../utilities/hooks';
 
 import CmsWidgetComponent from './cms-widget.po';
