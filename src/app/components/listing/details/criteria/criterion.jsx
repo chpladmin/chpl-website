@@ -34,19 +34,20 @@ import {
   resources as resourceDefinition,
   qmsStandard,
 } from 'shared/prop-types';
+import { palette } from 'themes';
 
 const useStyles = makeStyles({
   criterionAccordion: {
     borderRadius: '8px',
     display: 'grid',
-    borderColor: ' #c2c6ca',
+    borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
   },
   criterionAccordionSummary: {
-    backgroundColor: '#ffffff !important',
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
-    borderBottom: '.5px solid #c2c6ca',
+    borderBottom: `.5px solid ${palette.divider}`,
   },
   criterionAccordionDetails: {
     borderRadius: '0 0 8px 8px',
@@ -57,12 +58,12 @@ const useStyles = makeStyles({
   pendingChip: {
     fontSize: '.7rem',
     backgroundColor: '#3e0d59',
-    color: '#ffffff',
+    color: palette.white,
   },
   stagedChip: {
     fontSize: '.7rem',
     backgroundColor: '#0d5928',
-    color: '#ffffff',
+    color: palette.white,
   },
   criterionNumber: {
     textTransform: 'none',
