@@ -157,7 +157,7 @@ function ChplListingPage({ id, panel }) {
                   className={classes.menuItems}
                 >
                   <InternalScrollButton
-                    id="safetyEnhancedDesign"
+                    id="sed"
                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
                   >
                     Safety Enhanced Design (SED)
@@ -180,7 +180,7 @@ function ChplListingPage({ id, panel }) {
               className={classes.menuItems}
             >
               <InternalScrollButton
-                id="complianceActivities"
+                id="compliance"
                 analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
               >
                 Compliance Activities
@@ -191,7 +191,7 @@ function ChplListingPage({ id, panel }) {
               className={classes.menuItems}
             >
               <InternalScrollButton
-                id="additionalInformation"
+                id="additional"
                 analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
               >
                 Additional Information
@@ -314,7 +314,7 @@ function ChplListingPage({ id, panel }) {
             && (
               <Card>
                 <span className="anchor-element">
-                  <span id="safetyEnhancedDesign" className="page-anchor" />
+                  <span id="sed" className="page-anchor" />
                 </span>
                 <CardContent>
                   Safety Enhanced Design (SED)
@@ -337,7 +337,7 @@ function ChplListingPage({ id, panel }) {
           </Card>
           <Card>
             <span className="anchor-element">
-              <span id="complianceActivities" className="page-anchor" />
+              <span id="compliance" className="page-anchor" />
             </span>
             <CardContent>
               Compliance Activities
@@ -350,7 +350,7 @@ function ChplListingPage({ id, panel }) {
           </Card>
           <Card>
             <span className="anchor-element">
-              <span id="additionalInformation" className="page-anchor" />
+              <span id="additional" className="page-anchor" />
             </span>
             <CardContent>
               Additional Information

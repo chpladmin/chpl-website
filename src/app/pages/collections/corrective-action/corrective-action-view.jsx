@@ -114,21 +114,6 @@ const useStyles = makeStyles({
   },
 });
 
-const getPanel = (listing) => {
-  const surv = listing.openSurveillanceNonConformityCount > 0 || listing.closedSurveillanceNonConformityCount > 0;
-  const dr = listing.openDirectReviewNonConformityCount > 0 || listing.closedDirectReviewNonConformityCount > 0;
-  if (surv && dr) {
-    return 'compliance';
-  }
-  if (surv) {
-    return 'surveillance';
-  }
-  if (dr) {
-    return 'directReviews';
-  }
-  return 'compliance';
-};
-
 function ChplCorrectiveActionCollectionView(props) {
   const storageKey = 'storageKey-correctiveActionView';
   const $analytics = getAngularService('$analytics');
@@ -161,7 +146,6 @@ function ChplCorrectiveActionCollectionView(props) {
     setDirectReviewsAvailable(data?.directReviewsAvailable);
     setListings(data.results.map((listing) => ({
       ...listing,
-      panel: getPanel(listing),
     })));
     setRecordCount(data.recordCount);
   }, [data?.directReviewsAvailable, data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -210,7 +194,7 @@ function ChplCorrectiveActionCollectionView(props) {
       { directReviewsAvailable
         && (
           <>
-            <div className={classes.searchContainer} component={Paper}>
+            <div className={classes.searchContainer}>
               <ChplFilterSearchTerm />
               <ChplFilterPanel />
             </div>
@@ -271,7 +255,7 @@ function ChplCorrectiveActionCollectionView(props) {
                                     <TableCell className={classes.stickyColumn}>
                                       <strong>
                                         <ChplLink
-                                          href={`#/listing/${item.id}?panel=${item.panel}`}
+                                          href={`#/listing/${item.id}?panel=compliance`}
                                           text={item.chplProductNumber}
                                           analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                                           external={false}
