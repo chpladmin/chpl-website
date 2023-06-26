@@ -171,12 +171,12 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
       </AccordionSummary>
       <CardContent>
         <Typography gutterBottom>
-          Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing
+          { ics ? 'This information reflects surveillance activities associated with this listing’s Inherited Certification Status (ICS)' : 'Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing' }
         </Typography>
         { surveillance.length === 0
           && (
             <Typography>
-              { ics ? 'Inherited Certified Status Surveillance (ICS) information is displayed here if a surveillance activity related to a listing\'s use of Inherited Certified Status has been opened by an ONC-ACB that affects this listing. No such ICS surveillance activity has been conducted for this listing.' : 'No surveillance activity has been conducted for this listing' }
+              { ics ? 'No ICS surveillance activity has been conducted' : 'No surveillance activity has been conducted for this listing' }
             </Typography>
           )}
         { surveillance.map((surv) => (
