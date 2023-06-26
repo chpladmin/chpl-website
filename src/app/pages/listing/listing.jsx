@@ -78,7 +78,7 @@ const useStyles = makeStyles({
   },
   pageHeader: {
     padding: '32px 0',
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
   },
   sectionHeader: {
     display: 'flex',
@@ -379,9 +379,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="g1g2Measures" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography className={classes.sectionHeaderText} variant="h2">
-                  G1/G2 Measures
-                </Typography>
+                <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
               </Box>
               <CardContent>
                 <ChplG1G2
@@ -394,9 +392,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="compliance" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography className={classes.sectionHeaderText} variant="h2">
-                  Compliance Activities
-                </Typography>
+                <Typography className={classes.sectionHeaderText} variant="h2">Compliance Activities</Typography>
               </Box>
               <CardContent>
                 <ChplCompliance
@@ -420,9 +416,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="additional" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography className={classes.sectionHeaderText} variant="h2">
-                  Additional Information
-                </Typography>
+                <Typography className={classes.sectionHeaderText} variant="h2">Additional Information</Typography>
               </Box>
               <CardContent>
                 <ChplAdditionalInformation
