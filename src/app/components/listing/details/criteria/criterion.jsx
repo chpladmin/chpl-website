@@ -47,6 +47,7 @@ const useStyles = makeStyles({
   criterionAccordionSummary: {
     backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
+    padding: '0 4px',
     borderBottom: `.5px solid ${palette.divider}`,
   },
   criterionAccordionDetails: {

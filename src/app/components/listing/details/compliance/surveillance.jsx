@@ -35,10 +35,8 @@ const useStyles = makeStyles({
   surveillance: {
     borderRadius: '4px',
     display: 'grid',
-    borderColor: `${palette.divider}`,
-    borderWidth: '.5px',
-    borderStyle: 'solid',
-    padding: '0px',
+    border: `.5px solid ${palette.divider}`,
+    padding: '0',
     backgroundColor: `${palette.white}`,
   },
   surveillanceSummary: {
@@ -46,21 +44,21 @@ const useStyles = makeStyles({
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px !important',
+    padding: '0 4px !important',
   },
   surveillanceDetailsSummary: {
     backgroundColor: `${palette.white}!important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px !important',
+    padding: '0 4px !important',
   },
   surveillanceDetailsHeaderWithBorder: {
     backgroundColor: `${palette.white}!important`,
     borderRadius: '4px',
     borderLeft: `2px solid ${palette.primary}!important`,
     width: '100%',
-    padding: '0 8px !important',
+    padding: '0 4px !important',
   },
   surveillanceDetailsBorder: {
     borderLeft: `2px solid ${palette.primary}!important`,
