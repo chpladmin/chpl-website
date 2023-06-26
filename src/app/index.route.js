@@ -7,6 +7,7 @@ import organizationsStates from './pages/organizations/organizations.state';
 import { registrationStatesConfig as registrationStates } from './pages/registration/registration.state';
 import reportsStates from './pages/reports/reports.state';
 import resourcesStates from './pages/resources/resources.state';
+import subscriptionsStates from './pages/subscriptions/subscriptions.state';
 import surveillanceStates from './pages/surveillance/surveillance.state';
 import usersStates from './pages/users/users.state';
 
@@ -38,6 +39,7 @@ function otherwise($injector, $location) {
     .config(registrationStates)
     .config(reportsStates)
     .config(resourcesStates)
+    .config(subscriptionsStates)
     .config(surveillanceStates)
     .config(usersStates);
 })();
