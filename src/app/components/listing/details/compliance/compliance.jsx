@@ -6,13 +6,18 @@ import ChplSurveillance from './surveillance';
 
 import { directReview as directReviewPropType, surveillance as surveillancePropType } from 'shared/prop-types';
 
+const isIcs = (req) => {
+  if (!req.requirementType) { return false; } // req created before ICS type existed
+  return req.requirementType.title === 'Inherited Certified Status';
+};
+
 function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: initialSurveillance }) {
   const [surveillance, setSurveillance] = useState([]);
   const [icsSurveillance, setIcsSurveillance] = useState([]);
 
   useEffect(() => {
-    setSurveillance(initialSurveillance.filter((surv) => surv.requirements.some((req) => req.type.name !== 'Inherited Certified Status')));
-    setIcsSurveillance(initialSurveillance.filter((surv) => surv.requirements.every((req) => req.type.name === 'Inherited Certified Status')));
+    setSurveillance(initialSurveillance.filter((surv) => surv.requirements.some((req) => !isIcs(req))));
+    setIcsSurveillance(initialSurveillance.filter((surv) => surv.requirements.every(isIcs)));
   }, [initialSurveillance]);
 
   return (
