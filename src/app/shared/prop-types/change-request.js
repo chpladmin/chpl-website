@@ -19,7 +19,7 @@ const changeRequestStatus = shape({
   changeRequestStatusType,
   comment: string,
   id: number,
-  statusChangeDate: number,
+  statusChangeDateTime: number,
   userPermission: shape({
     authority: string,
     description: string,
@@ -36,7 +36,7 @@ const changeRequest = shape({
   developer: developer,
   id: number,
   statuses: arrayOf(changeRequestStatus),
-  submittedDate: number,
+  submittedDateTime: number,
 });
 
 export { changeRequest, changeRequestStatusType };
