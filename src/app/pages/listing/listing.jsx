@@ -394,20 +394,14 @@ function ChplListingPage({ id, panel }) {
                   directReviewsAvailable={listing.directReviewsAvailable}
                   surveillance={listing.surveillance}
                 />
-                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
                  && (
-                   <Box pt={4} display="flex" flexDirection="row">
-                     <Typography>
-                       Please click the link if you want to,
-                       { }
-                     </Typography>
-                     <ChplLink
-                       href="#/surveillance/manage"
-                       text=" Manage Surveillance Activity"
-                       external={false}
-                       router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                     />
-                   </Box>
+                   <ChplLink
+                     href="#/surveillance/manage"
+                     text="Manage Surveillance Activity"
+                     external={false}
+                     router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                   />
                  )}
               </CardContent>
             </Card>
