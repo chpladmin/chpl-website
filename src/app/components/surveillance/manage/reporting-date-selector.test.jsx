@@ -80,19 +80,19 @@ describe('the ChplSurveillanceActivityReportingDateSelector component', () => {
   describe('when entering valid data', () => {
     const testData = [
       {
-        year: '2020', quarter: 'Q1', expectedStartDate: LocalDate.of(2020, 1, 1), expectedEndDate: LocalDate.of(2020, 3, 31),
+        year: '2020', quarter: 'Q1', expectedStartDay: LocalDate.of(2020, 1, 1), expectedEndDay: LocalDate.of(2020, 3, 31),
       },
       {
-        year: '2020', quarter: 'Q2', expectedStartDate: LocalDate.of(2020, 4, 1), expectedEndDate: LocalDate.of(2020, 6, 30),
+        year: '2020', quarter: 'Q2', expectedStartDay: LocalDate.of(2020, 4, 1), expectedEndDay: LocalDate.of(2020, 6, 30),
       },
       {
-        year: '2020', quarter: 'Q3', expectedStartDate: LocalDate.of(2020, 7, 1), expectedEndDate: LocalDate.of(2020, 9, 30),
+        year: '2020', quarter: 'Q3', expectedStartDay: LocalDate.of(2020, 7, 1), expectedEndDay: LocalDate.of(2020, 9, 30),
       },
       {
-        year: '2020', quarter: 'Q4', expectedStartDate: LocalDate.of(2020, 10, 1), expectedEndDate: LocalDate.of(2020, 12, 31),
+        year: '2020', quarter: 'Q4', expectedStartDay: LocalDate.of(2020, 10, 1), expectedEndDay: LocalDate.of(2020, 12, 31),
       },
       {
-        year: '2020', quarter: 'All', expectedStartDate: LocalDate.of(2020, 1, 1), expectedEndDate: LocalDate.of(2020, 12, 31),
+        year: '2020', quarter: 'All', expectedStartDay: LocalDate.of(2020, 1, 1), expectedEndDay: LocalDate.of(2020, 12, 31),
       },
     ];
     testData.forEach((item) => {
@@ -105,11 +105,11 @@ describe('the ChplSurveillanceActivityReportingDateSelector component', () => {
         await selectMaterialUiSelectOption(quarter, item.quarter);
         userEvent.click(button);
 
-        const startDate = item.expectedStartDate;
-        const endDate = item.expectedEndDate;
+        const startDay = item.expectedStartDay;
+        const endDay = item.expectedEndDay;
 
         await waitFor(() => {
-          expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDate, endDate });
+          expect(networkServiceMock.getSurveillanceActivityReport).toHaveBeenCalledWith({ startDay, endDay });
         });
       });
     });

@@ -55,28 +55,28 @@ function ChplSurveillanceActivityReportingDateSelector() {
     switch (quarter) {
       case 'all':
         return {
-          startDate: LocalDate.of(year, 1, 1),
-          endDate: LocalDate.of(year, 12, 31),
+          startDay: LocalDate.of(year, 1, 1),
+          endDay: LocalDate.of(year, 12, 31),
         };
       case 'q1':
         return {
-          startDate: LocalDate.of(year, 1, 1),
-          endDate: LocalDate.of(year, 3, 31),
+          startDay: LocalDate.of(year, 1, 1),
+          endDay: LocalDate.of(year, 3, 31),
         };
       case 'q2':
         return {
-          startDate: LocalDate.of(year, 4, 1),
-          endDate: LocalDate.of(year, 6, 30),
+          startDay: LocalDate.of(year, 4, 1),
+          endDay: LocalDate.of(year, 6, 30),
         };
       case 'q3':
         return {
-          startDate: LocalDate.of(year, 7, 1),
-          endDate: LocalDate.of(year, 9, 30),
+          startDay: LocalDate.of(year, 7, 1),
+          endDay: LocalDate.of(year, 9, 30),
         };
       case 'q4':
         return {
-          startDate: LocalDate.of(year, 10, 1),
-          endDate: LocalDate.of(year, 12, 31),
+          startDay: LocalDate.of(year, 10, 1),
+          endDay: LocalDate.of(year, 12, 31),
         };
       default:
         return {};
