@@ -9,11 +9,12 @@ import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { LocalDate } from '@js-joda/core';
-import { getAngularService } from '.';
-import ChplTextField from '../../util/chpl-text-field';
-import theme from '../../../themes/theme';
 
-const useStyles = makeStyles(() => ({
+import ChplTextField from 'components/util/chpl-text-field';
+import { getAngularService } from 'services/angular-react-helper';
+import theme from 'themes/theme';
+
+const useStyles = makeStyles({
   apiRegistrationLayout: {
     display: 'grid',
     columnGap: '8px',
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   fullWidth: {
     gridColumn: '1 / -1',
   },
-}));
+});
 
 const validationSchema = yup.object({
   year: yup.string()
@@ -175,4 +176,4 @@ function ChplSurveillanceActivityReportingDateSelector() {
   );
 }
 
-export { ChplSurveillanceActivityReportingDateSelector };
+export default ChplSurveillanceActivityReportingDateSelector;

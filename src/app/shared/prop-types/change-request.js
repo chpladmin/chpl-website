@@ -1,6 +1,7 @@
 import {
   arrayOf, object, number, shape, string,
 } from 'prop-types';
+
 import acb from './acb';
 import developer from './developer';
 
@@ -30,10 +31,10 @@ const changeRequestStatus = shape({
 
 const changeRequest = shape({
   certificationBodies: arrayOf(acb),
-  changeRequestType: changeRequestType,
+  changeRequestType,
   currentStatus: changeRequestStatus,
   details: object,
-  developer: developer,
+  developer,
   id: number,
   statuses: arrayOf(changeRequestStatus),
   submittedDateTime: number,

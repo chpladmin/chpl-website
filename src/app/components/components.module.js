@@ -34,7 +34,7 @@ import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrappe
 import ChplSedTaskView from './listing/details/sed/sed-task-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import ChplComplianceWrapper from './listing/details/compliance/compliance-wrapper';
-import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
+import ChplSurveillanceActivityReportingDateSelector from './surveillance/manage/reporting-date-selector';
 import {
   ChplUploadPromotingInteroperability,
   ChplUploadWrapper,
