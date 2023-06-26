@@ -66,8 +66,8 @@ const useStyles = makeStyles({
     },
   },
   errorChip: {
-    color: `${palette.white}`,
-    backgroundColor: `${palette.error}`,
+    color: 'palette.white',
+    backgroundColor: 'palette.error',
   },
   labelAndData: {
     display: 'flex',
