@@ -17,7 +17,7 @@ describe('the Listing details "additional" panel', () => {
       hooks.waitForSpinnerToDisappear();
       additional.additionalHeader.scrollIntoView();
       additional.expandAdditional();
-      expect(additional.icsButton.isDisplayed()).toBe(false);
+      expect(additional.additionalInformationPanel).not.toHaveTextContaining('Select a Certified Product to the right');
     });
   });
 
@@ -27,20 +27,11 @@ describe('the Listing details "additional" panel', () => {
       hooks.waitForSpinnerToDisappear();
       additional.additionalHeader.scrollIntoView();
       additional.expandAdditional();
-      browser.waitUntil(() => additional.icsButton.isDisplayed());
-      browser.waitUntil(() => additional.icsButton.isEnabled());
     });
 
-    it('should display ICS relationship button under additional information', () => {
-      expect(additional.icsButton.isDisplayed()).toBe(true);
-      expect(additional.icsButton.isEnabled()).toBe(true);
-    });
-
-    it('should display ICS relationship modal and compare button after clicking on ICS relationship button', () => {
-      additional.icsButton.click();
-      expect(additional.icsRelationshipPanel).toHaveTextContaining('Select a Certified Product to the right');
+    it('should display ICS relationship panel', () => {
+      expect(additional.additionalInformationPanel).toHaveTextContaining('Select a Certified Product to the right');
       expect(additional.compareLink.isDisplayed()).toBe(true);
-      additional.icsButton.click();
     });
   });
 
@@ -54,7 +45,7 @@ describe('the Listing details "additional" panel', () => {
     });
 
     it('should not display ICS relationship button under additional information', () => {
-      expect(additional.icsButton.isDisplayed()).toBe(false);
+      expect(additional.additionalInformationPanel).not.toHaveTextContaining('Select a Certified Product to the right');
     });
 
     it('should display test results summary under additional information', () => {
