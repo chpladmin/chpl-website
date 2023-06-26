@@ -45,7 +45,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'stretch',
     gap: '16px',
-    padding: '16px 0',
+    padding: '32px 0',
     backgroundColor: '#f9f9f9',
     [theme.breakpoints.up('md')]: {
       display: 'grid',
@@ -57,7 +57,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     position: 'sticky',
-    top: '100px',
+    top: '104px',
     gap: '16px',
   },
   menuItems: {
@@ -77,7 +77,7 @@ const useStyles = makeStyles({
   },
   pageHeader: {
     padding: '32px 0',
-    backgroundColor: palette.white,
+    backgroundColor: `${palette.white}`,
   },
   sectionHeader: {
     display: 'flex',
@@ -87,6 +87,10 @@ const useStyles = makeStyles({
     alignItems: 'center',
     backgroundColor: palette.secondary,
     borderBottom: `.5px solid ${palette.divider}`,
+  },
+  sectionHeaderText: {
+    fontSize: '1.5em !important',
+    fontWeight: '600 !important',
   },
 });
 
@@ -275,7 +279,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="listingInformation" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography variant="h2">Listing Information</Typography>
+                <Typography className={classes.sectionHeaderText} variant="h2">Listing Information</Typography>
               </Box>
               <CardContent>
                 <ChplListingInformation
@@ -288,7 +292,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="certificationCriteria" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography variant="h2">Certification Criteria</Typography>
+                <Typography className={classes.sectionHeaderText} variant="h2">Certification Criteria</Typography>
                 <div>
                   <FormControlLabel
                     control={(
@@ -320,7 +324,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="clinicalQualityMeasures" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography variant="h2">Clinical Quality Measures</Typography>
+                <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
                 <div>
                   <FormControlLabel
                     control={(
@@ -355,7 +359,7 @@ function ChplListingPage({ id, panel }) {
                    <span id="sed" className="page-anchor" />
                  </span>
                  <Box className={classes.sectionHeader}>
-                   <Typography variant="h2">Safety Enhanced Design (SED)</Typography>
+                   <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
                  </Box>
                  <CardContent>
                    <ChplSed
@@ -369,7 +373,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="g1g2Measures" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography variant="h2">
+                <Typography className={classes.sectionHeaderText} variant="h2">
                   G1/G2 Measures
                 </Typography>
               </Box>
@@ -384,7 +388,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="compliance" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography variant="h2">
+                <Typography className={classes.sectionHeaderText} variant="h2">
                   Compliance Activities
                 </Typography>
               </Box>
@@ -416,7 +420,7 @@ function ChplListingPage({ id, panel }) {
                 <span id="additional" className="page-anchor" />
               </span>
               <Box className={classes.sectionHeader}>
-                <Typography variant="h2">
+                <Typography className={classes.sectionHeaderText} variant="h2">
                   Additional Information
                 </Typography>
               </Box>
