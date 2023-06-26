@@ -2,7 +2,7 @@ class AdditionalComponent {
   constructor() {
     this.elements = {
       additionalHeader: '//div[text()="Additional Information"]',
-      icsButton: '#toggle-ics-relationship-diagram-button',
+      additionalInformationPanel: '#panel-additional-information',
       compareLink: 'a=Compare all Certified Products',
       testResultsSummary: '#panel-additional-information-test-results-summary',
       modalHeader: '.modal-header',
@@ -17,12 +17,8 @@ class AdditionalComponent {
     return $(this.elements.testResultsSummary);
   }
 
-  get icsButton() {
-    return $(this.elements.icsButton);
-  }
-
-  get icsRelationshipPanel() {
-    return this.icsButton.parentElement().nextElement();
+  get additionalInformationPanel() {
+    return $(this.elements.additionalInformationPanel);
   }
 
   get compareLink() {

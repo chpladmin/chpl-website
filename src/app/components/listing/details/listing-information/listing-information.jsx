@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   List,
   ListItem,
   Typography,
@@ -15,9 +16,18 @@ import { getStatusIcon } from 'services/listing.service';
 import { UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 
-function ChplListingInformation(props) {
-  const { listing } = props;
+function ChplListingInformation({ listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
+  const [listing, setListing] = useState(undefined);
+
+  useEffect(() => {
+    setListing({
+      ...initialListing,
+      chplProductNumberHistory: [...new Set(initialListing.chplProductNumberHistory.map((item) => item.chplProductNumber))]
+        .filter((item) => item !== initialListing.chplProductNumber)
+        .sort((a, b) => (a < b ? -1 : 1)),
+    });
+  }, [initialListing]);
 
   const canViewRwtDates = () => {
     if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; }
@@ -25,6 +35,8 @@ function ChplListingInformation(props) {
     if (hasAnyRole(['ROLE_DEVELOPER']) && user.organizations.some((o) => o.id === listing.developer.id)) { return true; }
     return false;
   };
+
+  if (!listing) { return <CircularProgress />; }
 
   return (
     <Box gridGap={16} display="flex" flexDirection="column">
@@ -48,7 +60,7 @@ function ChplListingInformation(props) {
                <List>
                  {listing.chplProductNumberHistory.map((prev) => (
                    <ListItem key={prev}>
-                     {prev}
+                     { prev }
                    </ListItem>
                  ))}
                </List>

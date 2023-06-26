@@ -35,6 +35,7 @@ import ChplListingInformation from 'components/listing/details/listing-informati
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
 import { ChplLink, InternalScrollButton } from 'components/util';
+import { getAngularService } from 'services/angular-react-helper';
 import { UserContext, FlagContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
@@ -95,6 +96,7 @@ const useStyles = makeStyles({
 });
 
 function ChplListingPage({ id, panel }) {
+  const $state = getAngularService('$state');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const { hasAnyRole } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
@@ -122,6 +124,10 @@ function ChplListingPage({ id, panel }) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [listing, panel]);
+
+  const edit = () => {
+    $state.go('listing.view.edit');
+  };
 
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
@@ -152,7 +158,7 @@ function ChplListingPage({ id, panel }) {
                      size="small"
                      variant="contained"
                      color="primary"
-                     href={`#/listing/${listing.id}/view/edit`}
+                     onClick={edit}
                    >
                      Edit
                    </Button>
@@ -164,7 +170,7 @@ function ChplListingPage({ id, panel }) {
                      size="small"
                      variant="contained"
                      color="primary"
-                     href={`#/listing/${listing.id}/view/edit`}
+                     onClick={edit}
                    >
                      Edit
                    </Button>
@@ -398,20 +404,14 @@ function ChplListingPage({ id, panel }) {
                   directReviewsAvailable={listing.directReviewsAvailable}
                   surveillance={listing.surveillance}
                 />
-                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
                  && (
-                   <Box pt={4} display="flex" flexDirection="row">
-                     <Typography>
-                       Please click the link if you want to,
-                       { }
-                     </Typography>
-                     <ChplLink
-                       href="#/surveillance/manage"
-                       text=" Manage Surveillance Activity"
-                       external={false}
-                       router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                     />
-                   </Box>
+                   <ChplLink
+                     href="#/surveillance/manage"
+                     text="Manage Surveillance Activity"
+                     external={false}
+                     router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                   />
                  )}
               </CardContent>
             </Card>
