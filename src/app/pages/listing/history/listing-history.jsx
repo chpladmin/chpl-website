@@ -28,7 +28,7 @@ import {
   interpretVersion,
 } from './history.service';
 
-import { ChplDialogTitle, ChplTooltip } from 'components/util';
+import { ChplDialogTitle } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { toTimestamp } from 'services/date-util';
 import theme from 'themes/theme';
@@ -172,19 +172,17 @@ function ChplListingHistory(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <ChplTooltip title="View Listing History">
-        <Button
-          id="view-listing-history"
-          aria-label="Open Listing History dialog"
-          color="secondary"
-          variant="contained"
-          onClick={handleClickOpen}
-          endIcon={<VisibilityIcon />}
-          size="small"
-        >
-          View Listing History
-        </Button>
-      </ChplTooltip>
+      <Button
+        id="view-listing-history"
+        aria-label="Open Listing History dialog"
+        color="secondary"
+        variant="contained"
+        onClick={handleClickOpen}
+        endIcon={<VisibilityIcon />}
+        size="small"
+      >
+        View Listing History
+      </Button>
       <Dialog
         onClose={handleClose}
         aria-labelledby="listing-history-title"
