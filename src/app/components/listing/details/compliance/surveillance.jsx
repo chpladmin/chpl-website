@@ -68,6 +68,9 @@ const useStyles = makeStyles({
   '& span.MuiTypography-root.MuiCardHeader-title.MuiTypography-h6.MuiTypography-displayBlock': {
     fontWeight: '300',
   },
+  rotate: {
+    transform: 'rotate(180deg)',
+  },
 });
 
 const getItemsSurveilled = (surveillance) => {
@@ -144,18 +147,39 @@ const getSurveillanceTitle = (surv) => {
 
 function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
   const [surveillance, setSurveillance] = useState([]);
+  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
     setSurveillance(initialSurveillance);
   }, [initialSurveillance]);
 
+  const getIcon = () => (expanded
+    ? (
+      <>
+        <Typography color="primary" variant="body2">Hide Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+      </>
+    )
+    : (
+      <>
+        <Typography color="primary" variant="body2">Show Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" />
+      </>
+    ));
+
+  const handleAccordionChange = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <Accordion className={classes.surveillance}>
+    <Accordion
+      className={classes.surveillance}
+      onChange={handleAccordionChange}
+    >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={getIcon()}
         className={classes.surveillanceSummary}
-        color="secondary"
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography>

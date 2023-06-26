@@ -78,6 +78,9 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  rotate: {
+    transform: 'rotate(180deg)',
+  },
 });
 
 const getFriendlyValues = (nc) => ({
@@ -106,6 +109,7 @@ const sortNonconformities = (a, b) => {
 
 function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable }) {
   const [directReviews, setDirectReviews] = useState([]);
+  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -144,10 +148,31 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
     }).sort(sortDirectReviews));
   }, [initialDirectReviews]);
 
+  const getIcon = () => (expanded
+    ? (
+      <>
+        <Typography color="primary" variant="body2">Hide Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+      </>
+    )
+    : (
+      <>
+        <Typography color="primary" variant="body2">Show Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" />
+      </>
+    ));
+
+  const handleAccordionChange = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <Accordion className={classes.directReviews}>
+    <Accordion
+      className={classes.directReviews}
+      onChange={handleAccordionChange}
+    >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={getIcon()}
         className={classes.directReviewsSummary}
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
