@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Chip,
   List,
   ListItem,
   Typography,
@@ -23,7 +24,7 @@ import { palette, theme, utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   subCard: {
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
     borderBottom: `.5px solid ${palette.divider}`,
     display: 'flex',
     flexDirection: 'row',
@@ -34,25 +35,25 @@ const useStyles = makeStyles({
   directReviews: {
     borderRadius: '4px',
     display: 'grid',
-    borderColor: `${palette.divider}`,
+    borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
     padding: '0px',
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
   },
   directReviewsSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px!important',
+    padding: '0 4px',
   },
   directReviewSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px!important',
+    padding: '0 4px',
   },
   dataContainer: {
     display: 'flex',
@@ -63,6 +64,10 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
     },
+  },
+  errorChip: {
+    color: palette.white,
+    backgroundColor: palette.error,
   },
   labelAndData: {
     display: 'flex',
@@ -190,9 +195,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
             )}
           { !directReviewsAvailable
             && (
-              <Typography variant="body2">
-                error
-              </Typography>
+              <Chip size="small" className={classes.errorChip} variant="default" label="Error" />
             )}
         </Box>
       </AccordionSummary>

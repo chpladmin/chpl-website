@@ -47,6 +47,7 @@ const useStyles = makeStyles({
   criterionAccordionSummary: {
     backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
+    padding: '0 4px',
     borderBottom: `.5px solid ${palette.divider}`,
   },
   criterionAccordionDetails: {
@@ -82,6 +83,7 @@ function ChplCriterion(props) {
     canEdit,
     hasIcs,
     isConfirming,
+    onSave,
     qmsStandards,
     resources,
   } = props;
@@ -131,7 +133,7 @@ function ChplCriterion(props) {
     }
     setEditing(false);
     setCriterion(updatedCriterion);
-    props.onSave(updatedCriterion);
+    onSave(updatedCriterion);
   };
 
   return (
