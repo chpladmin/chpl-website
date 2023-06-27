@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 12.2.0
+_26 June 2023_
+
+### Features
+* Enable view/edit of ONC-ACBs and ONC-ATLs in new UI
+
+### Flagged Features
+* Enable Subscribers to confirm their subscriptions
+* Enable users to sign up for subscriptions on Listings
+
+### Bug Fixes
+* Display error when trying to set an ONC-ACB/ONC-ATL's retirement date to the future
+
+---
+
 ## Version 12.1.0
 _12 June 2023_
 
