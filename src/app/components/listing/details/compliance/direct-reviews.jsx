@@ -42,14 +42,14 @@ const useStyles = makeStyles({
     backgroundColor: `${palette.white}`,
   },
   directReviewsSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
     padding: '0 4px',
   },
   directReviewSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
@@ -66,8 +66,8 @@ const useStyles = makeStyles({
     },
   },
   errorChip: {
-    color: 'palette.white',
-    backgroundColor: 'palette.error',
+    color: palette.white,
+    backgroundColor: palette.error,
   },
   labelAndData: {
     display: 'flex',
