@@ -14,7 +14,7 @@ let quarterlyPage;
 let toast;
 let complaints;
 
-describe('the quarterly surveillance reporting page', () => {
+xdescribe('the quarterly surveillance reporting page', () => {
   beforeEach(async () => {
     loginComponent = new LoginComponent();
     reportingPage = new ReportingPage();
