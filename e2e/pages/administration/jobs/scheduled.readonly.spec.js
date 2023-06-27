@@ -40,7 +40,7 @@ describe('the Reports page', () => {
         'Questionable Activity Report',
         'Questionable URL Report',
         'Real World Testing Email Report',
-        'Service Based URL Uptime Report',
+        'Service Base URL List Uptime Report',
         'Summary Statistics Email',
         'Trigger Developer Ban Notification',
       ];
