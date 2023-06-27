@@ -4,9 +4,10 @@ import Hooks from '../../utilities/hooks';
 import CmsWidgetComponent from './cms-widget.po';
 
 const listingId1 = 9851;
-const listingId2 = 11149;
+const listingId2 = 10974;
+const listingId3 = 10964;
 const search1 = '2621'; // developer code for listingId1
-const search2 = '2155'; // developer code for listingId2
+const search2 = '3121'; // developer code for listingId2
 const chplPublicGuide = 'https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf';
 const cmsReverseLookup = '#/resources/cms-lookup';
 const baseCriteria = 'http://healthit.gov/topic/certification-ehrs/2015-edition-test-method/2015-edition-cures-update-base-electronic-health-record-definition';
@@ -21,7 +22,7 @@ beforeAll(async () => {
   search = new SearchPage();
   cms = new CmsWidgetComponent();
   hooks = new Hooks();
-  await hooks.open('#/search');
+  hooks.open('#/search');
 });
 
 describe('on cms widget', () => {
@@ -116,11 +117,10 @@ describe('on cms widget', () => {
   describe('if there are listings added which meets 100% of base criteria(View with 100% products) - ', () => {
     beforeAll(() => {
       search.open();
-      search.searchForText(search1);
-      cms.addListingToCms(listingId1);
       search.searchForText(search2);
       browser.waitUntil(() => cms.certIdButton(listingId2), config.shortTimeout);
       cms.addListingToCms(listingId2);
+      cms.addListingToCms(listingId3);
       cms.waitForProcessingSpinnerToDisappear();
     });
 
