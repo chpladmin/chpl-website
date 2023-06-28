@@ -16,8 +16,8 @@ function ChplCompliance({ directReviews, directReviewsAvailable, surveillance: i
   const [icsSurveillance, setIcsSurveillance] = useState([]);
 
   useEffect(() => {
-    setSurveillance(initialSurveillance.filter((surv) => surv.requirements.some((req) => !isIcs(req))));
-    setIcsSurveillance(initialSurveillance.filter((surv) => surv.requirements.every(isIcs)));
+    setSurveillance(initialSurveillance.filter((surv) => surv.requirements.every((req) => !isIcs(req))));
+    setIcsSurveillance(initialSurveillance.filter((surv) => surv.requirements.some(isIcs)));
   }, [initialSurveillance]);
 
   return (
