@@ -13,16 +13,38 @@ import {
   TableHead,
   TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import ChplSedDownload from './sed-download';
 
+import { theme } from 'themes';
 import { ChplHighlightCures, ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
+
+const useStyles = makeStyles({
+  dataContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    flexWrap: 'nowrap',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      gap: '8px',
+      flexWrap: 'wrap',
+    },
+  },
+  dataBox: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '48%',
+    },
+  },
+});
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
 
@@ -38,6 +60,7 @@ function ChplSed({ listing }) {
   } = listing;
   const $state = getAngularService('$state');
   const [hasSed, setHasSed] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     setHasSed(certificationResults.some((cr) => cr.success && cr.sed));
@@ -60,7 +83,7 @@ function ChplSed({ listing }) {
       <Card>
         <CardHeader title="SED Summary" />
         <CardContent>
-          <Box display="flex" gridGap={8} flexDirection="row" flexWrap="wrap">
+          <Box className={classes.dataContainer}>
             <Box width="100%">
               <Typography variant="subtitle1">
                 Full Usability Report
@@ -76,7 +99,7 @@ function ChplSed({ listing }) {
                 {!sedReportFileLocation && 'No report on file'}
               </Typography>
             </Box>
-            <Box width="48%">
+            <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
                 Description of Intended Users
               </Typography>
@@ -84,7 +107,7 @@ function ChplSed({ listing }) {
                 {sedIntendedUserDescription ?? 'N/A'}
               </Typography>
             </Box>
-            <Box width="48%">
+            <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
                 Date SED Testing was Completed
               </Typography>
