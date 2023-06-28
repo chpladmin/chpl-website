@@ -8,8 +8,6 @@ const ListingId2 = 9861;
 const search1 = '2688';// using developer code to search listing
 const search2 = '1757';// using developer code to search listing
 
-const config = require('../../config/mainConfig');
-
 let compare;
 let hooks;
 let search;
