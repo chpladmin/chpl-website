@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -14,13 +13,12 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import ChplSedDownload from './sed-download';
+import ChplSedTaskView from './sed-task-view';
 
 import { ChplHighlightCures, ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
 
@@ -36,16 +34,11 @@ function ChplSed({ listing }) {
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
-  const $state = getAngularService('$state');
   const [hasSed, setHasSed] = useState(false);
 
   useEffect(() => {
     setHasSed(certificationResults.some((cr) => cr.success && cr.sed));
   }, [certificationResults]);
-
-  const viewTask = (task) => {
-    $state.go('.sedTask', { sedTaskId: task.id });
-  };
 
   if (!hasSed) {
     return (
@@ -147,62 +140,15 @@ function ChplSed({ listing }) {
             listing={listing}
           />
         </Box>
-        <CardContent>
-          <Card>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Task Rating and Scale Type</TableCell>
-                  <TableCell>Certification Criteria</TableCell>
-                  <TableCell><span className="sr-only">Actions</span></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { sed.testTasks
-                  .sort(sortTestTasks)
-                  .map((task) => (
-                    <TableRow key={task.id}>
-                      <TableCell>
-                        {task.description}
-                      </TableCell>
-                      <TableCell>
-                        {task.taskRating}
-                        {' '}
-                        (
-                        {task.taskRatingScale}
-                        )
-                      </TableCell>
-                      <TableCell>
-                        {task.criteria
-                          .sort(sortCriteria)
-                          .map((criterion) => (
-                            <ListItem key={criterion.id}>
-                              {criterion.removed && 'Removed | '}
-                              {criterion.number}
-                              :
-                              {' '}
-                              <ChplHighlightCures text={criterion.title} />
-                            </ListItem>
-                          ))}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          size="small"
-                          endIcon={<VisibilityIcon />}
-                          onClick={() => viewTask(task)}
-                        >
-                          View
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </Card>
-        </CardContent>
+        { sed.testTasks
+          .sort(sortTestTasks)
+          .map((task) => (
+            <ChplSedTaskView
+              key={task.id}
+              listing={listing}
+              task={task}
+            />
+          ))}
       </Card>
     </Box>
   );
