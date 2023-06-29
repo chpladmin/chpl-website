@@ -158,20 +158,22 @@ function ChplSed({ listing }) {
       </Card>
       <Card>
         <CardHeader title="SED Testing Tasks" />
-        <Box display="flex" justifyContent="flex-end" pt={4} pr={4} pl={4}>
-          <ChplSedDownload
-            listing={listing}
-          />
-        </Box>
-        { sed.testTasks
-          .sort(sortTestTasks)
-          .map((task) => (
-            <ChplSedTaskView
-              key={task.id}
+        <CardContent>
+          <Box display="flex" justifyContent="flex-end" pb={4}>
+            <ChplSedDownload
               listing={listing}
-              task={task}
             />
-          ))}
+          </Box>
+          { sed.testTasks
+            .sort(sortTestTasks)
+            .map((task) => (
+              <ChplSedTaskView
+                key={task.id}
+                listing={listing}
+                task={task}
+              />
+            ))}
+        </CardContent>
       </Card>
     </Box>
   );
