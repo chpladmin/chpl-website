@@ -55,13 +55,41 @@ const useStyles = makeStyles({
     },
   },
   navigation: {
+    backgroundColor: '#FFF',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     position: 'sticky',
-    top: '104px',
+    top: '0',
+    zIndex: '2000',
     gap: '16px',
+    borderRadius: '4px',
+    overflowX: 'scroll',
+    boxShadow: 'rgb(149 157 165 / 50%) 0px 4px 16px',
+    border: `.5px solid ${palette.divider}`,
+    [theme.breakpoints.up('sm')]: {
+      top: '100px',
+    },
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      overflowX: 'hidden',
+      flexDirection: 'column',
+      position: 'sticky',
+      top: '104px',
+      gap: '16px',
+      zIndex: '100',
+    },
+  },
+  menuContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    overflowX: 'visible',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
   },
   menuItems: {
+    display: 'flex',
     padding: '8px',
     justifyContent: 'space-between',
     '&.Mui-disabled': {
@@ -82,16 +110,32 @@ const useStyles = makeStyles({
   },
   sectionHeader: {
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignContent: 'center',
     padding: '16px',
-    alignItems: 'center',
     backgroundColor: palette.secondary,
     borderBottom: `.5px solid ${palette.divider}`,
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
   },
   sectionHeaderText: {
     fontSize: '1.5em !important',
     fontWeight: '600 !important',
+  },
+  listingHeaderBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gridGap: '16px',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gridGap: 'none',
+    },
   },
 });
 
@@ -140,41 +184,43 @@ function ChplListingPage({ id, panel }) {
       />
       <div className={classes.pageHeader}>
         <Container maxWidth="lg">
-          <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Typography
-              variant="h1"
-            >
-              {listing.product.name}
-            </Typography>
-            <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" gridGap="4px">
+          <Box className={classes.listingHeaderBox}>
+            <Box>
+              <Typography
+                variant="h1"
+              >
+                {listing.product.name}
+              </Typography>
+            </Box>
+            <Box>
               <ChplActionButton
                 listing={listing}
                 horizontal
               >
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
-                 && (
-                   <Button
-                     endIcon={<EditIcon />}
-                     size="small"
-                     variant="contained"
-                     color="primary"
-                     onClick={edit}
-                   >
-                     Edit
-                   </Button>
-                 )}
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
-                 && (
-                   <Button
-                     endIcon={<EditIcon />}
-                     size="small"
-                     variant="contained"
-                     color="primary"
-                     onClick={edit}
-                   >
-                     Edit
-                   </Button>
-                 )}
+                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={edit}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={edit}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 <ChplListingHistory
                   listing={listing}
                   canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
@@ -187,7 +233,7 @@ function ChplListingPage({ id, panel }) {
       <Container maxWidth="lg">
         <div className={classes.container} id="main-content" tabIndex="-1">
           <div className={classes.navigation}>
-            <Card>
+            <Box className={classes.menuContainer}>
               <Box
                 className={classes.menuItems}
               >
@@ -222,19 +268,19 @@ function ChplListingPage({ id, panel }) {
                 </InternalScrollButton>
               </Box>
               {listing.certificationEdition.name !== '2011'
-               && (
-                 <Box
-                   className={classes.menuItems}
-                 >
-                   <InternalScrollButton
-                     id="sed"
-                     analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
-                   >
-                     Safety Enhanced Design (SED)
-                     <TouchAppOutlinedIcon className={classes.iconSpacing} />
-                   </InternalScrollButton>
-                 </Box>
-               )}
+                  && (
+                    <Box
+                      className={classes.menuItems}
+                    >
+                      <InternalScrollButton
+                        id="sed"
+                        analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                      >
+                        Safety Enhanced Design (SED)
+                        <TouchAppOutlinedIcon className={classes.iconSpacing} />
+                      </InternalScrollButton>
+                    </Box>
+                  )}
               <Box
                 className={classes.menuItems}
               >
@@ -268,17 +314,17 @@ function ChplListingPage({ id, panel }) {
                   <InfoOutlinedIcon className={classes.iconSpacing} />
                 </InternalScrollButton>
               </Box>
-            </Card>
-            { subscriptionsIsOn
-             && (
-               <Box>
-                 <ChplSubscribe
-                   subscribedObjectId={listing.id}
-                   subscribedObjectTypeId={1}
-                 />
-               </Box>
-             )}
+            </Box>
           </div>
+          {subscriptionsIsOn
+          && (
+            <Box>
+              <ChplSubscribe
+                subscribedObjectId={listing.id}
+                subscribedObjectTypeId={1}
+              />
+            </Box>
+          )}
           <div className={classes.content}>
             <Card>
               <span className="anchor-element">
@@ -309,7 +355,7 @@ function ChplListingPage({ id, panel }) {
                         color="primary"
                         onChange={() => setSeeAllCriteria(!seeAllCriteria)}
                       />
-                    )}
+                  )}
                     label="See all Certification Criteria"
                   />
                   (
@@ -341,7 +387,7 @@ function ChplListingPage({ id, panel }) {
                         checked={seeAllCqms}
                         onChange={() => setSeeAllCqms(!seeAllCqms)}
                       />
-                    )}
+                  )}
                     label="See all CQMs"
                   />
                   (
@@ -359,21 +405,21 @@ function ChplListingPage({ id, panel }) {
               </CardContent>
             </Card>
             {listing.certificationEdition.name !== '2011'
-             && (
-               <Card>
-                 <span className="anchor-element">
-                   <span id="sed" className="page-anchor" />
-                 </span>
-                 <Box className={classes.sectionHeader}>
-                   <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
-                 </Box>
-                 <CardContent>
-                   <ChplSed
-                     listing={listing}
-                   />
-                 </CardContent>
-               </Card>
-             )}
+            && (
+              <Card>
+                <span className="anchor-element">
+                  <span id="sed" className="page-anchor" />
+                </span>
+                <Box className={classes.sectionHeader}>
+                  <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
+                </Box>
+                <CardContent>
+                  <ChplSed
+                    listing={listing}
+                  />
+                </CardContent>
+              </Card>
+            )}
             <Card>
               <span className="anchor-element">
                 <span id="g1g2Measures" className="page-anchor" />
@@ -400,15 +446,15 @@ function ChplListingPage({ id, panel }) {
                   directReviewsAvailable={listing.directReviewsAvailable}
                   surveillance={listing.surveillance}
                 />
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                 && (
-                   <ChplLink
-                     href="#/surveillance/manage"
-                     text="Manage Surveillance Activity"
-                     external={false}
-                     router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                   />
-                 )}
+                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+                && (
+                  <ChplLink
+                    href="#/surveillance/manage"
+                    text="Manage Surveillance Activity"
+                    external={false}
+                    router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                  />
+                )}
               </CardContent>
             </Card>
             <Card>
