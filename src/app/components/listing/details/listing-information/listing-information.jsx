@@ -91,7 +91,7 @@ function ChplListingInformation({ listing: initialListing }) {
            )}
           <Box className={classes.dataBox}>
             <Typography variant="subtitle1">Certification Date:</Typography>
-            <Typography gutterBottom>{getDisplayDateFormat(listing.certificationDate)}</Typography>
+            <Typography gutterBottom>{getDisplayDateFormat(listing.certificationDay)}</Typography>
             { listing.product.ownerHistory?.length > 0
              && (
                <Box className={classes.dataBox}>

@@ -24,7 +24,7 @@ import { palette, theme, utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   subCard: {
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
     borderBottom: `.5px solid ${palette.divider}`,
     display: 'flex',
     flexDirection: 'row',
@@ -35,11 +35,11 @@ const useStyles = makeStyles({
   directReviews: {
     borderRadius: '4px',
     display: 'grid',
-    borderColor: `${palette.divider}`,
+    borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
     padding: '0px',
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
   },
   directReviewsSummary: {
     backgroundColor: `${palette.white} !important`,

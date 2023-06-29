@@ -83,6 +83,7 @@ function ChplCriterion(props) {
     canEdit,
     hasIcs,
     isConfirming,
+    onSave,
     qmsStandards,
     resources,
   } = props;
@@ -132,7 +133,7 @@ function ChplCriterion(props) {
     }
     setEditing(false);
     setCriterion(updatedCriterion);
-    props.onSave(updatedCriterion);
+    onSave(updatedCriterion);
   };
 
   return (

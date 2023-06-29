@@ -22,14 +22,14 @@ import { palette, utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   infoIcon: {
-    color: `${palette.primary}`,
+    color: palette.primary,
   },
   root: {
     width: '100%',
     padding: '0 8px !important',
   },
   subCard: {
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
     borderBottom: `.5px solid ${palette.divider}`,
   },
   surveillance: {
@@ -37,31 +37,31 @@ const useStyles = makeStyles({
     display: 'grid',
     border: `.5px solid ${palette.divider}`,
     padding: '0',
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
   },
   surveillanceSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
     padding: '0 4px !important',
   },
   surveillanceDetailsSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
     padding: '0 4px !important',
   },
   surveillanceDetailsHeaderWithBorder: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
-    borderLeft: `2px solid ${palette.primary}!important`,
+    borderLeft: `2px solid ${palette.primary} !important`,
     width: '100%',
     padding: '0 4px !important',
   },
   surveillanceDetailsBorder: {
-    borderLeft: `2px solid ${palette.primary}!important`,
+    borderLeft: `2px solid ${palette.primary} !important`,
   },
   '& span.MuiTypography-root.MuiCardHeader-title.MuiTypography-h6.MuiTypography-displayBlock': {
     fontWeight: '300',

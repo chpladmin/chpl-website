@@ -1,11 +1,11 @@
 <ui-view>
-  <span feature-flag="ui-upgrade">
+  <span feature-flag="ui-upgrade-view">
     <chpl-listing-page-bridge
       id="$ctrl.listing.id"
       panel="$ctrl.panel"
       ></chpl-listing-page-bridge>
   </span>
-  <span feature-flag="ui-upgrade" feature-flag-hide>
+  <span feature-flag="ui-upgrade-view" feature-flag-hide>
     <chpl-browser-viewed-widget-bridge listing="$ctrl.listing"></chpl-browser-viewed-widget-bridge>
     <div class="container" ng-if="!$ctrl.loading">
       <div class="row text-bottom" ng-if="$ctrl.listing">

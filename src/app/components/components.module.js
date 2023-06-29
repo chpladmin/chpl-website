@@ -27,7 +27,6 @@ import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSubscribeWrapper from './subscriptions/subscribe-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
-import ChplSedTaskView from './listing/details/sed/sed-task-view-wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
 import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
 import {
@@ -85,7 +84,6 @@ angular
   .component('chplLinkBridge', reactToAngularComponent(ChplLink))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
-  .component('chplSedTaskViewBridge', reactToAngularComponent(ChplSedTaskView))
   .component('chplSubscribeBridge', reactToAngularComponent(ChplSubscribeWrapper))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
