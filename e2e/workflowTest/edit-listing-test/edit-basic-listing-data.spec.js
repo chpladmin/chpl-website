@@ -34,30 +34,41 @@ describe('On Listing details page', () => {
       await hooks.open('#/listing/9715');
     });
 
-    it('should be able to add RWT data to the listing and save edits', () => {
+    it('should be able to add RWT plans data to the listing and save edits', () => {
       const timestamp = Date.now();
       const plansDateInput = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
       const plansDateDisplay = `${new Date().toLocaleString('en-us', { month: 'short' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
       const testPlansUrl = `https://testPlansUrl${timestamp}.com`;
-      const nextDay = new Date();
-      nextDay.setDate(nextDay.getDate() + 1);
-      const resultsDateInput = nextDay.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-      const resultsDateDisplay = `${nextDay.toLocaleString('en-us', { month: 'short' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
-      const testResultsUrl = `https://testResultsUrl${timestamp}.com`;
-
       login.logIn('drummond');
       page.editCertifiedProduct.click();
       hooks.waitForSpinnerToDisappear();
       listingEdit.rwtPlansUrl.setValue(testPlansUrl);
       listingEdit.rwtPlansCheckDate.setValue(plansDateInput);
-      listingEdit.rwtResultsUrl.setValue(testResultsUrl);
-      listingEdit.rwtResultsCheckDate.setValue(resultsDateInput);
       action.save();
       hooks.waitForSpinnerToDisappear();
       browser.waitUntil(() => toast.toastTitle.isDisplayed());
       toast.clearAllToast();
       expect(page.listingBasicInformation.getText()).toContain(testPlansUrl);
       expect(page.listingBasicInformation.getText()).toContain(`Last ONC-ACB Completeness Check: ${plansDateDisplay}`);
+    });
+
+    it('should be able to add RWT Results data to the listing and save edits', () => {
+      const timestamp = Date.now();
+      const resultsDateInput = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      const resultsDateDisplay = `${new Date().toLocaleString('en-us', { month: 'short' })} ${new Date().getDate()}, ${new Date().getFullYear()}`;
+      const testResultsUrl = `https://testResultsUrl${timestamp}.com`;
+
+      login.logIn('drummond');
+      page.editCertifiedProduct.click();
+      hooks.waitForSpinnerToDisappear();
+      listingEdit.rwtPlansUrl.clearValue();
+      listingEdit.rwtPlansCheckDate.clearValue();
+      listingEdit.rwtResultsUrl.setValue(testResultsUrl);
+      listingEdit.rwtResultsCheckDate.setValue(resultsDateInput);
+      action.save();
+      hooks.waitForSpinnerToDisappear();
+      browser.waitUntil(() => toast.toastTitle.isDisplayed());
+      toast.clearAllToast();
       expect(page.listingBasicInformation.getText()).toContain(testResultsUrl);
       expect(page.listingBasicInformation.getText()).toContain(`Last ONC-ACB Completeness Check: ${resultsDateDisplay}`);
     });
