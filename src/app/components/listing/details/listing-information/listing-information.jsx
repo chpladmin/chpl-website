@@ -11,12 +11,12 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import { theme } from 'themes';
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
+import { theme } from 'themes';
 
 const useStyles = makeStyles({
   dataContainer: {

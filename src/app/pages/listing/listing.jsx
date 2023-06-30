@@ -55,7 +55,7 @@ const useStyles = makeStyles({
     },
   },
   navigation: {
-    backgroundColor: '#FFF',
+    backgroundColor: palette.white,
     display: 'flex',
     flexDirection: 'row',
     position: 'sticky',
@@ -197,30 +197,30 @@ function ChplListingPage({ id, panel }) {
                 listing={listing}
                 horizontal
               >
-                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
-                  && (
-                    <Button
-                      endIcon={<EditIcon />}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={edit}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
-                  && (
-                    <Button
-                      endIcon={<EditIcon />}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={edit}
-                    >
-                      Edit
-                    </Button>
-                  )}
+                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
+                 && (
+                   <Button
+                     endIcon={<EditIcon />}
+                     size="small"
+                     variant="contained"
+                     color="primary"
+                     onClick={edit}
+                   >
+                     Edit
+                   </Button>
+                 )}
+                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
+                 && (
+                   <Button
+                     endIcon={<EditIcon />}
+                     size="small"
+                     variant="contained"
+                     color="primary"
+                     onClick={edit}
+                   >
+                     Edit
+                   </Button>
+                 )}
                 <ChplListingHistory
                   listing={listing}
                   canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
@@ -316,7 +316,7 @@ function ChplListingPage({ id, panel }) {
               </Box>
             </Box>
           </div>
-          {subscriptionsIsOn
+          { subscriptionsIsOn
           && (
             <Box>
               <ChplSubscribe
@@ -355,7 +355,7 @@ function ChplListingPage({ id, panel }) {
                         color="primary"
                         onChange={() => setSeeAllCriteria(!seeAllCriteria)}
                       />
-                  )}
+                    )}
                     label="See all Certification Criteria"
                   />
                   (
@@ -387,7 +387,7 @@ function ChplListingPage({ id, panel }) {
                         checked={seeAllCqms}
                         onChange={() => setSeeAllCqms(!seeAllCqms)}
                       />
-                  )}
+                    )}
                     label="See all CQMs"
                   />
                   (
@@ -405,21 +405,21 @@ function ChplListingPage({ id, panel }) {
               </CardContent>
             </Card>
             {listing.certificationEdition.name !== '2011'
-            && (
-              <Card>
-                <span className="anchor-element">
-                  <span id="sed" className="page-anchor" />
-                </span>
-                <Box className={classes.sectionHeader}>
-                  <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
-                </Box>
-                <CardContent>
-                  <ChplSed
-                    listing={listing}
-                  />
-                </CardContent>
-              </Card>
-            )}
+             && (
+               <Card>
+                 <span className="anchor-element">
+                   <span id="sed" className="page-anchor" />
+                 </span>
+                 <Box className={classes.sectionHeader}>
+                   <Typography className={classes.sectionHeaderText} variant="h2">Safety Enhanced Design (SED)</Typography>
+                 </Box>
+                 <CardContent>
+                   <ChplSed
+                     listing={listing}
+                   />
+                 </CardContent>
+               </Card>
+             )}
             <Card>
               <span className="anchor-element">
                 <span id="g1g2Measures" className="page-anchor" />
@@ -447,14 +447,14 @@ function ChplListingPage({ id, panel }) {
                   surveillance={listing.surveillance}
                 />
                 {hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
-                && (
-                  <ChplLink
-                    href="#/surveillance/manage"
-                    text="Manage Surveillance Activity"
-                    external={false}
-                    router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                  />
-                )}
+                 && (
+                   <ChplLink
+                     href="#/surveillance/manage"
+                     text="Manage Surveillance Activity"
+                     external={false}
+                     router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                   />
+                 )}
               </CardContent>
             </Card>
             <Card>

@@ -18,11 +18,11 @@ import {
 import ChplSedDownload from './sed-download';
 import ChplSedTaskView from './sed-task-view';
 
-import { theme } from 'themes';
 import { ChplHighlightCures, ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
+import { theme } from 'themes';
 
 const useStyles = makeStyles({
   dataContainer: {
