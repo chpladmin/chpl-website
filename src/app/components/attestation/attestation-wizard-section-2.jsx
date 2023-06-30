@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Card,
   CardContent,
   Checkbox,
@@ -14,6 +15,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 import { array, func, string } from 'prop-types';
 
 import { interpretEmphatic, interpretLink } from './attestation-util';
@@ -24,6 +26,18 @@ const useStyles = makeStyles({
   },
   radioGroup: {
     textTransform: 'none',
+  },
+  warningBox: {
+    padding: '16px',
+    backgroundColor: '#fdfde7',
+    border: '1px solid #afafaf',
+    borderRadius: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '4px',
+    marginBottom: '16px',
+    gridGap: '16px',
+    alignItems: 'center',
   },
 });
 
@@ -114,6 +128,15 @@ function ChplAttestationWizardSection2(props) {
             ))}
         </RadioGroup>
       </FormControl>
+      { item.submittedResponses[0]?.message
+        && (
+          <Box className={classes.warningBox}>
+            <ReportProblemOutlinedIcon />
+            <Typography>
+              { item.submittedResponses[0].message }
+            </Typography>
+          </Box>
+        )}
       { item.childFormItems
         .map((child) => item.submittedResponses
           .some((resp) => resp.id === child.parentResponse.id)
