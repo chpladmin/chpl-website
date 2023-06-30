@@ -398,7 +398,7 @@ lookup = {
   'root.ics': {
     message: (before) => {
       if (typeof before !== 'object') { console.debug({ before, key: 'root.ics' }); }
-      return 'Inherited Certification Status changes';
+      return 'Inherited Certified Status changes';
     },
   },
   'root.ics.children': { message: (before, after) => compare(before, after, 'children', 'ICS Children') },
