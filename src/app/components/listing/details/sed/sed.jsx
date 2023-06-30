@@ -79,7 +79,7 @@ function ChplSed({ listing }) {
           <Box className={classes.dataContainer}>
             <Box width="100%">
               <Typography variant="subtitle1">
-                Full Usability Report
+                Full Usability Report:
               </Typography>
               <Typography>
                 { sedReportFileLocation
@@ -94,7 +94,7 @@ function ChplSed({ listing }) {
             </Box>
             <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
-                Description of Intended Users
+                Description of Intended Users:
               </Typography>
               <Typography>
                 {sedIntendedUserDescription ?? 'N/A'}
@@ -102,7 +102,7 @@ function ChplSed({ listing }) {
             </Box>
             <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
-                Date SED Testing was Completed
+                Date SED Testing was Completed:
               </Typography>
               <Typography>
                 {getDisplayDateFormat(sedTestingEndDay)}

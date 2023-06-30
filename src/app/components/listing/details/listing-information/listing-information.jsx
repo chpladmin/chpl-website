@@ -95,7 +95,7 @@ function ChplListingInformation({ listing: initialListing }) {
             { listing.product.ownerHistory?.length > 0
              && (
                <Box className={classes.dataBox}>
-                 <Typography variant="subtitle1"> Previous Developer:</Typography>
+                 <Typography variant="subtitle1">Previous Developer:</Typography>
                  <List>
                    {listing.product.ownerHistory.map((prev) => (
                      <ListItem key={prev.developer.id}>
@@ -184,7 +184,7 @@ function ChplListingInformation({ listing: initialListing }) {
           <CardContent>
             <Box className={classes.dataContainer}>
               <Box className={classes.dataBox}>
-                <Typography variant="subtitle1">Chpl Developer Page</Typography>
+                <Typography variant="subtitle1">Developer:</Typography>
                 <ChplLink
                   href={`#/organizations/developers/${listing.developer.id}`}
                   text={listing.developer.name}
@@ -218,7 +218,7 @@ function ChplListingInformation({ listing: initialListing }) {
                 && (
                   <Box className={classes.dataBox}>
                     <Typography variant="body1" gutterBottom>
-                      <strong>Address</strong>
+                      <strong>Address:</strong>
                       <br />
                       <span className="sr-only">Line 1: </span>
                       {listing.developer.address.line1}
@@ -251,7 +251,7 @@ function ChplListingInformation({ listing: initialListing }) {
               { listing.product.contact
                 && (
                   <Typography variant="body1" gutterBottom>
-                    <strong>Contact</strong>
+                    <strong>Contact:</strong>
                     <br />
                     <span className="sr-only">Full name: </span>
                     {listing.product.contact.fullName}
@@ -317,7 +317,7 @@ function ChplListingInformation({ listing: initialListing }) {
               { (listing.rwtPlansUrl || listing.rwtPlansCheckDate || listing.rwtResultsUrl || listing.rwtResultsCheckDate)
                 && (
                   <Box className={classes.dataBox}>
-                    <Typography variant="subtitle1" gutterBottom>Real World Testing</Typography>
+                    <Typography variant="subtitle1" gutterBottom>Real World Testing:</Typography>
                     { listing.rwtPlansUrl
                      && (
                        <>

@@ -87,7 +87,7 @@ function ChplAdditionalInformation(props) {
                 { listing.ics.parents?.length > 0
                   && (
                     <>
-                      <Typography variant="subtitle1">Inherits From</Typography>
+                      <Typography variant="subtitle1">Inherits From:</Typography>
                       <List>
                         { getRelatives(listing.ics.parents) }
                       </List>
@@ -96,7 +96,7 @@ function ChplAdditionalInformation(props) {
                 { listing.ics.children?.length > 0
                   && (
                     <>
-                      <Typography variant="subtitle1">ICS Source for</Typography>
+                      <Typography variant="subtitle1">ICS Source for:</Typography>
                       <List>
                         { getRelatives(listing.ics.children) }
                       </List>
