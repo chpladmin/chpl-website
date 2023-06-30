@@ -49,6 +49,18 @@ const selectedSvap = shape({
   svapId: number,
 });
 
+const selectedTestTool = shape({
+  id: number,
+  retired: bool,
+  testToolId: number,
+  testToolName: string,
+  testToolVersion: string,
+});
+
+const testTool = shape({
+  value: string,
+});
+
 const ucdProcessType = shape({
   id: number,
   name: string,
@@ -67,6 +79,8 @@ export {
   qmsStandardType,
   svap,
   selectedSvap,
+  selectedTestTool,
+  testTool,
   ucdProcess,
   ucdProcessType,
 };

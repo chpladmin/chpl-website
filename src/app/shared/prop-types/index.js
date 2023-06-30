@@ -35,6 +35,8 @@ import {
   qmsStandardType,
   svap,
   selectedSvap,
+  selectedTestTool,
+  testTool,
   ucdProcess,
   ucdProcessType,
 } from './standards';
@@ -48,7 +50,6 @@ import {
 import { testData, selectedTestData } from './test-data';
 import { testProcedure, selectedTestProcedure } from './test-procedure';
 import { testStandard, selectedTestStandard } from './test-standard';
-import { testTool, selectedTestTool } from './test-tool';
 import user from './user';
 import version from './version';
 
