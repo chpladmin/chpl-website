@@ -198,7 +198,7 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
         { surveillance.length === 0
           && (
             <Typography>
-              { ics ? 'No ICS surveillance activity has been conducted' : 'No surveillance activity has been conducted for this listing' }
+              { ics ? 'No ICS surveillance activity has been conducted' : 'No surveillance activity has been conducted' }
             </Typography>
           )}
         { surveillance.map((surv) => (
