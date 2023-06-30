@@ -102,6 +102,10 @@ const DevelopersEditComponent = {
       const request = {
         developer: this.developer,
         details: data,
+        changeRequestType: {
+          id: 2,
+          name: 'Developer Demographics Change Request',
+        },
       };
       this.networkService.submitChangeRequest(request)
         .then(that.handleResponse.bind(that), that.handleError.bind(that));
