@@ -179,14 +179,6 @@ export default class NetworkService {
     return this.apiGET('/change-requests');
   }
 
-  getChangeRequestStatusTypes() {
-    return this.apiGET('/data/change-request-status-types');
-  }
-
-  getChangeRequestTypes() {
-    return this.apiGET('/data/change-request-types');
-  }
-
   getCollection(type) {
     switch (type) {
       case 'complaintListings':
