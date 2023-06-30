@@ -12,15 +12,37 @@ import {
   TableHead,
   TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 
 import ChplSedDownload from './sed-download';
 import ChplSedTaskView from './sed-task-view';
 
+import { theme } from 'themes';
 import { ChplHighlightCures, ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
+
+const useStyles = makeStyles({
+  dataContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    flexWrap: 'nowrap',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      gap: '8px',
+      flexWrap: 'wrap',
+    },
+  },
+  dataBox: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '48%',
+    },
+  },
+});
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
 
@@ -35,6 +57,7 @@ function ChplSed({ listing }) {
     sedTestingEndDay,
   } = listing;
   const [hasSed, setHasSed] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     setHasSed(certificationResults.some((cr) => cr.success && cr.sed));
@@ -53,7 +76,7 @@ function ChplSed({ listing }) {
       <Card>
         <CardHeader title="SED Summary" />
         <CardContent>
-          <Box display="flex" gridGap={8} flexDirection="row" flexWrap="wrap">
+          <Box className={classes.dataContainer}>
             <Box width="100%">
               <Typography variant="subtitle1">
                 Full Usability Report
@@ -69,7 +92,7 @@ function ChplSed({ listing }) {
                 {!sedReportFileLocation && 'No report on file'}
               </Typography>
             </Box>
-            <Box width="48%">
+            <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
                 Description of Intended Users
               </Typography>
@@ -77,7 +100,7 @@ function ChplSed({ listing }) {
                 {sedIntendedUserDescription ?? 'N/A'}
               </Typography>
             </Box>
-            <Box width="48%">
+            <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
                 Date SED Testing was Completed
               </Typography>
@@ -135,20 +158,22 @@ function ChplSed({ listing }) {
       </Card>
       <Card>
         <CardHeader title="SED Testing Tasks" />
-        <Box display="flex" justifyContent="flex-end" pt={4} pr={4} pl={4}>
-          <ChplSedDownload
-            listing={listing}
-          />
-        </Box>
-        { sed.testTasks
-          .sort(sortTestTasks)
-          .map((task) => (
-            <ChplSedTaskView
-              key={task.id}
+        <CardContent>
+          <Box display="flex" justifyContent="flex-end" pb={4}>
+            <ChplSedDownload
               listing={listing}
-              task={task}
             />
-          ))}
+          </Box>
+          { sed.testTasks
+            .sort(sortTestTasks)
+            .map((task) => (
+              <ChplSedTaskView
+                key={task.id}
+                listing={listing}
+                task={task}
+              />
+            ))}
+        </CardContent>
       </Card>
     </Box>
   );

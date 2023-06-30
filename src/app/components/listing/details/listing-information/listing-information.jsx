@@ -8,17 +8,40 @@ import {
   List,
   ListItem,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
 
+import { theme } from 'themes';
 import { ChplLink } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { getStatusIcon } from 'services/listing.service';
 import { UserContext } from 'shared/contexts';
 import { listing as listingType } from 'shared/prop-types/listing';
 
+const useStyles = makeStyles({
+  dataContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    flexWrap: 'nowrap',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      gap: '8px',
+      flexWrap: 'wrap',
+    },
+  },
+  dataBox: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '48%',
+    },
+  },
+});
+
 function ChplListingInformation({ listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
+  const classes = useStyles();
 
   useEffect(() => {
     setListing({
@@ -41,21 +64,21 @@ function ChplListingInformation({ listing: initialListing }) {
   return (
     <Box gridGap={16} display="flex" flexDirection="column">
       <Box gridGap={16} display="flex" flexDirection="column">
-        <Box gridGap={8} display="flex" flexDirection="row" flexWrap="wrap">
-          <Box width="48%">
+        <Box className={classes.dataContainer}>
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">CHPL Product Number:</Typography>
             <Typography gutterBottom>{listing.chplProductNumber}</Typography>
           </Box>
           { listing.acbCertificationId
            && (
-             <Box width="48%">
+             <Box className={classes.dataBox}>
                <Typography variant="subtitle1">ONC-ACB Certification ID:</Typography>
                <Typography gutterBottom>{listing.acbCertificationId}</Typography>
              </Box>
            )}
           { listing.chplProductNumberHistory.length > 0
            && (
-             <Box width="48%">
+             <Box className={classes.dataBox}>
                <Typography variant="subtitle1">Previous CHPL Product Numbers:</Typography>
                <List>
                  {listing.chplProductNumberHistory.map((prev) => (
@@ -66,12 +89,12 @@ function ChplListingInformation({ listing: initialListing }) {
                </List>
              </Box>
            )}
-          <Box width="48%">
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">Certification Date:</Typography>
             <Typography gutterBottom>{getDisplayDateFormat(listing.certificationDay)}</Typography>
             { listing.product.ownerHistory?.length > 0
              && (
-               <Box width="48%">
+               <Box className={classes.dataBox}>
                  <Typography variant="subtitle1"> Previous Developer:</Typography>
                  <List>
                    {listing.product.ownerHistory.map((prev) => (
@@ -87,15 +110,15 @@ function ChplListingInformation({ listing: initialListing }) {
                </Box>
              )}
           </Box>
-          <Box width="48%">
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">Version:</Typography>
             <Typography gutterBottom>{listing.version.version}</Typography>
           </Box>
-          <Box width="48%">
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">Certification Edition:</Typography>
             <Typography gutterBottom>{`${listing.certificationEdition.name}${listing.curesUpdate ? ' Cures Update' : ''}`}</Typography>
           </Box>
-          <Box width="48%">
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">Certification Status:</Typography>
             <Typography gutterBottom>
               {listing.currentStatus.status.name }
@@ -104,23 +127,23 @@ function ChplListingInformation({ listing: initialListing }) {
           </Box>
           { listing.practiceType.name
            && (
-             <Box width="48%">
+             <Box className={classes.dataBox}>
                <Typography variant="subtitle1">Practice Type:</Typography>
                <Typography gutterBottom>{listing.practiceType.name}</Typography>
              </Box>
            )}
           { listing.classificationType.name
            && (
-             <Box width="48%">
+             <Box className={classes.dataBox}>
                <Typography variant="subtitle1">Classification Type:</Typography>
                <Typography gutterBottom>{listing.classificationType.name}</Typography>
              </Box>
            )}
-          <Box width="48%">
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">ONC-Authorized Certification Body:</Typography>
             <Typography gutterBottom>{listing.certifyingBody.name}</Typography>
           </Box>
-          <Box width="48%">
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">ONC-Authorized Testing Laboratory:</Typography>
             { listing.testingLabs.map((atl) => (
               <Typography gutterBottom key={atl.id}>{atl.testingLabName}</Typography>
@@ -143,7 +166,7 @@ function ChplListingInformation({ listing: initialListing }) {
                </>
              )}
           </Box>
-          <Box width="48%">
+          <Box className={classes.dataBox}>
             <Typography variant="subtitle1">Transparency Disclosure:</Typography>
             { listing.mandatoryDisclosures
               ? (
@@ -159,8 +182,8 @@ function ChplListingInformation({ listing: initialListing }) {
         <Card>
           <CardHeader title="Developer" />
           <CardContent>
-            <Box gridGap={8} display="flex" flexDirection="row" flexWrap="wrap">
-              <Box width="48%">
+            <Box className={classes.dataContainer}>
+              <Box className={classes.dataBox}>
                 <Typography variant="subtitle1">Chpl Developer Page</Typography>
                 <ChplLink
                   href={`#/organizations/developers/${listing.developer.id}`}
@@ -172,14 +195,14 @@ function ChplListingInformation({ listing: initialListing }) {
               </Box>
               { listing.developer.status.status !== 'Active'
                 && (
-                  <Box width="48%">
+                  <Box className={classes.dataBox}>
                     <Typography variant="subtitle1">Developer Status:</Typography>
                     <Typography gutterBottom>{listing.developer.status.status}</Typography>
                   </Box>
                 )}
               { listing.developer.website
                 && (
-                  <Box width="48%">
+                  <Box className={classes.dataBox}>
                     <Typography variant="subtitle1">Developer Website:</Typography>
                     <ChplLink
                       href={listing.developer.website}
@@ -187,13 +210,13 @@ function ChplListingInformation({ listing: initialListing }) {
                     />
                   </Box>
                 )}
-              <Box width="48%">
+              <Box className={classes.dataBox}>
                 <Typography variant="subtitle1">Self-Developer:</Typography>
                 <Typography gutterBottom>{listing.developer.selfDeveloper ? 'Yes' : 'No'}</Typography>
               </Box>
               { listing.developer.address
                 && (
-                  <Box width="48%">
+                  <Box className={classes.dataBox}>
                     <Typography variant="body1" gutterBottom>
                       <strong>Address</strong>
                       <br />
@@ -280,8 +303,8 @@ function ChplListingInformation({ listing: initialListing }) {
         <Card>
           <CardHeader title="Conditions and Maintenance of Certification" />
           <CardContent>
-            <Box gridGap={8} display="flex" flexDirection="row" flexWrap="wrap">
-              <Box width="48%">
+            <Box className={classes.dataContainer}>
+              <Box className={classes.dataBox}>
                 <Typography variant="subtitle1">Attestations:</Typography>
                 <ChplLink
                   href={`#/organizations/developers/${listing.developer.id}`}
@@ -293,7 +316,7 @@ function ChplListingInformation({ listing: initialListing }) {
               </Box>
               { (listing.rwtPlansUrl || listing.rwtPlansCheckDate || listing.rwtResultsUrl || listing.rwtResultsCheckDate)
                 && (
-                  <Box width="48%">
+                  <Box className={classes.dataBox}>
                     <Typography variant="subtitle1" gutterBottom>Real World Testing</Typography>
                     { listing.rwtPlansUrl
                      && (
