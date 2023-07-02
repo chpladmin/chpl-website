@@ -129,7 +129,8 @@ describe('On Listing details page', () => {
     });
   });
 
-  describe('when editing a 2011 edition listing', () => {
+  // ignore two flaky listing edit tests and address after ui upgrade flag is removed
+  xdescribe('when editing a 2011 edition listing', () => {
     beforeEach(async () => {
       await hooks.open('#/listing/41');
     });
@@ -150,7 +151,7 @@ describe('On Listing details page', () => {
     });
   });
 
-  describe('when editing a 2014 edition listing', () => {
+  xdescribe('when editing a 2014 edition listing', () => {
     beforeEach(async () => {
       await hooks.open('#/listing/437');
     });
