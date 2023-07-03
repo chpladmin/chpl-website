@@ -49,15 +49,15 @@ const useStyles = makeStyles({
     gap: '16px',
     alignItems: 'end',
     backgroundColor: '#f5f9fd',
+    borderBottom: '0.5px solid #c2c6ca',
   },
   cardSubHeaderContainer: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '8px',
+    gridTemplateColumns: '1fr',
+    gap: '16px',
     alignItems: 'start',
-    padding: '16px',
     [theme.breakpoints.up('sm')]: {
-      gridTemplateColumns: 'repeat(auto-fit, minmax(256px, 1fr))',
+      gridTemplateColumns: '1fr 1fr',
     },
   },
   actionsContainer: {
@@ -86,6 +86,9 @@ const useStyles = makeStyles({
   },
   cardContentContainer: {
     padding: '16px',
+    gap: '16px',
+    display: 'flex',
+    flexDirection: 'column',
   },
   cardContentChangeRequest: {
     gridTemplateColumns: '1fr',
@@ -459,16 +462,16 @@ function ChplChangeRequest(props) {
           />
         )}
       <Card className={classes.productCard}>
+        <div className={classes.cardHeaderContainer}>
+          <ChplAvatar
+            text={changeRequest.developer.name}
+          />
+          <Typography gutterBottom className={classes.cardHeader} variant="h4">
+            { isEditing ? 'Edit ' : '' }
+            {changeRequest.changeRequestType.name}
+          </Typography>
+        </div>
         <CardContent className={classes.cardContentContainer}>
-          <div className={classes.cardHeaderContainer}>
-            <ChplAvatar
-              text={changeRequest.developer.name}
-            />
-            <Typography gutterBottom className={classes.cardHeader} variant="h4">
-              { isEditing ? 'Edit ' : '' }
-              {changeRequest.changeRequestType.name}
-            </Typography>
-          </div>
           <div className={classes.cardSubHeaderContainer}>
             <div>
               <Typography gutterBottom variant="subtitle2">Developer:</Typography>
