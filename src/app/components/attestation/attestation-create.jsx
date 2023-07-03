@@ -32,7 +32,7 @@ function ChplAttestationCreate(props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [period, setPeriod] = useState({});
   const [stage, setStage] = useState(0);
-  const { data, isLoading } = useFetchAttestationForm({ period });
+  const { data, isLoading } = useFetchAttestationForm({ period, developer });
   const { data: { submittablePeriod = {} } = {} } = useFetchAttestations({ developer, isAuthenticated: hasAnyRole(['ROLE_DEVELOPER']) });
   const crData = useFetchChangeRequestTypes();
   const { mutate } = usePostChangeRequest();
