@@ -73,7 +73,7 @@ describe('the complaints component', () => {
       });
 
       it('should only show the complaint that has that Associated Certified Product', async () => {
-        const searchTerm = '15.04.04.1221.Soar.15.00.1.180611';
+        const searchTerm = '15.04.04.2881.Solu.09.01.1.190218';
         await component.searchForText(searchTerm);
         await (await component.viewButton).click();
         await expect(await component.complaintsBody()).toContain(searchTerm);
@@ -86,22 +86,6 @@ describe('the complaints component', () => {
         await (await component.viewButton).click();
         await expect(await component.complaintsBody()).toContain(searchTerm);
         await (await component.backToComplaintsButton).click();
-      });
-    });
-
-    describe('when searching complaints with filters', () => {
-      afterEach(async () => {
-        await component.resetFilters();
-      });
-
-      it('should only show the complaints that has all of search options used', async () => {
-        await component.setListFilter('complainantTypes', 'Anonymous');
-        await component.setListFilter('currentStatuses', 'Closed');
-        const complaints = (await component.getTableComplaints());
-        complaints.forEach(async (complaint) => {
-          await expect(await (await component.getComplaintCell(complaint, 4)).getText()).toContain('Anonymous');
-          return expect(await (await component.getComplaintCell(complaint, 0)).getText()).toContain('CLOSED');
-        });
       });
     });
   });

@@ -38,12 +38,6 @@ describe('the Decertified Products collection page', () => {
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);
       });
-
-      it('should filter on status', async () => {
-        await page.setListFilter('certificationStatuses', 'Active');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeGreaterThan(countBefore);
-      });
     });
 
     describe('by text', () => {

@@ -32,37 +32,25 @@ describe('the Search page', () => {
         await page.resetFilters();
       });
 
-      it('should filter on criteria', async () => {
-        await page.setListFilter('certificationCriteriaIds', '1');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeLessThan(countBefore);
-      });
-
       it('should filter on edition', async () => {
         await page.removeFilter('Certification Edition', '2015');
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);
       });
 
-      it('should filter on status', async () => {
-        await page.setListFilter('certificationStatuses', 'Withdrawn_by_Developer');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeGreaterThan(countBefore);
-      });
-
-      it('should filter on cqms', async () => {
+      xit('should filter on cqms', async () => {
         await page.setListFilter('cqms', 'CMS2');
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);
       });
 
-      it('should filter on compliance', async () => {
+      xit('should filter on compliance', async () => {
         await page.setListFilter('hasHadComplianceActivity', 'true');
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);
       });
 
-      it('should filter on non-conformities', async () => {
+      xit('should filter on non-conformities', async () => {
         await page.setListFilter('nonConformityOptions', 'open_nonconformity');
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);

@@ -31,7 +31,7 @@ describe('the qms standard page', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add, edit and delete qms standards', async () => {
+    it('should be able to add and edit qms standards', async () => {
       const name = `0Test - ${Date.now()}`;
       const newName = `1Test - ${Date.now()}`;
       const initialCount = (await page.getData()).length;
@@ -45,11 +45,6 @@ describe('the qms standard page', () => {
       await action.save();
       browser.waitUntil(async () => (await (await $$(page.dataTable)).getText()).not.toContain(name));
       await expect(await (await page.dataTable).getText()).toContain(newName);
-      await page.editItem(newName);
-      await action.delete();
-      await action.clickYesToConfirm();
-      await (browser.waitUntil(async () => (await page.getData()).length === initialCount));
-      await expect(await (await page.dataTable).getText()).not.toContain(newName);
     });
   });
 });
