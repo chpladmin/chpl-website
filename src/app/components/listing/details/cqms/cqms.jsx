@@ -27,6 +27,10 @@ const useStyles = makeStyles({
   disabledRow: {
     backgroundColor: 'rgba(0, 0, 0, 0.12)',
   },
+  tableScrolling: {
+    overflowX: 'auto',
+    width: '100%',
+  },
 });
 
 function ChplCqms(props) {
@@ -61,7 +65,7 @@ function ChplCqms(props) {
             Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
           </Typography>
         )}
-      <Card>
+      <Card className={classes.tableScrolling}>
         <Table>
           <TableHead>
             <TableRow>
