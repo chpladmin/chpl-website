@@ -20,8 +20,14 @@ const usePutSubscriber = () => {
   return useMutation(async (data) => axios.put('subscriptions/confirm-subscriber', data));
 };
 
+const useDeleteSubscriber = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.put('subscriptions/unsubscribe-all', data));
+};
+
 export {
   useFetchRoles,
   usePostSubscription,
   usePutSubscriber,
+  useDeleteSubscriber,
 };
