@@ -60,7 +60,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     position: 'sticky',
     top: '0',
-    zIndex: '2000',
+    zIndex: '1299',
     gap: '16px',
     borderRadius: '4px',
     overflowX: 'scroll',
