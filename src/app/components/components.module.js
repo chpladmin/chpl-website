@@ -28,7 +28,7 @@ import ChplSubscribeWrapper from './subscriptions/subscribe-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
-import { ChplSurveillanceActivityReportingDateSelector } from './surveillance/manage';
+import ChplSurveillanceActivityReportingDateSelector from './surveillance/manage/reporting-date-selector';
 import {
   ChplUploadPromotingInteroperability,
   ChplUploadWrapper,

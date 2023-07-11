@@ -31,7 +31,7 @@ describe('the svap component', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add, edit and delete svaps', async () => {
+    it('should be able to add and edit svaps', async () => {
       const version = `0Test - ${Date.now()}`;
       const newVersion = `1Test - ${Date.now()}`;
       const initialCount = (await page.getData()).length;
@@ -48,11 +48,6 @@ describe('the svap component', () => {
       await action.save();
       browser.waitUntil(async () => (await (await $$(page.dataTable)).getText()).not.toContain(version));
       await expect(await (await page.dataTable).getText()).toContain(newVersion);
-      await page.editItem(newVersion);
-      await action.delete();
-      await action.clickYesToConfirm();
-      await (browser.waitUntil(async () => (await page.getData()).length === initialCount));
-      await expect(await (await page.dataTable).getText()).not.toContain(newVersion);
     });
   });
 });

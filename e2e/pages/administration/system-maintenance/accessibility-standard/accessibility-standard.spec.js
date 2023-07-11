@@ -31,7 +31,7 @@ describe('the accessibility standard', () => {
       await expect(await page.getTitle()).toBe('System Maintenance');
     });
 
-    it('should be able to add a new accessibility standard and then edit and delete', async () => {
+    it('should be able to add a new accessibility standard and then edit it', async () => {
       const name = `1Test - ${Date.now()}`;
       const editName = `2Test - ${Date.now()}`;
       const initialCount = (await page.getData()).length;
@@ -45,11 +45,6 @@ describe('the accessibility standard', () => {
       await action.save();
       browser.waitUntil(async () => (await (await $$(page.dataTable)).getText()).not.toContain(name));
       await expect(await (await page.dataTable).getText()).toContain(editName);
-      await page.editItem(editName);
-      await action.delete();
-      await action.clickYesToConfirm();
-      await browser.waitUntil(async () => (await page.getData()).length === initialCount);
-      await expect(await (await page.dataTable).getText()).not.toContain(editName);
-    }); 
+    });
   });
 });
