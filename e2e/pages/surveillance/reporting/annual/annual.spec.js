@@ -42,6 +42,7 @@ describe('when logged in as a ROLE_ONC', () => {
 
   it('can download annual report', () => {
     annualPage.download.click();
+    browser.waitUntil(() => toast.toastTitle.isDisplayed());
     expect(toast.toastTitle.getText()).toBe('Report is being generated');
   });
 });

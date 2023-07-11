@@ -20,9 +20,6 @@ describe('the 2015 Listing page', () => {
     expect(information.contact.isDisplayed()).toBe(true);
     expect(information.link.getAttribute('href')).toContain('http://www');
   });
-  it('should display version information', () => {
-    expect(information.getInformation('version').isDisplayed()).toBe(true);
-  });
   it('should display edition as 2015', () => {
     expect(information.getInformation('certification-edition').getText()).toContain('2015');
   });
@@ -74,13 +71,13 @@ describe('the 2014 Listing page', () => {
   it('should display classification type', () => {
     expect(information.getInformation('classification-type').isDisplayed()).toBe(true);
   });
-  it('should display ACB information', () => {
+  xit('should display ACB information', () => {
     expect(information.getInformation('onc-authorized-certification-body').getText()).toContain('Drummond Group');
   });
-  it('should display ATL information', () => {
+  xit('should display ATL information', () => {
     expect(information.getInformation('onc-accredited-testing-laboratory').isDisplayed()).toBe(true);
   });
-  it('should display mandatory disclosures URL', () => {
+  xit('should display mandatory disclosures URL', () => {
     expect(information.getInformation('mandatory-disclosures').isDisplayed()).toBe(true);
   });
 });

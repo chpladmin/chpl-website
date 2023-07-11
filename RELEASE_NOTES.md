@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 12.2.1
+_3 July 2023_
+
+### User Interface Updates
+* Display inconsistent data messages when viewing/editing Attestations
+* Display messages about inconsistent data when submitting Attestations
+
+### Flagged Bug Fixes
+* Restore ability for Developer to submit Demographic Change Requests
+
+---
+
 ## Version 12.2.0
 _26 June 2023_
 

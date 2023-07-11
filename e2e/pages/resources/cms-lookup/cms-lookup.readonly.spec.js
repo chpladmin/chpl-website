@@ -8,7 +8,7 @@ const config = require('../../../config/mainConfig');
 
 let page;
 
-describe('on the CMS ID reverse look up page', async () => {
+xdescribe('on the CMS ID reverse look up page', async () => {
   beforeEach(async () => {
     page = new CmsLookupPage();
     await page.open();

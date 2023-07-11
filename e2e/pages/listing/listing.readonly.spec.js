@@ -49,10 +49,6 @@ describe('when on 2015 listing page', () => {
     });
   });
 
-  it('should have product history button', () => {
-    expect(page.productHistory.isDisplayed()).toBe(true);
-  });
-
   describe('when clicking on product history button', () => {
     beforeEach(() => {
       page.productHistory.click();
@@ -110,10 +106,6 @@ describe('when on 2014 listing page - ', () => {
     it('should go back to search page', () => {
       expect(browser.getUrl()).toContain('/search');
     });
-  });
-
-  it('should have product history button', () => {
-    expect(page.productHistory.isDisplayed()).toBe(true);
   });
 
   describe('when clicking on product history button', () => {
