@@ -132,7 +132,7 @@ const useStyles = makeStyles({
       gridGap: 'none',
     },
   },
-  leftSifeContent: {
+  leftSideContent: {
     display: 'flex',
     flexDirection: 'column',
     position: 'sticky',
@@ -254,7 +254,7 @@ function ChplListingPage({ id, panel }) {
       </div>
       <Container maxWidth="lg">
         <div className={classes.container} id="main-content" tabIndex="-1">
-          <div className={classes.leftSifeContent}>
+          <div className={classes.leftSideContent}>
             <div className={classes.navigation}>
               <Box className={classes.menuContainer}>
                 <Box
@@ -494,7 +494,6 @@ function ChplListingPage({ id, panel }) {
                 />
               </CardContent>
             </Card>
-
             { subscriptionsIsOn
               && (
                 <Box className={classes.subscribeMobile}>

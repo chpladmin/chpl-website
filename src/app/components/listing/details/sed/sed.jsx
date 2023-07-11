@@ -42,8 +42,8 @@ const useStyles = makeStyles({
       width: '48%',
     },
   },
-  tableScrolling:{
-    overflowX: 'auto!important',
+  tableScrolling: {
+    overflowX: 'auto !important',
   },
 });
 

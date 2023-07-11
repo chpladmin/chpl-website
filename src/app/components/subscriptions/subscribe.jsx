@@ -93,7 +93,7 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   });
 
   return (
-    <Card >
+    <Card>
       <Box className={classes.subscribeToBackground} />
       <CardContent>
         <Box display="flex" flexDirection="column" gridGap={16}>
@@ -101,7 +101,7 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
             <Typography gutterBottom variant="h5">
               <strong>Want Updates?</strong>
             </Typography>
-            <Typography variant='body2'>
+            <Typography variant="body2">
               If you&apos;re interested in keeping up-to-date with changes to this listing from the Certified Health IT Product List (CHPL) fill out the fields below.
             </Typography>
           </div>

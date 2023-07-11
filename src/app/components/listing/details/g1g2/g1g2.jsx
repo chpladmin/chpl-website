@@ -24,8 +24,8 @@ const useStyles = makeStyles({
   infoIcon: {
     color: `${palette.primary}`,
   },
-  tableScrolling:{
-    overflowX: 'auto!important',
+  tableScrolling: {
+    overflowX: 'auto !important',
   },
 });
 
