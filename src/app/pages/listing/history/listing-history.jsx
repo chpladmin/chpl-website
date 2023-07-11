@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   ButtonGroup,
   Dialog,
@@ -36,6 +37,14 @@ import theme from 'themes/theme';
 const useStyles = makeStyles(() => ({
   noWrap: {
     whiteSpace: 'nowrap',
+  },
+  listingHistoryActions: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    [theme.breakpoints.up('md')]: {
+      flexFlow: 'row',
+    },
   },
 }));
 
@@ -232,27 +241,28 @@ function ChplListingHistory(props) {
             )}
         </DialogContent>
         <DialogActions>
-          <Typography>
-            This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the
-            <code>
-              /activity/metadata/listings/
-              { listing.id }
-            </code>
-            {' '}
-            API call described on the CHPL API page.
-          </Typography>
-          <ButtonGroup
-            className={classes.noWrap}
-            color="primary"
-            variant="outlined"
-          >
-            <Button
-              id="go-to-api"
-              onClick={goToApi}
+          <Box className={classes.listingHistoryActions}>
+            <Typography gutterBottom>
+              This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the
+              <code>
+                /activity/metadata/listings/
+                { listing.id }
+              </code>
+              {' '}
+              API call described on the CHPL API page.
+            </Typography>
+            <ButtonGroup
+              className={classes.noWrap}
+              color="primary"
+              variant="outlined"
             >
-              Go to API
-            </Button>
-            { canSeeHistory
+              <Button
+                id="go-to-api"
+                onClick={goToApi}
+              >
+                Go to API
+              </Button>
+              { canSeeHistory
               && (
                 <Button
                   id="see-full-history"
@@ -261,7 +271,8 @@ function ChplListingHistory(props) {
                   Go to Full History
                 </Button>
               )}
-          </ButtonGroup>
+            </ButtonGroup>
+          </Box>
         </DialogActions>
       </Dialog>
     </ThemeProvider>

@@ -4,10 +4,10 @@ import {
   AccordionDetails,
   AccordionSummary,
   Avatar,
+  Box,
   Button,
   Chip,
   Container,
-  Grid,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -50,8 +50,26 @@ const useStyles = makeStyles({
     padding: '0 4px',
     borderBottom: `.5px solid ${palette.divider}`,
   },
+  criterionAccordionSummaryHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: '16px',
+  },
   criterionAccordionDetails: {
     borderRadius: '0 0 8px 8px',
+  },
+  criterionAccordionSummarySubBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: '8px',
+  },
+  criterionAccordionSummaryData: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignContent: 'center',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -149,58 +167,60 @@ function ChplCriterion(props) {
           expandIcon={getIcon()}
           id={`criterion-id-${criterion.criterion.id}-header`}
         >
-          <Grid container alignItems="center" spacing={4}>
-            <Grid item xs={1}>
-              { criterion.success
-              && (
-                <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
-              )}
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="subtitle1">
-                { criterion.criterion.removed
+          <Box className={classes.criterionAccordionSummaryHeader}>
+            <Box className={classes.criterionAccordionSummarySubBox}>
+              <Box className={classes.criterionAccordionSummaryData}>
+                { criterion.success
                 && (
-                  <>
-                    Removed |
-                  </>
+                  <CheckIcon fontSize="large" aria-label={`Listing attests to criterion ${criterion.number}`} />
                 )}
-                <div className={classes.criterionNumber}>
-                  {criterion.criterion.number}
-                </div>
-              </Typography>
-              { pending
-              && (
-                <Chip
-                  overlap="circle"
-                  label="Pending Changes"
-                  className={classes.pendingChip}
-                  avatar={(
-                    <Avatar className={classes.pendingChip}>
-                      <SyncIcon color="secondary" />
-                    </Avatar>
+              </Box>
+              <Box className={classes.criterionAccordionSummaryData}>
+                <Typography variant="subtitle1">
+                  { criterion.criterion.removed
+                  && (
+                    <>
+                      Removed |
+                    </>
                   )}
-                />
-              )}
-              { staged && !pending
-              && (
-                <Chip
-                  overlap="circle"
-                  label="Staged Changes"
-                  className={classes.stagedChip}
-                  avatar={(
-                    <Avatar className={classes.stagedChip}>
-                      <CloudDoneIcon color="secondary" />
-                    </Avatar>
-                  )}
-                />
-              )}
-            </Grid>
-            <Grid item xs={8}>
+                  <div className={classes.criterionNumber}>
+                    {criterion.criterion.number}
+                  </div>
+                </Typography>
+                { pending
+                && (
+                  <Chip
+                    overlap="circle"
+                    label="Pending Changes"
+                    className={classes.pendingChip}
+                    avatar={(
+                      <Avatar className={classes.pendingChip}>
+                        <SyncIcon color="secondary" />
+                      </Avatar>
+                    )}
+                  />
+                )}
+                { staged && !pending
+                && (
+                  <Chip
+                    overlap="circle"
+                    label="Staged Changes"
+                    className={classes.stagedChip}
+                    avatar={(
+                      <Avatar className={classes.stagedChip}>
+                        <CloudDoneIcon color="secondary" />
+                      </Avatar>
+                    )}
+                  />
+                )}
+              </Box>
+            </Box>
+            <Box className={classes.criterionAccordionSummaryData}>
               <Typography variant="body2">
                 <ChplHighlightCures text={criterion.criterion.title} />
               </Typography>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </AccordionSummary>
         <AccordionDetails
           className={classes.criterionAccordionDetails}
