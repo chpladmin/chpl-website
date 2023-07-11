@@ -142,7 +142,7 @@ const useStyles = makeStyles({
 function ChplListingPage({ id, panel }) {
   const $state = getAngularService('$state');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
-  const { hasAnyRole } = useContext(UserContext);
+  const { hasAnyRole, user } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
   const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
@@ -168,6 +168,20 @@ function ChplListingPage({ id, panel }) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [listing, panel]);
+
+  const canEdit = () => {
+    if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; }
+    if (listing.certificationEdition.name !== '2015') { return false; }
+    if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
+    return false;
+  };
+
+  const canManageSurveillance = () => {
+    if (hasAnyRole(['ROLE_ADMIN'])) { return true; }
+    if (listing.certificationEdition.name !== '2015') { return false; }
+    if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
+    return false;
+  };
 
   const edit = () => {
     $state.go('listing.view.edit');
@@ -197,19 +211,7 @@ function ChplListingPage({ id, panel }) {
                 listing={listing}
                 horizontal
               >
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
-                 && (
-                   <Button
-                     endIcon={<EditIcon />}
-                     size="small"
-                     variant="contained"
-                     color="primary"
-                     onClick={edit}
-                   >
-                     Edit
-                   </Button>
-                 )}
-                { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
+                { canEdit()
                  && (
                    <Button
                      endIcon={<EditIcon />}
@@ -223,7 +225,7 @@ function ChplListingPage({ id, panel }) {
                  )}
                 <ChplListingHistory
                   listing={listing}
-                  canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
+                  canSeeHistory={canEdit()}
                 />
               </ChplActionButton>
             </Box>
@@ -446,7 +448,7 @@ function ChplListingPage({ id, panel }) {
                   directReviewsAvailable={listing.directReviewsAvailable}
                   surveillance={listing.surveillance}
                 />
-                {hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+                { canManageSurveillance()
                  && (
                    <ChplLink
                      href="#/surveillance/manage"
