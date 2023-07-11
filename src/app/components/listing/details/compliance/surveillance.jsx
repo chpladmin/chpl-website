@@ -193,7 +193,7 @@ function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
       </AccordionSummary>
       <CardContent>
         <Typography gutterBottom>
-          { ics ? 'This information reflects surveillance activities associated with this listing’s Inherited Certified Status (ICS)' : 'Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing' }
+          { ics ? 'This information reflects surveillance activities associated with this listing’s Inherited Certified Status (ICS)' : 'Relevant surveillance information that pertains to this listing can be found here' }
         </Typography>
         { surveillance.length === 0
           && (
