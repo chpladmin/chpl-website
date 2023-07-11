@@ -220,29 +220,29 @@ function ChplListingPage({ id, panel }) {
                 horizontal
               >
                 { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && listing.certificationEdition.name !== '2015'
-                 && (
-                   <Button
-                     endIcon={<EditIcon />}
-                     size="small"
-                     variant="contained"
-                     color="primary"
-                     onClick={edit}
-                   >
-                     Edit
-                   </Button>
-                 )}
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={edit}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && listing.certificationEdition.name === '2015'
-                 && (
-                   <Button
-                     endIcon={<EditIcon />}
-                     size="small"
-                     variant="contained"
-                     color="primary"
-                     onClick={edit}
-                   >
-                     Edit
-                   </Button>
-                 )}
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={edit}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 <ChplListingHistory
                   listing={listing}
                   canSeeHistory={hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])}
@@ -291,19 +291,19 @@ function ChplListingPage({ id, panel }) {
                   </InternalScrollButton>
                 </Box>
                 {listing.certificationEdition.name !== '2011'
-                    && (
-                      <Box
-                        className={classes.menuItems}
-                      >
-                        <InternalScrollButton
-                          id="sed"
-                          analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
-                        >
-                          Safety Enhanced Design (SED)
-                          <TouchAppOutlinedIcon className={classes.iconSpacing} />
-                        </InternalScrollButton>
-                      </Box>
-                    )}
+                 && (
+                   <Box
+                     className={classes.menuItems}
+                   >
+                     <InternalScrollButton
+                       id="sed"
+                       analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                     >
+                       Safety Enhanced Design (SED)
+                       <TouchAppOutlinedIcon className={classes.iconSpacing} />
+                     </InternalScrollButton>
+                   </Box>
+                 )}
                 <Box
                   className={classes.menuItems}
                 >
