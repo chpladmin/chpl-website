@@ -66,17 +66,12 @@ const useStyles = makeStyles({
     overflowX: 'scroll',
     boxShadow: 'rgb(149 157 165 / 50%) 0px 4px 16px',
     border: `.5px solid ${palette.divider}`,
-    [theme.breakpoints.up('sm')]: {
-      top: '100px',
-    },
     [theme.breakpoints.up('md')]: {
       display: 'flex',
       overflowX: 'hidden',
+      position: 'initial',
       flexDirection: 'column',
-      position: 'sticky',
-      top: '104px',
-      gap: '16px',
-      zIndex: '100',
+      zIndex: '0',
     },
   },
   menuContainer: {
@@ -135,6 +130,33 @@ const useStyles = makeStyles({
       flexDirection: 'row',
       alignItems: 'center',
       gridGap: 'none',
+    },
+  },
+  leftSifeContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'sticky',
+    top: '0',
+    gap: '16px',
+    zIndex: 300,
+    [theme.breakpoints.up('md')]: {
+      top: '104px',
+    },
+  },
+  subscribe: {
+    boxShadow: 'rgb(149 157 165 / 50%) 0px 4px 16px',
+    borderRadius: '8px',
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'inherit',
+    },
+  },
+  subscribeMobile: {
+    boxShadow: 'rgb(149 157 165 / 50%) 0px 4px 16px',
+    borderRadius: '8px',
+    display: 'inherit',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 });
@@ -232,99 +254,101 @@ function ChplListingPage({ id, panel }) {
       </div>
       <Container maxWidth="lg">
         <div className={classes.container} id="main-content" tabIndex="-1">
-          <div className={classes.navigation}>
-            <Box className={classes.menuContainer}>
-              <Box
-                className={classes.menuItems}
-              >
-                <InternalScrollButton
-                  id="listingInformation"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Listing Information' }}
+          <div className={classes.leftSifeContent}>
+            <div className={classes.navigation}>
+              <Box className={classes.menuContainer}>
+                <Box
+                  className={classes.menuItems}
                 >
-                  Listing Information
-                  <NotesOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
-              </Box>
-              <Box
-                className={classes.menuItems}
-              >
-                <InternalScrollButton
-                  id="certificationCriteria"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Certification Criteria' }}
+                  <InternalScrollButton
+                    id="listingInformation"
+                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Listing Information' }}
+                  >
+                    Listing Information
+                    <NotesOutlinedIcon className={classes.iconSpacing} />
+                  </InternalScrollButton>
+                </Box>
+                <Box
+                  className={classes.menuItems}
                 >
-                  Certification Criteria
-                  <BookOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
-              </Box>
-              <Box
-                className={classes.menuItems}
-              >
-                <InternalScrollButton
-                  id="clinicalQualityMeasures"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Clinical Quality Measures' }}
+                  <InternalScrollButton
+                    id="certificationCriteria"
+                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Certification Criteria' }}
+                  >
+                    Certification Criteria
+                    <BookOutlinedIcon className={classes.iconSpacing} />
+                  </InternalScrollButton>
+                </Box>
+                <Box
+                  className={classes.menuItems}
                 >
-                  Clinical Quality Measures
-                  <DoneAllOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
-              </Box>
-              {listing.certificationEdition.name !== '2011'
-                  && (
-                    <Box
-                      className={classes.menuItems}
-                    >
-                      <InternalScrollButton
-                        id="sed"
-                        analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                  <InternalScrollButton
+                    id="clinicalQualityMeasures"
+                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Clinical Quality Measures' }}
+                  >
+                    Clinical Quality Measures
+                    <DoneAllOutlinedIcon className={classes.iconSpacing} />
+                  </InternalScrollButton>
+                </Box>
+                {listing.certificationEdition.name !== '2011'
+                    && (
+                      <Box
+                        className={classes.menuItems}
                       >
-                        Safety Enhanced Design (SED)
-                        <TouchAppOutlinedIcon className={classes.iconSpacing} />
-                      </InternalScrollButton>
-                    </Box>
-                  )}
-              <Box
-                className={classes.menuItems}
-              >
-                <InternalScrollButton
-                  id="g1g2Measures"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
+                        <InternalScrollButton
+                          id="sed"
+                          analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Safety Enhanced Design' }}
+                        >
+                          Safety Enhanced Design (SED)
+                          <TouchAppOutlinedIcon className={classes.iconSpacing} />
+                        </InternalScrollButton>
+                      </Box>
+                    )}
+                <Box
+                  className={classes.menuItems}
                 >
-                  G1/G2 Measures
-                  <AssessmentOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
-              </Box>
-              <Box
-                className={classes.menuItems}
-              >
-                <InternalScrollButton
-                  id="compliance"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
+                  <InternalScrollButton
+                    id="g1g2Measures"
+                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
+                  >
+                    G1/G2 Measures
+                    <AssessmentOutlinedIcon className={classes.iconSpacing} />
+                  </InternalScrollButton>
+                </Box>
+                <Box
+                  className={classes.menuItems}
                 >
-                  Compliance Activities
-                  <SecurityOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
-              </Box>
-              <Box
-                className={classes.menuItems}
-              >
-                <InternalScrollButton
-                  id="additional"
-                  analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
+                  <InternalScrollButton
+                    id="compliance"
+                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Compliance Activities' }}
+                  >
+                    Compliance Activities
+                    <SecurityOutlinedIcon className={classes.iconSpacing} />
+                  </InternalScrollButton>
+                </Box>
+                <Box
+                  className={classes.menuItems}
                 >
-                  Additional Information
-                  <InfoOutlinedIcon className={classes.iconSpacing} />
-                </InternalScrollButton>
+                  <InternalScrollButton
+                    id="additional"
+                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'Additional Information' }}
+                  >
+                    Additional Information
+                    <InfoOutlinedIcon className={classes.iconSpacing} />
+                  </InternalScrollButton>
+                </Box>
               </Box>
-            </Box>
+            </div>
+            { subscriptionsIsOn
+              && (
+                <Box className={classes.subscribe}>
+                  <ChplSubscribe
+                    subscribedObjectId={listing.id}
+                    subscribedObjectTypeId={1}
+                  />
+                </Box>
+              )}
           </div>
-          { subscriptionsIsOn
-          && (
-            <Box>
-              <ChplSubscribe
-                subscribedObjectId={listing.id}
-                subscribedObjectTypeId={1}
-              />
-            </Box>
-          )}
           <div className={classes.content}>
             <Card>
               <span className="anchor-element">
@@ -470,6 +494,16 @@ function ChplListingPage({ id, panel }) {
                 />
               </CardContent>
             </Card>
+
+            { subscriptionsIsOn
+              && (
+                <Box className={classes.subscribeMobile}>
+                  <ChplSubscribe
+                    subscribedObjectId={listing.id}
+                    subscribedObjectTypeId={1}
+                  />
+                </Box>
+              )}
           </div>
         </div>
       </Container>
