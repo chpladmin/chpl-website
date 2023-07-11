@@ -26,8 +26,7 @@ function ChplUnsubscribeAll(props) {
     deleteSubscriber.mutate({
       subscriberId: hash,
     }, {
-      onSuccess: (response) => {
-        console.log({ response });
+      onSuccess: () => {
         setMessage('You have been unsubscribed from all CHPL notifications');
       },
       onError: (error) => {

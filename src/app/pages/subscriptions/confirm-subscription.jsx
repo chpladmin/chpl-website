@@ -26,8 +26,7 @@ function ChplConfirmSubscription(props) {
     putSubscriber.mutate({
       subscriberId: hash,
     }, {
-      onSuccess: (response) => {
-        console.log({ response });
+      onSuccess: () => {
         setMessage('Your subscription has been confirmed');
       },
       onError: (error) => {
