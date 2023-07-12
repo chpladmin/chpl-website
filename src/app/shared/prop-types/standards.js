@@ -58,6 +58,15 @@ const selectedTestTool = shape({
 });
 
 const testTool = shape({
+  criteria: arrayOf(criterion),
+  description: string,
+  endDay: string,
+  id: number,
+  name: string,
+  regulatoryTextCitation: string,
+  requiredDay: string,
+  rule: string,
+  startDay: string,
   value: string,
 });
 

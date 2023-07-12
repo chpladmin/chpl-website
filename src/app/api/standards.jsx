@@ -81,24 +81,16 @@ const usePutQmsStandard = () => {
 const useDeleteTestTool = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.delete(`test-tools/${data.testToolId}`), {
+  return useMutation(async (data) => axios.delete(`test-tools/${data.id}`), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['testTools']);
+      queryClient.invalidateQueries(['test-tools']);
     },
-  });
-};
-
-const useFetchCriteriaForTestTools = () => {
-  const axios = useAxios();
-  return useQuery(['test-tools/criteria'], async () => {
-    const response = await axios.get('test-tools/criteria');
-    return response.data;
   });
 };
 
 const useFetchTestTools = () => {
   const axios = useAxios();
-  return useQuery(['testTools'], async () => {
+  return useQuery(['test-tools'], async () => {
     const response = await axios.get('test-tools');
     return response.data;
   });
@@ -109,7 +101,7 @@ const usePostTestTool = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('test-tools', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['testTools']);
+      queryClient.invalidateQueries(['test-tools']);
     },
   });
 };
@@ -119,7 +111,7 @@ const usePutTestTool = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put('test-tools', data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['testTools']);
+      queryClient.invalidateQueries(['test-tools']);
     },
   });
 };
@@ -218,7 +210,6 @@ export {
   usePostQmsStandard,
   usePutQmsStandard,
   useDeleteTestTool,
-  useFetchCriteriaForTestTools,
   useFetchTestTools,
   usePostTestTool,
   usePutTestTool,

@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Chip,
-  FormControlLabel,
   MenuItem,
-  Switch,
   makeStyles,
 } from '@material-ui/core';
 import { arrayOf, func, string } from 'prop-types';
@@ -18,10 +16,12 @@ import { BreadcrumbContext } from 'shared/contexts';
 import { criterion as criterionPropType, testTool as testToolPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
-  regulatoryTextCitation: yup.string()
+  value: yup.string()
     .required('Field is required'),
-  approvedStandardVersion: yup.string()
-    .required('Field is required'),
+  regulatoryTextCitation: yup.string(),
+  endDay: yup.date(),
+  requiredDay: yup.date(),
+  startDay: yup.date(),
 });
 
 const useStyles = makeStyles({
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 });
 
 function ChplTestToolEdit(props) {
-  const { criterionOptions, dispatch } = props;
+  const { criterionOptions, dispatch, testTool: initialTestTool } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -72,28 +72,30 @@ function ChplTestToolEdit(props) {
   }, []);
 
   useEffect(() => {
-    setTestTool(props.testTool);
-    setCriteria(props.testTool.criteria?.map((c) => ({
+    setTestTool(initialTestTool);
+    setCriteria(initialTestTool.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(props.testTool.testToolId ? 'testTools.edit.disabled' : 'testTools.add.disabled');
-  }, [props.testTool]); // eslint-disable-line react/destructuring-assignment
+    display(initialTestTool.id ? 'testTools.edit.disabled' : 'testTools.add.disabled');
+  }, [initialTestTool]);
 
   useEffect(() => {
-    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1)));
+    setErrors(props.errors.sort((a, b) => (a < b ? -1 : 1))); // eslint-disable-line react/destructuring-assignment
   }, [props.errors]); // eslint-disable-line react/destructuring-assignment
 
-  const add = (criterion) => {
-    setCriteria((prev) => prev.concat(criterion));
+  const add = (item) => {
+    setCriteria((prev) => prev.concat(item));
     setSelectedCriterion('');
   };
 
   const buildPayload = () => ({
     ...testTool,
+    value: formik.values.value,
     regulatoryTextCitation: formik.values.regulatoryTextCitation,
-    approvedStandardVersion: formik.values.approvedStandardVersion,
     criteria,
-    replaced: formik.values.replaced,
+    endDay: formik.values.endDay,
+    requiredDay: formik.values.requiredDay,
+    startDay: formik.values.startDay,
   });
 
   const getDisplay = (criterion) => criterion.number + (isCures(criterion) ? ' (Cures Update)' : '');
@@ -129,12 +131,14 @@ function ChplTestToolEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      regulatoryTextCitation: props.testTool?.regulatoryTextCitation || '', // eslint-disable-line react/destructuring-assignment
-      approvedStandardVersion: props.testTool?.approvedStandardVersion || '', // eslint-disable-line react/destructuring-assignment
-      replaced: props.testTool?.replaced || false, // eslint-disable-line react/destructuring-assignment
+      value: initialTestTool?.value ?? '',
+      regulatoryTextCitation: initialTestTool?.regulatoryTextCitation ?? '',
+      endDay: initialTestTool?.endDay ?? '',
+      requiredDay: initialTestTool?.requiredDay ?? '',
+      startDay: initialTestTool?.startDay ?? '',
     },
     onSubmit: () => {
-      props.dispatch({ action: 'save', payload: buildPayload() });
+      dispatch({ action: 'save', payload: buildPayload() });
     },
     validationSchema,
   });
@@ -142,27 +146,25 @@ function ChplTestToolEdit(props) {
   return (
     <div className={classes.container}>
       <ChplTextField
+        id="value"
+        name="value"
+        label="Value"
+        value={formik.values.value}
+        required
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.value && !!formik.errors.value}
+        helperText={formik.touched.value && formik.errors.value}
+      />
+      <ChplTextField
         id="regulatory-text-citation"
         name="regulatoryTextCitation"
         label="Regulatory Text Citation"
         value={formik.values.regulatoryTextCitation}
-        required
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.touched.regulatoryTextCitation && !!formik.errors.regulatoryTextCitation}
         helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
-      />
-      <ChplTextField
-        id="approved-standard-version"
-        name="approvedStandardVersion"
-        label="Approved Standard Version"
-        value={formik.values.approvedStandardVersion}
-        multiline
-        required
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.approvedStandardVersion && !!formik.errors.approvedStandardVersion}
-        helperText={formik.touched.approvedStandardVersion && formik.errors.approvedStandardVersion}
       />
       <ChplTextField
         select
@@ -198,21 +200,45 @@ function ChplTestToolEdit(props) {
             />
           ))}
       </div>
-      <FormControlLabel
-        control={(
-          <Switch
-            id="replaced"
-            name="replaced"
-            color="primary"
-            checked={formik.values.replaced}
-            onChange={formik.handleChange}
-          />
-        )}
-        label="Replaced"
+      <ChplTextField
+        id="start-day"
+        name="startDay"
+        label="Start Date"
+        type="date"
+        placeholder="Start Date"
+        value={formik.values.startDay}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.startDay && !!formik.errors.startDay}
+        helperText={formik.touched.startDay && formik.errors.startDay}
+      />
+      <ChplTextField
+        id="required-day"
+        name="requiredDay"
+        label="Required Date"
+        type="date"
+        placeholder="Required Date"
+        value={formik.values.requiredDay}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.requiredDay && !!formik.errors.requiredDay}
+        helperText={formik.touched.requiredDay && formik.errors.requiredDay}
+      />
+      <ChplTextField
+        id="end-day"
+        name="endDay"
+        label="End Date"
+        type="date"
+        placeholder="End Date"
+        value={formik.values.endDay}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.endDay && !!formik.errors.endDay}
+        helperText={formik.touched.endDay && formik.errors.endDay}
       />
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete={!!testTool.testToolId}
+        canDelete={!!testTool.id}
         errors={errors}
         isDisabled={!isValid()}
       />

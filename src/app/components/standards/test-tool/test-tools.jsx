@@ -12,8 +12,10 @@ import ChplTestToolEdit from './test-tool-edit';
 import ChplTestToolsView from './test-tools-view';
 
 import {
+  useFetchCriteria,
+} from 'api/data';
+import {
   useDeleteTestTool,
-  useFetchCriteriaForTestTools,
   useFetchTestTools,
   usePostTestTool,
   usePutTestTool,
@@ -26,7 +28,7 @@ function ChplTestTools() {
   const deleteTestTool = useDeleteTestTool();
   const postTestTool = usePostTestTool();
   const putTestTool = usePutTestTool();
-  const criterionOptionsQuery = useFetchCriteriaForTestTools();
+  const criterionOptionsQuery = useFetchCriteria();
   const { enqueueSnackbar } = useSnackbar();
   const [activeTestTool, setActiveTestTool] = useState(undefined);
   const [criterionOptions, setCriterionOptions] = useState([]);
@@ -42,7 +44,7 @@ function ChplTestTools() {
         variant="text"
         disabled
       >
-        Test Tool
+        Test Tools
       </Button>,
     );
     append(
@@ -52,7 +54,7 @@ function ChplTestTools() {
         variant="text"
         onClick={() => handleDispatch({ action: 'cancel' })}
       >
-        Test Tool
+        Test Tools
       </Button>,
     );
     display('testTools.viewall.disabled');
@@ -65,7 +67,7 @@ function ChplTestTools() {
 
   useEffect(() => {
     if (criterionOptionsQuery.isLoading || !criterionOptionsQuery.isSuccess) { return; }
-    setCriterionOptions(criterionOptionsQuery.data);
+    setCriterionOptions(criterionOptionsQuery.data.criteria);
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
 
   handleDispatch = ({ action, payload }) => {
@@ -101,7 +103,7 @@ function ChplTestTools() {
         break;
       case 'save':
         setErrors([]);
-        if (payload.testToolId) {
+        if (payload.id) {
           putTestTool.mutate(payload, {
             onSuccess: () => {
               enqueueSnackbar('Test Tool Updated', {
@@ -138,7 +140,7 @@ function ChplTestTools() {
   if (activeTestTool) {
     return (
       <Card>
-        <CardHeader title={`${activeTestTool.testToolId ? 'Edit' : 'Add'} Test Tool`} />
+        <CardHeader title={`${activeTestTool.id ? 'Edit' : 'Add'} Test Tool`} />
         <CardContent>
           <ChplTestToolEdit
             testTool={activeTestTool}

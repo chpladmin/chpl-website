@@ -18,10 +18,9 @@ import { isCures, sortCriteria } from 'services/criteria.service';
 import { testTool as testToolPropType } from 'shared/prop-types';
 
 const headers = [
+  { property: 'value', text: 'Value', sortable: true },
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
-  { property: 'approvedStandardVersion', text: 'Approved Standard Version', sortable: true },
   { text: 'Applicable Criteria' },
-  { property: 'replaced', text: 'Replaced', sortable: true },
   { text: 'Action', invisible: true },
 ];
 
@@ -38,15 +37,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestToolsView(props) {
-  const { dispatch } = props;
+function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   const [testTools, setTestTools] = useState([]);
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('regulatoryTextCitation');
+  const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
 
   useEffect(() => {
-    setTestTools(props.testTools
+    setTestTools(initialTestTools
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -54,8 +52,8 @@ function ChplTestToolsView(props) {
           .map((c) => c.number + (isCures(c) ? ' (Cures Update)' : ''))
           .join(', '),
       }))
-      .sort(sortComparator('regulatoryTextCitation')));
-  }, [props.testTools]); // eslint-disable-line react/destructuring-assignment
+      .sort(sortComparator('value')));
+  }, [initialTestTools]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
@@ -92,23 +90,20 @@ function ChplTestToolsView(props) {
           <TableBody>
             { testTools
               .map((item) => (
-                <TableRow key={`${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}>
+                <TableRow key={`${item.value}`}>
                   <TableCell className={classes.firstColumn}>
-                    { item.regulatoryTextCitation }
+                    { item.value }
                   </TableCell>
                   <TableCell>
-                    { item.approvedStandardVersion }
+                    { item.regulatoryTextCitation }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
                   </TableCell>
-                  <TableCell>
-                    { item.replaced ? 'Yes' : 'No' }
-                  </TableCell>
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-test-tool-${item.regulatoryTextCitation}-${item.approvedStandardVersion}`}
+                      id={`edit-test-tool-${item.value}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
