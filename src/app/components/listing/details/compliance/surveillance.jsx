@@ -56,12 +56,12 @@ const useStyles = makeStyles({
   surveillanceDetailsHeaderWithBorder: {
     backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
-    borderLeft: `2px solid ${palette.primary} !important`,
+    borderLeft: `2px solid ${palette.black} !important`,
     width: '100%',
     padding: '0 4px !important',
   },
   surveillanceDetailsBorder: {
-    borderLeft: `2px solid ${palette.primary} !important`,
+    borderLeft: `2px solid ${palette.black} !important`,
   },
   '& span.MuiTypography-root.MuiCardHeader-title.MuiTypography-h6.MuiTypography-displayBlock': {
     fontWeight: '300',
