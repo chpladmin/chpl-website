@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     alignItems: 'stretch',
     gap: '16px',
     padding: '32px 0',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: palette.background,
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
@@ -88,8 +88,8 @@ const useStyles = makeStyles({
     padding: '8px',
     justifyContent: 'space-between',
     '&.Mui-disabled': {
-      color: '#000',
-      backgroundColor: '#f9f9f9',
+      color: palette.black,
+      backgroundColor: palette.background,
       fontWeight: 600,
     },
   },
@@ -206,7 +206,7 @@ function ChplListingPage({ id, panel }) {
   }
 
   return (
-    <Box bgcolor="#f9f9f9">
+    <Box bgcolor={palette.error}>
       <ChplBrowserViewedWidget
         listing={listing}
       />
