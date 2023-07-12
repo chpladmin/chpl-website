@@ -226,17 +226,17 @@ function ChplListingPage({ id, panel }) {
                 horizontal
               >
                 { canEdit()
-                 && (
-                   <Button
-                     endIcon={<EditIcon />}
-                     size="small"
-                     variant="contained"
-                     color="primary"
-                     onClick={edit}
-                   >
-                     Edit
-                   </Button>
-                 )}
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={edit}
+                    >
+                      Edit
+                    </Button>
+                  )}
                 <ChplListingHistory
                   listing={listing}
                   canSeeHistory={canEdit()}
@@ -465,14 +465,14 @@ function ChplListingPage({ id, panel }) {
                   surveillance={listing.surveillance}
                 />
                 { canManageSurveillance()
-                 && (
-                   <ChplLink
-                     href="#/surveillance/manage"
-                     text="Manage Surveillance Activity"
-                     external={false}
-                     router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
-                   />
-                 )}
+                  && (
+                    <ChplLink
+                      href="#/surveillance/manage"
+                      text="Manage Surveillance Activity"
+                      external={false}
+                      router={{ sref: 'surveillance.manage', options: { listingId: listing.id, chplProductNumber: listing.chplProductNumber } }}
+                    />
+                  )}
               </CardContent>
             </Card>
             <Card>
