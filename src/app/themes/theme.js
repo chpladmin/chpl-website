@@ -95,7 +95,7 @@ const theme = createTheme({
       },
       content: {
         padding: '0 8px',
-      },  
+      },
       expandIcon: {
         transform: 'none',
         '&$expanded': {
