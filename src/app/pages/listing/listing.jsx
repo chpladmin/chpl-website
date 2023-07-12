@@ -151,14 +151,6 @@ const useStyles = makeStyles({
       display: 'inherit',
     },
   },
-  subscribeMobile: {
-    boxShadow: 'rgb(149 157 165 / 50%) 0px 4px 16px',
-    borderRadius: '8px',
-    display: 'inherit',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
 });
 
 function ChplListingPage({ id, panel }) {
@@ -496,15 +488,6 @@ function ChplListingPage({ id, panel }) {
                 />
               </CardContent>
             </Card>
-            { subscriptionsIsOn
-              && (
-                <Box className={classes.subscribeMobile}>
-                  <ChplSubscribe
-                    subscribedObjectId={listing.id}
-                    subscribedObjectTypeId={1}
-                  />
-                </Box>
-              )}
           </div>
         </div>
       </Container>
