@@ -42,6 +42,9 @@ const useStyles = makeStyles({
       width: '48%',
     },
   },
+  tableScrolling: {
+    overflowX: 'auto !important',
+  },
 });
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
@@ -114,7 +117,7 @@ function ChplSed({ listing }) {
       <Card>
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <CardContent>
-          <Card>
+          <Card className={classes.tableScrolling}>
             <Table>
               <TableHead>
                 <TableRow>
