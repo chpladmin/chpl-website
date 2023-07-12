@@ -90,7 +90,7 @@ const theme = createTheme({
           borderBottom: '.5px solid #c2c6ca',
         },
         '&$focusVisible': {
-          border: '4px solid red',
+          border: `2px solid ${palette.black}`,
         },
       },
       content: {
