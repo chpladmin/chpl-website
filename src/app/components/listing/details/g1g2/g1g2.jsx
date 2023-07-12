@@ -24,6 +24,9 @@ const useStyles = makeStyles({
   infoIcon: {
     color: `${palette.primary}`,
   },
+  tableScrolling: {
+    overflowX: 'auto !important',
+  },
 });
 
 const getDisplayCriteria = (criteria) => [...new Set(criteria.map((c) => c.number))]
@@ -45,7 +48,7 @@ function ChplG1g2(props) {
   }
 
   return (
-    <Card>
+    <Card className={classes.tableScrolling}>
       <Table>
         <TableHead>
           <TableRow>
