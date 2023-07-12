@@ -87,6 +87,9 @@ const theme = createTheme({
           borderRadius: '4px',
           borderBottom: '.5px solid #c2c6ca',
         },
+        '&$focusVisible': {
+          border: '4px solid red',
+        },
       },
       content: {
         padding: '0 8px',
