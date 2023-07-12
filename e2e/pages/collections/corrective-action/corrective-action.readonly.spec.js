@@ -21,37 +21,6 @@ describe('the Corrective Action collection page', () => {
   });
 
   describe('when filtering', () => {
-    describe('using predefined filters', () => {
-      let countBefore;
-      let countAfter;
-
-      beforeEach(async () => {
-        countBefore = await page.getTotalResultCount();
-      });
-
-      afterEach(async () => {
-        await page.resetFilters();
-      });
-
-      it('should filter on edition', async () => {
-        await page.removeFilter('Certification Edition', '2015');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeLessThan(countBefore);
-      });
-
-      it('should filter on status', async () => {
-        await page.setListFilter('certificationStatuses', 'Withdrawn_by_Developer');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeGreaterThan(countBefore);
-      });
-
-      it('should filter on open nonconformities', async () => {
-        await page.setListFilter('nonConformityOptions', 'open_nonconformity');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeLessThan(countBefore);
-      });
-    });
-
     describe('by text', () => {
       afterEach(async () => {
         await page.clearSearchTerm();

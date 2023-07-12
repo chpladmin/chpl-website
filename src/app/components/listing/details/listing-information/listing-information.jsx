@@ -167,12 +167,12 @@ function ChplListingInformation({ listing: initialListing }) {
              )}
           </Box>
           <Box className={classes.dataBox}>
-            <Typography variant="subtitle1">Transparency Disclosure:</Typography>
+            <Typography variant="subtitle1">Mandatory Disclosures:</Typography>
             { listing.mandatoryDisclosures
               ? (
                 <ChplLink
                   href={listing.mandatoryDisclosures}
-                  analytics={{ event: 'Transparency Disclosure', category: 'Listing Details', label: listing.mandatoryDisclosures }}
+                  analytics={{ event: 'Mandatory Disclosures', category: 'Listing Details', label: listing.mandatoryDisclosures }}
                 />
               ) : (
                 <Typography gutterBottom>No report on File</Typography>

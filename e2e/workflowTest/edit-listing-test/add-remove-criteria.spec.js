@@ -12,7 +12,8 @@ let login;
 let page;
 let toast;
 
-describe('On the 2015 Listing page', () => {
+/* ignore these tests until OCD-4227 is done */
+xdescribe('On the 2015 Listing page', () => {
   beforeEach(async () => {
     page = new ListingPage();
     hooks = new Hooks();

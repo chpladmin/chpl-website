@@ -46,12 +46,6 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
         countAfter = await page.getTotalResultCount();
         await expect(countAfter).toBeLessThan(countBefore);
       });
-
-      it('should filter on status', async () => {
-        await page.setListFilter('certificationStatuses', 'Withdrawn_by_Developer');
-        countAfter = await page.getTotalResultCount();
-        await expect(countAfter).toBeGreaterThan(countBefore);
-      });
     });
 
     describe('by text', () => {

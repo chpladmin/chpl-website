@@ -37,7 +37,7 @@ describe('when editing complaints', () => {
       await complaintsComponent.saveComplaint();
       await (browser.waitUntil(async () => complaintsComponent.hasResults()));
       await complaintsComponent.editComplaint(fields.acbId);
-      await (await complaintsComponent.closedDate).addValue(['23', 'Jan', 'Tab', '2021']);
+      await (await complaintsComponent.closedDate).addValue(['20', 'Jan', 'Tab', '2021']);
       await complaintsComponent.saveComplaint();
       await expect(await complaintsComponent.fieldError('closed-date')).toBe('Closed Date must be after Received Date');
       await (await complaintsComponent.closedDate).addValue(['23', 'Apr', 'Tab', '2031']);
