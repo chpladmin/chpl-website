@@ -206,7 +206,7 @@ function ChplListingPage({ id, panel }) {
   }
 
   return (
-    <Box bgcolor={palette.error}>
+    <Box bgcolor={palette.background}>
       <ChplBrowserViewedWidget
         listing={listing}
       />
