@@ -259,7 +259,7 @@ function ChplCorrectiveActionCollectionView(props) {
                                           text={item.chplProductNumber}
                                           analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                                           external={false}
-                                          router={{ sref: 'listing', options: { id: item.id, panel: item.panel } }}
+                                          router={{ sref: 'listing', options: { id: item.id, panel: 'compliance' } }}
                                         />
                                       </strong>
                                     </TableCell>
