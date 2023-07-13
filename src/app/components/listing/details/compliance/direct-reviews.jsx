@@ -34,7 +34,8 @@ const useStyles = makeStyles({
   },
   directReviews: {
     borderRadius: '4px',
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
@@ -82,6 +83,16 @@ const useStyles = makeStyles({
   ncContainer: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  ncContent: {
+    display: 'flex',
+    gridGap: '8px',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
   },
   rotate: {
     transform: 'rotate(180deg)',
@@ -251,7 +262,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                     title={nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}
                   />
                   <CardContent>
-                    <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+                    <Box className={classes.ncContent}>
                       { getDataDisplay('Non-conformity Type', <Typography>{ nc.nonConformityType }</Typography>, 'Type of non-conformity found during review') }
                       { getDataDisplay('Developer Associated Listings',
                         <>
