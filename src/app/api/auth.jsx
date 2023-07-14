@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
@@ -14,6 +14,16 @@ const usePostEmailResetPassword = () => {
     .then((response) => response?.data));
 };
 
+const usePostLogin = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('auth/authenticate', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('listing');
+    },
+  });
+};
+
 const usePostResetPassword = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('auth/reset-password-request', data)
@@ -23,5 +33,6 @@ const usePostResetPassword = () => {
 export {
   usePostChangePassword,
   usePostEmailResetPassword,
+  usePostLogin,
   usePostResetPassword,
 };

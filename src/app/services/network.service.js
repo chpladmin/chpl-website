@@ -486,10 +486,6 @@ export default class NetworkService {
     return this.apiGET('/auth/keep-alive', { ignoreLoadingBar: true });
   }
 
-  login(userObj) {
-    return this.apiPOST('/auth/authenticate', userObj);
-  }
-
   mergeDevelopers(mergeDeveloperObject) {
     return this.apiPOST('/developers/merge', mergeDeveloperObject);
   }
