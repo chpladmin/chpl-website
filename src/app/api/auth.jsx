@@ -17,7 +17,8 @@ const usePostEmailResetPassword = () => {
 const usePostLogin = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('auth/authenticate', data), {
+  return useMutation(async (data) => axios.post('auth/authenticate', data)
+    .then((response) => response.data), {
     onSuccess: () => {
       queryClient.invalidateQueries('listing');
     },

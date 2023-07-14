@@ -217,7 +217,8 @@ function ChplLogin({ dispatch }) {
       token: resetToken,
       newPassword: resetFormik.values.newPassword,
     }, {
-      onSuccess: () => {
+      onSuccess: (response) => {
+        authService.saveToken(response.token);
         networkService.getUserById(authService.getUserId())
           .then((data) => {
             setUser(data);
