@@ -7,13 +7,10 @@ const states = [{
   },
   data: { title: 'CHPL Listing Details' },
   resolve: {
-    listing: (networkService, $location, $transition$) => {
+    listing: (networkService, $transition$) => {
       'ngInject';
 
-      if (!$transition$.params().id) {
-        $location.path('/search');
-      }
-      return networkService.getListing($transition$.params().id, $transition$.params().forceReload);
+      return networkService.getListing($transition$.params().id);
     },
     resources: ($q, networkService) => {
       'ngInject';
