@@ -2,10 +2,15 @@ const states = [{
   name: 'listing',
   url: '/listing/{id}',
   component: 'chplListing',
-  params: {
-    forceReload: { squash: true, value: null },
-  },
   data: { title: 'CHPL Listing Details' },
+}, {
+  name: 'listing.edit',
+  url: '/edit',
+  component: 'chplListingEditPage',
+  data: {
+    title: 'CHPL Listing Details - Edit',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
   resolve: {
     listing: (networkService, $transition$) => {
       'ngInject';
@@ -38,19 +43,6 @@ const states = [{
         networkService.getUcdProcesses().then((response) => { resources.ucdProcesses = response; }),
       ]).then(() => resources);
     },
-  },
-}, {
-  name: 'listing.view',
-  url: '/view',
-  component: 'chplListingViewPage',
-  data: { title: 'CHPL Listing Details - View' },
-}, {
-  name: 'listing.view.edit',
-  url: '/edit',
-  component: 'chplListingEditPage',
-  data: {
-    title: 'CHPL Listing Details - Edit',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
   },
 }, {
   name: 'product',

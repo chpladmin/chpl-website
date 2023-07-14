@@ -113,7 +113,7 @@ const ListingEditPageComponent = {
           if (!response.status || response.status === 200) {
             that.listingBasic = angular.copy(response);
             that.listingDetails = angular.copy(response);
-            that.$state.go('^.^', { forceReload: true }, { reload: true });
+            that.$state.go('^.^', undefined, { reload: true });
           } else {
             that.isSaving = undefined;
             that.errors.save = [response.error];
