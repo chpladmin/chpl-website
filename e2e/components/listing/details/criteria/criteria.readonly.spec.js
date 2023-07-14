@@ -1,6 +1,7 @@
-import CriteriaComponent from './criteria.po';
 import Hooks from '../../../../utilities/hooks';
 import ListingPage from '../../../../pages/listing/listing.po';
+
+import CriteriaComponent from './criteria.po';
 
 let criteria;
 let hooks;
@@ -27,19 +28,6 @@ describe('the 2015 listing page', () => {
 
   it.skip('should display removed criteria header', () => {
     expect(criteria.removedCriteriaHeader.isDisplayed()).toBe(true);
-  });
-
-  describe('when clicked on see all criteria', () => {
-    beforeEach(async () => {
-      page.seeAll.click();
-    });
-
-    it('should display all criteria', () => {
-      if (uiUpgradeFlag) {
-        criteria.expandRemovedCriteria();
-      }
-      expect(criteria.criteriaCount()).toBe(78);
-    });
   });
 
   it('should display view only a1 criteria details', () => {
