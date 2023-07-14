@@ -214,8 +214,8 @@ function ChplLogin({ dispatch }) {
 
   const login = () => {
     postLogin.mutate({
-      token: resetToken,
-      newPassword: resetFormik.values.newPassword,
+      userName: signinFormik.values.userName,
+      password: signinFormik.values.password,
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.token);
