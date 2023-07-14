@@ -19,7 +19,7 @@ import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
 import SecurityOutlinedIcon from '@material-ui/icons/SecurityOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import { number, string } from 'prop-types';
+import { number } from 'prop-types';
 
 import ChplListingHistory from './history';
 
@@ -153,7 +153,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingPage({ id, panel }) {
+function ChplListingPage({ id }) {
   const $state = getAngularService('$state');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
   const { hasAnyRole, user } = useContext(UserContext);
@@ -174,14 +174,6 @@ function ChplListingPage({ id, panel }) {
   useEffect(() => {
     setSubscriptionsIsOn(isOn('subscriptions'));
   }, [isOn]);
-
-  useEffect(() => {
-    if (!panel || !listing) { return; }
-    const target = document.getElementById(panel);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [listing, panel]);
 
   const canEdit = () => {
     if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; }
@@ -499,9 +491,4 @@ export default ChplListingPage;
 
 ChplListingPage.propTypes = {
   id: number.isRequired,
-  panel: string,
-};
-
-ChplListingPage.defaultProps = {
-  panel: undefined,
 };

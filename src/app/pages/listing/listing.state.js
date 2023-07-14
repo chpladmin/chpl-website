@@ -1,6 +1,6 @@
 const states = [{
   name: 'listing',
-  url: '/listing/{id}?panel',
+  url: '/listing/{id}',
   component: 'chplListing',
   params: {
     forceReload: { squash: true, value: null },
@@ -62,16 +62,6 @@ const states = [{
     state: 'listing',
     params: {
       id: trans.params().id,
-    },
-  }),
-}, {
-  name: 'product.initial-panel',
-  url: '?panel',
-  redirectTo: (trans) => ({
-    state: 'listing',
-    params: {
-      id: trans.params().id,
-      panel: trans.params().panel,
     },
   }),
 }];

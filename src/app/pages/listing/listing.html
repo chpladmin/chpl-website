@@ -2,7 +2,6 @@
   <span feature-flag="ui-upgrade-view">
     <chpl-listing-page-bridge
       id="$ctrl.listing.id"
-      panel="$ctrl.panel"
       ></chpl-listing-page-bridge>
   </span>
   <span feature-flag="ui-upgrade-view" feature-flag-hide>
@@ -156,8 +155,7 @@
               </div>
             </div>
             <div class="col-sm-8" id="listing-information-details">
-              <chpl-listing-details-view initial-panel="{{ $ctrl.panel }}"
-                                         listing="$ctrl.listing">
+              <chpl-listing-details-view listing="$ctrl.listing">
               </chpl-listing-details-view>
             </div>
           </div>

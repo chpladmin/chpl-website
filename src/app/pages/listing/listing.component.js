@@ -20,10 +20,6 @@ const ListingComponent = {
       this.hasAnyRole = authService.hasAnyRole;
     }
 
-    $onInit() {
-      this.panel = this.$stateParams.panel || 'cert';
-    }
-
     $onChanges(changes) {
       if (changes.listing) {
         this.listing = changes.listing.currentValue;

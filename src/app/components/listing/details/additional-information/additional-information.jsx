@@ -19,10 +19,10 @@ const getRelatives = (listings) => listings.map((listing) => (
     { listing.id
       && (
         <ChplLink
-          href={`#/listing/${listing.id}?panel=additional`}
+          href={`#/listing/${listing.id}`}
           text={`${listing.chplProductNumber} (${getDisplayDateFormat(listing.certificationDay)})`}
           external={false}
-          router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
+          router={{ sref: 'listing', options: { id: listing?.id } }}
           analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
         />
       )}

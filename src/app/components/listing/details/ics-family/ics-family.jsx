@@ -232,10 +232,10 @@ function ChplIcsFamily(props) {
                           <Typography>{ listing?.chplProductNumber }</Typography>
                         ) : (
                           <ChplLink
-                            href={`#/listing/${listing?.id}?panel=additional`}
+                            href={`#/listing/${listing?.id}`}
                             text={listing?.chplProductNumber}
                             external={false}
-                            router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
+                            router={{ sref: 'listing', options: { id: listing?.id } }}
                             analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
                           />
                         )}
@@ -320,10 +320,10 @@ function ChplIcsFamily(props) {
                               </>
                             ) : (
                               <ChplLink
-                                href={`#/listing/${l.id}?panel=additional`}
+                                href={`#/listing/${l.id}`}
                                 text={l.chplProductNumber}
                                 external={false}
-                                router={{ sref: 'listing', options: { id: l?.id, panel: 'additional' } }}
+                                router={{ sref: 'listing', options: { id: l?.id } }}
                                 analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: l.chplProductNumber }}
                               />
                             )}
