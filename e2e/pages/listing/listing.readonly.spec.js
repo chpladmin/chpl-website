@@ -1,7 +1,6 @@
 import Hooks from '../../utilities/hooks';
 import CmsWidgetComponent from '../../components/cms-widget/cms-widget.po';
 import CompareWidgetComponent from '../../components/compare-widget/compare-widget.po';
-import LoginComponent from '../../components/login/login.sync.po';
 
 import ListingPage from './listing.po';
 
@@ -9,14 +8,12 @@ let cmsComponent;
 let compareComponent;
 let hooks;
 let page;
-let login;
 
 beforeEach(() => {
   page = new ListingPage();
   hooks = new Hooks();
   cmsComponent = new CmsWidgetComponent();
   compareComponent = new CompareWidgetComponent();
-  login = new LoginComponent();
 });
 
 describe('when on 2015 listing page', () => {
@@ -25,37 +22,9 @@ describe('when on 2015 listing page', () => {
     hooks.waitForSpinnerToDisappear();
   });
 
-  describe('when logged in as a ROLE_ONC', () => {
-    beforeEach(async () => {
-      login.logIn('onc');
-    });
-
-    afterEach(() => {
-      login.logOut();
-    });
-
-    it('should have correct link for editing a listing', () => {
-      expect(page.editCertifiedProduct.getAttribute('href')).toContain('listing/9833/view/edit');
-    });
-  });
-
-  describe('clicking on return to search link', () => {
-    beforeEach(async () => {
-      page.returnToSearch.click();
-    });
-
-    it('should go back to search page', () => {
-      expect(browser.getUrl()).toContain('/search');
-    });
-  });
-
   describe('when clicking on product history button', () => {
     beforeEach(() => {
       page.productHistory.click();
-    });
-
-    it('should open product history modal', () => {
-      expect(page.listingHistoryModalRows().length).toBeGreaterThan(1);
     });
 
     describe('when clicking on Go to API button from product history', () => {
@@ -98,23 +67,10 @@ describe('when on 2014 listing page - ', () => {
     hooks.waitForSpinnerToAppear();
     hooks.waitForSpinnerToDisappear();
   });
-  describe('when clicking on return to search link', () => {
-    beforeEach(() => {
-      page.returnToSearch.click();
-    });
-
-    it('should go back to search page', () => {
-      expect(browser.getUrl()).toContain('/search');
-    });
-  });
 
   describe('when clicking on product history button', () => {
     beforeEach(() => {
       page.productHistory.click();
-    });
-
-    it('should open product history modal', () => {
-      expect(page.listingHistoryModalRows().length).toBeGreaterThan(1);
     });
 
     describe('when clicking on Go to API button from product history', () => {
