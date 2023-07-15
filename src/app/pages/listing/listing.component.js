@@ -1,73 +1,27 @@
 const ListingComponent = {
-  templateUrl: 'chpl.listing/listing.html',
-  bindings: {
-    listing: '<',
-  },
+  template: `<ui-view>
+  <chpl-listing-page-bridge
+    id="$ctrl.id"
+    ></chpl-listing-page-bridge>
+</ui-view>
+`,
   controller: class ListingComponent {
-    constructor($localStorage, $log, $q, $state, $stateParams, DateUtil, authService, featureFlags, utilService) {
+    constructor($log, $stateParams) {
       'ngInject';
 
-      this.$localStorage = $localStorage;
       this.$log = $log;
-      this.$q = $q;
-      this.$state = $state;
       this.$stateParams = $stateParams;
-      this.DateUtil = DateUtil;
-      this.authService = authService;
-      this.isOn = featureFlags.isOn;
-      this.utilService = utilService;
-      this.certificationStatus = utilService.certificationStatus;
-      this.hasAnyRole = authService.hasAnyRole;
     }
 
-    $onChanges(changes) {
-      if (changes.listing) {
-        this.listing = changes.listing.currentValue;
-        this.chplProductNumberHistory = [...new Set(this.listing.chplProductNumberHistory.map((item) => item.chplProductNumber))]
-          .filter((item) => item !== this.listing.chplProductNumber)
-          .sort((a, b) => (a < b ? -1 : 1));
-        this.backupListing = angular.copy(this.listing);
+    $onInit() {
+      if (this.$stateParams.id) {
+        this.id = parseInt(this.$stateParams.id, 10);
       }
-    }
-
-    canCertId(listing) {
-      return listing.curesUpdate
-        || (!this.isOn('cannot-generate-15e') && listing.certificationEdition.name === '2015');
-    }
-
-    canEdit() {
-      return this.$state.current.name === 'listing'
-                && ((this.listing.certificationEdition.name === '2014' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))
-                    || (this.listing.certificationEdition.name !== '2014' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])));
-    }
-
-    canViewRwtDates() {
-      if (this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-        return true;
-      } if (this.authService.hasAnyRole(['ROLE_ACB'])) {
-        const currentUser = this.authService.getCurrentUser();
-        return currentUser.organizations
-          .filter((o) => o.id === this.listing.certifyingBody.id)
-          .length > 0;
-      } if (this.authService.hasAnyRole(['ROLE_DEVELOPER'])) {
-        const currentUser = this.authService.getCurrentUser();
-        return currentUser.organizations
-          .filter((d) => d.id === this.listing.developer.id)
-          .length > 0;
-      }
-      return false;
-    }
-
-    takeDeveloperAction(action, id) {
-      this.$state.go('organizations.developers.developer', {
-        id,
-      });
     }
   },
 };
 
-angular
-  .module('chpl.listing')
+angular.module('chpl.listing')
   .component('chplListing', ListingComponent);
 
 export default ListingComponent;

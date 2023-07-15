@@ -190,7 +190,7 @@ function ChplListingPage({ id }) {
   };
 
   const edit = () => {
-    $state.go('listing.view.edit');
+    $state.go('listing.edit');
   };
 
   if (isLoading || !isSuccess || !listing) {
