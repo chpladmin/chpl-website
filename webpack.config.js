@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = (env) => {
@@ -62,20 +61,7 @@ module.exports = (env) => {
             plugins: [BabelPluginAngularjsAnnotate],
             presets: ['@babel/preset-env', '@babel/preset-react'],
           },
-        }, /* {
-                    loader: 'eslint-loader',
-                    options: {
-                        formatter: require('eslint-formatter-friendly'),
-                        outputReport: {
-                            filePath: '../test_reports/checkstyle-[hash].xml',
-                            formatter: require('eslint/lib/formatters/checkstyle')
-                        },
-                        outputReport: {
-                            filePath: '../test_reports/checkstyle-[hash].html',
-                            formatter: require('eslint/lib/formatters/html'),
-                        },
-                    }
-                } */],
+        }],
       }, {
         test: /\.html$/,
         exclude: /node_modules/,
@@ -183,7 +169,6 @@ module.exports = (env) => {
         inject: 'body',
         template: path.resolve(__dirname, './src/unsupported-browser.html'),
       }),
-      new StyleLintPlugin(),
     ],
   };
 
