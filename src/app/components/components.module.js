@@ -23,7 +23,6 @@ import {
   ChplConfirmVersion,
 } from './listing/confirm';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
-import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
@@ -77,7 +76,6 @@ angular
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
-  .component('chplIcsFamilyBridge', reactToAngularComponent(ChplIcsFamily))
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
