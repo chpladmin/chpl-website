@@ -429,6 +429,10 @@ export default class NetworkService {
     return this.apiGET('/data/test_data');
   }
 
+  getTestTools() {
+    return this.apiGET('/test-tools');
+  }
+
   getTestProcedures() {
     return this.apiGET('/data/test_procedures');
   }
