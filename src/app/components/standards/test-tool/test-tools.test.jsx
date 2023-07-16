@@ -16,9 +16,9 @@ import { BreadcrumbContext } from 'shared/contexts';
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const mock = {
   testTools: [
-    { testToolId: 1, regulatoryTextCitation: 'citation 1', approvedStandardVersion: 'version 1', criteria: [{ id: 1, number: 'number 1', title: '1 title criterion' }] },
-    { testToolId: 1, regulatoryTextCitation: 'a citation 2', approvedStandardVersion: 'version 2', criteria: [{ id: 2, number: 'number 2', title: '2 title criterion' }] },
-    { testToolId: 1, regulatoryTextCitation: 'last citation 3', approvedStandardVersion: 'version 3', criteria: [{ id: 3, number: 'number 3', title: '3 title criterion' }] },
+    { id: 1, value: 'value 1', regulatoryTextCitation: 'citation 1', criteria: [{ id: 1, number: 'number 1', title: '1 title criterion' }] },
+    { id: 2, value: 'a value', regulatoryTextCitation: 'a citation 2', criteria: [{ id: 2, number: 'number 2', title: '2 title criterion' }] },
+    { id: 3, value: 'no value', regulatoryTextCitation: 'last citation 3', criteria: [{ id: 3, number: 'number 3', title: '3 title criterion' }] },
   ],
   certificationCriteria: [
     { id: 1, number: '1', title: '1 title criterion' },
@@ -38,14 +38,20 @@ const mockApi = {
   mutate: jest.fn(),
 };
 
+jest.mock('api/data', () => ({
+  __esModule: true,
+  useFetchCriteria: () => ({
+    ...mockApi,
+    data: {
+      criteria: mock.certificationCriteria,
+    },
+  }),
+}));
+
 jest.mock('api/standards', () => ({
   __esModule: true,
   useDeleteTestTool: () => ({
     ...mockApi,
-  }),
-  useFetchCriteriaForTestTools: () => ({
-    ...mockApi,
-    data: mock.certificationCriteria,
   }),
   useFetchTestTools: () => ({
     ...mockApi,
@@ -82,12 +88,12 @@ describe('the ChplTestTools component', () => {
   });
 
   describe('when viewing Test Tools', () => {
-    it('should sort the Test Tools by citation', async () => {
+    it('should sort the Test Tools by value', async () => {
       await waitFor(() => {
         const rows = within(screen.getByRole('table')).getAllByRole('row');
-        expect(within(rows[1]).getByText(/a citation/)).toBeInTheDocument();
-        expect(within(rows[2]).getByText(/citation/)).toBeInTheDocument();
-        expect(within(rows[3]).getByText(/last citation/)).toBeInTheDocument();
+        expect(within(rows[1]).getByText(/a value/)).toBeInTheDocument();
+        expect(within(rows[2]).getByText(/no value/)).toBeInTheDocument();
+        expect(within(rows[3]).getByText(/value 1/)).toBeInTheDocument();
       });
     });
   });
@@ -103,8 +109,8 @@ describe('the ChplTestTools component', () => {
 
     it('should call the API with valid data on save', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add/i }));
+      userEvent.type(screen.getByLabelText(/Value/), 'A new value');
       userEvent.type(screen.getByLabelText(/Regulatory Text Citation/), 'A new citation');
-      userEvent.type(screen.getByLabelText(/Approved Standard Version/), 'A new version');
       userEvent.type(screen.getByLabelText(/Select a criterion to associate/), '{arrowdown}{arrowdown}{enter}');
       userEvent.click(screen.getByRole('button', { name: /Save/i }));
 
