@@ -55,14 +55,10 @@ describe('the 2014 listing page', () => {
     expect(criteria.criteriaCount()).toBeGreaterThan(35);
   });
 
-  describe('when clicked on see all criteria', () => {
-    beforeEach(async () => {
-      page.seeAll.click();
-    });
-
-    it('should display all criteria', () => {
-      expect(criteria.criteriaCount()).toBe(59);
-    });
+  it('should display all criteria when clicked on see all criteria', () => {
+    page.seeAllCriteria.scrollIntoView({ block: 'center', inline: 'center' });
+    page.seeAllCriteria.click();
+    expect(criteria.criteriaCount()).toBe(59);
   });
 
   it('should display view only a1 criteria details', () => {
