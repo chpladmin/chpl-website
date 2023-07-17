@@ -2,7 +2,7 @@ class ListingPage {
   constructor() {
     this.elements = {
       realWortldTestingHeader: 'h2=Real World Testing',
-      seeAll: '#viewAllCerts',
+      seeAllCriteria: '#see-all-criteria',
       editCertifiedProduct: '//span[text()="Edit"]',
       reason: '#reason-for-change',
       bypassWarning: '#acknowledge-warnings',
@@ -23,8 +23,8 @@ class ListingPage {
     return $(this.elements.manageSurveillanceActivity);
   }
 
-  get seeAll() {
-    return $(this.elements.seeAll);
+  get seeAllCriteria() {
+    return $(this.elements.seeAllCriteria);
   }
 
   get editCertifiedProduct() {
