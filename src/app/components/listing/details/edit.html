@@ -141,27 +141,6 @@
       </div>
     </div>
 
-    <!-- Compliance Activities -->
-    <div class="panel panel-ai">
-      <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('compliance')" aria-expanded="{{ $ctrl.panelShown === 'compliance' || $ctrl.panelShown === 'surveillance' || $ctrl.panelShown === 'directReviews' }}">
-        <div class="listing-details__element-header-title">Compliance Activities</div>
-        <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'compliance' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
-      </div>
-      <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'compliance'" id="panel-compliance-activities">
-        <div class="panel panel-ai">
-          <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showSubPanel('surveillance')" aria-expanded="{{ $ctrl.subPanelShown === 'surveillance' }}">
-            <div class="listing-details__element-header-title">Surveillance Activities</div>
-            <div>({{ $ctrl.listing.surveillance && $ctrl.listing.surveillance.length ? $ctrl.listing.surveillance.length : 0 }} found)</div>
-            <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.subPanelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
-          </div>
-          <div class="panel-body animate-if" ng-if="$ctrl.subPanelShown === 'surveillance'" id="panel-surveillance-activities">
-            <p>Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing</p>
-            <ai-surveillance certified-product="$ctrl.listing"></ai-surveillance>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Additional Information -->
     <div class="panel panel-ai">
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('additional')" aria-expanded="{{ $ctrl.panelShown === 'additional' }}">

@@ -9,12 +9,12 @@ import {
   ChplAttestationsViewWrapper,
 } from './attestation';
 import ChplBrowserComparedWidgetWrapper from './browser/browser-compared-widget-wrapper';
-import ChplBrowserViewedWidgetWrapper from './browser/browser-viewed-widget-wrapper';
 import ChplChangeRequestsWrapper from './change-request/change-requests-wrapper';
 import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import { ChplDeveloper } from './developer';
 import ChplDirectReviewsWrapper from './direct-reviews/direct-reviews-wrapper';
+import ChplListingView from './listing/listing-view-wrapper';
 import {
   ChplConfirmDeveloperWrapper,
   ChplConfirmListingsWrapper,
@@ -23,8 +23,6 @@ import {
   ChplConfirmVersion,
 } from './listing/confirm';
 import ChplCriteriaWrapper from './listing/details/criteria/criteria-wrapper';
-import ChplIcsFamily from './listing/details/ics-family/ics-family-wrapper';
-import ChplSubscribeWrapper from './subscriptions/subscribe-wrapper';
 import ChplSurveillanceView from './listing/details/surveillance/surveillance-view';
 import ChplSedDetailsEditWrapper from './listing/details/sed/details-edit/wrapper';
 import ChplComplaintsWrapper from './surveillance/complaints/complaints-wrapper';
@@ -37,7 +35,6 @@ import ChplUsersWrapper from './user/users-wrapper';
 import {
   ChplConfirmation,
   ChplEllipsis,
-  ChplLink,
   ChplNonProdIndicator,
 } from './util';
 
@@ -65,7 +62,6 @@ angular
   .component('chplAttestationEditWrapperBridge', reactToAngularComponent(ChplAttestationEditWrapper))
   .component('chplAttestationsViewWrapperBridge', reactToAngularComponent(ChplAttestationsViewWrapper))
   .component('chplBrowserComparedWidgetBridge', reactToAngularComponent(ChplBrowserComparedWidgetWrapper))
-  .component('chplBrowserViewedWidgetBridge', reactToAngularComponent(ChplBrowserViewedWidgetWrapper))
   .component('chplChangeRequestsWrapperBridge', reactToAngularComponent(ChplChangeRequestsWrapper))
   .component('chplComplaintsWrapperBridge', reactToAngularComponent(ChplComplaintsWrapper))
   .component('chplCmsDisplayWrapperBridge', reactToAngularComponent(ChplCmsDisplayWrapper))
@@ -80,11 +76,9 @@ angular
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
-  .component('chplIcsFamilyBridge', reactToAngularComponent(ChplIcsFamily))
-  .component('chplLinkBridge', reactToAngularComponent(ChplLink))
+  .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
-  .component('chplSubscribeBridge', reactToAngularComponent(ChplSubscribeWrapper))
   .component('chplSurveillanceActivityReportingDateSelectorBridge', reactToAngularComponent(ChplSurveillanceActivityReportingDateSelector))
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))

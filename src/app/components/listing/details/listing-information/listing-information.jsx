@@ -46,7 +46,7 @@ function ChplListingInformation({ listing: initialListing }) {
   useEffect(() => {
     setListing({
       ...initialListing,
-      chplProductNumberHistory: [...new Set(initialListing.chplProductNumberHistory.map((item) => item.chplProductNumber))]
+      chplProductNumberHistory: [...new Set(initialListing.chplProductNumberHistory?.map((item) => item.chplProductNumber))]
         .filter((item) => item !== initialListing.chplProductNumber)
         .sort((a, b) => (a < b ? -1 : 1)),
     });
@@ -118,21 +118,24 @@ function ChplListingInformation({ listing: initialListing }) {
             <Typography variant="subtitle1">Certification Edition:</Typography>
             <Typography gutterBottom>{`${listing.certificationEdition.name}${listing.curesUpdate ? ' Cures Update' : ''}`}</Typography>
           </Box>
-          <Box className={classes.dataBox}>
-            <Typography variant="subtitle1">Certification Status:</Typography>
-            <Typography gutterBottom>
-              {listing.currentStatus.status.name }
-              { getStatusIcon(listing.currentStatus.status) }
-            </Typography>
-          </Box>
-          { listing.practiceType.name
+          { listing.currentStatus
+            && (
+              <Box className={classes.dataBox}>
+                <Typography variant="subtitle1">Certification Status:</Typography>
+                <Typography gutterBottom>
+                  {listing.currentStatus.status.name }
+                  { getStatusIcon(listing.currentStatus.status) }
+                </Typography>
+              </Box>
+            )}
+          { listing.practiceType?.name
            && (
              <Box className={classes.dataBox}>
                <Typography variant="subtitle1">Practice Type:</Typography>
                <Typography gutterBottom>{listing.practiceType.name}</Typography>
              </Box>
            )}
-          { listing.classificationType.name
+          { listing.classificationType?.name
            && (
              <Box className={classes.dataBox}>
                <Typography variant="subtitle1">Classification Type:</Typography>
@@ -193,7 +196,7 @@ function ChplListingInformation({ listing: initialListing }) {
                   router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
                 />
               </Box>
-              { listing.developer.status.status !== 'Active'
+              { listing.developer.status && listing.developer.status.status !== 'Active'
                 && (
                   <Box className={classes.dataBox}>
                     <Typography variant="subtitle1">Developer Status:</Typography>
@@ -220,30 +223,30 @@ function ChplListingInformation({ listing: initialListing }) {
                     <Typography variant="body1" gutterBottom>
                       <strong>Address:</strong>
                       <br />
-                      <span className="sr-only">Line 1: </span>
+                      <span className="sr-only">Line 1:</span>
                       {listing.developer.address.line1}
                       {listing.developer.address.line2
                        && (
                          <>
                            ,
                            {' '}
-                           <span className="sr-only">Line 2: </span>
+                           <span className="sr-only">Line 2:</span>
                            {listing.developer.address.line2}
                          </>
                        )}
                       <br />
-                      <span className="sr-only">City: </span>
+                      <span className="sr-only">City:</span>
                       {listing.developer.address.city}
                       ,
                       {' '}
-                      <span className="sr-only">State: </span>
+                      <span className="sr-only">State:</span>
                       {listing.developer.address.state}
                       {' '}
-                      <span className="sr-only">Zipcode: </span>
+                      <span className="sr-only">Zipcode:</span>
                       {listing.developer.address.zipcode}
                       ,
                       {' '}
-                      <span className="sr-only">Country: </span>
+                      <span className="sr-only">Country:</span>
                       {listing.developer.address.country}
                     </Typography>
                   </Box>
@@ -253,22 +256,22 @@ function ChplListingInformation({ listing: initialListing }) {
                   <Typography variant="body1" gutterBottom>
                     <strong>Contact:</strong>
                     <br />
-                    <span className="sr-only">Full name: </span>
+                    <span className="sr-only">Full name:</span>
                     {listing.product.contact.fullName}
                     {listing.product.contact.title
                      && (
                        <>
                          ,
                          {' '}
-                         <span className="sr-only">Title: </span>
+                         <span className="sr-only">Title:</span>
                          {listing.product.contact.title}
                        </>
                      )}
                     <br />
-                    <span className="sr-only">Phone: </span>
+                    <span className="sr-only">Phone:</span>
                     {listing.product.contact.phoneNumber}
                     <br />
-                    <span className="sr-only">Email: </span>
+                    <span className="sr-only">Email:</span>
                     {listing.product.contact.email}
                   </Typography>
                 )}
