@@ -61,7 +61,7 @@ function ChplG1g2(props) {
         <TableBody>
           { measures
             .map((measure) => (
-              <TableRow key={measure.id}>
+              <TableRow key={measure.id ?? measure.measure.id}>
                 <TableCell className={measure.measure.removed ? classes.removedText : ''}>
                   <Box display="flex" alignItems="center" gridGap={4}>
                     { measure.measure.removed
