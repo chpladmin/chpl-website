@@ -179,14 +179,6 @@ export default class NetworkService {
     return this.apiGET('/change-requests');
   }
 
-  getChangeRequestStatusTypes() {
-    return this.apiGET('/data/change-request-status-types');
-  }
-
-  getChangeRequestTypes() {
-    return this.apiGET('/data/change-request-types');
-  }
-
   getCollection(type) {
     switch (type) {
       case 'complaintListings':
@@ -343,10 +335,6 @@ export default class NetworkService {
     return this.apiGET(`/products/${id}/listings`);
   }
 
-  getRelevantComplaints(report) {
-    return this.apiGET(`/surveillance-report/quarterly/${report.id}/complaints`);
-  }
-
   getRelevantListings(reportId) {
     return this.apiGET(`/surveillance-report/quarterly/${reportId}/listings`);
   }
@@ -396,7 +384,7 @@ export default class NetworkService {
   }
 
   getSurveillanceActivityReport(range) {
-    const url = `/surveillance/reports/activity?start=${range.startDate}&end=${range.endDate}`;
+    const url = `/surveillance/reports/activity?start=${range.startDay}&end=${range.endDay}`;
     return this.apiGET(url);
   }
 
