@@ -277,7 +277,9 @@ function ChplListingView({ isConfirming, listing }) {
           </Box>
           <CardContent>
             <ChplCriteria
+              accessibilityStandards={listing.accessibilityStandards}
               certificationResults={listing.certificationResults}
+              qmsStandards={listing.qmsStandards}
               viewAll={seeAllCriteria}
             />
           </CardContent>
