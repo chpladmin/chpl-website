@@ -8,6 +8,7 @@ import {
   ListItem,
   Typography,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 
 import ChplIcsFamily from 'components/listing/details/ics-family/ics-family';
 import { ChplLink } from 'components/util';
@@ -34,7 +35,7 @@ const getRelatives = (listings) => listings.map((listing) => (
 ));
 
 function ChplAdditionalInformation(props) {
-  const { listing } = props;
+  const { isConfirming, listing } = props;
   const [currentPi, setCurrentPi] = useState(undefined);
 
   useEffect(() => {
@@ -102,7 +103,7 @@ function ChplAdditionalInformation(props) {
                       </List>
                     </>
                   )}
-                { listing.ics.inherits && listing.certificationEdition.name === '2015'
+                { listing.ics.inherits && listing.certificationEdition.name === '2015' && !isConfirming
                   && (
                     <ChplIcsFamily
                       id={listing.id}
@@ -161,5 +162,10 @@ function ChplAdditionalInformation(props) {
 export default ChplAdditionalInformation;
 
 ChplAdditionalInformation.propTypes = {
+  isConfirming: bool,
   listing: listingType.isRequired,
+};
+
+ChplAdditionalInformation.defaultProps = {
+  isConfirming: false,
 };

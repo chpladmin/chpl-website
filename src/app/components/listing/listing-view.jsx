@@ -381,6 +381,7 @@ function ChplListingView({ isConfirming, listing }) {
           <CardContent>
             <ChplAdditionalInformation
               listing={listing}
+              isConfirming={isConfirming}
             />
           </CardContent>
         </Card>
