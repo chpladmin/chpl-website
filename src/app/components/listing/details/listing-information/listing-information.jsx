@@ -196,7 +196,7 @@ function ChplListingInformation({ listing: initialListing }) {
                   router={{ sref: 'organizations.developers.developer', options: { id: listing.developer.id } }}
                 />
               </Box>
-              { listing.developer.status.status !== 'Active'
+              { listing.developer.status && listing.developer.status.status !== 'Active'
                 && (
                   <Box className={classes.dataBox}>
                     <Typography variant="subtitle1">Developer Status:</Typography>
