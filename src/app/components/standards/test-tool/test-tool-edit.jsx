@@ -149,7 +149,7 @@ function ChplTestToolEdit(props) {
     initialValues: {
       value: initialTestTool?.value ?? '',
       regulatoryTextCitation: initialTestTool?.regulatoryTextCitation ?? '',
-      rule: initialTestTool?.rule.name ?? '',
+      rule: initialTestTool?.rule?.name ?? '',
       endDay: initialTestTool?.endDay ?? '',
       requiredDay: initialTestTool?.requiredDay ?? '',
       startDay: initialTestTool?.startDay ?? '',
