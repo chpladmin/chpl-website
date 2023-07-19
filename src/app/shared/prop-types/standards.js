@@ -33,6 +33,11 @@ const qmsStandardType = shape({
   name: string,
 });
 
+const rule = shape({
+  id: number,
+  name: string,
+});
+
 const svap = shape({
   approvedStandardVersion: string,
   criteria: arrayOf(criterion),
@@ -65,7 +70,7 @@ const testTool = shape({
   name: string,
   regulatoryTextCitation: string,
   requiredDay: string,
-  rule: string,
+  rule,
   startDay: string,
   value: string,
 });
@@ -86,6 +91,7 @@ export {
   accessibilityStandardType,
   qmsStandard,
   qmsStandardType,
+  rule,
   svap,
   selectedSvap,
   selectedTestTool,

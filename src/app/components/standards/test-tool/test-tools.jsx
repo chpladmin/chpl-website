@@ -16,6 +16,7 @@ import {
 } from 'api/data';
 import {
   useDeleteTestTool,
+  useFetchRules,
   useFetchTestTools,
   usePostTestTool,
   usePutTestTool,
@@ -29,9 +30,11 @@ function ChplTestTools() {
   const postTestTool = usePostTestTool();
   const putTestTool = usePutTestTool();
   const criterionOptionsQuery = useFetchCriteria();
+  const rulesQuery = useFetchRules();
   const { enqueueSnackbar } = useSnackbar();
   const [activeTestTool, setActiveTestTool] = useState(undefined);
   const [criterionOptions, setCriterionOptions] = useState([]);
+  const [rules, setRules] = useState([]);
   const [errors, setErrors] = useState([]);
   const [testTools, setTestTools] = useState([]);
   let handleDispatch;
@@ -69,6 +72,11 @@ function ChplTestTools() {
     if (criterionOptionsQuery.isLoading || !criterionOptionsQuery.isSuccess) { return; }
     setCriterionOptions(criterionOptionsQuery.data.criteria);
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
+
+  useEffect(() => {
+    if (rulesQuery.isLoading || !rulesQuery.isSuccess) { return; }
+    setRules(rulesQuery.data);
+  }, [rulesQuery.data, rulesQuery.isLoading, rulesQuery.isSuccess]);
 
   handleDispatch = ({ action, payload }) => {
     switch (action) {
@@ -146,6 +154,7 @@ function ChplTestTools() {
             testTool={activeTestTool}
             dispatch={handleDispatch}
             criterionOptions={criterionOptions}
+            rules={rules}
             errors={errors}
           />
         </CardContent>
