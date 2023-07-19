@@ -15,11 +15,16 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
+import { getDisplayDateFormat } from 'services/date-util';
 import { testTool as testToolPropType } from 'shared/prop-types';
 
 const headers = [
   { property: 'value', text: 'Value', sortable: true },
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
+  { property: 'startDay', text: 'Start Date', sortable: true },
+  { property: 'requiredDay', text: 'Required Date', sortable: true },
+  { property: 'endDay', text: 'End Date', sortable: true },
+  { text: 'Rule' },
   { text: 'Applicable Criteria' },
   { text: 'Action', invisible: true },
 ];
@@ -96,6 +101,18 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
                   </TableCell>
                   <TableCell>
                     { item.regulatoryTextCitation }
+                  </TableCell>
+                  <TableCell>
+                    { getDisplayDateFormat(item.startDay) }
+                  </TableCell>
+                  <TableCell>
+                    { getDisplayDateFormat(item.requiredDay) }
+                  </TableCell>
+                  <TableCell>
+                    { getDisplayDateFormat(item.endDay) }
+                  </TableCell>
+                  <TableCell>
+                    { item.rule?.name ?? '' }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
