@@ -159,25 +159,28 @@ function ChplSed({ listing }) {
           </Card>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader title="SED Testing Tasks" />
-        <CardContent>
-          <Box display="flex" justifyContent="flex-end" pb={4}>
-            <ChplSedDownload
-              listing={listing}
-            />
-          </Box>
-          { sed.testTasks
-            .sort(sortTestTasks)
-            .map((task) => (
-              <ChplSedTaskView
-                key={task.id ?? task.uniqueId}
-                listing={listing}
-                task={task}
-              />
-            ))}
-        </CardContent>
-      </Card>
+      { listing.certificationEdition.name === '2015'
+        && (
+          <Card>
+            <CardHeader title="SED Testing Tasks" />
+            <CardContent>
+              <Box display="flex" justifyContent="flex-end" pb={4}>
+                <ChplSedDownload
+                  listing={listing}
+                />
+              </Box>
+              { sed.testTasks
+                .sort(sortTestTasks)
+                .map((task) => (
+                  <ChplSedTaskView
+                    key={task.id ?? task.uniqueId}
+                    listing={listing}
+                    task={task}
+                  />
+                ))}
+            </CardContent>
+          </Card>
+        )}
     </Box>
   );
 }

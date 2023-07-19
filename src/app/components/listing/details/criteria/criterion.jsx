@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -16,11 +16,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SyncIcon from '@material-ui/icons/Sync';
-import {
-  arrayOf,
-  bool,
-  func,
-} from 'prop-types';
+import { bool, func } from 'prop-types';
 
 import ChplCriterionDetailsEdit from './criterion-details-edit';
 import ChplCriterionDetailsView from './criterion-details-view';
@@ -29,10 +25,9 @@ import { ChplHighlightCures } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { isCures } from 'services/criteria.service';
 import {
-  accessibilityStandard,
   certificationResult,
+  listing as listingPropType,
   resources as resourceDefinition,
-  qmsStandard,
 } from 'shared/prop-types';
 import { palette } from 'themes';
 
@@ -97,35 +92,49 @@ const useStyles = makeStyles({
 
 function ChplCriterion(props) {
   const {
-    accessibilityStandards,
+    certificationResult: initialCriterion,
     canEdit,
     hasIcs,
     isConfirming,
+    listing,
     onSave,
-    qmsStandards,
     resources,
   } = props;
-  const [criterion, setCriterion] = useState(props.certificationResult); // eslint-disable-line react/destructuring-assignment
+  const [accessibilityStandards, setAccessibilityStandards] = useState([]);
+  const [criterion, setCriterion] = useState(undefined);
   const [editing, setEditing] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [qmsStandards, setQmsStandards] = useState([]);
   const [pending, setPending] = useState(false);
   const [staged, setStaged] = useState(false);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
-  const getIcon = () => (expanded
-    ? (
-      <>
-        <Typography color="primary" variant="body2">Hide Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
-      </>
-    )
-    : (
-      <>
-        <Typography color="primary" variant="body2">Show Details</Typography>
-        <ExpandMoreIcon color="primary" fontSize="large" />
-      </>
-    ));
+  useEffect(() => {
+    setCriterion(initialCriterion);
+  }, [initialCriterion]);
+
+  useEffect(() => {
+    setAccessibilityStandards(listing.accessibilityStandards);
+    setQmsStandards(listing.qmsStandards);
+  }, [listing]);
+
+  const getIcon = () => {
+    if (listing.certificationEdition.name === '2011') { return null; }
+    return (expanded
+      ? (
+        <>
+          <Typography color="primary" variant="body2">Hide Details</Typography>
+          <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+        </>
+      )
+      : (
+        <>
+          <Typography color="primary" variant="body2">Show Details</Typography>
+          <ExpandMoreIcon color="primary" fontSize="large" />
+        </>
+      ));
+  };
 
   const handleAccordionChange = (event, isExpanded) => {
     setExpanded(!expanded);
@@ -153,6 +162,8 @@ function ChplCriterion(props) {
     setCriterion(updatedCriterion);
     onSave(updatedCriterion);
   };
+
+  if (!criterion) { return null; }
 
   return (
     <div>
@@ -222,54 +233,57 @@ function ChplCriterion(props) {
             </Box>
           </Box>
         </AccordionSummary>
-        <AccordionDetails
-          className={classes.criterionAccordionDetails}
-          id={`criterion-id-${criterion.criterion.id}-details`}
-        >
-          <Container>
-            { editing
-              ? (
-                <ChplCriterionDetailsEdit
-                  criterion={criterion}
-                  hasIcs={hasIcs}
-                  isConfirming={isConfirming}
-                  onCancel={handleCancel}
-                  onChange={handleChange}
-                  onSave={handleSave}
-                  resources={resources}
-                />
-              ) : (
-                <>
-                  { canEdit
-                  && (
-                    <div>
-                      <Button
-                        fullWidth
-                        color="secondary"
-                        variant="contained"
-                        className={classes.editCriterion}
-                        onClick={() => setEditing(true)}
-                        id={`criterion-id-${criterion.criterion.id}-edit`}
-                      >
-                        Edit Criteria
-                        <EditOutlinedIcon
-                          className={classes.iconSpacing}
-                          fontSize="large"
-                        />
-                      </Button>
-                    </div>
-                  )}
-                  <div>
-                    <ChplCriterionDetailsView
+        { listing.certificationEdition.name !== '2011'
+          && (
+            <AccordionDetails
+              className={classes.criterionAccordionDetails}
+              id={`criterion-id-${criterion.criterion.id}-details`}
+            >
+              <Container>
+                { editing
+                  ? (
+                    <ChplCriterionDetailsEdit
                       criterion={criterion}
-                      accessibilityStandards={accessibilityStandards}
-                      qmsStandards={qmsStandards}
+                      hasIcs={hasIcs}
+                      isConfirming={isConfirming}
+                      onCancel={handleCancel}
+                      onChange={handleChange}
+                      onSave={handleSave}
+                      resources={resources}
                     />
-                  </div>
-                </>
-              )}
-          </Container>
-        </AccordionDetails>
+                  ) : (
+                    <>
+                      { canEdit
+                        && (
+                          <div>
+                            <Button
+                              fullWidth
+                              color="secondary"
+                              variant="contained"
+                              className={classes.editCriterion}
+                              onClick={() => setEditing(true)}
+                              id={`criterion-id-${criterion.criterion.id}-edit`}
+                            >
+                              Edit Criteria
+                              <EditOutlinedIcon
+                                className={classes.iconSpacing}
+                                fontSize="large"
+                              />
+                            </Button>
+                          </div>
+                        )}
+                      <div>
+                        <ChplCriterionDetailsView
+                          criterion={criterion}
+                          accessibilityStandards={accessibilityStandards}
+                          qmsStandards={qmsStandards}
+                        />
+                      </div>
+                    </>
+                  )}
+              </Container>
+            </AccordionDetails>
+          )}
       </Accordion>
     </div>
   );
@@ -278,20 +292,19 @@ function ChplCriterion(props) {
 export default ChplCriterion;
 
 ChplCriterion.propTypes = {
-  accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   canEdit: bool,
   certificationResult: certificationResult.isRequired,
-  isConfirming: bool,
   hasIcs: bool,
+  isConfirming: bool,
+  listing: listingPropType.isRequired,
   onSave: func,
-  qmsStandards: arrayOf(qmsStandard).isRequired,
   resources: resourceDefinition,
 };
 
 ChplCriterion.defaultProps = {
   canEdit: false,
-  isConfirming: false,
   hasIcs: false,
+  isConfirming: false,
   onSave: () => {},
   resources: {},
 };
