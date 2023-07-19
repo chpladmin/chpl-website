@@ -322,22 +322,20 @@ function ChplCriterionDetailsView(props) {
                         { qmsStandards.map((qms, index) => (
                           <ListItem key={qms.id || index}>
                             <div>
-                            <strong>Standard: </strong>
-                            {' '}
-                            { qms.qmsStandardName }
-                            <br />
-                            <strong>Description: </strong>
-                            {' '}
-                            {
-                              qms.qmsModification
-                                && <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries />
-                            }
-                            { !qms.qmsModification
-                              && <>N/A</>}
-                            <br />
-                            <strong>Applicable Criteria: </strong>
-                            {' '}
-                            { qms.applicableCriteria || 'N/A' }
+                              <strong>Standard:</strong>
+                              {' '}
+                              { qms.qmsStandardName }
+                              <br />
+                              <strong>Description:</strong>
+                              {' '}
+                              { qms.qmsModification
+                                && <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries />}
+                              { !qms.qmsModification
+                                && <>N/A</>}
+                              <br />
+                              <strong>Applicable Criteria:</strong>
+                              {' '}
+                              { qms.applicableCriteria || 'N/A' }
                             </div>
                           </ListItem>
                         ))}
