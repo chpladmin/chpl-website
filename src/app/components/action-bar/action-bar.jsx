@@ -226,6 +226,7 @@ function ChplActionBar(props) {
                     value="warningAcknowledge"
                     onChange={toggleWarningAcknowledgement}
                     checked={warningAcknowledged}
+                    color="primary"
                   />
                 )}
               />
