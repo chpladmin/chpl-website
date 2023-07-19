@@ -190,17 +190,20 @@ function ChplListingView({ isConfirming, listing }) {
                      </InternalScrollButton>
                    </Box>
                  )}
-                <Box
-                  className={classes.menuItems}
-                >
-                  <InternalScrollButton
-                    id="g1g2Measures"
-                    analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
-                  >
-                    G1/G2 Measures
-                    <AssessmentOutlinedIcon className={classes.iconSpacing} />
-                  </InternalScrollButton>
-                </Box>
+                { !listing.certificationEdition.name === '2015'
+                  && (
+                    <Box
+                      className={classes.menuItems}
+                    >
+                      <InternalScrollButton
+                        id="g1g2Measures"
+                        analytics={{ event: 'Jump to Listing Section', category: 'Navigation', label: 'G1/G2 Measures' }}
+                      >
+                        G1/G2 Measures
+                        <AssessmentOutlinedIcon className={classes.iconSpacing} />
+                      </InternalScrollButton>
+                    </Box>
+                  )}
                 <Box
                   className={classes.menuItems}
                 >
@@ -277,9 +280,7 @@ function ChplListingView({ isConfirming, listing }) {
           </Box>
           <CardContent>
             <ChplCriteria
-              accessibilityStandards={listing.accessibilityStandards}
-              certificationResults={listing.certificationResults}
-              qmsStandards={listing.qmsStandards}
+              listing={listing}
               viewAll={seeAllCriteria}
             />
           </CardContent>
@@ -333,19 +334,22 @@ function ChplListingView({ isConfirming, listing }) {
              </CardContent>
            </Card>
          )}
-        <Card>
-          <span className="anchor-element">
-            <span id="g1g2Measures" className="page-anchor" />
-          </span>
-          <Box className={classes.sectionHeader}>
-            <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
-          </Box>
-          <CardContent>
-            <ChplG1G2
-              measures={listing.measures}
-            />
-          </CardContent>
-        </Card>
+        { !listing.certificationEdition.name === '2015'
+          && (
+            <Card>
+              <span className="anchor-element">
+                <span id="g1g2Measures" className="page-anchor" />
+              </span>
+              <Box className={classes.sectionHeader}>
+                <Typography className={classes.sectionHeaderText} variant="h2">G1/G2 Measures</Typography>
+              </Box>
+              <CardContent>
+                <ChplG1G2
+                  measures={listing.measures}
+                />
+              </CardContent>
+            </Card>
+          )}
         { !isConfirming
           && (
             <Card>
