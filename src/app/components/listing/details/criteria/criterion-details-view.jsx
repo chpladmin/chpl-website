@@ -329,7 +329,7 @@ function ChplCriterionDetailsView(props) {
                               qms.qmsModification
                                 && <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries />
                             }
-                            { !qms.modification
+                            { !qms.qmsModification
                               && <>N/A</>}
                             <br />
                             <strong>Applicable Criteria: </strong>
