@@ -241,7 +241,7 @@
               </div>
             </div>
           </td>
-          <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0 && !$ctrl.canEdit()"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testTool.id === null}">Tool: {{ m.value }}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.testTool.id === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
+          <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0 && !$ctrl.canEdit()"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testTool.id === null}">Tool: {{ m.testTool.value }}{{ m.testTool.retired ? ' (Retired)' : ''}}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.testTool.id === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
           <td ng-if="(!$ctrl.cert.testToolsUsed || $ctrl.cert.testToolsUsed.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.testDataUsed !== null && $ctrl.availableTestData && $ctrl.availableTestData.length > 0">
