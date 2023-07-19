@@ -2,6 +2,11 @@ import { useMutation, useQuery } from 'react-query';
 
 import { useAxios } from './axios';
 
+const useDeleteSubscriber = () => {
+  const axios = useAxios();
+  return useMutation(async (data) => axios.put('subscriptions/unsubscribe-all', data));
+};
+
 const useFetchRoles = () => {
   const axios = useAxios();
   return useQuery(['subscriptions/roles'], async () => {
@@ -21,6 +26,7 @@ const usePutSubscriber = () => {
 };
 
 export {
+  useDeleteSubscriber,
   useFetchRoles,
   usePostSubscription,
   usePutSubscriber,
