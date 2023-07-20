@@ -158,18 +158,6 @@ function ChplSystemMaintenance() {
             QMS Standards
           </Button>
           <Button
-            onClick={() => navigate('testTools')}
-            disabled={active === 'testTools'}
-            id="system-maintenance-navigation-test-tools"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            Test Tools
-          </Button>
-          <Button
             onClick={() => navigate('svaps')}
             disabled={active === 'svaps'}
             id="system-maintenance-navigation-svaps"
@@ -196,6 +184,18 @@ function ChplSystemMaintenance() {
                 System Jobs
               </Button>
             )}
+          <Button
+            onClick={() => navigate('testTools')}
+            disabled={active === 'testTools'}
+            id="system-maintenance-navigation-test-tools"
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            Test Tools
+          </Button>
           <Button
             onClick={() => navigate('ucdProcesses')}
             disabled={active === 'ucdProcesses'}
