@@ -176,7 +176,7 @@ function ChplListingView({ isConfirming, listing }) {
                     <DoneAllOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
-                {listing.certificationEdition.name !== '2011'
+                { listing.certificationEdition.name !== '2011'
                  && (
                    <Box
                      className={classes.menuItems}
@@ -190,7 +190,7 @@ function ChplListingView({ isConfirming, listing }) {
                      </InternalScrollButton>
                    </Box>
                  )}
-                { !listing.certificationEdition.name === '2015'
+                { listing.certificationEdition.name === '2015'
                   && (
                     <Box
                       className={classes.menuItems}
@@ -334,7 +334,7 @@ function ChplListingView({ isConfirming, listing }) {
              </CardContent>
            </Card>
          )}
-        { !listing.certificationEdition.name === '2015'
+        { listing.certificationEdition.name === '2015'
           && (
             <Card>
               <span className="anchor-element">
