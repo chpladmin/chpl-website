@@ -11,23 +11,10 @@
         <span>{{ $ctrl.listing.chplProductNumber }}</span>
       </div>
       <div class="panel-body" ng-if="!$ctrl.isEditing">
-        <span>
-          <strong>ACB Certification Id:</strong> {{ $ctrl.listing.acbCertificationId }} <br />
-          <strong>Certification Date:</strong> {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }} <br />
-          <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
-          <strong>Certification Body:</strong> {{ $ctrl.listing.certifyingBody.name }} <br />
-          <strong>Testing Lab<span ng-if="$ctrl.listing.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!$ctrl.listing.testingLabs || $ctrl.listing.testingLabs.length === 0">None<br /></span>
-          <ul ng-if="$ctrl.listing.testingLabs && $ctrl.listing.testingLabs.length !== 0">
-            <li ng-repeat="atl in $ctrl.listing.testingLabs">{{ atl.testingLabName }}</li>
-          </ul>
-        </span>
-        <strong>Standards Version Advancement Process Notice:</strong> {{ $ctrl.listing.svapNoticeUrl ? $ctrl.listing.svapNoticeUrl : 'None' }} <br />
-        <strong>Mandatory Disclosures:</strong> {{ $ctrl.listing.mandatoryDisclosures ? $ctrl.listing.mandatoryDisclosures : 'None' }} <br />
-        <br />
-        <chpl-listing-details-view is-confirming="true"
-                                   hide-direct-review="true"
-                                   listing="$ctrl.listing">
-        </chpl-listing-details-view>
+        <chpl-listing-view-bridge
+          is-confirming="true"
+          listing="$ctrl.listing"
+          ></chpl-listing-view-bridge>
         <p><button class="btn btn-default btn-block" ng-click="$ctrl.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button></p>
       </div>
       <div class="panel-body" ng-if="$ctrl.isEditing">
