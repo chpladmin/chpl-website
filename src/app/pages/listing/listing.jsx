@@ -8,7 +8,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import { number } from 'prop-types';
+import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingHistory from './history/listing-history';
 
@@ -137,5 +137,5 @@ function ChplListingPage({ id }) {
 export default ChplListingPage;
 
 ChplListingPage.propTypes = {
-  id: number.isRequired,
+  id: oneOfType([number, string]).isRequired,
 };

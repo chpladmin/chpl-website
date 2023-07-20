@@ -15,7 +15,7 @@ const ListingComponent = {
 
     $onInit() {
       if (this.$stateParams.id) {
-        this.id = parseInt(this.$stateParams.id, 10);
+        this.id = this.$stateParams.id;
       }
     }
   },

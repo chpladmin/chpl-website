@@ -1,5 +1,5 @@
 import React from 'react';
-import { number } from 'prop-types';
+import { number, oneOfType, string } from 'prop-types';
 
 import ChplListingPage from './listing';
 
@@ -18,5 +18,5 @@ function ChplListingWrapper({ id }) {
 export default ChplListingWrapper;
 
 ChplListingWrapper.propTypes = {
-  id: number.isRequired,
+  id: oneOfType([number, string]).isRequired,
 };
