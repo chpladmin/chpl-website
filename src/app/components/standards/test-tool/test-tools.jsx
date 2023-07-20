@@ -68,7 +68,7 @@ function ChplTestTools() {
 
   useEffect(() => {
     if (criterionOptionsQuery.isLoading || !criterionOptionsQuery.isSuccess) { return; }
-    setCriterionOptions(criterionOptionsQuery.data.criteria);
+    setCriterionOptions(criterionOptionsQuery.data);
   }, [criterionOptionsQuery.data, criterionOptionsQuery.isLoading, criterionOptionsQuery.isSuccess]);
 
   useEffect(() => {
