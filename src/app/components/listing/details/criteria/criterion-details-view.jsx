@@ -68,7 +68,7 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="additionalSoftware">
                 <TableCell component="th" scope="row">
-                  <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criterion.">
+                  <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
                         className={classes.infoIconColor}
