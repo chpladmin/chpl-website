@@ -98,6 +98,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
                 <TableRow key={`${item.value}`}>
                   <TableCell className={classes.firstColumn}>
                     { item.value }
+                    { item.retired && ' (Retired)'}
                   </TableCell>
                   <TableCell>
                     { item.regulatoryTextCitation }
