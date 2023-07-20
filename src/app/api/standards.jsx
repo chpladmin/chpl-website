@@ -68,6 +68,14 @@ const useFetchCriteriaForSvaps = () => {
   });
 };
 
+const useFetchCriteriaForTestTools = () => {
+  const axios = useAxios();
+  return useQuery(['test-tools/criteria'], async () => {
+    const response = await axios.get('test-tools/criteria');
+    return response.data;
+  });
+};
+
 const useFetchQmsStandards = () => {
   const axios = useAxios();
   return useQuery(['qms-standards'], async () => {
@@ -216,6 +224,7 @@ export {
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
   useFetchCriteriaForSvaps,
+  useFetchCriteriaForTestTools,
   useFetchQmsStandards,
   useFetchRules,
   useFetchSvaps,

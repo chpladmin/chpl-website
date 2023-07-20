@@ -12,10 +12,8 @@ import ChplTestToolEdit from './test-tool-edit';
 import ChplTestToolsView from './test-tools-view';
 
 import {
-  useFetchCriteria,
-} from 'api/data';
-import {
   useDeleteTestTool,
+  useFetchCriteriaForTestTools,
   useFetchRules,
   useFetchTestTools,
   usePostTestTool,
@@ -29,7 +27,7 @@ function ChplTestTools() {
   const deleteTestTool = useDeleteTestTool();
   const postTestTool = usePostTestTool();
   const putTestTool = usePutTestTool();
-  const criterionOptionsQuery = useFetchCriteria();
+  const criterionOptionsQuery = useFetchCriteriaForTestTools();
   const rulesQuery = useFetchRules();
   const { enqueueSnackbar } = useSnackbar();
   const [activeTestTool, setActiveTestTool] = useState(undefined);
