@@ -1,5 +1,7 @@
 import { createTheme } from '@material-ui/core/styles';
 
+import paletteColors from './palette';
+
 const theme = createTheme({
   root: {
     width: '100%',
@@ -8,22 +10,22 @@ const theme = createTheme({
   spacing: 4,
   palette: {
     background: {
-      default: '#f9f9f9',
+      default: paletteColors.background,
     },
     primary: {
       light: '#599bde',
-      main: '#156dac',
+      main: paletteColors.primary,
       dark: '#00437c',
-      contrastText: '#ffffff',
+      contrastText: paletteColors.white,
     },
     secondary: {
-      light: '#ffffff',
-      main: '#f5f9fd',
-      dark: '#c2c6ca',
-      contrastText: '#000000',
+      light: paletteColors.secondaryLight,
+      main: paletteColors.secondary,
+      dark: paletteColors.secondaryDark,
+      contrastText: paletteColors.white,
     },
     error: {
-      main: '#c44f65',
+      main: paletteColors.error,
     },
   },
   typography: {
@@ -83,9 +85,12 @@ const theme = createTheme({
         borderRadius: '4px !important',
         '&$expanded': {
           boxShadow: '0px 4px 8px rgb(149 157 165 / 30%)',
-          backgroundColor: '#f9f9f9',
+          backgroundColor: paletteColors.background,
           borderRadius: '4px',
           borderBottom: '.5px solid #c2c6ca',
+        },
+        '&$focusVisible': {
+          border: `2px solid ${paletteColors.black}`,
         },
       },
       content: {
@@ -106,7 +111,7 @@ const theme = createTheme({
     MuiAutocomplete: {
       popupIndicator: {
         marginTop: '4px',
-        color: '#156dac',
+        color: paletteColors.primary,
       },
     },
     MuiButton: {
@@ -130,10 +135,10 @@ const theme = createTheme({
         },
       },
       containedSecondary: {
-        border: '.5px solid #156dac',
-        backgroundColor: '#ffffff',
+        border: `.5px solid ${paletteColors.primary}`,
+        backgroundColor: paletteColors.white,
         fontSize: '1em',
-        color: '#156dac',
+        color: paletteColors.primary,
         '&:hover': {
           backgroundColor: 'rgb(245, 249, 253, 0.9)',
         },
@@ -148,14 +153,14 @@ const theme = createTheme({
         fontSize: '1.125em',
       },
       outlined: {
-        border: '#000 solid 1px',
+        border: `${paletteColors.black} solid 1px`,
       },
     },
     MuiCard: {
       root: {
         boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
         borderRadius: '8px',
-        border: '.5px solid #c2c6ca',
+        border: `.5px solid ${paletteColors.secondaryDark}`,
       },
     },
     MuiCardContent: {
@@ -168,13 +173,13 @@ const theme = createTheme({
     },
     MuiCardActions: {
       root: {
-        backgroundColor: '#f9f9f9',
+        backgroundColor: paletteColors.background,
       },
     },
     MuiCardHeader: {
       root: {
-        backgroundColor: '#f5f9fd',
-        borderBottom: '.5px solid #c2c6ca',
+        backgroundColor: paletteColors.secondary,
+        borderBottom: `.5px solid ${paletteColors.secondaryDark}`,
       },
       title: {
         fontWeight: '600',
@@ -182,13 +187,10 @@ const theme = createTheme({
     },
     MuiCheckbox: {
       root: {
-        color: '#156dac',
+        color: paletteColors.primary,
       },
       colorSecondary: {
-        color: '#156dac',
-        '&$checked': {
-          color: '#156dac',
-        },
+        color: paletteColors.primary,
       },
     },
     MuiChip: {
@@ -196,7 +198,7 @@ const theme = createTheme({
         fontSize: '.8em',
       },
       outlinedPrimary: {
-        backgroundColor: '#ffffff',
+        backgroundColor: paletteColors.white,
         fontWeight: '600',
       },
       deleteIcon: {
@@ -207,7 +209,7 @@ const theme = createTheme({
       deleteIconOutlinedColorPrimary: {
         color: '#bbb',
         '&:hover, selected': {
-          color: '#c44f65',
+          color: paletteColors.error,
         },
       },
     },
@@ -228,7 +230,7 @@ const theme = createTheme({
     },
     MuiDivider: {
       root: {
-        color: '#c2c6ca',
+        color: paletteColors.secondaryDark,
         margin: '8px 0',
       },
     },
@@ -277,7 +279,7 @@ const theme = createTheme({
     MuiListSubheader: {
       root: {
         fontSize: '0.875em',
-        color: '#000',
+        color: paletteColors.black,
       },
       gutters: {
         paddingLeft: '8px',
@@ -295,21 +297,21 @@ const theme = createTheme({
     MuiSelect: {
       icon: {
         position: 'inherit',
-        color: '#156dac',
+        color: paletteColors.primary,
       },
       select: {
         '&:focus': {
-          backgroundColor: '#fff',
+          backgroundColor: paletteColors.white,
         },
       },
     },
     MuiRadio: {
       root: {
-        color: '#156dac',
+        color: paletteColors.primary,
       },
       colorSecondary: {
         '&$checked': {
-          color: '#156dac',
+          color: paletteColors.primary,
         },
       },
     },
@@ -318,16 +320,16 @@ const theme = createTheme({
         fontSize: '.9em',
       },
       textColorPrimary: {
-        color: '#156dac',
+        color: paletteColors.primary,
         '&$selected': {
           fontWeight: 'bold',
-          color: '#000',
+          color: paletteColors.black,
         },
       },
     },
     MuiTabs: {
       indicator: {
-        backgroundColor: '#000000',
+        backgroundColor: paletteColors.black,
       },
     },
     MuiTable: {
@@ -340,23 +342,23 @@ const theme = createTheme({
         fontSize: '1em',
       },
       head: {
-        color: '#156dac',
+        color: paletteColors.primary,
         fontWeight: 800,
       },
       stickyHeader: {
-        backgroundColor: '#ffffff',
+        backgroundColor: paletteColors.white,
       },
     },
     MuiTableHead: {
       root: {
         borderRadius: '8px',
-        backgroundColor: '#ffffff',
+        backgroundColor: paletteColors.white,
         top: '0',
         position: 'sticky',
         zIndex: '100',
         boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
         '&:hover': {
-          backgroundColor: '#ffffff',
+          backgroundColor: paletteColors.white,
         },
       },
     },
@@ -370,7 +372,7 @@ const theme = createTheme({
         flex: 'none',
       },
       toolbar: {
-        backgroundColor: '#ffffff',
+        backgroundColor: paletteColors.white,
         margin: '16px',
         boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         borderRadius: '64px',
@@ -380,11 +382,11 @@ const theme = createTheme({
         paddingRight: '16px',
       },
       select: {
-        color: '#156dac',
+        color: paletteColors.primary,
         fontWeight: '500',
       },
       actions: {
-        color: '#156dac',
+        color: paletteColors.primary,
       },
     },
     MuiTableRow: {
@@ -396,10 +398,10 @@ const theme = createTheme({
     },
     MuiTableSortLabel: {
       active: {
-        color: '#000',
+        color: paletteColors.black,
       },
       icon: {
-        color: '#000',
+        color: paletteColors.black,
       },
     },
     MuiTimelineItem: {
@@ -457,7 +459,7 @@ const theme = createTheme({
     },
     MuiSvgIcon: {
       colorPrimary: {
-        color: '#156dac !important',
+        color: `${paletteColors.primary} !important`,
       },
     },
   },

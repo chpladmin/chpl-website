@@ -376,7 +376,8 @@ lookup = {
   'root.acbCertificationId': { message: (before, after) => comparePrimitive(before, after, 'acbCertificationId', 'ONC-ACB Certification ID') },
   'root.accessibilityStandards': { message: (before, after) => compare(before, after, 'accessibilityStandards', 'Accessibility Standards') },
   'root.businessErrorMessages': { message: () => undefined },
-  'root.certificationDate': { message: (before, after) => comparePrimitive(before, after, 'certificationDate', 'Certification Date', getDisplayDateFormat) },
+  'root.certificationDate': { message: (before, after) => comparePrimitive(before, after, 'certificationDate', 'Certification Date', getDisplayDateFormat, 'certificationDay') },
+  'root.certificationDay': { message: (before, after) => comparePrimitive(before, after, 'certificationDay', 'Certification Day', getDisplayDateFormat) },
   'root.certificationEvents': { message: (before, after) => compare(before, after, 'certificationEvents', 'Certification Status') },
   'root.certificationResults': { message: (before, after) => compare(before, after, 'certificationResults', 'Certification Criteria') },
   'root.certificationStatus': { message: () => 'Certification Status' },
@@ -403,7 +404,7 @@ lookup = {
   'root.ics': {
     message: (before) => {
       if (typeof before !== 'object') { console.debug({ before, key: 'root.ics' }); }
-      return 'Inherited Certification Status changes';
+      return 'Inherited Certified Status changes';
     },
   },
   'root.ics.children': { message: (before, after) => compare(before, after, 'children', 'ICS Children') },
@@ -430,7 +431,7 @@ lookup = {
   'root.sed.ucdProcesses': { message: (before, after) => compare(before, after, 'ucdProcesses', 'SED Processes') },
   'root.sedIntendedUserDescription': { message: (before, after) => comparePrimitive(before, after, 'sedIntendedUserDescription', 'SED Intended User Description') },
   'root.sedReportFileLocation': { message: (before, after) => comparePrimitive(before, after, 'sedReportFileLocation', 'SED Report File Location') },
-  'root.sedTestingEndDate': { message: (before, after) => (before.sedTestingEndDay ? undefined : comparePrimitive(before, after, 'sedTestingEndDate', 'SED Testing End Date', getDisplayDateFormat)) },
+  'root.sedTestingEndDate': { message: (before, after) => comparePrimitive(before, after, 'sedTestingEndDate', 'SED Testing End Date', getDisplayDateFormat, 'sedTestingEndDay') },
   'root.sedTestingEndDay': { message: (before, after) => comparePrimitive(before, after, 'sedTestingEndDay', 'SED Testing End Date', getDisplayDateFormat) },
   'root.surveillance': { message: (before, after) => compare(before, after, 'surveillance', 'Surveillance') },
   'root.svapNoticeUrl': { message: (before, after) => comparePrimitive(before, after, 'svapNoticeUrl', 'SVAP Notice URL') },

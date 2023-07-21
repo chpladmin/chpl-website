@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Chip,
   List,
   ListItem,
   Typography,
@@ -23,7 +24,7 @@ import { palette, theme, utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   subCard: {
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
     borderBottom: `.5px solid ${palette.divider}`,
     display: 'flex',
     flexDirection: 'row',
@@ -33,26 +34,27 @@ const useStyles = makeStyles({
   },
   directReviews: {
     borderRadius: '4px',
-    display: 'grid',
-    borderColor: `${palette.divider}`,
+    display: 'flex',
+    flexDirection: 'column',
+    borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
     padding: '0px',
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
   },
   directReviewsSummary: {
-    backgroundColor: `${palette.secondary}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px!important',
+    padding: '0 4px',
   },
   directReviewSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px!important',
+    padding: '0 4px',
   },
   dataContainer: {
     display: 'flex',
@@ -63,6 +65,10 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('md')]: {
       flexDirection: 'row',
     },
+  },
+  errorChip: {
+    color: palette.white,
+    backgroundColor: palette.error,
   },
   labelAndData: {
     display: 'flex',
@@ -77,6 +83,19 @@ const useStyles = makeStyles({
   ncContainer: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  ncContent: {
+    display: 'flex',
+    gridGap: '8px',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  },
+  rotate: {
+    transform: 'rotate(180deg)',
   },
 });
 
@@ -106,6 +125,7 @@ const sortNonconformities = (a, b) => {
 
 function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsAvailable }) {
   const [directReviews, setDirectReviews] = useState([]);
+  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
@@ -144,12 +164,32 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
     }).sort(sortDirectReviews));
   }, [initialDirectReviews]);
 
+  const getIcon = () => (expanded
+    ? (
+      <>
+        <Typography color="primary" variant="body2">Hide Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+      </>
+    )
+    : (
+      <>
+        <Typography color="primary" variant="body2">Show Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" />
+      </>
+    ));
+
+  const handleAccordionChange = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <Accordion className={classes.directReviews}>
+    <Accordion
+      className={classes.directReviews}
+      onChange={handleAccordionChange}
+    >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={getIcon()}
         className={classes.directReviewsSummary}
-        color="secondary"
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography variant="body1">
@@ -166,9 +206,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
             )}
           { !directReviewsAvailable
             && (
-              <Typography variant="body2">
-                error
-              </Typography>
+              <Chip size="small" className={classes.errorChip} variant="default" label="Error" />
             )}
         </Box>
       </AccordionSummary>
@@ -224,7 +262,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                     title={nc.nonConformityType ? nc.nonConformityType : 'Has not been determined'}
                   />
                   <CardContent>
-                    <Box display="flex" gridGap="8px" flexWrap="wrap" flexDirection="row" justifyContent="space-between">
+                    <Box className={classes.ncContent}>
                       { getDataDisplay('Non-conformity Type', <Typography>{ nc.nonConformityType }</Typography>, 'Type of non-conformity found during review') }
                       { getDataDisplay('Developer Associated Listings',
                         <>
@@ -239,7 +277,7 @@ function ChplDirectReviews({ directReviews: initialDirectReviews, directReviewsA
                               <List>
                                 { nc.developerAssociatedListings.map((dal) => (
                                   <ListItem key={dal.id}>
-                                    <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
+                                    <a href={`#/listing/${dal.id}`}>{ dal.chplProductNumber }</a>
                                   </ListItem>
                                 ))}
                               </List>

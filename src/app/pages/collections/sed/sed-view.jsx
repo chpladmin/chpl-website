@@ -215,7 +215,7 @@ function ChplSedCollectionView(props) {
           />
         </div>
       </div>
-      <div className={classes.searchContainer} component={Paper}>
+      <div className={classes.searchContainer}>
         <ChplFilterSearchTerm />
         <ChplFilterPanel />
       </div>
@@ -275,11 +275,11 @@ function ChplSedCollectionView(props) {
                               <TableCell className={classes.stickyColumn}>
                                 <strong>
                                   <ChplLink
-                                    href={`#/listing/${item.id}?panel=sed`}
+                                    href={`#/listing/${item.id}`}
                                     text={item.chplProductNumber}
                                     analytics={{ event: 'Go to Listing Details Page', category: analytics.category, label: item.chplProductNumber }}
                                     external={false}
-                                    router={{ sref: 'listing', options: { id: item.id, panel: 'sed' } }}
+                                    router={{ sref: 'listing', options: { id: item.id } }}
                                   />
                                 </strong>
                               </TableCell>

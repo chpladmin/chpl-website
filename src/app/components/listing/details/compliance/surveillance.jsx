@@ -10,7 +10,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { arrayOf } from 'prop-types';
+import { arrayOf, bool } from 'prop-types';
 
 import { getDataDisplay } from './compliance.services';
 
@@ -22,51 +22,52 @@ import { palette, utilStyles } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   infoIcon: {
-    color: `${palette.primary}`,
+    color: palette.primary,
   },
   root: {
     width: '100%',
     padding: '0 8px !important',
   },
   subCard: {
-    backgroundColor: `${palette.white}`,
+    backgroundColor: palette.white,
     borderBottom: `.5px solid ${palette.divider}`,
   },
   surveillance: {
     borderRadius: '4px',
     display: 'grid',
-    borderColor: `${palette.divider}`,
-    borderWidth: '.5px',
-    borderStyle: 'solid',
-    padding: '0px',
-    backgroundColor: `${palette.white}`,
+    border: `.5px solid ${palette.divider}`,
+    padding: '0',
+    backgroundColor: palette.white,
   },
   surveillanceSummary: {
-    backgroundColor: `${palette.secondary}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px !important',
+    padding: '0 4px !important',
   },
   surveillanceDetailsSummary: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     borderBottom: `.5px solid ${palette.divider}`,
     width: '100%',
-    padding: '0 8px !important',
+    padding: '0 4px !important',
   },
   surveillanceDetailsHeaderWithBorder: {
-    backgroundColor: `${palette.white}!important`,
+    backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
-    borderLeft: `2px solid ${palette.primary}!important`,
+    borderLeft: `2px solid ${palette.black} !important`,
     width: '100%',
-    padding: '0 8px !important',
+    padding: '0 4px !important',
   },
   surveillanceDetailsBorder: {
-    borderLeft: `2px solid ${palette.primary}!important`,
+    borderLeft: `2px solid ${palette.black} !important`,
   },
   '& span.MuiTypography-root.MuiCardHeader-title.MuiTypography-h6.MuiTypography-displayBlock': {
     fontWeight: '300',
+  },
+  rotate: {
+    transform: 'rotate(180deg)',
   },
 });
 
@@ -142,24 +143,45 @@ const getSurveillanceTitle = (surv) => {
   return title;
 };
 
-function ChplSurveillance({ surveillance: initialSurveillance }) {
+function ChplSurveillance({ surveillance: initialSurveillance, ics }) {
   const [surveillance, setSurveillance] = useState([]);
+  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
     setSurveillance(initialSurveillance);
   }, [initialSurveillance]);
 
+  const getIcon = () => (expanded
+    ? (
+      <>
+        <Typography color="primary" variant="body2">Hide Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" className={classes.rotate} />
+      </>
+    )
+    : (
+      <>
+        <Typography color="primary" variant="body2">Show Details</Typography>
+        <ExpandMoreIcon color="primary" fontSize="large" />
+      </>
+    ));
+
+  const handleAccordionChange = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <Accordion className={classes.surveillance}>
+    <Accordion
+      className={classes.surveillance}
+      onChange={handleAccordionChange}
+    >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={getIcon()}
         className={classes.surveillanceSummary}
-        color="secondary"
       >
         <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
           <Typography>
-            Surveillance Activities
+            { ics ? 'Inherited Certified Status Surveillance Activity' : 'Surveillance Activities' }
           </Typography>
           <Typography variant="body2">
             (
@@ -171,12 +193,12 @@ function ChplSurveillance({ surveillance: initialSurveillance }) {
       </AccordionSummary>
       <CardContent>
         <Typography gutterBottom>
-          Surveillance information is displayed here if a surveillance activity has been opened by an ONC-ACB that affects this listing
+          { ics ? 'This information reflects surveillance activities associated with this listing’s Inherited Certified Status (ICS)' : 'Relevant surveillance information that pertains to this listing can be found here' }
         </Typography>
         { surveillance.length === 0
           && (
             <Typography>
-              No surveillance activity has been conducted for this listing
+              { ics ? 'No ICS surveillance activity has been conducted' : 'No surveillance activity has been conducted' }
             </Typography>
           )}
         { surveillance.map((surv) => (
@@ -263,4 +285,9 @@ export default ChplSurveillance;
 
 ChplSurveillance.propTypes = {
   surveillance: arrayOf(surveillancePropType).isRequired,
+  ics: bool,
+};
+
+ChplSurveillance.defaultProps = {
+  ics: false,
 };

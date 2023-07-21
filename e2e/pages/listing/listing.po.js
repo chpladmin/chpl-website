@@ -2,16 +2,14 @@ class ListingPage {
   constructor() {
     this.elements = {
       realWortldTestingHeader: 'h2=Real World Testing',
-      seeAll: '#viewAllCerts',
-      editCertifiedProduct: '//button[text()=" Edit Certified Product"]',
+      seeAllCriteria: '#see-all-criteria',
+      editCertifiedProduct: '//span[text()="Edit"]',
       reason: '#reason-for-change',
       bypassWarning: '#acknowledge-warnings',
-      returnToSearch: '//a[text()=" Return to search results"]',
       productHistory: '#view-listing-history',
       goToApi: '#go-to-api',
-      manageSurveillanceActivity: '//a[text()=" Manage Surveillance Activity"]',
+      manageSurveillanceActivity: '//a[text()="Manage Surveillance Activity"]',
       listingHistoryTitle: '#listing-history-title',
-      listingBasicInformation: '#listing-information-basic',
       chplProductNumber: 'p*=CHPL Product Number:',
       previousChplProductNumbersTitle: 'p=Previous CHPL Product Numbers',
     };
@@ -25,8 +23,8 @@ class ListingPage {
     return $(this.elements.manageSurveillanceActivity);
   }
 
-  get seeAll() {
-    return $(this.elements.seeAll);
+  get seeAllCriteria() {
+    return $(this.elements.seeAllCriteria);
   }
 
   get editCertifiedProduct() {
@@ -41,10 +39,6 @@ class ListingPage {
     return $(this.elements.bypassWarning);
   }
 
-  get returnToSearch() {
-    return $(this.elements.returnToSearch);
-  }
-
   get productHistory() {
     return $(this.elements.productHistory);
   }
@@ -55,16 +49,6 @@ class ListingPage {
 
   goToDeveloperPageLink(developerName) {
     return $(`//a[text()="${developerName}"]`);
-  }
-
-  listingHistoryModalRows() {
-    return $(this.elements.listingHistoryTitle)
-      .parentElement()
-      .$('div.MuiDialogContent-root.MuiDialogContent-dividers')
-      .$('div')
-      .$('table')
-      .$('tbody')
-      .$$('tr');
   }
 
   get listingBasicInformation() {

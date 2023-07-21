@@ -1,19 +1,21 @@
 const states = [{
   name: 'listing',
-  url: '/listing/{id}?panel',
+  url: '/listing/{id}',
   component: 'chplListing',
-  params: {
-    forceReload: { squash: true, value: null },
-  },
   data: { title: 'CHPL Listing Details' },
+}, {
+  name: 'listing.edit',
+  url: '/edit',
+  component: 'chplListingEditPage',
+  data: {
+    title: 'CHPL Listing Details - Edit',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
   resolve: {
-    listing: (networkService, $location, $transition$) => {
+    listing: (networkService, $transition$) => {
       'ngInject';
 
-      if (!$transition$.params().id) {
-        $location.path('/search');
-      }
-      return networkService.getListing($transition$.params().id, $transition$.params().forceReload);
+      return networkService.getListing($transition$.params().id);
     },
     resources: ($q, networkService) => {
       'ngInject';
@@ -44,42 +46,12 @@ const states = [{
     },
   },
 }, {
-  name: 'listing.sedTask',
-  component: 'chplListingSedTaskView',
-  params: {
-    sedTaskId: { squash: true, value: null },
-  },
-  data: { title: 'CHPL Listing Details - SED Task' },
-}, {
-  name: 'listing.view',
-  url: '/view',
-  component: 'chplListingViewPage',
-  data: { title: 'CHPL Listing Details - View' },
-}, {
-  name: 'listing.view.edit',
-  url: '/edit',
-  component: 'chplListingEditPage',
-  data: {
-    title: 'CHPL Listing Details - Edit',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
-  },
-}, {
   name: 'product',
   url: '/product/{id}',
   redirectTo: (trans) => ({
     state: 'listing',
     params: {
       id: trans.params().id,
-    },
-  }),
-}, {
-  name: 'product.initial-panel',
-  url: '?panel',
-  redirectTo: (trans) => ({
-    state: 'listing',
-    params: {
-      id: trans.params().id,
-      panel: trans.params().panel,
     },
   }),
 }];

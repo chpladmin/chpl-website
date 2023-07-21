@@ -8,11 +8,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIcon from '@material-ui/icons/Info';
-import {
-  arrayOf,
-  bool,
-  func,
-} from 'prop-types';
+import { bool, func } from 'prop-types';
 
 import ChplCriterion from './criterion';
 
@@ -20,10 +16,8 @@ import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
 import {
-  accessibilityStandard,
-  certificationResult,
+  listing as listingPropType,
   resources as resourceDefinition,
-  qmsStandard,
 } from 'shared/prop-types';
 
 const useStyles = makeStyles({
@@ -47,24 +41,32 @@ const useStyles = makeStyles({
 });
 
 function ChplCriteria(props) {
-  const { hasIcs, isConfirming } = props;
+  const {
+    canEdit,
+    hasIcs,
+    isConfirming,
+    listing,
+    resources,
+    onSave,
+    viewAll,
+  } = props;
   const { hasAnyRole } = useContext(UserContext);
   const [criteria, setCriteria] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
-    setCriteria(props.certificationResults
+    setCriteria(listing.certificationResults
       .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
-  }, [props.certificationResults]); // eslint-disable-line react/destructuring-assignment
+  }, [listing]);
 
   const handleSave = (criterion) => {
     const updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
     updated.push(criterion);
     setCriteria(updated.sort((a, b) => sortCriteria(a.criterion, b.criterion)));
-    props.onSave(updated);
+    onSave(updated);
   };
 
-  const prepareResources = (resources, criterion) => {
+  const prepareResources = (criterion) => {
     const updated = {
       ...resources,
       testData: { ...resources.testData, data: resources.testData?.data.filter((item) => item.criteria.id === criterion.id) },
@@ -74,23 +76,24 @@ function ChplCriteria(props) {
     return updated;
   };
 
+  if (criteria.length === 0) { return null; }
+
   return (
     <>
-      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || props.viewAll))
+      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || viewAll))
         .map((cc) => (
           <ChplCriterion
             key={cc.criterion.id}
             certificationResult={cc}
-            canEdit={props.canEdit}
+            canEdit={canEdit}
             hasIcs={hasIcs}
             isConfirming={isConfirming}
+            listing={listing}
             onSave={handleSave}
-            resources={prepareResources(props.resources, cc.criterion)}
-            accessibilityStandards={props.accessibilityStandards}
-            qmsStandards={props.qmsStandards}
+            resources={prepareResources(cc.criterion)}
           />
         ))}
-      { (criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll)).length > 0)
+      { (criteria.filter((cc) => cc.criterion.removed && (cc.success || viewAll)).length > 0)
         && (
           <div>
             <Accordion
@@ -108,16 +111,15 @@ function ChplCriteria(props) {
               </AccordionSummary>
               <AccordionDetails>
                 <Container>
-                  { criteria.filter((cc) => cc.criterion.removed && (cc.success || props.viewAll))
+                  { criteria.filter((cc) => cc.criterion.removed && (cc.success || viewAll))
                     .map((cc) => (
                       <ChplCriterion
                         key={cc.criterion.id}
                         certificationResult={cc}
-                        canEdit={props.canEdit && !isConfirming && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
+                        canEdit={canEdit && !isConfirming && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
                         onSave={handleSave}
-                        resources={prepareResources(props.resources, cc.criterion)}
-                        accessibilityStandards={props.accessibilityStandards}
-                        qmsStandards={props.qmsStandards}
+                        resources={prepareResources(cc.criterion)}
+                        listing={listing}
                       />
                     ))}
                 </Container>
@@ -132,24 +134,20 @@ function ChplCriteria(props) {
 export default ChplCriteria;
 
 ChplCriteria.propTypes = {
-  certificationResults: arrayOf(certificationResult).isRequired,
-  accessibilityStandards: arrayOf(accessibilityStandard),
   canEdit: bool,
-  isConfirming: bool,
   hasIcs: bool,
+  isConfirming: bool,
+  listing: listingPropType.isRequired,
   onSave: func,
-  qmsStandards: arrayOf(qmsStandard),
   resources: resourceDefinition,
   viewAll: bool,
 };
 
 ChplCriteria.defaultProps = {
-  accessibilityStandards: [],
   canEdit: false,
-  isConfirming: false,
   hasIcs: false,
+  isConfirming: false,
   onSave: () => {},
-  qmsStandards: [],
   resources: {},
   viewAll: false,
 };

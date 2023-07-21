@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -13,16 +12,40 @@ import {
   TableHead,
   TableRow,
   Typography,
+  makeStyles,
 } from '@material-ui/core';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import ChplSedDownload from './sed-download';
+import ChplSedTaskView from './sed-task-view';
 
 import { ChplHighlightCures, ChplLink } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { getAngularService } from 'services/angular-react-helper';
 import { getDisplayDateFormat } from 'services/date-util';
 import { listing as listingType } from 'shared/prop-types/listing';
+import { theme } from 'themes';
+
+const useStyles = makeStyles({
+  dataContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    flexWrap: 'nowrap',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      gap: '8px',
+      flexWrap: 'wrap',
+    },
+  },
+  dataBox: {
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '48%',
+    },
+  },
+  tableScrolling: {
+    overflowX: 'auto !important',
+  },
+});
 
 const sortTestTasks = (a, b) => (a.description < b.description ? -1 : 1);
 
@@ -36,16 +59,12 @@ function ChplSed({ listing }) {
     sedReportFileLocation,
     sedTestingEndDay,
   } = listing;
-  const $state = getAngularService('$state');
   const [hasSed, setHasSed] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     setHasSed(certificationResults.some((cr) => cr.success && cr.sed));
   }, [certificationResults]);
-
-  const viewTask = (task) => {
-    $state.go('.sedTask', { sedTaskId: task.id });
-  };
 
   if (!hasSed) {
     return (
@@ -58,14 +77,15 @@ function ChplSed({ listing }) {
   return (
     <Box display="flex" gridGap={16} flexDirection="column">
       <Card>
+        <CardHeader title="SED Summary" />
         <CardContent>
-          <Box display="flex" gridGap={8} flexDirection="column">
-            <div>
+          <Box className={classes.dataContainer}>
+            <Box width="100%">
               <Typography variant="subtitle1">
-                Full Usability Report
+                Full Usability Report:
               </Typography>
               <Typography>
-                {sedReportFileLocation
+                { sedReportFileLocation
                   && (
                     <ChplLink
                       href={sedReportFileLocation}
@@ -74,30 +94,30 @@ function ChplSed({ listing }) {
                   )}
                 {!sedReportFileLocation && 'No report on file'}
               </Typography>
-            </div>
-            <div>
+            </Box>
+            <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
-                Description of Intended Users
+                Description of Intended Users:
               </Typography>
               <Typography>
                 {sedIntendedUserDescription ?? 'N/A'}
               </Typography>
-            </div>
-            <div>
+            </Box>
+            <Box className={classes.dataBox}>
               <Typography variant="subtitle1">
-                Date SED Testing was Completed
+                Date SED Testing was Completed:
               </Typography>
               <Typography>
                 {getDisplayDateFormat(sedTestingEndDay)}
               </Typography>
-            </div>
+            </Box>
           </Box>
         </CardContent>
       </Card>
       <Card>
         <CardHeader title="SED Tested Certification Criteria &amp; Associated UCD Processes" />
         <CardContent>
-          <Card>
+          <Card className={classes.tableScrolling}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -107,7 +127,7 @@ function ChplSed({ listing }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sed.ucdProcesses
+                { sed.ucdProcesses
                   .sort(sortUcdProcesses)
                   .map((ucd) => (
                     <TableRow key={ucd.id}>
@@ -139,70 +159,28 @@ function ChplSed({ listing }) {
           </Card>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader title="SED Testing Tasks" />
-        <Box display="flex" justifyContent="flex-end" pt={4} pr={4} pl={4}>
-          <ChplSedDownload
-            listing={listing}
-          />
-        </Box>
-        <CardContent>
+      { listing.certificationEdition.name === '2015'
+        && (
           <Card>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Task Rating and Scale Type</TableCell>
-                  <TableCell>Certification Criteria</TableCell>
-                  <TableCell><span className="sr-only">Actions</span></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sed.testTasks
-                  .sort(sortTestTasks)
-                  .map((task) => (
-                    <TableRow key={task.id}>
-                      <TableCell>
-                        {task.description}
-                      </TableCell>
-                      <TableCell>
-                        {task.taskRating}
-                        {' '}
-                        (
-                        {task.taskRatingScale}
-                        )
-                      </TableCell>
-                      <TableCell>
-                        {task.criteria
-                          .sort(sortCriteria)
-                          .map((criterion) => (
-                            <ListItem key={criterion.id}>
-                              {criterion.removed && 'Removed | '}
-                              {criterion.number}
-                              :
-                              {' '}
-                              <ChplHighlightCures text={criterion.title} />
-                            </ListItem>
-                          ))}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          size="small"
-                          endIcon={<VisibilityIcon />}
-                          onClick={() => viewTask(task)}
-                        >
-                          View
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+            <CardHeader title="SED Testing Tasks" />
+            <CardContent>
+              <Box display="flex" justifyContent="flex-end" pb={4}>
+                <ChplSedDownload
+                  listing={listing}
+                />
+              </Box>
+              { sed.testTasks
+                .sort(sortTestTasks)
+                .map((task) => (
+                  <ChplSedTaskView
+                    key={task.id ?? task.uniqueId}
+                    listing={listing}
+                    task={task}
+                  />
+                ))}
+            </CardContent>
           </Card>
-        </CardContent>
-      </Card>
+        )}
     </Box>
   );
 }
