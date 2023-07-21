@@ -87,46 +87,6 @@ export class ReportService {
     }
   }
 
-  nestedCompare (oldData, newData, key, subkey, display, filter) {
-    return this.compareItem(oldData[key], newData[key], subkey, display, filter);
-  }
-
-  compareAddress (prev, curr) {
-    var simpleFields = [
-      {key: 'streetLineOne', display: 'Street Line 1'},
-      {key: 'streetLineTwo', display: 'Street Line 2'},
-      {key: 'line1', display: 'Street Line 1'},
-      {key: 'line2', display: 'Street Line 2'},
-      {key: 'city', display: 'City'},
-      {key: 'state', display: 'State'},
-      {key: 'zipcode', display: 'Zipcode'},
-      {key: 'country', display: 'Country'},
-    ];
-    return this.compareObject(prev, curr, simpleFields);
-  }
-
-  compareContact (prev, curr) {
-    var simpleFields = [
-      {key: 'fullName', display: 'Full Name'},
-      {key: 'friendlyName', display: 'Friendly Name'},
-      {key: 'phoneNumber', display: 'Phone Number'},
-      {key: 'title', display: 'Title'},
-      {key: 'email', display: 'Email'},
-    ];
-    return this.compareObject(prev, curr, simpleFields);
-  }
-
-  compareObject (prev, curr, fields) {
-    var ret = [];
-    var change;
-
-    for (var i = 0; i < fields.length; i++) {
-      change = this.compareItem(prev, curr, fields[i].key, fields[i].display, fields[i].filter);
-      if (change) { ret.push('<li>' + change + '</li>'); }
-    }
-    return ret;
-  }
-
   interpretNonUpdate (activity, data, text, key) {
     if (!key) { key = 'name'; }
     if (data.originalData && !data.newData) { // no new data: deleted
@@ -143,10 +103,6 @@ export class ReportService {
     }
   }
 
-  isValidDate (d) {
-    return d instanceof Date && !isNaN(d);
-  }
-
   coerceToMidnight (date, roundUp) {
     if (date) {
       date.setHours(0,0,0,0);
@@ -154,29 +110,6 @@ export class ReportService {
         date.setDate(date.getDate() + 1);
       }
       return date;
-    }
-  }
-
-  validDates (startDate, endDate, range, ignoreRange) {
-    if (this.isValidDate(endDate) && this.isValidDate(startDate)) {
-      var utcEnd = Date.UTC(
-        endDate.getFullYear(),
-        endDate.getMonth(),
-        endDate.getDate()
-      );
-      var utcStart = Date.UTC(
-        startDate.getFullYear(),
-        startDate.getMonth(),
-        startDate.getDate()
-      );
-      var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
-      if (ignoreRange) {
-        return (utcStart < utcEnd);
-      }
-
-      return (0 <= diffDays && diffDays < range);
-    } else {
-      return false;
     }
   }
 

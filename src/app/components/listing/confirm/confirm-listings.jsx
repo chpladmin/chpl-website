@@ -281,6 +281,7 @@ function ChplConfirmListings(props) {
                             id={`reject-pending-listing-${listing.chplProductNumber}`}
                             onChange={($event) => handleRejectCheckbox($event, listing)}
                             inputProps={{ 'aria-label': `Reject Listing: ${listing.chplProductNumber}` }}
+                            color="primary"
                           />
                         </TableCell>
                       </TableRow>

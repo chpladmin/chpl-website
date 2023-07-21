@@ -18,13 +18,18 @@ import Image from '../../../assets/images/SubscribeTo.png';
 
 import { useFetchRoles, usePostSubscription } from 'api/subscriptions';
 import { ChplTextField } from 'components/util';
+import { theme } from 'themes';
 
 const useStyles = makeStyles({
   subscribeToBackground: {
     backgroundImage: `url(${Image})`,
-    minHeight: '186px',
-    marginLeft: '-20px',
+    minHeight: '132px',
     backgroundSize: '100%',
+    backgroundRepeat: 'no-repeat',
+    marginLeft: '-20px',
+    [theme.breakpoints.up('md')]: {
+      minHeight: '175px',
+    },
   },
 });
 
@@ -96,7 +101,7 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
             <Typography gutterBottom variant="h5">
               <strong>Want Updates?</strong>
             </Typography>
-            <Typography>
+            <Typography variant="body2">
               If you&apos;re interested in keeping up-to-date with changes to this listing from the Certified Health IT Product List (CHPL) fill out the fields below.
             </Typography>
           </div>

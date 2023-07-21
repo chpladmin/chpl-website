@@ -1,6 +1,7 @@
 const palette = {
   active: '#66926d',
-  black: '#000000',
+  background: '#f9f9f9',
+  black: '#000',
   divider: '#c2c6ca',
   error: '#c44f65',
   errorDark: '#853544',
@@ -11,7 +12,7 @@ const palette = {
   primaryLight: '#c6d5e5',
   primary: '#156dac',
   primaryDark: '#122953',
-  secondaryLight: '#ffffff',
+  secondaryLight: '#fff',
   secondary: '#f5f9fd',
   secondaryDark: '#c2c6ca',
   warning: '#e3bf00',
