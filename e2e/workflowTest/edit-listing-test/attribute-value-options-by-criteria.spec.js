@@ -23,7 +23,7 @@ inputs.forEach((input) => {
       hooks = new Hooks();
       login = new LoginComponent();
       criteria = new CriteriaComponent();
-      await hooks.open('#/listing/10599/view/edit');
+      await hooks.open('#/listing/10599/edit');
     });
 
     describe('When ONC logged in', () => {

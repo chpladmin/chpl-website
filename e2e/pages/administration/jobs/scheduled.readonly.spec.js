@@ -28,7 +28,6 @@ describe('the Reports page', () => {
     it('should have specific jobs', () => {
       const expected = [
         'All Broken Surveillance Rules Report',
-        'CHPL URL Uptime Report',
         'Complaints Report Email',
         'Cures Statistics Email',
         'Developer Access Report',
@@ -41,6 +40,7 @@ describe('the Reports page', () => {
         'Questionable Activity Report',
         'Questionable URL Report',
         'Real World Testing Email Report',
+        'Service Base URL List Uptime Report',
         'Summary Statistics Email',
         'Trigger Developer Ban Notification',
       ];

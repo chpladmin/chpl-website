@@ -10,7 +10,7 @@ import { arrayOf } from 'prop-types';
 import { ChplTooltip } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { directReview as directReviewType } from 'shared/prop-types';
-import { theme, utilStyles } from 'themes';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -179,7 +179,7 @@ function ChplDirectReviewsView(props) {
                                   <ul>
                                     { nc.developerAssociatedListings.map((dal) => (
                                       <li key={dal.id}>
-                                        <a href={`#/listing/${dal.id}?panel=directReviews`}>{ dal.chplProductNumber }</a>
+                                        <a href={`#/listing/${dal.id}`}>{ dal.chplProductNumber }</a>
                                       </li>
                                     ))}
                                   </ul>
