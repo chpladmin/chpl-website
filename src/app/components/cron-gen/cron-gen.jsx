@@ -70,7 +70,7 @@ const getCheckbox = (display, name, value, onChange, state) => (
   <FormControlLabel
     label={display}
     key={value}
-    control={<Checkbox name={name} value={value} onChange={onChange} checked={state.has(value)} />}
+    control={<Checkbox color="primary" name={name} value={value} onChange={onChange} checked={state.has(value)} />}
   />
 );
 

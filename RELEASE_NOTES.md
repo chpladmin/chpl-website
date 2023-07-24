@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 13.0.0
+_24 July 2023_
+
+### Major Feature
+* Display Listing details in new UI/UX
+
+### User Interface Updates
+* Use new Listing View for Inspect/Confirm workflow screen
+* Display ICS Surveillance separately from "regular" surveillance
+
+### Flagged Features
+* Support unsubscribing from all CHPL notifications
+
+---
+
 ## Version 12.2.1
 _3 July 2023_
 

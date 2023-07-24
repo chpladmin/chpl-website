@@ -10,6 +10,21 @@ import * as angularReactHelper from '../../../../services/angular-react-helper';
 
 import ChplCriterion from './criterion';
 
+const mock = {
+  listing: {
+    accessibilityStandards: [],
+    certificationEdition: { name: '2015' },
+    qmsStandards: [],
+  },
+  certificationResult: {
+    success: true,
+    criterion: {
+      number: '170.315 (z)(1)',
+      title: 'Criterion Title',
+    },
+  },
+};
+
 const $analyticsMock = {
   eventTrack: jest.fn(),
 };
@@ -30,15 +45,8 @@ describe('the ChplCriterion component', () => {
     beforeEach(async () => {
       render(
         <ChplCriterion
-          accessibilityStandards={[]}
-          certificationResult={{
-            success: true,
-            criterion: {
-              number: '170.315 (z)(1)',
-              title: 'Criterion Title',
-            },
-          }}
-          qmsStandards={[]}
+          certificationResult={mock.certificationResult}
+          listing={mock.listing}
         />,
       );
     });

@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { string } from 'prop-types';
 
-import { usePutSubscriber } from 'api/subscriptions';
+import { useDeleteSubscriber } from 'api/subscriptions';
 
 const useStyles = makeStyles({
   content: {
@@ -16,18 +16,18 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplConfirmSubscription(props) {
+function ChplUnsubscribeAll(props) {
   const { hash } = props;
   const [message, setMessage] = useState(undefined);
-  const putSubscriber = usePutSubscriber();
+  const deleteSubscriber = useDeleteSubscriber();
   const classes = useStyles();
 
   useEffect(() => {
-    putSubscriber.mutate({
+    deleteSubscriber.mutate({
       subscriberId: hash,
     }, {
       onSuccess: () => {
-        setMessage('Your subscription has been confirmed');
+        setMessage('You have been unsubscribed from all CHPL notifications');
       },
       onError: (error) => {
         setMessage(error.response.data.error);
@@ -40,7 +40,7 @@ function ChplConfirmSubscription(props) {
   return (
     <Container className={classes.content}>
       <Typography variant="h1">
-        Confirm Subscription
+        Unsubscribe
       </Typography>
       <Typography>
         { message }
@@ -49,8 +49,8 @@ function ChplConfirmSubscription(props) {
   );
 }
 
-export default ChplConfirmSubscription;
+export default ChplUnsubscribeAll;
 
-ChplConfirmSubscription.propTypes = {
+ChplUnsubscribeAll.propTypes = {
   hash: string.isRequired,
 };
