@@ -9,11 +9,12 @@ import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { LocalDate } from '@js-joda/core';
-import { getAngularService } from '.';
-import ChplTextField from '../../util/chpl-text-field';
-import theme from '../../../themes/theme';
 
-const useStyles = makeStyles(() => ({
+import ChplTextField from 'components/util/chpl-text-field';
+import { getAngularService } from 'services/angular-react-helper';
+import theme from 'themes/theme';
+
+const useStyles = makeStyles({
   apiRegistrationLayout: {
     display: 'grid',
     columnGap: '8px',
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   fullWidth: {
     gridColumn: '1 / -1',
   },
-}));
+});
 
 const validationSchema = yup.object({
   year: yup.string()
@@ -55,28 +56,28 @@ function ChplSurveillanceActivityReportingDateSelector() {
     switch (quarter) {
       case 'all':
         return {
-          startDate: LocalDate.of(year, 1, 1),
-          endDate: LocalDate.of(year, 12, 31),
+          startDay: LocalDate.of(year, 1, 1),
+          endDay: LocalDate.of(year, 12, 31),
         };
       case 'q1':
         return {
-          startDate: LocalDate.of(year, 1, 1),
-          endDate: LocalDate.of(year, 3, 31),
+          startDay: LocalDate.of(year, 1, 1),
+          endDay: LocalDate.of(year, 3, 31),
         };
       case 'q2':
         return {
-          startDate: LocalDate.of(year, 4, 1),
-          endDate: LocalDate.of(year, 6, 30),
+          startDay: LocalDate.of(year, 4, 1),
+          endDay: LocalDate.of(year, 6, 30),
         };
       case 'q3':
         return {
-          startDate: LocalDate.of(year, 7, 1),
-          endDate: LocalDate.of(year, 9, 30),
+          startDay: LocalDate.of(year, 7, 1),
+          endDay: LocalDate.of(year, 9, 30),
         };
       case 'q4':
         return {
-          startDate: LocalDate.of(year, 10, 1),
-          endDate: LocalDate.of(year, 12, 31),
+          startDay: LocalDate.of(year, 10, 1),
+          endDay: LocalDate.of(year, 12, 31),
         };
       default:
         return {};
@@ -175,4 +176,4 @@ function ChplSurveillanceActivityReportingDateSelector() {
   );
 }
 
-export { ChplSurveillanceActivityReportingDateSelector };
+export default ChplSurveillanceActivityReportingDateSelector;

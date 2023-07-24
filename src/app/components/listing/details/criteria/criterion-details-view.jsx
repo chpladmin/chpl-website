@@ -68,7 +68,7 @@ function ChplCriterionDetailsView(props) {
             && (
               <TableRow key="additionalSoftware">
                 <TableCell component="th" scope="row">
-                  <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criterion.">
+                  <ChplTooltip title="Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria.">
                     <IconButton className={classes.infoIcon}>
                       <InfoIcon
                         className={classes.infoIconColor}
@@ -321,20 +321,22 @@ function ChplCriterionDetailsView(props) {
                       <List>
                         { qmsStandards.map((qms, index) => (
                           <ListItem key={qms.id || index}>
-                            <strong>Standard: </strong>
-                            { qms.qmsStandardName }
-                            <br />
-                            <strong>Description: </strong>
-                            {
-                              qms.qmsModification
-                                && <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries />
-                            }
-                            { !qms.modification
-                              && <>N/A</>}
-                            <br />
-                            <strong>Applicable Criteria: </strong>
-                            { qms.applicableCriteria || 'N/A' }
-                            <br />
+                            <div>
+                              <strong>Standard:</strong>
+                              {' '}
+                              { qms.qmsStandardName }
+                              <br />
+                              <strong>Description:</strong>
+                              {' '}
+                              { qms.qmsModification
+                                && <ChplEllipsis text={qms.qmsModification} maxLength={32} wordBoundaries />}
+                              { !qms.qmsModification
+                                && <>N/A</>}
+                              <br />
+                              <strong>Applicable Criteria:</strong>
+                              {' '}
+                              { qms.applicableCriteria || 'N/A' }
+                            </div>
                           </ListItem>
                         ))}
                       </List>

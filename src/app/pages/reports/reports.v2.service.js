@@ -103,7 +103,8 @@ const compareArrays = (previous, current, options, lookup) => {
   return ret;
 };
 
-const comparePrimitive = (before, after, key, title, transform = (val) => val) => {
+const comparePrimitive = (before, after, key, title, transform = (val) => val, deprecatedBy) => {
+  if (deprecatedBy && before[deprecatedBy]) { return undefined; }
   if ((!before || !before[key]) && after && after[key]) {
     return `${title} added: ${transform(after[key])}`;
   }

@@ -10,6 +10,21 @@ const states = [{
   params: {
     hash: { squash: true, value: null },
   },
+  data: { title: 'CHPL Subscriptions' },
+  resolve: {
+    hash: ($transition$) => {
+      'ngInject';
+
+      return $transition$.params().hash;
+    },
+  },
+}, {
+  name: 'subscriptions.unsubscribe',
+  url: '/unsubscribe/{hash}',
+  component: 'chplSubscriptionsUnsubscribeAll',
+  params: {
+    hash: { squash: true, value: null },
+  },
   resolve: {
     hash: ($transition$) => {
       'ngInject';
@@ -25,6 +40,7 @@ const states = [{
   params: {
     hash: { squash: true, value: null },
   },
+  data: { title: 'CHPL Subscriptions' },
   resolve: {
     hash: ($transition$) => {
       'ngInject';
@@ -32,7 +48,6 @@ const states = [{
       return $transition$.params().hash;
     },
   },
-  data: { title: 'CHPL Subscriptions' },
 }];
 
 function subscriptionsStatesConfig($stateProvider) {

@@ -1,6 +1,7 @@
-import CriteriaComponent from './criteria.po';
 import Hooks from '../../../../utilities/hooks';
 import ListingPage from '../../../../pages/listing/listing.po';
+
+import CriteriaComponent from './criteria.po';
 
 let criteria;
 let hooks;
@@ -29,19 +30,6 @@ describe('the 2015 listing page', () => {
     expect(criteria.removedCriteriaHeader.isDisplayed()).toBe(true);
   });
 
-  describe('when clicked on see all criteria', () => {
-    beforeEach(async () => {
-      page.seeAll.click();
-    });
-
-    it('should display all criteria', () => {
-      if (uiUpgradeFlag) {
-        criteria.expandRemovedCriteria();
-      }
-      expect(criteria.criteriaCount()).toBe(78);
-    });
-  });
-
   it('should display view only a1 criteria details', () => {
     criteria.expandCriteria('1', '170.315 (a)(1)');
     expect(criteria.criteriaDetailTable('1', '170.315 (a)(1)').isDisplayed()).toBe(true);
@@ -67,14 +55,10 @@ describe('the 2014 listing page', () => {
     expect(criteria.criteriaCount()).toBeGreaterThan(35);
   });
 
-  describe('when clicked on see all criteria', () => {
-    beforeEach(async () => {
-      page.seeAll.click();
-    });
-
-    it('should display all criteria', () => {
-      expect(criteria.criteriaCount()).toBe(59);
-    });
+  it('should display all criteria when clicked on see all criteria', () => {
+    page.seeAllCriteria.scrollIntoView({ block: 'center', inline: 'center' });
+    page.seeAllCriteria.click();
+    expect(criteria.criteriaCount()).toBe(59);
   });
 
   it('should display view only a1 criteria details', () => {

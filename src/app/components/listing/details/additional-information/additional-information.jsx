@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
   CardHeader,
   List,
   ListItem,
   Typography,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 
 import ChplIcsFamily from 'components/listing/details/ics-family/ics-family';
 import { ChplLink } from 'components/util';
@@ -20,10 +20,10 @@ const getRelatives = (listings) => listings.map((listing) => (
     { listing.id
       && (
         <ChplLink
-          href={`#/listing/${listing.id}?panel=additional`}
-          text={`${listing.chplProductNumber} (${getDisplayDateFormat(listing.certificationDate)})`}
+          href={`#/listing/${listing.id}`}
+          text={`${listing.chplProductNumber} (${getDisplayDateFormat(listing.certificationDay)})`}
           external={false}
-          router={{ sref: 'listing', options: { id: listing?.id, panel: 'additional' } }}
+          router={{ sref: 'listing', options: { id: listing?.id } }}
           analytics={{ event: 'Go to ICS Relationship Listing', category: 'Listing Details', label: listing.chplProductNumber }}
         />
       )}
@@ -35,7 +35,7 @@ const getRelatives = (listings) => listings.map((listing) => (
 ));
 
 function ChplAdditionalInformation(props) {
-  const { listing } = props;
+  const { isConfirming, listing } = props;
   const [currentPi, setCurrentPi] = useState(undefined);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ function ChplAdditionalInformation(props) {
                 { listing.ics.parents?.length > 0
                   && (
                     <>
-                      <Typography variant="subtitle1">Inherits From</Typography>
+                      <Typography variant="subtitle1">Inherits From:</Typography>
                       <List>
                         { getRelatives(listing.ics.parents) }
                       </List>
@@ -97,21 +97,19 @@ function ChplAdditionalInformation(props) {
                 { listing.ics.children?.length > 0
                   && (
                     <>
-                      <Typography variant="subtitle1">ICS Source for</Typography>
+                      <Typography variant="subtitle1">ICS Source for:</Typography>
                       <List>
                         { getRelatives(listing.ics.children) }
                       </List>
                     </>
                   )}
-              </CardContent>
-              { listing.ics.inherits && listing.certificationEdition.name === '2015'
-                && (
-                  <CardActions>
+                { listing.ics.inherits && listing.certificationEdition.name === '2015' && !isConfirming
+                  && (
                     <ChplIcsFamily
                       id={listing.id}
                     />
-                  </CardActions>
-                )}
+                  )}
+              </CardContent>
             </Card>
           )}
         { listing.otherAcb !== null
@@ -164,5 +162,10 @@ function ChplAdditionalInformation(props) {
 export default ChplAdditionalInformation;
 
 ChplAdditionalInformation.propTypes = {
+  isConfirming: bool,
   listing: listingType.isRequired,
+};
+
+ChplAdditionalInformation.defaultProps = {
+  isConfirming: false,
 };

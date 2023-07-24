@@ -24,6 +24,9 @@ const useStyles = makeStyles({
   infoIcon: {
     color: `${palette.primary}`,
   },
+  tableScrolling: {
+    overflowX: 'auto !important',
+  },
 });
 
 const getDisplayCriteria = (criteria) => [...new Set(criteria.map((c) => c.number))]
@@ -45,7 +48,7 @@ function ChplG1g2(props) {
   }
 
   return (
-    <Card>
+    <Card className={classes.tableScrolling}>
       <Table>
         <TableHead>
           <TableRow>
@@ -58,7 +61,7 @@ function ChplG1g2(props) {
         <TableBody>
           { measures
             .map((measure) => (
-              <TableRow key={measure.id}>
+              <TableRow key={measure.id ?? measure.measure.id}>
                 <TableCell className={measure.measure.removed ? classes.removedText : ''}>
                   <Box display="flex" alignItems="center" gridGap={4}>
                     { measure.measure.removed
