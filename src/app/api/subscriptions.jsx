@@ -15,6 +15,16 @@ const useFetchRoles = () => {
   });
 };
 
+const useFetchSubscriptions = (hash) => {
+  const axios = useAxios();
+  return useQuery(['subscriptions', hash], async () => {
+    const response = await axios.get(`subscriptions/${hash}`);
+    return response.data;
+  }, {
+    enabled: !!hash,
+  });
+};
+
 const usePostSubscription = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.post('subscriptions', data));
@@ -28,6 +38,7 @@ const usePutSubscriber = () => {
 export {
   useDeleteSubscriber,
   useFetchRoles,
+  useFetchSubscriptions,
   usePostSubscription,
   usePutSubscriber,
 };
