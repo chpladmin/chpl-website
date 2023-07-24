@@ -103,7 +103,7 @@ function ChplAdditionalInformation(props) {
                       </List>
                     </>
                   )}
-                { listing.ics.inherits && listing.certificationEdition.name === '2015' && !isConfirming
+                { listing.ics.inherits !== null && listing.certificationEdition.name === '2015' && !isConfirming
                   && (
                     <ChplIcsFamily
                       id={listing.id}
