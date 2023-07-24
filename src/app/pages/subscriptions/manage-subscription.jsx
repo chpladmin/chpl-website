@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { string } from 'prop-types';
 
-import { useFetchSubscriptions } from 'api/subscriptions';
+import { useFetchSubscriber, useFetchSubscriptions } from 'api/subscriptions';
 
 const useStyles = makeStyles({
   content: {
@@ -18,17 +18,25 @@ const useStyles = makeStyles({
 
 function ChplManageSubscription(props) {
   const { hash } = props;
-  const [roles, setRoles] = useState([]);
+  const [subscriber, setSubscriber] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchSubscriptions(hash);
+  const subscriberQuery = useFetchSubscriber(hash);
+  const subscriptionQuery = useFetchSubscriptions(hash);
   const classes = useStyles();
 
   useEffect(() => {
-    if (isLoading || !isSuccess) {
+    if (subscriberQuery.isLoading || !subscriberQuery.isSuccess) {
       return;
     }
-    setSubscriptions(data);
-  }, [data, isLoading, isSuccess]);
+    setSubscriber(subscriberQuery.data);
+  }, [subscriberQuery.data, subscriberQuery.isLoading, subscriberQuery.isSuccess]);
+
+  useEffect(() => {
+    if (subscriptionQuery.isLoading || !subscriptionQuery.isSuccess) {
+      return;
+    }
+    setSubscriptions(subscriptionQuery.data);
+  }, [subscriptionQuery.data, subscriptionQuery.isLoading, subscriptionQuery.isSuccess]);
 
   return (
     <Container className={classes.content}>
@@ -36,8 +44,16 @@ function ChplManageSubscription(props) {
         Manage Subscriptions
       </Typography>
       <Typography>
-        Content coming soon
+        { subscriber.email }
+        {' | '}
+        { subscriber.role.name }
       </Typography>
+      { subscriptions.map((subscription) => (
+        <>
+          { subscription.subject.type.name }
+          { subscription.subject.subject }
+        </>
+      ))}
     </Container>
   );
 }

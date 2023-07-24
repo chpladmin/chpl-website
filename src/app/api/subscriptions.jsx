@@ -15,10 +15,20 @@ const useFetchRoles = () => {
   });
 };
 
+const useFetchSubscriber = (hash) => {
+  const axios = useAxios();
+  return useQuery(['subscribers', hash], async () => {
+    const response = await axios.get(`subscribers/${hash}`);
+    return response.data;
+  }, {
+    enabled: !!hash,
+  });
+};
+
 const useFetchSubscriptions = (hash) => {
   const axios = useAxios();
-  return useQuery(['subscriptions', hash], async () => {
-    const response = await axios.get(`subscriptions/${hash}`);
+  return useQuery(['subscribers', hash, 'subscriptions'], async () => {
+    const response = await axios.get(`subscribers/${hash}/subscriptions`);
     return response.data;
   }, {
     enabled: !!hash,
@@ -38,6 +48,7 @@ const usePutSubscriber = () => {
 export {
   useDeleteSubscriber,
   useFetchRoles,
+  useFetchSubscriber,
   useFetchSubscriptions,
   usePostSubscription,
   usePutSubscriber,
