@@ -9,8 +9,8 @@ const useDeleteSubscriber = () => {
 
 const useFetchRoles = () => {
   const axios = useAxios();
-  return useQuery(['subscriptions/roles'], async () => {
-    const response = await axios.get('subscriptions/roles');
+  return useQuery(['subscribers/roles'], async () => {
+    const response = await axios.get('subscribers/roles');
     return response.data;
   });
 };
