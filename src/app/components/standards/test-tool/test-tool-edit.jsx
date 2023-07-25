@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     gap: '8px',
     flexWrap: 'wrap',
   },
-  dataContainer: {
+  horizontalInput: {
     display: 'flex',
     flexDirection: 'row',
     gap: '16px',
@@ -171,7 +171,7 @@ function ChplTestToolEdit(props) {
 
   return (
     <div className={classes.container}>
-      <Box className={classes.dataContainer}>
+      <Box className={classes.horizontalInput}>
         <ChplTextField
           id="value"
           name="value"
@@ -194,7 +194,7 @@ function ChplTestToolEdit(props) {
           helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
         />
       </Box>
-      <Box className={classes.dataContainer}>
+      <Box className={classes.horizontalInput}>
         <ChplTextField
           id="start-day"
           name="startDay"
