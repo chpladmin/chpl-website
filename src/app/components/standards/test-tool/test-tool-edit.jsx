@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Chip,
+  Divider,
   MenuItem,
   makeStyles,
 } from '@material-ui/core';
@@ -40,6 +42,11 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     gap: '8px',
     flexWrap: 'wrap',
+  },
+  horizontalInput: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
   },
 });
 
@@ -164,27 +171,88 @@ function ChplTestToolEdit(props) {
 
   return (
     <div className={classes.container}>
+      <Box className={classes.horizontalInput}>
+        <ChplTextField
+          id="value"
+          name="value"
+          label="Value"
+          value={formik.values.value}
+          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.value && !!formik.errors.value}
+          helperText={formik.touched.value && formik.errors.value}
+        />
+        <ChplTextField
+          id="regulatory-text-citation"
+          name="regulatoryTextCitation"
+          label="Regulatory Text Citation"
+          value={formik.values.regulatoryTextCitation}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.regulatoryTextCitation && !!formik.errors.regulatoryTextCitation}
+          helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
+        />
+      </Box>
+      <Box className={classes.horizontalInput}>
+        <ChplTextField
+          id="start-day"
+          name="startDay"
+          label="Start Date"
+          type="date"
+          value={formik.values.startDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.startDay && !!formik.errors.startDay}
+          helperText={formik.touched.startDay && formik.errors.startDay}
+          className={classes.date}
+        />
+        <ChplTextField
+          id="required-day"
+          name="requiredDay"
+          label="Required Date"
+          type="date"
+          value={formik.values.requiredDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.requiredDay && !!formik.errors.requiredDay}
+          helperText={formik.touched.requiredDay && formik.errors.requiredDay}
+          className={classes.date}
+        />
+        <ChplTextField
+          id="end-day"
+          name="endDay"
+          label="End Date"
+          type="date"
+          value={formik.values.endDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.endDay && !!formik.errors.endDay}
+          helperText={formik.touched.endDay && formik.errors.endDay}
+          className={classes.date}
+        />
+      </Box>
+      <Divider />
+
       <ChplTextField
-        id="value"
-        name="value"
-        label="Value"
-        value={formik.values.value}
-        required
+        select
+        id="rule"
+        name="rule"
+        label="Select a Rule"
+        value={formik.values.rule}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.value && !!formik.errors.value}
-        helperText={formik.touched.value && formik.errors.value}
-      />
-      <ChplTextField
-        id="regulatory-text-citation"
-        name="regulatoryTextCitation"
-        label="Regulatory Text Citation"
-        value={formik.values.regulatoryTextCitation}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.regulatoryTextCitation && !!formik.errors.regulatoryTextCitation}
-        helperText={formik.touched.regulatoryTextCitation && formik.errors.regulatoryTextCitation}
-      />
+      >
+        { ruleOptions
+          .map((item) => (
+            <MenuItem
+              value={item}
+              key={item}
+            >
+              { item }
+            </MenuItem>
+          ))}
+      </ChplTextField>
       <ChplTextField
         select
         id="criteria-select"
@@ -219,61 +287,6 @@ function ChplTestToolEdit(props) {
             />
           ))}
       </div>
-      <ChplTextField
-        select
-        id="rule"
-        name="rule"
-        label="Select a Rule"
-        value={formik.values.rule}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      >
-        { ruleOptions
-          .map((item) => (
-            <MenuItem
-              value={item}
-              key={item}
-            >
-              { item }
-            </MenuItem>
-          ))}
-      </ChplTextField>
-      <ChplTextField
-        id="start-day"
-        name="startDay"
-        label="Start Date"
-        type="date"
-        placeholder="Start Date"
-        value={formik.values.startDay}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.startDay && !!formik.errors.startDay}
-        helperText={formik.touched.startDay && formik.errors.startDay}
-      />
-      <ChplTextField
-        id="required-day"
-        name="requiredDay"
-        label="Required Date"
-        type="date"
-        placeholder="Required Date"
-        value={formik.values.requiredDay}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.requiredDay && !!formik.errors.requiredDay}
-        helperText={formik.touched.requiredDay && formik.errors.requiredDay}
-      />
-      <ChplTextField
-        id="end-day"
-        name="endDay"
-        label="End Date"
-        type="date"
-        placeholder="End Date"
-        value={formik.values.endDay}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.endDay && !!formik.errors.endDay}
-        helperText={formik.touched.endDay && formik.errors.endDay}
-      />
       <ChplActionBar
         dispatch={handleDispatch}
         canDelete={!!testTool.id}
