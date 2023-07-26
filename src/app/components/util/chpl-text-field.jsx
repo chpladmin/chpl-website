@@ -12,7 +12,8 @@ const useStyles = makeStyles({
   },
   date: {
     height: '64px',
-    display: 'inline-grid',
+    display: 'inline-flex',
+    paddingTop: '16px',
   },
 });
 
