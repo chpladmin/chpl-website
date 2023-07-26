@@ -9,10 +9,16 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { string } from 'prop-types';
+import { useSnackbar } from 'notistack';
 
-import { useFetchSubscriber, useFetchSubscriptions } from 'api/subscriptions';
+import {
+  useDeleteSubscription,
+  useFetchSubscriber,
+  useFetchSubscriptions,
+} from 'api/subscriptions';
 import { ChplLink } from 'components/util';
 import { palette, utilStyles } from 'themes';
 
@@ -64,9 +70,11 @@ const useStyles = makeStyles({
 
 function ChplManageSubscription(props) {
   const { hash } = props;
+  const { enqueueSnackbar } = useSnackbar();
   const [selectedSubscriptions, setSelectedSubscriptions] = useState([]);
   const [subscriber, setSubscriber] = useState(undefined);
   const [subscriptions, setSubscriptions] = useState([]);
+  const { mutate } = useDeleteSubscription();
   const subscriberQuery = useFetchSubscriber(hash);
   const subscriptionQuery = useFetchSubscriptions(hash);
   const classes = useStyles();
@@ -87,6 +95,16 @@ function ChplManageSubscription(props) {
       expanded: false,
     })));
   }, [subscriptionQuery.data, subscriptionQuery.isLoading, subscriptionQuery.isSuccess]);
+
+  const deleteSubscription = (subscription) => {
+    mutate({ hash: subscriber.id, subscriptionId: subscription.id }, {
+      onSuccess: () => {
+        enqueueSnackbar('Subscription removed', {
+          variant: 'success',
+        });
+      },
+    });
+  };
 
   const getIcon = (subscription) => (subscription.expanded
     ? (
@@ -128,91 +146,95 @@ function ChplManageSubscription(props) {
       </Typography>
       <Button
         disabled={selectedSubscriptions.length === 0}
+        className={classes.deleteButton}
+        endIcon={<DeleteIcon />}
       >
         Remove Selected (
         { selectedSubscriptions.length }
         )
       </Button>
       { subscriptions.map((subscription) => (
-        <>
-          <Accordion
-            className={classes.criterionAccordion}
-            onChange={() => handleAccordionChange(subscription)}
-            id={`subscription-${subscription.certifiedProductId}`}
-            key={subscription.certifiedProductId}
+        <Accordion
+          className={classes.criterionAccordion}
+          onChange={() => handleAccordionChange(subscription)}
+          id={`subscription-${subscription.certifiedProductId}`}
+          key={`subscription-${subscription.certifiedProductId}`}
+        >
+          <AccordionSummary
+            className={classes.criterionAccordionSummary}
+            expandIcon={getIcon(subscription)}
+            id={`subscription-id-${subscription.certifiedProductId}-header`}
           >
-            <AccordionSummary
-              className={classes.criterionAccordionSummary}
-              expandIcon={getIcon(subscription)}
-              id={`subscription-id-${subscription.certifiedProductId}-header`}
-            >
-              <Box className={classes.criterionAccordionSummaryHeader}>
-                <Box className={classes.criterionAccordionSummarySubBox}>
-                  <Box className={classes.criterionAccordionSummaryData}>
-                    <Typography>
-                      {subscription.chplProductNumber}
-                    </Typography>
-                  </Box>
-                  <Box className={classes.criterionAccordionSummaryData}>
-                    <Typography variant="subtitle1">
-                      { subscription.subscriptions.length }
-                      {' '}
-                      subscription
-                      { subscription.subscriptions.length !== 1 && 's' }
-                    </Typography>
-                  </Box>
-                  <Box className={classes.criterionAccordionSummaryData}>
-                    checkbox
-                  </Box>
+            <Box className={classes.criterionAccordionSummaryHeader}>
+              <Box className={classes.criterionAccordionSummarySubBox}>
+                <Box className={classes.criterionAccordionSummaryData}>
+                  <Typography>
+                    {subscription.chplProductNumber}
+                  </Typography>
+                </Box>
+                <Box className={classes.criterionAccordionSummaryData}>
+                  <Typography variant="subtitle1">
+                    { subscription.subscriptions.length }
+                    {' '}
+                    subscription
+                    { subscription.subscriptions.length !== 1 && 's' }
+                  </Typography>
+                </Box>
+                <Box className={classes.criterionAccordionSummaryData}>
+                  checkbox
                 </Box>
               </Box>
-            </AccordionSummary>
-            <AccordionDetails
-              className={classes.criterionAccordionDetails}
-              id={`subscription-id-${subscription.certifiedProductId}-details`}
-            >
-              <Typography>
-                Developer
-                <ChplLink
-                  href={`#/organizations/developers/${subscription.developerId}`}
-                  text={subscription.developerName}
-                  external={false}
-                  router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
-                />
-              </Typography>
-              <Typography>
-                Product
-                {subscription.productName}
-              </Typography>
-              <Typography>
-                <ChplLink
-                  href={`#/listing/${subscription.certifiedProductId}`}
-                  text={`${subscription.chplProductNumber}`}
-                  external={false}
-                  router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
-                />
-              </Typography>
-              <Typography>
-                Verion
-                {subscription.version}
-              </Typography>
-              { subscription.subscriptions.map((s) => (
-                <Box
-                  key={s.id}
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails
+            className={classes.criterionAccordionDetails}
+            id={`subscription-id-${subscription.certifiedProductId}-details`}
+          >
+            <Typography>
+              Developer
+              <ChplLink
+                href={`#/organizations/developers/${subscription.developerId}`}
+                text={subscription.developerName}
+                external={false}
+                router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
+              />
+            </Typography>
+            <Typography>
+              Product
+              {subscription.productName}
+            </Typography>
+            <Typography>
+              <ChplLink
+                href={`#/listing/${subscription.certifiedProductId}`}
+                text={`${subscription.chplProductNumber}`}
+                external={false}
+                router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
+              />
+            </Typography>
+            <Typography>
+              Version
+              {subscription.version}
+            </Typography>
+            { subscription.subscriptions.map((s) => (
+              <Box
+                key={s.id}
+              >
+                <Typography>
+                  {s.subject.type.name}
+                  {' | ' }
+                  {s.subject.subject}
+                </Typography>
+                <Button
+                  onClick={() => deleteSubscription(s)}
+                  className={classes.deleteButton}
+                  endIcon={<DeleteIcon />}
                 >
-                  <Typography>
-                    {s.subject.type.name}
-                    {' | ' }
-                    {s.subject.subject}
-                  </Typography>
-                  <Button>
-                    Unsubscribe
-                  </Button>
-                </Box>
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        </>
+                  Unsubscribe
+                </Button>
+              </Box>
+            ))}
+          </AccordionDetails>
+        </Accordion>
       ))}
     </Container>
   );

@@ -1,10 +1,20 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
 const useDeleteSubscriber = () => {
   const axios = useAxios();
   return useMutation(async (data) => axios.put('subscriptions/unsubscribe-all', data));
+};
+
+const useDeleteSubscription = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`subscribers/${data.hash}/subscriptions/${data.subscriptionId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['subscribers']);
+    },
+  });
 };
 
 const useFetchRoles = () => {
@@ -47,6 +57,7 @@ const usePutSubscriber = () => {
 
 export {
   useDeleteSubscriber,
+  useDeleteSubscription,
   useFetchRoles,
   useFetchSubscriber,
   useFetchSubscriptions,
