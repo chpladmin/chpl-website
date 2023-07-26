@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { string } from 'prop-types';
 
 import { useFetchSubscriber, useFetchSubscriptions } from 'api/subscriptions';
+import { ChplLink } from 'components/util';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -64,7 +65,7 @@ const useStyles = makeStyles({
 function ChplManageSubscription(props) {
   const { hash } = props;
   const [selectedSubscriptions, setSelectedSubscriptions] = useState([]);
-  const [subscriber, setSubscriber] = useState([]);
+  const [subscriber, setSubscriber] = useState(undefined);
   const [subscriptions, setSubscriptions] = useState([]);
   const subscriberQuery = useFetchSubscriber(hash);
   const subscriptionQuery = useFetchSubscriptions(hash);
@@ -108,6 +109,8 @@ function ChplManageSubscription(props) {
     })));
   };
 
+  if (!subscriber) { return null; }
+
   return (
     <Container className={classes.content}>
       <Typography variant="h1">
@@ -116,10 +119,10 @@ function ChplManageSubscription(props) {
       <Typography>
         { subscriber.email }
         {' | '}
-        { /* subscriber.role.name */ }
+        { subscriber.role.name }
       </Typography>
       <Typography>
-        { subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 1) }
+        { subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0) }
         {' '}
         Total Subscriptions
       </Typography>
@@ -135,23 +138,27 @@ function ChplManageSubscription(props) {
           <Accordion
             className={classes.criterionAccordion}
             onChange={() => handleAccordionChange(subscription)}
-            id={`subscription-${subscription.id}`}
+            id={`subscription-${subscription.certifiedProductId}`}
+            key={subscription.certifiedProductId}
           >
             <AccordionSummary
               className={classes.criterionAccordionSummary}
               expandIcon={getIcon(subscription)}
-              id={`subscription-id-${subscription.id}-header`}
+              id={`subscription-id-${subscription.certifiedProductId}-header`}
             >
               <Box className={classes.criterionAccordionSummaryHeader}>
                 <Box className={classes.criterionAccordionSummarySubBox}>
                   <Box className={classes.criterionAccordionSummaryData}>
                     <Typography>
-                      chpl product number
+                      {subscription.chplProductNumber}
                     </Typography>
                   </Box>
                   <Box className={classes.criterionAccordionSummaryData}>
                     <Typography variant="subtitle1">
-                      n subscriptions
+                      { subscription.subscriptions.length }
+                      {' '}
+                      subscription
+                      { subscription.subscriptions.length !== 1 && 's' }
                     </Typography>
                   </Box>
                   <Box className={classes.criterionAccordionSummaryData}>
@@ -162,33 +169,46 @@ function ChplManageSubscription(props) {
             </AccordionSummary>
             <AccordionDetails
               className={classes.criterionAccordionDetails}
-              id={`subscription-id-${subscription.id}-details`}
+              id={`subscription-id-${subscription.certifiedProductId}-details`}
             >
               <Typography>
                 Developer
-                insert developer here
+                <ChplLink
+                  href={`#/organizations/developers/${subscription.developerId}`}
+                  text={subscription.developerName}
+                  external={false}
+                  router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
+                />
               </Typography>
               <Typography>
                 Product
-                insert product here
+                {subscription.productName}
               </Typography>
               <Typography>
-                CHPL Product Number
-                insert here
+                <ChplLink
+                  href={`#/listing/${subscription.certifiedProductId}`}
+                  text={`${subscription.chplProductNumber}`}
+                  external={false}
+                  router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
+                />
               </Typography>
               <Typography>
                 Verion
-                insert here
+                {subscription.version}
               </Typography>
               { subscription.subscriptions.map((s) => (
-                <>
+                <Box
+                  key={s.id}
+                >
                   <Typography>
-                    insert subscription type here
+                    {s.subject.type.name}
+                    {' | ' }
+                    {s.subject.subject}
                   </Typography>
                   <Button>
                     Unsubscribe
                   </Button>
-                </>
+                </Box>
               ))}
             </AccordionDetails>
           </Accordion>
