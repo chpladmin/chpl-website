@@ -5,6 +5,9 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Card,
+  CardContent,
+  CardMedia,
   Container,
   Typography,
   makeStyles,
@@ -12,9 +15,11 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { string } from 'prop-types';
 
+import Image from '../../../assets/images/mySubsriptions.png';
+
 import { useFetchSubscriber, useFetchSubscriptions } from 'api/subscriptions';
 import { ChplLink } from 'components/util';
-import { palette, utilStyles } from 'themes';
+import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -22,6 +27,20 @@ const useStyles = makeStyles({
     display: 'grid',
     gap: '8px',
     gridTemplateColumns: '1fr',
+    backgroundColor: `${palette.backgroundColor} !important`,
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: '16px',
+    padding: '32px 0',
+    backgroundColor: palette.background,
+    [theme.breakpoints.up('md')]: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 3fr',
+      alignItems: 'start',
+    },
   },
   criterionAccordion: {
     borderRadius: '8px',
@@ -59,6 +78,16 @@ const useStyles = makeStyles({
   },
   rotate: {
     transform: 'rotate(180deg)',
+  },
+  mySubsciptionImagery: {
+    backgroundImage: `url(${Image})`,
+    minHeight: '132px',
+    backgroundSize: '100%',
+    backgroundRepeat: 'no-repeat',
+    marginLeft: '-20px',
+    [theme.breakpoints.up('md')]: {
+      minHeight: '175px',
+    },
   },
 });
 
@@ -113,19 +142,33 @@ function ChplManageSubscription(props) {
 
   return (
     <Container className={classes.content}>
-      <Typography variant="h1">
-        My Subscriptions
-      </Typography>
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Typography variant="h1">
+          My Subscriptions
+        </Typography>
+        <Typography>
+          { subscriber.email }
+          {' | '}
+          { subscriber.role.name }
+        </Typography>
+        
+      </Box>
+      
+      <Box className={classes.container}>
+      <Card>
+        <Box className={classes.mySubsciptionImagery}></Box>
+        <CardContent>
+        <Typography>Welcome to your subscription page!</Typography>
+        <Typography>Here, you can easily view and manage your subscriptions.</Typography>
+        </CardContent>
+      </Card>
+      <Box>
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
       <Typography>
-        { subscriber.email }
-        {' | '}
-        { subscriber.role.name }
-      </Typography>
-      <Typography>
-        { subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0) }
-        {' '}
-        Total Subscriptions
-      </Typography>
+          { subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0) }
+          {' '}
+          Total Subscriptions
+        </Typography>
       <Button
         disabled={selectedSubscriptions.length === 0}
       >
@@ -133,6 +176,7 @@ function ChplManageSubscription(props) {
         { selectedSubscriptions.length }
         )
       </Button>
+      </Box>
       { subscriptions.map((subscription) => (
         <>
           <Accordion
@@ -214,6 +258,8 @@ function ChplManageSubscription(props) {
           </Accordion>
         </>
       ))}
+      </Box>
+      </Box>
     </Container>
   );
 }
