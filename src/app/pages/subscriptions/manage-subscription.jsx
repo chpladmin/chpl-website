@@ -31,30 +31,19 @@ import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  page: {
-    backgroundColor: `${palette.background} !important`,
-    width: '100%',
-  },
-  chplLeftHandFormat: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    gap: '16px',
-    padding: '32px 0',
-    width: '100%',
-    backgroundColor: `${palette.background}`,
-    [theme.breakpoints.up('md')]: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 3fr',
-      alignItems: 'start',
-    },
-  },
   chplAccordion: {
     borderRadius: '4px',
     display: 'grid',
     borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
+  },
+  chplAccordionDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    gap: '8px',
+    padding: '16px',
   },
   chplAccordionSummary: {
     backgroundColor: `${palette.white} !important`,
@@ -75,6 +64,30 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     gap: '8px',
   },
+  chplAccordionSummaryData: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignContent: 'center',
+  },
+  chplLeftHandFormat: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: '16px',
+    padding: '32px 0',
+    width: '100%',
+    backgroundColor: `${palette.background}`,
+    [theme.breakpoints.up('md')]: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 3fr',
+      alignItems: 'start',
+    },
+  },
+  deleteTextButton: {
+    color: `${palette.error} !important`,
+    textTransform: 'capitalize',
+  },
   header: {
     backgroundColor: `${palette.white} !important`,
     padding: '16px 0',
@@ -87,24 +100,12 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  accordionDetails: {
+  metaDataRow: {
+    width: '100%',
     display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    gap: '8px',
-    padding: '16px',
   },
-  chplAccordionSummaryData: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignContent: 'center',
-  },
-  criterionAccordionDetails: {
-    borderRadius: '0 0 8px 8px',
-  },
-  rotate: {
-    transform: 'rotate(180deg)',
+  metaDataBox: {
+    width: '50%',
   },
   mySubsciptionImagery: {
     backgroundImage: `url(${Image})`,
@@ -114,14 +115,12 @@ const useStyles = makeStyles({
     backgroundRepeat: 'no-repeat',
     marginTop: '-16px',
   },
-  deleteOutlinedButton: {
-    backgroundColor: `${palette.white} !important`,
-    border: `1px solid ${palette.error}`,
-    color: `${palette.error} !important`,
+  page: {
+    backgroundColor: `${palette.background} !important`,
+    width: '100%',
   },
-  deleteTextButton: {
-    color: `${palette.error} !important`,
-    textTransform: 'capitalize',
+  rotate: {
+    transform: 'rotate(180deg)',
   },
   subscriptionTypeContainer: {
     width: '100%',
@@ -138,13 +137,6 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  metaDataRow: {
-    width: '100%',
-    display: 'flex',
-  },
-  metaDataBox: {
-    width: '50%',
   },
 });
 
@@ -287,7 +279,7 @@ function ChplManageSubscription(props) {
                   </Box>
                 </AccordionSummary>
                 <AccordionDetails
-                  className={classes.accordionDetails}
+                  className={classes.chplAccordionDetails}
                   id={`subscription-id-${subscription.certifiedProductId}-details`}
                 >
                   <Box className={classes.subscriptionMetaDataContainer}>
