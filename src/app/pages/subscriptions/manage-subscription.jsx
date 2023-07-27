@@ -7,8 +7,10 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
+  IconButton,
+  FormControlLabel,
   Container,
+  Tooltip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -17,7 +19,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { string } from 'prop-types';
 import { useSnackbar } from 'notistack';
 
-import { useFetchSubscriber, useFetchSubscriptions } from 'api/subscriptions';
+import Image from '../../../assets/images/mySubsriptions.png';
+
 import {
   useDeleteSubscription,
   useFetchSubscriber,
@@ -29,10 +32,8 @@ import { palette, utilStyles, theme } from 'themes';
 const useStyles = makeStyles({
   ...utilStyles,
   content: {
-    display: 'grid',
-    gap: '8px',
-    gridTemplateColumns: '1fr',
-    backgroundColor: `${palette.backgroundColor} !important`,
+    backgroundColor: `${palette.background} !important`,
+    width: "100%",
   },
   container: {
     display: 'flex',
@@ -40,7 +41,8 @@ const useStyles = makeStyles({
     alignItems: 'stretch',
     gap: '16px',
     padding: '32px 0',
-    backgroundColor: palette.background,
+    width: '100%',
+    backgroundColor: `${palette.background}`,
     [theme.breakpoints.up('md')]: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
@@ -63,14 +65,32 @@ const useStyles = makeStyles({
   criterionAccordionSummaryHeader: {
     display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: '16px',
+    width: '100%',
+    justifyContent: 'space-between',
   },
   criterionAccordionSummarySubBox: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: '8px',
+  },
+  header: {
+    backgroundColor: `${palette.white} !important`,
+  },
+  headerContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  accordionDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    gap: '8px',
+    padding: '16px',
   },
   criterionAccordionSummaryData: {
     display: 'flex',
@@ -86,13 +106,20 @@ const useStyles = makeStyles({
   },
   mySubsciptionImagery: {
     backgroundImage: `url(${Image})`,
-    minHeight: '132px',
+    minHeight: '164px',
+    width: '100%',
     backgroundSize: '100%',
     backgroundRepeat: 'no-repeat',
-    marginLeft: '-20px',
-    [theme.breakpoints.up('md')]: {
-      minHeight: '175px',
-    },
+    marginTop: '-16px',
+  },
+  deleteOutlinedButton: {
+    backgroundColor: `${palette.white} !important`,
+    border: `1px solid ${palette.error}`,
+    color: `${palette.error} !important`,
+  },
+  deleteTextButton: {
+    color: `${palette.error} !important`,
+    textTransform: 'capitalize',
   },
 });
 
@@ -158,130 +185,162 @@ function ChplManageSubscription(props) {
   if (!subscriber) { return null; }
 
   return (
-    <Container className={classes.content}>
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Typography variant="h1">
-          My Subscriptions
-        </Typography>
-        <Typography>
-          { subscriber.email }
-          {' | '}
-          { subscriber.role.name }
-        </Typography>
-        
+    <Box className={classes.content}>
+      <Box className={classes.header} pt={4} pb={4} mt={-2}>
+        <Container className={classes.headerContent}>
+          <Typography variant="h1">
+            My Subscriptions
+          </Typography>
+          <Typography>
+            {subscriber.email}
+            {' | '}
+            {subscriber.role.name}
+          </Typography>
+        </Container>
       </Box>
-      
-      <Box className={classes.container}>
-      <Card>
-        <Box className={classes.mySubsciptionImagery}></Box>
-        <CardContent>
-        <Typography>Welcome to your subscription page!</Typography>
-        <Typography>Here, you can easily view and manage your subscriptions.</Typography>
-        </CardContent>
-      </Card>
-      <Box>
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
-      <Typography>
-          { subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0) }
-          {' '}
-          Total Subscriptions
-        </Typography>
-      <Button
-        disabled={selectedSubscriptions.length === 0}
-        className={classes.deleteButton}
-        endIcon={<DeleteIcon />}
-      >
-        Remove Selected (
-        { selectedSubscriptions.length }
-        )
-      </Button>
-      </Box>
-      { subscriptions.map((subscription) => (
-        <Accordion
-          className={classes.criterionAccordion}
-          onChange={() => handleAccordionChange(subscription)}
-          id={`subscription-${subscription.certifiedProductId}`}
-          key={`subscription-${subscription.certifiedProductId}`}
-        >
-          <AccordionSummary
-            className={classes.criterionAccordionSummary}
-            expandIcon={getIcon(subscription)}
-            id={`subscription-id-${subscription.certifiedProductId}-header`}
-          >
-            <Box className={classes.criterionAccordionSummaryHeader}>
-              <Box className={classes.criterionAccordionSummarySubBox}>
-                <Box className={classes.criterionAccordionSummaryData}>
-                  <Typography>
-                    {subscription.chplProductNumber}
-                  </Typography>
-                </Box>
-                <Box className={classes.criterionAccordionSummaryData}>
-                  <Typography variant="subtitle1">
-                    { subscription.subscriptions.length }
-                    {' '}
-                    subscription
-                    { subscription.subscriptions.length !== 1 && 's' }
-                  </Typography>
-                </Box>
-                <Box className={classes.criterionAccordionSummaryData}>
-                  checkbox
-                </Box>
-              </Box>
+      <Container>
+        <Box className={classes.container}>
+          <Card>
+            <Box className={classes.mySubsciptionImagery}></Box>
+            <CardContent>
+              <Typography gutterBottom variant='h4' component="h2"><strong>Welcome to your subscription page!</strong></Typography>
+              <Typography>Here, you can easily view and manage your subscriptions.</Typography>
+            </CardContent>
+          </Card>
+          <Box>
+            <Box display="flex" flexDirection="row" justifyContent="space-between" pb={4} alignItems="center">
+              <Typography variant='h5' component="h3">
+                <strong>
+                  {subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0)}
+                  {' '}
+                  Total Subscriptions
+                </strong>
+              </Typography>
             </Box>
-          </AccordionSummary>
-          <AccordionDetails
-            className={classes.criterionAccordionDetails}
-            id={`subscription-id-${subscription.certifiedProductId}-details`}
-          >
-            <Typography>
-              Developer
-              <ChplLink
-                href={`#/organizations/developers/${subscription.developerId}`}
-                text={subscription.developerName}
-                external={false}
-                router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
-              />
-            </Typography>
-            <Typography>
-              Product
-              {subscription.productName}
-            </Typography>
-            <Typography>
-              <ChplLink
-                href={`#/listing/${subscription.certifiedProductId}`}
-                text={`${subscription.chplProductNumber}`}
-                external={false}
-                router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
-              />
-            </Typography>
-            <Typography>
-              Version
-              {subscription.version}
-            </Typography>
-            { subscription.subscriptions.map((s) => (
-              <Box
-                key={s.id}
+            {subscriptions.map((subscription) => (
+              <Accordion
+                className={classes.criterionAccordion}
+                onChange={() => handleAccordionChange(subscription)}
+                id={`subscription-${subscription.certifiedProductId}`}
+                key={`subscription-${subscription.certifiedProductId}`}
               >
-                <Typography>
-                  {s.subject.type.name}
-                  {' | ' }
-                  {s.subject.subject}
-                </Typography>
-                <Button
-                  onClick={() => deleteSubscription(s)}
-                  className={classes.deleteButton}
-                  endIcon={<DeleteIcon />}
+                <AccordionSummary
+                  className={classes.criterionAccordionSummary}
+                  expandIcon={getIcon(subscription)}
+                  id={`subscription-id-${subscription.certifiedProductId}-header`}
                 >
-                  Unsubscribe
-                </Button>
-              </Box>
+                  <Box className={classes.criterionAccordionSummaryHeader}>
+                    <Box className={classes.criterionAccordionSummarySubBox}>
+                      <Box className={classes.criterionAccordionSummaryData}>
+                        <Typography variant="subtitle1">
+                          {subscription.chplProductNumber}
+                        </Typography>
+                      </Box>
+                      <Box className={classes.criterionAccordionSummaryData}>
+                        <Typography variant="body1">
+                          {subscription.subscriptions.length}
+                          {' '}
+                          subscription
+                          {subscription.subscriptions.length !== 1 && 's'}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box className={classes.criterionAccordionSummaryData}>
+                      <FormControlLabel
+                        onClick={(event) => event.stopPropagation()}
+                        onFocus={(event) => event.stopPropagation()}
+                        control={<Button
+                          variant="text"
+                          className={classes.deleteTextButton}
+                        >
+                          Unsubscribe from listing
+                        </Button>}
+                      />
+                    </Box>
+                  </Box>
+                </AccordionSummary>
+                <AccordionDetails className={classes.accordionDetails}
+                  id={`subscription-id-${subscription.certifiedProductId}-details`}
+                >
+                  <Box sx={{ gridGap: '8px', width: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center", }}>
+                    <Box sx={{ width: "100%", display: "flex", }}>
+                      <Box sx={{ width: "50%", }}>
+                        <Typography variant="subtitle1">
+                          Developer
+                        </Typography>
+                        <ChplLink
+                          href={`#/organizations/developers/${subscription.developerId}`}
+                          text={subscription.developerName}
+                          external={false}
+                          router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
+                        />
+                      </Box>
+                      <Box sx={{ width: "50%", }}>
+                        <Typography variant="subtitle1">
+                          Product
+                        </Typography>
+
+                        <Typography>
+                          {subscription.productName}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ width: "100%", display: "flex", }}>
+                      <Box sx={{ width: "50%", }}>
+                        <Typography variant="subtitle1">
+                          CHPL ID</Typography>
+                        <ChplLink
+                          href={`#/listing/${subscription.certifiedProductId}`}
+                          text={`${subscription.chplProductNumber}`}
+                          external={false}
+                          router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
+                        />
+                      </Box>
+                      <Box sx={{ width: "50%", }}>
+                        <Typography variant="subtitle1">
+                          Version
+                        </Typography>
+                        <Typography>
+                          {subscription.version}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+
+                  <Typography variant="subtitle1">
+                    Subscriptions
+                  </Typography>
+                  {subscription.subscriptions.map((s) => (
+                    <Card>
+                      <CardContent>
+                        <Box
+                          key={s.id}
+                          sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignContent: "center", alignItems: "center", }}
+                        >
+                          <Typography>
+                            {s.subject.type.name}
+                            {' | '}
+                            {s.subject.subject}
+                          </Typography>
+                          <Tooltip arrow="top" title="Unsubscribe from subscription type">
+                            <IconButton
+                              onClick={() => deleteSubscription(s)}
+                            >
+                              <DeleteIcon className={classes.deleteTextButton}
+                              />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </AccordionDetails>
+              </Accordion>
             ))}
-          </AccordionDetails>
-        </Accordion>
-      ))}
-      </Box>
-      </Box>
-    </Container>
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 
