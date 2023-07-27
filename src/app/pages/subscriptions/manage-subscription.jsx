@@ -50,7 +50,7 @@ const useStyles = makeStyles({
     },
   },
   chplAccordion: {
-    borderRadius: '8px',
+    borderRadius: '4px',
     display: 'grid',
     borderColor: palette.divider,
     borderWidth: '.5px',
@@ -77,6 +77,8 @@ const useStyles = makeStyles({
   },
   header: {
     backgroundColor: `${palette.white} !important`,
+    padding: '16px 0',
+    marginTop: '-8px',
   },
   headerContent: {
     display: 'flex',
@@ -120,6 +122,29 @@ const useStyles = makeStyles({
   deleteTextButton: {
     color: `${palette.error} !important`,
     textTransform: 'capitalize',
+  },
+  subscriptionTypeContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  subscriptionMetaDataContainer: {
+    gridGap: '8px',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  metaDataRow: {
+    width: '100%',
+    display: 'flex',
+  },
+  metaDataBox: {
+    width: '50%',
   },
 });
 
@@ -186,7 +211,7 @@ function ChplManageSubscription(props) {
 
   return (
     <Box className={classes.page}>
-      <Box className={classes.header} pt={4} pb={4} mt={-2}>
+      <Box className={classes.header}>
         <Container className={classes.headerContent}>
           <Typography variant="h1">
             My Subscriptions
@@ -256,7 +281,7 @@ function ChplManageSubscription(props) {
                           >
                             Unsubscribe from listing
                           </Button>
-)}
+                        )}
                       />
                     </Box>
                   </Box>
@@ -265,12 +290,9 @@ function ChplManageSubscription(props) {
                   className={classes.accordionDetails}
                   id={`subscription-id-${subscription.certifiedProductId}-details`}
                 >
-                  <Box sx={{
-                    gridGap: '8px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center',
-                  }}
-                  >
-                    <Box sx={{ width: '100%', display: 'flex' }}>
-                      <Box sx={{ width: '50%' }}>
+                  <Box className={classes.subscriptionMetaDataContainer}>
+                    <Box className={classes.metaDataRow}>
+                      <Box className={classes.metaDataBox}>
                         <Typography variant="subtitle1">
                           Developer
                         </Typography>
@@ -281,7 +303,7 @@ function ChplManageSubscription(props) {
                           router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
                         />
                       </Box>
-                      <Box sx={{ width: '50%' }}>
+                      <Box className={classes.metaDataBox}>
                         <Typography variant="subtitle1">
                           Product
                         </Typography>
@@ -291,8 +313,8 @@ function ChplManageSubscription(props) {
                         </Typography>
                       </Box>
                     </Box>
-                    <Box sx={{ width: '100%', display: 'flex' }}>
-                      <Box sx={{ width: '50%' }}>
+                    <Box className={classes.metaDataRow}>
+                      <Box className={classes.metaDataBox}>
                         <Typography variant="subtitle1">
                           CHPL ID
                         </Typography>
@@ -303,7 +325,7 @@ function ChplManageSubscription(props) {
                           router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
                         />
                       </Box>
-                      <Box sx={{ width: '50%' }}>
+                      <Box className={classes.metaDataBox}>
                         <Typography variant="subtitle1">
                           Version
                         </Typography>
@@ -322,9 +344,7 @@ function ChplManageSubscription(props) {
                       <CardContent>
                         <Box
                           key={s.id}
-                          sx={{
-                            width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center',
-                          }}
+                          className={classes.subscriptionTypeContainer}
                         >
                           <Typography>
                             {s.subject.type.name}
