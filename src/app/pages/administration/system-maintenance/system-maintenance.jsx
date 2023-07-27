@@ -122,18 +122,6 @@ function ChplSystemMaintenance() {
       <div className={classes.navigation}>
         <Card>
           <Button
-            onClick={() => navigate('announcements')}
-            disabled={active === 'announcements'}
-            id="system-maintenance-navigation-announcements"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            Announcements
-          </Button>
-          <Button
             onClick={() => navigate('accessibilityStandards')}
             disabled={active === 'accessibilityStandards'}
             id="system-maintenance-navigation-accessibility-standards"
@@ -144,6 +132,18 @@ function ChplSystemMaintenance() {
             className={classes.menuItems}
           >
             Accessibility Standards
+          </Button>
+          <Button
+            onClick={() => navigate('announcements')}
+            disabled={active === 'announcements'}
+            id="system-maintenance-navigation-announcements"
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            Announcements
           </Button>
           <Button
             onClick={() => navigate('qmsStandards')}
@@ -219,17 +219,17 @@ function ChplSystemMaintenance() {
                   System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.
                 </Typography>
                 <List>
-                  <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
                   <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
+                  <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
-                  { hasAnyRole(['ROLE_ADMIN'])
-                    && (
-                      <ListItem>Test Tools - INSERT TEXT HERE</ListItem>
-                    )}
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
                       <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
+                    )}
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
+                      <ListItem>Test Tools - INSERT TEXT HERE</ListItem>
                     )}
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
