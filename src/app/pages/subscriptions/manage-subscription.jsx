@@ -31,11 +31,11 @@ import { palette, utilStyles, theme } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  content: {
+  page: {
     backgroundColor: `${palette.background} !important`,
-    width: "100%",
+    width: '100%',
   },
-  container: {
+  chplLeftHandFormat: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
@@ -49,27 +49,27 @@ const useStyles = makeStyles({
       alignItems: 'start',
     },
   },
-  criterionAccordion: {
+  chplAccordion: {
     borderRadius: '8px',
     display: 'grid',
     borderColor: palette.divider,
     borderWidth: '.5px',
     borderStyle: 'solid',
   },
-  criterionAccordionSummary: {
+  chplAccordionSummary: {
     backgroundColor: `${palette.white} !important`,
     borderRadius: '4px',
     padding: '0 4px',
     borderBottom: `.5px solid ${palette.divider}`,
   },
-  criterionAccordionSummaryHeader: {
+  chplAccordionSummaryHeader: {
     display: 'flex',
     flexDirection: 'row',
     gap: '16px',
     width: '100%',
     justifyContent: 'space-between',
   },
-  criterionAccordionSummarySubBox: {
+  chplAccordionSummarySubBox: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -83,7 +83,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   accordionDetails: {
     display: 'flex',
@@ -92,7 +92,7 @@ const useStyles = makeStyles({
     gap: '8px',
     padding: '16px',
   },
-  criterionAccordionSummaryData: {
+  chplAccordionSummaryData: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -185,7 +185,7 @@ function ChplManageSubscription(props) {
   if (!subscriber) { return null; }
 
   return (
-    <Box className={classes.content}>
+    <Box className={classes.page}>
       <Box className={classes.header} pt={4} pb={4} mt={-2}>
         <Container className={classes.headerContent}>
           <Typography variant="h1">
@@ -199,17 +199,17 @@ function ChplManageSubscription(props) {
         </Container>
       </Box>
       <Container>
-        <Box className={classes.container}>
+        <Box className={classes.chplLeftHandFormat}>
           <Card>
-            <Box className={classes.mySubsciptionImagery}></Box>
+            <Box className={classes.mySubsciptionImagery} />
             <CardContent>
-              <Typography gutterBottom variant='h4' component="h2"><strong>Welcome to your subscription page!</strong></Typography>
+              <Typography gutterBottom variant="h4" component="h2"><strong>Welcome to your subscription page!</strong></Typography>
               <Typography>Here, you can easily view and manage your subscriptions.</Typography>
             </CardContent>
           </Card>
           <Box>
             <Box display="flex" flexDirection="row" justifyContent="space-between" pb={4} alignItems="center">
-              <Typography variant='h5' component="h3">
+              <Typography variant="h5" component="h3">
                 <strong>
                   {subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0)}
                   {' '}
@@ -219,24 +219,24 @@ function ChplManageSubscription(props) {
             </Box>
             {subscriptions.map((subscription) => (
               <Accordion
-                className={classes.criterionAccordion}
+                className={classes.chplAccordion}
                 onChange={() => handleAccordionChange(subscription)}
                 id={`subscription-${subscription.certifiedProductId}`}
                 key={`subscription-${subscription.certifiedProductId}`}
               >
                 <AccordionSummary
-                  className={classes.criterionAccordionSummary}
+                  className={classes.chplAccordionSummary}
                   expandIcon={getIcon(subscription)}
                   id={`subscription-id-${subscription.certifiedProductId}-header`}
                 >
-                  <Box className={classes.criterionAccordionSummaryHeader}>
-                    <Box className={classes.criterionAccordionSummarySubBox}>
-                      <Box className={classes.criterionAccordionSummaryData}>
+                  <Box className={classes.chplAccordionSummaryHeader}>
+                    <Box className={classes.chplAccordionSummarySubBox}>
+                      <Box className={classes.chplAccordionSummaryData}>
                         <Typography variant="subtitle1">
                           {subscription.chplProductNumber}
                         </Typography>
                       </Box>
-                      <Box className={classes.criterionAccordionSummaryData}>
+                      <Box className={classes.chplAccordionSummaryData}>
                         <Typography variant="body1">
                           {subscription.subscriptions.length}
                           {' '}
@@ -245,26 +245,32 @@ function ChplManageSubscription(props) {
                         </Typography>
                       </Box>
                     </Box>
-                    <Box className={classes.criterionAccordionSummaryData}>
+                    <Box className={classes.chplAccordionSummaryData}>
                       <FormControlLabel
                         onClick={(event) => event.stopPropagation()}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<Button
-                          variant="text"
-                          className={classes.deleteTextButton}
-                        >
-                          Unsubscribe from listing
-                        </Button>}
+                        control={(
+                          <Button
+                            variant="text"
+                            className={classes.deleteTextButton}
+                          >
+                            Unsubscribe from listing
+                          </Button>
+)}
                       />
                     </Box>
                   </Box>
                 </AccordionSummary>
-                <AccordionDetails className={classes.accordionDetails}
+                <AccordionDetails
+                  className={classes.accordionDetails}
                   id={`subscription-id-${subscription.certifiedProductId}-details`}
                 >
-                  <Box sx={{ gridGap: '8px', width: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center", }}>
-                    <Box sx={{ width: "100%", display: "flex", }}>
-                      <Box sx={{ width: "50%", }}>
+                  <Box sx={{
+                    gridGap: '8px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center',
+                  }}
+                  >
+                    <Box sx={{ width: '100%', display: 'flex' }}>
+                      <Box sx={{ width: '50%' }}>
                         <Typography variant="subtitle1">
                           Developer
                         </Typography>
@@ -275,7 +281,7 @@ function ChplManageSubscription(props) {
                           router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
                         />
                       </Box>
-                      <Box sx={{ width: "50%", }}>
+                      <Box sx={{ width: '50%' }}>
                         <Typography variant="subtitle1">
                           Product
                         </Typography>
@@ -285,10 +291,11 @@ function ChplManageSubscription(props) {
                         </Typography>
                       </Box>
                     </Box>
-                    <Box sx={{ width: "100%", display: "flex", }}>
-                      <Box sx={{ width: "50%", }}>
+                    <Box sx={{ width: '100%', display: 'flex' }}>
+                      <Box sx={{ width: '50%' }}>
                         <Typography variant="subtitle1">
-                          CHPL ID</Typography>
+                          CHPL ID
+                        </Typography>
                         <ChplLink
                           href={`#/listing/${subscription.certifiedProductId}`}
                           text={`${subscription.chplProductNumber}`}
@@ -296,7 +303,7 @@ function ChplManageSubscription(props) {
                           router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
                         />
                       </Box>
-                      <Box sx={{ width: "50%", }}>
+                      <Box sx={{ width: '50%' }}>
                         <Typography variant="subtitle1">
                           Version
                         </Typography>
@@ -315,7 +322,9 @@ function ChplManageSubscription(props) {
                       <CardContent>
                         <Box
                           key={s.id}
-                          sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", alignContent: "center", alignItems: "center", }}
+                          sx={{
+                            width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center',
+                          }}
                         >
                           <Typography>
                             {s.subject.type.name}
@@ -326,8 +335,7 @@ function ChplManageSubscription(props) {
                             <IconButton
                               onClick={() => deleteSubscription(s)}
                             >
-                              <DeleteIcon className={classes.deleteTextButton}
-                              />
+                              <DeleteIcon className={classes.deleteTextButton} />
                             </IconButton>
                           </Tooltip>
                         </Box>
