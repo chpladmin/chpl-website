@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  arrayOf,
   bool,
   func,
 } from 'prop-types';
@@ -9,10 +8,8 @@ import ChplCriteria from './criteria';
 
 import AppWrapper from 'app-wrapper';
 import {
-  accessibilityStandard,
-  certificationResult,
+  listing as listingPropType,
   resources as resourceDefinition,
-  qmsStandard,
 } from 'shared/prop-types';
 
 function ChplCriteriaWrapper(props) {
@@ -26,24 +23,20 @@ function ChplCriteriaWrapper(props) {
 export default ChplCriteriaWrapper;
 
 ChplCriteriaWrapper.propTypes = {
-  certificationResults: arrayOf(certificationResult).isRequired,
-  accessibilityStandards: arrayOf(accessibilityStandard),
   canEdit: bool,
-  isConfirming: bool,
   hasIcs: bool,
+  isConfirming: bool,
+  listing: listingPropType.isRequired,
   onSave: func,
-  qmsStandards: arrayOf(qmsStandard),
   resources: resourceDefinition,
   viewAll: bool,
 };
 
 ChplCriteriaWrapper.defaultProps = {
-  accessibilityStandards: [],
   canEdit: false,
-  isConfirming: false,
   hasIcs: false,
+  isConfirming: false,
   onSave: () => {},
-  qmsStandards: [],
   resources: {},
   viewAll: false,
 };
