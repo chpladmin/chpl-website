@@ -83,7 +83,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="Test Tool table"
+          aria-label="Test Tools table"
         >
           <ChplSortableHeaders
             headers={headers}

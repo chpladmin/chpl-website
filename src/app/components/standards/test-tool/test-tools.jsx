@@ -168,7 +168,7 @@ function ChplTestTools() {
 
   return (
     <Card>
-      <CardHeader title="Test Tool" />
+      <CardHeader title="Test Tools" />
       <CardContent>
         { (deleteTestTool.isLoading || postTestTool.isLoading || putTestTool.isLoading)
           && (
