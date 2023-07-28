@@ -149,7 +149,6 @@ const useStyles = makeStyles({
 function ChplManageSubscription(props) {
   const { hash } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const [selectedSubscriptions, setSelectedSubscriptions] = useState([]);
   const [subscriber, setSubscriber] = useState(undefined);
   const [subscriptions, setSubscriptions] = useState([]);
   const { mutate } = useDeleteSubscription();
@@ -182,6 +181,10 @@ function ChplManageSubscription(props) {
         });
       },
     });
+  };
+
+  const deleteSubscriptions = (subscription) => {
+    subscription.subscriptions.forEach(deleteSubscription);
   };
 
   const getIcon = (subscription) => (subscription.expanded
@@ -240,7 +243,7 @@ function ChplManageSubscription(props) {
                 </strong>
               </Typography>
             </Box>
-            {subscriptions.map((subscription) => (
+            { subscriptions.map((subscription) => (
               <Accordion
                 className={classes.chplAccordion}
                 onChange={() => handleAccordionChange(subscription)}
@@ -276,6 +279,7 @@ function ChplManageSubscription(props) {
                           <Button
                             variant="text"
                             className={classes.deleteTextButton}
+                            onClick={() => deleteSubscriptions(subscription)}
                           >
                             Unsubscribe from listing
                           </Button>
