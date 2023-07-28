@@ -138,6 +138,13 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  subscriptionTotalContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: '16px',
+    alignItems: 'center',
+  },
 });
 
 function ChplManageSubscription(props) {
@@ -225,7 +232,7 @@ function ChplManageSubscription(props) {
             </CardContent>
           </Card>
           <Box>
-            <Box display="flex" flexDirection="row" justifyContent="space-between" pb={4} alignItems="center">
+            <Box className={classes.subscriptionTotalContainer}>
               <Typography variant="h5" component="h3">
                 <strong>
                   {subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0)}
