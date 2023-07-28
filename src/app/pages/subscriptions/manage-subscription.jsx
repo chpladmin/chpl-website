@@ -7,9 +7,9 @@ import {
   Button,
   Card,
   CardContent,
-  IconButton,
-  FormControlLabel,
   Container,
+  FormControlLabel,
+  IconButton,
   Tooltip,
   Typography,
   makeStyles,
@@ -27,7 +27,7 @@ import {
   useFetchSubscriptions,
 } from 'api/subscriptions';
 import { ChplLink } from 'components/util';
-import { palette, utilStyles, theme } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -306,7 +306,6 @@ function ChplManageSubscription(props) {
                         <Typography variant="subtitle1">
                           Product
                         </Typography>
-
                         <Typography>
                           {subscription.productName}
                         </Typography>
@@ -334,15 +333,15 @@ function ChplManageSubscription(props) {
                       </Box>
                     </Box>
                   </Box>
-
                   <Typography variant="subtitle1">
                     Subscriptions
                   </Typography>
-                  {subscription.subscriptions.map((s) => (
-                    <Card>
+                  { subscription.subscriptions.map((s) => (
+                    <Card
+                      key={s.id}
+                    >
                       <CardContent>
                         <Box
-                          key={s.id}
                           className={classes.subscriptionTypeContainer}
                         >
                           <Typography>
