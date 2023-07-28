@@ -1,9 +1,8 @@
 import React from 'react';
 import { string } from 'prop-types';
-import {
-  Box,
-} from '@material-ui/core';
+
 import ChplConfirmSubscription from './confirm-subscription';
+
 import AppWrapper from 'app-wrapper';
 
 function ChplConfirmSubscriptionWrapper({ hash }) {
