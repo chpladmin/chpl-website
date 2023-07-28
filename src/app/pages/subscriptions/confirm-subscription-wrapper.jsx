@@ -9,11 +9,9 @@ import AppWrapper from 'app-wrapper';
 function ChplConfirmSubscriptionWrapper({ hash }) {
   return (
     <AppWrapper>
-      <Box sx={{ backgroundColor: '#f9f9f9'}}>
       <ChplConfirmSubscription
         hash={hash}
       />
-      </Box>
     </AppWrapper>
   );
 }
