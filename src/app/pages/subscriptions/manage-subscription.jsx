@@ -10,7 +10,6 @@ import {
   Container,
   FormControlLabel,
   IconButton,
-  Tooltip,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -26,7 +25,7 @@ import {
   useFetchSubscriber,
   useFetchSubscriptions,
 } from 'api/subscriptions';
-import { ChplLink } from 'components/util';
+import { ChplLink, ChplTooltip } from 'components/util';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -349,13 +348,13 @@ function ChplManageSubscription(props) {
                             {' | '}
                             {s.subject.subject}
                           </Typography>
-                          <Tooltip arrow="top" title="Unsubscribe from subscription type">
+                          <ChplTooltip title="Unsubscribe from subscription type">
                             <IconButton
                               onClick={() => deleteSubscription(s)}
                             >
                               <DeleteIcon className={classes.deleteTextButton} />
                             </IconButton>
-                          </Tooltip>
+                          </ChplTooltip>
                         </Box>
                       </CardContent>
                     </Card>
