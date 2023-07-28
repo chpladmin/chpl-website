@@ -13,7 +13,7 @@ class TestToolsPage extends SystemMaintenancePage {
       testToolStartDay: '#start-day',
       testToolReqDay: '#required-day',
       testToolEndDay: '#end-day',
-      dataTable: 'table[aria-label="Test Tool table"]',
+      dataTable: 'table[aria-label="Test Tools table"]',
     };
   }
 
