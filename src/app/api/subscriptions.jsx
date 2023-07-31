@@ -14,7 +14,7 @@ const useDeleteObjectSubscription = () => {
 
 const useDeleteSubscriber = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.put('subscriptions/unsubscribe-all', data));
+  return useMutation(async (data) => axios.delete(`subscribers/${data.hash}`));
 };
 
 const useDeleteSubscription = () => {

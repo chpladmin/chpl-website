@@ -188,7 +188,7 @@ function ChplManageSubscription(props) {
   const deleteSubscriptions = (subscription) => {
     deleteObjectSubscription({ hash: subscriber.id, objectTypeId: 1, objectId: subscription.certifiedProductId }, {
       onSuccess: () => {
-        enqueueSnackbar('Object Subscription removed', {
+        enqueueSnackbar('Subscription removed', {
           variant: 'success',
         });
       },
