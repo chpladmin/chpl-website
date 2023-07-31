@@ -232,7 +232,7 @@ function ChplSystemMaintenance() {
                     )}
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
-                      <ListItem>Test Tools - INSERT TEXT HERE</ListItem>
+                      <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem>
                     )}
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
