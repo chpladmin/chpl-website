@@ -21,6 +21,7 @@ import { useSnackbar } from 'notistack';
 import Image from '../../../assets/images/mySubsriptions.png';
 
 import {
+  useDeleteObjectSubscription,
   useDeleteSubscription,
   useFetchSubscriber,
   useFetchSubscriptions,
@@ -151,7 +152,8 @@ function ChplManageSubscription(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [subscriber, setSubscriber] = useState(undefined);
   const [subscriptions, setSubscriptions] = useState([]);
-  const { mutate } = useDeleteSubscription();
+  const { mutate: deleteSingleSubscription } = useDeleteSubscription();
+  const { mutate: deleteObjectSubscription } = useDeleteObjectSubscription();
   const subscriberQuery = useFetchSubscriber(hash);
   const subscriptionQuery = useFetchSubscriptions(hash);
   const classes = useStyles();
@@ -174,7 +176,7 @@ function ChplManageSubscription(props) {
   }, [subscriptionQuery.data, subscriptionQuery.isLoading, subscriptionQuery.isSuccess]);
 
   const deleteSubscription = (subscription) => {
-    mutate({ hash: subscriber.id, subscriptionId: subscription.id }, {
+    deleteSingleSubscription({ hash: subscriber.id, subscriptionId: subscription.id }, {
       onSuccess: () => {
         enqueueSnackbar('Subscription removed', {
           variant: 'success',
@@ -184,7 +186,13 @@ function ChplManageSubscription(props) {
   };
 
   const deleteSubscriptions = (subscription) => {
-    subscription.subscriptions.forEach(deleteSubscription);
+    deleteObjectSubscription({ hash: subscriber.id, objectTypeId: 1, objectId: subscription.certifiedProductId }, {
+      onSuccess: () => {
+        enqueueSnackbar('Object Subscription removed', {
+          variant: 'success',
+        });
+      },
+    });
   };
 
   const getIcon = (subscription) => (subscription.expanded
