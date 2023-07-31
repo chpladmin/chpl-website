@@ -52,7 +52,9 @@ const allOptions = [
   '2011 edition products (xml)',
   '2015 edition summary (csv)',
   '2014 edition summary (csv)',
-  'All products (json)',
+  '2015 edition products (json)',
+  '2014 edition products (json)',
+  '2011 edition products (json)',
   'SVAP Summary (csv)',
   'Surveillance Activity',
   'Surveillance (Basic)',
@@ -86,7 +88,9 @@ function ChplResourcesDownload() {
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
       'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
-      'All products (json)': { data: `${API}/download/json?api_key=${getApiKey()}`, definition: '', label: 'All products (json)' },
+      '2015 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015&format=json`, definition: '', label: '2015 JSON' },
+      '2014 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014&format=json`, definition: '', label: '2014 JSON' },
+      '2011 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2011&format=json`, definition: '', label: '2011 JSON' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
