@@ -58,6 +58,7 @@ const ConfirmListingComponent = {
         this.networkService.getTestData().then((response) => { pending.testData = response; }),
         this.networkService.getTestProcedures().then((response) => { pending.testProcedures = response; }),
         this.networkService.getTestStandards().then((response) => { pending.testStandards = response; }),
+        this.networkService.getTestTools().then((response) => { pending.testTools = response; }),
         this.networkService.getUcdProcesses().then((response) => { pending.ucdProcesses = response; }),
       ]).then(() => { this.resources = pending; });
     }
