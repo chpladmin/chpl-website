@@ -159,14 +159,22 @@ function ChplManageSubscription(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (subscriberQuery.isLoading || !subscriberQuery.isSuccess) {
+    if (subscriberQuery.isLoading) {
+      return;
+    }
+    if (!subscriberQuery.isSuccess) {
+      setSubscriber(undefined);
       return;
     }
     setSubscriber(subscriberQuery.data);
   }, [subscriberQuery.data, subscriberQuery.isLoading, subscriberQuery.isSuccess]);
 
   useEffect(() => {
-    if (subscriptionQuery.isLoading || !subscriptionQuery.isSuccess) {
+    if (subscriptionQuery.isLoading) {
+      return;
+    }
+    if (!subscriptionQuery.isSuccess) {
+      setSubscriptions([]);
       return;
     }
     setSubscriptions(subscriptionQuery.data.map((subscription) => ({
