@@ -397,7 +397,7 @@ function ChplCriterionDetailsView(props) {
                             {tt.testTool.value}
                             ; Version:
                             {' '}
-                            { tt.testToolVersion || 'N/A' }
+                            { tt.version || 'N/A' }
                           </ListItem>
                         ))}
                       </List>
