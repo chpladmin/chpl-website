@@ -1,8 +1,6 @@
 import React, { useContext, useState } from 'react';
 import {
-  Button,
   Card,
-  CardActions,
   CardContent,
   Collapse,
   Divider,
@@ -12,8 +10,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import { bool, func } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -54,7 +50,7 @@ const useStyles = makeStyles({
 
 function ChplCriterionDetailsEdit(props) {
   const { hasAnyRole } = useContext(UserContext);
-  const { hasIcs, isConfirming } = props;
+  const { hasIcs, isConfirming, onChange: superOnChange } = props;
   /* eslint-disable react/destructuring-assignment */
   const resources = {
     ...props.resources,
@@ -101,7 +97,7 @@ function ChplCriterionDetailsEdit(props) {
       serviceBaseUrlList: formik.values.serviceBaseUrlList,
       useCases: formik.values.useCases,
     };
-    props.onChange(updated);
+    superOnChange(updated);
   };
 
   const handleDetailChange = (change) => {
@@ -110,7 +106,7 @@ function ChplCriterionDetailsEdit(props) {
     };
     updated[change.key] = change.data;
     setCriterion(updated);
-    props.onChange(updated);
+    superOnChange(updated);
   };
 
   return (

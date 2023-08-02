@@ -3,19 +3,13 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Avatar,
   Box,
-  Button,
-  Chip,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import CloudDoneIcon from '@material-ui/icons/CloudDone';
 import CheckIcon from '@material-ui/icons/Check';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SyncIcon from '@material-ui/icons/Sync';
 import { bool, func } from 'prop-types';
 
 import ChplCriterionDetailsEdit from './criterion-details-edit';
