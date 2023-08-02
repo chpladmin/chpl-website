@@ -18,9 +18,9 @@
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
         <chpl-criteria-bridge
-          can-edit="true"
           has-ics="$ctrl.listing.ics.inherits"
           is-confirming="$ctrl.isConfirming"
+          is-editing="true"
           on-save="::$ctrl.handleCriteriaSave"
           listing="$ctrl.listing"
           resources="$ctrl.resources"

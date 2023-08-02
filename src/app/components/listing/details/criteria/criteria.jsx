@@ -42,9 +42,9 @@ const useStyles = makeStyles({
 
 function ChplCriteria(props) {
   const {
-    canEdit,
     hasIcs,
     isConfirming,
+    isEditing,
     listing,
     resources,
     onSave,
@@ -85,9 +85,9 @@ function ChplCriteria(props) {
           <ChplCriterion
             key={cc.criterion.id}
             certificationResult={cc}
-            canEdit={canEdit}
             hasIcs={hasIcs}
             isConfirming={isConfirming}
+            isEditing={isEditing}
             listing={listing}
             onSave={handleSave}
             resources={prepareResources(cc.criterion)}
@@ -116,7 +116,7 @@ function ChplCriteria(props) {
                       <ChplCriterion
                         key={cc.criterion.id}
                         certificationResult={cc}
-                        canEdit={canEdit && !isConfirming && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
+                        isEditing={isEditing && !isConfirming && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
                         onSave={handleSave}
                         resources={prepareResources(cc.criterion)}
                         listing={listing}
@@ -134,9 +134,9 @@ function ChplCriteria(props) {
 export default ChplCriteria;
 
 ChplCriteria.propTypes = {
-  canEdit: bool,
   hasIcs: bool,
   isConfirming: bool,
+  isEditing: bool,
   listing: listingPropType.isRequired,
   onSave: func,
   resources: resourceDefinition,
@@ -144,9 +144,9 @@ ChplCriteria.propTypes = {
 };
 
 ChplCriteria.defaultProps = {
-  canEdit: false,
   hasIcs: false,
   isConfirming: false,
+  isEditing: false,
   onSave: () => {},
   resources: {},
   viewAll: false,

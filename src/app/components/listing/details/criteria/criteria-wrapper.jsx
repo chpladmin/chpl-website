@@ -23,9 +23,9 @@ function ChplCriteriaWrapper(props) {
 export default ChplCriteriaWrapper;
 
 ChplCriteriaWrapper.propTypes = {
-  canEdit: bool,
   hasIcs: bool,
   isConfirming: bool,
+  isEditing: bool,
   listing: listingPropType.isRequired,
   onSave: func,
   resources: resourceDefinition,
@@ -33,9 +33,9 @@ ChplCriteriaWrapper.propTypes = {
 };
 
 ChplCriteriaWrapper.defaultProps = {
-  canEdit: false,
   hasIcs: false,
   isConfirming: false,
+  isEditing: false,
   onSave: () => {},
   resources: {},
   viewAll: false,
