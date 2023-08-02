@@ -86,11 +86,7 @@ function ChplCriterionDetailsEdit(props) {
 
   const onChange = (...args) => {
     formik.handleChange(...args);
-    props.onChange();
-  };
-
-  const save = () => {
-    const toSave = {
+    const updated = {
       ...criterion,
       success: formik.values.success,
       apiDocumentation: formik.values.apiDocumentation,
@@ -105,7 +101,7 @@ function ChplCriterionDetailsEdit(props) {
       serviceBaseUrlList: formik.values.serviceBaseUrlList,
       useCases: formik.values.useCases,
     };
-    props.onSave(toSave);
+    props.onChange(updated);
   };
 
   const handleDetailChange = (change) => {
@@ -114,7 +110,7 @@ function ChplCriterionDetailsEdit(props) {
     };
     updated[change.key] = change.data;
     setCriterion(updated);
-    props.onChange();
+    props.onChange(updated);
   };
 
   return (
@@ -634,27 +630,6 @@ function ChplCriterionDetailsEdit(props) {
             </Collapse>
           )}
       </CardContent>
-      <CardActions>
-        <Button
-          color="default"
-          variant="contained"
-          size="medium"
-          onClick={() => props.onCancel()}
-        >
-          <CloseOutlinedIcon />
-          {' '}
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          size="medium"
-          onClick={save}
-        >
-          Accept
-          <CheckOutlinedIcon />
-        </Button>
-      </CardActions>
     </Card>
   );
 }
@@ -665,9 +640,7 @@ ChplCriterionDetailsEdit.propTypes = {
   criterion: certificationResult.isRequired,
   isConfirming: bool,
   hasIcs: bool,
-  onCancel: func.isRequired,
   onChange: func.isRequired,
-  onSave: func.isRequired,
   resources: resourceDefinition.isRequired,
 };
 

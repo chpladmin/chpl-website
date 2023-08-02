@@ -69,16 +69,6 @@ const useStyles = makeStyles({
   iconSpacing: {
     marginLeft: '4px',
   },
-  pendingChip: {
-    fontSize: '.7rem',
-    backgroundColor: '#3e0d59',
-    color: palette.white,
-  },
-  stagedChip: {
-    fontSize: '.7rem',
-    backgroundColor: '#0d5928',
-    color: palette.white,
-  },
   criterionNumber: {
     textTransform: 'none',
   },
@@ -104,8 +94,6 @@ function ChplCriterion(props) {
   const [criterion, setCriterion] = useState(undefined);
   const [expanded, setExpanded] = useState(false);
   const [qmsStandards, setQmsStandards] = useState([]);
-  const [pending, setPending] = useState(false);
-  const [staged, setStaged] = useState(false);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
@@ -143,19 +131,7 @@ function ChplCriterion(props) {
     }
   };
 
-  const handleCancel = () => {
-    setPending(false);
-  };
-
-  const handleChange = () => {
-    setPending(true);
-  };
-
-  const handleSave = (updatedCriterion) => {
-    if (pending) {
-      setPending(false);
-      setStaged(true);
-    }
+  const handleChange = (updatedCriterion) => {
     setCriterion(updatedCriterion);
     onSave(updatedCriterion);
   };
@@ -195,32 +171,6 @@ function ChplCriterion(props) {
                     {criterion.criterion.number}
                   </div>
                 </Typography>
-                { pending
-                && (
-                  <Chip
-                    overlap="circle"
-                    label="Pending Changes"
-                    className={classes.pendingChip}
-                    avatar={(
-                      <Avatar className={classes.pendingChip}>
-                        <SyncIcon color="secondary" />
-                      </Avatar>
-                    )}
-                  />
-                )}
-                { staged && !pending
-                && (
-                  <Chip
-                    overlap="circle"
-                    label="Staged Changes"
-                    className={classes.stagedChip}
-                    avatar={(
-                      <Avatar className={classes.stagedChip}>
-                        <CloudDoneIcon color="secondary" />
-                      </Avatar>
-                    )}
-                  />
-                )}
               </Box>
             </Box>
             <Box className={classes.criterionAccordionSummaryData}>
@@ -243,9 +193,7 @@ function ChplCriterion(props) {
                       criterion={criterion}
                       hasIcs={hasIcs}
                       isConfirming={isConfirming}
-                      onCancel={handleCancel}
                       onChange={handleChange}
-                      onSave={handleSave}
                       resources={resources}
                     />
                   ) : (
