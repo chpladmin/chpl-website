@@ -198,7 +198,7 @@ const CertificationCriteriaEditComponent = {
       switch (action.action) {
         case 'Remove':
           this.cert.testToolsUsed = this.cert.testToolsUsed
-            .filter((crtt) => !(crtt.testTool.id === action.item.id
+            .filter((crtt) => !(crtt.testTool.id === action.item.item.id
               && crtt.version === action.item.additionalInputValue));
           break;
         case 'Add':
