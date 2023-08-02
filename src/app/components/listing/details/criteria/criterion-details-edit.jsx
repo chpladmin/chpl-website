@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -50,30 +50,44 @@ const useStyles = makeStyles({
 
 function ChplCriterionDetailsEdit(props) {
   const { hasAnyRole } = useContext(UserContext);
-  const { hasIcs, isConfirming, onChange: superOnChange } = props;
-  /* eslint-disable react/destructuring-assignment */
-  const resources = {
-    ...props.resources,
-    functionalitiesTested: props.resources.functionalitiesTested.filter((ft) => ft.criteria.some((c) => c.id === props.criterion.criterion.id)),
-  };
-  const [criterion, setCriterion] = useState(props.criterion);
-  /* eslint-enable react/destructuring-assignment */
+  const {
+    criterion: initialCriterion,
+    hasIcs,
+    isConfirming,
+    onChange: superOnChange,
+    resources: initialResources,
+  } = props;
+  const [criterion, setCriterion] = useState(undefined);
+  const [resources, setResources] = useState(undefined);
   const classes = useStyles();
+
+  useEffect(() => {
+    setCriterion({
+      ...initialCriterion,
+    });
+  }, [initialCriterion]);
+
+  useEffect(() => {
+    setResources({
+      ...initialResources,
+      functionalitiesTested: initialResources.functionalitiesTested.filter((ft) => ft.criteria.some((c) => c.id === initialCriterion.criterion.id)),
+    });
+  }, [initialCriterion, initialResources]);
 
   const formik = useFormik({
     initialValues: {
-      success: criterion.success || false,
-      apiDocumentation: criterion.apiDocumentation,
-      attestationAnswer: criterion.attestationAnswer,
-      documentationUrl: criterion.documentationUrl,
-      exportDocumentation: criterion.exportDocumentation,
-      g1Success: criterion.g1Success,
-      g2Success: criterion.g2Success,
-      gap: criterion.gap,
-      privacySecurityFramework: criterion.privacySecurityFramework,
-      sed: criterion.sed,
-      serviceBaseUrlList: criterion.serviceBaseUrlList,
-      useCases: criterion.useCases,
+      success: initialCriterion.success || false,
+      apiDocumentation: initialCriterion.apiDocumentation,
+      attestationAnswer: initialCriterion.attestationAnswer,
+      documentationUrl: initialCriterion.documentationUrl,
+      exportDocumentation: initialCriterion.exportDocumentation,
+      g1Success: initialCriterion.g1Success,
+      g2Success: initialCriterion.g2Success,
+      gap: initialCriterion.gap,
+      privacySecurityFramework: initialCriterion.privacySecurityFramework,
+      sed: initialCriterion.sed,
+      serviceBaseUrlList: initialCriterion.serviceBaseUrlList,
+      useCases: initialCriterion.useCases,
     },
     validationSchema,
     validateOnChange: false,
@@ -108,6 +122,8 @@ function ChplCriterionDetailsEdit(props) {
     setCriterion(updated);
     superOnChange(updated);
   };
+
+  if (!criterion) { return null; }
 
   return (
     <Card>
