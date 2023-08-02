@@ -216,8 +216,6 @@ function ChplManageSubscription(props) {
     })));
   };
 
-  if (!subscriber) { return null; }
-
   return (
     <Box className={classes.page}>
       <Box className={classes.header}>
@@ -225,11 +223,14 @@ function ChplManageSubscription(props) {
           <Typography variant="h1">
             My Subscriptions
           </Typography>
-          <Typography>
-            {subscriber.email}
-            {' | '}
-            {subscriber.role.name}
-          </Typography>
+          { subscriber
+            && (
+              <Typography>
+                {subscriber.email}
+                {' | '}
+                {subscriber.role.name}
+              </Typography>
+            )}
         </Container>
       </Box>
       <Container>
@@ -241,140 +242,153 @@ function ChplManageSubscription(props) {
               <Typography>Here, you can easily view and manage your subscriptions.</Typography>
             </CardContent>
           </Card>
-          <Box>
-            <Box className={classes.subscriptionTotalContainer}>
-              <Typography variant="h5" component="h3">
-                <strong>
-                  {subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0)}
-                  {' '}
-                  Total Subscriptions
-                </strong>
-              </Typography>
-            </Box>
-            { subscriptions.map((subscription) => (
-              <Accordion
-                className={classes.chplAccordion}
-                onChange={() => handleAccordionChange(subscription)}
-                id={`subscription-${subscription.certifiedProductId}`}
-                key={`subscription-${subscription.certifiedProductId}`}
-              >
-                <AccordionSummary
-                  className={classes.chplAccordionSummary}
-                  expandIcon={getIcon(subscription)}
-                  id={`subscription-id-${subscription.certifiedProductId}-header`}
-                >
-                  <Box className={classes.chplAccordionSummaryHeader}>
-                    <Box className={classes.chplAccordionSummarySubBox}>
-                      <Box className={classes.chplAccordionSummaryData}>
-                        <Typography variant="subtitle1">
-                          {subscription.chplProductNumber}
-                        </Typography>
-                      </Box>
-                      <Box className={classes.chplAccordionSummaryData}>
-                        <Typography variant="body1">
-                          {subscription.subscriptions.length}
-                          {' '}
-                          subscription
-                          {subscription.subscriptions.length !== 1 && 's'}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box className={classes.chplAccordionSummaryData}>
-                      <FormControlLabel
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={(
-                          <Button
-                            variant="text"
-                            className={classes.deleteTextButton}
-                            onClick={() => deleteSubscriptions(subscription)}
-                          >
-                            Unsubscribe from listing
-                          </Button>
-                        )}
-                      />
-                    </Box>
-                  </Box>
-                </AccordionSummary>
-                <AccordionDetails
-                  className={classes.chplAccordionDetails}
-                  id={`subscription-id-${subscription.certifiedProductId}-details`}
-                >
-                  <Box className={classes.subscriptionMetaDataContainer}>
-                    <Box className={classes.metaDataRow}>
-                      <Box className={classes.metaDataBox}>
-                        <Typography variant="subtitle1">
-                          Developer
-                        </Typography>
-                        <ChplLink
-                          href={`#/organizations/developers/${subscription.developerId}`}
-                          text={subscription.developerName}
-                          external={false}
-                          router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
-                        />
-                      </Box>
-                      <Box className={classes.metaDataBox}>
-                        <Typography variant="subtitle1">
-                          Product
-                        </Typography>
-                        <Typography>
-                          {subscription.productName}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box className={classes.metaDataRow}>
-                      <Box className={classes.metaDataBox}>
-                        <Typography variant="subtitle1">
-                          CHPL ID
-                        </Typography>
-                        <ChplLink
-                          href={`#/listing/${subscription.certifiedProductId}`}
-                          text={`${subscription.chplProductNumber}`}
-                          external={false}
-                          router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
-                        />
-                      </Box>
-                      <Box className={classes.metaDataBox}>
-                        <Typography variant="subtitle1">
-                          Version
-                        </Typography>
-                        <Typography>
-                          {subscription.version}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Typography variant="subtitle1">
-                    Subscriptions
+          { subscriptions.length === 0
+            && (
+              <Box className={classes.subscriptionTotalContainer}>
+                <Typography variant="h5" component="h3">
+                  <strong>
+                    You have no current subscriptions
+                  </strong>
+                </Typography>
+              </Box>
+            )}
+          { subscriptions.length > 0
+            && (
+              <Box>
+                <Box className={classes.subscriptionTotalContainer}>
+                  <Typography variant="h5" component="h3">
+                    <strong>
+                      {subscriptions.reduce((sum, subscription) => sum + subscription.subscriptions.length, 0)}
+                      {' '}
+                      Total Subscriptions
+                    </strong>
                   </Typography>
-                  { subscription.subscriptions.map((s) => (
-                    <Card
-                      key={s.id}
+                </Box>
+                { subscriptions.map((subscription) => (
+                  <Accordion
+                    className={classes.chplAccordion}
+                    onChange={() => handleAccordionChange(subscription)}
+                    id={`subscription-${subscription.certifiedProductId}`}
+                    key={`subscription-${subscription.certifiedProductId}`}
+                  >
+                    <AccordionSummary
+                      className={classes.chplAccordionSummary}
+                      expandIcon={getIcon(subscription)}
+                      id={`subscription-id-${subscription.certifiedProductId}-header`}
                     >
-                      <CardContent>
-                        <Box
-                          className={classes.subscriptionTypeContainer}
-                        >
-                          <Typography>
-                            {s.subject.type.name}
-                            {' | '}
-                            {s.subject.subject}
-                          </Typography>
-                          <ChplTooltip title="Unsubscribe from subscription type">
-                            <IconButton
-                              onClick={() => deleteSubscription(s)}
-                            >
-                              <DeleteIcon className={classes.deleteTextButton} />
-                            </IconButton>
-                          </ChplTooltip>
+                      <Box className={classes.chplAccordionSummaryHeader}>
+                        <Box className={classes.chplAccordionSummarySubBox}>
+                          <Box className={classes.chplAccordionSummaryData}>
+                            <Typography variant="subtitle1">
+                              {subscription.chplProductNumber}
+                            </Typography>
+                          </Box>
+                          <Box className={classes.chplAccordionSummaryData}>
+                            <Typography variant="body1">
+                              {subscription.subscriptions.length}
+                              {' '}
+                              subscription
+                              {subscription.subscriptions.length !== 1 && 's'}
+                            </Typography>
+                          </Box>
                         </Box>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </Box>
+                        <Box className={classes.chplAccordionSummaryData}>
+                          <FormControlLabel
+                            onClick={(event) => event.stopPropagation()}
+                            onFocus={(event) => event.stopPropagation()}
+                            control={(
+                              <Button
+                                variant="text"
+                                className={classes.deleteTextButton}
+                                onClick={() => deleteSubscriptions(subscription)}
+                              >
+                                Unsubscribe from listing
+                              </Button>
+                            )}
+                          />
+                        </Box>
+                      </Box>
+                    </AccordionSummary>
+                    <AccordionDetails
+                      className={classes.chplAccordionDetails}
+                      id={`subscription-id-${subscription.certifiedProductId}-details`}
+                    >
+                      <Box className={classes.subscriptionMetaDataContainer}>
+                        <Box className={classes.metaDataRow}>
+                          <Box className={classes.metaDataBox}>
+                            <Typography variant="subtitle1">
+                              Developer
+                            </Typography>
+                            <ChplLink
+                              href={`#/organizations/developers/${subscription.developerId}`}
+                              text={subscription.developerName}
+                              external={false}
+                              router={{ sref: 'organizations.developers.developer', options: { id: subscription.developerId } }}
+                            />
+                          </Box>
+                          <Box className={classes.metaDataBox}>
+                            <Typography variant="subtitle1">
+                              Product
+                            </Typography>
+                            <Typography>
+                              {subscription.productName}
+                            </Typography>
+                          </Box>
+                        </Box>
+                        <Box className={classes.metaDataRow}>
+                          <Box className={classes.metaDataBox}>
+                            <Typography variant="subtitle1">
+                              CHPL ID
+                            </Typography>
+                            <ChplLink
+                              href={`#/listing/${subscription.certifiedProductId}`}
+                              text={`${subscription.chplProductNumber}`}
+                              external={false}
+                              router={{ sref: 'listing', options: { id: subscription.certifiedProductId } }}
+                            />
+                          </Box>
+                          <Box className={classes.metaDataBox}>
+                            <Typography variant="subtitle1">
+                              Version
+                            </Typography>
+                            <Typography>
+                              {subscription.version}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                      <Typography variant="subtitle1">
+                        Subscriptions
+                      </Typography>
+                      { subscription.subscriptions.map((s) => (
+                        <Card
+                          key={s.id}
+                        >
+                          <CardContent>
+                            <Box
+                              className={classes.subscriptionTypeContainer}
+                            >
+                              <Typography>
+                                {s.subject.type.name}
+                                {' | '}
+                                {s.subject.subject}
+                              </Typography>
+                              <ChplTooltip title="Unsubscribe from subscription type">
+                                <IconButton
+                                  onClick={() => deleteSubscription(s)}
+                                >
+                                  <DeleteIcon className={classes.deleteTextButton} />
+                                </IconButton>
+                              </ChplTooltip>
+                            </Box>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+              </Box>
+            )}
         </Box>
       </Container>
     </Box>
