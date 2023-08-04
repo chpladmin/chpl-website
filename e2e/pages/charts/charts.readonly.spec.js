@@ -109,7 +109,7 @@ describe('the charts page', () => {
     });
 
     it('should have the right options in the "Certification status" dropdown', () => {
-      const expected = new Set(['Active', 'Suspended by ONC-ACB', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB']);
+      const expected = new Set(['Active', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB']);
       expect(page.certificationStatusDropdownOptions.length).toBe(expected.size);
       const options = [...new Set(page.certificationStatusDropdownOptions.map((item) => item.getText()))];
       options.forEach((option) => {
