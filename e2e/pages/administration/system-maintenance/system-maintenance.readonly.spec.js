@@ -73,5 +73,11 @@ describe('the system maintenance page', () => {
       await page.navigate('system-jobs');
       await expect(await page.canNavigate('system-jobs')).toBe(false);
     });
+
+    it('should allow navigation to "test-tools" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('test-tools')).toBe(true);
+      await page.navigate('test-tools');
+      await expect(await page.canNavigate('test-tools')).toBe(false);
+    });
   });
 });
