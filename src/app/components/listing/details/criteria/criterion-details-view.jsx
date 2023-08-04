@@ -394,10 +394,10 @@ function ChplCriterionDetailsView(props) {
                           <ListItem key={tt.id || tt.key || index}>
                             Tool:
                             {' '}
-                            {`${tt.testToolName}${tt.retired ? ' (Retired)' : ''}`}
+                            {tt.testTool.value}
                             ; Version:
                             {' '}
-                            { tt.testToolVersion || 'N/A' }
+                            { tt.version || 'N/A' }
                           </ListItem>
                         ))}
                       </List>

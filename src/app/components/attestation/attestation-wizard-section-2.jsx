@@ -155,6 +155,7 @@ function ChplAttestationWizardSection2(props) {
                                <Checkbox
                                  checked={child.submittedResponses.some((resp) => resp.id === answer.id)}
                                  onChange={(event) => handleSubResponse(section, item, answer, event.currentTarget.checked)}
+                                 color="primary"
                                />
                              )}
                              label={answer.response}

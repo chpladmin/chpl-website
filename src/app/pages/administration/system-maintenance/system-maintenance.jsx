@@ -13,6 +13,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ChplAnnouncements from 'components/announcement/announcements';
 import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
 import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
+import ChplTestTools from 'components/standards/test-tool/test-tools';
 import ChplSvaps from 'components/standards/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
 import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
@@ -91,6 +92,10 @@ function ChplSystemMaintenance() {
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
     hide('qmsStandards.edit.disabled');
+    hide('testTools.viewall.disabled');
+    hide('testTools.viewall');
+    hide('testTools.add.disabled');
+    hide('testTools.edit.disabled');
     hide('svaps.viewall.disabled');
     hide('svaps.viewall');
     hide('svaps.add.disabled');
@@ -117,18 +122,6 @@ function ChplSystemMaintenance() {
       <div className={classes.navigation}>
         <Card>
           <Button
-            onClick={() => navigate('announcements')}
-            disabled={active === 'announcements'}
-            id="system-maintenance-navigation-announcements"
-            fullWidth
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIcon />}
-            className={classes.menuItems}
-          >
-            Announcements
-          </Button>
-          <Button
             onClick={() => navigate('accessibilityStandards')}
             disabled={active === 'accessibilityStandards'}
             id="system-maintenance-navigation-accessibility-standards"
@@ -139,6 +132,18 @@ function ChplSystemMaintenance() {
             className={classes.menuItems}
           >
             Accessibility Standards
+          </Button>
+          <Button
+            onClick={() => navigate('announcements')}
+            disabled={active === 'announcements'}
+            id="system-maintenance-navigation-announcements"
+            fullWidth
+            variant="text"
+            color="primary"
+            endIcon={<ArrowForwardIcon />}
+            className={classes.menuItems}
+          >
+            Announcements
           </Button>
           <Button
             onClick={() => navigate('qmsStandards')}
@@ -179,6 +184,21 @@ function ChplSystemMaintenance() {
                 System Jobs
               </Button>
             )}
+          { hasAnyRole(['ROLE_ADMIN'])
+            && (
+              <Button
+                onClick={() => navigate('testTools')}
+                disabled={active === 'testTools'}
+                id="system-maintenance-navigation-test-tools"
+                fullWidth
+                variant="text"
+                color="primary"
+                endIcon={<ArrowForwardIcon />}
+                className={classes.menuItems}
+              >
+                Test Tools
+              </Button>
+            )}
           <Button
             onClick={() => navigate('ucdProcesses')}
             disabled={active === 'ucdProcesses'}
@@ -202,13 +222,17 @@ function ChplSystemMaintenance() {
                   System Maintenance is a tool for ONC administrators to add and edit system values that are maintained by ONC.
                 </Typography>
                 <List>
-                  <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
                   <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
+                  <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
                       <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
+                    )}
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
+                      <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem>
                     )}
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
                 </List>
@@ -226,6 +250,10 @@ function ChplSystemMaintenance() {
         { active === 'qmsStandards'
           && (
             <ChplQmsStandards />
+          )}
+        { active === 'testTools'
+          && (
+            <ChplTestTools />
           )}
         { active === 'svaps'
           && (

@@ -145,7 +145,7 @@
             <td>
               Test Tool <button class="btn btn-link btn-xs pull-right" uib-tooltip="The name and version of the test tool used during testing of the certification criterion functionality." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The name and version of the test tool used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
-            <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testToolId === null}">Tool: {{ m.testToolName }}; Version: {{ m.testToolVersion ? m.testToolVersion : 'N/A' }}<span ng-if="m.testToolId === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
+            <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.id === null}">Tool: {{ m.testTool.value }}{{ m.testTool.retired ? ' (Retired)' : ''}}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.id === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
             <td ng-if="!$ctrl.cert.testToolsUsed || $ctrl.cert.testToolsUsed.length === 0">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.testDataUsed !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_data{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
