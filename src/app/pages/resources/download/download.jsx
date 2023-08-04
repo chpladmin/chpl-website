@@ -157,7 +157,7 @@ function ChplResourcesDownload() {
             <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Certified Health IT Products</strong></Typography>
             <ul className={classes.listSpacing}>
               <li>
-                <Typography gutterBottom><strong>2015/2014/2011 Edition Products: (JSON)</strong></Typography>
+                <Typography gutterBottom><strong>2015/2014/2011 Edition Products (JSON):</strong></Typography>
                 {' '}
                 Entire collection of a specified certification edition&apos;s certified products, including all data elements.
                 <ul>
@@ -175,7 +175,7 @@ function ChplResourcesDownload() {
                 </ul>
               </li>
               <li>
-                <Typography gutterBottom><strong>2015/2014/2011 Edition Products: (XML)</strong></Typography>
+                <Typography gutterBottom><strong>2015/2014/2011 Edition Products (XML):</strong></Typography>
                 {' '}
                 Entire collection of a specified certification edition&apos;s certified products, including all data elements.
                 <ul>
@@ -194,7 +194,7 @@ function ChplResourcesDownload() {
                 </Typography>
               </Box>
               <li>
-                <Typography gutterBottom><strong>2015/2014 Edition Summary: (CSV)</strong></Typography>
+                <Typography gutterBottom><strong>2015/2014 Edition Summary (CSV):</strong></Typography>
                 {' '}
                 Entire collection of a specified certification edition&apos;s certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
                 <ul>
@@ -207,7 +207,7 @@ function ChplResourcesDownload() {
                 </ul>
               </li>
               <li>
-                <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary: (CSV)</strong></Typography>
+                <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary (CSV):</strong></Typography>
                 {' '}
                 Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
               </li>
@@ -220,7 +220,7 @@ function ChplResourcesDownload() {
               <li>
                 <Typography gutterBottom>
                   {' '}
-                  <strong>Surveillance Activity: (CSV)</strong>
+                  <strong>Surveillance Activity (CSV):</strong>
                 </Typography>
                 {' '}
                 Entire collection of surveillance activity reported to the CHPL.
@@ -228,18 +228,18 @@ function ChplResourcesDownload() {
               { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                     && (
                       <li>
-                        <Typography gutterBottom><strong>Surveillance (Basic): (CSV)</strong></Typography>
+                        <Typography gutterBottom><strong>Surveillance (Basic) (CSV):</strong></Typography>
                         {' '}
                         Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
                       </li>
                     )}
               <li>
-                <Typography gutterBottom><strong>Surveillance Non-Conformities: (CSV)</strong></Typography>
+                <Typography gutterBottom><strong>Surveillance Non-Conformities (CSV):</strong></Typography>
                 {' '}
                 Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file.
               </li>
               <li>
-                <Typography gutterBottom><strong>Direct Review Activity: (CSV)</strong></Typography>
+                <Typography gutterBottom><strong>Direct Review Activity (CSV):</strong></Typography>
                 {' '}
                 Entire collection of Direct Review activity reported to the CHPL.
               </li>
