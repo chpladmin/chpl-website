@@ -65,14 +65,11 @@ function ChplCriterionDetailsEdit(props) {
     setCriterion({
       ...initialCriterion,
     });
-  }, [initialCriterion]);
-
-  useEffect(() => {
     setResources({
       ...initialResources,
       functionalitiesTested: initialResources.functionalitiesTested.filter((ft) => ft.criteria.some((c) => c.id === initialCriterion.criterion.id)),
     });
-  }, [initialCriterion, initialResources]);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
