@@ -47,7 +47,7 @@ function ChplAdditionalInformation(props) {
   return (
     <>
       <Box gridGap={8} display="flex" flexDirection="column">
-        { listing.certificationEdition.name === '2014'
+        { listing.edition !== null && listing.edition.name === '2014'
           && (
             <Card>
               <CardHeader title="Test Results Summary" />
@@ -103,7 +103,7 @@ function ChplAdditionalInformation(props) {
                       </List>
                     </>
                   )}
-                { (listing.ics.parents?.length > 0 || listing.ics.children?.length > 0) && listing.certificationEdition.name === '2015' && !isConfirming
+                { (listing.ics.parents?.length > 0 || listing.ics.children?.length > 0) && listing.edition.name === '2015' && !isConfirming
                   && (
                     <ChplIcsFamily
                       id={listing.id}

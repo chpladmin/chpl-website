@@ -30,7 +30,7 @@ export const CompareComponent = {
 
     canCertId(listing) {
       return listing.curesUpdate
-        || (!this.isOn('cannot-generate-15e') && listing.certificationEdition.name === '2015');
+        || (!this.isOn('cannot-generate-15e') && (listing.edition === null || listing.edition.name === '2015'));
     }
 
     parse() {
@@ -167,7 +167,7 @@ export const CompareComponent = {
     }
 
     updateListingList(listing) {
-      this.hasNon2015 = this.hasNon2015 || listing.certificationEdition.name !== '2015';
+      this.hasNon2015 = this.hasNon2015 || (listing.edition !== null && listing.edition.name !== '2015');
       this.listingList.push({
         id: listing.id,
         certificationDate: listing.certificationDate,

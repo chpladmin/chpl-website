@@ -34,13 +34,15 @@ const useStyles = makeStyles({
 });
 
 function ChplCqms(props) {
-  const { cqms, edition } = props;
+  const { cqms } = props;
   const [viewAll, setViewAll] = useState(false);
+  const [edition, setEdition] = useState(undefined);
   const classes = useStyles();
 
   useEffect(() => {
+    setEdition(props.edition);
     setViewAll(props.viewAll);
-  }, [props.viewAll]); // eslint-disable-line react/destructuring-assignment
+  }, [props.viewAll, props.edition]); // eslint-disable-line react/destructuring-assignment
 
   const getCriteriaCells = (cqm) => [1, 2, 3, 4].map((num) => {
     const meets = cqm.criteria.find((crit) => crit.certificationNumber === `170.315 (c)(${num})`);
@@ -57,9 +59,11 @@ function ChplCqms(props) {
     );
   });
 
+  if (!edition) { return null; }
+
   return (
     <>
-      { edition.name === '2015'
+      { (edition === null || edition.name === '2015')
         && (
           <Typography className={classes.helperText}>
             Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
@@ -69,9 +73,9 @@ function ChplCqms(props) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{ edition.name === '2011' ? 'Meets' : 'Version' }</TableCell>
+              <TableCell>{ edition !== null && edition.name === '2011' ? 'Meets' : 'Version' }</TableCell>
               <TableCell>Quality Measure</TableCell>
-              { edition.name === '2015'
+              { (edition === null || edition.name === '2015')
               && (
                 <>
                   <TableCell>170.315 (c)(1)</TableCell>
@@ -89,7 +93,7 @@ function ChplCqms(props) {
                 <TableRow key={cqm.id ?? cqm.cmsId} className={!cqm.success ? classes.disabledRow : ''}>
                   <TableCell>
                     <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
-                    { edition.name === '2011' && cqm.success
+                    { edition.name !== null && edition.name === '2011' && cqm.success
                       && (
                         <CheckIcon fontSize="large" />
                       )}
@@ -105,7 +109,7 @@ function ChplCqms(props) {
                       </Typography>
                     </ChplTooltip>
                   </TableCell>
-                  { edition.name === '2015' && getCriteriaCells(cqm) }
+                  { (edition === null || edition.name === '2015') && getCriteriaCells(cqm) }
                 </TableRow>
               ))}
           </TableBody>
@@ -119,6 +123,10 @@ export default ChplCqms;
 
 ChplCqms.propTypes = {
   cqms: arrayOf(cqmType).isRequired,
-  edition: certificationEdition.isRequired,
+  edition: certificationEdition,
   viewAll: bool.isRequired,
+};
+
+ChplCqms.defaultProps = {
+  edition: undefined,
 };

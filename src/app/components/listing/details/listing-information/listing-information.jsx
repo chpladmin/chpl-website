@@ -114,10 +114,13 @@ function ChplListingInformation({ listing: initialListing }) {
             <Typography variant="subtitle1">Version:</Typography>
             <Typography gutterBottom>{listing.version.version}</Typography>
           </Box>
-          <Box className={classes.dataBox}>
-            <Typography variant="subtitle1">Certification Edition:</Typography>
-            <Typography gutterBottom>{`${listing.certificationEdition.name}${listing.curesUpdate ? ' Cures Update' : ''}`}</Typography>
-          </Box>
+          { listing.edition
+             && (
+             <Box className={classes.dataBox}>
+               <Typography variant="subtitle1">Certification Edition:</Typography>
+               <Typography gutterBottom>{`${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`}</Typography>
+             </Box>
+             )}
           { listing.currentStatus
             && (
               <Box className={classes.dataBox}>
