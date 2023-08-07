@@ -1,16 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
   CardHeader,
   CardActions,
+  Link,
   Divider,
   MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import CodeIcon from '@material-ui/icons/Code';
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
@@ -31,30 +35,46 @@ const useStyles = makeStyles({
   },
   content: {
     display: 'grid',
-    gap: '32px',
+    gap: '64px',
     alignItems: 'start',
     gridTemplateColumns: '1fr',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '7fr 5fr',
+      gridTemplateColumns: '2fr 1fr',
     },
   },
   listSpacing: {
     '& li': {
-      marginBottom: '.35em',
       lineHeight: '1.3em',
+      marginBottom: '.7em',
+      marginTop: '.7em',
     },
+  },
+  warningBox: {
+    padding: '16px',
+    backgroundColor: '#fdfde7',
+    border: '1px solid #afafaf',
+    borderRadius: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '4px',
+    marginBottom: '16px',
+    gridGap: '16px',
+    alignItems: 'center',
+  },
+  listHeaders: {
+    marginBottom: '8px',
   },
 });
 
 const allOptions = [
+  '2015 edition products (json)',
+  '2014 edition products (json)',
+  '2011 edition products (json)',
   '2015 edition products (xml)',
   '2014 edition products (xml)',
   '2011 edition products (xml)',
   '2015 edition summary (csv)',
   '2014 edition summary (csv)',
-  '2015 edition products (json)',
-  '2014 edition products (json)',
-  '2011 edition products (json)',
   'SVAP Summary (csv)',
   'Surveillance Activity',
   'Surveillance (Basic)',
@@ -128,102 +148,130 @@ function ChplResourcesDownload() {
         <div className={classes.content}>
           <div>
             <Typography
-              variant="h6"
+              variant="h4"
+              component="h3"
               gutterBottom
             >
-              To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.
+              <strong>Definitions & Guidelines</strong>
             </Typography>
+            <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Certified Health IT Products</strong></Typography>
             <ul className={classes.listSpacing}>
               <li>
-                <Typography gutterBottom variant="subtitle1">Certified Health IT Products</Typography>
+                <Typography gutterBottom><strong>2015/2014/2011 Edition Products (JSON):</strong></Typography>
+                {' '}
+                Entire collection of a specified certification edition&apos;s certified products, including all data elements.
                 <ul>
                   <li>
-                    <strong>2015/2014/2011 Edition Products:</strong>
-                    {' '}
-                    Entire collection of a specified certification edition&apos;s certified products, including all data elements. Available as an XML file.
-                    <ul>
-                      <li>
-                        The 2015 Edition Products file is updated nightly.
-                      </li>
-                      <li>
-                        The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                      </li>
-                    </ul>
+                    The 2015 Edition Products file is updated nightly.
                   </li>
                   <li>
-                    <strong>2015/2014 Edition Summary:</strong>
-                    {' '}
-                    Entire collection of a specified certification edition&apos;s certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests. Available as a CSV file.
-                    <ul>
-                      <li>
-                        The 2015 Edition Summary file is updated nightly.
-                      </li>
-                      <li>
-                        The 2014 Edition Summary file is updated quarterly.
-                      </li>
-                    </ul>
+                    The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
                   </li>
                   <li>
-                    <strong>Standards Version Advancement Process (SVAP) Summary:</strong>
+                    To find more details, select
                     {' '}
-                    Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.
+                    <Link href="/#/resources/api">API Documentation</Link>
                   </li>
                 </ul>
               </li>
               <li>
-                <Typography gutterBottom variant="subtitle1">Compliance Activities</Typography>
+                <Typography gutterBottom><strong>2015/2014/2011 Edition Products (XML):</strong></Typography>
+                {' '}
+                Entire collection of a specified certification edition&apos;s certified products, including all data elements.
                 <ul>
                   <li>
-                    <strong>Surveillance Activity:</strong>
-                    {' '}
-                    Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.
-                  </li>
-                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-                    && (
-                      <li>
-                        <strong>Surveillance (Basic):</strong>
-                        {' '}
-                        Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.
-                      </li>
-                    )}
-                  <li>
-                    <strong>Surveillance Non-Conformities:</strong>
-                    {' '}
-                    Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file. Available as a CSV file.
+                    The 2015 Edition Products file is updated nightly.
                   </li>
                   <li>
-                    <strong>Direct Review Activity:</strong>
-                    {' '}
-                    Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.
+                    The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
                   </li>
                 </ul>
+              </li>
+              <Box className={classes.warningBox}>
+                <ReportProblemOutlinedIcon />
+                <Typography>
+                  XML Files are now something text
+                </Typography>
+              </Box>
+              <li>
+                <Typography gutterBottom><strong>2015/2014 Edition Summary (CSV):</strong></Typography>
+                {' '}
+                Entire collection of a specified certification edition&apos;s certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
+                <ul>
+                  <li>
+                    The 2015 Edition Summary file is updated nightly.
+                  </li>
+                  <li>
+                    The 2014 Edition Summary file is updated quarterly.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary (CSV):</strong></Typography>
+                {' '}
+                Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
+              </li>
+            </ul>
+            <Box pt={4} pb={4}>
+              <Divider variant="fullWidth" />
+            </Box>
+            <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Compliance Activities</strong></Typography>
+            <ul className={classes.listSpacing}>
+              <li>
+                <Typography gutterBottom>
+                  {' '}
+                  <strong>Surveillance Activity (CSV):</strong>
+                </Typography>
+                {' '}
+                Entire collection of surveillance activity reported to the CHPL.
+              </li>
+              { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                    && (
+                      <li>
+                        <Typography gutterBottom><strong>Surveillance (Basic) (CSV):</strong></Typography>
+                        {' '}
+                        Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
+                      </li>
+                    )}
+              <li>
+                <Typography gutterBottom><strong>Surveillance Non-Conformities (CSV):</strong></Typography>
+                {' '}
+                Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file.
+              </li>
+              <li>
+                <Typography gutterBottom><strong>Direct Review Activity (CSV):</strong></Typography>
+                {' '}
+                Entire collection of Direct Review activity reported to the CHPL.
               </li>
             </ul>
           </div>
-          <Card>
+          <Card elevation={4}>
             <CardHeader title="Select A File To Download" />
             <CardContent>
-              <div className={classes.fullWidth}>
-                <ChplTextField
-                  select
-                  id="download-select"
-                  name="downloadSelect"
-                  label="Select a collection to download"
-                  value={selectedOption}
-                  onChange={(event) => setSelectedOption(event.target.value)}
-                >
-                  { downloadOptions.map((item) => (
-                    <MenuItem value={item} key={item}>{item}</MenuItem>
-                  ))}
-                </ChplTextField>
-              </div>
-              <div className={classes.fullWidth}>
-                <div>
-                  <Typography variant="body1">
-                    The XML definition files were last modified on August 7, 2023.
-                  </Typography>
+              <Box display="flex" flexDirection="column" gridGap={16}>
+                <Typography> To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.</Typography>
+                <div className={classes.fullWidth}>
+                  <ChplTextField
+                    select
+                    id="download-select"
+                    name="downloadSelect"
+                    label="Select a collection to download"
+                    value={selectedOption}
+                    onChange={(event) => setSelectedOption(event.target.value)}
+                  >
+                    { downloadOptions.map((item) => (
+                      <MenuItem value={item} key={item}>{item}</MenuItem>
+                    ))}
+                  </ChplTextField>
                 </div>
-              </div>
+                <div className={classes.fullWidth}>
+                  <div>
+                    <Typography variant="body1">
+                      The XML definition files were last modified on July 24, 2023.
+                    </Typography>
+                  </div>
+                </div>
+              </Box>
             </CardContent>
             <CardActions>
               <Button
@@ -239,15 +287,15 @@ function ChplResourcesDownload() {
               </Button>
               <Button
                 fullWidth
-                color="secondary"
-                variant="contained"
+                color="primary"
+                variant="text"
                 id="download-chpl-definition-button"
                 disabled={definitionDisabled}
                 onClick={() => downloadFile('definition')}
               >
                 Definition File
                 {' '}
-                <GetAppIcon className={classes.iconSpacing} />
+                <CodeIcon className={classes.iconSpacing} />
               </Button>
             </CardActions>
           </Card>
