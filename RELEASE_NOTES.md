@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.1.0
+_7 August 2023_
+
+### Features
+* Enable management of "Test Tools" by ROLE_ADMIN
+
+---
+
 ## Version 13.0.0
 _24 July 2023_
 

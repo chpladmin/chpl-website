@@ -5,10 +5,8 @@
     .factory('CertificationResultTestTool', function () {
       var CertificationResultTestTool = function (testTool, version) {
         return {
-          'retired': testTool.retired,
-          'testToolId': testTool.id,
-          'testToolName': testTool.name,
-          'testToolVersion': version,
+          testTool,
+          version: version,
         };
       };
 

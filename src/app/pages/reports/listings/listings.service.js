@@ -194,8 +194,13 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'testToolsUsed':
       options = {
-        sort: (p, c) => (p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0),
-        write: (f) => `Test Tool "${f.testToolName}"`,
+        sort: (p, c) => {
+          if (p.testTool) {
+            return p.testTool.value < c.testTool.value ? -1 : p.testTool.value > c.testTool.value ? 1 : 0;
+          }
+          return (p.testToolName < c.testToolName ? -1 : p.testToolName > c.testToolName ? 1 : 0);
+        },
+        write: (f) => `Test Tool "${f.testToolName ?? f.testTool.value}"`,
       };
       break;
     case 'text':
@@ -472,7 +477,9 @@ lookup = {
   'testTasks.testParticipants': { message: compareTestParticipants },
   'testTasks.testTaskId': { message: () => undefined },
   'testToolsUsed.id': { message: () => undefined },
+  'testToolsUsed.testTool.criteria': { message: () => undefined },
   'testToolsUsed.testToolVersion': { message: (before, after) => comparePrimitive(before, after, 'testToolVersion', 'Version') },
+  'testToolsUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
   'ucdProcesses.criteria': { message: (before, after) => compare(before, after, 'ucdProcesses.criteria', 'Certification Criteria') },
   'ucdProcesses.details': { message: (before, after) => comparePrimitive(before, after, 'details', 'UCD Process Details') },
   'ucdProcesses.id': { message: () => undefined },

@@ -10,11 +10,10 @@ import {
 import criterion from './criterion';
 import functionalitiesTested from './functionalities-tested';
 import reliedUponSoftware from './relied-upon-software';
-import { selectedSvap, svap } from './standards';
+import { selectedSvap, selectedTestTool, svap } from './standards';
 import { selectedTestData } from './test-data';
 import { selectedTestProcedure } from './test-procedure';
 import { selectedTestStandard } from './test-standard';
-import { selectedTestTool } from './test-tool';
 
 const certificationResult = shape({
   additionalSoftware: arrayOf(reliedUponSoftware),
