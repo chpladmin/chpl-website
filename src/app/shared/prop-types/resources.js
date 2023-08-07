@@ -12,7 +12,7 @@ import practiceType from './practice-type';
 import { testData } from './test-data';
 import { testProcedure } from './test-procedure';
 import { testStandard } from './test-standard';
-import { testTool } from './test-tool';
+import { testTool } from './standards';
 
 const resources = shape({
   accessibilityStandards: arrayOf(object),
