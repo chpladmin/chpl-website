@@ -33,6 +33,11 @@ const qmsStandardType = shape({
   name: string,
 });
 
+const rule = shape({
+  id: number,
+  name: string,
+});
+
 const svap = shape({
   approvedStandardVersion: string,
   criteria: arrayOf(criterion),
@@ -47,6 +52,27 @@ const selectedSvap = shape({
   regulatoryTextCitation: string,
   replaced: bool,
   svapId: number,
+});
+
+const selectedTestTool = shape({
+  id: number,
+  retired: bool,
+  testToolId: number,
+  testToolName: string,
+  testToolVersion: string,
+});
+
+const testTool = shape({
+  criteria: arrayOf(criterion),
+  description: string,
+  endDay: string,
+  id: number,
+  name: string,
+  regulatoryTextCitation: string,
+  requiredDay: string,
+  rule,
+  startDay: string,
+  value: string,
 });
 
 const ucdProcessType = shape({
@@ -65,8 +91,11 @@ export {
   accessibilityStandardType,
   qmsStandard,
   qmsStandardType,
+  rule,
   svap,
   selectedSvap,
+  selectedTestTool,
+  testTool,
   ucdProcess,
   ucdProcessType,
 };
