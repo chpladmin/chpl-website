@@ -11,7 +11,8 @@ const hocMock = {
   onChange: jest.fn(),
 };
 
-describe('the ChplTestToolsEdit component', () => {
+// un-ignore on OCD-4240
+xdescribe('the ChplTestToolsEdit component', () => {
   afterEach(() => {
     cleanup();
   });

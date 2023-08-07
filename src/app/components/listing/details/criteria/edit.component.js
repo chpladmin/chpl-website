@@ -44,6 +44,7 @@ const CertificationCriteriaEditComponent = {
       this.cert.metViaAdditionalSoftware = this.cert.additionalSoftware && this.cert.additionalSoftware.length > 0;
       this.certSave = angular.copy(this.cert);
 
+      this.setAvailableTestTools();
       this.selectedConformanceMethodKeys = this.getSelectedConformanceMethodKeys();
       this.selectedTestDataKeys = this.getSelectedTestDataKeys();
       this.selectedFunctionalityTestedKeys = this.getSelectedFunctionalityTestedKeys();
@@ -57,7 +58,6 @@ const CertificationCriteriaEditComponent = {
       this.selectedSvapKeys = this.getSelectedSvapKeys();
       this.setAvailableTestValues();
       this.setSvapDisplayText();
-      this.setAvailableTestTools();
     }
 
     cancel() {
@@ -198,8 +198,8 @@ const CertificationCriteriaEditComponent = {
       switch (action.action) {
         case 'Remove':
           this.cert.testToolsUsed = this.cert.testToolsUsed
-            .filter((crtt) => !(crtt.testToolId === action.item.item.id
-              && crtt.testToolVersion === action.item.additionalInputValue));
+            .filter((crtt) => !(crtt.testTool.id === action.item.item.id
+              && crtt.version === action.item.additionalInputValue));
           break;
         case 'Add':
           this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
@@ -219,7 +219,7 @@ const CertificationCriteriaEditComponent = {
       if (this.isConfirming) {
         if (item.retired && !this.hasIcs) {
           validation.valid = false;
-          validation.errors.push(`${item.name} is retired.  Retired test tools are only valid if the Certified Product carries ICS.`);
+          validation.errors.push(`${item.name} is retired. Retired test tools are only valid if the Certified Product carries ICS.`);
         }
       } else if (item.retired) {
         validation.valid = false;
@@ -333,8 +333,8 @@ const CertificationCriteriaEditComponent = {
         return [];
       }
       return this.cert.testToolsUsed.map((tt) => ({
-        key: tt.testToolId,
-        additionalInputValue: tt.testToolVersion,
+        key: tt.testTool.id,
+        additionalInputValue: tt.version,
       }));
     }
 
@@ -358,22 +358,13 @@ const CertificationCriteriaEditComponent = {
     }
 
     setAvailableTestTools() {
-      if (Array.isArray(this.cert.allowedTestTools)) {
-        this.cert.allowedTestTools = this.cert.allowedTestTools
-          .map((att) => ({
-            ...att,
-            dropDownText: att.name + (att.retired ? ' (Retired)' : ''),
+      if (Array.isArray(this.resources.testTools)) {
+        this.cert.allowedTestTools = this.resources.testTools
+          .filter((tt) => tt.criteria.some((cc) => cc.id === this.cert.criterion.id))
+          .map((tt) => ({
+            ...tt,
+            dropDownText: tt.value + (tt.retired ? ' (Retired)' : ''),
           }));
-        this.cert.testToolsUsed?.forEach((tt) => {
-          if (!this.cert.allowedTestTools.find((att) => att.id === tt.testToolId)) {
-            this.cert.allowedTestTools.push({
-              id: tt.testToolId,
-              name: tt.testToolName,
-              retired: tt.retired,
-              dropDownText: tt.testToolName + (tt.retired ? ' (Retired)' : ''),
-            });
-          }
-        });
       }
     }
   },
