@@ -429,6 +429,10 @@ export default class NetworkService {
     return this.apiGET('/data/test_data');
   }
 
+  getTestTools() {
+    return this.apiGET('/test-tools');
+  }
+
   getTestProcedures() {
     return this.apiGET('/data/test_procedures');
   }
@@ -484,10 +488,6 @@ export default class NetworkService {
 
   keepalive() {
     return this.apiGET('/auth/keep-alive', { ignoreLoadingBar: true });
-  }
-
-  login(userObj) {
-    return this.apiPOST('/auth/authenticate', userObj);
   }
 
   mergeDevelopers(mergeDeveloperObject) {

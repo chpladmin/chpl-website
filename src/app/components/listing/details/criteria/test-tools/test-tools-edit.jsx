@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -59,7 +59,6 @@ const mergeTestTools = (availableTestTools, usedTestTools) => {
         mergedTestTools.push({
           id: tt.testToolId,
           name: tt.testToolName,
-          retired: tt.retired,
         });
       }
     });
@@ -67,21 +66,28 @@ const mergeTestTools = (availableTestTools, usedTestTools) => {
   return mergedTestTools;
 };
 
-function ChplTestToolsEdit(props) {
-  /* eslint-disable react/destructuring-assignment */
+function ChplTestToolsEdit({
+  hasIcs,
+  isConfirming,
+  onChange,
+  testTools: initialTestTools,
+  options: initialOptions,
+}) {
   const [adding, setAdding] = useState(false);
-  const [hasIcs] = useState(props.hasIcs);
-  const [isConfirming] = useState(props.isConfirming);
-  const [testToolsUsed, setTestToolsUsed] = useState(props.testTools.sort((a, b) => (a.testToolName < b.testToolName ? -1 : 1)));
-  const [options, setOptions] = useState(
-    mergeTestTools(props.options, testToolsUsed)
-      .filter((option) => !(props.testTools.find((used) => used.testToolId === option.id)))
-      .sort((a, b) => (a.name < b.name ? -1 : 1)),
-  );
+  const [testToolsUsed, setTestToolsUsed] = useState([]);
+  const [options, setOptions] = useState([]);
   const classes = useStyles();
-  /* eslint-enable react/destructuring-assignment */
-
   let addNew;
+
+  useEffect(() => {
+    setTestToolsUsed(initialTestTools.sort((a, b) => (a.testTool.value < b.testTool.value ? -1 : 1)));
+  }, [initialTestTools]);
+
+  useEffect(() => {
+    setOptions(mergeTestTools(initialOptions, testToolsUsed)
+      .filter((option) => !(initialTestTools.find((used) => used.testToolId === option.id)))
+      .sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [initialOptions, initialTestTools, testToolsUsed]);
 
   const formik = useFormik({
     initialValues: {
@@ -97,7 +103,7 @@ function ChplTestToolsEdit(props) {
   });
 
   const update = (updated) => {
-    props.onChange({ key: 'testToolsUsed', data: updated });
+    onChange({ key: 'testToolsUsed', data: updated });
   };
 
   addNew = () => {

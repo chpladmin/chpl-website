@@ -24,6 +24,7 @@ import PasswordStrengthMeter from './password-strength-meter';
 import {
   usePostChangePassword,
   usePostEmailResetPassword,
+  usePostLogin,
   usePostResetPassword,
 } from 'api/auth';
 import { getAngularService } from 'services/angular-react-helper';
@@ -107,6 +108,7 @@ function ChplLogin({ dispatch }) {
   const { enqueueSnackbar } = useSnackbar();
   const postChangePassword = usePostChangePassword();
   const postEmailResetPassword = usePostEmailResetPassword();
+  const postLogin = usePostLogin();
   const postResetPassword = usePostResetPassword();
   const [state, setState] = useState('SIGNIN');
   const [passwordMessages, setPasswordMessages] = useState([]);
@@ -211,8 +213,12 @@ function ChplLogin({ dispatch }) {
   let sendReset;
 
   const login = () => {
-    networkService.login({ userName: signinFormik.values.userName, password: signinFormik.values.password })
-      .then(() => {
+    postLogin.mutate({
+      userName: signinFormik.values.userName,
+      password: signinFormik.values.password,
+    }, {
+      onSuccess: (response) => {
+        authService.saveToken(response.token);
         networkService.getUserById(authService.getUserId())
           .then((data) => {
             setUser(data);
@@ -225,7 +231,8 @@ function ChplLogin({ dispatch }) {
             dispatch('loggedIn');
             toastWhenUsernameUsed(signinFormik.values.userName, data);
           });
-      }, (error) => {
+      },
+      onError: (error) => {
         if (error?.status === 461) {
           const body = 'Your account has not been confirmed, please check your email to confirm your account.';
           enqueueSnackbar(body, { variant: 'info' });
@@ -238,7 +245,8 @@ function ChplLogin({ dispatch }) {
           const body = 'Bad username and password combination or account is locked / disabled.';
           enqueueSnackbar(body, { variant: 'error' });
         }
-      });
+      },
+    });
   };
 
   const logout = (e) => {
