@@ -6,34 +6,16 @@ import {
   CardContent,
   MenuItem,
   Typography,
-  makeStyles,
-
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import SubscriptionsTwoToneIcon from '@material-ui/icons/SubscriptionsTwoTone';
 import { number } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import SubscriptionsTwoToneIcon from '@material-ui/icons/SubscriptionsTwoTone';
-
-import Image from '../../../assets/images/SubscribeTo.png';
 
 import { useFetchRoles, usePostSubscription } from 'api/subscriptions';
 import { ChplTextField } from 'components/util';
-import { theme } from 'themes';
-
-const useStyles = makeStyles({
-  subscribeToBackground: {
-    backgroundImage: `url(${Image})`,
-    minHeight: '132px',
-    backgroundSize: '100%',
-    backgroundRepeat: 'no-repeat',
-    marginLeft: '-20px',
-    [theme.breakpoints.up('md')]: {
-      minHeight: '175px',
-    },
-  },
-});
 
 const validationSchema = yup.object({
   email: yup.string()
@@ -48,7 +30,6 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   const [roles, setRoles] = useState([]);
   const { data, isLoading, isSuccess } = useFetchRoles();
   const postSubscription = usePostSubscription();
-  const classes = useStyles();
   let formik;
 
   useEffect(() => {
