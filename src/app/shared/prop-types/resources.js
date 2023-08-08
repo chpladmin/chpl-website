@@ -44,10 +44,7 @@ const resources = shape({
     expandable: bool,
     data: arrayOf(testStandard),
   }),
-  testTools: shape({
-    expandable: bool,
-    data: arrayOf(testTool),
-  }),
+  testTools: arrayOf(testTool),
   testingLabs: arrayOf(object),
   ucdProcesses: arrayOf(object),
 });
