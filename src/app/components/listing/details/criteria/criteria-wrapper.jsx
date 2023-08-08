@@ -7,6 +7,7 @@ import {
 import ChplCriteria from './criteria';
 
 import AppWrapper from 'app-wrapper';
+import ListingWrapper from 'components/listing/listing-wrapper';
 import {
   listing as listingPropType,
   resources as resourceDefinition,
@@ -15,7 +16,9 @@ import {
 function ChplCriteriaWrapper(props) {
   return (
     <AppWrapper>
-      <ChplCriteria {...props} />
+      <ListingWrapper>
+        <ChplCriteria {...props} />
+      </ListingWrapper>
     </AppWrapper>
   );
 }

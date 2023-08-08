@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Card,
   IconButton,
@@ -19,11 +19,8 @@ import { arrayOf } from 'prop-types';
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
 import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
-import {
-  accessibilityStandard,
-  certificationResult,
-  qmsStandard,
-} from 'shared/prop-types';
+import { ListingContext } from 'shared/contexts';
+import { certificationResult } from 'shared/prop-types';
 
 const useStyles = makeStyles({
   infoIcon: {
@@ -34,11 +31,18 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCriterionDetailsView(props) {
-  const { criterion, qmsStandards, accessibilityStandards } = props;
+function ChplCriterionDetailsView({ criterion }) {
+  const { listing } = useContext(ListingContext);
+  const [accessibilityStandards, setAccessibilityStandards] = useState([]);
+  const [qmsStandards, setQmsStandards] = useState([]);
   const classes = useStyles();
 
-  if (criterion.criterion.certificationEdition === '2011') {
+  useEffect(() => {
+    setAccessibilityStandards(listing.accessibilityStandards);
+    setQmsStandards(listing.qmsStandards);
+  }, [listing]);
+
+  if (!listing || !criterion || criterion.criterion.certificationEdition === '2011') {
     return null;
   }
 
@@ -601,6 +605,4 @@ export default ChplCriterionDetailsView;
 
 ChplCriterionDetailsView.propTypes = {
   criterion: certificationResult.isRequired,
-  accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
-  qmsStandards: arrayOf(qmsStandard).isRequired,
 };

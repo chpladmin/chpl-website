@@ -14,7 +14,7 @@ import ChplCriterion from './criterion';
 
 import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
-import { UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import {
   listing as listingPropType,
   resources as resourceDefinition,
@@ -50,6 +50,7 @@ function ChplCriteria(props) {
     onSave,
     viewAll,
   } = props;
+  const { setListing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
   const [criteria, setCriteria] = useState([]);
   const classes = useStyles();
@@ -57,6 +58,7 @@ function ChplCriteria(props) {
   useEffect(() => {
     setCriteria(listing.certificationResults
       .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
+    setListing(listing);
   }, [listing]);
 
   const handleSave = (criterion) => {
@@ -88,7 +90,6 @@ function ChplCriteria(props) {
             hasIcs={hasIcs}
             isConfirming={isConfirming}
             isEditing={isEditing}
-            listing={listing}
             onSave={handleSave}
             resources={prepareResources(cc.criterion)}
           />
@@ -119,7 +120,6 @@ function ChplCriteria(props) {
                         isEditing={isEditing && !isConfirming && (cc.success || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))}
                         onSave={handleSave}
                         resources={prepareResources(cc.criterion)}
-                        listing={listing}
                       />
                     ))}
                 </Container>

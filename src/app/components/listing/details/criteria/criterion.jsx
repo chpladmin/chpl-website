@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -18,11 +18,8 @@ import ChplCriterionDetailsView from './criterion-details-view';
 import { ChplHighlightCures } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { isCures } from 'services/criteria.service';
-import {
-  certificationResult,
-  listing as listingPropType,
-  resources as resourceDefinition,
-} from 'shared/prop-types';
+import { ListingContext } from 'shared/contexts';
+import { certificationResult, resources as resourceDefinition } from 'shared/prop-types';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -80,14 +77,12 @@ function ChplCriterion(props) {
     hasIcs,
     isConfirming,
     isEditing,
-    listing,
     onSave,
     resources,
   } = props;
-  const [accessibilityStandards, setAccessibilityStandards] = useState([]);
+  const { listing } = useContext(ListingContext);
   const [criterion, setCriterion] = useState(undefined);
   const [expanded, setExpanded] = useState(false);
-  const [qmsStandards, setQmsStandards] = useState([]);
   const $analytics = getAngularService('$analytics');
   const classes = useStyles();
 
@@ -95,13 +90,10 @@ function ChplCriterion(props) {
     setCriterion(initialCriterion);
   }, [initialCriterion]);
 
-  useEffect(() => {
-    setAccessibilityStandards(listing.accessibilityStandards);
-    setQmsStandards(listing.qmsStandards);
-  }, [listing]);
+  if (!criterion || !listing) { return null; }
 
   const getIcon = () => {
-    if (listing.certificationEdition.name === '2011') { return null; }
+    if (listing.certificationEdition?.name === '2011') { return null; }
     return (expanded
       ? (
         <>
@@ -129,8 +121,6 @@ function ChplCriterion(props) {
     setCriterion(updatedCriterion);
     onSave(updatedCriterion);
   };
-
-  if (!criterion) { return null; }
 
   return (
     <div>
@@ -174,7 +164,7 @@ function ChplCriterion(props) {
             </Box>
           </Box>
         </AccordionSummary>
-        { listing.certificationEdition.name !== '2011'
+        { listing.certificationEdition?.name !== '2011'
           && (
             <AccordionDetails
               className={classes.criterionAccordionDetails}
@@ -193,8 +183,6 @@ function ChplCriterion(props) {
                   ) : (
                     <ChplCriterionDetailsView
                       criterion={criterion}
-                      accessibilityStandards={accessibilityStandards}
-                      qmsStandards={qmsStandards}
                     />
                   )}
               </Container>
@@ -212,7 +200,6 @@ ChplCriterion.propTypes = {
   hasIcs: bool,
   isConfirming: bool,
   isEditing: bool,
-  listing: listingPropType.isRequired,
   onSave: func,
   resources: resourceDefinition,
 };
