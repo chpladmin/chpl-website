@@ -12,14 +12,15 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+
+import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
-import CodeIcon from '@material-ui/icons/Code';
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-import { theme, utilStyles } from 'themes';
+import { theme, palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -31,7 +32,7 @@ const useStyles = makeStyles({
     gap: '16px',
     gridTemplateColumns: '1fr',
     padding: '32px',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: palette.background,
   },
   content: {
     display: 'grid',
@@ -51,8 +52,8 @@ const useStyles = makeStyles({
   },
   warningBox: {
     padding: '16px',
-    backgroundColor: '#fdfde7',
-    border: '1px solid #afafaf',
+    backgroundColor: palette.warningLight,
+    border: `1px solid ${palette.grey}`,
     borderRadius: '4px',
     display: 'flex',
     flexDirection: 'row',
@@ -98,19 +99,20 @@ function ChplResourcesDownload() {
 
   useEffect(() => {
     const data = {
-      '2011 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2011`, definition: `${API}/download?api_key=${getApiKey()}&edition=2011&definition=true`, label: '2011 XML' },
-      '2014 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014`, definition: `${API}/download?api_key=${getApiKey()}&edition=2014&definition=true`, label: '2014 XML' },
-      '2014 edition summary (csv)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014&format=csv`, definition: `${API}/download?api_key=${getApiKey()}&edition=2014&format=csv&definition=true`, label: '2014 CSV' },
-      '2015 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015`, definition: `${API}/download?api_key=${getApiKey()}&edition=2015&definition=true`, label: '2015 XML' },
-      '2015 edition summary (csv)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015&format=csv`, definition: `${API}/download?api_key=${getApiKey()}&edition=2015&format=csv&definition=true`, label: '2015 CSV' },
-      'Direct Review Activity': { data: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}`, definition: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}&definition=true`, label: 'Direct Review Activity' },
-      'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'Surveillance (Basic)' },
-      'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
-      'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
-      'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
       '2015 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015&format=json`, definition: '', label: '2015 JSON' },
       '2014 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014&format=json`, definition: '', label: '2014 JSON' },
       '2011 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2011&format=json`, definition: '', label: '2011 JSON' },
+      '2015 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015`, definition: `${API}/download?api_key=${getApiKey()}&edition=2015&definition=true`, label: '2015 XML' },
+      '2014 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014`, definition: `${API}/download?api_key=${getApiKey()}&edition=2014&definition=true`, label: '2014 XML' },
+      '2011 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2011`, definition: `${API}/download?api_key=${getApiKey()}&edition=2011&definition=true`, label: '2011 XML' },
+      '2015 edition summary (csv)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015&format=csv`, definition: `${API}/download?api_key=${getApiKey()}&edition=2015&format=csv&definition=true`, label: '2015 CSV' },
+      '2014 edition summary (csv)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014&format=csv`, definition: `${API}/download?api_key=${getApiKey()}&edition=2014&format=csv&definition=true`, label: '2014 CSV' },
+      'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
+      'Direct Review Activity': { data: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}`, definition: `${API}/developers/direct-reviews/download?api_key=${getApiKey()}&definition=true`, label: 'Direct Review Activity' },
+      'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'Surveillance (Basic)' },
+      'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
+      'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
+      'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
@@ -218,10 +220,7 @@ function ChplResourcesDownload() {
             <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Compliance Activities</strong></Typography>
             <ul className={classes.listSpacing}>
               <li>
-                <Typography gutterBottom>
-                  {' '}
-                  <strong>Surveillance Activity (CSV):</strong>
-                </Typography>
+                <Typography gutterBottom><strong>Surveillance Activity (CSV):</strong></Typography>
                 {' '}
                 Entire collection of surveillance activity reported to the CHPL.
               </li>
