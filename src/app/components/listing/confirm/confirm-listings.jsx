@@ -25,32 +25,13 @@ import {
 import ChplActionBarMessages from 'components/action-bar/action-bar-messages';
 import ChplSortableHeaders from 'components/util/chpl-sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
-import theme from 'themes/theme';
+import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
-  deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    '&:hover': {
-      backgroundColor: '#853544',
-    },
-  },
-  iconSpacing: {
-    marginLeft: '4px',
-  },
+  ...utilStyles,
   messageButton: {
     marginLeft: '-8px',
     textTransform: 'none',
-  },
-  stickyColumn: {
-    position: 'sticky',
-    left: 0,
-    boxShadow: 'rgba(149, 157, 165, 0.1) 0px 4px 8px',
-    backgroundColor: '#ffffff',
-    overflowWrap: 'anywhere',
-    [theme.breakpoints.up('sm')]: {
-      minWidth: '200px',
-    },
   },
   tableContainer: {
     overflowWrap: 'normal',
@@ -63,9 +44,6 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'flex-end',
     padding: '16px 32px',
-  },
-  wrap: {
-    overflowWrap: 'anywhere',
   },
 });
 
@@ -90,7 +68,7 @@ const getStatus = (listing, classes) => {
   );
 };
 
-function ChplConfirmListings(props) {
+function ChplConfirmListings({ onProcess }) {
   const DateUtil = getAngularService('DateUtil');
   const toaster = getAngularService('toaster');
   const [errors, setErrors] = useState([]);
@@ -140,7 +118,7 @@ function ChplConfirmListings(props) {
   }, [modernData, classes]);
 
   const handleProcess = (listing) => {
-    props.onProcess(listing.id);
+    onProcess(listing.id);
   };
 
   const handleRejectActual = (reject) => {
@@ -240,7 +218,7 @@ function ChplConfirmListings(props) {
                   { listings
                     .map((listing) => (
                       <TableRow key={listing.id}>
-                        <TableCell className={classes.stickyColumn}>
+                        <TableCell className={classes.firstColumn}>
                           <Button
                             id={`process-pending-listing-${listing.chplProductNumber}`}
                             color="primary"
@@ -252,11 +230,11 @@ function ChplConfirmListings(props) {
                             Process Listing
                           </Button>
                         </TableCell>
-                        <TableCell className={classes.wrap}>{listing.chplProductNumber}</TableCell>
-                        <TableCell className={classes.wrap}>{listing.developer}</TableCell>
-                        <TableCell className={classes.wrap}>{listing.product}</TableCell>
-                        <TableCell className={classes.wrap}>{listing.version}</TableCell>
-                        <TableCell className={classes.wrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
+                        <TableCell className={classes.linkWrap}>{listing.chplProductNumber}</TableCell>
+                        <TableCell className={classes.linkWrap}>{listing.developer}</TableCell>
+                        <TableCell className={classes.linkWrap}>{listing.product}</TableCell>
+                        <TableCell className={classes.linkWrap}>{listing.version}</TableCell>
+                        <TableCell className={classes.linkWrap}>{DateUtil.getDisplayDateFormat(listing.certificationDate)}</TableCell>
                         <TableCell>
                           { listing.displayStatus }
                           { listing.status !== 'UPLOAD_FAILURE' && (listing.errors?.length !== 0 || listing.warnings?.length !== 0)
