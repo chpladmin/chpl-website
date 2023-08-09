@@ -13,7 +13,7 @@ import ChplCriterion from './criterion';
 const mock = {
   listing: {
     accessibilityStandards: [],
-    certificationEdition: { name: '2015' },
+    edition: { name: '2015' },
     qmsStandards: [],
   },
   certificationResult: {
