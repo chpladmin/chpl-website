@@ -118,7 +118,7 @@ function ChplListingInformation({ listing: initialListing }) {
              && (
              <Box className={classes.dataBox}>
                <Typography variant="subtitle1">Certification Edition:</Typography>
-               <Typography gutterBottom>{`${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`}</Typography>
+               <Typography gutterBottom>{listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : ''}</Typography>
              </Box>
              )}
           { listing.currentStatus

@@ -29,7 +29,7 @@ export const CompareComponent = {
     }
 
     canCertId(listing) {
-      return listing.curesUpdate
+      return (listing.edition !== null && listing.curesUpdate)
         || (!this.isOn('cannot-generate-15e') && (listing.edition === null || listing.edition.name === '2015'));
     }
 
