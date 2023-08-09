@@ -21,8 +21,6 @@ const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Email format is invalid'),
-  role: yup.object()
-    .required('"I\'m interested because I\'m a..." is required'),
 });
 
 function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
@@ -69,9 +67,6 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
     initialValues: {
       email: '',
       role: '',
-    },
-    onSubmit: () => {
-      subscribe();
     },
   });
 
