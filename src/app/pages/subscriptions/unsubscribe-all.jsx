@@ -24,7 +24,7 @@ function ChplUnsubscribeAll(props) {
 
   useEffect(() => {
     deleteSubscriber.mutate({
-      subscriberId: hash,
+      hash,
     }, {
       onSuccess: () => {
         setMessage('You have been unsubscribed from all CHPL notifications');
