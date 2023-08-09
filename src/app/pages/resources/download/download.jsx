@@ -95,7 +95,6 @@ function ChplResourcesDownload() {
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('2015 edition products (xml)');
   const classes = useStyles();
-  const [definitionDisabled, setDefinitionDisabled] = useState(false);
 
   useEffect(() => {
     const data = {
@@ -120,8 +119,7 @@ function ChplResourcesDownload() {
       }
       return true;
     }));
-    setDefinitionDisabled(data[selectedOption].definition === '');
-  }, [API, getApiKey, getToken, hasAnyRole, selectedOption]);
+  }, [API, getApiKey, getToken, hasAnyRole]);
 
   const downloadFile = (type) => {
     if (selectedOption) {
@@ -224,13 +222,13 @@ function ChplResourcesDownload() {
                 Entire collection of surveillance activity reported to the CHPL.
               </li>
               { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-                    && (
-                      <li>
-                        <Typography gutterBottom><strong>Surveillance (Basic) (CSV):</strong></Typography>
-                        {' '}
-                        Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
-                      </li>
-                    )}
+                && (
+                  <li>
+                    <Typography gutterBottom><strong>Surveillance (Basic) (CSV):</strong></Typography>
+                    {' '}
+                    Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
+                  </li>
+                )}
               <li>
                 <Typography gutterBottom><strong>Surveillance Non-Conformities (CSV):</strong></Typography>
                 {' '}
@@ -288,7 +286,7 @@ function ChplResourcesDownload() {
                 color="primary"
                 variant="text"
                 id="download-chpl-definition-button"
-                disabled={definitionDisabled}
+                disabled={files[selectedOption]?.definition === ''}
                 onClick={() => downloadFile('definition')}
               >
                 Definition File
