@@ -1,17 +1,57 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
+const useDeleteObjectSubscription = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`subscribers/${data.hash}/subscriptions?subscribedObjectTypeId=${data.objectTypeId}&subscribedObjectId=${data.objectId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['subscribers']);
+    },
+  });
+};
+
 const useDeleteSubscriber = () => {
   const axios = useAxios();
-  return useMutation(async (data) => axios.put('subscriptions/unsubscribe-all', data));
+  return useMutation(async (data) => axios.delete(`subscribers/${data.hash}`));
+};
+
+const useDeleteSubscription = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`subscribers/${data.hash}/subscriptions/${data.subscriptionId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['subscribers']);
+    },
+  });
 };
 
 const useFetchRoles = () => {
   const axios = useAxios();
-  return useQuery(['subscriptions/roles'], async () => {
-    const response = await axios.get('subscriptions/roles');
+  return useQuery(['subscribers/roles'], async () => {
+    const response = await axios.get('subscribers/roles');
     return response.data;
+  });
+};
+
+const useFetchSubscriber = (hash) => {
+  const axios = useAxios();
+  return useQuery(['subscribers', hash], async () => {
+    const response = await axios.get(`subscribers/${hash}`);
+    return response.data;
+  }, {
+    enabled: !!hash,
+  });
+};
+
+const useFetchSubscriptions = (hash) => {
+  const axios = useAxios();
+  return useQuery(['subscribers', hash, 'subscriptions'], async () => {
+    const response = await axios.get(`subscribers/${hash}/subscriptions`);
+    return response.data;
+  }, {
+    enabled: !!hash,
   });
 };
 
@@ -26,8 +66,12 @@ const usePutSubscriber = () => {
 };
 
 export {
+  useDeleteObjectSubscription,
   useDeleteSubscriber,
+  useDeleteSubscription,
   useFetchRoles,
+  useFetchSubscriber,
+  useFetchSubscriptions,
   usePostSubscription,
   usePutSubscriber,
 };
