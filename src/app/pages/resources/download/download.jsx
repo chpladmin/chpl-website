@@ -94,7 +94,6 @@ function ChplResourcesDownload() {
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
   const [selectedOption, setSelectedOption] = useState('2015 edition products (xml)');
   const classes = useStyles();
-  const [definitionDisabled, setDefinitionDisabled] = useState(false);
 
   useEffect(() => {
     const data = {
@@ -119,8 +118,7 @@ function ChplResourcesDownload() {
       }
       return true;
     }));
-    setDefinitionDisabled(data[selectedOption].definition === '');
-  }, [API, getApiKey, getToken, hasAnyRole, selectedOption]);
+  }, [API, getApiKey, getToken, hasAnyRole]);
 
   const downloadFile = (type) => {
     if (selectedOption) {
@@ -290,7 +288,7 @@ function ChplResourcesDownload() {
                 color="primary"
                 variant="text"
                 id="download-chpl-definition-button"
-                disabled={definitionDisabled}
+                disabled={files[selectedOption]?.definition === ''}
                 onClick={() => downloadFile('definition')}
               >
                 Definition File
