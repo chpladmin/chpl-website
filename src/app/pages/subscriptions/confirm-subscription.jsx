@@ -10,6 +10,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import Grow from '@material-ui/core/Grow';
+import CheckIcon from '@material-ui/icons/Check';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -68,12 +70,27 @@ const useStyles = makeStyles({
   },
   subscriptionTotalContainer: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    paddingBottom: '16px',
-    alignItems: 'center',
+    paddingBottom: '8px 0',
+    gap: '16px',
+    alignItems: 'flex-start',
+  },
+  animatedItem: {
+    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`
+  },
+  "@keyframes myEffect": {
+    "0%": {
+      opacity: 0,
+      transform: "translateY(200%)"
+    },
+    "100%": {
+      opacity: 1,
+      transform: "translateY(0)"
+    }
   },
 });
+
 
 function ChplConfirmSubscription(props) {
   const { hash } = props;
@@ -122,63 +139,67 @@ function ChplConfirmSubscription(props) {
   return (
     <Box className={classes.page}>
       <Box className={classes.header}>
-        <Container className={classes.headerContent}>
+        <Container maxWidth="sm" className={classes.headerContent}>
           <Typography variant="h1">
-            Confirm Subscription
+            Confirm Your Subscription
           </Typography>
         </Container>
       </Box>
-      <Container>
-        <Box className={classes.chplLeftHandFormat}>
-          <Card>
-            <Box className={classes.mySubsciptionImagery} />
-            <CardContent>
-              <Typography gutterBottom variant="h4" component="h2"><strong>Welcome to your subscription page!</strong></Typography>
-              <Typography>Here, you can easily view and manage your subscriptions.</Typography>
+      <Container maxWidth="sm">
+        <Box pt={8} pb={8} display="flex" flexDirection="column" gridGap="16px">
+          <Card className={classes.animatedItem}>
+            <CardContent >
+              <Box className={classes.subscriptionTotalContainer}>
+                <Typography gutterBottom>To complete the subscription process and tailor your experience, we kindly ask you to confirm your subscription and select your area of interest from the dropdown menu provided below</Typography>
+                <ChplTextField
+                  select
+                  id="role"
+                  name="role"
+                  label="I'm interested because I'm a..."
+                  required
+                  value={formik.values.role}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.role && !!formik.errors.role}
+                  helperText={formik.touched.role && formik.errors.role}
+                >
+                  {roles.map((item) => (
+                    <MenuItem value={item} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </ChplTextField>
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="contained"
+                  onClick={confirm}
+                  endIcon={<CheckIcon fontSize="small" />}
+                >
+                  Confirm
+                </Button>
+              </Box>
             </CardContent>
           </Card>
-          <Box className={classes.subscriptionTotalContainer}>
-            <ChplTextField
-              select
-              id="role"
-              name="role"
-              label="I'm interested because I'm a..."
-              required
-              value={formik.values.role}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.role && !!formik.errors.role}
-              helperText={formik.touched.role && formik.errors.role}
-            >
-              {roles.map((item) => (
-                <MenuItem value={item} key={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </ChplTextField>
-            <Button
-              size="small"
-              color="secondary"
-              variant="contained"
-              onClick={confirm}
-              endIcon={<SendIcon fontSize="small" />}
-            >
-              Subscribe
-            </Button>
-          </Box>
-          { isConfirmed
+          {isConfirmed
             && (
-              <Typography>
-                You may manage your subscriptions at
-                {' '}
-                <ChplLink
-                  href={`#/subscriptions/manage/${hash}`}
-                  text="the manage subscriptions page"
-                  external={false}
-                  router={{ sref: 'subscriptions.manage', options: { hash } }}
-                />
-              </Typography>
+              <Card>
+                <CardContent>
+                  <Typography>
+                    You may manage your subscriptions at
+                    {' '}
+                    <ChplLink
+                      href={`#/subscriptions/manage/${hash}`}
+                      text="the manage subscriptions page"
+                      external={false}
+                      router={{ sref: 'subscriptions.manage', options: { hash } }}
+                    />
+                  </Typography>
+                </CardContent>
+              </Card>
             )}
+
+
         </Box>
       </Container>
     </Box>
