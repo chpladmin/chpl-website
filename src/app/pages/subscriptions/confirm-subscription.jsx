@@ -9,15 +9,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
-import Grow from '@material-ui/core/Grow';
 import CheckIcon from '@material-ui/icons/Check';
 import { string } from 'prop-types';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-
-import Image from '../../../assets/images/mySubsriptions.png';
 
 import { useFetchRoles, usePutSubscriber } from 'api/subscriptions';
 import { ChplLink, ChplTextField } from 'components/util';
@@ -30,20 +26,6 @@ const validationSchema = yup.object({
 
 const useStyles = makeStyles({
   ...utilStyles,
-  chplLeftHandFormat: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    gap: '16px',
-    padding: '32px 0',
-    width: '100%',
-    backgroundColor: `${palette.background}`,
-    [theme.breakpoints.up('md')]: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 3fr',
-      alignItems: 'start',
-    },
-  },
   header: {
     backgroundColor: `${palette.white} !important`,
     padding: '16px 0',
@@ -56,19 +38,11 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  mySubsciptionImagery: {
-    backgroundImage: `url(${Image})`,
-    minHeight: '164px',
-    width: '100%',
-    backgroundSize: '100%',
-    backgroundRepeat: 'no-repeat',
-    marginTop: '-16px',
-  },
   page: {
     backgroundColor: `${palette.background} !important`,
     width: '100%',
   },
-  subscriptionTotalContainer: {
+  confirmSubscriptionCard: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -77,20 +51,19 @@ const useStyles = makeStyles({
     alignItems: 'flex-start',
   },
   animatedItem: {
-    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`
+    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
   },
-  "@keyframes myEffect": {
-    "0%": {
+  '@keyframes myEffect': {
+    '0%': {
       opacity: 0,
-      transform: "translateY(200%)"
+      transform: 'translateY(200%)',
     },
-    "100%": {
+    '100%': {
       opacity: 1,
-      transform: "translateY(0)"
-    }
+      transform: 'translateY(0)',
+    },
   },
 });
-
 
 function ChplConfirmSubscription(props) {
   const { hash } = props;
@@ -148,8 +121,8 @@ function ChplConfirmSubscription(props) {
       <Container maxWidth="sm">
         <Box pt={8} pb={8} display="flex" flexDirection="column" gridGap="16px">
           <Card className={classes.animatedItem}>
-            <CardContent >
-              <Box className={classes.subscriptionTotalContainer}>
+            <CardContent>
+              <Box className={classes.confirmSubscriptionCard}>
                 <Typography gutterBottom>To complete the subscription process and tailor your experience, we kindly ask you to confirm your subscription and select your area of interest from the dropdown menu provided below</Typography>
                 <ChplTextField
                   select
@@ -198,8 +171,6 @@ function ChplConfirmSubscription(props) {
                 </CardContent>
               </Card>
             )}
-
-
         </Box>
       </Container>
     </Box>
