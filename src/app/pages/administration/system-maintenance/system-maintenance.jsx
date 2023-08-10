@@ -13,6 +13,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ChplAnnouncements from 'components/announcement/announcements';
 import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
 import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
+import ChplTestFunctionalities from 'components/standards/test-functionality/test-functionalities';
 import ChplTestTools from 'components/standards/test-tool/test-tools';
 import ChplSvaps from 'components/standards/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
@@ -92,6 +93,10 @@ function ChplSystemMaintenance() {
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
     hide('qmsStandards.edit.disabled');
+    hide('testFunctionalities.viewall.disabled');
+    hide('testFunctionalities.viewall');
+    hide('testFunctionalities.add.disabled');
+    hide('testFunctionalities.edit.disabled');
     hide('testTools.viewall.disabled');
     hide('testTools.viewall');
     hide('testTools.add.disabled');
@@ -187,6 +192,21 @@ function ChplSystemMaintenance() {
           { hasAnyRole(['ROLE_ADMIN'])
             && (
               <Button
+                onClick={() => navigate('testFunctionalities')}
+                disabled={active === 'testFunctionalities'}
+                id="system-maintenance-navigation-test-functionalities"
+                fullWidth
+                variant="text"
+                color="primary"
+                endIcon={<ArrowForwardIcon />}
+                className={classes.menuItems}
+              >
+                Test Functionalities
+              </Button>
+            )}
+          { hasAnyRole(['ROLE_ADMIN'])
+            && (
+              <Button
                 onClick={() => navigate('testTools')}
                 disabled={active === 'testTools'}
                 id="system-maintenance-navigation-test-tools"
@@ -232,6 +252,10 @@ function ChplSystemMaintenance() {
                     )}
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
+                      <ListItem>Test Functionalities - Table of the Test Functionality values used during testing of certification criterion functionality</ListItem>
+                    )}
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
                       <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem>
                     )}
                   <ListItem>UCD Processes - Add and update the UCD process(es) available to be applied to certification criteria</ListItem>
@@ -250,6 +274,10 @@ function ChplSystemMaintenance() {
         { active === 'qmsStandards'
           && (
             <ChplQmsStandards />
+          )}
+        { active === 'testFunctionalities'
+          && (
+            <ChplTestFunctionalities />
           )}
         { active === 'testTools'
           && (

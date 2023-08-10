@@ -62,6 +62,19 @@ const selectedTestTool = shape({
   testToolVersion: string,
 });
 
+const testFunctionality = shape({
+  criteria: arrayOf(criterion),
+  description: string,
+  endDay: string,
+  id: number,
+  name: string,
+  regulatoryTextCitation: string,
+  requiredDay: string,
+  rule,
+  startDay: string,
+  value: string,
+});
+
 const testTool = shape({
   criteria: arrayOf(criterion),
   description: string,
@@ -95,6 +108,7 @@ export {
   svap,
   selectedSvap,
   selectedTestTool,
+  testFunctionality,
   testTool,
   ucdProcess,
   ucdProcessType,

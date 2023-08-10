@@ -22,6 +22,16 @@ const useDeleteQmsStandard = () => {
   });
 };
 
+const useDeleteTestFunctionality = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`test-functionalities/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['test-functionalities']);
+    },
+  });
+};
+
 const useDeleteTestTool = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -68,6 +78,14 @@ const useFetchCriteriaForSvaps = () => {
   });
 };
 
+const useFetchCriteriaForTestFunctionalities = () => {
+  const axios = useAxios();
+  return useQuery(['test-functionalities/criteria'], async () => {
+    const response = await axios.get('test-functionalities/criteria');
+    return response.data;
+  });
+};
+
 const useFetchCriteriaForTestTools = () => {
   const axios = useAxios();
   return useQuery(['test-tools/criteria'], async () => {
@@ -96,6 +114,14 @@ const useFetchSvaps = () => {
   const axios = useAxios();
   return useQuery(['svaps'], async () => {
     const response = await axios.get('svaps');
+    return response.data;
+  });
+};
+
+const useFetchTestFunctionalities = () => {
+  const axios = useAxios();
+  return useQuery(['test-functionalities'], async () => {
+    const response = await axios.get('test-functionalities');
     return response.data;
   });
 };
@@ -132,6 +158,16 @@ const usePostQmsStandard = () => {
   return useMutation(async (data) => axios.post('qms-standards', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['qms-standards']);
+    },
+  });
+};
+
+const usePostTestFunctionality = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('test-functionalities', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['test-functionalities']);
     },
   });
 };
@@ -186,6 +222,16 @@ const usePutQmsStandard = () => {
   });
 };
 
+const usePutTestFunctionality = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('test-functionalities', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['test-functionalities']);
+    },
+  });
+};
+
 const usePutTestTool = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -220,24 +266,29 @@ export {
   useDeleteAccessibilityStandard,
   useDeleteQmsStandard,
   useDeleteSvap,
+  useDeleteTestFunctionality,
   useDeleteTestTool,
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
   useFetchCriteriaForSvaps,
+  useFetchCriteriaForTestFunctionalities,
   useFetchCriteriaForTestTools,
   useFetchQmsStandards,
   useFetchRules,
   useFetchSvaps,
+  useFetchTestFunctionalities,
   useFetchTestTools,
   useFetchUcdProcesses,
   usePostAccessibilityStandard,
   usePostQmsStandard,
   usePostSvap,
+  usePostTestFunctionality,
   usePostTestTool,
   usePostUcdProcess,
   usePutAccessibilityStandard,
   usePutQmsStandard,
   usePutSvap,
+  usePutTestFunctionality,
   usePutTestTool,
   usePutUcdProcess,
 };
