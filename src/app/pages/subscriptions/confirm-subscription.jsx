@@ -123,7 +123,7 @@ function ChplConfirmSubscription(props) {
           <Card className={classes.animatedItem}>
             <CardContent>
               <Box className={classes.confirmSubscriptionCard}>
-                <Typography gutterBottom>To complete the subscription process and tailor your experience, we kindly ask you to confirm your subscription and select your area of interest from the dropdown menu provided below</Typography>
+                <Typography gutterBottom>To complete the subscription process and tailor your experience, we kindly ask you to select your area of interest from the dropdown menu provided below and confirm your subscription</Typography>
                 <ChplTextField
                   select
                   id="role"
