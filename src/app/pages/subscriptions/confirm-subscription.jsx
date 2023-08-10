@@ -154,23 +154,24 @@ function ChplConfirmSubscription(props) {
               </Box>
             </CardContent>
           </Card>
-          {isConfirmed
-            && (
-              <Card>
-                <CardContent>
-                  <Typography>
-                    You may manage your subscriptions at
-                    {' '}
-                    <ChplLink
-                      href={`#/subscriptions/manage/${hash}`}
-                      text="the manage subscriptions page"
-                      external={false}
-                      router={{ sref: 'subscriptions.manage', options: { hash } }}
-                    />
-                  </Typography>
-                </CardContent>
-              </Card>
-            )}
+          { isConfirmed
+           && (
+             <Card>
+               <CardContent>
+                 <Typography>
+                   You may manage your subscriptions at
+                   {' '}
+                   <ChplLink
+                     href={`#/subscriptions/manage/${hash}`}
+                     text="the manage subscriptions page"
+                     external={false}
+                     inline
+                     router={{ sref: 'subscriptions.manage', options: { hash } }}
+                   />
+                 </Typography>
+               </CardContent>
+             </Card>
+           )}
         </Box>
       </Container>
     </Box>
