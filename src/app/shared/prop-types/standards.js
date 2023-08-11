@@ -20,6 +20,24 @@ const accessibilityStandardType = shape({
   name: string,
 });
 
+const rule = shape({
+  id: number,
+  name: string,
+});
+
+const functionalityTested = shape({
+  criteria: arrayOf(criterion),
+  description: string,
+  endDay: string,
+  id: number,
+  name: string,
+  regulatoryTextCitation: string,
+  requiredDay: string,
+  rule,
+  startDay: string,
+  value: string,
+});
+
 const qmsStandard = shape({
   applicableCriteria: string,
   id: number,
@@ -29,11 +47,6 @@ const qmsStandard = shape({
 });
 
 const qmsStandardType = shape({
-  id: number,
-  name: string,
-});
-
-const rule = shape({
   id: number,
   name: string,
 });
@@ -60,19 +73,6 @@ const selectedTestTool = shape({
   testToolId: number,
   testToolName: string,
   testToolVersion: string,
-});
-
-const testFunctionality = shape({
-  criteria: arrayOf(criterion),
-  description: string,
-  endDay: string,
-  id: number,
-  name: string,
-  regulatoryTextCitation: string,
-  requiredDay: string,
-  rule,
-  startDay: string,
-  value: string,
 });
 
 const testTool = shape({
@@ -102,13 +102,13 @@ const ucdProcess = shape({
 export {
   accessibilityStandard,
   accessibilityStandardType,
+  functionalityTested,
   qmsStandard,
   qmsStandardType,
   rule,
   svap,
   selectedSvap,
   selectedTestTool,
-  testFunctionality,
   testTool,
   ucdProcess,
   ucdProcessType,

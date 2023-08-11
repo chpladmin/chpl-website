@@ -8,62 +8,62 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
-import ChplTestFunctionalityEdit from './test-functionality-edit';
-import ChplTestFunctionalitiesView from './test-functionalities-view';
+import ChplFunctionalityTestedEdit from './functionality-tested-edit';
+import ChplFunctionalitiesTestedView from './functionalities-tested-view';
 
 import {
-  useDeleteTestFunctionality,
-  useFetchCriteriaForTestFunctionalities,
+  useDeleteFunctionalityTested,
+  useFetchCriteriaForFunctionalitiesTested,
   useFetchRules,
-  useFetchTestFunctionalities,
-  usePostTestFunctionality,
-  usePutTestFunctionality,
+  useFetchFunctionalitiesTested,
+  usePostFunctionalityTested,
+  usePutFunctionalityTested,
 } from 'api/standards';
 import { BreadcrumbContext } from 'shared/contexts';
 
-function ChplTestFunctionalities() {
+function ChplFunctionalitiesTested() {
   const { append, display, hide } = useContext(BreadcrumbContext);
-  const { data, isLoading, isSuccess } = useFetchTestFunctionalities();
-  const deleteTestFunctionality = useDeleteTestFunctionality();
-  const postTestFunctionality = usePostTestFunctionality();
-  const putTestFunctionality = usePutTestFunctionality();
-  const criterionOptionsQuery = useFetchCriteriaForTestFunctionalities();
+  const { data, isLoading, isSuccess } = useFetchFunctionalitiesTested();
+  const deleteFunctionalityTested = useDeleteFunctionalityTested();
+  const postFunctionalityTested = usePostFunctionalityTested();
+  const putFunctionalityTested = usePutFunctionalityTested();
+  const criterionOptionsQuery = useFetchCriteriaForFunctionalitiesTested();
   const rulesQuery = useFetchRules();
   const { enqueueSnackbar } = useSnackbar();
-  const [activeTestFunctionality, setActiveTestFunctionality] = useState(undefined);
+  const [activeFunctionalityTested, setActiveFunctionalityTested] = useState(undefined);
   const [criterionOptions, setCriterionOptions] = useState([]);
   const [rules, setRules] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [testFunctionalities, setTestFunctionalities] = useState([]);
+  const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   let handleDispatch;
 
   useEffect(() => {
     append(
       <Button
-        key="testFunctionalities.viewall.disabled"
+        key="functionalitiesTested.viewall.disabled"
         depth={1}
         variant="text"
         disabled
       >
-        Test Functionalities
+        Functionalities Tested
       </Button>,
     );
     append(
       <Button
-        key="testFunctionalities.viewall"
+        key="functionalitiesTested.viewall"
         depth={1}
         variant="text"
         onClick={() => handleDispatch({ action: 'cancel' })}
       >
-        Test Functionalities
+        Functionalities Tested
       </Button>,
     );
-    display('testFunctionalities.viewall.disabled');
+    display('functionalitiesTested.viewall.disabled');
   }, []);
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setTestFunctionalities(data);
+    setFunctionalitiesTested(data);
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
@@ -79,22 +79,22 @@ function ChplTestFunctionalities() {
   handleDispatch = ({ action, payload }) => {
     switch (action) {
       case 'cancel':
-        setActiveTestFunctionality(undefined);
-        display('testFunctionalities.viewall.disabled');
-        hide('testFunctionalities.viewall');
-        hide('testFunctionalities.add.disabled');
-        hide('testFunctionalities.edit.disabled');
+        setActiveFunctionalityTested(undefined);
+        display('functionalitiesTested.viewall.disabled');
+        hide('functionalitiesTested.viewall');
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
       case 'delete':
         setErrors([]);
-        deleteTestFunctionality.mutate(payload, {
+        deleteFunctionalityTested.mutate(payload, {
           onSuccess: () => {
-            enqueueSnackbar('Test Functionality Deleted', {
+            enqueueSnackbar('Functionality Tested Deleted', {
               variant: 'success',
             });
-            setActiveTestFunctionality(undefined);
-            display('testFunctionalities.viewall.disabled');
-            hide('testFunctionalities.viewall');
+            setActiveFunctionalityTested(undefined);
+            display('functionalitiesTested.viewall.disabled');
+            hide('functionalitiesTested.viewall');
           },
           onError: (error) => {
             setErrors(error.response.data.errorMessages);
@@ -102,36 +102,36 @@ function ChplTestFunctionalities() {
         });
         break;
       case 'edit':
-        setActiveTestFunctionality(payload);
+        setActiveFunctionalityTested(payload);
         setErrors([]);
-        display('testFunctionalities.viewall');
-        hide('testFunctionalities.viewall.disabled');
+        display('functionalitiesTested.viewall');
+        hide('functionalitiesTested.viewall.disabled');
         break;
       case 'save':
         setErrors([]);
         if (payload.id) {
-          putTestFunctionality.mutate(payload, {
+          putFunctionalityTested.mutate(payload, {
             onSuccess: () => {
-              enqueueSnackbar('Test Functionality Updated', {
+              enqueueSnackbar('Functionality Tested Updated', {
                 variant: 'success',
               });
-              setActiveTestFunctionality(undefined);
-              display('testFunctionalities.viewall.disabled');
-              hide('testFunctionalities.viewall');
+              setActiveFunctionalityTested(undefined);
+              display('functionalitiesTested.viewall.disabled');
+              hide('functionalitiesTested.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data.errorMessages);
             },
           });
         } else {
-          postTestFunctionality.mutate(payload, {
+          postFunctionalityTested.mutate(payload, {
             onSuccess: () => {
-              enqueueSnackbar('Test Functionality Created', {
+              enqueueSnackbar('Functionality Tested Created', {
                 variant: 'success',
               });
-              setActiveTestFunctionality(undefined);
-              display('testFunctionalities.viewall.disabled');
-              hide('testFunctionalities.viewall');
+              setActiveFunctionalityTested(undefined);
+              display('functionalitiesTested.viewall.disabled');
+              hide('functionalitiesTested.viewall');
             },
             onError: (error) => {
               setErrors(error.response.data?.errorMessages);
@@ -143,13 +143,13 @@ function ChplTestFunctionalities() {
     }
   };
 
-  if (activeTestFunctionality) {
+  if (activeFunctionalityTested) {
     return (
       <Card>
-        <CardHeader title={`${activeTestFunctionality.id ? 'Edit' : 'Add'} Test Functionality`} />
+        <CardHeader title={`${activeFunctionalityTested.id ? 'Edit' : 'Add'} Functionality Tested`} />
         <CardContent>
-          <ChplTestFunctionalityEdit
-            testFunctionality={activeTestFunctionality}
+          <ChplFunctionalityTestedEdit
+            functionalityTested={activeFunctionalityTested}
             dispatch={handleDispatch}
             criterionOptions={criterionOptions}
             rules={rules}
@@ -168,14 +168,14 @@ function ChplTestFunctionalities() {
 
   return (
     <Card>
-      <CardHeader title="Test Functionalities" />
+      <CardHeader title="Functionalities Tested" />
       <CardContent>
-        { (deleteTestFunctionality.isLoading || postTestFunctionality.isLoading || putTestFunctionality.isLoading)
+        { (deleteFunctionalityTested.isLoading || postFunctionalityTested.isLoading || putFunctionalityTested.isLoading)
           && (
             <CircularProgress />
           )}
-        <ChplTestFunctionalitiesView
-          testFunctionalities={testFunctionalities}
+        <ChplFunctionalitiesTestedView
+          functionalitiesTested={functionalitiesTested}
           dispatch={handleDispatch}
         />
       </CardContent>
@@ -183,7 +183,7 @@ function ChplTestFunctionalities() {
   );
 }
 
-export default ChplTestFunctionalities;
+export default ChplFunctionalitiesTested;
 
-ChplTestFunctionalities.propTypes = {
+ChplFunctionalitiesTested.propTypes = {
 };

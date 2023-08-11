@@ -16,7 +16,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { testFunctionality as testFunctionalityPropType } from 'shared/prop-types';
+import { functionalityTested as functionalityTestedPropType } from 'shared/prop-types';
 
 const headers = [
   { property: 'value', text: 'Value', sortable: true },
@@ -42,14 +42,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestFunctionalitiesView({ dispatch, testFunctionalities: initialTestFunctionalities }) {
-  const [testFunctionalities, setTestFunctionalities] = useState([]);
+function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initialFunctionalitiesTested }) {
+  const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
 
   useEffect(() => {
-    setTestFunctionalities(initialTestFunctionalities
+    setFunctionalitiesTested(initialFunctionalitiesTested
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -58,14 +58,14 @@ function ChplTestFunctionalitiesView({ dispatch, testFunctionalities: initialTes
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialTestFunctionalities]); // eslint-disable-line react/destructuring-assignment
+  }, [initialFunctionalitiesTested]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = testFunctionalities.sort(sortComparator(property, descending));
+    const updated = functionalitiesTested.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setTestFunctionalities(updated);
+    setFunctionalitiesTested(updated);
   };
 
   return (
@@ -73,7 +73,7 @@ function ChplTestFunctionalitiesView({ dispatch, testFunctionalities: initialTes
       <div className={classes.tableResultsHeaderContainer}>
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-test-functionality"
+          id="add-new-functionality-tested"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
@@ -83,7 +83,7 @@ function ChplTestFunctionalitiesView({ dispatch, testFunctionalities: initialTes
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="Test Functionalities table"
+          aria-label="Functionalities Tested table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -93,10 +93,11 @@ function ChplTestFunctionalitiesView({ dispatch, testFunctionalities: initialTes
             stickyHeader
           />
           <TableBody>
-            { testFunctionalities
+            { functionalitiesTested
               .map((item) => (
-                <TableRow key={`${item.value}`}>
+                <TableRow key={`${item.id}-${item.name}`}>
                   <TableCell className={classes.firstColumn}>
+                    { item.name }
                     { item.value }
                     { item.retired && ' (Retired)'}
                   </TableCell>
@@ -121,7 +122,7 @@ function ChplTestFunctionalitiesView({ dispatch, testFunctionalities: initialTes
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-test-functionality-${item.value}`}
+                      id={`edit-functionality-tested-${item.value}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
@@ -138,9 +139,9 @@ function ChplTestFunctionalitiesView({ dispatch, testFunctionalities: initialTes
   );
 }
 
-export default ChplTestFunctionalitiesView;
+export default ChplFunctionalitiesTestedView;
 
-ChplTestFunctionalitiesView.propTypes = {
+ChplFunctionalitiesTestedView.propTypes = {
   dispatch: func.isRequired,
-  testFunctionalities: arrayOf(testFunctionalityPropType).isRequired,
+  functionalitiesTested: arrayOf(functionalityTestedPropType).isRequired,
 };

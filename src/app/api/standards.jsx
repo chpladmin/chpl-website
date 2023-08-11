@@ -12,22 +12,22 @@ const useDeleteAccessibilityStandard = () => {
   });
 };
 
+const useDeleteFunctionalityTested = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`functionalities-tested/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['functionalities-tested']);
+    },
+  });
+};
+
 const useDeleteQmsStandard = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.delete(`qms-standards/${data.id}`), {
     onSuccess: () => {
       queryClient.invalidateQueries(['qms-standards']);
-    },
-  });
-};
-
-const useDeleteTestFunctionality = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.delete(`test-functionalities/${data.id}`), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['test-functionalities']);
     },
   });
 };
@@ -70,6 +70,14 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
+const useFetchCriteriaForFunctionalitiesTested = () => {
+  const axios = useAxios();
+  return useQuery(['functionalities-tested/criteria'], async () => {
+    const response = await axios.get('functionalities-tested/criteria');
+    return response.data;
+  });
+};
+
 const useFetchCriteriaForSvaps = () => {
   const axios = useAxios();
   return useQuery(['svaps/criteria'], async () => {
@@ -78,18 +86,18 @@ const useFetchCriteriaForSvaps = () => {
   });
 };
 
-const useFetchCriteriaForTestFunctionalities = () => {
-  const axios = useAxios();
-  return useQuery(['test-functionalities/criteria'], async () => {
-    const response = await axios.get('test-functionalities/criteria');
-    return response.data;
-  });
-};
-
 const useFetchCriteriaForTestTools = () => {
   const axios = useAxios();
   return useQuery(['test-tools/criteria'], async () => {
     const response = await axios.get('test-tools/criteria');
+    return response.data;
+  });
+};
+
+const useFetchFunctionalitiesTested = () => {
+  const axios = useAxios();
+  return useQuery(['functionalities-tested'], async () => {
+    const response = await axios.get('functionalities-tested');
     return response.data;
   });
 };
@@ -114,14 +122,6 @@ const useFetchSvaps = () => {
   const axios = useAxios();
   return useQuery(['svaps'], async () => {
     const response = await axios.get('svaps');
-    return response.data;
-  });
-};
-
-const useFetchTestFunctionalities = () => {
-  const axios = useAxios();
-  return useQuery(['test-functionalities'], async () => {
-    const response = await axios.get('test-functionalities');
     return response.data;
   });
 };
@@ -152,22 +152,22 @@ const usePostAccessibilityStandard = () => {
   });
 };
 
+const usePostFunctionalityTested = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('functionalities-tested', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['functionalities-tested']);
+    },
+  });
+};
+
 const usePostQmsStandard = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.post('qms-standards', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['qms-standards']);
-    },
-  });
-};
-
-const usePostTestFunctionality = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.post('test-functionalities', data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['test-functionalities']);
     },
   });
 };
@@ -212,22 +212,22 @@ const usePutAccessibilityStandard = () => {
   });
 };
 
+const usePutFunctionalityTested = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('functionalities-tested', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['functionalities-tested']);
+    },
+  });
+};
+
 const usePutQmsStandard = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put('qms-standards', data), {
     onSuccess: () => {
       queryClient.invalidateQueries(['qms-standards']);
-    },
-  });
-};
-
-const usePutTestFunctionality = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  return useMutation(async (data) => axios.put('test-functionalities', data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['test-functionalities']);
     },
   });
 };
@@ -264,31 +264,31 @@ const usePutUcdProcess = () => {
 
 export {
   useDeleteAccessibilityStandard,
+  useDeleteFunctionalityTested,
   useDeleteQmsStandard,
   useDeleteSvap,
-  useDeleteTestFunctionality,
   useDeleteTestTool,
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
+  useFetchCriteriaForFunctionalitiesTested,
   useFetchCriteriaForSvaps,
-  useFetchCriteriaForTestFunctionalities,
   useFetchCriteriaForTestTools,
+  useFetchFunctionalitiesTested,
   useFetchQmsStandards,
   useFetchRules,
   useFetchSvaps,
-  useFetchTestFunctionalities,
   useFetchTestTools,
   useFetchUcdProcesses,
   usePostAccessibilityStandard,
+  usePostFunctionalityTested,
   usePostQmsStandard,
   usePostSvap,
-  usePostTestFunctionality,
   usePostTestTool,
   usePostUcdProcess,
   usePutAccessibilityStandard,
+  usePutFunctionalityTested,
   usePutQmsStandard,
   usePutSvap,
-  usePutTestFunctionality,
   usePutTestTool,
   usePutUcdProcess,
 };

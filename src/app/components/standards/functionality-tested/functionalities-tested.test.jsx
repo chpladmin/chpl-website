@@ -9,13 +9,13 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import ChplTestFunctionalities from './test-functionalities';
+import ChplFunctionalitiesTested from './functionalities-tested';
 
 import { BreadcrumbContext } from 'shared/contexts';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
 const mock = {
-  testFunctionalities: [
+  functionalitiesTested: [
     { id: 1, value: 'value 1', regulatoryTextCitation: 'citation 1', criteria: [{ id: 1, number: 'number 1', title: '1 title criterion' }] },
     { id: 2, value: 'a value', regulatoryTextCitation: 'a citation 2', criteria: [{ id: 2, number: 'number 2', title: '2 title criterion' }] },
     { id: 3, value: 'no value', regulatoryTextCitation: 'last citation 3', criteria: [{ id: 3, number: 'number 3', title: '3 title criterion' }] },
@@ -50,21 +50,21 @@ jest.mock('api/data', () => ({
 
 jest.mock('api/standards', () => ({
   __esModule: true,
-  useDeleteTestFunctionality: () => ({
+  useDeleteFunctionalityTested: () => ({
     ...mockApi,
   }),
   useFetchRules: () => ({
     ...mockApi,
     data: [{ name: 'fake rule' }],
   }),
-  useFetchTestFunctionalities: () => ({
+  useFetchFunctionalitiesTested: () => ({
     ...mockApi,
-    data: mock.testFunctionalities,
+    data: mock.functionalitiesTested,
   }),
-  usePostTestFunctionality: () => ({
+  usePostFunctionalityTested: () => ({
     ...mockApi,
   }),
-  usePutTestFunctionality: () => ({
+  usePutFunctionalityTested: () => ({
     ...mockApi,
   }),
 }));
@@ -79,11 +79,11 @@ jest.mock('notistack', () => ({
 }));
 
 // ignoring due to weird issue with call stack, as well as something odd with finding buttons by role
-xdescribe('the ChplTestFunctionalities component', () => {
+xdescribe('the ChplFunctionalitiesTested component', () => {
   beforeEach(async () => {
     render(
       <BreadcrumbContext.Provider value={mock.breadcrumbContext}>
-        <ChplTestFunctionalities />
+        <ChplFunctionalitiesTested />
       </BreadcrumbContext.Provider>,
     );
   });
@@ -92,8 +92,8 @@ xdescribe('the ChplTestFunctionalities component', () => {
     cleanup();
   });
 
-  describe('when viewing Test Functionalities', () => {
-    it('should sort the Test Functionalities by value', async () => {
+  describe('when viewing Functionalities Tested', () => {
+    it('should sort the Functionalities Tested by value', async () => {
       await waitFor(() => {
         const rows = within(screen.getByRole('table')).getAllByRole('row');
         expect(within(rows[1]).getByText(/a value/)).toBeInTheDocument();
@@ -103,7 +103,7 @@ xdescribe('the ChplTestFunctionalities component', () => {
     });
   });
 
-  describe('when creating a Test Functionality', () => {
+  describe('when creating a Functionality Test', () => {
     it('should not allow saving without required elements', async () => {
       userEvent.click(screen.getByRole('button', { name: /Add/i }));
 
@@ -135,7 +135,7 @@ xdescribe('the ChplTestFunctionalities component', () => {
     });
   });
 
-  xdescribe('when editing a Test Functionality', () => {
+  xdescribe('when editing a Functionality Tested', () => {
     it('should allow removal of criteria', async () => {
       const rows = within(screen.getByRole('table')).getAllByRole('row');
       userEvent.click(within(rows[1]).getByRole('button', { name: /Edit/i }));

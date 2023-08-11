@@ -18,7 +18,7 @@ import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
   rule as rulePropType,
-  testFunctionality as testFunctionalityPropType,
+  functionalityTested as functionalityTestedPropType,
 } from 'shared/prop-types';
 
 const validationSchema = yup.object({
@@ -50,26 +50,26 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestFunctionalityEdit(props) {
+function ChplFunctionalityTestedEdit(props) {
   const {
     criterionOptions,
     dispatch,
     rules,
-    testFunctionality: initialTestFunctionality,
+    functionalityTested: initialFunctionalityTested,
   } = props;
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
-  const [testFunctionality, setTestFunctionality] = useState({});
+  const [functionalityTested, setFunctionalityTested] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
     append(
       <Button
-        key="testFunctionalities.add.disabled"
+        key="functionalitiesTested.add.disabled"
         depth={2}
         variant="text"
         disabled
@@ -79,7 +79,7 @@ function ChplTestFunctionalityEdit(props) {
     );
     append(
       <Button
-        key="testFunctionalities.edit.disabled"
+        key="functionalitiesTested.edit.disabled"
         depth={2}
         variant="text"
         disabled
@@ -90,12 +90,12 @@ function ChplTestFunctionalityEdit(props) {
   }, []);
 
   useEffect(() => {
-    setTestFunctionality(initialTestFunctionality);
-    setCriteria(initialTestFunctionality.criteria?.map((c) => ({
+    setFunctionalityTested(initialFunctionalityTested);
+    setCriteria(initialFunctionalityTested.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(initialTestFunctionality.id ? 'testFunctionalities.edit.disabled' : 'testFunctionalities.add.disabled');
-  }, [initialTestFunctionality]);
+    display(initialFunctionalityTested.id ? 'functionalitiesTested.edit.disabled' : 'functionalitiesTested.add.disabled');
+  }, [initialFunctionalityTested]);
 
   useEffect(() => {
     setRuleOptions(rules.map((rule) => rule.name).sort((a, b) => (a < b ? -1 : 1)));
@@ -111,7 +111,7 @@ function ChplTestFunctionalityEdit(props) {
   };
 
   const buildPayload = () => ({
-    ...testFunctionality,
+    ...functionalityTested,
     value: formik.values.value,
     regulatoryTextCitation: formik.values.regulatoryTextCitation,
     rule: rules.find((rule) => rule.name === formik.values.rule),
@@ -127,18 +127,18 @@ function ChplTestFunctionalityEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('testFunctionalities.add.disabled');
-        hide('testFunctionalities.edit.disabled');
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('testFunctionalities.add.disabled');
-        hide('testFunctionalities.edit.disabled');
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('testFunctionalities.add.disabled');
-        hide('testFunctionalities.edit.disabled');
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
         // no default
     }
@@ -154,12 +154,12 @@ function ChplTestFunctionalityEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      value: initialTestFunctionality?.value ?? '',
-      regulatoryTextCitation: initialTestFunctionality?.regulatoryTextCitation ?? '',
-      rule: initialTestFunctionality?.rule?.name ?? '',
-      endDay: initialTestFunctionality?.endDay ?? '',
-      requiredDay: initialTestFunctionality?.requiredDay ?? '',
-      startDay: initialTestFunctionality?.startDay ?? '',
+      value: initialFunctionalityTested?.value ?? '',
+      regulatoryTextCitation: initialFunctionalityTested?.regulatoryTextCitation ?? '',
+      rule: initialFunctionalityTested?.rule?.name ?? '',
+      endDay: initialFunctionalityTested?.endDay ?? '',
+      requiredDay: initialFunctionalityTested?.requiredDay ?? '',
+      startDay: initialFunctionalityTested?.startDay ?? '',
     },
     onSubmit: () => {
       dispatch({ action: 'save', payload: buildPayload() });
@@ -289,7 +289,7 @@ function ChplTestFunctionalityEdit(props) {
       </div>
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete={!!testFunctionality.id}
+        canDelete={!!functionalityTested.id}
         errors={errors}
         isDisabled={!isValid()}
       />
@@ -297,12 +297,12 @@ function ChplTestFunctionalityEdit(props) {
   );
 }
 
-export default ChplTestFunctionalityEdit;
+export default ChplFunctionalityTestedEdit;
 
-ChplTestFunctionalityEdit.propTypes = {
+ChplFunctionalityTestedEdit.propTypes = {
   criterionOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
   errors: arrayOf(string).isRequired,
   rules: arrayOf(rulePropType).isRequired,
-  testFunctionality: testFunctionalityPropType.isRequired,
+  functionalityTested: functionalityTestedPropType.isRequired,
 };
