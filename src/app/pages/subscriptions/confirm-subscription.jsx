@@ -150,6 +150,7 @@ function ChplConfirmSubscription(props) {
                   variant="contained"
                   onClick={confirm}
                   endIcon={<CheckIcon fontSize="small" />}
+                  disabled={formik.values.role === ''}
                 >
                   Confirm
                 </Button>
