@@ -69,12 +69,12 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
             </Typography>
           </Box>
           <Typography variant="body2">
-            If you&apos;re interested in keeping up-to-date with changes to this Listing from the CHPL fill out the fields below.
+            Keep up-to-date with significant changes to this Listing on the CHPL
           </Typography>
           <ChplTextField
             id="email"
             name="email"
-            label="Email"
+            label="Enter Email"
             required
             value={formik.values.email}
             onChange={formik.handleChange}
