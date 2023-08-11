@@ -92,7 +92,9 @@ function ChplConfirmSubscription(props) {
         setIsConfirmed(true);
       },
       onError: (error) => {
-        enqueueSnackbar(error.response.data.error, { variant: 'error' });
+        const { errorMessages } = error.response.data;
+        const body = `Error: ${errorMessages.join('; ')}`;
+        enqueueSnackbar(body, { variant: 'error' });
       },
     });
   };
