@@ -15,8 +15,8 @@ const palette = {
   secondaryLight: '#fff',
   secondary: '#f5f9fd',
   secondaryDark: '#c2c6ca',
-  warningLight: '#fdfde7',
   warning: '#e3bf00',
+  warningLight: '#fdfde7',
   white: '#fff',
 };
 

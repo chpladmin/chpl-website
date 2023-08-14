@@ -6,21 +6,19 @@ import {
   CardContent,
   CardHeader,
   CardActions,
-  Link,
   Divider,
   MenuItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-
 import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 
-import { ChplTextField } from 'components/util';
+import { ChplLink, ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
-import { theme, palette, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -134,14 +132,14 @@ function ChplResourcesDownload() {
         <Typography
           variant="h1"
         >
-          Download the CHPL
+          Download the Latest Certified Health IT Product List
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         <Typography
-          variant="h2"
+          variant="body1"
         >
-          Download the latest Certified Health IT Product List
+          Please note that the CHPL files are now available in JSON format, offering a more modern and flexible approach to data integration. Please note that while our XML files are still available, they are being deprecated and will be discontinued in the near future. We recommend transitioning to JSON format for future-proofing your data integrations.
         </Typography>
         <Divider />
         <div className={classes.content}>
@@ -167,9 +165,15 @@ function ChplResourcesDownload() {
                     The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
                   </li>
                   <li>
-                    To find more details, select
+                    For more information, please look at the
                     {' '}
-                    <Link href="/#/resources/api">API Documentation</Link>
+                    <ChplLink
+                      href="#/resources/api"
+                      text="API Documentation page"
+                      external={false}
+                      inline
+                      router={{ sref: 'resources.api' }}
+                    />
                   </li>
                 </ul>
               </li>
@@ -189,7 +193,7 @@ function ChplResourcesDownload() {
               <Box className={classes.warningBox}>
                 <ReportProblemOutlinedIcon />
                 <Typography>
-                  XML Files are now something text
+                  XML Files are being deprecated and will be discontinued in the near future.
                 </Typography>
               </Box>
               <li>
