@@ -19,7 +19,6 @@ const headers = [
   { property: 'number', text: 'Number', sortable: true },
   { property: 'title', text: 'Title', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'requiredDay', text: 'Required Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
 ];
@@ -80,9 +79,6 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.startDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.requiredDay) }
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.endDay) }
