@@ -64,7 +64,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="cols">{{ $ctrl.listing.edition?.name === '2011' ? 'Meets' : 'Version' }}</th>
+              <th scope="cols">{{ ($ctrl.listing.edition !== null && $ctrl.listing.edition.name) === '2011' ? 'Meets' : 'Version' }}</th>
               <th scope="cols">Quality Measure</th>
               <th scope="cols" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="no-br">170.315 (c)(1)</th>
               <th scope="cols" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="no-br">170.315 (c)(2)</th>
