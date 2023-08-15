@@ -91,7 +91,7 @@ function ChplResourcesDownload() {
   const { hasAnyRole } = useContext(UserContext);
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
-  const [selectedOption, setSelectedOption] = useState('2015 edition products (xml)');
+  const [selectedOption, setSelectedOption] = useState('2015 edition products (json)');
   const classes = useStyles();
 
   useEffect(() => {
