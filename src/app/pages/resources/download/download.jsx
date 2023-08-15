@@ -174,6 +174,7 @@ function ChplResourcesDownload() {
                       inline
                       router={{ sref: 'resources.api' }}
                     />
+                    .
                   </li>
                 </ul>
               </li>
