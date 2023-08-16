@@ -25,6 +25,7 @@ const headers = [
   { property: 'requiredDay', text: 'Required Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
+  { text: 'Practice Type' },
   { text: 'Applicable Criteria' },
   { text: 'Action', invisible: true },
 ];
@@ -115,6 +116,9 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
                   </TableCell>
                   <TableCell>
                     { item.rule?.name ?? '' }
+                  </TableCell>
+                  <TableCell>
+                    { item.practiceType?.name ?? '' }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
