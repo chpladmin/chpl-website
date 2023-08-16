@@ -39,24 +39,24 @@ describe('the Download page', () => {
     });
   });
 
-  it('should have correct information about SVAP', () => {
-    const expectedText = 'Standards Version Advancement Process (SVAP) Summary: Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Available as a CSV file; updated nightly.';
+  it('should have correct information about SVAP Summary (CSV)', () => {
+    const expectedText = 'Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.';
     expect(page.content.getText()).toContain(expectedText);
   });
 
   describe('in the compliance activities section', () => {
-    it('should have correct information about Surveillance Activity', () => {
-      const expectedText = 'Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.';
+    it('should have correct information about Surveillance Activity (CSV)', () => {
+      const expectedText = 'Entire collection of surveillance activity reported to the CHPL.';
       expect(page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about Surveillance Non-Conformities', () => {
-      const expectedText = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.';
+    it('should have correct information about Surveillance Non-Conformities (CSV)', () => {
+      const expectedText = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file.';
       expect(page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about Direct Review Activity', () => {
-      const expectedText = 'Entire collection of Direct Review activity reported to the CHPL. Available as a CSV file.';
+    it('should have correct information about Direct Review Activity (CSV)', () => {
+      const expectedText = 'Entire collection of Direct Review activity reported to the CHPL.';
       expect(page.content.getText()).toContain(expectedText);
     });
   });
@@ -70,8 +70,8 @@ describe('the Download page', () => {
       browser.call(() => login.logOut());
     });
 
-    it('should have correct information about the basic surveillance file', () => {
-      const expectedText = 'Surveillance (Basic): Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.';
+    it('should have correct information about Surveillance (Basic) (CSV)', () => {
+      const expectedText = 'Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.';
       expect(page.content.getText()).toContain(expectedText);
     });
   });
