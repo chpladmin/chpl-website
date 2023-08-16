@@ -9,7 +9,7 @@ import {
 
 import ChplCertificationCriteriaView from './certification-criteria-view';
 
-import { useFetchCriteria } from 'api/data';
+import { useFetchCriteria } from 'api/standards';
 import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplCertificationCriteria() {
@@ -33,7 +33,7 @@ function ChplCertificationCriteria() {
 
   useEffect(() => {
     if (isLoading || !isSuccess) { return; }
-    setCertificationCriteria(data.criteria);
+    setCertificationCriteria(data);
   }, [data, isLoading, isSuccess]);
 
   if (isLoading) {

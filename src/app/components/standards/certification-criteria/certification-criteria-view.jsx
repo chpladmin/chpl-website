@@ -11,7 +11,6 @@ import {
 import { arrayOf } from 'prop-types';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { isCures, sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { criterion as criterionPropType } from 'shared/prop-types';
 
@@ -21,6 +20,7 @@ const headers = [
   { property: 'startDay', text: 'Start Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
+  { text: 'Attributes' },
 ];
 
 const useStyles = makeStyles({
@@ -32,6 +32,34 @@ const useStyles = makeStyles({
   },
 });
 
+const getDisplay = (key) => {
+  switch (key) {
+    case 'additionalSoftware': return 'Additional Software';
+    case 'apiDocumentation': return 'API Documentation';
+    case 'attestationAnswer': return 'Attestation Answer';
+    case 'conformanceMethod': return 'Conformance Method';
+    case 'documentationUrl': return 'Documentation URL';
+    case 'exportDocumentation': return 'Export Documentation';
+    case 'functionalityTested': return 'Functionality Tested';
+    case 'g1Success': return 'G1 Success';
+    case 'g2Success': return 'G2 Success';
+    case 'gap': return 'Gap';
+    case 'optionalStandard': return 'Optional Standard';
+    case 'privacySecurityFramework': return 'Privacy & Security Framework';
+    case 'sed': return 'SED';
+    case 'serviceBaseUrlList': return 'Service Base URL List';
+    case 'standardsTested': return 'Standards Tested';
+    case 'svap': return 'SVAP';
+    case 'testData': return 'Test Data';
+    case 'testProcedure': return 'Test Procedure';
+    case 'testTool': return 'Test Tool';
+    case 'useCases': return 'Use Cases';
+    default:
+      console.debug(key);
+      return key;
+  }
+};
+
 function ChplCertificationCriteriaView({ certificationCriteria: initialCertificationCriteria }) {
   const [certificationCriterias, setCertificationCriteria] = useState([]);
   const [order, setOrder] = useState('asc');
@@ -42,6 +70,12 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
     setCertificationCriteria(initialCertificationCriteria
       .map((item) => ({
         ...item,
+        displayAttributes: Object
+          .entries(item.attributes)
+          .filter(([, value]) => value)
+          .map(([key]) => getDisplay(key))
+          .sort((a, b) => (a < b ? -1 : 1))
+          .join('; '),
       }))
       .sort(sortComparator('value')));
   }, [initialCertificationCriteria]); // eslint-disable-line react/destructuring-assignment
@@ -84,7 +118,10 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
                     { getDisplayDateFormat(item.endDay) }
                   </TableCell>
                   <TableCell>
-                    { item.rule?.name ?? '' }
+                    { item.rule.name }
+                  </TableCell>
+                  <TableCell>
+                    { item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A' }
                   </TableCell>
                 </TableRow>
               ))}

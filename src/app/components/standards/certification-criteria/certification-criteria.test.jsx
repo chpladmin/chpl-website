@@ -32,13 +32,11 @@ const mockApi = {
   isSuccess: true,
 };
 
-jest.mock('api/data', () => ({
+jest.mock('api/standards', () => ({
   __esModule: true,
   useFetchCriteria: () => ({
     ...mockApi,
-    data: {
-      criteria: mock.certificationCriteria,
-    },
+    data: mock.certificationCriteria,
   }),
 }));
 
