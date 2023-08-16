@@ -59,11 +59,9 @@ function ChplCqms(props) {
     );
   });
 
-  if (!edition) { return null; }
-
   return (
     <>
-      { (edition === null || edition.name === '2015')
+      { (edition === null || edition?.name === '2015')
         && (
           <Typography className={classes.helperText}>
             Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.
@@ -73,9 +71,9 @@ function ChplCqms(props) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{ edition !== null && edition.name === '2011' ? 'Meets' : 'Version' }</TableCell>
+              <TableCell>{ edition !== null && edition?.name === '2011' ? 'Meets' : 'Version' }</TableCell>
               <TableCell>Quality Measure</TableCell>
-              { (edition === null || edition.name === '2015')
+              { (edition === null || edition?.name === '2015')
               && (
                 <>
                   <TableCell>170.315 (c)(1)</TableCell>
@@ -93,7 +91,7 @@ function ChplCqms(props) {
                 <TableRow key={cqm.id ?? cqm.cmsId} className={!cqm.success ? classes.disabledRow : ''}>
                   <TableCell>
                     <span className="sr-only">{ cqm.success ? 'meets' : 'does not meet' }</span>
-                    { edition.name !== null && edition.name === '2011' && cqm.success
+                    { edition?.name !== null && edition?.name === '2011' && cqm.success
                       && (
                         <CheckIcon fontSize="large" />
                       )}
@@ -109,7 +107,7 @@ function ChplCqms(props) {
                       </Typography>
                     </ChplTooltip>
                   </TableCell>
-                  { (edition === null || edition.name === '2015') && getCriteriaCells(cqm) }
+                  { (edition === null || edition?.name === '2015') && getCriteriaCells(cqm) }
                 </TableRow>
               ))}
           </TableBody>
