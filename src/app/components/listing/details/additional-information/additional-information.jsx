@@ -103,7 +103,7 @@ function ChplAdditionalInformation(props) {
                       </List>
                     </>
                   )}
-                { (listing.ics.parents?.length > 0 || listing.ics.children?.length > 0) && listing.edition.name === '2015' && !isConfirming
+                { (listing.ics.parents?.length > 0 || listing.ics.children?.length > 0) && listing.edition?.name === '2015' && !isConfirming
                   && (
                     <ChplIcsFamily
                       id={listing.id}
