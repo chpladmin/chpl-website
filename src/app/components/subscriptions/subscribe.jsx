@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
   Card,
   CardContent,
-  MenuItem,
   Typography,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
@@ -14,35 +13,23 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 
-import { useFetchRoles, usePostSubscription } from 'api/subscriptions';
+import { usePostSubscription } from 'api/subscriptions';
 import { ChplTextField } from 'components/util';
 
 const validationSchema = yup.object({
   email: yup.string()
     .required('Email is required')
     .email('Email format is invalid'),
-  role: yup.object()
-    .required('"I\'m interested because I\'m a..." is required'),
 });
 
 function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
   const { enqueueSnackbar } = useSnackbar();
-  const [roles, setRoles] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchRoles();
   const postSubscription = usePostSubscription();
   let formik;
-
-  useEffect(() => {
-    if (isLoading || !isSuccess) {
-      return;
-    }
-    setRoles(data.sort((a, b) => (a.sortOrder - b.sortOrder)));
-  }, [data, isLoading, isSuccess]);
 
   const subscribe = () => {
     postSubscription.mutate({
       email: formik.values.email,
-      roleId: formik.values.role.id,
       subscribedObjectTypeId,
       subscribedObjectId,
     }, {
@@ -68,10 +55,6 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
     validationSchema,
     initialValues: {
       email: '',
-      role: '',
-    },
-    onSubmit: () => {
-      subscribe();
     },
   });
 
@@ -86,12 +69,12 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
             </Typography>
           </Box>
           <Typography variant="body2">
-            If you&apos;re interested in keeping up-to-date with changes to this Listing from the CHPL fill out the fields below.
+            Keep up-to-date with significant changes to this Listing on the CHPL
           </Typography>
           <ChplTextField
             id="email"
             name="email"
-            label="Email"
+            label="Enter Email"
             required
             value={formik.values.email}
             onChange={formik.handleChange}
@@ -99,24 +82,6 @@ function ChplSubscribe({ subscribedObjectTypeId, subscribedObjectId }) {
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
-          <ChplTextField
-            select
-            id="role"
-            name="role"
-            label="I'm interested because I'm a..."
-            required
-            value={formik.values.role}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.role && !!formik.errors.role}
-            helperText={formik.touched.role && formik.errors.role}
-          >
-            {roles.map((item) => (
-              <MenuItem value={item} key={item.id}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </ChplTextField>
           <Button
             size="small"
             color="secondary"
