@@ -220,9 +220,9 @@ function ChplCriterionDetailsView(props) {
                       <List>
                         { criterion.functionalitiesTested.map((ft, index) => (
                           <ListItem key={ft.id || ft.key || index}>
-                            { ft.description
-                              && <ChplEllipsis text={ft.description} maxLength={100} wordBoundaries />}
-                            { !ft.description && ft.name }
+                            { ft.functionalityTested.value
+                              && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
+                            { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
                           </ListItem>
                         ))}
                       </List>
