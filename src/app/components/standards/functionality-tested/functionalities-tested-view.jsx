@@ -96,9 +96,8 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
           <TableBody>
             { functionalitiesTested
               .map((item) => (
-                <TableRow key={`${item.id}-${item.name}`}>
+                <TableRow key={`${item.id}-${item.value}`}>
                   <TableCell className={classes.firstColumn}>
-                    { item.name }
                     { item.value }
                     { item.retired && ' (Retired)'}
                   </TableCell>
