@@ -64,8 +64,11 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'functionalitiesTested':
       options = {
-        sort: (p, c) => (p.name < c.name ? -1 : p.name > c.name ? 1 : 0),
-        write: (f) => `Test Functionality "${f.name}"`,
+        sort: (p, c) => {
+          if (p.name) { return (p.name < c.name ? -1 : p.name > c.name ? 1 : 0); }
+          return (p.functionalityTested.value < c.functionalityTested.value ? -1 : p.functionalityTested.value > c.functionalityTested.value ? 1 : 0);
+        },
+        write: (f) => `Functionality Tested "${f.functionalityTested?.value ?? f.name}"`,
       };
       break;
     case 'g1MacraMeasures':
@@ -155,7 +158,7 @@ const compare = (before, after, key, title = 'unknown') => {
     case 'testFunctionality':
       options = {
         sort: (p, c) => (p.name < c.name ? -1 : p.name > c.name ? 1 : 0),
-        write: (f) => `Test Functionality "${f.name}"`,
+        write: (f) => `Functionality Tested "${f.name}"`,
       };
       break;
     case 'testProcedures':
@@ -282,7 +285,7 @@ lookup = {
   'certificationResults.conformanceMethods': { message: (before, after) => compare(before, after, 'conformanceMethods', 'Conformance Methods') },
   'certificationResults.documentationUrl': { message: (before, after) => comparePrimitive(before, after, 'documentationUrl', 'Documentation URL') },
   'certificationResults.exportDocumentation': { message: (before, after) => comparePrimitive(before, after, 'exportDocumentation', 'Export Documentation') },
-  'certificationResults.functionalitiesTested': { message: (before, after) => compare(before, after, 'functionalitiesTested', 'Test Functionality') },
+  'certificationResults.functionalitiesTested': { message: (before, after) => compare(before, after, 'functionalitiesTested', 'Functionality Tested') },
   'certificationResults.g1MacraMeasures': { message: (before, after) => compare(before, after, 'g1MacraMeasures', 'G1 MACRA Measures') },
   'certificationResults.g1Success': { message: (before, after) => comparePrimitive(before, after, 'g1Success', 'G1 Success') },
   'certificationResults.g2MacraMeasures': { message: (before, after) => compare(before, after, 'g2MacraMeasures', 'G2 MACRA Measures') },
@@ -296,7 +299,7 @@ lookup = {
   'certificationResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
   'certificationResults.svaps': { message: (before, after) => compare(before, after, 'svaps', 'SVAP') },
   'certificationResults.testDataUsed': { message: (before, after) => compare(before, after, 'testDataUsed', 'Test Data') },
-  'certificationResults.testFunctionality': { message: (before, after) => compare(before, after, 'testFunctionality', 'Test Functionality') },
+  'certificationResults.testFunctionality': { message: (before, after) => compare(before, after, 'testFunctionality', 'Functionality Tested') },
   'certificationResults.testProcedures': { message: (before, after) => compare(before, after, 'testProcedures', 'Test Procedures') },
   'certificationResults.testStandards': { message: (before, after) => compare(before, after, 'testStandards', 'Test Standards') },
   'certificationResults.testTasks': { message: (before, after) => compare(before, after, 'testTasks', 'Test Tasks') },
@@ -319,6 +322,7 @@ lookup = {
   'cqmResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
   'cqmResults.successVersions': { message: (before, after) => compare(before, after, 'text', 'CQM Versions') },
   'cqmResults.title': { message: () => undefined },
+  'functionalitiesTested.functionalityTested.criteria': { message: () => undefined },
   'measures.associatedCriteria': { message: (before, after) => compare(before, after, 'measures.associatedCriteria', 'Certification Criteria') },
   'measures.id': { message: () => undefined },
   'measures.measure.allowedCriteria': { message: () => undefined },
