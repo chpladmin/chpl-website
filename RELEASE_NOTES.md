@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 13.2.0
+_21 August 2023_
+
+### Features
+* Add notice to download page related to new JSON files and deprecation of XML files
+
+### Flagged Features
+* Require "Role" when confirming a Subscription
+* Display subscriptions for subscribers to manage
+
+---
+
 ## Version 13.1.0
 _7 August 2023_
 

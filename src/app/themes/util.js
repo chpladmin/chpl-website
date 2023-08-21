@@ -1,4 +1,11 @@
 const util = {
+  deleteButton: {
+    backgroundColor: '#c44f65',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#853544',
+    },
+  },
   firstColumn: {
     position: 'sticky',
     left: 0,
