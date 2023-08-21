@@ -26,6 +26,7 @@ const validationSchema = yup.object({
     .required('Field is required'),
   regulatoryTextCitation: yup.string(),
   rule: yup.string(),
+  practiceType: yup.string(),
   endDay: yup.date(),
   requiredDay: yup.date(),
   startDay: yup.date(),
@@ -57,6 +58,8 @@ function ChplFunctionalityTestedEdit(props) {
     rules,
     functionalityTested: initialFunctionalityTested,
   } = props;
+  const practiceTypes = [{ id: 1, name: 'Ambulatory' }, { id: 2, name: 'Inpatient' }];
+  const practiceTypeOptions = ['Ambulatory', 'Inpatient'];
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -115,6 +118,7 @@ function ChplFunctionalityTestedEdit(props) {
     value: formik.values.value,
     regulatoryTextCitation: formik.values.regulatoryTextCitation,
     rule: rules.find((rule) => rule.name === formik.values.rule),
+    practiceType: practiceTypes.find((practiceType) => practiceType.name === formik.values.practiceType),
     criteria,
     endDay: formik.values.endDay,
     requiredDay: formik.values.requiredDay,
@@ -157,6 +161,7 @@ function ChplFunctionalityTestedEdit(props) {
       value: initialFunctionalityTested?.value ?? '',
       regulatoryTextCitation: initialFunctionalityTested?.regulatoryTextCitation ?? '',
       rule: initialFunctionalityTested?.rule?.name ?? '',
+      practiceType: initialFunctionalityTested?.practiceType?.name ?? '',
       endDay: initialFunctionalityTested?.endDay ?? '',
       requiredDay: initialFunctionalityTested?.requiredDay ?? '',
       startDay: initialFunctionalityTested?.startDay ?? '',
@@ -233,7 +238,6 @@ function ChplFunctionalityTestedEdit(props) {
         />
       </Box>
       <Divider />
-
       <ChplTextField
         select
         id="rule"
@@ -244,6 +248,25 @@ function ChplFunctionalityTestedEdit(props) {
         onBlur={formik.handleBlur}
       >
         { ruleOptions
+          .map((item) => (
+            <MenuItem
+              value={item}
+              key={item}
+            >
+              { item }
+            </MenuItem>
+          ))}
+      </ChplTextField>
+      <ChplTextField
+        select
+        id="practiceType"
+        name="practiceType"
+        label="Select a Practice Type"
+        value={formik.values.practiceType}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      >
+        { practiceTypeOptions
           .map((item) => (
             <MenuItem
               value={item}
