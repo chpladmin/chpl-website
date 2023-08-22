@@ -83,7 +83,8 @@ const ListingDetailsEditComponent = {
     }
 
     missingIcsSource() {
-      return this.listing.certificationEdition.name === '2015' && this.listing.ics.inherits && this.listing.ics.parents.length === 0;
+      return (this.listing.edition === null || this.listing.edition.name === '2015') 
+                && this.listing.ics.inherits && this.listing.ics.parents.length === 0;
     }
 
     matchesPreviousPIDate(item) {
@@ -103,13 +104,15 @@ const ListingDetailsEditComponent = {
         this.listing.promotingInteroperabilityUserHistory = [];
       }
 
-      if (this.listing.product && this.listing.product.id && this.listing.certificationEdition.name === '2015' && (!this.relatedListings || this.relatedListings.length === 0)) {
+      if (this.listing.product && this.listing.product.id && 
+            (this.listing.edition === null || this.listing.edition.name === '2015')
+            && (!this.relatedListings || this.relatedListings.length === 0)) {
         const that = this;
         this.networkService.getRelatedListings(this.listing.product.id)
           .then((family) => that.relatedListings = family.filter((item) => item.edition === '2015' && item.id !== that.listing.id));
       }
 
-      this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => ts.year === this.listing.certificationEdition.name);
+      this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => ts.year === this.listing.edition?.name);
     }
 
     prepCqms() {

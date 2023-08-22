@@ -8,9 +8,9 @@ import {
 } from 'prop-types';
 
 const certificationEdition = shape({
-  certificationEditionId: number,
+  id: number,
   retired: bool,
-  year: string,
+  name: string,
 });
 
 const surveillanceNonconformityType = shape({

@@ -58,7 +58,7 @@ const ListingEditPageComponent = {
     }
 
     prepareResources() {
-      this.resources.testStandards.data = this.resources.testStandards.data.filter((item) => !item.year || item.year === this.listingDetails.certificationEdition.name);
+      this.resources.testStandards.data = this.resources.testStandards.data.filter((item) => !item.year || item.year === this.listingDetails.edition.name);
     }
 
     cancel() {

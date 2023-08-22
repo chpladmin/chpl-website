@@ -47,10 +47,10 @@ export const ChartsDeveloperComponent = {
     _createIncumbentDevelopersCountChart (data) {
       this.incumbentDevelopersCounts =
                 data.incumbentDevelopersStatisticsResult.sort(function (a, b) {
-                  if (a.oldCertificationEdition.certificationEditionId === b.oldCertificationEdition.certificationEditionId) {
-                    return a.newCertificationEdition.certificationEditionId - b.newCertificationEdition.certificationEditionId;
+                  if (a.oldCertificationEdition.id === b.oldCertificationEdition.id) {
+                    return a.newCertificationEdition.id - b.newCertificationEdition.id;
                   } else {
-                    return a.oldCertificationEdition.certificationEditionId - b.oldCertificationEdition.certificationEditionId;
+                    return a.oldCertificationEdition.id - b.oldCertificationEdition.id;
                   }
                 }).map(function (obj) {
                   var chart = {
@@ -66,7 +66,7 @@ export const ChartsDeveloperComponent = {
                       ],
                     },
                     options: {
-                      title: 'New vs. Incumbent Developers by Edition, ' + obj.oldCertificationEdition.year + ' to ' + obj.newCertificationEdition.year,
+                      title: 'New vs. Incumbent Developers by Edition, ' + obj.oldCertificationEdition.name + ' to ' + obj.newCertificationEdition.name,
                     },
                   };
                   return chart;
@@ -161,7 +161,7 @@ export const ChartsDeveloperComponent = {
         return a.certificationStatus.name === status;
       }).map(function (obj) {
         return {c: [
-          { v: obj.certificationEdition.year },
+          { v: obj.certificationEdition.name },
           { v: obj.developerCount },
           { v: obj.productCount},
         ]};
@@ -176,8 +176,8 @@ export const ChartsDeveloperComponent = {
       data.statisticsResult.filter(function (a) {
         return a.certificationStatus.name === status;
       }).forEach(function (obj) {
-        transformedData.developer[obj.certificationEdition.year] = obj.developerCount;
-        transformedData.product[obj.certificationEdition.year] = obj.productCount;
+        transformedData.developer[obj.certificationEdition.name] = obj.developerCount;
+        transformedData.product[obj.certificationEdition.name] = obj.productCount;
       });
       return [{
         c: [{ v: 'Developer' }]
