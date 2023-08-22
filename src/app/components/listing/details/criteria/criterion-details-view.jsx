@@ -223,6 +223,16 @@ function ChplCriterionDetailsView(props) {
                             { ft.functionalityTested.value
                               && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
                             { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
+                            { ft.functionalityTested.additionalInformation
+                              && (
+                                <ChplTooltip title={ft.functionalityTested.additionalInformation}>
+                                  <IconButton className={classes.infoIcon}>
+                                    <InfoIcon
+                                      className={classes.infoIconColor}
+                                    />
+                                  </IconButton>
+                                </ChplTooltip>
+                              )}
                           </ListItem>
                         ))}
                       </List>
