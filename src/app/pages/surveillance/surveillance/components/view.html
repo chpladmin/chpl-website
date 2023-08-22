@@ -30,9 +30,9 @@
         <th scope="row">Version</th>
         <td>{{ $ctrl.listing.version.version }}</td>
       </tr>
-      <tr>
+      <tr ng-if="$ctrl.listing.edition">
         <th scope="row">Certification Edition</th>
-        <td>{{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span></td>
+        <td>{{ $ctrl.listing.edition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span></td>
       </tr>
       <tr>
         <th scope="row">Certifying Body</th>

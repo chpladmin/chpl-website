@@ -20,10 +20,11 @@ export default ChplCqmsWrapper;
 
 ChplCqmsWrapper.propTypes = {
   cqms: arrayOf(cqm).isRequired,
-  edition: certificationEdition.isRequired,
+  edition: certificationEdition,
   viewAll: bool,
 };
 
 ChplCqmsWrapper.defaultProps = {
+  edition: undefined,
   viewAll: false,
 };

@@ -311,10 +311,6 @@ export default class NetworkService {
     return this.apiGET(`/products?developerId=${developerId}`);
   }
 
-  getProductsByVersion(versionId, editable) {
-    return this.apiGET(`/certified_products?versionId=${versionId}&editable=${editable}`);
-  }
-
   getQmsStandards() {
     return this.apiGET('/qms-standards');
   }

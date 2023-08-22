@@ -39,7 +39,7 @@ function CmsWrapper(props) {
   };
 
   const canDisplayButton = (listing) => listing.curesUpdate
-        || (!cannotGenerate15EIsOn && (listing.certificationEdition?.name === '2015' || listing.edition?.name === '2015'));
+        || (!cannotGenerate15EIsOn && listing.edition?.name === '2015');
 
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 

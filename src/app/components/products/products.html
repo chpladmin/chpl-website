@@ -124,7 +124,7 @@
                 </div>
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">Edition</div>
-                  <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.curesUpdate"> Cures Update</span></div>
+                  <div class="product__listing-element">{{ listing.edition }}<span ng-if="listing.edition !== null && listing.curesUpdate"> Cures Update</span></div>
                 </div>
                 <div class="product__listing-data-item">
                   <div class="data-label product__data-label" ng-class="{ 'sr-only' : !$first }">#&nbsp;Non&#8209;conformities</div>

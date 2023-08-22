@@ -36,7 +36,9 @@
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250" ng-change="$ctrl.update()">
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
   </div>
-  <strong>Certification Edition:</strong> {{ $ctrl.listing.certificationEdition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
+  <div ng-if="$ctrl.listing.edition">
+    <strong>Certification Edition:</strong> {{ $ctrl.listing.edition.name }}</span> <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
+  </div>
   <div>
     <strong>Certification Date</strong> {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}
   </div>
@@ -97,7 +99,7 @@
       </div>
     </div>
   </span>
-  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+  <div class="form-group" ng-if="$ctrl.listing.edition !== null && $ctrl.listing.edition.name === '2014'">
     <label for="cp-practice">Practice Type</label>
     <select class="input-sm form-control" ng-model="$ctrl.listing.practiceType" id="cp-practice" name="cpPractice"
             ng-change="$ctrl.update()"
@@ -105,7 +107,7 @@
     </select>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpPractice.$touched) && $ctrl.form.cpPractice.$error.required">Field is required</div>
   </div>
-  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2014'">
+  <div class="form-group" ng-if="$ctrl.listing.edition !== null && $ctrl.listing.edition.name === '2014'">
     <label for="cp-classification">Classification Type</label>
     <select class="input-sm form-control" ng-model="$ctrl.listing.classificationType" id="cp-classification" name="cpClassification"
             ng-change="$ctrl.update()"
@@ -145,7 +147,7 @@
       <button class="btn btn-sm btn-link" ng-click="$ctrl.addingItem['oncAtls'] = true"><i class="fa fa-plus-circle"></i> Add Item</button>
     </div>
   </div>
-  <div class="form-group" ng-if="$ctrl.listing.certificationEdition.name === '2011' || ($ctrl.listing.certificationEdition.name === '2014' && $ctrl.listing.chplProductNumber.startsWith('CHP-'))">
+  <div class="form-group" ng-if="$ctrl.listing.chplProductNumber.startsWith('CHP-')">
     <label for="cp-additional-software">Product wide Relied Upon Software</label>
     <input class="input-sm form-control" type="text" ng-model="$ctrl.listing.productAdditionalSoftware" id="cp-additional-software" ng-change="$ctrl.update()">
   </div>
@@ -161,7 +163,7 @@
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.url">Improper format (http://www.example.com)</div>
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.mandatoryDisclosures.$touched) && $ctrl.form.mandatoryDisclosures.$error.maxlength">Field is too long</div>
   </div>
-  <div class="edit-listing__rwt-container" ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.workType !== 'confirm'">
+  <div class="edit-listing__rwt-container" ng-if="($ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015') && $ctrl.workType !== 'confirm'">
     <div class="edit-listing__rwt-container-header">
       <div class="data-label">Real World Testing</div>
     </div>

@@ -138,7 +138,7 @@ function ChplSedCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      fullEdition: listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -284,9 +284,16 @@ function ChplSedCollectionView(props) {
                                 </strong>
                               </TableCell>
                               <TableCell>
-                                {item.edition.name}
-                                {' '}
-                                {item.curesUpdate ? 'Cures Update' : '' }
+                                { item.edition
+                                  ? (
+                                    <>
+                                      {item.edition.name}
+                                      {' '}
+                                      {item.curesUpdate ? 'Cures Update' : '' }
+                                    </>
+                                  ) : (
+                                    <></>
+                                  )}
                               </TableCell>
                               <TableCell>
                                 <ChplLink
