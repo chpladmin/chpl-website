@@ -27,6 +27,7 @@ const validationSchema = yup.object({
   regulatoryTextCitation: yup.string(),
   rule: yup.string(),
   practiceType: yup.string(),
+  additionalInformation: yup.string(),
   endDay: yup.date(),
   requiredDay: yup.date(),
   startDay: yup.date(),
@@ -119,6 +120,7 @@ function ChplFunctionalityTestedEdit(props) {
     regulatoryTextCitation: formik.values.regulatoryTextCitation,
     rule: rules.find((rule) => rule.name === formik.values.rule),
     practiceType: practiceTypes.find((practiceType) => practiceType.name === formik.values.practiceType),
+    additionalInformation: formik.values.additionalInformation,
     criteria,
     endDay: formik.values.endDay,
     requiredDay: formik.values.requiredDay,
@@ -162,6 +164,7 @@ function ChplFunctionalityTestedEdit(props) {
       regulatoryTextCitation: initialFunctionalityTested?.regulatoryTextCitation ?? '',
       rule: initialFunctionalityTested?.rule?.name ?? '',
       practiceType: initialFunctionalityTested?.practiceType?.name ?? '',
+      additionalInformation: initialFunctionalityTested?.additionalInformation ?? '',
       endDay: initialFunctionalityTested?.endDay ?? '',
       requiredDay: initialFunctionalityTested?.requiredDay ?? '',
       startDay: initialFunctionalityTested?.startDay ?? '',
@@ -310,6 +313,14 @@ function ChplFunctionalityTestedEdit(props) {
             />
           ))}
       </div>
+      <ChplTextField
+        id="additional-information"
+        name="additionalInformation"
+        label="Additional Information"
+        value={formik.values.additionalInformation}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
       <ChplActionBar
         dispatch={handleDispatch}
         canDelete={!!functionalityTested.id}
