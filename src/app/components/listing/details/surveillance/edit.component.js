@@ -208,7 +208,7 @@ const SurveillanceEditComponent = {
 
     save() {
       if (this.workType === 'initiate') {
-        this.surveillance.certifiedProduct.edition = this.surveillance.certifiedProduct.certificationEdition.name;
+        this.surveillance.certifiedProduct.edition = this.surveillance.certifiedProduct.edition?.name;
         this.networkService.initiateSurveillance(this.surveillance)
           .then((response) => {
             if (!response.status || response.status === 200 || angular.isObject(response.status)) {

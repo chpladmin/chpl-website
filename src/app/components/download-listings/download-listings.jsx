@@ -114,7 +114,7 @@ function ChplDownloadListings(props) {
   useEffect(() => {
     setListings(props.listings.map((listing) => ({
       ...listing,
-      fullEdition: `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`,
+      fullEdition: listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,

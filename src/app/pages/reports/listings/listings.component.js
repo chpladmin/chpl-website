@@ -147,7 +147,7 @@ const ReportsListingsComponent = {
         categoriesFilter: `|${item.categories.join('|')}|`,
         friendlyActivityDate: new Date(item.date).toISOString().substring(0, 10),
         friendlyCertificationDate: new Date(item.certificationDate).toISOString().substring(0, 10),
-        edition: item.edition + (item.curesUpdate ? ' Cures Update' : ''),
+        edition: item.edition !== null ? item.edition + (item.curesUpdate ? ' Cures Update' : '') : '',
       };
       if (full) {
         this.parse(ret);

@@ -60,16 +60,16 @@
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cqm'" id="panel-cqm">
-        <p ng-if="$ctrl.listing.certificationEdition.name === '2015'">Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
+        <p ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'">Note 170.315 (c)(3) has two versions due to 2015 Cures Update, so please check the criterion in the “Certification Criteria” section above to determine which version applies here.</p>
         <table class="table">
           <thead>
             <tr>
-              <th scope="cols">{{ $ctrl.listing.certificationEdition.name === '2011' ? 'Meets' : 'Version' }}</th>
+              <th scope="cols">{{ ($ctrl.listing.edition !== null && $ctrl.listing.edition.name) === '2011' ? 'Meets' : 'Version' }}</th>
               <th scope="cols">Quality Measure</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(1)</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(2)</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(3)</th>
-              <th scope="cols" ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="no-br">170.315 (c)(4)</th>
+              <th scope="cols" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="no-br">170.315 (c)(1)</th>
+              <th scope="cols" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="no-br">170.315 (c)(2)</th>
+              <th scope="cols" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="no-br">170.315 (c)(3)</th>
+              <th scope="cols" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="no-br">170.315 (c)(4)</th>
             </tr>
           </thead>
           <tbody>
@@ -86,16 +86,16 @@
               <td>
                 <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
               </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
+              <td ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="text-center">
                 <input type="checkbox" class="form-control" ng-model="n.hasC1" id="data_c1_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
               </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
+              <td ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="text-center">
                 <input type="checkbox" class="form-control" ng-model="n.hasC2" id="data_c2_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
               </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
+              <td ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="text-center">
                 <input type="checkbox" class="form-control" ng-model="n.hasC3" id="data_c3_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
               </td>
-              <td ng-if="$ctrl.listing.certificationEdition.name === '2015'" class="text-center">
+              <td ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'" class="text-center">
                 <input type="checkbox" class="form-control" ng-model="n.hasC4" id="data_c4_{{n.id}}" ng-change="$ctrl.updateCs()" ng-disabled="n.successVersions.length < 1"></input>
               </td>
             </tr>
@@ -105,10 +105,10 @@
     </div>
 
     <!-- SED -->
-    <div class="panel panel-ai" ng-if="$ctrl.listing.certificationEdition.name !== '2011'">
+    <div class="panel panel-ai" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name !== '2011'">
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('sed')" aria-expanded="{{ $ctrl.panelShown === 'sed' }}">
         <div class="listing-details__element-header-title">Safety Enhanced Design (SED)</div>
-        <div>({{ $ctrl.sedCriteriaCount ? $ctrl.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="$ctrl.listing.certificationEdition.name === '2015'"> / {{ $ctrl.sedTaskCount ? $ctrl.sedTaskCount : 0 }} Testing Task<span ng-if="$ctrl.sedTaskCount !== 1">s</span></span>)</div>
+        <div>({{ $ctrl.sedCriteriaCount ? $ctrl.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'"> / {{ $ctrl.sedTaskCount ? $ctrl.sedTaskCount : 0 }} Testing Task<span ng-if="$ctrl.sedTaskCount !== 1">s</span></span>)</div>
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
       <div class="panel-body animate-if" ng-show="$ctrl.panelShown === 'sed'" id="panel-sed">
@@ -125,7 +125,7 @@
     </div>
 
     <!-- G1/G2 Measures -->
-    <div class="panel panel-ai" ng-if="$ctrl.listing.certificationEdition.name === '2015'">
+    <div class="panel panel-ai" ng-if="$ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015'">
       <div class="panel-heading listing-details__element-header" ng-click="$ctrl.showPanel('g1g2')" aria-expanded="{{ $ctrl.panelShown === 'g1g2' }}">
         <div class="listing-details__element-header-title">Successfully Tested G1/G2 Measures</div>
         <div>({{ $ctrl.listing.measures && $ctrl.listing.measures.length ? $ctrl.listing.measures.length : 0 }} found)</div>
@@ -150,7 +150,7 @@
       <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'additional'" id="panel-additional-information">
         <div class="form-group">
           <label for="cp-report-file-loc">Report File Location</label>
-          <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="$ctrl.listing.certificationEdition.name === '2014'" ng-change="$ctrl.update()">
+          <input class="input-sm form-control" type="url" ng-model="$ctrl.listing.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="$ctrl.listing.edition && $ctrl.listing.edition.name === '2014'" ng-change="$ctrl.update()">
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.required">Field is required</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpReportFileLoc.$touched) && $ctrl.form.cpReportFileLoc.$error.maxlength">Field is too long</div>
@@ -160,7 +160,7 @@
           <label for="cp-ics">Inherited Certified Status</label>
           <input type="checkbox" ng-model="$ctrl.listing.ics.inherits" id="cp-ics" ng-change="$ctrl.update()">
         </div>
-        <div ng-if="$ctrl.listing.certificationEdition.name === '2015' && $ctrl.listing.ics.inherits">
+        <div ng-if="($ctrl.listing.edition === null || $ctrl.listing.edition.name === '2015') && $ctrl.listing.ics.inherits">
           <div class="manage-list__container">
             <div class="manage-list--span-2 data-label">Inherits From</div>
             <div class="manage-list__item--start manage-list--span-2" ng-repeat-start="item in $ctrl.listing.ics.parents track by $index">

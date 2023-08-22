@@ -120,7 +120,7 @@ function ChplCriterion(props) {
   }, [listing]);
 
   const getIcon = () => {
-    if (listing.certificationEdition.name === '2011') { return null; }
+    if (listing.edition !== null && listing.edition.name === '2011') { return null; }
     return (expanded
       ? (
         <>
@@ -233,7 +233,7 @@ function ChplCriterion(props) {
             </Box>
           </Box>
         </AccordionSummary>
-        { listing.certificationEdition.name !== '2011'
+        { (listing.edition === null || listing.edition.name !== '2011')
           && (
             <AccordionDetails
               className={classes.criterionAccordionDetails}

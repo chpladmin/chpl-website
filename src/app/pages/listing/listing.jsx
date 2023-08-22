@@ -69,7 +69,7 @@ function ChplListingPage({ id }) {
 
   const canEdit = () => {
     if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; }
-    if (listing.certificationEdition.name !== '2015') { return false; }
+    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
     if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;
   };

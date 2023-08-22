@@ -129,7 +129,7 @@ function ChplListingView({ isConfirming, listing }) {
 
   const canManageSurveillance = () => {
     if (hasAnyRole(['ROLE_ADMIN'])) { return true; }
-    if (listing.certificationEdition.name !== '2015') { return false; }
+    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
     if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;
   };
@@ -176,7 +176,7 @@ function ChplListingView({ isConfirming, listing }) {
                     <DoneAllOutlinedIcon className={classes.iconSpacing} />
                   </InternalScrollButton>
                 </Box>
-                { listing.certificationEdition.name !== '2011'
+                { (listing.edition === null || listing.edition.name !== '2011')
                  && (
                    <Box
                      className={classes.menuItems}
@@ -190,7 +190,7 @@ function ChplListingView({ isConfirming, listing }) {
                      </InternalScrollButton>
                    </Box>
                  )}
-                { listing.certificationEdition.name === '2015'
+                { (listing.edition === null || listing.edition.name === '2015')
                   && (
                     <Box
                       className={classes.menuItems}
@@ -313,12 +313,12 @@ function ChplListingView({ isConfirming, listing }) {
           <CardContent>
             <ChplCqms
               cqms={listing.cqmResults}
-              edition={listing.certificationEdition}
+              edition={listing.edition}
               viewAll={seeAllCqms}
             />
           </CardContent>
         </Card>
-        {listing.certificationEdition.name !== '2011'
+        {(listing.edition === null || listing.edition.name !== '2011')
          && (
            <Card>
              <span className="anchor-element">
@@ -334,7 +334,7 @@ function ChplListingView({ isConfirming, listing }) {
              </CardContent>
            </Card>
          )}
-        { listing.certificationEdition.name === '2015'
+        { (listing.edition === null || listing.certificationEdition.name === '2015')
           && (
             <Card>
               <span className="anchor-element">
