@@ -36,6 +36,7 @@ function ChplComparePage({ ids }) {
   const [criteria, setCriteria] = useState([]);
   const [listings, setListings] = useState([]);
   const [listingsToProcess, setListingsToProcess] = useState([]);
+  const [showPracticeType, setShowPracticeType] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id: activeListing });
   const classes = useStyles();
 
@@ -57,6 +58,7 @@ function ChplComparePage({ ids }) {
           setCqms((prev) => [...prev, cqm].sort(sortCqms));
         }
       });
+      if (data.practiceType.name) { setShowPracticeType(true); }
     }
   }, [data, isLoading, isSuccess]);
 
@@ -188,8 +190,7 @@ function ChplComparePage({ ids }) {
                 return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
               }) }
               { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
-              { /* ignore next line if only 2015 edition listings */ }
-              { makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) }
+              { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : '' }
               { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
               { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
               { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate)) }
