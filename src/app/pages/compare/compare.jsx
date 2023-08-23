@@ -22,6 +22,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
 import { ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { palette, utilStyles } from 'themes';
 
@@ -31,6 +32,7 @@ const useStyles = makeStyles({
 
 function ChplComparePage({ ids }) {
   const [activeListing, setActiveListing] = useState(undefined);
+  const [cqms, setCqms] = useState([]);
   const [criteria, setCriteria] = useState([]);
   const [listings, setListings] = useState([]);
   const [listingsToProcess, setListingsToProcess] = useState([]);
@@ -48,6 +50,11 @@ function ChplComparePage({ ids }) {
       data.certificationResults.filter((cr) => cr.success).forEach((cr) => {
         if (!criteria.find((crit) => crit.id === cr.criterion.id)) {
           setCriteria((prev) => [...prev, cr.criterion].sort(sortCriteria));
+        }
+      });
+      data.cqmResults.filter((cqm) => cqm.success).forEach((cqm) => {
+        if (!cqms.find((item) => item.cmsId === cqm.cmsId)) {
+          setCqms((prev) => [...prev, cqm].sort(sortCqms));
         }
       });
     }
@@ -100,6 +107,38 @@ function ChplComparePage({ ids }) {
       ))}
     </TableRow>
   );
+
+  const getCqmValue = (cqm, listing) => {
+    let res;
+    if (cqm.cmsId) {
+      res = listing.cqmResults.find((c) => c.cmsId === cqm.cmsId);
+      if (res) {
+        return res.success ? res.successVersions.join('; ') : 'does not meet';
+      }
+      return 'cannot meet';
+    }
+    res = listing.cqmResults.find((c) => c.nqfNumber === cqm.nqfNumber);
+    if (res) {
+      return res.success ? 'meets' : 'does not meet';
+    }
+    return 'cannot meet';
+  };
+
+  const makeCqmRow = (cqm) => (
+    <TableRow key={cqm.id}>
+      <TableCell>
+        { cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }
+        {': '}
+        { cqm.title }
+      </TableCell>
+      { listings.map((listing) => (
+        <TableCell key={listing.id}>
+          { getCqmValue(cqm, listing) }
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+
   if (listings.length === 0) {
     return <CircularProgress />;
   }
@@ -159,6 +198,7 @@ function ChplComparePage({ ids }) {
               { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
               { criteria.map(makeCriterionRow)}
               { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
+              { cqms.map(makeCqmRow)}
               { makeRow('View listing details', (listing) => (
                 <ChplLink
                   href={`#/listing/${listing.id}`}
