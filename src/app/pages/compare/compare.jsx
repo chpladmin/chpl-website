@@ -1,38 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   CircularProgress,
   Container,
   IconButton,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-import { arrayOf, number, oneOfType, string } from 'prop-types';
+import {
+  arrayOf, number, oneOfType, string,
+} from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
 import { ChplLink, ChplTooltip } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { palette, theme, utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
 });
 
 function ChplComparePage({ ids }) {
-  const $state = getAngularService('$state');
-  const [activeListing, setActiveListing] = useState(undefined)
+  const [activeListing, setActiveListing] = useState(undefined);
   const [criteria, setCriteria] = useState([]);
   const [listings, setListings] = useState([]);
   const [listingsToProcess, setListingsToProcess] = useState([]);
@@ -44,7 +42,7 @@ function ChplComparePage({ ids }) {
       return;
     }
     if (data?.id) {
-      setListings((previous) => [...previous, data].sort((a, b) => a.certificationDate < b.certificationDate ? -1 : 1));
+      setListings((previous) => [...previous, data].sort((a, b) => (a.certificationDate < b.certificationDate ? -1 : 1)));
       setListingsToProcess((previous) => previous.filter((id) => id !== activeListing));
       setActiveListing(undefined);
       data.certificationResults.filter((cr) => cr.success).forEach((cr) => {
@@ -52,7 +50,7 @@ function ChplComparePage({ ids }) {
           setCriteria((prev) => [...prev, cr.criterion].sort(sortCriteria));
         }
       });
-    };
+    }
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
@@ -63,12 +61,12 @@ function ChplComparePage({ ids }) {
     setActiveListing(listingsToProcess[0]);
   }, [listingsToProcess]);
 
-  const makeRow = (title, data) => (
+  const makeRow = (title, getData) => (
     <TableRow>
       <TableCell>{ title }</TableCell>
       { listings.map((listing) => (
         <TableCell key={listing.id}>
-          { data(listing) }
+          { getData(listing) }
         </TableCell>
       ))}
     </TableRow>
@@ -97,8 +95,7 @@ function ChplComparePage({ ids }) {
           { listing.certificationResults
             .some((cr) => cr.criterion.id === criterion.id)
             ? (listing.certificationResults.find((cr) => cr.criterion.id === criterion.id).success ? 'meets' : 'does not meet')
-            : 'cannot meet'
-          }
+            : 'cannot meet'}
         </TableCell>
       ))}
     </TableRow>
@@ -138,8 +135,7 @@ function ChplComparePage({ ids }) {
                       <ChplActionButton
                         listing={listing}
                         horizontal={false}
-                      >
-                      </ChplActionButton>
+                      />
                     </Box>
                   </TableCell>
                 ))}
@@ -154,7 +150,7 @@ function ChplComparePage({ ids }) {
               }) }
               { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
               { /* ignore next line if only 2015 edition listings */ }
-              { makeRow('Practice Type', (listing) => listing.practiceType.name ? listing.practiceType.name : 'N/A') }
+              { makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) }
               { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
               { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
               { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate)) }
