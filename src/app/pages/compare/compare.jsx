@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
@@ -24,6 +24,7 @@ import { ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
+import { FlagContext } from 'shared/contexts';
 import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -34,11 +35,17 @@ function ChplComparePage({ ids }) {
   const [activeListing, setActiveListing] = useState(undefined);
   const [cqms, setCqms] = useState([]);
   const [criteria, setCriteria] = useState([]);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [listings, setListings] = useState([]);
   const [listingsToProcess, setListingsToProcess] = useState([]);
   const [showPracticeType, setShowPracticeType] = useState(false);
   const { data, isLoading, isSuccess } = useFetchListing({ id: activeListing });
+  const { isOn } = useContext(FlagContext);
   const classes = useStyles();
+
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
 
   useEffect(() => {
     if (isLoading || !isSuccess) {
@@ -185,7 +192,7 @@ function ChplComparePage({ ids }) {
             <TableBody>
               { makeRow('Developer', (listing) => listing.developer.name) }
               { makeRow('Version', (listing) => listing.version.version) }
-              { makeRow('Certification Edition', (listing) => {
+              { editionlessIsOn ? '' : makeRow('Certification Edition', (listing) => {
                 if (!listing.edition) { return ''; }
                 return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
               }) }
