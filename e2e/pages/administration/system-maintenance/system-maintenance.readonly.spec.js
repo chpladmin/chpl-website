@@ -79,5 +79,17 @@ describe('the system maintenance page', () => {
       await page.navigate('test-tools');
       await expect(await page.canNavigate('test-tools')).toBe(false);
     });
+
+    it('should allow navigation to "certification-criteria" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('certification-criteria')).toBe(true);
+      await page.navigate('certification-criteria');
+      await expect(await page.canNavigate('certification-criteria')).toBe(false);
+    });
+
+    it('should allow navigation to "functionalities-tested" but disable the navigation afterwards', async () => {
+      await expect(await page.canNavigate('functionalities-tested')).toBe(true);
+      await page.navigate('functionalities-tested');
+      await expect(await page.canNavigate('functionalities-tested')).toBe(false);
+    });
   });
 });
