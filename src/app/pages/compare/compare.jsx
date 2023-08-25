@@ -192,12 +192,12 @@ function ChplComparePage({ ids }) {
             <TableBody>
               { makeRow('Developer', (listing) => listing.developer.name) }
               { makeRow('Version', (listing) => listing.version.version) }
-              { editionlessIsOn ? '' : makeRow('Certification Edition', (listing) => {
+              { editionlessIsOn && makeRow('Certification Edition', (listing) => {
                 if (!listing.edition) { return ''; }
                 return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
               }) }
               { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
-              { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : '' }
+              { showPracticeType && makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) }
               { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
               { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
               { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate)) }
