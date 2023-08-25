@@ -200,7 +200,7 @@ function ChplComparePage({ ids }) {
               { showPracticeType && makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) }
               { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
               { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
-              { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate)) }
+              { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDay)) }
               { makeRow('CHPL Product Number', (listing) => listing.chplProductNumber) }
               { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
               { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
