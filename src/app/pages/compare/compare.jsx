@@ -22,7 +22,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import PanToolIcon from '@material-ui/icons/PanTool';
-
+import Grow from '@material-ui/core/Grow'
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
@@ -31,7 +31,7 @@ import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { FlagContext } from 'shared/contexts';
-import { palette, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -55,10 +55,30 @@ const useStyles = makeStyles({
   Table: {
     height: '100vh',
   },
+  stickyColumn: {
+    position: 'sticky',
+    left: 0,
+    zIndex: 1,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
+    backgroundColor: palette.background,
+  },
   MuiTableCellStickyHeader: {
     '&.TableCell-stickyHeader': {
       top: '75px',
     },
+  },
+  animatedItem: {
+    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`
+  },
+  "@keyframes myEffect": {
+    "0%": {
+      opacity: 0,
+      transform: "translateY(200%)"
+    },
+    "100%": {
+      opacity: 1,
+      transform: "translateY(0)"
+    }
   },
 });
 
@@ -110,9 +130,9 @@ function ChplComparePage({ ids }) {
 
   const makeRow = (title, getData) => (
     <TableRow>
-      <TableCell><strong>{title}</strong></TableCell>
+      <TableCell className={classes.stickyColumn}><strong>{title}</strong></TableCell>
       {listings.map((listing) => (
-        <TableCell key={listing.id}>
+        <TableCell className={classes.animatedItem} key={listing.id}>
           {getData(listing)}
         </TableCell>
       ))}
@@ -121,7 +141,7 @@ function ChplComparePage({ ids }) {
 
   const makeCriterionRow = (criterion) => (
     <TableRow key={criterion.id}>
-      <TableCell>
+      <TableCell className={classes.stickyColumn}>
         {criterion.removed ? 'Removed | ' : ''}
         <strong>{criterion.number}</strong>
         {': '}
@@ -251,7 +271,7 @@ function ChplComparePage({ ids }) {
 
   const makeCqmRow = (cqm) => (
     <TableRow key={cqm.id}>
-      <TableCell>
+      <TableCell className={classes.stickyColumn}>
         <strong>{cqm.cmsId ?? `NQF-${cqm.nqfNumber}`}</strong>
         {': '}
         {cqm.title}
@@ -273,18 +293,19 @@ function ChplComparePage({ ids }) {
       <div className={classes.pageHeader}>
         <Container maxWidth="lg">
           <Box className={classes.listingHeaderBox}>
-            <Box>
+            <Box width="100%">
               <Typography
                 variant="h1"
+                gutterBottom
               >
                 Compare Listings
               </Typography>
             </Box>
-            <Box>
+            <Box width="100%">
               <Typography
                 variant="body1"
               >
-                6 Products
+                6 ListingsSelected | For the best experience, we suggest comparing up to 4 products at a time. If you want to compare more than 4 products, you can still do so! Just remember to scroll horizontally on the page to access all the products you've added. While you have the flexibility to compare more items; we encourage you to focus on the most relevant products for your needs.
               </Typography>
 
             </Box>
@@ -299,7 +320,7 @@ function ChplComparePage({ ids }) {
                 <Table size="small">
                   <TableHead>
                     <TableRow hover="false" className={classes.headerRow}>
-                      <TableCell className={classes.headerColumnContent}><span className="sr-only">Data item</span></TableCell>
+                      <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                       {listings.map((listing) => (
                         <TableCell className={classes.headerColumnContent} key={listing.id}>
                           <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
