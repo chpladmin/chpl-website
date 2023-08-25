@@ -79,7 +79,7 @@ function ChplComparePage({ ids }) {
 
   const makeRow = (title, getData) => (
     <TableRow>
-      <TableCell>{ title }</TableCell>
+      <TableCell scope="row">{ title }</TableCell>
       { listings.map((listing) => (
         <TableCell key={listing.id}>
           { getData(listing) }
@@ -90,7 +90,7 @@ function ChplComparePage({ ids }) {
 
   const makeCriterionRow = (criterion) => (
     <TableRow key={criterion.id}>
-      <TableCell>
+      <TableCell scope="row">
         { criterion.removed ? 'Removed | ' : '' }
         { criterion.number }
         {': '}
@@ -135,7 +135,7 @@ function ChplComparePage({ ids }) {
 
   const makeCqmRow = (cqm) => (
     <TableRow key={cqm.id}>
-      <TableCell>
+      <TableCell scope="row">
         { cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }
         {': '}
         { cqm.title }
