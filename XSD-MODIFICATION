@@ -1,1 +1,2 @@
 OCD-4269: Listing 'certificationEdition' replaced with 'edition', edition 'certificationEditionId' replaced with 'id', and edition 'year' replaced with 'name'
+OCD-4305: add "decertificationDay" deprecating "decertificationDate"

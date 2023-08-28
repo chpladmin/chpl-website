@@ -131,9 +131,9 @@ function ChplComparePage({ ids }) {
   const makeRow = (title, getData) => (
     <TableRow>
       <TableCell className={classes.stickyColumn}><strong>{title}</strong></TableCell>
-      {listings.map((listing) => (
+      { listings.map((listing) => (
         <TableCell className={classes.animatedItem} key={listing.id}>
-          {getData(listing)}
+          { getData(listing) }
         </TableCell>
       ))}
     </TableRow>
@@ -141,9 +141,9 @@ function ChplComparePage({ ids }) {
 
   const makeCriterionRow = (criterion) => (
     <TableRow key={criterion.id}>
-      <TableCell className={classes.stickyColumn}>
-        {criterion.removed ? 'Removed | ' : ''}
-        <strong>{criterion.number}</strong>
+      <TableCell scope="row" className={classes.stickyColumn}>
+        { criterion.removed ? 'Removed | ' : '' }
+        <strong>{ criterion.number }</strong>
         {': '}
         {criterion.title}
         {criterion.removed
@@ -231,7 +231,7 @@ function ChplComparePage({ ids }) {
       );
     }
     res = listing.cqmResults.find((c) => c.nqfNumber === cqm.nqfNumber);
-    if (res) {
+    if (res && !res.cmsId) {
       return res.success
         ? (
           <span>
@@ -271,8 +271,8 @@ function ChplComparePage({ ids }) {
 
   const makeCqmRow = (cqm) => (
     <TableRow key={cqm.id}>
-      <TableCell className={classes.stickyColumn}>
-        <strong>{cqm.cmsId ?? `NQF-${cqm.nqfNumber}`}</strong>
+      <TableCell scope="row" className={classes.stickyColumn}>
+        <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
         {': '}
         {cqm.title}
       </TableCell>
