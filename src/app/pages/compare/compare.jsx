@@ -14,15 +14,15 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import InfoIcon from '@material-ui/icons/Info';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import PanToolIcon from '@material-ui/icons/PanTool';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {
   arrayOf, number, oneOfType, string,
 } from 'prop-types';
-import CloseIcon from '@material-ui/icons/Close';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import PanToolIcon from '@material-ui/icons/PanTool';
-import Grow from '@material-ui/core/Grow'
+
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
@@ -51,6 +51,7 @@ const useStyles = makeStyles({
   },
   headerColumnContent: {
     padding: '4px 16px 16px 16px',
+    width: '100%',
   },
   Table: {
     height: '100vh',
@@ -68,17 +69,17 @@ const useStyles = makeStyles({
     },
   },
   animatedItem: {
-    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`
+    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
   },
-  "@keyframes myEffect": {
-    "0%": {
+  '@keyframes myEffect': {
+    '0%': {
       opacity: 0,
-      transform: "translateY(200%)"
+      transform: 'translateY(200%)',
     },
-    "100%": {
+    '100%': {
       opacity: 1,
-      transform: "translateY(0)"
-    }
+      transform: 'translateY(0)',
+    },
   },
 });
 
@@ -130,7 +131,7 @@ function ChplComparePage({ ids }) {
 
   const makeRow = (title, getData) => (
     <TableRow>
-      <TableCell className={classes.stickyColumn}><strong>{title}</strong></TableCell>
+      <TableCell className={classes.stickyColumn}><strong>{ title }</strong></TableCell>
       { listings.map((listing) => (
         <TableCell className={classes.animatedItem} key={listing.id}>
           { getData(listing) }
@@ -145,8 +146,8 @@ function ChplComparePage({ ids }) {
         { criterion.removed ? 'Removed | ' : '' }
         <strong>{ criterion.number }</strong>
         {': '}
-        {criterion.title}
-        {criterion.removed
+        { criterion.title }
+        { criterion.removed
           && (
             <ChplTooltip title="This certification criterion has been removed from the Program.">
               <IconButton className={classes.infoIcon}>
@@ -157,42 +158,36 @@ function ChplComparePage({ ids }) {
             </ChplTooltip>
           )}
       </TableCell>
-      {listings.map((listing) => (
+      { listings.map((listing) => (
         <TableCell key={listing.id}>
-          {listing.certificationResults
+          { listing.certificationResults
             .some((cr) => cr.criterion.id === criterion.id)
             ? (listing.certificationResults.find((cr) => cr.criterion.id === criterion.id).success
               ? (
                 <span>
-                  <Box>
-                    <ChplTooltip
-                      title="Meets"
-                    >
-                      <ThumbUpIcon color="primary" />
-                    </ChplTooltip>
-                  </Box>
+                  <ChplTooltip
+                    title="Meets"
+                  >
+                    <ThumbUpIcon color="primary" />
+                  </ChplTooltip>
                 </span>
               )
               : (
                 <span>
-                  <Box>
-                    <ChplTooltip
-                      title="Does Not Meet"
-                    >
-                      <ThumbDownIcon color="disabled" />
-                    </ChplTooltip>
-                  </Box>
+                  <ChplTooltip
+                    title="Does Not Meet"
+                  >
+                    <ThumbDownIcon color="disabled" />
+                  </ChplTooltip>
                 </span>
               ))
             : (
               <span>
-                <Box>
-                  <ChplTooltip
-                    title="Can Not Meet"
-                  >
-                    <PanToolIcon color="error" />
-                  </ChplTooltip>
-                </Box>
+                <ChplTooltip
+                  title="Can Not Meet"
+                >
+                  <PanToolIcon color="error" />
+                </ChplTooltip>
               </span>
             )}
         </TableCell>
@@ -208,25 +203,21 @@ function ChplComparePage({ ids }) {
         return res.success ? res.successVersions.join('; ')
           : (
             <span>
-              <Box>
-                <ChplTooltip
-                  title="Does Not Meet"
-                >
-                  <ThumbDownIcon color="disabled" />
-                </ChplTooltip>
-              </Box>
+              <ChplTooltip
+                title="Does Not Meet"
+              >
+                <ThumbDownIcon color="disabled" />
+              </ChplTooltip>
             </span>
           );
       }
       return (
         <span>
-          <Box>
-            <ChplTooltip
-              title="Can Not Meet"
-            >
-              <PanToolIcon color="error" />
-            </ChplTooltip>
-          </Box>
+          <ChplTooltip
+            title="Can Not Meet"
+          >
+            <PanToolIcon color="error" />
+          </ChplTooltip>
         </span>
       );
     }
@@ -235,36 +226,30 @@ function ChplComparePage({ ids }) {
       return res.success
         ? (
           <span>
-            <Box>
-              <ChplTooltip
-                title="Meets"
-              >
-                <ThumbUpIcon color="primary" />
-              </ChplTooltip>
-            </Box>
+            <ChplTooltip
+              title="Meets"
+            >
+              <ThumbUpIcon color="primary" />
+            </ChplTooltip>
           </span>
         )
         : (
           <span>
-            <Box>
-              <ChplTooltip
-                title="Does Not Meet"
-              >
-                <ThumbDownIcon color="disabled" />
-              </ChplTooltip>
-            </Box>
+            <ChplTooltip
+              title="Does Not Meet"
+            >
+              <ThumbDownIcon color="disabled" />
+            </ChplTooltip>
           </span>
         );
     }
     return (
       <span>
-        <Box>
-          <ChplTooltip
-            title="Can Not Meet"
-          >
-            <PanToolIcon color="error" />
-          </ChplTooltip>
-        </Box>
+        <ChplTooltip
+          title="Can Not Meet"
+        >
+          <PanToolIcon color="error" />
+        </ChplTooltip>
       </span>
     );
   };
@@ -276,9 +261,9 @@ function ChplComparePage({ ids }) {
         {': '}
         {cqm.title}
       </TableCell>
-      {listings.map((listing) => (
+      { listings.map((listing) => (
         <TableCell key={listing.id}>
-          {getCqmValue(cqm, listing)}
+          { getCqmValue(cqm, listing) }
         </TableCell>
       ))}
     </TableRow>
@@ -293,85 +278,78 @@ function ChplComparePage({ ids }) {
       <div className={classes.pageHeader}>
         <Container maxWidth="lg">
           <Box className={classes.listingHeaderBox}>
-            <Box width="100%">
-              <Typography
-                variant="h1"
-                gutterBottom
-              >
-                Compare Listings
-              </Typography>
-            </Box>
-            <Box width="100%">
-              <Typography
-                variant="body1"
-              >
-                6 ListingsSelected | For the best experience, we suggest comparing up to 4 products at a time. If you want to compare more than 4 products, you can still do so! Just remember to scroll horizontally on the page to access all the products you've added. While you have the flexibility to compare more items; we encourage you to focus on the most relevant products for your needs.
-              </Typography>
-
-            </Box>
+            <Typography
+              variant="h1"
+              gutterBottom
+            >
+              Compare Listings
+            </Typography>
+            <Typography
+              variant="body1"
+            >
+              6 Listings Selected | For the best experience, we suggest comparing up to 4 products at a time. If you want to compare more than 4 products, you can still do so! Just remember to scroll horizontally on the page to access all the products you've added. While you have the flexibility to compare more items; we encourage you to focus on the most relevant products for your needs.
+            </Typography>
           </Box>
         </Container>
       </div>
       <Box className={classes.container}>
-        <Container maxWidth="lg">
-          <div id="main-content" tabIndex="-1">
-            <Card>
-              <TableContainer className={classes.Table}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow hover="false" className={classes.headerRow}>
-                      <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
-                      {listings.map((listing) => (
-                        <TableCell className={classes.headerColumnContent} key={listing.id}>
-                          <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                            {listing.product.name}
-                            <ChplBrowserComparedWidget
-                              listing={listing}
-                            />
-                            <IconButton size="small"><CloseIcon /></IconButton>
-                          </Box>
-                          <Box>
-                            <ChplActionButton
-                              listing={listing}
-                              horizontal={false}
-                            />
-                          </Box>
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {makeRow('Developer', (listing) => listing.developer.name)}
-                    {makeRow('Version', (listing) => listing.version.version)}
-                    {editionlessIsOn ? '' : makeRow('Certification Edition', (listing) => {
-                      if (!listing.edition) { return ''; }
-                      return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
-                    })}
-                    {makeRow('Certification Status', (listing) => listing.currentStatus.status.name)}
-                    {showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : ''}
-                    {makeRow('Certifying Body', (listing) => listing.certifyingBody.name)}
-                    {makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay))}
-                    {makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate))}
-                    {makeRow('CHPL Product Number', (listing) => listing.chplProductNumber)}
-                    {makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities)}
-                    {makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`)}
-                    {criteria.map(makeCriterionRow)}
-                    {makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`)}
-                    {cqms.map(makeCqmRow)}
-                    {makeRow('View listing details', (listing) => (
-                      <ChplLink
-                        href={`#/listing/${listing.id}`}
-                        text="details"
-                        analytics={{ event: 'Go to Listing Details page', category: 'Compare Page', label: listing.chplProductNumber }}
-                        external={false}
-                        router={{ sref: 'listing', options: { id: listing.id } }}
-                      />
+        <Container id="main-content" tabIndex="-1" maxWidth="lg">
+          <Card>
+            <TableContainer className={classes.Table}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow hover="false" className={classes.headerRow}>
+                    <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
+                    {listings.map((listing) => (
+                      <TableCell className={classes.headerColumnContent} key={listing.id}>
+                        <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                          {listing.product.name}
+                          <ChplBrowserComparedWidget
+                            listing={listing}
+                          />
+                          <IconButton size="small"><CloseIcon /></IconButton>
+                        </Box>
+                        <Box>
+                          <ChplActionButton
+                            listing={listing}
+                            horizontal={false}
+                          />
+                        </Box>
+                      </TableCell>
                     ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-          </div>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { makeRow('Developer', (listing) => listing.developer.name) }
+                  { makeRow('Version', (listing) => listing.version.version) }
+                  { editionlessIsOn ? '' : makeRow('Certification Edition', (listing) => {
+                    if (!listing.edition) { return ''; }
+                    return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
+                  }) }
+                  { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
+                  { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : '' }
+                  { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
+                  { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
+                  { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate)) }
+                  { makeRow('CHPL Product Number', (listing) => listing.chplProductNumber) }
+                  { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
+                  { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
+                  { criteria.map(makeCriterionRow) }
+                  { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
+                  { cqms.map(makeCqmRow) }
+                  { makeRow('View listing details', (listing) => (
+                    <ChplLink
+                      href={`#/listing/${listing.id}`}
+                      text="details"
+                      analytics={{ event: 'Go to Listing Details page', category: 'Compare Page', label: listing.chplProductNumber }}
+                      external={false}
+                      router={{ sref: 'listing', options: { id: listing.id } }}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
         </Container>
       </Box>
     </Box>
