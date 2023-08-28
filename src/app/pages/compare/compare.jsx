@@ -127,7 +127,7 @@ function ChplComparePage({ ids }) {
       return 'cannot meet';
     }
     res = listing.cqmResults.find((c) => c.nqfNumber === cqm.nqfNumber);
-    if (res) {
+    if (res && !res.cmsId) {
       return res.success ? 'meets' : 'does not meet';
     }
     return 'cannot meet';
