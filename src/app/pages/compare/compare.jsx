@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   },
   headerColumnContent: {
     padding: '4px 16px 16px 16px',
-    width: '100%',
+    width: 'auto',
   },
   Table: {
     height: '100vh',
