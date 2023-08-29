@@ -174,36 +174,39 @@ function ChplComparePage({ ids }) {
   };
 
   /* eslint-disable no-nested-ternary */
-  const makeCriterionRow = (criterion) => (
-    <TableRow key={criterion.id} id={`criterion-${criterion.id}`}>
-      <TableCell scope="row" className={classes.stickyColumn}>
-        { criterion.removed ? 'Removed | ' : '' }
-        <strong>{ criterion.number }</strong>
-        {': '}
-        { criterion.title }
-        { criterion.removed
-          && (
-            <ChplTooltip title="This certification criterion has been removed from the Program.">
-              <IconButton className={classes.infoIcon}>
-                <InfoIcon
-                  className={classes.infoIconColor}
-                />
-              </IconButton>
-            </ChplTooltip>
-          )}
-      </TableCell>
-      { listings.map((listing) => (
-        <TableCell key={listing.id}>
-          { listing.certificationResults
-            .some((cr) => cr.criterion.id === criterion.id)
-            ? (listing.certificationResults.find((cr) => cr.criterion.id === criterion.id).success
-              ? getAttestationDisplay('Meets')
-              : getAttestationDisplay('Does not meet'))
-            : getAttestationDisplay('Cannot meet')}
+  const makeCriterionRow = (criterion) => {
+    if (!listings.some((listing) => listing.certificationResults.some((cr) => cr.criterion.id === criterion.id))) { return null; }
+    return (
+      <TableRow key={criterion.id} id={`criterion-${criterion.id}`}>
+        <TableCell scope="row" className={classes.stickyColumn}>
+          { criterion.removed ? 'Removed | ' : '' }
+          <strong>{ criterion.number }</strong>
+          {': '}
+          { criterion.title }
+          { criterion.removed
+            && (
+              <ChplTooltip title="This certification criterion has been removed from the Program.">
+                <IconButton className={classes.infoIcon}>
+                  <InfoIcon
+                    className={classes.infoIconColor}
+                  />
+                </IconButton>
+              </ChplTooltip>
+            )}
         </TableCell>
-      ))}
-    </TableRow>
-  );
+        { listings.map((listing) => (
+          <TableCell key={listing.id}>
+            { listing.certificationResults
+              .some((cr) => cr.criterion.id === criterion.id)
+              ? (listing.certificationResults.find((cr) => cr.criterion.id === criterion.id).success
+                ? getAttestationDisplay('Meets')
+                : getAttestationDisplay('Does not meet'))
+              : getAttestationDisplay('Cannot meet')}
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  };
   /* eslint-enable no-nested-ternary */
 
   const getCqmValue = (cqm, listing) => {
@@ -225,20 +228,32 @@ function ChplComparePage({ ids }) {
     return getAttestationDisplay('Cannot meet');
   };
 
-  const makeCqmRow = (cqm) => (
-    <TableRow key={cqm.id} id={`cqm-${cqm.id}`}>
-      <TableCell scope="row" className={classes.stickyColumn}>
-        <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
-        {': '}
-        {cqm.title}
-      </TableCell>
-      { listings.map((listing) => (
-        <TableCell key={listing.id}>
-          { getCqmValue(cqm, listing) }
+  const makeCqmRow = (cqm) => {
+    if (!listings.some((listing) => listing.cqmResults.some((c) => {
+      if (cqm.cmsId) {
+        return c.cmsId === cqm.cmsId;
+      }
+      return c.nqfNumber === cqm.nqfNumber && !c.cmsId;
+    }))) { return null; }
+    return (
+      <TableRow key={cqm.id} id={`cqm-${cqm.id}`}>
+        <TableCell scope="row" className={classes.stickyColumn}>
+          <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
+          {': '}
+          {cqm.title}
         </TableCell>
-      ))}
-    </TableRow>
-  );
+        { listings.map((listing) => (
+          <TableCell key={listing.id}>
+            { getCqmValue(cqm, listing) }
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  };
+
+  const dropListing = (listing) => {
+    setListings((prev) => prev.filter((l) => l.id !== listing.id));
+  };
 
   if (listings.length === 0) {
     return <CircularProgress />;
@@ -258,7 +273,7 @@ function ChplComparePage({ ids }) {
             <Typography
               variant="body1"
             >
-              { ids.length }
+              { listings.length }
               {' '}
               Products Selected | For the best experience, we suggest comparing up to four products at a time. If you want to compare more than four products, you can still do so! Just remember to scroll horizontally on the page to access all the products you&apos;ve added. While you have the flexibility to compare more items; we encourage you to focus on the most relevant products for your needs.
             </Typography>
@@ -273,10 +288,10 @@ function ChplComparePage({ ids }) {
                 <TableHead>
                   <TableRow hover={false} className={classes.headerRow}>
                     <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
-                    {listings.map((listing) => (
+                    { listings.map((listing) => (
                       <TableCell className={classes.headerColumnContent} key={listing.id}>
                         <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-                          {listing.product.name}
+                          { listing.product.name }
                           <ChplBrowserComparedWidget
                             listing={listing}
                           />
