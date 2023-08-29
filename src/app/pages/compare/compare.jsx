@@ -1,18 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
+  Card,
   CircularProgress,
   Container,
   IconButton,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import InfoIcon from '@material-ui/icons/Info';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import PanToolIcon from '@material-ui/icons/PanTool';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {
   arrayOf, number, oneOfType, string,
 } from 'prop-types';
@@ -25,10 +31,56 @@ import { sortCriteria } from 'services/criteria.service';
 import { sortCqms } from 'services/cqms.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { FlagContext } from 'shared/contexts';
-import { palette, utilStyles } from 'themes';
+import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
+  container: {
+    padding: '32px 0',
+    backgroundColor: palette.background,
+  },
+  pageHeader: {
+    padding: '32px',
+    backgroundColor: palette.white,
+  },
+  headerRow: {
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0 16px 8px',
+    '&.MuiTableRow-root.MuiTableRow-hover:hover': {
+      backgroundColor: '#fff!important',
+    },
+  },
+  headerColumnContent: {
+    padding: '4px 16px 16px 16px',
+    width: '100%',
+  },
+  Table: {
+    height: '100vh',
+  },
+  stickyColumn: {
+    position: 'sticky',
+    left: 0,
+    zIndex: 1,
+    boxShadow: 'rgba(149, 157, 165, 0.1) 0 4px 8px',
+    backgroundColor: palette.background,
+  },
+  MuiTableCellStickyHeader: {
+    '&.TableCell-stickyHeader': {
+      top: '75px',
+    },
+  },
+  animatedItem: {
+    animation: `$myEffect 1000ms ${theme.transitions.easing.easeInOut}`,
+  },
+  '@keyframes myEffect': {
+    '0%': {
+      opacity: 0,
+      transform: 'translateY(200%)',
+    },
+    '100%': {
+      opacity: 1,
+      transform: 'translateY(0)',
+    },
+  },
 });
 
 function ChplComparePage({ ids }) {
@@ -79,9 +131,9 @@ function ChplComparePage({ ids }) {
 
   const makeRow = (title, getData) => (
     <TableRow>
-      <TableCell scope="row">{ title }</TableCell>
+      <TableCell className={classes.stickyColumn}><strong>{ title }</strong></TableCell>
       { listings.map((listing) => (
-        <TableCell key={listing.id}>
+        <TableCell className={classes.animatedItem} key={listing.id}>
           { getData(listing) }
         </TableCell>
       ))}
@@ -90,9 +142,9 @@ function ChplComparePage({ ids }) {
 
   const makeCriterionRow = (criterion) => (
     <TableRow key={criterion.id}>
-      <TableCell scope="row">
+      <TableCell scope="row" className={classes.stickyColumn}>
         { criterion.removed ? 'Removed | ' : '' }
-        { criterion.number }
+        <strong>{ criterion.number }</strong>
         {': '}
         { criterion.title }
         { criterion.removed
@@ -110,8 +162,34 @@ function ChplComparePage({ ids }) {
         <TableCell key={listing.id}>
           { listing.certificationResults
             .some((cr) => cr.criterion.id === criterion.id)
-            ? (listing.certificationResults.find((cr) => cr.criterion.id === criterion.id).success ? 'meets' : 'does not meet')
-            : 'cannot meet'}
+            ? (listing.certificationResults.find((cr) => cr.criterion.id === criterion.id).success
+              ? (
+                <span>
+                  <ChplTooltip
+                    title="Meets"
+                  >
+                    <ThumbUpIcon color="primary" />
+                  </ChplTooltip>
+                </span>
+              )
+              : (
+                <span>
+                  <ChplTooltip
+                    title="Does Not Meet"
+                  >
+                    <ThumbDownIcon color="disabled" />
+                  </ChplTooltip>
+                </span>
+              ))
+            : (
+              <span>
+                <ChplTooltip
+                  title="Can Not Meet"
+                >
+                  <PanToolIcon color="error" />
+                </ChplTooltip>
+              </span>
+            )}
         </TableCell>
       ))}
     </TableRow>
@@ -122,23 +200,66 @@ function ChplComparePage({ ids }) {
     if (cqm.cmsId) {
       res = listing.cqmResults.find((c) => c.cmsId === cqm.cmsId);
       if (res) {
-        return res.success ? res.successVersions.join('; ') : 'does not meet';
+        return res.success ? res.successVersions.join('; ')
+          : (
+            <span>
+              <ChplTooltip
+                title="Does Not Meet"
+              >
+                <ThumbDownIcon color="disabled" />
+              </ChplTooltip>
+            </span>
+          );
       }
-      return 'cannot meet';
+      return (
+        <span>
+          <ChplTooltip
+            title="Can Not Meet"
+          >
+            <PanToolIcon color="error" />
+          </ChplTooltip>
+        </span>
+      );
     }
     res = listing.cqmResults.find((c) => c.nqfNumber === cqm.nqfNumber);
     if (res && !res.cmsId) {
-      return res.success ? 'meets' : 'does not meet';
+      return res.success
+        ? (
+          <span>
+            <ChplTooltip
+              title="Meets"
+            >
+              <ThumbUpIcon color="primary" />
+            </ChplTooltip>
+          </span>
+        )
+        : (
+          <span>
+            <ChplTooltip
+              title="Does Not Meet"
+            >
+              <ThumbDownIcon color="disabled" />
+            </ChplTooltip>
+          </span>
+        );
     }
-    return 'cannot meet';
+    return (
+      <span>
+        <ChplTooltip
+          title="Can Not Meet"
+        >
+          <PanToolIcon color="error" />
+        </ChplTooltip>
+      </span>
+    );
   };
 
   const makeCqmRow = (cqm) => (
     <TableRow key={cqm.id}>
-      <TableCell scope="row">
-        { cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }
+      <TableCell scope="row" className={classes.stickyColumn}>
+        <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
         {': '}
-        { cqm.title }
+        {cqm.title}
       </TableCell>
       { listings.map((listing) => (
         <TableCell key={listing.id}>
@@ -153,73 +274,84 @@ function ChplComparePage({ ids }) {
   }
 
   return (
-    <Box bgcolor={palette.background}>
+    <Box bgcolor={palette.white}>
       <div className={classes.pageHeader}>
         <Container maxWidth="lg">
           <Box className={classes.listingHeaderBox}>
-            <Box>
-              <Typography
-                variant="h1"
-              >
-                Compare Listings
-              </Typography>
-            </Box>
+            <Typography
+              variant="h1"
+              gutterBottom
+            >
+              Compare Listings
+            </Typography>
+            <Typography
+              variant="body1"
+            >
+              6 Listings Selected | For the best experience, we suggest comparing up to 4 products at a time. If you want to compare more than 4 products, you can still do so! Just remember to scroll horizontally on the page to access all the products you've added. While you have the flexibility to compare more items; we encourage you to focus on the most relevant products for your needs.
+            </Typography>
           </Box>
         </Container>
       </div>
-      <Container maxWidth="lg">
-        <div className={classes.container} id="main-content" tabIndex="-1">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Data item</TableCell>
-                { listings.map((listing) => (
-                  <TableCell key={listing.id}>
-                    { listing.product.name }
-                    <ChplBrowserComparedWidget
-                      listing={listing}
+      <Box className={classes.container}>
+        <Container id="main-content" tabIndex="-1" maxWidth="lg">
+          <Card>
+            <TableContainer className={classes.Table}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow hover="false" className={classes.headerRow}>
+                    <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
+                    {listings.map((listing) => (
+                      <TableCell className={classes.headerColumnContent} key={listing.id}>
+                        <Box mb={2} display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+                          {listing.product.name}
+                          <ChplBrowserComparedWidget
+                            listing={listing}
+                          />
+                          <IconButton size="small"><CloseIcon /></IconButton>
+                        </Box>
+                        <Box>
+                          <ChplActionButton
+                            listing={listing}
+                            horizontal={false}
+                          />
+                        </Box>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { makeRow('Developer', (listing) => listing.developer.name) }
+                  { makeRow('Version', (listing) => listing.version.version) }
+                  { editionlessIsOn ? '' : makeRow('Certification Edition', (listing) => {
+                    if (!listing.edition) { return ''; }
+                    return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
+                  }) }
+                  { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
+                  { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : '' }
+                  { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
+                  { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
+                  { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate)) }
+                  { makeRow('CHPL Product Number', (listing) => listing.chplProductNumber) }
+                  { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
+                  { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
+                  { criteria.map(makeCriterionRow) }
+                  { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
+                  { cqms.map(makeCqmRow) }
+                  { makeRow('View listing details', (listing) => (
+                    <ChplLink
+                      href={`#/listing/${listing.id}`}
+                      text="details"
+                      analytics={{ event: 'Go to Listing Details page', category: 'Compare Page', label: listing.chplProductNumber }}
+                      external={false}
+                      router={{ sref: 'listing', options: { id: listing.id } }}
                     />
-                    <Box>
-                      <ChplActionButton
-                        listing={listing}
-                        horizontal={false}
-                      />
-                    </Box>
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { makeRow('Developer', (listing) => listing.developer.name) }
-              { makeRow('Version', (listing) => listing.version.version) }
-              { editionlessIsOn && makeRow('Certification Edition', (listing) => {
-                if (!listing.edition) { return ''; }
-                return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
-              }) }
-              { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
-              { showPracticeType && makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) }
-              { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
-              { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
-              { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDay)) }
-              { makeRow('CHPL Product Number', (listing) => listing.chplProductNumber) }
-              { makeRow('Number of Open Non-Conformities', (listing) => listing.countOpenNonconformities) }
-              { makeRow('Certification Criteria', (listing) => `${listing.countCerts} met`) }
-              { criteria.map(makeCriterionRow)}
-              { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
-              { cqms.map(makeCqmRow)}
-              { makeRow('View listing details', (listing) => (
-                <ChplLink
-                  href={`#/listing/${listing.id}`}
-                  text="details"
-                  analytics={{ event: 'Go to Listing Details page', category: 'Compare Page', label: listing.chplProductNumber }}
-                  external={false}
-                  router={{ sref: 'listing', options: { id: listing.id } }}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </Container>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        </Container>
+      </Box>
     </Box>
   );
 }
