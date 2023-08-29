@@ -272,7 +272,7 @@ function ChplComparePage({ ids }) {
             <TableContainer className={classes.Table}>
               <Table size="small">
                 <TableHead>
-                  <TableRow hover="false" className={classes.headerRow}>
+                  <TableRow hover={false} className={classes.headerRow}>
                     <TableCell className={classes.stickyColumn}><span className="sr-only">Data item</span></TableCell>
                     {listings.map((listing) => (
                       <TableCell className={classes.headerColumnContent} key={listing.id}>
@@ -296,12 +296,12 @@ function ChplComparePage({ ids }) {
                 <TableBody>
                   { makeRow('Developer', (listing) => listing.developer.name) }
                   { makeRow('Version', (listing) => listing.version.version) }
-                  { editionlessIsOn ? '' : makeRow('Certification Edition', (listing) => {
+                  { editionlessIsOn ? null : makeRow('Certification Edition', (listing) => {
                     if (!listing.edition) { return ''; }
                     return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
                   }) }
                   { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
-                  { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : '' }
+                  { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : null }
                   { makeRow('Certifying Body', (listing) => listing.certifyingBody.name) }
                   { makeRow('Certification Date', (listing) => getDisplayDateFormat(listing.certificationDay)) }
                   { makeRow('Inactive/Decertified Date', (listing) => getDisplayDateFormat(listing.decertificationDate)) }
