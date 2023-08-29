@@ -176,7 +176,7 @@ function ChplComparePage({ ids }) {
 
   /* eslint-disable no-nested-ternary */
   const makeCriterionRow = (criterion) => (
-    <TableRow key={criterion.id}>
+    <TableRow key={criterion.id} id={`criterion-${criterion.id}`}>
       <TableCell scope="row" className={classes.stickyColumn}>
         { criterion.removed ? 'Removed | ' : '' }
         <strong>{ criterion.number }</strong>
@@ -227,7 +227,7 @@ function ChplComparePage({ ids }) {
   };
 
   const makeCqmRow = (cqm) => (
-    <TableRow key={cqm.id}>
+    <TableRow key={cqm.id} id={`cqm-${cqm.id}`}>
       <TableCell scope="row" className={classes.stickyColumn}>
         <strong>{ cqm.cmsId ?? `NQF-${cqm.nqfNumber}` }</strong>
         {': '}
