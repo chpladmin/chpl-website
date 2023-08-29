@@ -27,7 +27,6 @@ import {
 } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
-import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserComparedWidget from 'components/browser/browser-compared-widget';
 import { ChplLink, ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
@@ -281,13 +280,13 @@ function ChplComparePage({ ids }) {
                           <ChplBrowserComparedWidget
                             listing={listing}
                           />
-                          <IconButton size="small"><CloseIcon /></IconButton>
-                        </Box>
-                        <Box>
-                          <ChplActionButton
-                            listing={listing}
-                            horizontal={false}
-                          />
+                          <IconButton
+                            size="small"
+                            onClick={() => dropListing(listing)}
+                            disabled={listings.length <= 2}
+                          >
+                            <CloseIcon />
+                          </IconButton>
                         </Box>
                       </TableCell>
                     ))}
