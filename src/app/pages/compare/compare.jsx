@@ -20,7 +20,10 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import PanToolIcon from '@material-ui/icons/PanTool';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {
-  arrayOf, number, oneOfType, string,
+  arrayOf,
+  number,
+  oneOfType,
+  string,
 } from 'prop-types';
 
 import { useFetchListing } from 'api/listing';
@@ -46,7 +49,7 @@ const useStyles = makeStyles({
   headerRow: {
     boxShadow: 'rgba(149, 157, 165, 0.1) 0 16px 8px',
     '&.MuiTableRow-root.MuiTableRow-hover:hover': {
-      backgroundColor: '#fff!important',
+      backgroundColor: `${palette.white} !important`,
     },
   },
   headerColumnContent: {
