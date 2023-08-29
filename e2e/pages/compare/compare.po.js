@@ -1,26 +1,20 @@
 class ComparePage {
   constructor() {
     this.elements = {
-      allCCCQM: '.compare-rowCert.ng-binding',
-      criteriaHeader: (number) => `th*=${number}`,
+      criteriaRow: (id) => `#criterion-${id}`,
       chplProductNumber: (number) => `td*=${number}`,
     };
   }
 
-  get allCCCQM() {
-    $(this.elements.allCCCQM).waitForDisplayed();
-    return $$(this.elements.allCCCQM);
-  }
-
-  getCellWithCriteriaNumber(criteriaNumber) {
-    return $(this.elements.criteriaHeader(criteriaNumber));
+  getCellWithCriteriaId(id) {
+    return $(this.elements.criteriaRow(id)).$$('td')[0];
   }
 
   isListingLoaded(chplProductNumber) {
     return $(this.elements.chplProductNumber(chplProductNumber)).isDisplayed();
   }
 
-  findIndex(chplProductNumber) {
+  findColumnIndex(chplProductNumber) {
     return $(this.elements.chplProductNumber(chplProductNumber))
       .parentElement()
       .$$('td')
@@ -32,7 +26,7 @@ class ComparePage {
       .$('tbody')
       .$$('tr')
       .find((row) => row.getText().includes('Inactive/Decertified Date'))
-      .$$('td')[this.findIndex(chplProductNumber)]
+      .$$('td')[this.findColumnIndex(chplProductNumber)]
       .getText();
   }
 }
