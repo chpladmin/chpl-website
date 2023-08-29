@@ -254,12 +254,14 @@ function ChplComparePage({ ids }) {
               variant="h1"
               gutterBottom
             >
-              Compare Listings
+              Compare Products
             </Typography>
             <Typography
               variant="body1"
             >
-              6 Listings Selected | For the best experience, we suggest comparing up to 4 products at a time. If you want to compare more than 4 products, you can still do so! Just remember to scroll horizontally on the page to access all the products you've added. While you have the flexibility to compare more items; we encourage you to focus on the most relevant products for your needs.
+              { ids.length }
+              {' '}
+              Products Selected | For the best experience, we suggest comparing up to four products at a time. If you want to compare more than four products, you can still do so! Just remember to scroll horizontally on the page to access all the products you&apos;ve added. While you have the flexibility to compare more items; we encourage you to focus on the most relevant products for your needs.
             </Typography>
           </Box>
         </Container>
@@ -309,7 +311,7 @@ function ChplComparePage({ ids }) {
                   { criteria.map(makeCriterionRow) }
                   { makeRow('Clinical Quality Measures', (listing) => `${listing.countCqms} met`) }
                   { cqms.map(makeCqmRow) }
-                  { makeRow('View listing details', (listing) => (
+                  { makeRow('View product details', (listing) => (
                     <ChplLink
                       href={`#/listing/${listing.id}`}
                       text="details"
