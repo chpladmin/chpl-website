@@ -143,6 +143,38 @@ function ChplComparePage({ ids }) {
     </TableRow>
   );
 
+  const getAttestationDisplay = (value) => {
+    switch (value) {
+      case 'Meets':
+        return (
+          <ChplTooltip
+            title="Meets"
+          >
+            <ThumbUpIcon color="primary" />
+          </ChplTooltip>
+        );
+      case 'Cannot meet':
+        return (
+          <ChplTooltip
+            title="Cannot meet"
+          >
+            <PanToolIcon color="error" />
+          </ChplTooltip>
+        );
+      case 'Does not meet':
+        return (
+          <ChplTooltip
+            title="Does not meet"
+          >
+            <ThumbDownIcon color="disabled" />
+          </ChplTooltip>
+        );
+        // no default
+    }
+    return null;
+  };
+
+  /* eslint-disable no-nested-ternary */
   const makeCriterionRow = (criterion) => (
     <TableRow key={criterion.id}>
       <TableCell scope="row" className={classes.stickyColumn}>
@@ -166,37 +198,14 @@ function ChplComparePage({ ids }) {
           { listing.certificationResults
             .some((cr) => cr.criterion.id === criterion.id)
             ? (listing.certificationResults.find((cr) => cr.criterion.id === criterion.id).success
-              ? (
-                <span>
-                  <ChplTooltip
-                    title="Meets"
-                  >
-                    <ThumbUpIcon color="primary" />
-                  </ChplTooltip>
-                </span>
-              )
-              : (
-                <span>
-                  <ChplTooltip
-                    title="Does Not Meet"
-                  >
-                    <ThumbDownIcon color="disabled" />
-                  </ChplTooltip>
-                </span>
-              ))
-            : (
-              <span>
-                <ChplTooltip
-                  title="Can Not Meet"
-                >
-                  <PanToolIcon color="error" />
-                </ChplTooltip>
-              </span>
-            )}
+              ? getAttestationDisplay('Meets')
+              : getAttestationDisplay('Does not meet'))
+            : getAttestationDisplay('Cannot meet')}
         </TableCell>
       ))}
     </TableRow>
   );
+  /* eslint-enable no-nested-ternary */
 
   const getCqmValue = (cqm, listing) => {
     let res;
@@ -204,57 +213,17 @@ function ChplComparePage({ ids }) {
       res = listing.cqmResults.find((c) => c.cmsId === cqm.cmsId);
       if (res) {
         return res.success ? res.successVersions.join('; ')
-          : (
-            <span>
-              <ChplTooltip
-                title="Does Not Meet"
-              >
-                <ThumbDownIcon color="disabled" />
-              </ChplTooltip>
-            </span>
-          );
+          : getAttestationDisplay('Does not meet');
       }
-      return (
-        <span>
-          <ChplTooltip
-            title="Can Not Meet"
-          >
-            <PanToolIcon color="error" />
-          </ChplTooltip>
-        </span>
-      );
+      return getAttestationDisplay('Cannot meet');
     }
     res = listing.cqmResults.find((c) => c.nqfNumber === cqm.nqfNumber);
     if (res && !res.cmsId) {
       return res.success
-        ? (
-          <span>
-            <ChplTooltip
-              title="Meets"
-            >
-              <ThumbUpIcon color="primary" />
-            </ChplTooltip>
-          </span>
-        )
-        : (
-          <span>
-            <ChplTooltip
-              title="Does Not Meet"
-            >
-              <ThumbDownIcon color="disabled" />
-            </ChplTooltip>
-          </span>
-        );
+        ? getAttestationDisplay('Meets')
+        : getAttestationDisplay('Does not meet');
     }
-    return (
-      <span>
-        <ChplTooltip
-          title="Can Not Meet"
-        >
-          <PanToolIcon color="error" />
-        </ChplTooltip>
-      </span>
-    );
+    return getAttestationDisplay('Cannot meet');
   };
 
   const makeCqmRow = (cqm) => (
