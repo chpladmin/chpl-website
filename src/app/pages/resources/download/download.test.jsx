@@ -82,7 +82,7 @@ describe('the ChplResourcesDownload page', () => {
       userEvent.click(screen.getByRole('button', { name: /Data File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: '2015 XML' });
+        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: '2015 JSON' });
       });
     });
   });
