@@ -62,7 +62,7 @@ const useFetchAccessibilityStandards = () => {
 
 const useFetchCriteria = () => {
   const axios = useAxios();
-  return useQuery(['certification-criteria/'], async () => {
+  return useQuery(['certification-criteria'], async () => {
     const response = await axios.get('certification-criteria');
     return response.data;
   });

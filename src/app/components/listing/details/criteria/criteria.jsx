@@ -12,7 +12,7 @@ import { bool, func } from 'prop-types';
 
 import ChplCriterion from './criterion';
 
-import { useFetchCriteria } from 'api/certification-criteria';
+import { useFetchCriteria } from 'api/standards';
 import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
@@ -68,10 +68,10 @@ function ChplCriteria(props) {
   }, [data, isLoading, isSuccess]);
 
   useEffect(() => {
-    setCriteria([...allCriteria, ...listing.certificationResults]
-                .reduce((m, cr) => m.set(cr.id, cr), new Map())
-                .values()
-                .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
+    setCriteria(Array.from([...allCriteria, ...listing.certificationResults]
+      .reduce((m, cr) => m.set(cr.criterion.id, cr), new Map())
+      .values())
+      .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
   }, [allCriteria, listing]);
 
   const handleSave = (criterion) => {
