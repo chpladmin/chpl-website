@@ -16,9 +16,10 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import InfoIcon from '@material-ui/icons/Info';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import PanToolIcon from '@material-ui/icons/PanTool';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import CheckIcon from '@material-ui/icons/Check';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
+
 import {
   arrayOf,
   number,
@@ -53,10 +54,10 @@ const useStyles = makeStyles({
   },
   headerColumnContent: {
     padding: '4px 16px 16px 16px',
-    width: 'auto',
+    minWidth: "150px",
   },
   Table: {
-    height: '100vh',
+    height: '80vh',
   },
   stickyColumn: {
     position: 'sticky',
@@ -149,7 +150,7 @@ function ChplComparePage({ ids }) {
           <ChplTooltip
             title="Meets"
           >
-            <ThumbUpIcon color="primary" />
+            <CheckIcon htmlColor={palette.active}/>
           </ChplTooltip>
         );
       case 'Cannot meet':
@@ -157,7 +158,7 @@ function ChplComparePage({ ids }) {
           <ChplTooltip
             title="Cannot meet"
           >
-            <PanToolIcon color="error" />
+            <NotInterestedIcon color="disabled"/>
           </ChplTooltip>
         );
       case 'Does not meet':
@@ -165,7 +166,7 @@ function ChplComparePage({ ids }) {
           <ChplTooltip
             title="Does not meet"
           >
-            <ThumbDownIcon color="disabled" />
+            <IndeterminateCheckBoxOutlinedIcon htmlColor={palette.black}/>
           </ChplTooltip>
         );
         // no default
