@@ -69,7 +69,6 @@ const testTool = shape({
   id: number,
   name: string,
   regulatoryTextCitation: string,
-  requiredDay: string,
   rule,
   startDay: string,
   value: string,
