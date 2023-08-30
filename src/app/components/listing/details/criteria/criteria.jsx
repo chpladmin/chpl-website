@@ -12,6 +12,7 @@ import { bool, func } from 'prop-types';
 
 import ChplCriterion from './criterion';
 
+import { useFetchCriteria } from 'api/certification-criteria';
 import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
 import { UserContext } from 'shared/contexts';
@@ -51,13 +52,27 @@ function ChplCriteria(props) {
     viewAll,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
+  const [allCriteria, setAllCriteria] = useState([]);
   const [criteria, setCriteria] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchCriteria();
   const classes = useStyles();
 
   useEffect(() => {
-    setCriteria(listing.certificationResults
-      .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
-  }, [listing]);
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setAllCriteria(data.map((c) => ({
+      success: false,
+      criterion: c,
+    })));
+  }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    setCriteria([...allCriteria, ...listing.certificationResults]
+                .reduce((m, cr) => m.set(cr.id, cr), new Map())
+                .values()
+                .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
+  }, [allCriteria, listing]);
 
   const handleSave = (criterion) => {
     const updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
