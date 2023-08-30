@@ -26,6 +26,7 @@ import ChplListingInformation from 'components/listing/details/listing-informati
 import ChplSed from 'components/listing/details/sed/sed';
 import ChplSubscribe from 'components/subscriptions/subscribe';
 import { ChplLink, InternalScrollButton } from 'components/util';
+import { isListingActive } from 'services/listing.service';
 import { UserContext, FlagContext } from 'shared/contexts';
 import { listing as listingPropType } from 'shared/prop-types';
 import { palette, theme, utilStyles } from 'themes';
@@ -115,9 +116,11 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingView({ isConfirming, listing }) {
+function ChplListingView({ isConfirming, listing: initialListing }) {
   const { hasAnyRole, user } = useContext(UserContext);
   const { isOn } = useContext(FlagContext);
+  const [canSeeAllCriteria, setCanSeeAllCriteria] = useState(false);
+  const [listing, setListing] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
   const [subscriptionsIsOn, setSubscriptionsIsOn] = useState(false);
@@ -126,6 +129,15 @@ function ChplListingView({ isConfirming, listing }) {
   useEffect(() => {
     setSubscriptionsIsOn(isOn('subscriptions'));
   }, [isOn]);
+
+  useEffect(() => {
+    if (!initialListing) { return; }
+    setCanSeeAllCriteria(isListingActive(initialListing));
+    setListing({
+      ...initialListing,
+      certificationResults: initialListing.certificationResults.filter((cr) => cr.success), // remove this in OCD-4347
+    });
+  }, [initialListing]);
 
   const canManageSurveillance = () => {
     if (hasAnyRole(['ROLE_ADMIN'])) { return true; }
@@ -260,18 +272,21 @@ function ChplListingView({ isConfirming, listing }) {
           <Box className={classes.sectionHeader}>
             <Typography className={classes.sectionHeaderText} variant="h2">Certification Criteria</Typography>
             <div>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    id="see-all-criteria"
-                    name="seeAllCriteria"
-                    checked={seeAllCriteria}
-                    color="primary"
-                    onChange={() => setSeeAllCriteria(!seeAllCriteria)}
+              { canSeeAllCriteria
+                && (
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                        id="see-all-criteria"
+                        name="seeAllCriteria"
+                        checked={seeAllCriteria}
+                        color="primary"
+                        onChange={() => setSeeAllCriteria(!seeAllCriteria)}
+                      />
+                    )}
+                    label="See all Certification Criteria"
                   />
                 )}
-                label="See all Certification Criteria"
-              />
               (
               {listing.certificationResults.filter((cr) => cr.success).length}
               {' '}

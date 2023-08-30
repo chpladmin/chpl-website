@@ -37,6 +37,9 @@ const getStatusIcon = (status) => {
   }
 };
 
+const isListingActive = (listing) => ['Active', 'Suspended by ONC', 'Suspended by ONC-ACB'].includes(listing.currentStatus.status.name);
+
 export {
-  getStatusIcon, // eslint-disable-line import/prefer-default-export
+  getStatusIcon,
+  isListingActive,
 };
