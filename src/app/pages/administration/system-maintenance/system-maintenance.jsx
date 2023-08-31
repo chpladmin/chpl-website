@@ -263,11 +263,11 @@ function ChplSystemMaintenance() {
                   <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
-<<<<<<< HEAD
-                      <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
-=======
                       <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem>
->>>>>>> staging
+                    )}
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
+                      <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
                     )}
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
