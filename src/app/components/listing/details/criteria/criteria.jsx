@@ -15,6 +15,7 @@ import ChplCriterion from './criterion';
 import { useFetchCriteria } from 'api/standards';
 import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { jsJoda } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import {
   listing as listingPropType,
@@ -54,7 +55,10 @@ function ChplCriteria(props) {
   const { hasAnyRole } = useContext(UserContext);
   const [allCriteria, setAllCriteria] = useState([]);
   const [criteria, setCriteria] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchCriteria();
+  const { data, isLoading, isSuccess } = useFetchCriteria({
+    activeStartDay: jsJoda.LocalDate.now(),
+    activeEndDay: jsJoda.LocalDate.now(),
+  });
   const classes = useStyles();
 
   useEffect(() => {

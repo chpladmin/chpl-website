@@ -60,10 +60,16 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
-const useFetchCriteria = () => {
+const useFetchCriteria = (props = {}) => {
+  const { activeStartDay = undefined, activeEndDay = undefined } = props;
   const axios = useAxios();
   return useQuery(['certification-criteria'], async () => {
-    const response = await axios.get('certification-criteria');
+    let query = 'certification-criteria';
+    if (activeStartDay || activeEndDay) { query += '?'; }
+    if (activeStartDay) { query += `activeStartDay=${activeStartDay}`; }
+    if (activeStartDay && activeEndDay) { query += '&'; }
+    if (activeEndDay) { query += `activeEndDay=${activeEndDay}`; }
+    const response = await axios.get(query);
     return response.data;
   });
 };
