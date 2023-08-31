@@ -70,6 +70,14 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
+const useFetchCriteria = () => {
+  const axios = useAxios();
+  return useQuery(['certification-criteria/'], async () => {
+    const response = await axios.get('certification-criteria');
+    return response.data;
+  });
+};
+
 const useFetchCriteriaForFunctionalitiesTested = () => {
   const axios = useAxios();
   return useQuery(['functionalities-tested/criteria'], async () => {
@@ -270,6 +278,7 @@ export {
   useDeleteTestTool,
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
+  useFetchCriteria,
   useFetchCriteriaForFunctionalitiesTested,
   useFetchCriteriaForSvaps,
   useFetchCriteriaForTestTools,
