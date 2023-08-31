@@ -12,6 +12,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import ChplAnnouncements from 'components/announcement/announcements';
 import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
+import ChplCertificationCriteria from 'components/standards/certification-criteria/certification-criteria';
 import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
 import ChplTestTools from 'components/standards/test-tool/test-tools';
 import ChplSvaps from 'components/standards/svap/svaps';
@@ -88,6 +89,7 @@ function ChplSystemMaintenance() {
     hide('announcements.viewall');
     hide('announcements.add.disabled');
     hide('announcements.edit.disabled');
+    hide('certificationCriteria.viewall.disabled');
     hide('qmsStandards.viewall.disabled');
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
@@ -145,6 +147,21 @@ function ChplSystemMaintenance() {
           >
             Announcements
           </Button>
+          { hasAnyRole(['ROLE_ADMIN'])
+            && (
+              <Button
+                onClick={() => navigate('certificationCriteria')}
+                disabled={active === 'certificationCriteria'}
+                id="system-maintenance-navigation-certification-criteria"
+                fullWidth
+                variant="text"
+                color="primary"
+                endIcon={<ArrowForwardIcon />}
+                className={classes.menuItems}
+              >
+                Certification Criteria
+              </Button>
+            )}
           <Button
             onClick={() => navigate('qmsStandards')}
             disabled={active === 'qmsStandards'}
@@ -224,6 +241,10 @@ function ChplSystemMaintenance() {
                 <List>
                   <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
                   <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
+                      <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem>
+                    )}
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
@@ -246,6 +267,10 @@ function ChplSystemMaintenance() {
         { active === 'accessibilityStandards'
           && (
             <ChplAccessibilityStandards />
+          )}
+        { active === 'certificationCriteria'
+          && (
+            <ChplCertificationCriteria />
           )}
         { active === 'qmsStandards'
           && (
