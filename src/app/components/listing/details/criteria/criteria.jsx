@@ -56,8 +56,9 @@ function ChplCriteria(props) {
   const [allCriteria, setAllCriteria] = useState([]);
   const [criteria, setCriteria] = useState([]);
   const { data, isLoading, isSuccess } = useFetchCriteria({
-    activeStartDay: jsJoda.LocalDate.now(),
+    activeStartDay: listing.certificationDay,
     activeEndDay: jsJoda.LocalDate.now(),
+    edition: listing.certificationEdition.name,
   });
   const classes = useStyles();
 

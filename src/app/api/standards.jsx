@@ -61,14 +61,11 @@ const useFetchAccessibilityStandards = () => {
 };
 
 const useFetchCriteria = (props = {}) => {
-  const { activeStartDay = undefined, activeEndDay = undefined } = props;
+  const params = Object.entries(props).map(([key, value]) => `${key}=${value}`).join('&');
+  let query = 'certification-criteria';
+  if (params.length > 0) { query += `?${params}`; }
   const axios = useAxios();
-  return useQuery(['certification-criteria'], async () => {
-    let query = 'certification-criteria';
-    if (activeStartDay || activeEndDay) { query += '?'; }
-    if (activeStartDay) { query += `activeStartDay=${activeStartDay}`; }
-    if (activeStartDay && activeEndDay) { query += '&'; }
-    if (activeEndDay) { query += `activeEndDay=${activeEndDay}`; }
+  return useQuery(['certification-criteria', params], async () => {
     const response = await axios.get(query);
     return response.data;
   });
