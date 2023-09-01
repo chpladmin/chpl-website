@@ -45,7 +45,7 @@ xdescribe('On the 2015 Listing page', () => {
        * makes the tests flaky
        */
       /*
-        if (criteria.uiUpgradeFlag()) {
+        if (criteria.uiUpgradeFlag()) { // note that this function has been removed
         criteria.expandCriteria('174');
         criteria.editCriteria('174');
         criteria.attestToggle.click();
@@ -65,7 +65,7 @@ xdescribe('On the 2015 Listing page', () => {
       expect(toast.toastTitle.getText()).toBe('CHPL ID Changed' || 'Update processing');
       toast.clearAllToast();
       hooks.waitForSpinnerToDisappear();
-      expect(criteria.criteriaHeader('174', '170.315 (d)(3)', true).isDisplayed()).toBe(false);
+      expect(criteria.criteriaHeader('174').isDisplayed()).toBe(false);
     });
 
     it('should able to attest unattested criteria 170.315 (g)(6) cures update', () => {
@@ -78,7 +78,7 @@ xdescribe('On the 2015 Listing page', () => {
        * makes the tests flaky
        */
       /*
-        if (criteria.uiUpgradeFlag()) {
+        if (criteria.uiUpgradeFlag()) { // note that this function has been removed
         criteria.expandCriteria('180');
         criteria.editCriteria('180');
         criteria.attestToggle.click();
@@ -103,7 +103,7 @@ xdescribe('On the 2015 Listing page', () => {
       expect(toast.toastTitle.getText()).toBe('Update processing');
       toast.clearAllToast();
       hooks.waitForSpinnerToDisappear();
-      expect(criteria.criteriaHeader('180', '170.315 (g)(6)', true).isDisplayed()).toBe(true);
+      expect(criteria.criteriaHeader('180').isDisplayed()).toBe(true);
     });
   });
 });

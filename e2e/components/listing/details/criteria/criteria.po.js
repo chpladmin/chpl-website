@@ -63,39 +63,21 @@ class CriteriaComponent {
     $(this.elements.removedCriteria).$$('div')[1].click();
   }
 
-  uiUpgradeFlag() {
-    return !$('chpl-certification-criteria').isExisting();
+  expandCriteria(id) {
+    $(`#criterion-id-${id}-header`).scrollIntoView({ block: 'center', inline: 'center' });
+    $(`#criterion-id-${id}-header`).$$('div')[2].click();
   }
 
-  expandCriteria(id, criteria) {
-    if (this.uiUpgradeFlag()) {
-      $(`#criterion-id-${id}-header`).scrollIntoView({ block: 'center', inline: 'center' });
-      $(`#criterion-id-${id}-header`).$$('div')[2].click();
-    } else {
-      $(`//*[@id="criteria_${criteria}_details_link"]`).click();
-    }
-  }
-
-  criteriaHeader(id, criteria, cures) {
-    if (this.uiUpgradeFlag()) {
-      return $(`#criterion-id-${id}-header`);
-    }
-    if (cures) {
-      return $(`//*[@id="criteria_${criteria}_details_header_cures"]`);
-    }
-    return $(`//*[@id="criteria_${criteria}_details_header"]`);
+  criteriaHeader(id) {
+    return $(`#criterion-id-${id}-header`);
   }
 
   criteriaCount() {
     return $$('//*[starts-with(@id,"criteri")] [contains(@id,"header")]').length;
   }
 
-  criteriaDetailTable(id, criteria) {
-    if (this.uiUpgradeFlag()) {
-      return $(`//*[@id="criterion-id-${id}-header"]/parent::div`).$('table');
-    }
-
-    return $(`//*[@id="criteria_${criteria}_details_header"]/parent::div`).$('table');
+  criteriaDetailTable(id) {
+    return $(`//*[@id="criterion-id-${id}-header"]/parent::div`).$('table');
   }
 
   addItem(type) {
@@ -138,9 +120,8 @@ class CriteriaComponent {
   editCriteriaOldButton(criteriaOld, cures) {
     if (cures) {
       return $(`//*[@id="criteria_${criteriaOld}_details_header_cures"]`).$('button=Edit');
-    } else {
-      return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit');
     }
+    return $(`//*[@id="criteria_${criteriaOld}_details_header"]`).$('button=Edit');
   }
 
   openAttestedCriteriaOld(criteriaOld, cures) {
