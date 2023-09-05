@@ -15,6 +15,7 @@ import ChplCriterion from './criterion';
 import { useFetchCriteria } from 'api/standards';
 import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { isListingActive } from 'services/listing.service';
 import { jsJoda } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import {
@@ -59,6 +60,7 @@ function ChplCriteria(props) {
     activeStartDay: listing.certificationDay,
     activeEndDay: jsJoda.LocalDate.now(),
     certificationEdition: listing.certificationEdition.name,
+    enabled: isListingActive(listing),
   });
   const classes = useStyles();
 
