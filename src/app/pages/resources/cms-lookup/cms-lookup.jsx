@@ -95,7 +95,7 @@ function ChplCmsLookup() {
         ...listing,
         certificationId: query.data.ehrCertificationId,
         certificationIdEdition: query.data.year,
-        edition: `${listing.year}${listing.curesUpdate ? ' Cures Update' : ''}`,
+        edition: listing.year !== null ? `${listing.year}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
       }))), []));
     setErrors(() => queries
       .filter((query) => query.isError)

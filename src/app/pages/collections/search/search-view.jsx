@@ -262,9 +262,16 @@ function ChplSearchView(props) {
                                 </strong>
                               </TableCell>
                               <TableCell>
-                                {item.edition.name}
-                                {' '}
-                                {item.curesUpdate ? 'Cures Update' : '' }
+                                { item.edition
+                                  ? (
+                                    <>
+                                      {item.edition.name}
+                                      {' '}
+                                      {item.curesUpdate ? 'Cures Update' : '' }
+                                    </>
+                                  ) : (
+                                    <></>
+                                  )}
                               </TableCell>
                               <TableCell>
                                 <ChplLink

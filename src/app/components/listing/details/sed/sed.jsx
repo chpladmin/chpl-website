@@ -159,7 +159,7 @@ function ChplSed({ listing }) {
           </Card>
         </CardContent>
       </Card>
-      { listing.certificationEdition.name === '2015'
+      { (listing.edition === null || listing.edition.name === '2015')
         && (
           <Card>
             <CardHeader title="SED Testing Tasks" />
