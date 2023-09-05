@@ -59,7 +59,7 @@ function ChplCriteria(props) {
   const { data, isLoading, isSuccess } = useFetchCriteria({
     activeStartDay: listing.certificationDay,
     activeEndDay: jsJoda.LocalDate.now(),
-    certificationEdition: listing.certificationEdition.name,
+    certificationEdition: listing.certificationEdition?.name,
     enabled: isListingActive(listing),
   });
   const classes = useStyles();
