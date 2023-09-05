@@ -60,7 +60,7 @@ function ChplFunctionalityTestedEdit(props) {
     functionalityTested: initialFunctionalityTested,
   } = props;
   const practiceTypes = [{ id: 1, name: 'Ambulatory' }, { id: 2, name: 'Inpatient' }];
-  const practiceTypeOptions = ['Ambulatory', 'Inpatient'];
+  const practiceTypeOptions = ['Ambulatory', 'Inpatient', 'N/A'];
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
