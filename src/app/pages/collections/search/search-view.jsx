@@ -201,7 +201,7 @@ function ChplSearchView(props) {
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
         { editionlessIsOn ? (
           <Typography variant="body1">
-            Please note that only active and suspended listings are shown by default. Use the Certification Status filter to display retired, withdrawn, or terminated edition listings.
+            Please note that only active and suspended listings are shown by default. Use the Certification Status filter to display retired, withdrawn, or terminated listings.
           </Typography>
         ) : (
           <Typography variant="body1">
