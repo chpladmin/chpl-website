@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 13.3.0
+_5 September 2023_
+
+### Features
+* Display "Certification Criteria" in admin section
+* Support displaying listing details w/o edition
+
+---
+
 ## Version 13.2.0
 _21 August 2023_
 
