@@ -216,7 +216,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.testProcedures || $ctrl.cert.testProcedures.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && (($ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0) || ($ctrl.cert.allowedTestTools && $ctrl.cert.allowedTestTools.length >0))">
+        <tr ng-if="$ctrl.cert.success && (($ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0) || ($ctrl.cert.allowedTestTools && $ctrl.cert.allowedTestTools.length > 0))">
           <td>Test tool</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
