@@ -21,6 +21,12 @@ const util = {
   iconSpacing: {
     marginLeft: '4px',
   },
+  infoIcon: {
+    float: 'right',
+  },
+  infoIconColor: {
+    color: '#156dac',
+  },
   linkWrap: {
     overflowWrap: 'anywhere',
   },
