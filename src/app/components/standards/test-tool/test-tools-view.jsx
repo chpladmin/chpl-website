@@ -22,7 +22,6 @@ const headers = [
   { property: 'value', text: 'Value', sortable: true },
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
-  { property: 'requiredDay', text: 'Required Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
   { text: 'Applicable Criteria' },
@@ -105,9 +104,6 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.startDay) }
-                  </TableCell>
-                  <TableCell>
-                    { getDisplayDateFormat(item.requiredDay) }
                   </TableCell>
                   <TableCell>
                     { getDisplayDateFormat(item.endDay) }

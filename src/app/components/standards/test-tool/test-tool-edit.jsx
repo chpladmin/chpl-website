@@ -27,7 +27,6 @@ const validationSchema = yup.object({
   regulatoryTextCitation: yup.string(),
   rule: yup.string(),
   endDay: yup.date(),
-  requiredDay: yup.date(),
   startDay: yup.date(),
 });
 
@@ -117,7 +116,6 @@ function ChplTestToolEdit(props) {
     rule: rules.find((rule) => rule.name === formik.values.rule),
     criteria,
     endDay: formik.values.endDay,
-    requiredDay: formik.values.requiredDay,
     startDay: formik.values.startDay,
   });
 
@@ -158,7 +156,6 @@ function ChplTestToolEdit(props) {
       regulatoryTextCitation: initialTestTool?.regulatoryTextCitation ?? '',
       rule: initialTestTool?.rule?.name ?? '',
       endDay: initialTestTool?.endDay ?? '',
-      requiredDay: initialTestTool?.requiredDay ?? '',
       startDay: initialTestTool?.startDay ?? '',
     },
     onSubmit: () => {
@@ -208,18 +205,6 @@ function ChplTestToolEdit(props) {
           className={classes.date}
         />
         <ChplTextField
-          id="required-day"
-          name="requiredDay"
-          label="Required Date"
-          type="date"
-          value={formik.values.requiredDay}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.requiredDay && !!formik.errors.requiredDay}
-          helperText={formik.touched.requiredDay && formik.errors.requiredDay}
-          className={classes.date}
-        />
-        <ChplTextField
           id="end-day"
           name="endDay"
           label="End Date"
@@ -233,7 +218,6 @@ function ChplTestToolEdit(props) {
         />
       </Box>
       <Divider />
-
       <ChplTextField
         select
         id="rule"
