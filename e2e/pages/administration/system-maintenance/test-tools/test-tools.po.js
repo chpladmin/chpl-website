@@ -11,7 +11,6 @@ class TestToolsPage extends SystemMaintenancePage {
       criterionSelector: '#criteria-select',
       ruleSelector: '#rule',
       testToolStartDay: '#start-day',
-      testToolReqDay: '#required-day',
       testToolEndDay: '#end-day',
       dataTable: 'table[aria-label="Test Tools table"]',
     };
@@ -31,10 +30,6 @@ class TestToolsPage extends SystemMaintenancePage {
 
   get testToolStartDay() {
     return $(this.elements.testToolStartDay);
-  }
-
-  get testToolReqDay() {
-    return $(this.elements.testToolReqDay);
   }
 
   get testToolEndDay() {
