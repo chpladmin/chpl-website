@@ -220,7 +220,17 @@ function ChplCriterionDetailsView(props) {
                       <List>
                         { criterion.functionalitiesTested.map((ft, index) => (
                           <ListItem key={ft.id || ft.key || index} className={ft.functionalityTested.retired ? 'removed' : ''}>
-                            { ft.functionalityTested.retired ? 'Retired | ' : ''}
+                            { ft.functionalityTested.retired
+                              && (
+                                <ChplTooltip title="Text TBD">
+                                  <IconButton className={classes.infoIcon}>
+                                    <InfoIcon
+                                      className={classes.infoIconColor}
+                                    />
+                                  </IconButton>
+                                </ChplTooltip>
+                              )}
+                            { ft.functionalityTested.retired ? 'Expired | ' : ''}
                             {' '}
                             { ft.functionalityTested.value
                               && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
@@ -262,6 +272,16 @@ function ChplCriterionDetailsView(props) {
                       <List>
                         { criterion.conformanceMethods.map((cm, index) => (
                           <ListItem key={cm.id || cm.key || index} className={cm.conformanceMethod.removed ? 'removed' : ''}>
+                            { cm.conformanceMethod.removed
+                              && (
+                                <ChplTooltip title="Text TBD">
+                                  <IconButton className={classes.infoIcon}>
+                                    <InfoIcon
+                                      className={classes.infoIconColor}
+                                    />
+                                  </IconButton>
+                                </ChplTooltip>
+                              )}
                             Name:
                             {' '}
                             {`${cm.conformanceMethod.removed ? 'Removed | ' : ''} ${cm.conformanceMethod.name}`}
