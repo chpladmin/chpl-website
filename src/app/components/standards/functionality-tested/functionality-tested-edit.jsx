@@ -24,7 +24,8 @@ import {
 const validationSchema = yup.object({
   value: yup.string()
     .required('Field is required'),
-  regulatoryTextCitation: yup.string(),
+  regulatoryTextCitation: yup.string()
+    .required('Field is required'),
   rule: yup.string(),
   practiceType: yup.string(),
   additionalInformation: yup.string(),
@@ -196,6 +197,7 @@ function ChplFunctionalityTestedEdit(props) {
           name="regulatoryTextCitation"
           label="Regulatory Text Citation"
           value={formik.values.regulatoryTextCitation}
+          required
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.regulatoryTextCitation && !!formik.errors.regulatoryTextCitation}
