@@ -38,7 +38,7 @@ const states = [{
         networkService.getMeasureTypes().then((response) => { resources.measureTypes = response; }),
         networkService.getOptionalStandards().then((response) => { resources.optionalStandards = response; }),
         networkService.getQmsStandards().then((response) => { resources.qmsStandards = response; }),
-        networkService.getSvaps().then((response) => { resources.svap = response; }),
+        networkService.getSvaps().then((response) => { resources.svaps = response; }),
         networkService.getTargetedUsers().then((response) => { resources.targetedUsers = response; }),
         networkService.getTestData().then((response) => { resources.testData = response; }),
         networkService.getTestTools().then((response) => { resources.testTools = response; }),

@@ -29,7 +29,7 @@
           <td><label class="control-label" for="data_gap{{ $ctrl.cert.criterion.number }}">GAP</label></td>
           <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.criterion.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null && $ctrl.cert.allowedSvaps.length > 0">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null && $ctrl.allowedSvaps.length > 0">
           <td>Standards Version Advancement Process</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -39,7 +39,7 @@
                     identifier="svap"
                     item-key="svapId"
                     item-text="displayText"
-                    items="$ctrl.cert.allowedSvaps"
+                    items="$ctrl.allowedSvaps"
                     selected-item-keys="$ctrl.selectedSvapKeys"
                     placeholder="Select an SVAP Version"
                     on-change="$ctrl.svapOnChange(action)">
