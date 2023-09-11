@@ -12,7 +12,11 @@ const getCqmValue = (cqm) => {
   return parseInt(cqm.nqfNumber, 10);
 };
 
-const sortCqms = (a, b) => getCqmValue(a) - getCqmValue(b);
+const sortCqms = (a, b) => {
+  if (a.cmsId && !b.cmsId) { return -1; }
+  if (!a.cmsId && b.cmsId) { return 1; }
+  return getCqmValue(a) - getCqmValue(b);
+};
 
 export {
   sortCqms, // eslint-disable-line import/prefer-default-export
