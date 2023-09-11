@@ -219,7 +219,9 @@ function ChplCriterionDetailsView(props) {
                     && (
                       <List>
                         { criterion.functionalitiesTested.map((ft, index) => (
-                          <ListItem key={ft.id || ft.key || index}>
+                          <ListItem key={ft.id || ft.key || index} className={ft.functionalityTested.retired ? 'removed' : ''}>
+                            { ft.functionalityTested.retired ? 'Retired | ' : ''}
+                            {' '}
                             { ft.functionalityTested.value
                               && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
                             { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
