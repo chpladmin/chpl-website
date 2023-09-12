@@ -21,6 +21,7 @@ const ListingEditPageComponent = {
       this.takeActionBarAction = this.takeActionBarAction.bind(this);
       this.showWarningAcknowledgement = false;
       this.showErrorAcknowledgement = false;
+      this.updateBasic = this.updateBasic.bind(this);
     }
 
     $onInit() {
@@ -168,11 +169,12 @@ const ListingEditPageComponent = {
     }
 
     updateBasic(listing, messages, reason) {
+      console.log({ messages, reason });
       if (listing) {
         this.listingBasic = angular.copy(listing);
       }
-      this.errors.basic = messages.errors.sort((a, b) => (a < b ? -1 : 1));
-      this.warnings.basic = messages.warnings.sort((a, b) => (a < b ? -1 : 1));
+      this.errors.basic = messages?.errors.sort((a, b) => (a < b ? -1 : 1));
+      this.warnings.basic = messages?.warnings.sort((a, b) => (a < b ? -1 : 1));
       this.consolidateErrors();
       this.reason = reason;
     }

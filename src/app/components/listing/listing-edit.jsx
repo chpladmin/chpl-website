@@ -14,59 +14,39 @@ import * as yup from 'yup';
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
 import { isCures, sortCriteria } from 'services/criteria.service';
+import { ListingContext } from 'shared/contexts';
 import { resources as resourcesPropType, listing as listingPropType } from 'shared/prop-types';
 
 const validationSchema = yup.object({
-  value: yup.string()
-    .required('Field is required'),
-  regulatoryTextCitation: yup.string(),
-  rule: yup.string(),
-  endDay: yup.date(),
-  requiredDay: yup.date(),
-  startDay: yup.date(),
+  acbCertificationId: yup.string(),
 });
 
 const useStyles = makeStyles({
 });
 
 function ChplListingEdit({
-    listing,
     onChange,
     resources,
     showFormErrors,
     workType,
   }) {
+  const { listing, setListing } = useContext(ListingContext);
   const classes = useStyles();
   let formik;
 
-  const buildPayload = () => ({
-    ...testTool,
-    value: formik.values.value,
-    regulatoryTextCitation: formik.values.regulatoryTextCitation,
-    rule: rules.find((rule) => rule.name === formik.values.rule),
-    criteria,
-    endDay: formik.values.endDay,
-    requiredDay: formik.values.requiredDay,
-    startDay: formik.values.startDay,
+  const updateListing = () => ({
+    ...listing,
+    acbCertificationId: formik.values.acbCertificationId,
   });
-
-  const handleDispatch = (action) => {
-    switch (action) {
-        // no default
-    }
-  };
 
   formik = useFormik({
     initialValues: {
-      value: initialTestTool?.value ?? '',
-      regulatoryTextCitation: initialTestTool?.regulatoryTextCitation ?? '',
-      rule: initialTestTool?.rule?.name ?? '',
-      endDay: initialTestTool?.endDay ?? '',
-      requiredDay: initialTestTool?.requiredDay ?? '',
-      startDay: initialTestTool?.startDay ?? '',
+      acbCertificationId: listing.acbCertificationId ?? '',
     },
     onSubmit: () => {
-      dispatch({ action: 'save', payload: buildPayload() });
+      const updated = updateListing();
+      console.log(updated.acbCertificationId);
+      //onChange(updated, {}, reason);
     },
     validationSchema,
   });
@@ -77,11 +57,10 @@ function ChplListingEdit({
     <>
       Listing edit
       <ChplTextField
-        id="value"
-        name="value"
-        label="Value"
-        value={formik.values.value}
-        required
+        id="acb-certification-id"
+        name="acbCertificationId"
+        label="ONC-ACB Certification ID"
+        value={formik.values.acbCertificationId}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.touched.value && !!formik.errors.value}
@@ -94,7 +73,6 @@ function ChplListingEdit({
 export default ChplListingEdit;
 
 ChplListingEdit.propTypes = {
-  listing: listingPropType.isRequired,
   onChange: func.isRequired,
   resources: resourcesPropType.isRequired,
   showFormErrors: bool.isRequired,
