@@ -60,11 +60,20 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
-const useFetchCriteria = () => {
+const useFetchCriteria = (props = { enabled: true }) => {
+  const params = Object
+    .entries(props)
+    .filter(([key]) => key !== 'enabled')
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+  let query = 'certification-criteria';
+  if (params.length > 0) { query += `?${params}`; }
   const axios = useAxios();
-  return useQuery(['certification-criteria/'], async () => {
-    const response = await axios.get('certification-criteria');
+  return useQuery(['certification-criteria', params], async () => {
+    const response = await axios.get(query);
     return response.data;
+  }, {
+    enabled: props.enabled,
   });
 };
 

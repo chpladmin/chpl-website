@@ -104,6 +104,7 @@ function ChplCriterion(props) {
   const [criterion, setCriterion] = useState(undefined);
   const [editing, setEditing] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [qmsStandards, setQmsStandards] = useState([]);
   const [pending, setPending] = useState(false);
   const [staged, setStaged] = useState(false);
@@ -115,12 +116,18 @@ function ChplCriterion(props) {
   }, [initialCriterion]);
 
   useEffect(() => {
+    if (!criterion) { return; }
+    setIsDisabled(!criterion.success && !((criterion.g1Success !== null && criterion.g1Success !== undefined) || (criterion.g2Success !== null && criterion.g2Success !== undefined)) && !canEdit);
+  }, [criterion, canEdit]);
+
+  useEffect(() => {
     setAccessibilityStandards(listing.accessibilityStandards);
     setQmsStandards(listing.qmsStandards);
   }, [listing]);
 
   const getIcon = () => {
     if (listing.edition !== null && listing.edition.name === '2011') { return null; }
+    if (isDisabled) { return null; }
     return (expanded
       ? (
         <>
@@ -168,7 +175,7 @@ function ChplCriterion(props) {
   return (
     <div>
       <Accordion
-        disabled={!criterion.success && !(criterion.g1Success !== null || criterion.g2Success !== null) && !canEdit}
+        disabled={isDisabled}
         className={classes.criterionAccordion}
         onChange={handleAccordionChange}
         id={`criterion-id-${criterion.criterion.id}`}

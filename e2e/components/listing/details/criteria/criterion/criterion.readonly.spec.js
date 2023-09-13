@@ -17,20 +17,18 @@ describe('the Criterion Component', () => {
   beforeEach(() => {
     hooks.open('#/listing/9833');
     hooks.waitForSpinnerToDisappear();
-    if (criterion.isUiUpgradeFlagOn()) {
-      criteria.expandRemovedCriteria();
-    }
+    criteria.expandRemovedCriteria();
     browser.waitUntil(() => criteria.criteriaCount() > 1);
   });
 
   it('should display criteria title correctly', () => {
-    const header = criterion.criterionHeader('170.315 (a)(1)', 1);
+    const header = criterion.criterionHeader(1);
     expect(header.getText()).toContain('170.315 (a)(1)');
     expect(header.getText().toUpperCase()).not.toContain('REMOVED');
   });
 
   it('should display removed criteria title correctly', () => {
-    const header = criterion.criterionHeader('170.315 (a)(6)', 6);
+    const header = criterion.criterionHeader(6);
     expect(header.getText().toUpperCase()).toContain('REMOVED');
   });
 });

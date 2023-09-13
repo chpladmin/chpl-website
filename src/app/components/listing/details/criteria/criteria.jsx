@@ -12,8 +12,11 @@ import { bool, func } from 'prop-types';
 
 import ChplCriterion from './criterion';
 
+import { useFetchCriteria } from 'api/standards';
 import { ChplTooltip } from 'components/util';
 import { sortCriteria } from 'services/criteria.service';
+import { isListingActive } from 'services/listing.service';
+import { jsJoda } from 'services/date-util';
 import { UserContext } from 'shared/contexts';
 import {
   listing as listingPropType,
@@ -51,13 +54,32 @@ function ChplCriteria(props) {
     viewAll,
   } = props;
   const { hasAnyRole } = useContext(UserContext);
+  const [allCriteria, setAllCriteria] = useState([]);
   const [criteria, setCriteria] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchCriteria({
+    activeStartDay: listing.certificationDay,
+    activeEndDay: jsJoda.LocalDate.now(),
+    certificationEdition: listing.certificationEdition?.name,
+    enabled: isListingActive(listing),
+  });
   const classes = useStyles();
 
   useEffect(() => {
-    setCriteria(listing.certificationResults
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setAllCriteria(data.map((c) => ({
+      success: false,
+      criterion: c,
+    })));
+  }, [data, isLoading, isSuccess]);
+
+  useEffect(() => {
+    setCriteria(Array.from([...allCriteria, ...listing.certificationResults]
+      .reduce((m, cr) => m.set(cr.criterion.id, cr), new Map())
+      .values())
       .sort((a, b) => sortCriteria(a.criterion, b.criterion)));
-  }, [listing]);
+  }, [allCriteria, listing]);
 
   const handleSave = (criterion) => {
     const updated = criteria.filter((cc) => cc.criterion.id !== criterion.criterion.id);
