@@ -14,7 +14,6 @@ import ChplCmsDisplayWrapper from './cms-widget/cms-display-wrapper';
 import ChplCompareDisplayWrapper from './compare-widget/compare-display-wrapper';
 import { ChplDeveloper } from './developer';
 import ChplDirectReviewsWrapper from './direct-reviews/direct-reviews-wrapper';
-import ChplListingEdit from './listing/listing-edit-wrapper';
 import ChplListingView from './listing/listing-view-wrapper';
 import {
   ChplConfirmDeveloperWrapper,
@@ -77,7 +76,6 @@ angular
   .component('chplDirectReviewsViewBridge', reactToAngularComponent(ChplDirectReviewsWrapper))
   .component('chplDeveloperBridge', reactToAngularComponent(ChplDeveloper))
   .component('chplEllipsisBridge', reactToAngularComponent(ChplEllipsis))
-  .component('chplListingEditBridge', reactToAngularComponent(ChplListingEdit))
   .component('chplListingViewBridge', reactToAngularComponent(ChplListingView))
   .component('chplNonProdIndicatorBridge', reactToAngularComponent(ChplNonProdIndicator))
   .component('chplSedDetailsEditWrapperBridge', reactToAngularComponent(ChplSedDetailsEditWrapper))
