@@ -14,9 +14,11 @@ import DoneAllOutlinedIcon from '@material-ui/icons/DoneAllOutlined';
 import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import { ChplLink, ChplTextField, InternalScrollButton } from 'components/util';
@@ -109,9 +111,14 @@ function ChplListingEdit() {
   const $state = getAngularService('$state');
   const { hasAnyRole, user } = useContext(UserContext);
   const { listing, setListing } = useContext(ListingContext);
+  const { enqueueSnackbar } = useSnackbar();
+  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
+  const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [reason, setReason] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
+  const putListing = usePutListing();
   const classes = useStyles();
   let formik;
 
@@ -137,9 +144,24 @@ function ChplListingEdit() {
       acbCertificationId: listing.acbCertificationId ?? '',
     },
     onSubmit: () => {
-      const updated = updateListing();
-      console.log('saving', updated.acbCertificationId);
-      //onChange(updated, {}, reason);
+      const payload = {
+        listing: updateListing(),
+        reason,
+        acknowledgeWarnings,
+        acknowledgeBusinessErrors,
+      };
+      console.log('saving', payload.listing.acbCertificationId);
+      putListing.mutate(payload, {
+        onSuccess: () => {
+          enqueueSnackbar('Listing Updated', {
+            variant: 'success',
+          });
+          $state.go('listing');
+        },
+        onError: (error) => {
+          setErrors(error.response.data.errorMessages);
+        },
+      });
     },
     validationSchema,
   });
