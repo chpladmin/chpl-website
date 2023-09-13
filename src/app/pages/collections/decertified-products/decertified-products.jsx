@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import ChplDecertifiedProductsCollectionView from './decertified-products-view';
 
@@ -13,6 +13,7 @@ import {
   decertificationDate,
   derivedCertificationEditions,
 } from 'components/filter/filters';
+import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -38,9 +39,15 @@ const staticFilters = [
   }];
 
 function ChplDecertifiedProductsCollectionPage() {
+  const { isOn } = useContext(FlagContext);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
   const ccQuery = useFetchCriteria();
+
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -80,6 +87,11 @@ function ChplDecertifiedProductsCollectionPage() {
         values,
       }));
   }, [ccQuery.data, ccQuery.isLoading, ccQuery.isSuccess]);
+
+  useEffect(() => {
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'derivedCertificationEditions' || !editionlessIsOn));
+  }, [editionlessIsOn]);
 
   const analytics = {
     category: 'Decertified Products',

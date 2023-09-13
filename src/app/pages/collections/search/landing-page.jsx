@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -19,11 +19,9 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 
 import Image from '../../../../assets/images/CHPL_Logo-01.png';
 
-import {
-  ChplFilterQuickFilters,
-  ChplFilterSearchTerm,
-} from 'components/filter';
+import { ChplFilterQuickFilters, ChplFilterSearchTerm } from 'components/filter';
 import { ChplLink } from 'components/util';
+import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 const useStyles = makeStyles(() => ({
@@ -68,7 +66,7 @@ const useStyles = makeStyles(() => ({
       padding: '0',
     },
   },
-  collectionsCardText:{
+  collectionsCardText: {
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
@@ -155,7 +153,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ChplLandingPage() {
+  const { isOn } = useContext(FlagContext);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
 
   return (
     <>
@@ -198,9 +202,15 @@ function ChplLandingPage() {
                               analytics={{ event: 'Use Shortcut Button', category: 'Navigation', label: 'API Info for 2015 Ed. Products' }}
                             />
                           </Typography>
-                          <Typography variant="body2">
-                            This list includes all 2015 Edition, including Cures update, health IT products that have been certified to at least one API Criteria
-                          </Typography>
+                          { editionlessIsOn ? (
+                            <Typography variant="body2">
+                              This list includes all health IT products that have been certified to at least one API Criteria
+                            </Typography>
+                          ) : (
+                            <Typography variant="body2">
+                              This list includes all 2015 Edition, including Cures update, health IT products that have been certified to at least one API Criteria
+                            </Typography>
+                          )}
                         </Box>
                       </Box>
                     </CardContent>

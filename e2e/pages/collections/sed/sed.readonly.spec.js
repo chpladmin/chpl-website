@@ -14,7 +14,7 @@ describe('the SED Information for 2015 Edition Products collection page', () => 
   });
 
   it('should have body text', async () => {
-    await expect(await page.getBodyText()).toContain('This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED):');
+    await expect(await page.getBodyText()).toContain('This list includes all 2015 Edition, including Cures Update, health IT products that have been certified with Safety Enhanced Design (SED).');
   });
 
   it('should have table headers in a defined order', async () => {
