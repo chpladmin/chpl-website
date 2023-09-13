@@ -86,9 +86,9 @@
             <td ng-if="$ctrl.cert.functionalitiesTested && $ctrl.cert.functionalitiesTested.length > 0">
               <ul>
                 <li ng-repeat="m in $ctrl.cert.functionalitiesTested">
-                  <span ng-if="!m.description">{{ m.name }}</span>
-                  <chpl-ellipsis-bridge ng-if="m.description" text="m.description" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
-                  <span ng-if="m.functionalityTestedId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
+                  {{ m.functionalityTested.regulatoryTextCitation }}:
+                  <chpl-ellipsis-bridge text="m.functionalityTested.value" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
+                  <span ng-if="m.functionalityTested === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
                 </li>
               </ul>
             </td>
