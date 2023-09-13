@@ -15,9 +15,9 @@ import ChplListingHistory from './history/listing-history';
 import { useFetchListing } from 'api/listing';
 import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
-import ChplListingView from 'components/listing/listing-view';
+import ChplListingEdit from 'components/listing/listing-edit';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -53,10 +53,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplListingPage({ id }) {
+function ChplListingEditPage({ id }) {
   const $state = getAngularService('$state');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
-  const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
@@ -76,16 +75,17 @@ function ChplListingPage({ id }) {
   };
 
   const edit = () => {
-    if (isOn('ui-upgrade-edit')) {
-      $state.go('listing.flag-edit');
-    } else {
-      $state.go('listing.edit');
-    }
+    $state.go('listing.edit');
   };
 
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
   }
+
+  const listingState = {
+    listing,
+    setListing,
+  };
 
   return (
     <Box bgcolor={palette.background}>
@@ -130,17 +130,19 @@ function ChplListingPage({ id }) {
       </div>
       <Container maxWidth="lg">
         <div className={classes.container} id="main-content" tabIndex="-1">
-          <ChplListingView
-            listing={listing}
-          />
+          <ListingContext.Provider value={listingState}>
+            <ChplListingEdit
+              listing={listing}
+            />
+          </ListingContext.Provider>
         </div>
       </Container>
     </Box>
   );
 }
 
-export default ChplListingPage;
+export default ChplListingEditPage;
 
-ChplListingPage.propTypes = {
+ChplListingEditPage.propTypes = {
   id: oneOfType([number, string]).isRequired,
 };

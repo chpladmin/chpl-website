@@ -5,15 +5,6 @@
         <h2 class="panel-title">Edit Listing Information</h2>
       </div>
       <div class="panel-body">
-        <chpl-listing-edit-bridge
-          listing="$ctrl.listingBasic"
-
-          resources="$ctrl.resources"
-          show-form-errors="$ctrl.showFormErrors"
-          work-type="$ctrl.isConfirming ? 'confirm' : 'edit'"
-          >
-        </chpl-listing-edit-bridge>
-
         <chpl-listing-edit
           listing="$ctrl.listingBasic"
           on-change="$ctrl.updateBasic(listing, messages, reason)"

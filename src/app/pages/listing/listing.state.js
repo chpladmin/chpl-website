@@ -4,6 +4,14 @@ const states = [{
   component: 'chplListing',
   data: { title: 'CHPL Listing Details' },
 }, {
+  name: 'listing.flag-edit',
+  url: '/flag-edit',
+  component: 'chplListingEditFlagged',
+  data: {
+    title: 'CHPL Listing Details - new edit',
+    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+  },
+}, {
   name: 'listing.edit',
   url: '/edit',
   component: 'chplListingEditPage',
