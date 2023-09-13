@@ -299,8 +299,8 @@
 
     function sortFunctionalitiesTested(ftA, ftB) {
       let matcher = /^\((.+?)\)/;
-      let a = ftA.name;
-      let b = ftB.name;
+      let a = ftA.functionalityTested.regulatoryTextCitation;
+      let b = ftB.functionalityTested.regulatoryTextCitation;
       while (a && a.length > 0 && b && b.length > 0) {
         let aVals = a.match(matcher);
         let bVals = b.match(matcher);
