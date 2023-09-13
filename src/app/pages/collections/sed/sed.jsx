@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import ChplSedCollectionView from './sed-view';
 
@@ -10,6 +10,7 @@ import {
   certificationStatuses,
   derivedCertificationEditions,
 } from 'components/filter/filters';
+import { FlagContext } from 'shared/contexts';
 
 const staticFilters = [
   certificationDate,
@@ -23,8 +24,14 @@ const staticFilters = [
   }];
 
 function ChplSedCollectionPage() {
+  const { isOn } = useContext(FlagContext);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [filters, setFilters] = useState(staticFilters);
   const acbQuery = useFetchAcbs();
+
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
 
   useEffect(() => {
     if (acbQuery.isLoading || !acbQuery.isSuccess) {
@@ -44,6 +51,11 @@ function ChplSedCollectionPage() {
         values,
       }));
   }, [acbQuery.data, acbQuery.isLoading, acbQuery.isSuccess]);
+
+  useEffect(() => {
+    setFilters((f) => f
+      .filter((filter) => filter.key !== 'derivedCertificationEditions' || !editionlessIsOn));
+  }, [editionlessIsOn]);
 
   const analytics = {
     category: 'SED Information for 2015 Edition Products',

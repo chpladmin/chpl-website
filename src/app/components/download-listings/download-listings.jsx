@@ -19,7 +19,7 @@ import { listing as listingPropType } from 'shared/prop-types';
 import { getAngularService } from 'services/angular-react-helper';
 import { sortCqms } from 'services/cqms.service';
 import { sortCriteria } from 'services/criteria.service';
-import { UserContext } from 'shared/contexts';
+import { FlagContext, UserContext } from 'shared/contexts';
 import { palette } from 'themes';
 
 const useStyles = makeStyles({
@@ -99,12 +99,14 @@ const parseSvapCsv = ({ svaps }, data) => {
 function ChplDownloadListings(props) {
   const { analytics, toggled } = props;
   const $analytics = getAngularService('$analytics');
+  const { isOn } = useContext(FlagContext);
   const { hasAnyRole } = useContext(UserContext);
   const [anchor, setAnchor] = useState(null);
   const [categories, setCategories] = useState(allCategories.map((h) => ({
     ...h,
     selected: toggled.includes(h.key) ? !h.selected : h.selected,
   })));
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
   const [svaps, setSvaps] = useState([]);
@@ -143,6 +145,10 @@ function ChplDownloadListings(props) {
     setSvaps(svapQuery.data);
   }, [svapQuery.data, svapQuery.isLoading, svapQuery.isSuccess]);
 
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
+
   const canDownload = () => categories.some((cat) => cat.selected);
 
   const handleClick = (e) => {
@@ -159,7 +165,7 @@ function ChplDownloadListings(props) {
   };
 
   const handleDownload = () => {
-    const activeCategories = categories.filter((cat) => cat.selected).map((cat) => cat.key);
+    const activeCategories = categories.filter((cat) => cat.selected && (cat.key !== 'fullEdition' || !editionlessIsOn)).map((cat) => cat.key);
     const csvExporter = new ExportToCsv({
       ...csvOptions,
       headers: allHeaders.filter((h) => activeCategories.includes(h.objectKey) || activeCategories.includes(h.group)),
@@ -248,7 +254,7 @@ function ChplDownloadListings(props) {
           },
         }}
       >
-        { categories.filter((c) => (c.key !== 'svap' || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))).map((c) => [
+        { categories.filter((c) => (c.key !== 'svap' || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) && (c.key !== 'fullEdition' || !editionlessIsOn)).map((c) => [
           <MenuItem
             onClick={() => toggle(c)}
             key={c.key}
