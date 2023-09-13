@@ -106,6 +106,12 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
               .map((item) => (
                 <TableRow key={`${item.id}`}>
                   <TableCell className={classes.firstColumn}>
+                    { item.removed
+                      && (
+                        <>
+                          Removed |
+                        </>
+                      )}
                     { item.number }
                   </TableCell>
                   <TableCell>

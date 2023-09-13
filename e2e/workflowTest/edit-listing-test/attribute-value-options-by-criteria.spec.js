@@ -50,7 +50,7 @@ inputs.forEach((input) => {
           * makes the tests flaky
           */
         /*
-        if (criteria.uiUpgradeFlag()) {
+        if (criteria.uiUpgradeFlag()) { // note that this function has been removed
           criteria.expandCriteria(id);
           criteria.editCriteria(id);
           criteria.attestToggle.click();
