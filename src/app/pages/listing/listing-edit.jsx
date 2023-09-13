@@ -1,23 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   CircularProgress,
   Container,
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
 import { number, oneOfType, string } from 'prop-types';
 
-import ChplListingHistory from './history/listing-history';
-
 import { useFetchListing } from 'api/listing';
-import ChplActionButton from 'components/action-widget/action-button';
-import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingEdit from 'components/listing/listing-edit';
-import { getAngularService } from 'services/angular-react-helper';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -39,24 +32,10 @@ const useStyles = makeStyles({
     padding: '32px 0',
     backgroundColor: palette.white,
   },
-  listingHeaderBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gridGap: '16px',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gridGap: 'none',
-    },
-  },
 });
 
 function ChplListingEditPage({ id }) {
-  const $state = getAngularService('$state');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
-  const { hasAnyRole, user } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
 
@@ -66,17 +45,6 @@ function ChplListingEditPage({ id }) {
     }
     setListing(data);
   }, [data, isLoading, isSuccess]);
-
-  const canEdit = () => {
-    if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; }
-    if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
-    if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
-    return false;
-  };
-
-  const edit = () => {
-    $state.go('listing.edit');
-  };
 
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
@@ -89,43 +57,15 @@ function ChplListingEditPage({ id }) {
 
   return (
     <Box bgcolor={palette.background}>
-      <ChplBrowserViewedWidget
-        listing={listing}
-      />
       <div className={classes.pageHeader}>
         <Container maxWidth="lg">
-          <Box className={classes.listingHeaderBox}>
-            <Box>
-              <Typography
-                variant="h1"
-              >
-                {listing.product.name}
-              </Typography>
-            </Box>
-            <Box>
-              <ChplActionButton
-                listing={listing}
-                horizontal
-              >
-                { canEdit()
-                  && (
-                    <Button
-                      endIcon={<EditIcon />}
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      onClick={edit}
-                    >
-                      Edit
-                    </Button>
-                  )}
-                <ChplListingHistory
-                  listing={listing}
-                  canSeeHistory={canEdit()}
-                />
-              </ChplActionButton>
-            </Box>
-          </Box>
+          <Typography
+            variant="h1"
+          >
+            Edit
+            {' '}
+            {listing.product.name}
+          </Typography>
         </Container>
       </div>
       <Container maxWidth="lg">
