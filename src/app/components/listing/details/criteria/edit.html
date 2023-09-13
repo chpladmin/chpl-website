@@ -136,7 +136,7 @@
                   <chpl-expandable-list
                     identifier="functionalityTested"
                     item-key="id"
-                    item-text="name"
+                    item-text="value"
                     items="$ctrl.sortedFunctionalitiesTested"
                     selected-item-keys="$ctrl.selectedFunctionalityTestedKeys"
                     placeholder="Select a Functionality Tested"
@@ -149,9 +149,9 @@
           <td ng-if="$ctrl.cert.success && $ctrl.cert.functionalitiesTested && $ctrl.cert.functionalitiesTested.length > 0 && !$ctrl.canEdit()">
             <ul>
               <li ng-repeat="m in $ctrl.cert.functionalitiesTested">
-                <span ng-if="!m.description">{{ m.name }}</span>
-                <chpl-ellipsis-bridge ng-if="m.description" text="m.description" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
-                <span ng-if="m.functionalityTestedId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
+                {{ m.functionalityTested.regulatoryTextCitation }}:
+                <chpl-ellipsis-bridge text="m.functionalityTested.value" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
+                <span ng-if="m.functionalityTested === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
               </li>
             </ul>
           </td>

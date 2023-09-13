@@ -135,7 +135,7 @@ const CertificationCriteriaEditComponent = {
       switch (action.action) {
         case 'Remove':
           this.cert.functionalitiesTested = this.cert.functionalitiesTested
-            .filter((crft) => crft.functionalityTestedId !== action.item.item.id);
+            .filter((crft) => crft.functionalityTested.id !== action.item.item.id);
           break;
         case 'Add':
           this.cert.functionalitiesTested.push(new this.CertificationResultFunctionalitiesTested(action.item.item));
@@ -269,7 +269,7 @@ const CertificationCriteriaEditComponent = {
       if (!this.cert.functionalitiesTested) {
         return [];
       }
-      return this.cert.functionalitiesTested.map((ft) => ({ key: ft.functionalityTestedId }));
+      return this.cert.functionalitiesTested.map((ft) => ({ key: ft.functionalityTested.id }));
     }
 
     getSelectedTestProcedureKeys() {
@@ -337,7 +337,7 @@ const CertificationCriteriaEditComponent = {
     getSortedFunctionalitiesTested() {
       return this.resources.functionalitiesTested
         .filter((ft) => ft.criteria.some((c) => c.id === this.cert.criterion.id))
-        .sort((a, b) => (a.name < b.name ? -1 : 1));
+        .sort((a, b) => (a.value < b.value ? -1 : 1));
     }
 
     setAvailableTestValues() {
