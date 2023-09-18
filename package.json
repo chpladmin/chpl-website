@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "13.3.0",
+  "version": "13.4.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
@@ -98,7 +98,7 @@
     "babel-plugin-angularjs-annotate": "^0.9.0",
     "browser-sync": "~2.9.12",
     "browser-sync-spa": "~1.0.3",
-    "chromedriver": "^113.0.0",
+    "chromedriver": "^116.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^7.6.0",
     "css-loader": "^0.28.11",

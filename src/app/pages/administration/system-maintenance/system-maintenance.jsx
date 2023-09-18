@@ -14,6 +14,7 @@ import ChplAnnouncements from 'components/announcement/announcements';
 import ChplAccessibilityStandards from 'components/standards/accessibility-standard/accessibility-standards';
 import ChplCertificationCriteria from 'components/standards/certification-criteria/certification-criteria';
 import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
+import ChplFunctionalitiesTested from 'components/standards/functionality-tested/functionalities-tested';
 import ChplTestTools from 'components/standards/test-tool/test-tools';
 import ChplSvaps from 'components/standards/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
@@ -90,6 +91,10 @@ function ChplSystemMaintenance() {
     hide('announcements.add.disabled');
     hide('announcements.edit.disabled');
     hide('certificationCriteria.viewall.disabled');
+    hide('functionalitiesTested.viewall.disabled');
+    hide('functionalitiesTested.viewall');
+    hide('functionalitiesTested.add.disabled');
+    hide('functionalitiesTested.edit.disabled');
     hide('qmsStandards.viewall.disabled');
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
@@ -160,6 +165,21 @@ function ChplSystemMaintenance() {
                 className={classes.menuItems}
               >
                 Certification Criteria
+              </Button>
+            )}
+          { hasAnyRole(['ROLE_ADMIN'])
+            && (
+              <Button
+                onClick={() => navigate('functionalitiesTested')}
+                disabled={active === 'functionalitiesTested'}
+                id="system-maintenance-navigation-functionalities-tested"
+                fullWidth
+                variant="text"
+                color="primary"
+                endIcon={<ArrowForwardIcon />}
+                className={classes.menuItems}
+              >
+                Functionalities Tested
               </Button>
             )}
           <Button
@@ -245,6 +265,10 @@ function ChplSystemMaintenance() {
                     && (
                       <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem>
                     )}
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
+                      <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
+                    )}
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
@@ -275,6 +299,10 @@ function ChplSystemMaintenance() {
         { active === 'qmsStandards'
           && (
             <ChplQmsStandards />
+          )}
+        { active === 'functionalitiesTested'
+          && (
+            <ChplFunctionalitiesTested />
           )}
         { active === 'testTools'
           && (

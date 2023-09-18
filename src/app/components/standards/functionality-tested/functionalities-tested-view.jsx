@@ -16,14 +16,16 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
-import { testTool as testToolPropType } from 'shared/prop-types';
+import { functionalityTested as functionalityTestedPropType } from 'shared/prop-types';
 
 const headers = [
   { property: 'value', text: 'Value', sortable: true },
   { property: 'regulatoryTextCitation', text: 'Regulatory Text Citation', sortable: true },
   { property: 'startDay', text: 'Start Date', sortable: true },
+  { property: 'requiredDay', text: 'Required Date', sortable: true },
   { property: 'endDay', text: 'End Date', sortable: true },
   { text: 'Rule' },
+  { text: 'Practice Type' },
   { text: 'Applicable Criteria' },
   { text: 'Action', invisible: true },
 ];
@@ -41,14 +43,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
-  const [testTools, setTestTools] = useState([]);
+function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initialFunctionalitiesTested }) {
+  const [functionalitiesTested, setFunctionalitiesTested] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('value');
   const classes = useStyles();
 
   useEffect(() => {
-    setTestTools(initialTestTools
+    setFunctionalitiesTested(initialFunctionalitiesTested
       .map((item) => ({
         ...item,
         criteriaDisplay: item.criteria
@@ -57,14 +59,14 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
           .join(', '),
       }))
       .sort(sortComparator('value')));
-  }, [initialTestTools]); // eslint-disable-line react/destructuring-assignment
+  }, [initialFunctionalitiesTested]); // eslint-disable-line react/destructuring-assignment
 
   const handleTableSort = (event, property, orderDirection) => {
     const descending = orderDirection === 'desc';
-    const updated = testTools.sort(sortComparator(property, descending));
+    const updated = functionalitiesTested.sort(sortComparator(property, descending));
     setOrderBy(property);
     setOrder(orderDirection);
-    setTestTools(updated);
+    setFunctionalitiesTested(updated);
   };
 
   return (
@@ -72,7 +74,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
       <div className={classes.tableResultsHeaderContainer}>
         <Button
           onClick={() => dispatch({ action: 'edit', payload: {} })}
-          id="add-new-test-tool"
+          id="add-new-functionality-tested"
           variant="contained"
           color="primary"
           endIcon={<AddIcon />}
@@ -82,7 +84,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
       </div>
       <TableContainer className={classes.container} component={Paper}>
         <Table
-          aria-label="Test Tools table"
+          aria-label="Functionalities Tested table"
         >
           <ChplSortableHeaders
             headers={headers}
@@ -92,9 +94,9 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
             stickyHeader
           />
           <TableBody>
-            { testTools
+            { functionalitiesTested
               .map((item) => (
-                <TableRow key={`${item.value}`}>
+                <TableRow key={`${item.id}-${item.value}`}>
                   <TableCell className={classes.firstColumn}>
                     { item.value }
                     { item.retired && ' (Retired)'}
@@ -106,10 +108,16 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
                     { getDisplayDateFormat(item.startDay) }
                   </TableCell>
                   <TableCell>
+                    { getDisplayDateFormat(item.requiredDay) }
+                  </TableCell>
+                  <TableCell>
                     { getDisplayDateFormat(item.endDay) }
                   </TableCell>
                   <TableCell>
                     { item.rule?.name ?? '' }
+                  </TableCell>
+                  <TableCell>
+                    { item.practiceType?.name ?? '' }
                   </TableCell>
                   <TableCell>
                     { item.criteriaDisplay }
@@ -117,7 +125,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
                   <TableCell align="right">
                     <Button
                       onClick={() => dispatch({ action: 'edit', payload: item })}
-                      id={`edit-test-tool-${item.value}`}
+                      id={`edit-functionality-tested-${item.value}`}
                       variant="contained"
                       color="secondary"
                       endIcon={<EditOutlinedIcon />}
@@ -134,9 +142,9 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
   );
 }
 
-export default ChplTestToolsView;
+export default ChplFunctionalitiesTestedView;
 
-ChplTestToolsView.propTypes = {
+ChplFunctionalitiesTestedView.propTypes = {
   dispatch: func.isRequired,
-  testTools: arrayOf(testToolPropType).isRequired,
+  functionalitiesTested: arrayOf(functionalityTestedPropType).isRequired,
 };

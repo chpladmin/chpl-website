@@ -50,7 +50,7 @@
         ucd-processes="vm.ucdProcesses"
         ></chpl-sed-details-edit-wrapper-bridge>
     </span>
-    <span ng-if="vm.listing.edition.name === '2015'">
+    <span ng-if="vm.listing.edition === null || vm.listing.edition.name === '2015'">
       <button class="btn btn-ai pull-right" ng-if="vm.editMode" ng-click="vm.addTask()"><i class="fa fa-plus"></i> Add SED Task</button>
       <h4>SED Testing Tasks</h4>
       <table class="table table-condensed nowrap" ng-if="vm.listing.sed.testTasks && vm.listing.sed.testTasks.length > 0" id="sed-tasks-table">

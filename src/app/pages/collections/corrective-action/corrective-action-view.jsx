@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Paper,
   Table,
@@ -29,10 +29,11 @@ import {
 import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const headers = [
+const initialHeaders = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
   { text: 'Certification Edition' },
   { property: 'developer', text: 'Developer', sortable: true },
@@ -118,7 +119,10 @@ function ChplCorrectiveActionCollectionView(props) {
   const storageKey = 'storageKey-correctiveActionView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
+  const { isOn } = useContext(FlagContext);
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
+  const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'open_surveillance_nc_count');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -155,6 +159,15 @@ function ChplCorrectiveActionCollectionView(props) {
       setPageNumber(0);
     }
   }, [data?.recordCount, pageNumber, data?.results?.length]);
+
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
+
+  useEffect(() => {
+    if (!editionlessIsOn) { return; }
+    setHeaders((prev) => prev.filter((header) => header.text !== 'Certification Edition'));
+  }, [editionlessIsOn]);
 
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
@@ -263,18 +276,21 @@ function ChplCorrectiveActionCollectionView(props) {
                                         />
                                       </strong>
                                     </TableCell>
-                                    <TableCell>
-                                      { item.edition
-                                        ? (
-                                          <>
-                                            {item.edition.name}
-                                            {' '}
-                                            {item.curesUpdate ? 'Cures Update' : '' }
-                                          </>
-                                        ) : (
-                                          <></>
-                                        )}
-                                    </TableCell>
+                                    { !editionlessIsOn
+                                      && (
+                                        <TableCell>
+                                          { item.edition
+                                            ? (
+                                              <>
+                                                {item.edition.name}
+                                                {' '}
+                                                {item.curesUpdate ? 'Cures Update' : '' }
+                                              </>
+                                            ) : (
+                                              <></>
+                                            )}
+                                        </TableCell>
+                                      )}
                                     <TableCell>
                                       <ChplLink
                                         href={`#/organizations/developers/${item.developer.id}`}

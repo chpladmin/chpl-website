@@ -12,6 +12,16 @@ const useDeleteAccessibilityStandard = () => {
   });
 };
 
+const useDeleteFunctionalityTested = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.delete(`functionalities-tested/${data.id}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['functionalities-tested']);
+    },
+  });
+};
+
 const useDeleteQmsStandard = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -60,10 +70,27 @@ const useFetchAccessibilityStandards = () => {
   });
 };
 
-const useFetchCriteria = () => {
+const useFetchCriteria = (props = { enabled: true }) => {
+  const params = Object
+    .entries(props)
+    .filter(([key]) => key !== 'enabled')
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+  let query = 'certification-criteria';
+  if (params.length > 0) { query += `?${params}`; }
   const axios = useAxios();
-  return useQuery(['certification-criteria/'], async () => {
-    const response = await axios.get('certification-criteria');
+  return useQuery(['certification-criteria', params], async () => {
+    const response = await axios.get(query);
+    return response.data;
+  }, {
+    enabled: props.enabled,
+  });
+};
+
+const useFetchCriteriaForFunctionalitiesTested = () => {
+  const axios = useAxios();
+  return useQuery(['functionalities-tested/criteria'], async () => {
+    const response = await axios.get('functionalities-tested/criteria');
     return response.data;
   });
 };
@@ -80,6 +107,14 @@ const useFetchCriteriaForTestTools = () => {
   const axios = useAxios();
   return useQuery(['test-tools/criteria'], async () => {
     const response = await axios.get('test-tools/criteria');
+    return response.data;
+  });
+};
+
+const useFetchFunctionalitiesTested = () => {
+  const axios = useAxios();
+  return useQuery(['functionalities-tested'], async () => {
+    const response = await axios.get('functionalities-tested');
     return response.data;
   });
 };
@@ -134,6 +169,16 @@ const usePostAccessibilityStandard = () => {
   });
 };
 
+const usePostFunctionalityTested = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.post('functionalities-tested', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['functionalities-tested']);
+    },
+  });
+};
+
 const usePostQmsStandard = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -184,6 +229,16 @@ const usePutAccessibilityStandard = () => {
   });
 };
 
+const usePutFunctionalityTested = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put('functionalities-tested', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['functionalities-tested']);
+    },
+  });
+};
+
 const usePutQmsStandard = () => {
   const axios = useAxios();
   const queryClient = useQueryClient();
@@ -226,25 +281,30 @@ const usePutUcdProcess = () => {
 
 export {
   useDeleteAccessibilityStandard,
+  useDeleteFunctionalityTested,
   useDeleteQmsStandard,
   useDeleteSvap,
   useDeleteTestTool,
   useDeleteUcdProcess,
   useFetchAccessibilityStandards,
   useFetchCriteria,
+  useFetchCriteriaForFunctionalitiesTested,
   useFetchCriteriaForSvaps,
   useFetchCriteriaForTestTools,
+  useFetchFunctionalitiesTested,
   useFetchQmsStandards,
   useFetchRules,
   useFetchSvaps,
   useFetchTestTools,
   useFetchUcdProcesses,
   usePostAccessibilityStandard,
+  usePostFunctionalityTested,
   usePostQmsStandard,
   usePostSvap,
   usePostTestTool,
   usePostUcdProcess,
   usePutAccessibilityStandard,
+  usePutFunctionalityTested,
   usePutQmsStandard,
   usePutSvap,
   usePutTestTool,

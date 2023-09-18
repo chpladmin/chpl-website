@@ -5,9 +5,11 @@
     .factory('CertificationResultFunctionalitiesTested', function () {
       var CertificationResultFunctionalitiesTested = function (functionalitiesTested) {
         return {
-          'description': functionalitiesTested.description,
-          'name': functionalitiesTested.name,
-          'functionalityTestedId': functionalitiesTested.id,
+          functionalityTested: {
+            'value': functionalitiesTested.value,
+            'regulatoryTextCitation': functionalitiesTested.regulatoryTextCitation,
+            'id': functionalitiesTested.id,
+          },
         };
       };
 

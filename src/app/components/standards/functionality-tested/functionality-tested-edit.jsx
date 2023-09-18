@@ -18,15 +18,19 @@ import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
   rule as rulePropType,
-  testTool as testToolPropType,
+  functionalityTested as functionalityTestedPropType,
 } from 'shared/prop-types';
 
 const validationSchema = yup.object({
   value: yup.string()
     .required('Field is required'),
-  regulatoryTextCitation: yup.string(),
+  regulatoryTextCitation: yup.string()
+    .required('Field is required'),
   rule: yup.string(),
+  practiceType: yup.string(),
+  additionalInformation: yup.string(),
   endDay: yup.date(),
+  requiredDay: yup.date(),
   startDay: yup.date(),
 });
 
@@ -49,26 +53,28 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplTestToolEdit(props) {
+function ChplFunctionalityTestedEdit(props) {
   const {
     criterionOptions,
     dispatch,
     rules,
-    testTool: initialTestTool,
+    functionalityTested: initialFunctionalityTested,
   } = props;
+  const practiceTypes = [{ id: 1, name: 'Ambulatory' }, { id: 2, name: 'Inpatient' }];
+  const practiceTypeOptions = ['Ambulatory', 'Inpatient', 'N/A'];
   const { append, display, hide } = useContext(BreadcrumbContext);
   const [criteria, setCriteria] = useState([]);
   const [errors, setErrors] = useState([]);
   const [ruleOptions, setRuleOptions] = useState([]);
   const [selectedCriterion, setSelectedCriterion] = useState('');
-  const [testTool, setTestTool] = useState({});
+  const [functionalityTested, setFunctionalityTested] = useState({});
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
     append(
       <Button
-        key="testTools.add.disabled"
+        key="functionalitiesTested.add.disabled"
         depth={2}
         variant="text"
         disabled
@@ -78,7 +84,7 @@ function ChplTestToolEdit(props) {
     );
     append(
       <Button
-        key="testTools.edit.disabled"
+        key="functionalitiesTested.edit.disabled"
         depth={2}
         variant="text"
         disabled
@@ -89,12 +95,12 @@ function ChplTestToolEdit(props) {
   }, []);
 
   useEffect(() => {
-    setTestTool(initialTestTool);
-    setCriteria(initialTestTool.criteria?.map((c) => ({
+    setFunctionalityTested(initialFunctionalityTested);
+    setCriteria(initialFunctionalityTested.criteria?.map((c) => ({
       ...c,
     })) || []);
-    display(initialTestTool.id ? 'testTools.edit.disabled' : 'testTools.add.disabled');
-  }, [initialTestTool]);
+    display(initialFunctionalityTested.id ? 'functionalitiesTested.edit.disabled' : 'functionalitiesTested.add.disabled');
+  }, [initialFunctionalityTested]);
 
   useEffect(() => {
     setRuleOptions(rules.map((rule) => rule.name).sort((a, b) => (a < b ? -1 : 1)));
@@ -110,12 +116,15 @@ function ChplTestToolEdit(props) {
   };
 
   const buildPayload = () => ({
-    ...testTool,
+    ...functionalityTested,
     value: formik.values.value,
     regulatoryTextCitation: formik.values.regulatoryTextCitation,
     rule: rules.find((rule) => rule.name === formik.values.rule),
+    practiceType: practiceTypes.find((practiceType) => practiceType.name === formik.values.practiceType),
+    additionalInformation: formik.values.additionalInformation,
     criteria,
     endDay: formik.values.endDay,
+    requiredDay: formik.values.requiredDay,
     startDay: formik.values.startDay,
   });
 
@@ -125,18 +134,18 @@ function ChplTestToolEdit(props) {
     switch (action) {
       case 'cancel':
         dispatch({ action: 'cancel' });
-        hide('testTools.add.disabled');
-        hide('testTools.edit.disabled');
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
       case 'delete':
         dispatch({ action: 'delete', payload: buildPayload() });
-        hide('testTools.add.disabled');
-        hide('testTools.edit.disabled');
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
       case 'save':
         formik.submitForm();
-        hide('testTools.add.disabled');
-        hide('testTools.edit.disabled');
+        hide('functionalitiesTested.add.disabled');
+        hide('functionalitiesTested.edit.disabled');
         break;
         // no default
     }
@@ -152,11 +161,14 @@ function ChplTestToolEdit(props) {
 
   formik = useFormik({
     initialValues: {
-      value: initialTestTool?.value ?? '',
-      regulatoryTextCitation: initialTestTool?.regulatoryTextCitation ?? '',
-      rule: initialTestTool?.rule?.name ?? '',
-      endDay: initialTestTool?.endDay ?? '',
-      startDay: initialTestTool?.startDay ?? '',
+      value: initialFunctionalityTested?.value ?? '',
+      regulatoryTextCitation: initialFunctionalityTested?.regulatoryTextCitation ?? '',
+      rule: initialFunctionalityTested?.rule?.name ?? '',
+      practiceType: initialFunctionalityTested?.practiceType?.name ?? '',
+      additionalInformation: initialFunctionalityTested?.additionalInformation ?? '',
+      endDay: initialFunctionalityTested?.endDay ?? '',
+      requiredDay: initialFunctionalityTested?.requiredDay ?? '',
+      startDay: initialFunctionalityTested?.startDay ?? '',
     },
     onSubmit: () => {
       dispatch({ action: 'save', payload: buildPayload() });
@@ -185,6 +197,7 @@ function ChplTestToolEdit(props) {
           name="regulatoryTextCitation"
           label="Regulatory Text Citation"
           value={formik.values.regulatoryTextCitation}
+          required
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.regulatoryTextCitation && !!formik.errors.regulatoryTextCitation}
@@ -202,6 +215,18 @@ function ChplTestToolEdit(props) {
           onBlur={formik.handleBlur}
           error={formik.touched.startDay && !!formik.errors.startDay}
           helperText={formik.touched.startDay && formik.errors.startDay}
+          className={classes.date}
+        />
+        <ChplTextField
+          id="required-day"
+          name="requiredDay"
+          label="Required Date"
+          type="date"
+          value={formik.values.requiredDay}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.requiredDay && !!formik.errors.requiredDay}
+          helperText={formik.touched.requiredDay && formik.errors.requiredDay}
           className={classes.date}
         />
         <ChplTextField
@@ -228,6 +253,25 @@ function ChplTestToolEdit(props) {
         onBlur={formik.handleBlur}
       >
         { ruleOptions
+          .map((item) => (
+            <MenuItem
+              value={item}
+              key={item}
+            >
+              { item }
+            </MenuItem>
+          ))}
+      </ChplTextField>
+      <ChplTextField
+        select
+        id="practiceType"
+        name="practiceType"
+        label="Select a Practice Type"
+        value={formik.values.practiceType}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      >
+        { practiceTypeOptions
           .map((item) => (
             <MenuItem
               value={item}
@@ -271,9 +315,17 @@ function ChplTestToolEdit(props) {
             />
           ))}
       </div>
+      <ChplTextField
+        id="additional-information"
+        name="additionalInformation"
+        label="Additional Information"
+        value={formik.values.additionalInformation}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
       <ChplActionBar
         dispatch={handleDispatch}
-        canDelete={!!testTool.id}
+        canDelete={!!functionalityTested.id}
         errors={errors}
         isDisabled={!isValid()}
       />
@@ -281,12 +333,12 @@ function ChplTestToolEdit(props) {
   );
 }
 
-export default ChplTestToolEdit;
+export default ChplFunctionalityTestedEdit;
 
-ChplTestToolEdit.propTypes = {
+ChplFunctionalityTestedEdit.propTypes = {
   criterionOptions: arrayOf(criterionPropType).isRequired,
   dispatch: func.isRequired,
   errors: arrayOf(string).isRequired,
   rules: arrayOf(rulePropType).isRequired,
-  testTool: testToolPropType.isRequired,
+  functionalityTested: functionalityTestedPropType.isRequired,
 };

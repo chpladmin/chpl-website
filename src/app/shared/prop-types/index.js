@@ -36,6 +36,7 @@ import routerConfig from './router-config';
 import {
   accessibilityStandard,
   accessibilityStandardType,
+  functionalityTested,
   qmsStandard,
   qmsStandardType,
   rule,
@@ -83,6 +84,7 @@ export {
   filter,
   formik,
   functionalitiesTested,
+  functionalityTested,
   job,
   listing,
   measure,

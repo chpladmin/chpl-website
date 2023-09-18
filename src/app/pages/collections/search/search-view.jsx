@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Paper,
@@ -34,10 +34,11 @@ import { getAngularService } from 'services/angular-react-helper';
 import { getStatusIcon } from 'services/listing.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { useSessionStorage as useStorage } from 'services/storage.service';
+import { FlagContext } from 'shared/contexts';
 import { palette, theme } from 'themes';
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
-const headers = [
+const initialHeaders = [
   { property: 'chpl_id', text: 'CHPL ID', sortable: true },
   { text: 'Certification Edition' },
   { property: 'developer', text: 'Developer', sortable: true },
@@ -125,7 +126,10 @@ function ChplSearchView(props) {
   const storageKey = 'storageKey-searchView';
   const $analytics = getAngularService('$analytics');
   const { analytics } = props;
+  const { isOn } = useContext(FlagContext);
   const [directReviewsAvailable, setDirectReviewsAvailable] = useState(true);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
+  const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
   const [orderBy, setOrderBy] = useStorage(`${storageKey}-orderBy`, 'developer');
   const [pageNumber, setPageNumber] = useStorage(`${storageKey}-pageNumber`, 0);
@@ -167,6 +171,15 @@ function ChplSearchView(props) {
     dispatch('setFilterDisability', 'nonConformityOptions', !directReviewsAvailable);
   }, [directReviewsAvailable]);
 
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+  }, [isOn]);
+
+  useEffect(() => {
+    if (!editionlessIsOn) { return; }
+    setHeaders((prev) => prev.filter((header) => header.text !== 'Certification Edition'));
+  }, [editionlessIsOn]);
+
   const handleTableSort = (event, property, orderDirection) => {
     $analytics.eventTrack('Sort', { category: analytics.category, label: property });
     setOrderBy(property);
@@ -186,9 +199,15 @@ function ChplSearchView(props) {
         <Typography variant="h1">CHPL Listings</Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography variant="body1">
-          Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.
-        </Typography>
+        { editionlessIsOn ? (
+          <Typography variant="body1">
+            Please note that only active and suspended listings are shown by default. Use the Certification Status filter to display retired, withdrawn, or terminated listings.
+          </Typography>
+        ) : (
+          <Typography variant="body1">
+            Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters to display retired, withdrawn, terminated, or 2011 and 2014 edition listings.
+          </Typography>
+        )}
       </div>
       <div className={classes.searchContainer}>
         <ChplFilterSearchTerm />
@@ -261,18 +280,21 @@ function ChplSearchView(props) {
                                   />
                                 </strong>
                               </TableCell>
-                              <TableCell>
-                                { item.edition
-                                  ? (
-                                    <>
-                                      {item.edition.name}
-                                      {' '}
-                                      {item.curesUpdate ? 'Cures Update' : '' }
-                                    </>
-                                  ) : (
-                                    <></>
-                                  )}
-                              </TableCell>
+                              { !editionlessIsOn
+                                && (
+                                  <TableCell>
+                                    { item.edition
+                                      ? (
+                                        <>
+                                          {item.edition.name}
+                                          {' '}
+                                          {item.curesUpdate ? 'Cures Update' : '' }
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+                                  </TableCell>
+                                )}
                               <TableCell>
                                 <ChplLink
                                   href={`#/organizations/developers/${item.developer.id}`}

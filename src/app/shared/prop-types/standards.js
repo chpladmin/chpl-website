@@ -20,6 +20,24 @@ const accessibilityStandardType = shape({
   name: string,
 });
 
+const rule = shape({
+  id: number,
+  name: string,
+});
+
+const functionalityTested = shape({
+  criteria: arrayOf(criterion),
+  description: string,
+  endDay: string,
+  id: number,
+  name: string,
+  regulatoryTextCitation: string,
+  requiredDay: string,
+  rule,
+  startDay: string,
+  value: string,
+});
+
 const qmsStandard = shape({
   applicableCriteria: string,
   id: number,
@@ -29,11 +47,6 @@ const qmsStandard = shape({
 });
 
 const qmsStandardType = shape({
-  id: number,
-  name: string,
-});
-
-const rule = shape({
   id: number,
   name: string,
 });
@@ -69,7 +82,6 @@ const testTool = shape({
   id: number,
   name: string,
   regulatoryTextCitation: string,
-  requiredDay: string,
   rule,
   startDay: string,
   value: string,
@@ -89,6 +101,7 @@ const ucdProcess = shape({
 export {
   accessibilityStandard,
   accessibilityStandardType,
+  functionalityTested,
   qmsStandard,
   qmsStandardType,
   rule,
