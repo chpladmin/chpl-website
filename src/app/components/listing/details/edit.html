@@ -16,7 +16,7 @@
         <div>({{ $ctrl.countCerts }} met)</div>
         <div class="listing-details__element-header-toggle"><i class="fa fa-lg" ng-class="$ctrl.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-left'"></i></div>
       </div>
-      <span feature-flag="ui-upgrade-edit" feature-flag-hide>
+
         <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
           <div ng-repeat="n in $ctrl.listing.certificationResults | orderBy:$ctrl.sortCerts track by n.criterion.id">
             <chpl-certification-criteria ng-if="$ctrl.viewAllCerts || n.success"
@@ -33,7 +33,7 @@
             </chpl-certification-criteria>
           </div>
         </div>
-      </span>
+<!--
       <span feature-flag="ui-upgrade-edit">
         <div class="panel-body animate-if" ng-if="$ctrl.panelShown === 'cert'" id="panel-certification-criteria">
           <chpl-criteria-bridge
@@ -50,6 +50,7 @@
           </chpl-criteria-bridge>
         </div>
       </span>
+      -->
     </div>
 
     <!-- CQMs -->

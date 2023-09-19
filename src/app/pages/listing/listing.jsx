@@ -76,11 +76,11 @@ function ChplListingPage({ id }) {
   };
 
   const edit = () => {
-    if (isOn('ui-upgrade-edit')) {
-      $state.go('listing.flag-edit');
-    } else {
-      $state.go('listing.edit');
-    }
+    $state.go('listing.edit');
+  };
+
+  const editFlagged = () => {
+    $state.go('listing.flag-edit');
   };
 
   if (isLoading || !isSuccess || !listing) {
@@ -117,6 +117,18 @@ function ChplListingPage({ id }) {
                       onClick={edit}
                     >
                       Edit
+                    </Button>
+                  )}
+                { hasAnyRole(['ROLE_ADMIN'])
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={editFlagged}
+                    >
+                      Edit - New
                     </Button>
                   )}
                 <ChplListingHistory
