@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 13.4.0
+_18 September 2023_
+
+### Features
+* Display Compare page in new UI/UX
+* Enable management of Test Functionalities
+
+### Flagged Features
+* Remove Edition search from main search page
+* Stop displaying "Edition"
+
+### User Interface Updates
+* Remove "show all criteria" from inactive listings
+
+---
+
 ## Version 13.3.0
 _5 September 2023_
 
