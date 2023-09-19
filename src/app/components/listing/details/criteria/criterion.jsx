@@ -195,10 +195,16 @@ function ChplCriterion(props) {
               </Box>
               <Box className={classes.criterionAccordionSummaryData}>
                 <Typography variant="subtitle1">
-                  { criterion.criterion.removed
+                  { criterion.criterion.status === 'Removed'
                   && (
                     <>
                       Removed |
+                    </>
+                  )}
+                  { criterion.criterion.status === 'Retired'
+                  && (
+                    <>
+                      Retired |
                     </>
                   )}
                   <div className={classes.criterionNumber}>
