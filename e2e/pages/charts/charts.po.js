@@ -18,6 +18,11 @@ class ChartsPage {
     return $(this.elements.programTypeDropdown).$$('option');
   }
 
+  async programTypeDropdownOptionsList() {
+    // eslint-disable-next-line no-return-await
+    return (await $(this.elements.programTypeDropdown).$$('option'));
+  }
+
   get axisDropdownOptions() {
     return $(this.elements.axisDropdown).$$('option');
   }
@@ -30,7 +35,7 @@ class ChartsPage {
     return $(this.elements.stackingTypeDropdown).$$('option');
   }
 
-  chartTabs(name) {
+  async chartTabs(name) {
     return $(`//button[text()="${name}"]`);
   }
 
