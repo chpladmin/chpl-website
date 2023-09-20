@@ -45,6 +45,10 @@ const CertificationCriteriaEditComponent = {
       this.certSave = angular.copy(this.cert);
 
       this.setAvailableTestTools();
+      this.setAvailableOptionalStandards();
+      this.setAvailableConformanceMethods();
+      this.setAvailableTestValues();
+      this.setAvailableSvaps();
       this.selectedConformanceMethodKeys = this.getSelectedConformanceMethodKeys();
       this.selectedTestDataKeys = this.getSelectedTestDataKeys();
       this.selectedFunctionalityTestedKeys = this.getSelectedFunctionalityTestedKeys();
@@ -56,8 +60,6 @@ const CertificationCriteriaEditComponent = {
       this.selectedTestToolKeys = this.getSelectedTestToolKeys();
       this.sortedFunctionalitiesTested = this.getSortedFunctionalitiesTested();
       this.selectedSvapKeys = this.getSelectedSvapKeys();
-      this.setAvailableTestValues();
-      this.setSvapDisplayText();
     }
 
     cancel() {
@@ -238,9 +240,7 @@ const CertificationCriteriaEditComponent = {
       }
       return this.cert.conformanceMethods
         .filter((cm) => cm.conformanceMethod.id
-            && that.cert.allowedConformanceMethods
-            && that.cert.allowedConformanceMethods.length > 0
-            && that.cert.allowedConformanceMethods.filter((acm) => acm.id === cm.conformanceMethod.id).length > 0)
+            && that.resources.conformanceMethods.filter((acm) => acm.id === cm.conformanceMethod.id).length > 0)
         .map((cm) => ({
           key: cm.conformanceMethod.id,
           additionalInputValue: cm.conformanceMethodVersion,
@@ -289,9 +289,7 @@ const CertificationCriteriaEditComponent = {
       }
       return this.cert.optionalStandards
         .filter((os) => os.optionalStandardId
-          && that.cert.allowedOptionalStandards
-          && that.cert.allowedOptionalStandards.length > 0
-          && that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length > 0)
+          && that.resources.optionalStandards.filter((aos) => aos.id === os.optionalStandardId).length > 0)
         .map((os) => ({ key: os.optionalStandardId }));
     }
 
@@ -302,9 +300,7 @@ const CertificationCriteriaEditComponent = {
       }
       return this.cert.optionalStandards
         .filter((os) => !os.optionalStandardId
-          || !that.cert.allowedOptionalStandards
-          || that.cert.allowedOptionalStandards.length === 0
-          || that.cert.allowedOptionalStandards.filter((aos) => aos.id === os.optionalStandardId).length === 0)
+          || that.resources.optionalStandards.filter((aos) => aos.id === os.optionalStandardId).length === 0)
         .map((os) => os.citation);
     }
 
@@ -351,10 +347,13 @@ const CertificationCriteriaEditComponent = {
       this.availableTestProcedures = this.resources.testProcedures.data.filter((item) => item.criteria.number === number && item.criteria.title === title);
     }
 
-    setSvapDisplayText() {
-      if (Array.isArray(this.cert.allowedSvaps)) {
-        this.cert.allowedSvaps = this.cert.allowedSvaps.map((svap) => ({ ...svap, displayText: `${(svap.replaced ? 'Replaced | ' : '') + svap.regulatoryTextCitation} ${svap.approvedStandardVersion}` }));
-      }
+    setAvailableSvaps() {
+      this.allowedSvaps = this.resources.svaps
+        .filter((svap) => svap.criteria.some((cc) => cc.id === this.cert.criterion.id))
+        .map((svap) => ({
+          ...svap,
+          displayText: `${(svap.replaced ? 'Replaced | ' : '')} ${svap.regulatoryTextCitation} ${svap.approvedStandardVersion}`,
+        }));
     }
 
     setAvailableTestTools() {
@@ -364,6 +363,28 @@ const CertificationCriteriaEditComponent = {
           .map((tt) => ({
             ...tt,
             dropDownText: tt.value + (tt.retired ? ' (Retired)' : ''),
+          }));
+      }
+    }
+
+    setAvailableConformanceMethods() {
+      if (Array.isArray(this.resources.conformanceMethods)) {
+        this.cert.allowedConformanceMethods = this.resources.conformanceMethods
+          .filter((cm) => cm.criteria.some((cc) => cc.id === this.cert.criterion.id))
+          .map((cm) => ({
+            ...cm,
+            dropDownText: cm.value + (cm.retired ? ' (Retired)' : ''),
+          }));
+      }
+    }
+
+    setAvailableOptionalStandards() {
+      if (Array.isArray(this.resources.optionalStandards)) {
+        this.cert.allowedOptionalStandards = this.resources.optionalStandards
+          .filter((os) => os.criteria.some((cc) => cc.id === this.cert.criterion.id))
+          .map((os) => ({
+            ...os,
+            dropDownText: os.value + (os.retired ? ' (Retired)' : ''),
           }));
       }
     }
