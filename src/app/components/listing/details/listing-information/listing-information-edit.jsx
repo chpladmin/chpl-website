@@ -26,6 +26,17 @@ const validationSchema = yup.object({
   icsCode: yup.string()
     .required('Field is required')
     .matches(/^[0-9]{2}$/, 'ICS Code must be a two digit single number from 00 to 99'),
+  svapNoticeUrl: yup.string()
+    .url('Improper format (http://www.example.com)')
+    .max(1024, 'Field is too long'),
+  rwtPlansUrl: yup.string()
+    .url('Improper format (http://www.example.com)')
+    .max(1024, 'Field is too long'),
+  rwtPlansCheckDate: yup.date(),
+  rwtResultsUrl: yup.string()
+    .url('Improper format (http://www.example.com)')
+    .max(1024, 'Field is too long'),
+  rwtResultsCheckDate: yup.date(),
 });
 
 function ChplListingInformationEdit() {
@@ -33,7 +44,7 @@ function ChplListingInformationEdit() {
   const classes = useStyles();
   let formik;
 
-  const handleChange = (event) => {
+  const handleBasicChange = (event) => {
     setListing((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -78,6 +89,11 @@ function ChplListingInformationEdit() {
       productCode: listing.chplProductNumber.split('.')[4] ?? '',
       versionCode: listing.chplProductNumber.split('.')[5] ?? '',
       icsCode: listing.chplProductNumber.split('.')[6] ?? '',
+      svapNoticeUrl: listing.svapNoticeUrl ?? '',
+      rwtPlansUrl: listing.rwtPlansUrl ?? '',
+      rwtPlansCheckDate: listing.rwtPlansCheckDate ?? '',
+      rwtResultsUrl: listing.rwtResultsUrl ?? '',
+      rwtResultsCheckDate: listing.rwtResultsCheckDate ?? '',
     },
     validationSchema,
   });
@@ -124,10 +140,62 @@ function ChplListingInformationEdit() {
         name="acbCertificationId"
         label="ONC-ACB Certification ID"
         value={formik.values.acbCertificationId}
-        onChange={handleChange}
+        onChange={handleBasicChange}
         onBlur={formik.handleBlur}
         error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
         helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
+      />
+      <ChplTextField
+        id="svap-notice-url"
+        name="svapNoticeUrl"
+        label="Standards Version Advancement Process Notice"
+        value={formik.values.svapNoticeUrl}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.svapNoticeUrl && !!formik.errors.svapNoticeUrl}
+        helperText={formik.touched.svapNoticeUrl && formik.errors.svapNoticeUrl}
+      />
+      <ChplTextField
+        id="rwt-plans-url"
+        name="rwtPlansUrl"
+        label="Plans URL"
+        value={formik.values.rwtPlansUrl}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+        helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+      />
+      <ChplTextField
+        id="rwt-plans-check-date"
+        name="rwtPlansCheckDate"
+        label="Plans Last ONC-ACB Completeness Check"
+        type="date"
+        value={formik.values.rwtPlansCheckDate}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.rwtPlansCheckDate && !!formik.errors.rwtPlansCheckDate}
+        helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
+      />
+      <ChplTextField
+        id="rwt-results-url"
+        name="rwtResultsUrl"
+        label="Results URL"
+        value={formik.values.rwtResultsUrl}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
+        helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
+      />
+      <ChplTextField
+        id="rwt-results-check-date"
+        name="rwtResultsCheckDate"
+        label="Results Last ONC-ACB Completeness Check"
+        type="date"
+        value={formik.values.rwtResultsCheckDate}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.rwtResultsCheckDate && !!formik.errors.rwtResultsCheckDate}
+        helperText={formik.touched.rwtResultsCheckDate && formik.errors.rwtResultsCheckDate}
       />
     </>
   );
