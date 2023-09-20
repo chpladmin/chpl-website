@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Card,
   CardContent,
-  FormControlLabel,
-  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,15 +13,15 @@ import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { useSnackbar } from 'notistack';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
+
+import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
 
 import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
-import { ChplLink, ChplTextField, InternalScrollButton } from 'components/util';
+import { InternalScrollButton } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { ListingContext, FlagContext, UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -103,14 +101,10 @@ const useStyles = makeStyles({
   },
 });
 
-const validationSchema = yup.object({
-  acbCertificationId: yup.string(),
-});
-
 function ChplListingEdit() {
   const $state = getAngularService('$state');
-  const { hasAnyRole, user } = useContext(UserContext);
-  const { listing, setListing } = useContext(ListingContext);
+  const { hasAnyRole } = useContext(UserContext);
+  const { listing } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
@@ -120,12 +114,26 @@ function ChplListingEdit() {
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
   const putListing = usePutListing();
   const classes = useStyles();
-  let formik;
 
-  const updateListing = () => ({
-    ...listing,
-    acbCertificationId: formik.values.acbCertificationId,
-  });
+  const save = () => {
+    const payload = {
+      listing,
+      reason,
+      acknowledgeWarnings,
+      acknowledgeBusinessErrors,
+    };
+    putListing.mutate(payload, {
+      onSuccess: () => {
+        enqueueSnackbar('Listing Updated', {
+          variant: 'success',
+        });
+        $state.go('listing');
+      },
+      onError: (error) => {
+        setErrors(error.response.data.errorMessages);
+      },
+    });
+  };
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -133,38 +141,11 @@ function ChplListingEdit() {
         $state.go('listing');
         break;
       case 'save':
-        formik.submitForm();
+        save();
         break;
         // no default
     }
   };
-
-  formik = useFormik({
-    initialValues: {
-      acbCertificationId: listing.acbCertificationId ?? '',
-    },
-    onSubmit: () => {
-      const payload = {
-        listing: updateListing(),
-        reason,
-        acknowledgeWarnings,
-        acknowledgeBusinessErrors,
-      };
-      console.log('saving', payload.listing.acbCertificationId);
-      putListing.mutate(payload, {
-        onSuccess: () => {
-          enqueueSnackbar('Listing Updated', {
-            variant: 'success',
-          });
-          $state.go('listing');
-        },
-        onError: (error) => {
-          setErrors(error.response.data.errorMessages);
-        },
-      });
-    },
-    validationSchema,
-  });
 
   if (!listing) { return null; }
 
@@ -257,16 +238,7 @@ function ChplListingEdit() {
             <Typography className={classes.sectionHeaderText} variant="h2">Listing Information</Typography>
           </Box>
           <CardContent>
-            <ChplTextField
-              id="acb-certification-id"
-              name="acbCertificationId"
-              label="ONC-ACB Certification ID"
-              value={formik.values.acbCertificationId}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.value && !!formik.errors.value}
-              helperText={formik.touched.value && formik.errors.value}
-            />
+            <ChplListingInformationEdit />
           </CardContent>
         </Card>
         <Card>
