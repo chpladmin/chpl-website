@@ -18,11 +18,6 @@ class ChartsPage {
     return $(this.elements.programTypeDropdown).$$('option');
   }
 
-  async programTypeDropdownOptionsList() {
-    // eslint-disable-next-line no-return-await
-    return (await $(this.elements.programTypeDropdown).$$('option'));
-  }
-
   get axisDropdownOptions() {
     return $(this.elements.axisDropdown).$$('option');
   }
