@@ -64,7 +64,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignContent: 'center',
+    alignItems: 'center',
   },
   iconSpacing: {
     marginLeft: '4px',
@@ -81,6 +81,7 @@ const useStyles = makeStyles({
   },
   criterionNumber: {
     textTransform: 'none',
+    fontWeight: '700',
   },
   editCriterion: {
     margin: '8px 0px',
@@ -198,18 +199,18 @@ function ChplCriterion(props) {
                   { criterion.criterion.status === 'REMOVED'
                   && (
                     <>
-                      Removed |
+                      Removed | 
                     </>
                   )}
                   { criterion.criterion.status === 'RETIRED'
                   && (
                     <>
-                      Retired |
+                      Retired | 
                     </>
                   )}
-                  <div className={classes.criterionNumber}>
-                    {criterion.criterion.number}
-                  </div>
+                </Typography>
+                <Typography className={classes.criterionNumber}>
+                  {criterion.criterion.number}
                 </Typography>
                 { pending
                 && (
