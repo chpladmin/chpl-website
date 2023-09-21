@@ -199,19 +199,19 @@ function ChplCriterion(props) {
                   { criterion.criterion.status === 'REMOVED'
                   && (
                     <>
-                      Removed |
+                      Removed | 
                     </>
                   )}
                   { criterion.criterion.status === 'RETIRED'
                   && (
                     <>
-                      Retired |
+                      Retired | 
                     </>
                   )}
                 </Typography>
-                <div className={classes.criterionNumber}>
+                <Typography className={classes.criterionNumber}>
                   {criterion.criterion.number}
-                </div>
+                </Typography>
                 { pending
                 && (
                   <Chip
