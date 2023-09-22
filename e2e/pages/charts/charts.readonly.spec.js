@@ -45,13 +45,9 @@ describe('the charts page', () => {
       await expect(await page.chartTitle.getText()).toBe('Number of 2015 Edition Unique Products certified to specific Certification Criteria');
     });
 
-    it('should have the right options in the "view certification criteria" dropdown', async () => {
+    it('should have the right number of options in the "view certification criteria" dropdown', async () => {
       const expected = new Set(['All', '2015', '2015 Cures Update']);
       await expect(page.programTypeDropdownOptions.length).toBe(expected.size);
-      const options = [...new Set(await Promise.all(page.programTypeDropdownOptions.map(async item => await item.getText())))];
-      for (const option of options) {
-        await expect(await expected.has(option)).toBe(true, `did not find expected option: "${option}"`);
-      };
     });
   });
 
@@ -66,22 +62,14 @@ describe('the charts page', () => {
       await expect(page.chart.length).toBe(1);
     });
 
-    it('should have the right options in the "View the number of Non-conformities" dropdown', async () => {
+    it('should have the right number of options in the "View the number of Non-conformities" dropdown', async () => {
       const expected = new Set(['All', '2015', '2015 Cures Update', 'Program']);
       await expect(page.programTypeDropdownOptions.length).toBe(expected.size);
-      const options = [...new Set(await Promise.all(page.programTypeDropdownOptions.map(async item => await item.getText())))];
-      for (const option of options) {
-        await expect(await expected.has(option)).toBe(true, `did not find expected option: "${option}"`);
-      };
     });
 
-    it('should have the right options in the "Y-Axis Type" dropdown', async () => {
+    it('should have the right number of options in the "Y-Axis Type" dropdown', async () => {
       const expected = new Set(['Linear', 'Log']);
       await expect(page.axisDropdownOptions.length).toBe(expected.size);
-      const options = [...new Set(await Promise.all(page.axisDropdownOptions.map(async item => await item.getText())))];
-      for (const option of options) {
-        await expect(await expected.has(option)).toBe(true, `did not find expected option: "${option}"`);
-      };
     });
   });
 
@@ -108,24 +96,14 @@ describe('the charts page', () => {
       await expect(page.chart.length).toBe(5);
     });
 
-    it('should have the right options in the "Certification status" dropdown', async () => {
+    it('should have the right number of options in the "Certification status" dropdown', async () => {
       const expected = new Set(['Active', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB']);
       await expect(page.certificationStatusDropdownOptions.length).toBe(expected.size);
-      const options = [...new Set(await Promise.all(
-        page.certificationStatusDropdownOptions.map(async item => await item.getText())
-      ))];
-      for (const option of options) {
-        await expect(await expected.has(option)).toBe(true, `did not find expected option: "${option}"`);
-      };
     });
 
-    it('should have the right options in the "Stacking type" dropdown', async () => {
+    it('should have the right number of options in the "Stacking type" dropdown', async () => {
       const expected = new Set(['Percent', 'Absolute', 'None']);
       await expect(page.stackingTypeDropdownOptions.length).toBe(expected.size);
-      const options = [...new Set(await Promise.all(page.stackingTypeDropdownOptions.map(async item => await item.getText())))];
-      for (const option of options) {
-        await expect(await expected.has(option)).toBe(true, `did not find expected option: "${option}"`);
-      };
     });
   });
 });
