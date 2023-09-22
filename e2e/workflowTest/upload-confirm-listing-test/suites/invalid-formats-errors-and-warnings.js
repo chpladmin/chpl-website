@@ -53,8 +53,8 @@ const suite = {
       'Export Documentation is required for certification 170.315 (b)(10) (Cures Update).',
       'Criteria 170.315 (b)(10) (Cures Update) indicates additional software should be present but none was found.',
       'Certification 170.315 (b)(1) (Cures Update) contains Privacy and Security Framework value \'Approach 3 and 4\' which must match one of \'Approach 1\', \'Approach 2\', \'Approach 1;Approach 2\'.',
-      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\'.',
-      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\'.',
+      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\', Version \'4\'. The duplicates have been removed.',
+      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\', Version \'5\'. The duplicates have been removed.',
       '170.315 (g)(3) is required but was not found.',
     ],
     expectedWarnings: [
