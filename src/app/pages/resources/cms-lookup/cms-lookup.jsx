@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -27,9 +27,10 @@ import { ChplLink } from 'components/util';
 import { ChplSortableHeaders } from 'components/util/sortable-headers';
 import { getAngularService } from 'services/angular-react-helper';
 import { useLocalStorage as useStorage } from 'services/storage.service';
+import { FlagContext } from 'shared/contexts';
 import { palette } from 'themes';
 
-const csvOptions = {
+const initialCsvOptions = {
   filename: 'cms-id-data',
   showLabels: true,
   headers: [
@@ -43,7 +44,7 @@ const csvOptions = {
   ],
 };
 
-const headers = csvOptions.headers.map((h) => ({ text: h.headerName }));
+const initialHeaders = initialCsvOptions.headers.map((h) => ({ text: h.headerName }));
 
 const useStyles = makeStyles({
   pageHeader: {
@@ -80,7 +81,11 @@ const useStyles = makeStyles({
 function ChplCmsLookup() {
   const storageKey = 'storageKey-cmsLookupIds';
   const $analytics = getAngularService('$analytics');
+  const { isOn } = useContext(FlagContext);
+  const [csvOptions, setCsvOptions] = useState(initialCsvOptions);
+  const [editionlessIsOn, setEditionlessIsOn] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [headers, setHeaders] = useState(initialHeaders);
   const [listings, setListings] = useState([]);
   const [cmsIds, setCmsIds] = useStorage(storageKey, []);
   const queries = useFetchListings({ cmsIds });
@@ -101,6 +106,17 @@ function ChplCmsLookup() {
       .filter((query) => query.isError)
       .reduce((msgs, query) => msgs.concat(`The CMS ID "${query.error.config.url.split('/')[2]}" is invalid, or not found`, []), []));
   }, [cmsIds, finishedLoading]);
+
+  useEffect(() => {
+    setEditionlessIsOn(isOn('editionless'));
+    if (isOn('editionless')) {
+      setCsvOptions((prev) => ({
+        ...prev,
+        headers: prev.headers.filter((header) => header.objectKey !== 'edition'),
+      }));
+      setHeaders((prev) => prev.filter((header) => header.text !== 'Product Certification Edition'));
+    }
+  }, [isOn]);
 
   const downloadListingData = () => {
     $analytics.eventTrack('Download Results', { category: 'CMS ID Reverse Lookup' });
@@ -204,7 +220,10 @@ function ChplCmsLookup() {
                             router={{ sref: 'listing', options: { id: item.id } }}
                           />
                         </TableCell>
-                        <TableCell>{ item.edition }</TableCell>
+                        { !editionlessIsOn
+                          &&
+                          <TableCell>{ item.edition }</TableCell>
+                        }
                       </TableRow>
                     ))}
                 </TableBody>

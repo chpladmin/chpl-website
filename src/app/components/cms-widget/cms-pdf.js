@@ -37,7 +37,7 @@ const checkCriterionIsMet = (key, criteriaMet) => {
   return [(criteriaMet.findIndex((criterion) => criterion.number === keys[0]) > -1)];
 };
 
-const getPdfCriteria = (year, cannotGenerate15E) => {
+const getPdfCriteria = (year, editionlessIsOn) => {
   /* eslint-disable object-curly-spacing */
   if (year === '2014/2015') {
     return [
@@ -182,7 +182,7 @@ const getPdfCriteria = (year, cannotGenerate15E) => {
   return null;
 };
 
-const createPdf = (data, cannotGenerate15E) => {
+const createPdf = (data, editionlessIsOn) => {
   if (!data || data === 'undefined') {
     return;
   }
@@ -192,6 +192,20 @@ const createPdf = (data, cannotGenerate15E) => {
     let software = decodeURIComponent(l.additionalSoftware);
     if (software) {
       software = software.replace(/\+/g, ' ');
+    }
+    if (editionlessIsOn) {
+      return {
+        head: [[`Listing ${idx + 1}`, '']],
+        body: [
+          ['Certifying Body', l.acb],
+          ['Practice Type', (l.practiceType ? l.practiceType : 'N/A')],
+          ['Product Certification #', l.chplProductNumber],
+          ['Developer', l.vendor],
+          ['Product Name', l.name],
+          ['Version', l.version],
+          ['Classification', (l.classification ? l.classification : 'N/A')],
+        ],
+      };
     }
     return {
       head: [[`Listing ${idx + 1}`, '']],
@@ -217,7 +231,7 @@ const createPdf = (data, cannotGenerate15E) => {
   const checkImages = [];
   const criteria = {
     head: [[`${data.year} CMS EHR Base Criteria Met`]],
-    body: getPdfCriteria(data.year, cannotGenerate15E),
+    body: getPdfCriteria(data.year, editionlessIsOn),
   };
 
   // Start the PDF document
