@@ -221,9 +221,7 @@ function ChplCmsLookup() {
                           />
                         </TableCell>
                         { !editionlessIsOn
-                          &&
-                          <TableCell>{ item.edition }</TableCell>
-                        }
+                          && <TableCell>{ item.edition }</TableCell>}
                       </TableRow>
                     ))}
                 </TableBody>
