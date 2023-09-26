@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
@@ -32,7 +32,7 @@ function CmsWrapper(props) {
     $rootScope.$digest();
   };
 
-  const canDisplayButton = (listing) => listing.curesUpdate);
+  const canDisplayButton = (listing) => listing.curesUpdate || listing.edition === null;
 
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
