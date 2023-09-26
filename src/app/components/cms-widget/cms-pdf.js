@@ -194,7 +194,6 @@ const createPdf = (data, editionlessIsOn) => {
         ['Version', l.version],
         ['Classification', (l.classification ? l.classification : 'N/A')],
         ['Certification Edition', l.year + (l.curesUpdate ? ' Cures Update' : '')],
-        ['Relied Upon Software Required', software],
       ],
     };
   });
