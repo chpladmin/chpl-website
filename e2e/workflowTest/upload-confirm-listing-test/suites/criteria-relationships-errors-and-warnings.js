@@ -9,10 +9,11 @@ const suite = {
       'Criterion 170.315 (c)(4) cannot use Conformance Method "NCQA eCQM Test Method" since the Conformance Method is removed and not inherited with ICS.',
       'Criterion 170.315 (c)(2) cannot use Conformance Method "NCQA eCQM Test Method" since the Conformance Method is removed and not inherited with ICS.',
       'Cannot select both 170.315 (g)(8) and 170.315 (g)(10) (Cures Update).',
-      'Cannot select both 170.315 (b)(6) and 170.315 (b)(10) (Cures Update)',
+      'Cannot select both 170.315 (b)(6) and 170.315 (b)(10) (Cures Update).',
       '170.315 (g)(3) is required but was not found.',
     ],
     expectedWarnings: [
+        'Conformance Method "NCQA eCQM Test Method" is not valid for criteria 170.315 (c)(3) (Cures Update). It has been replaced with "ONC Test Procedure".',
     ],
   }, {
     listingId: '15.04.04.1722.CRT2.V1.00.1.210607',
