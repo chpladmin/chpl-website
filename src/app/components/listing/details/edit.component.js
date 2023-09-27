@@ -1,3 +1,5 @@
+import { jsJoda } from 'services/date-util';
+
 const ListingDetailsEditComponent = {
   templateUrl: 'chpl.components/listing/details/edit.html',
   bindings: {
@@ -44,10 +46,25 @@ const ListingDetailsEditComponent = {
     $onChanges(changes) {
       if (changes.listing && changes.listing.currentValue) {
         this.listing = angular.copy(changes.listing.currentValue);
+        this.listing.certificationResults = this.listing.certificationResults.filter((cr) => cr.success);
         this.countCerts = this.listing.certificationResults.filter((cr) => cr.success).length;
         this.countCqms = this.listing.cqmResults.filter((cqm) => cqm.success).length;
         this.cqms = this.listing.cqmResults;
         this.prepCqms();
+        const that = this;
+        this.networkService.getAllCriteria({
+          activeStartDay: this.listing.certificationDay,
+          activeEndDay: jsJoda.LocalDate.now(),
+          certificationEdition: this.listing.certificationEdition?.name,
+        }).then((data) => {
+          const allCriteria = data.map((c) => ({
+            success: false,
+            criterion: c,
+          }));
+          that.listing.certificationResults = Array.from([...allCriteria, ...that.listing.certificationResults]
+            .reduce((m, cr) => m.set(cr.criterion.id, cr), new Map())
+            .values());
+        });
       }
       if (changes.resources && changes.resources.currentValue) {
         this.resources = angular.copy(changes.resources.currentValue);
@@ -83,7 +100,7 @@ const ListingDetailsEditComponent = {
     }
 
     missingIcsSource() {
-      return (this.listing.edition === null || this.listing.edition.name === '2015') 
+      return (this.listing.edition === null || this.listing.edition.name === '2015')
                 && this.listing.ics.inherits && this.listing.ics.parents.length === 0;
     }
 
@@ -104,15 +121,15 @@ const ListingDetailsEditComponent = {
         this.listing.promotingInteroperabilityUserHistory = [];
       }
 
-      if (this.listing.product && this.listing.product.id && 
-            (this.listing.edition === null || this.listing.edition.name === '2015')
+      if (this.listing.product && this.listing.product.id
+            && (this.listing.edition === null || this.listing.edition.name === '2015')
             && (!this.relatedListings || this.relatedListings.length === 0)) {
         const that = this;
         this.networkService.getRelatedListings(this.listing.product.id)
-          .then((family) => that.relatedListings = family.filter((item) => item.edition === '2015' && item.id !== that.listing.id));
+          .then((family) => that.relatedListings = family.filter((item) => (item.edition === null || item.edition === '2015') && item.id !== that.listing.id));
       }
 
-      this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => ts.year === this.listing.edition?.name);
+      this.resources.testStandards.data = this.resources.testStandards.data.filter((ts) => this.listing.edition === null || ts.year === this.listing.edition?.name);
     }
 
     prepCqms() {

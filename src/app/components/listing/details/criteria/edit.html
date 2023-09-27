@@ -328,7 +328,7 @@
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.sed !== null">
           <td><label class="control-label" for="data_sed{{ $ctrl.cert.criterion.number }}">SED</label></td>
           <td>
-            <select class="form-control input-sm" id="data_sed{{ $ctrl.cert.criterion.number }}" name="data_sed" ng_model="$ctrl.cert.sed" ng-options="b.value as b.name for b in $ctrl.options" ng-ng-disabled="$ctrl.cert.certificationEdition.name === '2015'" ng-disabled="!$ctrl.canEdit()"></select>
+            <select class="form-control input-sm" id="data_sed{{ $ctrl.cert.criterion.number }}" name="data_sed" ng_model="$ctrl.cert.sed" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select>
             <div class="text-warning" ng-if="(($ctrl.editForm.data.$dirty && $ctrl.cert.success) || $ctrl.editForm.data_sed.$dirty) && $ctrl.cert.sed">Use the "Safety Enhanced Design (SED)" panel to edit SED information for this Criteria.</div>
           </td>
         </tr>
