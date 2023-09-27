@@ -132,7 +132,7 @@ function ChplCriteria(props) {
                 </ChplTooltip>
               </AccordionSummary>
               <AccordionDetails>
-                <Container maxWidth="false">
+                <Container maxWidth={false}>
                   { criteria.filter((cc) => cc.criterion.removed && (cc.success || viewAll))
                     .map((cc) => (
                       <ChplCriterion

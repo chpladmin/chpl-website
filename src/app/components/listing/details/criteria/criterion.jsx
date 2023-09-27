@@ -195,21 +195,21 @@ function ChplCriterion(props) {
                 )}
               </Box>
               <Box className={classes.criterionAccordionSummaryData}>
-                <Typography variant="subtitle1">
+                <Typography variant="h6" className={classes.criterionNumber}>
                   { criterion.criterion.status === 'REMOVED'
                   && (
                     <>
-                      Removed | 
+                      Removed |
+                      {' '}
                     </>
                   )}
                   { criterion.criterion.status === 'RETIRED'
                   && (
                     <>
-                      Retired | 
+                      Retired |
+                      {' '}
                     </>
                   )}
-                </Typography>
-                <Typography className={classes.criterionNumber}>
                   {criterion.criterion.number}
                 </Typography>
                 { pending
