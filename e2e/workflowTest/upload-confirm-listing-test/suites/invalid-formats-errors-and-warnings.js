@@ -19,6 +19,8 @@ const suite = {
       'Applicable criteria is required for each QMS Standard listed.',
       'A certification edition is required for the listing.',
       'The ONC-ACB test� is not valid.',
+      '170.315 (g)(5) is required but was not found.',
+      '170.315 (g)(4) is required but was not found.,'
     ],
     expectedWarnings: [
       'An unrecognized character was found for ACB Name \'test�\'. Please check the input data.',
