@@ -69,7 +69,7 @@ const CertificationCriteriaEditComponent = {
 
     canEdit() {
       return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // can always edit
-        || !this.cert.criterion.removed; // ROLE_ACB can only edit when not removed criteria
+        || !this.cert.criterion.editable; // ROLE_ACB can only edit when criteria has been recently removed
     }
 
     isToolDisabled(tool) {
