@@ -85,7 +85,8 @@
             </td>
             <td ng-if="$ctrl.cert.functionalitiesTested && $ctrl.cert.functionalitiesTested.length > 0">
               <ul>
-                <li ng-repeat="m in $ctrl.cert.functionalitiesTested">
+                <li ng-repeat="m in $ctrl.cert.functionalitiesTested" ng-class="{ 'removed' : m.functionalityTested.retired }">
+                  <span ng-if="m.functionalityTested.retired">Expired | </span>
                   {{ m.functionalityTested.regulatoryTextCitation }}:
                   <chpl-ellipsis-bridge text="m.functionalityTested.value" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
                   <span ng-if="m.functionalityTested === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
@@ -145,7 +146,13 @@
             <td>
               Test Tool <button class="btn btn-link btn-xs pull-right" uib-tooltip="The name and version of the test tool used during testing of the certification criterion functionality." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The name and version of the test tool used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
-            <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testTool.id === null}">Tool: {{ m.testTool.value }}{{ m.testTool.retired ? ' (Retired)' : ''}}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.testTool.id === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
+            <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0">
+              <div ng-repeat="m in $ctrl.cert.testToolsUsed" ng-class="{ 'removed' : m.testTool.retired }">
+                <span ng-class="{'bg-danger': m.testTool.id === null}">
+                  Tool: {{ m.testTool.retired ? 'Retired | ' : ''}}{{ m.testTool.value }}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.testTool.id === null"> Warning: Tool not found in system, it will not be saved</span>
+                </span>
+              </div>
+            </td>
             <td ng-if="!$ctrl.cert.testToolsUsed || $ctrl.cert.testToolsUsed.length === 0">None</td>
           </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.testDataUsed !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_data{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">

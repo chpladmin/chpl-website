@@ -337,7 +337,11 @@ const CertificationCriteriaEditComponent = {
     getSortedFunctionalitiesTested() {
       return this.resources.functionalitiesTested
         .filter((ft) => ft.criteria.some((c) => c.id === this.cert.criterion.id))
-        .sort((a, b) => (a.value < b.value ? -1 : 1));
+        .sort((a, b) => (a.value < b.value ? -1 : 1))
+        .map((ft) => ({
+          ...ft,
+          displayText: `${(ft.retired ? 'Expired | ' : '')} ${ft.value}`,
+        }));
     }
 
     setAvailableTestValues() {
@@ -362,7 +366,7 @@ const CertificationCriteriaEditComponent = {
           .filter((tt) => tt.criteria.some((cc) => cc.id === this.cert.criterion.id))
           .map((tt) => ({
             ...tt,
-            dropDownText: tt.value + (tt.retired ? ' (Retired)' : ''),
+            dropDownText: (tt.retired ? 'Retired | ' : '') + tt.value,
           }));
       }
     }
@@ -373,7 +377,7 @@ const CertificationCriteriaEditComponent = {
           .filter((cm) => cm.criteria.some((cc) => cc.id === this.cert.criterion.id))
           .map((cm) => ({
             ...cm,
-            dropDownText: cm.value + (cm.retired ? ' (Retired)' : ''),
+            dropDownText: (cm.retired ? 'Retired | ' : '') + cm.value,
           }));
       }
     }

@@ -219,7 +219,8 @@ function ChplCriterionDetailsView(props) {
                     && (
                       <List>
                         { criterion.functionalitiesTested.map((ft, index) => (
-                          <ListItem key={ft.id || ft.key || index}>
+                          <ListItem key={ft.id || ft.key || index} className={ft.functionalityTested.retired ? 'removed' : ''}>
+                            { ft.functionalityTested.retired ? 'Expired | ' : '' }
                             { ft.functionalityTested.value
                               && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
                             { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
@@ -401,10 +402,10 @@ function ChplCriterionDetailsView(props) {
                     && (
                       <List>
                         { criterion.testToolsUsed.map((tt, index) => (
-                          <ListItem key={tt.id || tt.key || index}>
+                          <ListItem key={tt.id || tt.key || index} className={tt.testTool.retired ? 'removed' : ''}>
                             Tool:
                             {' '}
-                            {tt.testTool.value}
+                            {`${tt.testTool.retired ? 'Retired | ' : ''} ${tt.testTool.value}`}
                             ; Version:
                             {' '}
                             { tt.version || 'N/A' }
