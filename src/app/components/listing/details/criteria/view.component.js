@@ -39,7 +39,7 @@ const CertificationCriteriaViewComponent = {
       return this.isEditing // in editing mode
         && (this.cert.success // can always remove success
             || !this.cert.criterion.removed // can always edit non-removed
-            || this.cert.criterion.isEditable // can edit removed if within the year range
+            || this.cert.criterion.editable // can edit removed if within the year range
             || (!this.isConfirming && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))); // can only edit removed when given role & not confirming
     }
 
