@@ -3,6 +3,14 @@ import { useQuery } from 'react-query';
 import { useAxios } from './axios';
 import options from './options';
 
+const useFetchCertificationStatuses = () => {
+  const axios = useAxios();
+  return useQuery(['data/certification_statuses/'], async () => {
+    const response = await axios.get('data/certification_statuses');
+    return response.data;
+  }, options.daily);
+};
+
 const useFetchComplainantTypes = () => {
   const axios = useAxios();
   return useQuery(['data/complainant-types/'], async () => {
@@ -28,6 +36,7 @@ const useFetchCriteria = () => {
 };
 
 export {
+  useFetchCertificationStatuses,
   useFetchComplainantTypes,
   useFetchCqms,
   useFetchCriteria,

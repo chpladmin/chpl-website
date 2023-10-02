@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   FormControlLabel,
+  MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +13,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useFetchCertificationStatuses } from 'api/data';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext } from 'shared/contexts';
@@ -33,6 +35,14 @@ const validationSchema = yup.object({
   icsCode: yup.string()
     .required('Field is required')
     .matches(/^[0-9]{2}$/, 'ICS Code must be a two digit single number from 00 to 99'),
+  acbCertificationId: yup.string()
+    .max(250, 'Field is too long'),
+  newStatusType: yup.object()
+    .required('Field is missing'),
+  newSatusDay: yup.date()
+    .required('Field is missing'),
+  newStatusReason: yup.string()
+    .max(500, 'Field is too long'),
   svapNoticeUrl: yup.string()
     .url('Improper format (http://www.example.com)')
     .max(1024, 'Field is too long'),
@@ -48,8 +58,18 @@ const validationSchema = yup.object({
 
 function ChplListingInformationEdit() {
   const { listing, setListing } = useContext(ListingContext);
+  const [addingStatus, setAddingStatus] = useState(false);
+  const [certificationStatuses, setCertificationStatuses] = useState([]);
+  const { data, isLoading, isSuccess } = useFetchCertificationStatuses();
   const classes = useStyles();
   let formik;
+
+  useEffect(() => {
+    if (isLoading || !isSuccess) {
+      return;
+    }
+    setCertificationStatuses(data.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [data, isLoading, isSuccess]);
 
   const handleBasicChange = (event) => {
     setListing((prev) => ({
@@ -57,6 +77,29 @@ function ChplListingInformationEdit() {
       [event.target.name]: event.target.value,
     }));
     formik.setFieldValue(event.target.name, event.target.value);
+  };
+
+  const handleItemAddition = (type) => {
+    switch (type) {
+      case 'certificationEvents':
+        setListing((prev) => ({
+          ...prev,
+          certificationEvents: prev.certificationEvents.concat({
+            status: formik.values.newStatusType,
+            eventDay: formik.values.newStatusDay,
+            reason: formik.values.newStatusReason,
+          }),
+        }));
+        formik.setFieldValue('newStatusType', '');
+        formik.setFieldValue('newStatusDay', '');
+        formik.setFieldValue('newStatusReason', '');
+        setAddingStatus(false);
+        break;
+      case 'oncAtls':
+        //this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
+        break;
+        // no default
+    }
   };
 
   const handleItemRemoval = (type, item) => {
@@ -127,6 +170,9 @@ function ChplListingInformationEdit() {
       productCode: listing.chplProductNumber.split('.')[4] ?? '',
       versionCode: listing.chplProductNumber.split('.')[5] ?? '',
       icsCode: listing.chplProductNumber.split('.')[6] ?? '',
+      newStatusType: '',
+      newStatusDay: '',
+      newStatusReason: '',
       svapNoticeUrl: listing.svapNoticeUrl ?? '',
       rwtPlansUrl: listing.rwtPlansUrl ?? '',
       rwtPlansCheckDate: listing.rwtPlansCheckDate ?? '',
@@ -146,6 +192,7 @@ function ChplListingInformationEdit() {
         id="product-code"
         name="productCode"
         label="Product Code"
+        required
         value={formik.values.productCode}
         onChange={handleProductNumberChange}
         onBlur={formik.handleBlur}
@@ -156,6 +203,7 @@ function ChplListingInformationEdit() {
         id="version-code"
         name="versionCode"
         label="Version Code"
+        required
         value={formik.values.versionCode}
         onChange={handleProductNumberChange}
         onBlur={formik.handleBlur}
@@ -166,6 +214,7 @@ function ChplListingInformationEdit() {
         id="ics-code"
         name="icsCode"
         label="ICS Code"
+        required
         value={formik.values.icsCode}
         onChange={handleProductNumberChange}
         onBlur={formik.handleBlur}
@@ -220,13 +269,75 @@ function ChplListingInformationEdit() {
                         <Button
                           onClick={() => handleItemRemoval('certificationEvents', ce)}
                         >
-                          X
+                          X - need an icon
                         </Button>
                       </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
             </Table>
+          </>
+        )}
+      { !addingStatus
+        && (
+          <Button
+            onClick={() => setAddingStatus(true)}
+          >
+            + - need an icon
+          </Button>
+        )}
+      { addingStatus
+        && (
+          <>
+            <ChplTextField
+              select
+              id="new-status-type"
+              name="newStatusType"
+              label="New Status"
+              required
+              value={formik.values.newStatusType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.newStatusType && !!formik.errors.newStatusType}
+              helperText={formik.touched.newStatusType && formik.errors.newStatusType}
+            >
+              { certificationStatuses.map((item) => (
+                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+              ))}
+            </ChplTextField>
+            <ChplTextField
+              id="new-status-day"
+              name="newStatusDay"
+              label="Effective Date"
+              type="date"
+              required
+              value={formik.values.newStatusDay}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.newStatusDay && !!formik.errors.newStatusDay}
+              helperText={formik.touched.newStatusDay && formik.errors.newStatusDay}
+            />
+            <ChplTextField
+              id="new-status-reason"
+              name="newStatusReason"
+              label="Reason for Change"
+              value={formik.values.newStatusReason}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.newStatusReason && !!formik.errors.newStatusReason}
+              helperText={formik.touched.newStatusReason && formik.errors.newStatusReason}
+            />
+            <Button
+              onClick={() => handleItemAddition('certificationEvents')}
+              disabled={!formik.isValid}
+            >
+              save - need an icon
+            </Button>
+            <Button
+              onClick={() => setAddingStatus(false)}
+            >
+              cancel - need an icon
+            </Button>
           </>
         )}
       <ChplTextField
