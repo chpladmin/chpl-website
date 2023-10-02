@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
-  FormControlLabel,
+  CircularProgress,
   MenuItem,
   Table,
   TableBody,
@@ -13,10 +13,11 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import { useFetchAcbs } from 'api/acbs';
 import { useFetchCertificationStatuses } from 'api/data';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
-import { ListingContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -41,6 +42,8 @@ const validationSchema = yup.object({
     .required('Field is missing'),
   newStatusReason: yup.string()
     .max(500, 'Field is too long'),
+  certifyingBody: yup.string()
+    .required('Field is missing'),
   svapNoticeUrl: yup.string()
     .url('Improper format (http://www.example.com)')
     .max(1024, 'Field is too long'),
@@ -56,18 +59,40 @@ const validationSchema = yup.object({
 
 function ChplListingInformationEdit() {
   const { listing, setListing } = useContext(ListingContext);
+  const { hasAnyRole } = useContext(UserContext);
   const [addingStatus, setAddingStatus] = useState(false);
+  const [acbs, setAcbs] = useState([]);
+  const [acbOptions, setAcbOptions] = useState([]);
   const [certificationStatuses, setCertificationStatuses] = useState([]);
-  const { data, isLoading, isSuccess } = useFetchCertificationStatuses();
+  const acbsQuery = useFetchAcbs();
+  const certificationStatusesQuery = useFetchCertificationStatuses();
   const classes = useStyles();
   let formik;
 
   useEffect(() => {
-    if (isLoading || !isSuccess) {
+    if (acbsQuery.isLoading || !acbsQuery.isSuccess) {
       return;
     }
-    setCertificationStatuses(data.sort((a, b) => (a.name < b.name ? -1 : 1)));
-  }, [data, isLoading, isSuccess]);
+    setAcbs(acbsQuery.data.acbs);
+    setAcbOptions(acbsQuery.data.acbs
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((acb) => `${acb.retired ? 'Retired | ' : ''}${acb.name}`));
+  }, [acbsQuery.data, acbsQuery.isLoading, acbsQuery.isSuccess]);
+
+  useEffect(() => {
+    if (certificationStatusesQuery.isLoading || !certificationStatusesQuery.isSuccess) {
+      return;
+    }
+    setCertificationStatuses(certificationStatusesQuery.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
+  }, [certificationStatusesQuery.data, certificationStatusesQuery.isLoading, certificationStatusesQuery.isSuccess]);
+
+  const handleAcbChange = (event) => {
+    setListing((prev) => ({
+      ...prev,
+      certifyingBody: acbs.find((acb) => acb.name === event.target.value),
+    }));
+    formik.setFieldValue('certifyingBody', event.target.value);
+  };
 
   const handleBasicChange = (event) => {
     setListing((prev) => ({
@@ -171,6 +196,7 @@ function ChplListingInformationEdit() {
       newStatusType: '',
       newStatusDay: '',
       newStatusReason: '',
+      certifyingBody: listing.certifyingBody?.name ?? '',
       svapNoticeUrl: listing.svapNoticeUrl ?? '',
       rwtPlansUrl: listing.rwtPlansUrl ?? '',
       rwtPlansCheckDate: listing.rwtPlansCheckDate ?? '',
@@ -180,7 +206,11 @@ function ChplListingInformationEdit() {
     validationSchema,
   });
 
-  if (!listing) { return null; }
+  if (!listing || acbs.length === 0 || certificationStatuses.length === 0) {
+    return (
+      <CircularProgress />
+    );
+  }
 
   return (
     <>
@@ -246,7 +276,7 @@ function ChplListingInformationEdit() {
                 { listing.certificationEvents
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((ce, idx, vals) => (
-                    <TableRow key={ce.eventDay}>
+                    <TableRow key={ce.eventDay ?? ce.eventDate}>
                       <TableCell>
                         { ce.status.name }
                         { idx !== listing.certificationEvents.length - 1 && ce.status.name === vals[idx + 1].status.name
@@ -365,6 +395,25 @@ function ChplListingInformationEdit() {
               cancel - need an icon
             </Button>
           </>
+        )}
+      { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+        && (
+        <ChplTextField
+          select
+          id="certifying-body"
+          name="certifyingBody"
+          label="ONC-ACB"
+          required
+          value={formik.values.certifyingBody}
+          onChange={handleAcbChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
+          helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
+        >
+          { acbOptions.map((item) => (
+            <MenuItem value={item} key={item}>{ item }</MenuItem>
+          ))}
+        </ChplTextField>
         )}
       <ChplTextField
         id="svap-notice-url"
