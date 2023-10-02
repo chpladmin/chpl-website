@@ -94,7 +94,7 @@ function ChplListingInformationEdit() {
         setAddingStatus(false);
         break;
       case 'oncAtls':
-        //this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
+        // this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
         break;
         // no default
     }
@@ -109,7 +109,7 @@ function ChplListingInformationEdit() {
         }));
         break;
       case 'oncAtls':
-        //this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
+        // this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
         break;
         // no default
     }
@@ -245,15 +245,43 @@ function ChplListingInformationEdit() {
               <TableBody>
                 { listing.certificationEvents
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
-                  .map((ce, idx) => (
+                  .map((ce, idx, vals) => (
                     <TableRow key={ce.eventDay}>
                       <TableCell>
                         { ce.status.name }
+                        { idx !== listing.certificationEvents.length - 1 && ce.status.name === vals[idx + 1].status.name
+                          && (
+                            <>
+                              <br />
+                              Certification Status must differ from previous Status
+                            </>
+                          )}
                         { idx === 0 && mayCauseSuspension(ce.status.name)
                           && (
                             <>
                               <br />
                               Setting this product to this status may trigger a ban by ONC
+                            </>
+                          )}
+                        { idx === 0 && ce.status.name === 'Terminated by ONC'
+                          && (
+                            <>
+                              <br />
+                              Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;
+                            </>
+                          )}
+                        { idx === 0 && ce.status.name === 'Suspended by ONC'
+                          && (
+                            <>
+                              <br />
+                              Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;
+                            </>
+                          )}
+                        { idx === 0 && ce.status.name === 'Withdrawn by Developer'
+                          && (
+                            <>
+                              <br />
+                              Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;
                             </>
                           )}
                       </TableCell>
