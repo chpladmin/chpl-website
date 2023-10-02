@@ -30,7 +30,7 @@ class ChartsPage {
     return $(this.elements.stackingTypeDropdown).$$('option');
   }
 
-  chartTabs(name) {
+  async chartTabs(name) {
     return $(`//button[text()="${name}"]`);
   }
 

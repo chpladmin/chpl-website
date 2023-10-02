@@ -194,6 +194,10 @@ export default class NetworkService {
     return this.apiGET(`/complaints/search/v2?surveillanceIds=${surveillanceId}`);
   }
 
+  getConformanceMethods() {
+    return this.apiGET('/conformance-methods');
+  }
+
   getCriterionProductStatistics() {
     return this.apiGET('/statistics/criterion_product');
   }
@@ -264,6 +268,10 @@ export default class NetworkService {
 
   getNonconformityStatisticsCount() {
     return this.apiGET('/statistics/nonconformity_criteria_count');
+  }
+
+  getOptionalStandards() {
+    return this.apiGET('/optional-standards');
   }
 
   getParticipantAgeStatistics() {
@@ -415,6 +423,10 @@ export default class NetworkService {
 
   getSurveillanceProcessTypes() {
     return this.apiGET('/data/surveillance-process-types');
+  }
+
+  getSvaps() {
+    return this.apiGET('/svaps');
   }
 
   getTargetedUsers() {
