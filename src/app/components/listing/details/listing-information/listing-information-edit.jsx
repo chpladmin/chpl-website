@@ -24,8 +24,6 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = yup.object({
-  acbCertificationId: yup.string()
-    .max(250, 'Field is too long'),
   productCode: yup.string()
     .required('Field is required')
     .matches(/^[A-Za-z0-9_]{4}$/, 'Product Code must consist of letters, numbers and/or "_", and be 4 characters long'),
@@ -107,7 +105,7 @@ function ChplListingInformationEdit() {
       case 'certificationEvents':
         setListing((prev) => ({
           ...prev,
-          certificationEvents: prev.certificationEvents.filter((event) => event.eventDate !== item.eventDate),
+          certificationEvents: prev.certificationEvents.filter((event) => event.eventDay !== item.eventDay),
         }));
         break;
       case 'oncAtls':
@@ -162,7 +160,7 @@ function ChplListingInformationEdit() {
         return true;
       default: return false;
     }
-  }
+  };
 
   formik = useFormik({
     initialValues: {
@@ -246,9 +244,9 @@ function ChplListingInformationEdit() {
               </TableHead>
               <TableBody>
                 { listing.certificationEvents
-                  .sort((a, b) => b.eventDate - a.eventDate)
+                  .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((ce, idx) => (
-                    <TableRow key={ce.eventDate}>
+                    <TableRow key={ce.eventDay}>
                       <TableCell>
                         { ce.status.name }
                         { idx === 0 && mayCauseSuspension(ce.status.name)
@@ -260,7 +258,7 @@ function ChplListingInformationEdit() {
                           )}
                       </TableCell>
                       <TableCell>
-                        { getDisplayDateFormat(ce.eventDate) }
+                        { getDisplayDateFormat(ce.eventDay) }
                       </TableCell>
                       <TableCell>
                         { ce.reason }
@@ -302,7 +300,7 @@ function ChplListingInformationEdit() {
               helperText={formik.touched.newStatusType && formik.errors.newStatusType}
             >
               { certificationStatuses.map((item) => (
-                  <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
               ))}
             </ChplTextField>
             <ChplTextField
