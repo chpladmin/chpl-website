@@ -268,7 +268,7 @@ function ChplResourcesDownload() {
                 <div className={classes.fullWidth}>
                   <div>
                     <Typography variant="body1">
-                      The XML definition files were last modified on September 18, 2023.
+                      The XML definition files were last modified on October 2, 2023.
                     </Typography>
                   </div>
                 </div>
