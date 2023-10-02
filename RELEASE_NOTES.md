@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 13.4.1
+_2 October 2023_
+
+### UI Updates
+* Indicate change in XSD
+
+---
+
 ## Version 13.4.0
 _18 September 2023_
 
