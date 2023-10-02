@@ -1,12 +1,19 @@
 import React, { useContext } from 'react';
 import {
+  Button,
   FormControlLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   makeStyles,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { ChplTextField } from 'components/util';
+import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
@@ -52,6 +59,21 @@ function ChplListingInformationEdit() {
     formik.setFieldValue(event.target.name, event.target.value);
   };
 
+  const handleItemRemoval = (type, item) => {
+    switch (type) {
+      case 'certificationEvents':
+        setListing((prev) => ({
+          ...prev,
+          certificationEvents: prev.certificationEvents.filter((event) => event.eventDate !== item.eventDate),
+        }));
+        break;
+      case 'oncAtls':
+        //this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
+        break;
+        // no default
+    }
+  };
+
   const handleProductNumberChange = (event) => {
     const parts = listing.chplProductNumber.split('.');
     switch (event.target.name) {
@@ -82,6 +104,22 @@ function ChplListingInformationEdit() {
     const parts = listing.chplProductNumber.split('.');
     return `${parts[7]}.${parts[8]}`;
   };
+
+  const mayCauseSuspension = (status) => {
+    switch (status) {
+      case ('Active'):
+      case ('Retired'):
+      case ('Suspended by ONC-ACB'):
+      case ('Suspended by ONC'):
+      case ('Withdrawn by Developer'):
+      case ('Terminated by ONC'):
+        return false;
+      case ('Withdrawn by ONC-ACB'):
+      case ('Withdrawn by Developer Under Surveillance/Review'):
+        return true;
+      default: return false;
+    }
+  }
 
   formik = useFormik({
     initialValues: {
@@ -145,6 +183,52 @@ function ChplListingInformationEdit() {
         error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
         helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
       />
+      { listing.certificationEvents?.length > 0
+        && (
+          <>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Certification Status</TableCell>
+                  <TableCell>Effective Date</TableCell>
+                  <TableCell>Reason for Status Change</TableCell>
+                  <TableCell className="sr-only">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { listing.certificationEvents
+                  .sort((a, b) => b.eventDate - a.eventDate)
+                  .map((ce, idx) => (
+                    <TableRow key={ce.eventDate}>
+                      <TableCell>
+                        { ce.status.name }
+                        { idx === 0 && mayCauseSuspension(ce.status.name)
+                          && (
+                            <>
+                              <br />
+                              Setting this product to this status may trigger a ban by ONC
+                            </>
+                          )}
+                      </TableCell>
+                      <TableCell>
+                        { getDisplayDateFormat(ce.eventDate) }
+                      </TableCell>
+                      <TableCell>
+                        { ce.reason }
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => handleItemRemoval('certificationEvents', ce)}
+                        >
+                          X
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </>
+        )}
       <ChplTextField
         id="svap-notice-url"
         name="svapNoticeUrl"
