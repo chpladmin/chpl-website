@@ -141,7 +141,7 @@ const SurveillanceRequirementEditComponent = {
         .sort(sortRequirementTypes)
         .map((req) => ({
           ...req,
-          display: `${req.removed ? 'Removed | ' : ''}${req.number ? (`${req.number}: `) : ''}${req.title}`,
+          display: `${req.status === 'REMOVED' ? 'Removed | ' : ''}${req.status === 'RETIRED' ? 'Retired | ' : ''}${req.number ? (`${req.number}: `) : ''}${req.title}`,
         }));
     }
   },

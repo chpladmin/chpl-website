@@ -64,8 +64,8 @@ function ChplApiDocumentationCollectionPage() {
       .map((cc) => ({
         ...cc,
         value: cc.id,
-        display: `${cc.removed ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
-        longDisplay: `${cc.removed ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+        longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
         default: [56, 181, 182].includes(cc.id),
       }));
     setFilters((f) => f
