@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
+import { useFetchAtls } from 'api/atls';
 import { useFetchCertificationStatuses } from 'api/data';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -44,6 +45,7 @@ const validationSchema = yup.object({
     .max(500, 'Field is too long'),
   certifyingBody: yup.string()
     .required('Field is missing'),
+  testingLab: yup.string(),
   svapNoticeUrl: yup.string()
     .url('Improper format (http://www.example.com)')
     .max(1024, 'Field is too long'),
@@ -60,11 +62,15 @@ const validationSchema = yup.object({
 function ChplListingInformationEdit() {
   const { listing, setListing } = useContext(ListingContext);
   const { hasAnyRole } = useContext(UserContext);
+  const [addingAtl, setAddingAtl] = useState(false);
   const [addingStatus, setAddingStatus] = useState(false);
   const [acbs, setAcbs] = useState([]);
+  const [atls, setAtls] = useState([]);
   const [acbOptions, setAcbOptions] = useState([]);
+  const [atlOptions, setAtlOptions] = useState([]);
   const [certificationStatuses, setCertificationStatuses] = useState([]);
   const acbsQuery = useFetchAcbs();
+  const atlsQuery = useFetchAtls();
   const certificationStatusesQuery = useFetchCertificationStatuses();
   const classes = useStyles();
   let formik;
@@ -78,6 +84,21 @@ function ChplListingInformationEdit() {
       .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map((acb) => `${acb.retired ? 'Retired | ' : ''}${acb.name}`));
   }, [acbsQuery.data, acbsQuery.isLoading, acbsQuery.isSuccess]);
+
+  useEffect(() => {
+    if (atlsQuery.isLoading || !atlsQuery.isSuccess) {
+      return;
+    }
+    setAtls(atlsQuery.data.atls
+      .map((atl) => ({
+        ...atl,
+        testingLabId: atl.id,
+        testingLabName: atl.name,
+      })));
+    setAtlOptions(atlsQuery.data.atls
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((atl) => `${atl.retired ? 'Retired | ' : ''}${atl.name}`));
+  }, [atlsQuery.data, atlsQuery.isLoading, atlsQuery.isSuccess]);
 
   useEffect(() => {
     if (certificationStatusesQuery.isLoading || !certificationStatusesQuery.isSuccess) {
@@ -119,7 +140,12 @@ function ChplListingInformationEdit() {
         setAddingStatus(false);
         break;
       case 'oncAtls':
-        // this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
+        setListing((prev) => ({
+          ...prev,
+          testingLabs: prev.testingLabs.concat(atls.find((atl) => formik.values.testingLab.endsWith(atl.name))),
+        }));
+        formik.setFieldValue('testingLab', '');
+        setAddingAtl(false);
         break;
         // no default
     }
@@ -134,7 +160,10 @@ function ChplListingInformationEdit() {
         }));
         break;
       case 'oncAtls':
-        // this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
+        setListing((prev) => ({
+          ...prev,
+          testingLabs: prev.testingLabs.filter((atl) => atl.testingLabId !== item.testingLabId),
+        }));
         break;
         // no default
     }
@@ -197,6 +226,7 @@ function ChplListingInformationEdit() {
       newStatusDay: '',
       newStatusReason: '',
       certifyingBody: listing.certifyingBody?.name ?? '',
+      testingLab: '',
       svapNoticeUrl: listing.svapNoticeUrl ?? '',
       rwtPlansUrl: listing.rwtPlansUrl ?? '',
       rwtPlansCheckDate: listing.rwtPlansCheckDate ?? '',
@@ -358,7 +388,7 @@ function ChplListingInformationEdit() {
               helperText={formik.touched.newStatusType && formik.errors.newStatusType}
             >
               { certificationStatuses.map((item) => (
-                <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                <MenuItem value={item} key={item.id}>{ item.name }</MenuItem>
               ))}
             </ChplTextField>
             <ChplTextField
@@ -414,6 +444,78 @@ function ChplListingInformationEdit() {
             <MenuItem value={item} key={item}>{ item }</MenuItem>
           ))}
         </ChplTextField>
+        )}
+      { listing.testingLabs?.length > 0
+        && (
+          <>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Testing Lab</TableCell>
+                  <TableCell className="sr-only">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { listing.testingLabs
+                  .sort((a, b) => (a.testingLabName < b.testingLabName ? -1 : 1))
+                  .map((atl) => (
+                    <TableRow key={atl.testingLabId}>
+                      <TableCell>
+                        { atl.testingLabName }
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => handleItemRemoval('oncAtls', atl)}
+                        >
+                          X - need an icon
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </>
+        )}
+      { !addingAtl
+        && (
+          <Button
+            onClick={() => setAddingAtl(true)}
+          >
+            + - need an icon
+          </Button>
+        )}
+      { addingAtl
+        && (
+          <>
+            <ChplTextField
+              select
+              id="testing-lab"
+              name="testingLab"
+              label="New ONC-ATL"
+              value={formik.values.testingLab}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.newStatusType && !!formik.errors.newStatusType}
+              helperText={formik.touched.newStatusType && formik.errors.newStatusType}
+            >
+              { atlOptions
+                .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLabName)))
+                .map((item) => (
+                  <MenuItem value={item} key={item}>{ item }</MenuItem>
+                ))}
+            </ChplTextField>
+            <Button
+              onClick={() => handleItemAddition('oncAtls')}
+              disabled={formik.values.testingLab === ''}
+            >
+              save - need an icon
+            </Button>
+            <Button
+              onClick={() => setAddingAtl(false)}
+            >
+              cancel - need an icon
+            </Button>
+          </>
         )}
       <ChplTextField
         id="svap-notice-url"
