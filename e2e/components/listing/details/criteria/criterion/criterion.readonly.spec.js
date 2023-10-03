@@ -29,6 +29,7 @@ describe('the Criterion Component', () => {
 
   it('should display removed criteria title correctly', () => {
     const header = criterion.criterionHeader(6);
+    expect(header.getText()).toContain('170.315 (a)(6)');
     expect(header.getText().toUpperCase()).toContain('REMOVED');
   });
 });
