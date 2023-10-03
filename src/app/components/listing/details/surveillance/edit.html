@@ -79,7 +79,9 @@
           <tbody>
             <tr ng-repeat="req in $ctrl.surveillance.requirements track by $index">
               <td>{{ req.requirementTypeOther ? 'Other Requirement' : req.requirementType.requirementGroupType.name }}</td>
-              <td ng-class="{'removed' : req.requirementType.removed}">{{ req.display }}</td>
+              <td ng-class="{'removed' : req.requirementType.status !== 'ACTIVE'}">
+                {{ (req.type.status === 'REMOVED' ? 'Removed | ' : '') + (req.type.status === 'RETIRED' ? 'Retired | ' : '') + req.display }}
+              </td>
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>
