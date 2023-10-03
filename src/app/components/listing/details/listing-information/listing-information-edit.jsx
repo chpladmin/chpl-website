@@ -48,7 +48,11 @@ const validationSchema = yup.object({
   certifyingBody: yup.string()
     .required('Field is missing'),
   testingLab: yup.string(),
+  productAdditionalSoftware: yup.string(),
   svapNoticeUrl: yup.string()
+    .url('Improper format (http://www.example.com)')
+    .max(1024, 'Field is too long'),
+  mandatoryDisclosures: yup.string()
     .url('Improper format (http://www.example.com)')
     .max(1024, 'Field is too long'),
   rwtPlansUrl: yup.string()
@@ -274,7 +278,9 @@ function ChplListingInformationEdit() {
       practiceType: listing.practiceType?.name ?? '',
       certifyingBody: listing.certifyingBody?.name ?? '',
       testingLab: '',
+      productAdditionalSoftware: listing.productAdditionalSoftware ?? '',
       svapNoticeUrl: listing.svapNoticeUrl ?? '',
+      mandatoryDisclosures: listing.mandatoryDisclosures ?? '',
       rwtPlansUrl: listing.rwtPlansUrl ?? '',
       rwtPlansCheckDate: listing.rwtPlansCheckDate ?? '',
       rwtResultsUrl: listing.rwtResultsUrl ?? '',
@@ -601,6 +607,19 @@ function ChplListingInformationEdit() {
             </Button>
           </>
         )}
+      { listing.chplProductNumber.startsWith('CHP-')
+        && (
+          <ChplTextField
+            id="product-additional-software"
+            name="productAdditionalSoftware"
+            label="Product wide Relied Upon Software"
+            value={formik.values.productAdditionalSoftware}
+            onChange={handleBasicChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.productAdditionalSoftware && !!formik.errors.productAdditionalSoftware}
+            helperText={formik.touched.productAdditionalSoftware && formik.errors.productAdditionalSoftware}
+          />
+        )}
       <ChplTextField
         id="svap-notice-url"
         name="svapNoticeUrl"
@@ -610,6 +629,16 @@ function ChplListingInformationEdit() {
         onBlur={formik.handleBlur}
         error={formik.touched.svapNoticeUrl && !!formik.errors.svapNoticeUrl}
         helperText={formik.touched.svapNoticeUrl && formik.errors.svapNoticeUrl}
+      />
+      <ChplTextField
+        id="mandatory-disclosures"
+        name="mandatoryDisclosures"
+        label="Mandatory Disclosures"
+        value={formik.values.mandatoryDisclosures}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.mandatoryDisclosures && !!formik.errors.mandatoryDisclosures}
+        helperText={formik.touched.mandatoryDisclosures && formik.errors.mandatoryDisclosures}
       />
       <ChplTextField
         id="rwt-plans-url"
