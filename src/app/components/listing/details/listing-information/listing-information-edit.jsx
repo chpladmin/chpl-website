@@ -15,7 +15,7 @@ import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
-import { useFetchCertificationStatuses } from 'api/data';
+import { useFetchCertificationStatuses, useFetchClassificationTypes, useFetchPracticeTypes } from 'api/data';
 import { ChplTextField } from 'components/util';
 import { getDisplayDateFormat } from 'services/date-util';
 import { ListingContext, UserContext } from 'shared/contexts';
@@ -43,6 +43,8 @@ const validationSchema = yup.object({
     .required('Field is missing'),
   newStatusReason: yup.string()
     .max(500, 'Field is too long'),
+  classificationType: yup.string(),
+  practiceType: yup.string(),
   certifyingBody: yup.string()
     .required('Field is missing'),
   testingLab: yup.string(),
@@ -69,9 +71,15 @@ function ChplListingInformationEdit() {
   const [acbOptions, setAcbOptions] = useState([]);
   const [atlOptions, setAtlOptions] = useState([]);
   const [certificationStatuses, setCertificationStatuses] = useState([]);
+  const [classificationTypes, setClassificationTypes] = useState([]);
+  const [classificationTypeOptions, setClassificationTypeOptions] = useState([]);
+  const [practiceTypes, setPracticeTypes] = useState([]);
+  const [practiceTypeOptions, setPracticeTypeOptions] = useState([]);
   const acbsQuery = useFetchAcbs();
   const atlsQuery = useFetchAtls();
   const certificationStatusesQuery = useFetchCertificationStatuses();
+  const classificationTypesQuery = useFetchClassificationTypes();
+  const practiceTypesQuery = useFetchPracticeTypes();
   const classes = useStyles();
   let formik;
 
@@ -107,13 +115,25 @@ function ChplListingInformationEdit() {
     setCertificationStatuses(certificationStatusesQuery.data.sort((a, b) => (a.name < b.name ? -1 : 1)));
   }, [certificationStatusesQuery.data, certificationStatusesQuery.isLoading, certificationStatusesQuery.isSuccess]);
 
-  const handleAcbChange = (event) => {
-    setListing((prev) => ({
-      ...prev,
-      certifyingBody: acbs.find((acb) => acb.name === event.target.value),
-    }));
-    formik.setFieldValue('certifyingBody', event.target.value);
-  };
+  useEffect(() => {
+    if (classificationTypesQuery.isLoading || !classificationTypesQuery.isSuccess) {
+      return;
+    }
+    setClassificationTypes(classificationTypesQuery.data);
+    setClassificationTypeOptions(classificationTypesQuery.data
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((type) => type.name));
+  }, [classificationTypesQuery.data, classificationTypesQuery.isLoading, classificationTypesQuery.isSuccess]);
+
+  useEffect(() => {
+    if (practiceTypesQuery.isLoading || !practiceTypesQuery.isSuccess) {
+      return;
+    }
+    setPracticeTypes(practiceTypesQuery.data);
+    setPracticeTypeOptions(practiceTypesQuery.data
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((type) => type.name));
+  }, [practiceTypesQuery.data, practiceTypesQuery.isLoading, practiceTypesQuery.isSuccess]);
 
   const handleBasicChange = (event) => {
     setListing((prev) => ({
@@ -190,6 +210,31 @@ function ChplListingInformationEdit() {
     formik.setFieldValue(event.target.name, event.target.value);
   };
 
+  const handleSelectChange = (event) => {
+    switch (event.target.name) {
+      case 'certifyingBody':
+        setListing((prev) => ({
+          ...prev,
+          certifyingBody: acbs.find((acb) => acb.name === event.target.value),
+        }));
+        break;
+      case 'classificationType':
+        setListing((prev) => ({
+          ...prev,
+          classificationType: classificationTypes.find((type) => type.name === event.target.value),
+        }));
+        break;
+      case 'practiceType':
+        setListing((prev) => ({
+          ...prev,
+          practiceType: practiceTypes.find((type) => type.name === event.target.value),
+        }));
+        break;
+        // no default
+    }
+    formik.setFieldValue(event.target.name, event.target.value);
+  };
+
   const getPrefix = () => {
     const parts = listing.chplProductNumber.split('.');
     return `${parts[0]}.${parts[1]}.${parts[2]}.${parts[3]}`;
@@ -225,6 +270,8 @@ function ChplListingInformationEdit() {
       newStatusType: '',
       newStatusDay: '',
       newStatusReason: '',
+      classificationType: listing.classificationType?.name ?? '',
+      practiceType: listing.practiceType?.name ?? '',
       certifyingBody: listing.certifyingBody?.name ?? '',
       testingLab: '',
       svapNoticeUrl: listing.svapNoticeUrl ?? '',
@@ -426,6 +473,43 @@ function ChplListingInformationEdit() {
             </Button>
           </>
         )}
+      { listing.edition?.name === '2014'
+        && (
+          <>
+            <ChplTextField
+              select
+              id="classification-type"
+              name="classificationType"
+              label="Classification Type"
+              required
+              value={formik.values.classificationType}
+              onChange={handleSelectChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.classificationType && !!formik.errors.classificationType}
+              helperText={formik.touched.classificationType && formik.errors.classificationType}
+            >
+              { classificationTypeOptions.map((item) => (
+                <MenuItem value={item} key={item}>{ item }</MenuItem>
+              ))}
+            </ChplTextField>
+            <ChplTextField
+              select
+              id="practice-type"
+              name="practiceType"
+              label="Practice Type"
+              required
+              value={formik.values.practiceType}
+              onChange={handleSelectChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.practiceType && !!formik.errors.practiceType}
+              helperText={formik.touched.practiceType && formik.errors.practiceType}
+            >
+              { practiceTypeOptions.map((item) => (
+                <MenuItem value={item} key={item}>{ item }</MenuItem>
+              ))}
+            </ChplTextField>
+          </>
+        )}
       { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
         && (
         <ChplTextField
@@ -435,7 +519,7 @@ function ChplListingInformationEdit() {
           label="ONC-ACB"
           required
           value={formik.values.certifyingBody}
-          onChange={handleAcbChange}
+          onChange={handleSelectChange}
           onBlur={formik.handleBlur}
           error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
           helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
