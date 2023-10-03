@@ -3,6 +3,8 @@ import {
   Box,
   Card,
   CardContent,
+  List,
+  ListItem,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -13,13 +15,15 @@ import NotesOutlinedIcon from '@material-ui/icons/NotesOutlined';
 import TouchAppOutlinedIcon from '@material-ui/icons/TouchAppOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { useSnackbar } from 'notistack';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
 
 import { usePutListing } from 'api/listing';
 import { ChplActionBar } from 'components/action-bar';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
-import { InternalScrollButton } from 'components/util';
+import { ChplTextField, InternalScrollButton } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
@@ -101,6 +105,10 @@ const useStyles = makeStyles({
   },
 });
 
+const validationSchema = yup.object({
+  reason: yup.string(),
+});
+
 function ChplListingEdit() {
   const $state = getAngularService('$state');
   const { hasAnyRole } = useContext(UserContext);
@@ -109,16 +117,16 @@ function ChplListingEdit() {
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [reason, setReason] = useState(undefined);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
   const putListing = usePutListing();
   const classes = useStyles();
+  let formik;
 
   const save = () => {
     const payload = {
       listing,
-      reason,
+      reason: formik.values.reason,
       acknowledgeWarnings,
       acknowledgeBusinessErrors,
     };
@@ -149,6 +157,13 @@ function ChplListingEdit() {
         // no default
     }
   };
+
+    formik = useFormik({
+    initialValues: {
+      reason: '',
+    },
+    validationSchema,
+  });
 
   if (!listing) { return null; }
 
@@ -229,6 +244,26 @@ function ChplListingEdit() {
                 <InfoOutlinedIcon className={classes.iconSpacing} />
               </InternalScrollButton>
             </Box>
+          </Box>
+          <Box>
+            <ChplTextField
+              id="reason"
+              name="reason"
+              label="Reason"
+              value={formik.values.reason}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.productCode && !!formik.errors.productCode}
+              helperText={formik.touched.productCode && formik.errors.productCode}
+            />
+            If changes are made in any of the following ways, a Reason for Change is required:
+            <List>
+              <ListItem>Clinical Quality Measure Removed</ListItem>
+              <ListItem>Certification Criteria Removed</ListItem>
+              <ListItem>Editing of a 2011 Edition Certified Product</ListItem>
+              <ListItem>Editing of a 2014 Edition Certified Product</ListItem>
+              <ListItem>Certification Status Changed from anything to "Active"</ListItem>
+            </List>
           </Box>
         </div>
       </div>
