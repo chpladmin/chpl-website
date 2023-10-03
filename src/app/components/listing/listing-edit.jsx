@@ -117,8 +117,11 @@ function ChplListingEdit() {
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [warnings, setWarnings] = useState([]);
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
+  const [showErrorAcknowledgement, setShowErrorAcknowledgement] = useState(false);
+  const [showWarningAcknowledgement, setShowWarningAcknowledgement] = useState(false);
   const putListing = usePutListing();
   const classes = useStyles();
   let formik;
@@ -153,6 +156,12 @@ function ChplListingEdit() {
         break;
       case 'save':
         save();
+        break;
+      case 'toggleWarningAcknowledgement':
+        setAcknowledgeWarnings((prev) => !prev);
+        break;
+      case 'toggleErrorAcknowledgement':
+        setAcknowledgeErrors((prev) => !prev);
         break;
         // no default
     }
@@ -296,6 +305,9 @@ function ChplListingEdit() {
       <ChplActionBar
         dispatch={handleDispatch}
         errors={errors}
+        warnings={warnings}
+        showErrorAcknowledgement={showErrorAcknowledgement}
+        showWarningAcknowledgement={showWarningAcknowledgement}
       />
     </>
   );
