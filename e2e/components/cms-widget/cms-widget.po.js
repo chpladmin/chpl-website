@@ -18,7 +18,7 @@ class CmsWidgetComponent {
       processingSpinner: '#cms-id-processing',
       missingBaseCriteriaListAnd: '#missing-and',
       missingBaseCriteriaListOr: '#missing-or',
-      toggleCertIdButton: (listingId) => $(`#toggle-cms-${listingId}`),
+      toggleCertIdButton: async listingId => $(`#toggle-cms-${listingId}`),
     };
   }
 
@@ -26,7 +26,7 @@ class CmsWidgetComponent {
     return $(this.elements.cmsWidget);
   }
 
-  get compareProductsButton() {
+  async compareProductsButton() {
     return $(this.elements.compareProducts);
   }
 
@@ -34,7 +34,7 @@ class CmsWidgetComponent {
     return $(this.elements.chplPublicUserGuide);
   }
 
-  get cmsIdReverseLookupLink() {
+  async cmsIdReverseLookupLink() {
     return $(this.elements.cmsIdReverseLookup);
   }
 
@@ -42,7 +42,7 @@ class CmsWidgetComponent {
     return $(this.elements.progressBar);
   }
 
-  get progressBarValue() {
+  async progressBarValue() {
     return $(this.elements.progressBarBar);
   }
 
@@ -50,15 +50,15 @@ class CmsWidgetComponent {
     return $(this.elements.progressBarText);
   }
 
-  get getCertIdButton() {
+  async getCertIdButton() {
     return $(this.elements.certId);
   }
 
-  get removeProductsButton() {
+  async removeProductsButton() {
     return $(this.elements.removeProducts);
   }
 
-  get baseCriteriaLink() {
+  async baseCriteriaLink() {
     return $(this.elements.baseCriteria);
   }
 
@@ -66,15 +66,15 @@ class CmsWidgetComponent {
     return $(this.elements.widgetContainer).$$('p');
   }
 
-  get cmsCertificationIdText() {
+  async cmsCertificationIdText() {
     return $(this.elements.cmsCertificationId);
   }
 
-  get compareWidgetDropdown() {
+  async compareWidgetDropdown() {
     return $(this.elements.compareWidgetDropdown);
   }
 
-  get missingBaseCriteriaListAnd() {
+  async missingBaseCriteriaListAnd() {
     return $(this.elements.missingBaseCriteriaListAnd);
   }
 
@@ -86,17 +86,17 @@ class CmsWidgetComponent {
     return $(this.elements.downloadPdf);
   }
 
-  waitForProcessingSpinnerToDisappear() {
-    browser.waitUntil(() => !$(this.elements.processingSpinner).isDisplayed());
+  async waitForProcessingSpinnerToDisappear() {
+    await browser.waitUntil(async () => !(await $(this.elements.processingSpinner).isDisplayed()));
   }
 
-  certIdButton(listingId) {
+  async certIdButton(listingId) {
     return this.elements.toggleCertIdButton(listingId);
   }
 
-  addListingToCms(listingId) {
-    this.certIdButton(listingId).scrollIntoView({ block: 'center', inline: 'center' });
-    this.certIdButton(listingId).click();
+  async addListingToCms(listingId) {
+    await (await this.certIdButton(listingId)).scrollIntoView({ block: 'center', inline: 'center' });
+    await (await this.certIdButton(listingId)).click();
   }
 }
 
