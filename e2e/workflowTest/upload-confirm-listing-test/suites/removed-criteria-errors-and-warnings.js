@@ -4,7 +4,7 @@ const suite = {
   listings: [{
     listingId: '15.02.04.2701.RMVD.12.00.1.220920',
     expectedErrors: [
-      'The criterion 170.315 (a)(6) has been removed and may not be added to the listing.',
+      'The criterion 170.315 (a)(6) is unavailable for this listing.',
     ],
     expectedWarnings: [
     ],

@@ -17,7 +17,7 @@
           <tbody>
             <tr>
               <th scope="row">Type</th>
-              <td ng-class="{'removed' : noncon.type.removed}">{{ (noncon.type.removed ? 'Removed | ' : '') + (noncon.type.number ? (noncon.type.number + ': ') : '') + noncon.type.title}}</td>
+              <td ng-class="{'removed' : (noncon.type.status === 'REMOVED' || noncon.type.status === ' RETIRED')}">{{ (noncon.type.status === 'REMOVED' ? 'Removed | ' : '') + (noncon.type.status === 'RETIRED' ? 'Retired | ' : '') + (noncon.type.number ? (noncon.type.number + ': ') : '') + noncon.type.title}}</td>
             </tr>
             <tr>
               <th scope="row">Date of Determination</th>

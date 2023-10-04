@@ -639,6 +639,10 @@ option[label^="Removed"] {
     font-style: italic;
 }
 
+option[label^="Retired"] {
+    font-style: italic;
+}
+
 .removed {
 
     .btn-link {
