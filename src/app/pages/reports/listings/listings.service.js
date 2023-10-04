@@ -294,6 +294,7 @@ lookup = {
   'certificationResults.number': { message: () => undefined },
   'certificationResults.optionalStandards': { message: (before, after) => compare(before, after, 'optionalStandards', 'Optional Standards') },
   'certificationResults.privacySecurityFramework': { message: (before, after) => comparePrimitive(before, after, 'privacySecurityFramework', 'Privacy & Security Framework') },
+  'certificationResults.riskManagementSummaryInformation': { message: (before, after) => comparePrimitive(before, after, 'riskManagementSummaryInformation', 'Risk Management Summary Information') },
   'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
   'certificationResults.serviceBaseUrlList': { message: (before, after) => comparePrimitive(before, after, 'serviceBaseUrlList', 'Service Base URL List') },
   'certificationResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },

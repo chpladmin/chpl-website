@@ -196,6 +196,13 @@
             <td ng-if="$ctrl.cert.serviceBaseUrlList"><a ai-a href="{{ $ctrl.cert.serviceBaseUrlList }}" analytics-on="click" analytics-event="Service Base URL List" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.serviceBaseUrlList }">{{ $ctrl.cert.serviceBaseUrlList }}</a></td>
             <td ng-if="!$ctrl.cert.serviceBaseUrlList">None</td>
           </tr>
+          <tr ng-if="$ctrl.cert.riskManagementSummaryInformation !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_risk_management_summary_information">
+            <td>
+              Risk Management Summary Information <button class="btn btn-link btn-xs pull-right" uib-tooltip="TBD" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">TBD</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
+            <td ng-if="$ctrl.cert.riskManagementSummaryInformation"><a ai-a href="{{ $ctrl.cert.riskManagementSummaryInformation }}" analytics-on="click" analytics-event="Risk Management Summary Information" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.riskManagementSummaryInformation }">{{ $ctrl.cert.riskManagementSummaryInformation }}</a></td>
+            <td ng-if="!$ctrl.cert.riskManagementSummaryInformation">None</td>
+          </tr>
           <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Privacy_Security_Framework{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Privacy &amp; Security Framework <button class="btn btn-link btn-xs pull-right" uib-tooltip="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). " tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). </span><i class="fa fa-info-circle fa-lg"></i></button>
