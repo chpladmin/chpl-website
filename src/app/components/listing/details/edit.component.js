@@ -46,7 +46,6 @@ const ListingDetailsEditComponent = {
     $onChanges(changes) {
       if (changes.listing && changes.listing.currentValue) {
         this.listing = angular.copy(changes.listing.currentValue);
-        this.listing.certificationResults = this.listing.certificationResults.filter((cr) => cr.success);
         this.countCerts = this.listing.certificationResults.filter((cr) => cr.success).length;
         this.countCqms = this.listing.cqmResults.filter((cqm) => cqm.success).length;
         this.cqms = this.listing.cqmResults;
