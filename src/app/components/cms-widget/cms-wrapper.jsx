@@ -1,24 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
 
 import { getAngularService } from 'services/angular-react-helper';
-import { CmsContext, FlagContext } from 'shared/contexts';
+import { CmsContext } from 'shared/contexts';
 
 function CmsWrapper(props) {
   const $localStorage = getAngularService('$localStorage');
   const $rootScope = getAngularService('$rootScope');
   const { children } = props;
-  const { isOn } = useContext(FlagContext);
-  const [cannotGenerate15EIsOn, setCannotGenerate15EIsOn] = useState(false);
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
     setListings($localStorage?.cmsWidget?.products ?? []);
   }, []);
-
-  useEffect(() => {
-    setCannotGenerate15EIsOn(isOn('cannot-generate-15e'));
-  }, [isOn]);
 
   useEffect(() => {
     const deregisterAddWatcher = $rootScope.$on('cms.addedListing', (evt, listing) => setListings((prev) => prev.filter((p) => p.id !== listing.id).concat(listing)));
@@ -38,8 +32,7 @@ function CmsWrapper(props) {
     $rootScope.$digest();
   };
 
-  const canDisplayButton = (listing) => listing.curesUpdate
-        || (!cannotGenerate15EIsOn && listing.edition?.name === '2015');
+  const canDisplayButton = (listing) => listing.curesUpdate || listing.edition === null;
 
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
@@ -52,7 +45,6 @@ function CmsWrapper(props) {
   const cmsState = {
     addListing,
     canDisplayButton,
-    cannotGenerate15EIsOn,
     isInWidget,
     listings,
     removeListing,
