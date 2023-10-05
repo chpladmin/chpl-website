@@ -39,12 +39,14 @@ const validationSchema = yup.object({
     .max(250, 'Field is too long'),
   newStatusType: yup.object()
     .required('Field is missing'),
-  newSatusDay: yup.date()
+  newStatusDay: yup.date()
     .required('Field is missing'),
   newStatusReason: yup.string()
     .max(500, 'Field is too long'),
-  classificationType: yup.string(),
-  practiceType: yup.string(),
+  classificationType: yup.string()
+    .required('Field is missing'),
+  practiceType: yup.string()
+    .required('Field is missing'),
   certifyingBody: yup.string()
     .required('Field is missing'),
   testingLab: yup.string(),
@@ -359,7 +361,7 @@ function ChplListingInformationEdit() {
                 { listing.certificationEvents
                   .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
                   .map((ce, idx, vals) => (
-                    <TableRow key={ce.eventDay ?? ce.eventDate}>
+                    <TableRow key={ce.eventDay}>
                       <TableCell>
                         { ce.status.name }
                         { idx !== listing.certificationEvents.length - 1 && ce.status.name === vals[idx + 1].status.name
@@ -468,7 +470,7 @@ function ChplListingInformationEdit() {
             />
             <Button
               onClick={() => handleItemAddition('certificationEvents')}
-              disabled={!formik.isValid}
+              disabled={formik.values.newStatusType === '' || formik.values.newStatusDay === ''}
             >
               save - need an icon
             </Button>
@@ -585,8 +587,8 @@ function ChplListingInformationEdit() {
               value={formik.values.testingLab}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.newStatusType && !!formik.errors.newStatusType}
-              helperText={formik.touched.newStatusType && formik.errors.newStatusType}
+              error={formik.touched.testingLab && !!formik.errors.testingLab}
+              helperText={formik.touched.testingLab && formik.errors.testingLab}
             >
               { atlOptions
                 .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLabName)))
