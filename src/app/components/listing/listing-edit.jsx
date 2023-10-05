@@ -133,8 +133,6 @@ function ChplListingEdit() {
       acknowledgeWarnings,
       acknowledgeBusinessErrors,
     };
-    console.log('saving', payload);
-    /*
     putListing.mutate(payload, {
       onSuccess: () => {
         enqueueSnackbar('Listing Updated', {
@@ -144,9 +142,9 @@ function ChplListingEdit() {
       },
       onError: (error) => {
         setErrors(error.response.data.errorMessages);
+        setWarnings(error.response.data.warningMessages);
       },
     });
-    */
   };
 
   const handleDispatch = (action) => {

@@ -32,7 +32,7 @@ const usePutListing = () => {
   const queryClient = useQueryClient();
   return useMutation(async (data) => axios.put(`certified_products/${data.listing.id}`, data), {
     onSuccess: (response) => {
-      queryClient.invalidateQueries(['listing', response.id]);
+      queryClient.invalidateQueries(['listing', `${response.data.id}`]);
     },
   });
 };
