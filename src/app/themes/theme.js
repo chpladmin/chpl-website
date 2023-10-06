@@ -255,8 +255,12 @@ const theme = createTheme({
       asterisk: {
         fontSize: '2em',
         verticalAlign: 'text-top',
+        color: paletteColors.error,
+        '&$error': {
+              color: paletteColors.error,
+          },
+        },
       },
-    },
     MuiInputLabel: {
       shrink: {
         background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,1) 21%, rgba(255,255,255,1) 74%, rgba(255,255,255,1) 75%, rgba(255,255,255,0) 76%, rgba(255,255,255,0) 100%)',
