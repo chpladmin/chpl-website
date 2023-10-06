@@ -55,11 +55,11 @@ class NavigationComponent {
     return $$(this.elements.shortcuts);
   }
 
-  showNavigation() {
-    $(this.elements.showNavigation).click();
-    browser.waitUntil(() => !($(this.elements.showNavigation).isDisplayed()));
-    browser.waitUntil(() => $(this.elements.shortcutToggle).isClickable());
-    browser.pause(500); // need to wait for the navigation to settle; taking screenshots between previous waitUntils works, but without the screenshot it doesn't
+  async showNavigation() {
+    await $(this.elements.showNavigation).click();
+    await browser.waitUntil(async () => !((await $(this.elements.showNavigation).isDisplayed())));
+    await browser.waitUntil(async () => await $(this.elements.shortcutToggle).isClickable());
+    await browser.pause(500); // need to wait for the navigation to settle; taking screenshots between previous waitUntils works, but without the screenshot it doesn't
   }
 }
 

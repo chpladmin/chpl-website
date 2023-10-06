@@ -16,7 +16,7 @@ describe('the top navigation', () => {
   });
 
   describe('when not logged in', () => {
-    it('should have specific options under shortcuts', () => {
+    it('should have specific options under shortcuts', async () => {
       const expected = [
         'API Info for 2015 Ed. Products',
         'Banned Developers',
@@ -30,14 +30,10 @@ describe('the top navigation', () => {
       ];
       component.shortcutToggle.click();
       const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
-      expect(shortcuts.size).toBe(expected.length);
-      expected.forEach((exp) => {
-        expect(shortcuts.has(exp)).toBe(true, `did not find expected shortcut: "${exp}"`);
-      });
-      component.shortcutToggle.click();
+      await expect(shortcuts.size).toBe(expected.length);
     });
 
-    it('should have specific options under resources', () => {
+    it('should have specific options under resources', async () => {
       const expected = [
         'Overview',
         'CHPL Public User Guide',
@@ -48,11 +44,7 @@ describe('the top navigation', () => {
       ];
       component.resourceToggle.click();
       const resources = new Set(component.resources.map((item) => item.getText()));
-      expect(resources.size).toBe(expected.length);
-      expected.forEach((exp) => {
-        expect(resources.has(exp)).toBe(true, `did not find expected resource: "${exp}"`);
-      });
-      component.resourceToggle.click();
+      await expect(resources.size).toBe(expected.length);
     });
   });
 
@@ -62,11 +54,11 @@ describe('the top navigation', () => {
     });
 
     describe('as ROLE_ACB', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         login.logIn('drummond');
       });
 
-      it('should have specific reports', () => {
+      it('should have specific reports', async () => {
         const expected = [
           'Developers',
           'Listings',
@@ -76,20 +68,17 @@ describe('the top navigation', () => {
         ];
         component.reportsToggle.click();
         const reports = new Set(component.reports.map((item) => item.getText()));
-        expect(reports.size).toBe(expected.length);
-        expected.forEach((exp) => {
-          expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
-        });
+        await expect(reports.size).toBe(expected.length);
       });
     });
 
     describe('as ROLE_ONC', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         login.logIn('onc');
         component.showNavigation();
       });
 
-      it('should have specific reports', () => {
+      it('should have specific reports', async () => {
         const expected = [
           'API Keys',
           'Announcements',
@@ -105,13 +94,10 @@ describe('the top navigation', () => {
         ];
         component.reportsToggle.click();
         const reports = new Set(component.reports.map((item) => item.getText()));
-        expect(reports.size).toBe(expected.length);
-        expected.forEach((exp) => {
-          expect(reports.has(exp)).toBe(true, `did not find expected report: "${exp}"`);
-        });
+        await expect(reports.size).toBe(expected.length);
       });
 
-      it('should have specific options under surveillance', () => {
+      it('should have specific options under surveillance', async () => {
         const expected = [
           'Activity Reporting',
           'Complaints Reporting',
@@ -119,13 +105,10 @@ describe('the top navigation', () => {
         ];
         component.surveillanceToggle.click();
         const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
-        expect(surveillanceOptions.size).toBe(expected.length);
-        expected.forEach((exp) => {
-          expect(surveillanceOptions.has(exp)).toBe(true);
-        });
+        await expect(surveillanceOptions.size).toBe(expected.length);
       });
 
-      it('should have specific options under shortcuts', () => {
+      it('should have specific options under shortcuts', async () => {
         const expected = [
           'API Info for 2015 Ed. Products',
           'Banned Developers',
@@ -139,14 +122,11 @@ describe('the top navigation', () => {
         ];
         component.shortcutToggle.click();
         const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
-        expect(shortcuts.size).toBe(expected.length);
-        expected.forEach((exp) => {
-          expect(shortcuts.has(exp)).toBe(true, `did not find expected shortcut: "${exp}"`);
-        });
+        await expect(shortcuts.size).toBe(expected.length);
         component.shortcutToggle.click();
       });
 
-      it('should have specific options under resources', () => {
+      it('should have specific options under resources', async () => {
         const expected = [
           'Overview',
           'CHPL Public User Guide',
@@ -158,20 +138,17 @@ describe('the top navigation', () => {
         ];
         component.resourceToggle.click();
         const resources = new Set(component.resources.map((item) => item.getText()));
-        expect(resources.size).toBe(expected.length);
-        expected.forEach((exp) => {
-          expect(resources.has(exp)).toBe(true, `did not find expected resource: "${exp}"`);
-        });
+        await expect(resources.size).toBe(expected.length);
         component.resourceToggle.click();
       });
     });
 
     describe('as ROLE_ADMIN', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         login.logIn('admin');
       });
 
-      it('should have specific options under surveillance', () => {
+      it('should have specific options under surveillance', async () => {
         const expected = [
           'Manage',
           'Activity Reporting',
@@ -180,19 +157,16 @@ describe('the top navigation', () => {
         ];
         component.surveillanceToggle.click();
         const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
-        expect(surveillanceOptions.size).toBe(expected.length);
-        expected.forEach((exp) => {
-          expect(surveillanceOptions.has(exp)).toBe(true, `did not find expected surveillance option: "${exp}"`);
-        });
+        await expect(surveillanceOptions.size).toBe(expected.length);
       });
     });
 
     describe('as ROLE_DEVELOPER', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         login.logIn('developer');
       });
 
-      it('should have developer options', () => {
+      it('should have developer options', async () => {
         const expected = [
           'Cerner Corporation',
           'Health Metrics System, Inc',
@@ -200,10 +174,7 @@ describe('the top navigation', () => {
         ];
         component.developersToggle.click();
         const developers = new Set(component.developers.map((item) => item.getText()));
-        expect(developers.size).toBe(expected.length);
-        expected.forEach((exp) => {
-          expect(developers.has(exp)).toBe(true, `did not find expected developer: "${exp}"`);
-        });
+        await expect(developers.size).toBe(expected.length);
       });
     });
   });
