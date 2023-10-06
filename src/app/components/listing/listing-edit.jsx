@@ -3,6 +3,7 @@ import {
   Box,
   Card,
   CardContent,
+  Divider,
   List,
   ListItem,
   Typography,
@@ -102,6 +103,9 @@ const useStyles = makeStyles({
     [theme.breakpoints.up('md')]: {
       top: '104px',
     },
+  },
+  reason: {
+    paddingTop: '8px',
   },
 });
 
@@ -252,7 +256,9 @@ function ChplListingEdit() {
               </InternalScrollButton>
             </Box>
           </Box>
-          <Box>
+        </div>
+        <Card>
+        <CardContent>
             <ChplTextField
               id="reason"
               name="reason"
@@ -263,16 +269,14 @@ function ChplListingEdit() {
               error={formik.touched.productCode && !!formik.errors.productCode}
               helperText={formik.touched.productCode && formik.errors.productCode}
             />
-            If changes are made in any of the following ways, a Reason for Change is required:
-            <List>
-              <ListItem>Clinical Quality Measure Removed</ListItem>
-              <ListItem>Certification Criteria Removed</ListItem>
-              <ListItem>Editing of a 2011 Edition Certified Product</ListItem>
-              <ListItem>Editing of a 2014 Edition Certified Product</ListItem>
-              <ListItem>Certification Status Changed from anything to "Active"</ListItem>
-            </List>
-          </Box>
-        </div>
+              <Typography className={classes.reason} variant="body2" gutterBottom><strong>If changes are made in any of the following ways, a Reason for Change is required:</strong></Typography> 
+              <Typography variant="body2">Clinical Quality Measure Removed</Typography>
+              <Typography variant="body2">Certification Criteria Removed</Typography>
+              <Typography variant="body2">Editing of a 2011 Edition Certified Product</Typography>
+              <Typography variant="body2">Editing of a 2014 Edition Certified Product</Typography>
+              <Typography variant="body2">Certification Status Changed from anything to "Active"</Typography>
+          </CardContent>
+        </Card>
       </div>
       <div className={classes.content}>
         <Card>
