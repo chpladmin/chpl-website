@@ -45,13 +45,13 @@
       </div>
     </div>
   </div>
-  <div class="flex-containter" ng-if="$ctrl.filteredOptions().length > 0">
+  <div class="flex-containter" ng-if="$ctrl.options.length > 0">
     <div class="flex-item">
       <select class="form-control"
               id="{{ $ctrl.identifier }} "
               name="{{ $ctrl.identifier }}"
               ng-model="$ctrl.selectedItem"
-              ng-options="option.value as option.text disable when $ctrl.isItemDisabled(option.value) for option in $ctrl.filteredOptions()"
+              ng-options="option.value as option.text disable when $ctrl.isItemDisabled(option.value) for option in $ctrl.options"
               ng-change="$ctrl.selectOnChange()">
         <option value="" disabled selected>{{ $ctrl.placeholder }}</option>
       </select>
