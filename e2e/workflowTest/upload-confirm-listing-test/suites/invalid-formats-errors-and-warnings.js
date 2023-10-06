@@ -53,8 +53,6 @@ const suite = {
       'Export Documentation is required for certification 170.315 (b)(10) (Cures Update).',
       'Criteria 170.315 (b)(10) (Cures Update) indicates additional software should be present but none was found.',
       'Certification 170.315 (b)(1) (Cures Update) contains Privacy and Security Framework value \'Approach 3 and 4\' which must match one of \'Approach 1\', \'Approach 2\', \'Approach 1;Approach 2\'.',
-      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\'.',
-      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\'.',
       '170.315 (g)(3) is required but was not found.',
     ],
     expectedWarnings: [
@@ -63,6 +61,8 @@ const suite = {
       'Criteria 170.315 (a)(1) contains an invalid Functionality Tested \'(a)(1)(ii)123\'. It has been removed from the pending listing.',
       'Certification 170.315 (d)(13) (Cures Update) has a Use Case but no Attestation Answer.',
       'Test data \'test data\' is invalid for the criterion 170.315 (b)(1) (Cures Update) and has been removed from the listing.',
+      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Tool: Name \'Edge Testing Tool\', Version \'4\'. The duplicates have been removed.',
+      'Certification 170.315 (b)(1) (Cures Update) contains duplicate Test Data: Name \'ONC Test Method\', Version \'5\'. The duplicates have been removed.',
       'CHPL certification ID was not found.',
     ],
   }],
