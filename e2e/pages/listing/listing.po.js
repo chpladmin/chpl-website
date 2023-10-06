@@ -47,7 +47,7 @@ class ListingPage {
     return $(this.elements.goToApi);
   }
 
-  goToDeveloperPageLink(developerName) {
+  async goToDeveloperPageLink(developerName) {
     return $(`//a[text()="${developerName}"]`);
   }
 
@@ -59,11 +59,12 @@ class ListingPage {
     return $(this.elements.chplProductNumber).getText().split(':')[1].trim();
   }
 
-  get previousChplProductNumbers() {
-    return $(this.elements.previousChplProductNumbersTitle)
-      .parentElement()
-      .$$('li')
-      .map((ele) => ele.getText());
+  async previousChplProductNumbers() {
+    const pdtnum = await $(this.elements.previousChplProductNumbersTitle).parentElement().$$('li');
+
+    await Promise.all(
+      pdtnum.map(async (pnum) => pnum.getText()),
+    );
   }
 }
 
