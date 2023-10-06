@@ -55,10 +55,6 @@ export const ExpandableListComponent = {
       this.onChange({'action': action});
     }
 
-    filteredOptions () {
-      return this.options.filter(item => !this._doesItemExistInSelectedItems(item.value));
-    }
-
     isItemDisabled (item) {
       if (typeof this.itemDisabled === 'function') {
         return this.itemDisabled({'item': item});
@@ -78,12 +74,10 @@ export const ExpandableListComponent = {
     }
 
     selectOnChange () {
-      if (!this._doesItemExistInSelectedItems(this.selectedItem)) {
-        var item = this._createSelectedItem(this.selectedItem);
-        this.selectedItems.push(item);
-        var onChangeObject = this._getOnChangeObject('Add', item);
-        this.onChange({'action': onChangeObject});
-      }
+      var item = this._createSelectedItem(this.selectedItem);
+      this.selectedItems.push(item);
+      var onChangeObject = this._getOnChangeObject('Add', item);
+      this.onChange({'action': onChangeObject});
       this.selectedItem = '';
       this._validateItems(this.selectedItems);
     }
@@ -100,11 +94,6 @@ export const ExpandableListComponent = {
         selectedItem.additionalInput2Value = '';
       }
       return selectedItem;
-    }
-
-    _doesItemExistInSelectedItems (item) {
-      return this.selectedItems
-        .reduce((acc, arrayItem) => acc || arrayItem.item[this.itemKey] === item[this.itemKey], false);
     }
 
     _getItemByKey (key) {
