@@ -62,7 +62,14 @@ const ListingDetailsEditComponent = {
           }));
           that.listing.certificationResults = Array.from([...allCriteria, ...that.listing.certificationResults]
             .reduce((m, cr) => m.set(cr.criterion.id, cr), new Map())
-            .values());
+            .values())
+            .map((cr) => ({
+              ...cr,
+              criterion: {
+                ...cr.criterion,
+                attributes: data.find((c) => c.id === cr.criterion.id).attributes,
+              },
+            }));
         });
       }
       if (changes.resources && changes.resources.currentValue) {
