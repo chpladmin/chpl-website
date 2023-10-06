@@ -32,6 +32,16 @@ const useStyles = makeStyles({
   tableCards: {
     width: '100%',
   },
+  statusTable: {
+    width: '33%',
+  },
+  AtlTable: {
+    width: '100%',
+  },
+  multiline: {
+    height: '121px',
+    display: 'grid',
+  },
 });
 
 const validationSchema = yup.object({
@@ -371,9 +381,9 @@ function ChplListingInformationEdit() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Certification Status</TableCell>
-                    <TableCell>Effective Date</TableCell>
-                    <TableCell>Reason for Status Change</TableCell>
+                    <TableCell className={classes.statusTable}>Certification Status</TableCell>
+                    <TableCell className={classes.statusTable}>Effective Date</TableCell>
+                    <TableCell className={classes.statusTable}>Reason for Status Change</TableCell>
                     <TableCell className="sr-only">Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -454,8 +464,8 @@ function ChplListingInformationEdit() {
         && (
           <>
             <Typography variant="subtitle2">Adding New Status:</Typography>
-            <Box display="flex" flexDirection="row" gridGap={8} alignItems="flex-start" width="100%">
-              <Box width="50%">
+            <Box display="flex" flexDirection="row" gridGap={16} alignItems="flex-start" width="100%">
+              <Box display="flex" flexDirection="column" gridGap={16} alignItems="flex-start" width="66%">
                 <ChplTextField
                   select
                   id="new-status-type"
@@ -485,6 +495,7 @@ function ChplListingInformationEdit() {
                   helperText={formik.touched.newStatusDay && formik.errors.newStatusDay}
                 />
               </Box>
+              <Box width="33%">
               <ChplTextField
                 id="new-status-reason"
                 name="newStatusReason"
@@ -494,9 +505,11 @@ function ChplListingInformationEdit() {
                 onBlur={formik.handleBlur}
                 error={formik.touched.newStatusReason && !!formik.errors.newStatusReason}
                 helperText={formik.touched.newStatusReason && formik.errors.newStatusReason}
+                className={classes.multiline}
               />
+              </Box>
             </Box>
-            <Box display="flex" flexDirection="row" width="100%" gridGap={8}>
+            <Box display="flex" flexDirection="row" width="100%" gridGap={16}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -581,7 +594,7 @@ function ChplListingInformationEdit() {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Testing Lab</TableCell>
+                    <TableCell className={classes.AtlTable}>Testing Lab</TableCell>
                     <TableCell className="sr-only">Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -642,7 +655,7 @@ function ChplListingInformationEdit() {
                   <MenuItem value={item} key={item}>{ item }</MenuItem>
                 ))}
             </ChplTextField>
-            <Box Box display="flex" flexDirection="row" width="100%" gridGap={8}>
+            <Box display="flex" flexDirection="row" width="100%" gridGap={16}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -676,7 +689,7 @@ function ChplListingInformationEdit() {
         )}
 
         <Typography variant="subtitle1">Standards & Disclosures :</Typography>
-        <Box display="flex" flexDirection="row" width="100%" gridGap={8} alignItems="baseline">
+        <Box display="flex" flexDirection="row" width="100%" gridGap={16} alignItems="baseline">
 
           <ChplTextField
             id="svap-notice-url"
@@ -700,7 +713,7 @@ function ChplListingInformationEdit() {
           />
         </Box>
         <Typography variant="subtitle1">Real World Testing :</Typography>
-        <Box display="flex" flexDirection="row" width="100%" gridGap={8} alignItems="baseline">
+        <Box display="flex" flexDirection="row" width="100%" gridGap={16} alignItems="baseline">
           <Box display="flex" flexDirection="column" width="100%" gridGap={16}>
             <ChplTextField
               id="rwt-plans-url"
