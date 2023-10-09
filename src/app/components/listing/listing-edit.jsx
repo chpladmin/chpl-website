@@ -116,15 +116,23 @@ function ChplListingEdit() {
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
-  const [errors, setErrors] = useState([]);
-  const [warnings, setWarnings] = useState([]);
+  const [messages, setMessages] = useState({
+    businessErrors: new Set(),
+    dataErrors: new Set(),
+    warnings: new Set(),
+  });
   const [seeAllCqms, setSeeAllCqms] = useState(false);
   const [seeAllCriteria, setSeeAllCriteria] = useState(false);
-  const [showErrorAcknowledgement, setShowErrorAcknowledgement] = useState(false);
-  const [showWarningAcknowledgement, setShowWarningAcknowledgement] = useState(false);
   const putListing = usePutListing();
   const classes = useStyles();
   let formik;
+
+  const getErrors = () => {
+    return [...messages.businessErrors].concat([...messages.dataErrors]);
+  }
+  const getWarnings = () => {
+    return [...messages.warnings];
+  }
 
   const save = () => {
     const payload = {
@@ -141,8 +149,11 @@ function ChplListingEdit() {
         $state.go('listing');
       },
       onError: (error) => {
-        setErrors(error.response.data.errorMessages);
-        setWarnings(error.response.data.warningMessages);
+        setMessages({
+          businessErrors: new Set(error.response.data.businessErrorMessages ?? []),
+          dataErrors: new Set(error.response.data.dataErrorMessages ?? []),
+          warnings: new Set(error.response.data.warningMessages ?? []),
+        });
       },
     });
   };
@@ -159,7 +170,7 @@ function ChplListingEdit() {
         setAcknowledgeWarnings((prev) => !prev);
         break;
       case 'toggleErrorAcknowledgement':
-        setAcknowledgeErrors((prev) => !prev);
+        setAcknowledgeBusinessErrors((prev) => !prev);
         break;
         // no default
     }
@@ -302,10 +313,10 @@ function ChplListingEdit() {
       </div>
       <ChplActionBar
         dispatch={handleDispatch}
-        errors={errors}
-        warnings={warnings}
-        showErrorAcknowledgement={showErrorAcknowledgement}
-        showWarningAcknowledgement={showWarningAcknowledgement}
+        errors={getErrors()}
+        warnings={getWarnings()}
+        showErrorAcknowledgement={messages.businessErrors.size > 0 && messages.dataErrors.size === 0}
+        showWarningAcknowledgement={messages.warnings.size > 0}
       />
     </>
   );
