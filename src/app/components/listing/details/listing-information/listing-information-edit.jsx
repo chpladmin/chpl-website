@@ -299,42 +299,48 @@ function ChplListingInformationEdit() {
 
   return (
     <>
-      CHPL Product Number
-      { getPrefix() }
-      <ChplTextField
-        id="product-code"
-        name="productCode"
-        label="Product Code"
-        required
-        value={formik.values.productCode}
-        onChange={handleProductNumberChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.productCode && !!formik.errors.productCode}
-        helperText={formik.touched.productCode && formik.errors.productCode}
-      />
-      <ChplTextField
-        id="version-code"
-        name="versionCode"
-        label="Version Code"
-        required
-        value={formik.values.versionCode}
-        onChange={handleProductNumberChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.versionCode && !!formik.errors.versionCode}
-        helperText={formik.touched.versionCode && formik.errors.versionCode}
-      />
-      <ChplTextField
-        id="ics-code"
-        name="icsCode"
-        label="ICS Code"
-        required
-        value={formik.values.icsCode}
-        onChange={handleProductNumberChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.icsCode && !!formik.errors.icsCode}
-        helperText={formik.touched.icsCode && formik.errors.icsCode}
-      />
-      { getSuffix() }
+      { !listing.chplProductNumber.startsWith('CHP-')
+        && (
+          <>
+            CHPL Product Number:
+            {' '}
+            { getPrefix() }
+            <ChplTextField
+              id="product-code"
+              name="productCode"
+              label="Product Code"
+              required
+              value={formik.values.productCode}
+              onChange={handleProductNumberChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.productCode && !!formik.errors.productCode}
+              helperText={formik.touched.productCode && formik.errors.productCode}
+            />
+            <ChplTextField
+              id="version-code"
+              name="versionCode"
+              label="Version Code"
+              required
+              value={formik.values.versionCode}
+              onChange={handleProductNumberChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.versionCode && !!formik.errors.versionCode}
+              helperText={formik.touched.versionCode && formik.errors.versionCode}
+            />
+            <ChplTextField
+              id="ics-code"
+              name="icsCode"
+              label="ICS Code"
+              required
+              value={formik.values.icsCode}
+              onChange={handleProductNumberChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.icsCode && !!formik.errors.icsCode}
+              helperText={formik.touched.icsCode && formik.errors.icsCode}
+            />
+            { getSuffix() }
+          </>
+        )}
       <ChplTextField
         id="acb-certification-id"
         name="acbCertificationId"
