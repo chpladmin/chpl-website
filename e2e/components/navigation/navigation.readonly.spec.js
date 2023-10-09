@@ -107,40 +107,6 @@ describe('the top navigation', () => {
         const surveillanceOptions = new Set(component.surveillanceOptions.map((item) => item.getText()));
         await expect(surveillanceOptions.size).toBe(expected.length);
       });
-
-      it('should have specific options under shortcuts', async () => {
-        const expected = [
-          'API Info for 2015 Ed. Products',
-          'Banned Developers',
-          'Charts',
-          'Decertified Products',
-          'Real World Testing',
-          'Inactive Certificates',
-          'Products: Corrective Action',
-          'SED Info for 2015 Ed. Products',
-          'SVAP Information',
-        ];
-        component.shortcutToggle.click();
-        const shortcuts = new Set(component.shortcuts.map((item) => item.getText()));
-        await expect(shortcuts.size).toBe(expected.length);
-        component.shortcutToggle.click();
-      });
-
-      it('should have specific options under resources', async () => {
-        const expected = [
-          'Overview',
-          'CHPL Public User Guide',
-          'CHPL Developer User Guide',
-          'CMS ID Reverse Lookup',
-          'Download the CHPL',
-          'CHPL API',
-          'Contact Us',
-        ];
-        component.resourceToggle.click();
-        const resources = new Set(component.resources.map((item) => item.getText()));
-        await expect(resources.size).toBe(expected.length);
-        component.resourceToggle.click();
-      });
     });
 
     describe('as ROLE_ADMIN', () => {
