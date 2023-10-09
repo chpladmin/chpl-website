@@ -17,7 +17,9 @@ import {
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Delete, Add } from '@material-ui/icons';
+import {
+  Delete, Add, Save, Clear,
+} from '@material-ui/icons';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
@@ -192,7 +194,7 @@ function ChplListingInformationEdit() {
         formik.setFieldValue('testingLab', '');
         setAddingAtl(false);
         break;
-        // no default
+      // no default
     }
   };
 
@@ -210,7 +212,7 @@ function ChplListingInformationEdit() {
           testingLabs: prev.testingLabs.filter((atl) => atl.testingLabId !== item.testingLabId),
         }));
         break;
-        // no default
+      // no default
     }
   };
 
@@ -226,7 +228,7 @@ function ChplListingInformationEdit() {
       case 'icsCode':
         parts[6] = event.target.value;
         break;
-        // no default
+      // no default
     }
     setListing((prev) => ({
       ...prev,
@@ -255,7 +257,7 @@ function ChplListingInformationEdit() {
           practiceType: practiceTypes.find((type) => type.name === event.target.value),
         }));
         break;
-        // no default
+      // no default
     }
     formik.setFieldValue(event.target.name, event.target.value);
   };
@@ -318,402 +320,386 @@ function ChplListingInformationEdit() {
 
   return (
     <>
-      { !listing.chplProductNumber.startsWith('CHP-')
-        && (
-          <>
-            CHPL Product Number:
-            {' '}
-            { getPrefix() }
-            <ChplTextField
-              id="product-code"
-              name="productCode"
-              label="Product Code"
-              required
-              value={formik.values.productCode}
-              onChange={handleProductNumberChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.productCode && !!formik.errors.productCode}
-              helperText={formik.touched.productCode && formik.errors.productCode}
-            />
-            <ChplTextField
-              id="version-code"
-              name="versionCode"
-              label="Version Code"
-              required
-              value={formik.values.versionCode}
-              onChange={handleProductNumberChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.versionCode && !!formik.errors.versionCode}
-              helperText={formik.touched.versionCode && formik.errors.versionCode}
-            />
-            <ChplTextField
-              id="ics-code"
-              name="icsCode"
-              label="ICS Code"
-              required
-              value={formik.values.icsCode}
-              onChange={handleProductNumberChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.icsCode && !!formik.errors.icsCode}
-              helperText={formik.touched.icsCode && formik.errors.icsCode}
-            />
-            { getSuffix() }
-          </>
-        )}
-      <ChplTextField
-        id="acb-certification-id"
-        name="acbCertificationId"
-        label="ONC-ACB Certification ID"
-        value={formik.values.acbCertificationId}
-        onChange={handleBasicChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
-        helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
-      />
-      { listing.certificationEvents?.length > 0
-        && (
-          <>
-            <Typography variant="subtitle1">Status:</Typography>
-            <Card className={classes.tableCards}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell className={classes.statusTable}>Certification Status</TableCell>
-                    <TableCell className={classes.statusTable}>Effective Date</TableCell>
-                    <TableCell className={classes.statusTable}>Reason for Status Change</TableCell>
-                    <TableCell className="sr-only">Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  { listing.certificationEvents
-                    .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
-                    .map((ce, idx, vals) => (
-                      <TableRow key={ce.eventDay}>
-                        <TableCell>
-                          { ce.status.name }
-                          { idx !== listing.certificationEvents.length - 1 && ce.status.name === vals[idx + 1].status.name
-                          && (
-                            <>
-                              <br />
-                              Certification Status must differ from previous Status
-                            </>
-                          )}
-                          { idx === 0 && mayCauseSuspension(ce.status.name)
-                          && (
-                            <>
-                              <br />
-                              Setting this product to this status may trigger a ban by ONC
-                            </>
-                          )}
-                          { idx === 0 && ce.status.name === 'Terminated by ONC'
-                          && (
-                            <>
-                              <br />
-                              Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;
-                            </>
-                          )}
-                          { idx === 0 && ce.status.name === 'Suspended by ONC'
-                          && (
-                            <>
-                              <br />
-                              Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;
-                            </>
-                          )}
-                          { idx === 0 && ce.status.name === 'Withdrawn by Developer'
-                          && (
-                            <>
-                              <br />
-                              Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;
-                            </>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          { getDisplayDateFormat(ce.eventDay) }
-                        </TableCell>
-                        <TableCell>
-                          { ce.reason }
-                        </TableCell>
-                        <TableCell>
-                          <IconButton variant="outlined" onClick={() => handleItemRemoval('certificationEvents', ce)}>
-                            <Delete color="error" />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </Card>
-          </>
-        )}
-        { !addingStatus
-        && (
-          <Button
-            size="medium"
-            color="primary"
-            variant="outlined"
-            onClick={() => setAddingStatus(true)}
-            endIcon={<Add fontSize="medium" />}
-          >
-            Add
-          </Button>
-        )}
-        { addingStatus
-        && (
-          <>
-            <Typography variant="subtitle2">Adding New Status:</Typography>
-            <Box display="flex" flexDirection="row" gridGap={8} alignItems="flex-start" width="100%">
-              <Box display="flex" flexDirection="column" gridGap={8} alignItems="flex-start" width="66%">
-                <ChplTextField
-                  select
-                  id="new-status-type"
-                  name="newStatusType"
-                  label="New Status"
-                  required
-                  value={formik.values.newStatusType}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.newStatusType && !!formik.errors.newStatusType}
-                  helperText={formik.touched.newStatusType && formik.errors.newStatusType}
-                >
-                  { certificationStatuses.map((item) => (
-                    <MenuItem value={item} key={item.id}>{ item.name }</MenuItem>
-                  ))}
-                </ChplTextField>
-                <ChplTextField
-                  id="new-status-day"
-                  name="newStatusDay"
-                  label="Effective Date"
-                  type="date"
-                  required
-                  value={formik.values.newStatusDay}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.newStatusDay && !!formik.errors.newStatusDay}
-                  helperText={formik.touched.newStatusDay && formik.errors.newStatusDay}
-                />
+      <Box display="flex" flexDirection="column" gridGap={16} alignItems="flex-start">
+        {!listing.chplProductNumber.startsWith('CHP-')
+          && (
+            <>
+              <Typography variant="subtitle1">CHPL Product Number & Certification ID:</Typography>
+              <Box display="flex" flexDirection="row" alignContent="flex-start" width="100%" gridGap={16}>
+                <Box display="flex" flexDirection="row" gridGap={8} width="100%" alignItems="baseline">
+                  {getPrefix()}
+                  <ChplTextField
+                    id="product-code"
+                    name="productCode"
+                    label="Product Code"
+                    required
+                    value={formik.values.productCode}
+                    onChange={handleProductNumberChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.productCode && !!formik.errors.productCode}
+                    helperText={formik.touched.productCode && formik.errors.productCode}
+                  />
+                  <ChplTextField
+                    id="version-code"
+                    name="versionCode"
+                    label="Version Code"
+                    required
+                    value={formik.values.versionCode}
+                    onChange={handleProductNumberChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.versionCode && !!formik.errors.versionCode}
+                    helperText={formik.touched.versionCode && formik.errors.versionCode}
+                  />
+                  <ChplTextField
+                    id="ics-code"
+                    name="icsCode"
+                    label="ICS Code"
+                    required
+                    value={formik.values.icsCode}
+                    onChange={handleProductNumberChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.icsCode && !!formik.errors.icsCode}
+                    helperText={formik.touched.icsCode && formik.errors.icsCode}
+                  />
+                  {getSuffix()}
+                </Box>
+                <Box width="50%">
+                  <ChplTextField
+                    id="acb-certification-id"
+                    name="acbCertificationId"
+                    label="ONC-ACB Certification ID"
+                    value={formik.values.acbCertificationId}
+                    onChange={handleBasicChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
+                    helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
+                  />
+                </Box>
               </Box>
-              <Box width="33%">
+            </>
+          )}
+        {listing.certificationEvents?.length > 0
+          && (
+            <>
+              <Typography variant="subtitle1">Status:</Typography>
+              <Card className={classes.tableCards}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className={classes.statusTable}>Certification Status</TableCell>
+                      <TableCell className={classes.statusTable}>Effective Date</TableCell>
+                      <TableCell className={classes.statusTable}>Reason for Status Change</TableCell>
+                      <TableCell className="sr-only">Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {listing.certificationEvents
+                      .sort((a, b) => (a.eventDay < b.eventDay ? 1 : -1))
+                      .map((ce, idx, vals) => (
+                        <TableRow key={ce.eventDay}>
+                          <TableCell>
+                            {ce.status.name}
+                            {idx !== listing.certificationEvents.length - 1 && ce.status.name === vals[idx + 1].status.name
+                              && (
+                                <>
+                                  <br />
+                                  Certification Status must differ from previous Status
+                                </>
+                              )}
+                            {idx === 0 && mayCauseSuspension(ce.status.name)
+                              && (
+                                <>
+                                  <br />
+                                  Setting this product to this status may trigger a ban by ONC
+                                </>
+                              )}
+                            {idx === 0 && ce.status.name === 'Terminated by ONC'
+                              && (
+                                <>
+                                  <br />
+                                  Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;
+                                </>
+                              )}
+                            {idx === 0 && ce.status.name === 'Suspended by ONC'
+                              && (
+                                <>
+                                  <br />
+                                  Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;
+                                </>
+                              )}
+                            {idx === 0 && ce.status.name === 'Withdrawn by Developer'
+                              && (
+                                <>
+                                  <br />
+                                  Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;
+                                </>
+                              )}
+                          </TableCell>
+                          <TableCell>
+                            {getDisplayDateFormat(ce.eventDay)}
+                          </TableCell>
+                          <TableCell>
+                            {ce.reason}
+                          </TableCell>
+                          <TableCell>
+                            <IconButton variant="outlined" onClick={() => handleItemRemoval('certificationEvents', ce)}>
+                              <Delete color="error" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </Card>
+            </>
+          )}
+        {!addingStatus
+          && (
+            <Button
+              size="medium"
+              color="primary"
+              variant="outlined"
+              onClick={() => setAddingStatus(true)}
+              endIcon={<Add fontSize="medium" />}
+            >
+              Add
+            </Button>
+          )}
+        {addingStatus
+          && (
+            <>
+              <Typography variant="subtitle2">Adding New Status:</Typography>
+              <Box display="flex" flexDirection="row" gridGap={8} alignItems="flex-start" width="100%">
+                <Box display="flex" flexDirection="column" gridGap={8} alignItems="flex-start" width="66%">
+                  <ChplTextField
+                    select
+                    id="new-status-type"
+                    name="newStatusType"
+                    label="New Status"
+                    required
+                    value={formik.values.newStatusType}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.newStatusType && !!formik.errors.newStatusType}
+                    helperText={formik.touched.newStatusType && formik.errors.newStatusType}
+                  >
+                    {certificationStatuses.map((item) => (
+                      <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
+                    ))}
+                  </ChplTextField>
+                  <ChplTextField
+                    id="new-status-day"
+                    name="newStatusDay"
+                    label="Effective Date"
+                    type="date"
+                    required
+                    value={formik.values.newStatusDay}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.newStatusDay && !!formik.errors.newStatusDay}
+                    helperText={formik.touched.newStatusDay && formik.errors.newStatusDay}
+                  />
+                </Box>
+                <Box width="33%">
+                  <ChplTextField
+                    id="new-status-reason"
+                    name="newStatusReason"
+                    label="Reason for Change"
+                    value={formik.values.newStatusReason}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.newStatusReason && !!formik.errors.newStatusReason}
+                    helperText={formik.touched.newStatusReason && formik.errors.newStatusReason}
+                    multiline
+                  />
+                </Box>
+              </Box>
+              <Box display="flex" flexDirection="row" width="100%" gridGap={8}>
+                <Button
+                  size="medium"
+                  endIcon={<Clear fontSize="small" />}
+                  onClick={() => setAddingStatus(false)}
+                  variant="contained"
+                  color="default"
+                >
+                  cancel
+                </Button>
+                <Button
+                  size="medium"
+                  endIcon={<Save fontSize="small" />}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleItemAddition('certificationEvents')}
+                  disabled={formik.values.newStatusType === '' || formik.values.newStatusDay === ''}
+                >
+                  save
+                </Button>
+              </Box>
+            </>
+
+          )}
+        {listing.edition?.name === '2014'
+          && (
+            <>
               <ChplTextField
-                id="new-status-reason"
-                name="newStatusReason"
-                label="Reason for Change"
-                value={formik.values.newStatusReason}
+                select
+                id="classification-type"
+                name="classificationType"
+                label="Classification Type"
+                required
+                value={formik.values.classificationType}
+                onChange={handleSelectChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.classificationType && !!formik.errors.classificationType}
+                helperText={formik.touched.classificationType && formik.errors.classificationType}
+              >
+                {classificationTypeOptions.map((item) => (
+                  <MenuItem value={item} key={item}>{item}</MenuItem>
+                ))}
+              </ChplTextField>
+              <ChplTextField
+                select
+                id="practice-type"
+                name="practiceType"
+                label="Practice Type"
+                required
+                value={formik.values.practiceType}
+                onChange={handleSelectChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.practiceType && !!formik.errors.practiceType}
+                helperText={formik.touched.practiceType && formik.errors.practiceType}
+              >
+                {practiceTypeOptions.map((item) => (
+                  <MenuItem value={item} key={item}>{item}</MenuItem>
+                ))}
+              </ChplTextField>
+            </>
+          )}
+
+        {listing.testingLabs?.length > 0
+          && (
+            <>
+              <Typography variant="subtitle1">ONC-ACB & ATL :</Typography>
+              {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                && (
+                  <ChplTextField
+                    select
+                    id="certifying-body"
+                    name="certifyingBody"
+                    label="ONC-ACB"
+                    required
+                    value={formik.values.certifyingBody}
+                    onChange={handleSelectChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
+                    helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
+                  >
+                    {acbOptions.map((item) => (
+                      <MenuItem value={item} key={item}>{item}</MenuItem>
+                    ))}
+                  </ChplTextField>
+                )}
+              <Card className={classes.tableCards}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className={classes.AtlTable}>Testing Lab</TableCell>
+                      <TableCell className="sr-only">Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {listing.testingLabs
+                      .sort((a, b) => (a.testingLabName < b.testingLabName ? -1 : 1))
+                      .map((atl) => (
+                        <TableRow key={atl.testingLabId}>
+                          <TableCell>
+                            {atl.testingLabName}
+                          </TableCell>
+                          <TableCell>
+                            <IconButton
+                              variant="outlined"
+                              onClick={() => handleItemRemoval('oncAtls', atl)}
+                            >
+                              <Delete color="error" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </Card>
+            </>
+          )}
+        {!addingAtl
+          && (
+            <Button
+              size="medium"
+              color="primary"
+              variant="outlined"
+              endIcon={<Add fontSize="medium" />}
+              onClick={() => setAddingAtl(true)}
+            >
+              Add
+            </Button>
+          )}
+        {addingAtl
+          && (
+            <>
+              <Typography variant="subtitle2">Adding New Testing Lab:</Typography>
+
+              <ChplTextField
+                select
+                id="testing-lab"
+                name="testingLab"
+                label="New ONC-ATL"
+                value={formik.values.testingLab}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.newStatusReason && !!formik.errors.newStatusReason}
-                helperText={formik.touched.newStatusReason && formik.errors.newStatusReason}
-                className={classes.multiline}
-              />
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="row" width="100%" gridGap={8}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleItemAddition('certificationEvents')}
-                disabled={formik.values.newStatusType === '' || formik.values.newStatusDay === ''}
+                error={formik.touched.testingLab && !!formik.errors.testingLab}
+                helperText={formik.touched.testingLab && formik.errors.testingLab}
               >
-                save
-              </Button>
-              <Button
-                onClick={() => setAddingStatus(false)}
-                variant="contained"
-                color="default"
-              >
-                cancel
-              </Button>
-            </Box>
-          </>
-
-        )}
-        { listing.edition?.name === '2014'
-        && (
-          <>
-            <ChplTextField
-              select
-              id="classification-type"
-              name="classificationType"
-              label="Classification Type"
-              required
-              value={formik.values.classificationType}
-              onChange={handleSelectChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.classificationType && !!formik.errors.classificationType}
-              helperText={formik.touched.classificationType && formik.errors.classificationType}
-            >
-              { classificationTypeOptions.map((item) => (
-                <MenuItem value={item} key={item}>{ item }</MenuItem>
-              ))}
-            </ChplTextField>
-            <ChplTextField
-              select
-              id="practice-type"
-              name="practiceType"
-              label="Practice Type"
-              required
-              value={formik.values.practiceType}
-              onChange={handleSelectChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.practiceType && !!formik.errors.practiceType}
-              helperText={formik.touched.practiceType && formik.errors.practiceType}
-            >
-              { practiceTypeOptions.map((item) => (
-                <MenuItem value={item} key={item}>{ item }</MenuItem>
-              ))}
-            </ChplTextField>
-          </>
-        )}
-
-        { listing.testingLabs?.length > 0
-        && (
-          <>
-            <Typography variant="subtitle1">ONC-ACB & ATL :</Typography>
-            { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-        && (
-        <ChplTextField
-          select
-          id="certifying-body"
-          name="certifyingBody"
-          label="ONC-ACB"
-          required
-          value={formik.values.certifyingBody}
-          onChange={handleSelectChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
-          helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
-        >
-          { acbOptions.map((item) => (
-            <MenuItem value={item} key={item}>{ item }</MenuItem>
-          ))}
-        </ChplTextField>
-        )}
-            <Card className={classes.tableCards}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell className={classes.AtlTable}>Testing Lab</TableCell>
-                    <TableCell className="sr-only">Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  { listing.testingLabs
-                    .sort((a, b) => (a.testingLabName < b.testingLabName ? -1 : 1))
-                    .map((atl) => (
-                      <TableRow key={atl.testingLabId}>
-                        <TableCell>
-                          { atl.testingLabName }
-                        </TableCell>
-                        <TableCell>
-                          <IconButton
-                            variant="outlined"
-                            onClick={() => handleItemRemoval('oncAtls', atl)}
-                          >
-                            <Delete color="error" />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </Card>
-      { listing.testingLabs?.length > 0
-        && (
-          <>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Testing Lab</TableCell>
-                  <TableCell className="sr-only">Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                { listing.testingLabs
-                  .sort((a, b) => (a.testingLab.name < b.testingLab.name ? -1 : 1))
-                  .map((atl) => (
-                    <TableRow key={atl.testingLab.id}>
-                      <TableCell>
-                        { atl.testingLab.retired ? 'Retired | ' : ''}
-                        { atl.testingLab.name }
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          onClick={() => handleItemRemoval('oncAtls', atl)}
-                        >
-                          X - need an icon
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                {atlOptions
+                  .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLabName)))
+                  .map((item) => (
+                    <MenuItem value={item} key={item}>{item}</MenuItem>
                   ))}
-              </TableBody>
-            </Table>
-          </>
-        )}
-        { !addingAtl
-        && (
-          <Button
-            size="medium"
-            color="primary"
-            variant="outlined"
-            endIcon={<Add fontSize="medium" />}
-            onClick={() => setAddingAtl(true)}
-          >
-            Add
-          </Button>
-        )}
-        { addingAtl
-        && (
-          <>
-            <Typography variant="subtitle2">Adding New Testing Lab:</Typography>
-
+              </ChplTextField>
+              <Box display="flex" flexDirection="row" width="100%" gridGap={4}>
+                <Button
+                  size="medium"
+                  endIcon={<Clear fontSize="small" />}
+                  variant="contained"
+                  color="default"
+                  onClick={() => setAddingAtl(false)}
+                >
+                  cancel
+                </Button>
+                <Button
+                  size="medium"
+                  endIcon={<Save fontSize="small" />}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleItemAddition('oncAtls')}
+                  disabled={formik.values.testingLab === ''}
+                >
+                  save
+                </Button>
+              </Box>
+            </>
+          )}
+        {listing.chplProductNumber.startsWith('CHP-')
+          && (
             <ChplTextField
-              select
-              id="testing-lab"
-              name="testingLab"
-              label="New ONC-ATL"
-              value={formik.values.testingLab}
-              onChange={formik.handleChange}
+              id="product-additional-software"
+              name="productAdditionalSoftware"
+              label="Product wide Relied Upon Software"
+              value={formik.values.productAdditionalSoftware}
+              onChange={handleBasicChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.testingLab && !!formik.errors.testingLab}
-              helperText={formik.touched.testingLab && formik.errors.testingLab}
-            >
-              { atlOptions
-                .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLabName)))
-                .map((item) => (
-                  <MenuItem value={item} key={item}>{ item }</MenuItem>
-                ))}
-            </ChplTextField>
-            <Box display="flex" flexDirection="row" width="100%" gridGap={16}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleItemAddition('oncAtls')}
-                disabled={formik.values.testingLab === ''}
-              >
-                Save
-              </Button>
-              <Button
-                variant="contained"
-                color="default"
-                onClick={() => setAddingAtl(false)}
-              >
-                Cancel
-              </Button>
-            </Box>
-          </>
-        )}
-        { listing.chplProductNumber.startsWith('CHP-')
-        && (
-          <ChplTextField
-            id="product-additional-software"
-            name="productAdditionalSoftware"
-            label="Product wide Relied Upon Software"
-            value={formik.values.productAdditionalSoftware}
-            onChange={handleBasicChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.productAdditionalSoftware && !!formik.errors.productAdditionalSoftware}
-            helperText={formik.touched.productAdditionalSoftware && formik.errors.productAdditionalSoftware}
-          />
-        )}
+              error={formik.touched.productAdditionalSoftware && !!formik.errors.productAdditionalSoftware}
+              helperText={formik.touched.productAdditionalSoftware && formik.errors.productAdditionalSoftware}
+            />
+          )}
 
         <Typography variant="subtitle1">Standards & Disclosures :</Typography>
         <Box display="flex" flexDirection="row" width="100%" gridGap={16} alignItems="baseline">
