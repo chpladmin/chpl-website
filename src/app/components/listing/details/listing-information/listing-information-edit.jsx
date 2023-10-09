@@ -31,18 +31,30 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  tableCards: {
-    width: '100%',
-  },
   statusTable: {
     width: '33%',
   },
-  AtlTable: {
+  fullWidth: {
     width: '100%',
   },
-  multiline: {
-    height: '12vh',
-    display: 'grid',
+  editListingContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gridGap: '16px',
+    alignItems: 'flex-start',
+  },
+  productIdContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gridGap: '16px',
+    alignItems: 'flex-start',
+    width: '100%',
+  },
+  productVersionIcsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gridGap: '16px',
+    alignItems: 'baseline',
   },
 });
 
@@ -320,69 +332,65 @@ function ChplListingInformationEdit() {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" gridGap={16} alignItems="flex-start">
+      <Box className={classes.editListingContainer}>
         {!listing.chplProductNumber.startsWith('CHP-')
           && (
             <>
               <Typography variant="subtitle1">CHPL Product Number & Certification ID:</Typography>
-              <Box display="flex" flexDirection="row" alignContent="flex-start" width="100%" gridGap={16}>
-                <Box display="flex" flexDirection="row" gridGap={8} width="100%" alignItems="baseline">
-                  {getPrefix()}
-                  <ChplTextField
-                    id="product-code"
-                    name="productCode"
-                    label="Product Code"
-                    required
-                    value={formik.values.productCode}
-                    onChange={handleProductNumberChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.productCode && !!formik.errors.productCode}
-                    helperText={formik.touched.productCode && formik.errors.productCode}
-                  />
-                  <ChplTextField
-                    id="version-code"
-                    name="versionCode"
-                    label="Version Code"
-                    required
-                    value={formik.values.versionCode}
-                    onChange={handleProductNumberChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.versionCode && !!formik.errors.versionCode}
-                    helperText={formik.touched.versionCode && formik.errors.versionCode}
-                  />
-                  <ChplTextField
-                    id="ics-code"
-                    name="icsCode"
-                    label="ICS Code"
-                    required
-                    value={formik.values.icsCode}
-                    onChange={handleProductNumberChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.icsCode && !!formik.errors.icsCode}
-                    helperText={formik.touched.icsCode && formik.errors.icsCode}
-                  />
-                  {getSuffix()}
-                </Box>
-                <Box width="50%">
-                  <ChplTextField
-                    id="acb-certification-id"
-                    name="acbCertificationId"
-                    label="ONC-ACB Certification ID"
-                    value={formik.values.acbCertificationId}
-                    onChange={handleBasicChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
-                    helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
-                  />
-                </Box>
+              <Box className={classes.productVersionIcsContainer}>
+                {getPrefix()}
+                <ChplTextField
+                  id="product-code"
+                  name="productCode"
+                  label="Product Code"
+                  required
+                  value={formik.values.productCode}
+                  onChange={handleProductNumberChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.productCode && !!formik.errors.productCode}
+                  helperText={formik.touched.productCode && formik.errors.productCode}
+                />
+                <ChplTextField
+                  id="version-code"
+                  name="versionCode"
+                  label="Version Code"
+                  required
+                  value={formik.values.versionCode}
+                  onChange={handleProductNumberChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.versionCode && !!formik.errors.versionCode}
+                  helperText={formik.touched.versionCode && formik.errors.versionCode}
+                />
+                <ChplTextField
+                  id="ics-code"
+                  name="icsCode"
+                  label="ICS Code"
+                  required
+                  value={formik.values.icsCode}
+                  onChange={handleProductNumberChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.icsCode && !!formik.errors.icsCode}
+                  helperText={formik.touched.icsCode && formik.errors.icsCode}
+                />
+                {getSuffix()}
               </Box>
+              <ChplTextField
+                id="acb-certification-id"
+                name="acbCertificationId"
+                label="ONC-ACB Certification ID"
+                value={formik.values.acbCertificationId}
+                onChange={handleBasicChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
+                helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
+              />
             </>
           )}
         {listing.certificationEvents?.length > 0
           && (
             <>
               <Typography variant="subtitle1">Status:</Typography>
-              <Card className={classes.tableCards}>
+              <Card className={classes.fullWidth}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -403,35 +411,35 @@ function ChplListingInformationEdit() {
                               && (
                                 <>
                                   <br />
-                                  Certification Status must differ from previous Status
+                                  <Typography color="error" variant="body2">Certification Status must differ from previous Status</Typography>
                                 </>
                               )}
                             {idx === 0 && mayCauseSuspension(ce.status.name)
                               && (
                                 <>
                                   <br />
-                                  Setting this product to this status may trigger a ban by ONC
+                                  <Typography color="error" variant="body2">Setting this product to this status may trigger a ban by ONC</Typography>
                                 </>
                               )}
                             {idx === 0 && ce.status.name === 'Terminated by ONC'
                               && (
                                 <>
                                   <br />
-                                  Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;
+                                  <Typography color="error" variant="body2">Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography>
                                 </>
                               )}
                             {idx === 0 && ce.status.name === 'Suspended by ONC'
                               && (
                                 <>
                                   <br />
-                                  Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;
+                                  <Typography color="error" variant="body2">Setting this product to this status will cause the developer to be marked as &quot;Suspended by ONC&quot;</Typography>
                                 </>
                               )}
                             {idx === 0 && ce.status.name === 'Withdrawn by Developer'
                               && (
                                 <>
                                   <br />
-                                  Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;
+                                  <Typography color="error" variant="body2">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status &quot;Withdrawn by Developer Under Surveillance/Review&quot;</Typography>
                                 </>
                               )}
                           </TableCell>
@@ -469,8 +477,8 @@ function ChplListingInformationEdit() {
           && (
             <>
               <Typography variant="subtitle2">Adding New Status:</Typography>
-              <Box display="flex" flexDirection="row" gridGap={8} alignItems="flex-start" width="100%">
-                <Box display="flex" flexDirection="column" gridGap={8} alignItems="flex-start" width="66%">
+              <Box className={classes.newStatusContainer} display="flex" flexDirection="row" gridGap={8} alignItems="flex-start" width="100%">
+                <Box className={classes.statusDateContainer} display="flex" flexDirection="column" gridGap={8} alignItems="flex-start" width="66%">
                   <ChplTextField
                     select
                     id="new-status-type"
@@ -500,7 +508,7 @@ function ChplListingInformationEdit() {
                     helperText={formik.touched.newStatusDay && formik.errors.newStatusDay}
                   />
                 </Box>
-                <Box width="33%">
+                <Box className={classes.oneThirdWidth} width="33%">
                   <ChplTextField
                     id="new-status-reason"
                     name="newStatusReason"
@@ -520,14 +528,14 @@ function ChplListingInformationEdit() {
                   endIcon={<Clear fontSize="small" />}
                   onClick={() => setAddingStatus(false)}
                   variant="contained"
-                  color="default"
+                  color="secondary"
                 >
                   cancel
                 </Button>
                 <Button
                   size="medium"
                   endIcon={<Save fontSize="small" />}
-                  variant="outlined"
+                  variant="contained"
                   color="primary"
                   onClick={() => handleItemAddition('certificationEvents')}
                   disabled={formik.values.newStatusType === '' || formik.values.newStatusDay === ''}
@@ -599,11 +607,11 @@ function ChplListingInformationEdit() {
                     ))}
                   </ChplTextField>
                 )}
-              <Card className={classes.tableCards}>
+              <Card className={classes.fullWidth}>
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell className={classes.AtlTable}>Testing Lab</TableCell>
+                      <TableCell className={classes.fullWidth}>Testing Lab</TableCell>
                       <TableCell className="sr-only">Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -669,7 +677,7 @@ function ChplListingInformationEdit() {
                   size="medium"
                   endIcon={<Clear fontSize="small" />}
                   variant="contained"
-                  color="default"
+                  color="secondary"
                   onClick={() => setAddingAtl(false)}
                 >
                   cancel
@@ -677,7 +685,7 @@ function ChplListingInformationEdit() {
                 <Button
                   size="medium"
                   endIcon={<Save fontSize="small" />}
-                  variant="outlined"
+                  variant="contained"
                   color="primary"
                   onClick={() => handleItemAddition('oncAtls')}
                   disabled={formik.values.testingLab === ''}
