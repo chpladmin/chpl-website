@@ -121,18 +121,13 @@ function ChplListingEdit() {
     dataErrors: new Set(),
     warnings: new Set(),
   });
-  const [seeAllCqms, setSeeAllCqms] = useState(false);
-  const [seeAllCriteria, setSeeAllCriteria] = useState(false);
   const putListing = usePutListing();
   const classes = useStyles();
   let formik;
 
-  const getErrors = () => {
-    return [...messages.businessErrors].concat([...messages.dataErrors]);
-  }
-  const getWarnings = () => {
-    return [...messages.warnings];
-  }
+  const getErrors = () => [...messages.businessErrors].concat([...messages.dataErrors]);
+
+  const getWarnings = () => [...messages.warnings];
 
   const save = () => {
     const payload = {
@@ -176,7 +171,7 @@ function ChplListingEdit() {
     }
   };
 
-    formik = useFormik({
+  formik = useFormik({
     initialValues: {
       reason: '',
     },
@@ -280,7 +275,7 @@ function ChplListingEdit() {
               <ListItem>Certification Criteria Removed</ListItem>
               <ListItem>Editing of a 2011 Edition Certified Product</ListItem>
               <ListItem>Editing of a 2014 Edition Certified Product</ListItem>
-              <ListItem>Certification Status Changed from anything to "Active"</ListItem>
+              <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
             </List>
           </Box>
         </div>
