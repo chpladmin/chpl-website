@@ -120,15 +120,18 @@ function ChplListingEdit() {
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [acknowledgeBusinessErrors, setAcknowledgeBusinessErrors] = useState(false);
-  const [errors, setErrors] = useState([]);
-  const [warnings, setWarnings] = useState([]);
-  const [seeAllCqms, setSeeAllCqms] = useState(false);
-  const [seeAllCriteria, setSeeAllCriteria] = useState(false);
-  const [showErrorAcknowledgement, setShowErrorAcknowledgement] = useState(false);
-  const [showWarningAcknowledgement, setShowWarningAcknowledgement] = useState(false);
+  const [messages, setMessages] = useState({
+    businessErrors: new Set(),
+    dataErrors: new Set(),
+    warnings: new Set(),
+  });
   const putListing = usePutListing();
   const classes = useStyles();
   let formik;
+
+  const getErrors = () => [...messages.businessErrors].concat([...messages.dataErrors]);
+
+  const getWarnings = () => [...messages.warnings];
 
   const save = () => {
     const payload = {
@@ -145,8 +148,11 @@ function ChplListingEdit() {
         $state.go('listing');
       },
       onError: (error) => {
-        setErrors(error.response.data.errorMessages);
-        setWarnings(error.response.data.warningMessages);
+        setMessages({
+          businessErrors: new Set(error.response.data.businessErrorMessages ?? []),
+          dataErrors: new Set(error.response.data.dataErrorMessages ?? []),
+          warnings: new Set(error.response.data.warningMessages ?? []),
+        });
       },
     });
   };
@@ -163,13 +169,13 @@ function ChplListingEdit() {
         setAcknowledgeWarnings((prev) => !prev);
         break;
       case 'toggleErrorAcknowledgement':
-        setAcknowledgeErrors((prev) => !prev);
+        setAcknowledgeBusinessErrors((prev) => !prev);
         break;
         // no default
     }
   };
 
-    formik = useFormik({
+  formik = useFormik({
     initialValues: {
       reason: '',
     },
@@ -274,7 +280,7 @@ function ChplListingEdit() {
               <Typography variant="body2">Certification Criteria Removed</Typography>
               <Typography variant="body2">Editing of a 2011 Edition Certified Product</Typography>
               <Typography variant="body2">Editing of a 2014 Edition Certified Product</Typography>
-              <Typography variant="body2">Certification Status Changed from anything to "Active"</Typography>
+              <Typography variant="body2">Certification Status Changed from anything to &quot;Active&quot;</Typography>
           </CardContent>
         </Card>
       </div>
@@ -306,10 +312,10 @@ function ChplListingEdit() {
       </div>
       <ChplActionBar
         dispatch={handleDispatch}
-        errors={errors}
-        warnings={warnings}
-        showErrorAcknowledgement={showErrorAcknowledgement}
-        showWarningAcknowledgement={showWarningAcknowledgement}
+        errors={getErrors()}
+        warnings={getWarnings()}
+        showErrorAcknowledgement={messages.businessErrors.size > 0 && messages.dataErrors.size === 0}
+        showWarningAcknowledgement={messages.warnings.size > 0}
       />
     </>
   );
