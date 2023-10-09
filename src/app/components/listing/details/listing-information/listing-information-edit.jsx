@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CircularProgress,
-  Divider,
   IconButton,
   MenuItem,
   Table,
@@ -31,29 +30,46 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  statusTable: {
+  oneThirdWidth: {
     width: '33%',
+  },
+  halfWidth: {
+    width: '50%',
   },
   fullWidth: {
     width: '100%',
   },
-  editListingContainer: {
+  cancelAndSaveButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    gridGap: '8px',
+    width: '100%',
+  },
+  column: {
     display: 'flex',
     flexDirection: 'column',
     gridGap: '16px',
     alignItems: 'flex-start',
+    width: '100%',
   },
-  productIdContainer: {
+  twoColumnContainer: {
     display: 'flex',
     flexDirection: 'row',
-    gridGap: '16px',
+    gridGap: '8px',
     alignItems: 'flex-start',
     width: '100%',
+  },
+  statusDateContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gridGap: '8px',
+    alignItems: 'flex-start',
+    width: '66%',
   },
   productVersionIcsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    gridGap: '16px',
+    gridGap: '8px',
     alignItems: 'baseline',
   },
 });
@@ -332,7 +348,7 @@ function ChplListingInformationEdit() {
 
   return (
     <>
-      <Box className={classes.editListingContainer}>
+      <Box className={classes.column}>
         {!listing.chplProductNumber.startsWith('CHP-')
           && (
             <>
@@ -394,9 +410,9 @@ function ChplListingInformationEdit() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell className={classes.statusTable}>Certification Status</TableCell>
-                      <TableCell className={classes.statusTable}>Effective Date</TableCell>
-                      <TableCell className={classes.statusTable}>Reason for Status Change</TableCell>
+                      <TableCell className={classes.oneThirdWidth}>Certification Status</TableCell>
+                      <TableCell className={classes.oneThirdWidth}>Effective Date</TableCell>
+                      <TableCell className={classes.oneThirdWidth}>Reason for Status Change</TableCell>
                       <TableCell className="sr-only">Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -477,8 +493,8 @@ function ChplListingInformationEdit() {
           && (
             <>
               <Typography variant="subtitle2">Adding New Status:</Typography>
-              <Box className={classes.newStatusContainer} display="flex" flexDirection="row" gridGap={8} alignItems="flex-start" width="100%">
-                <Box className={classes.statusDateContainer} display="flex" flexDirection="column" gridGap={8} alignItems="flex-start" width="66%">
+              <Box className={classes.twoColumnContainer}>
+                <Box className={classes.statusDateContainer}>
                   <ChplTextField
                     select
                     id="new-status-type"
@@ -508,7 +524,7 @@ function ChplListingInformationEdit() {
                     helperText={formik.touched.newStatusDay && formik.errors.newStatusDay}
                   />
                 </Box>
-                <Box className={classes.oneThirdWidth} width="33%">
+                <Box className={classes.oneThirdWidth}>
                   <ChplTextField
                     id="new-status-reason"
                     name="newStatusReason"
@@ -522,7 +538,7 @@ function ChplListingInformationEdit() {
                   />
                 </Box>
               </Box>
-              <Box display="flex" flexDirection="row" width="100%" gridGap={8}>
+              <Box className={classes.cancelAndSaveButton}>
                 <Button
                   size="medium"
                   endIcon={<Clear fontSize="small" />}
@@ -672,7 +688,7 @@ function ChplListingInformationEdit() {
                     <MenuItem value={item} key={item}>{item}</MenuItem>
                   ))}
               </ChplTextField>
-              <Box display="flex" flexDirection="row" width="100%" gridGap={4}>
+              <Box className={classes.cancelAndSaveButton}>
                 <Button
                   size="medium"
                   endIcon={<Clear fontSize="small" />}
@@ -710,7 +726,7 @@ function ChplListingInformationEdit() {
           )}
 
         <Typography variant="subtitle1">Standards & Disclosures :</Typography>
-        <Box display="flex" flexDirection="row" width="100%" gridGap={16} alignItems="baseline">
+        <Box className={classes.twoColumnContainer}>
 
           <ChplTextField
             id="svap-notice-url"
@@ -734,8 +750,8 @@ function ChplListingInformationEdit() {
           />
         </Box>
         <Typography variant="subtitle1">Real World Testing :</Typography>
-        <Box display="flex" flexDirection="row" width="100%" gridGap={16} alignItems="baseline">
-          <Box display="flex" flexDirection="column" width="100%" gridGap={16}>
+        <Box className={classes.twoColumnContainer}>
+          <Box className={classes.column}>
             <ChplTextField
               id="rwt-plans-url"
               name="rwtPlansUrl"
@@ -759,7 +775,7 @@ function ChplListingInformationEdit() {
             />
           </Box>
 
-          <Box display="flex" flexDirection="column" width="100%" gridGap={16}>
+          <Box className={classes.column}>
             <ChplTextField
               id="rwt-results-url"
               name="rwtResultsUrl"
