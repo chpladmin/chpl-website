@@ -103,12 +103,7 @@ function ChplListingInformationEdit() {
     if (atlsQuery.isLoading || !atlsQuery.isSuccess) {
       return;
     }
-    setAtls(atlsQuery.data.atls
-      .map((atl) => ({
-        ...atl,
-        testingLabId: atl.id,
-        testingLabName: atl.name,
-      })));
+    setAtls(atlsQuery.data.atls);
     setAtlOptions(atlsQuery.data.atls
       .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map((atl) => `${atl.retired ? 'Retired | ' : ''}${atl.name}`));
@@ -168,7 +163,9 @@ function ChplListingInformationEdit() {
       case 'oncAtls':
         setListing((prev) => ({
           ...prev,
-          testingLabs: prev.testingLabs.concat(atls.find((atl) => formik.values.testingLab.endsWith(atl.name))),
+          testingLabs: prev.testingLabs.concat({
+            testingLab: atls.find((atl) => formik.values.testingLab.endsWith(atl.name)),
+          }),
         }));
         formik.setFieldValue('testingLab', '');
         setAddingAtl(false);
@@ -188,7 +185,7 @@ function ChplListingInformationEdit() {
       case 'oncAtls':
         setListing((prev) => ({
           ...prev,
-          testingLabs: prev.testingLabs.filter((atl) => atl.testingLabId !== item.testingLabId),
+          testingLabs: prev.testingLabs.filter((atl) => atl.testingLab.id !== item.testingLab.id),
         }));
         break;
         // no default
@@ -555,11 +552,12 @@ function ChplListingInformationEdit() {
               </TableHead>
               <TableBody>
                 { listing.testingLabs
-                  .sort((a, b) => (a.testingLabName < b.testingLabName ? -1 : 1))
+                  .sort((a, b) => (a.testingLab.name < b.testingLab.name ? -1 : 1))
                   .map((atl) => (
-                    <TableRow key={atl.testingLabId}>
+                    <TableRow key={atl.testingLab.id}>
                       <TableCell>
-                        { atl.testingLabName }
+                        { atl.testingLab.retired ? 'Retired | ' : ''}
+                        { atl.testingLab.name }
                       </TableCell>
                       <TableCell>
                         <Button
@@ -597,7 +595,7 @@ function ChplListingInformationEdit() {
               helperText={formik.touched.testingLab && formik.errors.testingLab}
             >
               { atlOptions
-                .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLabName)))
+                .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLab.name)))
                 .map((item) => (
                   <MenuItem value={item} key={item}>{ item }</MenuItem>
                 ))}
