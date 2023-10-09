@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   multiline: {
-    height: '121px',
+    height: '12vh',
     display: 'grid',
   },
 });
@@ -318,13 +318,13 @@ function ChplListingInformationEdit() {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" gridGap={16} alignItems="flex-start">
-        <Typography variant="subtitle1">CHPL Product Number & Certification ID:</Typography>
-        <Box display="flex" flexDirection="row" alignContent="flex-start" width="100%" gridGap={16}>
-          <Box display="flex" flexDirection="row" gridGap={8} width="100%" alignItems="baseline">
+      { !listing.chplProductNumber.startsWith('CHP-')
+        && (
+          <>
+            CHPL Product Number:
+            {' '}
             { getPrefix() }
             <ChplTextField
-              className={classes.productCode}
               id="product-code"
               name="productCode"
               label="Product Code"
@@ -358,22 +358,19 @@ function ChplListingInformationEdit() {
               helperText={formik.touched.icsCode && formik.errors.icsCode}
             />
             { getSuffix() }
-
-          </Box>
-          <Box width="50%">
-            <ChplTextField
-              id="acb-certification-id"
-              name="acbCertificationId"
-              label="ONC-ACB Certification ID"
-              value={formik.values.acbCertificationId}
-              onChange={handleBasicChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
-              helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
-            />
-          </Box>
-        </Box>
-        { listing.certificationEvents?.length > 0
+          </>
+        )}
+      <ChplTextField
+        id="acb-certification-id"
+        name="acbCertificationId"
+        label="ONC-ACB Certification ID"
+        value={formik.values.acbCertificationId}
+        onChange={handleBasicChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.acbCertificationId && !!formik.errors.acbCertificationId}
+        helperText={formik.touched.acbCertificationId && formik.errors.acbCertificationId}
+      />
+      { listing.certificationEvents?.length > 0
         && (
           <>
             <Typography variant="subtitle1">Status:</Typography>
@@ -464,8 +461,8 @@ function ChplListingInformationEdit() {
         && (
           <>
             <Typography variant="subtitle2">Adding New Status:</Typography>
-            <Box display="flex" flexDirection="row" gridGap={16} alignItems="flex-start" width="100%">
-              <Box display="flex" flexDirection="column" gridGap={16} alignItems="flex-start" width="66%">
+            <Box display="flex" flexDirection="row" gridGap={8} alignItems="flex-start" width="100%">
+              <Box display="flex" flexDirection="column" gridGap={8} alignItems="flex-start" width="66%">
                 <ChplTextField
                   select
                   id="new-status-type"
@@ -509,7 +506,7 @@ function ChplListingInformationEdit() {
               />
               </Box>
             </Box>
-            <Box display="flex" flexDirection="row" width="100%" gridGap={16}>
+            <Box display="flex" flexDirection="row" width="100%" gridGap={8}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -619,6 +616,36 @@ function ChplListingInformationEdit() {
                 </TableBody>
               </Table>
             </Card>
+      { listing.testingLabs?.length > 0
+        && (
+          <>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Testing Lab</TableCell>
+                  <TableCell className="sr-only">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { listing.testingLabs
+                  .sort((a, b) => (a.testingLab.name < b.testingLab.name ? -1 : 1))
+                  .map((atl) => (
+                    <TableRow key={atl.testingLab.id}>
+                      <TableCell>
+                        { atl.testingLab.retired ? 'Retired | ' : ''}
+                        { atl.testingLab.name }
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={() => handleItemRemoval('oncAtls', atl)}
+                        >
+                          X - need an icon
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
           </>
         )}
         { !addingAtl
