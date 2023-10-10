@@ -25,7 +25,7 @@ import { ChplActionBar } from 'components/action-bar';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import { ChplTextField, InternalScrollButton } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -103,6 +103,9 @@ const useStyles = makeStyles({
       top: '104px',
     },
   },
+  reason: {
+    paddingTop: '8px',
+  },
 });
 
 const validationSchema = yup.object({
@@ -111,7 +114,6 @@ const validationSchema = yup.object({
 
 function ChplListingEdit() {
   const $state = getAngularService('$state');
-  const { hasAnyRole } = useContext(UserContext);
   const { listing } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
@@ -258,7 +260,9 @@ function ChplListingEdit() {
               </InternalScrollButton>
             </Box>
           </Box>
-          <Box>
+        </div>
+        <Card>
+          <CardContent>
             <ChplTextField
               id="reason"
               name="reason"
@@ -269,16 +273,16 @@ function ChplListingEdit() {
               error={formik.touched.productCode && !!formik.errors.productCode}
               helperText={formik.touched.productCode && formik.errors.productCode}
             />
-            If changes are made in any of the following ways, a Reason for Change is required:
-            <List>
+            <Typography className={classes.reason} variant="body2" gutterBottom><strong>If changes are made in any of the following ways, a Reason for Change is required:</strong></Typography>
+            <List dense>
               <ListItem>Clinical Quality Measure Removed</ListItem>
               <ListItem>Certification Criteria Removed</ListItem>
               <ListItem>Editing of a 2011 Edition Certified Product</ListItem>
               <ListItem>Editing of a 2014 Edition Certified Product</ListItem>
               <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
             </List>
-          </Box>
-        </div>
+          </CardContent>
+        </Card>
       </div>
       <div className={classes.content}>
         <Card>
