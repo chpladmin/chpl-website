@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  Divider,
   List,
   ListItem,
   Typography,
@@ -26,7 +25,7 @@ import { ChplActionBar } from 'components/action-bar';
 import ChplAdditionalInformation from 'components/listing/details/additional-information/additional-information';
 import { ChplTextField, InternalScrollButton } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -115,7 +114,6 @@ const validationSchema = yup.object({
 
 function ChplListingEdit() {
   const $state = getAngularService('$state');
-  const { hasAnyRole } = useContext(UserContext);
   const { listing } = useContext(ListingContext);
   const { enqueueSnackbar } = useSnackbar();
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
@@ -264,7 +262,7 @@ function ChplListingEdit() {
           </Box>
         </div>
         <Card>
-        <CardContent>
+          <CardContent>
             <ChplTextField
               id="reason"
               name="reason"
@@ -275,12 +273,14 @@ function ChplListingEdit() {
               error={formik.touched.productCode && !!formik.errors.productCode}
               helperText={formik.touched.productCode && formik.errors.productCode}
             />
-              <Typography className={classes.reason} variant="body2" gutterBottom><strong>If changes are made in any of the following ways, a Reason for Change is required:</strong></Typography> 
-              <Typography variant="body2">Clinical Quality Measure Removed</Typography>
-              <Typography variant="body2">Certification Criteria Removed</Typography>
-              <Typography variant="body2">Editing of a 2011 Edition Certified Product</Typography>
-              <Typography variant="body2">Editing of a 2014 Edition Certified Product</Typography>
-              <Typography variant="body2">Certification Status Changed from anything to &quot;Active&quot;</Typography>
+            <Typography className={classes.reason} variant="body2" gutterBottom><strong>If changes are made in any of the following ways, a Reason for Change is required:</strong></Typography>
+            <List dense>
+              <ListItem>Clinical Quality Measure Removed</ListItem>
+              <ListItem>Certification Criteria Removed</ListItem>
+              <ListItem>Editing of a 2011 Edition Certified Product</ListItem>
+              <ListItem>Editing of a 2014 Edition Certified Product</ListItem>
+              <ListItem>Certification Status Changed from anything to &quot;Active&quot;</ListItem>
+            </List>
           </CardContent>
         </Card>
       </div>

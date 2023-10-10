@@ -14,11 +14,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 import {
   Delete, Add, Save, Clear,
 } from '@material-ui/icons';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import { useFetchAcbs } from 'api/acbs';
 import { useFetchAtls } from 'api/atls';
@@ -30,12 +30,6 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  oneThirdWidth: {
-    width: '33%',
-  },
-  halfWidth: {
-    width: '50%',
-  },
   fullWidth: {
     width: '100%',
   },
@@ -152,12 +146,7 @@ function ChplListingInformationEdit() {
     if (atlsQuery.isLoading || !atlsQuery.isSuccess) {
       return;
     }
-    setAtls(atlsQuery.data.atls
-      .map((atl) => ({
-        ...atl,
-        testingLabId: atl.id,
-        testingLabName: atl.name,
-      })));
+    setAtls(atlsQuery.data.atls);
     setAtlOptions(atlsQuery.data.atls
       .sort((a, b) => (a.name < b.name ? -1 : 1))
       .map((atl) => `${atl.retired ? 'Retired | ' : ''}${atl.name}`));
@@ -217,12 +206,14 @@ function ChplListingInformationEdit() {
       case 'oncAtls':
         setListing((prev) => ({
           ...prev,
-          testingLabs: prev.testingLabs.concat(atls.find((atl) => formik.values.testingLab.endsWith(atl.name))),
+          testingLabs: prev.testingLabs.concat({
+            testingLab: atls.find((atl) => formik.values.testingLab.endsWith(atl.name)),
+          }),
         }));
         formik.setFieldValue('testingLab', '');
         setAddingAtl(false);
         break;
-      // no default
+        // no default
     }
   };
 
@@ -237,10 +228,10 @@ function ChplListingInformationEdit() {
       case 'oncAtls':
         setListing((prev) => ({
           ...prev,
-          testingLabs: prev.testingLabs.filter((atl) => atl.testingLabId !== item.testingLabId),
+          testingLabs: prev.testingLabs.filter((atl) => atl.testingLab.id !== item.testingLab.id),
         }));
         break;
-      // no default
+        // no default
     }
   };
 
@@ -256,7 +247,7 @@ function ChplListingInformationEdit() {
       case 'icsCode':
         parts[6] = event.target.value;
         break;
-      // no default
+        // no default
     }
     setListing((prev) => ({
       ...prev,
@@ -285,7 +276,7 @@ function ChplListingInformationEdit() {
           practiceType: practiceTypes.find((type) => type.name === event.target.value),
         }));
         break;
-      // no default
+        // no default
     }
     formik.setFieldValue(event.target.name, event.target.value);
   };
@@ -349,7 +340,7 @@ function ChplListingInformationEdit() {
   return (
     <>
       <Box className={classes.column}>
-        {!listing.chplProductNumber.startsWith('CHP-')
+        { !listing.chplProductNumber.startsWith('CHP-')
           && (
             <>
               <Typography variant="subtitle1">CHPL Product Number & Certification ID:</Typography>
@@ -402,7 +393,7 @@ function ChplListingInformationEdit() {
               />
             </>
           )}
-        {listing.certificationEvents?.length > 0
+        { listing.certificationEvents?.length > 0
           && (
             <>
               <Typography variant="subtitle1">Status:</Typography>
@@ -422,29 +413,29 @@ function ChplListingInformationEdit() {
                       .map((ce, idx, vals) => (
                         <TableRow key={ce.eventDay}>
                           <TableCell>
-                            {ce.status.name}
-                            {idx !== listing.certificationEvents.length - 1 && ce.status.name === vals[idx + 1].status.name
+                            { ce.status.name }
+                            { idx !== listing.certificationEvents.length - 1 && ce.status.name === vals[idx + 1].status.name
                               && (
                                 <>
                                   <br />
                                   <Typography color="error" variant="body2">Certification Status must differ from previous Status</Typography>
                                 </>
                               )}
-                            {idx === 0 && mayCauseSuspension(ce.status.name)
+                            { idx === 0 && mayCauseSuspension(ce.status.name)
                               && (
                                 <>
                                   <br />
                                   <Typography color="error" variant="body2">Setting this product to this status may trigger a ban by ONC</Typography>
                                 </>
                               )}
-                            {idx === 0 && ce.status.name === 'Terminated by ONC'
+                            { idx === 0 && ce.status.name === 'Terminated by ONC'
                               && (
                                 <>
                                   <br />
                                   <Typography color="error" variant="body2">Setting this product to this status will cause the developer to be marked as &quot;Under Certification Ban&quot;</Typography>
                                 </>
                               )}
-                            {idx === 0 && ce.status.name === 'Suspended by ONC'
+                            { idx === 0 && ce.status.name === 'Suspended by ONC'
                               && (
                                 <>
                                   <br />
@@ -460,10 +451,10 @@ function ChplListingInformationEdit() {
                               )}
                           </TableCell>
                           <TableCell>
-                            {getDisplayDateFormat(ce.eventDay)}
+                            { getDisplayDateFormat(ce.eventDay) }
                           </TableCell>
                           <TableCell>
-                            {ce.reason}
+                            { ce.reason }
                           </TableCell>
                           <TableCell>
                             <IconButton variant="outlined" onClick={() => handleItemRemoval('certificationEvents', ce)}>
@@ -477,7 +468,7 @@ function ChplListingInformationEdit() {
               </Card>
             </>
           )}
-        {!addingStatus
+        { !addingStatus
           && (
             <Button
               size="medium"
@@ -489,7 +480,7 @@ function ChplListingInformationEdit() {
               Add
             </Button>
           )}
-        {addingStatus
+        { addingStatus
           && (
             <>
               <Typography variant="subtitle2">Adding New Status:</Typography>
@@ -507,7 +498,7 @@ function ChplListingInformationEdit() {
                     error={formik.touched.newStatusType && !!formik.errors.newStatusType}
                     helperText={formik.touched.newStatusType && formik.errors.newStatusType}
                   >
-                    {certificationStatuses.map((item) => (
+                    { certificationStatuses.map((item) => (
                       <MenuItem value={item} key={item.id}>{item.name}</MenuItem>
                     ))}
                   </ChplTextField>
@@ -546,7 +537,7 @@ function ChplListingInformationEdit() {
                   variant="contained"
                   color="secondary"
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   size="medium"
@@ -556,13 +547,12 @@ function ChplListingInformationEdit() {
                   onClick={() => handleItemAddition('certificationEvents')}
                   disabled={formik.values.newStatusType === '' || formik.values.newStatusDay === ''}
                 >
-                  save
+                  Save
                 </Button>
               </Box>
             </>
-
           )}
-        {listing.edition?.name === '2014'
+        { listing.edition?.name === '2014'
           && (
             <>
               <ChplTextField
@@ -577,7 +567,7 @@ function ChplListingInformationEdit() {
                 error={formik.touched.classificationType && !!formik.errors.classificationType}
                 helperText={formik.touched.classificationType && formik.errors.classificationType}
               >
-                {classificationTypeOptions.map((item) => (
+                { classificationTypeOptions.map((item) => (
                   <MenuItem value={item} key={item}>{item}</MenuItem>
                 ))}
               </ChplTextField>
@@ -593,17 +583,16 @@ function ChplListingInformationEdit() {
                 error={formik.touched.practiceType && !!formik.errors.practiceType}
                 helperText={formik.touched.practiceType && formik.errors.practiceType}
               >
-                {practiceTypeOptions.map((item) => (
+                { practiceTypeOptions.map((item) => (
                   <MenuItem value={item} key={item}>{item}</MenuItem>
                 ))}
               </ChplTextField>
             </>
           )}
-
-        {listing.testingLabs?.length > 0
+        { listing.testingLabs?.length > 0
           && (
             <>
-              <Typography variant="subtitle1">ONC-ACB & ATL :</Typography>
+              <Typography variant="subtitle1">ONC-ACB & ONC-ATL:</Typography>
               {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                 && (
                   <ChplTextField
@@ -618,7 +607,7 @@ function ChplListingInformationEdit() {
                     error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
                     helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
                   >
-                    {acbOptions.map((item) => (
+                    { acbOptions.map((item) => (
                       <MenuItem value={item} key={item}>{item}</MenuItem>
                     ))}
                   </ChplTextField>
@@ -632,12 +621,12 @@ function ChplListingInformationEdit() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {listing.testingLabs
-                      .sort((a, b) => (a.testingLabName < b.testingLabName ? -1 : 1))
+                    { listing.testingLabs
+                      .sort((a, b) => (a.testingLab.name < b.testingLab.name ? -1 : 1))
                       .map((atl) => (
-                        <TableRow key={atl.testingLabId}>
+                        <TableRow key={atl.testingLab.id}>
                           <TableCell>
-                            {atl.testingLabName}
+                            { atl.testingLab.name }
                           </TableCell>
                           <TableCell>
                             <IconButton
@@ -654,7 +643,7 @@ function ChplListingInformationEdit() {
               </Card>
             </>
           )}
-        {!addingAtl
+        { !addingAtl
           && (
             <Button
               size="medium"
@@ -666,11 +655,10 @@ function ChplListingInformationEdit() {
               Add
             </Button>
           )}
-        {addingAtl
+        { addingAtl
           && (
             <>
               <Typography variant="subtitle2">Adding New Testing Lab:</Typography>
-
               <ChplTextField
                 select
                 id="testing-lab"
@@ -682,8 +670,8 @@ function ChplListingInformationEdit() {
                 error={formik.touched.testingLab && !!formik.errors.testingLab}
                 helperText={formik.touched.testingLab && formik.errors.testingLab}
               >
-                {atlOptions
-                  .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLabName)))
+                { atlOptions
+                  .filter((atl) => !listing.testingLabs.some((a) => atl.endsWith(a.testingLab.name)))
                   .map((item) => (
                     <MenuItem value={item} key={item}>{item}</MenuItem>
                   ))}
@@ -696,7 +684,7 @@ function ChplListingInformationEdit() {
                   color="secondary"
                   onClick={() => setAddingAtl(false)}
                 >
-                  cancel
+                  Cancel
                 </Button>
                 <Button
                   size="medium"
@@ -706,12 +694,12 @@ function ChplListingInformationEdit() {
                   onClick={() => handleItemAddition('oncAtls')}
                   disabled={formik.values.testingLab === ''}
                 >
-                  save
+                  Save
                 </Button>
               </Box>
             </>
           )}
-        {listing.chplProductNumber.startsWith('CHP-')
+        { listing.chplProductNumber.startsWith('CHP-')
           && (
             <ChplTextField
               id="product-additional-software"
@@ -724,10 +712,8 @@ function ChplListingInformationEdit() {
               helperText={formik.touched.productAdditionalSoftware && formik.errors.productAdditionalSoftware}
             />
           )}
-
-        <Typography variant="subtitle1">Standards & Disclosures :</Typography>
+        <Typography variant="subtitle1">Standards & Disclosures:</Typography>
         <Box className={classes.twoColumnContainer}>
-
           <ChplTextField
             id="svap-notice-url"
             name="svapNoticeUrl"
@@ -749,7 +735,7 @@ function ChplListingInformationEdit() {
             helperText={formik.touched.mandatoryDisclosures && formik.errors.mandatoryDisclosures}
           />
         </Box>
-        <Typography variant="subtitle1">Real World Testing :</Typography>
+        <Typography variant="subtitle1">Real World Testing:</Typography>
         <Box className={classes.twoColumnContainer}>
           <Box className={classes.column}>
             <ChplTextField
@@ -774,7 +760,6 @@ function ChplListingInformationEdit() {
               helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
             />
           </Box>
-
           <Box className={classes.column}>
             <ChplTextField
               id="rwt-results-url"
