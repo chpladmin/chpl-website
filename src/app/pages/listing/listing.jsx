@@ -17,7 +17,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
-import { FlagContext, UserContext } from 'shared/contexts';
+import { UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -56,7 +56,6 @@ const useStyles = makeStyles({
 function ChplListingPage({ id }) {
   const $state = getAngularService('$state');
   const { data, isLoading, isSuccess } = useFetchListing({ id });
-  const { isOn } = useContext(FlagContext);
   const { hasAnyRole, user } = useContext(UserContext);
   const [listing, setListing] = useState(undefined);
   const classes = useStyles();
