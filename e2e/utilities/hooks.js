@@ -1,38 +1,38 @@
 class Hooks {
   constructor () { }
 
-  async open(path) {
-    await browser.maximizeWindow();
-    await browser.setWindowSize(1600, 1024);
-    await browser.url(path);
+  open (path) {
+    browser.maximizeWindow();
+    browser.setWindowSize(1600, 1024);
+    browser.url(path);
   }
 
-  async waitForSpinnerToDisappear() {
-    await browser.waitUntil( async () => !(await $('#loading-bar-spinner').isDisplayed()));
+  waitForSpinnerToDisappear () {
+    browser.waitUntil( () => !$('#loading-bar-spinner').isDisplayed());
   }
 
-  async waitForSpinnerToAppear() {
-    await browser.waitUntil( async () => await $('#loading-bar-spinner').isDisplayed());
+  waitForSpinnerToAppear () {
+    browser.waitUntil( () => $('#loading-bar-spinner').isDisplayed());
   }
   
-  async getCellValue(row, col) {
+  getCellValue(row, col) {
     return $(`//tbody/tr[${row}]/td[${col}]`).getText();
   }
 
-  async getTableHeaders() {
-    return (await $('table').$('thead')).$$('th');
+  getTableHeaders() {
+    return $('table').$('thead').$$('th');
   }
 
-  async getFlagState(flagName) {
+  getFlagState(flagName){
     const foundFlag = flagObj.find(flag => flag.key === flagName);
     return foundFlag?.active;
   }
   
-  async getTableRows() {
-    return (await $('table').$('tbody')).$$('tr');
+  getTableRows() {
+    return $('table').$('tbody').$$('tr');
   }
 
-  async getErrors() {
+  getErrors() {
     return $('#action-bar-errors').getText();
   }
 
