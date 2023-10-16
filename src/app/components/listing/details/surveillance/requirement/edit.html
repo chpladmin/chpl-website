@@ -65,8 +65,8 @@
           </thead>
           <tbody>
             <tr ng-repeat="noncon in $ctrl.requirement.nonconformities track by $index">
-              <td ng-class="{'removed' : noncon.type.removed}">
-                {{ (noncon.type.removed ? 'Removed | ' : '') + (noncon.type.number ? (noncon.type.number + ': ') : '') + noncon.type.title }}
+              <td ng-class="{'removed' : noncon.type.status !== 'ACTIVE'}">
+                {{ (noncon.type.status === 'REMOVED' ? 'Removed | ' : '') + (noncon.type.status === 'RETIRED' ? 'Retired | ' : '') + (noncon.type.number ? (noncon.type.number + ': ') : '') + noncon.type.title }}
               </td>
               <td>{{ noncon.nonconformityStatus }}</td>
               <td>{{ noncon.summary }}</td>

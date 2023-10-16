@@ -102,7 +102,7 @@ function ChplCriteria(props) {
 
   return (
     <>
-      { criteria.filter((cc) => !cc.criterion.removed && (cc.success || viewAll))
+      { criteria.filter((cc) => cc.criterion.status !== 'REMOVED' && (cc.success || viewAll))
         .map((cc) => (
           <ChplCriterion
             key={cc.criterion.id}
@@ -115,7 +115,7 @@ function ChplCriteria(props) {
             resources={prepareResources(cc.criterion)}
           />
         ))}
-      { (criteria.filter((cc) => cc.criterion.removed && (cc.success || viewAll)).length > 0)
+      { (criteria.filter((cc) => cc.criterion.status === 'REMOVED' && (cc.success || viewAll)).length > 0)
         && (
           <div>
             <Accordion
@@ -132,7 +132,7 @@ function ChplCriteria(props) {
                 </ChplTooltip>
               </AccordionSummary>
               <AccordionDetails>
-                <Container>
+                <Container maxWidth={false}>
                   { criteria.filter((cc) => cc.criterion.removed && (cc.success || viewAll))
                     .map((cc) => (
                       <ChplCriterion

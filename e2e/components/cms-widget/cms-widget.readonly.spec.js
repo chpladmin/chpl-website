@@ -22,7 +22,7 @@ beforeAll(async () => {
   search = new SearchPage();
   cms = new CmsWidgetComponent();
   hooks = new Hooks();
-  hooks.open('#/search');
+  await hooks.open('#/search');
 });
 
 describe('on cms widget', () => {
@@ -31,33 +31,33 @@ describe('on cms widget', () => {
       cms.cmsWidget.click();
     });
 
-    it('should say No Products Selected text', () => {
-      expect(cms.widgetText.map((p) => p.getText())).toEqual([
+    it('should say No Products Selected text', async () => {
+      await expect(await Promise.all(cms.widgetText.map(async p => await p.getText()))).toEqual([
         'No products selected.',
         'Note: the selected products must meet 100% of the Base Criteria. For assistance, view the CHPL Public User Guide or Base Criteria.',
         'To view which products were used to create a specific CMS ID, use the CMS ID Reverse Lookup.',
       ]);
     });
 
-    it('should have correct link to CHPL public guide', () => {
-      expect(cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
+    it('should have correct link to CHPL public guide', async () => {
+      await expect(await cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
     });
 
-    it('should have correct link to CMS ID Reverse Lookup', () => {
-      expect(cms.cmsIdReverseLookupLink.getAttribute('href')).toBe(cmsReverseLookup);
+    it('should have correct link to CMS ID Reverse Lookup', async () => {
+      await expect(await (await cms.cmsIdReverseLookupLink()).getAttribute('href')).toBe(cmsReverseLookup);
     });
 
-    it('should not have progress bar', () => {
-      expect(cms.progressBar.isDisplayed()).toBeFalse();
+    it('should not have progress bar', async () => {
+      await expect(await cms.progressBar.isDisplayed()).toBeFalse();
     });
 
-    it('should have base criteria link', () => {
-      expect(cms.baseCriteriaLink.isDisplayed()).toBeTrue();
+    it('should have base criteria link', async () => {
+      await expect(await (await cms.baseCriteriaLink()).isDisplayed()).toBe(true);
     });
 
-    it('should not have missing base criteria list', () => {
-      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeFalse();
-      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeFalse();
+    it('should not have missing base criteria list', async () => {
+      await expect(await cms.missingBaseCriteriaListOr.isDisplayed()).toBe(false);
+      await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(false);
     });
   });
 
@@ -69,48 +69,48 @@ describe('on cms widget', () => {
       cms.waitForProcessingSpinnerToDisappear();
     });
 
-    it('should have progress bar with correct text and value', () => {
-      expect(cms.progressBarText.getText()).toBe('80% Base Criteria Met');
-      expect(cms.progressBarValue.getAttribute('aria-valuenow')).toBe('80');
+    it('should have progress bar with correct text and value', async () => {
+      await expect(await cms.progressBarText.getText()).toBe('80% Base Criteria Met');
+      await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('80');
     });
 
-    it('should have missing base criteria list', () => {
-      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeTrue();
-      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeTrue();
+    it('should have missing base criteria list', async () => {
+      await expect(await cms.missingBaseCriteriaListOr.isDisplayed()).toBe(true);
+      await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(true);
     });
 
-    it('should have correct link to CHPL public guide', () => {
-      expect(cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
+    it('should have correct link to CHPL public guide', async () => {
+      await expect(await cms.chplPublicUserGuideLink.getAttribute('href')).toBe(chplPublicGuide);
     });
 
-    it('should have get cert Id button and disabled', () => {
-      expect(cms.getCertIdButton.isDisplayed()).toBeTrue();
-      expect(cms.getCertIdButton.isClickable()).toBeFalse();
+    it('should have get cert Id button and disabled', async () => {
+      await expect(await (await cms.getCertIdButton()).isDisplayed()).toBe(true);
+      await expect(await (await cms.getCertIdButton()).isClickable()).toBe(false);
     });
 
-    it('should have correct base criteria link', () => {
-      expect(cms.baseCriteriaLink.isDisplayed()).toBeTrue();
-      expect(cms.baseCriteriaLink.getAttribute('href')).toBe(baseCriteria);
+    it('should have correct base criteria link', async () => {
+      await expect(await (await cms.baseCriteriaLink()).isDisplayed()).toBe(true);
+      await expect(await (await cms.baseCriteriaLink()).getAttribute('href')).toBe(baseCriteria);
     });
 
-    it('should have correct CMS ID reverse look up link', () => {
-      expect(cms.cmsIdReverseLookupLink.isDisplayed()).toBeTrue();
-      expect(cms.cmsIdReverseLookupLink.getAttribute('href')).toBe(cmsReverseLookup);
+    it('should have correct CMS ID reverse look up link', async () => {
+      await expect(await (await cms.cmsIdReverseLookupLink()).isDisplayed()).toBe(true);
+      await expect(await (await cms.cmsIdReverseLookupLink()).getAttribute('href')).toBe(cmsReverseLookup);
     });
 
-    it('should have a disabled compare products button', () => {
-      expect(cms.compareProductsButton.isDisplayed()).toBeTrue();
-      expect(cms.compareProductsButton.isEnabled()).toBeFalse();
+    it('should have a disabled compare products button', async () => {
+      await expect(await (await cms.compareProductsButton()).isDisplayed()).toBe(true);
+      await expect(await (await cms.compareProductsButton()).isEnabled()).toBe(false);
     });
 
-    it('should have remove all products button and enabled', () => {
-      expect(cms.removeProductsButton.isDisplayed()).toBeTrue();
-      expect(cms.removeProductsButton.isClickable()).toBeTrue();
+    it('should have remove all products button and enabled', async () => {
+      await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(true);
+      await expect(await (await cms.removeProductsButton()).isClickable()).toBe(true);
     });
 
-    it('remove products button should remove products from widget', () => {
-      cms.removeProductsButton.click();
-      expect(cms.removeProductsButton.isDisplayed()).toBeFalse();
+    it('remove products button should remove products from widget', async () => {
+      await (await cms.removeProductsButton()).click();
+      await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(false);
     });
   });
 
@@ -118,58 +118,58 @@ describe('on cms widget', () => {
     beforeAll(() => {
       search.open();
       search.searchForText(search2);
-      browser.waitUntil(() => cms.certIdButton(listingId2), config.shortTimeout);
+      browser.waitUntil(async () => await (await cms.certIdButton(listingId2)), config.shortTimeout);
       cms.addListingToCms(listingId2);
       cms.addListingToCms(listingId3);
       cms.waitForProcessingSpinnerToDisappear();
     });
 
-    it('should have progress bar with the right text and value', () => {
-      expect(cms.progressBarText.getText()).toBe('100% Base Criteria Met');
-      expect(cms.progressBarValue.getAttribute('aria-valuenow')).toBe('100');
+    it('should have progress bar with the right text and value', async () => {
+      await expect(await cms.progressBarText.getText()).toBe('100% Base Criteria Met');
+      await expect(await (await cms.progressBarValue()).getAttribute('aria-valuenow')).toBe('100');
     });
 
-    it('should not have missing base criteria list', () => {
-      expect(cms.missingBaseCriteriaListOr.isDisplayed()).toBeFalse();
-      expect(cms.missingBaseCriteriaListAnd.isDisplayed()).toBeFalse();
+    it('should not have missing base criteria list', async () => {
+      await expect(await cms.missingBaseCriteriaListOr.isDisplayed()).toBe(false);
+      await expect(await (await cms.missingBaseCriteriaListAnd()).isDisplayed()).toBe(false);
     });
 
-    it('should have correct CMS ID reverse look up link', () => {
-      expect(cms.cmsIdReverseLookupLink.isDisplayed()).toBeTrue();
-      expect(cms.cmsIdReverseLookupLink.getAttribute('href')).toBe(cmsReverseLookup);
+    it('should have correct CMS ID reverse look up link', async () => {
+      await expect(await (await cms.cmsIdReverseLookupLink()).isDisplayed()).toBe(true);
+      await expect(await (await cms.cmsIdReverseLookupLink()).getAttribute('href')).toBe(cmsReverseLookup);
     });
 
-    it('should not have a base criteria link', () => {
-      expect(cms.baseCriteriaLink.isDisplayed()).toBeFalse();
+    it('should not have a base criteria link', async () => {
+      await expect(await (await cms.baseCriteriaLink()).isDisplayed()).toBe(false);
     });
 
-    it('should not have link to CHPL public guide', () => {
-      expect(cms.chplPublicUserGuideLink.isDisplayed()).toBeFalse();
+    it('should not have link to CHPL public guide', async () => {
+      await expect(await cms.chplPublicUserGuideLink.isDisplayed()).toBeFalse();
     });
 
-    it('should have remove all products button and enabled', () => {
-      expect(cms.removeProductsButton.isDisplayed()).toBeTrue();
-      expect(cms.removeProductsButton.isClickable()).toBeTrue();
+    it('should have remove all products button and enabled', async () => {
+      await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(true);
+      await expect(await (await cms.removeProductsButton()).isClickable()).toBe(true);
     });
 
-    it('should have get cert Id button and enabled', () => {
-      expect(cms.getCertIdButton.isDisplayed()).toBeTrue();
-      expect(cms.getCertIdButton.isClickable()).toBeTrue();
+    it('should have get cert Id button and enabled', async () => {
+      await expect(await (await cms.getCertIdButton()).isDisplayed()).toBe(true);
+      await expect(await (await cms.getCertIdButton()).isClickable()).toBe(true);
     });
 
-    it('get cert ID button generates CMS ID for the listings added', () => {
-      cms.getCertIdButton.click();
-      cms.waitForProcessingSpinnerToDisappear();
-      expect(cms.cmsCertificationIdText.isDisplayed()).toBeTrue();
+    it('get cert ID button generates CMS ID for the listings added', async () => {
+      await (await cms.getCertIdButton()).click();
+      await cms.waitForProcessingSpinnerToDisappear();
+      await expect(await (await cms.cmsCertificationIdText()).isDisplayed()).toBe(true);
     });
 
-    it('should have compare products button', () => {
-      expect(cms.compareProductsButton.isDisplayed()).toBeTrue();
+    it('should have compare products button', async () => {
+      await expect(await (await cms.compareProductsButton()).isDisplayed()).toBe(true);
     });
 
-    it('compare products button should open compare widget', () => {
-      cms.compareProductsButton.click();
-      expect(cms.compareWidgetDropdown.isDisplayed()).toBeTrue();
+    it('compare products button should open compare widget', async () => {
+      await (await cms.compareProductsButton()).click();
+      await expect(await (await cms.compareWidgetDropdown()).isDisplayed()).toBe(true);
     });
   });
 });
