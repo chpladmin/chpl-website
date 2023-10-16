@@ -4,12 +4,13 @@ export const ChartsProductComponent = {
     criterionProduct: '<',
   },
   controller: class ChartsProductComponent {
-    constructor ($analytics, $log, utilService) {
+    constructor ($analytics, $log, featureFlags, utilService) {
       'ngInject';
       this.$analytics = $analytics;
       this.$log = $log;
+      this.isOn = featureFlags.isOn;
       this.utilService = utilService;
-      this.criteriaTypes = [
+      this.criteriaTypes = this.isOn('editionless') ? undefined : [
         'All',
         2015,
         '2015 Cures Update',
@@ -37,7 +38,7 @@ export const ChartsProductComponent = {
             cols: [
               { label: 'Certification Criteria', type: 'string'},
               { label: 'Number of Unique Products', type: 'number'},
-              { type: 'string', role: 'tooltip'},
+              { Type: 'string', role: 'tooltip'},
             ],
             rows: this._getCriterionProductCountDataInChartFormat(data, 2014),
           },
@@ -70,7 +71,7 @@ export const ChartsProductComponent = {
               startup: true,
             },
             chartArea: { top: 64, height: '90%' },
-            title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
+            title: this.isOn('editionless') ? 'Number of Unique Products certified to specific Certification Criteria' : 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
           },
         },
         2015: {
@@ -91,7 +92,7 @@ export const ChartsProductComponent = {
               startup: true,
             },
             chartArea: { top: 64, height: '90%' },
-            title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
+            title: this.isOn('editionless') ? 'Number of Unique Products certified to specific Certification Criteria' : 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
           },
         },
         '2015 Cures Update': {
@@ -112,7 +113,7 @@ export const ChartsProductComponent = {
               startup: true,
             },
             chartArea: { top: 64, height: '90%' },
-            title: 'Number of 2015 Edition Unique Products certified to specific Cures Update Certification Criteria',
+            title: this.isOn('editionless') ? 'Number of Unique Products certified to specific Certification Criteria' : 'Number of 2015 Edition Unique Products certified to specific Cures Update Certification Criteria',
           },
         },
       };
