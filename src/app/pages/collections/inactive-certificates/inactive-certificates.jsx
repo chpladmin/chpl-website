@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ChplInactiveCertificatesCollectionView from './inactive-certificates-view';
 
 import { useFetchAcbs } from 'api/acbs';
-import { useFetchCriteria } from 'api/data';
+import { useFetchCriteria } from 'api/standards';
 import { FilterProvider } from 'components/filter';
 import {
   certificationBodies,
@@ -72,7 +72,7 @@ function ChplInactiveCertificatesCollectionPage() {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
       return;
     }
-    const values = ccQuery.data.criteria
+    const values = ccQuery.data
       .filter((cc) => cc.certificationEditionId === 3)
       .map((cc) => ({
         ...cc,

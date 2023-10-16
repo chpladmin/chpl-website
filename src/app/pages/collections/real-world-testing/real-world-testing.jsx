@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ChplRealWorldTestingCollectionView from './real-world-testing-view';
 
 import { useFetchAcbs } from 'api/acbs';
-import { useFetchCriteria } from 'api/data';
+import { useFetchCriteria } from 'api/standards';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
@@ -70,7 +70,7 @@ function ChplRealWorldTestingCollectionPage() {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
       return;
     }
-    const values = ccQuery.data.criteria
+    const values = ccQuery.data
       .filter((cc) => cc.certificationEditionId === 3)
       .map((cc) => ({
         ...cc,
