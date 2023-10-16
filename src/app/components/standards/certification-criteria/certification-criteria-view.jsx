@@ -125,7 +125,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
                     { getDisplayDateFormat(item.endDay) }
                   </TableCell>
                   <TableCell>
-                    { item.rule.name }
+                    { item.rule?.name }
                   </TableCell>
                   <TableCell>
                     { item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A' }
