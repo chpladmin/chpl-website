@@ -4,8 +4,9 @@ export const ChartsSurveillanceComponent = {
     nonconformityCriteriaCount: '<',
   },
   controller: class ChartsSurveillanceComponent {
-    constructor ($analytics, $log, featureFlags, utilService) {
+    constructor($analytics, $log, featureFlags, utilService) {
       'ngInject';
+
       this.$analytics = $analytics;
       this.$log = $log;
       this.isOn = featureFlags.isOn;
@@ -26,33 +27,33 @@ export const ChartsSurveillanceComponent = {
       };
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.nonconformityCriteriaCount) {
         this._createNonconformityCountChart(changes.nonconformityCriteriaCount.currentValue);
       }
     }
 
-    updateType () {
+    updateType() {
       this.$analytics.eventTrack('Filter Non-conformity Charts by Type of Program Requirements Surveilled', { category: 'Charts', label: this.chartState.nonconformityCountType });
     }
 
-    updateYAxis () {
-      let that = this;
-      Object.values(this.nonconformityCounts).forEach(value => {
+    updateYAxis() {
+      const that = this;
+      Object.values(this.nonconformityCounts).forEach((value) => {
         value.options.vAxis.scaleType = that.chartState.yAxis;
       });
-      let type = this.chartState.yAxis === 'mirrorLog' ? 'Log' : 'Linear';
+      const type = this.chartState.yAxis === 'mirrorLog' ? 'Log' : 'Linear';
       this.$analytics.eventTrack('Change Non-conformity Charts Y Axis', { category: 'Charts', label: type });
     }
 
-    _createNonconformityCountChart (data) {
+    _createNonconformityCountChart(data) {
       this.nonconformityCounts = {
         'All criteria': {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: this._getNonconformityCountDataInChartFormat(data, 'All criteria'),
           },
@@ -74,12 +75,12 @@ export const ChartsSurveillanceComponent = {
             },
           },
         },
-        'All': {
+        All: {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: this._getNonconformityCountDataInChartFormat(data, 'All'),
           },
@@ -105,8 +106,8 @@ export const ChartsSurveillanceComponent = {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: '2014 Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: '2014 Certification Criteria and Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: this._getNonconformityCountDataInChartFormat(data, 2014),
           },
@@ -132,8 +133,8 @@ export const ChartsSurveillanceComponent = {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: '2015 Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: '2015 Certification Criteria and Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: this._getNonconformityCountDataInChartFormat(data, 2015),
           },
@@ -159,8 +160,8 @@ export const ChartsSurveillanceComponent = {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: '2015 Cures Update Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: '2015 Cures Update Certification Criteria and Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: this._getNonconformityCountDataInChartFormat(data, '2015 Cures Update'),
           },
@@ -182,12 +183,12 @@ export const ChartsSurveillanceComponent = {
             },
           },
         },
-        'Program': {
+        Program: {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: 'Program Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: 'Program Certification Criteria and Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
             rows: this._getNonconformityCountDataInChartFormat(data, 'Program'),
           },
@@ -212,9 +213,9 @@ export const ChartsSurveillanceComponent = {
       };
     }
 
-    _getNonconformityCountDataInChartFormat (data, type) {
+    _getNonconformityCountDataInChartFormat(data, type) {
       return data.nonconformityStatisticsResult
-        .map(obj => {
+        .map((obj) => {
           if (obj.criterion) {
             obj.nonconformityType = obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '');
           }
@@ -222,7 +223,7 @@ export const ChartsSurveillanceComponent = {
           obj.title = obj.criterion ? obj.criterion.title : '';
           return obj;
         })
-        .filter(obj => {
+        .filter((obj) => {
           switch (type) {
             case 'All criteria':
               return (!obj.nonconformityType.includes('170.523') && !obj.nonconformityType.includes('Other'));
@@ -239,7 +240,7 @@ export const ChartsSurveillanceComponent = {
           }
         })
         .sort((a, b) => this.utilService.sortCertActual(a, b))
-        .map(obj => ({c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]}));
+        .map((obj) => ({ c: [{ v: obj.nonconformityType }, { v: obj.nonconformityCount }] }));
     }
   },
 };

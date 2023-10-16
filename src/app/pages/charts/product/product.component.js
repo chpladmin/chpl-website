@@ -4,8 +4,9 @@ export const ChartsProductComponent = {
     criterionProduct: '<',
   },
   controller: class ChartsProductComponent {
-    constructor ($analytics, $log, featureFlags, utilService) {
+    constructor($analytics, $log, featureFlags, utilService) {
       'ngInject';
+
       this.$analytics = $analytics;
       this.$log = $log;
       this.isOn = featureFlags.isOn;
@@ -20,30 +21,30 @@ export const ChartsProductComponent = {
       };
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.criterionProduct) {
         this._createCriterionProductCountChart(changes.criterionProduct.currentValue);
       }
     }
 
-    updateType () {
+    updateType() {
       this.$analytics.eventTrack('Filter Unique Product Charts', { category: 'Charts', label: this.chartState.criteriaType });
     }
 
-    _createCriterionProductCountChart (data) {
+    _createCriterionProductCountChart(data) {
       this.criterionProductCounts = {
         2014: {
           type: 'BarChart',
           data: {
             cols: [
-              { label: 'Certification Criteria', type: 'string'},
-              { label: 'Number of Unique Products', type: 'number'},
-              { Type: 'string', role: 'tooltip'},
+              { label: 'Certification Criteria', type: 'string' },
+              { label: 'Number of Unique Products', type: 'number' },
+              { Type: 'string', role: 'tooltip' },
             ],
             rows: this._getCriterionProductCountDataInChartFormat(data, 2014),
           },
           options: {
-            tooltip: {isHtml: true},
+            tooltip: { isHtml: true },
             animation: {
               duration: 1000,
               easing: 'inAndOut',
@@ -53,18 +54,18 @@ export const ChartsProductComponent = {
             title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
           },
         },
-        'All': {
+        All: {
           type: 'BarChart',
           data: {
             cols: [
-              { label: 'Certification Criteria', type: 'string'},
-              { label: 'Number of Unique Products', type: 'number'},
-              { type: 'string', role: 'tooltip'},
+              { label: 'Certification Criteria', type: 'string' },
+              { label: 'Number of Unique Products', type: 'number' },
+              { type: 'string', role: 'tooltip' },
             ],
             rows: this._getCriterionProductCountDataInChartFormat(data, 'All'),
           },
           options: {
-            tooltip: {isHtml: true},
+            tooltip: { isHtml: true },
             animation: {
               duration: 1000,
               easing: 'inAndOut',
@@ -78,14 +79,14 @@ export const ChartsProductComponent = {
           type: 'BarChart',
           data: {
             cols: [
-              { label: 'Certification Criteria', type: 'string'},
-              { label: 'Number of Unique Products', type: 'number'},
-              { type: 'string', role: 'tooltip'},
+              { label: 'Certification Criteria', type: 'string' },
+              { label: 'Number of Unique Products', type: 'number' },
+              { type: 'string', role: 'tooltip' },
             ],
             rows: this._getCriterionProductCountDataInChartFormat(data, 2015),
           },
           options: {
-            tooltip: {isHtml: true},
+            tooltip: { isHtml: true },
             animation: {
               duration: 1000,
               easing: 'inAndOut',
@@ -99,14 +100,14 @@ export const ChartsProductComponent = {
           type: 'BarChart',
           data: {
             cols: [
-              { label: 'Certification Criteria', type: 'string'},
-              { label: 'Number of Unique Products', type: 'number'},
-              { type: 'string', role: 'tooltip'},
+              { label: 'Certification Criteria', type: 'string' },
+              { label: 'Number of Unique Products', type: 'number' },
+              { type: 'string', role: 'tooltip' },
             ],
             rows: this._getCriterionProductCountDataInChartFormat(data, '2015 Cures Update'),
           },
           options: {
-            tooltip: {isHtml: true},
+            tooltip: { isHtml: true },
             animation: {
               duration: 1000,
               easing: 'inAndOut',
@@ -119,32 +120,32 @@ export const ChartsProductComponent = {
       };
     }
 
-    _getCriterionProductCountDataInChartFormat (data, edition) {
+    _getCriterionProductCountDataInChartFormat(data, edition) {
       return data.criterionProductStatisticsResult
-        .filter(obj => {
+        .filter((obj) => {
           switch (edition) {
-          case 2014:
-            return obj.criterion.certificationEdition === '2014';
-          case 'All':
-            return obj.criterion.certificationEdition === '2015';
-          case 2015:
-            return obj.criterion.certificationEdition === '2015' && !obj.criterion.title.includes('Cures Update');
-          case '2015 Cures Update':
-            return obj.criterion.certificationEdition === '2015' && obj.criterion.title.includes('Cures Update');
-          default: false;
+            case 2014:
+              return obj.criterion.certificationEdition === '2014';
+            case 'All':
+              return obj.criterion.certificationEdition === '2015';
+            case 2015:
+              return obj.criterion.certificationEdition === '2015' && !obj.criterion.title.includes('Cures Update');
+            case '2015 Cures Update':
+              return obj.criterion.certificationEdition === '2015' && obj.criterion.title.includes('Cures Update');
+            default: false;
           }
         })
-        .map(obj => {
+        .map((obj) => {
           obj.number = obj.criterion.number;
           obj.title = obj.criterion.title;
           return obj;
         })
         .sort((a, b) => this.utilService.sortCertActual(a, b))
-        .map(obj => {
-          return {c: [{
+        .map((obj) => ({
+          c: [{
             v: (obj.criterion.title.indexOf('Cures Update') > 0 ? ' (Cures Update)' : '') + obj.criterion.number,
-          },{v: obj.productCount}, {v: 'Name: ' + obj.criterion.title + '\n Count: ' + obj.productCount}]};
-        });
+          }, { v: obj.productCount }, { v: `Name: ${obj.criterion.title}\n Count: ${obj.productCount}` }],
+        }));
     }
   },
 };
