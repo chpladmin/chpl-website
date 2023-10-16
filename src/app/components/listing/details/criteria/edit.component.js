@@ -91,7 +91,7 @@ const CertificationCriteriaEditComponent = {
                               && crcm.conformanceMethodVersion === action.item.additionalInputValue));
           break;
         case 'Add':
-          this.cert.conformanceMethods.push(new this.CertificationResultConformanceMethod(action.item.item, action.item.additionalInputValue));
+          this.cert.conformanceMethods = [].concat(this.cert.conformanceMethods).concat(new this.CertificationResultConformanceMethod(action.item.item, action.item.additionalInputValue)).filter((item) => item);
           break;
         case 'Edit':
           this.cert.conformanceMethods = action.item.map((i) => new this.CertificationResultConformanceMethod(i.item, i.additionalInputValue));
@@ -107,7 +107,7 @@ const CertificationCriteriaEditComponent = {
             .filter((svap) => svap.svapId !== action.item.item.svapId);
           break;
         case 'Add':
-          this.cert.svaps.push(new this.CertificationResultSvap(action.item.item));
+          this.cert.svaps = [].concat(this.cert.svaps).concat(new this.CertificationResultSvap(action.item.item)).filter((item) => item);
           break;
         // no default
       }
@@ -122,7 +122,7 @@ const CertificationCriteriaEditComponent = {
               && crtd.alteration === action.item.additionalInput2Value));
           break;
         case 'Add':
-          this.cert.testDataUsed.push(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
+          this.cert.testDataUsed = [].concat(this.cert.testDataUsed).concat(new this.CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value)).filter((item) => item);
           break;
         case 'Edit':
           this.cert.testDataUsed = action.item.map((i) => new this.CertificationResultTestData(i.item, i.additionalInputValue, i.additionalInput2Value));
@@ -138,7 +138,7 @@ const CertificationCriteriaEditComponent = {
             .filter((crft) => crft.functionalityTested.id !== action.item.item.id);
           break;
         case 'Add':
-          this.cert.functionalitiesTested.push(new this.CertificationResultFunctionalitiesTested(action.item.item));
+          this.cert.functionalitiesTested = [].concat(this.cert.functionalitiesTested).concat(new this.CertificationResultFunctionalitiesTested(action.item.item)).filter((item) => item);
           break;
         default:
       }
@@ -152,7 +152,7 @@ const CertificationCriteriaEditComponent = {
               && crtp.testProcedureVersion === action.item.additionalInputValue));
           break;
         case 'Add':
-          this.cert.testProcedures.push(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
+          this.cert.testProcedures = [].concat(this.cert.testProcedures).concat(new this.CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue)).filter((item) => item);
           break;
         case 'Edit':
           this.cert.testProcedures = action.item.map((i) => new this.CertificationResultTestProcedure(i.item, i.additionalInputValue));
@@ -173,7 +173,7 @@ const CertificationCriteriaEditComponent = {
             });
           break;
         case 'Add':
-          this.cert.optionalStandards.push(new this.CertificationResultOptionalStandard(action.item.item));
+          this.cert.optionalStandards = [].concat(this.cert.optionalStandards).concat(new this.CertificationResultOptionalStandard(action.item.item)).filter((item) => item);
           break;
         default:
       }
@@ -190,7 +190,7 @@ const CertificationCriteriaEditComponent = {
           });
           break;
         case 'Add':
-          this.cert.testStandards.push(new this.CertificationResultTestStandard(action.item.item));
+          this.cert.testStandards = [].concat(this.cert.testStandards).concat(new this.CertificationResultTestStandard(action.item.item)).filter((item) => item);
           break;
         default:
       }
@@ -204,7 +204,7 @@ const CertificationCriteriaEditComponent = {
               && crtt.version === action.item.additionalInputValue));
           break;
         case 'Add':
-          this.cert.testToolsUsed.push(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
+          this.cert.testToolsUsed = [].concat(this.cert.testToolsUsed).concat(new this.CertificationResultTestTool(action.item.item, action.item.additionalInputValue)).filter((item) => item);
           break;
         case 'Edit':
           this.cert.testToolsUsed = action.item.map((i) => new this.CertificationResultTestTool(i.item, i.additionalInputValue));
