@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 13.5.0
+_16 October 2023_
+
+### Features
+* Allow multiple values for criterion attributes
+
+### User Interface Updates
+* Indicate when Certification Criteria are retired on Listing details
+
+### Bug Fixes
+* Remove "Manage Users" component from public Developers page
+
+### Flagged Features
+* Handle CMS ID generation with editionless listings
+
+---
+
 ## Version 13.4.1
 _2 October 2023_
 

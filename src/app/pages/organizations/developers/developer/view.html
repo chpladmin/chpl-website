@@ -30,11 +30,13 @@
         dispatch="::$ctrl.handleAttestationDispatch"
         ></chpl-attestations-view-wrapper-bridge>
       <br />
-      <chpl-users-bridge
-        users="$ctrl.users"
-        roles="$ctrl.roles"
-        dispatch="::$ctrl.takeUserAction"
-        ></chpl-users-bridge>
+      <div ng-if="$ctrl.can('manageUsers')">
+        <chpl-users-bridge
+          users="$ctrl.users"
+          roles="$ctrl.roles"
+          dispatch="::$ctrl.takeUserAction"
+          ></chpl-users-bridge>
+      </div>
     </div>
     <div class="col-md-8">
       <div ng-if="$ctrl.can('manageTracking')">
