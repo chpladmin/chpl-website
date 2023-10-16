@@ -1,6 +1,6 @@
 import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
-import LoginComponent from '../../components/login/login.sync.po';
+import LoginComponent from '../../components/login/login.po';
 import ActionBarComponent from '../../components/action-bar/action-bar.async.po';
 import ToastComponent from '../../components/toast/toast.po';
 import ListingEditComponent from '../../components/listing/edit/listing-edit.po';
@@ -25,21 +25,18 @@ describe('On Listing details page', () => {
     action = new ActionBarComponent();
   });
 
-  afterEach(async () => {
-    await login.logOut();
-  });
-
   describe('when changing CHPL Product Number data of a listing', () => {
     beforeEach(async () => {
-      await hooks.open('#/listing/9902');
+      await hooks.open('#/listing/10904');
+      await login.logIn('admin');
+      await browser.waitUntil(async () => (await page.productHistory).isDisplayed());
     });
 
     it('should show changes on the Listing page', async () => {
-      const productCode = (`${Date.now()}`).substring(0, 4);
-      const versionCode = (`${Date.now()}`).substring(0, 2);
+      const productCode = (`${Date.now()}`).substring(9);
+      const versionCode = (`${Date.now()}`).substring(11);
       const initialChplProductNumber = page.chplProductNumber;
 
-      await login.logIn('admin');
       await page.newEditCertifiedProductButton();
       await hooks.waitForSpinnerToDisappear();
       await listingEdit.addChplProductNumberProductCode(productCode);
