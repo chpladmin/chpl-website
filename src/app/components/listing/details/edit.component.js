@@ -67,7 +67,7 @@ const ListingDetailsEditComponent = {
               ...cr,
               criterion: {
                 ...cr.criterion,
-                attributes: data.find((c) => c.id === cr.criterion.id).attributes,
+                attributes: data.find((c) => c.id === cr.criterion.id)?.attributes,
               },
             }));
         });
