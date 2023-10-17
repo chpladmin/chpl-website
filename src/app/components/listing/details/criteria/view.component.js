@@ -87,7 +87,7 @@ const CertificationCriteriaViewComponent = {
     }
 
     showViewDetailsLink() {
-      return (this.cert.success && this.cert.additionalSoftware !== null)
+      return this.cert.success
                 || (!this.cert.success
                  && (this.cert.g1Success !== null
                   || this.cert.g2Success !== null));
