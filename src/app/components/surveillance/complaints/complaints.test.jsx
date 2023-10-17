@@ -96,6 +96,10 @@ const mockData = {
 jest.mock('api/data', () => ({
   __esModule: true,
   useFetchComplainantTypes: () => mockData,
+}));
+
+jest.mock('api/standards', () => ({
+  __esModule: true,
   useFetchCriteria: () => mockApi,
 }));
 
