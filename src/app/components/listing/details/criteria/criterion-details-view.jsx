@@ -568,7 +568,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-            { criterion.success && criterion.attributes.riskManagementSummaryInformation
+            { criterion.success && criterion.riskManagementSummaryInformation
             && (
               <TableRow key="riskManagementSummaryInformation">
                 <TableCell component="th" scope="row">
