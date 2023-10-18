@@ -1,4 +1,5 @@
 import { interpretRequirements } from 'services/surveillance.service';
+import * as jsJoda from '@js-joda/core';
 
 const SurveillanceEditComponent = {
   templateUrl: 'chpl.components/listing/details/surveillance/edit.html',
@@ -23,22 +24,11 @@ const SurveillanceEditComponent = {
         requirements: this.resolve.surveillance.requirements ? interpretRequirements(this.resolve.surveillance.requirements) : [],
       };
       this.workType = this.resolve.workType;
+      
       this.data = {
         ...this.resolve.surveillanceTypes,
-        surveillanceRequirements: {
-          data: this.resolve.surveillanceTypes.surveillanceRequirements.data
-            .filter((req) => req.requirementGroupType.name !== 'Certified Capability'
-              || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
-              || req.certificationEdition.year === this.resolve.surveillance.certifiedProduct.certificationEdition?.name),
-        },
-        nonconformityTypes: {
-          data: this.resolve.surveillanceTypes.nonconformityTypes.data
-            .filter((ncType) => ncType.certificationEdition === null
-              || ncType.certificationEdition.year === this.resolve.surveillance.certifiedProduct.edition
-              || ncType.certificationEdition.year === this.resolve.surveillance.certifiedProduct.certificationEdition?.name),
-        },
       };
-
+            
       this.showFormErrors = false;
       this.disableValidation = this.surveillance.errorMessages && this.surveillance.errorMessages.length > 0;
       if (this.surveillance.type) {
@@ -46,8 +36,30 @@ const SurveillanceEditComponent = {
       }
     }
 
+    isDateBetweenInclusive(dateRangeStart, dateRangeEnd, dateToCheck) {
+      const modifiedDateRangeStart = dateRangeStart === null ? jsJoda.LocalDate.MIN : jsJoda.LocalDate.parse(dateRangeStart);
+      const modifiedDateRangeEnd = dateRangeEnd === null ? jsJoda.LocalDate.MAX : jsJoda.LocalDate.parse(dateRangeEnd);
+      const modifiedDateToCheck = jsJoda.LocalDate.parse(dateToCheck)
+
+      return modifiedDateRangeStart.equals(modifiedDateToCheck)
+        || modifiedDateRangeEnd.equals(modifiedDateToCheck)
+        || (modifiedDateRangeStart.isBefore(modifiedDateToCheck)
+          && modifiedDateRangeEnd.isAfter(modifiedDateToCheck));
+    }
+
     addRequirement() {
-      const data = angular.copy(this.data);
+      const data = {
+        ...this.resolve.surveillanceTypes,
+        surveillanceRequirements: {
+          data: this.resolve.surveillanceTypes.surveillanceRequirements.data
+            .filter((req) => this.isDateBetweenInclusive(req.startDay, req.endDay, this.surveillance.startDay))
+        },
+        nonconformityTypes: {
+          data: this.resolve.surveillanceTypes.nonconformityTypes.data
+            .filter((ncType) => this.isDateBetweenInclusive(ncType.startDay, ncType.endDay, this.surveillance.startDay)),
+        },
+      };
+
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
         animation: false,
@@ -136,6 +148,18 @@ const SurveillanceEditComponent = {
     }
 
     editRequirement(req) {
+      const data = {
+        ...this.resolve.surveillanceTypes,
+        surveillanceRequirements: {
+          data: this.resolve.surveillanceTypes.surveillanceRequirements.data
+            .filter((req) => this.isDateBetweenInclusive(req.startDay, req.endDay, this.surveillance.startDay))
+        },
+        nonconformityTypes: {
+          data: this.resolve.surveillanceTypes.nonconformityTypes.data
+            .filter((ncType) => this.isDateBetweenInclusive(ncType.startDay, ncType.endDay, this.surveillance.startDay)),
+        },
+      };
+
       req.guiId = req.id ? req.id : (new Date()).getTime();
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
@@ -148,7 +172,7 @@ const SurveillanceEditComponent = {
           randomizedSitesUsed: () => this.surveillance.randomizedSitesUsed,
           requirement: () => req,
           surveillanceId: () => this.surveillance.id,
-          surveillanceTypes: () => this.data,
+          surveillanceTypes: () => data,
           workType: () => this.workType,
         },
         size: 'lg',
