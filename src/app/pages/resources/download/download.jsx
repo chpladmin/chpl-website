@@ -66,13 +66,16 @@ const useStyles = makeStyles({
 });
 
 const allOptions = [
-  '2015 edition products (json)',
+  'Active products (json)',
+  'Inactive products (json)',
   '2014 edition products (json)',
   '2011 edition products (json)',
-  '2015 edition products (xml)',
+  'Active products (xml)',
+  'Inactive products (xml)',
   '2014 edition products (xml)',
   '2011 edition products (xml)',
-  '2015 edition summary (csv)',
+  'Active product summary (csv)',
+  'Inactive product summary (csv)',
   '2014 edition summary (csv)',
   'SVAP Summary (csv)',
   'Surveillance Activity',
@@ -91,19 +94,21 @@ function ChplResourcesDownload() {
   const { hasAnyRole } = useContext(UserContext);
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
-  const [selectedOption, setSelectedOption] = useState('2015 edition products (json)');
+  const [selectedOption, setSelectedOption] = useState('Active products (json)');
   const classes = useStyles();
 
   useEffect(() => {
     const data = {
-      '2015 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015&format=json`, definition: '', label: '2015 JSON' },
-      '2014 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014&format=json`, definition: '', label: '2014 JSON' },
-      '2011 edition products (json)': { data: `${API}/download?api_key=${getApiKey()}&edition=2011&format=json`, definition: '', label: '2011 JSON' },
-      '2015 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015`, definition: `${API}/download?api_key=${getApiKey()}&edition=2015&definition=true`, label: '2015 XML' },
-      '2014 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014`, definition: `${API}/download?api_key=${getApiKey()}&edition=2014&definition=true`, label: '2014 XML' },
-      '2011 edition products (xml)': { data: `${API}/download?api_key=${getApiKey()}&edition=2011`, definition: `${API}/download?api_key=${getApiKey()}&edition=2011&definition=true`, label: '2011 XML' },
-      '2015 edition summary (csv)': { data: `${API}/download?api_key=${getApiKey()}&edition=2015&format=csv`, definition: `${API}/download?api_key=${getApiKey()}&edition=2015&format=csv&definition=true`, label: '2015 CSV' },
-      '2014 edition summary (csv)': { data: `${API}/download?api_key=${getApiKey()}&edition=2014&format=csv`, definition: `${API}/download?api_key=${getApiKey()}&edition=2014&format=csv&definition=true`, label: '2014 CSV' },
+      'Active products (json)': { data: `${API}/download/active?api_key=${getApiKey()}&format=json`, definition: '', label: '2015 JSON' },
+      'Inactive products (json)': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=json`, definition: '', label: '2015 JSON' },
+      '2014 edition products (json)': { data: `${API}/download/2014?api_key=${getApiKey()}&format=json`, definition: '', label: '2014 JSON' },
+      '2011 edition products (json)': { data: `${API}/download/2011?api_key=${getApiKey()}&format=json`, definition: '', label: '2011 JSON' },
+      'Active products (xml)': { data: `${API}/download/active?api_key=${getApiKey()}`, definition: `${API}/download/active?api_key=${getApiKey()}&definition=true`, label: '2015 XML' },
+      'Inactive products (xml)': { data: `${API}/download/inactive?api_key=${getApiKey()}`, definition: `${API}/download/inactive?api_key=${getApiKey()}&definition=true`, label: '2014 XML' },
+      '2011 edition products (xml)': { data: `${API}/download/2011?api_key=${getApiKey()}`, definition: `${API}/download/2011?api_key=${getApiKey()}&definition=true`, label: '2011 XML' },
+      'Active product summary (csv)': { data: `${API}/download/active?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/active?api_key=${getApiKey()}&format=csv&definition=true`, label: '2015 CSV' },
+      'Inactive product summary (csv)': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/inactive?api_key=${getApiKey()}&format=csv&definition=true`, label: '2015 CSV' },
+      '2014 edition summary (csv)': { data: `${API}/download/2014?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/2014?api_key=${getApiKey()}&format=csv&definition=true`, label: '2014 CSV' },
       'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
       'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'Surveillance (Basic)' },
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
