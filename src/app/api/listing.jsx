@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
-import options from './options';
 
 const useFetchIcsFamilyData = ({ id }) => {
   const axios = useAxios();
@@ -24,7 +23,7 @@ const useFetchListing = ({ id }) => {
       return response.data;
     }
     return {};
-  }, options.daily);
+  });
 };
 
 const usePutListing = () => {
