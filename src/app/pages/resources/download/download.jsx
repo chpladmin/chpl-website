@@ -6,6 +6,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Container,
   Divider,
   MenuItem,
   Typography,
@@ -21,23 +22,20 @@ import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  pageHeader: {
-    padding: '32px',
-  },
-  pageBody: {
-    display: 'grid',
-    gap: '16px',
-    gridTemplateColumns: '1fr',
-    padding: '32px',
-    backgroundColor: palette.background,
-  },
-  content: {
-    display: 'grid',
-    gap: '64px',
-    alignItems: 'start',
-    gridTemplateColumns: '1fr',
+  downloadCard: {
+    width: '100%',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: '2fr 1fr',
+      width: '350px',
+    },
+  },
+  downloadSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
     },
   },
   listSpacing: {
@@ -49,6 +47,26 @@ const useStyles = makeStyles({
   },
   listHeaders: {
     marginBottom: '8px',
+  },
+  pageHeader: {
+    padding: '32px 0',
+    backgroundColor: palette.white,
+  },
+  pageBody: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: palette.background,
+    padding: '32px 0',
+  },
+  content: {
+    display: 'flex',
+    gap: '16px',
+    marginTop: '32px',
+    alignItems: 'stretch',
+    flexDirection: 'row',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'column',
+    },
   },
 });
 
@@ -105,58 +123,119 @@ function ChplResourcesDownload() {
 
   return (
     <>
-      <div className={classes.pageHeader}>
-        <Typography
-          variant="h1"
-        >
-          Download the Latest Certified Health IT Product List
-        </Typography>
-      </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <div className={classes.content}>
-          <div>
+      <Box bgcolor={palette.background}>
+        <div className={classes.pageHeader}>
+          <Container maxWidth="lg">
             <Typography
-              variant="h4"
-              component="h3"
-              gutterBottom
+              variant="h1"
             >
-              <strong>Definitions & Guidelines</strong>
+              Download the Latest Certified Health IT Product List
             </Typography>
-            <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Certified Health IT Products</strong></Typography>
-            <ul className={classes.listSpacing}>
-              <li>
-                <Typography gutterBottom><strong>Certified Products Summary:</strong></Typography>
-                {' '}
-                Entire collection of a set of certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
-                <ul>
+          </Container>
+        </div>
+        <div className={classes.pageBody} id="main-content" tabIndex="-1">
+          <Container maxWidth="lg">
+            <div>
+              <Typography
+                variant="h4"
+                component="h2"
+              >
+                Definitions & Guidelines
+              </Typography>
+              <Typography className={classes.listHeaders} gutterBottom variant="h6">Certified Health IT Products</Typography>
+              <Divider />
+              <div className={classes.content}>
+                <Box className={classes.downloadSection}>
+                  <Box width="66%">
+                    <ul className={classes.listSpacing}>
+                      <li>
+                        <Typography gutterBottom><strong>Certified Products Summary:</strong></Typography>
+                        {' '}
+                        Entire collection of a set of certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
+                        <ul>
+                          <li>
+                            The Active products summary file is updated nightly.
+                          </li>
+                          <li>
+                            The Inactive products summary file is updated nightly.
+                          </li>
+                          <li>
+                            The 2014 Edition Summary file is updated quarterly.
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary:</strong></Typography>
+                        {' '}
+                        Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
+                      </li>
+                    </ul>
+                  </Box>
+                  <Card className={classes.downloadCard}>
+                    <CardHeader title="Select A File To Download" />
+                    <CardContent>
+                      <Box display="flex" flexDirection="column" gridGap={16}>
+                        <Typography> To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.</Typography>
+                        <div className={classes.fullWidth}>
+                          <ChplTextField
+                            select
+                            id="download-select"
+                            name="downloadSelect"
+                            label="Select a collection to download"
+                            value={selectedOption}
+                            onChange={(event) => setSelectedOption(event.target.value)}
+                          >
+                            { downloadOptions.map((item) => (
+                              <MenuItem value={item} key={item}>{item}</MenuItem>
+                            ))}
+                          </ChplTextField>
+                        </div>
+                      </Box>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        fullWidth
+                        color="primary"
+                        variant="contained"
+                        id="download-chpl-data-button"
+                        onClick={() => downloadFile('data')}
+                      >
+                        Data File
+                        {' '}
+                        <GetAppIcon className={classes.iconSpacing} />
+                      </Button>
+                      <Button
+                        fullWidth
+                        color="primary"
+                        variant="text"
+                        id="download-chpl-definition-button"
+                        disabled={files[selectedOption]?.definition === ''}
+                        onClick={() => downloadFile('definition')}
+                      >
+                        Definition File
+                        {' '}
+                        <CodeIcon className={classes.iconSpacing} />
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Box>
+                <Box>
+                  <Typography
+                    className={classes.listHeaders}
+                    variant="h4"
+                    component="h2"
+                  >
+                    Compliance Activities
+                  </Typography>
+                  <Divider variant="fullWidth" />
+                </Box>
+                <ul className={classes.listSpacing}>
                   <li>
-                    The Active products summary file is updated nightly.
+                    <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>
+                    {' '}
+                    Entire collection of surveillance activity reported to the CHPL.
                   </li>
-                  <li>
-                    The Inactive products summary file is updated nightly.
-                  </li>
-                  <li>
-                    The 2014 Edition Summary file is updated quarterly.
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary:</strong></Typography>
-                {' '}
-                Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
-              </li>
-            </ul>
-            <Box pt={4} pb={4}>
-              <Divider variant="fullWidth" />
-            </Box>
-            <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Compliance Activities</strong></Typography>
-            <ul className={classes.listSpacing}>
-              <li>
-                <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>
-                {' '}
-                Entire collection of surveillance activity reported to the CHPL.
-              </li>
-              { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                 && (
                   <li>
                     <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>
@@ -164,67 +243,22 @@ function ChplResourcesDownload() {
                     Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
                   </li>
                 )}
-              <li>
-                <Typography gutterBottom><strong>Surveillance Non-Conformities:</strong></Typography>
-                {' '}
-                Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file.
-              </li>
-              <li>
-                <Typography gutterBottom><strong>Direct Review Activity:</strong></Typography>
-                {' '}
-                Entire collection of Direct Review activity reported to the CHPL.
-              </li>
-            </ul>
-          </div>
-          <Card elevation={4}>
-            <CardHeader title="Select A File To Download" />
-            <CardContent>
-              <Box display="flex" flexDirection="column" gridGap={16}>
-                <Typography> To download a list of certified health IT products or compliance activities listed on the CHPL, please select from one of the categories below in the dropdown menu, and then click the Data File or Definition File button as needed.</Typography>
-                <div className={classes.fullWidth}>
-                  <ChplTextField
-                    select
-                    id="download-select"
-                    name="downloadSelect"
-                    label="Select a collection to download"
-                    value={selectedOption}
-                    onChange={(event) => setSelectedOption(event.target.value)}
-                  >
-                    { downloadOptions.map((item) => (
-                      <MenuItem value={item} key={item}>{item}</MenuItem>
-                    ))}
-                  </ChplTextField>
-                </div>
-              </Box>
-            </CardContent>
-            <CardActions>
-              <Button
-                fullWidth
-                color="primary"
-                variant="contained"
-                id="download-chpl-data-button"
-                onClick={() => downloadFile('data')}
-              >
-                Data File
-                {' '}
-                <GetAppIcon className={classes.iconSpacing} />
-              </Button>
-              <Button
-                fullWidth
-                color="primary"
-                variant="text"
-                id="download-chpl-definition-button"
-                disabled={files[selectedOption]?.definition === ''}
-                onClick={() => downloadFile('definition')}
-              >
-                Definition File
-                {' '}
-                <CodeIcon className={classes.iconSpacing} />
-              </Button>
-            </CardActions>
-          </Card>
+                  <li>
+                    <Typography gutterBottom><strong>Surveillance Non-Conformities:</strong></Typography>
+                    {' '}
+                    Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file.
+                  </li>
+                  <li>
+                    <Typography gutterBottom><strong>Direct Review Activity:</strong></Typography>
+                    {' '}
+                    Entire collection of Direct Review activity reported to the CHPL.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Container>
         </div>
-      </div>
+      </Box>
     </>
   );
 }
