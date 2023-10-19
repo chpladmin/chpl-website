@@ -48,18 +48,6 @@ const SurveillanceEditComponent = {
     }
 
     addRequirement() {
-      const data = {
-        ...this.resolve.surveillanceTypes,
-        surveillanceRequirements: {
-          data: this.resolve.surveillanceTypes.surveillanceRequirements.data
-            .filter((req) => this.isDateBetweenInclusive(req.startDay, req.endDay, this.surveillance.startDay))
-        },
-        nonconformityTypes: {
-          data: this.resolve.surveillanceTypes.nonconformityTypes.data
-            .filter((ncType) => this.isDateBetweenInclusive(ncType.startDay, ncType.endDay, this.surveillance.startDay)),
-        },
-      };
-
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
         animation: false,
@@ -71,7 +59,7 @@ const SurveillanceEditComponent = {
           randomizedSitesUsed: () => this.surveillance.randomizedSitesUsed,
           requirement: () => ({ nonconformities: [] }),
           surveillanceId: () => this.surveillance.id,
-          surveillanceTypes: () => data,
+          surveillanceTypes: () => this.filteredDataBySurveillanceDate(),
           workType: () => 'add',
         },
         size: 'lg',
@@ -172,7 +160,7 @@ const SurveillanceEditComponent = {
           randomizedSitesUsed: () => this.surveillance.randomizedSitesUsed,
           requirement: () => req,
           surveillanceId: () => this.surveillance.id,
-          surveillanceTypes: () => data,
+          surveillanceTypes: () => this.filteredDataBySurveillanceDate(),
           workType: () => this.workType,
         },
         size: 'lg',
@@ -196,6 +184,20 @@ const SurveillanceEditComponent = {
       }, (result) => {
         this.$log.info(result);
       });
+    }
+
+    filteredDataBySurveillanceDate() {
+      return {
+        ...this.resolve.surveillanceTypes,
+        surveillanceRequirements: {
+          data: this.resolve.surveillanceTypes.surveillanceRequirements.data
+            .filter((req) => this.isDateBetweenInclusive(req.startDay, req.endDay, this.surveillance.startDay))
+        },
+        nonconformityTypes: {
+          data: this.resolve.surveillanceTypes.nonconformityTypes.data
+            .filter((ncType) => this.isDateBetweenInclusive(ncType.startDay, ncType.endDay, this.surveillance.startDay)),
+        },
+      };
     }
 
     inspectNonconformities(noncons) {
