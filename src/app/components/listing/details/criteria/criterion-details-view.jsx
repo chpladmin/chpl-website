@@ -201,7 +201,7 @@ function ChplCriterionDetailsView(props) {
                 <TableCell>{criterion.g2Success ? 'True' : 'False'}</TableCell>
               </TableRow>
             )}
-            { criterion.success && criterion.criterion.attributes?.functionalitiesTested
+            { criterion.success && criterion.criterion.attributes?.functionalityTested
             && (
               <TableRow key="functionalitiesTested">
                 <TableCell component="th" scope="row">
@@ -242,7 +242,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-            { criterion.success && criterion.criterion.attributes?.conformanceMethods
+            { criterion.success && criterion.criterion.attributes?.conformanceMethod
             && (
               <TableRow key="conformanceMethods">
                 <TableCell component="th" scope="row">
@@ -280,7 +280,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-            { criterion.success && !criterion.criterion.attributes?.conformanceMethods
+            { criterion.success && !criterion.criterion.attributes?.conformanceMethod
             && (
               <TableRow key="testProcedures">
                 <TableCell component="th" scope="row">
@@ -384,7 +384,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-            { criterion.success && criterion.criterion.attributes?.testToolsUsed
+            { criterion.success && criterion.criterion.attributes?.testTool
             && (
               <TableRow key="testToolsUsed">
                 <TableCell component="th" scope="row">
@@ -417,7 +417,7 @@ function ChplCriterionDetailsView(props) {
                 </TableCell>
               </TableRow>
             )}
-            { criterion.success && criterion.criterion.attributes?.testDataUsed
+            { criterion.success && criterion.criterion.attributes?.testData
             && (
               <TableRow key="testDataUsed">
                 <TableCell component="th" scope="row">
