@@ -3,9 +3,9 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
-  CardActions,
   Divider,
   MenuItem,
   Typography,
@@ -13,9 +13,8 @@ import {
 } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
 
-import { ChplLink, ChplTextField } from 'components/util';
+import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
@@ -48,36 +47,16 @@ const useStyles = makeStyles({
       marginTop: '.7em',
     },
   },
-  warningBox: {
-    padding: '16px',
-    backgroundColor: palette.warningLight,
-    border: `1px solid ${palette.grey}`,
-    borderRadius: '4px',
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: '4px',
-    marginBottom: '16px',
-    gridGap: '16px',
-    alignItems: 'center',
-  },
   listHeaders: {
     marginBottom: '8px',
   },
 });
 
 const allOptions = [
-  'Active products (json)',
-  'Inactive products (json)',
-  '2014 edition products (json)',
-  '2011 edition products (json)',
-  'Active products (xml)',
-  'Inactive products (xml)',
-  '2014 edition products (xml)',
-  '2011 edition products (xml)',
-  'Active product summary (csv)',
-  'Inactive product summary (csv)',
-  '2014 edition summary (csv)',
-  'SVAP Summary (csv)',
+  'Active products summary',
+  'Inactive products summary',
+  '2014 edition summary',
+  'SVAP Summary',
   'Surveillance Activity',
   'Surveillance (Basic)',
   'Surveillance Non-Conformities',
@@ -94,22 +73,15 @@ function ChplResourcesDownload() {
   const { hasAnyRole } = useContext(UserContext);
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
-  const [selectedOption, setSelectedOption] = useState('Active products (json)');
+  const [selectedOption, setSelectedOption] = useState('Active products summary');
   const classes = useStyles();
 
   useEffect(() => {
     const data = {
-      'Active products (json)': { data: `${API}/download/active?api_key=${getApiKey()}&format=json`, definition: '', label: '2015 JSON' },
-      'Inactive products (json)': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=json`, definition: '', label: '2015 JSON' },
-      '2014 edition products (json)': { data: `${API}/download/2014?api_key=${getApiKey()}&format=json`, definition: '', label: '2014 JSON' },
-      '2011 edition products (json)': { data: `${API}/download/2011?api_key=${getApiKey()}&format=json`, definition: '', label: '2011 JSON' },
-      'Active products (xml)': { data: `${API}/download/active?api_key=${getApiKey()}`, definition: `${API}/download/active?api_key=${getApiKey()}&definition=true`, label: '2015 XML' },
-      'Inactive products (xml)': { data: `${API}/download/inactive?api_key=${getApiKey()}`, definition: `${API}/download/inactive?api_key=${getApiKey()}&definition=true`, label: '2014 XML' },
-      '2011 edition products (xml)': { data: `${API}/download/2011?api_key=${getApiKey()}`, definition: `${API}/download/2011?api_key=${getApiKey()}&definition=true`, label: '2011 XML' },
-      'Active product summary (csv)': { data: `${API}/download/active?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/active?api_key=${getApiKey()}&format=csv&definition=true`, label: '2015 CSV' },
-      'Inactive product summary (csv)': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/inactive?api_key=${getApiKey()}&format=csv&definition=true`, label: '2015 CSV' },
-      '2014 edition summary (csv)': { data: `${API}/download/2014?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/2014?api_key=${getApiKey()}&format=csv&definition=true`, label: '2014 CSV' },
-      'SVAP Summary (csv)': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
+      'Active products summary': { data: `${API}/download/active?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/active?api_key=${getApiKey()}&format=csv&definition=true`, label: 'Active products' },
+      'Inactive products summary': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/inactive?api_key=${getApiKey()}&format=csv&definition=true`, label: 'Inactive products' },
+      '2014 edition summary': { data: `${API}/download/2014?api_key=${getApiKey()}&format=csv`, definition: `${API}/download/2014?api_key=${getApiKey()}&format=csv&definition=true`, label: '2014 products' },
+      'SVAP Summary': { data: `${API}/svap/download?api_key=${getApiKey()}`, definition: `${API}/svap/download?api_key=${getApiKey()}&definition=true`, label: 'SVAP Summary' },
       'Surveillance (Basic)': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&authorization=Bearer%20${getToken()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=basic&definition=true&authorization=Bearer%20${getToken()}`, label: 'Surveillance (Basic)' },
       'Surveillance Activity': { data: `${API}/surveillance/download?api_key=${getApiKey()}&type=all`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&type=all&definition=true`, label: 'Surveillance' },
       'Surveillance Non-Conformities': { data: `${API}/surveillance/download?api_key=${getApiKey()}`, definition: `${API}/surveillance/download?api_key=${getApiKey()}&definition=true`, label: 'Surveillance Non-Conformities' },
@@ -141,12 +113,6 @@ function ChplResourcesDownload() {
         </Typography>
       </div>
       <div className={classes.pageBody} id="main-content" tabIndex="-1">
-        <Typography
-          variant="body1"
-        >
-          Please note that the CHPL files are now available in JSON format, offering a more modern and flexible approach to data integration. Please note that while our XML files are still available, they are being deprecated and will be discontinued in the near future. We recommend transitioning to JSON format for future-proofing your data integrations.
-        </Typography>
-        <Divider />
         <div className={classes.content}>
           <div>
             <Typography
@@ -159,56 +125,15 @@ function ChplResourcesDownload() {
             <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Certified Health IT Products</strong></Typography>
             <ul className={classes.listSpacing}>
               <li>
-                <Typography gutterBottom><strong>2015/2014/2011 Edition Products (JSON):</strong></Typography>
+                <Typography gutterBottom><strong>Certified Products Summary:</strong></Typography>
                 {' '}
-                Entire collection of a specified certification edition&apos;s certified products, including all data elements.
+                Entire collection of a set of certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
                 <ul>
                   <li>
-                    The 2015 Edition Products file is updated nightly.
+                    The Active products summary file is updated nightly.
                   </li>
                   <li>
-                    The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                  </li>
-                  <li>
-                    For more information, please look at the
-                    {' '}
-                    <ChplLink
-                      href="#/resources/api"
-                      text="API Documentation page"
-                      external={false}
-                      inline
-                      router={{ sref: 'resources.api' }}
-                    />
-                    .
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <Typography gutterBottom><strong>2015/2014/2011 Edition Products (XML):</strong></Typography>
-                {' '}
-                Entire collection of a specified certification edition&apos;s certified products, including all data elements.
-                <ul>
-                  <li>
-                    The 2015 Edition Products file is updated nightly.
-                  </li>
-                  <li>
-                    The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.
-                  </li>
-                </ul>
-              </li>
-              <Box className={classes.warningBox}>
-                <ReportProblemOutlinedIcon />
-                <Typography>
-                  XML Files are being deprecated and will be discontinued in the near future.
-                </Typography>
-              </Box>
-              <li>
-                <Typography gutterBottom><strong>2015/2014 Edition Summary (CSV):</strong></Typography>
-                {' '}
-                Entire collection of a specified certification edition&apos;s certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests.
-                <ul>
-                  <li>
-                    The 2015 Edition Summary file is updated nightly.
+                    The Inactive products summary file is updated nightly.
                   </li>
                   <li>
                     The 2014 Edition Summary file is updated quarterly.
@@ -216,7 +141,7 @@ function ChplResourcesDownload() {
                 </ul>
               </li>
               <li>
-                <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary (CSV):</strong></Typography>
+                <Typography gutterBottom><strong>Standards Version Advancement Process (SVAP) Summary:</strong></Typography>
                 {' '}
                 Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
               </li>
@@ -227,25 +152,25 @@ function ChplResourcesDownload() {
             <Typography className={classes.listHeaders} gutterBottom variant="h6"><strong>Compliance Activities</strong></Typography>
             <ul className={classes.listSpacing}>
               <li>
-                <Typography gutterBottom><strong>Surveillance Activity (CSV):</strong></Typography>
+                <Typography gutterBottom><strong>Surveillance Activity:</strong></Typography>
                 {' '}
                 Entire collection of surveillance activity reported to the CHPL.
               </li>
               { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
                 && (
                   <li>
-                    <Typography gutterBottom><strong>Surveillance (Basic) (CSV):</strong></Typography>
+                    <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>
                     {' '}
                     Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.
                   </li>
                 )}
               <li>
-                <Typography gutterBottom><strong>Surveillance Non-Conformities (CSV):</strong></Typography>
+                <Typography gutterBottom><strong>Surveillance Non-Conformities:</strong></Typography>
                 {' '}
                 Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above &quot;Surveillance Activity&quot; file.
               </li>
               <li>
-                <Typography gutterBottom><strong>Direct Review Activity (CSV):</strong></Typography>
+                <Typography gutterBottom><strong>Direct Review Activity:</strong></Typography>
                 {' '}
                 Entire collection of Direct Review activity reported to the CHPL.
               </li>
@@ -269,13 +194,6 @@ function ChplResourcesDownload() {
                       <MenuItem value={item} key={item}>{item}</MenuItem>
                     ))}
                   </ChplTextField>
-                </div>
-                <div className={classes.fullWidth}>
-                  <div>
-                    <Typography variant="body1">
-                      The XML definition files were last modified on October 16, 2023.
-                    </Typography>
-                  </div>
                 </div>
               </Box>
             </CardContent>
