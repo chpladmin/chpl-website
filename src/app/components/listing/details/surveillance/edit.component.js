@@ -36,17 +36,6 @@ const SurveillanceEditComponent = {
       }
     }
 
-    isDateBetweenInclusive(dateRangeStart, dateRangeEnd, dateToCheck) {
-      const modifiedDateRangeStart = dateRangeStart === null ? jsJoda.LocalDate.MIN : jsJoda.LocalDate.parse(dateRangeStart);
-      const modifiedDateRangeEnd = dateRangeEnd === null ? jsJoda.LocalDate.MAX : jsJoda.LocalDate.parse(dateRangeEnd);
-      const modifiedDateToCheck = jsJoda.LocalDate.parse(dateToCheck)
-
-      return modifiedDateRangeStart.equals(modifiedDateToCheck)
-        || modifiedDateRangeEnd.equals(modifiedDateToCheck)
-        || (modifiedDateRangeStart.isBefore(modifiedDateToCheck)
-          && modifiedDateRangeEnd.isAfter(modifiedDateToCheck));
-    }
-
     addRequirement() {
       this.modalInstance = this.$uibModal.open({
         component: 'aiSurveillanceRequirementEdit',
@@ -212,6 +201,17 @@ const SurveillanceEditComponent = {
         },
         size: 'lg',
       });
+    }
+
+    isDateBetweenInclusive(dateRangeStart, dateRangeEnd, dateToCheck) {
+      const modifiedDateRangeStart = dateRangeStart === null ? jsJoda.LocalDate.MIN : jsJoda.LocalDate.parse(dateRangeStart);
+      const modifiedDateRangeEnd = dateRangeEnd === null ? jsJoda.LocalDate.MAX : jsJoda.LocalDate.parse(dateRangeEnd);
+      const modifiedDateToCheck = jsJoda.LocalDate.parse(dateToCheck)
+
+      return modifiedDateRangeStart.equals(modifiedDateToCheck)
+        || modifiedDateRangeEnd.equals(modifiedDateToCheck)
+        || (modifiedDateRangeStart.isBefore(modifiedDateToCheck)
+          && modifiedDateRangeEnd.isAfter(modifiedDateToCheck));
     }
 
     misorderedStartEndDays() {
