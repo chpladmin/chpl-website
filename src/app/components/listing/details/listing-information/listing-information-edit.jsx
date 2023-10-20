@@ -345,7 +345,7 @@ function ChplListingInformationEdit() {
             <>
               <Typography variant="subtitle1">CHPL Product Number & Certification ID:</Typography>
               <Box className={classes.productVersionIcsContainer}>
-                {getPrefix()}
+                { getPrefix() }
                 <ChplTextField
                   id="product-code"
                   name="productCode"
@@ -379,7 +379,7 @@ function ChplListingInformationEdit() {
                   error={formik.touched.icsCode && !!formik.errors.icsCode}
                   helperText={formik.touched.icsCode && formik.errors.icsCode}
                 />
-                {getSuffix()}
+                { getSuffix() }
               </Box>
               <ChplTextField
                 id="acb-certification-id"
@@ -393,10 +393,10 @@ function ChplListingInformationEdit() {
               />
             </>
           )}
+        <Typography variant="subtitle1">Status:</Typography>
         { listing.certificationEvents?.length > 0
           && (
             <>
-              <Typography variant="subtitle1">Status:</Typography>
               <Card className={classes.fullWidth}>
                 <Table>
                   <TableHead>
@@ -477,7 +477,7 @@ function ChplListingInformationEdit() {
               onClick={() => setAddingStatus(true)}
               endIcon={<Add fontSize="medium" />}
             >
-              Add
+              Add Certification Status
             </Button>
           )}
         { addingStatus
@@ -589,59 +589,63 @@ function ChplListingInformationEdit() {
               </ChplTextField>
             </>
           )}
+        <Typography variant="subtitle1">ONC-ACB & ONC-ATL:</Typography>
+        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+          && (
+            <ChplTextField
+              select
+              id="certifying-body"
+              name="certifyingBody"
+              label="ONC-ACB"
+              required
+              value={formik.values.certifyingBody}
+              onChange={handleSelectChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
+              helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
+            >
+              { acbOptions.map((item) => (
+                <MenuItem value={item} key={item}>{item}</MenuItem>
+              ))}
+            </ChplTextField>
+          )}
+        { hasAnyRole(['ROLE_ACB'])
+          && (
+            <Typography>
+              { listing.certifyingBody?.name }
+            </Typography>
+          )}
         { listing.testingLabs?.length > 0
           && (
-            <>
-              <Typography variant="subtitle1">ONC-ACB & ONC-ATL:</Typography>
-              {hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
-                && (
-                  <ChplTextField
-                    select
-                    id="certifying-body"
-                    name="certifyingBody"
-                    label="ONC-ACB"
-                    required
-                    value={formik.values.certifyingBody}
-                    onChange={handleSelectChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.certifyingBody && !!formik.errors.certifyingBody}
-                    helperText={formik.touched.certifyingBody && formik.errors.certifyingBody}
-                  >
-                    { acbOptions.map((item) => (
-                      <MenuItem value={item} key={item}>{item}</MenuItem>
+            <Card className={classes.fullWidth}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className={classes.fullWidth}>Testing Lab</TableCell>
+                    <TableCell className="sr-only">Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { listing.testingLabs
+                    .sort((a, b) => (a.testingLab.name < b.testingLab.name ? -1 : 1))
+                    .map((atl) => (
+                      <TableRow key={atl.testingLab.id}>
+                        <TableCell>
+                          { atl.testingLab.name }
+                        </TableCell>
+                        <TableCell>
+                          <IconButton
+                            variant="outlined"
+                            onClick={() => handleItemRemoval('oncAtls', atl)}
+                          >
+                            <Delete color="error" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </ChplTextField>
-                )}
-              <Card className={classes.fullWidth}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell className={classes.fullWidth}>Testing Lab</TableCell>
-                      <TableCell className="sr-only">Action</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    { listing.testingLabs
-                      .sort((a, b) => (a.testingLab.name < b.testingLab.name ? -1 : 1))
-                      .map((atl) => (
-                        <TableRow key={atl.testingLab.id}>
-                          <TableCell>
-                            { atl.testingLab.name }
-                          </TableCell>
-                          <TableCell>
-                            <IconButton
-                              variant="outlined"
-                              onClick={() => handleItemRemoval('oncAtls', atl)}
-                            >
-                              <Delete color="error" />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </Card>
-            </>
+                </TableBody>
+              </Table>
+            </Card>
           )}
         { !addingAtl
           && (
@@ -652,7 +656,7 @@ function ChplListingInformationEdit() {
               endIcon={<Add fontSize="medium" />}
               onClick={() => setAddingAtl(true)}
             >
-              Add
+              Add ONC-ATL
             </Button>
           )}
         { addingAtl
@@ -735,55 +739,60 @@ function ChplListingInformationEdit() {
             helperText={formik.touched.mandatoryDisclosures && formik.errors.mandatoryDisclosures}
           />
         </Box>
-        <Typography variant="subtitle1">Real World Testing:</Typography>
-        <Box className={classes.twoColumnContainer}>
-          <Box className={classes.column}>
-            <ChplTextField
-              id="rwt-plans-url"
-              name="rwtPlansUrl"
-              label="Plans URL"
-              value={formik.values.rwtPlansUrl}
-              onChange={handleBasicChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
-              helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
-            />
-            <ChplTextField
-              id="rwt-plans-check-date"
-              name="rwtPlansCheckDate"
-              label="Plans Last ONC-ACB Completeness Check"
-              type="date"
-              value={formik.values.rwtPlansCheckDate}
-              onChange={handleBasicChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.rwtPlansCheckDate && !!formik.errors.rwtPlansCheckDate}
-              helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
-            />
-          </Box>
-          <Box className={classes.column}>
-            <ChplTextField
-              id="rwt-results-url"
-              name="rwtResultsUrl"
-              label="Results URL"
-              value={formik.values.rwtResultsUrl}
-              onChange={handleBasicChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
-              helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
-            />
-            <ChplTextField
-              id="rwt-results-check-date"
-              name="rwtResultsCheckDate"
-              label="Results Last ONC-ACB Completeness Check"
-              type="date"
-              value={formik.values.rwtResultsCheckDate}
-              onChange={handleBasicChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.rwtResultsCheckDate && !!formik.errors.rwtResultsCheckDate}
-              helperText={formik.touched.rwtResultsCheckDate && formik.errors.rwtResultsCheckDate}
-            />
-          </Box>
-        </Box>
+        { (listing.edition?.name === '2015' || listing.edition === undefined)
+          && (
+            <>
+              <Typography variant="subtitle1">Real World Testing:</Typography>
+              <Box className={classes.twoColumnContainer}>
+                <Box className={classes.column}>
+                  <ChplTextField
+                    id="rwt-plans-url"
+                    name="rwtPlansUrl"
+                    label="Plans URL"
+                    value={formik.values.rwtPlansUrl}
+                    onChange={handleBasicChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtPlansUrl && !!formik.errors.rwtPlansUrl}
+                    helperText={formik.touched.rwtPlansUrl && formik.errors.rwtPlansUrl}
+                  />
+                  <ChplTextField
+                    id="rwt-plans-check-date"
+                    name="rwtPlansCheckDate"
+                    label="Plans Last ONC-ACB Completeness Check"
+                    type="date"
+                    value={formik.values.rwtPlansCheckDate}
+                    onChange={handleBasicChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtPlansCheckDate && !!formik.errors.rwtPlansCheckDate}
+                    helperText={formik.touched.rwtPlansCheckDate && formik.errors.rwtPlansCheckDate}
+                  />
+                </Box>
+                <Box className={classes.column}>
+                  <ChplTextField
+                    id="rwt-results-url"
+                    name="rwtResultsUrl"
+                    label="Results URL"
+                    value={formik.values.rwtResultsUrl}
+                    onChange={handleBasicChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtResultsUrl && !!formik.errors.rwtResultsUrl}
+                    helperText={formik.touched.rwtResultsUrl && formik.errors.rwtResultsUrl}
+                  />
+                  <ChplTextField
+                    id="rwt-results-check-date"
+                    name="rwtResultsCheckDate"
+                    label="Results Last ONC-ACB Completeness Check"
+                    type="date"
+                    value={formik.values.rwtResultsCheckDate}
+                    onChange={handleBasicChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.rwtResultsCheckDate && !!formik.errors.rwtResultsCheckDate}
+                    helperText={formik.touched.rwtResultsCheckDate && formik.errors.rwtResultsCheckDate}
+                  />
+                </Box>
+              </Box>
+            </>
+          )}
       </Box>
     </>
   );
