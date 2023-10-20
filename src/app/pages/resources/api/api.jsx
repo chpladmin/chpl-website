@@ -81,14 +81,14 @@ const useStyles = makeStyles({
 });
 
 const allOptions = [
-  'Active products (json)',
-  'Inactive products (json)',
-  '2014 edition products (json)',
-  '2011 edition products (json)',
-  'Active products (xml)',
-  'Inactive products (xml)',
-  '2014 edition products (xml)',
-  '2011 edition products (xml)',
+  'Active products (JSON)',
+  'Inactive products (JSON)',
+  '2014 edition products (JSON)',
+  '2011 edition products (JSON)',
+  'Active products (XML)',
+  'Inactive products (XML)',
+  '2014 edition products (XML)',
+  '2011 edition products (XML)',
 ];
 
 function ChplResourcesApi() {
@@ -101,20 +101,20 @@ function ChplResourcesApi() {
   } = getAngularService('authService');
   const [files, setFiles] = useState({});
   const [downloadOptions, setDownloadOptions] = useState(allOptions);
-  const [selectedOption, setSelectedOption] = useState('Active products (json)');
+  const [selectedOption, setSelectedOption] = useState('Active products (JSON)');
   const classes = useStyles();
   const url = `${window.location.href.split('#')[0]}rest/v3/api-docs`;
 
   useEffect(() => {
     const data = {
-      'Active products (json)': { data: `${API}/download/active?api_key=${getApiKey()}&format=json`, definition: '', label: 'Active JSON' },
-      'Inactive products (json)': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=json`, definition: '', label: 'Inactive JSON' },
-      '2014 edition products (json)': { data: `${API}/download/2014?api_key=${getApiKey()}&format=json`, definition: '', label: '2014 JSON' },
-      '2011 edition products (json)': { data: `${API}/download/2011?api_key=${getApiKey()}&format=json`, definition: '', label: '2011 JSON' },
-      'Active products (xml)': { data: `${API}/download/active?api_key=${getApiKey()}`, definition: `${API}/download/active?api_key=${getApiKey()}&definition=true`, label: 'Active XML' },
-      'Inactive products (xml)': { data: `${API}/download/inactive?api_key=${getApiKey()}`, definition: `${API}/download/inactive?api_key=${getApiKey()}&definition=true`, label: 'Inactive XML' },
-      '2014 edition products (xml)': { data: `${API}/download/2014?api_key=${getApiKey()}`, definition: `${API}/download/2014?api_key=${getApiKey()}&definition=true`, label: '2014 XML' },
-      '2011 edition products (xml)': { data: `${API}/download/2011?api_key=${getApiKey()}`, definition: `${API}/download/2011?api_key=${getApiKey()}&definition=true`, label: '2011 XML' },
+      'Active products (JSON)': { data: `${API}/download/active?api_key=${getApiKey()}&format=json`, definition: '', label: 'Active JSON' },
+      'Inactive products (JSON)': { data: `${API}/download/inactive?api_key=${getApiKey()}&format=json`, definition: '', label: 'Inactive JSON' },
+      '2014 edition products (JSON)': { data: `${API}/download/2014?api_key=${getApiKey()}&format=json`, definition: '', label: '2014 JSON' },
+      '2011 edition products (JSON)': { data: `${API}/download/2011?api_key=${getApiKey()}&format=json`, definition: '', label: '2011 JSON' },
+      'Active products (XML)': { data: `${API}/download/active?api_key=${getApiKey()}`, definition: `${API}/download/active?api_key=${getApiKey()}&definition=true`, label: 'Active XML' },
+      'Inactive products (XML)': { data: `${API}/download/inactive?api_key=${getApiKey()}`, definition: `${API}/download/inactive?api_key=${getApiKey()}&definition=true`, label: 'Inactive XML' },
+      '2014 edition products (XML)': { data: `${API}/download/2014?api_key=${getApiKey()}`, definition: `${API}/download/2014?api_key=${getApiKey()}&definition=true`, label: '2014 XML' },
+      '2011 edition products (XML)': { data: `${API}/download/2011?api_key=${getApiKey()}`, definition: `${API}/download/2011?api_key=${getApiKey()}&definition=true`, label: '2011 XML' },
     };
     setFiles(data);
     setDownloadOptions(() => allOptions);
