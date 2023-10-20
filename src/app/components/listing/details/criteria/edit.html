@@ -317,7 +317,7 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_serviceBaseUrlList.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.riskManagementSummaryInformation !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.riskManagementSummaryInformation">
           <td><label class="control-label" for="data_risk_management_summary_information{{ $ctrl.cert.criterion.number }}">Risk Management Summary Information</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_risk_management_summary_information{{ $ctrl.cert.criterion.number }}" name="data_riskManagementSummaryInformation" ng-model="$ctrl.cert.riskManagementSummaryInformation" ng-maxlength="1024" required></input>
