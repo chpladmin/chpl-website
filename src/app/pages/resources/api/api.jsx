@@ -38,7 +38,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    gridTemplateColumns: '1fr',
     backgroundColor: palette.background,
     padding: '32px 0',
   },
@@ -200,7 +199,7 @@ function ChplResourcesApi() {
                   </Typography>
                 </Box>
               </ul>
-              <Card className={classes.downloadCard} elevation={4}>
+              <Card className={classes.downloadCard}>
                 <CardHeader title="Select A File To Download" />
                 <CardContent>
                   <Box display="flex" flexDirection="column" gridGap={16}>

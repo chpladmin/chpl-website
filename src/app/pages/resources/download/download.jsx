@@ -63,10 +63,7 @@ const useStyles = makeStyles({
     gap: '16px',
     marginTop: '32px',
     alignItems: 'stretch',
-    flexDirection: 'row',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'column',
-    },
+    flexDirection: 'column',
   },
 });
 
