@@ -15,25 +15,18 @@ describe('the Download page', () => {
     await hooks.open('#/resources/download');
   });
 
-  describe('in the 2015/2014/2011 Edition products section', () => {
-    it('should have correct information about 2015 edition products file', async () => {
-      const expectedText = 'The 2015 Edition Products file is updated nightly.';
+  describe('in the Certified Products Summary section', () => {
+    it('should have correct information about Active Products Summary file', async () => {
+      const expectedText = 'The Active products summary file is updated nightly.';
       await expect(await page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about 2014 and 2011 edition products file', async () => {
-      const expectedText = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
-      await expect(await page.content.getText()).toContain(expectedText);
-    });
-  });
-
-  describe('in the 2015/2014 Edition summary section', () => {
-    it('should have correct information about 2015 edition summary file', async () => {
-      const expectedText = 'The 2015 Edition Summary file is updated nightly.';
+    it('should have correct information about Inactive Products Summary file', async () => {
+      const expectedText = 'The Inactive products summary file is updated nightly.';
       await expect(await page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about 2014 edition summary file', async () => {
+    it('should have correct information about 2014 Edition Summary file', async () => {
       const expectedText = 'The 2014 Edition Summary file is updated quarterly.';
       await expect(await page.content.getText()).toContain(expectedText);
     });
