@@ -139,7 +139,7 @@ function ChplListingInformationEdit() {
     setAcbs(acbsQuery.data.acbs);
     setAcbOptions(acbsQuery.data.acbs
       .sort((a, b) => (a.name < b.name ? -1 : 1))
-      .map((acb) => `${acb.retired ? 'Retired | ' : ''}${acb.name}`));
+      .map((acb) => acb.name));
   }, [acbsQuery.data, acbsQuery.isLoading, acbsQuery.isSuccess]);
 
   useEffect(() => {
