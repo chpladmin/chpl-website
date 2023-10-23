@@ -139,11 +139,16 @@ function ChplListingEdit() {
       acknowledgeBusinessErrors,
     };
     putListing.mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         enqueueSnackbar('Listing Updated', {
           variant: 'success',
         });
-        $state.go('listing');
+        if (response.headers['chpl-id-changed']) {
+          enqueueSnackbar('Your activity caused a CHPL Product Number to change', {
+            variant: 'success',
+          });
+        }
+        setTimeout(() => $state.go('listing'), 5000);
       },
       onError: (error) => {
         setMessages({
