@@ -215,7 +215,7 @@ function ChplCriterionDetailsView(props) {
                   Functionality Tested
                 </TableCell>
                 <TableCell>
-                  { criterion.functionalitiesTested.length > 0
+                  { criterion.functionalitiesTested?.length > 0
                     && (
                       <List>
                         { criterion.functionalitiesTested.map((ft, index) => (
@@ -238,7 +238,7 @@ function ChplCriterionDetailsView(props) {
                         ))}
                       </List>
                     )}
-                  { criterion.functionalitiesTested.length === 0 && 'None' }
+                  { criterion.functionalitiesTested?.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
             )}
@@ -256,7 +256,7 @@ function ChplCriterionDetailsView(props) {
                   Conformance Method
                 </TableCell>
                 <TableCell>
-                  { criterion.conformanceMethods.length > 0
+                  { criterion.conformanceMethods?.length > 0
                     && (
                       <List>
                         { criterion.conformanceMethods.map((cm, index) => (
@@ -276,7 +276,7 @@ function ChplCriterionDetailsView(props) {
                         ))}
                       </List>
                     )}
-                  { criterion.conformanceMethods.length === 0 && 'None' }
+                  { criterion.conformanceMethods?.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
             )}
@@ -398,7 +398,7 @@ function ChplCriterionDetailsView(props) {
                   Test Tool
                 </TableCell>
                 <TableCell>
-                  { criterion.testToolsUsed.length > 0
+                  { criterion.testToolsUsed?.length > 0
                     && (
                       <List>
                         { criterion.testToolsUsed.map((tt, index) => (
@@ -413,7 +413,7 @@ function ChplCriterionDetailsView(props) {
                         ))}
                       </List>
                     )}
-                  { criterion.testToolsUsed.length === 0 && 'None' }
+                  { criterion.testToolsUsed?.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
             )}
@@ -431,7 +431,7 @@ function ChplCriterionDetailsView(props) {
                   Test Data Used
                 </TableCell>
                 <TableCell>
-                  { criterion.testDataUsed.length > 0
+                  { criterion.testDataUsed?.length > 0
                     && (
                       <List>
                         { criterion.testDataUsed.map((td, index) => (
@@ -449,7 +449,7 @@ function ChplCriterionDetailsView(props) {
                         ))}
                       </List>
                     )}
-                  { criterion.testDataUsed.length === 0 && 'None' }
+                  { criterion.testDataUsed?.length === 0 && 'None' }
                 </TableCell>
               </TableRow>
             )}
