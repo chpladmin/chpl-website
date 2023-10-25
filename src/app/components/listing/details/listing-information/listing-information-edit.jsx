@@ -236,7 +236,7 @@ function ChplListingInformationEdit() {
   };
 
   const handleProductNumberChange = (event) => {
-    const parts = listing.chplProductNumber.split('.');
+    const parts = listing.chplProductNumber?.split('.');
     switch (event.target.name) {
       case 'productCode':
         parts[4] = event.target.value;
@@ -282,12 +282,12 @@ function ChplListingInformationEdit() {
   };
 
   const getPrefix = () => {
-    const parts = listing.chplProductNumber.split('.');
+    const parts = listing.chplProductNumber?.split('.') ?? [];
     return `${parts[0]}.${parts[1]}.${parts[2]}.${parts[3]}`;
   };
 
   const getSuffix = () => {
-    const parts = listing.chplProductNumber.split('.');
+    const parts = listing.chplProductNumber?.split('.') ?? [];
     return `${parts[7]}.${parts[8]}`;
   };
 
@@ -310,9 +310,9 @@ function ChplListingInformationEdit() {
   formik = useFormik({
     initialValues: {
       acbCertificationId: listing.acbCertificationId ?? '',
-      productCode: listing.chplProductNumber.split('.')[4] ?? '',
-      versionCode: listing.chplProductNumber.split('.')[5] ?? '',
-      icsCode: listing.chplProductNumber.split('.')[6] ?? '',
+      productCode: listing.chplProductNumber?.split('.')[4] ?? '',
+      versionCode: listing.chplProductNumber?.split('.')[5] ?? '',
+      icsCode: listing.chplProductNumber?.split('.')[6] ?? '',
       newStatusType: '',
       newStatusDay: '',
       newStatusReason: '',
@@ -340,7 +340,7 @@ function ChplListingInformationEdit() {
   return (
     <>
       <Box className={classes.column}>
-        { !listing.chplProductNumber.startsWith('CHP-')
+        { !listing.chplProductNumber?.startsWith('CHP-')
           && (
             <>
               <Typography variant="subtitle1">CHPL Product Number & Certification ID:</Typography>
@@ -703,7 +703,7 @@ function ChplListingInformationEdit() {
               </Box>
             </>
           )}
-        { listing.chplProductNumber.startsWith('CHP-')
+        { listing.chplProductNumber?.startsWith('CHP-')
           && (
             <ChplTextField
               id="product-additional-software"
