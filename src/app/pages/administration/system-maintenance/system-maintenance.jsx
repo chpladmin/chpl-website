@@ -16,6 +16,7 @@ import ChplCertificationCriteria from 'components/standards/certification-criter
 import ChplQmsStandards from 'components/standards/qms-standard/qms-standards';
 import ChplFunctionalitiesTested from 'components/standards/functionality-tested/functionalities-tested';
 import ChplTestTools from 'components/standards/test-tool/test-tools';
+import ChplStandards from 'components/standards/standard/standards';
 import ChplSvaps from 'components/standards/svap/svaps';
 import ChplSystemJobs from 'components/jobs/system-jobs';
 import ChplUcdProcesses from 'components/standards/ucd-process/ucd-processes';
@@ -99,6 +100,10 @@ function ChplSystemMaintenance() {
     hide('qmsStandards.viewall');
     hide('qmsStandards.add.disabled');
     hide('qmsStandards.edit.disabled');
+    hide('standards.viewall.disabled');
+    hide('standards.viewall');
+    hide('standards.add.disabled');
+    hide('standards.edit.disabled');
     hide('testTools.viewall.disabled');
     hide('testTools.viewall');
     hide('testTools.add.disabled');
@@ -194,6 +199,21 @@ function ChplSystemMaintenance() {
           >
             QMS Standards
           </Button>
+          { hasAnyRole(['ROLE_ADMIN'])
+            && (
+              <Button
+                onClick={() => navigate('standards')}
+                disabled={active === 'standards'}
+                id="system-maintenance-navigation-standards"
+                fullWidth
+                variant="text"
+                color="primary"
+                endIcon={<ArrowForwardIcon />}
+                className={classes.menuItems}
+              >
+                Standards
+              </Button>
+            )}
           <Button
             onClick={() => navigate('svaps')}
             disabled={active === 'svaps'}
@@ -270,6 +290,10 @@ function ChplSystemMaintenance() {
                       <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
                     )}
                   <ListItem>QMS Standards - Add and update the QMS Standards available to be applied to listings</ListItem>
+                  { hasAnyRole(['ROLE_ADMIN'])
+                    && (
+                      <ListItem>Standards - TBD</ListItem>
+                    )}
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
                   { hasAnyRole(['ROLE_ADMIN'])
                     && (
@@ -304,9 +328,9 @@ function ChplSystemMaintenance() {
           && (
             <ChplFunctionalitiesTested />
           )}
-        { active === 'testTools'
+        { active === 'standards'
           && (
-            <ChplTestTools />
+            <ChplStandards />
           )}
         { active === 'svaps'
           && (
@@ -315,6 +339,10 @@ function ChplSystemMaintenance() {
         { active === 'systemJobs'
           && (
             <ChplSystemJobs />
+          )}
+        { active === 'testTools'
+          && (
+            <ChplTestTools />
           )}
         { active === 'ucdProcesses'
           && (
