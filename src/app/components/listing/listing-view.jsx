@@ -133,10 +133,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
   useEffect(() => {
     if (!initialListing) { return; }
     setCanSeeAllCriteria(isListingActive(initialListing));
-    setListing({
-      ...initialListing,
-      certificationResults: initialListing.certificationResults.filter((cr) => cr.success), // remove this in OCD-4347
-    });
+    setListing(initialListing);
   }, [initialListing]);
 
   const canManageSurveillance = () => {
