@@ -8,6 +8,13 @@ const suite = {
     ],
     expectedWarnings: [
     ],
+  }, {
+    listingId: '15.02.04.2701.RMVD.12.00.1.190920',
+    expectedErrors: [
+      'The criterion 170.315 (a)(6) was removed more than 1 year ago and may not be modified.',
+    ],
+    expectedWarnings: [
+    ],
   }],
 };
 
