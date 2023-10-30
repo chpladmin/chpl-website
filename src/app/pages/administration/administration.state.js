@@ -36,7 +36,7 @@ const states = [
       apiKeys: (authService, networkService) => {
         'ngInject';
 
-        if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+        if (authService.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC'])) {
           return networkService.getApiUsers();
         }
         return [];
@@ -44,7 +44,7 @@ const states = [
     },
     data: {
       title: 'CHPL Administration - API Keys',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'administration.change-requests',
@@ -52,7 +52,7 @@ const states = [
     component: 'chplChangeRequestsWrapperBridge',
     data: {
       title: 'CHPL Administration - Change Requests',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'administration.cms',
@@ -60,7 +60,7 @@ const states = [
     component: 'chplCmsWrapperBridge',
     data: {
       title: 'CHPL Administration - CMS',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'],
     },
   }, {
     name: 'administration.confirm',
@@ -73,7 +73,7 @@ const states = [
     component: 'chplConfirmListings',
     data: {
       title: 'CHPL Administration - Confirm Listings',
-      roles: ['ROLE_ADMIN', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ACB'],
     },
   }, {
     name: 'administration.confirm.listings.listing',
@@ -93,7 +93,7 @@ const states = [
     },
     data: {
       title: 'CHPL Administration - Confirm Listing',
-      roles: ['ROLE_ADMIN', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ACB'],
     },
   }, {
     name: 'administration.reports',
@@ -101,7 +101,7 @@ const states = [
     component: 'chplReportsWrapperBridge',
     data: {
       title: 'CHPL Administration - Reports',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'administration.system-maintenance',
@@ -109,7 +109,7 @@ const states = [
     component: 'chplSystemMaintenanceWrapperBridge',
     data: {
       title: 'CHPL Administration - System Maintenance',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC'],
     },
   }, {
     name: 'administration.upload',
@@ -117,7 +117,7 @@ const states = [
     component: 'chplUpload',
     data: {
       title: 'CHPL Administration - Upload',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'login',

@@ -22,16 +22,16 @@
       <div class="form-group">
         <label class="control-label" for="obstacle">Obstacle Summary</label>
         <p class="form-control-static">Please list any obstacles encountered during surveillance, including those related to resources/technical capabilities, developers, and providers/end-users.</p>
-        <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+        <textarea class="form-control" id="obstacle" name="obstacle" ng-model="$ctrl.report.obstacleSummary" ng-disabled="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <div class="form-group">
         <label class="control-label" for="priority">Priority Changes From Findings Summary</label>
-        <textarea class="form-control" id="priority" name="priority" ng-model="$ctrl.report.priorityChangesFromFindingsSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+        <textarea class="form-control" id="priority" name="priority" ng-model="$ctrl.report.priorityChangesFromFindingsSummary" ng-disabled="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
     </div>
   </div>
   <chpl-action-bar can-act="$ctrl.can(action)"
-                   is-notification="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
+                   is-notification="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"
                    take-action="$ctrl.takeActionBarAction(action)">
   </chpl-action-bar>
 </div>

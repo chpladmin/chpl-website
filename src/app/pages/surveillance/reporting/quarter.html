@@ -22,25 +22,25 @@
       <div class="form-group">
         <label class="control-label" for="surveillance-activities">Surveillance Activities and Outcomes</label>
         <p class="form-control-static">The ONC-ACB used the following selection method to make its random selection of certified Health IT Modules for surveillance initiated during the reporting period.</p>
-        <textarea class="form-control" id="surveillance-activities" name="surveillanceActivities" ng-model="$ctrl.report.surveillanceActivitiesAndOutcomes" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+        <textarea class="form-control" id="surveillance-activities" name="surveillanceActivities" ng-model="$ctrl.report.surveillanceActivitiesAndOutcomes" ng-disabled="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <div class="form-group">
         <label class="control-label" for="reactive">Reactive Surveillance Summary</label>
         <p class="form-control-static">In order to meet its obligation to conduct reactive surveillance, the ONC-ACB undertook the following activities and implemented the following measures to ensure that it was able to systematically obtain, synthesize and act on all facts and circumstances that would cause a reasonable person to question the ongoing compliance of any certified Health IT Module.</p>
-        <textarea class="form-control" id="reactive-surveillance-summary" name="reactiveSurveillanceSummary" ng-model="$ctrl.report.reactiveSurveillanceSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+        <textarea class="form-control" id="reactive-surveillance-summary" name="reactiveSurveillanceSummary" ng-model="$ctrl.report.reactiveSurveillanceSummary" ng-disabled="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <div class="form-group">
         <label class="control-label" for="prioritized-element">Prioritized Element Summary</label>
         <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to evaluate and address the prioritized elements of surveillance referred to in Program Policy Resource #18-03 (October 5, 2018).</p>
-        <textarea class="form-control" id="prioritized-element" name="prioritizedElement" ng-model="$ctrl.report.prioritizedElementSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+        <textarea class="form-control" id="prioritized-element" name="prioritizedElement" ng-model="$ctrl.report.prioritizedElementSummary" ng-disabled="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <div class="form-group">
         <label class="control-label" for="disclosure-requirements">Disclosure Requirements Summary</label>
         <p class="form-control-static">The ONC-ACB undertook the following activities and implemented the following measures to ensure adherence by developers to disclosure requirements, as required of the ONC-ACB under 45 CFR &sect; 170.523(k):</p>
-        <textarea class="form-control" id="disclosure-requirements-summary" name="disclosureRequirementsSummary" ng-model="$ctrl.report.disclosureRequirementsSummary" ng-disabled="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"></textarea>
+        <textarea class="form-control" id="disclosure-requirements-summary" name="disclosureRequirementsSummary" ng-model="$ctrl.report.disclosureRequirementsSummary" ng-disabled="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"></textarea>
       </div>
       <chpl-action-bar can-act="$ctrl.can(action)"
-                       is-notification="!$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])"
+                       is-notification="!$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"
                        take-action="$ctrl.takeActionBarAction(action)">
       </chpl-action-bar>
       <hr />

@@ -11,7 +11,7 @@ const hocMock = {
   dispatch: jest.fn(),
 };
 
-const rolesMock = ['ROLE_ADMIN', 'ROLE_ONC'];
+const rolesMock = ['CHPL-ADMIN', 'ROLE_ONC'];
 
 describe('the ChplUserInvite component', () => {
   beforeEach(async () => {
@@ -33,7 +33,7 @@ describe('the ChplUserInvite component', () => {
       userEvent.click(screen.getByRole('button', { name: /Open User Invitation dialog/i }));
       userEvent.type(screen.getByLabelText(/Email/), 'email@sample.com');
       userEvent.click(screen.getByRole('button', { name: /ROLE/ }));
-      userEvent.click(screen.getByRole('option', { name: 'ROLE_ADMIN' }));
+      userEvent.click(screen.getByRole('option', { name: 'CHPL-ADMIN' }));
       userEvent.click(screen.getByRole('button', { name: /Send Invite/i }));
 
       await waitFor(() => {
@@ -41,7 +41,7 @@ describe('the ChplUserInvite component', () => {
           'invite',
           {
             email: 'email@sample.com',
-            role: 'ROLE_ADMIN',
+            role: 'CHPL-ADMIN',
           },
         );
       });

@@ -53,7 +53,7 @@ function ChplListingInformation({ listing: initialListing }) {
   }, [initialListing]);
 
   const canViewRwtDates = () => {
-    if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) { return true; }
+    if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC'])) { return true; }
     if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     if (hasAnyRole(['ROLE_DEVELOPER']) && user.organizations.some((o) => o.id === listing.developer.id)) { return true; }
     return false;

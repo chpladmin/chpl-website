@@ -30,6 +30,7 @@ import {
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { ChplTextField } from 'components/util';
+import { FlagContext } from 'shared/contexts';
 
 const zxcvbn = require('zxcvbn');
 
@@ -115,6 +116,8 @@ function ChplLogin({ dispatch }) {
   const [resetToken, setResetToken] = useState('');
   const [strength, setStrength] = useState(0);
   const classes = useStyles();
+  const { isOn } = useContext(FlagContext);
+
   let changeFormik;
   let resetFormik;
   let sendResetFormik;
@@ -219,18 +222,33 @@ function ChplLogin({ dispatch }) {
     }, {
       onSuccess: (response) => {
         authService.saveToken(response.token);
-        networkService.getUserById(authService.getUserId())
-          .then((data) => {
-            setUser(data);
-            signinFormik.resetForm();
-            $analytics.eventTrack('Log In', { category: 'Authentication' });
-            authService.saveCurrentUser(data);
-            Idle.watch();
-            Keepalive.ping();
-            $rootScope.$broadcast('loggedIn');
-            dispatch('loggedIn');
-            toastWhenUsernameUsed(signinFormik.values.userName, data);
-          });
+        if (isOn('sso')) {
+          networkService.getCognitoUser(authService.getUserId())
+            .then((data) => {
+              setUser(data);
+              signinFormik.resetForm();
+              $analytics.eventTrack('Log In', { category: 'Authentication' });
+              authService.saveCurrentUser(data);
+              Idle.watch();
+              //Keepalive.ping();
+              $rootScope.$broadcast('loggedIn');
+              dispatch('loggedIn');
+              toastWhenUsernameUsed(signinFormik.values.userName, data);
+            });
+        } else {
+          networkService.getUserById(authService.getUserId())
+            .then((data) => {
+              setUser(data);
+              signinFormik.resetForm();
+              $analytics.eventTrack('Log In', { category: 'Authentication' });
+              authService.saveCurrentUser(data);
+              Idle.watch();
+              Keepalive.ping();
+              $rootScope.$broadcast('loggedIn');
+              dispatch('loggedIn');
+              toastWhenUsernameUsed(signinFormik.values.userName, data);
+            });
+        }
       },
       onError: (error) => {
         if (error?.status === 461) {

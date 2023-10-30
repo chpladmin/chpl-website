@@ -60,14 +60,14 @@ const VersionComponent = {
       switch (action) {
         case 'edit':
           return this.canEdit // allowed by containing component
-            && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+            && (this.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                 || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"
         case 'merge':
           return this.canMerge // allowed by containing component
-            && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
+            && this.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC']); // always allowed as ADMIN/ONC
         case 'split':
           return this.canSplit // allowed by containing component
-            && (this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
+            && (this.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC']) // always allowed as ADMIN/ONC
                 || this.hasAnyRole(['ROLE_ACB']) && this.developer.status.status === 'Active'); // allowed for ACB iff Developer is "Active"o
         default:
           return false;

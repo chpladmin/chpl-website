@@ -35,7 +35,7 @@ function ChplJobs() {
   const { append, display, hide } = useContext(BreadcrumbContext);
   const { hasAnyRole } = useContext(UserContext);
   const jobTypeQuery = useFetchJobTypes();
-  const systemQuery = useFetchSystemTriggers({ isAuthenticated: hasAnyRole(['ROLE_ADMIN']) });
+  const systemQuery = useFetchSystemTriggers({ isAuthenticated: hasAnyRole(['CHPL-ADMIN']) });
   const deleteTrigger = useDeleteTrigger();
   const postOneTimeTrigger = usePostOneTimeTrigger();
   const { enqueueSnackbar } = useSnackbar();

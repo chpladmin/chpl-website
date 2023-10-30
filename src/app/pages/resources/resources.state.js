@@ -46,7 +46,7 @@ const states = [
     component: 'chplStyleGuideBridge',
     data: {
       title: 'CHPL Style Guide',
-      roles: ['ROLE_ADMIN'],
+      roles: ['CHPL-ADMIN'],
     },
   },
 ];

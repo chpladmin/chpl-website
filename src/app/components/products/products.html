@@ -42,7 +42,7 @@
                 </select>
               </div>
               <div class="product__product-info-item-action">
-                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
+                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'])">
                   <button class="btn btn-default dropdown-toggle" type="button" id="edit-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
                     <i class="fa fa-pencil"></i> Edit
                   </button>
@@ -55,7 +55,7 @@
                     </li>
                   </ul>
                 </div>
-                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (product.versions.length > 2 || product.activeVersion.listings.length > 1)">
+                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB']) && (product.versions.length > 2 || product.activeVersion.listings.length > 1)">
                   <button class="btn btn-default dropdown-toggle" type="button" id="split-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
                     <i class="fa fa-scissors"></i> Split
                   </button>
@@ -76,7 +76,7 @@
                     </li>
                   </ul>
                 </div>
-                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 2)">
+                <div uib-dropdown auto-close="outsideClick" class="btn-group" ng-if="$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC']) && ($ctrl.products.length > 1 || product.versions.length > 2)">
                   <button class="btn btn-default dropdown-toggle" type="button" id="merge-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true" ng-click="$event.stopPropagation()">
                     <i class="fa fa-code-fork fa-rotate-180"></i> Merge
                   </button>

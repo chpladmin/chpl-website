@@ -3,7 +3,8 @@
     .factory('authService', authService);
 
   /** @ngInclude */
-  function authService($localStorage, $log, $rootScope, $window, API_KEY) {
+  /** @ngInject */
+  function authService($localStorage, $log, $rootScope, $window, featureFlags, API_KEY) {
     const service = {
       canImpersonate,
       canManageAcb,
@@ -28,12 +29,12 @@
       const userRole = parseJwt(getToken())?.Authority;
       const targetRole = target.role;
       return !isImpersonating()
-                && ((userRole === 'ROLE_ADMIN' && targetRole !== 'ROLE_ADMIN')
-                 || (userRole === 'ROLE_ONC' && targetRole !== 'ROLE_ADMIN' && targetRole !== 'ROLE_ONC'));
+                && ((userRole === 'CHPL-ADMIN' && targetRole !== 'CHPL_ADMIN')
+                 || (userRole === 'ROLE_ONC' && targetRole !== 'CHPL-ADMIN' && targetRole !== 'ROLE_ONC'));
     }
 
     function canManageAcb(acb) {
-      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC'])) {
         return true;
       }
       if (hasAnyRole(['ROLE_ACB'])) {
@@ -46,7 +47,7 @@
     }
 
     function canManageDeveloper(developer) {
-      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
         return true;
       }
       if (hasAnyRole(['ROLE_DEVELOPER'])) {
@@ -63,7 +64,7 @@
     }
 
     function getFullname() {
-      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -84,13 +85,18 @@
     }
 
     function getUserId() {
-      if (hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
-        const identity = parseJwt(token).Identity;
-        return identity[0];
+        if (featureFlags.isOn('sso')) {
+          return parseJwt(token).email;
+        } else {
+          const identity = parseJwt(token).Identity;
+          return identity[0];
+        }
+      } else {
+        logout();
+        return '';
       }
-      logout();
-      return '';
     }
 
     function hasAnyRole(roles) {
@@ -99,7 +105,12 @@
       }
       const token = getToken();
       if (token) {
-        const userRole = parseJwt(token).Authority;
+        var userRole;
+        if (featureFlags.isOn('sso')) {
+          userRole = parseJwt(token)['cognito:groups'][0];
+        } else {
+          userRole = parseJwt(token).Authority;
+        }
         if (roles) {
           if (userRole) {
             return roles.reduce((ret, role) => ret || userRole === role, false); // true iff user has a role in the required list
@@ -118,6 +129,7 @@
     }
 
     function logout() {
+      console.log('Logging out!')
       delete $localStorage.jwtToken;
       delete $localStorage.currentUser;
       $rootScope.$broadcast('loggedOut');
@@ -139,6 +151,7 @@
     }
 
     function saveToken(token) {
+      console.log('Saving token');
       $localStorage.jwtToken = token;
     }
   }

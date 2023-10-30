@@ -35,7 +35,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Edit',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'],
     },
   }, {
     name: 'organizations.developers.developer.split',
@@ -45,7 +45,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Split',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.developers.developer.join',
@@ -55,7 +55,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Join',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC'],
     },
   }, {
     name: 'organizations.developers.developer.attestation',
@@ -100,7 +100,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Edit Product',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.developers.developer.product.merge',
@@ -110,7 +110,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Merge Product',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.developers.developer.product.split',
@@ -120,7 +120,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Split Product',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.developers.developer.product.version',
@@ -134,7 +134,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Edit Version',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.developers.developer.product.version.merge',
@@ -144,7 +144,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Merge Version',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.developers.developer.product.version.split',
@@ -154,7 +154,7 @@ const states = [
     },
     data: {
       title: 'CHPL Developers - Split Version',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.onc-acbs',
@@ -162,7 +162,7 @@ const states = [
     component: 'chplOncOrganizationsBridge',
     data: {
       title: 'CHPL ONC-ACBs',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
     },
   }, {
     name: 'organizations.onc-atls',
@@ -170,7 +170,7 @@ const states = [
     component: 'chplOncOrganizationsBridge',
     data: {
       title: 'CHPL ONC-ATLs',
-      roles: ['ROLE_ADMIN', 'ROLE_ONC'],
+      roles: ['CHPL-ADMIN', 'ROLE_ONC'],
     },
   },
 ];

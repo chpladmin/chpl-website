@@ -13,12 +13,12 @@ function IndexWrapper() {
   const networkService = getAngularService('networkService');
 
   useEffect(() => {
-    if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+    if (authService.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
       Idle.watch();
     }
     const deregisterKeepalive = $rootScope.$on('Keepalive', () => {
       console.info('Keepalive');
-      if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (authService.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         networkService.keepalive()
           .then((response) => {
             authService.saveToken(response.token);
