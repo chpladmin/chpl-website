@@ -40,6 +40,9 @@ function UserWrapper(props) {
     if (!user || !roles || roles.length === 0 || !user.role) {
       return false;
     }
+    if (roles.includes('chpl-admin')) {
+      roles.push('ROLE_ADMIN');
+    }
     return roles.reduce((ret, role) => ret || user.role === role, false); // true iff user has a role in the required list
   };
 
