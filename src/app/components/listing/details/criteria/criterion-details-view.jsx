@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Card,
   IconButton,
   List,
@@ -222,10 +223,12 @@ function ChplCriterionDetailsView(props) {
                       <List>
                         { criterion.functionalitiesTested.map((ft, index) => (
                           <ListItem key={ft.id || ft.key || index} className={ft.functionalityTested.retired ? 'removed' : ''}>
-                            { ft.functionalityTested.retired ? 'Expired | ' : '' }
-                            { ft.functionalityTested.value
-                              && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
-                            { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
+                            <Box width="100%">
+                              { ft.functionalityTested.retired ? 'Expired | ' : '' }
+                              { ft.functionalityTested.value
+                                && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
+                              { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
+                            </Box>
                             <ChplUpdateIndicator
                               requiredDay={ft.functionalityTested.requiredDay}
                               endDay={ft.functionalityTested.endDay}
