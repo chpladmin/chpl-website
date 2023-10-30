@@ -29,12 +29,12 @@
       const userRole = parseJwt(getToken())?.Authority;
       const targetRole = target.role;
       return !isImpersonating()
-                && ((userRole === 'CHPL-ADMIN' && targetRole !== 'CHPL_ADMIN')
-                 || (userRole === 'ROLE_ONC' && targetRole !== 'CHPL-ADMIN' && targetRole !== 'ROLE_ONC'));
+                && ((userRole === 'chpl-admin' && targetRole !== 'CHPL_ADMIN')
+                 || (userRole === 'ROLE_ONC' && targetRole !== 'chpl-admin' && targetRole !== 'ROLE_ONC'));
     }
 
     function canManageAcb(acb) {
-      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC'])) {
+      if (hasAnyRole(['chpl-admin', 'ROLE_ONC'])) {
         return true;
       }
       if (hasAnyRole(['ROLE_ACB'])) {
@@ -47,7 +47,7 @@
     }
 
     function canManageDeveloper(developer) {
-      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'])) {
         return true;
       }
       if (hasAnyRole(['ROLE_DEVELOPER'])) {
@@ -64,7 +64,7 @@
     }
 
     function getFullname() {
-      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
         const identity = parseJwt(token).Identity;
         if (identity.length === 3) {
@@ -85,7 +85,7 @@
     }
 
     function getUserId() {
-      if (hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         const token = getToken();
         if (featureFlags.isOn('sso')) {
           return parseJwt(token).email;
@@ -103,6 +103,11 @@
       if (!roles || roles.length === 0) {
         return false;
       }
+
+      if (roles.includes('chpl-admin')) {
+        roles.push('ROLE_ADMIN');
+      }
+      
       const token = getToken();
       if (token) {
         var userRole;
@@ -151,7 +156,6 @@
     }
 
     function saveToken(token) {
-      console.log('Saving token');
       $localStorage.jwtToken = token;
     }
   }
