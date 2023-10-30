@@ -51,7 +51,7 @@ function ChplActionButton(props) {
         {children}
         <CompareButton listing={listing} />
         <CmsButton listing={listing} />
-        { hasAnyRole(['CHPL-ADMIN']) && listing.id >= 10912
+        { hasAnyRole(['chpl-admin']) && listing.id >= 10912
           && (
             <Button
               color="secondary"

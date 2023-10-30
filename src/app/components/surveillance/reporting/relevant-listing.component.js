@@ -83,7 +83,7 @@ const SurveillanceReportRelevantListingComponent = {
     }
 
     displaySurveillance(relevantSurveillance) {
-      if (this.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])) {
+      if (this.hasAnyRole(['chpl-admin', 'ROLE_ACB'])) {
         this.editSurveillance(relevantSurveillance);
       } else {
         this.viewSurveillance(relevantSurveillance);
@@ -96,7 +96,7 @@ const SurveillanceReportRelevantListingComponent = {
       this.networkService.getListing(this.listing.id, true).then((listing) => {
         const surveillance = listing.surveillance.find((s) => s.id === relevantSurveillance.id);
         that.$uibModal.open({
-          component: that.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
+          component: that.hasAnyRole(['chpl-admin', 'ROLE_ACB']) ? 'aiSurveillanceEdit' : 'chplSurveillanceViewContainerComponent',
           animation: false,
           backdrop: 'static',
           keyboard: false,

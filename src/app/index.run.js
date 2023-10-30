@@ -9,7 +9,7 @@
         });
     };
 
-    if (authService.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
+    if (authService.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_DEVELOPER'])) {
       networkService.keepalive()
         .then(() => {
           loadFlags();

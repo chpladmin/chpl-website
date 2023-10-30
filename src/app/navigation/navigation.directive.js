@@ -21,7 +21,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
   this.$onInit = () => {
     $rootScope.bodyClass = 'navigation-shown';
 
-    if (vm.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+    if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
       vm.toggleNavClosed();
     } else {
       vm.toggleNavOpen();
@@ -29,7 +29,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
 
     const showCmsWidgetHook = $rootScope.$on('ShowCmsWidget', () => {
       vm.showCmsWidget(true);
-      if (vm.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         vm.toggleNavOpen();
       }
     });
@@ -42,7 +42,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
 
     const showCompareWidgetHook = $rootScope.$on('ShowCompareWidget', () => {
       vm.showCompareWidget(true);
-      if (vm.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         vm.toggleNavOpen();
       }
     });
@@ -68,7 +68,7 @@ function NavigationController($localStorage, $location, $log, $rootScope, $scope
     $scope.$on('$destroy', loggedOut);
 
     const flags = $rootScope.$on('flags loaded', () => {
-      if (vm.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
+      if (vm.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB', 'ROLE_CMS_STAFF', 'ROLE_DEVELOPER'])) {
         vm.toggleNavClosed();
       }
     });

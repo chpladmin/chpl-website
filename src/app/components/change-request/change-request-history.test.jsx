@@ -16,7 +16,7 @@ const mock = {
       comment: 'onc comment',
     }, {
       id: 2,
-      userPermission: { authority: 'CHPL-ADMIN' },
+      userPermission: { authority: 'ROLE_ADMIN' },
       statusChangeDateTime: '2022-03-21T04:20:32.000',
       changeRequestStatusType: { name: 'admin status' },
       comment: 'comment by admin',

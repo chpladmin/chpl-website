@@ -338,7 +338,7 @@ function ChplDeveloperEdit(props) {
             />
           )}
           <CardContent className={classes.content}>
-            { hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+            { hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'])
             && getEnhancedEditField({ key: 'name', display: 'Name', className: classes.fullWidth }) }
             <FormControlLabel
               control={(
@@ -353,7 +353,7 @@ function ChplDeveloperEdit(props) {
             )}
               label="Self-Developer"
             />
-            { hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC'])
+            { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
             && (
               <>
                 <TableContainer className={classes.fullWidth}>

@@ -145,7 +145,7 @@ function ChplAttestationView(props) {
             </TableContainer>
           )}
       </Box>
-      { canCreateException && hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC', 'ROLE_ACB'])
+      { canCreateException && hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'])
         && (
           <Button
             color="primary"

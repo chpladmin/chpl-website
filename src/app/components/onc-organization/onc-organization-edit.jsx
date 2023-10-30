@@ -224,7 +224,7 @@ function ChplOncOrganizationEdit(props) {
           <Typography className={classes.fullWidth} variant="subtitle1">General Info</Typography>
           { getEnhancedEditField({ key: 'name', display: 'Name', disabled: formik.values.retired }) }
           { getEnhancedEditField({ key: 'website', display: 'Website', disabled: formik.values.retired }) }
-          { hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC']) && organization.name
+          { hasAnyRole(['chpl-admin', 'ROLE_ONC']) && organization.name
               && (
                 <>
                   <Divider className={classes.fullWidth} />

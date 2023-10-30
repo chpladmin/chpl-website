@@ -2,9 +2,9 @@
   <div class="col-md-12">
     <h1>Upload</h1>
     <div class="upload__items">
-      <chpl-upload-wrapper-bridge ng-if="$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ACB'])"></chpl-upload-wrapper-bridge>
-      <chpl-upload-promoting-interoperability-bridge ng-if="$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC'])"></chpl-upload-promoting-interoperability-bridge>
-      <chpl-upload-api-documentation ng-if="$ctrl.hasAnyRole(['CHPL-ADMIN', 'ROLE_ONC'])"></chpl-upload-api-documentation>
+      <chpl-upload-wrapper-bridge ng-if="$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB'])"></chpl-upload-wrapper-bridge>
+      <chpl-upload-promoting-interoperability-bridge ng-if="$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ONC'])"></chpl-upload-promoting-interoperability-bridge>
+      <chpl-upload-api-documentation ng-if="$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ONC'])"></chpl-upload-api-documentation>
       <chpl-upload-real-world-testing></chpl-upload-real-world-testing>
     </div>
   </div>
