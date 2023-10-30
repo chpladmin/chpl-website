@@ -26,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.gap !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_GAP{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.gap" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_GAP{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               GAP <button class="btn btn-link btn-xs pull-right" uib-tooltip="The corresponding certification criteria are gap certified (True or False)." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The corresponding certification criteria are gap certified (True or False).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -79,13 +79,14 @@
             </td>
             <td>{{ $ctrl.cert.g2Success ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.functionalitiesTested !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Functionality_Tested{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.functionalityTested" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Functionality_Tested{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Functionality Tested <button class="btn btn-link btn-xs pull-right" uib-tooltip="Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.functionalitiesTested && $ctrl.cert.functionalitiesTested.length > 0">
               <ul>
-                <li ng-repeat="m in $ctrl.cert.functionalitiesTested">
+                <li ng-repeat="m in $ctrl.cert.functionalitiesTested" ng-class="{ 'removed' : m.functionalityTested.retired }">
+                  <span ng-if="m.functionalityTested.retired">Expired | </span>
                   {{ m.functionalityTested.regulatoryTextCitation }}:
                   <chpl-ellipsis-bridge text="m.functionalityTested.value" max-length="100" word-boundaries="true"></chpl-ellipsis-bridge>
                   <span ng-if="m.functionalityTested === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
@@ -94,7 +95,7 @@
             </td>
             <td ng-if="!$ctrl.cert.functionalitiesTested || $ctrl.cert.functionalitiesTested.length === 0">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_conformance_method{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.conformanceMethod" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_conformance_method{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Conformance Method <button class="btn btn-link btn-xs pull-right" uib-tooltip="The method used to evaluate compliance with the certification criterion. For the Test Procedure method, this also includes the version used during testing of the certification criterion functionality." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The method used to evaluate compliance with the certification criterion. For the Test Procedure method, this also includes the version used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -106,7 +107,7 @@
             </td>
             <td ng-if="!$ctrl.cert.conformanceMethods || $ctrl.cert.conformanceMethods.length === 0">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null && !$ctrl.cert.conformanceMethods" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_procedure{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.testProcedure && !$ctrl.cert.conformanceMethods" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_procedure{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Test Procedure <button class="btn btn-link btn-xs pull-right" uib-tooltip="The type of test procedure and the version used during testing of the certification criterion functionality." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The type of test procedure and the version used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -141,55 +142,61 @@
               <span ng-if="!$ctrl.accessibilityStandards || $ctrl.accessibilityStandards.length === 0">N/A</span>
             </td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.testToolsUsed !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_tool{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.testTool" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_tool{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Test Tool <button class="btn btn-link btn-xs pull-right" uib-tooltip="The name and version of the test tool used during testing of the certification criterion functionality." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The name and version of the test tool used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
-            <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testTool.id === null}">Tool: {{ m.testTool.value }}{{ m.testTool.retired ? ' (Retired)' : ''}}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.testTool.id === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
+            <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0">
+              <div ng-repeat="m in $ctrl.cert.testToolsUsed" ng-class="{ 'removed' : m.testTool.retired }">
+                <span ng-class="{'bg-danger': m.testTool.id === null}">
+                  Tool: {{ m.testTool.retired ? 'Retired | ' : ''}}{{ m.testTool.value }}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.testTool.id === null"> Warning: Tool not found in system, it will not be saved</span>
+                </span>
+              </div>
+            </td>
             <td ng-if="!$ctrl.cert.testToolsUsed || $ctrl.cert.testToolsUsed.length === 0">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.testDataUsed !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_data{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.testData" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Test_data{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Test Data Used <button class="btn btn-link btn-xs pull-right" uib-tooltip="The test data version and any alterations or modifications to the ONC-approved test data. It is an optional field except for the products testing for automated numerator recording (&sect;170.314(g)(1) or &sect;170.315(g)(1)) and automated measure calculation (&sect; 170.314(g)(2) or &sect;170.315(g)(2)). For those products, the field is required." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The test data version and any alterations or modifications to the ONC-approved test data. It is an optional field except for the products testing for automated numerator recording (&sect;170.314(g)(1) or &sect;170.315(g)(1)) and automated measure calculation (&sect; 170.314(g)(2) or &sect;170.315(g)(2)). For those products, the field is required.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.testDataUsed && $ctrl.cert.testDataUsed.length > 0"><div ng-repeat="m in $ctrl.cert.testDataUsed">Name: {{ m.testData.name ? m.testData.name : 'N/A' }}; Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
             <td ng-if="!$ctrl.cert.testDataUsed || $ctrl.cert.testDataUsed.length === 0">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.apiDocumentation !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Api_Documentation{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.criterion.attributes.apiDocumentation" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Api_Documentation{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               API Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink to the required documentation used to meet the applicable API certification criteria (&sect;170.315(g)(7) through 170.315(g)(10))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink to the required documentation used to meet the applicable API certification criteria (&sect;170.315(g)(7) through 170.315(g)(10)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.apiDocumentation"><a ai-a href="{{ $ctrl.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.apiDocumentation }">{{ $ctrl.cert.apiDocumentation }}</a></td>
             <td ng-if="!$ctrl.cert.apiDocumentation">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.exportDocumentation !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Export_Documentation{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.criterion.attributes.exportDocumentation" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Export_Documentation{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Export Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink of the export’s format used to support the EHI export criterion (&sect; 170.315(b)(10))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.exportDocumentation"><a ai-a href="{{ $ctrl.cert.exportDocumentation }}" analytics-on="click" analytics-event="Export Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.exportDocumentation }">{{ $ctrl.cert.exportDocumentation }}</a></td>
             <td ng-if="!$ctrl.cert.exportDocumentation">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.attestationAnswer != null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Attestation_Answer{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.criterion.attributes.attestationAnswer" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Attestation_Answer{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Attestation <button class="btn btn-link btn-xs pull-right" uib-tooltip="Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Indicates whether certified health IT supports the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ $ctrl.cert.attestationAnswer ? 'Yes' : 'No' }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.documentationUrl !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Documentation_Url{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.criterion.attributes.documentationUrl" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Documentation_Url{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Optional documentation for the Attestation to the applicable privacy and security transparency attestation criteria (&sect; 170.315(d)(12) or &sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.documentationUrl"><a ai-a href="{{ $ctrl.cert.documentationUrl }}" analytics-on="click" analytics-event="Documentation" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.documentationUrl }">{{ $ctrl.cert.documentationUrl }}</a></td>
             <td ng-if="!$ctrl.cert.documentationUrl">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Use_Cases{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.criterion.attributes.useCases" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Use_Cases{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Use Case(s) <button class="btn btn-link btn-xs pull-right" uib-tooltip="Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Use cases supported as applicable to meet the multi-factor authentication criterion (&sect; 170.315(d)(13))</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.useCases"><a ai-a href="{{ $ctrl.cert.useCases }}" analytics-on="click" analytics-event="Use Cases" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.useCases }">{{ $ctrl.cert.useCases }}</a></td>
             <td ng-if="!$ctrl.cert.useCases">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.serviceBaseUrlList !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_service_base_url_list{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.criterion.attributes.serviceBaseUrlList" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_service_base_url_list{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Service Base URL List <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The publicly accessible hyperlink to the list of service base URLs for a Health IT Module certified to &sect; 170.315(g)(10) that can be used by patients to access their electronic health information.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -203,13 +210,13 @@
             <td ng-if="$ctrl.cert.riskManagementSummaryInformation"><a ai-a href="{{ $ctrl.cert.riskManagementSummaryInformation }}" analytics-on="click" analytics-event="Risk Management Summary Information" analytics-properties="{ category: 'Download Details', label: $ctrl.cert.riskManagementSummaryInformation }">{{ $ctrl.cert.riskManagementSummaryInformation }}</a></td>
             <td ng-if="!$ctrl.cert.riskManagementSummaryInformation">None</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Privacy_Security_Framework{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.privacySecurityFramework" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_Privacy_Security_Framework{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               Privacy &amp; Security Framework <button class="btn btn-link btn-xs pull-right" uib-tooltip="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). " tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). </span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ $ctrl.cert.privacySecurityFramework }}</td>
           </tr>
-          <tr ng-if="$ctrl.cert.success &&  $ctrl.cert.sed !== null" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_SED{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
+          <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.sed" id="criteria_{{ $ctrl.cert.criterion.number }}_details_row_SED{{ $ctrl.cert.criterion.title.includes('Cures') ? '_cures' : ''}}">
             <td>
               SED <button class="btn btn-link btn-xs pull-right" uib-tooltip="The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>

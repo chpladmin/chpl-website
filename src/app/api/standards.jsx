@@ -74,6 +74,7 @@ const useFetchAccessibilityStandards = () => {
 const useFetchCriteria = (props = { enabled: true, active: true }) => {
   const params = Object
     .entries(props)
+    .filter(([key, value]) => key !== 'enabled' && key !== 'active' && value)
     .filter(([key]) => (key !== 'enabled' && key !== 'active'))
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
