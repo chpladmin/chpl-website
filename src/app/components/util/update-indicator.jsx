@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import UpdateIcon from '@material-ui/icons/Update';
+import WarningIcon from '@material-ui/icons/Warning';
 import * as jsJoda from '@js-joda/core';
 import { string } from 'prop-types';
 
@@ -17,6 +18,9 @@ import { palette } from 'themes';
 const useStyles = makeStyles({
   updateRequired: {
     color: palette.error,
+  },
+  updateNeeded: {
+    color: palette.warningDark,
   },
   alreadyUpdated: {
     color: palette.active,
@@ -48,7 +52,32 @@ function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
       )}
       >
         <IconButton>
-          <UpdateIcon className={classes.updateRequired} />
+          <UpdateIcon className={classes.updateNeeded} />
+        </IconButton>
+      </ChplTooltip>
+    );
+  }
+
+  if (endDay && jsJoda.LocalDate.now() > endDay) {
+    return (
+      <ChplTooltip title={(
+        <Box>
+          <Typography variant="h5" align="left">
+            Update Required by
+            {' '}
+            { getDisplayDateFormat(endDay) }
+          </Typography>
+          { additionalInformation
+            && (
+              <Typography variant="body1" align="left" className={classes.additionalInformation}>
+                { additionalInformation }
+              </Typography>
+            )}
+        </Box>
+      )}
+      >
+        <IconButton>
+          <WarningIcon className={classes.updateRequired} />
         </IconButton>
       </ChplTooltip>
     );
@@ -59,9 +88,9 @@ function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
       <ChplTooltip title={(
         <Box>
           <Typography variant="h5" align="left">
-            Updated before
+            Requirement met for
             {' '}
-            { getDisplayDateFormat(requiredDay) }
+            { getDisplayDateFormat(requiredDay).split(', ')[1] }
           </Typography>
           { additionalInformation
             && (
