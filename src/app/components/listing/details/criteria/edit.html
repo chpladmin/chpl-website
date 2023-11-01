@@ -25,11 +25,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.gap !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.gap">
           <td><label class="control-label" for="data_gap{{ $ctrl.cert.criterion.number }}">GAP</label></td>
           <td><select class="form-control input-sm" id="data_gap{{ $ctrl.cert.criterion.number }}" name="data_gap" ng_model="$ctrl.cert.gap" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.svaps !== null && $ctrl.allowedSvaps.length > 0">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.svap && $ctrl.allowedSvaps.length > 0">
           <td>Standards Version Advancement Process</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -87,7 +87,7 @@
             </ul>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && ($ctrl.cert.testStandards !== null && ($ctrl.cert.testStandards.length > 0 || $ctrl.resources.testStandards.data.length > 0))">
+        <tr ng-if="$ctrl.cert.success && ($ctrl.cert.criterion.attributes.standardsTested && ($ctrl.cert.testStandards.length > 0 || $ctrl.resources.testStandards.data.length > 0))">
           <td>
             <span>Test Standard</span>
           </td>
@@ -119,15 +119,15 @@
           </td>
           <td ng-if="(!$ctrl.cert.testStandards || $ctrl.cert.testStandards.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.g1Success !== null">
+        <tr ng-if="$ctrl.cert.criterion.attributes.g1Success">
           <td><label class="control-label" for="data_g1Success{{ $ctrl.cert.criterion.number }}">Measure Successfully Tested for G1</label></td>
           <td><select class="form-control input-sm" id="data_g1Success{{ $ctrl.cert.criterion.number }}" name="data_g1Success" ng_model="$ctrl.cert.g1Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.g2Success !== null">
+        <tr ng-if="$ctrl.cert.criterion.attributes.g2Success">
           <td><label class="control-label" for="data_g2Success{{ $ctrl.cert.criterion.number }}">Measure Successfully Tested for G2</label></td>
           <td><select class="form-control input-sm" id="data_g2Success{{ $ctrl.cert.criterion.number }}" name="data_g2Success" ng_model="$ctrl.cert.g2Success" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.functionalitiesTested !== null && $ctrl.sortedFunctionalitiesTested.length > 0">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.functionalityTested && $ctrl.sortedFunctionalitiesTested.length > 0">
           <td>Functionality Tested</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -136,7 +136,7 @@
                   <chpl-expandable-list
                     identifier="functionalityTested"
                     item-key="id"
-                    item-text="value"
+                    item-text="displayText"
                     items="$ctrl.sortedFunctionalitiesTested"
                     selected-item-keys="$ctrl.selectedFunctionalityTestedKeys"
                     placeholder="Select a Functionality Tested"
@@ -157,7 +157,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.functionalitiesTested || $ctrl.cert.functionalitiesTested.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.conformanceMethods !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.conformanceMethod">
           <td>Conformance method</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -188,7 +188,7 @@
           </td>
           <td ng-if="(!$ctrl.cert.conformanceMethods || $ctrl.cert.conformanceMethods.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testProcedures !== null && (!$ctrl.cert.conformanceMethods || $ctrl.cert.testProcedures.length > 0)">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.testProcedure && (!$ctrl.cert.conformanceMethods || $ctrl.cert.testProcedures.length > 0)">
           <td>Test procedure</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -244,7 +244,7 @@
           <td ng-if="$ctrl.cert.testToolsUsed && $ctrl.cert.testToolsUsed.length > 0 && !$ctrl.canEdit()"><div ng-repeat="m in $ctrl.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testTool.id === null}">Tool: {{ m.testTool.value }}{{ m.testTool.retired ? ' (Retired)' : ''}}; Version: {{ m.version ? m.version : 'N/A' }}<span ng-if="m.testTool.id === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
           <td ng-if="(!$ctrl.cert.testToolsUsed || $ctrl.cert.testToolsUsed.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.testDataUsed !== null && $ctrl.availableTestData && $ctrl.availableTestData.length > 0">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.testData && $ctrl.availableTestData && $ctrl.availableTestData.length > 0">
           <td>Test data</td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -273,7 +273,7 @@
           <td ng-if="$ctrl.cert.testDataUsed && $ctrl.cert.testDataUsed.length > 0 && !$ctrl.canEdit()"><div ng-repeat="m in $ctrl.cert.testDataUsed">Name: {{ m.testData.name ? m.testData.name : 'N/A' }}; Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
           <td ng-if="(!$ctrl.cert.testDataUsed || $ctrl.cert.testDataUsed.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.apiDocumentation !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.apiDocumentation">
           <td><label class="control-label" for="data_api{{ $ctrl.cert.criterion.number }}">API Documentation</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_api{{ $ctrl.cert.criterion.number }}" name="data_apiDocumentation" ng-model="$ctrl.cert.apiDocumentation" ng-maxlength="1024" ng-disabled="!$ctrl.canEdit()"></input>
@@ -281,7 +281,7 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_apiDocumentation.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.exportDocumentation !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.exportDocumentation">
           <td><label class="control-label" for="data_export{{ $ctrl.cert.criterion.number }}">Export Documentation</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_export{{ $ctrl.cert.criterion.number }}" name="data_exportDocumentation" ng-model="$ctrl.cert.exportDocumentation" ng-maxlength="1024"></input>
@@ -289,11 +289,11 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_exportDocumentation.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.attestationAnswer !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.attestationAnswer">
           <td><label class="control-label" for="data_attestationAnswer{{ $ctrl.cert.criterion.number }}">Attestation</label></td>
           <td><select class="form-control input-sm" id="data_attestationAnswer{{ $ctrl.cert.criterion.number }}" name="data_attestationAnswer" ng_model="$ctrl.cert.attestationAnswer" ng-options="b.value as b.name for b in $ctrl.yesNo"></select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.documentationUrl !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.documentationUrl">
           <td><label class="control-label" for="data_documentation{{ $ctrl.cert.criterion.number }}">Documentation</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_documentation{{ $ctrl.cert.criterion.number }}" name="data_documentationUrl" ng-model="$ctrl.cert.documentationUrl" ng-maxlength="1024"></input>
@@ -301,7 +301,7 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_documentationUrl.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.useCases !== null && $ctrl.cert.attestationAnswer">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.useCases && $ctrl.cert.attestationAnswer">
           <td><label class="control-label" for="data_use{{ $ctrl.cert.criterion.number }}">Use Case(s)</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_use{{ $ctrl.cert.criterion.number }}" name="data_useCases" ng-model="$ctrl.cert.useCases" ng-maxlength="1024"></input>
@@ -309,7 +309,7 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_useCases.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.serviceBaseUrlList !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.serviceBaseUrlList">
           <td><label class="control-label" for="data_service_base_url_list{{ $ctrl.cert.criterion.number }}">Service Base URL List</label></td>
           <td>
             <input class="form-control input-sm" type="url" id="data_service_base_url_list{{ $ctrl.cert.criterion.number }}" name="data_serviceBaseUrlList" ng-model="$ctrl.cert.serviceBaseUrlList" ng-maxlength="1024"></input>
@@ -317,7 +317,7 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_serviceBaseUrlList.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.privacySecurityFramework !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.privacySecurityFramework">
           <td><label class="control-label" for="data_psFramework{{ $ctrl.cert.criterion.number }}">Privacy &amp; Security Framework</label></td>
           <td><select class="form-control input-sm" id="data_psFramework{{ $ctrl.cert.criterion.number }}" name="data_psFramework" ng_model="$ctrl.cert.privacySecurityFramework" ng-disabled="!$ctrl.canEdit()">
               <option value="Approach 1">Approach 1</option>
@@ -325,10 +325,10 @@
               <option value="Approach 1;Approach 2">Approach 1;Approach 2</option>
           </select></td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && $ctrl.cert.sed !== null">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.sed">
           <td><label class="control-label" for="data_sed{{ $ctrl.cert.criterion.number }}">SED</label></td>
           <td>
-            <select class="form-control input-sm" id="data_sed{{ $ctrl.cert.criterion.number }}" name="data_sed" ng_model="$ctrl.cert.sed" ng-options="b.value as b.name for b in $ctrl.options" ng-ng-disabled="$ctrl.cert.certificationEdition.name === '2015'" ng-disabled="!$ctrl.canEdit()"></select>
+            <select class="form-control input-sm" id="data_sed{{ $ctrl.cert.criterion.number }}" name="data_sed" ng_model="$ctrl.cert.sed" ng-options="b.value as b.name for b in $ctrl.options" ng-disabled="!$ctrl.canEdit()"></select>
             <div class="text-warning" ng-if="(($ctrl.editForm.data.$dirty && $ctrl.cert.success) || $ctrl.editForm.data_sed.$dirty) && $ctrl.cert.sed">Use the "Safety Enhanced Design (SED)" panel to edit SED information for this Criteria.</div>
           </td>
         </tr>
