@@ -4,13 +4,12 @@ class ListingPage {
       realWortldTestingHeader: 'h2=Real World Testing',
       seeAllCriteria: '#see-all-criteria',
       editCertifiedProduct: '//span[text()="Edit"]',
+      newEditCertifiedProductButton: '//span[text()="Edit - New"]',
       reason: '#reason-for-change',
-      bypassWarning: '#acknowledge-warnings',
       productHistory: '#view-listing-history',
       goToApi: '#go-to-api',
       manageSurveillanceActivity: '//a[text()="Manage Surveillance Activity"]',
-      listingHistoryTitle: '#listing-history-title',
-      chplProductNumber: 'p*=CHPL Product Number:',
+      chplProductNumber: 'p*=15.',
       previousChplProductNumbersTitle: 'p=Previous CHPL Product Numbers',
     };
   }
@@ -31,12 +30,12 @@ class ListingPage {
     return $(this.elements.editCertifiedProduct);
   }
 
-  get reason() {
-    return $(this.elements.reason);
+  async newEditCertifiedProductButton() {
+    await (await $(this.elements.newEditCertifiedProductButton)).click();
   }
 
-  get bypassWarning() {
-    return $(this.elements.bypassWarning);
+  get reason() {
+    return $(this.elements.reason);
   }
 
   get productHistory() {
@@ -51,19 +50,19 @@ class ListingPage {
     return $(`//a[text()="${developerName}"]`);
   }
 
-  get listingBasicInformation() {
-    return $(this.elements.listingBasicInformation);
+  async chplProductNumber() {
+    return (await $(this.elements.chplProductNumber)).getText();
   }
 
-  get chplProductNumber() {
-    return $(this.elements.chplProductNumber).getText().split(':')[1].trim();
+  get previousChplProductNumbers() {
+    return $(this.elements.previousChplProductNumbers);
   }
 
   async previousChplProductNumbers() {
-    const pdtnum = await $(this.elements.previousChplProductNumbersTitle).parentElement().$$('li');
+    const pdtnum = await $(this.elements.previousChplProductNumbersTitle).$$('li');
 
     await Promise.all(
-      pdtnum.map(async (pnum) => pnum.getText()),
+      pdtnum.map(async (pnum) => await pnum.getText()),
     );
   }
 }

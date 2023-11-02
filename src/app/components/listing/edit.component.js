@@ -210,7 +210,7 @@ const ListingEditComponent = {
     }
 
     filterListEditItems(items) {
-      return items.filter((i) => !this.listing.testingLabs.filter((tl) => tl.testingLabName === i.name).length);
+      return items.filter((i) => !this.listing.testingLabs.filter((tl) => tl.testingLab.name === i.name).length);
     }
 
     removeItem(type, item) {
@@ -219,7 +219,7 @@ const ListingEditComponent = {
           this.listing.certificationEvents = this.listing.certificationEvents.filter((event) => event.statusDateObject.getTime() !== item.statusDateObject.getTime());
           break;
         case 'oncAtls':
-          this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLabName !== item.testingLabName);
+          this.listing.testingLabs = this.listing.testingLabs.filter((l) => l.testingLab.name !== item.testingLab.name);
           break;
         default:
           this.$log.error('remove', type, item);
@@ -238,7 +238,7 @@ const ListingEditComponent = {
           break;
         case 'oncAtls':
           this.addNewValue(this.listing.testingLabs, this.newItem[type]);
-          this.listing.testingLabs = this.listing.testingLabs.sort((a, b) => (a.testingLabName < b.testingLabName ? -1 : 1));
+          this.listing.testingLabs = this.listing.testingLabs.sort((a, b) => (a.testingLab.name < b.testingLab.name ? -1 : 1));
           break;
         default:
           this.$log.error('add', type);
