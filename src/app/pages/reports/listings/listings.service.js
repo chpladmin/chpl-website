@@ -145,8 +145,8 @@ const compare = (before, after, key, title = 'unknown') => {
       break;
     case 'testingLabs':
       options = {
-        sort: (p, c) => (p.testingLabName < c.testingLabName ? -1 : p.testingLabName > c.testingLabName ? 1 : 0),
-        write: (f) => `Testing Lab "${f.testingLabName}"`,
+        sort: (p, c) => ((p.testingLabName ?? p.testingLab.name) < (c.testingLabName ?? c.testingLab.name) ? -1 : (p.testingLabName ?? p.testingLab.name) > (c.testingLabName ?? c.testingLab.name) ? 1 : 0),
+        write: (f) => `Testing Lab "${f.testingLabName ?? f.testingLab.name}"`,
       };
       break;
     case 'testDataUsed':
@@ -458,6 +458,8 @@ lookup = {
   'surveillance.startDate': { message: (before, after) => comparePrimitive(before, after, 'startDate', 'Start Date', getDisplayDateFormat) },
   'surveillance.startDay': { message: (before, after) => comparePrimitive(before, after, 'startDay', 'Start Day', getDisplayDateFormat) },
   'surveillance.warningMessages': { message: () => undefined },
+  'testingLabs.id': { message: () => undefined },
+  'testingLabs.testingLab': { message: () => undefined },
   'testDataUsed.id': { message: () => undefined },
   'testDataUsed.alteration': { message: (before, after) => comparePrimitive(before, after, 'alteration', 'Alteration') },
   'testDataUsed.version': { message: (before, after) => comparePrimitive(before, after, 'version', 'Version') },
