@@ -1,7 +1,7 @@
 import ListingPage from '../../pages/listing/listing.po';
 import Hooks from '../../utilities/hooks';
-import LoginComponent from '../../components/login/login.sync.po';
-import ActionBarComponent from '../../components/action-bar/action-bar.po';
+import LoginComponent from '../../components/login/login.po';
+import ActionBarComponent from '../../components/action-bar/action-bar.async.po';
 import ToastComponent from '../../components/toast/toast.po';
 import ListingEditComponent from '../../components/listing/edit/listing-edit.po';
 import RealWorldTestingPage from '../../pages/collections/real-world-testing/real-world-testing.po';
@@ -25,8 +25,29 @@ describe('On Listing details page', () => {
     action = new ActionBarComponent();
   });
 
-  afterEach(async () => {
-    login.logOut();
+  describe('when changing CHPL Product Number data of a listing', () => {
+    beforeEach(async () => {
+      await hooks.open('#/listing/10904');
+      await login.logIn('admin');
+      await browser.waitUntil(async () => (await page.productHistory).isDisplayed());
+    });
+
+    it('should show changes on the Listing page', async () => {
+      const productCode = (`${Date.now()}`).substring(9);
+      const versionCode = (`${Date.now()}`).substring(11);
+      const initialChplProductNumber = page.chplProductNumber;
+
+      await page.newEditCertifiedProductButton();
+      await hooks.waitForSpinnerToDisappear();
+      await listingEdit.addChplProductNumberProductCode(productCode);
+      await listingEdit.addChplProductNumberVersionCode(versionCode);
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await (await (listingEdit.warningLabel)).click();
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await expect(page.chplProductNumber).not.toContain(initialChplProductNumber);
+    });
   });
 
   xdescribe('when changing CHPL Product Number data of 2015 edition listing', () => {
@@ -34,53 +55,53 @@ describe('On Listing details page', () => {
       await hooks.open('#/listing/9902');
     });
 
-    it('should show changes on the Listing page', () => {
+    it('should show changes on the Listing page', async () => {
       const productCode = (`${Date.now()}`).substring(9);
       const versionCode = (`${Date.now()}`).substring(11);
       const initialChplProductNumber = page.chplProductNumber;
 
-      login.logIn('drummond');
-      page.editCertifiedProduct.click();
-      hooks.waitForSpinnerToDisappear();
-      listingEdit.chplProductNumberProdCode.doubleClick();
-      listingEdit.chplProductNumberProdCode.addValue(productCode);
-      listingEdit.chplProductNumberVerCode.doubleClick();
-      listingEdit.chplProductNumberVerCode.addValue(versionCode);
-      action.save();
-      hooks.waitForSpinnerToDisappear();
-      listingEdit.warningLabel.click();
-      action.save();
-      hooks.waitForSpinnerToDisappear();
-      browser.waitUntil(() => toast.toastTitle.isDisplayed());
-      toast.clearAllToast();
-      expect(page.chplProductNumber).not.toBe(initialChplProductNumber);
+      await login.logIn('drummond');
+      await page.editCertifiedProduct.click();
+      await hooks.waitForSpinnerToDisappear();
+      await listingEdit.chplProductNumberProdCode.doubleClick();
+      await listingEdit.chplProductNumberProdCode.addValue(productCode);
+      await listingEdit.chplProductNumberVerCode.doubleClick();
+      await listingEdit.chplProductNumberVerCode.addValue(versionCode);
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await listingEdit.warningLabel.click();
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await browser.waitUntil(async () => await toast.toastTitle.isDisplayed());
+      await toast.clearAllToast();
+      await expect(page.chplProductNumber).not.toBe(initialChplProductNumber);
       const { previousChplProductNumbers } = page;
-      expect(previousChplProductNumbers.includes(initialChplProductNumber)).toBeTruthy();
+      await expect(previousChplProductNumbers.includes(initialChplProductNumber)).toBeTruthy();
     });
 
-    it('should show allow searching by the old number', () => {
+    it('should show allow searching by the old number', async () => {
       const productCode = (`${Date.now()}`).substring(9);
       const versionCode = (`${Date.now()}`).substring(11);
       const initialChplProductNumber = page.chplProductNumber;
 
-      login.logIn('drummond');
-      page.editCertifiedProduct.click();
-      hooks.waitForSpinnerToDisappear();
-      listingEdit.chplProductNumberProdCode.doubleClick();
-      listingEdit.chplProductNumberProdCode.addValue(productCode);
-      listingEdit.chplProductNumberVerCode.doubleClick();
-      listingEdit.chplProductNumberVerCode.addValue(versionCode);
-      action.save();
-      hooks.waitForSpinnerToDisappear();
-      listingEdit.warningLabel.click();
-      action.save();
-      hooks.waitForSpinnerToDisappear();
-      browser.waitUntil(() => toast.toastTitle.isDisplayed());
-      toast.clearAllToast();
-      hooks.open('#/collections/real-world-testing');
-      browser.waitUntil(() => !searchPage.isLoading);
-      searchPage.searchForText(initialChplProductNumber);
-      expect(searchPage.getTableCellText(searchPage.results[0], 0)).not.toContain(initialChplProductNumber);
+      await login.logIn('drummond');
+      await page.editCertifiedProduct.click();
+      await hooks.waitForSpinnerToDisappear();
+      await listingEdit.chplProductNumberProdCode.doubleClick();
+      await listingEdit.chplProductNumberProdCode.addValue(productCode);
+      await listingEdit.chplProductNumberVerCode.doubleClick();
+      await listingEdit.chplProductNumberVerCode.addValue(versionCode);
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await listingEdit.warningLabel.click();
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await browser.waitUntil(async () => await toast.toastTitle.isDisplayed());
+      await toast.clearAllToast();
+      await hooks.open('#/collections/real-world-testing');
+      await browser.waitUntil(async () => !searchPage.isLoading);
+      await searchPage.searchForText(initialChplProductNumber);
+      await expect(await searchPage.getTableCellText(searchPage.results[0], 0)).not.toContain(initialChplProductNumber);
     });
   });
 
@@ -90,19 +111,19 @@ describe('On Listing details page', () => {
       await hooks.open('#/listing/41');
     });
 
-    it('should be able to add reason for edit and save edits', () => {
+    it('should be able to add reason for edit and save edits', async () => {
       const timestamp = Date.now();
       const mandatoryDisclosureUrl = `https://website${timestamp}.com`;
-      login.logIn('onc');
-      page.editCertifiedProduct.click();
-      hooks.waitForSpinnerToDisappear();
-      listingEdit.mandatoryDisclosures.setValue(mandatoryDisclosureUrl);
-      listingEdit.reasonForChange.setValue('test reason');
-      action.save();
-      hooks.waitForSpinnerToDisappear();
-      browser.waitUntil(() => toast.toastTitle.isDisplayed());
-      toast.clearAllToast();
-      expect(page.listingBasicInformation.getText()).toContain(mandatoryDisclosureUrl);
+      await login.logIn('onc');
+      await page.editCertifiedProduct.click();
+      await hooks.waitForSpinnerToDisappear();
+      await listingEdit.mandatoryDisclosures.setValue(mandatoryDisclosureUrl);
+      await listingEdit.reasonForChange.setValue('test reason');
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await browser.waitUntil(async () => await toast.toastTitle.isDisplayed());
+      await toast.clearAllToast();
+      await expect(await page.listingBasicInformation.getText()).toContain(mandatoryDisclosureUrl);
     });
   });
 
@@ -111,19 +132,19 @@ describe('On Listing details page', () => {
       await hooks.open('#/listing/437');
     });
 
-    it('should be able to add reason for edit and save edits', () => {
+    it('should be able to add reason for edit and save edits', async () => {
       const timestamp = Date.now();
       const mandatoryDisclosureUrl = `https://website${timestamp}.com`;
-      login.logIn('onc');
-      page.editCertifiedProduct.click();
-      hooks.waitForSpinnerToDisappear();
-      listingEdit.mandatoryDisclosures.setValue(mandatoryDisclosureUrl);
-      listingEdit.reasonForChange.setValue('test reason');
-      action.save();
-      hooks.waitForSpinnerToDisappear();
-      browser.waitUntil(() => toast.toastTitle.isDisplayed());
-      toast.clearAllToast();
-      expect(page.listingBasicInformation.getText()).toContain(mandatoryDisclosureUrl);
+      await login.logIn('onc');
+      await page.editCertifiedProduct.click();
+      await hooks.waitForSpinnerToDisappear();
+      await listingEdit.mandatoryDisclosures.setValue(mandatoryDisclosureUrl);
+      await listingEdit.reasonForChange.setValue('test reason');
+      await action.save();
+      await hooks.waitForSpinnerToDisappear();
+      await browser.waitUntil(async () => await toast.toastTitle.isDisplayed());
+      await toast.clearAllToast();
+      await expect(await page.listingBasicInformation.getText()).toContain(mandatoryDisclosureUrl);
     });
   });
 });
