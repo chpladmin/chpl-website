@@ -17,7 +17,9 @@ class ListingEditComponent {
       rwtResultsUrl: '#rwt-results-url',
       rwtResultsCheckDate: '#rwt-results-check-date',
       chplProductNumberProdCode: '#id-prod',
+      newChplProductNumberProdCode: '#product-code',
       chplProductNumberVerCode: '#id-ver',
+      newChplProductNumberVerCode: '#version-code',
       warningLabel: 'span*=I have reviewed the warning and wish to proceed with this update',
       mandatoryDisclosures: '#mandatory-disclosures',
       reasonForChange: '#reason-for-change',
@@ -88,91 +90,105 @@ class ListingEditComponent {
     return $(this.elements.chplProductNumberProdCode);
   }
 
+  async addChplProductNumberProductCode(productCode) {
+    await (await $(this.elements.newChplProductNumberProdCode)).click();
+    await browser.keys(['Control', 'a']);
+    await browser.keys(['Backspace']);
+    await (await $(this.elements.newChplProductNumberProdCode)).setValue(productCode);
+  }
+
   get chplProductNumberVerCode() {
     return $(this.elements.chplProductNumberVerCode);
+  }
+
+  async addChplProductNumberVersionCode(versionCode) {
+    await (await $(this.elements.newChplProductNumberVerCode)).click();
+    await browser.keys(['Control', 'a']);
+    await browser.keys(['Backspace']);
+    await (await $(this.elements.newChplProductNumberVerCode)).setValue(versionCode);
   }
 
   get warningLabel() {
     return $(this.elements.warningLabel);
   }
 
-  openEditCriteria(editCriteriaId, cures) {
-    this.editcertifiedProduct.click();
+  async openEditCriteria(editCriteriaId, cures) {
+    await this.editcertifiedProduct.click();
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button')[1].click();
+      await (await $(`//*[@id="criteria_${editCriteriaId}_details_header_cures"]`).$$('button'))[1].click();
     } else {
-      $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button')[1].click();
+      await (await $(`//*[@id="criteria_${editCriteriaId}_details_header"]`).$$('button'))[1].click();
     }
   }
 
-  addTestProcedures(name, version) {
-    this.testProcedureName.selectByVisibleText(name);
+  async addTestProcedures(name, version) {
+    await this.testProcedureName.selectByVisibleText(name);
     const totalTestProc = this.allTestProcedureVersion.length;
     // This will get latest added test procedure version text box
-    $(`//*[@id="testProcedures-additional-input-${totalTestProc - 1}"]`).addValue(version);
+    await $(`//*[@id="testProcedures-additional-input-${totalTestProc - 1}"]`).addValue(version);
   }
 
-  addTestFunctionality(name) {
-    this.testFunctionalityName.selectByVisibleText(name);
+  async addTestFunctionality(name) {
+    await this.testFunctionalityName.selectByVisibleText(name);
   }
 
-  addTestData(name, version) {
-    this.testDataName.selectByVisibleText(name);
+  async addTestData(name, version) {
+    await this.testDataName.selectByVisibleText(name);
     const totalTestData = (this.allTestDataVersion.length) / 2;
     // This will get latest added test data version text box, alteration has same id so this below locator is different than test proc, tools
-    $(`//*[@id="testData-additional-input-${totalTestData - 1}"]`).addValue(version);
+    await $(`//*[@id="testData-additional-input-${totalTestData - 1}"]`).addValue(version);
   }
 
-  addTestTools(name, version) {
-    this.testToolsName.selectByVisibleText(name);
+  async addTestTools(name, version) {
+    await this.testToolsName.selectByVisibleText(name);
     const totalTestTools = this.allTestToolsVersion.length;
     // This will get latest added test tools version text box
-    $(`//*[@id="testTools-additional-input-${totalTestTools - 1}"]`).addValue(version);
+    await $(`//*[@id="testTools-additional-input-${totalTestTools - 1}"]`).addValue(version);
   }
 
-  removeTestProcToolData(name) {
-    $(`//span[text()="${name}"]/parent::button`).click();
+  async removeTestProcToolData(name) {
+    await $(`//span[text()="${name}"]/parent::button`).click();
   }
 
-  viewDetailsCriteria(criteriaId, cures) {
+  async viewDetailsCriteria(criteriaId, cures) {
     if (cures) {
       // click on Edit for on the criteria
-      $(`//*[@id="criteria_${criteriaId}_details_link_cures"]`).waitAndClick();
+      await $(`//*[@id="criteria_${criteriaId}_details_link_cures"]`).waitAndClick();
     } else {
-      $(`//*[@id="criteria_${criteriaId}_details_link"]`).waitAndClick();
+      await $(`//*[@id="criteria_${criteriaId}_details_link"]`).waitAndClick();
     }
   }
 
-  closeEditListing() {
-    this.closeListingEditButton.waitAndClick();
-    this.yesConfirmation.waitAndClick();
-    this.closeListingEditButton.waitAndClick();
-    this.yesConfirmation.waitAndClick();
+  async closeEditListing() {
+    await this.closeListingEditButton.waitAndClick();
+    await this.yesConfirmation.waitAndClick();
+    await this.closeListingEditButton.waitAndClick();
+    await this.yesConfirmation.waitAndClick();
   }
 
-  getTestFunctionalityDetail(criteriaId, cures) {
+  async getTestFunctionalityDetail(criteriaId, cures) {
     if (cures) {
       return $(`//*[@id="criteria_${criteriaId}_details_row_Functionality_Tested_cures"]`);
     }
     return $(`//*[@id="criteria_${criteriaId}_details_row_Functionality_Tested"]`);
   }
 
-  getTestDataDetail(criteriaId, cures) {
+  async getTestDataDetail(criteriaId, cures) {
     if (cures) {
       return $(`//*[@id="criteria_${criteriaId}_details_row_Test_data_cures"]`);
     }
     return $(`//*[@id="criteria_${criteriaId}_details_row_Test_data"]`);
   }
 
-  getTestToolDetail(criteriaId, cures) {
+  async getTestToolDetail(criteriaId, cures) {
     if (cures) {
       return $(`//*[@id="criteria_${criteriaId}_details_row_Test_tool_cures"]`);
     }
     return $(`//*[@id="criteria_${criteriaId}_details_row_Test_tool"]`);
   }
 
-  getTestProcedureDetail(criteriaId, cures) {
+  async getTestProcedureDetail(criteriaId, cures) {
     if (cures) {
       return $(`//*[@id="criteria_${criteriaId}_details_row_Test_procedure_cures"]`);
     }
