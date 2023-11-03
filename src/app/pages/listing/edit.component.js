@@ -171,8 +171,8 @@ const ListingEditPageComponent = {
       if (listing) {
         this.listingBasic = angular.copy(listing);
       }
-      this.errors.basic = messages.errors.sort((a, b) => (a < b ? -1 : 1));
-      this.warnings.basic = messages.warnings.sort((a, b) => (a < b ? -1 : 1));
+      this.errors.basic = messages?.errors.sort((a, b) => (a < b ? -1 : 1));
+      this.warnings.basic = messages?.warnings.sort((a, b) => (a < b ? -1 : 1));
       this.consolidateErrors();
       this.reason = reason;
     }
