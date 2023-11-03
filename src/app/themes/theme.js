@@ -255,6 +255,10 @@ const theme = createTheme({
       asterisk: {
         fontSize: '2em',
         verticalAlign: 'text-top',
+        color: paletteColors.error,
+        '&$error': {
+          color: paletteColors.error,
+        },
       },
     },
     MuiInputLabel: {

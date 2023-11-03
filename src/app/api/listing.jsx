@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAxios } from './axios';
 
@@ -26,7 +26,18 @@ const useFetchListing = ({ id }) => {
   });
 };
 
+const usePutListing = () => {
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  return useMutation(async (data) => axios.put(`certified_products/${data.listing.id}`, data), {
+    onSuccess: (response) => {
+      queryClient.invalidateQueries(['listing', `${response.data.id}`]);
+    },
+  });
+};
+
 export {
   useFetchIcsFamilyData,
   useFetchListing,
+  usePutListing,
 };
