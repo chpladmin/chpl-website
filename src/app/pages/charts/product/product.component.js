@@ -1,37 +1,51 @@
 import { sortCriteria } from 'services/criteria.service';
 
-export const ChartsProductComponent = {
+const getCriterionProductCountDataInChartFormat = (data) => data.criterionProductStatisticsResult
+  .map((obj) => ({
+    ...obj,
+    number: obj.criterion.number,
+    title: obj.criterion.title,
+  }))
+  .sort(sortCriteria)
+  .map((obj) => ({
+    c: [{
+      v: obj.criterion.number,
+    }, { v: obj.productCount }, { v: `Name: ${obj.criterion.title}\n Count: ${obj.productCount}` }],
+  }));
+
+const ChartsProductComponent = {
   templateUrl: 'chpl.charts/product/product.html',
   bindings: {
     criterionProduct: '<',
   },
   controller: class ChartsProductComponent {
-    constructor ($analytics, $log, utilService) {
+    constructor($analytics, $log, utilService) {
       'ngInject';
+
       this.$analytics = $analytics;
       this.$log = $log;
       this.utilService = utilService;
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.criterionProduct) {
-        this._createCriterionProductCountChart(changes.criterionProduct.currentValue);
+        this.createCriterionProductCountChart(changes.criterionProduct.currentValue);
       }
     }
 
-    _createCriterionProductCountChart (data) {
+    createCriterionProductCountChart(data) {
       this.criterionProductCounts = {
         type: 'BarChart',
         data: {
           cols: [
-            { label: 'Certification Criteria', type: 'string'},
-            { label: 'Number of Unique Products', type: 'number'},
-            { type: 'string', role: 'tooltip'},
+            { label: 'Certification Criteria', type: 'string' },
+            { label: 'Number of Unique Products', type: 'number' },
+            { type: 'string', role: 'tooltip' },
           ],
-          rows: this._getCriterionProductCountDataInChartFormat(data),
+          rows: getCriterionProductCountDataInChartFormat(data),
         },
         options: {
-          tooltip: {isHtml: true},
+          tooltip: { isHtml: true },
           animation: {
             duration: 1000,
             easing: 'inAndOut',
@@ -42,23 +56,10 @@ export const ChartsProductComponent = {
         },
       };
     }
-
-    _getCriterionProductCountDataInChartFormat (data) {
-      return data.criterionProductStatisticsResult
-        .map((obj) => ({
-          ...obj,
-          number: obj.criterion.number,
-          title: obj.criterion.title,
-        }))
-        .sort(sortCriteria)
-        .map(obj => {
-          return {c: [{
-            v: obj.criterion.number,
-          },{v: obj.productCount}, {v: 'Name: ' + obj.criterion.title + '\n Count: ' + obj.productCount}]};
-        });
-    }
   },
 };
 
 angular.module('chpl.charts')
   .component('chplChartsProduct', ChartsProductComponent);
+
+export default ChartsProductComponent;
