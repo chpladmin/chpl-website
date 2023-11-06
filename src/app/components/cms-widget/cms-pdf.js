@@ -193,7 +193,7 @@ const createPdf = (data, editionlessIsOn) => {
         ['Product Name', l.name],
         ['Version', l.version],
         ['Classification', (l.classification ? l.classification : 'N/A')],
-        ['Certification Edition', l.year],
+        ['Certification Edition', l.year + (l.curesUpdate ? ' Cures Update' : '')],
       ],
     };
   });
