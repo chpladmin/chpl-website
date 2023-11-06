@@ -17,8 +17,8 @@ const suite = {
       'Testing Lab is required but not found.',
       'No certification date was found.',
       'Applicable criteria is required for each QMS Standard listed.',
-      'A certification edition is required for the listing.',
       'The ONC-ACB test� is not valid.',
+      'A certification edition is required for the listing.',
     ],
     expectedWarnings: [
       'An unrecognized character was found for ACB Name \'test�\'. Please check the input data.',

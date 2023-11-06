@@ -33,6 +33,12 @@ const util = {
   removedText: {
     fontStyle: 'italic',
   },
+  oneThirdWidth: {
+    width: '33%',
+  },
+  halfWidth: {
+    width: '50%',
+  },
 };
 
 export default util;
