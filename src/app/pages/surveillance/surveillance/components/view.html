@@ -32,7 +32,7 @@
       </tr>
       <tr ng-if="$ctrl.listing.edition">
         <th scope="row">Certification Edition</th>
-        <td>{{ $ctrl.listing.edition.name }}</td>
+        <td>{{ $ctrl.listing.edition.name }} <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span></td>
       </tr>
       <tr>
         <th scope="row">Certifying Body</th>

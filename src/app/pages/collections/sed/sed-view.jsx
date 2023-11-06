@@ -153,7 +153,7 @@ function ChplSedCollectionView(props) {
     }
     setListings(data.results.map((listing) => ({
       ...listing,
-      fullEdition: listing.edition ? `${listing.edition.name}` : '',
+      fullEdition: listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
     })));
     setRecordCount(data.recordCount);
   }, [data?.results, data?.recordCount, isError, isLoading, analytics]);
@@ -312,7 +312,9 @@ function ChplSedCollectionView(props) {
                                     { item.edition
                                       ? (
                                         <>
-                                          { item.edition.name }
+                                          {item.edition.name}
+                                          {' '}
+                                          {item.curesUpdate ? 'Cures Update' : '' }
                                         </>
                                       ) : (
                                         <></>

@@ -37,7 +37,7 @@
     <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.form.cpAcbCertId.$touched) && $ctrl.form.cpAcbCertId.$error.maxlength">Field is too long</div>
   </div>
   <div ng-if="$ctrl.listing.edition">
-    <strong>Certification Edition:</strong> {{ $ctrl.listing.edition.name }}</span><br />
+    <strong>Certification Edition:</strong> {{ $ctrl.listing.edition.name }}</span> <span ng-if="$ctrl.listing.curesUpdate">Cures Update</span><br />
   </div>
   <div>
     <strong>Certification Date</strong> {{ $ctrl.DateUtil.getCertificationDay($ctrl.listing) }}

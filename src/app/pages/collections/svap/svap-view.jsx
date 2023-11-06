@@ -351,7 +351,9 @@ function ChplSvapCollectionView(props) {
                                     { item.edition
                                       ? (
                                         <>
-                                          { item.edition.name }
+                                          {item.edition.name}
+                                          {' '}
+                                          {item.curesUpdate ? 'Cures Update' : '' }
                                         </>
                                       ) : (
                                         <></>

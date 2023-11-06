@@ -139,7 +139,7 @@ const SurveillanceReportRelevantListingComponent = {
     }
 
     fixRequirementOptions() {
-      if (this.listing.edition === '2015') {
+      if (this.listing.edition === '2015' || this.listing.edition === '2015 Cures Update') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
       } else if (this.listing.edition === '2014') {
         this.surveillanceTypes.surveillanceRequirements.criteriaOptions = this.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;

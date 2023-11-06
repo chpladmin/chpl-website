@@ -312,7 +312,7 @@ function ChplComparePage({ ids }) {
                   { makeRow('Version', (listing) => listing.version.version) }
                   { editionlessIsOn ? null : makeRow('Certification Edition', (listing) => {
                     if (!listing.edition) { return ''; }
-                    return listing.edition.name;
+                    return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
                   }) }
                   { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
                   { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : null }

@@ -21,6 +21,7 @@ const staticFilters = [
     required: true,
     values: [
       { value: '2015', default: true },
+      { value: '2015 Cures Update', default: true },
     ],
   }];
 

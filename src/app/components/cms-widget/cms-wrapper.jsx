@@ -32,7 +32,7 @@ function CmsWrapper(props) {
     $rootScope.$digest();
   };
 
-  const canDisplayButton = (listing) => listing.edition?.name === '2015' || listing.edition === null;
+  const canDisplayButton = (listing) => listing.curesUpdate || listing.edition === null;
 
   const isInWidget = (listing) => listings.find((l) => l.id === listing.id);
 
