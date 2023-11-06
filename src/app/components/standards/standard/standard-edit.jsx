@@ -274,7 +274,7 @@ function ChplStandardEdit(props) {
               key={item.id}
               disabled={isDisabled(item)}
             >
-              {`${item.number}: ${item.title}`}
+              {`${item.status === 'RETIRED' ? 'Retired | ' : ''}${item.number}: ${item.title}`}
             </MenuItem>
           ))}
       </ChplTextField>
