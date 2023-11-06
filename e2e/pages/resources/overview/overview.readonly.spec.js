@@ -14,15 +14,15 @@ beforeEach(async () => {
 });
 
 describe('the Overview page', () => {
-  it('should have an indicator to show non prod environment', () => {
-    expect(indicator.nonProdIndicator.isDisplayed()).toBe(true);
+  it('should have an indicator to show non prod environment', async () => {
+    await expect(await indicator.nonProdIndicator.isDisplayed()).toBe(true);
   });
 
-  it('should have an ONC ACB ATL table', () => {
-    expect(page.acbatlTable.isDisplayed()).toBe(true);
+  it('should have an ONC ACB ATL table', async () => {
+    await expect(await page.acbatlTable.isDisplayed()).toBe(true);
   });
 
-  it('should have acb and atl data in the table', () => {
+  it('should have acb and atl data in the table', async () => {
     const rowcount = page.acbatlTableRow.length;
     const colcount = page.acbatlTableCol.length;
     const actualResult = [];
@@ -39,6 +39,6 @@ describe('the Overview page', () => {
         isSame = true;
       }
     }
-    expect(isSame).toBe(true);
+    await expect(isSame).toBe(true);
   });
 });

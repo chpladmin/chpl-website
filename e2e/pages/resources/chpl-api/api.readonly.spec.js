@@ -21,7 +21,7 @@ describe('the CHPL API page', () => {
   });
 
   it('should have body text', async () => {
-    await expect(await page.getBodyText()).toContain('The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products');
+    await expect(await page.getBodyText()).toContain('Please note that the CHPL files are now available in JSON format, offering a more modern and flexible approach to data integration.');
   });
 
   it('should allow users to register for API key', async () => {
