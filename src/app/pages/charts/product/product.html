@@ -1,18 +1,7 @@
 <div class="row">
   <div class="col-sm-12">
     <p>The charts below describe the number of unique products that have been certified to each of the ONC certification criteria. A unique product represents a group of CHPL listings that refer to a single product from the same developer, each listing in a group often differing by version number.</p>
-    <div google-chart="" chart="$ctrl.criterionProductCounts['' + $ctrl.chartState.criteriaType]" class="bar-chart"></div>
-  </div>
-</div>
-<div class="row" ng-if="$ctrl.chartState.criteriaType !== 2014">
-  <div class="col-sm-12">
-    <label>
-      View Certification Criteria with respect to the 2015 Cures rule
-      <select ng-model="$ctrl.chartState.criteriaType"
-              ng-change="$ctrl.updateType()"
-              ng-options="option for option in $ctrl.criteriaTypes">
-      </select>
-    </label>
+    <div google-chart="" chart="$ctrl.criterionProductCounts" class="bar-chart"></div>
   </div>
 </div>
 <div class="row">
