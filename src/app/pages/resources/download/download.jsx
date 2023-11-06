@@ -190,7 +190,9 @@ function ChplResourcesDownload() {
                             text="CHPL API"
                             external={false} 
                             inline 
-                            href="#/resources/api">
+                            href="#/resources/api"
+                            router={{ sref: 'resources.api' }}
+                            >
                           </ChplLink>
                         </span>
                       </Typography>
