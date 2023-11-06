@@ -21,9 +21,7 @@ import { bool, func } from 'prop-types';
 import ChplCriterionDetailsEdit from './criterion-details-edit';
 import ChplCriterionDetailsView from './criterion-details-view';
 
-import { ChplHighlightCures } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
-import { isCures } from 'services/criteria.service';
 import {
   certificationResult,
   listing as listingPropType,
@@ -147,7 +145,7 @@ function ChplCriterion(props) {
   const handleAccordionChange = (event, isExpanded) => {
     setExpanded(!expanded);
     if (isExpanded) {
-      const label = criterion.criterion.number + (isCures(criterion.criterion) ? ' (Cures Update)' : '');
+      const label = criterion.criterion.number;
       $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label });
     }
   };
@@ -242,7 +240,7 @@ function ChplCriterion(props) {
             </Box>
             <Box className={classes.criterionAccordionSummaryData}>
               <Typography variant="body2">
-                <ChplHighlightCures text={criterion.criterion.title} />
+                { criterion.criterion.title }
               </Typography>
             </Box>
           </Box>

@@ -22,7 +22,6 @@ const staticFilters = [
     required: true,
     values: [
       { value: '2015', default: true },
-      { value: '2015 Cures Update', default: true },
     ],
   }, {
     ...certificationStatuses,
@@ -77,7 +76,7 @@ function ChplInactiveCertificatesCollectionPage() {
       .map((cc) => ({
         ...cc,
         value: cc.id,
-        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}${cc.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+        display: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}`,
         longDisplay: `${cc.status === 'REMOVED' ? 'Removed | ' : ''}${cc.number}: ${cc.title}`,
       }));
     setFilters((f) => f

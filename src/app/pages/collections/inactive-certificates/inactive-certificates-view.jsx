@@ -270,9 +270,7 @@ function ChplInactiveCertificatesCollectionView(props) {
                                     { item.edition
                                       ? (
                                         <>
-                                          {item.edition.name}
-                                          {' '}
-                                          {item.curesUpdate ? 'Cures Update' : '' }
+                                          { item.edition.name }
                                         </>
                                       ) : (
                                         <></>
@@ -291,7 +289,7 @@ function ChplInactiveCertificatesCollectionView(props) {
                               <TableCell>{item.product.name}</TableCell>
                               <TableCell>{item.version.name}</TableCell>
                               <TableCell>{ getStatusIcon(item.certificationStatus) }</TableCell>
-                              <TableCell>{getDisplayDateFormat(item.decertificationDate)}</TableCell>
+                              <TableCell>{ getDisplayDateFormat(item.decertificationDate) }</TableCell>
                               <TableCell>
                                 <ChplActionButton listing={item} />
                               </TableCell>

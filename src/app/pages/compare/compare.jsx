@@ -19,7 +19,6 @@ import InfoIcon from '@material-ui/icons/Info';
 import CheckIcon from '@material-ui/icons/Check';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
-
 import {
   arrayOf,
   number,
@@ -54,7 +53,7 @@ const useStyles = makeStyles({
   },
   headerColumnContent: {
     padding: '16px',
-    minWidth: "150px",
+    minWidth: '150px',
   },
   Table: {
     height: '80vh',
@@ -150,7 +149,7 @@ function ChplComparePage({ ids }) {
           <ChplTooltip
             title="Meets"
           >
-            <CheckIcon htmlColor={palette.active}/>
+            <CheckIcon htmlColor={palette.active} />
           </ChplTooltip>
         );
       case 'Cannot meet':
@@ -158,7 +157,7 @@ function ChplComparePage({ ids }) {
           <ChplTooltip
             title="Cannot meet"
           >
-            <NotInterestedIcon color="disabled"/>
+            <NotInterestedIcon color="disabled" />
           </ChplTooltip>
         );
       case 'Does not meet':
@@ -166,7 +165,7 @@ function ChplComparePage({ ids }) {
           <ChplTooltip
             title="Does not meet"
           >
-            <IndeterminateCheckBoxOutlinedIcon htmlColor={palette.black}/>
+            <IndeterminateCheckBoxOutlinedIcon htmlColor={palette.black} />
           </ChplTooltip>
         );
         // no default
@@ -313,7 +312,7 @@ function ChplComparePage({ ids }) {
                   { makeRow('Version', (listing) => listing.version.version) }
                   { editionlessIsOn ? null : makeRow('Certification Edition', (listing) => {
                     if (!listing.edition) { return ''; }
-                    return `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}`;
+                    return listing.edition.name;
                   }) }
                   { makeRow('Certification Status', (listing) => listing.currentStatus.status.name) }
                   { showPracticeType ? makeRow('Practice Type', (listing) => (listing.practiceType.name ? listing.practiceType.name : 'N/A')) : null }

@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
-import { isCures, sortCriteria } from 'services/criteria.service';
+import { sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
 import { functionalityTested as functionalityTestedPropType } from 'shared/prop-types';
 
@@ -55,7 +55,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
         ...item,
         criteriaDisplay: item.criteria
           .sort(sortCriteria)
-          .map((c) => c.number + (isCures(c) ? ' (Cures Update)' : ''))
+          .map((c) => c.number)
           .join(', '),
       }))
       .sort(sortComparator('value')));

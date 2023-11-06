@@ -286,9 +286,7 @@ function ChplSearchView(props) {
                                     { item.edition
                                       ? (
                                         <>
-                                          {item.edition.name}
-                                          {' '}
-                                          {item.curesUpdate ? 'Cures Update' : '' }
+                                          { item.edition.name }
                                         </>
                                       ) : (
                                         <></>

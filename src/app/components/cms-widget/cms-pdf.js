@@ -109,13 +109,13 @@ const getPdfCriteria = (year) => {
       {key: null, description: 'Clinical Quality Measures-Record and Export'},
       {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
       {key: null, description: 'Transitions of Care'},
-      {key: '170.315 (b)(1)', description: '#170.315(b)(1) (Cures Update)'},
+      {key: '170.315 (b)(1)', description: '#170.315(b)(1)'},
       {key: null, description: 'Application Access-Patient Selection'},
       {key: '170.315 (g)(7)', description: '#170.315(g)(7)'},
       {key: null, description: 'Application Access-Data Category Request'},
-      {key: '170.315 (g)(10)', description: '#170.315(g)(10) (Cures Update)'},
+      {key: '170.315 (g)(10)', description: '#170.315(g)(10)'},
       {key: null, description: 'Application Access-All Data Request'},
-      {key: '170.315 (g)(9)', description: '#170.315(g)(9) (Cures Update)'},
+      {key: '170.315 (g)(9)', description: '#170.315(g)(9)'},
       {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
       {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
     ];
@@ -193,7 +193,7 @@ const createPdf = (data, editionlessIsOn) => {
         ['Product Name', l.name],
         ['Version', l.version],
         ['Classification', (l.classification ? l.classification : 'N/A')],
-        ['Certification Edition', l.year + (l.curesUpdate ? ' Cures Update' : '')],
+        ['Certification Edition', l.year],
       ],
     };
   });

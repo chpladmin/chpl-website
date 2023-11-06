@@ -78,9 +78,6 @@ export const SurveillanceManagementComponent = {
         .filter((l) => this.hasPermission(l))
         .map((l) => {
           l.mainSearch = [l.developer, l.product, l.version, l.chplProductNumber].join('|');
-          if (l.edition != null) {
-            l.edition += (l.curesUpdate ? ' Cures Update' : '');
-          }
           l.surveillance = angular.toJson({
             openSurveillanceCount: l.openSurveillanceCount,
             closedSurveillanceCount: l.closedSurveillanceCount,

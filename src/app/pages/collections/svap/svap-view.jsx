@@ -109,7 +109,7 @@ const parseSvap = ({ svaps }, data) => {
   const items = svaps
     .map((item) => ({
       ...item,
-      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+      display: item.criterion.number,
       svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
     }))
     .sort((a, b) => sortCriteria(a.criterion, b.criterion));
@@ -351,9 +351,7 @@ function ChplSvapCollectionView(props) {
                                     { item.edition
                                       ? (
                                         <>
-                                          {item.edition.name}
-                                          {' '}
-                                          {item.curesUpdate ? 'Cures Update' : '' }
+                                          { item.edition.name }
                                         </>
                                       ) : (
                                         <></>

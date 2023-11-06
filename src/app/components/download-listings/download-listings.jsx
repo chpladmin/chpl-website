@@ -43,8 +43,8 @@ const allHeaders = [
   { headerName: 'Certification Status', objectKey: 'certificationStatusName' },
   { headerName: 'Details', objectKey: 'detailsLink' },
   { headerName: 'API Documentation - 170.315 (g)(7)', objectKey: 'apiDocumentation56', group: 'apiDocumentation' },
-  { headerName: 'API Documentation - 170.315 (g)(9) (Cures Update)', objectKey: 'apiDocumentation181', group: 'apiDocumentation' },
-  { headerName: 'API Documentation - 170.315 (g)(10) (Cures Update)', objectKey: 'apiDocumentation182', group: 'apiDocumentation' },
+  { headerName: 'API Documentation - 170.315 (g)(9)', objectKey: 'apiDocumentation181', group: 'apiDocumentation' },
+  { headerName: 'API Documentation - 170.315 (g)(10)', objectKey: 'apiDocumentation182', group: 'apiDocumentation' },
   { headerName: 'Service Base URL List', objectKey: 'serviceBaseUrlList', group: 'apiDocumentation' },
   { headerName: 'Mandatory Disclosures URL', objectKey: 'mandatoryDisclosures', group: 'apiDocumentation' },
   { headerName: 'Certification Criteria', objectKey: 'criteria' },
@@ -88,7 +88,7 @@ const parseSvapCsv = ({ svaps }, data) => {
   return svaps
     .map((item) => ({
       ...item,
-      display: `${item.criterion.number}${item.criterion.title.includes('Cures Update') ? ' (Cures Update)' : ''}`,
+      display: item.criterion.number,
       svaps: item.values.map((id) => data.find((s) => s.svapId === id)),
     }))
     .sort((a, b) => sortCriteria(a.criterion, b.criterion))
@@ -116,7 +116,7 @@ function ChplDownloadListings(props) {
   useEffect(() => {
     setListings(props.listings.map((listing) => ({
       ...listing,
-      fullEdition: listing.edition ? `${listing.edition.name}${listing.curesUpdate ? ' Cures Update' : ''}` : '',
+      fullEdition: listing.edition ? listing.edition.name : '',
       developerName: listing.developer.name,
       productName: listing.product.name,
       versionName: listing.version.name,

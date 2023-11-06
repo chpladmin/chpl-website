@@ -18,34 +18,24 @@ const criteriaSortOrder = [
   '170.315 (a)(13)',
   '170.315 (a)(14)',
   '170.315 (a)(15)',
-  '170.315 (b)(1) (Cures Update)',
   '170.315 (b)(1)',
-  '170.315 (b)(2) (Cures Update)',
   '170.315 (b)(2)',
-  '170.315 (b)(3) (Cures Update)',
   '170.315 (b)(3)',
   '170.315 (b)(4)',
   '170.315 (b)(4)',
   '170.315 (b)(5)',
   '170.315 (b)(5)',
   '170.315 (b)(6)',
-  '170.315 (b)(7) (Cures Update)',
   '170.315 (b)(7)',
-  '170.315 (b)(8) (Cures Update)',
   '170.315 (b)(8)',
-  '170.315 (b)(9) (Cures Update)',
   '170.315 (b)(9)',
-  '170.315 (b)(10) (Cures Update)',
   '170.315 (b)(10)',
   '170.315 (c)(1)',
   '170.315 (c)(2)',
-  '170.315 (c)(3) (Cures Update)',
   '170.315 (c)(3)',
   '170.315 (c)(4)',
   '170.315 (d)(1)',
-  '170.315 (d)(2) (Cures Update)',
   '170.315 (d)(2)',
-  '170.315 (d)(3) (Cures Update)',
   '170.315 (d)(3)',
   '170.315 (d)(4)',
   '170.315 (d)(5)',
@@ -53,14 +43,10 @@ const criteriaSortOrder = [
   '170.315 (d)(7)',
   '170.315 (d)(8)',
   '170.315 (d)(9)',
-  '170.315 (d)(10) (Cures Update)',
   '170.315 (d)(10)',
   '170.315 (d)(11)',
-  '170.315 (d)(12) (Cures Update)',
   '170.315 (d)(12)',
-  '170.315 (d)(13) (Cures Update)',
   '170.315 (d)(13)',
-  '170.315 (e)(1) (Cures Update)',
   '170.315 (e)(1)',
   '170.315 (e)(2)',
   '170.315 (e)(3)',
@@ -68,7 +54,6 @@ const criteriaSortOrder = [
   '170.315 (f)(2)',
   '170.315 (f)(3)',
   '170.315 (f)(4)',
-  '170.315 (f)(5) (Cures Update)',
   '170.315 (f)(5)',
   '170.315 (f)(6)',
   '170.315 (f)(7)',
@@ -77,13 +62,10 @@ const criteriaSortOrder = [
   '170.315 (g)(3)',
   '170.315 (g)(4)',
   '170.315 (g)(5)',
-  '170.315 (g)(6) (Cures Update)',
   '170.315 (g)(6)',
   '170.315 (g)(7)',
   '170.315 (g)(8)',
-  '170.315 (g)(9) (Cures Update)',
   '170.315 (g)(9)',
-  '170.315 (g)(10) (Cures Update)',
   '170.315 (g)(10)',
   '170.315 (h)(1)',
   '170.315 (h)(2)',
@@ -193,15 +175,12 @@ const criteriaSortOrder = [
   '170.306 (i)',
 ];
 
-const isCures = (criterion) => criterion.title ? criterion.title.indexOf('Cures Update') > -1 : false;
-
 const sortCriteria = (a, b) => {
-  const aValue = (a.number ?? a.certificationNumber) + (isCures(a) ? ' (Cures Update)' : '');
-  const bValue = (b.number ?? b.certificationNumber) + (isCures(b) ? ' (Cures Update)' : '');
+  const aValue = a.number ?? a.certificationNumber;
+  const bValue = b.number ?? b.certificationNumber;
   return criteriaSortOrder.indexOf(aValue) - criteriaSortOrder.indexOf(bValue);
 };
 
 export {
-  isCures,
   sortCriteria,
 };

@@ -24,7 +24,7 @@ const SurveillanceReportRelevantListingsComponent = {
             ...listing,
             formattedCertificationDate: new Date(listing.certificationDate),
             surveillanceCount: listing.surveillances.length,
-            edition: listing.edition + (listing.curesUpdate ? ' Cures Update' : ''),
+            edition: listing.edition,
           }));
         }
       }

@@ -60,7 +60,7 @@ const interpretCertificationCriteria = (prev, curr, utilService) => {
   cCC.sort((a, b) => utilService.sortCertActual(a, b));
   for (i = 0; i < pCC.length; i += 1) {
     const obj = {
-      criteria: (pCC[i].number || pCC[i].criterion.number) + ((pCC[i].title || pCC[i].criterion.title).indexOf('Cures Update') > 0 ? ' (Cures Update)' : ''),
+      criteria: (pCC[i].number || pCC[i].criterion.number) + ((pCC[i].title || pCC[i].criterion.title)),
       changes: [],
     };
 
@@ -201,7 +201,7 @@ const interpretListingChange = (prev, curr, utilService) => {
       changes.push(`Real World Testing Results URL changed from ${prev.rwtResultsUrl} to ${curr.rwtResultsUrl}`);
     }
   }
-  const measures = compareListing({measures: prev.measures}, {measures: curr.measures});
+  const measures = compareListing({ measures: prev.measures }, { measures: curr.measures });
   if (measures.length > 0) {
     changes.push(measures);
   }
@@ -288,7 +288,9 @@ const interpretProduct = (activity) => {
     ret.change.push(`Product ${prev.name} split to become Products ${curr[0].name} and ${curr[1].name}`);
     split = { id: prev.id, end: activity.activityDate - SPLIT_DATE_SKEW_ADJUSTMENT };
   }
-  return { interpreted: ret, merged, ownerChanges, split };
+  return {
+    interpreted: ret, merged, ownerChanges, split,
+  };
 };
 
 const interpretVersion = (activity) => {

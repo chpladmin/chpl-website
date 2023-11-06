@@ -108,8 +108,8 @@ const useStyles = makeStyles({
 
 const criteriaLookup = {
   56: { display: '170.315 (g)(7)', sort: 0 },
-  181: { display: '170.315 (g)(9) (Cures Update)', sort: 1 },
-  182: { display: '170.315 (g)(10) (Cures Update)', sort: 2 },
+  181: { display: '170.315 (g)(9)', sort: 1 },
+  182: { display: '170.315 (g)(10)', sort: 2 },
 };
 
 /* eslint object-curly-newline: ["error", { "minProperties": 5, "consistent": true }] */
@@ -263,8 +263,8 @@ function ChplApiDocumentationCollectionView(props) {
           )}
           <ul>
             <li>&sect;170.315 (g)(7): Application Access - Patient Selection</li>
-            <li>&sect;170.315 (g)(9): Application Access - All Data Request (Cures Update)</li>
-            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services (Cures Update)</li>
+            <li>&sect;170.315 (g)(9): Application Access - All Data Request</li>
+            <li>&sect;170.315 (g)(10): Standardized API for Patient and Population Services</li>
           </ul>
           <Typography variant="body1" gutterBottom>
             The Mandatory Disclosures URL is also provided for each health IT product in this list. This is a hyperlink to a page on the developer&apos;s official website that provides in plain language any limitations and/or additional costs associated with the implementation and/or use of the developer&apos;s certified health IT.
@@ -375,9 +375,7 @@ function ChplApiDocumentationCollectionView(props) {
                                     { item.edition
                                       ? (
                                         <>
-                                          {item.edition.name}
-                                          {' '}
-                                          {item.curesUpdate ? 'Cures Update' : '' }
+                                          { item.edition.name }
                                         </>
                                       ) : (
                                         <></>
@@ -403,7 +401,7 @@ function ChplApiDocumentationCollectionView(props) {
                                 { item.serviceBaseUrlListValue
                                   ? (
                                     <dl>
-                                      <dt>170.315 (g)(10) (Cures Update)</dt>
+                                      <dt>170.315 (g)(10)</dt>
                                       <dd>
                                         <ChplLink
                                           href={item.serviceBaseUrlListValue}
