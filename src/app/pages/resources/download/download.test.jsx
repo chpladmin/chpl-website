@@ -51,7 +51,7 @@ describe('the ChplResourcesDownload page', () => {
       const items = screen.getAllByRole('listitem');
 
       await waitFor(() => {
-        expect(items.length).toBe(14);
+        expect(items.length).toBe(8);
       });
     });
   });
@@ -59,21 +59,21 @@ describe('the ChplResourcesDownload page', () => {
   describe('when selecting a file', () => {
     it('should track analytics on the download file', async () => {
       userEvent.click(screen.getByRole('button', { name: /Select a collection to download/i }));
-      userEvent.click(within(screen.getByRole('listbox')).getByText('2011 edition products (xml)'));
+      userEvent.click(within(screen.getByRole('listbox')).getByText('Inactive products summary'));
       userEvent.click(screen.getByRole('button', { name: /Data File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: '2011 XML' });
+        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: 'Inactive products' });
       });
     });
 
     it('should track analytics on the definition file', async () => {
       userEvent.click(screen.getByRole('button', { name: /Select a collection to download/i }));
-      userEvent.click(within(screen.getByRole('listbox')).getByText('2011 edition products (xml)'));
+      userEvent.click(within(screen.getByRole('listbox')).getByText('Inactive products summary'));
       userEvent.click(screen.getByRole('button', { name: /Definition File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL Definition', { category: 'Download CHPL', label: '2011 XML' });
+        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL Definition', { category: 'Download CHPL', label: 'Inactive products' });
       });
     });
 
@@ -82,7 +82,7 @@ describe('the ChplResourcesDownload page', () => {
       userEvent.click(screen.getByRole('button', { name: /Data File/i }));
 
       await waitFor(() => {
-        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: '2015 JSON' });
+        expect(analyticsMock.eventTrack).toHaveBeenCalledWith('Download CHPL', { category: 'Download CHPL', label: 'Active products' });
       });
     });
   });
