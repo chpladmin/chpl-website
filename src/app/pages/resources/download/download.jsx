@@ -181,20 +181,18 @@ function ChplResourcesDownload() {
                       </li>
                     </ul>
                     <Box className={classes.infoBox}>
-                      <InfoOutlinedIcon color="primary"/>
+                      <InfoOutlinedIcon color="primary" />
                       <Typography>
-                         JSON and XML files have been moved to the
-                         {' '}
-                         <span>
-                          <ChplLink
-                            text="CHPL API"
-                            external={false} 
-                            inline 
-                            href="#/resources/api"
-                            router={{ sref: 'resources.api' }}
-                            >
-                          </ChplLink>
-                        </span>
+                        JSON and XML files have been moved to the
+                        {' '}
+                        <ChplLink
+                          text="CHPL API page"
+                          external={false}
+                          inline
+                          href="#/resources/api"
+                          router={{ sref: 'resources.api' }}
+                        />
+                        .
                       </Typography>
                     </Box>
                   </Box>
