@@ -5,7 +5,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import NewReleasesIcon from '@material-ui/icons/NewReleases';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import UpdateIcon from '@material-ui/icons/Update';
 import WarningIcon from '@material-ui/icons/Warning';
 import * as jsJoda from '@js-joda/core';
@@ -63,7 +63,7 @@ function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
       <ChplTooltip title={(
         <Box>
           <Typography variant="h5" align="left">
-            Update Required by
+            Past Due: Update Required by
             {' '}
             { getDisplayDateFormat(endDay) }
           </Typography>
@@ -102,7 +102,7 @@ function ChplUpdateIndicator({ requiredDay, endDay, additionalInformation }) {
       )}
       >
         <IconButton>
-          <NewReleasesIcon className={classes.alreadyUpdated} />
+          <CheckCircleIcon className={classes.alreadyUpdated} />
         </IconButton>
       </ChplTooltip>
     );
