@@ -55,7 +55,7 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
         ...item,
         criteriaDisplay: item.criteria
           .sort(sortCriteria)
-          .map((c) => c.number)
+          .map((c) => `${c.removed ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
       }))
       .sort(sortComparator('value')));
