@@ -1,11 +1,36 @@
-export const ChartsSurveillanceComponent = {
+import { sortNonconformityTypes } from 'services/surveillance.service';
+
+const getNonconformityCountDataInChartFormat = (data, type) => data.nonconformityStatisticsResult
+  .map((obj) => ({
+    ...obj,
+    nonconformityType: obj.criterion ? ((obj.criterion.removed ? 'Removed | ' : '') + obj.criterion.number) : obj.nonconformityType,
+    number: obj.criterion ? obj.criterion.number : '',
+    title: obj.criterion ? obj.criterion.title : obj.nonconformityType,
+  }))
+  .filter((obj) => {
+    switch (type) {
+      case 'Certification Criteria':
+        return obj.nonconformityType.includes('170.315');
+      case 'Program':
+        return !obj.nonconformityType.includes('170.314') && !obj.nonconformityType.includes('170.315');
+      case 'All':
+        return !obj.nonconformityType.includes('170.314');
+      default:
+        return false;
+    }
+  })
+  .sort(sortNonconformityTypes)
+  .map((obj) => ({ c: [{ v: obj.nonconformityType }, { v: obj.nonconformityCount }] }));
+
+const ChartsSurveillanceComponent = {
   templateUrl: 'chpl.charts/surveillance/surveillance.html',
   bindings: {
     nonconformityCriteriaCount: '<',
   },
   controller: class ChartsSurveillanceComponent {
-    constructor ($analytics, $log, utilService) {
+    constructor($analytics, $log, utilService) {
       'ngInject';
+
       this.$analytics = $analytics;
       this.$log = $log;
       this.utilService = utilService;
@@ -20,35 +45,35 @@ export const ChartsSurveillanceComponent = {
       };
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
       if (changes.nonconformityCriteriaCount) {
-        this._createNonconformityCountChart(changes.nonconformityCriteriaCount.currentValue);
+        this.createNonconformityCountChart(changes.nonconformityCriteriaCount.currentValue);
       }
     }
 
-    updateType () {
+    updateType() {
       this.$analytics.eventTrack('Filter Non-conformity Charts by Type of Program Requirements Surveilled', { category: 'Charts', label: this.chartState.nonconformityCountType });
     }
 
-    updateYAxis () {
-      let that = this;
-      Object.values(this.nonconformityCounts).forEach(value => {
+    updateYAxis() {
+      const that = this;
+      Object.values(this.nonconformityCounts).forEach((value) => {
         value.options.vAxis.scaleType = that.chartState.yAxis;
       });
-      let type = this.chartState.yAxis === 'mirrorLog' ? 'Log' : 'Linear';
+      const type = this.chartState.yAxis === 'mirrorLog' ? 'Log' : 'Linear';
       this.$analytics.eventTrack('Change Non-conformity Charts Y Axis', { category: 'Charts', label: type });
     }
 
-    _createNonconformityCountChart (data) {
+    createNonconformityCountChart(data) {
       this.nonconformityCounts = {
-        'All': {
+        All: {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
-            rows: this._getNonconformityCountDataInChartFormat(data, 'All'),
+            rows: getNonconformityCountDataInChartFormat(data, 'All'),
           },
           options: {
             animation: {
@@ -72,10 +97,10 @@ export const ChartsSurveillanceComponent = {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: 'Certification Criteria Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: 'Certification Criteria Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
-            rows: this._getNonconformityCountDataInChartFormat(data, 'Certification Criteria'),
+            rows: getNonconformityCountDataInChartFormat(data, 'Certification Criteria'),
           },
           options: {
             animation: {
@@ -95,14 +120,14 @@ export const ChartsSurveillanceComponent = {
             },
           },
         },
-        'Program': {
+        Program: {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: 'Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
+              { label: 'Program Requirements Surveilled', type: 'string' },
+              { label: 'Number of Non-Conformities', type: 'number' },
             ],
-            rows: this._getNonconformityCountDataInChartFormat(data, 'Program'),
+            rows: getNonconformityCountDataInChartFormat(data, 'Program'),
           },
           options: {
             animation: {
@@ -124,34 +149,10 @@ export const ChartsSurveillanceComponent = {
         },
       };
     }
-
-    _getNonconformityCountDataInChartFormat (data, type) {
-      return data.nonconformityStatisticsResult
-        .map(obj => {
-          if (obj.criterion) {
-            obj.nonconformityType = (obj.criterion.removed ? 'Removed | ' : '') + obj.criterion.number;
-          }
-          obj.number = obj.criterion ? obj.criterion.number : obj.nonconformityType;
-          obj.title = obj.criterion ? obj.criterion.title : '';
-          return obj;
-        })
-        .filter(obj => {
-          switch (type) {
-          case 'Certification Criteria':
-            return obj.nonconformityType.includes('170.315');
-          case 'Program':
-            return obj.nonconformityType.includes('170.523') || obj.nonconformityType.includes('Other');
-          case 'All':
-            return !obj.nonconformityType.includes('170.314');
-          default:
-            return false;
-          }
-        })
-        .sort((a, b) => this.utilService.sortCertActual(a, b))
-        .map(obj => ({c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]}));
-    }
   },
 };
 
 angular.module('chpl.charts')
   .component('chplChartsSurveillance', ChartsSurveillanceComponent);
+
+export default ChartsSurveillanceComponent;
