@@ -17,12 +17,23 @@ jest.mock('swagger-ui-react', () => ({
 jest.mock('components/util', () => ({
   __esModule: true,
   ChplLink: jest.fn(() => 'ChplLink'),
+  ChplTextField: jest.fn(() => 'ChplTextField'),
 }));
 
+const ApiMock = 'API';
+
+const analyticsMock = {
+  eventTrack: jest.fn(() => {}),
+};
+
 const authServiceMock = {
-  hasAnyRole: jest.fn(),
+  getApiKey: jest.fn(() => 'key'),
+  getToken: jest.fn(() => 'token'),
+  hasAnyRole: jest.fn(() => false),
 };
 angularReactHelper.getAngularService = jest.fn();
+when(angularReactHelper.getAngularService).calledWith('API').mockReturnValue(ApiMock);
+when(angularReactHelper.getAngularService).calledWith('$analytics').mockReturnValue(analyticsMock);
 when(angularReactHelper.getAngularService).calledWith('authService').mockReturnValue(authServiceMock);
 
 describe('the ChplResourcesApi page', () => {
