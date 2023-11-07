@@ -11,8 +11,7 @@ export const ChartsSurveillanceComponent = {
       this.utilService = utilService;
       this.nonconformityTypes = [
         'All',
-        2015,
-        '2015 Cures Update',
+        'Certification Criteria',
         'Program',
       ];
       this.chartState = {
@@ -69,14 +68,14 @@ export const ChartsSurveillanceComponent = {
             },
           },
         },
-        2014: {
+        'Certification Criteria': {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: '2014 Certification Criteria and Program Requirements Surveilled', type: 'string'},
+              { label: 'Certification Criteria Surveilled', type: 'string'},
               { label: 'Number of Non-Conformities', type: 'number'},
             ],
-            rows: this._getNonconformityCountDataInChartFormat(data, 2014),
+            rows: this._getNonconformityCountDataInChartFormat(data, 'Certification Criteria'),
           },
           options: {
             animation: {
@@ -84,63 +83,9 @@ export const ChartsSurveillanceComponent = {
               easing: 'inAndOut',
               startup: true,
             },
-            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
+            title: 'Number of Non-Conformities by Certification Criteria Surveilled',
             hAxis: {
-              title: '2014 Certification Criteria and Program Requirements Surveilled',
-              minValue: 0,
-            },
-            vAxis: {
-              scaleType: this.chartState.yAxis,
-              title: 'Number of Non-Conformities',
-              minValue: 0,
-            },
-          },
-        },
-        2015: {
-          type: 'ColumnChart',
-          data: {
-            cols: [
-              { label: '2015 Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
-            ],
-            rows: this._getNonconformityCountDataInChartFormat(data, 2015),
-          },
-          options: {
-            animation: {
-              duration: 1000,
-              easing: 'inAndOut',
-              startup: true,
-            },
-            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
-            hAxis: {
-              title: '2015 Certification Criteria and Program Requirements Surveilled',
-              minValue: 0,
-            },
-            vAxis: {
-              scaleType: this.chartState.yAxis,
-              title: 'Number of Non-Conformities',
-              minValue: 0,
-            },
-          },
-        },
-        '2015 Cures Update': {
-          type: 'ColumnChart',
-          data: {
-            cols: [
-              { label: '2015 Cures Update Certification Criteria and Program Requirements Surveilled', type: 'string'},
-              { label: 'Number of Non-Conformities', type: 'number'},
-            ],
-            rows: this._getNonconformityCountDataInChartFormat(data, '2015 Cures Update'),
-          },
-          options: {
-            animation: {
-              duration: 1000,
-              easing: 'inAndOut',
-              startup: true,
-            },
-            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
-            hAxis: {
-              title: '2015 Cures Update Certification Criteria and Program Requirements Surveilled',
+              title: 'Certification Criteria Surveilled',
               minValue: 0,
             },
             vAxis: {
@@ -154,7 +99,7 @@ export const ChartsSurveillanceComponent = {
           type: 'ColumnChart',
           data: {
             cols: [
-              { label: 'Program Certification Criteria and Program Requirements Surveilled', type: 'string'},
+              { label: 'Program Requirements Surveilled', type: 'string'},
               { label: 'Number of Non-Conformities', type: 'number'},
             ],
             rows: this._getNonconformityCountDataInChartFormat(data, 'Program'),
@@ -165,9 +110,9 @@ export const ChartsSurveillanceComponent = {
               easing: 'inAndOut',
               startup: true,
             },
-            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
+            title: 'Number of Non-Conformities by Program Requirements Surveilled',
             hAxis: {
-              title: 'Program Certification Criteria and Program Requirements Surveilled',
+              title: 'Program Requirements Surveilled',
               minValue: 0,
             },
             vAxis: {
@@ -184,7 +129,7 @@ export const ChartsSurveillanceComponent = {
       return data.nonconformityStatisticsResult
         .map(obj => {
           if (obj.criterion) {
-            obj.nonconformityType = obj.criterion.number + (obj.criterion.title.indexOf('Cures Update') > -1 ? ' (Cures Update)' : '');
+            obj.nonconformityType = (obj.criterion.removed ? 'Removed | ' : '') + obj.criterion.number;
           }
           obj.number = obj.criterion ? obj.criterion.number : obj.nonconformityType;
           obj.title = obj.criterion ? obj.criterion.title : '';
@@ -192,10 +137,8 @@ export const ChartsSurveillanceComponent = {
         })
         .filter(obj => {
           switch (type) {
-          case 2015:
-            return (obj.nonconformityType.includes('170.315') && !obj.nonconformityType.includes('Cures Update'));
-          case '2015 Cures Update':
-            return obj.nonconformityType.includes('Cures Update');
+          case 'Certification Criteria':
+            return obj.nonconformityType.includes('170.315');
           case 'Program':
             return obj.nonconformityType.includes('170.523') || obj.nonconformityType.includes('Other');
           case 'All':
