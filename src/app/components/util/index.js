@@ -10,6 +10,7 @@ import ChplProgress from './progress';
 import ChplSortableHeaders from './chpl-sortable-headers';
 import ChplTextField from './chpl-text-field';
 import ChplTooltip from './chpl-tooltip';
+import ChplUpdateIndicator from './update-indicator';
 import InternalScrollButton from './internal-scroll-button';
 import SnackbarWrapper from './snackbar-wrapper';
 
@@ -26,6 +27,7 @@ export {
   ChplSortableHeaders,
   ChplTextField,
   ChplTooltip,
+  ChplUpdateIndicator,
   InternalScrollButton,
   SnackbarWrapper,
 };
