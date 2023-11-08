@@ -88,6 +88,7 @@ function ChplCqmsEdit() {
             </TableHead>
             <TableBody>
               { listing.cqmResults
+                .filter((cqm) => cqm.success) // add "view all" later
                 .sort(sortCqms)
                 .map((cqm) => (
                   <TableRow key={cqm.cmsId}>
