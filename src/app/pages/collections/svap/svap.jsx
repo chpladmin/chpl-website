@@ -91,7 +91,7 @@ function ChplSvapCollectionPage() {
       return;
     }
     const values = ccQuery.data
-      .filter((cc) => cc.certificationEditionId === 3)
+      .filter((cc) => cc.certificationEditionId === 3 || cc.certificationEditionId === null)
       .map((cc) => ({
         ...cc,
         value: cc.id,
