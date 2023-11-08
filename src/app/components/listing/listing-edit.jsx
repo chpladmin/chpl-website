@@ -18,6 +18,7 @@ import { useSnackbar } from 'notistack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import ChplCqmsEdit from './details/cqms/cqms-edit';
 import ChplListingInformationEdit from './details/listing-information/listing-information-edit';
 
 import { usePutListing } from 'api/listing';
@@ -299,6 +300,17 @@ function ChplListingEdit() {
           </Box>
           <CardContent>
             <ChplListingInformationEdit />
+          </CardContent>
+        </Card>
+        <Card>
+          <span className="anchor-element">
+            <span id="clinicalQualityMeasures" className="page-anchor" />
+          </span>
+          <Box className={classes.sectionHeader}>
+            <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
+          </Box>
+          <CardContent>
+            <ChplCqmsEdit />
           </CardContent>
         </Card>
         <Card>
