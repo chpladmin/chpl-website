@@ -15,6 +15,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import ChplCqmEdit from './cqm-edit';
+
+import { ChplTextField } from 'components/util';
 import { sortCqms } from 'services/cqms.service';
 import { ListingContext, UserContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
@@ -91,53 +94,10 @@ function ChplCqmsEdit() {
                 .filter((cqm) => cqm.success) // add "view all" later
                 .sort(sortCqms)
                 .map((cqm) => (
-                  <TableRow key={cqm.cmsId}>
-                    <TableCell>
-                  { !cqm.cmsId
-                    && (
-                      <>checkbox</>
-                    )}
-                  { cqm.cmsId
-                    && (
-                      <>multi-select</>
-                    )}
-                    </TableCell>
-                    <TableCell>
-                      { !cqm.cmsId
-                        && (
-                          <>NQF-{ cqm.nqfNumber }</>
-                        )}
-                      { cqm.cmsId
-                        && (
-                          <>{ cqm.cmsId }</>
-                        )}
-                      : { cqm.title }
-                    </TableCell>
-                    { (listing.edition === null || listing.edition.name === '2015')
-                      && (
-                        <TableCell>
-                          1
-                        </TableCell>
-                      )}
-                    { (listing.edition === null || listing.edition.name === '2015')
-                      && (
-                        <TableCell>
-                          2
-                        </TableCell>
-                      )}
-                    { (listing.edition === null || listing.edition.name === '2015')
-                      && (
-                        <TableCell>
-                          3
-                        </TableCell>
-                      )}
-                    { (listing.edition === null || listing.edition.name === '2015')
-                      && (
-                        <TableCell>
-                          4
-                        </TableCell>
-                      )}
-                  </TableRow>
+                  <ChplCqmEdit
+                    key={cqm.cmsId}
+                    cqm={cqm}
+                  />
                 ))}
             </TableBody>
           </Table>
