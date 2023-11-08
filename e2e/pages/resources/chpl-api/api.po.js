@@ -2,6 +2,7 @@ class ApiPage {
   constructor() {
     this.elements = {
       header: 'h1=CHPL API',
+      content: '#main-content',
       announcementsController: '#operations-tag-announcements',
       attestationController: '#operations-tag-attestation',
       getAttestationEndpoint: '#operations-attestation-getAllPeriods',
@@ -16,7 +17,7 @@ class ApiPage {
   }
 
   async getBodyText() {
-    return (await (await (await $(this.elements.header)).parentElement()).nextElement()).getText();
+    return (await $(this.elements.content)).getText();
   }
 
   get announcementsController() {
