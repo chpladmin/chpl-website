@@ -42,12 +42,7 @@ describe('the charts page', () => {
     });
 
     it('should display correct title of the chart about 2015 edition products', async () => {
-      await expect(await page.chartTitle.getText()).toBe('Number of 2015 Edition Unique Products certified to specific Certification Criteria');
-    });
-
-    it('should have the right number of options in the "view certification criteria" dropdown', async () => {
-      const expected = new Set(['All', '2015', '2015 Cures Update']);
-      await expect(page.programTypeDropdownOptions.length).toBe(expected.size);
+      await expect(await page.chartTitle.getText()).toBe('Number of Unique Products certified to specific Certification Criteria');
     });
   });
 
@@ -63,7 +58,7 @@ describe('the charts page', () => {
     });
 
     it('should have the right number of options in the "View the number of Non-conformities" dropdown', async () => {
-      const expected = new Set(['All', '2015', '2015 Cures Update', 'Program']);
+      const expected = new Set(['All', 'Certification Criteria', 'Program']);
       await expect(page.programTypeDropdownOptions.length).toBe(expected.size);
     });
 
