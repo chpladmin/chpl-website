@@ -573,7 +573,7 @@ function ChplCriterionDetailsView(props) {
               && (
                 <TableRow key="riskManagementSummaryInformation">
                   <TableCell component="th" scope="row">
-                    <ChplTooltip title="TBD">
+                    <ChplTooltip title="The publicly accessible hyperlink to the Risk Management practices for a Health IT Module certified to &sect;170.315(b)(11), outlines the developers&apos; strategies to ensure that predictive Decision Support Interventions are fair, accurate, reliable, and maintain user safety and data privacy.">
                       <IconButton className={classes.infoIcon}>
                         <InfoIcon
                           className={classes.infoIconColor}
