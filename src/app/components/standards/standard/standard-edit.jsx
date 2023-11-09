@@ -13,7 +13,7 @@ import * as yup from 'yup';
 
 import { ChplActionBar } from 'components/action-bar';
 import { ChplTextField } from 'components/util';
-import { isCures, sortCriteria } from 'services/criteria.service';
+import { sortCriteria } from 'services/criteria.service';
 import { BreadcrumbContext } from 'shared/contexts';
 import {
   criterion as criterionPropType,
@@ -123,8 +123,6 @@ function ChplStandardEdit(props) {
     requiredDay: formik.values.requiredDay,
     startDay: formik.values.startDay,
   });
-
-  const getDisplay = (criterion) => criterion.number + (isCures(criterion) ? ' (Cures Update)' : '');
 
   const handleDispatch = (action) => {
     switch (action) {
@@ -274,7 +272,7 @@ function ChplStandardEdit(props) {
               key={item.id}
               disabled={isDisabled(item)}
             >
-              {`${item.status === 'RETIRED' ? 'Retired | ' : ''}${item.number}: ${item.title}`}
+              {`${item.status === 'REMOVED' ? 'Removed | ' : ''}${item.number}: ${item.title}`}
             </MenuItem>
           ))}
       </ChplTextField>
@@ -284,7 +282,7 @@ function ChplStandardEdit(props) {
           .map((item) => (
             <Chip
               key={item.id}
-              label={getDisplay(item)}
+              label={`${item.status === 'REMOVED' ? 'Removed | ' : ''}${item.number}`}
               onDelete={() => remove(item)}
               color="primary"
               variant="outlined"
