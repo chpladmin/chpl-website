@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip } from '@material-ui/core';
-import { string } from 'prop-types';
+import { node, oneOfType, string } from 'prop-types';
+
 import theme from '../../themes/theme';
 
 const useStylesBootstrap = makeStyles({
@@ -26,5 +27,5 @@ function ChplTooltip(props) {
 export default ChplTooltip;
 
 ChplTooltip.propTypes = {
-  title: string.isRequired,
+  title: oneOfType([node, string]).isRequired,
 };
