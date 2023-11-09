@@ -34,7 +34,7 @@ describe('the charts page', () => {
   describe('unique product charts tab', () => {
     beforeEach(async () => {
       await hooks.waitForSpinnerToDisappear();
-      await browser.waitUntil(async () => await page.chartTitle.isDisplayed(), config.shortTimeout);
+      await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
 
     it('should display 1 chart', async () => {
@@ -50,7 +50,7 @@ describe('the charts page', () => {
     beforeEach(async () => {
       await (await page.chartTabs('Nonconformity charts')).click();
       await hooks.waitForSpinnerToDisappear();
-      await browser.waitUntil(async () => await page.chartTitle.isDisplayed(), config.shortTimeout);
+      await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
 
     it('should display 1 chart', async () => {
@@ -72,7 +72,7 @@ describe('the charts page', () => {
     beforeEach(async () => {
       await (await page.chartTabs('SED Participant charts')).click();
       await hooks.waitForSpinnerToDisappear();
-      await browser.waitUntil(async () => await page.chartTitle.isDisplayed(), config.shortTimeout);
+      await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
 
     it('should display 7 charts', async () => {
@@ -84,7 +84,7 @@ describe('the charts page', () => {
     beforeEach(async () => {
       await (await page.chartTabs('Developer charts')).click();
       await hooks.waitForSpinnerToDisappear();
-      await browser.waitUntil(async () => await page.chartTitle.isDisplayed(), config.shortTimeout);
+      await browser.waitUntil(async () => page.chartTitle.isDisplayed(), config.shortTimeout);
     });
 
     it('should display 5 charts', async () => {
