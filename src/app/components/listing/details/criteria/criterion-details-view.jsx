@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Card,
   IconButton,
   List,
@@ -18,7 +19,9 @@ import { arrayOf } from 'prop-types';
 
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
-import { ChplEllipsis, ChplLink, ChplTooltip } from 'components/util';
+import {
+  ChplEllipsis, ChplLink, ChplTooltip, ChplUpdateIndicator,
+} from 'components/util';
 import {
   accessibilityStandard,
   certificationResult,
@@ -220,20 +223,17 @@ function ChplCriterionDetailsView(props) {
                         <List>
                           { criterion.functionalitiesTested.map((ft, index) => (
                             <ListItem key={ft.id || ft.key || index} className={ft.functionalityTested.retired ? 'removed' : ''}>
-                              { ft.functionalityTested.retired ? 'Expired | ' : '' }
-                              { ft.functionalityTested.value
-                                && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
-                              { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
-                              { ft.functionalityTested.additionalInformation
-                                && (
-                                  <ChplTooltip title={ft.functionalityTested.additionalInformation}>
-                                    <IconButton className={classes.infoIcon}>
-                                      <InfoIcon
-                                        className={classes.infoIconColor}
-                                      />
-                                    </IconButton>
-                                  </ChplTooltip>
-                                )}
+                              <Box width="100%">
+                                { ft.functionalityTested.retired ? 'Expired | ' : '' }
+                                { ft.functionalityTested.value
+                                  && <ChplEllipsis text={ft.functionalityTested.value} maxLength={100} wordBoundaries />}
+                                { !ft.functionalityTested.value && ft.functionalityTested.regulatoryTextCitation }
+                              </Box>
+                              <ChplUpdateIndicator
+                                requiredDay={ft.functionalityTested.requiredDay}
+                                endDay={ft.functionalityTested.endDay}
+                                additionalInformation={ft.functionalityTested.additionalInformation}
+                              />
                             </ListItem>
                           ))}
                         </List>
