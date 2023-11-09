@@ -296,7 +296,7 @@ function ChplFunctionalityTestedEdit(props) {
               key={item.id}
               disabled={isDisabled(item)}
             >
-              {`${item.removed ? 'Removed | ' : ''}${item.number}: ${item.title}`}
+              {`${item.status === 'REMOVED' ? 'Removed | ' : ''}${item.number}: ${item.title}`}
             </MenuItem>
           ))}
       </ChplTextField>
@@ -306,7 +306,7 @@ function ChplFunctionalityTestedEdit(props) {
           .map((item) => (
             <Chip
               key={item.id}
-              label={`${item.removed ? 'Removed | ' : ''}${item.number}`}
+              label={`${item.status === 'REMOVED' ? 'Removed | ' : ''}${item.number}`}
               onDelete={() => remove(item)}
               color="primary"
               variant="outlined"

@@ -53,7 +53,7 @@ function ChplTestToolsView({ dispatch, testTools: initialTestTools }) {
         ...item,
         criteriaDisplay: item.criteria
           .sort(sortCriteria)
-          .map((c) => `${c.removed ? 'Removed | ' : ''}${c.number}`)
+          .map((c) => `${c.status === 'REMOVED' ? 'Removed | ' : ''}${c.number}`)
           .join(', '),
       }))
       .sort(sortComparator('value')));
