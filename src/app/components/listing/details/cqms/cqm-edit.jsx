@@ -49,7 +49,17 @@ function ChplCqmEdit(props) {
   };
 
   const toggle = (c) => {
-    console.log({c, cqm});
+    setListing({
+      ...listing,
+      cqmResults: listing.cqmResults
+        .filter((c) => c.cmsId !== cqm.cmsId)
+        .concat({
+          ...cqm,
+          criteria: cqm.criteria.some((cc) => cc.certificationNumber === `170.315 (c)(${c})`)
+            ? cqm.criteria.filter((cc) => cc.certificationNumber !== `170.315 (c)(${c})`)
+            : [...cqm.criteria].concat({ certificationNumber: `170.315 (c)(${c})`}),
+        }),
+    });
   };
 
   if (!listing) {
