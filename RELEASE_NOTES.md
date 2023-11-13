@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 13.6.0
+_13 November 2023_
+
+### Features
+* Display indicators around Functionalities Tested dates
+* Move JSON and XML files to "API" page instead of Download page
+* Update download page to have "active" vs. "inactive" download files
+* Edit basic Listing data in ReactJS
+
+---
+
 ## Version 13.5.0
 _16 October 2023_
 
