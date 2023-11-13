@@ -48,11 +48,15 @@ function ChplCqmEdit(props) {
     formik.setFieldValue(event.target.name, event.target.value);
   };
 
+  const toggle = (c) => {
+    console.log({c, cqm});
+  };
+
   if (!listing) {
     return (
       <CircularProgress />
     );
-  }
+  };
 
   return (
     <TableRow>
@@ -115,7 +119,12 @@ function ChplCqmEdit(props) {
       </TableCell>
       { (listing.edition === null || listing.edition.name === '2015') && [1, 2, 3, 4].map((v) => (
         <TableCell key={`${cqm.cmsId}-${v}`}>
-          { v }
+          <Switch
+            id={`${cqm.cmsId}-${v}`}
+            color="primary"
+            checked={cqm.criteria.some((cc) => cc.certificationNumber === `170.315 (c)(${v})`)}
+            onChange={() => toggle(v)}
+          />
         </TableCell>
       ))}
     </TableRow>

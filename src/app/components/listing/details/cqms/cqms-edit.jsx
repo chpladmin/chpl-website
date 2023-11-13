@@ -72,7 +72,7 @@ function ChplCqmsEdit() {
                 </TableCell>
                 <TableCell>Quality Measure</TableCell>
                 { (listing.edition === null || listing.edition.name === '2015') && [1, 2, 3, 4].map((v) => (
-                  <TableCell className="no-br" key={`170.315(c)(${v})`}>
+                  <TableCell className="no-br" key={`170.315 (c)(${v})`}>
                     { `170.315 (c)(${v})` }
                   </TableCell>
                 ))}
