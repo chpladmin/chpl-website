@@ -152,7 +152,7 @@ function ChplListingInformation({ listing: initialListing }) {
           <Box className={classes.dataBox}>
             <Typography variant="subtitle1">ONC-Authorized Testing Laboratory:</Typography>
             { listing.testingLabs.map((atl) => (
-              <Typography gutterBottom key={atl.id}>{atl.testingLabName}</Typography>
+              <Typography gutterBottom key={atl.testingLab.id}>{atl.testingLab.name}</Typography>
             ))}
             { listing.productAdditionalSoftware
              && (

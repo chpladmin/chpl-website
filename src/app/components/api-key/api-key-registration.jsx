@@ -9,6 +9,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -128,6 +129,7 @@ function ChplApiKeyRegistration() {
           name="registerButton"
           variant="contained"
           onClick={formik.handleSubmit}
+          endIcon={<SendIcon/>}
         >
           Register
         </Button>

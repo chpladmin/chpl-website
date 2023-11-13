@@ -78,6 +78,10 @@ function ChplListingPage({ id }) {
     $state.go('listing.edit');
   };
 
+  const editFlagged = () => {
+    $state.go('listing.flag-edit');
+  };
+
   if (isLoading || !isSuccess || !listing) {
     return <CircularProgress />;
   }
@@ -112,6 +116,18 @@ function ChplListingPage({ id }) {
                       onClick={edit}
                     >
                       Edit
+                    </Button>
+                  )}
+                { hasAnyRole(['ROLE_ADMIN'])
+                  && (
+                    <Button
+                      endIcon={<EditIcon />}
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={editFlagged}
+                    >
+                      Edit - New
                     </Button>
                   )}
                 <ChplListingHistory
