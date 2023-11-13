@@ -41,9 +41,7 @@ describe('the Functionalities Tested component', () => {
       await (await page.funtionalityTestedStartDay).click();
       await browser.keys(['ArrowUp', 'Tab','ArrowUp', 'Tab','ArrowUp']);
       await (await page.funtionalityTestedReqDay).click();
-      await browser.keys(['ArrowDown', 'Tab','ArrowDown', 'Tab','ArrowDown']);
-      await (await page.funtionalityTestedEndDay).click();
-      await browser.keys(['ArrowDown', 'Tab','ArrowDown', 'Tab','ArrowUp', 'ArrowUp']);
+      await browser.keys(['ArrowUp', 'Tab','ArrowUp', 'Tab','ArrowUp']);
       await (await page.ruleSelector).click();
       await browser.keys(['ArrowDown', 'ArrowDown','ArrowDown', 'ArrowDown', 'Enter']);
       await (await page.practiceType).click();
