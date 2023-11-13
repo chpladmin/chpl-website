@@ -13,6 +13,7 @@ import { arrayOf, func } from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
+import { ChplUpdateIndicator } from 'components/util';
 import { ChplSortableHeaders, sortComparator } from 'components/util/sortable-headers';
 import { isCures, sortCriteria } from 'services/criteria.service';
 import { getDisplayDateFormat } from 'services/date-util';
@@ -100,6 +101,11 @@ function ChplFunctionalitiesTestedView({ dispatch, functionalitiesTested: initia
                   <TableCell className={classes.firstColumn}>
                     { item.value }
                     { item.retired && ' (Retired)'}
+                    <ChplUpdateIndicator
+                      requiredDay={item.requiredDay}
+                      endDay={item.endDay}
+                      additionalInformation={item.additionalInformation}
+                    />
                   </TableCell>
                   <TableCell>
                     { item.regulatoryTextCitation }

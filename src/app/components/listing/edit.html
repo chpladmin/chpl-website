@@ -127,14 +127,14 @@
   <div class="manage-list__container">
     <div class="data-label">Testing Lab</div>
     <div class="manage-list__item--start" ng-repeat-start="item in $ctrl.listing.testingLabs track by $index">
-      {{ item.testingLabName }}
+      {{ item.testingLab.name }}
     </div>
     <div class="manage-list__item--end" ng-repeat-end>
       <button class="btn btn-link btn-sm" ng-click="$ctrl.removeItem('oncAtls', item)"><i class="fa fa-times"></i><span class="sr-only">Remove Item</span></button>
     </div>
     <div class="manage-list__item--start" ng-if="$ctrl.addingItem['oncAtls']">
       <div class="data-label sr-only"><label for="testing-lab-add-new">Add new Testing Lab</label></div>
-      <select class="form-control" ng-model="$ctrl.newItem['oncAtls'].testingLabName" id="testing-lab-add-new" name="testingLabAddNew" required
+      <select class="form-control" ng-model="$ctrl.newItem['oncAtls'].testingLab.name" id="testing-lab-add-new" name="testingLabAddNew" required
               ng-options="option.name as option.name for option in $ctrl.filterListEditItems($ctrl.resources.testingLabs)">
       </select>
     </div>

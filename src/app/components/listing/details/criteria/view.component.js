@@ -39,6 +39,7 @@ const CertificationCriteriaViewComponent = {
       return this.isEditing // in editing mode
         && (this.cert.success // can always remove success
             || !this.cert.criterion.removed // can always edit non-removed
+            || this.cert.criterion.editable // can edit removed if within the year range
             || (!this.isConfirming && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']))); // can only edit removed when given role & not confirming
     }
 
@@ -86,10 +87,10 @@ const CertificationCriteriaViewComponent = {
     }
 
     showViewDetailsLink() {
-      return (this.cert.success && this.cert.additionalSoftware !== null)
+      return this.cert.success
                 || (!this.cert.success
-                 && (this.cert.g1Success !== null
-                  || this.cert.g2Success !== null));
+                    && ((this.cert.g1Success !== null && this.cert.g1Success !== undefined)
+                        || (this.cert.g2Success !== null && this.cert.g2Success !== undefined)));
     }
 
     showOptionalStandardsSection() {
