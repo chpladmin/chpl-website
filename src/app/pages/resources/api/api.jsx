@@ -221,7 +221,7 @@ function ChplResourcesApi() {
                     <div className={classes.fullWidth}>
                       <div>
                         <Typography variant="body1">
-                          The XML definition files were last modified on October 16, 2023.
+                          The XML definition files were last modified on November 13, 2023.
                         </Typography>
                       </div>
                     </div>
