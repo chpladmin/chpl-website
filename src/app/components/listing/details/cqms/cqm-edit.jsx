@@ -6,6 +6,7 @@ import {
   CircularProgress,
   IconButton,
   MenuItem,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -112,30 +113,11 @@ function ChplCqmEdit(props) {
           )}
         : { cqm.title }
       </TableCell>
-      { (listing.edition === null || listing.edition.name === '2015')
-        && (
-          <TableCell>
-            1
-          </TableCell>
-        )}
-      { (listing.edition === null || listing.edition.name === '2015')
-        && (
-          <TableCell>
-            2
-          </TableCell>
-        )}
-      { (listing.edition === null || listing.edition.name === '2015')
-        && (
-          <TableCell>
-            3
-          </TableCell>
-        )}
-      { (listing.edition === null || listing.edition.name === '2015')
-        && (
-          <TableCell>
-            4
-          </TableCell>
-        )}
+      { (listing.edition === null || listing.edition.name === '2015') && [1, 2, 3, 4].map((v) => (
+        <TableCell key={`${cqm.cmsId}-${v}`}>
+          { v }
+        </TableCell>
+      ))}
     </TableRow>
   );
 }

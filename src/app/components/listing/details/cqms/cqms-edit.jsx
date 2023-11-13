@@ -71,22 +71,11 @@ function ChplCqmsEdit() {
                   { (listing.edition !== null && listing.edition.name) === '2011' ? 'Meets' : 'Version' }
                 </TableCell>
                 <TableCell>Quality Measure</TableCell>
-                { (listing.edition === null || listing.edition.name === '2015')
-                  && (
-                    <TableCell>170.315 (c)(1)</TableCell>
-                  )}
-                { (listing.edition === null || listing.edition.name === '2015')
-                  && (
-                    <TableCell>170.315 (c)(2)</TableCell>
-                  )}
-                { (listing.edition === null || listing.edition.name === '2015')
-                  && (
-                    <TableCell>170.315 (c)(3)</TableCell>
-                  )}
-                { (listing.edition === null || listing.edition.name === '2015')
-                  && (
-                    <TableCell>170.315 (c)(4)</TableCell>
-                  )}
+                { (listing.edition === null || listing.edition.name === '2015') && [1, 2, 3, 4].map((v) => (
+                  <TableCell className="no-br" key={`170.315(c)(${v})`}>
+                    { `170.315 (c)(${v})` }
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
