@@ -157,7 +157,7 @@ function ChplSystemMaintenance() {
           >
             Announcements
           </Button>
-          { hasAnyRole(['ROLE_ADMIN'])
+          { hasAnyRole(['chpl-admin'])
             && (
               <Button
                 onClick={() => navigate('certificationCriteria')}
@@ -172,7 +172,7 @@ function ChplSystemMaintenance() {
                 Certification Criteria
               </Button>
             )}
-          { hasAnyRole(['ROLE_ADMIN'])
+          { hasAnyRole(['chpl-admin'])
             && (
               <Button
                 onClick={() => navigate('functionalitiesTested')}
@@ -226,7 +226,7 @@ function ChplSystemMaintenance() {
           >
             SVAP
           </Button>
-          { hasAnyRole(['ROLE_ADMIN'])
+          { hasAnyRole(['chpl-admin'])
             && (
               <Button
                 onClick={() => navigate('systemJobs')}
@@ -241,7 +241,7 @@ function ChplSystemMaintenance() {
                 System Jobs
               </Button>
             )}
-          { hasAnyRole(['ROLE_ADMIN'])
+          { hasAnyRole(['chpl-admin'])
             && (
               <Button
                 onClick={() => navigate('testTools')}
@@ -281,11 +281,11 @@ function ChplSystemMaintenance() {
                 <List>
                   <ListItem>Accessibility Standards - Add and update the Accessibility Standards available to be applied to listings</ListItem>
                   <ListItem>Announcements - Create and edit announcements displayed on CHPL for public and/or logged-in users</ListItem>
-                  { hasAnyRole(['ROLE_ADMIN'])
+                  { hasAnyRole(['chpl-admin'])
                     && (
                       <ListItem>Certification Criteria - Table of the Certification Criteria values</ListItem>
                     )}
-                  { hasAnyRole(['ROLE_ADMIN'])
+                  { hasAnyRole(['chpl-admin'])
                     && (
                       <ListItem>Functionalities Tested - Table of the Functionality Tested values used during testing of certification criterion functionality</ListItem>
                     )}
@@ -295,11 +295,11 @@ function ChplSystemMaintenance() {
                       <ListItem>Standards - TBD</ListItem>
                     )}
                   <ListItem>SVAP - Add and update SVAP values for use by ONC-ACBs on each listing</ListItem>
-                  { hasAnyRole(['ROLE_ADMIN'])
+                  { hasAnyRole(['chpl-admin'])
                     && (
                       <ListItem>System Jobs - View and schedule system-related jobs</ListItem>
                     )}
-                  { hasAnyRole(['ROLE_ADMIN'])
+                  { hasAnyRole(['chpl-admin'])
                     && (
                       <ListItem>Test Tools - Table of the Test Tool values used during testing of certification criterion functionality</ListItem>
                     )}

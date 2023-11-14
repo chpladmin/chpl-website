@@ -17,7 +17,7 @@ const states = [{
   component: 'chplListingEditPage',
   data: {
     title: 'CHPL Listing Details - Edit',
-    roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
+    roles: ['chpl-admin', 'ROLE_ONC', 'ROLE_ACB'],
   },
   resolve: {
     listing: (networkService, $transition$) => {

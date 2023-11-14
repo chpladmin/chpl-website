@@ -254,7 +254,7 @@ function ChplDownloadListings(props) {
           },
         }}
       >
-        { categories.filter((c) => (c.key !== 'svap' || hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) && (c.key !== 'fullEdition' || !editionlessIsOn)).map((c) => [
+        { categories.filter((c) => (c.key !== 'svap' || hasAnyRole(['chpl-admin', 'ROLE_ONC'])) && (c.key !== 'fullEdition' || !editionlessIsOn)).map((c) => [
           <MenuItem
             onClick={() => toggle(c)}
             key={c.key}
