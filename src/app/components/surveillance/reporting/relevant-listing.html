@@ -44,8 +44,8 @@
             <td class="row">
               <span class="col-sm-2">
                 <button class="btn btn-link" id="edit-surveillance-data-{{ surveillance.friendlyId }}"
-                        uib-tooltip="{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeSurveillance = surveillance">
-                  <i class="fa" ng-class="$ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ?  'fa-pencil-square-o' : 'fa-eye'"></i><span class="sr-only">{{ $ctrl.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']) ? 'Edit' : 'View' }} surveillance data</span>
+                        uib-tooltip="{{ $ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB']) ? 'Edit' : 'View' }} Surveillance Data" tooltip-trigger="'mouseenter focus click'" ng-click="$ctrl.activeSurveillance = surveillance">
+                  <i class="fa" ng-class="$ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB']) ?  'fa-pencil-square-o' : 'fa-eye'"></i><span class="sr-only">{{ $ctrl.hasAnyRole(['chpl-admin', 'ROLE_ACB']) ? 'Edit' : 'View' }} surveillance data</span>
                 </button>
               </span>
               <span class="col-sm-10">
