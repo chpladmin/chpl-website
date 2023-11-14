@@ -190,6 +190,10 @@ export default class NetworkService {
     return this.apiGET('/change-requests');
   }
 
+  getCognitoUser(email) {
+    return this.apiGET(`/cognito/users/${email}`);
+  }
+
   getCollection(type) {
     switch (type) {
       case 'complaintListings':
@@ -470,6 +474,10 @@ export default class NetworkService {
 
   getUserById(id) {
     return this.apiGET(`/users/beta/${id}/details`);
+  }
+
+  getCognitoUserById(email) {
+    return this.apiGET(`/cognito/users/${email}`);
   }
 
   getUsers() {
