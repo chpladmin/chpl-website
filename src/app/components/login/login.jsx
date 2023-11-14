@@ -233,7 +233,6 @@ function ChplLogin({ dispatch }) {
               //Keepalive.ping();
               $rootScope.$broadcast('loggedIn');
               dispatch('loggedIn');
-              toastWhenUsernameUsed(signinFormik.values.userName, data);
             });
         } else {
           networkService.getUserById(authService.getUserId())
