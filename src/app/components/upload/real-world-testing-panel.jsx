@@ -6,31 +6,42 @@ import {
   Button,
   makeStyles,
   ThemeProvider,
+  Typography,
+  Divider,
+  Box,
 } from '@material-ui/core';
 import { theme } from 'themes';
+
+import DeleteIcon from '@material-ui/icons/Delete';
+import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import DoneIcon from '@material-ui/icons/Done';
+
 import { useSnackbar } from 'notistack';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
+buttonUploadContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+},
 deleteButton: {
-  backgroundColor: '#c44f65',
-  color: '#ffffff',
+  border: '1px solid #c44f65',
+  backgroundColor: '#FFFFFF',
+  color: '#c44f65',
   '&:hover': {
-    backgroundColor: '#853544',
+    border: '1px solid #853544',
+    color: '#853544',
   },
-},
-gridStyle: {
-  display: 'grid',
-  gridTemplateRows: '1fr 1fr',
-  gridTemplateColumns: '1fr 1fr 1fr 1fr',
-  gridRowGap: '8px',
-  gridColumnGap: '8px',
-},
-firstRow: {
-  gridColumn: '1 / -1',
 },
 fileName: {
   wordBreak: 'break-word',
+},
+uploadContentContainer: {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  alignItems: 'flex-start',
 },
 });
 
@@ -109,11 +120,13 @@ function ChplUploadRealWorldTestingPanel() {
     <Card>
       <CardHeader title="Upload Real World Testing"/>
       <CardContent>
-        <div className={classes.gridStyle}>
-        Something
+        <div className={classes.uploadContentContainer}>
+        <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
         <Button
               color="primary"
+              variant="outlined"
               component="label"
+              endIcon={<CloudUploadOutlinedIcon/>}
             >
               Choose file to upload
               <input
@@ -126,43 +139,47 @@ function ChplUploadRealWorldTestingPanel() {
             </div>
             { file
             && (
-              <div className={classes.fileName}>
+              <Box borderTop="1px solid #EEEEEE" marginTop="16px" display="flex" flexDirection="column" paddingTop="16px" gridGap="16px">
+              <Box display="flex" flexDirection="row" gridGap="16px">
+              <div>
                 <strong>Filename:</strong>
                 {' '}
                 { file.name }
               </div>
-            )}
+              { file
+              && (
+                <div>
+                  <strong>File size:</strong>
+                  {' '}
+                  { file.size }
+                </div>
+              )}
+              </Box>
           { file
             && (
-              <div>
-                <strong>File size:</strong>
-                {' '}
-                { file.size }
-              </div>
-            )}
-          { file
-            && (
-              <div>
+              <div className={classes.buttonUploadContainer}>
                 <Button
                   color="primary"
                   variant="contained"
                   onClick={uploadFile}
+                  endIcon={<DoneIcon />}
                 >
-                  <i className="fa fa-cloud-upload" />
-                  {' '}
                   Upload
                 </Button>
                 <Button
                   className={classes.deleteButton}
                   variant="contained"
                   onClick={clearFile}
-                >
-                  <i className="fa fa-trash-o" />
-                  {' '}
+                  endIcon={<DeleteIcon />}
+                  >
                   Remove
                 </Button>
               </div>
+              
             )}
+            </Box>
+            )}
+
       </CardContent>
     </Card>
     </ThemeProvider>
