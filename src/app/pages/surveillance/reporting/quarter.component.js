@@ -22,7 +22,7 @@ export const SurveillanceReportQuarterComponent = {
     }
 
     $onInit () {
-      this.displayEdit = this.hasAnyRole((['ROLE_ADMIN', 'ROLE_ACB']));
+      this.displayEdit = this.hasAnyRole((['chpl-admin', 'ROLE_ACB']));
     }
 
     $onChanges (changes) {
@@ -54,7 +54,7 @@ export const SurveillanceReportQuarterComponent = {
     }
 
     can (action) {
-      return action === 'delete' && this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB']);
+      return action === 'delete' && this.hasAnyRole(['chpl-admin', 'ROLE_ACB']);
     }
 
     cancel () {
