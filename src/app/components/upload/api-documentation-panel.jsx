@@ -142,7 +142,7 @@ function ChplUploadApiDocumentationPanel() {
   return (
     <ThemeProvider theme={theme}>
     <Card>
-      <CardHeader title="API Documentation"/>
+      <CardHeader title="Upload API Documentation"/>
       <CardContent>
         <div className={classes.uploadContentContainer}>
         <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
@@ -216,7 +216,6 @@ function ChplUploadApiDocumentationPanel() {
             )}
             </Box>
             )}
-
       </CardContent>
     </Card>
     </ThemeProvider>
