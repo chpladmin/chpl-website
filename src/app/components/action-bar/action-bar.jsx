@@ -118,7 +118,7 @@ function ChplActionBar(props) {
   }, [props.warnings]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {
-    setShowErrorAcknowledgement(props.showErrorAcknowledgement && hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']));
+    setShowErrorAcknowledgement(props.showErrorAcknowledgement && hasAnyRole(['chpl-admin', 'ROLE_ONC']));
   }, [props.showErrorAcknowledgement, hasAnyRole]); // eslint-disable-line react/destructuring-assignment
 
   useEffect(() => {

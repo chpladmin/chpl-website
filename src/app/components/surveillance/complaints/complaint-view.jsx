@@ -218,7 +218,7 @@ function ChplComplaintView(props) {
         >
           Back to Complaints
         </Button>
-        { hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])
+        { hasAnyRole(['chpl-admin', 'ROLE_ACB'])
           && (
             <Button
               color="primary"
