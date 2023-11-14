@@ -30,6 +30,8 @@ import ChplSurveillanceActivityReportingDateSelector from './surveillance/manage
 import {
   ChplUploadPromotingInteroperability,
   ChplUploadWrapper,
+  ChplUploadRealWorldTestingPanel,
+  ChplUploadRealWorldTestingWrapper,
 } from './upload';
 import ChplUsersWrapper from './user/users-wrapper';
 import {
@@ -83,5 +85,7 @@ angular
   .component('chplSurveillanceViewBridge', reactToAngularComponent(ChplSurveillanceView))
   .component('chplUploadPromotingInteroperabilityBridge', reactToAngularComponent(ChplUploadPromotingInteroperability))
   .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
+  .component('chplUploadRealWorldTestingWrapperBridge', reactToAngularComponent(ChplUploadRealWorldTestingWrapper))
+  .component('chplUploadRealWorldTestingPanelBridge', reactToAngularComponent(ChplUploadRealWorldTestingPanel))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));
