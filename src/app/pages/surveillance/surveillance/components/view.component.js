@@ -29,9 +29,9 @@ const SurveillanceManagementViewComponent = {
 
     canEdit() {
       if (this.listing.edition !== null && this.listing.edition.name === '2014') {
-        return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+        return this.hasAnyRole(['chpl-admin', 'ROLE_ONC']);
       }
-      return this.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']);
+      return this.hasAnyRole(['chpl-admin', 'ROLE_ONC', 'ROLE_ACB']);
     }
   },
 };

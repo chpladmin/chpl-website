@@ -301,7 +301,7 @@ function ChplResourcesApi() {
             <div
               className={classes.fullWidth}
             >
-              { hasAnyRole(['ROLE_ADMIN'])
+              { hasAnyRole(['chpl-api'])
                 ? (
                   <SwaggerUI
                     url={url}

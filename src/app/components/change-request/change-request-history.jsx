@@ -41,7 +41,7 @@ function ChplChangeRequestHistory(props) {
         ...item,
       };
       switch (item.userPermission.authority) {
-        case 'ROLE_ADMIN':
+        case 'chpl-admin':
         case 'ROLE_ONC':
           updated.actingOrganization = 'ONC';
           break;
