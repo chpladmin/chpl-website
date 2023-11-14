@@ -134,7 +134,6 @@
     }
 
     function logout() {
-      console.log('Logging out!')
       delete $localStorage.jwtToken;
       delete $localStorage.currentUser;
       $rootScope.$broadcast('loggedOut');
