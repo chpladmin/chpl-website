@@ -171,7 +171,7 @@ const CertificationCriteriaEditComponent = {
           this.cert.standards = this.cert.standards
             .filter((crs) => {
               if (action.item.item.id === 'newItem') {
-                return crs.citation !== action.item.item.citation;
+                return crs.value !== action.item.item.value;
               }
               return crs.standardId !== action.item.item.id;
             });
@@ -310,9 +310,9 @@ const CertificationCriteriaEditComponent = {
         return [];
       }
       return this.cert.standards
-        .filter((os) => os.standardId
-          && that.resources.standards.filter((aos) => aos.id === os.standardId).length > 0)
-        .map((os) => ({ key: os.standardId }));
+        .filter((s) => s.standardId
+          && that.resources.standards.filter((as) => as.id === s.standardId).length > 0)
+        .map((s) => ({ key: s.standardId }));
     }
 
     getSelectedOptionalStandardKeys() {
@@ -334,7 +334,7 @@ const CertificationCriteriaEditComponent = {
       return this.cert.standards
         .filter((s) => !s.standardId
           || that.resources.standards.filter((as) => as.id === s.standardId).length === 0)
-        .map((s) => s.citation);
+        .map((s) => s.value);
     }
 
     getNewOptionalStandards() {

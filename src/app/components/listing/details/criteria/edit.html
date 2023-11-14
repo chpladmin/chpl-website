@@ -57,9 +57,11 @@
           </td>
           <td ng-if="(!$ctrl.cert.svaps || $ctrl.cert.svaps.length === 0) && !$ctrl.canEdit()">None</td>
         </tr>
-        <tr ng-if="$ctrl.cert.success && (($ctrl.cert.standards && $ctrl.cert.standards.length > 0) || ($ctrl.cert.allowedStandards && $ctrl.cert.allowedStandards.length > 0))">
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.standard">
           <td>
             <span>Standard</span>
+            <pre>{{ $ctrl.cert.standards | json }}</pre>
+            <pre>{{ $ctrl.cert.allowedStandards | json }}</pre>
           </td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -68,12 +70,12 @@
                   <chpl-expandable-list
                     identifier="standard"
                     item-key="id"
-                    item-text="citation"
+                    item-text="dropdownText"
                     items="$ctrl.cert.allowedStandards"
                     new-items="$ctrl.newStandards"
                     selected-item-keys="$ctrl.selectedStandardKeys"
                     placeholder="Select a Standard"
-                    on-change="$ctrl.StandardsOnChange(action)">
+                    on-change="$ctrl.standardsOnChange(action)">
                   </chpl-expandable-list>
                 </div>
               </div>

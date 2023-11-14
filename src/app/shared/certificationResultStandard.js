@@ -3,8 +3,8 @@
     .factory('CertificationResultStandard', () => {
       const CertificationResultStandard = (standard) => ({
         standardId: standard.id,
-        citation: standard.citation,
-        description: standard.description,
+        citation: standard.value,
+        description: standard.regulatoryTextCitation,
       });
 
       // Return a reference to the function
