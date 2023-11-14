@@ -32,6 +32,8 @@ import {
   ChplUploadWrapper,
   ChplUploadRealWorldTestingPanel,
   ChplUploadRealWorldTestingWrapper,
+  ChplUploadApiDocumentationPanel,
+  ChplUploadApiDocumentationWrapper,
 } from './upload';
 import ChplUsersWrapper from './user/users-wrapper';
 import {
@@ -87,5 +89,7 @@ angular
   .component('chplUploadWrapperBridge', reactToAngularComponent(ChplUploadWrapper))
   .component('chplUploadRealWorldTestingWrapperBridge', reactToAngularComponent(ChplUploadRealWorldTestingWrapper))
   .component('chplUploadRealWorldTestingPanelBridge', reactToAngularComponent(ChplUploadRealWorldTestingPanel))
+  .component('chplUploadApiDocumentationWrapperBridge', reactToAngularComponent(ChplUploadApiDocumentationWrapper))
+  .component('chplUploadApiDocumentationPanelBridge', reactToAngularComponent(ChplUploadApiDocumentationPanel))
   .component('chplUsersBridge', reactToAngularComponent(ChplUsersWrapper))
   .component('indexWrapperBridge', reactToAngularComponent(IndexWrapper));
