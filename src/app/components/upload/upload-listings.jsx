@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -7,30 +8,37 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import DoneIcon from '@material-ui/icons/Done';
+
+import { useSnackbar } from 'notistack';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
+  buttonUploadContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+},
   deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
+    border: '1px solid #c44f65',
+    backgroundColor: '#FFFFFF',
+    color: '#c44f65',
     '&:hover': {
-      backgroundColor: '#853544',
+      border: '1px solid #853544',
+      color: '#853544',
     },
-  },
-  gridStyle: {
-    display: 'grid',
-    gridTemplateRows: '1fr 1fr',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-    gridRowGap: '8px',
-    gridColumnGap: '8px',
-  },
-  firstRow: {
-    gridColumn: '1 / -1',
   },
   fileName: {
     wordBreak: 'break-word',
+  },
+  uploadContentContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    alignItems: 'flex-start',
   },
 });
 
@@ -107,15 +115,16 @@ function ChplUploadListings() {
     <Card>
       <CardHeader title="Upload Certified Products" />
       <CardContent>
-        <div className={classes.gridStyle}>
-          <Typography variant="body1" className={classes.firstRow}>
-            CSV files only
+        <div className={classes.uploadContentContainer}>
+          <Typography variant="body1">
+            <strong> CSV files only</strong>
           </Typography>
           <div>
             <Button
               color="primary"
-              variant={file ? 'outlined' : 'contained'}
+              variant='outlined'
               component="label"
+              endIcon={<CloudUploadOutlinedIcon/>}
             >
               Choose file to upload
               <input
@@ -128,12 +137,13 @@ function ChplUploadListings() {
           </div>
           { file
             && (
+              <Box width="100%" borderTop="1px solid #EEEEEE" marginTop="16px" display="flex" flexDirection="column" paddingTop="16px" gridGap="16px">
+              <Box display="flex" flexDirection="row" gridGap="16px">
               <div className={classes.fileName}>
                 <strong>Filename:</strong>
                 {' '}
                 { file.name }
               </div>
-            )}
           { file
             && (
               <div>
@@ -142,28 +152,29 @@ function ChplUploadListings() {
                 { file.size }
               </div>
             )}
+            </Box>
           { file
             && (
-              <div>
+              <div className={classes.buttonUploadContainer}>
                 <Button
                   color="primary"
                   variant="contained"
                   onClick={uploadFile}
+                  endIcon={<DoneIcon />}
                 >
-                  <i className="fa fa-cloud-upload" />
-                  {' '}
                   Upload
                 </Button>
                 <Button
                   className={classes.deleteButton}
                   variant="contained"
                   onClick={clearFile}
+                  endIcon={<DeleteIcon />}
                 >
-                  <i className="fa fa-trash-o" />
-                  {' '}
                   Remove
                 </Button>
               </div>
+            )}
+            </Box>
             )}
         </div>
       </CardContent>
