@@ -137,7 +137,7 @@ function ChplListingView({ isConfirming, listing: initialListing }) {
   }, [initialListing]);
 
   const canManageSurveillance = () => {
-    if (hasAnyRole(['ROLE_ADMIN'])) { return true; }
+    if (hasAnyRole(['chpl-admin'])) { return true; }
     if (listing.edition !== null && listing.edition.name !== '2015') { return false; }
     if (hasAnyRole(['ROLE_ACB']) && user.organizations.some((o) => o.id === listing.certifyingBody.id)) { return true; }
     return false;

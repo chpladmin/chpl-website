@@ -117,7 +117,7 @@ function ChplResourcesDownload() {
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
-      if (option === 'Surveillance (Basic)' && !hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+      if (option === 'Surveillance (Basic)' && !hasAnyRole(['chpl-admin', 'ROLE_ONC'])) {
         return false;
       }
       return true;
@@ -260,7 +260,7 @@ function ChplResourcesDownload() {
                     {' '}
                     Entire collection of surveillance activity reported to the CHPL.
                   </li>
-                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                  { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
                 && (
                   <li>
                     <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>
