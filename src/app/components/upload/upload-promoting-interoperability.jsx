@@ -7,40 +7,48 @@ import {
   ThemeProvider,
   Typography,
   makeStyles,
+  Box,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+import DeleteIcon from '@material-ui/icons/Delete';
+import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import DoneIcon from '@material-ui/icons/Done';
 
 import { ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
 
 const useStyles = makeStyles({
-  deleteButton: {
-    backgroundColor: '#c44f65',
-    color: '#ffffff',
-    '&:hover': {
-      backgroundColor: '#853544',
-    },
+buttonUploadContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+},
+deleteButton: {
+  border: '1px solid #c44f65',
+  backgroundColor: '#FFFFFF',
+  color: '#c44f65',
+  '&:hover': {
+    border: '1px solid #853544',
+    color: '#853544',
   },
-  gridStyle: {
-    display: 'grid',
-    gridTemplateRows: '1fr 1fr',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-    gridRowGap: '8px',
-    gridColumnGap: '8px',
-  },
-  fullRow: {
-    gridColumn: '1 / -1',
-  },
-  fileName: {
-    wordBreak: 'break-word',
-  },
+},
+fileName: {
+  wordBreak: 'break-word',
+},
+uploadContentContainer: {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  alignItems: 'flex-start',
+},
 });
 
 const validationSchema = yup.object({
   accurateAsOf: yup.date()
-    .required('Accurate as of date is required'),
+    .required('Enter the most accurate date for Promoting Interoperability Users associated with this upload, field required.'),
 });
 
 function ChplUploadPromotingInteroperability() {
@@ -120,17 +128,30 @@ function ChplUploadPromotingInteroperability() {
   return (
     <ThemeProvider theme={theme}>
       <Card>
-        <CardHeader title="Upload Promoting Interoperability Users" subtitle="CSV files only" />
+        <CardHeader title="Upload Promoting Interoperability Users"/>
         <CardContent>
-          <div className={classes.gridStyle}>
-            <Typography variant="body1" className={classes.fullRow}>
-              CSV files only
+          <div className={classes.uploadContentContainer}>
+            <Typography gutterBottom variant="body1">
+              <strong>CSV files only</strong>
             </Typography>
+            <ChplTextField
+                type="date"
+                id="promoting-interoperability-accurate-as-of"
+                name="accurateAsOf"
+                label="Date for Promoting Interoperability Users with this upload"
+                required
+                value={formik.values.accurateAsOf}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
+                helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
+              />
             <div>
               <Button
                 color="primary"
-                variant={file ? 'outlined' : 'contained'}
+                variant="outlined"
                 component="label"
+                endIcon={<CloudUploadOutlinedIcon/>}
               >
                 Choose file to upload
                 <input
@@ -143,12 +164,13 @@ function ChplUploadPromotingInteroperability() {
             </div>
             { file
               && (
+              <Box width="100%" borderTop="1px solid #EEEEEE" marginTop="16px" display="flex" flexDirection="column" paddingTop="16px" gridGap="16px">
+              <Box display="flex" flexDirection="row" gridGap="16px">
                 <div className={classes.fileName}>
                   <strong>Filename:</strong>
                   {' '}
                   { file.name }
                 </div>
-              )}
             { file
               && (
               <div>
@@ -157,44 +179,31 @@ function ChplUploadPromotingInteroperability() {
                 { file.size }
               </div>
               )}
+              </Box>
             { file
               && (
-              <div>
+              <div className={classes.buttonUploadContainer}>
                 <Button
                   color="primary"
                   variant="contained"
                   onClick={formik.handleSubmit}
+                  endIcon={<DoneIcon />}
                 >
-                  <i className="fa fa-cloud-upload" />
-                  {' '}
                   Upload
                 </Button>
                 <Button
                   className={classes.deleteButton}
                   variant="contained"
                   onClick={clearFile}
+                  endIcon={<DeleteIcon/>}
                 >
-                  <i className="fa fa-trash-o" />
-                  {' '}
                   Remove
                 </Button>
               </div>
               )}
-            <div className={classes.fullRow}>
-              <ChplTextField
-                type="date"
-                id="promoting-interoperability-accurate-as-of"
-                name="accurateAsOf"
-                label="Enter the Accurate As of date for Promoting Interoperability Users associated with this upload"
-                required
-                value={formik.values.accurateAsOf}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.accurateAsOf && !!formik.errors.accurateAsOf}
-                helperText={formik.touched.accurateAsOf && formik.errors.accurateAsOf}
-              />
-            </div>
-          </div>
+            </Box>
+          )}
+         </div>     
         </CardContent>
       </Card>
     </ThemeProvider>
