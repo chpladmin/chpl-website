@@ -93,6 +93,18 @@ function ChplCqmEdit(props) {
     });
   };
 
+  const toggleSuccess = () => {
+    setListing({
+      ...listing,
+      cqmResults: listing.cqmResults
+        .filter((c) => c.nqfNumber !== cqm.nqfNumber)
+        .concat({
+          ...cqm,
+          success: !cqm.success,
+        }),
+    });
+  };
+
   if (!listing) {
     return (
       <CircularProgress />
@@ -104,7 +116,12 @@ function ChplCqmEdit(props) {
       <TableCell>
         { !cqm.cmsId
           && (
-            <>checkbox</>
+            <Switch
+              id={`${cqm.nqfNumber}-success`}
+              color="primary"
+              checked={cqm.success}
+              onChange={() => toggleSuccess()}
+            />
           )}
         { cqm.cmsId
           && (

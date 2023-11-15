@@ -90,7 +90,7 @@ function ChplCqmsEdit(props) {
                 .sort(sortCqms)
                 .map((cqm) => (
                   <ChplCqmEdit
-                    key={cqm.cmsId}
+                    key={cqm.cmsId ?? cqm.nqfNumber}
                     cqm={cqm}
                   />
                 ))}
