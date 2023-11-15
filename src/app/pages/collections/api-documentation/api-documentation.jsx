@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ChplApiDocumentationCollectionView from './api-documentation-view';
 
 import { useFetchAcbs } from 'api/acbs';
-import { useFetchCriteria } from 'api/data';
+import { useFetchCriteria } from 'api/standards';
 import { FilterProvider } from 'components/filter';
 import {
   certificationBodies,
@@ -59,8 +59,8 @@ function ChplApiDocumentationCollectionPage() {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
       return;
     }
-    const values = ccQuery.data.criteria
-      .filter((cc) => cc.certificationEditionId === 3)
+    const values = ccQuery.data
+      .filter((cc) => cc.certificationEditionId === 3 || cc.certificationEditionId === null)
       .map((cc) => ({
         ...cc,
         value: cc.id,

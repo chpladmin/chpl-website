@@ -3,7 +3,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import ChplSearchView from './search-view';
 
 import { useFetchAcbs } from 'api/acbs';
-import { useFetchCqms, useFetchCriteria } from 'api/data';
+import { useFetchCqms } from 'api/data';
+import { useFetchCriteria } from 'api/standards';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
@@ -95,7 +96,7 @@ function ChplSearchPage() {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
       return;
     }
-    const values = ccQuery.data.criteria
+    const values = ccQuery.data
       .map((cc) => ({
         ...cc,
         value: cc.id,

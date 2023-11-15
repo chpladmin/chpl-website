@@ -37,73 +37,16 @@ const checkCriterionIsMet = (key, criteriaMet) => {
   return [(criteriaMet.findIndex((criterion) => criterion.number === keys[0]) > -1)];
 };
 
-const getPdfCriteria = (year) => {
+const getPdfCriteria = (editionlessIsOn) => {
   /* eslint-disable object-curly-spacing */
-  if (year === '2014/2015') {
-    return [
-      {key: null, description: '(A) Certification to the following certification criteria-'},
-      {key: null, description: '(1) CPOE at-'},
-      {key: '|,170.314 (a)(1),170.314 (a)(18),170.314 (a)(19),170.314 (a)(20)', description: '(i) #170.314(a)(1), #170.314(18), #170.314(19) or #170.314(20); or'},
-      {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '(ii) #170.315(a)(1), #170.315(2) or #170.315(3)'},
-      {key: null, description: '(2) Record demographics at-'},
-      {key: '170.314 (a)(3)', description: '(i) #170.314(a)(3); or'},
-      {key: '170.315 (a)(5)', description: '(ii) #170.315(a)(5)'},
-      {key: null, description: '(3) Problem list at-'},
-      {key: '170.314 (a)(5)', description: '(i) #170.314(a)(5); or'},
-      {key: '170.315 (a)(6)', description: '(ii) #170.315(a)(6)'},
-      {key: null, description: '(4) Medication list at-'},
-      {key: '170.314 (a)(6)', description: '(i) #170.314(a)(6); or'},
-      {key: '170.315 (a)(7)', description: '(ii) #170.315(a)(7)'},
-      {key: null, description: '(5) Medication allergy list at-'},
-      {key: '170.314 (a)(7)', description: '(i) #170.314(a)(7); or'},
-      {key: '170.315 (a)(8)', description: '(ii) #170.315(a)(8)'},
-      {key: null, description: '(6) Clinical decision support at-'},
-      {key: '170.314 (a)(8)', description: '(i) #170.314(a)(8); or'},
-      {key: '170.315 (a)(9)', description: '(ii) #170.315(a)(9)'},
-      {key: null, description: '(7) Health information exchange at transitions of care at one of the following-'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2)', description: '#(i) 170.314(b)(1) and 170.314(2)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (h)(1)', description: '#(ii) 170.314(b)(1), 170.314(b)(2), and 170.314(h)(1)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8)', description: '#(iii) 170.314(b)(1), 170.314(b)(2), and 170.314(b)(8)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1)', description: '#(iv) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), and 170.314(h)(1)'},
-      {key: '&,170.314 (b)(8),170.314 (h)(1)', description: '#(v) 170.314(b)(8) and 170.314(h)(1)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.315 (h)(2)', description: '#(vi) 170.314(b)(1), 170.314(b)(2), and 170.315(h)(2)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (h)(1),170.315 (h)(2)', description: '#(vii) 170.314(b)(1), 170.314(b)(2), 170.314(h)(1), and 170.315(h)(2)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.315 (h)(2)', description: '#(viii) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), and 170.315(h)(2)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.314 (h)(2)', description: '#(ix) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), and 170.315(h)(2)'},
-      {key: '&,170.314 (b)(8),170.314 (h)(1),170.315 (h)(2)', description: '#(x) 170.314(b)(8), 170.314(h)(1), and 170.315(h)(2)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.315 (b)(1)', description: '#(xi) 170.314(b)(1), 170.314(b)(2), and 170.315(b)(1)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (h)(1),170.315 (b)(1)', description: '#(xii) 170.314(b)(1), 170.314(b)(2), 170.314(h)(1), and 170.315(b)(1)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.315 (b)(1)', description: '#(xiii) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), and 170.315(b)(1)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.315 (b)(1)', description: '#(xiv) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), and 170.315(b)(1)'},
-      {key: '&,170.314 (b)(8),170.314 (h)(1),170.315 (b)(1)', description: '#(xv) 170.314(b)(8), 170.314(h)(1), and 170.315(b)(1)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.315 (b)(1),170.315 (h)(1)', description: '#(xvi) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), 170.315(b)(1), and 170.315(h)(1)'},
-      {key: '&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.315 (b)(1),170.315 (h)(2)', description: '#(xvii) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), 170.315(b)(1), and 170.315(h)(2)'},
-      {key: '&,170.314 (h)(1),170.315 (b)(1)', description: '#(xviii) 170.314(h)(1) and 170.315(b)(1)'},
-      {key: '&,170.315 (b)(1),170.315 (h)(1)', description: '#(xix) 170.315(b)(1) and 170.315(h)(1)'},
-      {key: '&,170.315 (b)(1),170.315 (h)(2)', description: '#(xx) 170.315(b)(1) and 170.315(h)(2)'},
-      {key: '&,170.315 (b)(1),170.315 (h)(1),170.315 (h)(2)', description: '#(xxi) 170.315(b)(1), 170.314(h)(1), and 170.314(h)(2)'},
-      {key: null, description: '(B) Clinical quality measures at-'},
-      {key: '|,170.314 (c)(1),170.315 (c)(1)', description: '(1) #170.314(c)(1) or #170.315(c)(1); and'},
-      {key: '|,170.314 (c)(2),170.315 (c)(2)', description: '(2) #170.314(c)(2) or #170.315(c)(2); and'},
-      {key: '|,170.314 (c)(3),170.315 (c)(3)', description: '(3) #170.314(c)(3) or #170.315(c)(3)'},
-      {key: null, description: '(C) Privacy and security at-'},
-      {key: '|,170.314 (d)(1),170.315 (d)(1)', description: '(1) #170.314(d)(1) or #170.315(d)(1); and'},
-      {key: '|,170.314 (d)(2),170.315 (d)(2)', description: '(2) #170.314(d)(2) or #170.315(d)(2); and'},
-      {key: '|,170.314 (d)(3),170.315 (d)(3)', description: '(3) #170.314(d)(3) or #170.315(d)(3); and'},
-      {key: '|,170.314 (d)(4),170.315 (d)(4)', description: '(4) #170.314(d)(4) or #170.315(d)(4); and'},
-      {key: '|,170.314 (d)(5),170.315 (d)(5)', description: '(5) #170.314(d)(5) or #170.315(d)(5); and'},
-      {key: '|,170.314 (d)(6),170.315 (d)(6)', description: '(6) #170.314(d)(6) or #170.315(d)(6); and'},
-      {key: '|,170.314 (d)(7),170.315 (d)(7)', description: '(7) #170.314(d)(7) or #170.315(d)(7); and'},
-      {key: '|,170.314 (d)(8),170.315 (d)(8)', description: '(8) #170.314(d)(8) or #170.315(d)(8)'},
-    ];
-  } if (year === '2015') {
+  if (editionlessIsOn) {
     return [
       {key: null, description: 'Demographics'},
       {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
       {key: null, description: 'Implantable Device List'},
       {key: '170.315 (a)(14)', description: '#170.315(a)(14)'},
-      {key: null, description: 'Clinical Decision Support'},
-      {key: '170.315 (a)(9)', description: '#170.315(a)(9)'},
+      {key: null, description: 'Clinical Decision Support or Decision Support Interventions'},
+      {key: '|,170.315 (a)(9),170.315 (b)(11)', description: '#170.315(a)(9) or #170.315 (b)(11)'},
       {key: null, description: 'Computerized Provider Order Entry'},
       {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
       {key: null, description: 'Clinical Quality Measures-Record and Export'},
@@ -119,43 +62,30 @@ const getPdfCriteria = (year) => {
       {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
       {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
     ];
-  } if (year === '2014') {
-    return [
-      {key: null, description: 'CPOE at-'},
-      {key: '170.314 (a)(1)', description: '#170.314(a)(1)'},
-      {key: null, description: 'Record demographics at-'},
-      {key: '170.314 (a)(3)', description: '#170.314(a)(3)'},
-      {key: null, description: 'Problem list at-'},
-      {key: '170.314 (a)(5)', description: '#170.314(a)(5)'},
-      {key: null, description: 'Medication list at-'},
-      {key: '170.314 (a)(6)', description: '#170.314(a)(6)'},
-      {key: null, description: 'Medication allergy list at-'},
-      {key: '170.314 (a)(7)', description: '#170.314(a)(7)'},
-      {key: null, description: 'Clinical decision support at-'},
-      {key: '170.314 (a)(8)', description: '#170.314(a)(8)'},
-      {key: null, description: 'Transitions of Care - receive, display, and incorporate transition of care/referral summaries-'},
-      {key: '170.314 (b)(1)', description: '#170.314(b)(1)'},
-      {key: null, description: 'Transitions of Care - create and transmit transition of care/referral summaries-'},
-      {key: '170.314 (b)(2)', description: '#170.314(b)(2)'},
-      {key: null, description: 'Data Portability at-'},
-      {key: '170.314 (b)(7)', description: '#170.314(b)(7)'},
-      {key: null, description: 'Clinical quality measures at-'},
-      {key: '170.314 (c)(1)', description: '#170.314(c)(1)'},
-      {key: '170.314 (c)(2)', description: '#170.314(c)(2)'},
-      {key: '170.314 (c)(3)', description: '#170.314(c)(3)'},
-      {key: null, description: 'Privacy and security at-'},
-      {key: '170.314 (d)(1)', description: '#170.314(d)(1)'},
-      {key: '170.314 (d)(2)', description: '#170.314(d)(2)'},
-      {key: '170.314 (d)(3)', description: '#170.314(d)(3)'},
-      {key: '170.314 (d)(4)', description: '#170.314(d)(4)'},
-      {key: '170.314 (d)(5)', description: '#170.314(d)(5)'},
-      {key: '170.314 (d)(6)', description: '#170.314(d)(6)'},
-      {key: '170.314 (d)(7)', description: '#170.314(d)(7)'},
-      {key: '170.314 (d)(8)', description: '#170.314(d)(8)'},
-    ];
   }
+  return [
+    {key: null, description: 'Demographics'},
+    {key: '170.315 (a)(5)', description: '#170.315(a)(5)'},
+    {key: null, description: 'Implantable Device List'},
+    {key: '170.315 (a)(14)', description: '#170.315(a)(14)'},
+    {key: null, description: 'Clinical Decision Support'},
+    {key: '170.315 (a)(9)', description: '#170.315(a)(9)'},
+    {key: null, description: 'Computerized Provider Order Entry'},
+    {key: '|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)', description: '#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)'},
+    {key: null, description: 'Clinical Quality Measures-Record and Export'},
+    {key: '170.315 (c)(1)', description: '#170.315(c)(1)'},
+    {key: null, description: 'Transitions of Care'},
+    {key: '170.315 (b)(1)', description: '#170.315(b)(1) (Cures Update)'},
+    {key: null, description: 'Application Access-Patient Selection'},
+    {key: '170.315 (g)(7)', description: '#170.315(g)(7)'},
+    {key: null, description: 'Application Access-Data Category Request'},
+    {key: '170.315 (g)(10)', description: '#170.315(g)(10) (Cures Update)'},
+    {key: null, description: 'Application Access-All Data Request'},
+    {key: '170.315 (g)(9)', description: '#170.315(g)(9) (Cures Update)'},
+    {key: null, description: 'Direct Project or Direct Project, Edge Protocol, and XDR/XDM'},
+    {key: '|,170.315 (h)(1),170.315 (h)(2)', description: '#170.315(h)(1) or #170.315(h)(2)'},
+  ];
   /* eslint-enable object-curly-spacing */
-  return null;
 };
 
 const createPdf = (data, editionlessIsOn) => {
@@ -205,8 +135,8 @@ const createPdf = (data, editionlessIsOn) => {
   ];
   const checkImages = [];
   const criteria = {
-    head: [[`${data.year} CMS EHR Base Criteria Met`]],
-    body: getPdfCriteria(data.year, editionlessIsOn),
+    head: [['2015 CMS EHR Base Criteria Met']],
+    body: getPdfCriteria(editionlessIsOn),
   };
 
   // Start the PDF document

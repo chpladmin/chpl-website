@@ -46,6 +46,7 @@ const getDisplay = (key) => {
     case 'gap': return 'Gap';
     case 'optionalStandard': return 'Optional Standard';
     case 'privacySecurityFramework': return 'Privacy & Security Framework';
+    case 'riskManagementSummaryInformation': return 'Risk Management Summary Information';
     case 'sed': return 'SED';
     case 'serviceBaseUrlList': return 'Service Base URL List';
     case 'standardsTested': return 'Standards Tested';
@@ -124,7 +125,7 @@ function ChplCertificationCriteriaView({ certificationCriteria: initialCertifica
                     { getDisplayDateFormat(item.endDay) }
                   </TableCell>
                   <TableCell>
-                    { item.rule.name }
+                    { item.rule?.name }
                   </TableCell>
                   <TableCell>
                     { item.displayAttributes.length > 0 ? item.displayAttributes : 'N/A' }
