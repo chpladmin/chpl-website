@@ -14,6 +14,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { bool } from 'prop-types';
 
 import ChplCqmEdit from './cqm-edit';
 
@@ -36,9 +37,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCqmsEdit() {
+function ChplCqmsEdit(props) {
   const { listing, setListing } = useContext(ListingContext);
+  const [viewAll, setViewAll] = useState(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    setViewAll(props.viewAll);
+  }, [props.viewAll]); // eslint-disable-line react/destructuring-assignment
 
   const handleBasicChange = (event) => {
     setListing((prev) => ({
@@ -80,7 +86,7 @@ function ChplCqmsEdit() {
             </TableHead>
             <TableBody>
               { listing.cqmResults
-                .filter((cqm) => cqm.success) // add "view all" later
+                .filter((cqm) => viewAll || cqm.success)
                 .sort(sortCqms)
                 .map((cqm) => (
                   <ChplCqmEdit
@@ -99,4 +105,5 @@ function ChplCqmsEdit() {
 export default ChplCqmsEdit;
 
 ChplCqmsEdit.propTypes = {
+  viewAll: bool.isRequired,
 };

@@ -3,8 +3,10 @@ import {
   Box,
   Card,
   CardContent,
+  FormControlLabel,
   List,
   ListItem,
+  Switch,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -124,6 +126,7 @@ function ChplListingEdit() {
     dataErrors: new Set(),
     warnings: new Set(),
   });
+  const [seeAllCqms, setSeeAllCqms] = useState(false);
   const putListing = usePutListing();
   const classes = useStyles();
   let formik;
@@ -308,9 +311,29 @@ function ChplListingEdit() {
           </span>
           <Box className={classes.sectionHeader}>
             <Typography className={classes.sectionHeaderText} variant="h2">Clinical Quality Measures</Typography>
+            <div>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    id="see-all-cqms"
+                    name="seeAllCqms"
+                    color="primary"
+                    checked={seeAllCqms}
+                    onChange={() => setSeeAllCqms(!seeAllCqms)}
+                  />
+                )}
+                label="See all CQMs"
+              />
+              (
+              {listing.cqmResults.filter((cqm) => cqm.success).length}
+              {' '}
+              found)
+            </div>
           </Box>
           <CardContent>
-            <ChplCqmsEdit />
+            <ChplCqmsEdit
+              viewAll={seeAllCqms}
+            />
           </CardContent>
         </Card>
         <Card>
