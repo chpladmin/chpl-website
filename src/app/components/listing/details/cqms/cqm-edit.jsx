@@ -1,25 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
-  Box,
-  Button,
-  Card,
   Chip,
   CircularProgress,
-  IconButton,
   MenuItem,
   Switch,
-  Table,
-  TableBody,
   TableCell,
-  TableHead,
   TableRow,
-  Typography,
   makeStyles,
 } from '@material-ui/core';
 
 import { ChplTextField } from 'components/util';
 import { cqm as cqmPropType } from 'shared/prop-types';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -43,14 +35,6 @@ function ChplCqmEdit(props) {
   const { listing, setListing } = useContext(ListingContext);
   const [selectedVersion, setSelectedVersion] = useState('');
   const classes = useStyles();
-
-  const handleBasicChange = (event) => {
-    setListing((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-    formik.setFieldValue(event.target.name, event.target.value);
-  };
 
   const add = (v) => {
     setListing({
@@ -88,7 +72,7 @@ function ChplCqmEdit(props) {
           ...cqm,
           criteria: cqm.criteria.some((cc) => cc.certificationNumber === `170.315 (c)(${v})`)
             ? cqm.criteria.filter((cc) => cc.certificationNumber !== `170.315 (c)(${v})`)
-            : [...cqm.criteria].concat({ certificationNumber: `170.315 (c)(${v})`}),
+            : [...cqm.criteria].concat({ certificationNumber: `170.315 (c)(${v})` }),
         }),
     });
   };
@@ -109,7 +93,7 @@ function ChplCqmEdit(props) {
     return (
       <CircularProgress />
     );
-  };
+  }
 
   return (
     <TableRow>
@@ -166,13 +150,18 @@ function ChplCqmEdit(props) {
       <TableCell>
         { !cqm.cmsId
           && (
-            <>NQF-{ cqm.nqfNumber }</>
+            <>
+              NQF-
+              { cqm.nqfNumber }
+            </>
           )}
         { cqm.cmsId
           && (
             <>{ cqm.cmsId }</>
           )}
-        : { cqm.title }
+        :
+        {' '}
+        { cqm.title }
       </TableCell>
       { (listing.edition === null || listing.edition.name === '2015') && [1, 2, 3, 4].map((v) => (
         <TableCell key={`${cqm.cmsId}-${v}`}>

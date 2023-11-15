@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CircularProgress,
-  IconButton,
-  MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -18,9 +15,8 @@ import { bool } from 'prop-types';
 
 import ChplCqmEdit from './cqm-edit';
 
-import { ChplTextField } from 'components/util';
 import { sortCqms } from 'services/cqms.service';
-import { ListingContext, UserContext } from 'shared/contexts';
+import { ListingContext } from 'shared/contexts';
 import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -37,22 +33,14 @@ const useStyles = makeStyles({
   },
 });
 
-function ChplCqmsEdit(props) {
-  const { listing, setListing } = useContext(ListingContext);
+function ChplCqmsEdit({ viewAll: initialViewAll }) {
+  const { listing } = useContext(ListingContext);
   const [viewAll, setViewAll] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
-    setViewAll(props.viewAll);
-  }, [props.viewAll]); // eslint-disable-line react/destructuring-assignment
-
-  const handleBasicChange = (event) => {
-    setListing((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-    formik.setFieldValue(event.target.name, event.target.value);
-  };
+    setViewAll(initialViewAll);
+  }, [initialViewAll]);
 
   if (!listing) {
     return (
