@@ -346,6 +346,15 @@
             <div class="text-danger" ng-if="$ctrl.editForm.data_serviceBaseUrlList.$error.url">Field is an invalid format (http://www.example.com)</div>
           </td>
         </tr>
+        <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.riskManagementSummaryInformation">
+          <td><label class="control-label" for="data_risk_management_summary_information{{ $ctrl.cert.criterion.number }}">Risk Management Summary Information</label></td>
+          <td>
+            <input class="form-control input-sm" type="url" id="data_risk_management_summary_information{{ $ctrl.cert.criterion.number }}" name="data_riskManagementSummaryInformation" ng-model="$ctrl.cert.riskManagementSummaryInformation" ng-maxlength="1024" required></input>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_riskManagementSummaryInformation.$error.required">Field is required</div>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_riskManagementSummaryInformation.$error.maxlength">Field is too long</div>
+            <div class="text-danger" ng-if="$ctrl.editForm.data_riskManagementSummaryInformation.$error.url">Field is an invalid format (http://www.example.com)</div>
+          </td>
+        </tr>
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.privacySecurityFramework">
           <td><label class="control-label" for="data_psFramework{{ $ctrl.cert.criterion.number }}">Privacy &amp; Security Framework</label></td>
           <td><select class="form-control input-sm" id="data_psFramework{{ $ctrl.cert.criterion.number }}" name="data_psFramework" ng_model="$ctrl.cert.privacySecurityFramework" ng-disabled="!$ctrl.canEdit()">

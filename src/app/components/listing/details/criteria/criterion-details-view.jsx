@@ -607,6 +607,26 @@ function ChplCriterionDetailsView(props) {
                   </TableCell>
                 </TableRow>
               )}
+            { criterion.success && criterion.riskManagementSummaryInformation
+              && (
+                <TableRow key="riskManagementSummaryInformation">
+                  <TableCell component="th" scope="row">
+                    <ChplTooltip title="The publicly accessible hyperlink to the Risk Management practices for a Health IT Module certified to &sect;170.315(b)(11), outlines the developers&apos; strategies to ensure that predictive Decision Support Interventions are fair, accurate, reliable, and maintain user safety and data privacy.">
+                      <IconButton className={classes.infoIcon}>
+                        <InfoIcon
+                          className={classes.infoIconColor}
+                        />
+                      </IconButton>
+                    </ChplTooltip>
+                    Risk Management Summary Information
+                  </TableCell>
+                  <TableCell>
+                    { criterion.riskManagementSummaryInformation
+                      && <ChplLink href={criterion.riskManagementSummaryInformation} analytics={{ event: 'Risk Management Summary Information', category: 'Download Details', label: criterion.riskManagementSummaryInformation }} />}
+                    { !criterion.riskManagementSummaryInformation && 'None' }
+                  </TableCell>
+                </TableRow>
+              )}
             { criterion.success && criterion.criterion.attributes?.privacySecurityFramework
               && (
                 <TableRow key="privacySecurityFramework">
