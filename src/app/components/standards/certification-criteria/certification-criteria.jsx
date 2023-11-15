@@ -14,7 +14,7 @@ import { BreadcrumbContext } from 'shared/contexts';
 
 function ChplCertificationCriteria() {
   const { append, display } = useContext(BreadcrumbContext);
-  const { data, isLoading, isSuccess } = useFetchCriteria();
+  const { data, isLoading, isSuccess } = useFetchCriteria({ active: false });
   const [certificationCriteria, setCertificationCriteria] = useState([]);
 
   useEffect(() => {
