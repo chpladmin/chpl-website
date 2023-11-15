@@ -126,7 +126,7 @@ function ChplListingEdit() {
     dataErrors: new Set(),
     warnings: new Set(),
   });
-  const [seeAllCqms, setSeeAllCqms] = useState(false);
+  const [seeAllCqms, setSeeAllCqms] = useState(true);
   const putListing = usePutListing();
   const classes = useStyles();
   let formik;
