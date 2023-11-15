@@ -114,7 +114,7 @@ const states = [
   }, {
     name: 'administration.upload',
     url: '/upload',
-    component: 'chplUpload',
+    component: 'chplUploadPageWrapperBridge',
     data: {
       title: 'CHPL Administration - Upload',
       roles: ['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'],
