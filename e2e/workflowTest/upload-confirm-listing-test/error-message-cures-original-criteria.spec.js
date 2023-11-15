@@ -24,6 +24,6 @@ describe('when ACB inspects uploaded listing with both cures and original criter
     hooks.waitForSpinnerToDisappear();
     actionBar.waitForMessages();
     const errors = actionBar.errors.map((item) => item.getText());
-    expect(errors.includes('Cannot select both 170.315 (b)(3) and 170.315 (b)(3) (Cures Update).')).toBe(true);
+    expect(errors.includes('Cannot select both 170.315 (b)(3) and 170.315 (b)(3).')).toBe(true);
   });
 });
