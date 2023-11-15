@@ -19,7 +19,7 @@ describe('when ACB inspects uploaded listing with both cures and original criter
     hooks = new Hooks();
     hooks.open('#/administration/upload');
     loginComponent.logIn('acb');
-    upload.uploadFileAndWaitForListingsToBeProcessed('../../../resources/listings/2015_v19_AQA3.csv', ['15.04.04.1722.AQA5.03.01.1.200620'], hooks, confirm);
+    upload.uploadFileAndWaitForListingsToBeProcessed('../../../resources/listings/2015_v20_AQA5.csv', ['15.04.04.1722.AQA5.03.01.1.200620'], hooks, confirm);
     confirm.gotoPendingListingPage('15.04.04.1722.AQA5.03.01.1.200620');
     hooks.waitForSpinnerToDisappear();
     actionBar.waitForMessages();
