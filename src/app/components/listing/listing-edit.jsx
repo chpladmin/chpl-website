@@ -325,7 +325,7 @@ function ChplListingEdit() {
                 label="See all CQMs"
               />
               (
-              {listing.cqmResults.filter((cqm) => cqm.success).length}
+              {listing.cqmResults.filter((cqm) => (cqm.success || cqm.successVersions?.length > 0)).length}
               {' '}
               found)
             </div>

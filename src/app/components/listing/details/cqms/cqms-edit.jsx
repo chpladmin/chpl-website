@@ -74,7 +74,7 @@ function ChplCqmsEdit({ viewAll: initialViewAll }) {
             </TableHead>
             <TableBody>
               { listing.cqmResults
-                .filter((cqm) => viewAll || cqm.success)
+                .filter((cqm) => viewAll || cqm.success || cqm.successVersions?.length > 0)
                 .sort(sortCqms)
                 .map((cqm) => (
                   <ChplCqmEdit
