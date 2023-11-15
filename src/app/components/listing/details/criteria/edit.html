@@ -60,8 +60,6 @@
         <tr ng-if="$ctrl.cert.success && $ctrl.cert.criterion.attributes.standard">
           <td>
             <span>Standard</span>
-            <pre>{{ $ctrl.cert.standards | json }}</pre>
-            <pre>{{ $ctrl.cert.allowedStandards | json }}</pre>
           </td>
           <td ng-if="$ctrl.canEdit()">
             <div class="form-horizontal">
@@ -70,9 +68,8 @@
                   <chpl-expandable-list
                     identifier="standard"
                     item-key="id"
-                    item-text="dropdownText"
+                    item-text="dropDownText"
                     items="$ctrl.cert.allowedStandards"
-                    new-items="$ctrl.newStandards"
                     selected-item-keys="$ctrl.selectedStandardKeys"
                     placeholder="Select a Standard"
                     on-change="$ctrl.standardsOnChange(action)">

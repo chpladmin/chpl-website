@@ -6,7 +6,7 @@ const CertificationCriteriaEditComponent = {
     dismiss: '&',
   },
   controller: class CertificationCriteriaEditController {
-    constructor($filter, $log, authService, utilService, CertificationResultConformanceMethod, CertificationResultSvap, CertificationResultStandard, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultFunctionalitiesTested, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
+    constructor($filter, $log, authService, utilService, CertificationResultConformanceMethod, CertificationResultSvap, CertificationResultOptionalStandard, CertificationResultTestData, CertificationResultFunctionalitiesTested, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool) {
       'ngInject';
 
       this.$filter = $filter;
@@ -16,7 +16,6 @@ const CertificationCriteriaEditComponent = {
       this.extendSelect = utilService.extendSelect;
       this.CertificationResultFunctionalitiesTested = CertificationResultFunctionalitiesTested;
       this.CertificationResultConformanceMethod = CertificationResultConformanceMethod;
-      this.CertificationResultStandard = CertificationResultStandard;
       this.CertificationResultOptionalStandard = CertificationResultOptionalStandard;
       this.CertificationResultTestData = CertificationResultTestData;
       this.CertificationResultTestProcedure = CertificationResultTestProcedure;
@@ -58,7 +57,6 @@ const CertificationCriteriaEditComponent = {
       this.selectedStandardKeys = this.getSelectedStandardKeys();
       this.selectedOptionalStandardKeys = this.getSelectedOptionalStandardKeys();
       this.selectedTestStandardKeys = this.getSelectedTestStandardKeys();
-      this.newStandards = this.getNewStandards();
       this.newOptionalStandards = this.getNewOptionalStandards();
       this.newTestStandards = this.getNewTestStandards();
       this.selectedTestToolKeys = this.getSelectedTestToolKeys();
@@ -171,13 +169,13 @@ const CertificationCriteriaEditComponent = {
           this.cert.standards = this.cert.standards
             .filter((crs) => {
               if (action.item.item.id === 'newItem') {
-                return crs.value !== action.item.item.value;
+                return crs.standard.value !== action.item.item.value;
               }
-              return crs.standardId !== action.item.item.id;
+              return crs.standard.id !== action.item.item.id;
             });
           break;
         case 'Add':
-          this.cert.standards = [].concat(this.cert.standards).concat(new this.CertificationResultStandard(action.item.item)).filter((item) => item);
+          this.cert.standards = [].concat(this.cert.standards).concat({ standard: action.item.item }).filter((item) => item);
           break;
         default:
       }
@@ -310,9 +308,9 @@ const CertificationCriteriaEditComponent = {
         return [];
       }
       return this.cert.standards
-        .filter((s) => s.standardId
-          && that.resources.standards.filter((as) => as.id === s.standardId).length > 0)
-        .map((s) => ({ key: s.standardId }));
+        .filter((s) => s.standard.id
+          && that.resources.standards.filter((as) => as.id === s.standard.id).length > 0)
+        .map((s) => ({ key: s.standard.id }));
     }
 
     getSelectedOptionalStandardKeys() {
@@ -324,17 +322,6 @@ const CertificationCriteriaEditComponent = {
         .filter((os) => os.optionalStandardId
           && that.resources.optionalStandards.filter((aos) => aos.id === os.optionalStandardId).length > 0)
         .map((os) => ({ key: os.optionalStandardId }));
-    }
-
-    getNewStandards() {
-      const that = this;
-      if (!this.cert.standards) {
-        return [];
-      }
-      return this.cert.standards
-        .filter((s) => !s.standardId
-          || that.resources.standards.filter((as) => as.id === s.standardId).length === 0)
-        .map((s) => s.value);
     }
 
     getNewOptionalStandards() {
