@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Card,
+  Chip,
   CircularProgress,
   IconButton,
   MenuItem,
@@ -35,9 +36,12 @@ const useStyles = makeStyles({
   },
 });
 
+const sortVersions = (a, b) => parseInt(a.substring(1), 10) - parseInt(b.substring(1), 10);
+
 function ChplCqmEdit(props) {
   const { cqm } = props;
   const { listing, setListing } = useContext(ListingContext);
+  const [selectedVersion, setSelectedVersion] = useState('');
   const classes = useStyles();
 
   const handleBasicChange = (event) => {
@@ -48,16 +52,43 @@ function ChplCqmEdit(props) {
     formik.setFieldValue(event.target.name, event.target.value);
   };
 
-  const toggle = (c) => {
+  const add = (v) => {
     setListing({
       ...listing,
       cqmResults: listing.cqmResults
         .filter((c) => c.cmsId !== cqm.cmsId)
         .concat({
           ...cqm,
-          criteria: cqm.criteria.some((cc) => cc.certificationNumber === `170.315 (c)(${c})`)
-            ? cqm.criteria.filter((cc) => cc.certificationNumber !== `170.315 (c)(${c})`)
-            : [...cqm.criteria].concat({ certificationNumber: `170.315 (c)(${c})`}),
+          successVersions: [].concat(cqm.successVersions).concat(v),
+        }),
+    });
+    setSelectedVersion('');
+  };
+
+  const isDisabled = (v) => cqm.successVersions.includes(v);
+
+  const remove = (v) => {
+    setListing({
+      ...listing,
+      cqmResults: listing.cqmResults
+        .filter((c) => c.cmsId !== cqm.cmsId)
+        .concat({
+          ...cqm,
+          successVersions: cqm.successVersions.filter((sv) => sv !== v),
+        }),
+    });
+  };
+
+  const toggle = (v) => {
+    setListing({
+      ...listing,
+      cqmResults: listing.cqmResults
+        .filter((c) => c.cmsId !== cqm.cmsId)
+        .concat({
+          ...cqm,
+          criteria: cqm.criteria.some((cc) => cc.certificationNumber === `170.315 (c)(${v})`)
+            ? cqm.criteria.filter((cc) => cc.certificationNumber !== `170.315 (c)(${v})`)
+            : [...cqm.criteria].concat({ certificationNumber: `170.315 (c)(${v})`}),
         }),
     });
   };
@@ -78,7 +109,6 @@ function ChplCqmEdit(props) {
         { cqm.cmsId
           && (
             <>
-              { /*
               <ChplTextField
                 select
                 id="version-select"
@@ -86,9 +116,10 @@ function ChplCqmEdit(props) {
                 label="Select a version"
                 value={selectedVersion}
                 onChange={(event) => add(event.target.value)}
-                helperText={versions.length === 0 && 'At least one version must be selected'}
+                helperText={cqm.successVersions.length === 0 && 'At least one version must be selected'}
               >
-                { versionOptions
+                { cqm.allVersions
+                  .sort(sortVersions)
                   .map((item) => (
                     <MenuItem
                       value={item}
@@ -100,7 +131,8 @@ function ChplCqmEdit(props) {
                   ))}
               </ChplTextField>
               <div className={classes.chips}>
-                { criteria
+                { cqm.successVersions
+                  .sort(sortVersions)
                   .map((item) => (
                     <Chip
                       key={item}
@@ -111,8 +143,6 @@ function ChplCqmEdit(props) {
                     />
                   ))}
               </div>
-                */ }
-              multi-select
             </>
           )}
       </TableCell>
