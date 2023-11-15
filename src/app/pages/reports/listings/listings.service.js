@@ -125,6 +125,12 @@ const compare = (before, after, key, title = 'unknown') => {
         write: (f) => `Requirement "${f.requirementType?.title ?? f.requirement}"`,
       };
       break;
+    case 'standards':
+      options = {
+        sort: (p, c) => (p.standard.value < c.standard.value ? -1 : p.standard.value > c.standard.value ? 1 : 0),
+        write: (f) => `Standard "${f.standard.regulatoryTextCitation}: ${f.standard.value}"`,
+      };
+      break;
     case 'surveillance':
       options = {
         sort: (p, c) => (p.friendlyId < c.friendlyId ? -1 : p.friendlyId > c.friendlyId ? 1 : 0),
@@ -297,6 +303,7 @@ lookup = {
   'certificationResults.riskManagementSummaryInformation': { message: (before, after) => comparePrimitive(before, after, 'riskManagementSummaryInformation', 'Risk Management Summary Information') },
   'certificationResults.sed': { message: (before, after) => comparePrimitive(before, after, 'sed', 'SED tested') },
   'certificationResults.serviceBaseUrlList': { message: (before, after) => comparePrimitive(before, after, 'serviceBaseUrlList', 'Service Base URL List') },
+  'certificationResults.standards': { message: (before, after) => compare(before, after, 'standards', 'Standards') },
   'certificationResults.success': { message: (before, after) => comparePrimitive(before, after, 'success', 'Successful') },
   'certificationResults.svaps': { message: (before, after) => compare(before, after, 'svaps', 'SVAP') },
   'certificationResults.testDataUsed': { message: (before, after) => compare(before, after, 'testDataUsed', 'Test Data') },
