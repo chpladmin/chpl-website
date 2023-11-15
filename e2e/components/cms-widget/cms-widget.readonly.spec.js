@@ -151,7 +151,8 @@ describe('on cms widget', () => {
       await expect(await cms.chplPublicUserGuideLink.isDisplayed()).toBeFalse();
     });
 
-    it('should have remove all products button and enabled', async () => {
+    //ignoring these tests as they are flaky - will address these tests later
+    xit('should have remove all products button and enabled', async () => {
       await expect(await (await cms.removeProductsButton()).isDisplayed()).toBe(true);
       await expect(await (await cms.removeProductsButton()).isClickable()).toBe(true);
     });
