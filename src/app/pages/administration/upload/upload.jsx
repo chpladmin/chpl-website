@@ -13,7 +13,7 @@ import {
   ChplUploadApiDocumentationWrapper,
 } from '../../../components/upload';
 
-import { palette, theme, utilStyles } from 'themes';
+import { palette, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
@@ -36,6 +36,11 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     gap: '16px',
   },
+  uploadCardColumns: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
 });
 
 function ChplUpload() {
@@ -51,20 +56,22 @@ function ChplUpload() {
           </Typography>
         </Container>
       </div>
-      <div className={classes.pageBody} id="main-content" tabIndex="-1">
+      <div className={classes.pageBody} tabIndex="-1">
         <Container maxWidth="lg">
-          <Box className={classes.uploadCardContainer}>
-            <Box className={classes.uploadCard}>
-              <ChplUploadListings />
-            </Box>
-            <Box className={classes.uploadCard}>
-              <ChplUploadRealWorldTestingWrapper />
-            </Box>
-            <Box className={classes.uploadCard}>
-              <ChplUploadPromotingInteroperability />
-            </Box>
-            <Box className={classes.uploadCard}>
-              <ChplUploadApiDocumentationWrapper />
+          <Box className={classes.uploadCardColumns}>
+            <Box className={classes.uploadCardContainer}>
+              <Box className={classes.uploadCards}>
+                <ChplUploadListings />
+              </Box>
+              <Box className={classes.uploadCards}>
+                <ChplUploadRealWorldTestingWrapper />
+              </Box>
+              <Box className={classes.uploadCards}>
+                <ChplUploadPromotingInteroperability />
+              </Box>
+              <Box className={classes.uploadCards}>
+                <ChplUploadApiDocumentationWrapper />
+              </Box>
             </Box>
           </Box>
         </Container>
