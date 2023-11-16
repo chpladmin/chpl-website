@@ -1,50 +1,60 @@
 import React, { useState } from 'react';
 import {
+  Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
-  Button,
-  makeStyles,
   ThemeProvider,
   Typography,
-  Divider,
-  Box,
+  makeStyles,
 } from '@material-ui/core';
-import { theme } from 'themes';
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DoneIcon from '@material-ui/icons/Done';
-
 import { useSnackbar } from 'notistack';
+
+import { theme } from 'themes';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
-buttonUploadContainer: {
+  buttonUploadContainer: {
     display: 'flex',
     flexDirection: 'row',
     gap: '16px',
-},
-deleteButton: {
-  border: '1px solid #c44f65',
-  backgroundColor: '#FFFFFF',
-  color: '#c44f65',
-  '&:hover': {
-    border: '1px solid #853544',
-    color: '#853544',
   },
-},
-fileName: {
-  wordBreak: 'break-word',
-},
-uploadContentContainer: {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  alignItems: 'flex-start',
-},
+  deleteButton: {
+    border: '1px solid #c44f65',
+    backgroundColor: '#FFFFFF',
+    color: '#c44f65',
+    '&:hover': {
+      border: '1px solid #853544',
+      color: '#853544',
+    },
+  },
+  fileName: {
+    wordBreak: 'break-word',
+  },
+  uploadContentContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    alignItems: 'flex-start',
+  },
+  fileUploadContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+  },
+  fileUploadContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    borderTop: '1px solid #EEEEEE',
+    marginTop: '16px',
+    paddingTop: '16px',
+  },
 });
-
 
 function ChplUploadRealWorldTestingPanel() {
   const API = getAngularService('API');
@@ -69,7 +79,7 @@ function ChplUploadRealWorldTestingPanel() {
     const item = {
       url: `${API}/real-world-testing/upload`,
       headers: {
-        Authorization: 'Bearer ' + authService.getToken(),
+        Authorization: `Bearer ${authService.getToken()}`,
         'API-Key': authService.getApiKey(),
       },
       data: {
@@ -117,16 +127,16 @@ function ChplUploadRealWorldTestingPanel() {
 
   return (
     <ThemeProvider theme={theme}>
-    <Card>
-      <CardHeader title="Upload Real World Testing"/>
-      <CardContent>
-        <div className={classes.uploadContentContainer}>
-        <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
-        <Button
+      <Card>
+        <CardHeader title="Upload Real World Testing" />
+        <CardContent>
+          <div className={classes.uploadContentContainer}>
+            <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
+            <Button
               color="primary"
               variant="outlined"
               component="label"
-              endIcon={<CloudUploadOutlinedIcon/>}
+              endIcon={<CloudUploadOutlinedIcon />}
             >
               Choose file to upload
               <input
@@ -136,17 +146,17 @@ function ChplUploadRealWorldTestingPanel() {
                 style={{ display: 'none' }}
               />
             </Button>
-            </div>
-            { file
+          </div>
+          { file
             && (
-              <Box borderTop="1px solid #EEEEEE" marginTop="16px" display="flex" flexDirection="column" paddingTop="16px" gridGap="16px">
-              <Box display="flex" flexDirection="row" gridGap="16px">
-              <div>
-                <strong>Filename:</strong>
-                {' '}
-                { file.name }
-              </div>
-              { file
+              <Box className={classes.fileUploadContainer}>
+                <Box className={classes.fileUploadContent}>
+                  <div>
+                    <strong>Filename:</strong>
+                    {' '}
+                    { file.name }
+                  </div>
+                  { file
               && (
                 <div>
                   <strong>File size:</strong>
@@ -154,8 +164,8 @@ function ChplUploadRealWorldTestingPanel() {
                   { file.size }
                 </div>
               )}
-              </Box>
-          { file
+                </Box>
+                { file
             && (
               <div className={classes.buttonUploadContainer}>
                 <Button
@@ -171,17 +181,15 @@ function ChplUploadRealWorldTestingPanel() {
                   variant="contained"
                   onClick={clearFile}
                   endIcon={<DeleteIcon />}
-                  >
+                >
                   Remove
                 </Button>
               </div>
-              
             )}
-            </Box>
+              </Box>
             )}
-
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
     </ThemeProvider>
   );
 }
