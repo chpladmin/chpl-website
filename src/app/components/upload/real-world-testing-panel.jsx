@@ -9,12 +9,13 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { theme } from 'themes';
+
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DoneIcon from '@material-ui/icons/Done';
-import { useSnackbar } from 'notistack';
 
-import { theme } from 'themes';
+import { useSnackbar } from 'notistack';
 import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({

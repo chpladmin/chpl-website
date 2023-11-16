@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     gap: '16px',
-},
+  },
   deleteButton: {
     border: '1px solid #c44f65',
     backgroundColor: '#FFFFFF',
@@ -39,6 +39,19 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '8px',
     alignItems: 'flex-start',
+  },
+  fileUploadContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '16px',
+  },
+  fileUploadContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    borderTop: '1px solid #EEEEEE',
+    marginTop: '16px',
+    paddingTop: '16px',
   },
 });
 
@@ -122,9 +135,9 @@ function ChplUploadListings() {
           <div>
             <Button
               color="primary"
-              variant='outlined'
+              variant="outlined"
               component="label"
-              endIcon={<CloudUploadOutlinedIcon/>}
+              endIcon={<CloudUploadOutlinedIcon />}
             >
               Choose file to upload
               <input
@@ -137,14 +150,14 @@ function ChplUploadListings() {
           </div>
           { file
             && (
-              <Box width="100%" borderTop="1px solid #EEEEEE" marginTop="16px" display="flex" flexDirection="column" paddingTop="16px" gridGap="16px">
-              <Box display="flex" flexDirection="row" gridGap="16px">
-              <div className={classes.fileName}>
-                <strong>Filename:</strong>
-                {' '}
-                { file.name }
-              </div>
-          { file
+              <Box className={classes.fileUploadContainer}>
+                <Box className={classes.fileUploadContent}>
+                  <div className={classes.fileName}>
+                    <strong>Filename:</strong>
+                    {' '}
+                    { file.name }
+                  </div>
+                  { file
             && (
               <div>
                 <strong>File size:</strong>
@@ -152,8 +165,8 @@ function ChplUploadListings() {
                 { file.size }
               </div>
             )}
-            </Box>
-          { file
+                </Box>
+                { file
             && (
               <div className={classes.buttonUploadContainer}>
                 <Button
@@ -174,7 +187,7 @@ function ChplUploadListings() {
                 </Button>
               </div>
             )}
-            </Box>
+              </Box>
             )}
         </div>
       </CardContent>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -7,18 +8,18 @@ import {
   ThemeProvider,
   Typography,
   makeStyles,
-  Box,
 } from '@material-ui/core';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DoneIcon from '@material-ui/icons/Done';
 
-import { ChplTextField } from 'components/util';
-import { getAngularService } from 'services/angular-react-helper';
 import theme from 'themes/theme';
+
+import { ChplTextField } from 'components/util';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { getAngularService } from 'services/angular-react-helper';
 
 const useStyles = makeStyles({
 buttonUploadContainer: {
@@ -43,6 +44,19 @@ uploadContentContainer: {
   flexDirection: 'column',
   gap: '8px',
   alignItems: 'flex-start',
+},
+fileUploadContent: {
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '16px',
+},
+fileUploadContainer: {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  borderTop: '1px solid #EEEEEE',
+  marginTop: '16px',
+  paddingTop: '16px',
 },
 });
 
@@ -164,8 +178,8 @@ function ChplUploadPromotingInteroperability() {
             </div>
             { file
               && (
-              <Box width="100%" borderTop="1px solid #EEEEEE" marginTop="16px" display="flex" flexDirection="column" paddingTop="16px" gridGap="16px">
-              <Box display="flex" flexDirection="row" gridGap="16px">
+              <Box className={classes.fileUploadContainer}>
+              <Box className={classes.fileUploadContent}>
                 <div className={classes.fileName}>
                   <strong>Filename:</strong>
                   {' '}

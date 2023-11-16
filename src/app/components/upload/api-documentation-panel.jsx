@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import {
+  Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
-  Button,
-  makeStyles,
   ThemeProvider,
   Typography,
-  Box,
+  makeStyles,
 } from '@material-ui/core';
 import { theme } from 'themes';
 
-import { ChplTextField } from 'components/util';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import DoneIcon from '@material-ui/icons/Done';
+import { ChplTextField } from 'components/util';
 
 import { useSnackbar } from 'notistack';
 import { getAngularService } from 'services/angular-react-helper';
@@ -44,6 +44,19 @@ uploadContentContainer: {
   flexDirection: 'column',
   gap: '8px',
   alignItems: 'flex-start',
+},
+fileUploadContent: {
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '16px',
+},
+fileUploadContainer: {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  borderTop: '1px solid #EEEEEE',
+  marginTop: '16px',
+  paddingTop: '16px',
 },
 });
 
@@ -108,20 +121,6 @@ function ChplUploadApiDocumentationPanel() {
           });
         }
       })
-      .catch((error) => {
-        let message = `Error: File "${file.name}" was not uploaded successfully.`;
-        if (error?.data?.errorMessages) {
-          if (error.data.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
-            message += ' The CSV header row does not match any of the headers in the system.';
-            // to do: get available templates
-          } else {
-            message += ` ${error.data.errorMessages.join(', ')}`;
-          }
-        }
-        enqueueSnackbar(message, {
-          variant: 'error',
-        });
-      })
       .finally(() => {
         clearFile();
       });
@@ -145,7 +144,7 @@ function ChplUploadApiDocumentationPanel() {
       <CardHeader title="Upload API Documentation"/>
       <CardContent>
         <div className={classes.uploadContentContainer}>
-        <Typography gutterBottom variant="body1"><strong>CVS files only</strong></Typography>
+        <Typography gutterBottom variant="body1"><strong>No requirements on file type</strong></Typography>
         <ChplTextField
                 type="date"
                 id="api-documentation-accurate-as-of"
@@ -176,8 +175,8 @@ function ChplUploadApiDocumentationPanel() {
             </div>
             { file
             && (
-              <Box borderTop="1px solid #EEEEEE" marginTop="16px" display="flex" flexDirection="column" paddingTop="16px" gridGap="16px">
-              <Box display="flex" flexDirection="row" gridGap="16px">
+              <Box className={classes.fileUploadContainer}>
+              <Box className={classes.fileUploadContent}>
               <div>
                 <strong>Filename:</strong>
                 {' '}
