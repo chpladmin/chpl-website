@@ -14,8 +14,9 @@ import {
 } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
-import { ChplTextField } from 'components/util';
+import { ChplLink, ChplTextField } from 'components/util';
 import { getAngularService } from 'services/angular-react-helper';
 import { UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
@@ -65,6 +66,18 @@ const useStyles = makeStyles({
     alignItems: 'stretch',
     flexDirection: 'column',
   },
+  infoBox: {
+    padding: '16px',
+    backgroundColor: palette.secondary,
+    border: `1px solid ${palette.primary}`,
+    borderRadius: '4px',
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '16px',
+    marginBottom: '16px',
+    gridGap: '16px',
+    alignItems: 'center',
+  },
 });
 
 const allOptions = [
@@ -104,7 +117,7 @@ function ChplResourcesDownload() {
     };
     setFiles(data);
     setDownloadOptions(() => allOptions.filter((option) => {
-      if (option === 'Surveillance (Basic)' && !hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
+      if (option === 'Surveillance (Basic)' && !hasAnyRole(['chpl-admin', 'ROLE_ONC'])) {
         return false;
       }
       return true;
@@ -167,6 +180,21 @@ function ChplResourcesDownload() {
                         Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.
                       </li>
                     </ul>
+                    <Box className={classes.infoBox}>
+                      <InfoOutlinedIcon color="primary" />
+                      <Typography>
+                        JSON and XML files have been moved to the
+                        {' '}
+                        <ChplLink
+                          text="CHPL API page"
+                          external={false}
+                          inline
+                          href="#/resources/api"
+                          router={{ sref: 'resources.api' }}
+                        />
+                        .
+                      </Typography>
+                    </Box>
                   </Box>
                   <Card className={classes.downloadCard}>
                     <CardHeader title="Select A File To Download" />
@@ -232,7 +260,7 @@ function ChplResourcesDownload() {
                     {' '}
                     Entire collection of surveillance activity reported to the CHPL.
                   </li>
-                  { hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])
+                  { hasAnyRole(['chpl-admin', 'ROLE_ONC'])
                 && (
                   <li>
                     <Typography gutterBottom><strong>Surveillance (Basic):</strong></Typography>

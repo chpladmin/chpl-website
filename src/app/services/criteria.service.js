@@ -37,6 +37,7 @@ const criteriaSortOrder = [
   '170.315 (b)(9)',
   '170.315 (b)(10) (Cures Update)',
   '170.315 (b)(10)',
+  '170.315 (b)(11)',
   '170.315 (c)(1)',
   '170.315 (c)(2)',
   '170.315 (c)(3) (Cures Update)',
@@ -60,6 +61,7 @@ const criteriaSortOrder = [
   '170.315 (d)(12)',
   '170.315 (d)(13) (Cures Update)',
   '170.315 (d)(13)',
+  '170.315 (d)(14)',
   '170.315 (e)(1) (Cures Update)',
   '170.315 (e)(1)',
   '170.315 (e)(2)',
@@ -193,7 +195,7 @@ const criteriaSortOrder = [
   '170.306 (i)',
 ];
 
-const isCures = (criterion) => criterion.title ? criterion.title.indexOf('Cures Update') > -1 : false;
+const isCures = (criterion) => (criterion.title ? criterion.title.indexOf('Cures Update') > -1 : false);
 
 const sortCriteria = (a, b) => {
   const aValue = (a.number ?? a.certificationNumber) + (isCures(a) ? ' (Cures Update)' : '');

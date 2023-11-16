@@ -15,64 +15,57 @@ describe('the Download page', () => {
     await hooks.open('#/resources/download');
   });
 
-  describe('in the 2015/2014/2011 Edition products section', () => {
-    it('should have correct information about 2015 edition products file', () => {
-      const expectedText = 'The 2015 Edition Products file is updated nightly.';
-      expect(page.content.getText()).toContain(expectedText);
+  describe('in the Certified Products Summary section', () => {
+    it('should have correct information about Active Products Summary file', async () => {
+      const expectedText = 'The Active products summary file is updated nightly.';
+      await expect(await page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about 2014 and 2011 edition products file', () => {
-      const expectedText = 'The 2014 Edition Products file and the 2011 Edition Products file are updated quarterly.';
-      expect(page.content.getText()).toContain(expectedText);
-    });
-  });
-
-  describe('in the 2015/2014 Edition summary section', () => {
-    it('should have correct information about 2015 edition summary file', () => {
-      const expectedText = 'The 2015 Edition Summary file is updated nightly.';
-      expect(page.content.getText()).toContain(expectedText);
+    it('should have correct information about Inactive Products Summary file', async () => {
+      const expectedText = 'The Inactive products summary file is updated nightly.';
+      await expect(await page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about 2014 edition summary file', () => {
+    it('should have correct information about 2014 Edition Summary file', async () => {
       const expectedText = 'The 2014 Edition Summary file is updated quarterly.';
-      expect(page.content.getText()).toContain(expectedText);
+      await expect(await page.content.getText()).toContain(expectedText);
     });
   });
 
-  it('should have correct information about SVAP Summary (CSV)', () => {
+  it('should have correct information about SVAP Summary (CSV)', async () => {
     const expectedText = 'Entire collection of SVAP values that have been associated with a criterion for a certified product. Multiple rows for a single product will appear in the file for any products containing multiple SVAP values and/or SVAP values for multiple criteria. Updated nightly.';
-    expect(page.content.getText()).toContain(expectedText);
+    await expect(await page.content.getText()).toContain(expectedText);
   });
 
   describe('in the compliance activities section', () => {
-    it('should have correct information about Surveillance Activity (CSV)', () => {
+    it('should have correct information about Surveillance Activity (CSV)', async () => {
       const expectedText = 'Entire collection of surveillance activity reported to the CHPL.';
-      expect(page.content.getText()).toContain(expectedText);
+      await expect(await page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about Surveillance Non-Conformities (CSV)', () => {
+    it('should have correct information about Surveillance Non-Conformities (CSV)', async () => {
       const expectedText = 'Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file.';
-      expect(page.content.getText()).toContain(expectedText);
+      await expect(await page.content.getText()).toContain(expectedText);
     });
 
-    it('should have correct information about Direct Review Activity (CSV)', () => {
+    it('should have correct information about Direct Review Activity (CSV)', async () => {
       const expectedText = 'Entire collection of Direct Review activity reported to the CHPL.';
-      expect(page.content.getText()).toContain(expectedText);
+      await expect(await page.content.getText()).toContain(expectedText);
     });
   });
 
   describe('when logged in as ROLE_ONC', () => {
-    beforeEach(() => {
-      browser.call(() => login.logIn('onc'));
+    beforeEach(async () => {
+      await browser.call(() => login.logIn('onc'));
     });
 
-    afterEach(() => {
-      browser.call(() => login.logOut());
+    afterEach(async () => {
+      await browser.call(() => login.logOut());
     });
 
-    it('should have correct information about Surveillance (Basic) (CSV)', () => {
+    it('should have correct information about Surveillance (Basic) (CSV)', async () => {
       const expectedText = 'Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities.';
-      expect(page.content.getText()).toContain(expectedText);
+      await expect(await page.content.getText()).toContain(expectedText);
     });
   });
 });

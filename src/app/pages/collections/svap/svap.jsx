@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ChplSvapCollectionView from './svap-view';
 
 import { useFetchAcbs } from 'api/acbs';
-import { useFetchCriteria } from 'api/data';
-import { useFetchSvaps } from 'api/standards';
+import { useFetchCriteria, useFetchSvaps } from 'api/standards';
 import { FilterProvider, defaultFilter } from 'components/filter';
 import {
   certificationBodies,
@@ -91,8 +90,8 @@ function ChplSvapCollectionPage() {
     if (ccQuery.isLoading || !ccQuery.isSuccess) {
       return;
     }
-    const values = ccQuery.data.criteria
-      .filter((cc) => cc.certificationEditionId === 3)
+    const values = ccQuery.data
+      .filter((cc) => cc.certificationEditionId === 3 || cc.certificationEditionId === null)
       .map((cc) => ({
         ...cc,
         value: cc.id,
