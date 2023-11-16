@@ -1,13 +1,13 @@
 import React from 'react';
 
-import ChplUpload from './upload.jsx';
+import ChplUpload from './upload';
 
 import AppWrapper from 'app-wrapper';
 
 function ChplUploadPageWrapper() {
   return (
     <AppWrapper>
-        <ChplUpload />
+      <ChplUpload />
     </AppWrapper>
   );
 }
