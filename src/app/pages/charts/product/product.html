@@ -4,7 +4,7 @@
     <div google-chart="" chart="$ctrl.criterionProductCounts['' + $ctrl.chartState.criteriaType]" class="bar-chart"></div>
   </div>
 </div>
-<div class="row" ng-if="$ctrl.chartState.criteriaType !== 2014">
+<div class="row" ng-if="!$ctrl.isOn('editionless')">
   <div class="col-sm-12">
     <label>
       View Certification Criteria with respect to the 2015 Cures rule

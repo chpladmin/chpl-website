@@ -62,7 +62,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-ai-success pull-right" ng-click="$ctrl.addRequirement()" ng-disabled="!$ctrl.surveillance.type"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</span></button>
+        <button class="btn btn-ai-success pull-right" ng-click="$ctrl.addRequirement()" ng-disabled="!$ctrl.surveillance.type || !$ctrl.surveillance.startDay"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</span></button>
         <h5>Requirements</h5>
         <span ng-if="!$ctrl.surveillance.requirements || $ctrl.surveillance.requirements.length === 0">No Surveilled Requirements Found</span>
         <table class="table table-condensed" ng-if="$ctrl.surveillance.requirements && $ctrl.surveillance.requirements.length > 0">
