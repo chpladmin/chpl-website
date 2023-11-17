@@ -27,6 +27,14 @@ const useDeleteSubscription = () => {
   });
 };
 
+const useFetchAllSubscriptions = () => {
+  const axios = useAxios();
+  return useQuery(['subscriptions'], async () => {
+    const response = await axios.get('subscriptions');
+    return response.data;
+  });
+};
+
 const useFetchRoles = () => {
   const axios = useAxios();
   return useQuery(['subscribers/roles'], async () => {
@@ -69,6 +77,7 @@ export {
   useDeleteObjectSubscription,
   useDeleteSubscriber,
   useDeleteSubscription,
+  useFetchAllSubscriptions,
   useFetchRoles,
   useFetchSubscriber,
   useFetchSubscriptions,
