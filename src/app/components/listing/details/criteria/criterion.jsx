@@ -291,6 +291,7 @@ function ChplCriterion(props) {
                           criterion={criterion}
                           accessibilityStandards={accessibilityStandards}
                           qmsStandards={qmsStandards}
+                          isConfirming={isConfirming}
                         />
                       </div>
                     </>

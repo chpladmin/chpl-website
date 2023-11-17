@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
 import * as jsJoda from '@js-joda/core';
-import { arrayOf } from 'prop-types';
+import { arrayOf, bool } from 'prop-types';
 
 import ChplReliedUponSoftwareView from './relied-upon-software/relied-upon-software-view';
 
@@ -39,7 +39,12 @@ const useStyles = makeStyles({
 });
 
 function ChplCriterionDetailsView(props) {
-  const { criterion, qmsStandards, accessibilityStandards } = props;
+  const {
+    criterion,
+    qmsStandards,
+    accessibilityStandards,
+    isConfirming,
+  } = props;
   const classes = useStyles();
 
   if (criterion.criterion.certificationEdition === '2011') {
@@ -48,7 +53,7 @@ function ChplCriterionDetailsView(props) {
 
   const hasDisplayableStandards = () => criterion.success
         && criterion.standards?.length > 0
-        && criterion.standards.some((std) => std.standard.endDay || jsJoda.LocalDate.now() < std.standard.requiredDay);
+        && (isConfirming || criterion.standards.some((std) => std.standard.endDay || jsJoda.LocalDate.now() < std.standard.requiredDay));
 
   const showOptionalStandardsSection = () => criterion.success
         && ((criterion.optionalStandards?.length > 0)
@@ -672,4 +677,9 @@ ChplCriterionDetailsView.propTypes = {
   criterion: certificationResult.isRequired,
   accessibilityStandards: arrayOf(accessibilityStandard).isRequired,
   qmsStandards: arrayOf(qmsStandard).isRequired,
+  isConfirming: bool,
+};
+
+ChplCriterionDetailsView.defaultProps = {
+  isConfirming: false,
 };
