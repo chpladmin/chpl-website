@@ -419,7 +419,7 @@ const CertificationCriteriaEditComponent = {
           .filter((s) => s.criteria.some((cc) => cc.id === this.cert.criterion.id))
           .map((s) => ({
             ...s,
-            dropDownText: s.value + (s.retired ? ' (Retired)' : ''),
+            dropDownText: s.regulatoryTextCitation + (s.retired ? ' (Retired)' : ''),
           }));
       }
     }
