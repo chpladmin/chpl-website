@@ -16,7 +16,6 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-
   chips: {
     display: 'flex',
     flexDirection: 'row',
@@ -34,7 +33,6 @@ const useStyles = makeStyles({
   fullWidth: {
     width: '100%',
   },
-  
   versionColumn: {
     width: '216px',
   },
