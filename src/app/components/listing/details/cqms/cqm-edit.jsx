@@ -16,8 +16,13 @@ import { utilStyles } from 'themes';
 
 const useStyles = makeStyles({
   ...utilStyles,
-  fullWidth: {
-    width: '100%',
+
+  chips: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: '4px',
+    marginTop: '4px',
   },
   column: {
     display: 'flex',
@@ -25,6 +30,13 @@ const useStyles = makeStyles({
     gridGap: '16px',
     alignItems: 'flex-start',
     width: '100%',
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  
+  versionColumn: {
+    width: '216px',
   },
 });
 
@@ -97,12 +109,13 @@ function ChplCqmEdit(props) {
 
   return (
     <TableRow>
-      <TableCell>
+      <TableCell className={classes.versionColumn} size="small">
         { !cqm.cmsId
           && (
             <Switch
               id={`${cqm.nqfNumber}-success`}
               color="primary"
+              size="small"
               checked={cqm.success}
               onChange={() => toggleSuccess()}
             />
@@ -141,13 +154,14 @@ function ChplCqmEdit(props) {
                       onDelete={() => remove(item)}
                       color="primary"
                       variant="outlined"
+                      size="small"
                     />
                   ))}
               </div>
             </>
           )}
       </TableCell>
-      <TableCell>
+      <TableCell size="small">
         { !cqm.cmsId
           && (
             <>
@@ -164,12 +178,13 @@ function ChplCqmEdit(props) {
         { cqm.title }
       </TableCell>
       { (listing.edition === null || listing.edition.name === '2015') && [1, 2, 3, 4].map((v) => (
-        <TableCell key={`${cqm.cmsId}-${v}`}>
+        <TableCell size="small" key={`${cqm.cmsId}-${v}`}>
           <Switch
             id={`${cqm.cmsId}-${v}`}
             color="primary"
             checked={cqm.criteria.some((cc) => cc.certificationNumber === `170.315 (c)(${v})`)}
             onChange={() => toggle(v)}
+            size="small"
           />
         </TableCell>
       ))}
