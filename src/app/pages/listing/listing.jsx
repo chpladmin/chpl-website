@@ -17,7 +17,7 @@ import ChplActionButton from 'components/action-widget/action-button';
 import ChplBrowserViewedWidget from 'components/browser/browser-viewed-widget';
 import ChplListingView from 'components/listing/listing-view';
 import { getAngularService } from 'services/angular-react-helper';
-import { UserContext } from 'shared/contexts';
+import { ListingContext, UserContext } from 'shared/contexts';
 import { palette, theme, utilStyles } from 'themes';
 
 const useStyles = makeStyles({
@@ -86,6 +86,11 @@ function ChplListingPage({ id }) {
     return <CircularProgress />;
   }
 
+  const listingState = {
+    listing,
+    setListing,
+  };
+
   return (
     <Box bgcolor={palette.background}>
       <ChplBrowserViewedWidget
@@ -141,9 +146,11 @@ function ChplListingPage({ id }) {
       </div>
       <Container maxWidth="lg">
         <div className={classes.container} id="main-content" tabIndex="-1">
-          <ChplListingView
-            listing={listing}
-          />
+          <ListingContext.Provider value={listingState}>
+            <ChplListingView
+              listing={listing}
+            />
+          </ListingContext.Provider>
         </div>
       </Container>
     </Box>
