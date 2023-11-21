@@ -94,9 +94,9 @@ function ChplUploadApiDocumentation() {
       },
     };
     if (typeof formik.values.accurateAsOf === 'object') {
-      item.url += `?accurate_as_of=${formik.values.accurateAsOf.getTime()}`;
+      item.url += `?file_update_date=${formik.values.accurateAsOf.getTime()}`;
     } else {
-      item.url += `?accurate_as_of=${new Date(formik.values.accurateAsOf).getTime()}`;
+      item.url += `?file_update_date=${new Date(formik.values.accurateAsOf).getTime()}`;
     }
     Upload.upload(item)
       .then((response) => {
